@@ -11,8 +11,10 @@ url: https://docs.sentry.io/api/snapshots/
 
 # Snapshots | Sentry Docs
 
+* #### [Build a Snapshot Archive](https://docs.sentry.io/api/snapshots/build-a-snapshot-archive.md)
 * #### [Create a skipped Snapshot status check](https://docs.sentry.io/api/snapshots/create-a-skipped-snapshot-status-check.md)
 * #### [Delete a Snapshot](https://docs.sentry.io/api/snapshots/delete-a-snapshot.md)
+* #### [Retrieve a Snapshot Archive's Status](https://docs.sentry.io/api/snapshots/retrieve-a-snapshot-archives-status.md)
 * #### [Retrieve latest base Snapshot](https://docs.sentry.io/api/snapshots/retrieve-latest-base-snapshot.md)
 * #### [Retrieve Snapshot details](https://docs.sentry.io/api/snapshots/retrieve-snapshot-details.md)
 * #### [Retrieve Snapshot image detail](https://docs.sentry.io/api/snapshots/retrieve-snapshot-image-detail.md)
@@ -21,8 +23,10 @@ url: https://docs.sentry.io/api/snapshots/
 
 ## Pages in this section
 
+- [Build a Snapshot Archive](https://docs.sentry.io/api/snapshots/build-a-snapshot-archive.md)
 - [Create a skipped Snapshot status check](https://docs.sentry.io/api/snapshots/create-a-skipped-snapshot-status-check.md)
 - [Delete a Snapshot](https://docs.sentry.io/api/snapshots/delete-a-snapshot.md)
+- [Retrieve a Snapshot Archive's Status](https://docs.sentry.io/api/snapshots/retrieve-a-snapshot-archives-status.md)
 - [Retrieve latest base Snapshot](https://docs.sentry.io/api/snapshots/retrieve-latest-base-snapshot.md)
 - [Retrieve Snapshot details](https://docs.sentry.io/api/snapshots/retrieve-snapshot-details.md)
 - [Retrieve Snapshot image detail](https://docs.sentry.io/api/snapshots/retrieve-snapshot-image-detail.md)

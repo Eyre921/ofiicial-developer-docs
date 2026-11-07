@@ -41240,7 +41240,7 @@ See [Environment variables](https://neon.com/docs/compute/functions/environment-
 
 Share a reusable Neon Function that anyone can add to their project with neon functions new.
 
-Last updated: 2026-10-26
+Last updated: 2026-11-07
 
 The Function Registry is the public catalog behind [`neon functions new`](https://neon.com/docs/cli/functions#new). Each template is a folder in [`registry/`](https://github.com/neondatabase/examples/tree/main/registry) in `neondatabase/examples`. To add one, you open a pull request with the template folder and an index entry. Neon reviews it, and after it merges to `main`, the template shows up in the CLI and on [neon.com/functions/templates](https://neon.com/functions/templates) within about an hour. You don't publish anything yourself.
 
@@ -41320,13 +41320,13 @@ Append the template to `templates` in `registry.json`:
   "title": "Send email with SendGrid",
   "description": "Send transactional email through the SendGrid v3 API.",
   "path": "sendgrid/template.json",
-  "categories": ["email"],
+  "categories": ["community"],
   "logo": "https://example.com/sendgrid.svg",
   "website": "https://example.com/"
 }
 ```
 
-`id`, `title`, `description`, and `categories` should match `template.json`. An entry that fails validation is dropped from the listing without an error, so always check that your template shows up.
+`id`, `title`, `description`, and `provider` should match `template.json`. `categories` differs: the entry holds the source label and `template.json` holds the topical labels. An entry that fails validation is dropped from the listing without an error, so always check that your template shows up.
 
 ## Test it and open a pull request
 
@@ -41334,16 +41334,16 @@ Run the [local test](https://neon.com/docs/compute/functions/registry#test-your-
 
 ## template.json fields
 
-| Field                  | Required | Rule                                                                                                                                                    |
-| ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                   | yes      | Lowercase letters, digits, and hyphens, starting with a letter or digit. Must match the index entry. Use it as the folder name too.                     |
-| `title`, `description` | yes      | Non-empty.                                                                                                                                              |
-| `layout`               | yes      | `router` or `separate`. See [Layouts](https://neon.com/docs/compute/functions/registry#layouts).                                                        |
-| `categories`           | no       | Listing labels. Should match the index entry. See [Categories](https://neon.com/docs/compute/functions/registry#categories).                            |
-| `provider`             | no       | Shown in listings. Defaults to `Neon`.                                                                                                                  |
-| `dependencies`         | no       | Exact `name@version` pins, scoped packages included. No ranges and no `latest`, so users install the version a reviewer approved.                       |
-| `environment`          | no       | `UPPER_SNAKE` names, each with a description. The CLI declares them in `neon.ts` and adds them to `.env.example`, using the description as the comment. |
-| `operations`           | no       | 1 to 40 entries. Leave them out for a single-module template.                                                                                           |
+| Field                  | Required | Rule                                                                                                                                                                      |
+| ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                   | yes      | Lowercase letters, digits, and hyphens, starting with a letter or digit. Must match the index entry. Use it as the folder name too.                                       |
+| `title`, `description` | yes      | Non-empty.                                                                                                                                                                |
+| `layout`               | yes      | `router` or `separate`. See [Layouts](https://neon.com/docs/compute/functions/registry#layouts).                                                                          |
+| `categories`           | no       | Topical listing labels, such as `ai` or `email`. The source label goes in the index entry. See [Categories](https://neon.com/docs/compute/functions/registry#categories). |
+| `provider`             | no       | Shown in listings. Defaults to `Neon`.                                                                                                                                    |
+| `dependencies`         | no       | Exact `name@version` pins, scoped packages included. No ranges and no `latest`, so users install the version a reviewer approved.                                         |
+| `environment`          | no       | `UPPER_SNAKE` names, each with a description. The CLI declares them in `neon.ts` and adds them to `.env.example`, using the description as the comment.                   |
+| `operations`           | no       | 1 to 40 entries. Leave them out for a single-module template.                                                                                                             |
 
 Each operation takes these fields:
 
@@ -41358,14 +41358,14 @@ Each operation takes these fields:
 
 ## Index entry fields
 
-The entry in `registry.json` repeats `id`, `title`, `description`, `provider`, and `categories`, and adds:
+The entry in `registry.json` repeats `id`, `title`, `description`, and `provider`, and adds:
 
-| Field        | Required | Rule                                                                                                  |
-| ------------ | -------- | ----------------------------------------------------------------------------------------------------- |
-| `path`       | yes      | Path to the template's `template.json`, relative to `registry.json`.                                  |
-| `categories` | yes      | At least one category. See [Categories](https://neon.com/docs/compute/functions/registry#categories). |
-| `logo`       | no       | Absolute `https://` URL. Display only. The CLI never fetches it.                                      |
-| `website`    | no       | Absolute `https://` URL to the provider's site. Display only. The CLI never fetches it.               |
+| Field        | Required | Rule                                                                                                                                       |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `path`       | yes      | Path to the template's `template.json`, relative to `registry.json`.                                                                       |
+| `categories` | yes      | The source label: `first-party`, `partner`, or `community`. See [Categories](https://neon.com/docs/compute/functions/registry#categories). |
+| `logo`       | no       | Absolute `https://` URL. Display only. The CLI never fetches it.                                                                           |
+| `website`    | no       | Absolute `https://` URL to the provider's site. Display only. The CLI never fetches it.                                                    |
 
 ## Layouts
 
@@ -41377,19 +41377,28 @@ If you leave out `operations`, the template ships exactly one module at `functio
 
 ## Categories
 
-Categories drive filtering on [neon.com/functions/templates](https://neon.com/functions/templates). They're lowercase hyphenated strings, not a fixed list, and a template can have several. The CLI ignores them.
+Categories drive filtering on [neon.com/functions/templates](https://neon.com/functions/templates), which combines the labels from both files. They're lowercase hyphenated strings, not a fixed list. The CLI ignores them.
+
+The index entry in `registry.json` gets one source label that says who wrote the template:
+
+| Category      | Use it for                                                                                   |
+| ------------- | -------------------------------------------------------------------------------------------- |
+| `first-party` | Templates written and maintained by Neon, even when they wrap a third-party SDK.             |
+| `partner`     | Templates written by a company Neon works with closely, such as Mastra, TanStack, or WorkOS. |
+| `community`   | Templates written by anyone else.                                                            |
+
+Add at least one topical label to `template.json`, even though the schema doesn't require it. Reuse one from this table where it fits:
 
 | Category            | Use it for                                        |
 | ------------------- | ------------------------------------------------- |
-| `first-party`       | Templates maintained by Neon.                     |
 | `ai`                | Templates that use AI Gateway or an AI framework. |
 | `ai-infrastructure` | Third-party AI data or tooling providers.         |
-| `api`               | HTTP APIs backed by Postgres.                     |
+| `api`               | HTTP APIs, with or without Postgres.              |
 | `auth`              | Authentication or access control.                 |
 | `bots`              | Chat or messaging bots.                           |
 | `mcp`               | Model Context Protocol servers.                   |
 
-To add a new category, use it in your entries and add a row to the categories table in the registry [README](https://github.com/neondatabase/examples/blob/main/registry/README.md).
+To add a new topical category, use it in your `template.json` and add a row to the categories table in the registry [README](https://github.com/neondatabase/examples/blob/main/registry/README.md).
 
 ## Limits
 
@@ -81062,7 +81071,7 @@ For further information on connection latency, see the [Neon Documentation](http
 
 --- [Document source](https://neon.com/docs/guides/better-drizzle.md) ---
 
-> Summary: Better Drizzle connection guide for Lakebase Postgres walks through setting up better-drizzle with node-postgres driver. Learn how to configure a Better Drizzle client, define schema relations, seed data, run CRUD queries, use plugins, and manage transactions with savepoints.
+> Summary: Better Drizzle connection guide for Lakebase Postgres walks through setting up better-drizzle 0.3 with Drizzle ORM 1.0 and the node-postgres driver. Learn how to configure a Better Drizzle client, define relations with defineRelations, seed data, run CRUD queries, use plugins, and manage transactions with savepoints.
 
 # Connect from Better Drizzle to Neon
 
@@ -81093,7 +81102,7 @@ better-drizzle wraps your existing Drizzle client and generates one delegate per
 - **Consistent CRUD**: `findMany`, `findFirst`, `findUnique`, `create`, `update`, `delete`, `upsert`, and `upsertMany` on every table
 - **Typed relation loading**: `include` and `select` with full type inference from your Drizzle schema
 - **Nested relation filters**: `some`, `every`, `none`, and `is` for filtering by related rows
-- **Unified pagination**: Offset and cursor pagination returning the same `{ data, pagination }` shape
+- **Pagination with metadata**: Offset (`paginate`) and cursor (`cursor`) pagination, both returning `{ data, pagination }`
 - **Lifecycle hooks**: Cross-cutting concerns like audit trails, tracing, and metrics without sprinkling them through every call
 - **First-class plugins**: Timestamps, soft delete, and custom behavior packaged as reusable plugins
 - **Transactions with savepoints**: Nested transactions, rollback, `afterCommit` callbacks, and automatic retries
@@ -81131,37 +81140,40 @@ Find your database connection string by clicking the **Connect** button in the C
 ![Connection details modal](https://neon.com/docs/connect/connect_to_branch_modal.png)
 The connection string includes the user name, password, hostname, and database name.
 
-Create a `.env` file in your project's root directory and add the connection string to it. Your `.env` file should look like this:
+Create a `.env` file in your project's root directory. Add the pooled connection string (the hostname includes `-pooler`) as `DATABASE_URL` for your application, and the direct connection string (without `-pooler`) as `DATABASE_URL_UNPOOLED` for Drizzle Kit migrations. To get the direct string, turn off **Connection pooling** in the **Connect to your branch** modal, or remove `-pooler` from the hostname. Your `.env` file should look like this:
 
 ```text
-DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://[user]:[password]@[endpoint]-pooler.[region].aws.neon.tech/[dbname]?sslmode=verify-full&channel_binding=require"
+DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.neon.tech/[dbname]?sslmode=verify-full&channel_binding=require"
 ```
 
-**Note:** Neon supports both direct and pooled connection strings, which you can find by clicking the **Connect** button in the Console nav. A pooled connection string (the hostname includes `-pooler`) routes through a PgBouncer connection pool, which is ideal for your application at runtime. However, using a pooled connection string for migrations can lead to errors. Use a direct (non-pooled) connection when running Drizzle Kit migrations. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling) and [Schema migration with Drizzle ORM](https://neon.com/docs/guides/drizzle-migrations).
+The Console's connection string uses `sslmode=require`. `pg` 8.23 and later print a `SECURITY WARNING` for `sslmode=require`, so change it to `sslmode=verify-full`, which keeps the same behavior without the warning.
+
+**Note:** A pooled connection string routes through a PgBouncer connection pool, which suits your application at runtime. Running migrations through the pooler can lead to errors, so Drizzle Kit uses the direct connection. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling) and [Schema migration with Drizzle ORM](https://neon.com/docs/guides/drizzle-migrations).
 
 ## Install dependencies
 
 Install the dependencies:
 
 ```bash
-npm install better-drizzle pg drizzle-orm
-npm install -D drizzle-kit@0.21.4 @types/pg @types/node dotenv
+npm install better-drizzle drizzle-orm@1.0.0-rc.4 pg dotenv
+npm install -D drizzle-kit@1.0.0-rc.4 tsx @types/pg @types/node
 ```
 
-**Note: Drizzle Kit Compatibility**
+**Note: Drizzle ORM version**
 
-better-drizzle is compatible with `drizzle-kit@0.21.4` and Drizzle ORM versions up to `^0.30.0`.
+better-drizzle 0.3 supports only Drizzle ORM `1.0.0-rc.4` and its `defineRelations` API. Install `drizzle-orm` and `drizzle-kit` with that exact version: a plain `npm install drizzle-orm` resolves to 0.x, and later release candidates aren't supported yet. Projects on Drizzle ORM 0.x need better-drizzle 0.2.x. See [Upgrading](https://better-drizzle.com/docs/guides/upgrading) in the better-drizzle docs.
 
 ## Configure Drizzle Kit
 
-Drizzle Kit uses a configuration file to manage schema and migrations. Create a `drizzle.config.ts` file in your project root:
+Drizzle Kit uses a configuration file to manage schema and migrations. Create a `drizzle.config.ts` file in your project root. It uses the direct connection string, since migrations shouldn't run through the connection pooler:
 
 ```typescript filename="drizzle.config.ts"
 import 'dotenv/config';
 import { defineConfig } from 'drizzle-kit';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL is not set in the .env file');
+if (!process.env.DATABASE_URL_UNPOOLED) {
+  throw new Error('DATABASE_URL_UNPOOLED is not set in the .env file');
 }
 
 export default defineConfig({
@@ -81169,19 +81181,18 @@ export default defineConfig({
   out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL_UNPOOLED,
   },
 });
 ```
 
 ## Define your schema and relations
 
-better-drizzle reads your Drizzle schema (including relations) to generate each table's typed API. The relations you define power `include`, `select`, and nested relation filters.
+better-drizzle reads your Drizzle tables and relations to generate each table's typed API. The relations you define power `include`, `select`, and nested relation filters.
 
-Create a `src/schema.ts` file with two tables: `users` and `posts`. Each user can have many posts, and each post belongs to one user.
+Create a `src/schema.ts` file with two tables: `users` and `posts`.
 
 ```typescript filename="src/schema.ts"
-import { relations } from 'drizzle-orm';
 import { boolean, integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
@@ -81199,41 +81210,42 @@ export const posts = pgTable('posts', {
   title: text('title').notNull(),
   published: boolean('published').notNull().default(false),
 });
+```
 
-export const usersRelations = relations(users, ({ many }) => ({
-  posts: many(posts),
+Declare the relations with Drizzle's `defineRelations` in a `src/relations.ts` file. Each user can have many posts, and each post belongs to one user.
+
+```typescript filename="src/relations.ts"
+import { defineRelations } from 'drizzle-orm';
+import * as schema from './schema';
+
+export const relations = defineRelations(schema, (r) => ({
+  users: {
+    posts: r.many.posts(),
+  },
+  posts: {
+    author: r.one.users({
+      from: r.posts.authorId,
+      to: r.users.id,
+    }),
+  },
 }));
-
-export const postsRelations = relations(posts, ({ one }) => ({
-  author: one(users, {
-    fields: [posts.authorId],
-    references: [users.id],
-  }),
-}));
-
-export const schema = {
-  users,
-  usersRelations,
-  posts,
-  postsRelations,
-};
 ```
 
 ## Initialize the Better Drizzle client
 
-Create a standard Drizzle client and wrap it with `better()` to get the Better client. Create a `src/db.ts` file:
+Create a Drizzle client with your relations and wrap it with `better()` to get the Better client. `better()` reads the tables and relations from the Drizzle instance. Create a `src/db.ts` file:
 
 ```typescript filename="src/db.ts"
+import 'dotenv/config';
 import { better } from 'better-drizzle';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
-import { schema } from './schema';
-import 'dotenv/config';
+import { relations } from './relations';
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
-const db = drizzle(pool, { schema });
+export const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
+const db = drizzle({ client: pool, relations });
 
-export const client = better(db, { schema });
+export const client = better(db);
 ```
 
 ## Generate migrations
@@ -81257,7 +81269,7 @@ npx drizzle-kit migrate
 Create a `src/seed.ts` file to populate the database with some users and posts:
 
 ```typescript filename="src/seed.ts"
-import { client } from './db';
+import { client, pool } from './db';
 
 async function seed() {
   await client.users.upsertMany({
@@ -81282,7 +81294,7 @@ async function seed() {
     data: [
       { authorId: alice!.id, title: 'Hello World', published: true },
       { authorId: alice!.id, title: 'better-drizzle is great', published: true },
-      { authorId: alice!.id, title: 'Neon Postgres rocks', published: true },
+      { authorId: alice!.id, title: 'Branching with Neon', published: true },
       { authorId: bob!.id, title: 'Secret draft', published: false },
     ],
   });
@@ -81290,20 +81302,27 @@ async function seed() {
   console.log('Seeded 3 users and 4 posts.');
 }
 
-seed();
+seed()
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
+  .finally(() => pool.end());
 ```
 
-Run the seed script:
+Run the seed script once:
 
 ```bash
 npx tsx src/seed.ts
 ```
 
+The script upserts users but inserts posts with `createMany`, so running it again adds duplicate posts and changes the query output shown below.
+
 ## Query with better-drizzle
 
 ### Reads with typed relations
 
-Each table gets a delegate (`client.users`, `client.posts`) with methods that are fully typed against your schema.
+Each table gets a delegate (`client.users`, `client.posts`) with methods that are fully typed against your schema. To try the examples in this section, put them in an `async` function in a file such as `src/queries.ts` that imports `client` and `pool` from `./db`, call `pool.end()` when you're done, and run it with `npx tsx src/queries.ts`.
 
 List active users with their three most recent published posts:
 
@@ -81340,7 +81359,7 @@ The query returns active users with their published posts nested under each user
     "name": "Alice",
     "active": true,
     "posts": [
-      { "id": 3, "title": "Neon Postgres rocks" },
+      { "id": 3, "title": "Branching with Neon" },
       { "id": 2, "title": "better-drizzle is great" },
       { "id": 1, "title": "Hello World" }
     ]
@@ -81383,11 +81402,11 @@ const posts = await client.posts.findMany({
 });
 ```
 
-> The `author: { is: { active: true } }` filter keeps only posts where the author is active, excluding Bob's posts since he is inactive:
+The `author: { is: { active: true } }` filter keeps only posts where the author is active, so Bob's draft is excluded.
 
 ### Writes with skipDuplicates and upsertMany
 
-Create a new user, skipping if the email already exists
+Create a new user, or skip the insert if the email already exists. `create` returns `null` when it skips:
 
 ```typescript
 const maybeCreated = await client.users.create({
@@ -81418,14 +81437,12 @@ await client.users.upsertMany({
 });
 ```
 
-### Pagination: one shape for offset and cursor
+### Pagination
+
+Use `paginate` for offset pagination:
 
 ```typescript
-import { PaginationType } from 'better-drizzle';
-
-// Offset pagination
-const page1 = await client.users.paginate({
-  type: PaginationType.Offset,
+const page = await client.users.paginate({
   where: { active: true },
   select: { id: true, name: true },
   orderBy: [{ id: 'desc' }],
@@ -81434,30 +81451,46 @@ const page1 = await client.users.paginate({
 });
 ```
 
-Both offset and cursor pagination return the same `{ data, pagination }` shape:
+The result includes the rows and the page metadata. With only the seed data loaded (before the write examples above), it looks like this:
 
-```json title="Output"
+```json filename="Output"
 {
   "data": [
     { "id": 3, "name": "Charlie" },
     { "id": 1, "name": "Alice" }
   ],
-  "pagination": { "count": 2, "hasNext": false, "hasPrevious": false }
+  "pagination": {
+    "type": "offset",
+    "page": 1,
+    "perPage": 10,
+    "total": 2,
+    "pageCount": 1,
+    "hasNext": false,
+    "hasPrevious": false
+  }
 }
 ```
 
-Cursor pagination uses the last item's cursor to fetch the next page:
+Use `cursor` for feed-style pagination. Pass the previous page's `nextCursor` as `after` to fetch the next page:
 
 ```typescript
-const page2 = await client.users.paginate({
-  type: PaginationType.Cursor,
+const first = await client.users.cursor({
   where: { active: true },
   select: { id: true, name: true },
-  after: { id: page1.data[page1.data.length - 1]?.id },
-  limit: 10,
   orderBy: [{ id: 'desc' }],
+  limit: 1,
+});
+
+const second = await client.users.cursor({
+  where: { active: true },
+  select: { id: true, name: true },
+  orderBy: [{ id: 'desc' }],
+  limit: 1,
+  after: first.pagination.nextCursor ?? undefined,
 });
 ```
+
+Cursor results return `hasNext`, `hasPrevious`, `nextCursor`, and `previousCursor` in `pagination`. With only the seed data loaded, `first.pagination` is `{ "type": "cursor", "hasNext": true, "hasPrevious": false, "nextCursor": { "id": 3 }, "previousCursor": null }`.
 
 ### Count and exists
 
@@ -81473,21 +81506,16 @@ const exists = await client.users.exists({
 
 ## Use plugins for cross-cutting behavior
 
-Plugins can manage timestamps, soft deletes, and custom behavior.
+Plugins can manage timestamps, soft deletes, and custom behavior. The timestamps and soft delete plugins ship with `better-drizzle`, so there's nothing extra to install.
 
 ### Timestamps
 
-Auto-manage `createdAt` and `updatedAt` columns on every write:
-
-```bash
-npm install @better-drizzle/timestamps
-```
+Auto-manage `createdAt` and `updatedAt` columns on every write. In `src/db.ts`, import the plugin and pass it to `better()`:
 
 ```typescript filename="src/db.ts"
-import { timestamps } from '@better-drizzle/timestamps';
+import { timestamps } from 'better-drizzle/timestamps';
 
-const client = better(db, {
-  schema,
+export const client = better(db, {
   plugins: [
     timestamps({
       createdAt: 'createdAt',
@@ -81499,38 +81527,37 @@ const client = better(db, {
 
 **Important: Timestamps plugin**
 
-Use the column names defined in your Drizzle schema rather than the raw PostgreSQL column names. For example, if your schema specifies `createdAt` and `updatedAt`, those are the names you should reference in the plugin configuration - not the database's `created_at` and `updated_at`.
+Use the property names defined in your Drizzle schema, not the Postgres column names. For example, if your schema defines `createdAt: timestamp('created_at')`, reference `createdAt` in the plugin configuration, not `created_at`.
 
-The plugin automatically sets `createdAt` on row creation and updates `updatedAt` on every update. Ensure your schema has the `createdAt` and `updatedAt` columns defined as timestamps. For example:
+The plugin sets `createdAt` and `updatedAt` when a row is created and updates `updatedAt` on every update. Add `createdAt` and `updatedAt` timestamp columns to your schema, then run `npx drizzle-kit generate` and `npx drizzle-kit migrate` again:
 
 ```typescript filename="src/schema.ts"
-import { relations } from "drizzle-orm";
-import { boolean, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  email: text("email").notNull().unique(),
-  name: text("name").notNull(),
-  active: boolean("active").notNull().default(true),
-  createdAt: timestamp("created_at"),
-  updatedAt: timestamp("updated_at"),
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  email: text('email').notNull().unique(),
+  name: text('name').notNull(),
+  active: boolean('active').notNull().default(true),
+  createdAt: timestamp('created_at'),
+  updatedAt: timestamp('updated_at'),
 });
 
-export const posts = pgTable("posts", {
-  id: serial("id").primaryKey(),
-  authorId: integer("author_id")
+export const posts = pgTable('posts', {
+  id: serial('id').primaryKey(),
+  authorId: integer('author_id')
     .notNull()
     .references(() => users.id),
-  title: text("title").notNull(),
-  published: boolean("published").notNull().default(false),
-  createdAt: timestamp("created_at"),
-  updatedAt: timestamp("updated_at"),
+  title: text('title').notNull(),
+  published: boolean('published').notNull().default(false),
+  createdAt: timestamp('created_at'),
+  updatedAt: timestamp('updated_at'),
 });
 ```
 
 ### Soft delete
 
-To use soft deletes, add a `deletedAt` column to your schema:
+To use soft deletes, add a `deletedAt` column to your schema, then generate and apply a migration:
 
 ```typescript filename="src/schema.ts"
 export const posts = pgTable('posts', {
@@ -81544,17 +81571,12 @@ export const posts = pgTable('posts', {
 });
 ```
 
-Install and configure the `@better-drizzle/soft-delete` plugin:
-
-```bash
-npm install @better-drizzle/soft-delete
-```
+In `src/db.ts`, import the soft delete plugin and pass it to `better()`:
 
 ```typescript filename="src/db.ts"
-import { softDelete } from '@better-drizzle/soft-delete';
+import { softDelete } from 'better-drizzle/soft-delete';
 
-const client = better(db, {
-  schema,
+export const client = better(db, {
   plugins: [
     softDelete({
       column: 'deletedAt',
@@ -81575,11 +81597,10 @@ await client.posts.restore({ where: { id: 1 } });
 
 ## Add lifecycle hooks
 
-Observe operations for auditing, metrics, or custom metadata:
+Observe operations for auditing, metrics, or custom metadata. Pass `hooks` to `better()` in `src/db.ts`:
 
-```typescript filename="db.ts"
-const client = better(db, {
-  schema,
+```typescript filename="src/db.ts"
+export const client = better(db, {
   hooks: {
     beforeCreate(ctx) {
       console.log('beforeCreate', ctx.action, ctx.table);
@@ -81668,10 +81689,6 @@ await client.transaction(
   },
 );
 ```
-
-## Summary
-
-better-drizzle provides a type-safe, boilerplate-free API on top of Drizzle ORM, providing features like auto-pagination, soft deletes, lifecycle hooks, and nested transactions.
 
 ## Other features
 
@@ -87309,7 +87326,7 @@ For more information on the tools and concepts used in this guide, refer to the 
 
 --- [Document source](https://neon.com/docs/guides/django.md) ---
 
-> Summary: Connecting Django to Neon serverless Lakebase Postgres requires configuring the `DATABASES` block in `settings.py` with the psycopg3 driver, `sslmode: require`, and `CONN_HEALTH_CHECKS: True` to prevent dropped connections when the compute scales to zero after 5 minutes of inactivity. Use this page when setting up a new Django connection or debugging the `Endpoint ID is not specified` SNI error, which occurs with psycopg2 and libpq versions older than v14. For schema migrations after connecting, see the separate Django Migrations guide.
+> Summary: Connecting Django to Lakebase Postgres on Neon requires configuring the `DATABASES` block in `settings.py` with the psycopg3 driver, `sslmode: require`, and `CONN_HEALTH_CHECKS: True` to prevent dropped connections when the compute scales to zero after 5 minutes of inactivity. Use this page when setting up a new Django connection or debugging the `Endpoint ID is not specified` SNI error, which occurs with psycopg2 and libpq versions older than v14. For schema migrations after connecting, see the separate Django Migrations guide.
 
 # Connect a Django application to Neon
 
@@ -87323,8 +87340,8 @@ To connect to Neon from a Django application:
 
 ## Prerequisites
 
-- A [Neon account and project](https://neon.com/docs/get-started-with-neon/signing-up) with connection parameters ready
-- Python 3.8+ installed
+- A [Neon account and project](https://neon.com/docs/get-started/signing-up) with connection parameters ready
+- Python 3.12+ installed (required by Django 6). Django 5.2 LTS supports Python 3.10+.
 - An existing Django project (or create one with `django-admin startproject myproject`)
 
 **Important:**
@@ -87337,15 +87354,15 @@ source venv/bin/activate   # macOS / Linux
 # venv\Scripts\activate    # Windows
 ```
 
-## Install the PostgreSQL driver
+## Install the Postgres driver
 
-Install `psycopg` (the modern psycopg3 driver) and `python-dotenv` inside your virtual environment:
+Install `psycopg` (psycopg 3) and `python-dotenv` inside your virtual environment:
 
 ```bash
 pip install "psycopg[binary]" python-dotenv
 ```
 
-**Note:** The docs examples below use `psycopg` (v3). If your project uses the older `psycopg2` driver, see [Connection issues](https://neon.com/docs/guides/django#connection-issues) for SNI compatibility requirements.
+**Note:** The examples below use `psycopg` (v3). If your project uses the older `psycopg2` driver, see [Connection issues](https://neon.com/docs/guides/django#connection-issues) for SNI compatibility requirements.
 
 ## Create a Neon project
 
@@ -87390,7 +87407,7 @@ DATABASES = {
 }
 ```
 
-**Note:** Neon places computes into an idle state and closes connections after 5 minutes of inactivity (see [Compute lifecycle](https://neon.com/docs/introduction/compute-lifecycle/)). To avoid connection errors, you can set the Django [CONN_MAX_AGE](https://docs.djangoproject.com/en/4.1/ref/settings/#std-setting-CONN_MAX_AGE) setting to 0 to close database connections at the end of each request so that your application does not attempt to reuse connections that were closed by Neon. From Django 4.1, you can use a higher `CONN_MAX_AGE` setting in combination with the [CONN_HEALTH_CHECKS](https://docs.djangoproject.com/en/4.1/ref/settings/#conn-health-checks) setting to enable connection reuse while preventing errors that might occur due to closed connections. For more information about these configuration options, see [Connection management](https://docs.djangoproject.com/en/4.1/ref/databases#connection-management), in the _Django documentation_.
+**Note:** Neon places computes into an idle state and closes connections after 5 minutes of inactivity (see [Compute lifecycle](https://neon.com/docs/introduction/compute-lifecycle/)). To avoid connection errors, you can set the Django [CONN_MAX_AGE](https://docs.djangoproject.com/en/stable/ref/settings/#std-setting-CONN_MAX_AGE) setting to 0 to close database connections at the end of each request so that your application does not attempt to reuse connections that were closed by Neon. From Django 4.1, you can use a higher `CONN_MAX_AGE` setting in combination with the [CONN_HEALTH_CHECKS](https://docs.djangoproject.com/en/stable/ref/settings/#conn-health-checks) setting to enable connection reuse while preventing errors that might occur due to closed connections. For more information about these configuration options, see [Connection management](https://docs.djangoproject.com/en/stable/ref/databases/#connection-management), in the _Django documentation_.
 
 You can find all of the connection details listed above by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
@@ -87404,9 +87421,9 @@ PGPASSWORD="<password>"
 PGPORT=5432
 ```
 
-> Replace `<endpoint_hostname>`, `<dbname>`, `<user>`, and `<password>` with your actual database credentials.
+> Replace `<endpoint_hostname>`, `<dbname>`, `<user>`, and `<password>` with your actual database credentials. If you have a connection string (`postgresql://[user]:[password]@[neon_hostname]/[dbname]`), copy its parts into the matching variables. The pooled hostname (with `-pooler`) works with these settings.
 
-For additional information about Django project settings, see [Django Settings: Databases](https://docs.djangoproject.com/en/4.0/ref/settings#databases), in the Django documentation.
+For additional information about Django project settings, see [Django Settings: Databases](https://docs.djangoproject.com/en/stable/ref/settings/#databases), in the Django documentation.
 
 ## Test the connection
 
@@ -87445,34 +87462,36 @@ Create a simple view to verify the database connection is working.
    python manage.py runserver
    ```
 
-4. Visit `http://localhost:8000` to see the PostgreSQL version from your Neon database.
+4. Visit `http://localhost:8000` to see the Postgres version from your Neon database.
 
 ## Connection issues
 
-- Django uses the `psycopg2` driver as the default adapter for Postgres. If you have an older version of that driver, you may encounter an `Endpoint ID is not specified` error when connecting to Neon. This error occurs if the client library used by your driver does not support the Server Name Indication (SNI) mechanism in TLS, which Neon uses to route incoming connections. The `psycopg2` driver uses the `libpq` client library, which supports SNI as of v14. You can check your `psycopg2` and `libpq` versions by starting a Django shell in your Django project and running the following commands:
+- Django uses `psycopg` (v3) when it's installed and falls back to `psycopg2`. If your project uses an older version of `psycopg2`, you may encounter an `Endpoint ID is not specified` error when connecting to Neon. This error occurs if the client library used by your driver does not support the Server Name Indication (SNI) mechanism in TLS, which Neon uses to route incoming connections. The `psycopg2` driver uses the `libpq` client library, which supports SNI as of v14. You can check your `psycopg2` and `libpq` versions by starting a Django shell in your Django project and running the following commands:
 
   ```bash
   # Start a Django shell
   python3 manage.py shell
+  ```
 
+  ```python
   # Check versions
   import psycopg2
   print("psycopg2 version:", psycopg2.__version__)
   print("libpq version:", psycopg2._psycopg.libpq_version())
   ```
 
-  The version number for `libpq` is presented in a different format, for example, version 14.1 will be shown as 140001. If your `libpq` version is less than version 14, you can either upgrade your `psycopg2` driver to get a newer `libpq` version or use one of the workarounds described in our [Connection errors](https://neon.com/docs/connect/connection-errors#the-endpoint-id-is-not-specified) documentation. Upgrading your `psycopg2` driver may introduce compatibility issues with your Django or Python version, so you should test your application thoroughly.
+  The version number for `libpq` is presented in a different format, for example, version 14.1 will be shown as 140001. If your `libpq` version is less than version 14, you can either upgrade your `psycopg2` driver to get a newer `libpq` version or use one of the workarounds in [Connection errors](https://neon.com/docs/connect/connection-errors#the-endpoint-id-is-not-specified). Upgrading your `psycopg2` driver may introduce compatibility issues with your Django or Python version, so you should test your application thoroughly.
 
 - If you encounter an `SSL SYSCALL error: EOF detected` when connecting to the database, this typically occurs because the application is trying to reuse a connection after the Neon compute has been suspended due to inactivity. To resolve this issue, try one of the following options:
 
-  - Set your Django [`CONN_MAX_AGE`](https://docs.djangoproject.com/en/5.1/ref/settings/#conn-max-age) setting to a value less than or equal to the scale to zero setting configured for your compute. The default is 5 minutes (300 seconds).
-  - Enable [`CONN_HEALTH_CHECKS`](https://docs.djangoproject.com/en/5.1/ref/settings/#conn-health-checks) by setting it to `true`. This forces a health check to verify that the connection is alive before executing a query.
+  - Set your Django [`CONN_MAX_AGE`](https://docs.djangoproject.com/en/stable/ref/settings/#conn-max-age) setting to a value less than or equal to the scale to zero setting configured for your compute. The default is 5 minutes (300 seconds).
+  - Enable [`CONN_HEALTH_CHECKS`](https://docs.djangoproject.com/en/stable/ref/settings/#conn-health-checks) by setting it to `True`. This forces a health check to verify that the connection is alive before executing a query.
 
   For information configuring Neon's Scale to zero setting, see [Configuring Scale to zero for Neon computes](https://neon.com/docs/guides/scale-to-zero-guide).
 
 ## Schema migration with Django
 
-For schema migration with Django, see our guide:
+For schema migration with Django, see:
 
 - [Django Migrations](https://neon.com/docs/guides/django-migrations): Schema migration with Lakebase Postgres and Django
 
@@ -90612,8 +90631,8 @@ This guide describes how to create a Neon project and connect to it from an Expr
 ## Choose a driver
 
 - **`@neondatabase/serverless`** connects over HTTP or WebSockets instead of TCP. Use it for serverless and edge platforms without built-in connection pooling (Vercel, Netlify Functions, Cloudflare Workers without Hyperdrive).
-- **`postgres` (postgres.js)** is a fast, full-featured client for both serverless and traditional Node.js server environments.
-- **`pg` (node-postgres)** is the classic, widely-used driver for traditional, long-running Node.js servers. Also the standard choice for [Vercel Fluid compute](https://vercel.com/docs/functions/fluid-compute) and Cloudflare with [Hyperdrive](https://developers.cloudflare.com/hyperdrive/).
+- **`postgres` (postgres.js)** works in both serverless and traditional Node.js server environments.
+- **`pg` (node-postgres)** is the most widely used driver for traditional, long-running Node.js servers. Also the standard choice for [Vercel Fluid compute](https://vercel.com/docs/functions/fluid-compute) and Cloudflare with [Hyperdrive](https://developers.cloudflare.com/hyperdrive/).
 
 For a detailed comparison including all platforms, see [Choosing your connection method](https://neon.com/docs/connect/choose-connection).
 
@@ -90661,7 +90680,7 @@ If you do not have one already, create a Neon project.
 Add a `.env` file to your project directory and add your Neon connection details to it. Find your database connection details by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. Select Node.js from the **Connection string** dropdown. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
-DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
 ```
 
 **Important:** Never hardcode credentials in source code files. Always use environment variables via `process.env`. For more information, see [Security overview](https://neon.com/docs/security/security-overview).
@@ -90764,18 +90783,20 @@ app.listen(PORT, () => {
 });
 ```
 
+**Note:** If you use node-postgres, note that `pg` 8.23 and later print a `SECURITY WARNING` when a connection string uses `sslmode=require`. To keep the current behavior and remove the warning, change `sslmode=require` to `sslmode=verify-full` in your connection string. For SSL mode definitions, see [SSL support](https://www.postgresql.org/docs/current/libpq-ssl.html) in the Postgres documentation.
+
 ## Run index.js
 
-Run `node index.js` to view the result on [localhost:4242](http://localhost:4242) as follows:
+Run `node index.js` and open [localhost:4242](http://localhost:4242). The response looks like this:
 
-```shell
-{ version: 'PostgreSQL 16.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit' }
+```json
+{ "version": "PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit" }
 ```
 
 ## Connection issues
 
 - If you see an `endpoint ID is not specified` error, the TLS client your Postgres driver depends on doesn't support Server Name Indication (SNI), which Neon uses to route connections. For `pg` (node-postgres), this means an outdated `libpq`-compatible TLS stack; upgrading `pg` usually resolves it.
-- If you encounter an `SSL SYSCALL error: EOF detected` (or a similar connection-reset error), this typically happens when an application tries to reuse a connection after the Neon compute has been suspended due to inactivity. This mainly affects long-running servers that keep a connection pool open, like the `pg` example above — closing and recreating idle connections, or reconnecting on error, resolves it.
+- If you encounter an `SSL SYSCALL error: EOF detected` (or a similar connection-reset error), this typically happens when an application tries to reuse a connection after the Neon compute has been suspended due to inactivity. This mainly affects long-running servers that keep a connection pool open, like the `pg` example above. Closing and recreating idle connections, or reconnecting on error, resolves it.
 
 <details>
 
@@ -90795,7 +90816,7 @@ Run `node index.js` to view the result on [localhost:4242](http://localhost:4242
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-- [Realtime](https://neon.com/docs/realtime/guides/queries): Build realtime apps with end-to-end reactivity »
+- [Realtime](https://neon.com/docs/realtime/guides/queries): Build realtime apps with end-to-end reactivity
 
 --- [Document source](https://neon.com/docs/guides/file-storage.md) ---
 
@@ -91210,7 +91231,7 @@ Learn how you can use Flyway with multiple database environments. See [Use Flywa
 
 --- [Document source](https://neon.com/docs/guides/go.md) ---
 
-> Summary: Connecting a Go application to Lakebase Postgres with pgx/v5 requires Go 1.21 or later and a DATABASE_URL connection string passed via environment variable. Use this page for raw SQL access with parameterized queries, not an ORM: it walks through CREATE, SELECT, UPDATE, DELETE, bulk inserts via CopyFrom, and multi-statement transactions with conn.Begin and defer tx.Rollback.
+> Summary: Connecting a Go application to Lakebase Postgres with pgx/v5 requires Go 1.25 or later and a DATABASE_URL connection string passed via environment variable. Use this page for raw SQL access with parameterized queries, not an ORM: it walks through CREATE, SELECT, UPDATE, DELETE, bulk inserts via CopyFrom, and multi-statement transactions with conn.Begin and defer tx.Rollback.
 
 # Connect a Go application to Lakebase Postgres
 
@@ -91220,16 +91241,16 @@ Last updated: 2026-10-09
 
 Pre-built prompt for connecting Go applications to Neon [View prompt](https://neon.com/prompts/golang-prompt.md)
 
-This guide describes how to create a Neon project and connect to it from a Go (Golang) application using [pgx](https://github.com/jackc/pgx), a high-performance and feature-rich PostgreSQL driver for Go.
+This guide describes how to create a Neon project and connect to it from a Go (Golang) application using [pgx](https://github.com/jackc/pgx), a Postgres driver for Go.
 
 You'll learn how to connect to your database from a Go application, and perform basic Create, Read, Update, and Delete (CRUD) operations.
 
 ## Prerequisites
 
 - A Neon account. If you do not have one, see [Sign up](https://console.neon.tech/signup).
-- Go 1.21 or later. If you do not have Go installed, see the [official installation guide](https://go.dev/doc/install).
+- Go 1.25 or later. If you do not have Go installed, see the [official installation guide](https://go.dev/doc/install).
 
-**Note:** The latest version of `pgx/v5` (v5.9.1+) requires Go 1.25. If you are using an older Go version, pin to a compatible release: `go get github.com/jackc/pgx/v5@v5.7.4`.
+**Note:** `pgx/v5` v5.9.0 and later require Go 1.25. If you can't upgrade Go, pin a release that supports Go 1.21: `go get github.com/jackc/pgx/v5@v5.7.4`.
 
 ## Create a Neon project
 
@@ -91273,7 +91294,7 @@ For your Go project, create a project directory, initialize a Go module, and add
 
 ## Store your Neon connection string
 
-Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
+Create a file named `.env` in your project's root directory. This file stores your database connection string. Don't commit it to source control.
 
 1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
@@ -91287,13 +91308,15 @@ Create a file named `.env` in your project's root directory. This file will secu
 
 ## Examples
 
-This section provides example Go scripts that demonstrate how to connect to your Neon database and perform basic operations such as [creating a table](https://neon.com/docs/guides/go#create-a-table-and-insert-data), [reading data](https://neon.com/docs/guides/go#read-data), [updating data](https://neon.com/docs/guides/go#update-data), and [deleting data](https://neon.com/docs/guides/go#deleting-data).
+This section provides example Go scripts that demonstrate how to connect to your Neon database and perform basic operations such as [creating a table](https://neon.com/docs/guides/go#create-a-table-and-insert-data), [reading data](https://neon.com/docs/guides/go#read-data), [updating data](https://neon.com/docs/guides/go#update-data), and [deleting data](https://neon.com/docs/guides/go#delete-data).
+
+Each script is a standalone program with its own `main` function, so run each one by file name with `go run <file>.go`. Because they share a directory, `go build .` and your editor report `main redeclared`. That's expected for this guide. In a real app, put each program in its own directory under `cmd/`.
 
 ### Create a table and insert data
 
 In your project directory, create a file named `create_table.go`. This script connects to your Neon database, creates a table named `books`, and inserts some sample data into it.
 
-```go title="create_table.go"
+```go filename="create_table.go"
 package main
 
 import (
@@ -91405,7 +91428,7 @@ go run create_table.go
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 Finished dropping table (if it existed).
 Finished creating table.
@@ -91417,7 +91440,7 @@ Inserted 3 rows of data.
 
 In your project directory, create a file named `read_data.go`. This script connects to your Neon database and retrieves all rows from the `books` table.
 
-```go title="read_data.go"
+```go filename="read_data.go"
 package main
 
 import (
@@ -91473,7 +91496,7 @@ func main() {
 		fmt.Printf("ID: %d, Title: %s, Author: %s, Year: %d, In Stock: %t\n",
 			id, title, author, publicationYear, inStock)
 	}
-	fmt.Println("--------------------\n")
+	fmt.Println("--------------------")
 
 	if err := rows.Err(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error during rows iteration: %v\n", err)
@@ -91499,7 +91522,7 @@ go run read_data.go
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 
 --- Book Library ---
@@ -91514,7 +91537,7 @@ ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: false
 
 In your project directory, create a file named `update_data.go`. This script connects to your Neon database and updates the stock status of the book 'Dune' to `true`.
 
-```go title="update_data.go"
+```go filename="update_data.go"
 package main
 
 import (
@@ -91575,7 +91598,7 @@ go run read_data.go
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 
 --- Book Library ---
@@ -91592,7 +91615,7 @@ ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: true
 
 In your project directory, create a file named `delete_data.go`. This script connects to your Neon database and deletes the book '1984' from the `books` table.
 
-```go title="delete_data.go"
+```go filename="delete_data.go"
 package main
 
 import (
@@ -91652,7 +91675,7 @@ go run read_data.go
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 
 --- Book Library ---
@@ -91668,7 +91691,7 @@ ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: true
 
 The examples above execute each operation independently. For production code where multiple operations must succeed or fail together, wrap them in a transaction. The `defer tx.Rollback(ctx)` pattern ensures the transaction is rolled back if the function exits before committing.
 
-```go title="transaction_example.go"
+```go filename="transaction_example.go"
 package main
 
 import (
@@ -91740,6 +91763,14 @@ Run with:
 go run transaction_example.go
 ```
 
+When the code runs successfully, it produces the following output:
+
+```text filename="Output"
+Transaction committed successfully.
+```
+
+Run `read_data.go` again to see the new row: `Brave New World` by Aldous Huxley, with `In Stock: false`.
+
 ## Connection issues
 
 - If you see an `endpoint ID is not specified` error, the TLS client your Postgres driver depends on doesn't support Server Name Indication (SNI), which Neon uses to route connections. This is uncommon with `pgx/v5`, which uses Go's standard `crypto/tls` package and supports SNI by default, but can occur with an older driver or an outdated TLS implementation.
@@ -91757,15 +91788,15 @@ go run transaction_example.go
 
 </details>
 
-## Next steps: Using an ORM or framework
+## Use an ORM
 
-While this guide demonstrates how to connect to Neon using raw SQL queries, for more advanced and maintainable data interactions in your Go applications, consider using an Object-Relational Mapping (ORM) framework. ORMs not only let you work with data as objects but also help manage schema changes through automated migrations keeping your database structure in sync with your application models.
+This guide uses raw SQL. An Object-Relational Mapping (ORM) library lets you work with rows as Go structs and can run migrations that keep your schema in sync with your models.
 
-Explore the following resources to learn how to integrate ORMs with Neon:
+To use an ORM with Neon, see:
 
 - [Connect a Go application to Neon using GORM](https://neon.com/guides/golang-gorm-postgres)
 
-## Next steps: Neon backend services
+## Neon backend services
 
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
@@ -93514,17 +93545,17 @@ Last updated: 2026-10-21
 
 --- [Document source](https://neon.com/docs/guides/java.md) ---
 
-> Summary: Connect a Java application to Lakebase Postgres using the PostgreSQL JDBC driver with Apache Maven. Covers complete CRUD examples including PreparedStatement inserts, batch operations, and transaction control with setAutoCommit, commit, and rollback. Also covers dotenv-java for credential management. Focuses on raw JDBC without an ORM, unlike Spring Boot or Hibernate guides.
+> Summary: Connect a Java application to Lakebase Postgres using the Postgres JDBC driver (pgJDBC) with Apache Maven. Covers complete CRUD examples including PreparedStatement inserts, batch operations, and transaction control with setAutoCommit, commit, and rollback. Also covers dotenv-java for credential management. Focuses on raw JDBC without an ORM, unlike Spring Boot or Hibernate guides.
 
 # Connect a Java application to Lakebase Postgres
 
-Learn how to run SQL queries in Neon from Java using the PostgreSQL JDBC driver
+Learn how to run SQL queries in Neon from Java using the Postgres JDBC driver
 
 Last updated: 2026-10-09
 
 Pre-built prompt for connecting Java applications to Neon [View prompt](https://neon.com/prompts/java-prompt.md)
 
-This guide describes how to create a Neon project and connect to it from a Java application using **Java Database Connectivity (JDBC)**, the standard API for interacting with relational databases in Lakebase Postgres.
+This guide describes how to create a Neon project and connect to it from a Java application using **Java Database Connectivity (JDBC)**, Java's standard API for relational databases, and the Postgres JDBC driver ([pgJDBC](https://jdbc.postgresql.org)).
 
 You will learn how to set up a project, connect to your database, and perform basic create, read, update, and delete (CRUD) operations.
 
@@ -93568,26 +93599,24 @@ Create a project using the Maven `archetype:generate` command. This sets up a st
 
    > Open this directory in your preferred code editor (for example, VS Code, IntelliJ IDEA).
 
-3. Add the `postgresql` driver and `dotenv-java` libraries as dependencies in your `pom.xml` file. There may be other dependencies already present (e.g, `junit`), so ensure you add these within the `<dependencies>` section.
+3. Add the `postgresql` driver and `dotenv-java` libraries to your `pom.xml` file. The generated `pom.xml` already has a `<dependencies>` section with JUnit dependencies. Add these two `<dependency>` elements inside that existing section. Don't add a second `<dependencies>` section: Maven fails with `Duplicated tag: 'dependencies'`.
 
-   ```xml title="pom.xml"
-   <dependencies>
-     <dependency>
-       <groupId>org.postgresql</groupId>
-       <artifactId>postgresql</artifactId>
-       <version>42.7.3</version>
-     </dependency>
-     <dependency>
-       <groupId>io.github.cdimascio</groupId>
-       <artifactId>dotenv-java</artifactId>
-       <version>3.2.0</version>
-     </dependency>
-   </dependencies>
+   ```xml filename="pom.xml"
+   <dependency>
+     <groupId>org.postgresql</groupId>
+     <artifactId>postgresql</artifactId>
+     <version>42.7.14</version>
+   </dependency>
+   <dependency>
+     <groupId>io.github.cdimascio</groupId>
+     <artifactId>dotenv-java</artifactId>
+     <version>3.2.0</version>
+   </dependency>
    ```
 
    **Note: Note**
 
-   Make sure to add this to the `<dependencies>` section. A common mistake is adding it to `<dependencyManagement>`, which only declares a version but doesn't actually include the library in your build.
+   The generated `pom.xml` also has a `<dependencies>` section inside `<dependencyManagement>`. Don't add the libraries there: `<dependencyManagement>` only declares versions and doesn't include the libraries in your build.
 
    Save the file.
 
@@ -93601,7 +93630,7 @@ Create a project using the Maven `archetype:generate` command. This sets up a st
 
 ## Store your Neon connection string
 
-Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
+Create a file named `.env` in your project's root directory. This file stores your database connection string. Don't commit it to source control.
 
 1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
@@ -93610,11 +93639,11 @@ Create a file named `.env` in your project's root directory. This file will secu
 4. Copy the connection string, which includes your password.
 5. Create a file named `.env` in your project's root directory and add the connection string to it as shown below:
 
-   ```text title=".env"
+   ```text filename=".env"
    DATABASE_URL="jdbc:postgresql://[neon_hostname]/[dbname]?user=[user]&password=[password]&sslmode=require&channelBinding=require"
    ```
 
-   > Replace `[user]`, `[password]`, `[neon_hostname]`, and `[dbname]` with your actual database credentials.
+   > Replace `[user]`, `[password]`, `[neon_hostname]`, and `[dbname]` with your actual database credentials. If you start from a `postgresql://` connection string, move the user and password into the `user` and `password` parameters, add the `jdbc:` prefix, and write `channel_binding=require` as `channelBinding=require`.
 
 ## Examples
 
@@ -93624,7 +93653,7 @@ This section provides code examples for performing CRUD operations. The examples
 
 Create a file named `CreateTable.java`. This class connects to your database, creates a table, and inserts data.
 
-```java title="src/main/java/com/neon/quickstart/CreateTable.java"
+```java filename="src/main/java/com/neon/quickstart/CreateTable.java"
 package com.neon.quickstart;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -93714,7 +93743,7 @@ mvn exec:java -Dexec.mainClass="com.neon.quickstart.CreateTable"
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 Finished dropping table (if it existed).
 Finished creating table.
@@ -93726,7 +93755,7 @@ Inserted 3 rows of data.
 
 Create a file named `ReadData.java`. This class fetches all rows from the `books` table and prints them.
 
-```java title="src/main/java/com/neon/quickstart/ReadData.java"
+```java filename="src/main/java/com/neon/quickstart/ReadData.java"
 package com.neon.quickstart;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -93772,7 +93801,7 @@ mvn exec:java -Dexec.mainClass="com.neon.quickstart.ReadData"
 
 When the read logic runs, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 
 --- Book Library ---
@@ -93785,9 +93814,9 @@ ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: false
 
 ### Update data
 
-Create a file named `UpdateData.java` to update the stock status of 'Dune' to `True`.
+Create a file named `UpdateData.java` to update the stock status of 'Dune' to `true`.
 
-```java title="src/main/java/com/neon/quickstart/UpdateData.java"
+```java filename="src/main/java/com/neon/quickstart/UpdateData.java"
 package com.neon.quickstart;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -93836,7 +93865,9 @@ mvn exec:java -Dexec.mainClass="com.neon.quickstart.ReadData"
 
 The updated output will be:
 
-```text title="Output"
+```text filename="Output"
+Connection established
+
 --- Book Library ---
 ID: 2, Title: The Hobbit, Author: J.R.R. Tolkien, Year: 1937, In Stock: true
 ID: 3, Title: 1984, Author: George Orwell, Year: 1949, In Stock: true
@@ -93851,7 +93882,7 @@ ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: true
 
 Create a file named `DeleteData.java` to delete the book '1984' from the table.
 
-```java title="src/main/java/com/neon/quickstart/DeleteData.java"
+```java filename="src/main/java/com/neon/quickstart/DeleteData.java"
 package com.neon.quickstart;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -93899,7 +93930,9 @@ mvn exec:java -Dexec.mainClass="com.neon.quickstart.ReadData"
 
 The final output will be:
 
-```text title="Output"
+```text filename="Output"
+Connection established
+
 --- Book Library ---
 ID: 2, Title: The Hobbit, Author: J.R.R. Tolkien, Year: 1937, In Stock: true
 ID: 1, Title: The Catcher in the Rye, Author: J.D. Salinger, Year: 1951, In Stock: true
@@ -93913,7 +93946,7 @@ ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: true
 
 The examples above execute each operation independently. For production code where multiple operations must succeed or fail together, wrap them in a transaction. Use `setAutoCommit(false)` to start a transaction, `commit()` on success, and `rollback()` in the catch block on failure.
 
-```java title="src/main/java/com/neon/quickstart/TransactionExample.java"
+```java filename="src/main/java/com/neon/quickstart/TransactionExample.java"
 package com.neon.quickstart;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -93983,6 +94016,16 @@ Run with:
 mvn exec:java -Dexec.mainClass="com.neon.quickstart.TransactionExample"
 ```
 
+When the code runs successfully, it produces the following output:
+
+```text filename="Output"
+Inserted book.
+Updated stock status.
+Transaction committed successfully.
+```
+
+Run `ReadData` again to see the new row: `Brave New World` by Aldous Huxley, with `In Stock: false`.
+
 <details>
 
 <summary>**Notes for AI-assisted setup**</summary>
@@ -93995,22 +94038,22 @@ mvn exec:java -Dexec.mainClass="com.neon.quickstart.TransactionExample"
 
 </details>
 
-## Next steps: Using an ORM or framework
+## Use an ORM or framework
 
-While this guide demonstrates how to connect to Neon using raw SQL queries, for more advanced and maintainable data interactions in your Java applications, consider using an Object-Relational Mapping (ORM) framework. ORMs not only let you work with data as objects but also help manage schema changes through automated migrations keeping your database structure in sync with your application models.
+This guide uses raw SQL through JDBC. An Object-Relational Mapping (ORM) framework such as Hibernate lets you work with rows as Java objects, and migration tools keep your schema in sync with your models.
 
-Explore the following resources to learn how to integrate ORMs with Neon:
+To use an ORM or framework with Neon, see:
 
 - [Database Schema Changes with Hibernate, Spring Boot, and Neon](https://neon.com/guides/spring-boot-hibernate)
 
-## Next steps: Neon backend services
+## Neon backend services
 
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
 
 ## Resources
 
-- [PostgreSQL JDBC Driver Documentation](https://jdbc.postgresql.org/documentation/use/)
+- [pgJDBC documentation](https://jdbc.postgresql.org/documentation/use/)
 - [Apache Maven Quickstart](https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html)
 - [Database Migrations in Spring Boot with Flyway and Neon](https://neon.com/guides/spring-boot-flyway)
 
@@ -96264,13 +96307,13 @@ Last updated: 2026-09-16
 
 Pre-built prompt for connecting Laravel to Lakebase Postgres [View prompt](https://neon.com/prompts/laravel-prompt.md)
 
-Laravel is a web application framework with expressive, elegant syntax. Connecting to Neon from Laravel is the same as connecting to a standalone Lakebase Postgres installation from Laravel. Only the connection details differ.
+[Laravel](https://laravel.com/) is a PHP web application framework. Connecting to Neon from Laravel is the same as connecting to any Postgres database from Laravel. Only the connection details differ.
 
 To connect to Neon from Laravel:
 
 ## Create a Neon project
 
-If you do not have one already, create a Neon project. Save your connection details including your password. They are required when defining connection settings.
+If you do not have one already, create a Neon project.
 
 1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
 2. Click **New Project**.
@@ -96278,7 +96321,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
 ## Configure the connection
 
-Open the `.env` file in your Laravel app, and replace all the database credentials.
+Open the `.env` file in your Laravel app and replace the database settings. New Laravel projects use `DB_CONNECTION=sqlite` with the other `DB_*` lines commented out; replace them with the following:
 
 ```shell
 DB_CONNECTION=pgsql
@@ -96287,9 +96330,23 @@ DB_PORT=5432
 DB_DATABASE=[dbname]
 DB_USERNAME=[user]
 DB_PASSWORD=[password]
+DB_SSLMODE=require
 ```
 
+If you have a connection string (`postgresql://[user]:[password]@[neon_hostname]/[dbname]`), copy its parts into the matching variables. The pooled hostname (with `-pooler`) works with these settings.
+
 You can find your database connection details by clicking the **Connect** button in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+
+## Test the connection
+
+Run Laravel's default migrations against your Neon database, then show the connection details:
+
+```shell
+php artisan migrate
+php artisan db:show
+```
+
+`db:show` lists the Postgres version, your Neon host, and the tables the migrations created.
 
 ## Connection issues
 
@@ -96299,12 +96356,12 @@ With older Postgres clients/drivers, including older PDO_PGSQL drivers, you may 
 ERROR: The endpoint ID is not specified. Either upgrade the Postgres client library (libpq) for SNI support or pass the endpoint ID (the first part of the domain name) as a parameter: '&options=endpoint%3D'. See [https://neon.com/sni](https://neon.com/sni) for more information.
 ```
 
-If you run into this error, please see the following documentation for an explanation of the issue and workarounds: [The endpoint ID is not specified](https://neon.com/docs/connect/connection-errors#the-endpoint-id-is-not-specified).
+If you run into this error, see the following for an explanation of the issue and workarounds: [The endpoint ID is not specified](https://neon.com/docs/connect/connection-errors#the-endpoint-id-is-not-specified).
 
 - If using a connection string to connect to your database, try [Workaround A. Pass the endpoint ID as an option](https://neon.com/docs/connect/connection-errors#a-pass-the-endpoint-id-as-an-option). For example:
 
   ```text
-  postgresql://[user]:[password]@[neon_hostname]/[dbname]?options=endpoint%3D[endpoint-id]
+  postgresql://[user]:[password]@[neon_hostname]/[dbname]?options=endpoint%3D[endpoint_id]
   ```
 
   Replace `[endpoint_id]` with your compute's endpoint ID, which you can find in your Neon connection string. It looks similar to this: `ep-cool-darkness-123456`.
@@ -96317,7 +96374,7 @@ If you run into this error, please see the following documentation for an explan
 
 ## Schema migration with Laravel
 
-For schema migration with Laravel, see our guide:
+For schema migration with Laravel, see:
 
 - [Laravel Migrations](https://neon.com/docs/guides/laravel-migrations): Schema migration with Lakebase Postgres and Laravel
 
@@ -105105,7 +105162,7 @@ If your dump/restore process takes longer, consider using [self-hosted runners](
 
 --- [Document source](https://neon.com/docs/guides/nestjs.md) ---
 
-> Summary: NestJS-to-Neon integration uses a DatabaseModule that provisions a connection pool via node-postgres, postgres.js, or the Neon serverless driver and injects it as a NestJS provider. Choose this guide when adding a Neon serverless Postgres backend to a TypeScript NestJS project without an ORM. The steps cover Neon project creation, DATABASE_URL configuration in .env, and wiring a service and GET controller endpoint to query the database.
+> Summary: NestJS-to-Neon integration uses a DatabaseModule that provisions a connection pool via node-postgres, postgres.js, or the Neon serverless driver and injects it as a NestJS provider. Choose this guide when adding a Lakebase Postgres database on Neon to a TypeScript NestJS project without an ORM. The steps cover Neon project creation, DATABASE_URL configuration in .env, and wiring a service and GET controller endpoint to query the database.
 
 # Connect a NestJS application to Neon
 
@@ -105115,13 +105172,13 @@ Last updated: 2026-10-05
 
 Pre-built prompt for connecting NestJS applications to Lakebase Postgres [View prompt](https://neon.com/prompts/nestjs-prompt.md)
 
-NestJS is a framework for building efficient, scalable Node.js server-side applications[1](https://docs.nestjs.com/). This guide explains how to connect NestJS with Neon using a secure server-side request.
+[NestJS](https://docs.nestjs.com/) is a framework for building Node.js server-side applications. This guide explains how to connect a NestJS application to Neon.
 
 To create a Neon project and access it from a NestJS application:
 
 ## Create a Neon project
 
-If you do not have one already, create a Neon project. Save your connection details including your password. They are required when defining connection settings.
+If you do not have one already, create a Neon project.
 
 1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
 2. Click **New Project**.
@@ -105129,26 +105186,27 @@ If you do not have one already, create a Neon project. Save your connection deta
 
 ## Create a NestJS project and add dependencies
 
-1. Create a NestJS project if you do not have one. For instructions, see [Quick Start](https://docs.nestjs.com/first-steps), in the NestJS documentation.
+1. Create a NestJS project if you do not have one. For instructions, see [First steps](https://docs.nestjs.com/first-steps) in the NestJS documentation.
 
-2. Add project dependencies using one of the following commands:
+2. Add project dependencies using one of the following commands. Each installs the driver and `dotenv`, which the database module uses to load your connection string.
 
    **node-postgres**
 
    ```shell
-   npm install pg
+   npm install pg dotenv
+   npm install -D @types/pg
    ```
 
    **postgres.js**
 
    ```shell
-   npm install postgres
+   npm install postgres dotenv
    ```
 
    **Neon serverless driver**
 
    ```shell
-   npm install @neondatabase/serverless
+   npm install @neondatabase/serverless dotenv
    ```
 
 ## Store your Neon credentials
@@ -105156,14 +105214,26 @@ If you do not have one already, create a Neon project. Save your connection deta
 Add a `.env` file to your project directory and add your Neon connection string to it. You can find your connection details by clicking **Connect** in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
-DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
+```
+
+## Create a sample table
+
+The example endpoint reads from a table named `playing_with_neon`. Create it and add a few rows by running the following SQL in the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or with `psql`:
+
+```sql
+CREATE TABLE playing_with_neon(id SERIAL PRIMARY KEY, name TEXT NOT NULL, value REAL);
+INSERT INTO playing_with_neon(name, value)
+  SELECT LEFT(md5(i::TEXT), 10), random() FROM generate_series(1, 10) s(i);
 ```
 
 ## Configure the Postgres client
 
-### 1. Create a Database Module
+New NestJS projects use ES modules, so the relative imports below include the `.js` extension. The `.js` extension also works in projects that compile to CommonJS.
 
-To manage the connection to your Neon database, start by creating a **DatabaseModule** in your NestJS application. This module will handle the configuration and provisioning of the Postgres client.
+### 1. Create a database module
+
+To manage the connection to your Neon database, create a `DatabaseModule` in `src/database/database.module.ts`. This module creates the Postgres client and provides it to the rest of your application.
 
 **node-postgres**
 
@@ -105203,7 +105273,7 @@ config({
   path: ['.env', '.env.production', '.env.local'],
 });
 
-const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
 
 const dbProvider = {
   provide: 'POSTGRES_POOL',
@@ -105229,7 +105299,7 @@ config({
   path: ['.env', '.env.production', '.env.local'],
 });
 
-const sql = neon(process.env.DATABASE_URL);
+const sql = neon(process.env.DATABASE_URL!);
 
 const dbProvider = {
   provide: 'POSTGRES_POOL',
@@ -105243,22 +105313,22 @@ const dbProvider = {
 export class DatabaseModule {}
 ```
 
-### 2. Create a Service for Database Interaction
+### 2. Create a service for database interaction
 
-Next, implement a service to handle interaction with your Postgres database. This service will use the database connection defined in the DatabaseModule.
+Next, replace `src/app.service.ts` with a service that queries your database through the client provided by `DatabaseModule`.
 
 **node-postgres**
 
 ```typescript
 import { Injectable, Inject } from '@nestjs/common';
+import type { Pool } from 'pg';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('POSTGRES_POOL') private readonly sql: any) {}
+  constructor(@Inject('POSTGRES_POOL') private readonly sql: Pool) {}
 
-  async getTable(name: string): Promise<any[]> {
-    const client = await this.sql.connect();
-    const { rows } = await client.query(`SELECT * FROM ${name}`);
+  async getRows() {
+    const { rows } = await this.sql.query('SELECT * FROM playing_with_neon');
     return rows;
   }
 }
@@ -105268,13 +105338,14 @@ export class AppService {
 
 ```typescript
 import { Injectable, Inject } from '@nestjs/common';
+import type { Sql } from 'postgres';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('POSTGRES_POOL') private readonly sql: any) {}
+  constructor(@Inject('POSTGRES_POOL') private readonly sql: Sql) {}
 
-  async getTable(name: string): Promise<any[]> {
-    return await this.sql(`SELECT * FROM ${name}`);
+  async getRows() {
+    return await this.sql`SELECT * FROM playing_with_neon`;
   }
 }
 ```
@@ -105283,26 +105354,27 @@ export class AppService {
 
 ```typescript
 import { Injectable, Inject } from '@nestjs/common';
+import type { NeonQueryFunction } from '@neondatabase/serverless';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('POSTGRES_POOL') private readonly sql: any) {}
+  constructor(@Inject('POSTGRES_POOL') private readonly sql: NeonQueryFunction<false, false>) {}
 
-  async getTable(name: string): Promise<any[]> {
-    return await this.sql.query(`SELECT * FROM ${name}`);
+  async getRows() {
+    return await this.sql`SELECT * FROM playing_with_neon`;
   }
 }
 ```
 
-### 3. Integrate the Database Module and Service
+### 3. Integrate the database module and service
 
-Import and inject the DatabaseModule and AppService into your AppModule. This ensures that the database connection and services are available throughout your application.
+Import `DatabaseModule` and `AppService` in `src/app.module.ts`. This makes the database client and service available throughout your application.
 
 ```typescript
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
+import { AppController } from './app.controller.js';
+import { AppService } from './app.service.js';
+import { DatabaseModule } from './database/database.module.js';
 
 @Module({
   imports: [DatabaseModule],
@@ -105312,30 +105384,32 @@ import { DatabaseModule } from './database/database.module';
 export class AppModule {}
 ```
 
-### 4. Define a Controller Endpoint
+### 4. Define a controller endpoint
 
-Finally, define a `GET` endpoint in your AppController to fetch data from your Postgres database. This endpoint will use the AppService to query the database.
+Finally, replace `src/app.controller.ts` with a `GET` endpoint that returns the rows from your table through `AppService`.
 
 ```typescript
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService } from './app.service.js';
 
 @Controller('/')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  async getTable() {
-    return this.appService.getTable('playing_with_neon');
+  async getRows() {
+    return this.appService.getRows();
   }
 }
 ```
+
+If your project has the default `src/app.controller.spec.ts`, update or remove it: it tests `getHello()`, which the new controller replaces.
 
 ## Run the app
 
 When you run `npm run start` you can expect to see output similar to the following at [localhost:3000](http://localhost:3000):
 
-```shell
+```json
 [{"id":1,"name":"c4ca4238a0","value":0.39330545},{"id":2,"name":"c81e728d9d","value":0.14468245}]
 ```
 
@@ -108319,14 +108393,14 @@ Last updated: 2026-10-09
 
 Pre-built prompt for connecting Python applications to Neon [View prompt](https://neon.com/prompts/python-prompt.md)
 
-This guide describes how to create a Neon project and connect to it from a Python application using popular Postgres drivers. We'll cover [Psycopg 3](https://www.psycopg.org/psycopg3/docs/), the latest generation of the popular synchronous adapter, its predecessor [Psycopg 2 (psycopg2)](https://pypi.org/project/psycopg2-binary/), and [asyncpg](https://pypi.org/project/asyncpg/), an asynchronous adapter for use with `asyncio`.
+This guide describes how to create a Neon project and connect to it from a Python application using three Postgres drivers: [Psycopg 3](https://www.psycopg.org/psycopg3/docs/), the current synchronous adapter, its predecessor [Psycopg 2 (psycopg2)](https://pypi.org/project/psycopg2-binary/), and [asyncpg](https://pypi.org/project/asyncpg/), an asynchronous adapter for use with `asyncio`.
 
 You'll learn how to connect to the database from a Python application and perform basic Create, Read, Update, and Delete (CRUD) operations.
 
 ## Prerequisites
 
 - A Neon account. If you do not have one, see [Sign up](https://console.neon.tech/signup).
-- Python 3.8 or later. If you do not have Python installed, install it from the [Python website](https://www.python.org/downloads/).
+- Python 3.10 or later. Current releases of `psycopg` and `psycopg2-binary` require Python 3.10+. If you do not have Python installed, install it from the [Python website](https://www.python.org/downloads/).
 
 ## Create a Neon project
 
@@ -108375,8 +108449,8 @@ For your Python project, create a project directory, set up a virtual environmen
 
 3. Install the required libraries using `pip`.
 
-   - `psycopg`: The modern, synchronous database adapter for connecting to Postgres (Psycopg 3). **Recommended** for new projects.
-   - `psycopg2-binary`: An older, widely-used synchronous database adapter.
+   - `psycopg`: The synchronous database adapter for connecting to Postgres (Psycopg 3). **Recommended** for new projects.
+   - `psycopg2-binary`: The previous-generation synchronous database adapter.
    - `asyncpg`: The asynchronous database adapter for connecting to Postgres.
    - `python-dotenv`: A helper library to manage environment variables.
 
@@ -108388,7 +108462,7 @@ For your Python project, create a project directory, set up a virtual environmen
 
 ## Store your Neon connection string
 
-Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
+Create a file named `.env` in your project's root directory. This file stores your database connection string outside your code.
 
 1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
@@ -108402,7 +108476,7 @@ Create a file named `.env` in your project's root directory. This file will secu
 
 ## Examples
 
-This section provides example Python scripts that demonstrate how to connect to your Neon database and perform basic operations such as [creating a table](https://neon.com/docs/guides/python#create-a-table-and-insert-data), [reading data](https://neon.com/docs/guides/python#read-data), [updating data](https://neon.com/docs/guides/python#update-data), and [deleting data](https://neon.com/docs/guides/python#delete-data).
+This section provides example Python scripts that demonstrate how to connect to your Neon database and perform basic operations such as [creating a table](https://neon.com/docs/guides/python#create-a-table-and-insert-data), [reading data](https://neon.com/docs/guides/python#read-data), [updating data](https://neon.com/docs/guides/python#update-data), and [deleting data](https://neon.com/docs/guides/python#delete-data). Pick one driver and use its tab for all four scripts.
 
 ### Create a table and insert data
 
@@ -109019,11 +109093,11 @@ ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: True
 --------------------
 ```
 
-> You can see that the book '1984' has been successfully deleted from the `books` table.
+> You can see that the book '1984' has been deleted from the `books` table.
 
-## Next steps: Using an ORM or framework
+## Use an ORM or framework
 
-While this guide demonstrates how to connect to Neon using raw SQL queries, for more advanced and maintainable data interactions in your Python applications, consider using an Object-Relational Mapping (ORM) framework. ORMs not only let you work with data as objects but also help manage schema changes through automated migrations keeping your database structure in sync with your application models.
+While this guide demonstrates how to connect to Neon using raw SQL queries, for more advanced and maintainable data interactions in your Python applications, consider using an Object-Relational Mapping (ORM) framework. ORMs let you work with data as objects and manage schema changes through migrations, keeping your database structure in sync with your application models.
 
 Explore the following resources to learn how to integrate ORMs with Neon:
 
@@ -109039,8 +109113,8 @@ Explore the following resources to learn how to integrate ORMs with Neon:
 
 - [Psycopg 3 documentation](https://www.psycopg.org/psycopg3/docs/)
 - [Psycopg 2 documentation](https://www.psycopg.org/docs/)
-- [Asyncpg documentation](https://magicstack.github.io/asyncpg/current/)
-- [Building an API with Django, Django REST Framework, and Neon Postgres](https://neon.com/guides/django-rest-api)
+- [asyncpg documentation](https://magicstack.github.io/asyncpg/current/)
+- [Building an API with Django, Django REST Framework, and Lakebase Postgres](https://neon.com/guides/django-rest-api)
 
 --- [Document source](https://neon.com/docs/guides/quarkus-jdbc.md) ---
 
@@ -109841,6 +109915,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
    ```shell
    npm install pg
+   npm install -D @types/pg
    ```
 
    **postgres.js**
@@ -109860,22 +109935,24 @@ If you do not have one already, create a Neon project. Save your connection deta
 Add a `.env` file to your project's root directory and add your Neon connection string to it. You can find the connection string for your database by clicking the **Connect** button in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
-DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
 ```
+
+**Note:** `pg` 8.23 and later print a `SECURITY WARNING` when a connection string uses `sslmode=require`. If you use node-postgres, change `sslmode=require` to `sslmode=verify-full` to keep the current behavior and remove the warning.
 
 ## Configure the Postgres client
 
-With React Router, data fetching is handled in "Route Modules". We will create a new route that connects to Neon in its `loader` function, which runs on the server.
+With React Router, data fetching is handled in route modules. The following steps add a new route that connects to Neon in its `loader` function, which runs on the server.
 
 ### 1. Define the route
 
-First, define a new route in `app/routes.ts`. This tells React Router to render our new component when a user visits the `/version` path.
+First, add a route to `app/routes.ts`. This tells React Router to render the new component when a user visits the `/version` path. Keep your existing `index` route as it is (new projects use `routes/home.tsx`).
 
 ```typescript {5} filename=app/routes.ts
 import { type RouteConfig, route, index } from '@react-router/dev/routes';
 
 export default [
-  index('./home.tsx'),
+  index('routes/home.tsx'),
   route('version', './routes/version.tsx'),
 ] satisfies RouteConfig;
 ```
@@ -109890,16 +109967,16 @@ Create a new file at `app/routes/version.tsx`. This file will contain both the s
 import { Pool } from 'pg';
 import type { Route } from './+types/version';
 
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
 // The loader function runs on the server
 export async function loader() {
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
   const client = await pool.connect();
   try {
     const { rows } = await client.query('SELECT version()');
     return { version: rows[0].version };
   } finally {
     client.release();
-    await pool.end();
   }
 }
 
@@ -109920,9 +109997,10 @@ export default function Version({ loaderData }: Route.ComponentProps) {
 import postgres from 'postgres';
 import type { Route } from './+types/version';
 
+const sql = postgres(process.env.DATABASE_URL as string);
+
 // The loader function runs on the server
 export async function loader() {
-  const sql = postgres(process.env.DATABASE_URL as string);
   const response = await sql`SELECT version()`;
   return { version: response[0].version };
 }
@@ -109984,8 +110062,10 @@ Now, navigate to [http://localhost:5173/version](http://localhost:5173/version) 
 
 ```text
 Database Version
-PostgreSQL 17.5 (6bc9ef8) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
 ```
+
+**Note:** `npm run dev` loads `.env` automatically. The production server (`npm run build` then `npm start`) does not, so set `DATABASE_URL` in your environment before you start it.
 
 ## Next steps
 
@@ -109994,7 +110074,7 @@ PostgreSQL 17.5 (6bc9ef8) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 
 
 --- [Document source](https://neon.com/docs/guides/react.md) ---
 
-> Summary: React connection hub for Lakebase Postgres, directing developers to server-side integration guides for Next.js, Remix, TanStack Start, and SvelteKit. Use this page when setting up a Lakebase Postgres connection from a React meta-framework, since Lakebase Postgres must be accessed server-side in React apps. Neon Auth quick starts for Next.js and TanStack Router are also linked here.
+> Summary: React connection hub for Lakebase Postgres, directing developers to server-side integration guides for Next.js, React Router, Remix, and TanStack Start. Use this page when setting up a Lakebase Postgres connection from a React meta-framework, since Lakebase Postgres must be accessed server-side in React apps. Neon Auth quick starts for Next.js and TanStack Router are also linked here.
 
 # Connect a React application to Neon
 
@@ -110002,22 +110082,20 @@ Set up a Neon project in seconds and connect from a React application
 
 Last updated: 2026-10-08
 
-React by Facebook is an open-source front-end JavaScript library for building user interfaces based on components.
+React is an open-source JavaScript library for building component-based user interfaces.
 
-Lakebase Postgres should be accessed from the server side in React applications. Using the following React meta-frameworks, you can easily configure a server-side connection to a Lakebase Postgres database.
+Connect to Lakebase Postgres from the server side of a React application, never from the browser. The following React frameworks each have a guide for configuring a server-side connection.
 
-## React Meta-Frameworks
-
-Find detailed instructions for connecting to Neon from various React meta-frameworks.
+## React frameworks
 
 - [TanStack Start](https://neon.com/docs/guides/tanstack-start): Connect a TanStack Start application to Neon
 - [Next.js](https://neon.com/docs/guides/nextjs): Connect a Next.js application to Neon
+- [React Router](https://neon.com/docs/guides/react-router): Connect a React Router application to Neon
 - [Remix](https://neon.com/docs/guides/remix): Connect a Remix application to Neon
-- [Sveltekit](https://neon.com/docs/guides/sveltekit): Connect a Sveltekit application to Neon
 
 ## Managed Better Auth
 
-After you connect your database, add managed authentication with [Managed Better Auth](https://neon.com/docs/auth/overview). Quick starts are available for supported React meta-frameworks:
+After you connect your database, add managed authentication with [Managed Better Auth](https://neon.com/docs/auth/overview). Quick starts are available for these React frameworks:
 
 - [Next.js](https://neon.com/docs/auth/quick-start/nextjs-api-only): Set up Managed Better Auth with Next.js
 - [TanStack Router](https://neon.com/docs/auth/quick-start/tanstack-router): Set up Managed Better Auth with TanStack Router
@@ -110029,7 +110107,7 @@ For React Router, follow the [React Auth quick start](https://neon.com/docs/auth
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-- [Realtime](https://neon.com/docs/realtime/sdks/typescript#react): Build realtime React apps on Neon with end-to-end reactivity and type-safety »
+- [Realtime](https://neon.com/docs/realtime/sdks/typescript#react): Build realtime React apps on Neon with end-to-end reactivity and type safety
 
 --- [Document source](https://neon.com/docs/guides/read-only-access-read-replicas.md) ---
 
@@ -113285,6 +113363,7 @@ This guide describes how to create a project on Neon and connect to it from a Ru
 
 - A Neon account. If you do not have one, see [Sign up](https://console.neon.tech/signup).
 - The Rust toolchain. If you do not have it installed, install it from the [official Rust website](https://www.rust-lang.org/tools/install).
+- OpenSSL. The `openssl` crate links to your system's OpenSSL library. On Debian or Ubuntu, install `pkg-config` and `libssl-dev`. See the [openssl crate documentation](https://docs.rs/openssl/latest/openssl/#automatic) for other platforms.
 
 ## Create a Neon project
 
@@ -113307,11 +113386,11 @@ For your Rust project, use `cargo` to create a new project and add the required 
    cd neon-rust-quickstart
    ```
 
-   This command creates a new directory named `neon-rust-quickstart` containing a `src/main.rs` file for your code and a `Cargo.toml` file for your project's configuration and dependencies.
+   This command creates a new directory named `neon-rust-quickstart` containing a `src/main.rs` file for your code and a `Cargo.toml` file for your project's configuration and dependencies. To set up a project in an existing directory instead, run `cargo init` in that directory.
 
    > Open the directory in your preferred code editor (for example, VS Code, RustRover, etc.) to edit the files.
 
-2. Add the required crates using `cargo add`. Choose the set of commands for either a synchronous or asynchronous setup.
+2. Add the required crates using `cargo add`. Choose the synchronous `postgres` crate for scripts and command-line tools, or the asynchronous `tokio-postgres` crate if your application already uses Tokio (for example, a web server built on Axum or Actix). Use the same tab for the code examples that follow.
 
    **postgres (sync)**
 
@@ -113341,7 +113420,7 @@ For your Rust project, use `cargo` to create a new project and add the required 
 
    Open your `Cargo.toml` file and add the following `[[bin]]` sections to the end of it:
 
-   ```toml title="Cargo.toml"
+   ```toml filename="Cargo.toml"
    [[bin]]
    name = "create_table"
    path = "src/create_table.rs"
@@ -113367,7 +113446,7 @@ For your Rust project, use `cargo` to create a new project and add the required 
 
 ## Store your Neon connection string
 
-Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
+Create a file named `.env` in your project's root directory. This file stores your database connection string. Don't commit it to source control.
 
 1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
@@ -113381,15 +113460,15 @@ Create a file named `.env` in your project's root directory. This file will secu
 
 ## Choosing the right method to execute SQL commands
 
-Before diving into the code examples, it's important to understand how to interact with your Neon database using Rust. The `postgres` and `tokio-postgres` crates provide several methods for executing SQL commands. Choosing the right method depends on your use case:
+The `postgres` and `tokio-postgres` crates provide several methods for executing SQL commands. The right method depends on your use case:
 
-- `client.execute:`
+- `client.execute`:
   Use this for a single DML/DDL statement (`INSERT`, `UPDATE`, `DELETE`) or a fire-and-forget query. It supports parameter placeholders (`$1`, `$2`, etc.) and returns the number of rows affected (`u64`).
 
-- `client.batch_execute:`  
+- `client.batch_execute`:  
   Ideal for running multiple SQL commands in one shot (schema migrations, DDL, seed data). Supply a semicolon-separated SQL string. This method does not support parameters and returns `()` on success.
 
-- `client.query:`  
+- `client.query`:  
   The go-to for any `SELECT` that returns rows. It accepts placeholders and returns a `Vec<Row>`, so you can iterate over rows and extract typed values.
 
 ### Quick comparison
@@ -113400,7 +113479,7 @@ Before diving into the code examples, it's important to understand how to intera
 | `client.batch_execute` | Multiple statements in one SQL blob <br/>(DDL, migrations, seed data) | No         | `()`                  |
 | `client.query`         | Fetching rows from a `SELECT`                                         | Yes        | `Vec<Row>`            |
 
-Now that you know how to connect to your Neon database and the available methods for executing SQL commands, let's look at some examples of how you can perform basic CRUD operations. You will use all three methods (`execute`, `batch_execute`, and `query`) in the examples to demonstrate their usage.
+The examples below use all three methods (`execute`, `batch_execute`, and `query`).
 
 ## Examples
 
@@ -113412,7 +113491,7 @@ In your project's `src` directory, create a file named `create_table.rs` and add
 
 **postgres (sync)**
 
-```rust title="src/create_table.rs"
+```rust filename="src/create_table.rs"
 use dotenvy::dotenv;
 use postgres::Client;
 use openssl::ssl::{SslConnector, SslMethod};
@@ -113481,8 +113560,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 **tokio-postgres (async)**
 
-```rust title="src/create_table.rs"
-use tokio_postgres;
+```rust filename="src/create_table.rs"
 use dotenvy::dotenv;
 use openssl::ssl::{SslConnector, SslMethod};
 use postgres_openssl::MakeTlsConnector;
@@ -113578,7 +113656,7 @@ cargo run --bin create_table
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 Finished dropping table (if it existed).
 Finished creating table.
@@ -113593,7 +113671,7 @@ In your `src` directory, create a file named `read_data.rs`. This script connect
 
 **postgres (sync)**
 
-```rust title="src/read_data.rs"
+```rust filename="src/read_data.rs"
 use dotenvy::dotenv;
 use postgres::Client;
 use openssl::ssl::{SslConnector, SslMethod};
@@ -113630,8 +113708,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 **tokio-postgres (async)**
 
-```rust title="src/read_data.rs"
-use tokio_postgres;
+```rust filename="src/read_data.rs"
 use dotenvy::dotenv;
 use openssl::ssl::{SslConnector, SslMethod};
 use postgres_openssl::MakeTlsConnector;
@@ -113687,7 +113764,7 @@ cargo run --bin read_data
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 
 --- Book Library ---
@@ -113704,7 +113781,7 @@ In your `src` directory, create a file named `update_data.rs`. This script updat
 
 **postgres (sync)**
 
-```rust title="src/update_data.rs"
+```rust filename="src/update_data.rs"
 use dotenvy::dotenv;
 use postgres::Client;
 use openssl::ssl::{SslConnector, SslMethod};
@@ -113739,8 +113816,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 **tokio-postgres (async)**
 
-```rust title="src/update_data.rs"
-use tokio_postgres;
+```rust filename="src/update_data.rs"
 use dotenvy::dotenv;
 use openssl::ssl::{SslConnector, SslMethod};
 use postgres_openssl::MakeTlsConnector;
@@ -113799,7 +113875,7 @@ cargo run --bin read_data
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 
 --- Book Library ---
@@ -113807,10 +113883,10 @@ ID: 2, Title: The Hobbit, Author: J.R.R. Tolkien, Year: 1937, In Stock: true
 ID: 3, Title: 1984, Author: George Orwell, Year: 1949, In Stock: true
 ID: 1, Title: The Catcher in the Rye, Author: J.D. Salinger, Year: 1951, In Stock: true
 ID: 4, Title: Dune, Author: Frank Herbert, Year: 1965, In Stock: true
----------------------
+--------------------
 ```
 
-> You can see that the stock status for 'Dune' has been updated to `True`.
+> You can see that the stock status for 'Dune' has been updated to `true`.
 
 ### Delete data
 
@@ -113818,7 +113894,7 @@ In your `src` directory, create a file named `delete_data.rs`. This script delet
 
 **postgres (sync)**
 
-```rust title="src/delete_data.rs"
+```rust filename="src/delete_data.rs"
 use dotenvy::dotenv;
 use postgres::Client;
 use openssl::ssl::{SslConnector, SslMethod};
@@ -113853,8 +113929,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 **tokio-postgres (async)**
 
-```rust title="src/delete_data.rs"
-use tokio_postgres;
+```rust filename="src/delete_data.rs"
 use dotenvy::dotenv;
 use openssl::ssl::{SslConnector, SslMethod};
 use postgres_openssl::MakeTlsConnector;
@@ -113913,7 +113988,7 @@ cargo run --bin read_data
 
 When the code runs successfully, it produces the following output:
 
-```text title="Output"
+```text filename="Output"
 Connection established
 
 --- Book Library ---
@@ -116065,7 +116140,7 @@ For more information on the tools and concepts used in this guide, refer to the 
 
 --- [Document source](https://neon.com/docs/guides/sqlalchemy.md) ---
 
-> Summary: SQLAlchemy, a Python SQL toolkit and ORM, connects to Lakebase Postgres by installing psycopg2 and passing a connection string to SQLAlchemy's create_engine function. Use this guide to build a working connection, then resolve Lakebase-specific errors caused by compute scale-to-zero suspension, including SSL connection drops when idle connections are reused. A recent version of SQLAlchemy is required to avoid idle connection reuse bugs. Set pool_recycle or pool_pre_ping to prevent SSL SYSCALL EOF errors.
+> Summary: SQLAlchemy, a Python SQL toolkit and ORM, connects to Lakebase Postgres by installing psycopg (v3) and passing a postgresql+psycopg connection string to SQLAlchemy's create_engine function. Use this guide to build a working connection, then resolve Lakebase-specific errors caused by compute scale-to-zero suspension, including SSL connection drops when idle connections are reused. A recent version of SQLAlchemy is required to avoid idle connection reuse bugs. Set pool_recycle or pool_pre_ping to prevent SSL SYSCALL EOF errors.
 
 # Connect an SQLAlchemy application to Lakebase Postgres
 
@@ -116075,87 +116150,84 @@ Last updated: 2026-09-16
 
 Pre-built prompt for connecting SQLAlchemy to Lakebase Postgres [View prompt](https://neon.com/prompts/sqlalchemy-prompt.md)
 
-SQLAlchemy is a Python SQL toolkit and Object Relational Mapper (ORM) that provides application developers with the full power and flexibility of SQL. This guide describes how to create a project on Neon and connect to it from SQLAlchemy.
+SQLAlchemy is a Python SQL toolkit and Object Relational Mapper (ORM). This guide describes how to create a project on Neon and connect to it from SQLAlchemy.
 
 **Prerequisites:**
 
-To complete the steps in this topic, ensure that you have an SQLAlchemy installation with a Postgres driver. The following instructions use `psycopg2`, the default driver for Postgres in SQLAlchemy. For SQLAlchemy installation instructions, refer to the [SQLAlchemy Installation Guide](https://docs.sqlalchemy.org/en/14/intro.html#installation). `psycopg2` installation instructions are provided below.
+- Python 3.11 or later (required by SQLAlchemy 2.1).
+- A Python virtual environment for your project.
+
+The instructions below use `psycopg` (v3), the default Postgres driver in SQLAlchemy 2.1.
 
 To connect to a Lakebase Postgres database from SQLAlchemy:
 
 ## Create a Neon project
 
-If you do not have one already, create a Neon project. Save your connection details, including your password. They are required when defining connection settings.
+If you do not have one already, create a Neon project.
 
 1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
 2. Click **New Project**.
 3. Specify your project settings and click **Create Project**.
 
-## Install psycopg2
+## Install SQLAlchemy and a driver
 
-Psycopg2 is a popular python library for running raw Postgres queries.
-
-For most operating systems, the quickest installation method is using the PIP package manager. For example:
+Install SQLAlchemy, the `psycopg` driver, and `python-dotenv` in your virtual environment:
 
 ```shell
-pip install psycopg2-binary
+pip install sqlalchemy "psycopg[binary]" python-dotenv
 ```
 
-For additional information about installing `psycopg2`, refer to the [psycopg2 installation documentation](https://www.psycopg.org/docs/install.html).
+For more installation options, see [Installation](https://docs.sqlalchemy.org/en/20/intro.html#installation) in the SQLAlchemy documentation.
 
-## Create the "hello neon" program
+## Store your connection string
+
+Add a `.env` file to your project directory with your connection string. You can find it by clicking the **Connect** button in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+
+Change the scheme from `postgresql://` to `postgresql+psycopg://` so that SQLAlchemy uses the `psycopg` driver on any SQLAlchemy 2.x version:
+
+```shell
+DATABASE_URL="postgresql+psycopg://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
+```
+
+**Note:** To use `psycopg2` instead, install `psycopg2-binary` and use the `postgresql+psycopg2://` scheme. SQLAlchemy 2.0 uses `psycopg2` for plain `postgresql://` URLs; SQLAlchemy 2.1 uses `psycopg`.
+
+## Create an SQLAlchemy engine and run a query
+
+SQLAlchemy uses an engine to manage database connections. Create a file named `main.py` that creates an engine from your connection string and runs a query:
 
 ```python
-import psycopg2
+import os
 
-# Optional: tell psycopg2 to cancel the query on Ctrl-C
-import psycopg2.extras; psycopg2.extensions.set_wait_callback(psycopg2.extras.wait_select)
+from dotenv import load_dotenv
+from sqlalchemy import create_engine, text
 
-# You can set the password to None if it is specified in a ~/.pgpass file
-USERNAME = "alex"
-PASSWORD = "AbC123dEf"
-HOST = "@ep-cool-darkness-123456.us-east-2.aws.neon.tech"
-PORT = "5432"
-PROJECT = "dbname"
+load_dotenv()
 
-conn_str = f"dbname={PROJECT} user={USERNAME} password={PASSWORD} host={HOST} port={PORT} sslmode=require&channel_binding=require"
+engine = create_engine(os.environ["DATABASE_URL"], pool_pre_ping=True)
 
-conn = psycopg2.connect(conn_str)
-
-with conn.cursor() as cur:
- cur.execute("SELECT 'hello neon';")
- print(cur.fetchall())
+with engine.connect() as conn:
+    result = conn.execute(text("SELECT 'hello neon'"))
+    print(result.scalar())
 ```
 
-You can find the connection details for your database by clicking the **Connect** button in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+`pool_pre_ping=True` checks that a pooled connection is still alive before using it, which avoids errors after your compute scales to zero.
 
-**Note:** This example was tested with Python 3 and psycopg2 version 2.9.3.
+Run the script:
 
-## Create an SQLAlchemy engine for your Neon project
-
-SQLAlchemy uses engine abstraction to manage database connections and exposes a `create_engine` function as the primary endpoint for engine initialization.
-
-The following example creates an SQLAlchemy engine that points to your Neon branch:
-
-```python
-from sqlalchemy import create_engine
-
-USERNAME = "alex"
-PASSWORD = "AbC123dEf"
-HOST = "ep-cool-darkness-123456.us-east-2.aws.neon.tech"
-DATABASE = "dbname"
-
-conn_str = f'postgresql://{USERNAME}:{PASSWORD}@{HOST}/{DATABASE}?sslmode=require&channel_binding=require'
-
-engine = create_engine(conn_str)
+```shell
+python main.py
 ```
 
-You can find the connection string for your database by clicking the **Connect** button in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+The output is:
+
+```text
+hello neon
+```
 
 For additional information about connecting from SQLAlchemy, refer to the following topics in the SQLAlchemy documentation:
 
-- [Establishing Connectivity - the Engine](https://docs.sqlalchemy.org/en/14/tutorial/engine.html)
-- [Connecting to PostgreSQL with SQLAlchemy](https://docs.sqlalchemy.org/en/14/core/engines.html#postgresql)
+- [Establishing Connectivity - the Engine](https://docs.sqlalchemy.org/en/20/tutorial/engine.html)
+- [Connecting to PostgreSQL with SQLAlchemy](https://docs.sqlalchemy.org/en/20/core/engines.html#postgresql)
 
 ## SQLAlchemy connection errors
 
@@ -116163,13 +116235,13 @@ For additional information about connecting from SQLAlchemy, refer to the follow
 - If you encounter an `SSL SYSCALL error: EOF detected` when connecting to the database, this typically happens because the application is trying to reuse a connection after the Neon compute has been suspended due to inactivity. To resolve this issue, try one of the following options:
 
   - Set the SQLAlchemy `pool_recycle` parameter to a value less than or equal to the scale to zero setting configured for your compute.
-  - Set the SQLAlchemy `pool_pre_ping` parameter to `true`. This ensures that your engine checks if the connection is alive before executing a query.
+  - Set the SQLAlchemy `pool_pre_ping` parameter to `True`. This ensures that your engine checks if the connection is alive before executing a query.
 
-  For more details on the `pool_recycle` and `pool_pre_ping` parameters, refer to [SQLAlchemy: Connection Pool Configuration](https://docs.sqlalchemy.org/en/20/core/pooling.html#connection-pool-configuration) and [Dealing with Disconnects](https://docs.sqlalchemy.org/en/20/core/pooling.html#connection-pool-configuration). For information on configuring Neon's scale to zero setting, see [Configuring Scale to Zero for Neon computes](https://neon.com/docs/guides/scale-to-zero-guide).
+  For more details on the `pool_recycle` and `pool_pre_ping` parameters, refer to [SQLAlchemy: Connection Pool Configuration](https://docs.sqlalchemy.org/en/20/core/pooling.html#connection-pool-configuration) and [Dealing with Disconnects](https://docs.sqlalchemy.org/en/20/core/pooling.html#dealing-with-disconnects). For information on configuring Neon's scale to zero setting, see [Configuring Scale to Zero for Neon computes](https://neon.com/docs/guides/scale-to-zero-guide).
 
 ## Schema migration with SQLAlchemy
 
-For schema migration with SQLAlchemy, see our guide:
+For schema migration with SQLAlchemy, see:
 
 - [SQLAlchemy Migrations](https://neon.com/docs/guides/sqlalchemy-migrations): Schema migration with Lakebase Postgres and SQLAlchemy
 
@@ -116560,13 +116632,13 @@ Build full-stack reactive apps with SSR and end-to-end type-safety using [Neon R
 
 Pre-built prompt for connecting TanStack Start applications to Lakebase Postgres [View prompt](https://neon.com/prompts/tanstack-start-prompt.md)
 
-TanStack Start is an open-source, fully type-safe web framework for building feature rich React and Solid based applications using the TanStack ecosystem.
+TanStack Start is an open-source, type-safe web framework for building React and Solid applications with the TanStack ecosystem.
 
 To create a project on Neon and access it from a Start application:
 
 ## Create a Neon project
 
-If you do not have one already, create a Neon project. Save your connection details including your password. They are required when defining connection settings.
+If you do not have one already, create a Neon project.
 
 1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
 2. Click **New Project**.
@@ -116582,6 +116654,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
    ```shell
    npm install pg
+   npm install -D @types/pg
    ```
 
    **postgres.js**
@@ -116596,19 +116669,27 @@ If you do not have one already, create a Neon project. Save your connection deta
    npm install @neondatabase/serverless
    ```
 
+   If you plan to use [static server functions](https://neon.com/docs/guides/tanstack-start#static-server-functions), also install the static functions middleware:
+
+   ```shell
+   npm install @tanstack/start-static-server-functions
+   ```
+
 ## Store your Neon credentials
 
 Add a `.env` file to your project directory and add your Neon connection string to it. You can find your Neon database connection string by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
-DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
 ```
+
+**Note:** `pg` 8.23 and later print a `SECURITY WARNING` when a connection string uses `sslmode=require`. If you use node-postgres, change `sslmode=require` to `sslmode=verify-full` to keep the current behavior and remove the warning.
 
 If you haven't created a project yet, [Claimable Neon](https://neon.com/claimable-neon) provisions a temporary Neon project without an account. A human can claim the project into a Neon account before it expires. See [Claimable Neon](https://neon.com/docs/reference/claimable-neon).
 
 ## Configure the Postgres client
 
-There are multiple ways to make server side requests with TanStack Start. See below for the different implementations.
+There are multiple ways to make server-side requests with TanStack Start. See below for the different implementations.
 
 ### Server Functions
 
@@ -116642,8 +116723,9 @@ export const getData = createServerFn({ method: "GET" }).handler(async () => {
 import postgres from 'postgres';
 import { createServerFn } from "@tanstack/react-start";
 
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
+
 export const getData = createServerFn({ method: "GET" }).handler(async () => {
-   const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
   const response = await sql`SELECT version()`;
   return response[0].version;
 });
@@ -116656,7 +116738,7 @@ import { neon } from "@neondatabase/serverless";
 import { createServerFn } from "@tanstack/react-start";
 
 export const getData = createServerFn({ method: "GET" }).handler(async () => {
-  const sql = neon(process.env.DATABASE_URL);
+  const sql = neon(process.env.DATABASE_URL!);
   const response = await sql`SELECT version()`;
 
   return response[0].version;
@@ -116720,10 +116802,11 @@ import postgres from 'postgres';
 import { createServerFn } from "@tanstack/react-start";
 import { staticFunctionMiddleware } from "@tanstack/start-static-server-functions";
 
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
+
 export const getData = createServerFn({ method: "GET" })
 .middleware([staticFunctionMiddleware])
 .handler(async () => {
-  const sql = postgres(process.env.DATABASE_URL, { ssl: 'require' });
   const response = await sql`SELECT version()`;
   return response[0].version;
 });
@@ -116739,7 +116822,7 @@ import { staticFunctionMiddleware } from "@tanstack/start-static-server-function
 export const getData = createServerFn({ method: "GET" })
 .middleware([staticFunctionMiddleware])
 .handler(async () => {
-  const sql = neon(process.env.DATABASE_URL);
+  const sql = neon(process.env.DATABASE_URL!);
   const response = await sql`SELECT version()`;
 
   return response[0].version;
@@ -116774,12 +116857,12 @@ export default function RouteComponent() {
 When you run `npm run dev` you can expect to see the following on [localhost:3000](http://localhost:3000/):
 
 ```shell
-PostgreSQL 16.0 on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
+PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
 ```
 
 ### Where to upload and serve files?
 
-Neon does not provide a built-in file storage service. For managing binary file data (blobs), we recommend using dedicated, specialized storage services. Follow our guide on [File Storage](https://neon.com/docs/guides/file-storage) to learn more about how to store files in external object storage and file management services and track metadata in Neon.
+Use [Object Storage](https://neon.com/docs/storage/overview), Neon's S3-compatible storage that branches with your database. To use an external provider instead, see [File storage](https://neon.com/docs/guides/file-storage).
 
 ## Source code
 
@@ -116794,7 +116877,7 @@ You can find the source code for the applications described in this guide on Git
 - [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
 - [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
 - [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-- [Realtime](https://neon.com/docs/realtime/examples/tanstack): Build fully-reactive realtime TanStack apps on Neon with SSR, end-to-end type-safety and reactive client-side development using TanStack DB »
+- [Realtime](https://neon.com/docs/realtime/examples/tanstack): Build realtime TanStack apps on Neon with SSR, end-to-end type safety, and reactive client-side development using TanStack DB
 
 --- [Document source](https://neon.com/docs/guides/time-travel-tutorial.md) ---
 
@@ -117375,7 +117458,7 @@ In addition to being good for system design, Inngest has some special features t
 
 --- [Document source](https://neon.com/docs/guides/typeorm.md) ---
 
-> Summary: TypeORM connects to Lakebase Postgres by setting `DataSource` type to `postgres`, supplying the Lakebase Postgres connection string via `DATABASE_URL`, and enabling `ssl: true`. Serverless deployments should use a pooled connection string (add `-pooler` to the endpoint ID) to handle high concurrency without exhausting connections. To prevent timeouts from Lakebase Postgres idle-compute cold start (default 5 minutes), add `connect_timeout=10` to the connection string.
+> Summary: TypeORM connects to Lakebase Postgres through the `pg` driver: install `pg`, set the `DataSource` type to `postgres`, load the connection string from `DATABASE_URL` with `dotenv`, and enable `ssl: true`. Serverless deployments should use a pooled connection string (add `-pooler` to the endpoint ID) to handle high concurrency without exhausting connections. If you set TypeORM's `connectTimeoutMS`, leave room for a suspended compute to start.
 
 # Connect from TypeORM to Neon
 
@@ -117385,7 +117468,7 @@ Last updated: 2026-09-16
 
 Pre-built prompt for connecting Node.js applications to Lakebase Postgres using TypeORM. [View prompt](https://neon.com/prompts/typeorm-prompt.md)
 
-TypeORM is an open-source ORM that lets you to manage and interact with your database. This guide covers the following topics:
+TypeORM is an open-source ORM for TypeScript and JavaScript. This guide assumes you have a TypeORM project. To create one, run `npx typeorm init --name my-project --database postgres`. This guide covers the following topics:
 
 - [Connect to a database on Neon from TypeORM](https://neon.com/docs/guides/typeorm#connect-to-a-database-on-neon-from-typeorm)
 - [Use connection pooling with TypeORM](https://neon.com/docs/guides/typeorm#use-connection-pooling-with-typeorm)
@@ -117399,9 +117482,17 @@ To establish a basic connection from TypeORM to a database on Neon, perform the 
    ![Connection details modal](https://neon.com/docs/connect/connect_to_branch_modal.png)
    The connection string includes the user name, password, hostname, and database name.
 
-2. Update the TypeORM's DataSource initialization in your application to the following:
+2. Install the `pg` driver, which TypeORM uses for Postgres, and `dotenv` to load your `.env` file. `npx typeorm init` doesn't install `pg`.
 
-   ```typescript {4,5,6}
+   ```bash
+   npm install pg dotenv
+   ```
+
+3. Update the TypeORM `DataSource` initialization in your application (`src/data-source.ts` in a project created with `typeorm init`) to the following. Replace the `host`, `port`, `username`, `password`, and `database` options with `url`, and keep your other options, such as `entities` and `migrations`.
+
+   ```typescript {1,7,8}
+   import 'dotenv/config';
+   import 'reflect-metadata';
    import { DataSource } from 'typeorm';
 
    export const AppDataSource = new DataSource({
@@ -117414,15 +117505,19 @@ To establish a basic connection from TypeORM to a database on Neon, perform the 
    });
    ```
 
-3. Add a `DATABASE_URL` variable to your `.env` file and set it to the Neon connection string that you copied in the previous step. We also recommend adding `?sslmode=require&channel_binding=require` to the end of the connection string to ensure a [secure connection](https://neon.com/docs/connect/connect-securely).
+   The `import 'dotenv/config'` line loads `.env` before the `DataSource` reads `process.env.DATABASE_URL`. Without it, `DATABASE_URL` is undefined and TypeORM tries to connect to `localhost`.
 
-   Your setting will appear similar to the following:
+4. Create a `.env` file in your project root, add a `DATABASE_URL` variable, and set it to the connection string you copied in the first step. Add `.env` to your `.gitignore` so you don't commit the password.
 
    ```text
    DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
    ```
 
-**Tip:** TypeORM leverages a [node-postgres](https://node-postgres.com) Pool instance to connect to your Postgres database. Installing [pg-native](https://npmjs.com/package/pg-native) and setting the `NODE_PG_FORCE_NATIVE` environment variable to `true` [switches the `pg` driver to `pg-native`](https://github.com/brianc/node-postgres/blob/master/packages/pg/lib/index.js#L31-L34), which, according to some users, produces noticeably faster response times.
+   `pg` 8.23 and later print a `SECURITY WARNING` when a connection string uses `sslmode=require`. Change `sslmode=require` to `sslmode=verify-full` to keep the current behavior and remove the warning. For more about SSL modes, see [Connect securely](https://neon.com/docs/connect/connect-securely).
+
+5. Run your application. In a project created with `typeorm init`, run `npm start`. The sample app inserts a user and prints the users it loads from your database.
+
+**Tip:** TypeORM uses a [node-postgres](https://node-postgres.com) `Pool` to connect to your Postgres database. Installing [pg-native](https://npmjs.com/package/pg-native) and setting the `NODE_PG_FORCE_NATIVE` environment variable to `true` switches the `pg` driver to `pg-native`, which uses the `libpq` C library.
 
 ## Use connection pooling with TypeORM
 
@@ -117439,24 +117534,25 @@ A pooled Neon connection string adds `-pooler` to the endpoint ID, which tells N
 
 ## Connection timeouts
 
-A connection timeout that occurs when connecting from TypeORM to Neon causes an error similar to the following:
+If your compute has been suspended after a period of inactivity, the first connection starts it again. This usually takes a few hundred milliseconds. See [Scale to zero](https://neon.com/docs/introduction/scale-to-zero).
 
-```text
-Error: P1001: Can't reach database server at `ep-white-thunder-826300.us-east-2.aws.neon.tech`:`5432`
-Please make sure your database server is running at `ep-white-thunder-826300.us-east-2.aws.neon.tech`:`5432`.
+By default, TypeORM waits for a connection with no timeout. If you set a timeout with TypeORM's `connectTimeoutMS` option, give it enough time for the compute to start:
+
+```typescript {5}
+export const AppDataSource = new DataSource({
+  type: 'postgres',
+  url: process.env.DATABASE_URL,
+  ssl: true,
+  connectTimeoutMS: 10000,
+  entities: [
+    /*list of entities*/
+  ],
+});
 ```
 
-This error most likely means that the TypeORM query timed out before the Neon compute was activated.
+When the timeout is reached, `pg` throws `Error: Connection terminated due to connection timeout`.
 
-A Neon compute has two main states: _Active_ and _Idle_. Active means that the compute is currently running. If there is no query activity for 5 minutes, Neon places a compute into an idle state by default.
-
-When you connect to an idle compute from TypeORM, Neon automatically activates it. Activation typically happens within a few seconds but added latency can result in a connection timeout. To address this issue, you can adjust your Neon connection string by adding a `connect_timeout` parameter. This parameter defines the maximum number of seconds to wait for a new connection to be opened. The default value is 5 seconds. A higher setting may provide the time required to avoid connection timeouts. For example:
-
-```text
-DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require&connect_timeout=10"
-```
-
-**Note:** A `connect_timeout` setting of 0 means no timeout.
+**Note:** TypeORM ignores the `connect_timeout` parameter in the connection string. Use `connectTimeoutMS` instead.
 
 ## Next steps
 
@@ -122883,7 +122979,7 @@ Select the guide that matches your requirements.
 
 Learn about Neon's pricing plans and how to manage billing
 
-Last updated: 2026-06-05
+Last updated: 2026-11-06
 
 ## Neon plans
 
@@ -122899,7 +122995,7 @@ Last updated: 2026-06-05
 
 ## Neon for Enterprise
 
-- [Neon for the Enterprise](https://neon.com/enterprise): Find out how Enterprises are maximizing engineering efficiency with Neon
+- [Lakebase on Databricks](https://www.databricks.com/product/lakebase): Run Lakebase Postgres for enterprise workloads on Databricks
 
 --- [Document source](https://neon.com/docs/introduction/agent-plan.md) ---
 
@@ -126047,10 +126143,15 @@ We're also improving and scaling Lakebase Postgres on Neon. Here's what's on the
 
 ## What we've shipped recently 🚢
 
+- **AI Gateway credits for all accounts**: You no longer need a paid plan to use the AI Gateway. Free plan organization admins can buy prepaid credits from $5 under **Billing** in the Console. [Learn more](https://neon.com/docs/ai-gateway/prepaid-credits).
+- **Recover deleted projects from the Console**: Recover a deleted project from the **Projects** page for 7 days after deletion, in addition to the CLI and API. [Learn more](https://neon.com/docs/manage/projects#recover-a-deleted-project).
+- **Automatic updates for computes up to 16 CU**: Every compute up to 16 CU, including all autoscaling computes, now gets compute updates automatically, with no manual restart required. [Learn more](https://neon.com/docs/manage/updates).
+- **Give your app its own MCP server**: Run an MCP server on Functions with the Managed Better Auth OAuth provider plugin, so your users can reach your app from AI agents with their existing accounts. [Read the blog post](https://neon.com/blog/managed-better-auth-oauth-provider-mcp).
+- **More coding agents supported by `neon init`**: Factory Droid, fx, Hermes Agent, Junie, Kilo Code, Kimi Code, Kiro CLI, and Pi join more than 20 coding agents you can connect to Neon with one command. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon#supported-agents-add-mcp).
+- **New Functions templates**: Twenty new Function Registry templates cover AI agents and chat, APIs, workflows, email, uploads, and monitoring, including an MCP server, `openai-agents`, `mastra`, and `x402-paid-api`. They combine Functions with Postgres, AI Gateway, Object Storage, and Managed Better Auth. [Learn more](https://neon.com/functions/templates).
 - **Managed Better Auth general availability**: Managed Better Auth is now generally available. Check the [Managed Better Auth roadmap](https://neon.com/docs/auth/roadmap) for upcoming plugins and features. [Learn more](https://neon.com/docs/auth/overview).
 - **HIPAA support for backend services**: HIPAA compliance now extends to Managed Better Auth, the Data API, Functions, Object Storage, AI Gateway, and Realtime, so you can use them with protected health information in a HIPAA-enabled project. [Learn more](https://neon.com/docs/security/hipaa).
 - **Set up your coding agent for Neon**: One prompt installs the Neon CLI, signs you in, and adds Neon's agent skills and MCP server. Each backend service overview page also has a prompt that builds a working example in your project. [Learn more](https://neon.com/docs/cli/skills).
-- **New Functions templates**: Six new Function Registry templates, including an MCP server, a Telegram bot, and image analysis and generation APIs, combine Functions with Postgres, AI Gateway, Object Storage, and Managed Better Auth. [Learn more](https://neon.com/functions/templates).
 - **Apple and Microsoft sign-in for Managed Better Auth**: Managed Better Auth now supports Apple and Microsoft Entra ID as OAuth providers, alongside Google, GitHub, and Vercel. [Learn more](https://neon.com/docs/auth/guides/setup-oauth).
 - **Tune Lakebase Search indexes**: `lakebase_vector` 1.1.2 adds functions that recommend `lakebase_ann.probes` settings for your index, so you can trade off recall and latency without trial and error. [Learn more](https://neon.com/docs/extensions/lakebase-vector#get-recommended-probes-values).
 - **Gemini 4 Argon on the AI Gateway**: Google's Gemini 4 Argon is now available through the chat completions or native Gemini endpoint, with a 1M-token context window and text, image, video, audio, and PDF input. [Learn more](https://neon.com/docs/ai-gateway/models/gemini-4-argon).
@@ -126267,7 +126368,7 @@ You can enable or disable the scale-to-zero setting by editing your compute sett
 
 Postgres with instant provisioning, no server management, and pay-per-usage billing
 
-Last updated: 2026-10-08
+Last updated: 2026-11-07
 
 Neon takes the world's most loved database, Postgres, and makes it serverless. As part of the Neon backend, Lakebase Postgres helps teams ship reliable and scalable applications faster.
 
@@ -126306,7 +126407,7 @@ _That you'll get unpredictable costs due to traffic spikes_. We provide transpar
 - [Scale to Zero](https://neon.com/docs/introduction/scale-to-zero)
 - [Plans and billing](https://neon.com/docs/introduction/about-billing)
 - [Database-per-tenant use cases](https://neon.com/use-cases/database-per-tenant)
-- [Variable workload use cases](https://neon.com/variable-load)
+- [Bursty workload use cases](https://neon.com/use-cases/bursty-workloads)
 - [Postgres for SaaS use cases](https://neon.com/use-cases/postgres-for-saas)
 
 --- [Document source](https://neon.com/docs/introduction/spending-notifications.md) ---

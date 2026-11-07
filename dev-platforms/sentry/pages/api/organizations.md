@@ -12,10 +12,12 @@ url: https://docs.sentry.io/api/organizations/
 # Organizations | Sentry Docs
 
 * #### [Add a Member to an Organization](https://docs.sentry.io/api/organizations/add-a-member-to-an-organization.md)
+* #### [Create an Org Auth Token](https://docs.sentry.io/api/organizations/create-an-org-auth-token.md)
 * #### [Delete an Organization Member](https://docs.sentry.io/api/organizations/delete-an-organization-member.md)
 * #### [List a Repository's Commits](https://docs.sentry.io/api/organizations/list-a-repositorys-commits.md)
 * #### [List an Organization's Client Keys](https://docs.sentry.io/api/organizations/list-an-organizations-client-keys.md)
 * #### [List an Organization's Members](https://docs.sentry.io/api/organizations/list-an-organizations-members.md)
+* #### [List an Organization's Org Auth Tokens](https://docs.sentry.io/api/organizations/list-an-organizations-org-auth-tokens.md)
 * #### [List an Organization's Projects](https://docs.sentry.io/api/organizations/list-an-organizations-projects.md)
 * #### [List an Organization's Repositories](https://docs.sentry.io/api/organizations/list-an-organizations-repositories.md)
 * #### [List an Organization's trusted Relays](https://docs.sentry.io/api/organizations/list-an-organizations-trusted-relays.md)
@@ -26,6 +28,7 @@ url: https://docs.sentry.io/api/organizations/
 * #### [Retrieve an Organization's Events Count by Project](https://docs.sentry.io/api/organizations/retrieve-an-organizations-events-count-by-project.md)
 * #### [Retrieve Chunk Upload Options](https://docs.sentry.io/api/organizations/retrieve-chunk-upload-options.md)
 * #### [Retrieve Event Counts for an Organization (v2)](https://docs.sentry.io/api/organizations/retrieve-event-counts-for-an-organization-v2.md)
+* #### [Revoke an Org Auth Token](https://docs.sentry.io/api/organizations/revoke-an-org-auth-token.md)
 * #### [Update an Organization](https://docs.sentry.io/api/organizations/update-an-organization.md)
 * #### [Update an Organization Member's Roles](https://docs.sentry.io/api/organizations/update-an-organization-members-roles.md)
 * #### [Upload File Chunks](https://docs.sentry.io/api/organizations/upload-file-chunks.md)
@@ -33,10 +36,12 @@ url: https://docs.sentry.io/api/organizations/
 ## Pages in this section
 
 - [Add a Member to an Organization](https://docs.sentry.io/api/organizations/add-a-member-to-an-organization.md)
+- [Create an Org Auth Token](https://docs.sentry.io/api/organizations/create-an-org-auth-token.md)
 - [Delete an Organization Member](https://docs.sentry.io/api/organizations/delete-an-organization-member.md)
 - [List a Repository's Commits](https://docs.sentry.io/api/organizations/list-a-repositorys-commits.md)
 - [List an Organization's Client Keys](https://docs.sentry.io/api/organizations/list-an-organizations-client-keys.md)
 - [List an Organization's Members](https://docs.sentry.io/api/organizations/list-an-organizations-members.md)
+- [List an Organization's Org Auth Tokens](https://docs.sentry.io/api/organizations/list-an-organizations-org-auth-tokens.md)
 - [List an Organization's Projects](https://docs.sentry.io/api/organizations/list-an-organizations-projects.md)
 - [List an Organization's Repositories](https://docs.sentry.io/api/organizations/list-an-organizations-repositories.md)
 - [List an Organization's trusted Relays](https://docs.sentry.io/api/organizations/list-an-organizations-trusted-relays.md)
@@ -47,6 +52,7 @@ url: https://docs.sentry.io/api/organizations/
 - [Retrieve an Organization's Events Count by Project](https://docs.sentry.io/api/organizations/retrieve-an-organizations-events-count-by-project.md)
 - [Retrieve Chunk Upload Options](https://docs.sentry.io/api/organizations/retrieve-chunk-upload-options.md)
 - [Retrieve Event Counts for an Organization (v2)](https://docs.sentry.io/api/organizations/retrieve-event-counts-for-an-organization-v2.md)
+- [Revoke an Org Auth Token](https://docs.sentry.io/api/organizations/revoke-an-org-auth-token.md)
 - [Update an Organization](https://docs.sentry.io/api/organizations/update-an-organization.md)
 - [Update an Organization Member's Roles](https://docs.sentry.io/api/organizations/update-an-organization-members-roles.md)
 - [Upload File Chunks](https://docs.sentry.io/api/organizations/upload-file-chunks.md)

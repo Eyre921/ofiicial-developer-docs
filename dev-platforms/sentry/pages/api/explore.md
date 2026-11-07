@@ -15,6 +15,7 @@ Explore allow you to slice and dice your events
 
 * #### [List an Organization's AI Conversations](https://docs.sentry.io/api/explore/list-an-organizations-ai-conversations.md)
 * #### [List an Organization's Trace Metrics](https://docs.sentry.io/api/explore/list-an-organizations-trace-metrics.md)
+* #### [List Logs for Traces or a Replay](https://docs.sentry.io/api/explore/list-logs-for-traces-or-a-replay.md)
 * #### [Query Dropped and Accepted Events/Stats by Outcome and Reason](https://docs.sentry.io/api/explore/query-dropped-and-accepted-events-stats-by-outcome-and-reason.md)
 * #### [Query Explore Events in Table Format](https://docs.sentry.io/api/explore/query-explore-events-in-table-format.md)
 * #### [Query Explore Events in Timeseries Format](https://docs.sentry.io/api/explore/query-explore-events-in-timeseries-format.md)
@@ -27,6 +28,7 @@ Explore allow you to slice and dice your events
 
 - [List an Organization's AI Conversations](https://docs.sentry.io/api/explore/list-an-organizations-ai-conversations.md)
 - [List an Organization's Trace Metrics](https://docs.sentry.io/api/explore/list-an-organizations-trace-metrics.md)
+- [List Logs for Traces or a Replay](https://docs.sentry.io/api/explore/list-logs-for-traces-or-a-replay.md)
 - [Query Dropped and Accepted Events/Stats by Outcome and Reason](https://docs.sentry.io/api/explore/query-dropped-and-accepted-events-stats-by-outcome-and-reason.md)
 - [Query Explore Events in Table Format](https://docs.sentry.io/api/explore/query-explore-events-in-table-format.md)
 - [Query Explore Events in Timeseries Format](https://docs.sentry.io/api/explore/query-explore-events-in-timeseries-format.md)
