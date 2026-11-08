@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1523 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1522 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -638,7 +638,6 @@
 - `docs/eleven-agents/api-reference/workspace/secrets/update` — [Update secret](pages/docs/eleven-agents/api-reference/workspace/secrets/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/update.md)
 - `docs/eleven-agents/api-reference/workspace/update` — [Update settings](pages/docs/eleven-agents/api-reference/workspace/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/update.md)
 - `docs/eleven-agents/best-practices/guardrails` — [Guardrails](pages/docs/eleven-agents/best-practices/guardrails.md) · [原文](https://elevenlabs.io/docs/eleven-agents/best-practices/guardrails.md)
-- `docs/eleven-agents/best-practices/prompting-guide` — [Prompting guide](pages/docs/eleven-agents/best-practices/prompting-guide.md) · [原文](https://elevenlabs.io/docs/eleven-agents/best-practices/prompting-guide.md)
 - `docs/eleven-agents/build/overview` — [Build](pages/docs/eleven-agents/build/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/build/overview.md)
 - `docs/eleven-agents/customization/agent-analysis` — [Conversation analysis](pages/docs/eleven-agents/customization/agent-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis.md)
 - `docs/eleven-agents/customization/agent-analysis/analysis-library` — [Analysis library](pages/docs/eleven-agents/customization/agent-analysis/analysis-library.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/analysis-library.md)

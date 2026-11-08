@@ -42177,7 +42177,7 @@ Unlike a scheduled trigger, an object-created trigger has no `schedule` or `next
 
 **neon.ts**
 
-Declare the trigger in the top-level `triggers` record in [`neon.ts`](https://neon.com/docs/reference/neon-ts#triggers), with `function` pointing at your function's slug, then apply it with `neon deploy`. `bucket` selects the bucket and `prefix` optionally scopes it to keys under that path.
+Declare the trigger in the top-level `triggers` record in [`neon.ts`](https://neon.com/docs/reference/neon-ts#triggers), with `function` pointing at your function's slug, then apply it with `neon deploy`. `bucket` selects the bucket, which must also be declared under `buckets` in the same file, and `prefix` optionally scopes it to keys under that path.
 
 ```ts filename="neon.ts"
 functions: {
@@ -42185,6 +42185,9 @@ functions: {
     name: "On upload",
     source: "./functions/onupload.ts",
   },
+},
+buckets: {
+  "my-bucket": {},
 },
 triggers: {
   "record-uploads": {
@@ -44719,6 +44722,7 @@ Connections from the GUI applications and IDEs in the table below have been test
 | [Google Colab](https://colab.research.google.com/)                                                                            | See [Use Google Colab with Neon](https://neon.com/docs/ai/ai-google-colab).                                                                                                                                                                                                                                                                                                                             |
 | [Luna Modeler](https://www.datensen.com/data-modeling/luna-modeler-for-relational-databases.html)                             | Requires enabling the SSL/TLS option                                                                                                                                                                                                                                                                                                                                                                    |
 | [Metabase](https://www.metabase.com/)                                                                                         |                                                                                                                                                                                                                                                                                                                                                                                                         |
+| [OrcaQ](https://github.com/cin12211/orca-q)                                                                                   |                                                                                                                                                                                                                                                                                                                                                                                                         |
 | [Postico](https://eggerapps.at/postico2/)                                                                                     | SNI support since v1.5.21. For older versions, use [SNI workaround B](https://neon.com/docs/connect/connection-errors#b-use-libpq-keyvalue-syntax-in-the-database-field). Postico's [keep-connection-alive mechanism](https://eggerapps.at/postico/docs/v1.2/changelist.html), enabled by default, may prevent your compute from scaling to zero.                                                       |
 | [PostgreSQL VS Code Extension by Chris Kolkman](https://marketplace.visualstudio.com/items?itemName=ckolkman.vscode-postgres) |                                                                                                                                                                                                                                                                                                                                                                                                         |
 | [pgAdmin 4](https://www.pgadmin.org/)                                                                                         | See [Using pgAdmin4 with hosted Postgres](https://neon.com/guides/pgAdmin4-hosted-postgres).                                                                                                                                                                                                                                                                                                            |
@@ -76347,7 +76351,7 @@ Last updated: 2026-09-16
 
 Pre-built prompt for connecting Astro to Neon using the Neon serverless driver [View prompt](https://neon.com/prompts/astro-serverless-prompt.md)
 
-Astro builds fast content sites, powerful web applications, dynamic server APIs, and everything in-between. This guide describes how to create a database on Neon and access it from an Astro site or application.
+Astro is a web framework for content sites, web applications, and server APIs. This guide describes how to create a database on Neon and query it from an Astro site or application at request time.
 
 To create a Neon project and access it from an Astro site or application:
 
@@ -76361,7 +76365,7 @@ If you do not have one already, create a Neon project. Save your connection deta
 
 ## Create an Astro project and add dependencies
 
-1. Create an Astro project if you do not have one. For instructions, see [Getting Started](https://docs.astro.build/en/getting-started/), in the Astro documentation.
+1. Create an Astro project if you do not have one, for example with `npm create astro@latest`. For instructions, see [Getting Started](https://docs.astro.build/en/getting-started/) in the Astro documentation.
 
 2. Add project dependencies using one of the following commands:
 
@@ -76385,23 +76389,47 @@ If you do not have one already, create a Neon project. Save your connection deta
 
 ## Enable on-demand rendering
 
-Astro requires an adapter to query databases at request time. Run:
+Astro needs an adapter and server output to query your database at request time. Add the Node adapter:
 
 ```shell
 npx astro add node
 ```
 
-This enables [on-demand rendering](https://docs.astro.build/en/guides/on-demand-rendering/) (also known as server-side rendering or SSR) so your pages can fetch fresh data on each request.
+Then set `output: 'server'` in `astro.config.mjs` so every page and endpoint uses [on-demand rendering](https://docs.astro.build/en/guides/on-demand-rendering/) (also known as server-side rendering or SSR):
 
-**Note:** This adapter is required for real-time database queries in production. Without it, your database is queried only once at build time, and production will serve static data. Development mode (`npm run dev`) rebuilds pages automatically and does not require the adapter.
+```javascript filename="astro.config.mjs"
+// @ts-check
+import { defineConfig, envField } from 'astro/config';
+
+import node from '@astrojs/node';
+
+// https://astro.build/config
+export default defineConfig({
+  output: 'server',
+  adapter: node({
+    mode: 'standalone',
+  }),
+  env: {
+    schema: {
+      DATABASE_URL: envField.string({ context: 'server', access: 'secret' }),
+    },
+  },
+});
+```
+
+The `env.schema` entry declares `DATABASE_URL` as a server-only secret. Astro reads secrets from the environment at runtime instead of copying them into the build output, so your password doesn't end up in `dist/`. For more, see [Type-safe environment variables](https://docs.astro.build/en/guides/environment-variables/#type-safe-environment-variables) in the Astro documentation.
+
+**Note:** The adapter alone isn't enough. Astro's default output is `static`, so without `output: 'server'`, `npm run build` prerenders your pages and API routes at build time and production serves the build-time results. To render only some routes on demand, keep the default and add `export const prerender = false;` to those pages and endpoints. Development mode (`npm run dev`) renders every request, so you won't see the difference until you build.
 
 ## Store your Neon credentials
 
 Add a `.env` file to your project directory and add your Neon connection string to it. You can find the connection string for your database by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell
-DATABASE_URL="postgresql://<user>:<password>@<endpoint_hostname>.neon.tech:<port>/<dbname>?sslmode=require&channel_binding=require"
+DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
 ```
+
+If you use node-postgres, `pg` 8.23 and later print a `SECURITY WARNING` for `sslmode=require`. Change it to `sslmode=verify-full` to keep the same behavior without the warning.
 
 ## Create a database utility
 
@@ -76413,10 +76441,11 @@ Create a new file at `src/lib/neon.ts` (or `src/lib/neon.js`) with the following
 
 ```typescript
 import { Pool } from 'pg';
+import { DATABASE_URL } from 'astro:env/server';
 
 export const pool = new Pool({
-  connectionString: import.meta.env.DATABASE_URL,
-  ssl: true
+  connectionString: DATABASE_URL,
+  ssl: true,
 });
 ```
 
@@ -76424,16 +76453,18 @@ export const pool = new Pool({
 
 ```typescript
 import postgres from 'postgres';
+import { DATABASE_URL } from 'astro:env/server';
 
-export const sql = postgres(import.meta.env.DATABASE_URL, { ssl: 'require' });
+export const sql = postgres(DATABASE_URL, { ssl: 'require' });
 ```
 
 **Neon serverless driver**
 
 ```typescript
 import { neon } from '@neondatabase/serverless';
+import { DATABASE_URL } from 'astro:env/server';
 
-export const sql = neon(import.meta.env.DATABASE_URL);
+export const sql = neon(DATABASE_URL);
 ```
 
 ## Configure the Postgres client
@@ -76498,18 +76529,16 @@ const data = response[0].version;
 When you run `npm run dev` you can expect to see something like the following when you visit `localhost:4321`:
 
 ```shell
-PostgreSQL 17.7 on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
 ```
 
 ### Server Endpoints (API Routes)
 
-In your server endpoints (API Routes) in Astro application, import the database client from your utility file:
+In your server endpoints (API routes), import the database client from your utility file. Create `src/pages/api/index.ts`:
 
 **node-postgres**
 
-```javascript
-// File: src/pages/api/index.ts
-
+```typescript filename="src/pages/api/index.ts"
 import { pool } from '../../lib/neon';
 
 export async function GET() {
@@ -76527,9 +76556,7 @@ export async function GET() {
 
 **postgres.js**
 
-```javascript
-// File: src/pages/api/index.ts
-
+```typescript filename="src/pages/api/index.ts"
 import { sql } from '../../lib/neon';
 
 export async function GET() {
@@ -76542,9 +76569,7 @@ export async function GET() {
 
 **Neon serverless driver**
 
-```javascript
-// File: src/pages/api/index.ts
-
+```typescript filename="src/pages/api/index.ts"
 import { sql } from '../../lib/neon';
 
 export async function GET() {
@@ -76559,9 +76584,17 @@ export async function GET() {
 
 When you run `npm run dev` you can expect to see something like the following when you visit the `localhost:4321/api` route:
 
-```shell
-{ version: 'PostgreSQL 17.7 on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit' }
+```json
+{"version":"PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit"}
 ```
+
+To run the production build, run `npm run build`, then start the server with `DATABASE_URL` set in its environment. For example, load it from your `.env` file with Node's `--env-file` option (Node 20.6 or later):
+
+```shell
+node --env-file=.env ./dist/server/entry.mjs
+```
+
+The server listens on port 4321 by default; set the `PORT` environment variable to change it. With `output: 'server'`, each request queries your database. If `DATABASE_URL` isn't set, Astro fails the request with an `EnvInvalidVariables` error.
 
 ## Next steps
 
@@ -83406,13 +83439,13 @@ Add a `.env.local` file to your project directory and add your Neon connection d
 POSTGRES_URL='postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require'
 ```
 
-**Note:** `Bun.sql` uses `POSTGRES_URL` as the default environment variable for the Primary connection URL for Postgres
+**Note:** `Bun.sql` reads the connection string from `POSTGRES_URL` by default (it also checks `DATABASE_URL`), so you don't need to pass it in code.
 
 **Important:** To ensure the security of your data, never expose your Neon credentials directly in your code or commit them to version control.
 
 ## Configure the Postgres client
 
-Add an `index.ts` file (or `index.js`) to your project directory and add the following code snippet to connect to your Neon database. Choose the configuration that matches your preferred client.
+`bun init` creates an `index.ts` file in your project directory. Replace its contents with the following code to connect to your Neon database. Choose the configuration that matches your preferred client.
 
 **Bun.sql**
 
@@ -83432,7 +83465,7 @@ getPgVersion();
 ```typescript
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.POSTGRES_URL);
+const sql = neon(process.env.POSTGRES_URL!);
 
 async function getPgVersion() {
   const result = await sql`SELECT version()`;
@@ -83444,12 +83477,12 @@ getPgVersion();
 
 ## Run index.ts
 
-Run `bun run index.ts` (or `bun index.js`) to view the result.
+Run `bun run index.ts` to view the result.
 
 ```shell
 $ bun run index.ts
 {
-  version: "PostgreSQL 17.2 on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit",
+  version: "PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit",
 }
 ```
 
@@ -87541,7 +87574,7 @@ This guide describes how to create a Neon project and connect to it from an Enti
 
 To connect to Neon from an Entity Framework application:
 
-1. [Create a Neon Project](https://neon.com/docs/guides/dotnet-entity-framework#create-a-neon-project)
+1. [Create a Neon project](https://neon.com/docs/guides/dotnet-entity-framework#create-a-neon-project)
 2. [Create a .NET project and add dependencies](https://neon.com/docs/guides/dotnet-entity-framework#create-a-net-project-and-add-dependencies)
 3. [Configure Entity Framework](https://neon.com/docs/guides/dotnet-entity-framework#configure-entity-framework)
 4. [Run the application](https://neon.com/docs/guides/dotnet-entity-framework#run-the-application)
@@ -87559,27 +87592,27 @@ If you do not have one already, create a Neon project.
 1. Create a new ASP.NET Core Web API project and change to the newly created directory:
 
    ```bash
-   dotnet new webapi -n NeonEfExample
+   dotnet new webapi --use-controllers -n NeonEfExample
    cd NeonEfExample
    ```
 
-2. Delete the files `WeatherForecast.cs` and `Controllers/WeatherForecastController.cs` as we won't be using them:
+   The `--use-controllers` option creates a controller-based project. Without it, .NET 8 and later create a minimal API project with no `Controllers` folder.
+
+2. Delete the sample files `WeatherForecast.cs` and `Controllers/WeatherForecastController.cs`, which this guide doesn't use:
 
    ```bash
    rm WeatherForecast.cs Controllers/WeatherForecastController.cs
    ```
 
-3. Install required packages
-
-   **Important: IMPORTANT**
-
-   Ensure you install package versions that match your .NET version. You can verify your .NET version at any time by running `dotnet --version`.
+3. Install the EF Core tools and packages. Use package versions with the same major version as your .NET SDK. Run `dotnet --version` to check it: for example, `10.0.403` is .NET 10, so use `10.*`.
 
    ```bash
-   dotnet tool install --global dotnet-ef --version YOUR_DOTNET_VERSION
-   dotnet add package Microsoft.EntityFrameworkCore.Design --version YOUR_DOTNET_VERSION
-   dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version YOUR_DOTNET_VERSION
+   dotnet tool install --global dotnet-ef --version '10.*'
+   dotnet add package Microsoft.EntityFrameworkCore.Design --version '10.*'
+   dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version '10.*'
    ```
+
+   For .NET 9, use `'9.*'`; for .NET 8, use `'8.*'`. Don't pass the full SDK version (such as `10.0.403`): package versions don't match it, and the install fails.
 
 ## Configure Entity Framework
 
@@ -87617,17 +87650,19 @@ If you do not have one already, create a Neon project.
    }
    ```
 
-3. Update `appsettings.json` / `appsettings.Development.json`:
-
-   Add the connection string:
+3. Add a `ConnectionStrings` section to `appsettings.json` with your Neon connection details. Get them from the **Connect** modal in the Neon Console:
 
    ```json
    {
      "ConnectionStrings": {
-       "TodoDbConnection": "Host=your-neon-host;Database=your-db;Username=your-username;Password=your-password;SSL Mode=Require"
+       "TodoDbConnection": "Host=[neon_hostname];Database=[dbname];Username=[user];Password=[password];SSL Mode=Require;Channel Binding=Require"
      }
    }
    ```
+
+   Npgsql uses this key-value format rather than a `postgresql://` URL. To convert a URL such as `postgresql://alex:AbC123dEf@ep-cool-darkness-123456-pooler.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require`, use the hostname for `Host`, the path for `Database`, the user and password for `Username` and `Password`, and map `sslmode=require` to `SSL Mode=Require` and `channel_binding=require` to `Channel Binding=Require`.
+
+   Keep the existing `Logging` and `AllowedHosts` settings in the file. Don't commit a real password: for local development, you can store the connection string with [user secrets](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets) instead.
 
 4. Create a Todo controller in `Controllers/TodoController.cs`:
 
@@ -87667,7 +87702,7 @@ If you do not have one already, create a Neon project.
    }
    ```
 
-5. Update `Program.cs`:
+5. Replace the contents of `Program.cs`:
 
    ```csharp
    using Microsoft.EntityFrameworkCore;
@@ -87676,30 +87711,26 @@ If you do not have one already, create a Neon project.
    var builder = WebApplication.CreateBuilder(args);
 
    builder.Services.AddControllers();
+   builder.Services.AddOpenApi();
 
    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-       options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-   builder.Services.AddEndpointsApiExplorer();
-   builder.Services.AddSwaggerGen();
+       options.UseNpgsql(builder.Configuration.GetConnectionString("TodoDbConnection")));
 
    var app = builder.Build();
 
-   app.UseSwagger();
-   app.UseSwaggerUI();
+   if (app.Environment.IsDevelopment())
+   {
+       app.MapOpenApi();
+   }
+
+   app.UseHttpsRedirection();
    app.UseAuthorization();
    app.MapControllers();
 
-   if (app.Environment.IsDevelopment())
-   {
-       app.Run("http://localhost:5001");
-   }
-   else
-   {
-       app.UseHttpsRedirection();
-       app.Run();
-   }
+   app.Run();
    ```
+
+   The name passed to `GetConnectionString` must match the key in `appsettings.json` (`TodoDbConnection`). If it doesn't, `dotnet ef database update` fails with `The ConnectionString property has not been initialized`.
 
 6. Create and apply the initial migration:
 
@@ -87710,13 +87741,29 @@ If you do not have one already, create a Neon project.
 
 ## Run the application
 
-1. Start the application:
+1. Start the application on port 5001 (use any free port if 5001 is taken, and change the URLs below to match):
 
    ```bash
-   dotnet run
+   dotnet run --urls http://localhost:5001
    ```
 
-2. Test the connection by navigating to [`http://localhost:5001/swagger`](http://localhost:5001/swagger) in your browser. You can use the Swagger UI to create and retrieve Todo items.
+2. In another terminal, create a todo and then list todos:
+
+   ```bash
+   curl -X POST http://localhost:5001/api/todo \
+     -H "Content-Type: application/json" \
+     -d '{"title": "Try Neon", "isComplete": false}'
+
+   curl http://localhost:5001/api/todo
+   ```
+
+   The second command returns the todo stored in your Neon database:
+
+   ```json filename="Output"
+   [{"id":1,"title":"Try Neon","isComplete":false}]
+   ```
+
+   In development, the OpenAPI document for the API is available at `http://localhost:5001/openapi/v1.json`.
 
 ## Resources
 
