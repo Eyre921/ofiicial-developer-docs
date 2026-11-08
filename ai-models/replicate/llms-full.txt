@@ -1,160 +1,3 @@
-# Run a model from Google Colab
-
-**URL:** https://replicate.com/docs/get-started/google-colab.md
-
-[](#what-is-google-colab)What is Google Colab?
-----------------------------------------------
-
-Google Colab is a cloud-based platform that lets you write and execute Python code right from your browser, without having to install anything or worry about setting up Python.
-
-[](#what-are-notebooks)What are notebooks?
-------------------------------------------
-
-Colab uses **notebooks**: interactive documents that contain both code and other elements like paragraphs, equations, and images. Notebooks are a great prototyping tool for data scientists, researchers, and developers to create and share documents that contain live working code.
-
-[](#running-replicate-models-on-colab)Running Replicate models on Colab
------------------------------------------------------------------------
-
-You can run any public Replicate model in a notebook with just a few lines of Python code.
-
-To get started, [check out the Replicate Python notebook](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
-
-[![](https://github.com/replicate/cog/assets/2289/d2b4d474-7fa3-4b09-932a-deda4a9cab54)](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
-
-# Deploy a custom model
-
-**URL:** https://replicate.com/docs/get-started/deploy-a-custom-model.md
-
-Replicate lets you build and scale AI products with your own custom models. You write the code, we handle the infrastructure orchestration and scaling.
-
-With custom models and [deployments](/docs/topics/deployments), you can:
-
-*   Run arbitrary code and weights on high-end GPUs (A100s, H100s, B200s, and more) via API
-*   Dedicated deployments with no noisy neighbors
-*   Scale from zero to thousands of GPUs automatically based on demand
-*   Deploy updates without downtime using rolling deployments
-*   Monitor performance, costs, and usage in real-time
-*   Pay only for what you use
-
-This guide shows you how to deploy your model on production-grade GPU infrastructure that scales dynamically and can handle millions of requests.
-
-Note
-
-This guide will show you how to build a custom model from scratch using Cog. If you’re looking to create a fine-tuned image generation model using your own training data, check out the [guide to fine-tuning image models](/docs/guides/fine-tune-an-image-model).
-
-[](#what-is-a-custom-model)What is a custom model?
---------------------------------------------------
-
-In the world of machine learning, the word “model” can mean many different things depending on context. It can be the source code, trained weights, architecture, or some combination thereof. At Replicate, when we say “model” we’re referring to a trained, packaged, and published software program that accepts inputs and returns outputs.
-
-Models on Replicate are built with [Cog](https://cog.run/), an open-source tool that packages arbitrary code into a standard, production-ready container. Cog handles generating API servers and cloud deployment automatically. You define your model environment and prediction logic, and Replicate handles the server, scaling, and compute management.
-
-[](#step-1-create-a-model)Step 1: Create a model
-------------------------------------------------
-
-Click “Create model” in the account menu or go to [replicate.com/create](https://replicate.com/create) to create your new model.
-
-### [](#choose-a-name)Choose a name
-
-Pick a short and memorable name, like `hotdog-detector`. You can use lower case characters and dashes.
-
-### [](#choose-an-owner)Choose an owner
-
-If you’re working with a team, you should **create your model under an organization** so you and your team can share access and billing. To create an organization, click “Join or create organization” from the account menu or go to [replicate.com/organizations/create](https://replicate.com/organizations/create). Learn more about [organizations](/docs/topics/organizations).
-
-If you’re creating a model for your own individual use, you don’t need an organization. Create it under your user account.
-
-### [](#choose-model-visibility)Choose model visibility
-
-Public models can be discovered and used by anyone. Private models can only be seen by the user or organization that owns them.
-
-Set your model to be private to start, so it’s accessible only to you and your organization. You can make it public later if you want to share it with others.
-
-### [](#choose-hardware)Choose hardware
-
-Choose the type of hardware your model runs on. This affects performance and cost. [The billing docs](/docs/topics/billing) show specifications and pricing for available hardware.
-
-For GPU-accelerated models, start with a **Nvidia T4 GPU** for development. You can upgrade to more powerful GPUs like A100s or H100s later using deployments without changing your code.
-
-Once you’ve created your new model, you should see a page that looks something like this:
-
-![new-model-page](https://github.com/replicate/cog/assets/2289/e36e6405-356f-4158-afdd-a61d22e248e6)
-
-> If you prefer to work from the command line, you can use the [Replicate CLI](https://github.com/replicate/cli) to create models, or [create models programmatically using the API](https://replicate.com/changelog/2023-11-06-api-for-creating-models).
-
-[](#step-2-build-your-model)Step 2: Build your model
-----------------------------------------------------
-
-Now that you’ve created your model on Replicate, it’s time to actually write the code for it, build it, and push it to Replicate.
-
-You’ll use [Cog](https://cog.run) to build and push your model. Cog is an open-source tool that packages arbitrary code in production-ready containers with automatic API generation.
-
-Follow this guide to learn how to install Cog, write the code for your model, and push it to Replicate:
-
-⚙️ [Guide: Push your own model with Cog](/docs/guides/push-a-model)
-
-Once you’ve pushed your custom model, return to this guide to learn how to create a deployment and scale it.
-
-[](#step-3-create-a-deployment)Step 3: Create a deployment
-----------------------------------------------------------
-
-When you push a model to Replicate, we automatically generate an API server and deploy it on our GPU cluster. For production use, you should create a [deployment](/docs/topics/deployments) to get full control over scaling, hardware, and performance.
-
-Deployments give you production-grade control over your model’s infrastructure and provide a private, dedicated API endpoint.
-
-To create a deployment, go to your model page and click the **Deploy** button.
-
-You’ll see a form where you can configure:
-
-*   Deployment name: Choose a descriptive name for your deployment
-*   Hardware type: Select from available GPU architectures
-*   Instance scaling: Set minimum and maximum instance counts
-*   Cost estimation: Live preview of your deployment costs
-
-The form shows real-time cost estimates as you adjust your configuration, helping you balance performance and budget.
-
-Once you’re satisfied with your choices, click **Create a deployment**.
-
-![deployment-form](https://github.com/replicate/cog/assets/2289/8fd72cc5-0a8b-4e7b-b7f3-3b23aabff96f)
-
-> **Keep your model warm.** If you’re giving a demo or putting your model in the hands of users, you’ll want it to respond quickly, without a [cold boot](/docs/topics/models/run-a-model#warm-models). Set the minimum number of instances to 1 to make sure that at least one instance is always running. You can reduce this to 0 later if you don’t need the model to be instantaneously responsive to new requests.
-
-After creating your deployment, you’ll see updated example code for running your model through the deployment endpoint. This code differs from the earlier API calls—it references your deployment (`you/your-deployment`) rather than the model directly (`you/your-model`):
-
-![deployment-snippet](https://github.com/replicate/cog/assets/2289/d2adde0e-4281-4a0d-914c-73fef5a42ec3)
-
-[](#step-4-monitor-your-deployment)Step 4: Monitor your deployment
-------------------------------------------------------------------
-
-Once your deployment receives traffic, go to your deployment page to monitor its performance. The dashboard shows:
-
-*   Request volume and latency: Track how many requests you’re processing and response times
-*   Instance utilization: See how many instances are active, idle, or starting up
-*   Error rates: Monitor failed requests and troubleshoot issues
-*   Cost analysis: View detailed spending broken down by compute time and instance hours
-
-![deployment-metrics](https://github.com/replicate/cog/assets/2289/214e1a90-62f5-4577-a556-3736c340a4c1)
-
-[](#step-5-iterate-on-your-deployment)Step 5: Iterate on your deployment
-------------------------------------------------------------------------
-
-Machine learning models improve over time as you retrain with new data, fix bugs, or update dependencies. With deployments, you can update your model without disrupting service.
-
-When you make changes to your model, run `cog push` to publish updates. Your deployment can then use rolling updates to deploy the new model without downtime. [You can integrate this into your existing development workflow using GitHub Actions.](https://github.com/replicate/setup-cog)
-
-Deployments handle the complexity of managing multiple model iterations, allowing you to test changes, rollback if needed, and ensure consistent performance for your users.
-
-[](#next-steps)Next steps
--------------------------
-
-You’ve successfully created a custom model on Replicate, built it with Cog, deployed it with production-grade infrastructure control, and set up monitoring to track its performance. Your model now has a private API endpoint that can scale automatically based on demand.
-
-Now it’s time to integrate your deployed model into your app or product:
-
-*   Learn how to [continuously deploy your model using GitHub Actions](https://github.com/replicate/setup-cog).
-*   Check out the [client libraries](/docs/reference/client-libraries) you can use to run your model.
-*   Check out the [deployments guide](/docs/topics/deployments) to learn more about model performance and scaling.
-
 # Fine-tune an image model
 
 **URL:** https://replicate.com/docs/get-started/fine-tune-with-flux.md
@@ -479,6 +322,163 @@ For more details on handling output files, see [Output Files](/docs/topics/predi
 -------------------------
 
 Read the [full Python client documentation on GitHub.](https://github.com/replicate/replicate-python#readme)
+
+# Deploy a custom model
+
+**URL:** https://replicate.com/docs/get-started/deploy-a-custom-model.md
+
+Replicate lets you build and scale AI products with your own custom models. You write the code, we handle the infrastructure orchestration and scaling.
+
+With custom models and [deployments](/docs/topics/deployments), you can:
+
+*   Run arbitrary code and weights on high-end GPUs (A100s, H100s, B200s, and more) via API
+*   Dedicated deployments with no noisy neighbors
+*   Scale from zero to thousands of GPUs automatically based on demand
+*   Deploy updates without downtime using rolling deployments
+*   Monitor performance, costs, and usage in real-time
+*   Pay only for what you use
+
+This guide shows you how to deploy your model on production-grade GPU infrastructure that scales dynamically and can handle millions of requests.
+
+Note
+
+This guide will show you how to build a custom model from scratch using Cog. If you’re looking to create a fine-tuned image generation model using your own training data, check out the [guide to fine-tuning image models](/docs/guides/fine-tune-an-image-model).
+
+[](#what-is-a-custom-model)What is a custom model?
+--------------------------------------------------
+
+In the world of machine learning, the word “model” can mean many different things depending on context. It can be the source code, trained weights, architecture, or some combination thereof. At Replicate, when we say “model” we’re referring to a trained, packaged, and published software program that accepts inputs and returns outputs.
+
+Models on Replicate are built with [Cog](https://cog.run/), an open-source tool that packages arbitrary code into a standard, production-ready container. Cog handles generating API servers and cloud deployment automatically. You define your model environment and prediction logic, and Replicate handles the server, scaling, and compute management.
+
+[](#step-1-create-a-model)Step 1: Create a model
+------------------------------------------------
+
+Click “Create model” in the account menu or go to [replicate.com/create](https://replicate.com/create) to create your new model.
+
+### [](#choose-a-name)Choose a name
+
+Pick a short and memorable name, like `hotdog-detector`. You can use lower case characters and dashes.
+
+### [](#choose-an-owner)Choose an owner
+
+If you’re working with a team, you should **create your model under an organization** so you and your team can share access and billing. To create an organization, click “Join or create organization” from the account menu or go to [replicate.com/organizations/create](https://replicate.com/organizations/create). Learn more about [organizations](/docs/topics/organizations).
+
+If you’re creating a model for your own individual use, you don’t need an organization. Create it under your user account.
+
+### [](#choose-model-visibility)Choose model visibility
+
+Public models can be discovered and used by anyone. Private models can only be seen by the user or organization that owns them.
+
+Set your model to be private to start, so it’s accessible only to you and your organization. You can make it public later if you want to share it with others.
+
+### [](#choose-hardware)Choose hardware
+
+Choose the type of hardware your model runs on. This affects performance and cost. [The billing docs](/docs/topics/billing) show specifications and pricing for available hardware.
+
+For GPU-accelerated models, start with a **Nvidia T4 GPU** for development. You can upgrade to more powerful GPUs like A100s or H100s later using deployments without changing your code.
+
+Once you’ve created your new model, you should see a page that looks something like this:
+
+![new-model-page](https://github.com/replicate/cog/assets/2289/e36e6405-356f-4158-afdd-a61d22e248e6)
+
+> If you prefer to work from the command line, you can use the [Replicate CLI](https://github.com/replicate/cli) to create models, or [create models programmatically using the API](https://replicate.com/changelog/2023-11-06-api-for-creating-models).
+
+[](#step-2-build-your-model)Step 2: Build your model
+----------------------------------------------------
+
+Now that you’ve created your model on Replicate, it’s time to actually write the code for it, build it, and push it to Replicate.
+
+You’ll use [Cog](https://cog.run) to build and push your model. Cog is an open-source tool that packages arbitrary code in production-ready containers with automatic API generation.
+
+Follow this guide to learn how to install Cog, write the code for your model, and push it to Replicate:
+
+⚙️ [Guide: Push your own model with Cog](/docs/guides/push-a-model)
+
+Once you’ve pushed your custom model, return to this guide to learn how to create a deployment and scale it.
+
+[](#step-3-create-a-deployment)Step 3: Create a deployment
+----------------------------------------------------------
+
+When you push a model to Replicate, we automatically generate an API server and deploy it on our GPU cluster. For production use, you should create a [deployment](/docs/topics/deployments) to get full control over scaling, hardware, and performance.
+
+Deployments give you production-grade control over your model’s infrastructure and provide a private, dedicated API endpoint.
+
+To create a deployment, go to your model page and click the **Deploy** button.
+
+You’ll see a form where you can configure:
+
+*   Deployment name: Choose a descriptive name for your deployment
+*   Hardware type: Select from available GPU architectures
+*   Instance scaling: Set minimum and maximum instance counts
+*   Cost estimation: Live preview of your deployment costs
+
+The form shows real-time cost estimates as you adjust your configuration, helping you balance performance and budget.
+
+Once you’re satisfied with your choices, click **Create a deployment**.
+
+![deployment-form](https://github.com/replicate/cog/assets/2289/8fd72cc5-0a8b-4e7b-b7f3-3b23aabff96f)
+
+> **Keep your model warm.** If you’re giving a demo or putting your model in the hands of users, you’ll want it to respond quickly, without a [cold boot](/docs/topics/models/run-a-model#warm-models). Set the minimum number of instances to 1 to make sure that at least one instance is always running. You can reduce this to 0 later if you don’t need the model to be instantaneously responsive to new requests.
+
+After creating your deployment, you’ll see updated example code for running your model through the deployment endpoint. This code differs from the earlier API calls—it references your deployment (`you/your-deployment`) rather than the model directly (`you/your-model`):
+
+![deployment-snippet](https://github.com/replicate/cog/assets/2289/d2adde0e-4281-4a0d-914c-73fef5a42ec3)
+
+[](#step-4-monitor-your-deployment)Step 4: Monitor your deployment
+------------------------------------------------------------------
+
+Once your deployment receives traffic, go to your deployment page to monitor its performance. The dashboard shows:
+
+*   Request volume and latency: Track how many requests you’re processing and response times
+*   Instance utilization: See how many instances are active, idle, or starting up
+*   Error rates: Monitor failed requests and troubleshoot issues
+*   Cost analysis: View detailed spending broken down by compute time and instance hours
+
+![deployment-metrics](https://github.com/replicate/cog/assets/2289/214e1a90-62f5-4577-a556-3736c340a4c1)
+
+[](#step-5-iterate-on-your-deployment)Step 5: Iterate on your deployment
+------------------------------------------------------------------------
+
+Machine learning models improve over time as you retrain with new data, fix bugs, or update dependencies. With deployments, you can update your model without disrupting service.
+
+When you make changes to your model, run `cog push` to publish updates. Your deployment can then use rolling updates to deploy the new model without downtime. [You can integrate this into your existing development workflow using GitHub Actions.](https://github.com/replicate/setup-cog)
+
+Deployments handle the complexity of managing multiple model iterations, allowing you to test changes, rollback if needed, and ensure consistent performance for your users.
+
+[](#next-steps)Next steps
+-------------------------
+
+You’ve successfully created a custom model on Replicate, built it with Cog, deployed it with production-grade infrastructure control, and set up monitoring to track its performance. Your model now has a private API endpoint that can scale automatically based on demand.
+
+Now it’s time to integrate your deployed model into your app or product:
+
+*   Learn how to [continuously deploy your model using GitHub Actions](https://github.com/replicate/setup-cog).
+*   Check out the [client libraries](/docs/reference/client-libraries) you can use to run your model.
+*   Check out the [deployments guide](/docs/topics/deployments) to learn more about model performance and scaling.
+
+# Run a model from Google Colab
+
+**URL:** https://replicate.com/docs/get-started/google-colab.md
+
+[](#what-is-google-colab)What is Google Colab?
+----------------------------------------------
+
+Google Colab is a cloud-based platform that lets you write and execute Python code right from your browser, without having to install anything or worry about setting up Python.
+
+[](#what-are-notebooks)What are notebooks?
+------------------------------------------
+
+Colab uses **notebooks**: interactive documents that contain both code and other elements like paragraphs, equations, and images. Notebooks are a great prototyping tool for data scientists, researchers, and developers to create and share documents that contain live working code.
+
+[](#running-replicate-models-on-colab)Running Replicate models on Colab
+-----------------------------------------------------------------------
+
+You can run any public Replicate model in a notebook with just a few lines of Python code.
+
+To get started, [check out the Replicate Python notebook](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
+
+[![](https://github.com/replicate/cog/assets/2289/d2b4d474-7fa3-4b09-932a-deda4a9cab54)](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
 
 # Run a model from Node.js
 
@@ -811,6 +811,74 @@ Timeseries data storage and management
 
 United States
 
+# Create a deployment
+
+**URL:** https://replicate.com/docs/topics/deployments/create-a-deployment.md
+
+To create a new deployment, go to [replicate.com/deployments](https://replicate.com/deployments) and select **Create a new deployment**. (You can also navigate to any model _version_ on the website and click the **Deploy** button on the top right of the view.)
+
+Here you will be able to give the deployment a name and confirm the model and version that you wish to deploy. You can update the version at any time. Once your deployment is created, you’ll be able to start running predictions against your new model instance.
+
+To further configure the deployment, navigate to the **Settings** tab on the deployment page. Here you can customize the hardware as well as the autoscaling characteristics of the deployment. We also give you an indicator of how much the deployment will cost to operate.
+
+[](#manage-deployments-using-the-api)Manage deployments using the API
+---------------------------------------------------------------------
+
+You can also create and manage deployments using the API.
+
+Example cURL request:
+
+```shell
+curl -s \
+  -X POST \
+  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "my-app-image-generator",
+        "model": "some-org/some-model",
+        "version": "da77bc59ee60423279fd632efb4795ab731d9e3ca9705ef3341091fb989b7eaf",
+        "hardware": "gpu-t4",
+        "min_instances": 1,
+        "max_instances": 5
+      }' \
+  https://api.replicate.com/v1/deployments
+```
+
+The response will be a JSON object describing the deployment:
+
+```json
+{
+  "owner": "acme",
+  "name": "my-app-image-generator",
+  "current_release": {
+    "number": 1,
+    "model": "some-org/some-model",
+    "version": "da77bc59ee60423279fd632efb4795ab731d9e3ca9705ef3341091fb989b7eaf",
+    "created_at": "2024-02-15T16:32:57.018467Z",
+    "created_by": {
+      "type": "organization",
+      "username": "acme",
+      "name": "Acme Corp, Inc.",
+      "github_url": "https://github.com/acme",
+    },
+    "configuration": {
+      "hardware": "gpu-t4",
+      "min_instances": 1,
+      "max_instances": 5
+    }
+  }
+}
+```
+
+See the API docs for more details:
+
+*   [Create a deployment](https://replicate.com/docs/reference/http#deployments.create)
+*   [Get a deployment](https://replicate.com/docs/reference/http#deployments.get)
+*   [Update a deployment](https://replicate.com/docs/reference/http#deployments.update)
+*   [Delete a deployment](https://replicate.com/docs/reference/http#deployments.delete)
+*   [List deployments](https://replicate.com/docs/reference/http#deployments.list)
+*   [Create a prediction using a deployment](https://replicate.com/docs/reference/http#deployments.predictions.create)
+
 # Run a model
 
 **URL:** https://replicate.com/docs/topics/models/run-a-model.md
@@ -890,73 +958,97 @@ They can be used to identify the image, version, deployment, when debugging or i
 
 These environment variables are accessible to your code in public models, private models, and deployments.
 
-# Create a deployment
+# Input files
 
-**URL:** https://replicate.com/docs/topics/deployments/create-a-deployment.md
+**URL:** https://replicate.com/docs/topics/predictions/input-files.md
 
-To create a new deployment, go to [replicate.com/deployments](https://replicate.com/deployments) and select **Create a new deployment**. (You can also navigate to any model _version_ on the website and click the **Deploy** button on the top right of the view.)
+Some models accept files as input, like images, audio, or video, zip files, PDFs, etc.
 
-Here you will be able to give the deployment a name and confirm the model and version that you wish to deploy. You can update the version at any time. Once your deployment is created, you’ll be able to start running predictions against your new model instance.
+There are multiple ways to use files as input when running a model on Replicate. You can provide a file as input using a URL, a local file on your computer, or a base64-encoded object.
 
-To further configure the deployment, navigate to the **Settings** tab on the deployment page. Here you can customize the hardware as well as the autoscaling characteristics of the deployment. We also give you an indicator of how much the deployment will cost to operate.
+[](#option-1-hosted-file)Option 1: Hosted file
+----------------------------------------------
 
-[](#manage-deployments-using-the-api)Manage deployments using the API
----------------------------------------------------------------------
+Use a URL to provide a hosted file:
 
-You can also create and manage deployments using the API.
+This is useful if you already have a file hosted somewhere on the internet.
 
-Example cURL request:
+[](#option-2-local-file)Option 2: Local file
+--------------------------------------------
 
-```shell
-curl -s \
-  -X POST \
-  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "name": "my-app-image-generator",
-        "model": "some-org/some-model",
-        "version": "da77bc59ee60423279fd632efb4795ab731d9e3ca9705ef3341091fb989b7eaf",
-        "hardware": "gpu-t4",
-        "min_instances": 1,
-        "max_instances": 5
-      }' \
-  https://api.replicate.com/v1/deployments
-```
+You can provide Replicate with a `Blob`, `File`, or `Buffer` object, and the library will handle the upload for you. This will work for files up to 100MB:
 
-The response will be a JSON object describing the deployment:
+[](#option-3-data-uri)Option 3: Data URI
+----------------------------------------
+
+Create a data URI consisting of the base64 encoded data for your file. This is only recommended if the file is less than 1MB:
+
+[](#using-the-file-input)Using the file input
+---------------------------------------------
+
+Once you have your file input ready, you can use it in your prediction:
+
+# View deployments
+
+**URL:** https://replicate.com/docs/topics/deployments/view-deployments.md
+
+All existing deployments can be found under your account dashboard in the [**Deployments** tab](https://replicate.com/deployments). From here you can navigate to a specific deployment to see its current status, usage metrics and predictions.
+
+To temporarily disable a deployment, you can set the minimum and maximum instances under the autoscaling settings to zero, or select **Disable deployment** under **Settings**. This will cancel any in-flight predictions, prevent further predictions from running, and halt billing for the instance.
+
+To permanently delete a deployment, see [Delete a deployment](/docs/topics/deployments/delete-a-deployment).
+
+# Set up webhooks
+
+**URL:** https://replicate.com/docs/topics/webhooks/setup-webhook.md
+
+To receive webhook events, specify a `webhook` URL in the request body when creating a prediction or a training.
+
+Here’s an example using the Replicate client to create a prediction and request a webhook event when the prediction is completed:
+
+[](#webhook-events-filter)Webhook events filter
+-----------------------------------------------
+
+By default, we will send requests to your webhook URL whenever there are new outputs or the prediction has finished. You can change which events trigger webhook requests by specifying `webhook_events_filter` in the prediction request:
+
+*   `start`: immediately on prediction start
+*   `output`: each time a prediction generates an output (note that predictions can generate multiple outputs)
+*   `logs`: each time log output is generated by a prediction
+*   `completed`: when the prediction reaches a terminal state (succeeded/canceled/failed)
+
+For example, if you only wanted requests to be sent at the start and end of the prediction, you would provide:
 
 ```json
 {
-  "owner": "acme",
-  "name": "my-app-image-generator",
-  "current_release": {
-    "number": 1,
-    "model": "some-org/some-model",
-    "version": "da77bc59ee60423279fd632efb4795ab731d9e3ca9705ef3341091fb989b7eaf",
-    "created_at": "2024-02-15T16:32:57.018467Z",
-    "created_by": {
-      "type": "organization",
-      "username": "acme",
-      "name": "Acme Corp, Inc.",
-      "github_url": "https://github.com/acme",
-    },
-    "configuration": {
-      "hardware": "gpu-t4",
-      "min_instances": 1,
-      "max_instances": 5
-    }
-  }
+  "input": {
+    "text": "Alice"
+  },
+  "webhook": "https://example.com/my-webhook",
+  "webhook_events_filter": ["start", "completed"]
 }
 ```
 
-See the API docs for more details:
+Requests for event types `output` and `logs` will be sent at most once every 500ms.
 
-*   [Create a deployment](https://replicate.com/docs/reference/http#deployments.create)
-*   [Get a deployment](https://replicate.com/docs/reference/http#deployments.get)
-*   [Update a deployment](https://replicate.com/docs/reference/http#deployments.update)
-*   [Delete a deployment](https://replicate.com/docs/reference/http#deployments.delete)
-*   [List deployments](https://replicate.com/docs/reference/http#deployments.list)
-*   [Create a prediction using a deployment](https://replicate.com/docs/reference/http#deployments.predictions.create)
+If you request `start` and `completed` webhooks, then they’ll always be sent regardless of throttling.
+
+[](#webhooks-for-trainings)Webhooks for trainings
+-------------------------------------------------
+
+In addition to predictions, you can also receive webhooks when [fine-tuning models with the training API](/docs/get-started/fine-tune-with-flux):
+
+Tip
+
+**Add query params to your webhook URL** to pass along extra metadata, like an internal ID you’re using for a prediction. For example: `https://example.com/replicate-webhook?customId=123`
+
+[](#example-resources)Example resources
+---------------------------------------
+
+*   See the [Node.js client](https://github.com/replicate/replicate-javascript#replicatepredictionscreate) webhook docs.
+*   See the [Python client](https://github.com/replicate/replicate-python#run-a-model-in-the-background-and-get-a-webhook) webhook docs.
+*   See [predictions.create](https://replicate.com/docs/reference/http#predictions.create) and [trainings.create](https://replicate.com/docs/reference/http#trainings.create) API docs.
+*   See [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12) for a reference implementation in JavaScript.
+*   Read our [streaming guide](/docs/streaming) to learn how to consume server-sent events (SSEs) from language models.
 
 # Create a prediction
 
@@ -1237,98 +1329,6 @@ For example:
 
 The web URL is available immediately when a prediction is created and remains accessible after completion, making it useful for both real-time monitoring and post-completion analysis.
 
-# Set up webhooks
-
-**URL:** https://replicate.com/docs/topics/webhooks/setup-webhook.md
-
-To receive webhook events, specify a `webhook` URL in the request body when creating a prediction or a training.
-
-Here’s an example using the Replicate client to create a prediction and request a webhook event when the prediction is completed:
-
-[](#webhook-events-filter)Webhook events filter
------------------------------------------------
-
-By default, we will send requests to your webhook URL whenever there are new outputs or the prediction has finished. You can change which events trigger webhook requests by specifying `webhook_events_filter` in the prediction request:
-
-*   `start`: immediately on prediction start
-*   `output`: each time a prediction generates an output (note that predictions can generate multiple outputs)
-*   `logs`: each time log output is generated by a prediction
-*   `completed`: when the prediction reaches a terminal state (succeeded/canceled/failed)
-
-For example, if you only wanted requests to be sent at the start and end of the prediction, you would provide:
-
-```json
-{
-  "input": {
-    "text": "Alice"
-  },
-  "webhook": "https://example.com/my-webhook",
-  "webhook_events_filter": ["start", "completed"]
-}
-```
-
-Requests for event types `output` and `logs` will be sent at most once every 500ms.
-
-If you request `start` and `completed` webhooks, then they’ll always be sent regardless of throttling.
-
-[](#webhooks-for-trainings)Webhooks for trainings
--------------------------------------------------
-
-In addition to predictions, you can also receive webhooks when [fine-tuning models with the training API](/docs/get-started/fine-tune-with-flux):
-
-Tip
-
-**Add query params to your webhook URL** to pass along extra metadata, like an internal ID you’re using for a prediction. For example: `https://example.com/replicate-webhook?customId=123`
-
-[](#example-resources)Example resources
----------------------------------------
-
-*   See the [Node.js client](https://github.com/replicate/replicate-javascript#replicatepredictionscreate) webhook docs.
-*   See the [Python client](https://github.com/replicate/replicate-python#run-a-model-in-the-background-and-get-a-webhook) webhook docs.
-*   See [predictions.create](https://replicate.com/docs/reference/http#predictions.create) and [trainings.create](https://replicate.com/docs/reference/http#trainings.create) API docs.
-*   See [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12) for a reference implementation in JavaScript.
-*   Read our [streaming guide](/docs/streaming) to learn how to consume server-sent events (SSEs) from language models.
-
-# View deployments
-
-**URL:** https://replicate.com/docs/topics/deployments/view-deployments.md
-
-All existing deployments can be found under your account dashboard in the [**Deployments** tab](https://replicate.com/deployments). From here you can navigate to a specific deployment to see its current status, usage metrics and predictions.
-
-To temporarily disable a deployment, you can set the minimum and maximum instances under the autoscaling settings to zero, or select **Disable deployment** under **Settings**. This will cancel any in-flight predictions, prevent further predictions from running, and halt billing for the instance.
-
-To permanently delete a deployment, see [Delete a deployment](/docs/topics/deployments/delete-a-deployment).
-
-# Input files
-
-**URL:** https://replicate.com/docs/topics/predictions/input-files.md
-
-Some models accept files as input, like images, audio, or video, zip files, PDFs, etc.
-
-There are multiple ways to use files as input when running a model on Replicate. You can provide a file as input using a URL, a local file on your computer, or a base64-encoded object.
-
-[](#option-1-hosted-file)Option 1: Hosted file
-----------------------------------------------
-
-Use a URL to provide a hosted file:
-
-This is useful if you already have a file hosted somewhere on the internet.
-
-[](#option-2-local-file)Option 2: Local file
---------------------------------------------
-
-You can provide Replicate with a `Blob`, `File`, or `Buffer` object, and the library will handle the upload for you. This will work for files up to 100MB:
-
-[](#option-3-data-uri)Option 3: Data URI
-----------------------------------------
-
-Create a data URI consisting of the base64 encoded data for your file. This is only recommended if the file is less than 1MB:
-
-[](#using-the-file-input)Using the file input
----------------------------------------------
-
-Once you have your file input ready, you can use it in your prediction:
-
 # Create a model
 
 **URL:** https://replicate.com/docs/topics/models/create-a-model.md
@@ -1486,103 +1486,6 @@ We do not retry any webhooks for intermediate states.
 ---------------------
 
 In rare cases, webhooks for a single prediction may arrive out of order. We recommend you include logic in your application to ignore all webhooks for a prediction after the terminal webhook (where the status is `succeeded`, `failed` or `canceled`). If you are using `output` or `logs` events, you may also want to ignore webhooks that regress the status of the prediction (for example, by emitting less output or fewer logs).
-
-# Monitor a deployment
-
-**URL:** https://replicate.com/docs/topics/deployments/monitor-a-deployment.md
-
-Deployments provide tools to help you track performance, diagnose issues, and monitor your model’s health.
-
-[](#metrics-dashboard)Metrics dashboard
----------------------------------------
-
-Each deployment provides a metrics dashboard to help you understand how your model is performing in production.
-
-You can view up to 24 hours of historical metrics data, aggregated into 15-minute intervals.
-
-### [](#available-metrics)Available metrics
-
-The dashboard tracks the following metrics:
-
-*   **Latency**: Track response times and identify performance bottlenecks
-*   **Throughput**: Monitor requests per second and capacity utilization
-*   **Error rates**: Identify and troubleshoot failed predictions
-*   **Instance status**: See how many instances are starting, idle, or actively processing requests
-*   **Queue depth**: Monitor pending predictions waiting for processing
-*   **GPU memory usage**: Monitor how much GPU memory your deployment is using across all instances
-
-The metrics graphs automatically refresh and provide interactive controls for zooming and filtering data by time range.
-
-Access your deployment metrics by visiting [replicate.com/deployments](https://replicate.com/deployments) and selecting the deployment you want to monitor.
-
-[](#gpu-memory-monitoring)GPU memory monitoring
------------------------------------------------
-
-GPU memory monitoring helps you optimize resource utilization and ensure your models are running efficiently. The GPU memory visualization shows:
-
-*   **Total memory available**: The total GPU memory capacity allocated to your deployment across all instances.
-*   **Memory usage patterns**: Both median and maximum GPU memory usage over configurable time periods (2 hours or 24 hours).
-*   **Multi-instance aggregation**: Memory usage is aggregated across all running instances in your deployment, giving you a comprehensive view of resource utilization.
-
-This monitoring helps you:
-
-*   See if your model is using GPU memory efficiently
-*   Decide if you need different hardware for better performance
-*   Spot memory usage patterns and potential optimizations
-*   Plan capacity for scaling your deployment
-
-[](#setup-failure-notifications)Setup failure notifications
------------------------------------------------------------
-
-Info
-
-This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
-
-You can choose to get notified via email when your deployment fails during the model’s [setup function](https://cog.run/python/#predictorsetup).
-
-The alert includes:
-
-*   The name of the deployment
-*   URL of the version that failed setup
-*   If relevant, any actions that we’ve automatically taken (like rolling back to a previous version)
-
-To turn on setup failure alerts:
-
-1.  Configure your email address:
-    *   Go to your account settings at [replicate.com/account](https://replicate.com/account)
-    *   Navigate to the **General** tab
-    *   Set your preferred email address for notifications
-2.  Turn on alerts for your deployment:
-    *   Go to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
-    *   Select the deployment you want to monitor
-    *   Go to the **Settings** tab
-    *   Scroll down to advanced settings and check the box to enable notifications for setup failure
-
-If you use Slack, you can use Slack’s [send emails to Slack](https://slack.com/help/articles/206819278-Send-emails-to-Slack) feature to receive these notifications in a Slack channel.
-
-[](#custom-setup-timeouts)Custom setup timeouts
------------------------------------------------
-
-Info
-
-This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
-
-You can customize the timeout for your deployment’s model [setup function](https://cog.run/python/#predictorsetup). The setup timeout determines how long Replicate will wait for a model instance to complete setup before marking it as failed. The default setup timeout is 10 minutes.
-
-To configure the setup timeout:
-
-1.  Navigate to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
-2.  Select the deployment you want to configure
-3.  Go to the **Settings** tab
-4.  Scroll to **Advanced settings** and pick a duration from 1 minute to 3 hours.
-
-![Setup timeout configuration in deployment settings](/_content/assets/deployment-setup-timeout.FN-shQZL.png)
-
-The default setup timeout is appropriate for most models, but you may need to increase it if your model:
-
-*   Has a large model file that takes time to download
-*   Performs complex initialization or preprocessing
-*   Requires additional setup steps during instance startup
 
 # Output files
 
@@ -1768,6 +1671,103 @@ const nextConfig = {
 
 Remember to update your code to work with `FileOutput` objects if you’re using version 1.0.0 or later of our client libraries.
 
+# Monitor a deployment
+
+**URL:** https://replicate.com/docs/topics/deployments/monitor-a-deployment.md
+
+Deployments provide tools to help you track performance, diagnose issues, and monitor your model’s health.
+
+[](#metrics-dashboard)Metrics dashboard
+---------------------------------------
+
+Each deployment provides a metrics dashboard to help you understand how your model is performing in production.
+
+You can view up to 24 hours of historical metrics data, aggregated into 15-minute intervals.
+
+### [](#available-metrics)Available metrics
+
+The dashboard tracks the following metrics:
+
+*   **Latency**: Track response times and identify performance bottlenecks
+*   **Throughput**: Monitor requests per second and capacity utilization
+*   **Error rates**: Identify and troubleshoot failed predictions
+*   **Instance status**: See how many instances are starting, idle, or actively processing requests
+*   **Queue depth**: Monitor pending predictions waiting for processing
+*   **GPU memory usage**: Monitor how much GPU memory your deployment is using across all instances
+
+The metrics graphs automatically refresh and provide interactive controls for zooming and filtering data by time range.
+
+Access your deployment metrics by visiting [replicate.com/deployments](https://replicate.com/deployments) and selecting the deployment you want to monitor.
+
+[](#gpu-memory-monitoring)GPU memory monitoring
+-----------------------------------------------
+
+GPU memory monitoring helps you optimize resource utilization and ensure your models are running efficiently. The GPU memory visualization shows:
+
+*   **Total memory available**: The total GPU memory capacity allocated to your deployment across all instances.
+*   **Memory usage patterns**: Both median and maximum GPU memory usage over configurable time periods (2 hours or 24 hours).
+*   **Multi-instance aggregation**: Memory usage is aggregated across all running instances in your deployment, giving you a comprehensive view of resource utilization.
+
+This monitoring helps you:
+
+*   See if your model is using GPU memory efficiently
+*   Decide if you need different hardware for better performance
+*   Spot memory usage patterns and potential optimizations
+*   Plan capacity for scaling your deployment
+
+[](#setup-failure-notifications)Setup failure notifications
+-----------------------------------------------------------
+
+Info
+
+This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
+
+You can choose to get notified via email when your deployment fails during the model’s [setup function](https://cog.run/python/#predictorsetup).
+
+The alert includes:
+
+*   The name of the deployment
+*   URL of the version that failed setup
+*   If relevant, any actions that we’ve automatically taken (like rolling back to a previous version)
+
+To turn on setup failure alerts:
+
+1.  Configure your email address:
+    *   Go to your account settings at [replicate.com/account](https://replicate.com/account)
+    *   Navigate to the **General** tab
+    *   Set your preferred email address for notifications
+2.  Turn on alerts for your deployment:
+    *   Go to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
+    *   Select the deployment you want to monitor
+    *   Go to the **Settings** tab
+    *   Scroll down to advanced settings and check the box to enable notifications for setup failure
+
+If you use Slack, you can use Slack’s [send emails to Slack](https://slack.com/help/articles/206819278-Send-emails-to-Slack) feature to receive these notifications in a Slack channel.
+
+[](#custom-setup-timeouts)Custom setup timeouts
+-----------------------------------------------
+
+Info
+
+This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
+
+You can customize the timeout for your deployment’s model [setup function](https://cog.run/python/#predictorsetup). The setup timeout determines how long Replicate will wait for a model instance to complete setup before marking it as failed. The default setup timeout is 10 minutes.
+
+To configure the setup timeout:
+
+1.  Navigate to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
+2.  Select the deployment you want to configure
+3.  Go to the **Settings** tab
+4.  Scroll to **Advanced settings** and pick a duration from 1 minute to 3 hours.
+
+![Setup timeout configuration in deployment settings](/_content/assets/deployment-setup-timeout.FN-shQZL.png)
+
+The default setup timeout is appropriate for most models, but you may need to increase it if your model:
+
+*   Has a large model file that takes time to download
+*   Performs complex initialization or preprocessing
+*   Requires additional setup steps during instance startup
+
 # Prediction lifecycle
 
 **URL:** https://replicate.com/docs/topics/predictions/lifecycle.md
@@ -1817,42 +1817,6 @@ When you’re logged in, you can view a list of your predictions on the [dashboa
 For long-running models, you may want to poll the API or use [webhooks](/docs/topics/webhooks) to check the status of a prediction.
 
 To learn more about how long predictions are stored with Replicate, refer to [Data retention](/docs/topics/predictions/data-retention).
-
-# Delete a deployment
-
-**URL:** https://replicate.com/docs/topics/deployments/delete-a-deployment.md
-
-You can delete a deployment you own on the settings page on the web or programmatically via the `deployments.delete` HTTP API.
-
-Note
-
-You can only delete deployments that have been offline and unused for at least 15 minutes.
-
-[](#delete-a-deployment-on-the-web)Delete a deployment on the web
------------------------------------------------------------------
-
-Go to [Deployments](https://replicate.com/deployments) and select the deployment, navigate to **Settings**, then select **Delete deployment**.
-
-[](#delete-a-deployment-via-api)Delete a deployment via API
------------------------------------------------------------
-
-Use the [`deployments.delete` endpoint](https://replicate.com/docs/reference/http#delete-a-deployment):
-
-```http
-DELETE https://api.replicate.com/v1/deployments/{deployment_id}
-```
-
-Here’s an example cURL request:
-
-```shell
-curl -s -X DELETE \
-  -H "Authorization: Bearer YOUR_API_TOKEN" \
-  https://api.replicate.com/v1/deployments/deployment-id
-```
-
-Note
-
-Currently, the JavaScript and Python client libraries do not offer a way to delete deployments (only the HTTP API does).
 
 # Verify webhooks
 
@@ -1947,6 +1911,55 @@ As mentioned above, Replicate also sends the timestamp of the attempt in the `we
 
 [](#complete-verification-example)Complete verification example
 ---------------------------------------------------------------
+
+# Model versions
+
+**URL:** https://replicate.com/docs/topics/models/versions.md
+
+Just like normal software, machine learning models change and improve over time, and those changes are released as new versions. Whenever a model author retrains a model with new data, fixes a bug in the source code, or updates a dependency, those changes can influence the behavior of the model. The changes are published as new versions, so model authors can make improvements without disrupting the experience for people using older versions of the model. Versioning is essential to making machine learning reproducible: it helps guarantee that a model will behave consistently regardless of when or where it’s being run.
+
+[](#finding-model-versions)Finding model versions
+-------------------------------------------------
+
+You can find model versions by going to any model page and clicking on the [Versions tab](https://replicate.com/fofr/sticker-maker/versions).
+
+![The model versions UI on Replicate](/_content/assets/versions.B4zSnoCg.png)
+
+# Delete a deployment
+
+**URL:** https://replicate.com/docs/topics/deployments/delete-a-deployment.md
+
+You can delete a deployment you own on the settings page on the web or programmatically via the `deployments.delete` HTTP API.
+
+Note
+
+You can only delete deployments that have been offline and unused for at least 15 minutes.
+
+[](#delete-a-deployment-on-the-web)Delete a deployment on the web
+-----------------------------------------------------------------
+
+Go to [Deployments](https://replicate.com/deployments) and select the deployment, navigate to **Settings**, then select **Delete deployment**.
+
+[](#delete-a-deployment-via-api)Delete a deployment via API
+-----------------------------------------------------------
+
+Use the [`deployments.delete` endpoint](https://replicate.com/docs/reference/http#delete-a-deployment):
+
+```http
+DELETE https://api.replicate.com/v1/deployments/{deployment_id}
+```
+
+Here’s an example cURL request:
+
+```shell
+curl -s -X DELETE \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  https://api.replicate.com/v1/deployments/deployment-id
+```
+
+Note
+
+Currently, the JavaScript and Python client libraries do not offer a way to delete deployments (only the HTTP API does).
 
 # Publish a model
 
@@ -2092,19 +2105,6 @@ Cog models are versioned just like normal software projects, which means you can
 
 For more details, see [model versions](/docs/topics/models/versions).
 
-# Model versions
-
-**URL:** https://replicate.com/docs/topics/models/versions.md
-
-Just like normal software, machine learning models change and improve over time, and those changes are released as new versions. Whenever a model author retrains a model with new data, fixes a bug in the source code, or updates a dependency, those changes can influence the behavior of the model. The changes are published as new versions, so model authors can make improvements without disrupting the experience for people using older versions of the model. Versioning is essential to making machine learning reproducible: it helps guarantee that a model will behave consistently regardless of when or where it’s being run.
-
-[](#finding-model-versions)Finding model versions
--------------------------------------------------
-
-You can find model versions by going to any model page and clicking on the [Versions tab](https://replicate.com/fofr/sticker-maker/versions).
-
-![The model versions UI on Replicate](/_content/assets/versions.B4zSnoCg.png)
-
 # Share a prediction
 
 **URL:** https://replicate.com/docs/topics/predictions/share-a-prediction.md
@@ -2158,6 +2158,69 @@ await replicate.predictions.create({
 Your webhook handler should now receive webhooks from Replicate. Once you’ve deployed your app, change the value of the `webhook` URL to your production webhook handler endpoint when creating predictions.
 
 For a real-world example of webhook handling in Next.js, check out [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12).
+
+# Model hardware
+
+**URL:** https://replicate.com/docs/topics/models/hardware.md
+
+Whether your model is [public or private](/docs/topics/models/private-models), or running as a [deployment](/docs/topics/deployments), you can change the hardware it runs on.
+
+To compare hardware pricing and performance, see the [pricing page](https://replicate.com/pricing).
+
+[](#edit-model-hardware-on-the-web)Edit model hardware on the web
+-----------------------------------------------------------------
+
+To change the hardware for a public or private model on the web, do the following:
+
+1.  Go to your model page
+2.  Click the **Settings** tab
+3.  Scroll down to the **Hardware** section and chooose your desired hardware
+4.  Click the **Save** button
+
+[](#edit-model-hardware-using-the-api)Edit model hardware using the API
+-----------------------------------------------------------------------
+
+There is not currently an API to change the hardware for public or private models.
+
+If this feature is important to you, please let us know by contacting [support@replicate.com](mailto:support@replicate.com).
+
+[](#edit-deployment-hardware-on-the-web)Edit deployment hardware on the web
+---------------------------------------------------------------------------
+
+If you’re running a [deployment](/docs/topics/deployments), you can change its hardware configuration using the web or the API.
+
+To change the hardware for a deployment on the web, do the following:
+
+1.  Go to [replicate.com/deployments](https://replicate.com/deployments)
+2.  Click the deployment you want to edit
+3.  Click the **Settings** tab
+4.  Choose your desired hardware
+5.  Click the **Save** button
+
+[](#edit-deployment-hardware-using-the-api)Edit deployment hardware using the API
+---------------------------------------------------------------------------------
+
+To change the hardware for a deployment using the API, use the [Update a deployment](https://replicate.com/docs/reference/http#deployments.update) endpoint:
+
+```bash
+curl -s \
+  -X PATCH \
+  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"min_instances": 3, "max_instances": 10, "hardware": "gpu-t4"}' \
+  https://api.replicate.com/v1/deployments/acme/my-app-image-generator
+```
+
+Tip
+
+If your model is public, keep in mind that other people may be using it, and changing the hardware it runs on may affect the performance and price of the model for them. If your public model is very popular, consider leaving it running on the existing hardware and [creating a deployment](/docs/topics/deployments) for your own private use.
+
+[](#hardware-for-fine-tunes)Hardware for fine-tunes
+---------------------------------------------------
+
+Fine-tuned models based on SDXL or Flux with [fast booting](https://replicate.com/docs/billing#fast-booting-fine-tunes) use the hardware set by the base model they were trained from.
+
+If you would like to change the hardware for a fine-tuned version with fast booting, you can [make a deployment](https://replicate.com/deployments/create).
 
 # Official models
 
@@ -2238,6 +2301,38 @@ For the full list, [take a look at the official models collection](https://repli
 ---------------------------------------------------------
 
 The collection of official models is always growing. If you know of a model that you think should be official, please [let us know](https://replicate.com/contact).
+
+# Rate limits
+
+**URL:** https://replicate.com/docs/topics/predictions/rate-limits.md
+
+We limit the number of API requests that can be made to Replicate:
+
+*   You can [create predictions](/docs/reference/http#create-a-prediction) at 600 requests per minute.
+*   All other endpoints you can call at 3000 requests per minute.
+
+[](#throttling)Throttling
+-------------------------
+
+You can make short bursts of requests above the default rate limits before being throttled.
+
+As you approach running out of credit, we apply stronger rate limits. We do this to stop you from accidentally overspending and going into arrears, and to give you some time to increase your balance when it’s running low before getting shut off entirely. To avoid this, set up [credit auto-reload](/docs/topics/billing/prepaid-credit) to keep your credit balance above $20.
+
+If you have been granted credit and don’t have a payment method on file, you’ll also be rate limited to 1 request per second with a maximum of 6 requests per minute.
+
+[](#api-response)API response
+-----------------------------
+
+If you hit a limit, you will receive a response with status `429` with a body like:
+
+```json
+{"detail":"Request was throttled. Your rate limit resets in ~30s."}
+```
+
+[](#higher-limits)Higher limits
+-------------------------------
+
+If you want higher limits, [contact us](https://replicate.com/support).
 
 # Community models
 
@@ -2383,101 +2478,6 @@ If you’ve created a useful model, consider publishing it to share with the com
 4.  [Make it public](/docs/topics/models/private-models) so others can discover and use it
 
 For more information about creating and publishing models, see the [guide to publishing your first model](/docs/topics/models/publish-a-model).
-
-# Model hardware
-
-**URL:** https://replicate.com/docs/topics/models/hardware.md
-
-Whether your model is [public or private](/docs/topics/models/private-models), or running as a [deployment](/docs/topics/deployments), you can change the hardware it runs on.
-
-To compare hardware pricing and performance, see the [pricing page](https://replicate.com/pricing).
-
-[](#edit-model-hardware-on-the-web)Edit model hardware on the web
------------------------------------------------------------------
-
-To change the hardware for a public or private model on the web, do the following:
-
-1.  Go to your model page
-2.  Click the **Settings** tab
-3.  Scroll down to the **Hardware** section and chooose your desired hardware
-4.  Click the **Save** button
-
-[](#edit-model-hardware-using-the-api)Edit model hardware using the API
------------------------------------------------------------------------
-
-There is not currently an API to change the hardware for public or private models.
-
-If this feature is important to you, please let us know by contacting [support@replicate.com](mailto:support@replicate.com).
-
-[](#edit-deployment-hardware-on-the-web)Edit deployment hardware on the web
----------------------------------------------------------------------------
-
-If you’re running a [deployment](/docs/topics/deployments), you can change its hardware configuration using the web or the API.
-
-To change the hardware for a deployment on the web, do the following:
-
-1.  Go to [replicate.com/deployments](https://replicate.com/deployments)
-2.  Click the deployment you want to edit
-3.  Click the **Settings** tab
-4.  Choose your desired hardware
-5.  Click the **Save** button
-
-[](#edit-deployment-hardware-using-the-api)Edit deployment hardware using the API
----------------------------------------------------------------------------------
-
-To change the hardware for a deployment using the API, use the [Update a deployment](https://replicate.com/docs/reference/http#deployments.update) endpoint:
-
-```bash
-curl -s \
-  -X PATCH \
-  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"min_instances": 3, "max_instances": 10, "hardware": "gpu-t4"}' \
-  https://api.replicate.com/v1/deployments/acme/my-app-image-generator
-```
-
-Tip
-
-If your model is public, keep in mind that other people may be using it, and changing the hardware it runs on may affect the performance and price of the model for them. If your public model is very popular, consider leaving it running on the existing hardware and [creating a deployment](/docs/topics/deployments) for your own private use.
-
-[](#hardware-for-fine-tunes)Hardware for fine-tunes
----------------------------------------------------
-
-Fine-tuned models based on SDXL or Flux with [fast booting](https://replicate.com/docs/billing#fast-booting-fine-tunes) use the hardware set by the base model they were trained from.
-
-If you would like to change the hardware for a fine-tuned version with fast booting, you can [make a deployment](https://replicate.com/deployments/create).
-
-# Rate limits
-
-**URL:** https://replicate.com/docs/topics/predictions/rate-limits.md
-
-We limit the number of API requests that can be made to Replicate:
-
-*   You can [create predictions](/docs/reference/http#create-a-prediction) at 600 requests per minute.
-*   All other endpoints you can call at 3000 requests per minute.
-
-[](#throttling)Throttling
--------------------------
-
-You can make short bursts of requests above the default rate limits before being throttled.
-
-As you approach running out of credit, we apply stronger rate limits. We do this to stop you from accidentally overspending and going into arrears, and to give you some time to increase your balance when it’s running low before getting shut off entirely. To avoid this, set up [credit auto-reload](/docs/topics/billing/prepaid-credit) to keep your credit balance above $20.
-
-If you have been granted credit and don’t have a payment method on file, you’ll also be rate limited to 1 request per second with a maximum of 6 requests per minute.
-
-[](#api-response)API response
------------------------------
-
-If you hit a limit, you will receive a response with status `429` with a body like:
-
-```json
-{"detail":"Request was throttled. Your rate limit resets in ~30s."}
-```
-
-[](#higher-limits)Higher limits
--------------------------------
-
-If you want higher limits, [contact us](https://replicate.com/support).
 
 # Safety checking
 
@@ -2797,183 +2797,98 @@ Note
 
 Currently, the JavaScript and Python client libraries do not offer a way to delete model versions (only the HTTP API does).
 
-# Streaming output
+# Secrets
 
-**URL:** https://replicate.com/docs/topics/predictions/streaming.md
+**URL:** https://replicate.com/docs/topics/models/secrets.md
 
-Replicate’s API supports server-sent event streams (SSEs) for models. This guide will show you how to consume streaming output.
+When building models that need to access external services or sensitive configuration, you often need to handle secrets like API keys, authentication tokens, or passwords. For example, some models use a Hugging Face API key to publish trained model weights to the Hugging Face Hub, or a Weights & Biases API key to log training data for later inspection. Cog provides a special `Secret` input type that helps you handle sensitive information securely.
 
-[](#what-is-streaming-output)What is streaming output?
-------------------------------------------------------
+[](#what-are-secrets)What are secrets?
+--------------------------------------
 
-Streaming output allows you to receive real-time progressive updates while a model processes your input. Instead of waiting for the entire prediction to complete, you can access results as they are generated, making it ideal for applications like chat bots that require immediate responses.
+Secrets in Cog are input parameters that contain sensitive information that should be handled carefully. When you define an input as a `Secret`, Cog treats it specially:
 
-At a high level, streaming output works like this:
+*   The value is redacted in logs and outputs
+*   The default string representation shows `**********` instead of the actual value
+*   Model consumers can pass secrets through secure channels
 
-1.  You create a prediction with the `stream` option.
-2.  Replicate returns a prediction with a URL to receive streaming output.
-3.  You connect to the URL and receive a stream of updates.
+[](#creating-a-model-with-secret-inputs)Creating a model with secret inputs
+---------------------------------------------------------------------------
 
-[](#which-models-support-streaming-output)Which models support streaming output?
---------------------------------------------------------------------------------
+To use secrets in your model, import the `Secret` type from `cog` and use it as a parameter type in your `predict()` method:
 
-Streaming output is [supported by lots of language models](https://replicate.com/collections/streaming-language-models), including several variations of Llama 3:
-
-*   **[meta/meta-llama-3.1-405b-instruct](https://replicate.com/meta/meta-llama-3.1-405b-instruct)**: 405 billion parameter model fine-tuned on chat completions. If you want to build a chat bot with the best accuracy, this is the one to use.
-*   **[meta/meta-llama-3-70b-instruct](https://replicate.com/meta/meta-llama-3-70b-instruct)**: 70 billion parameter model fine-tuned on chat completions. A good balance of accuracy and cost.
-*   **[meta/meta-llama-3-70b](https://replicate.com/meta/meta-llama-3-70b)**: 70 billion parameter base model. Use this if you want to do other kinds of language completions, like completing a user’s writing.
-*   **[meta/meta/meta-llama-3-8b-instruct](https://replicate.com/meta/meta-llama-3-8b-instruct)**: 8 billion parameter model fine-tuned on chat completions. Use this if you’re building a chat bot and would prefer it to be faster and cheaper at the expense of accuracy.
-*   **[meta/meta/meta-llama-3-8b](https://replicate.com/meta/meta-llama-3-8b)**: 8 billion parameter base model. Base models can be used for a variety of natural language generation tasks.
-
-For a full list of models that support streaming output, see the [streaming language models collection](https://replicate.com/collections/streaming-language-models).
-
-[](#requesting-streaming-output)Requesting streaming output
------------------------------------------------------------
-
-When you create a prediction via the API, the response includes a `urls` object which contains a number of URLs that you can use to interact with the prediction. If the requested model version supports streaming, then the `urls` object will include a `stream` URL:
-
-```json
-{
-  "web": "https://replicate.com/p/cky59275mdrm80cpw83rcn3ej0",
-  "get": "https://api.replicate.com/v1/predictions/cky59275mdrm80cpw83rcn3ej0",
-  "stream": "https://stream.replicate.com/v1/files/bcwr-3afcgaxf5opqtgeq5ababozl3erroi6ody73lpkwklvnu7bwtmrq",
-  "cancel": "https://api.replicate.com/v1/predictions/cky59275mdrm80cpw83rcn3ej0/cancel"
-}
+```python
+from cog import BasePredictor, Secret
+class Predictor(BasePredictor):
+    def predict(self, 
+                prompt: str,
+                api_key: Secret
+    ) -> str:
+        # Access the secret value using get_secret_value()
+        token = api_key.get_secret_value()
+        
+        # Use the token to authenticate with an external service
+        response = make_api_call(token, prompt)
+        return response
 ```
 
-You can use this `urls.stream` URL to receive streaming output using [server-sent events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
+### [](#key-points-for-model-authors)Key points for model authors:
 
-[EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) is a standard web browser API for receiving server-sent events. It allows the server to push real-time updates to the browser without needing a full two-way connection like WebSockets.
+*   **Import the `Secret` type**: Import `Secret` from the `cog` package
+*   **Use `get_secret_value()`**: Access the actual secret value using the `.get_secret_value()` method
+*   **Never log secrets**: The `Secret` type automatically redacts its value when printed, but be careful not to log the result of `get_secret_value()`
+*   **Handle securely**: Use secrets only when needed and avoid storing them unnecessarily
 
-HTTP
+[](#example-model-with-external-api-access)Example: Model with external API access
+----------------------------------------------------------------------------------
 
-```shell
-curl -X POST -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
-      -d '{"input": {"prompt": "Tell me a story"}, "stream": true}' \
-      "https://api.replicate.com/v1/models/meta/meta-llama-3-70b-instruct/predictions"
-# See https://replicate.com/meta/llama-3-70b-instruct
+Here’s a complete example of a model that uses a secret to authenticate with an external service:
+
+```python
+from cog import BasePredictor, Secret, Input
+import requests
+class Predictor(BasePredictor):
+    def predict(self, 
+                text: str = Input(description="Text to process"),
+                api_token: Secret = Input(description="API token for the translation service")
+    ) -> str:
+        # Get the actual secret value
+        token = api_token.get_secret_value()
+        
+        # Use it to authenticate with external service
+        headers = {"Authorization": f"Bearer {token}"}
+        response = requests.post(
+            "https://api.example.com/translate",
+            headers=headers,
+            json={"text": text}
+        )
+        
+        return response.json()["translated_text"]
 ```
 
-JavaScript
+[](#security-considerations)Security considerations
+---------------------------------------------------
 
-```js
-const stream = replicate.stream("meta/meta-llama-3-70b-instruct", {
-  prompt: "Tell me a story",
-});
+*   **Never expose secrets**: The secret value should only be accessed via `get_secret_value()` and never logged or returned in outputs
+*   **Validate before use**: Always validate that a secret was provided before using it
+*   **Use HTTPS**: When making external API calls with secrets, always use HTTPS endpoints
+*   **Handle errors carefully**: Don’t include secret values in error messages
+
+[](#testing-your-model)Testing your model
+-----------------------------------------
+
+When testing locally with `cog predict`, you can pass secrets as regular strings:
+
+```bash
+cog predict -i text="Hello world" -i api_token="your-test-token"
 ```
 
-You can then process events from this stream.
+The secret will be treated as sensitive information when the model runs on Replicate.
 
-[](#receiving-streaming-output)Receiving streaming output
----------------------------------------------------------
+[](#next-steps)Next steps
+-------------------------
 
-HTTP
-
-```shell
-curl -X GET -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
-      -H "Accept: text/event-stream" \
-      "https://streaming.api.replicate.com/v1/predictions/fuwwvjtbdmroc4xifxdcwqtdfq"
-``````text
-event: output
-id: 1690212292:0
-data: Once upon a time...
-```
-
-JavaScript
-
-To receive streaming output, construct an `EventSource` using the `stream` URL from the prediction:
-
-```js
-const output = [];
-for await (const { event, data } of stream) {
-  if (event === "output") {
-    output.push(data);
-  }
-}
-console.log(output.join(""));
-```
-
-A prediction’s event stream consists of the following event types:
-
-event
-
-format
-
-description
-
-`output`
-
-plain text
-
-Emitted when the prediction returns new output
-
-`error`
-
-JSON
-
-Emitted when the prediction returns an error
-
-`done`
-
-JSON
-
-Emitted when the prediction finishes
-
-A `done` event is emitted when a prediction finishes successfully, is cancelled, or produces an error.
-
-If a prediction completes successfully, it receives a `done` event with an empty JSON payload.
-
-```text
-event: output
-id: 1690212292:0
-data: Once upon a time...
-event: output
-id: 1690212293:0
-data: The End.
-event: done
-data: {}
-```
-
-If a prediction is cancelled, it receives a `done` event with a JSON payload `{"reason": "canceled"}`.
-
-```text
-event: output
-id: 1690212292:0
-data: Once upon a time...
-event: done
-data: {"reason": "canceled"}
-```
-
-If a prediction produces an error, it receives an `error` event with a JSON payload for the error followed by a `done` event with a JSON payload `{"reason": "error"}`.
-
-```text
-event: output
-id: 1690212292:0
-data: Once upon a time...
-event: error
-data: {"detail": "Something went wrong"}
-event: done
-data: {"reason": "error"}
-```
-
-[](#408-request-timeout)408 Request timeout
--------------------------------------------
-
-There is a 30 second timeout on the event stream endpoint, which when reached will result in an empty event being sent down the stream with the text “408: 408 Request Timeout”.
-
-```plaintext
-:408: 408 Request Timeout
-```
-
-This will usually occur if you try to connect to the stream after the prediction has been deleted (API predictions expire after 1 hour) or if the client has failed to process the `done` event and close the connection.
-
-[](#further-reading)Further reading
------------------------------------
-
-*   Check out [llama.replicate.dev](https://llama.replicate.dev/) to see an example of streaming output in a Next.js app.
-*   Read the [Replicate Node.js client API docs](https://github.com/replicate/replicate-javascript#streaming) for usage details for Node.js and browsers.
-*   Compare streaming models using [Vercel’s AI playground](https://sdk.vercel.ai).
-*   Learn how to use [Vercel’s AI SDK](https://sdk.vercel.ai/docs/guides/providers/replicate) to stream models on Replicate in JavaScript apps.
+Learn how consumers can provide secrets when running your model by reading the [prediction secrets documentation](/docs/topics/predictions/secrets).
 
 # Dynamic image caching with Cloudflare Workers
 
@@ -3576,98 +3491,183 @@ Here are some suggestions for next steps:
 
 Happy hacking!
 
-# Secrets
+# Streaming output
 
-**URL:** https://replicate.com/docs/topics/models/secrets.md
+**URL:** https://replicate.com/docs/topics/predictions/streaming.md
 
-When building models that need to access external services or sensitive configuration, you often need to handle secrets like API keys, authentication tokens, or passwords. For example, some models use a Hugging Face API key to publish trained model weights to the Hugging Face Hub, or a Weights & Biases API key to log training data for later inspection. Cog provides a special `Secret` input type that helps you handle sensitive information securely.
+Replicate’s API supports server-sent event streams (SSEs) for models. This guide will show you how to consume streaming output.
 
-[](#what-are-secrets)What are secrets?
---------------------------------------
+[](#what-is-streaming-output)What is streaming output?
+------------------------------------------------------
 
-Secrets in Cog are input parameters that contain sensitive information that should be handled carefully. When you define an input as a `Secret`, Cog treats it specially:
+Streaming output allows you to receive real-time progressive updates while a model processes your input. Instead of waiting for the entire prediction to complete, you can access results as they are generated, making it ideal for applications like chat bots that require immediate responses.
 
-*   The value is redacted in logs and outputs
-*   The default string representation shows `**********` instead of the actual value
-*   Model consumers can pass secrets through secure channels
+At a high level, streaming output works like this:
 
-[](#creating-a-model-with-secret-inputs)Creating a model with secret inputs
----------------------------------------------------------------------------
+1.  You create a prediction with the `stream` option.
+2.  Replicate returns a prediction with a URL to receive streaming output.
+3.  You connect to the URL and receive a stream of updates.
 
-To use secrets in your model, import the `Secret` type from `cog` and use it as a parameter type in your `predict()` method:
+[](#which-models-support-streaming-output)Which models support streaming output?
+--------------------------------------------------------------------------------
 
-```python
-from cog import BasePredictor, Secret
-class Predictor(BasePredictor):
-    def predict(self, 
-                prompt: str,
-                api_key: Secret
-    ) -> str:
-        # Access the secret value using get_secret_value()
-        token = api_key.get_secret_value()
-        
-        # Use the token to authenticate with an external service
-        response = make_api_call(token, prompt)
-        return response
+Streaming output is [supported by lots of language models](https://replicate.com/collections/streaming-language-models), including several variations of Llama 3:
+
+*   **[meta/meta-llama-3.1-405b-instruct](https://replicate.com/meta/meta-llama-3.1-405b-instruct)**: 405 billion parameter model fine-tuned on chat completions. If you want to build a chat bot with the best accuracy, this is the one to use.
+*   **[meta/meta-llama-3-70b-instruct](https://replicate.com/meta/meta-llama-3-70b-instruct)**: 70 billion parameter model fine-tuned on chat completions. A good balance of accuracy and cost.
+*   **[meta/meta-llama-3-70b](https://replicate.com/meta/meta-llama-3-70b)**: 70 billion parameter base model. Use this if you want to do other kinds of language completions, like completing a user’s writing.
+*   **[meta/meta/meta-llama-3-8b-instruct](https://replicate.com/meta/meta-llama-3-8b-instruct)**: 8 billion parameter model fine-tuned on chat completions. Use this if you’re building a chat bot and would prefer it to be faster and cheaper at the expense of accuracy.
+*   **[meta/meta/meta-llama-3-8b](https://replicate.com/meta/meta-llama-3-8b)**: 8 billion parameter base model. Base models can be used for a variety of natural language generation tasks.
+
+For a full list of models that support streaming output, see the [streaming language models collection](https://replicate.com/collections/streaming-language-models).
+
+[](#requesting-streaming-output)Requesting streaming output
+-----------------------------------------------------------
+
+When you create a prediction via the API, the response includes a `urls` object which contains a number of URLs that you can use to interact with the prediction. If the requested model version supports streaming, then the `urls` object will include a `stream` URL:
+
+```json
+{
+  "web": "https://replicate.com/p/cky59275mdrm80cpw83rcn3ej0",
+  "get": "https://api.replicate.com/v1/predictions/cky59275mdrm80cpw83rcn3ej0",
+  "stream": "https://stream.replicate.com/v1/files/bcwr-3afcgaxf5opqtgeq5ababozl3erroi6ody73lpkwklvnu7bwtmrq",
+  "cancel": "https://api.replicate.com/v1/predictions/cky59275mdrm80cpw83rcn3ej0/cancel"
+}
 ```
 
-### [](#key-points-for-model-authors)Key points for model authors:
+You can use this `urls.stream` URL to receive streaming output using [server-sent events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
 
-*   **Import the `Secret` type**: Import `Secret` from the `cog` package
-*   **Use `get_secret_value()`**: Access the actual secret value using the `.get_secret_value()` method
-*   **Never log secrets**: The `Secret` type automatically redacts its value when printed, but be careful not to log the result of `get_secret_value()`
-*   **Handle securely**: Use secrets only when needed and avoid storing them unnecessarily
+[EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) is a standard web browser API for receiving server-sent events. It allows the server to push real-time updates to the browser without needing a full two-way connection like WebSockets.
 
-[](#example-model-with-external-api-access)Example: Model with external API access
-----------------------------------------------------------------------------------
+HTTP
 
-Here’s a complete example of a model that uses a secret to authenticate with an external service:
-
-```python
-from cog import BasePredictor, Secret, Input
-import requests
-class Predictor(BasePredictor):
-    def predict(self, 
-                text: str = Input(description="Text to process"),
-                api_token: Secret = Input(description="API token for the translation service")
-    ) -> str:
-        # Get the actual secret value
-        token = api_token.get_secret_value()
-        
-        # Use it to authenticate with external service
-        headers = {"Authorization": f"Bearer {token}"}
-        response = requests.post(
-            "https://api.example.com/translate",
-            headers=headers,
-            json={"text": text}
-        )
-        
-        return response.json()["translated_text"]
+```shell
+curl -X POST -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
+      -d '{"input": {"prompt": "Tell me a story"}, "stream": true}' \
+      "https://api.replicate.com/v1/models/meta/meta-llama-3-70b-instruct/predictions"
+# See https://replicate.com/meta/llama-3-70b-instruct
 ```
 
-[](#security-considerations)Security considerations
----------------------------------------------------
+JavaScript
 
-*   **Never expose secrets**: The secret value should only be accessed via `get_secret_value()` and never logged or returned in outputs
-*   **Validate before use**: Always validate that a secret was provided before using it
-*   **Use HTTPS**: When making external API calls with secrets, always use HTTPS endpoints
-*   **Handle errors carefully**: Don’t include secret values in error messages
-
-[](#testing-your-model)Testing your model
------------------------------------------
-
-When testing locally with `cog predict`, you can pass secrets as regular strings:
-
-```bash
-cog predict -i text="Hello world" -i api_token="your-test-token"
+```js
+const stream = replicate.stream("meta/meta-llama-3-70b-instruct", {
+  prompt: "Tell me a story",
+});
 ```
 
-The secret will be treated as sensitive information when the model runs on Replicate.
+You can then process events from this stream.
 
-[](#next-steps)Next steps
--------------------------
+[](#receiving-streaming-output)Receiving streaming output
+---------------------------------------------------------
 
-Learn how consumers can provide secrets when running your model by reading the [prediction secrets documentation](/docs/topics/predictions/secrets).
+HTTP
+
+```shell
+curl -X GET -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
+      -H "Accept: text/event-stream" \
+      "https://streaming.api.replicate.com/v1/predictions/fuwwvjtbdmroc4xifxdcwqtdfq"
+``````text
+event: output
+id: 1690212292:0
+data: Once upon a time...
+```
+
+JavaScript
+
+To receive streaming output, construct an `EventSource` using the `stream` URL from the prediction:
+
+```js
+const output = [];
+for await (const { event, data } of stream) {
+  if (event === "output") {
+    output.push(data);
+  }
+}
+console.log(output.join(""));
+```
+
+A prediction’s event stream consists of the following event types:
+
+event
+
+format
+
+description
+
+`output`
+
+plain text
+
+Emitted when the prediction returns new output
+
+`error`
+
+JSON
+
+Emitted when the prediction returns an error
+
+`done`
+
+JSON
+
+Emitted when the prediction finishes
+
+A `done` event is emitted when a prediction finishes successfully, is cancelled, or produces an error.
+
+If a prediction completes successfully, it receives a `done` event with an empty JSON payload.
+
+```text
+event: output
+id: 1690212292:0
+data: Once upon a time...
+event: output
+id: 1690212293:0
+data: The End.
+event: done
+data: {}
+```
+
+If a prediction is cancelled, it receives a `done` event with a JSON payload `{"reason": "canceled"}`.
+
+```text
+event: output
+id: 1690212292:0
+data: Once upon a time...
+event: done
+data: {"reason": "canceled"}
+```
+
+If a prediction produces an error, it receives an `error` event with a JSON payload for the error followed by a `done` event with a JSON payload `{"reason": "error"}`.
+
+```text
+event: output
+id: 1690212292:0
+data: Once upon a time...
+event: error
+data: {"detail": "Something went wrong"}
+event: done
+data: {"reason": "error"}
+```
+
+[](#408-request-timeout)408 Request timeout
+-------------------------------------------
+
+There is a 30 second timeout on the event stream endpoint, which when reached will result in an empty event being sent down the stream with the text “408: 408 Request Timeout”.
+
+```plaintext
+:408: 408 Request Timeout
+```
+
+This will usually occur if you try to connect to the stream after the prediction has been deleted (API predictions expire after 1 hour) or if the client has failed to process the `done` event and close the connection.
+
+[](#further-reading)Further reading
+-----------------------------------
+
+*   Check out [llama.replicate.dev](https://llama.replicate.dev/) to see an example of streaming output in a Next.js app.
+*   Read the [Replicate Node.js client API docs](https://github.com/replicate/replicate-javascript#streaming) for usage details for Node.js and browsers.
+*   Compare streaming models using [Vercel’s AI playground](https://sdk.vercel.ai).
+*   Learn how to use [Vercel’s AI SDK](https://sdk.vercel.ai/docs/guides/providers/replicate) to stream models on Replicate in JavaScript apps.
 
 # Build a website with vinext
 
@@ -4624,6 +4624,227 @@ Now might be a good time to tinker with the bot a bit. Some ideas:
 
 Get creative and share what you’ve built with us on [X](https://x.com/replicate)!
 
+# Build an app with SwiftUI
+
+**URL:** https://replicate.com/docs/guides/run/swiftui.md
+
+Learn how to build a SwiftUI app that uses Replicate to run a machine learning model.
+
+By the end, you’ll have an app that can run on iOS and macOS that generates images from text prompts using Stable Diffusion.
+
+Tip
+
+**Want to skip ahead?** Check out the GitHub repo at [replicate/getting-started-swiftui](https://github.com/replicate/getting-started-swiftui).
+
+[](#prerequisites)Prerequisites
+-------------------------------
+
+*   **Xcode**: You’ll need Xcode to build and run your app. Download the latest version of Xcode from [developer.apple.com](https://developer.apple.com/xcode/).
+*   [**A Replicate account**](https://replicate.com/signin): You’ll use Replicate to run machine learning models. It’s free to get started, and you get a bit of credit when you sign up. After that, you pay per second for your usage. See [how billing works](https://replicate.com/docs/billing) for more details.
+
+[](#1-create-the-app)1\. Create the app
+---------------------------------------
+
+[SwiftUI](https://developer.apple.com/xcode/swiftui/) is a framework for building native apps for Apple devices. It’s a great choice for getting something up and running fast, and is well-suited to prototyping ideas with Replicate.
+
+Open Xcode and create a new project by selecting “File” > “New” > “Project…”. (⇧⌘N).
+
+![swiftui-1-light](https://github.com/replicate/cog/assets/2289/2998a94a-1c9a-418a-a454-d0d6da8a2161)
+
+Under “Multiplatform” select the “App” template and click “Next”. Give your app a name, such as “ReplicateExample”, and click “Next”. Then save your project to a working directory.
+
+![swiftui-2-light](https://github.com/replicate/cog/assets/2289/921fd03d-703b-4364-8c67-b1f13953229d)
+
+Now’s a good time to make sure everything is working as expected. In Xcode, select “Product” > “Run” (⌘R) build and run the app on your device or simulator.
+
+If you see a “Hello, world!” message, you’re ready to move on to the next step.
+
+[](#2-add-replicates-swift-package-dependency)2\. Add Replicate’s Swift package dependency
+------------------------------------------------------------------------------------------
+
+Use the [official Swift package](https://github.com/replicate/replicate-swift) to run machine learning models on Replicate from your app.
+
+In Xcode, select “File” > “Add packages…”. Copy `https://github.com/replicate/replicate-swift` and paste it into the search bar. Select `replicate-swift` from the list and click the “Add Package” button.
+
+![swiftui-3-light](https://github.com/replicate/cog/assets/2289/949e4c36-dd08-44d3-9f0c-88195900e913)
+
+Once Xcode finishes downloading the package, you’ll be prompted to choose which products to add to your project. Select Replicate’s library and add it to your example app target.
+
+![swiftui-4-light](https://github.com/replicate/cog/assets/2289/83de5826-3cdc-434c-9531-81f29f667290)
+
+[](#3-configure-your-app)3\. Configure your app
+-----------------------------------------------
+
+Enable network access for your app so that it can connect to Replicate.
+
+In project settings, select the “ReplicateExample” target, then select the “Signing & Capabilities” tab. Under “App Sandbox”, check the box next to “Outgoing Connections (Client)”.
+
+![swiftui-5-light](https://github.com/replicate/cog/assets/2289/873ee719-287f-4017-80f9-f1beccb298cd)
+
+[](#4-set-up-replicates-client)4\. Set up Replicate’s client
+------------------------------------------------------------
+
+Now it’s time to write some code.
+
+In the Project Navigator, open the `ContentView.swift` file. Add the following code to the top of the file, replacing `<#token#>` with [your API token](https://replicate.com/account/api-tokens?new-token-name=swiftui-app).
+
+```swift
+import Replicate
+private let client = Replicate.Client(token: <#token#>)
+```
+
+Warning
+
+For this example, we’re hard-coding the API token in the app. But this is just to help you get started quickly, and isn’t recommended for production apps. You shouldn’t store secrets in code or any other resources bundled with your app. Instead, fetch them from CloudKit or another server and store them in the Keychain.
+
+For more information, consult Apple’s documentation for CloudKit and the Keychain:
+
+*   [fetch(withRecordID:completionHandler:)](https://developer.apple.com/documentation/cloudkit/ckdatabase/1449126-fetch)
+*   [Storing Keys in the Keychain](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_keychain)
+
+[](#5-define-the-model)5\. Define the model
+-------------------------------------------
+
+Models on Replicate have typed [inputs](https://replicate.com/stability-ai/stable-diffusion/api#inputs) and [outputs](https://replicate.com/stability-ai/stable-diffusion/api#output-schema), so it’s convenient to define a Swift type for each model your app uses.
+
+In `ContentView.swift`, add the following code:
+
+```swift
+// https://replicate.com/stability-ai/stable-diffusion
+enum StableDiffusion: Predictable {
+  static var modelID = "stability-ai/stable-diffusion"
+  static let versionID = "db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf"
+  struct Input: Codable {
+      let prompt: String
+  }
+  typealias Output = [URL]
+}
+```
+
+*   `Predictable` is a protocol that defines a common interface for all models.
+*   `modelID` is the ID of the model we want to run — in this case, “stability-ai/stable-diffusion” for [Stable Diffusion](https://replicate.com/stability-ai/stable-diffusion)
+*   `versionID` is the ID of the version of the model we want to run. Here, we’re using the latest version at the time of writing.
+*   `Input` and `Output` define the types of the model’s input and output. In this case, the input is a struct with a `prompt` property, and the output is a list of URLs to the generated images. (Stable Diffusion has additional inputs, including an option for how many images to generate, but we’re keeping things simple for this example.)
+
+Next, add a `prompt` and a `prediction` property to `ContentView`, and define `generate()` and `cancel()` methods:
+
+```swift
+struct ContentView: View {
+  @State private var prompt = ""
+  @State private var prediction: StableDiffusion.Prediction? = nil
+  func generate() async throws {
+    prediction = try await StableDiffusion.predict(with: client,
+                                                   input: .init(prompt: prompt))
+    try await prediction?.wait(with: client)
+  }
+  func cancel() async throws {
+    try await prediction?.cancel(with: client)
+  }
+  // ...
+```
+
+The `generate()` method creates a prediction and waits for it to complete. Because `Prediction` is a value type, the UI will automatically update when the prediction completes.
+
+[](#6-implement-the-rest-of-contentview)6\. Implement the rest of ContentView
+-----------------------------------------------------------------------------
+
+Finally, wire up the UI to call these methods and display the generated image.
+
+The content view’s body has a `Form` with a `Section` containing a `TextField`. When the user types text into this field and submits the form, that text will be used to create a prediction by the `generate()` method.
+
+```swift
+var body: some View {
+  Form {
+    Section {
+      TextField(text: $prompt,
+            prompt: Text("Enter a prompt to display an image"),
+            axis: .vertical,
+            label: {})
+        .disabled(prediction?.status.terminated == false)
+        .submitLabel(.go)
+        .onSubmit(of: .text) {
+          Task {
+            try await generate()
+          }
+        }
+    }
+```
+
+Under the text field is a conditional block that renders the prediction from the time it’s created until it finishes.
+
+*   `starting` and `processing`: Show an indeterminate loading indicator as well as a button to cancel the prediction.
+*   `succeeded`: Show the generated image using an `AsyncImage` component.
+*   `failed`: Show an error message.
+*   `canceled`: Show a status message to the user.
+
+The `ZStack` acts as a placeholder to keep everything in place while waiting for the prediction to finish.
+
+```swift
+if let prediction {
+  ZStack {
+    Color.clear
+      .aspectRatio(1.0, contentMode: .fit)
+    switch prediction.status {
+    case .starting, .processing:
+      VStack{
+        ProgressView("Generating...")
+          .padding(32)
+        Button("Cancel") {
+          Task { try await cancel() }
+        }
+      }
+    case .succeeded:
+      if let url = prediction.output?.first {
+        VStack {
+          AsyncImage(url: url, scale: 2.0, content: { phase in
+            phase.image?
+              .resizable()
+              .aspectRatio(contentMode: .fit)
+              .cornerRadius(32)
+          })
+          ShareLink("Export", item: url)
+            .padding(32)
+        }
+      }
+    case .failed:
+      Text(prediction.error?.localizedDescription ?? "Unknown error")
+        .foregroundColor(.red)
+    case .canceled:
+      Text("The prediction was canceled")
+        .foregroundColor(.secondary)
+    }
+  }
+  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+  .padding()
+  .listRowBackground(Color.clear)
+  .listRowInsets(.init())
+}
+```
+
+[](#7-create-a-prediction)7: Create a prediction
+------------------------------------------------
+
+Your app should be ready to use now! In Xcode, select “Product” > “Run” (⌘R) to run the app locally.
+
+![swiftui-6-light](https://github.com/replicate/cog/assets/2289/2c38947a-abd6-4bda-bf43-baff303fdd98)
+
+[](#next-steps)Next steps
+-------------------------
+
+Huzzah! You should now have a working app that’s powered by machine learning.
+
+But this is just the start. Here are some ideas for what you can do next:
+
+Show your friends what you’ve built.
+
+Before you go too much further, make sure to set up CloudKit to securely store your API key, as you definitely don’t want to commit it to source control.
+
+Integrate a [super resolution model](https://replicate.com/collections/super-resolution) into your new app to upscale the generated images to a higher resolution.
+
+[Explore other models on Replicate](https://replicate.com/explore) and integrate them into your app.
+
+️ Update the README if you’re planning to open-source your project so others know how to use it and contribute.
+
 # Push a model using GitHub Actions
 
 **URL:** https://replicate.com/docs/guides/build/push-a-model-using-github-actions.md
@@ -5334,227 +5555,6 @@ const output = await replicate.run(
 console.log(output);
 ```
 
-# Build an app with SwiftUI
-
-**URL:** https://replicate.com/docs/guides/run/swiftui.md
-
-Learn how to build a SwiftUI app that uses Replicate to run a machine learning model.
-
-By the end, you’ll have an app that can run on iOS and macOS that generates images from text prompts using Stable Diffusion.
-
-Tip
-
-**Want to skip ahead?** Check out the GitHub repo at [replicate/getting-started-swiftui](https://github.com/replicate/getting-started-swiftui).
-
-[](#prerequisites)Prerequisites
--------------------------------
-
-*   **Xcode**: You’ll need Xcode to build and run your app. Download the latest version of Xcode from [developer.apple.com](https://developer.apple.com/xcode/).
-*   [**A Replicate account**](https://replicate.com/signin): You’ll use Replicate to run machine learning models. It’s free to get started, and you get a bit of credit when you sign up. After that, you pay per second for your usage. See [how billing works](https://replicate.com/docs/billing) for more details.
-
-[](#1-create-the-app)1\. Create the app
----------------------------------------
-
-[SwiftUI](https://developer.apple.com/xcode/swiftui/) is a framework for building native apps for Apple devices. It’s a great choice for getting something up and running fast, and is well-suited to prototyping ideas with Replicate.
-
-Open Xcode and create a new project by selecting “File” > “New” > “Project…”. (⇧⌘N).
-
-![swiftui-1-light](https://github.com/replicate/cog/assets/2289/2998a94a-1c9a-418a-a454-d0d6da8a2161)
-
-Under “Multiplatform” select the “App” template and click “Next”. Give your app a name, such as “ReplicateExample”, and click “Next”. Then save your project to a working directory.
-
-![swiftui-2-light](https://github.com/replicate/cog/assets/2289/921fd03d-703b-4364-8c67-b1f13953229d)
-
-Now’s a good time to make sure everything is working as expected. In Xcode, select “Product” > “Run” (⌘R) build and run the app on your device or simulator.
-
-If you see a “Hello, world!” message, you’re ready to move on to the next step.
-
-[](#2-add-replicates-swift-package-dependency)2\. Add Replicate’s Swift package dependency
-------------------------------------------------------------------------------------------
-
-Use the [official Swift package](https://github.com/replicate/replicate-swift) to run machine learning models on Replicate from your app.
-
-In Xcode, select “File” > “Add packages…”. Copy `https://github.com/replicate/replicate-swift` and paste it into the search bar. Select `replicate-swift` from the list and click the “Add Package” button.
-
-![swiftui-3-light](https://github.com/replicate/cog/assets/2289/949e4c36-dd08-44d3-9f0c-88195900e913)
-
-Once Xcode finishes downloading the package, you’ll be prompted to choose which products to add to your project. Select Replicate’s library and add it to your example app target.
-
-![swiftui-4-light](https://github.com/replicate/cog/assets/2289/83de5826-3cdc-434c-9531-81f29f667290)
-
-[](#3-configure-your-app)3\. Configure your app
------------------------------------------------
-
-Enable network access for your app so that it can connect to Replicate.
-
-In project settings, select the “ReplicateExample” target, then select the “Signing & Capabilities” tab. Under “App Sandbox”, check the box next to “Outgoing Connections (Client)”.
-
-![swiftui-5-light](https://github.com/replicate/cog/assets/2289/873ee719-287f-4017-80f9-f1beccb298cd)
-
-[](#4-set-up-replicates-client)4\. Set up Replicate’s client
-------------------------------------------------------------
-
-Now it’s time to write some code.
-
-In the Project Navigator, open the `ContentView.swift` file. Add the following code to the top of the file, replacing `<#token#>` with [your API token](https://replicate.com/account/api-tokens?new-token-name=swiftui-app).
-
-```swift
-import Replicate
-private let client = Replicate.Client(token: <#token#>)
-```
-
-Warning
-
-For this example, we’re hard-coding the API token in the app. But this is just to help you get started quickly, and isn’t recommended for production apps. You shouldn’t store secrets in code or any other resources bundled with your app. Instead, fetch them from CloudKit or another server and store them in the Keychain.
-
-For more information, consult Apple’s documentation for CloudKit and the Keychain:
-
-*   [fetch(withRecordID:completionHandler:)](https://developer.apple.com/documentation/cloudkit/ckdatabase/1449126-fetch)
-*   [Storing Keys in the Keychain](https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_keychain)
-
-[](#5-define-the-model)5\. Define the model
--------------------------------------------
-
-Models on Replicate have typed [inputs](https://replicate.com/stability-ai/stable-diffusion/api#inputs) and [outputs](https://replicate.com/stability-ai/stable-diffusion/api#output-schema), so it’s convenient to define a Swift type for each model your app uses.
-
-In `ContentView.swift`, add the following code:
-
-```swift
-// https://replicate.com/stability-ai/stable-diffusion
-enum StableDiffusion: Predictable {
-  static var modelID = "stability-ai/stable-diffusion"
-  static let versionID = "db21e45d3f7023abc2a46ee38a23973f6dce16bb082a930b0c49861f96d1e5bf"
-  struct Input: Codable {
-      let prompt: String
-  }
-  typealias Output = [URL]
-}
-```
-
-*   `Predictable` is a protocol that defines a common interface for all models.
-*   `modelID` is the ID of the model we want to run — in this case, “stability-ai/stable-diffusion” for [Stable Diffusion](https://replicate.com/stability-ai/stable-diffusion)
-*   `versionID` is the ID of the version of the model we want to run. Here, we’re using the latest version at the time of writing.
-*   `Input` and `Output` define the types of the model’s input and output. In this case, the input is a struct with a `prompt` property, and the output is a list of URLs to the generated images. (Stable Diffusion has additional inputs, including an option for how many images to generate, but we’re keeping things simple for this example.)
-
-Next, add a `prompt` and a `prediction` property to `ContentView`, and define `generate()` and `cancel()` methods:
-
-```swift
-struct ContentView: View {
-  @State private var prompt = ""
-  @State private var prediction: StableDiffusion.Prediction? = nil
-  func generate() async throws {
-    prediction = try await StableDiffusion.predict(with: client,
-                                                   input: .init(prompt: prompt))
-    try await prediction?.wait(with: client)
-  }
-  func cancel() async throws {
-    try await prediction?.cancel(with: client)
-  }
-  // ...
-```
-
-The `generate()` method creates a prediction and waits for it to complete. Because `Prediction` is a value type, the UI will automatically update when the prediction completes.
-
-[](#6-implement-the-rest-of-contentview)6\. Implement the rest of ContentView
------------------------------------------------------------------------------
-
-Finally, wire up the UI to call these methods and display the generated image.
-
-The content view’s body has a `Form` with a `Section` containing a `TextField`. When the user types text into this field and submits the form, that text will be used to create a prediction by the `generate()` method.
-
-```swift
-var body: some View {
-  Form {
-    Section {
-      TextField(text: $prompt,
-            prompt: Text("Enter a prompt to display an image"),
-            axis: .vertical,
-            label: {})
-        .disabled(prediction?.status.terminated == false)
-        .submitLabel(.go)
-        .onSubmit(of: .text) {
-          Task {
-            try await generate()
-          }
-        }
-    }
-```
-
-Under the text field is a conditional block that renders the prediction from the time it’s created until it finishes.
-
-*   `starting` and `processing`: Show an indeterminate loading indicator as well as a button to cancel the prediction.
-*   `succeeded`: Show the generated image using an `AsyncImage` component.
-*   `failed`: Show an error message.
-*   `canceled`: Show a status message to the user.
-
-The `ZStack` acts as a placeholder to keep everything in place while waiting for the prediction to finish.
-
-```swift
-if let prediction {
-  ZStack {
-    Color.clear
-      .aspectRatio(1.0, contentMode: .fit)
-    switch prediction.status {
-    case .starting, .processing:
-      VStack{
-        ProgressView("Generating...")
-          .padding(32)
-        Button("Cancel") {
-          Task { try await cancel() }
-        }
-      }
-    case .succeeded:
-      if let url = prediction.output?.first {
-        VStack {
-          AsyncImage(url: url, scale: 2.0, content: { phase in
-            phase.image?
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .cornerRadius(32)
-          })
-          ShareLink("Export", item: url)
-            .padding(32)
-        }
-      }
-    case .failed:
-      Text(prediction.error?.localizedDescription ?? "Unknown error")
-        .foregroundColor(.red)
-    case .canceled:
-      Text("The prediction was canceled")
-        .foregroundColor(.secondary)
-    }
-  }
-  .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-  .padding()
-  .listRowBackground(Color.clear)
-  .listRowInsets(.init())
-}
-```
-
-[](#7-create-a-prediction)7: Create a prediction
-------------------------------------------------
-
-Your app should be ready to use now! In Xcode, select “Product” > “Run” (⌘R) to run the app locally.
-
-![swiftui-6-light](https://github.com/replicate/cog/assets/2289/2c38947a-abd6-4bda-bf43-baff303fdd98)
-
-[](#next-steps)Next steps
--------------------------
-
-Huzzah! You should now have a working app that’s powered by machine learning.
-
-But this is just the start. Here are some ideas for what you can do next:
-
-Show your friends what you’ve built.
-
-Before you go too much further, make sure to set up CloudKit to securely store your API key, as you definitely don’t want to commit it to source control.
-
-Integrate a [super resolution model](https://replicate.com/collections/super-resolution) into your new app to upscale the generated images to a higher resolution.
-
-[Explore other models on Replicate](https://replicate.com/explore) and integrate them into your app.
-
-️ Update the README if you’re planning to open-source your project so others know how to use it and contribute.
-
 # Set up a CI/CD pipeline for your model
 
 **URL:** https://replicate.com/docs/guides/build/continuous-model-deployment.md
@@ -6225,6 +6225,147 @@ Now that you have your own model, see what else you can do with it!
 
 To see what models you can use, [check out the Transformers docs on Hugging Face](https://huggingface.co/docs/transformers).
 
+# Push a Diffusers model
+
+**URL:** https://replicate.com/docs/guides/build/push-a-diffusers-model.md
+
+Learn how to push a [Diffusers](https://huggingface.co/docs/diffusers) image generation model to Replicate as a scalable API.
+
+[](#intro)Intro
+---------------
+
+[Diffusers](https://huggingface.co/docs/diffusers) is an open-source Python library that provides a consistent interface for using diffusion models for image generation, the most popular of which is Stable Diffusion.
+
+There are lots of ways to use Stable Diffusion: You can [run it from your browser](https://replicate.com/stability-ai/stable-diffusion) on Replicate’s website, or [run it from your code](https://replicate.com/stability-ai/stable-diffusion/api) using Replicate’s API. You can even [run it on your own machine](https://replicate.com/blog/run-stable-diffusion-on-m1-mac).
+
+But what if you want to customize the model? There are a lot of things you might want to change:
+
+*   **Use custom/pretrained weights or styles.** There are lots of variants of Stable Diffusion trained on different styles of images, like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
+*   **Use a different image format.** Stable Diffusion returns an uncompressed PNG by default, but you might want to also return a compressed JPEG or WebP image.
+*   **Generate a batch of outputs.** You could update the prompt input to accept a delimited string of multiple values and generate a batch of 200 images at once to reduce API call overhead.
+*   **Remove some inputs you don’t care about.** Many machine learning models have a lot of inputs, but you might only care about a few of them. You could remove the ones you don’t care about, and make the model easier to use. For an example of this, see [lora-training](https://replicate.com/cloneofsimo/lora-training) and [lora-advanced-training](https://replicate.com/cloneofsimo/lora-advanced-training).
+*   **Change the scheduler.** Schedulers give you a way to configure a speed-vs-quality tradeoff in your model.
+
+In this guide we’ll walk you through the steps to create your own model, so you can make these kinds of changes and push them to Replicate as your own public or private model with a stable API.
+
+[](#prerequisites)Prerequisites
+-------------------------------
+
+To follow this guide, you’ll need:
+
+*   **An account on Replicate.**
+*   **Docker.** You’ll be using the Cog command-line tool to build and push your model. Cog uses Docker to create a container for your model. You’ll need to [install and start Docker](https://docs.docker.com/get-docker/) before you can run Cog. You can confirm Docker is running by typing `docker info` in your terminal.
+
+[](#step-1-create-a-model)Step 1: Create a model
+------------------------------------------------
+
+First, create a model on Replicate at [replicate.com/create](https://replicate.com/create?purpose=fine-tune-image). If you haven’t used Replicate before, you’ll need to sign in with your GitHub account. You can configure the model to be private so that only you can use it, or public so anyone can use it.
+
+[![](https://user-images.githubusercontent.com/2289/222594676-ecb72c3e-1fb4-4ed5-b368-1a82afc46f3b.png)](https://replicate.com/create?purpose=fine-tune-image)
+
+[](#step-2-clone-the-stable-diffusion-repo)Step 2: Clone the Stable Diffusion repo
+----------------------------------------------------------------------------------
+
+Replicate maintains an open-source Stable Diffusion repo on GitHub at [replicate/cog-stable-diffusion](https://github.com/replicate/cog-stable-diffusion).
+
+Create your own fork of the repo on GitHub, or clone the repo directly:
+
+```shell
+git clone https://github.com/replicate/cog-stable-diffusion
+cd cog-stable-diffusion
+```
+
+This repo is fairly small, and contains two noteworthy files:
+
+*   `cog.yaml` - Defines the CUDA and Python versions, and dependencies for the model. This file tells Cog how to package the model.
+*   `predict.py` - Defines the inputs and outputs of the model, and the code to run the model. The Stable Diffusion model itself is imported through the Python [`diffusers`](https://pypi.org/project/diffusers/) library.
+
+[](#step-3-install-cog)Step 3: Install Cog
+------------------------------------------
+
+[Cog](https://cog.run) is an open source tool that makes it easy to put a machine learning model in a Docker container. Run the following commands to install it and set the correct permissions:
+
+```shell
+curl https://replicate.github.io/codespaces/scripts/install-cog.sh | bash
+```
+
+Confirm that Cog is installed by running `cog --version`:
+
+```shell
+cog --version
+# cog version 0.9.25 (built 2024-10-07T15:11:47Z)
+```
+
+[](#step-4-customize-your-model)Step 4: Customize your model
+------------------------------------------------------------
+
+The repo you cloned is configured to build Stable Diffusion 2.1 by default, but you can customize it to use any [diffusers-compatible model](https://huggingface.co/models?library=fine-tune-image), including trained models like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
+
+To use a different model, open `predict.py` and change the value of `MODEL_ID` to a shorthand `{owner}/{repo}` string that corresponds to a diffusers-compatible model on Hugging Face:
+
+```python
+MODEL_ID = "wavymulder/Analog-Diffusion"
+```
+
+If you just want to use a different pretrained model, this is the only change that’s needed.
+
+If you want to make other changes to your model’s behavior, take a look at [`predict.py`](https://github.com/replicate/cog-stable-diffusion/blob/38510524cf4f3dc679e5945ebb52feb40d52c1a9/predict.py), which is the Python interface that defines the inputs and outputs for your model.
+
+[](#step-5-download-weights)Step 5: Download weights
+----------------------------------------------------
+
+Now that you’ve configured your model, it’s time to download the weights:
+
+```shell
+cog run script/download-weights
+```
+
+This process will take a few minutes but you’ll only need to run it once, as it will cache the downloaded dependencies on disk. Get up and stretch, grab yourself a snack, or use this opportunity to add metadata to the model page you created on Replicate in Step 1 by adding a title, README, GitHub repository URL, etc.
+
+[](#step-6-run-your-model)Step 6: Run your model
+------------------------------------------------
+
+Now that you’ve downloaded the weights, you can run the model locally with Cog:
+
+```shell
+cog predict -i prompt="monkey scuba diving" -i width=512  -i height=512
+```
+
+This will run the model locally and return the output image. You can change the prompt, width, and height to see how the model responds to different inputs. Note that larger dimensions require more VRAM, so 512x512 is a sensible default.
+
+[](#step-7-push-your-model)Step 7: Push your model
+--------------------------------------------------
+
+Now that you’ve customized your model, it’s time to push it to Replicate.
+
+First you’ll need to authenticate:
+
+```shell
+cog login
+```
+
+Then push your model using the name you specified in Step 1:
+
+```shell
+cog push r8.im/<your-username>/<your-model-name>
+```
+
+[](#step-8-use-your-model)Step 8: Use your model
+------------------------------------------------
+
+Your model is now live!
+
+You can run the model from the website by clicking the “Demo” tab on the model page, or you can use the HTTP API to run the model from your own code.
+
+Click the “API” tab on your model page to see example code for running the model:
+
+![](https://user-images.githubusercontent.com/2289/222592355-ec880478-fa5c-470b-bf90-512cd0b1247f.png)
+
+[](#next-steps)Next steps
+-------------------------
+
+Now that you have your own model, see what else you can do with it.
+
 # Build a realtime speech app with OpenAI, Cloudflare, and Replicate
 
 **URL:** https://replicate.com/docs/guides/extend/openai-realtime.md
@@ -6543,270 +6684,6 @@ We’d love to see what you build with these powerful new tools.
 
 Share your project on [X](https://x.com/replicate) and tag us.
 
-# Push a Diffusers model
-
-**URL:** https://replicate.com/docs/guides/build/push-a-diffusers-model.md
-
-Learn how to push a [Diffusers](https://huggingface.co/docs/diffusers) image generation model to Replicate as a scalable API.
-
-[](#intro)Intro
----------------
-
-[Diffusers](https://huggingface.co/docs/diffusers) is an open-source Python library that provides a consistent interface for using diffusion models for image generation, the most popular of which is Stable Diffusion.
-
-There are lots of ways to use Stable Diffusion: You can [run it from your browser](https://replicate.com/stability-ai/stable-diffusion) on Replicate’s website, or [run it from your code](https://replicate.com/stability-ai/stable-diffusion/api) using Replicate’s API. You can even [run it on your own machine](https://replicate.com/blog/run-stable-diffusion-on-m1-mac).
-
-But what if you want to customize the model? There are a lot of things you might want to change:
-
-*   **Use custom/pretrained weights or styles.** There are lots of variants of Stable Diffusion trained on different styles of images, like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
-*   **Use a different image format.** Stable Diffusion returns an uncompressed PNG by default, but you might want to also return a compressed JPEG or WebP image.
-*   **Generate a batch of outputs.** You could update the prompt input to accept a delimited string of multiple values and generate a batch of 200 images at once to reduce API call overhead.
-*   **Remove some inputs you don’t care about.** Many machine learning models have a lot of inputs, but you might only care about a few of them. You could remove the ones you don’t care about, and make the model easier to use. For an example of this, see [lora-training](https://replicate.com/cloneofsimo/lora-training) and [lora-advanced-training](https://replicate.com/cloneofsimo/lora-advanced-training).
-*   **Change the scheduler.** Schedulers give you a way to configure a speed-vs-quality tradeoff in your model.
-
-In this guide we’ll walk you through the steps to create your own model, so you can make these kinds of changes and push them to Replicate as your own public or private model with a stable API.
-
-[](#prerequisites)Prerequisites
--------------------------------
-
-To follow this guide, you’ll need:
-
-*   **An account on Replicate.**
-*   **Docker.** You’ll be using the Cog command-line tool to build and push your model. Cog uses Docker to create a container for your model. You’ll need to [install and start Docker](https://docs.docker.com/get-docker/) before you can run Cog. You can confirm Docker is running by typing `docker info` in your terminal.
-
-[](#step-1-create-a-model)Step 1: Create a model
-------------------------------------------------
-
-First, create a model on Replicate at [replicate.com/create](https://replicate.com/create?purpose=fine-tune-image). If you haven’t used Replicate before, you’ll need to sign in with your GitHub account. You can configure the model to be private so that only you can use it, or public so anyone can use it.
-
-[![](https://user-images.githubusercontent.com/2289/222594676-ecb72c3e-1fb4-4ed5-b368-1a82afc46f3b.png)](https://replicate.com/create?purpose=fine-tune-image)
-
-[](#step-2-clone-the-stable-diffusion-repo)Step 2: Clone the Stable Diffusion repo
-----------------------------------------------------------------------------------
-
-Replicate maintains an open-source Stable Diffusion repo on GitHub at [replicate/cog-stable-diffusion](https://github.com/replicate/cog-stable-diffusion).
-
-Create your own fork of the repo on GitHub, or clone the repo directly:
-
-```shell
-git clone https://github.com/replicate/cog-stable-diffusion
-cd cog-stable-diffusion
-```
-
-This repo is fairly small, and contains two noteworthy files:
-
-*   `cog.yaml` - Defines the CUDA and Python versions, and dependencies for the model. This file tells Cog how to package the model.
-*   `predict.py` - Defines the inputs and outputs of the model, and the code to run the model. The Stable Diffusion model itself is imported through the Python [`diffusers`](https://pypi.org/project/diffusers/) library.
-
-[](#step-3-install-cog)Step 3: Install Cog
-------------------------------------------
-
-[Cog](https://cog.run) is an open source tool that makes it easy to put a machine learning model in a Docker container. Run the following commands to install it and set the correct permissions:
-
-```shell
-curl https://replicate.github.io/codespaces/scripts/install-cog.sh | bash
-```
-
-Confirm that Cog is installed by running `cog --version`:
-
-```shell
-cog --version
-# cog version 0.9.25 (built 2024-10-07T15:11:47Z)
-```
-
-[](#step-4-customize-your-model)Step 4: Customize your model
-------------------------------------------------------------
-
-The repo you cloned is configured to build Stable Diffusion 2.1 by default, but you can customize it to use any [diffusers-compatible model](https://huggingface.co/models?library=fine-tune-image), including trained models like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
-
-To use a different model, open `predict.py` and change the value of `MODEL_ID` to a shorthand `{owner}/{repo}` string that corresponds to a diffusers-compatible model on Hugging Face:
-
-```python
-MODEL_ID = "wavymulder/Analog-Diffusion"
-```
-
-If you just want to use a different pretrained model, this is the only change that’s needed.
-
-If you want to make other changes to your model’s behavior, take a look at [`predict.py`](https://github.com/replicate/cog-stable-diffusion/blob/38510524cf4f3dc679e5945ebb52feb40d52c1a9/predict.py), which is the Python interface that defines the inputs and outputs for your model.
-
-[](#step-5-download-weights)Step 5: Download weights
-----------------------------------------------------
-
-Now that you’ve configured your model, it’s time to download the weights:
-
-```shell
-cog run script/download-weights
-```
-
-This process will take a few minutes but you’ll only need to run it once, as it will cache the downloaded dependencies on disk. Get up and stretch, grab yourself a snack, or use this opportunity to add metadata to the model page you created on Replicate in Step 1 by adding a title, README, GitHub repository URL, etc.
-
-[](#step-6-run-your-model)Step 6: Run your model
-------------------------------------------------
-
-Now that you’ve downloaded the weights, you can run the model locally with Cog:
-
-```shell
-cog predict -i prompt="monkey scuba diving" -i width=512  -i height=512
-```
-
-This will run the model locally and return the output image. You can change the prompt, width, and height to see how the model responds to different inputs. Note that larger dimensions require more VRAM, so 512x512 is a sensible default.
-
-[](#step-7-push-your-model)Step 7: Push your model
---------------------------------------------------
-
-Now that you’ve customized your model, it’s time to push it to Replicate.
-
-First you’ll need to authenticate:
-
-```shell
-cog login
-```
-
-Then push your model using the name you specified in Step 1:
-
-```shell
-cog push r8.im/<your-username>/<your-model-name>
-```
-
-[](#step-8-use-your-model)Step 8: Use your model
-------------------------------------------------
-
-Your model is now live!
-
-You can run the model from the website by clicking the “Demo” tab on the model page, or you can use the HTTP API to run the model from your own code.
-
-Click the “API” tab on your model page to see example code for running the model:
-
-![](https://user-images.githubusercontent.com/2289/222592355-ec880478-fa5c-470b-bf90-512cd0b1247f.png)
-
-[](#next-steps)Next steps
--------------------------
-
-Now that you have your own model, see what else you can do with it.
-
-# Build a webhook notifier with Val Town
-
-**URL:** https://replicate.com/docs/guides/extend/build-a-webhook-notifier-with-val-town.md
-
-This guide will show you how to set up a simple email notification system for tracking the status of your predictions.
-
-These notifications are especially useful when you want your team to be aware of any failing predictions, or when your workloads are experiencing elevated error rates.
-
-[![Val Town lets you write serverless functions right in the browser.](https://github.com/user-attachments/assets/dfeb11d4-a72c-4449-98e9-fae0e419a35c)](https://www.val.town/v/zeke/replicateWebhookHandler)
-
-Val Town lets you write serverless functions right in the browser.
-
-[](#what-are-webhooks)What are webhooks?
-----------------------------------------
-
-Webhooks are a way to notify you when certain events happen.
-
-When you make an API request to Replicate to run a model, you can optionally include a “webhook URL” in the body of the request. This is the URL of a hosted public HTTP endpoint that you control. Replicate will then make an HTTP POST request to that endpoint at various points in the lifecycle of the prediction.
-
-If webhooks are new to you, read the [webhooks documentation](/docs/topics/webhooks) first.
-
-[](#what-is-val-town)What is Val Town?
---------------------------------------
-
-[Val Town](https://val.town) is a simple but powerful web service that makes it easy to build hosted serverless functions, which are perfect for receiving and processing webhooks.
-
-Val Town lets you write small JavaScript or TypeScript snippets of code directly in the browser and run them on cloud-hosted servers. You can use Val Town to create scheduled functions (like cron jobs), email yourself, and persist small pieces of data.
-
-The spirit of the Val Town product is captured by their old tagline: “If GitHub Gists could run, and AWS Lambda was fun.”
-
-[](#prerequisites)Prerequisites
--------------------------------
-
-*   A [Val Town](https://val.town) account. It’s free to get started.
-*   A Replicate account. Also free to get started.
-*   Familiarity with [webhooks](/docs/topics/webhooks).
-*   [cURL](https://curl.se/). You’ll use this to run a model via Replicate’s API.
-
-[](#step-1-create-a-val-town-project)Step 1: Create a Val Town project
-----------------------------------------------------------------------
-
-Much like GitHub repositories, Val Town projects can be forked and modified.
-
-Go to [val.town/v/zeke/replicateWebhookHandler](https://www.val.town/v/zeke/replicateWebhookHandler) and click the “Fork” button.
-
-Alternatively, you can create your own Val from scratch, set the “type” to HTTP, and paste the following code into the editor:
-
-```typescript
-import { email } from "https://esm.town/v/std/email";
-export default async function(request: Request): Promise<Response> {
-  if (request.method !== "POST") {
-    return new Response("Method Not Allowed", { status: 405 });
-  }
-  try {
-    const jsonBody = await request.json();
-    await email({
-      to: "zeke@replicate.com",
-      subject: "Replicate Webhook Received",
-      text: JSON.stringify(jsonBody, null, 2), // Pretty-print the JSON for better readability
-      html: `<pre>${JSON.stringify(jsonBody, null, 2)}</pre>`, // HTML version with pre-formatted text
-    });
-    return new Response("Webhook received and email sent", { status: 200 });
-  } catch (error) {
-    console.error("Error processing webhook:", error);
-    return new Response("Error processing webhook", { status: 400 });
-  }
-}
-```
-
-Change the `to:` key to your own email address.
-
-The `email()` function is part of Val town’s [standard library](https://www.val.town/u/std), and comes preconfigured. You don’t have to install or configure anything to start sending emails. Note that you can only send emails to yourself if you’re on Val Town Free. If you’re on [Val Town Pro](https://www.val.town/pricing), you can email anyone.
-
-Your new project will have a URL like `https://zeke-replicatewebhookhandler.web.val.run`. This is your webhook URL. Copy it to your clipboard for use in the next step.
-
-[](#step-2-run-a-prediction)Step 2: Run a prediction
-----------------------------------------------------
-
-Now that you have a webhook URL, you can use it when you run a model via Replicate’s API.
-
-For this example, we’ll run [zeke/chaos-monkey](https://replicate.com/zeke/chaos-monkey), a tiny test model which can be used to test success and failure modes.
-
-Here is an example API request using cURL. Change the `webhook` URL to your own webhook URL, then run it:
-
-```sh
-curl -s -X POST \
-  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "Prefer: wait" \
-  -d $'{
-    "version": "0098011f5f482d1fcdbbba44ef1d6d22858e439a103b6ebb449ef9dec623a71e",
-    "input": {
-      "sleep": 0,
-      "outcome": "success"
-    },
-    "webhook": "https://zeke-replicatewebhookhandler.web.val.run",
-    "webhook_events_filter": ["completed"]
-  }' \
-  https://api.replicate.com/v1/predictions
-```
-
-Replicate will make an HTTP POST request to your webhook URL when the prediction finishes.
-
-[](#step-3-receive-notifications)Step 3: Receive notifications
---------------------------------------------------------------
-
-Val town keeps logs of the incoming requests for each project. Click the **Requests** tab on your project to see a log of the incoming requests:
-
-![requests tab](https://github.com/user-attachments/assets/bcc811f3-a1c2-40a7-b6a7-ca43e615f788)
-
-You should also have an email awaiting you in your inbox.
-
-Go check your email!
-
-[](#next-steps)Next steps
--------------------------
-
-Now that you’ve got a basic setup for receiving webhooks, you can use it to build more complex systems. Here are some ideas:
-
-*   Validate the incoming webhook. The code above accepts the incoming webhook with verifying its authenticity. For real-world applications, you should validate the webhook to ensure it’s from Replicate and not malicious. See [verifying webhooks](/docs/topics/webhooks/verify-webhook) for more information.
-*   Use a more robust notification system. The example above uses email which is great for getting started, but you could also send notifications to Slack, SMS, PagerDuty, or other services.
-*   Use state to track recent predictions. Val town’s standard library has a built-in [blob storage system](https://www.val.town/v/std/blob) that you can use to store JSON data (as well as text, images, and other file types). Just like Val town’s email function, blob storage is preconfigured and ready to use. You could extend the example above to store recent predictions in a blob, and then notify yourself or your team when error rates exceed a certain threshold.
-
 # Optimize models with Pruna
 
 **URL:** https://replicate.com/docs/guides/build/optimize-models-with-pruna.md
@@ -7042,111 +6919,128 @@ Now that you have your own optimized model, the question is: what will you build
 *   Compress more models and explore different compression methods with Pruna. Check the [Pruna documentation](https://docs.pruna.ai/en/stable/compression.html) for more information.
 *   Join us in [Discord](https://discord.com/invite/JFQmtFKCjd) to get support or to share your feedback.
 
-# Get a GPU on Lambda Labs
+# Build a webhook notifier with Val Town
 
-**URL:** https://replicate.com/docs/guides/build/get-a-gpu-on-lambda-labs.md
+**URL:** https://replicate.com/docs/guides/extend/build-a-webhook-notifier-with-val-town.md
 
-GPUs are specialized processors that are designed to handle complex mathematical calculations. Many machine learning models will only run on a computer with a GPU. While GPUs are incredibly powerful, setting up a machine that can use them can be challenging. GPUs require specific drivers and software to work properly, which can be difficult to install and configure.
+This guide will show you how to set up a simple email notification system for tracking the status of your predictions.
 
-In this guide, you’ll learn how to get your own GPU machine in the cloud, so you can package your model and push it to Replicate.
+These notifications are especially useful when you want your team to be aware of any failing predictions, or when your workloads are experiencing elevated error rates.
 
-Note
+[![Val Town lets you write serverless functions right in the browser.](https://github.com/user-attachments/assets/dfeb11d4-a72c-4449-98e9-fae0e419a35c)](https://www.val.town/v/zeke/replicateWebhookHandler)
 
-You probably don’t need to set up your own GPU machine to push a model to Replicate. In most cases, you should be able to package your model with [Cog](https://cog.run) and [push it to Replicate](https://replicate.com/docs/guides/push-a-model) without ever leaving your local machine.
+Val Town lets you write serverless functions right in the browser.
 
-In certain cases, you may need a GPU machine to push a model. If you’re not sure if you need this, you probably don’t. If you get an error message like this:
+[](#what-are-webhooks)What are webhooks?
+----------------------------------------
 
-`RuntimeError: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero.`
+Webhooks are a way to notify you when certain events happen.
 
-then you may need this guide.
+When you make an API request to Replicate to run a model, you can optionally include a “webhook URL” in the body of the request. This is the URL of a hosted public HTTP endpoint that you control. Replicate will then make an HTTP POST request to that endpoint at various points in the lifecycle of the prediction.
 
-[](#sign-up-for-lambda-labs)Sign up for Lambda Labs
----------------------------------------------------
+If webhooks are new to you, read the [webhooks documentation](/docs/topics/webhooks) first.
 
-Lambda Labs is a cloud provider that offers GPU machines that come preconfigured with Docker and NVIDIA drivers, which makes them a great fit for working with [Cog](https://cog.run).
+[](#what-is-val-town)What is Val Town?
+--------------------------------------
 
-Create an account at [lambdalabs.com/service/gpu-cloud](https://lambdalabs.com/service/gpu-cloud) and enter your billing info. You’ll be able to run GPU machines for [as little as $0.50/hour](https://lambdalabs.com/service/gpu-cloud/pricing).
+[Val Town](https://val.town) is a simple but powerful web service that makes it easy to build hosted serverless functions, which are perfect for receiving and processing webhooks.
 
-[](#create-a-gpu-cloud-instance)Create a GPU Cloud instance
------------------------------------------------------------
+Val Town lets you write small JavaScript or TypeScript snippets of code directly in the browser and run them on cloud-hosted servers. You can use Val Town to create scheduled functions (like cron jobs), email yourself, and persist small pieces of data.
 
-Once you’ve got a Lambda account, create a new GPU Cloud instance. You’ll be asked to specify three settings:
+The spirit of the Val Town product is captured by their old tagline: “If GitHub Gists could run, and AWS Lambda was fun.”
 
-*   **Instance type**: This is the type of machine you want to use. For example, `1x A10 (24 GB PCIe)`. Start by choosing the smallest instance type. You can upgrade to a larger instance type later if you need more power.
-*   **Region**: This is the geographical location of the machine. For example, “California, USA (`us-west-1`)”. Choose the region closest to you.
-*   **Filesystem**: This is not strictly required, as your instance will still have an ephemeral writeable filesystem, but if you want to be able to shut down your instance and come back to it without losing your changes on disk, you’ll need to attach a filesystem.
+[](#prerequisites)Prerequisites
+-------------------------------
 
-[](#add-your-public-ssh-key)Add your public SSH key
----------------------------------------------------
+*   A [Val Town](https://val.town) account. It’s free to get started.
+*   A Replicate account. Also free to get started.
+*   Familiarity with [webhooks](/docs/topics/webhooks).
+*   [cURL](https://curl.se/). You’ll use this to run a model via Replicate’s API.
 
-Next you’ll be asked to provide your public SSH key so you can easily log into your new instance using SSH. If you’ve already set up your SSH keys for another service like GitHub, you can use your existing public key. Use a command like this to copy your public key to your clipboard:
+[](#step-1-create-a-val-town-project)Step 1: Create a Val Town project
+----------------------------------------------------------------------
 
-```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
+Much like GitHub repositories, Val Town projects can be forked and modified.
+
+Go to [val.town/v/zeke/replicateWebhookHandler](https://www.val.town/v/zeke/replicateWebhookHandler) and click the “Fork” button.
+
+Alternatively, you can create your own Val from scratch, set the “type” to HTTP, and paste the following code into the editor:
+
+```typescript
+import { email } from "https://esm.town/v/std/email";
+export default async function(request: Request): Promise<Response> {
+  if (request.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405 });
+  }
+  try {
+    const jsonBody = await request.json();
+    await email({
+      to: "zeke@replicate.com",
+      subject: "Replicate Webhook Received",
+      text: JSON.stringify(jsonBody, null, 2), // Pretty-print the JSON for better readability
+      html: `<pre>${JSON.stringify(jsonBody, null, 2)}</pre>`, // HTML version with pre-formatted text
+    });
+    return new Response("Webhook received and email sent", { status: 200 });
+  } catch (error) {
+    console.error("Error processing webhook:", error);
+    return new Response("Error processing webhook", { status: 400 });
+  }
+}
 ```
 
-If you don’t have one already, check out [GitHub’s docs for generating an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+Change the `to:` key to your own email address.
 
-[](#launch-your-instance)Launch your instance
----------------------------------------------
+The `email()` function is part of Val town’s [standard library](https://www.val.town/u/std), and comes preconfigured. You don’t have to install or configure anything to start sending emails. Note that you can only send emails to yourself if you’re on Val Town Free. If you’re on [Val Town Pro](https://www.val.town/pricing), you can email anyone.
 
-Your GPU Cloud instance will be launched in a few minutes. Once it’s ready, you can access it through SSH or JupyterLab.
+Your new project will have a URL like `https://zeke-replicatewebhookhandler.web.val.run`. This is your webhook URL. Copy it to your clipboard for use in the next step.
 
-To SSH into your instance, copy the “SSH login” command from your Lambda dashboard, then run it:
+[](#step-2-run-a-prediction)Step 2: Run a prediction
+----------------------------------------------------
 
-```bash
-ssh ubuntu@[your-instance-ip]
-```
+Now that you have a webhook URL, you can use it when you run a model via Replicate’s API.
 
-To access your instance using JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
+For this example, we’ll run [zeke/chaos-monkey](https://replicate.com/zeke/chaos-monkey), a tiny test model which can be used to test success and failure modes.
 
-[](#install-cog-on-your-instance)Install Cog on your instance
--------------------------------------------------------------
-
-Cog is Replicate’s open-source tool that makes it easy to put a machine learning model in a Docker container. Cog is the tool you use to package your trained model and push it to Replicate.
-
-Using the terminal (either from your SSH sesion or inside JupyterLab), run the following command to install Cog on your instance:
+Here is an example API request using cURL. Change the `webhook` URL to your own webhook URL, then run it:
 
 ```sh
-sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
-sudo chmod +x /usr/local/bin/cog
+curl -s -X POST \
+  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Prefer: wait" \
+  -d $'{
+    "version": "0098011f5f482d1fcdbbba44ef1d6d22858e439a103b6ebb449ef9dec623a71e",
+    "input": {
+      "sleep": 0,
+      "outcome": "success"
+    },
+    "webhook": "https://zeke-replicatewebhookhandler.web.val.run",
+    "webhook_events_filter": ["completed"]
+  }' \
+  https://api.replicate.com/v1/predictions
 ```
 
-[](#run-an-existing-model)Run an existing model
------------------------------------------------
+Replicate will make an HTTP POST request to your webhook URL when the prediction finishes.
 
-To verify that your new instance is working properly, you can run a prediction on an existing model on Replicate.
+[](#step-3-receive-notifications)Step 3: Receive notifications
+--------------------------------------------------------------
 
-Run the following commmand in the terminal to download the [Stable Diffusion](https://replicate.com/stability-ai/stable-diffusion) model and run it locally on your new instance:
+Val town keeps logs of the incoming requests for each project. Click the **Requests** tab on your project to see a log of the incoming requests:
 
-```bash
-sudo cog predict r8.im/stability-ai/stable-diffusion@sha256:f178fa7a1ae43a9a9af01b833b9d2ecf97b1bcb0acfd2dc5dd04895e042863f1 -i prompt="a pot of gold"
-```
+![requests tab](https://github.com/user-attachments/assets/bcc811f3-a1c2-40a7-b6a7-ca43e615f788)
 
-Note: It’s important to use `sudo` here so Cog can work properly with the Docker installation on your instance.
+You should also have an email awaiting you in your inbox.
 
-[](#use-jupyterlab-to-view-model-output)Use JupyterLab to view model output
----------------------------------------------------------------------------
+Go check your email!
 
-JupyterLab is a web-based editor that makes it easy to run models interactively and view the files on your instance. Lambda’s GPU Cloud instances are preconfigured with JupyterLab.
+[](#next-steps)Next steps
+-------------------------
 
-To access JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
+Now that you’ve got a basic setup for receiving webhooks, you can use it to build more complex systems. Here are some ideas:
 
-You should see your output file in the JupyterLab file browser. Click on it to view the output.
-
-![jupyterlab](https://user-images.githubusercontent.com/2289/214712829-b393d36a-fe90-4da2-974d-735b5ee036fe.png)
-
-[](#push-your-model-to-replicate)Push your model to Replicate
--------------------------------------------------------------
-
-You’ve now got a working GPU machine in the cloud!
-
-Now it’s time to [build your own model and push it to Replicate](https://replicate.com/docs/topics/models/publish-a-model).
-
-[](#terminate-your-instance)Terminate your instance
----------------------------------------------------
-
-Lambda’s GPU Cloud instances remain active until you terminate them, so you’ll be charged for them until you shut them down. To terminate your instance, go to the Lambda dashboard and click “Terminate” on your instance.
+*   Validate the incoming webhook. The code above accepts the incoming webhook with verifying its authenticity. For real-world applications, you should validate the webhook to ensure it’s from Replicate and not malicious. See [verifying webhooks](/docs/topics/webhooks/verify-webhook) for more information.
+*   Use a more robust notification system. The example above uses email which is great for getting started, but you could also send notifications to Slack, SMS, PagerDuty, or other services.
+*   Use state to track recent predictions. Val town’s standard library has a built-in [blob storage system](https://www.val.town/v/std/blob) that you can use to store JSON data (as well as text, images, and other file types). Just like Val town’s email function, blob storage is preconfigured and ready to use. You could extend the example above to store recent predictions in a blob, and then notify yourself or your team when error rates exceed a certain threshold.
 
 # Get a GPU machine on Brev
 
@@ -7348,107 +7242,111 @@ Happy hacking!
 *   Use `brev ls` to list your instances. This is handy if you forget what you named your new instance!
 *   Remember to `brev stop` your instance when you’re not using it to avoid incurring charges.
 
-# Best practices for Replicate models
+# Get a GPU on Lambda Labs
 
-**URL:** https://replicate.com/docs/guides/build/model-best-practices.md
+**URL:** https://replicate.com/docs/guides/build/get-a-gpu-on-lambda-labs.md
 
-This guide will walk you through the best practices for pushing a reliable, fast, and user-friendly model to Replicate.
+GPUs are specialized processors that are designed to handle complex mathematical calculations. Many machine learning models will only run on a computer with a GPU. While GPUs are incredibly powerful, setting up a machine that can use them can be challenging. GPUs require specific drivers and software to work properly, which can be difficult to install and configure.
 
-[](#getting-started)Getting started
------------------------------------
+In this guide, you’ll learn how to get your own GPU machine in the cloud, so you can package your model and push it to Replicate.
 
-All models on Replicate use [Cog](https://github.com/replicate/cog), an open-source tool that lets you package machine learning models in a standard, production-ready container. It’s based on Docker.
+Note
 
-If you’re new to Cog, we recommend starting from our docs: [Push a model to Replicate](https://replicate.com/docs/guides/push-a-model)
+You probably don’t need to set up your own GPU machine to push a model to Replicate. In most cases, you should be able to package your model with [Cog](https://cog.run) and [push it to Replicate](https://replicate.com/docs/guides/push-a-model) without ever leaving your local machine.
 
-In short, you need to:
+In certain cases, you may need a GPU machine to push a model. If you’re not sure if you need this, you probably don’t. If you get an error message like this:
 
-1.  define the Docker environment your model runs in with `cog.yaml`
-2.  define how predictions are run with `predict.py`
-3.  test your model by running predictions locally, for example: `cog predict -i image=@input.jpg`
-4.  push the model to Replicate with `cog push`
+`RuntimeError: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero.`
 
-For the rest of this guide we’ll assume you’re familiar with Cog and you know how to push a model to Replicate.
+then you may need this guide.
 
-[](#make-your-model-easy-to-understand)Make your model easy to understand
--------------------------------------------------------------------------
+[](#sign-up-for-lambda-labs)Sign up for Lambda Labs
+---------------------------------------------------
 
-People must be able to use your model without reading the source code.
+Lambda Labs is a cloud provider that offers GPU machines that come preconfigured with Docker and NVIDIA drivers, which makes them a great fit for working with [Cog](https://cog.run).
 
-### [](#naming-your-model)Naming your model
+Create an account at [lambdalabs.com/service/gpu-cloud](https://lambdalabs.com/service/gpu-cloud) and enter your billing info. You’ll be able to run GPU machines for [as little as $0.50/hour](https://lambdalabs.com/service/gpu-cloud/pricing).
 
-All names on Replicate are lowercase and use dashes instead of spaces. For example, `llama-2-70b-chat`.
+[](#create-a-gpu-cloud-instance)Create a GPU Cloud instance
+-----------------------------------------------------------
 
-Best practice is to use the model’s official name, like the name of the GitHub repo or HuggingFace model.
+Once you’ve got a Lambda account, create a new GPU Cloud instance. You’ll be asked to specify three settings:
 
-Where there are variations of a model, we recommend adding those variations to the end of the name to make the model distinct. These are commonly different parameter sizes or fine-tunes, such as `codellama-34b` and `codellama-34b-instruct`.
+*   **Instance type**: This is the type of machine you want to use. For example, `1x A10 (24 GB PCIe)`. Start by choosing the smallest instance type. You can upgrade to a larger instance type later if you need more power.
+*   **Region**: This is the geographical location of the machine. For example, “California, USA (`us-west-1`)”. Choose the region closest to you.
+*   **Filesystem**: This is not strictly required, as your instance will still have an ephemeral writeable filesystem, but if you want to be able to shut down your instance and come back to it without losing your changes on disk, you’ll need to attach a filesystem.
 
-### [](#include-a-clear-description)Include a clear description
+[](#add-your-public-ssh-key)Add your public SSH key
+---------------------------------------------------
 
-A short one line description explaining what the model does. Avoid technical terms and abbreviations in your description.
+Next you’ll be asked to provide your public SSH key so you can easily log into your new instance using SSH. If you’ve already set up your SSH keys for another service like GitHub, you can use your existing public key. Use a command like this to copy your public key to your clipboard:
 
-Some good examples:
+```bash
+cat ~/.ssh/id_ed25519.pub | pbcopy
+```
 
-*   For the `autocaption` model: “Automatically add captions to a video”
-*   For the `llama-2-70b-chat`: “A 70 billion parameter language model from Meta, fine tuned for chat completions”
+If you don’t have one already, check out [GitHub’s docs for generating an SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
 
-### [](#use-well-named-model-inputs)Use well named model inputs
+[](#launch-your-instance)Launch your instance
+---------------------------------------------
 
-Do not prematurely shorten names. Use `negative_prompt` instead of `n_prompt`.
+Your GPU Cloud instance will be launched in a few minutes. Once it’s ready, you can access it through SSH or JupyterLab.
 
-### [](#order-your-inputs)Order your inputs
+To SSH into your instance, copy the “SSH login” command from your Lambda dashboard, then run it:
 
-Put the most important inputs first.
+```bash
+ssh ubuntu@[your-instance-ip]
+```
 
-Group related inputs together. For example, `prompt` and `negative_prompt` should be together in your `predict.py` inputs. Users usually want to change them together.
+To access your instance using JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
 
-For models with many inputs, consider prefixing fields with a group name. For example, `controlnet_strength`, `controlnet_image` and `controlnet_model`.
+[](#install-cog-on-your-instance)Install Cog on your instance
+-------------------------------------------------------------
 
-### [](#add-guidance-to-explain-inputs)Add guidance to explain inputs
+Cog is Replicate’s open-source tool that makes it easy to put a machine learning model in a Docker container. Cog is the tool you use to package your trained model and push it to Replicate.
 
-Even when obvious to you. For example, not everyone knows how to use a negative prompt. Guidance like this would help them:
+Using the terminal (either from your SSH sesion or inside JupyterLab), run the following command to install Cog on your instance:
 
-> A negative prompt is a prompt containing all the things you do not want in your output
+```sh
+sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
+sudo chmod +x /usr/local/bin/cog
+```
 
-### [](#pick-defaults-that-balance-speed-and-quality)Pick defaults that balance speed and quality
+[](#run-an-existing-model)Run an existing model
+-----------------------------------------------
 
-Good defaults get quality outputs quickly.
+To verify that your new instance is working properly, you can run a prediction on an existing model on Replicate.
 
-For example, with SDXL you get good images at 768x768 with 25 inference steps, which is 3x faster than 1024x1024 at 50 steps.
+Run the following commmand in the terminal to download the [Stable Diffusion](https://replicate.com/stability-ai/stable-diffusion) model and run it locally on your new instance:
 
-### [](#give-guidance-on-recommended-ranges)Give guidance on recommended ranges
+```bash
+sudo cog predict r8.im/stability-ai/stable-diffusion@sha256:f178fa7a1ae43a9a9af01b833b9d2ecf97b1bcb0acfd2dc5dd04895e042863f1 -i prompt="a pot of gold"
+```
 
-A model should make it difficult to get bad results while remaining flexible for anyone wanting to experiment.
+Note: It’s important to use `sudo` here so Cog can work properly with the Docker installation on your instance.
 
-Keep wide input ranges, but use guidance text to explain where the best results lie.
+[](#use-jupyterlab-to-view-model-output)Use JupyterLab to view model output
+---------------------------------------------------------------------------
 
-### [](#handle-image-inputs-well)Handle image inputs well
+JupyterLab is a web-based editor that makes it easy to run models interactively and view the files on your instance. Lambda’s GPU Cloud instances are preconfigured with JupyterLab.
 
-If your model takes images as inputs, it should accept all the common image formats users will try. For example, JPEG, PNG, GIF and WEBP, as well as images with alpha channels (transparency).
+To access JupyterLab, click the “Launch” button beside your new instance in the Lambda dashboard.
 
-Where inference would fail with a given input (like an RGBA image), convert images to a format that works.
+You should see your output file in the JupyterLab file browser. Click on it to view the output.
 
-An image that’s too big will often cause out of memory errors. Scale images to a size that works best with your model, but maintain aspect ratio.
+![jupyterlab](https://user-images.githubusercontent.com/2289/214712829-b393d36a-fe90-4da2-974d-735b5ee036fe.png)
 
-Some models need dimensions that are multiples of 8, or similar (for example Stable Diffusion). In these cases, automatically scale images to the nearest multiple.
+[](#push-your-model-to-replicate)Push your model to Replicate
+-------------------------------------------------------------
 
-Make image scaling easy and automatic, so users can throw any image at your model and get good results. But add controls so they can override defaults and control sizing if they need to.
+You’ve now got a working GPU machine in the cloud!
 
-[](#dependencies)Dependencies
------------------------------
+Now it’s time to [build your own model and push it to Replicate](https://replicate.com/docs/topics/models/publish-a-model).
 
-Keep dependencies to a minimum. Fewer dependencies mean smaller containers and faster builds.
+[](#terminate-your-instance)Terminate your instance
+---------------------------------------------------
 
-Use pinned versions. Pinning your dependencies to specific versions makes your model more reproducible. It will make it easier to debug.
-
-OpenCV is a big dependency. If you’re using it, we recommend using the headless version [opencv-python-headless](https://pypi.org/project/opencv-python-headless/) which is a smaller version for server use.
-
-[](#model-weights)Model weights
--------------------------------
-
-Download weights and push them with your model. Do not try to download them at runtime. If you’re using HuggingFace Diffusers, you can also push the model cache.
-
-If you have weights that are especially large, contact the Replicate team and we’ll help you keep your model size down and your model fast. We’re working on making this better.
+Lambda’s GPU Cloud instances remain active until you terminate them, so you’ll be charged for them until you shut them down. To terminate your instance, go to the Lambda dashboard and click “Terminate” on your instance.
 
 # Working with LoRAs
 
@@ -7560,6 +7458,108 @@ Image models:
 *   [https://replicate.com/replicate/fast-flux-trainer](https://replicate.com/replicate/fast-flux-trainer)
 *   [https://replicate.com/pnyompen/sd-controlnet-lora](https://replicate.com/pnyompen/sd-controlnet-lora)
 *   [https://replicate.com/black-forest-labs/flux-schnell-lora](https://replicate.com/black-forest-labs/flux-schnell-lora)
+
+# Best practices for Replicate models
+
+**URL:** https://replicate.com/docs/guides/build/model-best-practices.md
+
+This guide will walk you through the best practices for pushing a reliable, fast, and user-friendly model to Replicate.
+
+[](#getting-started)Getting started
+-----------------------------------
+
+All models on Replicate use [Cog](https://github.com/replicate/cog), an open-source tool that lets you package machine learning models in a standard, production-ready container. It’s based on Docker.
+
+If you’re new to Cog, we recommend starting from our docs: [Push a model to Replicate](https://replicate.com/docs/guides/push-a-model)
+
+In short, you need to:
+
+1.  define the Docker environment your model runs in with `cog.yaml`
+2.  define how predictions are run with `predict.py`
+3.  test your model by running predictions locally, for example: `cog predict -i image=@input.jpg`
+4.  push the model to Replicate with `cog push`
+
+For the rest of this guide we’ll assume you’re familiar with Cog and you know how to push a model to Replicate.
+
+[](#make-your-model-easy-to-understand)Make your model easy to understand
+-------------------------------------------------------------------------
+
+People must be able to use your model without reading the source code.
+
+### [](#naming-your-model)Naming your model
+
+All names on Replicate are lowercase and use dashes instead of spaces. For example, `llama-2-70b-chat`.
+
+Best practice is to use the model’s official name, like the name of the GitHub repo or HuggingFace model.
+
+Where there are variations of a model, we recommend adding those variations to the end of the name to make the model distinct. These are commonly different parameter sizes or fine-tunes, such as `codellama-34b` and `codellama-34b-instruct`.
+
+### [](#include-a-clear-description)Include a clear description
+
+A short one line description explaining what the model does. Avoid technical terms and abbreviations in your description.
+
+Some good examples:
+
+*   For the `autocaption` model: “Automatically add captions to a video”
+*   For the `llama-2-70b-chat`: “A 70 billion parameter language model from Meta, fine tuned for chat completions”
+
+### [](#use-well-named-model-inputs)Use well named model inputs
+
+Do not prematurely shorten names. Use `negative_prompt` instead of `n_prompt`.
+
+### [](#order-your-inputs)Order your inputs
+
+Put the most important inputs first.
+
+Group related inputs together. For example, `prompt` and `negative_prompt` should be together in your `predict.py` inputs. Users usually want to change them together.
+
+For models with many inputs, consider prefixing fields with a group name. For example, `controlnet_strength`, `controlnet_image` and `controlnet_model`.
+
+### [](#add-guidance-to-explain-inputs)Add guidance to explain inputs
+
+Even when obvious to you. For example, not everyone knows how to use a negative prompt. Guidance like this would help them:
+
+> A negative prompt is a prompt containing all the things you do not want in your output
+
+### [](#pick-defaults-that-balance-speed-and-quality)Pick defaults that balance speed and quality
+
+Good defaults get quality outputs quickly.
+
+For example, with SDXL you get good images at 768x768 with 25 inference steps, which is 3x faster than 1024x1024 at 50 steps.
+
+### [](#give-guidance-on-recommended-ranges)Give guidance on recommended ranges
+
+A model should make it difficult to get bad results while remaining flexible for anyone wanting to experiment.
+
+Keep wide input ranges, but use guidance text to explain where the best results lie.
+
+### [](#handle-image-inputs-well)Handle image inputs well
+
+If your model takes images as inputs, it should accept all the common image formats users will try. For example, JPEG, PNG, GIF and WEBP, as well as images with alpha channels (transparency).
+
+Where inference would fail with a given input (like an RGBA image), convert images to a format that works.
+
+An image that’s too big will often cause out of memory errors. Scale images to a size that works best with your model, but maintain aspect ratio.
+
+Some models need dimensions that are multiples of 8, or similar (for example Stable Diffusion). In these cases, automatically scale images to the nearest multiple.
+
+Make image scaling easy and automatic, so users can throw any image at your model and get good results. But add controls so they can override defaults and control sizing if they need to.
+
+[](#dependencies)Dependencies
+-----------------------------
+
+Keep dependencies to a minimum. Fewer dependencies mean smaller containers and faster builds.
+
+Use pinned versions. Pinning your dependencies to specific versions makes your model more reproducible. It will make it easier to debug.
+
+OpenCV is a big dependency. If you’re using it, we recommend using the headless version [opencv-python-headless](https://pypi.org/project/opencv-python-headless/) which is a smaller version for server use.
+
+[](#model-weights)Model weights
+-------------------------------
+
+Download weights and push them with your model. Do not try to download them at runtime. If you’re using HuggingFace Diffusers, you can also push the model cache.
+
+If you have weights that are especially large, contact the Replicate team and we’ll help you keep your model size down and your model fast. We’re working on making this better.
 
 # Speed up models with torch.compile
 
@@ -9295,32 +9295,6 @@ Rather than working with pixels, which would be very slow, many diffusion models
 
 During training, training data is encoded into latent space. During inference, the output of the diffusion process is decoded back into an image.
 
-# Client libraries
-
-**URL:** https://replicate.com/docs/reference/client-libraries.md
-
-Client libraries make it easier to call the HTTP API from various languages.
-
-[](#official-client-libraries)Official client libraries
--------------------------------------------------------
-
-*   [mcp.replicate.com](https://mcp.replicate.com) – MCP client for Replicate’s HTTP API
-*   [github.com/replicate/replicate-javascript](https://github.com/replicate/replicate-javascript) – Node.js client
-*   [github.com/replicate/replicate-python](https://github.com/replicate/replicate-python) – Python client
-*   [github.com/replicate/replicate-swift](https://github.com/replicate/replicate-swift) – Swift client
-*   [github.com/replicate/replicate-go](https://github.com/replicate/replicate-go) – Go client
-
-[](#community-maintained-client-libraries)Community-maintained client libraries
--------------------------------------------------------------------------------
-
-*   [github.com/cbh123/replicate-elixir](https://github.com/cbh123/replicate-elixir) – Elixir client
-*   [github.com/dreamingtulpa/replicate-ruby](https://github.com/dreamingtulpa/replicate-ruby) – Ruby client
-*   [github.com/dreamingtulpa/replicate-rails](https://github.com/dreamingtulpa/replicate-rails) – Rails integration
-*   [github.com/fofr/replicate-predict](https://github.com/fofr/replicate-predict) - JavaScript wrapper to run and save batches of API calls on Replicate
-*   [github.com/halilcosdu/laravel-replicate](https://github.com/halilcosdu/laravel-replicate) - Laravel client
-
-Got one you’d like to add? [Contact us](https://replicate.com/support).
-
 # How does Replicate work?
 
 **URL:** https://replicate.com/docs/reference/how-does-replicate-work.md
@@ -9616,6 +9590,88 @@ To learn more, check out the [guide to deploying a custom model](https://replica
 
 Stuck on something? [Contact our support team](https://replicate.com/support).
 
+# Agent skills
+
+**URL:** https://replicate.com/docs/reference/skills.md
+
+[](#what-are-agent-skills)What are agent skills?
+------------------------------------------------
+
+Agent skills are markdown instruction files that give coding assistants domain-specific knowledge. They follow the open [Agent Skills](https://agentskills.io) spec and work with tools like [Claude Code](https://claude.ai/code), [OpenCode](https://opencode.ai), [OpenAI Codex](https://openai.com/index/codex/), and others.
+
+Skills are different from [MCP](/docs/reference/mcp). MCP gives your coding assistant tools to call Replicate’s API. Skills give it knowledge about _how to use those tools well_: which models to pick, how to structure prompts, what tradeoffs to consider. They work best together.
+
+[](#replicates-skills)Replicate’s skills
+----------------------------------------
+
+Replicate publishes a collection of agent skills covering model discovery, comparison, execution, and prompting:
+
+Skill
+
+What it covers
+
+`find-models`
+
+Searching models, browsing collections, reading schemas, picking the right model
+
+`compare-models`
+
+Evaluating models by cost, speed, quality, and capabilities
+
+`run-models`
+
+Creating predictions, polling, webhooks, streaming, file handling, multi-model workflows
+
+`prompt-images`
+
+Prompting techniques for image generation and editing: photographic language, text rendering, style transfer, character consistency, inpainting
+
+`prompt-videos`
+
+Prompting techniques for video generation: scene description, camera motion, audio and dialogue, time-coded multi-shot prompting, style control
+
+Source code: [github.com/replicate/skills](https://github.com/replicate/skills)
+
+[](#install)Install
+-------------------
+
+Install all of Replicate’s skills with one command:
+
+```plaintext
+npx skills add replicate/skills
+```
+
+This downloads the skill files into your project and registers them with your coding assistant. The `skills` CLI detects which tools you have installed (Claude Code, OpenCode, etc.) and configures them automatically.
+
+[](#update-and-remove)Update and remove
+---------------------------------------
+
+To pull the latest versions of all installed skills:
+
+```plaintext
+npx skills update
+```
+
+To remove Replicate’s skills:
+
+```plaintext
+npx skills remove replicate
+```
+
+[](#skills-and-mcp)Skills and MCP
+---------------------------------
+
+Skills and [MCP](/docs/reference/mcp) are complementary:
+
+*   **MCP** connects your coding assistant to Replicate’s HTTP API, giving it _tools_ to search for models, create predictions, and fetch results.
+*   **Skills** give your coding assistant _knowledge_ about how to use those tools effectively: which models to choose, how to write prompts that get good results, and what parameters to tune.
+
+You don’t need both, but they work well together. With MCP alone, your assistant can call the API but may not know which model to pick or how to prompt it. With skills alone, your assistant has the knowledge but would need you to make API calls manually.
+
+Tip
+
+For the best experience, install both the [MCP server](/docs/reference/mcp) and agent skills.
+
 # Replicate's MCP server
 
 **URL:** https://replicate.com/docs/reference/mcp.md
@@ -9861,87 +9917,31 @@ Here’s an example prompt you can try:
 
 For more information, see the [replicate-mcp-code-mode repository](https://github.com/replicate/replicate-mcp-code-mode).
 
-# Agent skills
+# Client libraries
 
-**URL:** https://replicate.com/docs/reference/skills.md
+**URL:** https://replicate.com/docs/reference/client-libraries.md
 
-[](#what-are-agent-skills)What are agent skills?
-------------------------------------------------
+Client libraries make it easier to call the HTTP API from various languages.
 
-Agent skills are markdown instruction files that give coding assistants domain-specific knowledge. They follow the open [Agent Skills](https://agentskills.io) spec and work with tools like [Claude Code](https://claude.ai/code), [OpenCode](https://opencode.ai), [OpenAI Codex](https://openai.com/index/codex/), and others.
+[](#official-client-libraries)Official client libraries
+-------------------------------------------------------
 
-Skills are different from [MCP](/docs/reference/mcp). MCP gives your coding assistant tools to call Replicate’s API. Skills give it knowledge about _how to use those tools well_: which models to pick, how to structure prompts, what tradeoffs to consider. They work best together.
+*   [mcp.replicate.com](https://mcp.replicate.com) – MCP client for Replicate’s HTTP API
+*   [github.com/replicate/replicate-javascript](https://github.com/replicate/replicate-javascript) – Node.js client
+*   [github.com/replicate/replicate-python](https://github.com/replicate/replicate-python) – Python client
+*   [github.com/replicate/replicate-swift](https://github.com/replicate/replicate-swift) – Swift client
+*   [github.com/replicate/replicate-go](https://github.com/replicate/replicate-go) – Go client
 
-[](#replicates-skills)Replicate’s skills
-----------------------------------------
+[](#community-maintained-client-libraries)Community-maintained client libraries
+-------------------------------------------------------------------------------
 
-Replicate publishes a collection of agent skills covering model discovery, comparison, execution, and prompting:
+*   [github.com/cbh123/replicate-elixir](https://github.com/cbh123/replicate-elixir) – Elixir client
+*   [github.com/dreamingtulpa/replicate-ruby](https://github.com/dreamingtulpa/replicate-ruby) – Ruby client
+*   [github.com/dreamingtulpa/replicate-rails](https://github.com/dreamingtulpa/replicate-rails) – Rails integration
+*   [github.com/fofr/replicate-predict](https://github.com/fofr/replicate-predict) - JavaScript wrapper to run and save batches of API calls on Replicate
+*   [github.com/halilcosdu/laravel-replicate](https://github.com/halilcosdu/laravel-replicate) - Laravel client
 
-Skill
-
-What it covers
-
-`find-models`
-
-Searching models, browsing collections, reading schemas, picking the right model
-
-`compare-models`
-
-Evaluating models by cost, speed, quality, and capabilities
-
-`run-models`
-
-Creating predictions, polling, webhooks, streaming, file handling, multi-model workflows
-
-`prompt-images`
-
-Prompting techniques for image generation and editing: photographic language, text rendering, style transfer, character consistency, inpainting
-
-`prompt-videos`
-
-Prompting techniques for video generation: scene description, camera motion, audio and dialogue, time-coded multi-shot prompting, style control
-
-Source code: [github.com/replicate/skills](https://github.com/replicate/skills)
-
-[](#install)Install
--------------------
-
-Install all of Replicate’s skills with one command:
-
-```plaintext
-npx skills add replicate/skills
-```
-
-This downloads the skill files into your project and registers them with your coding assistant. The `skills` CLI detects which tools you have installed (Claude Code, OpenCode, etc.) and configures them automatically.
-
-[](#update-and-remove)Update and remove
----------------------------------------
-
-To pull the latest versions of all installed skills:
-
-```plaintext
-npx skills update
-```
-
-To remove Replicate’s skills:
-
-```plaintext
-npx skills remove replicate
-```
-
-[](#skills-and-mcp)Skills and MCP
----------------------------------
-
-Skills and [MCP](/docs/reference/mcp) are complementary:
-
-*   **MCP** connects your coding assistant to Replicate’s HTTP API, giving it _tools_ to search for models, create predictions, and fetch results.
-*   **Skills** give your coding assistant _knowledge_ about how to use those tools effectively: which models to choose, how to write prompts that get good results, and what parameters to tune.
-
-You don’t need both, but they work well together. With MCP alone, your assistant can call the API but may not know which model to pick or how to prompt it. With skills alone, your assistant has the knowledge but would need you to make API calls manually.
-
-Tip
-
-For the best experience, install both the [MCP server](/docs/reference/mcp) and agent skills.
+Got one you’d like to add? [Contact us](https://replicate.com/support).
 
 # OpenAPI schema
 
@@ -10175,6 +10175,42 @@ And here’s the output:
 ```
 
 To learn more about how Replicate model interfaces are defined, see the [Cog documentation](https://cog.run/python).
+
+# llms.txt
+
+**URL:** https://replicate.com/docs/reference/llms-txt.md
+
+The `llms.txt` file provides a plain text overview of all Replicate documentation, formatted for consumption by Large Language Models.
+
+The file is available at: [https://replicate.com/docs/llms.txt](/docs/llms.txt)
+
+[](#example)Example
+-------------------
+
+```markdown
+# Replicate
+## Get Started
+- [Run a model from Node.js](https://replicate.com/docs/get-started/nodejs): Get started with a few lines of JavaScript.
+- [Run a model from Python](https://replicate.com/docs/get-started/python): The language of the machine learning world.
+## Topics
+- [Models](https://replicate.com/docs/topics/models/index): A model is a trained, packaged, and published software program that accepts inputs and returns outputs.
+- [Predictions](https://replicate.com/docs/topics/predictions/index): Whenever you run a model, you're creating a prediction.
+...
+```
+
+[](#use-cases)Use Cases
+-----------------------
+
+*   Training or fine-tuning language models on Replicate’s documentation
+*   Building chatbots or AI assistants that answer questions about Replicate
+*   Indexing documentation for semantic search
+*   Creating documentation embeddings
+
+[](#related)Related
+-------------------
+
+*   [HTTP API](/docs/reference/http) - The full API reference
+*   [OpenAPI schema](/docs/reference/openapi) - Machine-readable API schema
 
 # HTTP API
 
@@ -12443,42 +12479,6 @@ If you want higher limits, [contact us](https://replicate.com/support).
 Replicate’s public HTTP API documentation is available as a machine-readable OpenAPI schema in JSON format.
 
 See [OpenAPI schema](/docs/reference/openapi) to learn more and download the schema.
-
-# llms.txt
-
-**URL:** https://replicate.com/docs/reference/llms-txt.md
-
-The `llms.txt` file provides a plain text overview of all Replicate documentation, formatted for consumption by Large Language Models.
-
-The file is available at: [https://replicate.com/docs/llms.txt](/docs/llms.txt)
-
-[](#example)Example
--------------------
-
-```markdown
-# Replicate
-## Get Started
-- [Run a model from Node.js](https://replicate.com/docs/get-started/nodejs): Get started with a few lines of JavaScript.
-- [Run a model from Python](https://replicate.com/docs/get-started/python): The language of the machine learning world.
-## Topics
-- [Models](https://replicate.com/docs/topics/models/index): A model is a trained, packaged, and published software program that accepts inputs and returns outputs.
-- [Predictions](https://replicate.com/docs/topics/predictions/index): Whenever you run a model, you're creating a prediction.
-...
-```
-
-[](#use-cases)Use Cases
------------------------
-
-*   Training or fine-tuning language models on Replicate’s documentation
-*   Building chatbots or AI assistants that answer questions about Replicate
-*   Indexing documentation for semantic search
-*   Creating documentation embeddings
-
-[](#related)Related
--------------------
-
-*   [HTTP API](/docs/reference/http) - The full API reference
-*   [OpenAPI schema](/docs/reference/openapi) - Machine-readable API schema
 
 # Error codes
 
