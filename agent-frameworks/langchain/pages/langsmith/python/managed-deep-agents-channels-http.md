@@ -1,5 +1,5 @@
 ---
-title: "Connect a Managed Deep Agent over HTTP"
+title: "Connect a Managed Deep Agent to a custom channel over HTTP"
 source: https://docs.langchain.com/langsmith/python/managed-deep-agents-channels-http
 path: langsmith/python/managed-deep-agents-channels-http
 ---

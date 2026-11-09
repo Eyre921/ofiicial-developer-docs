@@ -14,7 +14,7 @@ Pinecone stores your data as [documents](#documents) in a document index. A docu
 
 ## Documents
 
-A document is a JSON object in a document index, read and written through the Documents API. It has a required `_id`, values for the ranking fields declared in the index's schema, and any number of metadata fields. At query time, you choose which ranking field to search with `score_by`.
+A document is a JSON object in a document index, read and written through the [Documents API](/guides/get-started/documents-api). It has a required `_id`, values for the ranking fields declared in the index's schema, and any number of metadata fields. At query time, you choose which ranking field to search with `score_by`.
 
 You declare the schema when you create the index, and you can't change it afterward. The schema supports these ranking field types:
 

@@ -18448,6 +18448,16 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 # Changelog
 Source: https://developers.notion.com/page/changelog
 
+**November 9, 2026**
+
+### Custom Agents in people properties
+
+You can now assign a Custom Agent to a `people` [page property value](/reference/page-property-values#people) when you [create a page](/reference/post-page) or [update page properties](/reference/patch-page). The connection needs the [View sessions and interact with agents](/reference/capabilities#agent-capabilities) capability, and the agent must be selected in the connection's **Agent access** tab. Assigning an agent can start a run, the same as assigning it in Notion.
+
+Page responses now include assigned Custom Agents as [bot user objects](/reference/user#bots). Before, they were left out of `people` arrays. A bot's `avatar_url` is now `null` when its icon isn't an image URL.
+
+Two limits apply. A `user` [rich text mention](/reference/rich-text#user-mention-type-object) of a Custom Agent still returns a `validation_error`. [List all users](/reference/get-users) doesn't include Custom Agents, so read an agent's bot user ID from a `people` property where the agent is already assigned.
+
 **November 5, 2026**
 
 ### Sync health on data source reads
@@ -22429,7 +22439,7 @@ A connection with only comment capabilities can still call [Retrieve token's bot
 
 Agent capabilities control how a connection can use the [Notion Agent APIs](/guides/notion-agent-apis/overview). A connection reaches only the Custom Agents selected in its **Agent access** tab.
 
-* **View sessions and interact with agents**: This capability lets a connection [query agents](/reference/notion-agent-apis/query-agents), [retrieve an agent](/reference/notion-agent-apis/retrieve-agent), and start, continue, and read sessions with [Create or update a session](/reference/notion-agent-apis/update-session).
+* **View sessions and interact with agents**: This capability lets a connection [query agents](/reference/notion-agent-apis/query-agents), [retrieve an agent](/reference/notion-agent-apis/retrieve-agent), and start, continue, and read sessions with [Create or update a session](/reference/notion-agent-apis/update-session). It also lets a connection assign a selected Custom Agent in a [`people` page property](/reference/page-property-values#people).
 
 * **Edit selected agents**: This capability lets a connection [update](/reference/notion-agent-apis/update-agent) a selected Custom Agent, including its status. On its own, it doesn't let a connection read agents, read sessions, or chat. It also doesn't let a connection delete an agent, change a credit limit, or read sessions it didn't create. Only a personal access token or the Admin API can delete an agent or change its credit limit. A public connection can request it only if it's installed in a single workspace.
 
@@ -24498,6 +24508,8 @@ Returns a paginated list of [Users](/reference/user) for the workspace. The resp
 Guests are not included in the response.
 If you already know a guest's ID, [Retrieve a user](/reference/get-user) can return that guest when they belong to the connected workspace.
 
+Custom Agents are not included in the response. To find an agent's bot user ID, read a [`people` page property](/reference/page-property-values#people) where the agent is assigned.
+
 See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 The API does not guarantee a particular sort order for returned users.
@@ -25900,7 +25912,9 @@ A new option name adds an option to the schema if your connection can write to t
 
 The Person property uses the API key `people`. A page response contains an array of people or groups. [User objects](/reference/user) can be partial, so do not assume that a name or email is present.
 
-Writes accept user IDs, including bots that appear as user objects in the API. Bots used internally by Notion may not be assignable. [Retrieve a page property item](/reference/retrieve-a-page-property) returns a paginated list with one user in each item’s `people` field. Use it when a page response omits people.
+Writes accept user IDs, including bots that appear as user objects in the API. To assign a Custom Agent, use its bot user ID, which you can read from a `people` property where the agent is already assigned. [List all users](/reference/get-users) doesn't include Custom Agents. The connection needs the [View sessions and interact with agents](/reference/capabilities#agent-capabilities) capability, and the agent must be selected in the connection's **Agent access** tab. Other bots used internally by Notion can't be assigned.
+
+[Retrieve a page property item](/reference/retrieve-a-page-property) returns a paginated list with one user in each item’s `people` field. Use it when a page response omits people.
 
 > [tab] Schema
 >
@@ -31418,6 +31432,8 @@ If the type key is `"template_mention_user"`, then the rich text object contains
 
 If a rich text object’s `type` value is `"user"`, then the corresponding user field contains a [user object](/reference/user).
 
+A `user` mention can reference a person or a connection's bot. A Custom Agent can't be mentioned: the request returns a `validation_error`. To hand work to an agent, assign it in a [`people` page property](/reference/page-property-values#people).
+
 > [!NOTE]
 >
 > If your connection doesn’t yet have access to the mentioned user, then the `plain_text` that would include a user’s name reads as `"@Anonymous"`. To update the connection to get access to the user, update the connection capabilities on the connection settings page.
@@ -32736,7 +32752,7 @@ User objects that represent people have the `type` property set to `"person"`. T
 
 ## Bots
 
-A user object's `type` property is `"bot"` when the user object represents a bot. A bot user object has the following properties:
+A user object's `type` property is `"bot"` when the user object represents a bot. Custom Agents appear as bots in `people` page properties. [List all users](/reference/get-users) doesn't include them, and a `user` mention can't reference one. A bot's `avatar_url` is `null` when its icon isn't an image URL. A bot user object has the following properties:
 
 | Property | Updatable | Type | Description | Example value |
 | :- | :- | :- | :- | :- |

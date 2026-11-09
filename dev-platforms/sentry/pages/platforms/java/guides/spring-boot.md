@@ -55,7 +55,7 @@ dependencies {
 <plugin>
   <groupId>io.sentry</groupId>
   <artifactId>sentry-maven-plugin</artifactId>
-  <version>0.11.0</version>
+  <version>0.12.0</version>
   <!-- Required to allow auto-install of Sentry SDK and Integrations -->
   <extensions>true</extensions>
   <configuration>

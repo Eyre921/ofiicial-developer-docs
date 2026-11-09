@@ -8,7 +8,7 @@ Create a legacy integrated index with create_index_for_model, so Pinecone embeds
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 A legacy integrated index is created with `create_index_for_model` and served by the legacy Records API. Pinecone converts the source text you upsert and search with to vectors, using one hosted embedding model per index. To have Pinecone embed text in a document index instead, declare `embed` or `sparse_embed` on a `string` field. See [Integrated embedding](/guides/search/integrated-embedding).
 

@@ -2103,6 +2103,8 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/reference/review-excluded-files
 /en/copilot/reference/copilot-usage-metrics
 /en/copilot/reference/copilot-usage-metrics/copilot-usage-metrics
+/en/copilot/reference/copilot-usage-metrics/usage-metrics-coverage
+/en/copilot/reference/copilot-usage-metrics/industry-comparisons
 /en/copilot/reference/copilot-usage-metrics/interpret-copilot-metrics
 /en/copilot/reference/copilot-usage-metrics/reconciling-usage-metrics
 /en/copilot/reference/copilot-usage-metrics/lines-of-code-metrics

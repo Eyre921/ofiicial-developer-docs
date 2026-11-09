@@ -71,7 +71,7 @@ data "pinecone_collections" "all" {}
 
 output "collections" {
   value = {
-    for collection in coalesce(data.pinecone_collections.all.collectionsm, []) : collection.name => collection.status
+    for collection in coalesce(data.pinecone_collections.all.collections, []) : collection.name => collection.status
   }
 }
 ```

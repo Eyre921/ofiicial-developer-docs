@@ -6,7 +6,7 @@ path: platforms/ruby/guides/rack
 
 ---
 title: "Rack Middleware"
-description: "Learn how to set up Sentry in your app, capture your first errors and traces, and view them in Sentry."
+description: "Learn how to set up Sentry in your app, capture your first events, and view them in Sentry."
 url: https://docs.sentry.io/platforms/ruby/guides/rack/
 ---
 
@@ -26,28 +26,9 @@ You need:
 
 ## [Install](https://docs.sentry.io/platforms/ruby/guides/rack.md#install)
 
-Installing the Sentry SDK enables core features such as **Error Monitoring** and **Application Metrics** by default. We'll show you how to send metrics in [Verify Your Setup](https://docs.sentry.io/platforms/ruby/guides/rack.md#verify-your-setup).
-
-Choose additional features you want to configure, and this guide will show you how to get set up:
-
-Error Monitoring\[ ]Tracing\[ ]Profiling
-
-Want to learn more about these features?
-
-* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Sentry's core error monitoring product that automatically reports errors, uncaught exceptions, and crashes. If you have something that looks like an exception, Sentry can capture it.
-* [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
-* [**Profiling**](https://docs.sentry.io/product/profiling.md): Gain deeper insight than traditional tracing without custom instrumentation, letting you discover slow-to-execute or resource-intensive functions in your app.
-* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
-
 ### [Install the Sentry SDK](https://docs.sentry.io/platforms/ruby/guides/rack.md#install-the-sentry-sdk)
 
-Add the `sentry-ruby` gem to your `Gemfile`:
-
-```ruby
-gem "sentry-ruby"
-```
-
-Add the `sentry-ruby` and `stackprof` gems to your `Gemfile`:
+Add the `sentry-ruby` and `stackprof` gems to your `Gemfile` to enable Profiling. Keep `stackprof` before `sentry-ruby` so it loads first:
 
 ```ruby
 gem "stackprof"
@@ -56,13 +37,28 @@ gem "sentry-ruby"
 
 ## [Configure](https://docs.sentry.io/platforms/ruby/guides/rack.md#configure)
 
-### [Initialize the Sentry SDK](https://docs.sentry.io/platforms/ruby/guides/rack.md#initialize-the-sentry-sdk)
+**Error Monitoring** starts working as soon as you call `Sentry.init`. **Application Metrics** need no extra configuration, and you'll learn how to send them in step [#3](https://docs.sentry.io/platforms/ruby/guides/rack.md#send-application-metrics-). This guide also enables **Tracing** and **Profiling**.
 
-Configuration should happen as early as possible in your application's lifecycle.
+Want to learn more about these features?
+
+* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Sentry's core error monitoring product that automatically reports errors, uncaught exceptions, and crashes. If you have something that looks like an exception, Sentry can capture it.
+* [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
+* [**Profiling**](https://docs.sentry.io/product/profiling.md): Gain deeper insight than traditional tracing without custom instrumentation, letting you discover slow-to-execute or resource-intensive functions in your app.
+* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
+
+### [Initialize the Sentry SDK](https://docs.sentry.io/platforms/ruby/guides/rack.md#initialize-the-sentry-sdk)
 
 #### [With Rackup](https://docs.sentry.io/platforms/ruby/guides/rack.md#with-rackup)
 
-Import and initialize the SDK and add `use Sentry::Rack::CaptureExceptions` to your `config.ru` or other rackup file:
+Import and initialize the SDK and add `use Sentry::Rack::CaptureExceptions` to your `config.ru` or other rackup file.
+
+The snippet also turns on:
+
+* Tracing: via [`traces_sample_rate`](https://docs.sentry.io/platforms/ruby/guides/rack/configuration/options.md#traces_sample_rate)
+* Profiling: via [`profiles_sample_rate`](https://docs.sentry.io/platforms/ruby/guides/rack/configuration/options.md#profiles_sample_rate) (requires the `stackprof` gem from the Install step)
+* Breadcrumbs from logs: via [`breadcrumbs_logger`](https://docs.sentry.io/platforms/ruby/guides/rack/configuration/options.md#breadcrumbs_logger)
+
+Don't need a feature? Remove its options from the snippet.
 
 ```ruby
 require 'sentry-ruby'
@@ -70,26 +66,17 @@ require 'sentry-ruby'
 Sentry.init do |config|
   config.dsn = 'https://<key>@o<orgId>.ingest.sentry.io/<projectId>'
 
-  # Get breadcrumbs from logs
-  # Learn more at
-  # https://docs.sentry.io/platforms/ruby/configuration/options/#breadcrumbs_logger
+  # Add breadcrumbs from logs
   config.breadcrumbs_logger = [:sentry_logger, :http_logger]
-  # ___PRODUCT_OPTION_START___ performance
 
-  # Set tracesSampleRate to 1.0 to capture 100%
-  # of transactions for tracing.
-  # We recommend adjusting this value in production
-  # Learn more at
-  # https://docs.sentry.io/platforms/ruby/configuration/options/#traces_sample_rate
+  # Enables Tracing.
+  # Set to 1.0 to capture 100% of transactions for tracing.
+  # We recommend reducing this value in production.
   config.traces_sample_rate = 1.0
-  # ___PRODUCT_OPTION_END___ performance
-  # ___PRODUCT_OPTION_START___ profiling
 
-  # Enable profiling for a percentage of sessions relative to traces_sample_rate.
-  # Learn more at
-  # https://docs.sentry.io/platforms/ruby/configuration/options/#profiles_sample_rate
+  # Enables Profiling for a percentage of sampled transactions.
+  # Requires the stackprof gem.
   config.profiles_sample_rate = 1.0
-  # ___PRODUCT_OPTION_END___ profiling
 end
 
 use Sentry::Rack::CaptureExceptions
@@ -97,7 +84,15 @@ use Sentry::Rack::CaptureExceptions
 
 #### [Without Rackup](https://docs.sentry.io/platforms/ruby/guides/rack.md#without-rackup)
 
-If you're not using Rackup to run your app, you have to place Sentry's initialization code **before** your code requires Sinatra:
+If you're not using Rackup to run your app, you have to place Sentry's initialization code **before** your code requires Sinatra.
+
+The snippet also turns on:
+
+* Tracing: via [`traces_sample_rate`](https://docs.sentry.io/platforms/ruby/guides/rack/configuration/options.md#traces_sample_rate)
+* Profiling: via [`profiles_sample_rate`](https://docs.sentry.io/platforms/ruby/guides/rack/configuration/options.md#profiles_sample_rate) (requires the `stackprof` gem from the Install step)
+* Breadcrumbs from logs: via [`breadcrumbs_logger`](https://docs.sentry.io/platforms/ruby/guides/rack/configuration/options.md#breadcrumbs_logger)
+
+Don't need a feature? Remove its options from the snippet.
 
 ```ruby
 require 'sentry-ruby'
@@ -105,26 +100,17 @@ require 'sentry-ruby'
 Sentry.init do |config|
   config.dsn = 'https://<key>@o<orgId>.ingest.sentry.io/<projectId>'
 
-  # Get breadcrumbs from logs
-  # Learn more at
-  # https://docs.sentry.io/platforms/ruby/configuration/options/#breadcrumbs_logger
+  # Add breadcrumbs from logs
   config.breadcrumbs_logger = [:sentry_logger, :http_logger]
-  # ___PRODUCT_OPTION_START___ performance
 
-  # Set tracesSampleRate to 1.0 to capture 100%
-  # of transactions for tracing.
-  # We recommend adjusting this value in production
-  # Learn more at
-  # https://docs.sentry.io/platforms/ruby/configuration/options/#traces_sample_rate
+  # Enables Tracing.
+  # Set to 1.0 to capture 100% of transactions for tracing.
+  # We recommend reducing this value in production.
   config.traces_sample_rate = 1.0
-  # ___PRODUCT_OPTION_END___ performance
-  # ___PRODUCT_OPTION_START___ profiling
 
-  # Enable profiling for a percentage of sessions relative to traces_sample_rate.
-  # Learn more at
-  # https://docs.sentry.io/platforms/ruby/configuration/options/#profiles_sample_rate
+  # Enables Profiling for a percentage of sampled transactions.
+  # Requires the stackprof gem.
   config.profiles_sample_rate = 1.0
-  # ___PRODUCT_OPTION_END___ profiling
 end
 
 # in a non-rackup environment you must initialize the Sentry SDK before requiring sinatra
@@ -136,7 +122,7 @@ get "/" do
 end
 ```
 
-### [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/ruby/guides/rack.md#control-the-data-you-send-to-sentry-optional)
+### [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/ruby/guides/rack.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK does **not** send user identity data (IP address, ID, and similar) or other data like HTTP bodies and URL query parameters.
 
@@ -154,49 +140,43 @@ Sentry.init do |config|
 end
 ```
 
-## [Verify Your Setup](https://docs.sentry.io/platforms/ruby/guides/rack.md#verify-your-setup)
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/ruby/guides/rack.md#send-application-metrics-)
 
-Let's test your setup and confirm that data reaches your Sentry project.
+Use `Sentry.metrics` to send counters, gauges, and distributions from your app. Add attributes to search and filter metrics later.
 
-### [Issues](https://docs.sentry.io/platforms/ruby/guides/rack.md#issues)
-
-To verify that Sentry captures errors and creates issues in your Sentry project, add this intentional error to your application:
+See [Set Up Metrics](https://docs.sentry.io/platforms/ruby/guides/rack/metrics.md) for all available metric types and configuration options.
 
 ```ruby
+Sentry.metrics.count("checkout.failed", value: 1)
 
+Sentry.metrics.gauge(
+  "queue.depth",
+  42,
+  attributes: { queue: "payments" }
+)
+
+Sentry.metrics.distribution(
+  "api_latency",
+  187,
+  unit: "millisecond",
+  attributes: { endpoint: "/api/orders" }
+)
+```
+
+If you're using Yabeda, you can use the [`sentry-yabeda` integration](https://docs.sentry.io/platforms/ruby/guides/rack/integrations/yabeda.md) to automatically send Yabeda metrics to Sentry.
+
+## [Verify Your Setup](https://docs.sentry.io/platforms/ruby/guides/rack.md#verify-your-setup)
+
+Let's test your setup and confirm that Sentry is working correctly and sending data to your Sentry project.
+
+Trigger and capture a test error in your application:
+
+```ruby
 begin
   1 / 0
 rescue ZeroDivisionError => exception
   Sentry.capture_exception(exception)
 end
-```
-
-### [Tracing](https://docs.sentry.io/platforms/ruby/guides/rack.md#tracing)
-
-To test your tracing configuration, create a custom transaction and span:
-
-```ruby
-
-Sentry.start_transaction(op: "task", name: "Transaction Name") do |transaction|
-  Sentry.get_current_scope.set_span(transaction)
-
-  Sentry.with_child_span(description: "Custom Span Name") do |span|
-    # your instrumented code here
-  end
-end
-```
-
-### [Metrics NEW](https://docs.sentry.io/platforms/ruby/guides/rack.md#metrics-)
-
-Send test metrics from your app to verify that metrics are arriving in Sentry using the `Sentry.metrics` APIs.
-
-You can also send Yabeda metrics to Sentry automatically using our [Yabeda integration](https://docs.sentry.io/platforms/ruby/guides/rack/integrations/yabeda.md).
-
-```ruby
-
-Sentry.metrics.count("checkout.failed", 1)
-Sentry.metrics.gauge("queue.depth", 42)
-Sentry.metrics.distribution("cart.amount_usd", 187.5)
 ```
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/ruby/guides/rack.md#view-captured-data-in-sentry)
@@ -212,12 +192,11 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/ruby/guides/rack.md#next-steps)
 
-At this point, you should have integrated Sentry into your application and should already be sending data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your Ruby application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/ruby/guides/rack/configuration.md)
+* [Set Up Tracing](https://docs.sentry.io/platforms/ruby/guides/rack/tracing.md) to learn more about tracing and sampling
+* [Set Up Profiling](https://docs.sentry.io/platforms/ruby/guides/rack/profiling.md) to learn how to collect and analyze profiles
 
 Are you having problems setting up the SDK?
 

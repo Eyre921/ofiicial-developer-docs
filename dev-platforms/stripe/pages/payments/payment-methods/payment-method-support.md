@@ -60,7 +60,7 @@ Refer to the following table to see where each [payment method](https://docs.str
 | [Multibanco](https://docs.stripe.com/payments/multibanco.md) | EUR | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GI, GR, HU, IE, IT, LI, LT, LU, LV, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE, CH, GB, US | PT |
 | [OXXO](https://docs.stripe.com/payments/oxxo.md) | MXN | MX | MX |
 | [P24](https://docs.stripe.com/payments/p24.md) | EUR, PLN | European Union, AU, CA, HK, JP, MX, NZ, SG, US | PL |
-| [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | EUR, GBP | FI, IE, GB | FI, IE, GB |
+| [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | EUR, GBP | AT, AU, BE, BG, CA, CH, CY, CZ, DE, DK, EE, ES, FI, FR, GB, GR, HK, HR, HU, IE, IT, JP, LI, LT, LU, LV, MT, NL, NO, PL, PT, RO, SE, SG, SI, SK, US | FI, IE, GB |
 | [PayNow](https://docs.stripe.com/payments/paynow.md) | SGD | SG | SG |
 | [PayPal](https://docs.stripe.com/payments/paypal.md) | AUD, CAD, CHF, CZK, DKK, EUR, GBP, HKD, NOK, NZD, PLN, SEK, SGD, USD | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, IE, IT, LV, LI, LT, LU, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE, CH, GB | Worldwide |
 | [PayPay](https://docs.stripe.com/payments/paypay.md) | JPY | JP | JP |

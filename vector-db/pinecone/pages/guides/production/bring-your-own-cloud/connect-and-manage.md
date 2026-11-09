@@ -12,10 +12,6 @@ Once your BYOC environment is deployed, connect to your indexes over public or p
 
 How you connect to your indexes for data plane operations like [querying](/reference/api/latest/data-plane/query), [upserting](/reference/api/latest/data-plane/upsert), and [fetching](/reference/api/latest/data-plane/fetch) vectors depends on your network access mode.
 
-> [!NOTE]
->
-> BYOC doesn't support reading and writing data from the index browser in the Pinecone console.
-
 ### Connect over the public endpoint
 
 Use the `host` URL from the Pinecone console or the [Describe an index](/reference/api/latest/control-plane/describe_index) API response. For example:

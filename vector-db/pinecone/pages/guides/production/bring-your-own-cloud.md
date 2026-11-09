@@ -37,7 +37,7 @@ Some features available in the standard Pinecone service aren't supported or hav
 
 * Each organization can have up to 2 BYOC environments. To request an increase, contact [Pinecone support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 * [Integrated embedding and inference](/guides/indexes/index-data-overview#integrated-embedding) isn't supported, because it relies on models Pinecone hosts outside your cloud account.
-* You can't read or write data from the index browser in the Pinecone console.
+* If an index has a [private endpoint](/guides/production/bring-your-own-cloud/connect-and-manage#connect-over-a-private-endpoint), you can't read or write its data from the index browser in the Pinecone console.
 * The Pinecone CLI can't run data plane operations (queries, upserts, fetches), though its control plane operations (create, list, delete indexes) work as expected.
 * You can't import from private cloud storage buckets unless the bucket is in the same cloud account as your BYOC deployment.
 * On-demand indexes in an environment share the pool, so per-index rate limits prevent a busy index from slowing down the others. If one index needs more capacity than the pool can share, create it as a dedicated read nodes index.

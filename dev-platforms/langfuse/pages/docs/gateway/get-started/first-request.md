@@ -22,7 +22,7 @@ This page walks you through how to send your first request through the Gateway. 
 
 ### Create a gateway API key [#create-a-key]
 
-Go to **Organization settings → AI Gateway → Gateway keys** and select **Create key**.
+Go to **AI Gateway → Gateway keys** and select **Create key**.
 
 Export the key and your region's gateway host in your shell. The setup for each client in the next steps uses these variables.
 
@@ -45,15 +45,15 @@ export LANGFUSE_GATEWAY_HOST="https://gateway.cloud.langfuse.com"
 
 ### Pick a model [#list-models]
 
-Copy the ID of a model you can call. Each ID has the form `<credential>:<model>`, for example `openai-prod:<model>`. See [model IDs](/docs/gateway/features/models#model-ids) for which form to send.
+Pick a model you can call. Its ID has the form `<credential>:<model>`, for example `openai-prod:<model>`. See [model IDs](/docs/gateway/features/models#model-ids) for which form to send.
 
 **Langfuse UI**
 
-Go to **Organization settings → AI Gateway → Models** to see the models you can call.
+Go to **AI Gateway → Providers & Models → Models** and choose a provider credential in the filter. The list shows each model's name without the credential prefix, the routes it supports, and whether it's enabled. Add the credential's name as the prefix when you call a model.
 
-  ![Gateway models page listing model IDs with a copy button, their provider, and supported routes](/images/docs/ai-gateway/models-list.png)
+  ![Providers & Models page on the Models tab, filtered to one provider credential, listing model names with a copy button, their supported routes, and an Enabled switch per model](/images/docs/ai-gateway/models-list.png)
 
-  If the page says "No active providers", your organization hasn't added a
+  If the page says "No providers yet", your organization hasn't added a
   provider credential yet. Ask your admin.
 
 **API**

@@ -10,7 +10,7 @@ Extend your integrations with additional payment methods processed outside of St
 
 Custom payment methods allow you to extend your payment and billing integrations with payment methods processed outside of Stripe. For a list of payment methods offered by Stripe, see the [payment method overview page](https://docs.stripe.com/payments/payment-methods/overview.md).
 
-While you process custom payment method transactions outside of Stripe, you can still [record the transaction details](https://docs.stripe.com/api/payment-record/report-payment/report.md) to your Stripe account to unify reporting and build back office workflows.
+While you process custom payment method transactions outside of Stripe, you can still [record the transaction details](https://docs.stripe.com/api/payment-record/report.md) to your Stripe account to unify reporting and build back office workflows.
 
 ## Configure custom payment method types
 

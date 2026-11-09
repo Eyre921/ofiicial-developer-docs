@@ -29,15 +29,17 @@ Multi-currency settlement is available in the following locations:
 
 ## Enable multi-currency settlement
 
-Add other settlement currencies from your [Balances](https://dashboard.stripe.com/balance/overview) page or using the [settlement_currencies](https://docs.stripe.com/api/balance-settings/update.md?api-version=2026-10-28.preview#update_balance_settings-payments-settlement_currencies) parameter on the Balance Settings API.
+Enable additional settlement currencies in your [settlement settings](https://dashboard.stripe.com/settings/settlement). Select a currency, then confirm and save your changes. To accrue a balance in a currency, accept payments presented in that currency. You can also manage settlement currencies using the [settlement_currencies](https://docs.stripe.com/api/balance-settings/update.md?api-version=2026-10-28.preview#update_balance_settings-payments-settlement_currencies) parameter on the Balance Settings API.
 
-You can also configure bank accounts and currencies in your [Payout Settings](https://dashboard.stripe.com/settings/money-management). To accrue a balance in a given currency, you must first accept payments in that currency, known as presentment.
+## Disable multi-currency settlement
 
-### Attach bank accounts to receive payouts in local currencies
+In your [settlement settings](https://dashboard.stripe.com/settings/settlement), select a settlement currency to disable, then confirm and save your changes. Repeat this process for each additional currency you want to disable. You can’t disable your default settlement currency.
 
-You must provide a separate supported bank account for each settlement currency you configure to receive payouts in that currency. You must match the currency of the bank account to the settlement currency. After you provide the corresponding bank accounts, Stripe directs payouts from your multi-currency balances to their respective bank accounts in the matching currency.
+## Add bank accounts for local-currency payouts
 
-### Configure payout settings
+To receive payouts in a settlement currency, you must add a separate supported bank account with the same currency. Add bank accounts in [Payout Settings](https://dashboard.stripe.com/settings/money-management). Stripe sends payouts from each multi-currency balance to the bank account with the matching currency.
+
+## Configure payout settings
 
 After you meet a currency’s [minimum payout amount](https://docs.stripe.com/payouts/multi-currency-settlement.md#multicurrency-settlement-fees), payouts follow your configured [payout schedule](https://docs.stripe.com/connect/manage-payout-schedule.md), whether manual or automatic. You can’t pay out until your balance for the currency meets the minimum payout amount.
 

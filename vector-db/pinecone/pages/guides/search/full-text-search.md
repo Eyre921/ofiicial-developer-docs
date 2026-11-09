@@ -30,7 +30,7 @@ What full-text search does and doesn't match:
 
 ## How it works
 
-Pinecone's Documents API stores typed fields you declare in a schema. End to end, the flow is short: create an index with a [schema](#schema-definition) that declares your ranking fields, upsert your data as JSON documents, then search by choosing one ranking signal per search request with `score_by`. The [end-to-end example](#end-to-end-example) below stitches all three steps into one runnable script.
+Pinecone's [Documents API](/guides/get-started/documents-api) stores typed fields you declare in a schema. End to end, the flow is short: create an index with a [schema](#schema-definition) that declares your ranking fields, upsert your data as JSON documents, then search by choosing one ranking signal per search request with `score_by`. The [end-to-end example](#end-to-end-example) below stitches all three steps into one runnable script.
 
 ### Interfaces
 

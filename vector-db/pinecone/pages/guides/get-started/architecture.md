@@ -59,7 +59,7 @@ Pinecone separates writes and reads into different paths, and each path scales i
 
 ### Data-plane APIs
 
-Each index is created for, and served by, one data-plane API. The Documents API serves document indexes and is the API to build on. The legacy Vectors API and legacy Records API serve legacy vector indexes and legacy integrated indexes, and they keep working.
+Each index is created for, and served by, one data-plane API. The [Documents API](/guides/get-started/documents-api) serves document indexes and is the API to build on. The legacy Vectors API and legacy Records API serve legacy vector indexes and legacy integrated indexes, and they keep working.
 
 | | Documents API | Legacy Vectors API | Legacy Records API |
 | :- | :- | :- | :- |

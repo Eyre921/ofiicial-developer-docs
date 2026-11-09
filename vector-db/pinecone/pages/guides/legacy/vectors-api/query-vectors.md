@@ -8,7 +8,7 @@ Query a legacy vector index with the legacy Vectors API, using a dense vector, a
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 This page shows you how to query a legacy vector index with the legacy Vectors API. For a document index, see [Semantic search](/guides/search/semantic-search), [Sparse-vector search](/guides/search/sparse-vector-search), and [Filter by metadata](/guides/search/filter-by-metadata).
 

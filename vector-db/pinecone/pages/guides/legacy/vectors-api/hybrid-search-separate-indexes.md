@@ -8,7 +8,7 @@ Store dense and sparse vectors in two Pinecone indexes linked by ID, query each,
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 Store dense and sparse vectors in two separate Pinecone indexes linked by a shared record ID, query each index, and merge the results client-side (for example, with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion)). This is the legacy Vectors API separate-index hybrid pattern. It's more flexible than a single index (it supports sparse-only queries, integrated embedding, and per-index reranking) but requires managing two indexes.
 

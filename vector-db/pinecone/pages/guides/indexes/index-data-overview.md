@@ -16,7 +16,7 @@ You define a `schema` with `pc.indexes.create` (or `POST /indexes`).
 
 * One schema can combine `dense_vector`, `sparse_vector`, and `full_text_search`-enabled `string` fields.
 * A single index can serve [full-text search](/guides/search/full-text-search) (BM25 with Lucene queries), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/sparse-vector-search) together, often covering what previously required two indexes.
-* Holds [documents](/guides/get-started/key-terms#document), read and written through the Documents API. Pick the ranking signal per query with `score_by`.
+* Holds [documents](/guides/get-started/key-terms#document), read and written through the [Documents API](/guides/get-started/documents-api). Pick the ranking signal per query with `score_by`.
 
 ### Legacy vector index
 

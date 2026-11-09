@@ -8,7 +8,7 @@ Update a record's metadata or vector values by ID, or update metadata across rec
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 This page shows you how to update records in a namespace of a legacy vector index with the legacy Vectors API. To replace whole records, [upsert](/guides/legacy/vectors-api/upsert-vectors) them instead. For a document index, see [Update data](/guides/data/update-data).
 

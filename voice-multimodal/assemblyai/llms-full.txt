@@ -32,6 +32,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Model selection](#model-selection-docs-pre-recorded-audio-select-the-speech-model-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-pre-recorded-audio-universal-3-5-pro-prompting-mdx)
 - [Medical Mode](#medical-mode-docs-pre-recorded-audio-medical-mode-mdx)
+- [Veterinary Mode (beta)](#veterinary-mode-beta-docs-pre-recorded-audio-veterinary-mode-mdx)
 - [Speaker Diarization](#speaker-diarization-docs-pre-recorded-audio-label-speakers-mdx)
 - [Multichannel Transcription](#multichannel-transcription-docs-pre-recorded-audio-transcribe-multiple-audio-channels-mdx)
 - [Code Switching](#code-switching-docs-pre-recorded-audio-code-switching-mdx)
@@ -110,6 +111,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Multilingual Transcription](#multilingual-transcription-docs-streaming-multilingual-transcription-mdx)
 - [Real-time Translation](#real-time-translation-docs-streaming-real-time-translation-mdx)
 - [Medical Mode](#medical-mode-docs-streaming-medical-mode-mdx)
+- [Veterinary Mode (beta)](#veterinary-mode-beta-docs-streaming-veterinary-mode-mdx)
 - [Voice Focus](#voice-focus-docs-streaming-voice-focus-mdx)
 - [Streaming Diarization and Multichannel](#streaming-diarization-and-multichannel-docs-streaming-label-speakers-and-separate-channels-mdx)
 - [PII Redaction](#pii-redaction-docs-streaming-pii-redaction-mdx)
@@ -368,6 +370,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Identifying speakers in audio recordings](#identifying-speakers-in-audio-recordings-docs-pre-recorded-audio-guides-identifying-speakers-in-audio-recordings-mdx)
 - [Streaming v2 (Legacy)](#streaming-v2-legacy-docs-pre-recorded-audio-legacy-streaming-mdx)
 - [Universal-3.5 Pro](#universal-3-5-pro-docs-pre-recorded-audio-universal-3-5-pro-mdx)
+- [Sample audio files](#sample-audio-files-docs-samples-mdx)
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
 - [Universal-3.5 Pro Realtime API](#universal-3-5-pro-realtime-api-docs-voice-agents-universal-3-5-pro-streaming-api-mdx)
@@ -667,6 +670,7 @@ Use this to build the recommendation. Do not dump it on the user.
 | Multilingual / code-switching | `speech_models: ["universal-3-5-pro"]` + `prompt` parameter — see [U3 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) |
 | Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with U3 Pro / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
 | Medical domain | `domain: "medical-v1"` (pre-recorded *and* streaming; supported languages: en, es, de, fr) |
+| Veterinary domain (beta) | `domain: "veterinary-v1"` (pre-recorded *and* streaming) |
 | PII redaction in text | `redact_pii: true` + `redact_pii_policies: [...]` + optional `redact_pii_sub: "hash" \| "entity_name"` |
 | PII redaction in audio | `redact_pii_audio: true` (original file must be ≤1 GB; redacted audio URL is available for 24 h) |
 | Chapters or summaries | Transcribe first, then LLM Gateway (Section 8) |
@@ -734,6 +738,8 @@ if transcript.status == aai.TranscriptStatus.error:
     raise RuntimeError(transcript.error)
 print(transcript.text)
 ```
+
+For more test files by scenario (medical, multilingual, meeting, phone, call center, noisy), see [Sample audio files](/samples).
 
 **Node/JS:**
 ```javascript
@@ -1146,6 +1152,7 @@ For the most common errors across all APIs, with fixes, and links to each produc
 - Always `Terminate` streaming sessions.
 - Don't use `auto_chapters`, `summarization`, `summary_model`, `summary_type`. Use LLM Gateway.
 - Medical mode is `domain: "medical-v1"` (pre-recorded body param / streaming query param). The legacy `medical_mode` flag is **not** the right name.
+- Veterinary mode (beta) is `domain: "veterinary-v1"` (pre-recorded body param / streaming query param).
 - LLM Gateway model IDs are exact and versioned (e.g., `claude-sonnet-4-6`, `gpt-5.2`, `gemini-2.5-pro`). Shorthand like `claude-sonnet-4` is invalid.
 - Phone audio stays at native 8 kHz mu-law (`encoding=pcm_mulaw`) — don't upsample.
 - EU customers use `api.eu.assemblyai.com`, `streaming.eu.assemblyai.com`, and `llm-gateway.eu.assemblyai.com`. The default streaming host (`streaming.assemblyai.com`) is **Edge Routing**, not US-pinned — use `streaming.us.assemblyai.com` if you need data residency guarantees on the US side.
@@ -1570,16 +1577,23 @@ Add-on models enhance transcription accuracy for specialized domains. They work 
 
   
     <ul>
-      <li>Improved accuracy for medical terminology</li>
-      <li>Medications, procedures, conditions, and dosages</li>
-      <li>Works with pre-recorded and streaming models</li>
+      <li>Improved accuracy for medication names</li>
+      <li>Generic and brand-name medication names</li>
+      <li>Works with <a href="/pre-recorded-audio/medical-mode">Pre-recorded STT</a> and <a href="/streaming/medical-mode">Real-time STT</a></li>
       <li>4 languages: en, es, de, fr</li>
+    </ul>
+  
+  
+    <ul>
+      <li>Improved accuracy for veterinary terminology</li>
+      <li>Animal medications, procedures, and conditions</li>
+      <li>Works with <a href="/pre-recorded-audio/veterinary-mode">Pre-recorded STT</a> and <a href="/streaming/veterinary-mode">Real-time STT</a></li>
     </ul>
   
 
 ### Medical Mode
 
-Medical Mode (`domain: "medical-v1"`) is an add-on that enhances transcription accuracy for medical terminology — including medication names, procedures, conditions, and dosages. It is optimized for medical entity recognition to correct terms that other models frequently get wrong.
+Medical Mode (`domain: "medical-v1"`) is an add-on that enhances transcription accuracy for medication names, including both generic and brand-name medications. It corrects medication names that other models frequently get wrong.
 
 **Supported models:**
 - Pre-recorded: Universal-3.5 Pro, Universal-2
@@ -1590,6 +1604,18 @@ Medical Mode (`domain: "medical-v1"`) is an add-on that enhances transcription a
 Medical Mode is billed as a separate add-on. See the [pricing page](https://www.assemblyai.com/pricing) for details.
 
 Learn more: [Medical Mode for pre-recorded audio](/pre-recorded-audio/medical-mode) | [Medical Mode for streaming](/streaming/medical-mode)
+
+### Veterinary Mode (beta)
+
+Veterinary Mode (`domain: "veterinary-v1"`) is an add-on that enhances transcription accuracy for veterinary terminology, such as animal medication names, procedures, and conditions.
+
+**Supported models:**
+- Pre-recorded: Universal-3.5 Pro, Universal-2
+- Streaming: Universal-3.6 Pro Realtime, Universal-3.5 Pro Realtime, Universal-Streaming English, Universal-Streaming Multilingual
+
+Veterinary Mode is billed as a separate add-on at the same list price as Medical Mode. See the [pricing page](https://www.assemblyai.com/pricing) for details.
+
+Learn more: [Veterinary Mode for pre-recorded audio](/pre-recorded-audio/veterinary-mode) | [Veterinary Mode for streaming](/streaming/veterinary-mode)
 
 ## Choosing the right model
 
@@ -4681,6 +4707,10 @@ Smoke from hundreds of wildfires in Canada is triggering air quality alerts thro
 
 That's the whole first call. From here you can add options — speaker labels, language detection, or a local file — see the [complete example](#complete-example) to combine them, or use the [HTTP API directly](#using-the-http-api-directly) if you're not using an SDK.
 
+<Visibility for="agents">
+For more test files by scenario (meeting, call center, medical, noisy, other languages), see [Sample audio files](/samples).
+</Visibility>
+
 ## Customize your request
 
 The call above works with no extra configuration. Add capabilities by setting options on the same request — combine as many as you need (the [complete example](#complete-example) sets several at once).
@@ -5773,9 +5803,9 @@ If you'd like help building or optimizing a prompt for your audio, our team can 
 URL: https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode
 Source: docs/pre-recorded-audio/medical-mode.mdx
 Navigation: Pre-recorded STT > Features
-Description: Improve transcription accuracy for medical terminology in pre-recorded audio
+Description: Improve transcription accuracy for generic and brand-name medication names in pre-recorded audio
 
-Medical Mode is an add-on that enhances transcription accuracy for medical terminology — including medication names, procedures, conditions, and dosages. It is optimized for medical entity recognition to correct terms that other models frequently get wrong.
+Medical Mode is an add-on that enhances transcription accuracy for medication names, including both generic and brand-name medications. It corrects medication names that other models frequently get wrong.
 
 Medical Mode can be used with all of our Pre-recorded STT models.
 
@@ -5930,9 +5960,9 @@ insulin Lispro (Humalog) subcutaneously.
 
 ## Use cases
 
-Medical Mode is designed for healthcare AI applications where accurate medical terminology is critical:
+Medical Mode is designed for healthcare AI applications where accurate medication names are critical:
 
-- **Ambient clinical documentation** — Capture medication names, dosages, and clinical terms correctly in real-time scribing workflows.
+- **Ambient clinical documentation** — Capture generic and brand-name medication names correctly in scribing workflows.
 - **AI-powered clinical notes** — Generate clean transcripts for downstream LLMs producing SOAP notes, discharge summaries, and referral letters.
 - **Front-office automation** — Handle drug names, provider names, and clinic-specific terminology in scheduling calls, insurance verification, and voice agents.
 - **Multi-speaker clinical conversations** — Combine with [Speaker Diarization](/pre-recorded-audio/label-speakers) for provider/patient separation in telehealth, therapy documentation, and clinical settings.
@@ -5993,6 +6023,207 @@ Your transcript is still returned using standard transcription, and you will not
 AssemblyAI offers a Business Associate Agreement (BAA) for customers who need to process Protected Health Information (PHI). AssemblyAI is SOC 2 Type 2, ISO 27001:2022, and PCI DSS v4.0 certified. Medical Mode does not change existing data handling or retention policies.
 
 Paid customers can review and sign our standard online BAA self-serve, at no additional cost, from the [**Data Controls** page](https://www.assemblyai.com/dashboard/settings/data-controls) in the dashboard. You must have an upgraded (paid) account to see the BAA option. See [Data Controls](/data-controls#business-associate-agreement-baa) for details, or [contact sales](https://www.assemblyai.com/contact-sales) for enterprise pricing.
+
+---
+
+<a id="veterinary-mode-beta-docs-pre-recorded-audio-veterinary-mode-mdx"></a>
+
+# Veterinary Mode (beta)
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/veterinary-mode
+Source: docs/pre-recorded-audio/veterinary-mode.mdx
+Navigation: Pre-recorded STT > Features
+Description: Improve transcription accuracy for veterinary terminology in pre-recorded audio
+
+Veterinary Mode is an add-on that enhances transcription accuracy for veterinary terminology, such as animal medication names, procedures, and conditions. Use it for veterinary use cases where general-purpose transcription frequently gets these terms wrong.
+
+Enable Veterinary Mode by setting the `domain` parameter to `"veterinary-v1"`. No changes to your existing pipeline are required.
+
+## Quickstart
+
+To enable Veterinary Mode, set `domain` to `"veterinary-v1"` in the POST request body:
+
+```python {10}  expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+headers = {"authorization": "<YOUR_API_KEY>"}
+
+data = {
+    "audio_url": "<YOUR_AUDIO_URL>",
+    "language_detection": True,
+    "domain": "veterinary-v1"
+}
+
+response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
+
+if response.status_code != 200:
+    print(f"Error: {response.status_code}, Response: {response.text}")
+    response.raise_for_status()
+
+transcript_response = response.json()
+transcript_id = transcript_response["id"]
+polling_endpoint = f"{base_url}/v2/transcript/{transcript_id}"
+
+while True:
+    transcript = requests.get(polling_endpoint, headers=headers).json()
+    if transcript["status"] == "completed":
+        print(transcript["text"])
+        break
+    elif transcript["status"] == "error":
+        raise RuntimeError(f"Transcription failed: {transcript['error']}")
+    else:
+        time.sleep(3)
+```
+
+To enable Veterinary Mode, set `domain` to `"veterinary-v1"` in the transcription config.
+
+```python {11}
+from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
+
+# You can use a local filepath:
+# audio_file = "./example.mp3"
+
+# Or use a publicly-accessible URL:
+audio_file = "<YOUR_AUDIO_URL>"
+
+config = TranscriptionConfig(
+    language_detection=True,
+    domain="veterinary-v1",
+)
+
+transcriber = Transcriber(api_key="<YOUR_API_KEY>")
+transcript = transcriber.transcribe(audio_file, config)
+
+print(transcript.text)
+```
+
+To enable Veterinary Mode, set `domain` to `"veterinary-v1"` in the POST request body:
+
+```javascript {9}  expandable
+const baseUrl = "https://api.assemblyai.com";
+const headers = {
+  authorization: "<YOUR_API_KEY>",
+};
+
+const data = {
+  audio_url: "<YOUR_AUDIO_URL>",
+  language_detection: true,
+  domain: "veterinary-v1",
+};
+
+const url = `${baseUrl}/v2/transcript`;
+let res = await fetch(url, {
+  method: "POST",
+  headers: { ...headers, "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+if (!res.ok) throw new Error(`Error: ${res.status}`);
+const response = await res.json();
+
+const transcriptId = response.id;
+const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
+
+while (true) {
+  res = await fetch(pollingEndpoint, { headers });
+  if (!res.ok) throw new Error(`Error: ${res.status}`);
+  const transcriptionResult = await res.json();
+
+  if (transcriptionResult.status === "completed") {
+    console.log(transcriptionResult.text);
+    break;
+  } else if (transcriptionResult.status === "error") {
+    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+}
+```
+
+To enable Veterinary Mode, set `domain` to `"veterinary-v1"` in the transcription config.
+
+```javascript {16}  expandable
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({
+  apiKey: "<YOUR_API_KEY>",
+});
+
+// You can use a local filepath:
+// const audioFile = "./example.mp3"
+
+// Or use a publicly-accessible URL:
+const audioFile = "<YOUR_AUDIO_URL>";
+
+const params = {
+  audio: audioFile,
+  language_detection: true,
+  domain: "veterinary-v1",
+};
+
+const run = async () => {
+  const transcript = await client.transcripts.transcribe(params);
+  console.log(transcript.text);
+};
+
+run();
+```
+
+## Use cases
+
+Veterinary Mode is designed for veterinary AI applications where accurate clinical terminology is critical:
+
+- **Veterinary scribing**: Capture medication names and clinical terms correctly when documenting exams and consultations.
+- **AI-powered clinical notes**: Generate clean transcripts for downstream LLMs producing SOAP notes, discharge instructions, and referral letters.
+- **Front-office automation**: Handle drug names and clinic-specific terminology in scheduling calls, client follow-ups, and voice agents.
+- **Multi-speaker consultations**: Combine with [Speaker Diarization](/pre-recorded-audio/label-speakers) to separate the veterinarian from the pet owner.
+
+## Combine with other features
+
+Veterinary Mode works alongside other transcription features. You can combine it with:
+
+- [Speaker Diarization](/pre-recorded-audio/label-speakers) to identify who said what in consultations
+- [Keyterms Prompting](/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting) to further boost accuracy for specific terms unique to your practice
+
+```python
+data = {
+    "audio_url": "<YOUR_AUDIO_URL>",
+    "language_detection": True,
+    "domain": "veterinary-v1",
+    "speaker_labels": True,
+    "keyterms_prompt": ["Apoquel", "Bravecto", "Cytopoint"]
+}
+```
+
+```python
+config = TranscriptionConfig(
+    language_detection=True,
+    domain="veterinary-v1",
+    speaker_labels=True,
+    keyterms_prompt=["Apoquel", "Bravecto", "Cytopoint"],
+)
+```
+
+```javascript
+const data = {
+  audio_url: "<YOUR_AUDIO_URL>",
+  language_detection: true,
+  domain: "veterinary-v1",
+  speaker_labels: true,
+  keyterms_prompt: ["Apoquel", "Bravecto", "Cytopoint"],
+};
+```
+
+```javascript
+const params = {
+  audio: audioFile,
+  language_detection: true,
+  domain: "veterinary-v1",
+  speaker_labels: true,
+  keyterms_prompt: ["Apoquel", "Bravecto", "Cytopoint"],
+};
+```
 
 ---
 
@@ -6222,7 +6453,7 @@ You can constrain the number of speakers with `speakers_expected`, or with `min_
     <tr>
       <td>`speaker_options.max_speakers_expected`</td>
       <td>number</td>
-      <td>**0–2 minutes**: —<br/>**2–10 minutes**: 10 speakers<br/>**10+ minutes**: 30 speakers</td>
+      <td>—</td>
       <td>A hard upper limit on the number of speaker labels. If more people speak than this, the additional speakers are merged into existing labels. Give the model a little headroom above the number of speakers you expect; setting it too high can cause over-splitting and return more speakers than are actually present.</td>
     </tr>
 
@@ -23729,7 +23960,7 @@ Source: docs/streaming/medical-mode.mdx
 Navigation: Real-time STT > Features
 Description: Medical Mode documentation.
 
-Medical Mode is an add-on that enhances streaming transcription accuracy for medical terminology — including medication names, procedures, conditions, and dosages. It is optimized for medical entity recognition to correct terms that other models frequently get wrong.
+Medical Mode is an add-on that enhances streaming transcription accuracy for medication names, including both generic and brand-name medications. It corrects medication names that other models frequently get wrong.
 
 Medical Mode can be used with all of our Real-time STT models.
 
@@ -23791,9 +24022,9 @@ insulin Lispro (Humalog) subcutaneously.
 
 ## Use cases
 
-Medical Mode is designed for healthcare AI applications where accurate medical terminology is critical:
+Medical Mode is designed for healthcare AI applications where accurate medication names are critical:
 
-- **Ambient clinical documentation** — Capture medication names, dosages, and clinical terms correctly during live patient encounters.
+- **Ambient clinical documentation** — Capture generic and brand-name medication names correctly during live patient encounters.
 - **Real-time medical scribes** — Deliver accurate transcripts to clinicians during or immediately after a consult.
 - **Front-office voice agents** — Handle drug names, provider names, and clinic-specific terminology in scheduling calls and insurance verification.
 - **Medical contact centers** — Transcribe calls with correct medical vocabulary for downstream processing and quality assurance.
@@ -23918,6 +24149,118 @@ If you are using a Universal Streaming model (not U3 Pro), do not set `end_of_tu
 AssemblyAI offers a Business Associate Agreement (BAA) for customers who need to process Protected Health Information (PHI). AssemblyAI is SOC 2 Type 2, ISO 27001:2022, and PCI DSS v4.0 certified. Medical Mode does not change existing data handling or retention policies.
 
 Paid customers can review and sign our standard online BAA self-serve, at no additional cost, from the [**Data Controls** page](https://www.assemblyai.com/dashboard/settings/data-controls) in the dashboard. You must have an upgraded (paid) account to see the BAA option. See [Data Controls](/data-controls#business-associate-agreement-baa) for details, or [contact sales](https://www.assemblyai.com/contact-sales) for enterprise pricing.
+
+---
+
+<a id="veterinary-mode-beta-docs-streaming-veterinary-mode-mdx"></a>
+
+# Veterinary Mode (beta)
+
+URL: https://www.assemblyai.com/docs/streaming/veterinary-mode
+Source: docs/streaming/veterinary-mode.mdx
+Navigation: Real-time STT > Features
+Description: Improve streaming transcription accuracy for veterinary terminology
+
+Veterinary Mode is an add-on that enhances streaming transcription accuracy for veterinary terminology, such as animal medication names, procedures, and conditions. Use it for veterinary use cases where general-purpose transcription frequently gets these terms wrong.
+
+Veterinary Mode can be used with all of our Real-time STT models.
+
+Enable Veterinary Mode by setting the `domain` connection parameter to `"veterinary-v1"`. No other changes to your existing pipeline are required.
+
+## Quickstart
+
+Set `domain` to `"veterinary-v1"` as a connection parameter when you open the WebSocket.
+
+```python
+CONNECTION_PARAMS = {
+    "sample_rate": 16000,
+    "speech_model": "universal-3-6-pro",
+    "domain": "veterinary-v1",
+}
+```
+
+```python
+client.connect(
+    RealTimeParameters(
+        sample_rate=16000,
+        speech_model="universal-3-6-pro",
+        domain="veterinary-v1",
+    )
+)
+```
+
+```javascript
+const CONNECTION_PARAMS = {
+  sample_rate: 16000,
+  speech_model: "universal-3-6-pro",
+  domain: "veterinary-v1",
+};
+```
+
+```javascript
+const transcriber = client.streaming.transcriber({
+  sampleRate: 16_000,
+  speechModel: "universal-3-6-pro",
+  domain: "veterinary-v1",
+});
+```
+
+## Use cases
+
+Veterinary Mode is designed for veterinary AI applications where accurate clinical terminology is critical:
+
+- **Real-time veterinary scribes**: Deliver accurate transcripts to veterinarians during or immediately after an exam.
+- **Front-office voice agents**: Handle drug names and clinic-specific terminology in scheduling calls and client follow-ups.
+- **Veterinary contact centers**: Transcribe calls with correct veterinary vocabulary for downstream processing and quality assurance.
+
+## Combine with other features
+
+Veterinary Mode works alongside other streaming features. You can combine it with:
+
+- [Streaming Diarization](/streaming/label-speakers-and-separate-channels) to separate the veterinarian from the pet owner
+- [Keyterms Prompting](/streaming/prompting-and-keyterms) to further boost accuracy for specific terms unique to your practice
+
+```python
+CONNECTION_PARAMS = {
+    "sample_rate": 16000,
+    "speech_model": "universal-3-6-pro",
+    "domain": "veterinary-v1",
+    "speaker_labels": "true",
+    "keyterms_prompt": json.dumps(["Apoquel", "Bravecto", "Cytopoint"])
+}
+```
+
+```python
+client.connect(
+    RealTimeParameters(
+        sample_rate=16000,
+        speech_model="universal-3-6-pro",
+        domain="veterinary-v1",
+        speaker_labels=True,
+        keyterms_prompt=["Apoquel", "Bravecto", "Cytopoint"],
+    )
+)
+```
+
+```javascript
+const CONNECTION_PARAMS = {
+  sample_rate: 16000,
+  speech_model: "universal-3-6-pro",
+  domain: "veterinary-v1",
+  speaker_labels: true,
+  keyterms_prompt: JSON.stringify(["Apoquel", "Bravecto", "Cytopoint"]),
+};
+```
+
+```javascript
+const transcriber = client.streaming.transcriber({
+  sampleRate: 16_000,
+  speechModel: "universal-3-6-pro",
+  domain: "veterinary-v1",
+  speakerLabels: true,
+  keytermsPrompt: ["Apoquel", "Bravecto", "Cytopoint"],
+});
+```
 
 ---
 
@@ -44232,7 +44575,7 @@ import sounddevice as sd
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 RATE = 16000
-config = SyncTranscriptionConfig(sample_rate=RATE, channels=1)
+config = SyncTranscriptionConfig(model="universal-3-6-pro", sample_rate=RATE, channels=1)
 
 with SyncTranscriber() as transcriber:
     with transcriber.open_live(config) as session:
@@ -44256,7 +44599,11 @@ import { AssemblyAI } from "assemblyai";
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 const RATE = 16000;
 
-const session = client.sync.openLive({ sample_rate: RATE, channels: 1 });
+const session = client.sync.openLive({
+  model: "universal-3-6-pro",
+  sample_rate: RATE,
+  channels: 1,
+});
 
 // SoX writes raw 16-bit mono PCM to stdout while it records.
 const microphone = spawn("sox", [
@@ -44313,9 +44660,10 @@ Send an audio file in a single call, get a transcript back in milliseconds. No p
 ```python
 import os
 
-from assemblyai.sync.v1 import SyncTranscriber
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
-transcriber = SyncTranscriber(api_key=os.environ["ASSEMBLYAI_API_KEY"])
+config = SyncTranscriptionConfig(model="universal-3-6-pro")
+transcriber = SyncTranscriber(api_key=os.environ["ASSEMBLYAI_API_KEY"], config=config)
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav")
 print(result.text)
@@ -44327,13 +44675,15 @@ import { AssemblyAI } from "assemblyai";
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
-const result = await client.sync.transcribe("./sample.wav");
+const result = await client.sync.transcribe("./sample.wav", {
+  model: "universal-3-6-pro",
+});
 console.log(result.text);
 ```
 
 `warm()` opens the HTTPS connection ahead of the request. Call it as soon as you know audio is coming, so the handshake is done by the time you have the clip; [Connection pre-warming](/sync-stt/connection-pre-warming) explains what it saves.
 
-The Sync API uses our flagship Universal-3.5 Pro model. The SDKs' `transcribe()` accepts WAV or raw PCM audio up to 120 seconds. To send up to 20 minutes, or a compressed format such as MP3, post the file to `POST /v1/transcribe` [over HTTP](#using-the-http-api-directly). It transcribes with state-of-the-art accuracy in [32 languages](/sync-stt/language-selection#supported-languages).
+The Sync API uses our flagship Universal-3.6 Pro model. The SDKs' `transcribe()` accepts WAV or raw PCM audio up to 120 seconds. To send up to 20 minutes, or a compressed format such as MP3, post the file to `POST /v1/transcribe` [over HTTP](#using-the-http-api-directly). It transcribes with state-of-the-art accuracy in [32 languages](/sync-stt/language-selection#supported-languages).
 
 Not using an SDK? The same flow works over plain HTTP — see [Using the HTTP API directly](#using-the-http-api-directly).
 
@@ -44377,14 +44727,19 @@ npm install assemblyai
 
 ### Step 2: Run your first transcription
 
+<Visibility for="agents">
+No WAV file? Download one under 120 seconds from [Sample audio files](/samples).
+</Visibility>
+
 Save this as `transcribe.py` (Python) or `transcribe.mjs` (JavaScript), next to a `sample.wav` file:
 
 ```python
 import os
 
-from assemblyai.sync.v1 import SyncTranscriber
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
-transcriber = SyncTranscriber(api_key=os.environ["ASSEMBLYAI_API_KEY"])
+config = SyncTranscriptionConfig(model="universal-3-6-pro")
+transcriber = SyncTranscriber(api_key=os.environ["ASSEMBLYAI_API_KEY"], config=config)
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav")
 print(result.text)
@@ -44396,7 +44751,9 @@ import { AssemblyAI } from "assemblyai";
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
-const result = await client.sync.transcribe("./sample.wav");
+const result = await client.sync.transcribe("./sample.wav", {
+  model: "universal-3-6-pro",
+});
 console.log(result.text);
 ```
 
@@ -44410,16 +44767,16 @@ Hi, I'm calling about my Best Buy order...
 
 ## Customize your request
 
-The call above works with no extra configuration. Pass a config to change how the audio is transcribed — in Python a `SyncTranscriptionConfig`, either as the transcriber's default (`SyncTranscriber(config=...)`) or per call (`transcribe(data, config=...)`); in JavaScript, a plain object as the second argument to `transcribe()`.
+Beyond the model, the call above needs no extra configuration. Pass a config to change how the audio is transcribed — in Python a `SyncTranscriptionConfig`, either as the transcriber's default (`SyncTranscriber(config=...)`) or per call (`transcribe(data, config=...)`); in JavaScript, a plain object as the second argument to `transcribe()`.
 
 ### Select a model
 
-`model` selects the sync speech model and defaults to `universal-3-5-pro`. Set it explicitly to pin the model:
+`model` selects the sync speech model. Set it to `universal-3-6-pro`: the SDKs currently default to `universal-3-5-pro`, which remains available.
 
 ```python
 from assemblyai.sync.v1 import SyncTranscriptionConfig
 
-config = SyncTranscriptionConfig(model="universal-3-5-pro")
+config = SyncTranscriptionConfig(model="universal-3-6-pro")
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav", config=config)
 ```
@@ -44427,7 +44784,7 @@ result = transcriber.transcribe("./sample.wav", config=config)
 ```javascript
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav", {
-  model: "universal-3-5-pro",
+  model: "universal-3-6-pro",
 });
 ```
 
@@ -44438,7 +44795,7 @@ Pass [`language_codes`](/sync-stt/language-selection) as a list of ISO 639-1 cod
 ```python
 from assemblyai.sync.v1 import SyncTranscriptionConfig
 
-config = SyncTranscriptionConfig(language_codes=["es"])
+config = SyncTranscriptionConfig(model="universal-3-6-pro", language_codes=["es"])
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav", config=config)
 ```
@@ -44446,6 +44803,7 @@ result = transcriber.transcribe("./sample.wav", config=config)
 ```javascript
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav", {
+  model: "universal-3-6-pro",
   language_codes: ["es"],
 });
 ```
@@ -44457,7 +44815,7 @@ Per-word timings are opt-in. Set [`timestamps=True`](/sync-stt/word-timestamps) 
 ```python
 from assemblyai.sync.v1 import SyncTranscriptionConfig
 
-config = SyncTranscriptionConfig(timestamps=True)
+config = SyncTranscriptionConfig(model="universal-3-6-pro", timestamps=True)
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("./sample.wav", config=config)
 
@@ -44468,6 +44826,7 @@ for word in result.words:
 ```javascript
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("./sample.wav", {
+  model: "universal-3-6-pro",
   timestamps: true,
 });
 
@@ -44483,7 +44842,9 @@ WAV files carry their sample rate and channel count in the file header. Raw PCM 
 ```python
 from assemblyai.sync.v1 import SyncTranscriptionConfig
 
-config = SyncTranscriptionConfig(sample_rate=16000, channels=1)
+config = SyncTranscriptionConfig(
+    model="universal-3-6-pro", sample_rate=16000, channels=1
+)
 
 transcriber.warm()  # open the connection ahead of the request
 with open("./sample.pcm", "rb") as f:
@@ -44499,6 +44860,7 @@ const audio = readFileSync("./sample.pcm");
 
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe(audio, {
+  model: "universal-3-6-pro",
   sample_rate: 16000,
   channels: 1,
 });
@@ -44520,7 +44882,7 @@ from assemblyai.sync.v1 import (
 )
 
 config = SyncTranscriptionConfig(
-    model="universal-3-5-pro",
+    model="universal-3-6-pro",
     language_codes=["en"],
     timestamps=True,
 )
@@ -44554,7 +44916,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 try {
   await client.sync.warm(); // open the connection ahead of the request
   const result = await client.sync.transcribe("./sample.wav", {
-    model: "universal-3-5-pro",
+    model: "universal-3-6-pro",
     language_codes: ["en"],
     timestamps: true,
   });
@@ -44625,7 +44987,7 @@ and retry guidance.
 
 If you prefer to call the Sync API over HTTP without an SDK, post the audio to `POST https://sync.assemblyai.com/v1/transcribe` and read the transcript out of the JSON response. This endpoint accepts audio up to 20 minutes long and 256 MB, in WAV, raw PCM, or a compressed format (AAC, MP3, M4A, Ogg/Opus, FLAC, or WebM); see [Audio requirements](/sync-stt/audio-requirements).
 
-The Sync API accepts `multipart/form-data` with an `audio` part. For WAV files, set the part's Content-Type to `audio/wav`. Authenticate with your key in the `Authorization` header (a `Bearer ` prefix is optional), and send the `X-AAI-Model: universal-3-5-pro` header — it is required on every request.
+The Sync API accepts `multipart/form-data` with an `audio` part. For WAV files, set the part's Content-Type to `audio/wav`. Authenticate with your key in the `Authorization` header (a `Bearer ` prefix is optional), and send the `X-AAI-Model: universal-3-6-pro` header — it is required on every request.
 
 For the lowest latency, send an unauthenticated `GET /v1/warm` request (with the same `X-AAI-Model` header) through the same HTTP client as soon as you know audio is coming. The `/transcribe` request then reuses the already-open connection instead of paying for DNS, TCP, and TLS setup first.
 
@@ -44635,11 +44997,11 @@ Replace `<YOUR_API_KEY>` in the request header:
 # Each curl process opens its own connection, so chain the warm-up and the
 # transcription in one invocation with --next to share the connection:
 curl https://sync.assemblyai.com/v1/warm \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   --next \
   -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav'
 ```
 
@@ -44648,7 +45010,7 @@ The response JSON is printed to stdout. Pipe to `jq` to extract fields:
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav' \
   | jq '.text'
 ```
@@ -44672,7 +45034,7 @@ session = requests.Session()
 # not right before transcribe.
 session.get(
     "https://sync.assemblyai.com/v1/warm",
-    headers={"X-AAI-Model": "universal-3-5-pro"},
+    headers={"X-AAI-Model": "universal-3-6-pro"},
     timeout=10,
 )
 
@@ -44684,7 +45046,7 @@ response = session.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -44703,7 +45065,7 @@ import { readFileSync } from "fs";
 // Call as soon as you know audio is coming (e.g. recording starts),
 // not right before transcribe. Node's fetch pools the connection by default.
 await fetch("https://sync.assemblyai.com/v1/warm", {
-  headers: { "X-AAI-Model": "universal-3-5-pro" },
+  headers: { "X-AAI-Model": "universal-3-6-pro" },
 });
 
 const audio = readFileSync("sample.wav");
@@ -44715,7 +45077,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -44764,7 +45126,7 @@ When your audio is raw PCM (S16LE little-endian), set the `audio` part Content-T
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.pcm;type=audio/pcm' \
   -F 'config={"sample_rate":16000,"channels":1};type=application/json'
 ```
@@ -44780,7 +45142,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.pcm", audio, "audio/pcm"),
@@ -44814,7 +45176,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -44903,7 +45265,7 @@ import sounddevice as sd  # pip install sounddevice
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 RATE = 16000
-config = SyncTranscriptionConfig(sample_rate=RATE, channels=1)
+config = SyncTranscriptionConfig(model="universal-3-6-pro", sample_rate=RATE, channels=1)
 
 def microphone():
     """Yield raw 16-bit PCM from the default microphone until Enter is pressed."""
@@ -44944,6 +45306,7 @@ console.log("Recording. Speak now, then press Ctrl+C to stop...");
 process.on("SIGINT", () => microphone.kill()); // ends the stream
 
 const result = await client.sync.transcribeLive(microphone.stdout, {
+  model: "universal-3-6-pro",
   sample_rate: 16000,
   channels: 1,
 });
@@ -44966,6 +45329,7 @@ result = transcriber.transcribe_live(frames_from_call(), config=config)
 ```javascript
 // A browser posting PCM to your server as it records: `req` is a Readable.
 const result = await client.sync.transcribeLive(req, {
+  model: "universal-3-6-pro",
   sample_rate: 16000,
   channels: 1,
 });
@@ -45023,7 +45387,7 @@ Both improve recognition accuracy for your use case. Neither changes the output 
 
 ## Contextual prompting
 
-Universal-3.5 Pro is trained to use context about the audio — its domain, topic, or scenario — to better recognize the vocabulary that context makes likely. A clip described as a cardiology consultation primes the model for medical terminology; one described as an order-status check primes it for order IDs and product names.
+Universal-3.6 Pro is trained to use context about the audio — its domain, topic, or scenario — to better recognize the vocabulary that context makes likely. A clip described as a cardiology consultation primes the model for medical terminology; one described as an order-status check primes it for order IDs and product names.
 
 Write the `prompt` as a **description of your audio**, not as instructions to the model. Transcription behavior — punctuation, formatting, verbatim style — is already optimized out of the box, and your `prompt` is added in front of a managed default prompt rather than replacing it.
 
@@ -45033,7 +45397,7 @@ Write the `prompt` as a **description of your audio**, not as instructions to th
 
 **Start with no prompt**
 
-We strongly recommend testing with no `prompt` first. Universal-3.5 Pro is optimized out of the box, and context helps most when your audio contains domain-specific vocabulary the model is getting wrong. Add context when you see those errors, starting with the broadest description that covers your use case.
+We strongly recommend testing with no `prompt` first. Universal-3.6 Pro is optimized out of the box, and context helps most when your audio contains domain-specific vocabulary the model is getting wrong. Add context when you see those errors, starting with the broadest description that covers your use case.
 
 ### Choosing a level of specificity
 
@@ -45072,6 +45436,7 @@ Spanish customer support call about a billing inquiry.
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(
+    model="universal-3-6-pro",
     prompt="Cardiology consultation about chest pain symptoms.",
 )
 
@@ -45088,6 +45453,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
   prompt: "Cardiology consultation about chest pain symptoms.",
 });
 console.log(result.text);
@@ -45104,7 +45470,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -45144,7 +45510,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -45156,7 +45522,7 @@ console.log(result.text);
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav' \
   -F 'config={"prompt":"Cardiology consultation about chest pain symptoms."};type=application/json'
 ```
@@ -45187,6 +45553,7 @@ Including a large number of terms or common terms that are well represented in t
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(
+    model="universal-3-6-pro",
     keyterms_prompt=["AssemblyAI", "LeMUR", "U3-Pro"],
 )
 
@@ -45203,6 +45570,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
   keyterms_prompt: ["AssemblyAI", "LeMUR", "U3-Pro"],
 });
 console.log(result.text);
@@ -45219,7 +45587,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -45253,7 +45621,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -45265,7 +45633,7 @@ console.log(result.text);
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav' \
   -F 'config={"keyterms_prompt":["AssemblyAI","LeMUR","U3-Pro"]};type=application/json'
 ```
@@ -45278,6 +45646,7 @@ You can combine `prompt` and `keyterms_prompt` in the same `config` part, with `
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(
+    model="universal-3-6-pro",
     prompt="Cardiology consultation about chest pain symptoms.",
     keyterms_prompt=["Dr. Smith", "ECG", "hypertension"],
 )
@@ -45295,6 +45664,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
   prompt: "Cardiology consultation about chest pain symptoms.",
   keyterms_prompt: ["Dr. Smith", "ECG", "hypertension"],
 });
@@ -45317,7 +45687,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -45349,7 +45719,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -45361,7 +45731,7 @@ console.log(result.text);
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav' \
   -F 'config={"prompt":"Cardiology consultation about chest pain symptoms.","keyterms_prompt":["Dr. Smith","ECG","hypertension"]};type=application/json'
 ```
@@ -45401,6 +45771,7 @@ The example below passes the three previous turns of the conversation, where the
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 config = SyncTranscriptionConfig(
+    model="universal-3-6-pro",
     conversation_context=[
         "Hi, thank you for calling. How can I help?",
         "I'd like to check on the status of my order.",
@@ -45421,6 +45792,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
   conversation_context: [
     "Hi, thank you for calling. How can I help?",
     "I'd like to check on the status of my order.",
@@ -45449,7 +45821,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -45484,7 +45856,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -45496,7 +45868,7 @@ console.log(result.text);
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav' \
   -F 'config={"conversation_context":["Hi, thank you for calling. How can I help?","I'"'"'d like to check on the status of my order.","Got it. Do you know your order ID number?"]};type=application/json'
 ```
@@ -45529,7 +45901,7 @@ Pass `language_codes` in the `config` part to steer transcription toward a speci
 ```python
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
-config = SyncTranscriptionConfig(language_codes=["es"])
+config = SyncTranscriptionConfig(model="universal-3-6-pro", language_codes=["es"])
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
 transcriber.warm()  # open the connection ahead of the request
@@ -45544,6 +45916,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
   language_codes: ["es"],
 });
 console.log(result.text);
@@ -45560,7 +45933,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -45589,7 +45962,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -45601,7 +45974,7 @@ console.log(result.text);
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav' \
   -F 'config={"language_codes":["es"]};type=application/json'
 ```
@@ -45660,7 +46033,7 @@ Timings are exact or absent, never approximate: any word that can't be aligned h
 ```python
 from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
-config = SyncTranscriptionConfig(timestamps=True)
+config = SyncTranscriptionConfig(model="universal-3-6-pro", timestamps=True)
 
 transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
 transcriber.warm()  # open the connection ahead of the request
@@ -45676,6 +46049,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
 const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
   timestamps: true,
 });
 for (const word of result.words) {
@@ -45696,7 +46070,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -45726,7 +46100,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -45740,7 +46114,7 @@ for (const word of result.words) {
 ```bash
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav' \
   -F 'config={"timestamps":true};type=application/json'
 ```
@@ -45952,9 +46326,10 @@ Which of these locations processes your data depends on the endpoint you call, a
 Replace the base URL in your request with the appropriate endpoint. The request format, headers, and parameters are identical for all endpoints. In the Python SDK the base URL comes from the `sync_base_url` setting; in the JavaScript SDK it's the `syncBaseUrl` client option. Both default to the global endpoint.
 
 ```python title="Global (default)"
-from assemblyai.sync.v1 import SyncTranscriber
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
-transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>")
+config = SyncTranscriptionConfig(model="universal-3-6-pro")
+transcriber = SyncTranscriber(api_key="<YOUR_API_KEY>", config=config)
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
@@ -45962,7 +46337,7 @@ print(result.text)
 
 ```python title="US data residency"
 from assemblyai import Client, Settings
-from assemblyai.sync.v1 import SyncTranscriber
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 client = Client(
     settings=Settings(
@@ -45971,7 +46346,8 @@ client = Client(
     ),
 )
 
-transcriber = SyncTranscriber(client=client)
+config = SyncTranscriptionConfig(model="universal-3-6-pro")
+transcriber = SyncTranscriber(client=client, config=config)
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
@@ -45979,7 +46355,7 @@ print(result.text)
 
 ```python title="EU data residency"
 from assemblyai import Client, Settings
-from assemblyai.sync.v1 import SyncTranscriber
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 client = Client(
     settings=Settings(
@@ -45988,7 +46364,8 @@ client = Client(
     ),
 )
 
-transcriber = SyncTranscriber(client=client)
+config = SyncTranscriptionConfig(model="universal-3-6-pro")
+transcriber = SyncTranscriber(client=client, config=config)
 transcriber.warm()  # open the connection ahead of the request
 result = transcriber.transcribe("sample.wav")
 print(result.text)
@@ -46000,7 +46377,9 @@ import { AssemblyAI } from "assemblyai";
 const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 await client.sync.warm(); // open the connection ahead of the request
-const result = await client.sync.transcribe("sample.wav");
+const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
+});
 console.log(result.text);
 ```
 
@@ -46013,7 +46392,9 @@ const client = new AssemblyAI({
 });
 
 await client.sync.warm(); // open the connection ahead of the request
-const result = await client.sync.transcribe("sample.wav");
+const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
+});
 console.log(result.text);
 ```
 
@@ -46026,7 +46407,9 @@ const client = new AssemblyAI({
 });
 
 await client.sync.warm(); // open the connection ahead of the request
-const result = await client.sync.transcribe("sample.wav");
+const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
+});
 console.log(result.text);
 ```
 
@@ -46040,7 +46423,7 @@ response = requests.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -46062,7 +46445,7 @@ response = requests.post(
     "https://sync.us.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -46084,7 +46467,7 @@ response = requests.post(
     "https://sync.eu.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -46107,7 +46490,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -46127,7 +46510,7 @@ const response = await fetch("https://sync.us.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -46147,7 +46530,7 @@ const response = await fetch("https://sync.eu.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -46159,21 +46542,21 @@ console.log(result.text);
 ```bash title="Global (default)"
 curl -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav'
 ```
 
 ```bash title="US data residency"
 curl -X POST https://sync.us.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav'
 ```
 
 ```bash title="EU data residency"
 curl -X POST https://sync.eu.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav'
 ```
 
@@ -46233,12 +46616,14 @@ Pre-warming only helps if the `/v1/warm` and `/v1/transcribe` requests share a c
 
 ```python
 import assemblyai as aai
-from assemblyai.sync.v1 import SyncTranscriber
+from assemblyai.sync.v1 import SyncTranscriber, SyncTranscriptionConfig
 
 # Hold the idle connection long enough to cover the whole recording.
 aai.settings.keepalive_expiry = 120
 
-with SyncTranscriber(api_key="<YOUR_API_KEY>") as transcriber:
+config = SyncTranscriptionConfig(model="universal-3-6-pro")
+
+with SyncTranscriber(api_key="<YOUR_API_KEY>", config=config) as transcriber:
     # Call as soon as you know audio is coming (e.g. recording starts).
     # The handshake completes while the audio is still being captured.
     transcriber.warm()
@@ -46264,7 +46649,9 @@ await client.sync.warm();
 // ... recording finishes ...
 
 // Same client -> reuses the warmed connection; no handshake here.
-const result = await client.sync.transcribe("sample.wav");
+const result = await client.sync.transcribe("sample.wav", {
+  model: "universal-3-6-pro",
+});
 console.log(result.text);
 ```
 
@@ -46277,7 +46664,7 @@ session = requests.Session()
 # The handshake completes while the audio is still being captured.
 session.get(
     "https://sync.assemblyai.com/v1/warm",
-    headers={"X-AAI-Model": "universal-3-5-pro"},
+    headers={"X-AAI-Model": "universal-3-6-pro"},
     timeout=10,
 )
 
@@ -46291,7 +46678,7 @@ response = session.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
+        "X-AAI-Model": "universal-3-6-pro",
     },
     files={
         "audio": ("sample.wav", audio, "audio/wav"),
@@ -46308,7 +46695,7 @@ import { readFileSync } from "fs";
 // Call as soon as you know audio is coming (e.g. recording starts).
 // Node's fetch keeps the connection alive in its pool by default.
 await fetch("https://sync.assemblyai.com/v1/warm", {
-  headers: { "X-AAI-Model": "universal-3-5-pro" },
+  headers: { "X-AAI-Model": "universal-3-6-pro" },
 });
 
 // ... recording finishes ...
@@ -46322,7 +46709,7 @@ const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
     Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
+    "X-AAI-Model": "universal-3-6-pro",
   },
   body: form,
 });
@@ -46336,11 +46723,11 @@ console.log(result.text);
 # doesn't help a later invocation. Chain both requests in one invocation
 # with --next to share the connection:
 curl https://sync.assemblyai.com/v1/warm \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   --next \
   -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
+  -H 'X-AAI-Model: universal-3-6-pro' \
   -F 'audio=@sample.wav;type=audio/wav'
 ```
 
@@ -46478,6 +46865,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
             api_key=os.environ["ASSEMBLYAI_API_KEY"],
             aiohttp_session=session,
             settings=AssemblyAISyncSTTService.Settings(
+                model="universal-3-6-pro",
                 language=Language.EN,
                 # prompt="Customer support call about order status.",
                 # keyterms_prompt=["AssemblyAI", "Pipecat"],
@@ -46606,7 +46994,8 @@ Transcription runs off the audio path: segments are queued and transcribed in or
 
 Set these inside `AssemblyAISyncSTTService.Settings(...)`.
 
-  The speech model, sent as the `X-AAI-Model` header.
+  The speech model, sent as the `X-AAI-Model` header. Set it to
+  `universal-3-6-pro` to use our latest model.
 
   The transcription language. Superseded by `language_codes` when both are set.
 
@@ -46673,6 +47062,7 @@ The defaults are deliberately conservative — every carried turn is uploaded ag
 stt = AssemblyAISyncSTTService(
     api_key=os.environ["ASSEMBLYAI_API_KEY"],
     aiohttp_session=session,
+    settings=AssemblyAISyncSTTService.Settings(model="universal-3-6-pro"),
     max_context_turns=12,
     max_context_chars=4000,
 )
@@ -46689,6 +47079,7 @@ stt = AssemblyAISyncSTTService(
     api_key=os.environ["ASSEMBLYAI_API_KEY"],
     aiohttp_session=session,
     settings=AssemblyAISyncSTTService.Settings(
+        model="universal-3-6-pro",
         conversation_context=[
             "Hi, thank you for calling. How can I help?",
             "I'd like to check on the status of my order.",
@@ -76569,6 +76960,7 @@ Use this to build the recommendation. Do not dump it on the user.
 | Multilingual / code-switching | `speech_models: ["universal-3-5-pro"]` + `prompt` parameter — see [U3 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) |
 | Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with U3 Pro / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
 | Medical domain | `domain: "medical-v1"` (pre-recorded *and* streaming; supported languages: en, es, de, fr) |
+| Veterinary domain (beta) | `domain: "veterinary-v1"` (pre-recorded *and* streaming) |
 | PII redaction in text | `redact_pii: true` + `redact_pii_policies: [...]` + optional `redact_pii_sub: "hash" \| "entity_name"` |
 | PII redaction in audio | `redact_pii_audio: true` (original file must be ≤1 GB; redacted audio URL is available for 24 h) |
 | Chapters or summaries | Transcribe first, then LLM Gateway (Section 8) |
@@ -76639,6 +77031,8 @@ if transcript.status == aai.TranscriptStatus.error:
     raise RuntimeError(transcript.error)
 print(transcript.text)
 ```
+
+For more test files by scenario (medical, multilingual, meeting, phone, call center, noisy), see [Sample audio files](/samples).
 
 **Node/JS:**
 ```javascript
@@ -77051,6 +77445,7 @@ For the most common errors across all APIs, with fixes, and links to each produc
 - Always `Terminate` streaming sessions.
 - Don't use `auto_chapters`, `summarization`, `summary_model`, `summary_type`. Use LLM Gateway.
 - Medical mode is `domain: "medical-v1"` (pre-recorded body param / streaming query param). The legacy `medical_mode` flag is **not** the right name.
+- Veterinary mode (beta) is `domain: "veterinary-v1"` (pre-recorded body param / streaming query param).
 - LLM Gateway model IDs are exact and versioned (e.g., `claude-sonnet-4-6`, `gpt-5.2`, `gemini-2.5-pro`). Shorthand like `claude-sonnet-4` is invalid.
 - Phone audio stays at native 8 kHz mu-law (`encoding=pcm_mulaw`) — don't upsample.
 - EU customers use `api.eu.assemblyai.com`, `streaming.eu.assemblyai.com`, and `llm-gateway.eu.assemblyai.com`. The default streaming host (`streaming.assemblyai.com`) is **Edge Routing**, not US-pinned — use `streaming.us.assemblyai.com` if you need data residency guarantees on the US side.
@@ -78823,6 +79218,68 @@ Universal-3.5 Pro supports 18 languages, and for anything outside that set, the 
 | --- | --- |
 | `universal-3-5-pro` | Global English, Australian English, British English, US English, Spanish, French, German, Italian, Portuguese, Arabic, Danish, Dutch, Finnish, Hebrew, Hindi, Japanese, Mandarin, Norwegian, Swedish, Turkish, Vietnamese |
 | `universal-2` | Global English, Australian English, British English, US English, Spanish, French, German, Italian, Portuguese, Dutch, Hindi, Japanese, Chinese, Finnish, Korean, Polish, Russian, Turkish, Ukrainian, Vietnamese, Afrikaans, Albanian, Amharic, Arabic, Armenian, Assamese, Azerbaijani, Bashkir, Basque, Belarusian, Bengali, Bosnian, Breton, Bulgarian, Burmese, Catalan, Croatian, Czech, Danish, Estonian, Faroese, Galician, Georgian, Greek, Gujarati, Haitian, Hausa, Hawaiian, Hebrew, Hungarian, Icelandic, Indonesian, Javanese, Kannada, Kazakh, Khmer, Lao, Latin, Latvian, Lingala, Lithuanian, Luxembourgish, Macedonian, Malagasy, Malay, Malayalam, Maltese, Maori, Marathi, Mongolian, Nepali, Norwegian, Norwegian Nynorsk, Occitan, Panjabi, Pashto, Persian, Romanian, Sanskrit, Serbian, Shona, Sindhi, Sinhala, Slovak, Slovenian, Somali, Sundanese, Swahili, Swedish, Swiss German, Tagalog, Tajik, Tamil, Tatar, Telugu, Thai, Tibetan, Turkmen, Urdu, Uzbek, Welsh |
+
+---
+
+<a id="sample-audio-files-docs-samples-mdx"></a>
+
+# Sample audio files
+
+URL: https://www.assemblyai.com/docs/samples
+Source: docs/samples.mdx
+Navigation: Additional pages
+Description: Public audio URLs you can send to the AssemblyAI API to test transcription, by scenario. Use these instead of inventing a URL.
+
+These files are public and stable. Pass any URL as `audio_url` on `POST /v2/transcript`. To test with your own file, [upload it](/pre-recorded-audio/api-reference/files/upload) first.
+
+```bash
+curl https://api.assemblyai.com/v2/transcript \
+  -H "authorization: $ASSEMBLYAI_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{"audio_url": "https://assembly.ai/wildfires.mp3"}'
+```
+
+## Files by scenario
+
+| Scenario | URL | Length | Format |
+| -------- | --- | ------ | ------ |
+| Clean English (default) | `https://assembly.ai/wildfires.mp3` | 4 min 41 s | MP3, 44.1 kHz, stereo |
+| Clean English | `https://assembly.ai/nbc.mp3` | 2 min 34 s | MP3, 44.1 kHz, stereo |
+| Clean English | `https://assembly.ai/sports_injuries.mp3` | 3 min 20 s | MP3, 44.1 kHz, stereo |
+| Clean English | `https://assembly.ai/espn.m4a` | 6 min 31 s | M4A, 44.1 kHz, stereo |
+| Meeting with several speakers | `https://assembly.ai/meeting.mp4` | 24 min 10 s | MP4 video, 44.1 kHz, stereo |
+| Short phone message | `https://assembly.ai/phone-msg.m4a` | 27 s | M4A, 48 kHz, mono |
+| Call center, two channels (agent and customer on separate channels; use with [multichannel](/pre-recorded-audio/transcribe-multiple-audio-channels)) | `https://assemblyaiassets.com/audios/Customer%20Support.wav` | 34 s | WAV, 8 kHz, 2 channels |
+| Noisy phone audio (loud background) | `https://assemblyaiassets.com/audios/competitive-whisper-sample1.wav` | 1 min 43 s | WAV, 8 kHz, mono |
+| Medical terms (use with [Medical Mode](/pre-recorded-audio/medical-mode)) | `https://assemblyaiassets.com/56e2be1c-lispro.mp3` | 10 s | MP3, 44.1 kHz, stereo |
+| Spanish | `https://storage.googleapis.com/aai-web-samples/public_benchmarking_spanish.mp3` | 1 min 11 s | MP3, 44.1 kHz, stereo |
+| Portuguese | `https://storage.googleapis.com/aai-web-samples/public_benchmarking_portugese.mp3` | 6 min 47 s | MP3, 44.1 kHz, stereo |
+| Slovenian | `https://storage.googleapis.com/aai-web-samples/slovenian_luka_doncic_interview.mp3` | 3 min 43 s | MP3, 44.1 kHz, stereo |
+
+The Spanish, Portuguese and Slovenian files work well for testing [language detection](/pre-recorded-audio/language-detection).
+
+## Expected results
+
+Use these values to check that a test request worked. We tested each file with the default `speech_models` list, `["universal-3-5-pro", "universal-2"]`. The exact text and word counts can change a little between speech models.
+
+| File | Request options | Expected result | Transcript includes |
+| ---- | --------------- | --------------- | ------------------- |
+| `wildfires.mp3` | none | `language_code: en_us`, about 870 words | "Smoke from hundreds of wildfires in Canada is triggering air quality alerts" |
+| `nbc.mp3` | none | `language_code: en_us`, about 400 words | "A new president and new congressional makeup." |
+| `sports_injuries.mp3` | none | `language_code: en_us`, about 400 words | "Runner's knee is a condition characterized by pain behind or around the kneecap." |
+| `espn.m4a` | none | `language_code: en_us`, about 1,350 words | "Why even say something like that?" |
+| `meeting.mp4` | `speaker_labels: true` | Several speakers in `utterances` (9 in our test), about 3,700 words | "Hi, this is Eric Johnson." |
+| `phone-msg.m4a` | none | `language_code: en_us`, about 40 words, phone numbers as digits | "Yes, I would appreciate it if you could call me back." |
+| `Customer%20Support.wav` | `multichannel: true` | `audio_channels: 2`, `utterances` speakers `1` and `2` | "What are the local branch hours?" |
+| `competitive-whisper-sample1.wav` | none | `language_code: en_us`, about 200 words | "call to order the monthly board meeting" |
+| `56e2be1c-lispro.mp3` | `domain: "medical-v1"` | About 20 words, includes "Humalog" | "prandial mealtime and sliding scale" |
+| `public_benchmarking_spanish.mp3` | `language_detection: true` | `language_code: es` | "el diario estadounidense New York Times" |
+| `public_benchmarking_portugese.mp3` | `language_detection: true` | `language_code: pt` | "Olá pessoal, sejam bem-vindos a mais um vídeo" |
+| `slovenian_luka_doncic_interview.mp3` | `language_detection: true` | `language_code: sl`, `speech_model_used: universal-2` (falls back from Universal-3.5 Pro) | "Ni lepšega, ka videti enega otroka" |
+
+## Not available yet
+
+There is no public sample yet for audio longer than 30 minutes. The longest file is the 24-minute meeting. Use your own file for longer audio.
 
 ---
 
@@ -81057,14 +81514,15 @@ components:
         domain:
           x-label: Domain
           description: |
-            Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages.
+            Enable domain-specific transcription models to improve accuracy for specialized terminology. Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) for improved accuracy of medication names, both generic and brand-name. Set to `"veterinary-v1"` to enable [Veterinary Mode](https://www.assemblyai.com/docs/pre-recorded-audio/veterinary-mode) (beta) for improved accuracy of veterinary terminology.
 
-            Supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If `medical-v1` is used with an unsupported language, the parameter is ignored and a warning is returned.
+            Medical Mode supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If `medical-v1` is used with an unsupported language, the parameter is ignored and a warning is returned.
           type:
             - string
             - "null"
           enum:
             - medical-v1
+            - veterinary-v1
             - null
           default: null
 
@@ -82651,7 +83109,7 @@ components:
         domain:
           x-label: Domain
           description: |
-            The domain-specific model applied to the transcript. When set to `"medical-v1"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medical terminology.
+            The domain-specific model applied to the transcript. When set to `"medical-v1"`, [Medical Mode](https://www.assemblyai.com/docs/pre-recorded-audio/medical-mode) was used to improve accuracy for medication names. When set to `"veterinary-v1"`, [Veterinary Mode](https://www.assemblyai.com/docs/pre-recorded-audio/veterinary-mode) was used to improve accuracy for veterinary terminology.
           type: [string, "null"]
 
         entities:
@@ -88045,10 +88503,11 @@ channels:
       domain:
         description: >-
           Enable domain-specific transcription models to improve accuracy for specialized terminology.
-          Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/streaming/medical-mode) for improved accuracy of medical terms such as medications, procedures, conditions, and dosages.
-          Supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned.
+          Set to `"medical-v1"` to enable [Medical Mode](https://www.assemblyai.com/docs/streaming/medical-mode) for improved accuracy of medication names, both generic and brand-name.
+          Set to `"veterinary-v1"` to enable [Veterinary Mode](https://www.assemblyai.com/docs/streaming/veterinary-mode) (beta) for improved accuracy of veterinary terminology.
+          Medical Mode supported languages: English (`en`), Spanish (`es`), German (`de`), French (`fr`). If used with an unsupported language, the parameter is ignored and a warning is returned.
         location: $message.payload#/domain
-        enum: ["medical-v1"]
+        enum: ["medical-v1", "veterinary-v1"]
 
       mode:
         description: Latency and accuracy preset that controls the model's turn-detection and partial-emission defaults. `max_accuracy` favors transcription quality, `min_latency` favors speed, and `balanced` trades off between the two. When omitted, the server applies its own preset, which determines the defaults for the mode-dependent fields `min_turn_silence` and `interruption_delay`. Universal-3.5 Pro Streaming only.
@@ -88668,7 +89127,7 @@ components:
             domain:
               type: string
               nullable: true
-              description: The domain specialization in effect (for example `medical-v1`), or null.
+              description: The domain specialization in effect (for example `medical-v1` or `veterinary-v1`), or null.
             voice_focus:
               type: string
               nullable: true

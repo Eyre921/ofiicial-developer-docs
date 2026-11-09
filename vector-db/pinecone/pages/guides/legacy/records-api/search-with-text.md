@@ -8,7 +8,7 @@ Search a legacy integrated index with query text through the legacy Records API,
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 This page shows you how to search a legacy integrated index created with `create_index_for_model`. The legacy Records API converts the query text to a vector with the embedding model associated with the index. For a document index with [integrated embedding](/guides/search/integrated-embedding), see [Semantic search](/guides/search/semantic-search) and [Sparse-vector search](/guides/search/sparse-vector-search).
 

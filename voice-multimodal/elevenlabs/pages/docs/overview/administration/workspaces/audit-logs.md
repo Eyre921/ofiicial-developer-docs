@@ -81,6 +81,10 @@ The following OCSF classes are emitted today:
 
 OCSF compliance is best-effort. Where a canonical OCSF field exists, audit entries use it; the `unmapped` field carries any ElevenLabs-specific attributes that don't fit the standard.
 
+### Activity names
+
+Each entry's `activity_name` describes the specific action that was audited, such as `API Key Creation`. The exhaustive list of activity names is published as the `AuditActivityName` enum in our OpenAPI spec; see the `activity_name` filter on [`GET /v1/workspace/audit-logs`](/docs/api-reference/workspace/audit-logs/list).
+
 ## Redaction
 
 Sensitive material that would otherwise appear in URL paths or query parameters is redacted before audit entries are written. Password reset tokens are one such case; equivalent redaction applies to any audit-relevant request whose URL structure carries secrets.

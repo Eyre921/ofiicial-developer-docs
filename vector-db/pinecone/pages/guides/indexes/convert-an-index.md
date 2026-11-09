@@ -267,7 +267,7 @@ Each document carries the ID its record had, the vector in `embedding`, the tick
 
 ## Switch to the new index
 
-The new index has its own name and host, and you read and write it through the [Documents API](/guides/indexes/move-to-the-documents-api), so your application's write and search calls change. Until the new index is `Ready`, it rejects reads and writes with a `401` and the message `Not ready`.
+The new index has its own name and host, and you read and write it through the [Documents API](/guides/get-started/documents-api), so your application's write and search calls change. Until the new index is `Ready`, it rejects reads and writes with a `401` and the message `Not ready`.
 
 ### 1. Replay writes made during the conversion
 

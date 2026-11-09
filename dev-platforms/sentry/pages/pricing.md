@@ -131,9 +131,7 @@ Profile Hours are determined by the length of the profile in milliseconds and ar
 
 All Sentry plans include one cron monitor and one uptime monitor. Additional monitors can only be purchased with your PAYG budget.
 
-More details on how to activate, deactivate, and manage your monitors quota is available under:
-
-* [Billing Quota Management: Manage Your Cron and Uptime Monitors](https://docs.sentry.io/pricing/quotas/manage-cron-monitors.md)
+More details on how to activate, deactivate, and manage your monitors quota is available under: - [Billing Quota Management: Manage Your Cron and Uptime Monitors](https://docs.sentry.io/pricing/quotas/manage-cron-monitors.md)
 
 **Cron Monitors**
 
@@ -159,13 +157,15 @@ More details on how to activate, deactivate, and manage your monitors quota is a
 
 #### [Seer Pricing](https://docs.sentry.io/pricing.md#seer-pricing)
 
+##### Seer Billing Changes December 8
+
+On December 8, 2026, Seer moves from active-contributor pricing to usage-based credits. Instead of tracking repository commits, manage your [Seer Wallet](https://sentry.io/orgredirect/organizations/:orgslug/settings/billing/overview/) in organization settings to add funds, set a daily spend limit, and turn Seer on or off.
+
 Seer is Sentry's AI debugging agent. It catches breaking changes before deploy and debugs and fixes issues in production. Access Seer by enabling it on your existing subscription in [settings](https://sentry.io/orgredirect/organizations/:orgslug/settings/billing/overview/?product=seer). Seer usage is billed separately as its own monthly charge and does not count against your PAYG budget.
 
-Access Seer by adding it to your existing subscription for $40 per active contributor per month, where an active contributor is defined as any user who makes 2 or more PRs to a [Seer-Enabled repository](https://docs.sentry.io/product/ai-in-sentry/seer.md#getting-started-with-seer). A repo is considered Seer-Enabled when it is connected to Sentry and has one or more Seer features enabled. At the end of the month, contributor counts reset.
+Until December 8th, 2026, access Seer by adding it to your existing subscription for $40 per active contributor per month, where an active contributor is defined as any user who makes 2 or more PRs to a [Seer-Enabled repository](https://docs.sentry.io/product/ai-in-sentry/seer.md#getting-started-with-seer). A repo is considered Seer-Enabled when it is connected to Sentry and has one or more Seer features enabled. At the end of the month, contributor counts reset.
 
-| Team                   | Business               |
-| ---------------------- | ---------------------- |
-| $40/active contributor | $40/active contributor |
+After December 8th, 2026, Seer will move to a usage-based credit system.
 
 For Github, all members of your repositories, *except* GitHub bots marked as `[bot]`, are counted as active contributors.
 
@@ -173,7 +173,7 @@ For Gitlab, all accounts (group members) are counted as active contributors, eve
 
 #### [Legacy Seer Pricing](https://docs.sentry.io/pricing.md#legacy-seer-pricing)
 
-As of January 2026, Legacy Seer pricing will no longer be offered as an add-on to your Sentry subscription.
+As of January 2026, Legacy Seer pricing will no longer be offered as an add-on to your Sentry subscription. Legacy Seer pricing will be rolled into the new usage-based Seer pricing, released on December 8th, 2026.
 
 If you were subscribed to Seer before January 2026, you are likely on legacy Seer pricing, which is $20/month per Sentry subscription, plus $25 worth of Seer event credits. This can be used for any combination of **Issue Scans** or **Issue Fixes** (see pricing tables below). Any usage beyond this $25 credit will draw from your PAYG budget. Any usage beyond the $25 credit will draw from your [PAYG budget](https://docs.sentry.io/pricing.md#terminology).
 

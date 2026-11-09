@@ -31,13 +31,30 @@ Surface form submissions in Slack with just a few clicks. Learn more in the [Net
 
 ## Email notifications
 
-### Note - Email verification for form notifications
+Netlify sends form notification emails from a shared sending email address. To keep that address from being used to send unwanted email, each recipient of a form notification must be one of the following:
 
-We're building email verification for email addresses that receive form notifications. Once it ships, we'll share the details in a [changelog post](https://www.netlify.com/changelog/tag/forms/).
+- An active member of your Netlify team.
+- An email address outside your team that has [confirmed it wants to receive form notifications](#confirm-a-recipient-outside-your-team). Email confirmation is rolling out to teams gradually and might not be available for your team yet.
 
-Unless your team is on an Enterprise plan or a Legacy Business plan, the email address you use for a form notification must belong to an active member of your Netlify team. This requirement applies when you create a notification and when you edit an existing notification. If you enter an email address that isn't associated with a team member, you get a validation error and the notification isn't saved.
+This requirement applies when you create a notification and when you edit an existing notification. If email confirmation isn't available for your team and you enter an email address that isn't associated with a team member, you get a validation error that says the address must be the email of a team member, and the notification isn't saved.
 
-Existing email notifications that use an address that isn't connected to a team member, such as `orders@company.com`, keep working. You only need to meet this requirement the next time you create or edit an email notification, and you can't save an edit that uses an email address that isn't connected to a team member. Before you next edit a notification, either invite the owner of the address to your team so you can keep using it, or change the recipient to an existing team member's address. 
+If you're using an email address that isn't connected to a team member but it was already confirmed, then you don't need to confirm it again.
+
+### Confirm a recipient outside your team
+
+Email confirmation lets you send form notifications to someone who isn't on your team, like a client or a shared inbox such as `orders@company.com`, without inviting them to your team.
+
+When you add an email address that doesn't belong to a team member:
+
+1. The address appears in your list of notifications as **pending confirmation**.
+2. Netlify sends a single confirmation email to that address, asking whether the owner wants to receive form notifications for your project.
+3. Once the owner selects **Confirm** in that email, the address starts receiving form notifications.
+
+Until the address is confirmed, Netlify doesn't send any form notifications to it. If the owner ignores the confirmation email, the address never receives form notifications. Confirmation proves that the owner of the address wants the email.
+
+If the form notification email address is already connected to an active team member or has already been confirmed, then you'll start receiving notifications about form submissions right away.
+
+Learn more in the [Forms changelog](https://www.netlify.com/changelog/tag/forms/).
 
 ### Update the notification recipient
 
@@ -49,9 +66,11 @@ To change the email address that receives form notifications:
 Forms > Submission notifications
 .
 2. Find the notification you want to change and select **Options > Edit notifications**.
-3. Enter an email address that belongs to an active member of your team, then save your changes.
+3. Enter the email address of an active team member or an address outside your team, then save your changes.
 
-If you need to send notifications to someone who isn't on your team yet, [invite them to the team](/manage/accounts-and-billing/team-management/manage-team-members#add-new-team-members) first, then add their email address as the notification recipient.
+If you enter an address outside your team, it receives a confirmation email and stays pending until its owner confirms. If email confirmation isn't available for your team, [invite the owner of the email address to your team](/manage/accounts-and-billing/team-management/manage-team-members#add-new-team-members) first, then add their email address as the notification recipient.
+
+### Reply to form submitters
 
 By default, form notification emails are sent from formresponses@netlify.com, and any replies to a notification go to that address. To respond to a form submitter, you need to enter their address manually.
 

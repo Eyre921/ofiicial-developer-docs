@@ -12,31 +12,52 @@ url: https://docs.sentry.io/platforms/apple/guides/watchos/
 
 # Sentry for watchOS
 
-On this page, we get you up and running with Sentry's Apple SDK, which will automatically report errors and exceptions in your application.
+On this page, you'll set up Sentry's Apple SDK to report errors and exceptions in your application.
 
-If you don't already have an account and Sentry project established, head over to [sentry.io](https://sentry.io/signup/), then return to this page.
+If you don't already have a Sentry account and project, [create them](https://sentry.io/signup/) before you continue.
 
-## [Features](https://docs.sentry.io/platforms/apple/guides/watchos.md#features)
+## [Prerequisites](https://docs.sentry.io/platforms/apple/guides/watchos.md#prerequisites)
 
-In addition to capturing errors, you can monitor interactions between multiple services or applications by [enabling tracing](https://docs.sentry.io/concepts/key-terms/tracing.md).
+The examples below use Sentry Cocoa SDK 9.27.0 or later. Minimum OS versions for SDK 9.25.0 and later are:
 
-Select which Sentry features you'd like to install in addition to Error Monitoring to get the corresponding installation and configuration instructions below.
+* watchOS 9.0
+
+If your app supports older OS versions, use a compatible earlier SDK release. See the [migration guides](https://docs.sentry.io/platforms/apple/guides/watchos/migration.md) for version-specific requirements.
 
 ## [Install](https://docs.sentry.io/platforms/apple/guides/watchos.md#install)
 
-Error Monitoring\[ ]Tracing\[ ]Logs
+Sentry captures data by using an SDK within your application's runtime. We recommend installing the SDK with Swift Package Manager (SPM).
 
-Sentry captures data by using an SDK within your application's runtime. These are platform-specific and allow Sentry to have a deep understanding of how your application works.
-
-We recommend installing the SDK with Swift Package Manager (SPM), but we also support alternate [installation methods](https://docs.sentry.io/platforms/apple/guides/watchos/install.md). To integrate Sentry into your Xcode project, open your App in Xcode and open **File > Add Packages**. Then add the SDK by entering the git repo url in the top right search field:
+In Xcode, open **File > Add Package Dependencies**, then enter this repository URL:
 
 ```bash
 https://github.com/getsentry/sentry-cocoa.git
 ```
 
+Select a compatible SDK version and add **one** SDK product to your application target:
+
+* **SentrySPM** builds the SDK from source and is the recommended choice.
+* **Sentry** uses the prebuilt static framework.
+
+Both products use `import Sentry`. See [Swift Package Manager](https://docs.sentry.io/platforms/apple/guides/watchos/install/swift-package-manager.md) for other products, or [the installation options](https://docs.sentry.io/platforms/apple/guides/watchos/install.md) for other installation methods.
+
 ## [Configure](https://docs.sentry.io/platforms/apple/guides/watchos.md#configure)
 
-To capture all errors, we recommend to initialize the SDK on the main thread as soon as possible such as in your `WKExtensionDelegate.applicationDidFinishLaunching` method:
+On watchOS, Error Monitoring captures handled errors; crash detection isn't available. Use the snippet in [Verify Your Setup](https://docs.sentry.io/platforms/apple/guides/watchos.md#verify-your-setup) to capture a handled error.
+
+This guide also configures **Tracing** and shows you how to send **Logs**. See the [watchOS feature limitations](https://docs.sentry.io/platforms/apple/guides/watchos/features.md) for other platform restrictions.
+
+**Application Metrics** are enabled by default, but aren't collected automatically. See [Send Application Metrics](https://docs.sentry.io/platforms/apple/guides/watchos.md#send-application-metrics-) to record your own metrics.
+
+The snippets set `sendDefaultPii` to include IP addresses. Remove that option if you don't want to send this data. Remove other options for features you don't need.
+
+We recommend initializing the SDK **on the main thread**, as early as possible. See [the background-thread initialization FAQ](https://docs.sentry.io/platforms/apple/guides/watchos/troubleshooting.md#can-i-initialize-the-sdk-from-a-background-thread) for details.
+
+Set `debug` to `false` or remove it after setup, and reduce sampling rates before using the configuration in production.
+
+### [Initialize the SDK](https://docs.sentry.io/platforms/apple/guides/watchos.md#initialize-the-sdk-3)
+
+Initialize the SDK in your `WKExtensionDelegate.applicationDidFinishLaunching` method or your SwiftUI `App` initializer. This snippet configures Tracing.
 
 ```swift
 import Sentry
@@ -44,69 +65,127 @@ import Sentry
 func applicationDidFinishLaunching() {
     SentrySDK.start { options in
         options.dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
-        options.debug = true // Enabled debug when first installing is always helpful
-
-        // Adds IP for users.
-        // For more information, visit: https://docs.sentry.io/platforms/apple/data-management/data-collected/
+        options.debug = true
         options.sendDefaultPii = true
-        // ___PRODUCT_OPTION_START___ performance
 
-        // Set tracesSampleRate to 1 to capture 100% of transactions for performance monitoring.
-        // We recommend adjusting this value in production.
-        options.tracesSampleRate = 1
-        // ___PRODUCT_OPTION_END___ performance
-        // ___PRODUCT_OPTION_START___ logs
-
-        // Enable logs to be sent to Sentry
-        options.enableLogs = true
-        // ___PRODUCT_OPTION_END___ logs
+        // Enable Tracing. Reduce this value in production.
+        options.tracesSampleRate = 1.0
     }
 }
 ```
 
-## [Verify](https://docs.sentry.io/platforms/apple/guides/watchos.md#verify)
+### [Send a Test Trace](https://docs.sentry.io/platforms/apple/guides/watchos.md#send-a-test-trace)
 
-Verify that your app is sending events to Sentry by adding the following snippet, which includes an intentional error. You should see the error reported in Sentry within a few minutes.
-
-To verify crashes, ensure you run your application without a debugger attached. Otherwise, the SDK won't capture the crash.
+Sampling settings determine which transactions to send; they don't create transactions. Start a transaction around an operation in your app and finish it when the operation completes:
 
 **Swift**
 
 ```swift
-import Sentry
+let transaction = SentrySDK.startTransaction(
+    name: "Example Operation",
+    operation: "task",
+    bindToScope: true
+)
 
-do {
-    try aMethodThatMightFail()
-} catch {
-    SentrySDK.capture(error: error)
-}
+// Perform the operation you want to measure.
+
+transaction.finish()
 ```
 
 **Objective-C**
 
 ```objc
-@import Sentry;
+id<SentrySpan> transaction = [SentrySDK startTransactionWithName:@"Example Operation"
+                                                    operation:@"task"
+                                                  bindToScope:YES];
 
-NSError *error = nil;
-[self aMethodThatMightFail:&error]
+// Perform the operation you want to measure.
 
-if (error) {
-    [SentrySDK captureError:error];
-}
+[transaction finish];
+```
+
+For asynchronous work, finish the transaction in the completion handler. Binding a transaction to the scope lets automatic instrumentation, such as HTTP tracing, attach child spans to it.
+
+macOS and watchOS don't automatically create UIKit screen-load or app-start transactions. Add transactions around operations you want to measure, as shown above, or instrument your views with [SwiftUI Instrumentation](https://docs.sentry.io/platforms/apple/guides/watchos/tracing/instrumentation/swiftui-instrumentation.md).
+
+## [Send Logs](https://docs.sentry.io/platforms/apple/guides/watchos.md#send-logs)
+
+Use `SentrySDK.logger` after initializing the SDK to send logs on all supported Apple platforms, including watchOS. In SDK 9.27.0+, these calls don't require an enable flag.
+
+For SDK 9.0.0–9.26.x, set `options.enableLogs = true` during initialization. For SDK 8.55.0–8.x, use `options.experimental.enableLogs = true`. See [Set Up Logs](https://docs.sentry.io/platforms/apple/guides/watchos/logs.md) for logging methods and options.
+
+**Swift**
+
+```swift
+SentrySDK.logger.info("User example action completed")
+
+SentrySDK.logger.warn("Slow operation detected", attributes: [
+    "operation": "data_fetch",
+    "duration": 3500
+])
+```
+
+**Objective-C**
+
+```objc
+SentryLogger *logger = SentrySDK.logger;
+[logger info:@"User example action completed"];
+[logger warn:@"Slow operation detected" attributes:@{
+    @"operation": @"data_fetch",
+    @"duration": @3500
+}];
+```
+
+To stop sending logs, remove the logging calls or filter them with [`beforeSendLog`](https://docs.sentry.io/platforms/apple/guides/watchos/logs.md#beforesendlog). In SDK 9.27.0+, setting `enableLogs` to `false` doesn't drop logs sent through this API.
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/apple/guides/watchos.md#send-application-metrics-)
+
+Application Metrics are enabled by default, but you must record them explicitly. In Sentry Cocoa SDK 9.12.0 and later, use `SentrySDK.metrics` to send counters, gauges, and distributions. Metrics were experimental in versions 9.2.0–9.11.x.
+
+`SentrySDK.metrics` is a Swift API. Objective-C projects can use `SentryObjCSDK.metrics` through the separate `SentryObjC` framework, available since SDK 9.16.0. See [Set Up Metrics](https://docs.sentry.io/platforms/apple/guides/watchos/metrics.md) for usage and filtering options.
+
+```swift
+SentrySDK.metrics.count(key: "checkout.failed", value: 1)
+
+SentrySDK.metrics.gauge(key: "time_since_refresh", value: 4, unit: .hour)
+
+SentrySDK.metrics.distribution(
+    key: "api_latency",
+    value: 187,
+    unit: .millisecond,
+    attributes: ["endpoint": "/api/orders"]
+)
+```
+
+## [Upload Debug Symbols](https://docs.sentry.io/platforms/apple/guides/watchos.md#upload-debug-symbols)
+
+Upload your app's debug symbols (dSYMs) so Sentry can show function names and source locations in stack traces. Follow [Uploading Debug Symbols](https://docs.sentry.io/platforms/apple/guides/watchos/dsym.md) to configure uploads for your builds.
+
+## [Verify Your Setup](https://docs.sentry.io/platforms/apple/guides/watchos.md#verify-your-setup)
+
+Capture a handled test error after initializing the SDK. You should see it in your Sentry project's Issues page within a few minutes.
+
+**Swift**
+
+```swift
+import Foundation
+import Sentry
+
+SentrySDK.capture(error: NSError(domain: "SentryTest", code: 1))
+```
+
+**Objective-C**
+
+```objc
+[SentrySDK captureError:[NSError errorWithDomain:@"SentryTest" code:1 userInfo:nil]];
 ```
 
 ## [Next Steps](https://docs.sentry.io/platforms/apple/guides/watchos.md#next-steps)
 
+At this point, you've integrated Sentry into your Apple application. Here's what to explore next:
+
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Learn more about Sentry's Apple SDK features](https://docs.sentry.io/platforms/apple/guides/watchos/features.md)
-* [Add readable stack traces to errors](https://docs.sentry.io/platforms/apple/guides/watchos/dsym.md)
-* [Add Apple Privacy manifest](https://docs.sentry.io/platforms/apple/guides/watchos/data-management/apple-privacy-manifest.md)
-
-## [FAQ](https://docs.sentry.io/platforms/apple/guides/watchos.md#faq)
-
-Can I initialize the SDK from a background thread?
-
-Yes, you can initialize the SDK from a background thread, but this is **not recommended**. Some initialization steps, like collecting view hierarchy information, must still run on the main thread. Initializing on the main thread also ensures reliable detection of app launch crashes.
+* [Explore the SDK's features and platform limitations](https://docs.sentry.io/platforms/apple/guides/watchos/features.md)
 
 ## Other Apple Frameworks
 

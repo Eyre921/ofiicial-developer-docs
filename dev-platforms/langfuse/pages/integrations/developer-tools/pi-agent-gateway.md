@@ -29,7 +29,7 @@ category: Integrations
 
 ### Create a gateway API key [#create-a-key]
 
-Create a gateway API key under **Organization settings → AI Gateway → Gateway keys**. See [API keys](/docs/gateway/features/api-keys#create-a-key).
+Create a gateway API key under **AI Gateway → Gateway keys**. See [API keys](/docs/gateway/features/api-keys#create-a-key).
 
 Export it in the shell you start Pi from:
 

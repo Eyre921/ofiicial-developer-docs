@@ -24581,7 +24581,7 @@ Server metadata is stored in a standardized [`server.json` format](https://githu
 
 The MCP Registry is part of an ecosystem that looks something like:
 
-![The MCP Registry ecosystem](https://mintcdn.com/mcp/jWyXLg8iLYJ-g6Lo/registry/ecosystem-diagram.excalidraw.svg?fit=max\&auto=format\&n=jWyXLg8iLYJ-g6Lo\&q=85\&s=06fcebbf5a33d3ef1fed72279f01f321)
+![The MCP Registry ecosystem](https://mintcdn.com/mcp/TuKtsYL1h-25zu1M/registry/ecosystem-diagram.excalidraw.svg?fit=max\&auto=format\&n=TuKtsYL1h-25zu1M\&q=85\&s=7e700f8b72398e303666dfe17ed3d25b)
 
 ### Relationship with Package Registries
 
@@ -28729,13 +28729,7 @@ MCP Project Antitrust Policy for participants and contributors
 
 **Effective: September 29, 2025**
 
-> [!NOTE]
->
-> This policy applies when participating in MCP meetings, Working Groups,
-> Interest Groups, and other collaborative forums where competitors may be
-> present. Most individual contributors working on code or documentation don't
-> need to worry about this in day-to-day work - it's primarily relevant for
-> group discussions about standards and specifications.
+This policy applies to MCP meetings, working groups, interest groups, and any other project forum where competitors may be present. See [Meetings and channels](/community/working-interest-groups#meetings-and-channels) for how group meetings are run.
 
 ## Introduction
 
@@ -28789,21 +28783,28 @@ To contact the Project regarding matters addressed by this Antitrust Policy, ple
 # Group Charter Template
 Source: https://modelcontextprotocol.io/community/charter-template
 
-Template for MCP Working Group and Interest Group charters.
+The charter template for MCP working groups and interest groups, and how to submit a charter.
 
-Every MCP Working Group and Interest Group must maintain a charter document following this structure. Charters are stored at `docs/community/working-groups/<group-name>.mdx` or `docs/community/interest-groups/<group-name>.mdx` in the [modelcontextprotocol repository](https://github.com/modelcontextprotocol/modelcontextprotocol) and added to `docs/docs.json`.
+This page gives the charter template that every working group and interest group must follow and explains how to submit a charter. The template was adopted by [SEP-2149](/seps/2149), a Specification Enhancement Proposal (SEP), and is changed, together with the rules in [Working Groups and Interest Groups](/community/working-interest-groups), by a Process SEP. Each charter lives at `docs/community/working-groups/<name>.mdx` or `docs/community/interest-groups/<name>.mdx` in the [modelcontextprotocol repository](https://github.com/modelcontextprotocol/modelcontextprotocol), records only the group's mission, scope, leadership, membership and operations, and does not restate those rules, which apply to every group. Sections marked **(WG only)** are required for working groups and optional for interest groups. To start a group, see [Forming a group](/community/working-interest-groups#forming-a-group).
 
-The charter captures information specific to your group. Governance rules — leadership requirements, decision-making process, meeting requirements, escalation paths — are defined in the [Working and Interest Groups](/community/working-interest-groups) documentation and apply automatically. Do not repeat them here.
+## Submitting a charter
 
-Sections marked **(WG only)** are required for Working Groups and optional for Interest Groups.
+* The group must already be sponsored under [Forming a group](/community/working-interest-groups#forming-a-group).
+* Copy the template below into the charter file and replace the placeholders. Delete the `{/* */}` guidance comments or leave them as written: HTML comments break the MDX build, and `npm run format` corrupts a `{/* */}` comment that spans lines.
+* Run `npm run prep`, then push.
+* Open a pull request that adds the charter file, a navigation entry under Working Groups or Interest Groups in `docs/docs.json`, and a line under [Current groups](/community/working-interest-groups#current-groups).
+* A Core Maintainer will review the pull request, as outlined in the [Amending or retiring a group](/community/working-interest-groups#amending-or-retiring-a-group) requirements.
+* Later changes follow [Amending or retiring a group](/community/working-interest-groups#amending-or-retiring-a-group) and add a row to the charter's Changelog.
 
 > [!NOTE]
 >
-> Copy the markdown below into `docs/community/working-groups/<group-name>.mdx` (or `interest-groups/` for an IG) and replace the placeholder text.
+> [Transports](/community/working-groups/transports) and
+> [Security](/community/interest-groups/security) are filled-in examples, for a
+> working group and an interest group respectively.
 
-***
+## Template
 
-```markdown theme={null}
+```mdx theme={null}
 ---
 title: <Group Name> Charter
 description: Charter for the MCP <Group Name> <Working Group | Interest Group>.
@@ -28811,50 +28812,33 @@ description: Charter for the MCP <Group Name> <Working Group | Interest Group>.
 
 ## Group Type
 
-<!-- State whether this is a Working Group or an Interest Group. -->
+{/* Keep one, delete the other. */}
 
 **Working Group** | **Interest Group**
 
 ## Mission Statement
 
-<!--
-A 2-3 sentence summary of the group's purpose.
-- The problem space being addressed
-- Why cross-cutting collaboration is needed
-- For WGs: what concrete deliverables the group will produce
-- For IGs: what discussions and knowledge-sharing the group will facilitate
--->
+{/* Two or three sentences: the problem space, why it needs collaboration across groups, and the deliverables the WG will produce or the discussions the IG will host. */}
+{/* Example opening: "The <Group Name> Working Group exists to <deliverable> so that <outcome>." */}
 
 ## Scope
 
 ### In Scope
 
-<!--
-For WGs:
-- Specification Work: Specific spec sections or SEPs owned
-- Reference Implementations: SDK components or reference implementations
-- Cross-Cutting Concerns: Areas requiring coordination with other groups
-- Documentation: Documentation responsibilities
-
-For IGs:
-- Topic areas for discussion
-- Types of output (problem statements, use cases, recommendations)
--->
+{/* WG: Specification Work (spec sections or SEPs the group owns), Reference Implementations (SDK components or reference implementations), Cross-Cutting Concerns (areas needing coordination with other groups), and Documentation responsibilities. */}
+{/* IG: topic areas for discussion, and the kinds of output (problem statements, use cases, recommendations). */}
 
 ### Out of Scope
 
-<!-- Explicit statements of what is NOT within the group's purview to prevent mission creep. -->
+{/* Explicit statements of what is not within the group's purview, to prevent mission creep. */}
 
 ### Related Groups
 
-<!-- List of other WGs or IGs with intersecting work and the nature of overlap. -->
+{/* Other WGs or IGs with intersecting work and the nature of the overlap. */}
 
 ## Leadership
 
-<!--
-Leadership requirements and responsibilities are defined in the governance rules.
-List current Leads (WG) or Facilitators (IG).
--->
+{/* List current Leads (WG) or Facilitators (IG). Requirements and duties are defined at /community/working-interest-groups#leadership. */}
 
 | Role | Name | Organization | GitHub | Term |
 | ---- | ---- | ------------ | ------ | ---- |
@@ -28862,13 +28846,9 @@ List current Leads (WG) or Facilitators (IG).
 
 ## Authority & Decision Rights (WG only)
 
-<!--
-The decision-making process (lazy consensus → vote → escalation) is defined in
-the governance rules. This table documents which decisions this WG can make at
-which authority level.
-
-IGs do not make binding decisions and do not need this section.
--->
+{/* The progression from lazy consensus to vote to escalation is defined at /community/working-interest-groups#making-decisions, not here. */}
+{/* The rows below record the level at which this WG takes each kind of decision. They are the usual allocation and are approved with the charter. A change to any row follows /community/working-interest-groups#amending-or-retiring-a-group and gets a Changelog row. */}
+{/* IGs do not make binding decisions and omit this section. */}
 
 | Decision Type                       | Authority Level                                        |
 | ----------------------------------- | ------------------------------------------------------ |
@@ -28883,11 +28863,8 @@ IGs do not make binding decisions and do not need this section.
 
 ## Membership
 
-<!--
-List current group members and their participation levels, if any.
-Leave out if no members exist yet. Participation tiers and membership
-criteria are defined in the governance rules.
--->
+{/* List current members and their participation level. Omit this section until the group has members. */}
+{/* Participation tiers and membership criteria are defined at /community/working-interest-groups#participation-levels. */}
 
 | Name | Organization | GitHub | Discord | Level |
 | ---- | ------------ | ------ | ------- | ----- |
@@ -28895,11 +28872,8 @@ criteria are defined in the governance rules.
 
 ## Operations
 
-<!--
-Document the group's current meeting approach. Meeting requirements (open,
-published 7 days ahead, agendas/notes to GitHub Discussions) and communication
-channels are defined in the governance rules.
--->
+{/* List the group's regular meetings. Meeting and channel rules are defined at /community/working-interest-groups#meetings-and-channels. */}
+{/* External repositories, proposal documents or meeting notes may be listed below the table. */}
 
 | Meeting         | Frequency | Duration | Purpose                               |
 | --------------- | --------- | -------- | ------------------------------------- |
@@ -28908,20 +28882,17 @@ channels are defined in the governance rules.
 
 ## Deliverables & Success Metrics (WG only)
 
-<!--
-Track active work items with status and ownership.
-IGs may optionally list current discussion topics or planned outputs here.
--->
+{/* IGs may list current discussion topics or planned outputs here instead. */}
 
 ### Active Work Items
 
-| Item          | Status                    | Target Date | Champion |
-| ------------- | ------------------------- | ----------- | -------- |
-| SEP-XXX: Name | Draft / Review / Approved |             |          |
+| Item           | Status                       | Target Date | Champion |
+| -------------- | ---------------------------- | ----------- | -------- |
+| SEP-XXXX: Name | draft / in-review / accepted |             |          |
 
 ### Success Criteria
 
-<!-- Measurable outcomes for WG success. -->
+{/* State measurable outcomes. */}
 
 ## Changelog
 
@@ -28930,1078 +28901,319 @@ IGs may optionally list current discussion topics or planned outputs here.
 |      |        |
 ```
 
-***
 
-## Example Mission Statements
-
-**Working Group:**
-
-> The Transport Working Group exists to evolve MCP's transport mechanisms to support diverse deployment scenarios—from local subprocess communication to horizontally-scaled cloud deployments—while maintaining protocol coherence and backward compatibility.
-
-**Interest Group:**
-
-> The Enterprise IG explores the challenges of deploying MCP in enterprise environments, gathering use cases and requirements to inform future specification work.
-
-
-# Contributor Communication
+# Communication
 Source: https://modelcontextprotocol.io/community/communication
 
-Communication strategy and framework for the Model Context Protocol community
+The MCP project's communication channels, when a channel may be private, and where decisions are recorded.
 
-This document explains how to communicate and collaborate within the Model Context Protocol (MCP) project.
+This page sets out the project's communication channels, when a channel may be private, and where decisions are recorded. It was adopted by [SEP-994](/seps/994), a Specification Enhancement Proposal (SEP), and is changed by a Process SEP. The [Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md) governs every channel. If you are new to the project, start at [Contributing](/community/contributing).
 
-## Communication Channels
+## Channels
 
-| Channel | Purpose | When to Use |
-| - | - | - |
-| [Discord](https://discord.gg/6CSzBmMkjX) | Real-time discussion | Quick questions, coordination, WG/IG discussions |
-| [Live calls](https://meet.modelcontextprotocol.io/) | Sync up | WG/IG presentations, progress reports |
-| [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions) | Structured discussion | Proposals, roadmap planning, longer-form debate |
-| [GitHub Issues](https://github.com/modelcontextprotocol/modelcontextprotocol/issues) | Actionable tasks | Bug reports, documentation fixes |
-| [Vulnerability reports](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md) | Security issues | Vulnerabilities - **never post publicly** |
+| Channel | Use it for |
+| - | - |
+| [Discord](https://discord.gg/6CSzBmMkjX) | Real-time coordination among contributors, including working group, interest group and SDK discussion |
+| [Meeting calendar](https://meet.modelcontextprotocol.io/) | Open group and maintainer meetings. For how meetings run, see [Meetings and channels](/community/working-interest-groups#meetings-and-channels) |
+| [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions) | Ideas, feature requests with rationale, questions, roadmap discussion, announcements and releases, and meeting agendas and notes (Meeting Notes category) |
+| [GitHub Issues](https://github.com/modelcontextprotocol/modelcontextprotocol/issues) | Reproducible bugs, scoped documentation tasks, and CI and release tasks, filed through the issue forms. [SEPs](/community/sep-guidelines) are pull requests to `seps/`, not issues |
+| [Security advisories](/community/policies#reporting-a-vulnerability) | Vulnerabilities. Never post one in a public channel |
 
-All communication is governed by our [Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md). We expect respectful, professional, and inclusive interactions across all channels.
+Each SDK and project repository has its own issue tracker and Discord channel. Most have Discussions turned off and use Issues instead; this repository and the registry are the main exceptions. Vulnerability reports follow the [Security Policy](/community/policies#reporting-a-vulnerability).
 
 ## Discord
 
-The [MCP Contributor Discord](https://discord.gg/6CSzBmMkjX) is for real-time contributor discussion and collaboration. The server is designed for **MCP contributors** and is not intended for general MCP support.
+The [MCP Contributor Discord](https://discord.gg/6CSzBmMkjX) is for people working on the protocol and its projects, and is where discussion of the protocol and its design starts. It is not a support channel: report a reproducible bug as an issue on the repository it affects, and start from the documentation for questions about using MCP. Do not market products or services on the server, and mention vendors only as examples relevant to the specification.
 
-### Public Channels (Default)
+Channels are named `#general` for project-wide discussion, `#<name>-wg` and `#<name>-ig` for each working group and interest group, and `#<lang>-sdk-dev` for each SDK. Other projects have a channel such as `#inspector-dev`. Propose a new group in `#wg-ig-group-creation`. Responses are best-effort.
 
-**Purpose:** Open community engagement, collaborative development, and transparent project coordination.
+Channels are public by default. Private channels are restricted to designated maintainers and Community Moderators and exist only for security incidents (CVEs and protocol vulnerabilities), people and Code of Conduct matters, and coordination that needs an immediate or focused response from a limited audience. Some maintainer decision channels are read-only. A private channel is a temporary incident room, not a place for routine development. Matters concerning an individual contributor may remain private.
 
-**Primary use cases:**
+## Decision records
 
-* SDK and tooling development (e.g., `#typescript-sdk-dev`, `#inspector-dev`)
-* [Working Group and Interest Group](/community/working-interest-groups) discussions (e.g., `#auth-wg`, `#security-ig`)
-* Community onboarding and contribution guidance
-* Community feedback and collaborative brainstorming
-* Public office hours and maintainer availability
+Discord is not the record. A Discord discussion heading toward a technical or governance decision must move to a GitHub Discussion. Every technical or governance decision, including a Core Maintainer outcome on a SEP, is written up in a Discussion with the `notes` label, or on the SEP's pull request. Specification changes are also recorded in the [changelog](/specification/draft/changelog), and process changes in these community pages.
 
-**Avoid:**
-
-* MCP user support - Read official documentation and use GitHub Discussions for questions
-* Service or product marketing - Keep discussions vendor-neutral; mentions of brands are discouraged except as examples relevant to the specification
-
-### Private Channels (Exceptions)
-
-**Purpose:** Confidential coordination and sensitive matters. Access is restricted to designated maintainers.
-
-**Criteria for private use:**
-
-* Security incidents (CVEs, protocol vulnerabilities)
-* People matters (maintainer discussions, code of conduct issues)
-* Coordination requiring immediate or focused response with a limited audience
-* Some channels are read-only for maintainer decision-making
-
-**Transparency requirements:**
-
-* All technical and governance decisions affecting the community must be documented in GitHub Discussions and/or Issues, labeled with `notes`
-* Private channels are temporary "incident rooms," not for routine development
-* Some matters related to individual contributors may remain private when appropriate
-
-Any significant discussion on Discord that leads to a potential decision or proposal must be moved to GitHub Discussion or Issue for a persistent, searchable record.
-
-## GitHub Discussions
-
-Use for structured, long-form discussion and debate on project direction.
-
-**When to use:**
-
-* Project roadmap planning and milestone discussions
-* Announcements and release communications
-* Community polls and consensus-building
-* Feature requests with context and rationale
-* If a repository doesn't have Discussions enabled, use GitHub Issues instead
-
-## GitHub Issues
-
-Use for bug reports and actionable development tasks. Feature requests should go to [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions).
-
-**When to use:**
-
-* Bug reports with reproducible steps
-* Documentation improvements with specific scope
-* CI/CD problems and infrastructure issues
-* Release tasks and milestone tracking
-
-**Note:** SEP proposals are submitted as pull requests to the [`seps/` directory](https://github.com/modelcontextprotocol/modelcontextprotocol/tree/main/seps), not as GitHub Issues. See the [SEP Guidelines](/community/sep-guidelines).
-
-## Security Issues
-
-**Do not post security issues publicly.**
-
-1. Use the private security reporting process in [SECURITY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md)
-2. Contact Lead or [Core Maintainers](/community/governance#current-core-maintainers) directly
-3. Follow responsible disclosure guidelines
-
-## Decision Records
-
-All MCP decisions are documented in public channels:
-
-| Type | Location |
-| - | - |
-| Technical decisions | [GitHub Issues](https://github.com/modelcontextprotocol/modelcontextprotocol/issues) and SEPs |
-| Specification changes | [Changelog](https://modelcontextprotocol.io/specification/draft/changelog) |
-| Process changes | [Community documentation](https://modelcontextprotocol.io/community/governance) |
-| Governance decisions | [GitHub Issues](https://github.com/modelcontextprotocol/modelcontextprotocol/issues) and SEPs |
-
-When documenting decisions, we retain as much context as possible:
-
-* Decision makers
-* Background context and motivation
-* Options considered
-* Rationale for chosen approach
-* Implementation steps
+A record names who decided, the context, the options considered, the rationale, and the next steps. For meeting agendas and notes, see [Meetings and channels](/community/working-interest-groups#meetings-and-channels).
 
 
 # Contributing to MCP
 Source: https://modelcontextprotocol.io/community/contributing
 
-How to contribute to the Model Context Protocol project
+How to contribute to the Model Context Protocol specification, docs and SDKs.
 
-The Model Context Protocol (MCP) is an open source project that welcomes contributions from the
-community. This guide walks you through everything you need to get started.
+MCP is an open source project that welcomes contributions from the community. You don't need a change ready to get involved.
 
-## Before You Begin
+You'll find the specification, these docs and Specification Enhancement Proposals (SEPs) in the [specification repository](https://github.com/modelcontextprotocol/modelcontextprotocol). Each SDK and tool has its own repository in the [`modelcontextprotocol`](https://github.com/modelcontextprotocol) organization.
 
-### Join the Community
+To build with MCP, start with the [server](/docs/develop/build-server) and [client](/docs/develop/build-client) guides, the [SDK list](/docs/sdk) or the [MCP Registry](/registry/about).
 
-You don't need to have a change ready to get involved. Join the
-[MCP Contributor Discord](https://discord.gg/6CSzBmMkjX) to connect with contributors and
-maintainers, ask questions, and find out where help is needed. See the
-[Contributor Communication](/community/communication) guide for all channels - including
-[live calls](https://meet.modelcontextprotocol.io/) and GitHub Discussions - and when to use
-each one, or jump to [Getting Help](#getting-help) below.
+If you want to invest some time in our discussions, the protocol work is organized in [working groups and interest groups](/community/working-interest-groups). Their meetings are open to anyone and are listed on [meet.modelcontextprotocol.io](https://meet.modelcontextprotocol.io/). [Meetings and channels](/community/working-interest-groups#meetings-and-channels) sets out how a meeting is announced and minuted. No invitation or role is needed to attend or speak at a meeting, to comment on a pull request, or to open an issue or a discussion.
 
-### Prerequisites
+These same working groups and interest groups are represented in the Discord space.
 
-Before contributing, ensure you have the following installed and ready:
+## Where to start
 
-* **[Git](https://git-scm.com/downloads)** - For cloning repositories and submitting changes
-* **[Node.js 24+](https://nodejs.org/)** - Required for building and testing our projects
-* **npm** - Comes with Node.js, used for dependency management
-* **[GitHub account](https://github.com/signup)** - For submitting pull requests and issues
-* **Language-specific tooling** - If contributing to an SDK, you'll need the appropriate
-  development environment for that language (e.g., Python, Rust, Go)
+**1. Join Discord**
 
-Verify your setup:
+Contributors talk about the protocol on [Discord](/community/communication#discord).
 
-```bash theme={null}
-node --version  # Should be 24.x or higher
-npm --version   # Should be 11.x or higher
-git --version   # Any recent version
-```
+**2. Find your group**
 
-> [!NOTE]
->
-> These commands work the same on macOS, Linux, and Windows, so you're good to
-> go on any platform.
+Pick the [working group](/community/working-interest-groups#current-groups) or Discord channel that covers your area. If none fits, use `#general`.
 
-### Repository Structure
+The specification repository also labels issues [`good first issue`](https://github.com/modelcontextprotocol/modelcontextprotocol/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) and `help wanted` when they are sized for a first change.
 
-MCP spans multiple repositories in the
-[`modelcontextprotocol`](https://github.com/modelcontextprotocol) organization on GitHub. Here are
-a few notable sub-projects worth checking out:
+The sections below cover each kind of change.
 
-| Repository | Contents |
-| - | - |
-| [`modelcontextprotocol/modelcontextprotocol`](https://github.com/modelcontextprotocol/modelcontextprotocol) | Specification, docs, SEPs |
-| [`modelcontextprotocol/typescript-sdk`](https://github.com/modelcontextprotocol/typescript-sdk) | TypeScript/JavaScript SDK |
-| [`modelcontextprotocol/python-sdk`](https://github.com/modelcontextprotocol/python-sdk) | Python SDK |
-| [`modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk) | Go SDK |
-| [`modelcontextprotocol/java-sdk`](https://github.com/modelcontextprotocol/java-sdk) | Java SDK |
-| [`modelcontextprotocol/kotlin-sdk`](https://github.com/modelcontextprotocol/kotlin-sdk) | Kotlin SDK |
-| [`modelcontextprotocol/csharp-sdk`](https://github.com/modelcontextprotocol/csharp-sdk) | C# SDK |
-| [`modelcontextprotocol/swift-sdk`](https://github.com/modelcontextprotocol/swift-sdk) | Swift SDK |
-| [`modelcontextprotocol/rust-sdk`](https://github.com/modelcontextprotocol/rust-sdk) | Rust SDK |
-| [`modelcontextprotocol/ruby-sdk`](https://github.com/modelcontextprotocol/ruby-sdk) | Ruby SDK |
-| [`modelcontextprotocol/php-sdk`](https://github.com/modelcontextprotocol/php-sdk) | PHP SDK |
+**3. Talk to the lead**
 
-Throughout this guide, **specification repository** refers to
-`modelcontextprotocol/modelcontextprotocol`, which contains the protocol spec, this documentation
-site, and [Spec Enhancement Proposals (SEPs)](/community/sep-guidelines).
+Each group's page names its leads. Post what you want to work on in the group's channel.
 
-### Project Roles
+Anyone can join a group meeting, comment on a pull request or open an issue. Check the [calendar](https://meet.modelcontextprotocol.io/) and read the [Antitrust Policy](/community/antitrust) before you attend.
 
-MCP follows a [governance model](/community/governance) with different levels of responsibility:
+## Report a problem
 
-* **Contributors** - Anyone who files issues, submits PRs, or participates in discussions (that's
-  you!)
-* **Maintainers** - Steward specific areas like SDKs, documentation, or
-  [Working Groups](/community/working-interest-groups)
-* **Core Maintainers** - Guide overall project direction, review SEPs, and oversee the specification
+[Report a vulnerability](/community/policies#reporting-a-vulnerability) in private.
 
-You can find the current list of maintainers in the
-[`MAINTAINERS.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md)
-file.
+For a bug, typo or unclear text in the specification or these docs, open an [issue](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/new/choose). For an SDK or tool, open it in that repository.
 
-Maintainers are here to help you succeed! Don't hesitate to reach out if you have questions or
-need guidance on your contribution.
+Please don't post usage questions in the repositories. We stopped taking them there because of spam.
 
-## Your First Contribution
+## Change the specification or docs
 
-Start here if you are new to MCP and contributing to its ecosystem.
+You need write access to open a pull request on the specification repository. We prefer you begin with an issue and follow the steps for a bug below.
 
-> [!NOTE]
->
-> While we use the specification repository as an example, the key patterns are
-> applicable to other MCP repos as well.
+**1. Raise the change**
 
-### Step 1: Set Up Your Environment
+Report a bug in an issue. Raise anything else in your group's channel or `#general`.
 
-Set up your local environment so you can test and validate changes before submitting them.
+**2. Push a branch**
 
-**1. Fork the repository**
+Push to a fork, or to a working group repository you can write to. Specification fixes go in `draft/`. Keep each change to one concern. [CONTRIBUTING.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CONTRIBUTING.md) covers setup and checks.
 
-Click the **Fork** button on the [repository page](https://github.com/modelcontextprotocol/modelcontextprotocol) to create your own copy. This gives you a personal workspace where you can make changes without affecting the main project.
+**3. Ask for a pull request**
 
-**2. Clone your fork**
+Link the branch in that issue or channel and ask a maintainer to open a pull request that credits you.
 
-```bash theme={null}
-git clone https://github.com/YOUR-USERNAME/modelcontextprotocol.git
-cd modelcontextprotocol
-```
+A change to the protocol itself needs a [SEP](#propose-a-protocol-change).
 
-Replace `YOUR-USERNAME` with your GitHub username.
+## Work on an SDK or tool
 
-**3. Install dependencies**
+Inspector and the reference servers accept issues only.
 
-```bash theme={null}
-npm install
-```
+**1. Read the contributing guide**
 
-This installs the tools needed for schema generation, documentation building, and validation.
+Each repository sets its own rules, and some close pull requests that have no assigned issue. If a repository has no guide, ask in its channel, such as `#python-sdk-dev`.
 
-**4. Verify everything works**
+**2. Pick an issue**
 
-```bash theme={null}
-npm run check
-```
+Look for [`good first issue`](https://github.com/search?q=org%3Amodelcontextprotocol+is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22\&type=issues) or `help wanted`, or open a new one. Ask to be assigned if the guide requires it.
 
-This runs TypeScript compilation, schema validation, example validation, documentation link checks, and formatting checks. If everything passes, your environment is good and you're ready to contribute.
+**3. Open a pull request**
 
-If `npm run check` fails, see [Troubleshooting](#troubleshooting) below.
+For anything larger than a small bug fix, agree on the approach in the issue before you write code.
 
-### Step 2: Find Something to Work On
+The [SDK list](/docs/sdk) shows each SDK's [tier](/community/sdk-tiers), which sets its issue triage times.
 
-While a lot of the items you might see tracked in the repository can feel intimidating, especially
-for newcomers, there are plenty of places where you can start with your first improvements:
+## Propose a protocol change
 
-1. **Documentation improvements** - Help us fix typos, unclear explanations, broken links, or
-   incomplete examples
-2. **Issues labeled `good first issue`** - Tackle issues tagged in the
-   [specification repo](https://github.com/modelcontextprotocol/modelcontextprotocol/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-   as well as our SDK repos
-3. **Schema examples** - Add examples to `schema/draft/examples/` to make it easier for developers
-   to understand protocol primitives
+Protocol changes go through a [SEP](/community/sep-guidelines). Bug fixes and clarifications [do not need one](/community/sep-guidelines#when-you-need-a-sep).
 
-### Step 3: Make Your Change
+**1. Discuss the idea**
 
-Create your changes in a dedicated branch.
-
-**1. Create a branch**
-
-```bash theme={null}
-git checkout -b fix/your-description
-```
-
-Use a descriptive branch name that reflects your change, like `fix/typo-in-tools-doc` or `feat/add-example-for-resources`.
-
-**2. Make your changes**
-
-Edit the relevant files in your local copy. If you're editing schema files, remember to run `npm run generate:schema` to regenerate the JSON schema and documentation.
-
-**3. Run checks**
-
-```bash theme={null}
-npm run check
-```
-
-Fix any issues before committing. If you have formatting errors, `npm run format` can auto-fix most of them.
-
-**4. Commit with a clear message**
-
-```bash theme={null}
-git commit -m "Fix typo in tools documentation"
-```
-
-Write a concise message that describes what you changed and why. Reference issue numbers if applicable (e.g., `Fix typo in tools documentation (#123)`).
-
-### Step 4: Submit a Pull Request
-
-When you're ready, push your branch and open a pull request.
-
-**1. Push your branch**
-
-```bash theme={null}
-git push origin fix/your-description
-```
-
-**2. Open a PR on GitHub**
-
-You can use the [GitHub CLI](https://cli.github.com/) to make this process easier:
-
-```bash theme={null}
-gh pr create --fill
-```
-
-Alternatively, navigate to your fork on GitHub and click **Compare & pull request**.
-
-**3. Fill in the PR template**
-
-Provide a clear description of your changes and link any related issues.
-
-**4. Wait for review**
-
-Maintainers typically respond within 1-5 business days.
-
-> [!TIP]
->
-> That's it, **congratulations on your first contribution**! Every improvement,
-> no matter how small, helps make MCP better for everyone.
-
-### What Makes a Good Contribution
-
-Help us review your contribution quickly by following these patterns:
-
-| Harder to Review | Thoughtful and Impactful |
-| - | - |
-| Large PR with unrelated changes | Focused PR addressing one issue |
-| Reformatting code without functional changes | Fixing a bug with a clear explanation |
-| Vague commit messages ("fixed stuff") | Descriptive commits linking to issues |
-| Submitting with failing CI checks | All CI tests pass before requesting review |
-| Duplicating existing documentation | Documenting an undocumented feature or edge case |
-
-## Types of Contributions
-
-Different contributions follow different processes depending on their scope.
-
-> [!TIP]
->
-> Not sure which category your change falls into? Ask in the [MCP Contributor
-> Discord](/community/communication#discord) before starting any significant
-> work.
-
-### Small Changes (Direct PR)
-
-Simply submit a pull request directly to the repo for:
-
-* Bug fixes and typo corrections
-* Documentation improvements, such as bringing clarity to an ambiguous or unclear section
-* Adding examples to existing features
-* Minor schema fixes that don't materially change the specification or SDK behavior
-* Test improvements
-
-### Major Changes (SEP Required)
-
-Anything that changes the MCP specification requires following the
-[Specification Enhancement Proposal (SEP)](/community/sep-guidelines) process. This includes, but
-is not limited to:
-
-* New protocol features or API methods
-* Breaking changes to existing behavior
-* Changes to the message format or schema structure
-* New interoperability standards
-* Governance or process changes
-
-Here are a few concrete examples of what would require following the SEP steps:
-
-* Adding a new RPC method like `tools/execute`
-* Changing how authentication and authorization works
-* Adding a new capability negotiation field
-* Modifying the transport layer specification
-
-## Working with the Specification Repository
-
-Once you've determined [what type of contribution](#types-of-contributions) you're making, here's
-how to work with the specification repository.
-
-### Schema Changes
-
-The TypeScript schema (`schema/draft/schema.ts`) is the **source of truth** for the protocol. It
-defines every message type, request/response structure, and primitive (tools, resources, prompts)
-that clients and servers exchange. SDK implementers across all languages rely on this schema to
-build conformant implementations.
-
-When you run `npm run generate:schema`, it generates:
-
-* The JSON schema (`schema/draft/schema.json`) for validation
-* The Schema Reference documentation (`docs/specification/draft/schema.mdx`)
-
-To modify the schema:
-
-**1. Edit the TypeScript schema**
-
-Make your changes in `schema/draft/schema.ts`.
-
-**2. Add examples (optional)**
-
-Add JSON examples in `schema/draft/examples/[TypeName]/` (e.g., `Tool/my-example.json`). Reference them in the schema using `@example` + `@includeCode` JSDoc tags.
-
-**3. Generate JSON schema and docs**
-
-```bash theme={null}
-npm run generate:schema
-```
-
-**4. Validate your changes**
-
-```bash theme={null}
-npm run check
-```
-
-### Documentation Changes
-
-Docs are written in [MDX format](https://mdxjs.com/) (Markdown with JSX components) and powered by
-[Mintlify](https://mintlify.com/). The `docs/` directory contains:
-
-* `docs/docs/` - Guides and tutorials for getting started and building with MCP
-* `docs/specification/` - Formal protocol specification (versioned by date)
-
-Here is how you can contribute to our documentation:
-
-**1. Start the local docs server**
-
-```bash theme={null}
-npm run serve:docs
-```
-
-This launches a live preview at `http://localhost:3000` with hot reloading.
-
-**2. Make your changes**
-
-Edit the relevant `.mdx` files. You can use [Mintlify components](https://www.mintlify.com/docs/components) like `<Note>`, `<Tip>`, `<Steps>`, and `<Card>` for richer formatting.
-
-**3. Check for issues**
-
-```bash theme={null}
-npm run check:docs
-```
-
-This validates formatting, broken links, and other common issues.
-
-### Major Protocol Changes
-
-For significant changes, follow the [SEP process](/community/sep-guidelines). Prior to spending a
-lot of time on a spec proposal, make sure to follow these best practices.
-
-**1. Validate your idea first**
-
-Discuss in an [Interest Group](/community/working-interest-groups) or on
-[Discord](https://discord.gg/6CSzBmMkjX).
+Raise it in your group's channel. The SEP pull request [must link to that discussion](/community/sep-guidelines#before-you-write).
 
 **2. Build a prototype**
 
-Demonstrate practical application of your idea.
+See [Prototype Requirements](/community/sep-guidelines#prototype-requirements). Consider shipping the idea as an [extension](/extensions/overview) where its shape allows.
 
 **3. Find a sponsor**
 
-A maintainer from the [maintainer
-list](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md)
-who will champion your proposal. See [Finding a Sponsor for
-SEPs](#finding-a-sponsor-for-seps) below.
+See [Sponsors](/community/sep-guidelines#sponsors).
 
 **4. Write the SEP**
 
-Follow the [SEP Guidelines](/community/sep-guidelines).
+Follow the [workflow](/community/sep-guidelines#workflow). Without write access, ask your sponsor to open the pull request.
 
-### Finding a Sponsor for SEPs
+## Other ways to help
 
-A **sponsor** is a Core Maintainer or Maintainer who champions your SEP through the review
-process. They provide feedback, help refine your proposal, and present it at Core Maintainer
-meetings.
+* Review open SEPs and draft specification pull requests.
+* Reproduce reported bugs.
+* Test SDK release candidates against the draft specification.
+* Write [conformance](https://github.com/modelcontextprotocol/conformance) scenarios. A Standards Track SEP with observable protocol behavior [needs one](/community/sep-guidelines#conformance-test-requirement) to reach Final.
 
-> [!WARNING]
->
-> Every SEP needs a sponsor to move forward. SEPs that don't find a sponsor
-> within 6 months are marked as **dormant**. Dormant SEPs aren't rejected
-> outright - they can be revived later if a sponsor is found or the proposal is
-> re-assessed to be needed.
+## Growing your role
 
-To find a sponsor:
+To take on a bigger role, see the [Contributor Ladder](/community/contributor-ladder). [Governance](/community/governance) covers who decides what, and [MAINTAINERS.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md) lists the current maintainers.
 
-**1. Find relevant maintainers**
+## Ground rules
 
-Look at the [maintainer
-list](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md)
-to find maintainers working in your area.
-
-**2. Tag maintainers in your PR**
-
-Tag 1-2 relevant maintainers (don't spam everyone).
-
-**3. Share in Discord**
-
-Post your PR in the relevant Discord channel to increase visibility.
-
-**4. Follow up if needed**
-
-If no response after 2 weeks, ask in `#general` or reach out to a Core
-Maintainer.
-
-Maintainers review open proposals regularly, but response time varies based on complexity and
-availability.
-
-## Working with the SDK Repositories
-
-MCP maintains official SDKs in multiple languages. Contributions are welcome - whether you're
-fixing bugs, improving performance, adding features, or enhancing documentation.
-
-> [!NOTE]
->
-> Each SDK has its own repository, maintainers, and contribution guidelines.
-> Some SDKs are maintained in collaboration with larger partner organizations,
-> such as Google, Microsoft, JetBrains, and others, so processes may vary
-> slightly between repositories.
-
-### Before Contributing to an SDK
-
-Before diving into code, follow these steps.
-
-**1. Open an issue first**
-
-Before starting significant work, open an issue to discuss your approach.
-This helps avoid duplicate effort, ensures your contribution aligns with the
-SDK's direction, and gives maintainers a chance to provide early feedback.
-
-**2. Join the SDK channel**
-
-Find the relevant channel in [Discord](https://discord.gg/6CSzBmMkjX) (e.g.,
-`#typescript-sdk-dev`, `#python-sdk-dev`).
-
-**3. Read the SDK's CONTRIBUTING.md**
-
-Each repository has its own `CONTRIBUTING.md` with specific instructions for
-setting up your development environment, coding standards, commit message
-conventions, and PR requirements.
-
-**4. Write tests**
-
-All contributions should include appropriate test coverage. Bug fixes should
-include a test that reproduces the issue, and new features should have tests
-covering the expected behavior. This helps maintain SDK reliability and
-prevents regressions.
-
-### SDK Repositories
-
-> [card] [TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
-
-> [card] [Python SDK](https://github.com/modelcontextprotocol/python-sdk)
-
-> [card] [Go SDK](https://github.com/modelcontextprotocol/go-sdk)
-
-> [card] [Kotlin SDK](https://github.com/modelcontextprotocol/kotlin-sdk)
-
-> [card] [Java SDK](https://github.com/modelcontextprotocol/java-sdk)
-
-> [card] [C# SDK](https://github.com/modelcontextprotocol/csharp-sdk)
-
-> [card] [Swift SDK](https://github.com/modelcontextprotocol/swift-sdk)
-
-> [card] [Rust SDK](https://github.com/modelcontextprotocol/rust-sdk)
-
-> [card] [Ruby SDK](https://github.com/modelcontextprotocol/ruby-sdk)
-
-> [card] [PHP SDK](https://github.com/modelcontextprotocol/php-sdk)
-
-## Getting Help
-
-Got questions or need guidance? The MCP community is here to help.
-
-* **[Discord](/community/communication#discord)** - Real-time discussion with contributors and
-  maintainers, focused on MCP contributions (not general MCP support)
-* **[GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions)**
-  \- Exploration and conversation: **feature requests**, questions, roadmap planning, and proposals
-  that need input before becoming concrete tasks
-* **[GitHub Issues](https://github.com/modelcontextprotocol/modelcontextprotocol/issues)** -
-  Actionable work: bug reports with reproducible steps, documentation fixes, and tasks that are
-  well-defined and ready to implement (not feature requests)
-
-This separation helps maintainers focus on work that's ready for implementation while giving ideas
-room to develop. If you're unsure whether something is ready to be an issue, start with a
-discussion. For a complete guide, see our [Contributor Communication](/community/communication)
-documentation.
-
-For protocol discussions, join [Working Group](/community/working-interest-groups) channels like
-`#auth-wg` or `#server-identity-wg`. For SDK help, find your language's channel (e.g.,
-`#typescript-sdk-dev`).
-
-## Troubleshooting
-
-Sometimes things don't go as planned - that's completely normal! Here are solutions to common
-issues. If you're still stuck, don't hesitate to ask for help in
-[Discord](/community/communication#discord). The community is friendly and happy to help you get
-unstuck.
-
-### `npm run check` fails
-
-Common causes:
-
-* **Wrong Node.js version** - Ensure you have Node.js 24+
-* **Missing dependencies** - Run `npm install` again
-* **Schema out of sync** - Run `npm run generate:schema`
-* **Formatting issues** - Run `npm run format` to auto-fix
-
-### My PR has been sitting unnoticed for weeks
-
-1. Ensure all CI checks pass
-2. Politely ping the desired reviewer in a comment
-3. Ask in the relevant Discord channel
-4. For urgent issues, reach out to a Core Maintainer
-
-### I can't find a sponsor for my SEP
-
-1. Make sure your idea has been discussed in Discord or an Interest Group first
-2. Proposals with demonstrated community interest are more likely to find sponsors
-3. Consider whether your change might be too large - could it be split into smaller SEPs?
-
-See [Finding a Sponsor for SEPs](#finding-a-sponsor-for-seps) for the full process.
-
-### My SEP was rejected
-
-Don't take it personally - a SEP rejection doesn't mean your idea was bad. SEPs can be rejected
-for many reasons: timing, scope, competing priorities, or simply because the protocol isn't ready
-for that change yet. The feedback you receive is valuable and often points toward a path forward.
-
-Rejection is not permanent. You have a few options ahead:
-
-1. **Address the feedback and resubmit** - Often, rejection comes with specific concerns.
-   Addressing those concerns and resubmitting can be the right path forward.
-2. **Discuss in Discord** - Talk with maintainers to better understand the concerns. Sometimes a
-   brief conversation reveals a simpler path forward.
-3. **Try a different approach** - Submit a new SEP that addresses the same problem differently,
-   incorporating what you learned.
-4. **Wait for the right moment** - Circumstances change. New use cases emerge, the community
-   grows, and priorities shift. An idea rejected today might be welcomed tomorrow.
-
-## Out of Scope
-
-This guide covers contributions to the **core MCP project** - the specification, official SDKs,
-and documentation.
-
-Building your own MCP servers, clients, or tools is **not** covered here. For guidance on building
-with MCP, see our documentation:
-
-* [Build a Server](/docs/develop/build-server)
-* [Build a Client](/docs/develop/build-client)
-* [Example Servers](/examples)
-
-If you build something you'd like to share with the community, you can submit it to the
-[MCP Registry](/registry/about).
-
-## AI Contributions
-
-We welcome the use of AI tools like Claude or ChatGPT to help with your contributions! If you do
-use AI assistance, just let us know in your pull request or issue - a quick note about how you
-used it (drafting docs, generating code, brainstorming, etc.) is all we need.
-
-The key is that you understand and can stand behind your contribution:
-
-* **You get it** - You understand what the changes do and can explain them
-* **You know why** - You can articulate why the change is needed
-* **You've verified it** - You've tested or validated that it works as intended
-
-You can read the full policy in
-[AI\_POLICY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/AI_POLICY.md).
-
-## Code of Conduct
-
-All contributors must follow the
-[Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md).
-We expect respectful, professional, and inclusive interactions across all channels.
-
-## License
-
-By contributing, you agree that your contributions will be licensed under:
-
-* **Code and specifications**: Apache License 2.0
-* **Documentation** (excluding specifications): CC-BY 4.0
-
-See the
-[LICENSE](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/LICENSE) file for
-details.
+* The [Code of Conduct](/community/policies#code-of-conduct) applies in every repository, channel and meeting.
+* [Disclose](/community/policies#ai-assisted-contributions) any AI assistance in the pull request or issue.
+* AI agents must follow [AGENTS.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/AGENTS.md), which limits when they can open issues and pull requests.
+* Contributions are [licensed](/community/policies#licensing-and-intellectual-property) under Apache-2.0 for code and specifications and CC-BY-4.0 for other documentation.
 
 
 # Contributor Ladder
 Source: https://modelcontextprotocol.io/community/contributor-ladder
 
-Roles, responsibilities, and advancement criteria for MCP contributors, from first contribution to Core Maintainer
+The contributor roles in the MCP project, what each requires and grants, and how people move between them.
 
-The Model Context Protocol contributor ladder defines roles, responsibilities, and advancement criteria for the project. It shows community members how to grow their involvement from a first contribution to project leadership.
+This page defines the contributor roles in the MCP project, what each requires and grants, and how people move between them. It was adopted by [SEP-2148](/seps/2148), a Specification Enhancement Proposal (SEP), and is changed by a Process SEP. Authority between roles is defined in [Governance](/community/governance#roles), and the group-level roles (WG Member, WG Lead, IG Facilitator) in [Working Groups and Interest Groups](/community/working-interest-groups).
 
-This document implements [SEP-2148](/seps/2148-contributor-ladder). For Working Group and Interest Group governance, see [SEP-2149](/seps/2149-working-group-charter-template).
+## Roles at a glance
 
-## Guiding Principles
-
-* **Earned Trust.** Advancement follows from demonstrated contributions, good judgment, and sustained engagement. Tenure alone is not enough.
-* **Multiple Growth Pathways.** Code, specification work, documentation, and community building all lead to advancement.
-* **Transparency.** Criteria for advancement are explicit and applied consistently.
-* **Alignment With MCP Goals.** Contributors must show commitment to MCP beyond any single employer's interests.
-
-## Roles at a Glance
-
-| Role | Summary | Key Privileges | Minimum Timeline |
+| Role | What it is | Access granted | Minimum time |
 | - | - | - | - |
-| [**Contributor**](#contributor) | Anyone who contributes to MCP | Submit issues, PRs, participate in discussions | Immediate |
-| [**Member**](#member) | Established, active contributor | GitHub org membership, triage rights, eligible for WG/IG leadership | 2-3 months of meaningful contributions |
-| [**Maintainer**](#maintainer) | Area steward with operational responsibility | Merge rights, release participation | 6+ months as Member |
-| [**Core Maintainer**](#core-maintainer) | Technical leadership and protocol stewardship | Final decision authority, governance participation | By invitation after sustained Maintainer contribution |
-| [**Lead Maintainer**](#lead-maintainer) | Ultimate project authority (founders) | All Core Maintainer privileges, veto authority, appoints Core Maintainers | Reserved for project founders; succession only |
-| [**Community Moderator**](#community-moderator) | CoC enforcement and community health | Moderation rights on community platforms, incident handling | Parallel track: Member status + appointment |
+| [Contributor](#contributor) | Anyone who has contributed to MCP in any form | None; issues, pull requests and discussions are open to all | None |
+| [Member](#member) | Established, active contributor | GitHub organization membership, triage rights | 2-3 months of active participation |
+| [Maintainer](#maintainer) | Steward of a named area (an SDK, a tool, a docs area, a group) | Merge rights in the area, listed in [`MAINTAINERS.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md) | 6 months as Member |
+| [Core Maintainer](#core-maintainer) | Project-wide technical leadership; authority in [Governance](/community/governance#roles) | Administrative rights on all repositories | By invitation after sustained Maintainer contribution |
+| [Lead Maintainer](#lead-maintainer) | Founding role; authority in [Governance](/community/governance#roles) | Administrative rights on all repositories and infrastructure | Founders and their successors only |
+| [Community Moderator](#community-moderator) | Code of Conduct enforcement and incident handling | Moderation tools on Discord and GitHub Discussions | Member status; parallel track |
 
-> [!NOTE]
->
-> Timelines are minimums, not guarantees. They protect the project from rapid
-> privilege escalation and ensure a high bar of demonstrated commitment. Actual
-> advancement is discretionary and may take longer. Exceptions require explicit
-> Core Maintainer approval with documented rationale.
-
-***
+Timelines are minimums, advancement is discretionary, and an exception requires Core Maintainer approval with written rationale. Code, specification text, documentation, triage, security work, community work and moderation all count equally toward every role.
 
 ## Contributor
 
-Anyone who has contributed to MCP in any form is a Contributor. This includes opening issues, submitting pull requests, participating in working group discussions, improving documentation, or helping other community members.
-
-**There are no formal requirements.** We welcome all contributions that follow our contributing guidelines.
-
-**Getting started:**
-
-* Review the [Contributing Guide](/community/contributing)
-* Join community channels (Discord, GitHub Discussions)
-* Look for issues tagged `good-first-issue` or `help-wanted`
-* Attend working group meetings
-
-***
+A Contributor is anyone who has contributed to MCP in any form: issues, pull requests, group discussion, documentation, or help to others. There are no formal requirements. Start at [Contributing](/community/contributing#where-to-start) and join the channels listed in [Communication](/community/communication).
 
 ## Member
 
-Members are established contributors with a record of ongoing commitment to MCP.
+**Requirements.** Several contributions to MCP, including at least one merged pull request or accepted contribution. Ongoing engagement over 2-3 months rather than one-off contributions. Two-factor authentication enabled on GitHub. No objection from existing Members within 7 days of nomination.
 
-**Requirements:**
+**Sponsorship and approval.** Sponsored by two Members or Maintainers from different organizations, or by one Core Maintainer or Lead Maintainer. Approved by no-objection.
 
-* Multiple contributions to MCP (code, documentation, and/or community)
-* At least one merged PR or accepted contribution
-* Ongoing engagement with the community, not just one-off contributions
-* Two-factor authentication enabled on GitHub
-* No objections from existing Members within 7 days
+**Duties.** Respond to issues and pull requests assigned to you. Help onboard new contributors when you can. Follow the [Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md).
 
-**Sponsorship:**
+**Privileges.** GitHub organization membership with triage rights. Can be assigned issues and pull requests and use review commands such as `/lgtm`. Pull request creation on the specification repository follows [Contributing](/community/contributing#change-the-specification-or-docs). Eligible to serve as WG Lead or IG Facilitator. The member lists in the [access repository](https://github.com/modelcontextprotocol/access) are the roster. No separate list is published.
 
-* Sponsored by two existing Members or Maintainers from different organizations, **or**
-* Sponsored by one Core Maintainer or Lead Maintainer
-
-**Minimum timeline:** 2-3 months of active participation
-
-**Responsibilities:**
-
-* Continue contributing in good faith
-* Respond to assigned issues and PRs
-* Follow community guidelines and the code of conduct
-* Help onboard new contributors when possible
-
-**Privileges:**
-
-* GitHub organization membership with triage rights
-* Can be assigned to issues and PRs
-* Can use shortcut approval or review commands on PRs, such as `/lgtm`
-* Listed in the community membership roster
-* Can create PRs in restricted repositories
-* Eligible for Working Group Lead or Interest Group Facilitator roles
-
-**Inactivity:** Members with no contributions for 3 months may be moved to emeritus status. Re-engagement follows a simplified re-familiarization process.
-
-***
+**Minimum time.** 2-3 months of active participation.
 
 ## Maintainer
 
-Maintainers are trusted stewards who take operational responsibility for specific areas.
+**Requirements.** Six or more months as a Member with sustained contributions. Leadership or ownership of something concrete: an SDK, a tool, a documentation area, a working or interest group, or a significant initiative. Acting for the project over the interests of any employer. Knowledge of the [roadmap](/development/roadmap), the [design principles](/community/design-principles) and how the area is used in practice. Completed security and governance onboarding.
 
-**Requirements:**
+**Sponsorship and approval.** Sponsored by one Maintainer or Core Maintainer. Approved by Core Maintainers.
 
-* Member for at least 6 months with sustained, high-quality contributions
-* Demonstrated leadership in working groups or significant initiatives
-* Ability to represent MCP's interests above those of any single employer or organization
-* Deep understanding of the MCP vision, roadmap, and design principles
-* Understanding of how the area impacts real-world AI integration and model interaction patterns
-* Completed security and governance onboarding
+**Duties.**
 
-**Sponsorship and Approval:**
+* Own the operational health of the area, including test stability, documentation currency, the release process and milestone planning.
+* Review escalated decisions within the timelines under [Escalation](#escalation), and make sure proposals that reach Core Maintainers are refined and account for ecosystem-wide impact.
+* Mentor Members and sponsor future Maintainers.
+* Speak for the area's users, represent MCP externally when asked, and take part in roadmap and governance discussions and in the project's GitHub and Discord channels.
 
-* Sponsored by an existing Maintainer or Core Maintainer
-* Approved by Core Maintainers
+**Privileges.** Merge rights in owned areas. May sponsor Members, Maintainers and SEPs (see [SEP Guidelines](/community/sep-guidelines#sponsors)). Included in roadmap and prioritization discussions. Listed in [`MAINTAINERS.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md).
 
-**Responsibilities:**
-
-* Own the operational health of the area (test stability, documentation currency)
-* Run release processes and milestone planning for the scope
-* Provide timely review of escalated decisions
-* Participate actively in governance discussions
-* Mentor Members and develop future Maintainers
-* Represent MCP in external contexts when appropriate
-* Engage with the area ecosystem and stakeholders; understand real-world usage and represent community needs
-* Ensure proposals reaching Core Maintainers are refined, well-considered, and account for ecosystem-wide impact
-* Participate actively in discussions on communication channels (GitHub issues, Discord)
-
-**Privileges:**
-
-* Merge privileges for owned areas
-* Can sponsor new Maintainers
-* Participate in roadmap and prioritization discussions
-* Listed in `MAINTAINERS.md`
-
-**Inactivity:** Maintainers with no contributions for 6 months may be moved to emeritus status following review by Core Maintainers. Merge rights are revoked upon emeritus transition. Re-engagement requires completing security and governance onboarding again.
-
-All contribution pathways can lead to Maintainer. The specific scope will align with the contribution type.
-
-***
+**Minimum time.** 6 months as Member.
 
 ## Core Maintainer
 
-Core Maintainers hold final decision-making authority for MCP's technical direction. This is the highest level of trust in the community.
+**Requirements.** Six or more months as a Maintainer or in equivalent standing. Demonstrated judgment on project-wide decisions. Trusted across organizations.
 
-> [!NOTE]
->
-> The Core Maintainer role is intentionally limited. This ensures a coherent
-> technical vision while the project scales. Bandwidth concerns are addressed
-> through delegation to Maintainers, Working Group Leads, and Interest Group
-> Facilitators, not by expanding Core Maintainer numbers.
+**Sponsorship and approval.** Nominated by a majority of Core Maintainers and approved by Lead Maintainers, or appointed directly by Lead Maintainers. Removal is by Lead Maintainers (see [Governance](/community/governance#roles)).
 
-**Requirements:**
+**Duties.** Steward the design principles and the roadmap, and hold to long-term restraint in protocol evolution. Decide contested and cross-cutting technical questions and governance matters under the [decision process](/community/governance#decision-process). Represent the project externally, plan succession, and watch community health. Attend the Core Maintainer meeting every two weeks and [Steering Group](/community/governance#roles) meetups.
 
-* Sustained contribution as Maintainer or similar role over at least 6 months
-* Demonstrated judgment on complex, project-wide decisions
-* Trust and respect across organizational boundaries
-* Deep commitment to MCP's long-term success
+**Privileges.** Vote on SEPs and governance matters. Approve Maintainers, breaking changes and major specification revisions. Administrative rights on all MCP repositories. Listed in [`MAINTAINERS.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md).
 
-**Appointment:**
+**Minimum time.** By invitation after sustained Maintainer contribution.
 
-* Nominated by a majority of Core Maintainers and approved by Lead Maintainers, **or**
-* Direct appointment by Lead Maintainers
-
-When evaluating candidates, Core Maintainers should consider whether the current composition adequately represents the breadth of the MCP ecosystem. This includes enterprise adopters deploying MCP in production.
-
-**Responsibilities:**
-
-* Final technical decision authority for contested or cross-cutting issues
-* Stewardship of project vision and design principles
-* Governance and policy decisions
-* External representation of MCP
-* Succession planning and community health
-* Ensure restraint and sustainability in protocol evolution
-* Attend Core Maintainer meetings and meetups
-
-**Privileges:**
-
-* Final approval on breaking changes and major spec revisions
-* Voting rights on [SEPs](/community/sep-guidelines)
-* Approval of Maintainers
-* Governance voting rights and expectation of governance participation
-* Administrative rights to all MCP GitHub repositories
-* Listed in `MAINTAINERS.md` as Core Maintainer
-
-**Inactivity:** Core Maintainers with no participation in governance or technical decisions for 6 months may be moved to emeritus status following review by Lead Maintainers. Given the visibility of this role, Core Maintainers should proactively communicate reduced availability.
-
-***
+The group is kept small and delegates to Maintainers, WG Leads and IG Facilitators rather than growing. When evaluating candidates, Core Maintainers consider whether it reflects the breadth of MCP adoption, including enterprise adopters running MCP in production.
 
 ## Lead Maintainer
 
-Lead Maintainers hold ultimate authority over MCP's direction and governance. This is a lifetime appointment reserved for project founders. There is no advancement path to this role. It is only assumed through succession (see [Succession](#succession)).
-
-**Responsibilities:**
-
-* All Core Maintainer responsibilities
-* Appoint and remove Core Maintainers
-* Final authority on contested governance decisions
-* Project-wide strategic direction
-
-**Privileges:**
-
-* Can act alone where Core Maintainers require multiple approvals
-* Veto authority over any decision
-* Appoints successor
+Lead Maintainer is the founding role, held for life, with no advancement path into it. A Lead Maintainer holds every Core Maintainer duty and privilege plus the powers listed in [Governance](/community/governance#roles) (veto, appointment and removal of Core Maintainers, acting alone).
 
 ### Succession
 
-If a Lead Maintainer leaves the role for any reason, succession begins upon their written notice. If they cannot give notice, the remaining Lead Maintainers or Core Maintainers may determine that the Lead Maintainer is unable to continue serving.
+If a Lead Maintainer leaves the role for any reason, succession begins on their written notice or, if they cannot give notice, when the remaining Lead Maintainers or the Core Maintainers determine that the Lead Maintainer is unable to continue serving.
 
-If one or more Lead Maintainers remain, they appoint a successor. If more than one remains, they decide by majority vote. The remaining Lead Maintainers continue to govern until a successor is appointed.
-
-If no Lead Maintainers remain, the Core Maintainers appoint a successor by majority vote within 30 days. Until a new Lead Maintainer is appointed, the project operates by two-thirds vote of Core Maintainers.
-
-***
+While one or more Lead Maintainers remain, they appoint the successor, by majority vote if more than one remains, and continue to govern until the successor is appointed. If no Lead Maintainers remain, the Core Maintainers appoint a successor by majority vote within 30 days, and the project operates by two-thirds vote of Core Maintainers until a new Lead Maintainer is appointed.
 
 ## Community Moderator
 
-Community Moderators help keep the MCP community healthy, safe, and welcoming. This role focuses on moderation and Code of Conduct enforcement rather than technical contribution.
+**Requirements.** Member status. Composure and good judgment in community interactions. Working knowledge of the [Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md). Discretion and fairness in sensitive situations.
 
-**Requirements:**
+**Sponsorship and approval.** Sponsored and approved by one Core Maintainer or Lead Maintainer. Core Maintainers may remove a moderator for failure to uphold moderation standards or for Code of Conduct violations. A moderator may step down at any time.
 
-* Member status minimum
-* Demonstrated good judgment and composure in community interactions
-* Understanding of the MCP Code of Conduct and community guidelines
-* Ability to handle sensitive situations with discretion and fairness
+**Duties.**
 
-**Sponsorship:**
+* Watch community channels, including Discord and GitHub Discussions, for Code of Conduct violations.
+* Triage and respond to Code of Conduct reports, and escalate serious or complex incidents to Core Maintainers.
+* Coordinate with other moderators so that enforcement is consistent.
+* Record moderation actions and keep incident details confidential.
+* Recuse from any incident you are party to. Those incidents go directly to Core Maintainers.
 
-* Sponsored by a Core Maintainer or Lead Maintainer
+**Privileges.** Moderation rights and tools on Discord and GitHub Discussions, and access to private moderator channels. May warn, mute or temporarily ban users for Code of Conduct violations. Listed in [`MAINTAINERS.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md#community-moderators).
 
-**Responsibilities:**
+**Minimum time.** None beyond Member status.
 
-* Monitor community channels (Discord, GitHub Discussions, etc.) for Code of Conduct adherence
-* Handle Code of Conduct incident reports, including initial triage and response
-* Escalate serious or complex incidents to Core Maintainers
-* Help maintain a welcoming and inclusive environment
-* Coordinate with other moderators to ensure consistent enforcement
-* Document moderation actions and maintain confidentiality of incident details
-* Recuse from any incident involving them personally; such incidents go directly to Core Maintainers
+Community Moderator is a parallel track that may be held alongside any other role and is not a prerequisite for technical advancement. Moderation work counts toward every role.
 
-**Privileges:**
+## Leading a working or interest group
 
-* Moderation rights on community platforms (Discord, GitHub Discussions)
-* Access to moderation tools and private moderation channels
-* Authority to issue warnings, mute, or temporarily ban users for Code of Conduct violations
-* Listed in the community moderator roster
+WG Lead and IG Facilitator require Member status, not Maintainer status, and the work counts toward advancement to Maintainer. Their requirements, sponsorship and duties are defined in [Working Groups and Interest Groups](/community/working-interest-groups#leadership).
 
-**Relationship to Contributor Ladder:** Community Moderator is a parallel track, not a prerequisite for technical advancement. Moderator experience counts toward any role, especially where community judgment matters. Moderators may hold other roles at the same time (Member, Maintainer, etc.).
+## Advancement process
 
-**Removal:** Core Maintainers may remove Community Moderators for failure to uphold moderation standards or for Code of Conduct violations. Moderators may step down voluntarily at any time.
+You may nominate yourself or be nominated by a sponsor. Self-nominees still need the sponsors listed below.
 
-***
+1. The nominee or a sponsor opens an issue in the [specification repository](https://github.com/modelcontextprotocol/modelcontextprotocol) using the nomination template, with links to the contributions that meet the role's requirements.
+2. Sponsors confirm their support in the thread.
+3. A 7-day community comment period runs.
+4. The approving body decides and records the outcome in the thread.
+5. Access is provisioned through the [access repository](https://github.com/modelcontextprotocol/access) and the new role-holder completes onboarding.
 
-## Working Group and Interest Group Leadership
+| Role | Sponsors | Approved by |
+| - | - | - |
+| Member | 2 Members or Maintainers from different organizations, or 1 Core or Lead Maintainer | No objection from existing Members within 7 days |
+| Maintainer | 1 Maintainer or Core Maintainer | Core Maintainers |
+| Core Maintainer | Nominated by a majority of Core Maintainers | Lead Maintainers, who may instead appoint directly |
+| Community Moderator | 1 Core or Lead Maintainer | The sponsoring Core or Lead Maintainer |
 
-Working Group (WG) Leads and Interest Group (IG) Facilitators are a form of community leadership that does not require Maintainer status. WG and IG leadership centers on facilitation and coordination rather than merge authority.
+## Escalation
 
-The full governance rules for WGs and IGs are defined in [SEP-2149: MCP Group Governance and Charter Template](/seps/2149-working-group-charter-template). These include participation tiers, decision-making process, meeting requirements, and lifecycle.
+Decisions are made at the lowest level that owns the matter and are recorded in writing. Maintainers, WG Leads and IG Facilitators handle day-to-day decisions within their scope. Core Maintainers act on escalation, on cross-cutting questions, and where a process requires them, such as specification changes and Maintainer approval. Lead Maintainers act only on contested governance decisions or when Core Maintainers cannot reach a decision. Escalate only when you are blocked, when the decision has project-wide effect, or when a process on these pages requires it.
 
-**Requirements:**
-
-* Member status minimum
-* Demonstrated sustained engagement with the group's scope
-* Good facilitation and communication skills
-* Ability to represent multiple perspectives fairly
-* Group and its leadership sponsored by at least two Core Maintainers or one Lead Maintainer
-
-**Relationship to Contributor Ladder:**
-
-* WG Lead and IG Facilitator experience is valuable for advancement to Maintainer
-* Leads and Facilitators without Maintainer status work with Maintainers for merge decisions
-* Leads and Facilitators have authority over group operations but not spec approval
-* WG Leads and Maintainers may sponsor SEPs
-* WG Leads may triage SEPs in their scope area. This includes closing SEPs that do not fit the roadmap. Closures require documented rationale, and authors may appeal to Core Maintainers.
-
-***
-
-## Advancement Process
-
-### Self-Nomination vs. Recognition
-
-Contributors may either:
-
-1. **Self-nominate** when they believe they meet the requirements
-2. **Be nominated** by a sponsor who has observed their contributions
-
-Both paths are equally valid. Self-nomination is encouraged. It shows initiative and self-awareness of one's contribution scope.
-
-### Process Steps
-
-1. **Nomination.** The nominee or sponsor opens an issue using the nomination template. It must include links to contributions that demonstrate the requirements, plus sponsor confirmations.
-2. **Community Review.** A 7-day period follows for community input.
-3. **Decision.** The approving authority reviews and decides.
-4. **Onboarding.** The new role-holder receives appropriate access and onboarding.
-
-| Advancement To | Approved By |
-| - | - |
-| Member | 2 existing Members+ from different organizations, **or** 1 Core/Lead Maintainer |
-| Maintainer | 1 Maintainer or Core Maintainer sponsor + Core Maintainer approval |
-| Core Maintainer | Lead Maintainers |
-| Community Moderator | 1 Core Maintainer or Lead Maintainer |
-
-Nominees who self-nominate must still secure the required sponsorship. Sponsors confirm support in the nomination issue.
-
-***
-
-## Decision-Making and Escalation
-
-### Delegation as Default
-
-MCP operates on a principle of delegation. Decisions should be made at the lowest appropriate level. This lets the project move quickly while preserving Core Maintainer bandwidth for cross-cutting concerns.
-
-* **Maintainers, WG Leads, and IG Facilitators** handle day-to-day decisions within scope.
-* **Core Maintainers** intervene on escalation, cross-cutting issues, or when required by process (spec changes, Maintainer approval).
-* **Lead Maintainers** intervene only on contested governance decisions or when Core Maintainers cannot reach consensus.
-
-When in doubt, make the decision at your level and document it. Escalate only when blocked, when the decision has project-wide implications, or when process explicitly requires it.
-
-The detailed escalation procedure for Working Group and Interest Group disputes is defined in [SEP-2149 §1.5](/seps/2149-working-group-charter-template). It includes the designation of a Core Maintainer without shared organizational affiliation to resolve the issue.
-
-### Escalation Matrix
-
-| Issue Type | First Escalation | Second Escalation | Timeline |
+| Issue type | First escalation | Second escalation | Response time |
 | - | - | - | - |
-| Technical disagreement in PR | Maintainer in scope | Core Maintainer | 5 business days |
-| Technical disagreement in WG | WG Lead | Core Maintainer | 5 business days |
-| Technical disagreement in IG | IG Facilitator | Core Maintainer | 5 business days |
-| Disagreement with WG Lead / IG Facilitator | Core Maintainer | Lead Maintainer | 7 business days |
-| Disagreement with Maintainer decision | Core Maintainer | Lead Maintainer | 7 business days |
-| Core Maintainer disagreement | Lead Maintainer | N/A | 10 business days |
+| Technical disagreement in a pull request | Maintainer in scope | Core Maintainer | 5 business days |
+| Technical disagreement in a working group | WG Lead | Core Maintainer | 5 business days |
+| Technical disagreement in an interest group | IG Facilitator | Core Maintainer | 5 business days |
+| Disagreement with a WG Lead or IG Facilitator | Core Maintainer | Lead Maintainer | 7 business days |
+| Disagreement with a Maintainer decision | Core Maintainer | Lead Maintainer | 7 business days |
+| Disagreement among Core Maintainers | Lead Maintainer | None | 10 business days |
 | Code of Conduct violation | Community Moderator | Core Maintainer | Immediate |
 | Security issue | Core Maintainer | Lead Maintainer | Immediate |
 
-**Escalation process:**
+A vulnerability is reported through a private advisory first (see [Reporting a vulnerability](/community/policies#reporting-a-vulnerability)). The security row is the maintainer-internal escalation once a report exists.
 
-1. Document the decision, the options considered, and the points of disagreement
-2. Present to the escalation authority with a clear ask
-3. The escalation authority either (a) provides binding guidance, (b) requests more information, or (c) escalates further if needed
+To escalate:
 
-***
+1. Document the decision, the options considered and the points of disagreement.
+2. Present it to the escalation authority with a clear ask.
+3. The escalation authority gives binding guidance, asks for more information, or escalates further.
 
-## Contribution Pathways
+Disputes inside a working or interest group follow [Working Groups and Interest Groups](/community/working-interest-groups#escalation), which lists the disputes that go straight to Core Maintainers and requires that the Core Maintainer designated to resolve a group dispute share no organizational affiliation with the parties.
 
-MCP values diverse contributions. All of these pathways can lead to advancement.
+## Inactivity, stepping down and removal
 
-**Code Contributions.** SDK development (TypeScript, Python, etc.), testing infrastructure, tooling and developer experience.
+### Inactivity
 
-**Specification Work.** Drafting or refining spec text, [SEP](/community/sep-guidelines) authorship or co-authorship, protocol design participation, compatibility analysis.
+Members with no contributions for 3 months may be moved to emeritus status. Returning Members go through a simplified re-familiarization. Maintainers with no contributions for 6 months may be moved to emeritus status after Core Maintainer review, and the move revokes their merge rights. Returning Maintainers repeat the security and governance onboarding. Lead Maintainers review a Core Maintainer after 6 months without participation in governance or technical decisions and may move them to emeritus status. Core Maintainers should say early when their availability drops.
 
-**Documentation.** User guides and tutorials, API documentation, architecture documentation, keeping content current.
+### Stepping down
 
-**Community Building.** Onboarding new contributors, working group facilitation, community support (Discord, GitHub discussions), event organization or representation.
+You may step down from any role for any reason. Tell the WG Lead, IG Facilitator, Maintainer or Core Maintainer you work with, hand over open work, and move to emeritus status.
 
-**Quality and Security.** Bug triage and reproduction, security review and analysis, test coverage improvement, release validation.
+### Emeritus status
 
-***
+Emeritus role-holders keep their recognition in [`MAINTAINERS.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md) and release notes and hold no duties or privileges.
 
-## Stepping Down and Emeritus Status
+### Removal
 
-Contributors may step down from roles for any reason. This is normal and healthy.
-
-**Process:**
-
-1. Notify relevant leadership (WG Lead, IG Facilitator, Maintainer, or Core Maintainer as appropriate)
-2. Help transition any ongoing work
-3. Move to emeritus status
-
-**Emeritus status:**
-
-* Recognized for past contributions
-* May return to active status with abbreviated re-onboarding
-* No ongoing responsibilities or privileges
-
-**Involuntary Removal.** Roles may be revoked for code of conduct violations or sustained non-participation. Removal follows appropriate review processes.
-
-***
-
-## Recognition and Visibility
-
-The community recognizes contributors through:
-
-* **Contributor lists** such as `MAINTAINERS.md`
-* **GitHub teams** for appropriate access
-* **Public acknowledgment** in release notes
-* **Speaking opportunities** at community events
-* **Badges** (if implemented) on community platforms
+A role may be revoked for Code of Conduct violations or sustained non-participation, following appropriate review.
 
 
 # Design Principles
@@ -30009,19 +29221,17 @@ Source: https://modelcontextprotocol.io/community/design-principles
 
 The core design principles that guide the development of the Model Context Protocol.
 
-These principles guide how we evaluate protocol proposals, weigh tradeoffs, and evolve MCP. They reflect lessons from building and maintaining the project. They are meant as guidance by and for the community when developing [Spec Enhancement Proposals](/community/sep-guidelines) (SEPs) and [extensions](/extensions/overview).
+These principles guide how we evaluate protocol proposals, weigh tradeoffs, and evolve MCP. They apply to [Specification Enhancement Proposals](/community/sep-guidelines) (SEPs) and [extensions](/extensions/overview), and are distinct from the specification's [architectural design principles](/specification/latest/architecture#design-principles), which describe how servers and clients are built. Core Maintainers cite them when accepting or rejecting SEPs. A proposal that cuts against a principle should say so and argue why. When two principles conflict, they are weighed against each other, not ranked.
 
 ## Convergence over choice
 
-There should be one way to solve a problem in MCP. Rather than supporting multiple approaches that fragment the ecosystem, we choose a single well-designed path — accepting harder decisions upfront to deliver a more cohesive protocol.
+There should be one way to solve a problem in MCP. Rather than supporting multiple approaches that fragment the ecosystem, we choose a single well-designed path, accepting harder decisions upfront to deliver a more cohesive protocol.
 
 [Extensions](/extensions/overview) are where convergence gets tested; the specification is where it gets committed.
 
 ## Composability over specificity
 
-MCP provides foundational primitives: resources, tools, and prompts. We don't add protocol features for use cases that can be constructed from these existing building blocks. This keeps the surface area small and implementations simple.
-
-When someone asks why MCP doesn't support a feature directly, the answer is usually that it can be built from what MCP already provides. Extensions like [MCP Apps](/extensions/apps/overview) and [Tasks](/extensions/tasks/overview) capture the patterns that emerge.
+MCP provides foundational primitives: resources, tools, and prompts. We don't add protocol features for use cases that can be constructed from these existing building blocks. This keeps the surface area small and implementations simple. Extensions like [MCP Apps](/extensions/apps/overview) and [Tasks](/extensions/tasks/overview) capture the patterns that emerge.
 
 ## Interoperability over optimization
 
@@ -30029,19 +29239,17 @@ MCP runs across clients, servers, and models of widely varying sophistication. W
 
 ## Stability over velocity
 
-Adding to a protocol as widely adopted as MCP is easy. Removing from it is nearly impossible. Every addition is a permanent commitment and a cost for client implementers to support. We move deliberately, knowing that "no" today leaves the door open while "yes" closes it forever.
-
-Contributors accustomed to rapid shipping may find this pace frustrating, but sustainable standards require sustainable decision-making. We optimize for decades, not quarters.
+Adding to a protocol as widely adopted as MCP is easy. Removing from it is nearly impossible. Every addition is a permanent commitment and a cost for client implementers to support. We move deliberately, knowing that "no" today leaves the door open while "yes" closes it forever. We optimize for decades, not quarters. Removal, when it happens, follows [Feature Lifecycle and Deprecation](/community/feature-lifecycle).
 
 ## Capability over compensation
 
-Models improve faster than protocols evolve. We avoid adding permanent structure to work around limitations that are likely temporary — the limitation fades, but the complexity remains.
+Models improve faster than protocols evolve. We avoid adding permanent structure to work around limitations that are likely temporary: the limitation fades, but the complexity remains.
 
 This is not license to ignore today's reality. Optional context that weaker models lean on and stronger ones ignore costs nothing. But when a proposal exists primarily because current models struggle without it, we ask whether they will outgrow the need before we can shed the weight.
 
 ## Demonstration over deliberation
 
-MCP values working implementations over theoretical debates. When evaluating proposals, we prioritize evidence from real usage over hypothetical arguments. We encourage contributors to prototype, experiment, and demonstrate rather than design by committee. Implementation reveals what discussion cannot.
+MCP values working implementations over theoretical debates, and evidence from real usage over hypothetical arguments. We encourage contributors to prototype rather than design by committee. A SEP needs a working [prototype](/community/sep-guidelines#prototype-requirements) before it can be accepted.
 
 ## Pragmatism over purity
 
@@ -30049,24 +29257,20 @@ MCP makes practical tradeoffs in service of adoption and usability. We don't pur
 
 ## Standardization over innovation
 
-MCP standardizes patterns that have already proven valuable. We look for conventions that work across multiple implementations and codify them, rather than inventing new paradigms and hoping they'll be adopted.
-
-We encourage the use of [MCP extensions](/extensions/overview) as a way to experiment with new patterns that may eventually lead to standardization.
+MCP standardizes patterns that have already proven valuable. We look for conventions that work across multiple implementations and codify them, rather than inventing new paradigms and hoping they'll be adopted. New patterns are best tried in [extensions](/extensions/overview) first.
 
 
-# Feature Lifecycle and Deprecation Policy
+# Feature Lifecycle and Deprecation
 Source: https://modelcontextprotocol.io/community/feature-lifecycle
 
 How individual MCP specification features move through Active, Deprecated, and Removed states, and the timeline implementers can plan against.
 
-This policy defines a lifecycle for individual features within the Model
-Context Protocol specification. It defines three feature states (Active,
-Deprecated, Removed), the criteria and procedure for moving between them, a
-minimum window between deprecation and removal, and the documentation required
-at each transition.
-
-This policy was adopted via
-[SEP-2596](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2596).
+This page defines how a feature of the MCP specification is deprecated and
+later removed, and the obligations that follow for SDKs. It was adopted by
+[SEP-2596](/seps/2596), a Specification Enhancement Proposal (SEP), and is
+changed by a Process SEP. Features
+currently Deprecated or scheduled for removal are listed in the
+[Deprecated registry](/specification/draft/deprecated).
 
 ## Scope
 
@@ -30085,11 +29289,11 @@ A specification feature is in exactly one of three states:
 | **Deprecated** | The feature remains in the specification but is scheduled for removal. A migration path is documented (see below). | New implementations should not adopt the feature. Existing implementations should migrate before the earliest removal date. |
 | **Removed** | The feature has been deleted from `draft` and will be absent from the next Current revision. It remains documented in the Final revision it last appeared in. | Implementations targeting that next Current revision must not depend on the feature. |
 
-A Deprecated feature MAY be restored to Active by a SEP that supersedes the
+A Deprecated feature may be restored to Active by a SEP that supersedes the
 deprecation SEP and documents the changed circumstances. Restoration follows
 the same approval path as deprecation. If the feature is later deprecated
 again, the minimum deprecation window in
-[Deprecating a feature](#deprecating-a-feature) is measured afresh from the
+[Deprecating a Feature](#deprecating-a-feature) is measured afresh from the
 revision in which the new deprecation takes effect.
 
 ### SDKs
@@ -30106,10 +29310,10 @@ A feature may be proposed for deprecation when:
   mitigated in place,
 * ecosystem telemetry or SDK maintainer consensus indicates negligible adoption
   relative to its maintenance cost,
-* or any other reasons the Core Maintainers deem appropriate.
+* the Core Maintainers deem it appropriate for any other reason.
 
-Deprecation is a specification change and therefore requires a SEP per the
-[SEP guidelines](/community/sep-guidelines). The deprecation SEP must:
+Deprecation requires a SEP (see [SEP Guidelines](/community/sep-guidelines)).
+The deprecation SEP must:
 
 1. Identify the feature by name and link to its definition in `schema.ts`
    (where applicable) and the specification prose.
@@ -30119,44 +29323,42 @@ Deprecation is a specification change and therefore requires a SEP per the
    in the revision in which the deprecation takes effect; the replacement and
    the deprecation may land in the same revision.
 4. Specify the **minimum deprecation window**: the number of months, at least
-   twelve, that the feature must remain Deprecated before it is eligible for
-   removal. The window is measured from the release of the specification
-   revision in which the feature is first marked Deprecated, not from the date
-   the SEP reaches Final. The feature becomes eligible for removal in the first
-   specification revision released as Current on or after the window elapses;
-   that point is the feature's **earliest removal**.
+   twelve, that the feature must remain Deprecated. The feature's **earliest
+   removal** is the first specification revision released as Current on or
+   after the window elapses.
 
-When the deprecation SEP is accepted and reaches Final, the deprecation is scheduled.
+When the deprecation SEP is accepted, its author makes the following changes
+to the draft specification in the SEP's pull request, and the sponsor verifies
+them before setting `final` (see
+[SEP Guidelines](/community/sep-guidelines#workflow)):
 
-* The feature's entry in `schema.ts` gains a `@deprecated` JSDoc tag
+* Add a `@deprecated` JSDoc tag to the feature's entry in `schema.ts`,
   referencing the deprecation SEP and the revision in which the deprecation
   takes effect.
-* The specification prose for the feature gains a deprecation notice with the
-  same information.
-* The `changelog.mdx` for that revision gains an entry under a "Deprecated"
-  heading. "Deprecated" and "Removed" are standing changelog headings alongside
-  the existing Major/Minor/Other groupings.
-* The feature is added to the
-  [deprecated registry](#the-deprecated-registry) with its deprecation SEP, the
-  revision in which it became Deprecated, its migration path, and its earliest
-  removal.
+* Add a deprecation notice with the same information to the feature's
+  specification prose.
+* Record the deprecation in that revision's `changelog.mdx` under a
+  "Deprecated" heading. "Deprecated" and "Removed" are standing changelog
+  headings alongside Major/Minor/Other.
+* List the feature in the [deprecated registry](#the-deprecated-registry) with
+  its deprecation SEP, the revision in which it became Deprecated, its
+  migration path, and its earliest removal.
 
-The feature becomes Deprecated when the revision carrying these changes is released
-and becomes the new Current revision (see [versioning guide](/docs/learn/versioning)).
-The minimum deprecation window is counted from that release.
+The feature becomes Deprecated when the revision carrying these edits is
+released as Current (see [versioning guide](/docs/learn/versioning)), and the
+minimum deprecation window is counted from that release, not from the date the
+SEP reaches Final.
+[SEP-2577](/seps/2577) is a worked example of a deprecation SEP.
 
 ## The Deprecated Registry
 
 [`docs/specification/draft/deprecated.mdx`](/specification/draft/deprecated) is
-a single page listing every feature in a Deprecated or Removed state. It is
-the canonical answer to "what is on its way out, and by when," so that an
-implementer does not have to reconstruct that picture from deprecation entries
-spread across revision changelogs.
+the single list of every feature in a Deprecated or Removed state.
 
 ## Tier 1 SDK Obligations
 
-Once the revision in which a feature becomes Deprecated is
-released as Current, Tier 1 SDKs:
+Once the revision in which a feature becomes Deprecated is released as Current,
+Tier 1 SDKs:
 
 * Must mark the corresponding API surface deprecated using the language's
   native mechanism (for example `@Deprecated` in Java, `[Obsolete]` in .NET,
@@ -30168,46 +29370,40 @@ released as Current, Tier 1 SDKs:
   `DeprecationWarning`, Node.js's `process.emitWarning`, or a configurable
   logger).
 
-A Tier 1 SDK that consistently fails to surface a Deprecated feature is subject to the
-[Tier Relegation Process](/community/sdk-tiers#tier-relegation).
+A Tier 1 SDK that consistently fails to surface a Deprecated feature is subject
+to [tier relegation](/community/sdk-tiers#tier-relegation).
 
 ## Removing a Feature
 
-1. Once a feature is set for removal, the removal is executed at the discretion
-   of the Core Maintainers after the minimum deprecation window has elapsed.
-2. The removal needs to be documented in the `changelog.mdx` and [registry](#the-deprecated-registry).
-3. A SEP is required for any change to the original deprecation or removal SEP, for
-   example extending or shortening the timeline
-   ([Expedited removal](#expedited-removal)) or restoring the feature to Active
-   ([Feature states](#feature-states)).
-
-Features may remain Deprecated, without removal, for much longer than the minimum deprecation window.
+After the minimum deprecation window has elapsed, Core Maintainers may remove
+the feature when preparing a release. The removal is recorded in
+`changelog.mdx` under the "Removed" heading and in the
+[registry](#the-deprecated-registry). Any change to the original deprecation or
+removal, such as extending or shortening the timeline
+([Expedited removal](#expedited-removal)) or restoring the feature to Active
+([Feature states](#feature-states)), requires a SEP. A feature may remain
+Deprecated indefinitely.
 
 ## Expedited Removal
 
-The twelve-month floor may be shortened when the feature presents an active
-security risk, meaning a vulnerability with a published security advisory or
-documented in-the-wild exploitation for which no in-place mitigation exists.
-Shortening the window requires Core Maintainer approval under the
-[governance decision process](/community/governance#decision-process), recorded
-in the deprecation SEP or, where the risk surfaces after that SEP is already
-Final, in a short expedited-removal SEP that references it. The shortened
-window must still provide at least ninety days between the feature becoming
-Deprecated and its earliest removal.
+The twelve-month minimum window may be shortened when the feature presents an
+active security risk, meaning a vulnerability with a published security
+advisory or documented in-the-wild exploitation for which no in-place
+mitigation exists. Shortening the window requires Core Maintainer approval
+under the [governance decision process](/community/governance#decision-process),
+recorded in the deprecation SEP or, where the risk surfaces after that SEP is
+already Final, in a short expedited-removal SEP that references it. The
+shortened window must still provide at least ninety days between the feature
+becoming Deprecated and its earliest removal.
 
 ## Roles
 
-| Action | Who |
-| - | - |
-| Propose deprecation, extension, or restoration | Any contributor, per the SEP process |
-| Sponsor | A Maintainer or Core Maintainer, per the SEP process |
-| Approve a deprecation SEP | Core Maintainers, per the [governance decision process](/community/governance#decision-process) |
-| Decide a removal during release preparation | Core Maintainers, per the [governance decision process](/community/governance#decision-process) |
-| Approve an extension or restoration SEP | Core Maintainers, per the [governance decision process](/community/governance#decision-process) |
-| Approve expedited removal | Core Maintainers, per the [governance decision process](/community/governance#decision-process) |
-
-Lead Maintainers retain veto authority over each of the approvals
-above, per the [governance roles](/community/governance#roles) definition.
+Any contributor may propose a deprecation, extension, or restoration through
+a SEP with a sponsor (see [SEP Guidelines](/community/sep-guidelines#sponsors)).
+Core Maintainers approve deprecations, removal timing, extensions,
+restorations, and expedited removals under the
+[governance decision process](/community/governance#decision-process), subject
+to Lead Maintainer veto (see [Governance](/community/governance#roles)).
 
 
 # Governance and Stewardship
@@ -31202,37 +30398,54 @@ The following SEPs and themes form the IG's initial discussion agenda. This list
 | 2026-04-20 | Initial charter |
 
 
-# SDK Tiering System
+# Project Policies
+Source: https://modelcontextprotocol.io/community/policies
+
+The standing policies that apply to everyone who takes part in the MCP project, and where each one is defined.
+
+This page lists the policies that apply to everyone who takes part in the MCP project: in meetings, on Discord, and in every repository under the [`modelcontextprotocol`](https://github.com/modelcontextprotocol) organization. Group Leads and Facilitators link it from meeting agendas.
+
+## Code of Conduct
+
+The [Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md) governs every channel, repository and meeting. Send reports to [mcp-coc@anthropic.com](mailto:mcp-coc@anthropic.com). The [Community Moderators](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md#community-moderators) handle them under the [Contributor Ladder](/community/contributor-ladder#community-moderator) and escalate to Core Maintainers when needed.
+
+## Antitrust
+
+Participants often work for competing organizations. MCP is organized as Model Context Protocol a Series of LF Projects, LLC, so the [LF Projects policies](https://www.lfprojects.org/policies/), including its antitrust policy, apply to all participants. The project's own [Antitrust Policy](/community/antitrust) sets out how meetings and standard-setting discussions are conducted.
+
+## Licensing and intellectual property
+
+Code and specification contributions are made under the Apache License 2.0 and other documentation under CC-BY-4.0, with no copyright assignment. The governing text is [General Project Policies](/community/governance#general-project-policies).
+
+## AI-assisted contributions
+
+Any AI assistance used for a contribution must be disclosed in the pull request or issue, together with its extent. This includes AI-written review responses and comments; trivial spacing or typo fixes are the only exception. The full policy is [AI\_POLICY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/AI_POLICY.md), which applies to every repository in the organization.
+
+## Reporting a vulnerability
+
+> [!WARNING]
+>
+> Do not report security issues in public issues, discussions or pull requests.
+
+Open a private advisory on the affected repository at `github.com/modelcontextprotocol/<repo>/security/advisories/new`. Private vulnerability reporting is enabled on the specification repository and on every official SDK and project repository. Before filing, read [SECURITY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md): it says [what to include](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#what-to-include), describes the [trust model and the behaviors that are intentional rather than vulnerabilities](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#intended-behaviors-and-trust-model) (stdio command execution, denial of service by a stdio peer, server side effects, LLM-driven tool invocation), and lists [what remains in scope](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#what-remains-in-scope).
+
+The maintainers who receive a report coordinate the fix and advisory across every affected SDK so that advisories are released together, and raise it with the specification maintainers when the root cause is in the specification (see [SDK Vulnerability Disclosure](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#sdk-vulnerability-disclosure)). CVEs are assigned through GitHub's CNA. Questions that are not themselves a report, including which repository to file against, go to the [Security Interest Group](/community/interest-groups/security) in `#security-ig`.
+
+## Communication and records
+
+[Communication](/community/communication) sets out which channel is for what, when a channel may be private, and where decisions are recorded.
+
+
+# SDK Tiers
 Source: https://modelcontextprotocol.io/community/sdk-tiers
 
-Feature completeness, protocol support, and maintenance commitment levels for Model Context Protocol SDKs
+What each SDK tier requires, how conformance is measured, how an SDK moves between tiers, and the issue labels SDK repositories must use.
 
-The MCP SDK Tiering System establishes clear expectations for feature completeness, protocol support, and maintenance commitments across official and community-driven SDKs. This helps developers choose the right SDK for their needs and provides SDK maintainers with a clear path to improving adoption expectations.
+This page defines the three SDK tiers, what each requires, how an SDK moves between them, and the issue labels SDK repositories must use. The tiers were adopted by [SEP-1730](/seps/1730), a Specification Enhancement Proposal (SEP), and are changed by a Process SEP. The [SDK Working Group](/community/working-groups/sdk) operates them, and each SDK's current tier is shown on the [SDKs page](/docs/sdk).
 
-> [!NOTE]
->
-> **Key dates:**
->
-> * **January 23, 2026**: Conformance tests available
-> * **February 23, 2026**: Official SDK tiering published
->
-> Between January 23 and February 23, SDK maintainers can work with the
-> Conformance Testing working group to adopt the tests and set up GitHub issue
-> tracking with the standardized labels defined below.
+## Tier requirements
 
-## Overview
-
-SDKs are classified into three tiers based on feature completeness, maintenance commitments, and documentation quality:
-
-* **Tier 1**: Fully supported SDKs with complete protocol implementation, including all
-  non-experimental features and optional capabilities like sampling and elicitation
-* **Tier 2**: Actively-maintained SDKs working toward full protocol specification support
-* **Tier 3**: Experimental, partially implemented, or specialized SDKs
-
-Experimental features and protocol extensions (such as Tasks and MCP Apps) are not required
-for any tier.
-
-## Tier Requirements
+Tier 1 SDKs are fully supported and implement every non-experimental feature, including optional capabilities such as sampling and elicitation. SDKs in Tier 2 are actively maintained and working toward full specification support, and those in Tier 3 are experimental, partially implemented, or specialized. Experimental features and protocol extensions (such as Tasks and MCP Apps) are not required for any tier.
 
 | Requirement | Tier 1: Fully Supported | Tier 2: Commitment to Full Support | Tier 3: Experimental |
 | - | - | - | - |
@@ -31245,32 +30458,21 @@ for any tier.
 | **Dependency Policy** | Published update policy | Published update policy | Not required |
 | **Roadmap** | Published roadmap | Published plan toward Tier 1 or explanation for remaining Tier 2 | Not required |
 
-**Issue Triage** means labeling and determining whether an issue is valid, not resolving the issue.
+**Issue Triage** means labeling an issue and determining whether it is valid, not resolving it.
 
-**Critical Bug** refers to P0 issues (see [Priority labels](#priority-only-if-actionable) for
-detailed criteria).
+**Critical Bug** means a `P0` issue as defined under [Priority labels](#priority-only-if-actionable).
 
-**Stable Release** is a published version explicitly marked as production-ready (e.g., version `1.0.0`
-or higher without pre-release identifiers like `-alpha`, `-beta`, or `-rc`).
+**Stable Release** means a published version explicitly marked as production-ready, for example version `1.0.0` or higher without a pre-release identifier such as `-alpha`, `-beta`, or `-rc`.
 
-**Clear Versioning** means following idiomatic versioning patterns with documented
-breaking change policies, so users can understand compatibility expectations when upgrading.
+**Clear Versioning** means following idiomatic versioning patterns with a documented breaking-change policy.
 
-**Roadmap** outlines concrete steps and work items that track implementation of required MCP
-specification components (non-experimental features and optional capabilities as described in
-[Conformance Testing](#conformance-testing)), giving users visibility into upcoming feature support.
+**Roadmap** means a published set of concrete steps and work items tracking implementation of the required specification components (non-experimental features and optional capabilities, as scoped under [Conformance testing](#conformance-testing)).
 
-## Conformance Testing
+## Conformance testing
 
-All SDKs are evaluated using [automated conformance tests](https://github.com/modelcontextprotocol/conformance)
-that validate protocol support against the published specifications. SDKs receive a conformance score
-based on test results:
+Conformance is measured with the [conformance test suite](https://github.com/modelcontextprotocol/conformance). Each official SDK runs the suite against its default branch and publishes the results.
 
-* **Tier 1**: 100% conformance required
-* **Tier 2**: 80% conformance required
-* **Tier 3**: No minimum requirement
-
-Conformance scores are calculated against **applicable required tests** only:
+The pass rates in the matrix are calculated against applicable required tests only:
 
 * Tests for the specification version the SDK targets
 * Excluding tests marked as pending or skipped
@@ -31278,36 +30480,33 @@ Conformance scores are calculated against **applicable required tests** only:
 * Excluding legacy backward-compatibility tests (unless the SDK claims legacy support)
 * Excluding tests labeled `disputed` in the conformance repository, until the dispute is resolved
 
-Conformance testing validates that SDKs correctly implement the protocol by running standardized test
-scenarios and checking protocol message exchanges. See [Tier Relegation](#tier-relegation) for how
-temporary test failures are handled.
+Sustained test failures are handled under [Tier relegation](#tier-relegation).
 
-## Tier Advancement
+## Tier advancement
 
-SDK maintainers can request tier advancement by:
+To request a higher tier, an SDK's maintainers:
 
-1. Self-assessing against tier requirements
-2. Opening an issue in the [modelcontextprotocol/modelcontextprotocol](https://github.com/modelcontextprotocol/modelcontextprotocol) repository with supporting evidence
-3. Passing automated conformance testing
-4. Receiving approval from SDK Working Group maintainers
+1. Self-assess the SDK against the [tier requirements](#tier-requirements).
+2. Open an issue in the [modelcontextprotocol/modelcontextprotocol](https://github.com/modelcontextprotocol/modelcontextprotocol) repository with the supporting evidence.
+3. Pass the conformance threshold for the requested tier on the latest stable release.
+4. Obtain approval from the SDK Working Group.
 
-The SDK Working Group reviews advancement requests and makes final tier assignments.
+The SDK Working Group makes the final tier assignment and records the decision and rationale as set out in its [charter](/community/working-groups/sdk).
 
-## Tier Relegation
+## Tier relegation
 
-An SDK may be moved to a lower tier if existing conformance tests on the latest stable release fail
-continuously for 4 weeks:
+An SDK may be moved to a lower tier if existing conformance tests on its latest stable release fail continuously for 4 weeks:
 
-* **Tier 1 → Tier 2**: Any conformance test fails
-* **Tier 2 → Tier 3**: More than 20% of conformance tests fail
+* **Tier 1 to Tier 2**: any conformance test fails.
+* **Tier 2 to Tier 3**: more than 20% of conformance tests fail.
 
 An SDK may also be relegated if issues remain unaddressed for two months.
 
-## Issue Triage Labels
+The SDK Working Group may likewise relegate a Tier 1 SDK that consistently fails to surface specification deprecations as required by [Tier 1 SDK Obligations](/community/feature-lifecycle#tier-1-sdk-obligations). The group decides each relegation and records it with its rationale.
 
-SDK repositories must use consistent labels to enable automated reporting on issue handling metrics.
-Tier calculations use these metrics to measure triage response times (time from issue creation to
-first label) and critical bug resolution times (time from P0 label to issue close).
+## Issue triage labels
+
+SDK repositories must use the labels below. Two tier metrics are computed from them: triage response time (issue creation to first label) and critical bug resolution time (`P0` label to close).
 
 ### Type (pick one)
 
@@ -31317,12 +30516,11 @@ first label) and critical bug resolution times (time from P0 label to issue clos
 | `enhancement` | Request for new feature |
 | `question` | Further information requested |
 
-Repositories using [GitHub's native issue types](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/managing-issue-types-in-an-organization)
-satisfy this requirement without needing type labels.
+Repositories using [GitHub's native issue types](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/managing-issue-types-in-an-organization) satisfy this requirement without type labels.
 
 ### Status (pick one)
 
-Use these exact label names across all repositories to enable consistent reporting and analysis.
+Use these exact label names in every repository.
 
 | Label | Description |
 | - | - |
@@ -31341,359 +30539,274 @@ Use these exact label names across all repositories to enable consistent reporti
 | `P2` | Moderate issues, valuable feature requests |
 | `P3` | Nice to haves, rare edge cases |
 
-**P0 (Critical)** issues are:
+A `P0` issue is either:
 
-* **Security vulnerabilities** with CVSS score ≥ 7.0 (High or Critical severity)
-* **Core functionality failures** that prevent basic MCP operations: connection establishment,
-  message exchange, or use of core primitives (tools, resources, prompts)
-
-
-# Security Policy
-Source: https://modelcontextprotocol.io/community/security
-
-How to report security vulnerabilities in the Model Context Protocol specification and SDKs, what is in and out of scope, and how SDK maintainers coordinate disclosure.
-
-This page summarizes how security reports are handled across the Model Context Protocol
-project. The full policy, including the trust model and the complete list of behaviors that
-are intentional and not eligible as vulnerabilities, lives in
-[SECURITY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md)
-in the specification repository.
-
-## Reporting a vulnerability
-
-Report security issues through GitHub Security Advisories on the affected repository.
-Private vulnerability reporting is enabled on the specification repository and on every
-official SDK repository in the [modelcontextprotocol](https://github.com/modelcontextprotocol)
-organization.
-
-Do not report security issues through public issues, discussions, or pull requests.
-
-## SDK disclosure and cross-SDK coordination
-
-When a report is filed against an SDK, the maintainers of that SDK assess whether the same
-issue affects other official SDKs. Many MCP vulnerabilities stem from shared patterns,
-transport implementations, or spec-level behavior that multiple SDKs implement the same
-way. The receiving maintainers coordinate with the maintainers of other potentially
-affected SDKs to determine which are impacted and to what degree, so that fixes and
-advisories can be released together rather than leaving some SDKs exposed after others have
-published.
-
-If the root cause is a defect in the specification rather than an implementation bug, the
-coordinating maintainers will discuss this with the specification maintainers.
-
-CVEs are assigned through GitHub's CNA as part of the GHSA workflow.
-
-## Scope
-
-The following are considered security vulnerabilities when they arise from flaws in the
-specification or official SDKs: protocol-level vulnerabilities, authentication or
-authorization bypasses, implementation bugs such as injection or memory-safety issues,
-sandbox escapes, session hijacking, token leakage, and cross-tenant access.
-
-The full
-[SECURITY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md)
-documents the MCP trust model and a list of intentional behaviors that are not
-vulnerabilities. One of the most common is stdio peer attacks, summarized below.
-
-### Stdio transport trust boundary
-
-When using the stdio transport, the client spawns the server as a local subprocess and both
-might run with equivalent environment-level privilege. The SDK does not defend either peer
-against a malicious counterpart across the stdio channel: a malicious server already has
-arbitrary code execution by virtue of being run, and a malicious client already has full
-process control over the server it spawned.
-
-Reports whose only impact is that one stdio peer can crash, hang, exhaust resources of, or
-otherwise deny service to the other are out of scope and should be filed as regular issues
-rather than as a GHSA. If the affected SDK code is reachable via any of the supported
-remote transports, or results in a sandbox escape, the report remains in scope. Deployments
-that run stdio servers at reduced privilege are responsible for enforcing isolation at that
-boundary. The SDK's stdio transport is not a sandbox.
-
-## Security Interest Group
-
-The [Security Interest Group](/community/interest-groups/security) is where you raise MCP-specific
-security topics, including disclosure questions that don't fit a single repository, and where
-facilitators route them to the group that owns the work.
+* A security vulnerability with a CVSS score of 7.0 or higher (High or Critical severity)
+* A core functionality failure that prevents basic MCP operations: connection establishment, message exchange, or use of the core primitives (tools, resources, prompts)
 
 
 # SEP Guidelines
 Source: https://modelcontextprotocol.io/community/sep-guidelines
 
-Specification Enhancement Proposal (SEP) guidelines for proposing changes to the Model Context Protocol
+When a Specification Enhancement Proposal is required and the procedure a proposal follows from pull request to Final.
 
-## What is a SEP?
+This page describes when a Specification Enhancement Proposal (SEP) is required and the procedure from pull request to Final. A SEP is a design document that gives a concise technical specification of a feature or process and its rationale. Its author is responsible for building consensus and recording dissenting opinions. [SEP-1850](/seps/1850) adopted the process and [SEP-2484](/seps/2484) the conformance gate. Changing either requires a Process SEP.
 
-SEP stands for Specification Enhancement Proposal. A SEP is a design document providing information to the MCP community, or describing a new feature for the Model Context Protocol or its processes. The SEP should provide a concise technical specification of the feature and a rationale for the feature.
+## When you need a SEP
 
-SEPs are the primary mechanism for proposing major new features, collecting community input on an issue, and documenting the design decisions that have gone into MCP. The SEP author is responsible for building consensus within the community and documenting dissenting opinions.
+Write a SEP for:
 
-When drafting a SEP, authors should review the [MCP design principles](/community/design-principles), which outline the core values and tradeoffs that guide the protocol's evolution.
+* A new, changed or removed protocol feature or method (a new RPC method such as `tools/execute`, a new capability negotiation field, a change to a transport)
+* Any change that is not backward compatible
+* A change to message formats or schema structure
+* An interoperability convention supported outside the core specification
+* A governance or process change
+* Anything controversial or with several plausible designs, such as a change to how authorization works
 
-SEPs are maintained as markdown files in the [`seps/` directory](https://github.com/modelcontextprotocol/modelcontextprotocol/tree/main/seps) of the specification repository. Their revision history serves as the historical record of the feature proposal.
+Bug fixes, clarifications, editorial changes, new examples for existing features, schema fixes that do not change behavior, and tests go in an ordinary pull request. Amendments to the governance document itself follow the procedure in [SEP-2085](/seps/2085), not this process. If unsure, ask in [Discord](/community/communication#discord) first.
 
-## When to Write a SEP
+## SEP types
 
-The SEP process is reserved for changes that are substantial enough to require broad community discussion, a formal design document, and a historical record. A regular GitHub pull request is often more appropriate for smaller changes.
+* Standards Track: a new protocol feature or implementation, or an interoperability standard supported outside the core specification.
+* Informational: a design issue or guidance for the community, with no new feature.
+* Process: a process surrounding MCP, or a change to one.
+* Extensions Track: a protocol extension. It receives the same review and acceptance as Standards Track. An accepted Extensions Track SEP moves the extension to Beta, and a second one moves it to Stable (see [Extension Lifecycle](/extensions/overview#extension-lifecycle) for the stages).
 
-**Write a SEP if your change involves:**
+## Before you write
 
-* **A new feature or protocol change** - Adding, modifying, or removing features in the protocol (new API methods, message format changes, interoperability standards)
-* **A breaking change** - Any change that is not backwards-compatible
-* **A governance or process change** - Altering decision-making or contribution guidelines
-* **A complex or controversial topic** - Changes likely to have multiple valid solutions or generate significant debate
+Bring the idea to the working or interest group that covers the area first (see [Joining a group](/community/working-interest-groups#joining-a-group)). If no group fits, start a thread in [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions) or in `#general` on Discord, and if interest is sustained consider [forming a group](/community/working-interest-groups#forming-a-group). Check which [roadmap](/development/roadmap) priority area the idea serves, read the [design principles](/community/design-principles), and try the idea as an [extension](/extensions/overview) first where its shape allows. Build a prototype that meets the [Prototype Requirements](#prototype-requirements), then write the SEP.
 
-**Skip the SEP process for:**
+Prior discussion is required, and the pull request description must link to it: a Discord thread, meeting notes or a GitHub Discussion. A SEP without a linked prior discussion is not accepted. Specification changes are slow by design (see [Stability over velocity](/community/design-principles#stability-over-velocity)).
 
-* Bug fixes and typo corrections
-* Documentation clarifications
-* Adding examples to existing features
-* Minor schema fixes that don't change behavior
-
-Not sure? Ask in [Discord](/community/communication#discord) before starting significant work.
-
-## SEP Types
-
-There are four kinds of SEP:
-
-1. **Standards Track** - Describes a new feature or implementation for the Model Context Protocol, or an interoperability standard supported outside the core specification.
-2. **Informational** - Describes a design issue or provides guidelines/information to the community without proposing a new feature.
-3. **Process** - Describes a process surrounding MCP or proposes a change to a process (like this document).
-4. **Extensions Track** - Describes a protocol extension. Follows the same review and acceptance process as Standards Track SEPs, but indicates that the proposal is for an extension rather than a protocol addition. An accepted Extensions Track SEP moves an extension to Beta, and a second one moves it to Stable. See [Extension Lifecycle](/extensions/overview#extension-lifecycle) for the stages.
-
-## SEP Workflow
+## Workflow
 
 ```mermaid theme={null}
 flowchart TD
     Idea["Idea"]
-    AwaitingSponsor{"Awaiting Sponsor<br/>(up to 6 months)"}
-    Draft["Draft"]
-    Dormant["Dormant<br/>(no sponsor)"]
-    Withdrawn["Withdrawn<br/>(by author)"]
-    InReview["In-Review"]
+    Awaiting{"Awaiting sponsor<br/>(PR label: proposal)"}
+    Draft["draft"]
+    Dormant["dormant"]
+    Withdrawn["withdrawn"]
+    InReview["in-review"]
     Decision{"Core Maintainers decide"}
-    Accepted["Accepted"]
-    Rejected["Rejected"]
-    Final["Final"]
+    Accepted["accepted"]
+    Rejected["rejected"]
+    Final["final"]
+    Superseded["superseded"]
 
-    Idea -->|"Submit PR with SEP file"| AwaitingSponsor
-    AwaitingSponsor --> Draft
-    AwaitingSponsor --> Dormant
-    AwaitingSponsor --> Withdrawn
-    Draft -->|"Sponsor reviews"| InReview
+    Idea -->|"Open PR adding the SEP file"| Awaiting
+    Awaiting -->|"Sponsor self-assigns"| Draft
+    Awaiting -->|"180 days without a sponsor"| Dormant
+    Dormant -->|"Sponsor found, PR reopened"| Draft
+    Awaiting --> Withdrawn
+    Draft --> Withdrawn
+    Draft -->|"Sponsor sets in-review"| InReview
     InReview --> Decision
     Decision --> Accepted
     Decision --> Rejected
-    Accepted -->|"Reference implementation +<br/>conformance test complete"| Final
+    Decision -->|"Returned with feedback"| Draft
+    Accepted -->|"Specification text, reference implementation<br/>and conformance test complete"| Final
+    Final -->|"Replaced by a newer SEP"| Superseded
 ```
 
-### Step-by-Step Process
+1. Copy [`seps/TEMPLATE.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/seps/TEMPLATE.md) to `seps/0000-<slug>.md` and fill it in.
+2. Open a pull request against the [specification repository](https://github.com/modelcontextprotocol/modelcontextprotocol), titled `sep: <description>` as in `sep: propose task cancellation`, following the [pull request title guidelines](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CONTRIBUTING.md#pull-request-titles). The repository accepts pull requests from collaborators only; if you are not one, find a [sponsor](#sponsors) first and ask them to open it and name you as the author.
+3. The SEP number is the PR number. Rename the file (PR #1850 becomes `seps/1850-<slug>.md`), update the header, and run `npm run generate:seps`, or the `check:seps` CI job fails. Rename the pull request to `sep(SEP-1850): <description>`; a follow-up commit is enough, with no amend or force-push. Later pull requests about this SEP keep `SEP-1850` as their scope and link to it in the description.
+4. The PR is labeled `proposal`, meaning awaiting sponsor. `proposal` is a PR label only; the `Status` header in the SEP stays unset.
+5. A [sponsor](#sponsors) assigns themselves to the PR and sets `draft`. Review takes place in PR comments.
+6. When the SEP is ready, the sponsor confirms that the prior discussion happened and is linked in the pull request description, sets `in-review`, and puts it on the Core Maintainer meeting agenda. The author and sponsor may present it.
+7. Core Maintainers decide under [Review and acceptance](#review-and-acceptance). The sponsor records the outcome, `accepted` or `rejected`, on the PR and in the SEP header.
+8. For an accepted SEP, the author adds to the same PR: the specification prose, the `schema.ts` changes with regenerated output (see [CONTRIBUTING.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CONTRIBUTING.md#schema-changes)), a changelog entry, and any required documentation edits (for a deprecation, the four edits under [Deprecating a Feature](/community/feature-lifecycle#deprecating-a-feature)). The reference implementation is completed where it lives: an SDK branch, a fork or a standalone repository (see [Prototype Requirements](#prototype-requirements)). For a Standards Track SEP with observable protocol behavior, the conformance scenario and `sep-NNNN.yaml` are merged (see [Conformance Test Requirement](#conformance-test-requirement)). SDK implementations are not required for Final.
+9. The sponsor verifies these artifacts and sets `final`. The PR is then merged.
 
-**Prior discussion is required.** SEP authors must discuss the idea with the relevant [working or interest group](/community/working-interest-groups) in [Discord](/community/communication#discord) before opening the SEP pull request, and the PR description must link to that discussion (a Discord thread, WG/IG meeting notes, or a GitHub Discussion). A SEP without a linked prior discussion is not accepted. If no relevant group exists, start a conversation in [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions) or the `#general` channel in [Discord](/community/communication#discord) instead. If there is enough interest, it may be worth [creating a new IG or WG](/community/working-interest-groups#creating-an-interest-group). The effort involved in finding sponsors and facilitators is a good signal of whether the idea has sufficient traction.
+The eight `Status` values, also defined on the [SEP index](/seps):
 
-> [!NOTE]
->
-> To improve your chances of a SEP being accepted, check alignment with [Core
-> Maintainer](/community/governance#roles) priorities and [design
-> principles](/community/design-principles). Priorities are generally reflected
-> in the [project roadmap](/development/roadmap). Proposals outside current
-> priorities or that conflict with design principles are more likely to face
-> delays or additional friction in the review process.
+| Status | Meaning | Set by |
+| - | - | - |
+| `draft` | Has a sponsor, under informal review in PR comments | Sponsor |
+| `in-review` | On the Core Maintainer agenda for formal review | Sponsor |
+| `accepted` | Approved, awaiting specification text, reference implementation and conformance | Sponsor, after the Core Maintainer decision |
+| `rejected` | Declined by Core Maintainers | Sponsor, after the Core Maintainer decision |
+| `withdrawn` | Withdrawn by the author | Author or sponsor |
+| `final` | All artifacts complete and the PR merged | Sponsor |
+| `superseded` | Replaced by a newer SEP | Sponsor |
+| `dormant` | No sponsor after 180 days, PR closed, may be revived | Core Maintainers |
 
-1. **Discuss with the relevant group**: Bring your idea to the matching [working or interest group](/community/working-interest-groups) and refine it there. Keep a link to the discussion (a Discord thread, meeting notes, or a GitHub Discussion) so you can include it in the PR description.
+A SEP that has no sponsor after 180 days is marked `dormant` and its PR is closed. Dormant is not rejected: a dormant SEP is revived by finding a sponsor and reopening the PR, which returns it to `draft`.
 
-2. **Draft your SEP** as a markdown file named `0000-your-feature-title.md`, using `0000` as a placeholder. Follow the [SEP format](#sep-format) below.
+## Sponsors
 
-3. **Create a pull request** adding your SEP file to the `seps/` directory in the [specification repository](https://github.com/modelcontextprotocol/modelcontextprotocol). Use a title such as `sep: propose task cancellation`, following the [PR title guidelines](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CONTRIBUTING.md#pull-request-titles). The repository accepts pull requests from collaborators only.
+A sponsor is a Core Maintainer, a Maintainer, or a WG Lead for a SEP within that working group's scope.
 
-4. **Update the SEP number**: Once your PR is created, rename the file using the PR number (e.g., PR #1850 becomes `1850-your-feature-title.md`) and update the SEP header. Rename the PR title to `sep(SEP-1850): describe the proposal`. A follow-up commit is sufficient; you do not need to amend or force-push. Follow-up PRs about this SEP retain `SEP-1850` as their scope and link to the original SEP in the description.
+To find one, look up the Maintainers for your area in [MAINTAINERS.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md), then ask in the group's Discord channel.
 
-5. **Find a Sponsor**: Tag a Core Maintainer or Maintainer from [the maintainer list](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md). Choose someone whose area relates to your proposal. Tips:
-   * Tag 1-2 relevant maintainers, not everyone
-   * Share your PR in the relevant Discord channel
-   * If no response after 2 weeks, ask in `#general`
+If you can open pull requests on the repository, post the pull request with its prototype in that channel and tag at most two Maintainers on it. If you cannot, post the draft SEP and its prototype instead, and ask a Maintainer to sponsor it and open the pull request naming you as the author; the SEP is numbered from that pull request as usual. Either way, after two weeks with no response, ask in `#general`.
 
-6. **Sponsor assigns themselves**: When a sponsor agrees, they assign themselves to the PR and update the SEP status to `draft`.
+The sponsor reviews the proposal and requests changes, presents it with the author, verifies the Final artifacts, and makes every status change in the [Workflow](#workflow). That covers the `Status` field in the SEP file, which is canonical, and the matching PR label, which is for filtering. A sponsor without write access to the branch sets the field through the author. Authors do not edit `Status` or labels themselves; they ask their sponsor.
 
-7. **Informal review**: The sponsor reviews the proposal and may request changes. Discussion happens in PR comments.
-
-8. **Formal review**: When ready, the sponsor updates the status to `in-review`. Before doing so, the sponsor confirms that the group discussion happened and is linked in the PR description. The SEP enters formal review by Core Maintainers (meetings every two weeks).
-
-9. **Resolution**: The SEP may be `accepted`, `rejected`, or returned for revision. The sponsor updates the status.
-
-10. **Finalization**: Once accepted, the reference implementation must be completed. For Standards Track SEPs with observable protocol behavior, a [conformance test](#conformance-test-requirement) must also be merged. The author adds the specification changes (schema changes, specification text, and a changelog entry) to the SEP's pull request. SDK implementations are not required for a SEP to become `final`. When this work is complete, the sponsor updates the status to `final` and the SEP's PR can be merged. Merged SEPs are published in the [SEP index](/seps/index), and each one is reachable by number at `modelcontextprotocol.io/seps/<number>` (for example, [/seps/1850](/seps/1850)).
-
-### SEP Statuses
-
-| Status | Meaning |
-| - | - |
-| `draft` | Has a sponsor, undergoing informal review |
-| `in-review` | Ready for formal Core Maintainer review |
-| `accepted` | Approved, awaiting implementation + conformance |
-| `rejected` | Declined by Core Maintainers |
-| `withdrawn` | Author withdrew the proposal |
-| `final` | Complete with implementation and conformance |
-| `superseded` | Replaced by a newer SEP |
-| `dormant` | No sponsor found within 6 months; can be revived |
-
-**Important distinction**: `dormant` is not the same as `rejected`. A dormant SEP simply didn't find a sponsor - the idea may still be valid. If circumstances change (new community interest, new use cases), a dormant SEP can be revived by finding a sponsor and reopening the PR.
-
-## SEP Format
-
-Each SEP should have the following parts:
-
-### 1. Preamble
-
-A short descriptive title, author names/contact info, current status, SEP type, and PR number.
-
-### 2. Abstract
-
-A short (\~200 word) description of the technical issue being addressed.
-
-### 3. Motivation
-
-Why the existing protocol specification is inadequate. This is critical - SEPs without sufficient motivation may be rejected outright.
-
-### 4. Specification
-
-The technical specification describing syntax and semantics of the new feature. Must be detailed enough for competing, interoperable implementations.
-
-### 5. Rationale
-
-Why particular design decisions were made, alternate designs considered, and related work. Should provide evidence of community consensus and address objections raised during discussion.
-
-### 6. Backward Compatibility
-
-All SEPs introducing backward incompatibilities must describe these incompatibilities, their severity, and how to deal with them.
-
-### 7. Reference Implementation
-
-Must be completed before the SEP reaches "Final" status, but need not be complete before acceptance.
-
-### 8. Security Implications
-
-Any security concerns related to the SEP should be explicitly documented.
-
-See the [SEP template](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/seps/README.md#sep-file-structure) for the complete file structure.
+A WG Lead may also triage and close in-scope SEPs under [Leadership](/community/working-interest-groups#leadership), subject to appeal to Core Maintainers.
 
 ## Prototype Requirements
 
-Before a SEP can be accepted, you need "a prototype implementation demonstrating the proposal." Here's what qualifies:
+A SEP needs a working prototype before it can be accepted: an implementation in an official SDK as a branch or fork, a standalone proof of concept of the key mechanics, integration tests that exercise the proposed behavior, or a reference server or client. The prototype should show that the core functionality works as described and that the API design is practical and ergonomic, surface edge cases and implementation problems, and be runnable by reviewers from included setup instructions. Pseudocode alone, or a design document without code, is not sufficient. Production quality is not required.
 
-**Acceptable prototypes:**
+## Review and acceptance
 
-* A working implementation in one of the official SDKs (as a branch/fork)
-* A standalone proof-of-concept demonstrating the key mechanics
-* Integration tests showing the proposed behavior
-* A reference server or client implementing the feature
-
-**The prototype should:**
-
-* Demonstrate the core functionality works as described
-* Show the API design is practical and ergonomic
-* Reveal any edge cases or implementation challenges
-* Be runnable by reviewers (include setup instructions)
-
-**Not sufficient:**
-
-* Pseudocode alone
-* A design document without code
-* "Trust me, it works" - reviewers need to see it
-
-The prototype doesn't need to be production-ready. It exists to prove feasibility and surface issues early.
-
-## The Sponsor Role
-
-A Sponsor is a Core Maintainer or Maintainer who champions the SEP through the review process. The sponsor's responsibilities include:
-
-* Reviewing the proposal and providing constructive feedback
-* Requesting changes based on community input
-* **Updating the SEP status** as the proposal progresses
-* Initiating formal review when the SEP is ready
-* Presenting and discussing the proposal at Core Maintainer meetings
-* Ensuring the proposal meets quality standards
-
-Authors should request status changes through their sponsor rather than modifying the status field themselves.
-
-## Status Management
-
-**The Sponsor is responsible for updating the SEP status.** This ensures status transitions are made by someone with the authority and context to do so appropriately.
-
-The sponsor:
-
-1. Updates the `Status` field directly in the SEP markdown file (or, if they do not have access to the source repo, work with the author to set the right status)
-2. Applies matching labels to the pull request (e.g., `draft`, `in-review`, `accepted`)
-
-Both the markdown status field and PR labels should be kept in sync. The markdown file is the canonical record (versioned with the proposal), while PR labels make it easy to filter and search.
-
-## SEP Review & Resolution
-
-SEPs are reviewed by the MCP Core Maintainers team every two weeks.
-
-For a SEP to be accepted it must meet these criteria:
-
-* A prototype implementation demonstrating the proposal
-* Clear benefit to the MCP ecosystem
-* Community support and consensus
-
-Once a SEP has been accepted, the author adds the specification changes (schema changes, specification text, and a changelog entry) to the SEP's pull request. The reference implementation must be completed, along with any required [conformance test](#conformance-test-requirement). SDK implementations are not required. When this work is complete, the status changes to "Final" and the PR can be merged.
+Core Maintainers review `in-review` SEPs at their meeting every two weeks under the [decision process](/community/governance#decision-process). The criteria are a working prototype, clear benefit to the MCP ecosystem, community support and consensus, and fit with the roadmap and the design principles. The outcome is `accepted`, `rejected`, or a return to `draft` with specific feedback recorded on the PR.
 
 ## Conformance Test Requirement
 
-For **Standards Track SEPs** that introduce or modify observable protocol behavior, a conformance scenario must be merged into the [conformance repository](https://github.com/modelcontextprotocol/conformance) before the SEP can reach `Final` status.
+A Standards Track SEP that introduces or modifies observable protocol behavior cannot reach `final` until the [conformance repository](https://github.com/modelcontextprotocol/conformance) has:
 
-**What's required:**
+* A scenario tagged with the SEP number, targeting the repository's draft spec-version tag.
+* A traceability file, `sep-NNNN.yaml`, mapping every MUST, MUST NOT, SHOULD and SHOULD NOT in the SEP's Specification section to a check ID or to a documented exclusion, with a tracking issue where the exclusion is a framework gap.
+* The scenario passing against the SEP's reference implementation.
 
-* A conformance scenario tagged with the SEP number, targeting the conformance repository's draft spec-version tag
-* A structured traceability file (`sep-NNNN.yaml`) mapping each MUST/MUST NOT and SHOULD/SHOULD NOT in the SEP's Specification section to either a check ID or a documented exclusion (with a tracking issue if it's a framework gap)
-* The scenario passes against the SEP's reference implementation
+Process SEPs, Informational SEPs, and Standards Track SEPs with no observable protocol behavior (documentation clarifications, schema annotations that do not change validation, implementation-hardening recommendations) are exempt.
 
-**What's exempt:**
+Anyone may write the scenario: the SEP author, an SDK maintainer, or any other contributor. The sponsor confirms that it exists and that `sep-NNNN.yaml` covers every normative statement, and the conformance repository's maintainers review the scenario PR for technical correctness. Writing the scenario before Core Maintainer review is encouraged, not required. [SEP-2484](/seps/2484) defines the traceability format and the dispute process.
 
-* Process and Informational SEPs
-* Standards Track SEPs with no observable protocol behavior (documentation clarifications, non-validating schema annotations, implementation-hardening recommendations)
+## After the decision
 
-**Who does what:**
+A rejected SEP may be revised against the recorded feedback and resubmitted, or answered with a competing SEP.
 
-* The **sponsor** ensures a conformance scenario is written and verifies the traceability file covers every MUST/MUST NOT and SHOULD/SHOULD NOT in the SEP
-* The **conformance repository maintainers** review the scenario PR for technical correctness
-* The test **author** can be anyone: the SEP author, an SDK maintainer, a community contributor
+Before Final, raise problems on the SEP's PR. A Final SEP is a frozen record of the design as accepted. Where the specification has since diverged, the specification governs: report problems as issues against it, not as edits to the SEP.
 
-Writing a conformance scenario during SEP drafting (before Core Maintainer review) is encouraged but not required, since it often surfaces ambiguities in normative language that are cheaper to fix early.
+A SEP is withdrawn at the author's request. The author or the sponsor sets `withdrawn`. A SEP that replaces an earlier one carries a `Supersedes:` line in its header, and the earlier SEP is set `superseded`.
 
-See [SEP-2484](/seps/2484-conformance-tests-required-for-final-seps) for the full specification including the traceability file format and dispute process.
+Ownership of a SEP may pass to a new author when the original author no longer has time for it or cannot be reached. The original author stays on as co-author if they wish. Disagreement with the author's direction is not grounds for transfer. Write a competing SEP instead.
 
-## After Rejection
+## Template and tooling
 
-Rejection is not permanent. You can:
+SEP files live in [`seps/`](https://github.com/modelcontextprotocol/modelcontextprotocol/tree/main/seps), and each file's git history is the record of the proposal. [`seps/TEMPLATE.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/seps/TEMPLATE.md) gives the structure: a preamble, then Abstract, Motivation, Specification, Rationale, Backward Compatibility, Security Implications and Reference Implementation. The Abstract is about 200 words. Insufficient Motivation is by itself grounds for rejection. The Specification must be detailed enough for independent, interoperable implementations. In the Rationale, record the alternatives considered, the objections raised and the evidence of consensus. Backward Compatibility is mandatory whenever the SEP introduces an incompatibility, and states its severity and the migration path. Security Implications are stated explicitly, including when there are none.
 
-1. **Address the feedback** - If specific concerns were raised, address them and resubmit
-2. **Discuss the rejection** - Ask in Discord to understand the reasoning
-3. **Submit a competing SEP** - Sometimes a different approach works better
-4. **Wait for the right time** - Community needs evolve; what's rejected today may be welcomed later
+`npm run generate:seps` renders the files into `docs/seps/`, and `npm run check:seps` verifies that the rendered pages are current. For a worked example, see [SEP-2567](/seps/2567), a recent Final Standards Track SEP.
 
-## Reporting SEP Bugs or Updates
 
-For SEPs not yet reaching `final` state, comment directly on the SEP's pull request.
+# MCP Apps Working Group Charter
+Source: https://modelcontextprotocol.io/community/working-groups/apps
 
-Final SEPs are preserved as historical records of the design as accepted. They are not updated after finalization. If the specification changes after a SEP reaches Final status, the current specification is authoritative. Each Final SEP page displays a notice to this effect.
+Charter for the MCP Apps Working Group.
 
-## Transferring SEP Ownership
+## Group Type
 
-It occasionally becomes necessary to transfer ownership of SEPs to a new author. In general, we'd like to retain the original author as a co-author, but that's up to the original author.
+**Working Group**
 
-Good reasons to transfer ownership:
+## Mission Statement
 
-* Original author no longer has time or interest
-* Original author is unreachable
+The MCP Apps Working Group defines, evolves, and maintains the official extension for interactive user interfaces over MCP. The working group oversees the extension specification, SDK, reference implementations, security model, conformance work, and guidance so that apps can run safely and consistently across independent MCP hosts.
 
-Bad reasons:
+## Scope
 
-* You disagree with the direction (submit a competing SEP instead)
+### In Scope
 
-## Copyright
+* **Specification Work**: The [MCP Apps extension specification](https://github.com/modelcontextprotocol/ext-apps/tree/main/specification) and related SEPs, covering the areas below under the `io.modelcontextprotocol/ui` namespace.
+* **App Lifecycle**: How apps are declared, initialized, persisted, and torn down, including UI resource declaration and tool metadata.
+* **App Interaction Model**: The interaction protocol between user, app, and host, such as bi-directional messaging, app tools, etc.
+* **Content Types and Rendering Targets**: Support for different content types and methodologies like generative UI, with interoperability with external protocols such as [A2UI](https://a2ui.org/) and [AG-UI](https://ag-ui.com/).
+* **Security Model**: The threat model, sandboxing, security policy, permissions, and auditability of UI-initiated actions.
+* **SDKs and Reference Implementations**: The [`@modelcontextprotocol/ext-apps`](https://github.com/modelcontextprotocol/ext-apps) SDK, reference host, example servers, and host integration examples.
+* **Conformance**: Compatibility tests, app validation, and the definition of conformance requirements for apps and hosts.
+* **Cross-Cutting Coordination**: App discovery and metadata (with the Registry WG), UI in agentic flows (with the Agents IG), and per-language SDK support (with the SDK WG).
+* **Documentation**: API references, authoring guidance, host integration guidance, starter resources, and examples.
 
-This document is placed in the public domain or under the CC0-1.0-Universal license, whichever is more permissive.
+### Out of Scope
+
+* **Core protocol ownership**: Changes to base MCP semantics, transports, or lifecycle are proposed through the [SEP process](/community/sep-guidelines) and owned by the relevant group or Core Maintainers.
+* **Host-specific product and design decisions**: Hosts control their user experience and visual design. The WG standardizes the interoperability and security contract.
+* **Individual app implementations**: Apps built on the extension remain the responsibility of their authors.
+* **General agent orchestration**: Agent loops and sub-agent coordination belong to the Agents IG, and task management belongs to the Tasks and Events WG. This WG covers only the interactive UI surface and its integration points.
+
+### Related Groups
+
+* **Agents IG**: Interactive UI within agentic flows and task lifecycles.
+* **[Registry WG](/community/working-groups/registry)**: App discovery, distribution, and metadata.
+* **[Security IG](/community/interest-groups/security)**: Sandboxing, permissions, and review of UI-initiated actions.
+* **[SDK WG](/community/working-groups/sdk)**: SDK consistency and support outside the TypeScript reference implementation.
+
+## Leadership
+
+| Role | Name | Organization | GitHub | Term |
+| - | - | - | - | - |
+| Lead | Ido Salomon | MCP-UI | [@idosal](https://github.com/idosal) | Initial |
+| Lead | Liad Yosef | MCP-UI / Ora | [@liady](https://github.com/liady) | Initial |
+| Lead | Olivier Chafik | Anthropic | [@ochafik](https://github.com/ochafik) | Initial |
+
+## Authority & Decision Rights
+
+| Decision Type | Authority Level |
+| - | - |
+| Meeting logistics & scheduling | WG Leads (autonomous) |
+| Proposal prioritization within WG | WG Leads (autonomous) |
+| SEP triage & closure (in scope) | WG Leads (autonomous, with documented rationale) |
+| Technical design within scope | WG consensus |
+| Spec changes (additive) | WG consensus → Core Maintainer approval |
+| Spec changes (breaking/fundamental) | WG consensus → Core Maintainer approval + wider review |
+| Scope expansion | Core Maintainer approval required |
+| WG Member approval | WG Member sponsors |
+
+## Membership
+
+| Name | Organization | GitHub | Discord | Level |
+| - | - | - | - | - |
+| Ido Salomon | MCP-UI | [@idosal](https://github.com/idosal) | | Lead |
+| Liad Yosef | MCP-UI / Ora | [@liady](https://github.com/liady) | | Lead |
+| Olivier Chafik | Anthropic | [@ochafik](https://github.com/ochafik) | | Lead |
+| Anton Pidkuiko | Anthropic | [@antonpk1](https://github.com/antonpk1) | | WG Member |
+| Max Stoiber | OpenAI | [@mstoiber-oai](https://github.com/mstoiber-oai) | | WG Member |
+| Dominic Farolino | Google | [@domfarolino](https://github.com/domfarolino) | | WG Member |
+
+## Operations
+
+| Meeting | Frequency | Duration | Purpose |
+| - | - | - | - |
+| Working Session | Tri-weekly (Wednesday, 08:00 Pacific) | 60 minutes | Specification review, roadmap discussion, and app/host feedback |
+
+Meetings are published on the [MCP community calendar](https://meet.modelcontextprotocol.io/tag/mcp-apps-wg) under the `#mcp-apps-wg` tag. Agendas and notes are maintained in the public [MCP Apps Working Group agenda](https://docs.google.com/document/d/103S6IjN9D80ntbPIcK3mP_ZWdeFom2Mq8qpkpIsXRVI/edit) and linked from calendar entries.
+
+Discord: `#mcp-apps-wg`
+
+## Resources
+
+* Specification and SDK: [modelcontextprotocol/ext-apps](https://github.com/modelcontextprotocol/ext-apps) (`@modelcontextprotocol/ext-apps`)
+* Foundational proposal: [SEP-1865](/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp)
+* Guides: [MCP Apps overview](/extensions/apps/overview) and [Build an MCP App](/extensions/apps/build)
+* API documentation: [apps.extensions.modelcontextprotocol.io](https://apps.extensions.modelcontextprotocol.io/)
+* Work tracking: [ext-apps issues](https://github.com/modelcontextprotocol/ext-apps/issues) and [pull requests](https://github.com/modelcontextprotocol/ext-apps/pulls)
+
+## Deliverables & Success Metrics
+
+### Active Work Items
+
+Live work is tracked in the ext-apps [issue tracker](https://github.com/modelcontextprotocol/ext-apps/issues) and [pull requests](https://github.com/modelcontextprotocol/ext-apps/pulls). Headline workstreams are:
+
+| Item | Status | Target Date | Champion |
+| - | - | - | - |
+| Specification and SDK evolution: protocol alignment, capability negotiation, versioning, and maintenance of `@modelcontextprotocol/ext-apps` | In Progress | | [@idosal](https://github.com/idosal), [@liady](https://github.com/liady), [@ochafik](https://github.com/ochafik) |
+| Address view sprawl across tools and servers (reusable and independent views) | In Progress | | [@mstoiber-oai](https://github.com/mstoiber-oai), [@idosal](https://github.com/idosal), [@liady](https://github.com/liady) |
+| Formalize security model and extend sandboxing and permissions | In Progress | | [@idosal](https://github.com/idosal) |
+| Experiment with the app tools interaction model (WebMCP approach) | In Progress | | [@ochafik](https://github.com/ochafik) |
+| Address dynamic resource content and non-HTML hosts | Draft | | [@liady](https://github.com/liady), [@idosal](https://github.com/idosal) |
+| Conformance and cross-host interoperability: official validator, public platform tests, and compatibility reporting | In Progress | | [@idosal](https://github.com/idosal) |
+| Developer experience and ecosystem adoption: reference host, authoring tools, examples, documentation, accessibility, and discovery coordination | Maintained | | [@idosal](https://github.com/idosal) |
+
+### Success Criteria
+
+* The extension specification, SDK, reference host, and examples are actively maintained, with responsive triage of specification and SDK issues.
+* MCP Apps can run unmodified across multiple major hosts.
+* Conforming hosts implement the documented sandboxing, permissions, content security policy, and auditability requirements, verified by the conformance suite.
+* Breaking changes are rare, documented, and preceded by an appropriate deprecation and migration path.
+* MCP Apps is the standard UI layer of the agentic web.
+
+## Changelog
+
+| Date | Change |
+| - | - |
+| 2025-11-21 | SEP-1865 proposed, unifying the MCP-UI and OpenAI Apps SDK approaches |
+| 2025-12-17 | First MCP Apps Working Group meeting |
+| 2026-01-26 | Initial stable MCP Apps extension specification published |
+| 2026-01-28 | SEP-1865 marked Final |
+| 2026-05-21 | Initial charter |
 
 
 # File Uploads Charter
@@ -33327,298 +32440,156 @@ and the [`roadmaps/` directory](https://github.com/modelcontextprotocol/transpor
 | 2026-08-23 | Initial charter |
 
 
-# Working and Interest Groups
+# Working Groups and Interest Groups
 Source: https://modelcontextprotocol.io/community/working-interest-groups
 
-Governance rules for the two forms of collaborative groups within the Model Context Protocol community — Working Groups and Interest Groups.
+The MCP project's working groups and interest groups, how to join or start one, and the operating rules every group follows.
 
-Within the MCP contributor community we maintain two types of collaboration formats: **Interest Groups (IGs)** and **Working Groups (WGs)**.
+This page lists the project's working groups and interest groups, explains how to join or start one, and sets the operating rules every group follows. The rules were adopted by [SEP-2149](/seps/2149), a Specification Enhancement Proposal (SEP). A group's charter cannot override them, and changing them requires a Process SEP. Group membership is not required to take part in a group's work, though a [SEP](/community/sep-guidelines) needs [prior discussion](/community/sep-guidelines#before-you-write) with the relevant working group and its approval before the pull request is opened. You may take part in as many groups as your time allows.
 
-## Quick Reference
+## Working groups and interest groups
 
-| | Interest Group (IG) | Working Group (WG) |
+| | Working group | Interest group |
 | - | - | - |
-| **Purpose** | Identify and discuss problems | Build concrete solutions |
-| **Output** | Problem statements, use cases, recommendations | SEPs, implementations, code |
-| **Commitment** | Active contribution expected | Active contribution expected |
-| **Duration** | Ongoing as long as topic is relevant | Until deliverables complete |
-| **Leadership** | Facilitator(s) | Lead(s) |
-| **Decisions** | Rough consensus, non-binding | Binding (lazy consensus → vote → escalation) |
-| **Example** | "Security in MCP" — discussing security challenges | "Server Identity" — implementing identity verification |
+| Purpose | Build a concrete solution | Identify and discuss a problem |
+| Output | SEPs, reference implementations, or stewardship of an endorsed project such as the Inspector, the Registry or an SDK | Problem statements, use cases, recommendations, and input to working groups and SEPs |
+| Decisions | Binding within scope: lazy consensus, then vote, then escalation | Non-binding, by rough consensus |
+| Led by | Leads | Facilitators |
+| Duration | Until its deliverables are complete | Ongoing while the topic is relevant |
+| Example | [Transports](/community/working-groups/transports) | [Security](/community/interest-groups/security) |
 
-## When to Use Which
+In the usual path an interest group frames a problem, and a new working group, an existing group, or a SEP submitted directly solves it.
 
-**Join an Interest Group when you:**
+## Current groups
 
-* Have a problem but aren't sure of the solution
-* Want to explore whether an idea has community support
-* Are new to MCP and want to learn about a topic area
-* Want to share use cases and requirements
+Working groups:
 
-**Join a Working Group when you:**
+* [MCP Apps](/community/working-groups/apps)
+* [File Uploads](/community/working-groups/file-uploads)
+* [Filesystems](/community/working-groups/filesystems)
+* [Governance](/community/working-groups/governance)
+* [Infrastructure](/community/working-groups/infrastructure)
+* [Inspector V2](/community/working-groups/inspector-v2)
+* [Interceptors](/community/working-groups/interceptors)
+* [Progressive Disclosure](/community/working-groups/progressive-disclosure)
+* [Registry](/community/working-groups/registry)
+* [SDK](/community/working-groups/sdk)
+* [Server Card](/community/working-groups/server-card)
+* [Skills Over MCP](/community/working-groups/skills-over-mcp)
+* [Tasks and Events](/community/working-groups/tasks-events)
+* [Transports](/community/working-groups/transports)
 
-* Have a specific solution to implement
-* Are ready to write code or a SEP
-* Can commit regular time to active development
-* Want to help build a particular feature
+Interest groups:
 
-**Typical flow**: Discuss a problem in an IG → Validate that it's worth solving → Form or join a WG to build the solution → Submit a SEP → Implement
+* [Agents](/community/interest-groups/agents)
+* [Authorization](/community/interest-groups/auth)
+* [Enterprise](/community/interest-groups/enterprise)
+* [Enterprise-Managed Authorization](/community/interest-groups/enterprise-managed-authorization)
+* [Financial Services](/community/interest-groups/financial-services)
+* [Scientific Computing](/community/interest-groups/scientific-computing)
+* [Security](/community/interest-groups/security)
+* [Tool Annotations](/community/interest-groups/tool-annotations)
 
-## Interest Groups (IGs)
+## Joining a group
 
-**Goal:** Facilitate discussion and knowledge-sharing among MCP contributors who share interests in a specific topic. The focus is on identifying problems worth solving and gathering requirements — not building solutions.
+Join the group's Discord channel, which the charter names ([Communication](/community/communication#discord) gives the naming convention). Attend the group's call, listed on [meet.modelcontextprotocol.io](https://meet.modelcontextprotocol.io), and follow its agenda and notes thread (see [Meetings and channels](#meetings-and-channels)). Offering to take notes, prepare an agenda or facilitate a call is the fastest way in. Share your use cases in SEP discussions and take on working group deliverables when you are ready.
 
-**What IGs do:**
+To be listed as a Participant, ask a Lead. WG Member status follows the nomination process under [Participation levels](#participation-levels). Member lists live in the [access repository](https://github.com/modelcontextprotocol/access), which drives GitHub team membership and Discord roles. The [Antitrust Policy](/community/antitrust) applies in every group meeting.
 
-* Host discussions in Discord channels
-* Run regular meetings to share use cases
-* Document problem statements and requirements
-* Build consensus on what should be prioritized
-* Provide input to Working Groups and SEPs
+## Leadership
 
-**Examples:**
+Each group has one or more Leads, called Facilitators in an interest group. A Lead or Facilitator must hold at least [Member](/community/contributor-ladder#member) status and show sustained engagement with the group's scope. They must be able to facilitate across organizations, represent several perspectives fairly, and commit to running the group's operations; for a WG Lead that means 2 to 3 hours a week. The group and its leadership must be sponsored by at least two Core Maintainers or one Lead Maintainer.
 
-* Security in MCP
-* Auth in MCP
-* Using MCP in enterprise settings
-* Tooling and practices for hosting MCP clients
+Every Lead and Facilitator must:
 
-## Working Groups (WGs)
+* schedule and run regular meetings under [Meetings and channels](#meetings-and-channels)
+* set agendas with participants and publish them in advance
+* make sure meeting notes are published
+* keep the charter and other group documentation current
+* keep the member list and access list in the [access repository](https://github.com/modelcontextprotocol/access) current
+* recruit and retain a broad membership across organizations and perspectives
 
-**Goal:** Collaborate on a SEP, a series of related SEPs, or an officially endorsed project. WGs produce concrete deliverables.
+A WG Lead must also:
 
-**What WGs do:**
+* drive the group's proposals through the [SEP process](/community/sep-guidelines) to resolution
+* triage SEPs in the group's scope and close those that do not fit the roadmap, giving written rationale on the pull request; the author may appeal to Core Maintainers
+* escalate blocked decisions to Core Maintainers with clear context
+* keep the group's roadmap (the charter's Active Work Items) current and feed it into the [project roadmap](/development/roadmap)
+* regularly check the group's general direction with one or more Core Maintainers
+* post the quarterly update under [Reporting](#reporting)
 
-* Write and iterate on SEPs
-* Build reference implementations
-* Maintain ongoing projects (Inspector, Registry, SDKs)
-* Drive features from proposal to specification
+Leading a group does not require Maintainer status, and it counts toward advancement to [Maintainer](/community/contributor-ladder#maintainer). A Lead or Facilitator who is not a Maintainer works with one for merge decisions. Lead authority covers group operations, not specification approval. A WG Lead may [sponsor SEPs](/community/sep-guidelines#sponsors) within the group's scope.
 
-**Examples:**
-
-* Registry
-* Inspector
-* Tool Filtering
-* Server Identity
-
-## Governance
-
-The following rules apply to all MCP Working Groups and Interest Groups. Individual group charters cannot override these requirements. Where rules differ between WGs and IGs, this is noted explicitly.
-
-### Leadership
-
-Each group has one or more **Leads** (referred to as **Facilitators** for Interest Groups).
-
-**Requirements for all Leads and Facilitators:**
-
-* Hold at least Member status on the MCP Contributor Ladder — see [Governance](/community/governance) for role definitions
-* Demonstrated sustained engagement with the group's scope area
-* Ability to facilitate across organizational boundaries
-* Commitment to running the group's operations
-* Group and its leadership sponsored by at least two Core Maintainers or one Lead Maintainer
-
-**Additional requirements for WG Leads:**
-
-* Commitment to 2-3 hours/week for WG activities
-
-**All Leads are responsible for:**
-
-* Schedule and facilitate regular meetings
-* Set agendas in collaboration with participants and publish them in advance
-* Ensure meeting notes are published within 48 hours
-* Maintain the group's documentation
-* Maintain a members list and respective access list in the [access repository](https://github.com/modelcontextprotocol/access)
-* Proactively recruit and retain broad, representative membership across organizations and perspectives
-
-**WG Leads are additionally responsible for:**
-
-* Drive proposals through the [SEP process](/community/sep-guidelines) to resolution
-* Triage SEPs in the WG's scope area, including closing SEPs that do not fit the roadmap (with documented rationale; authors may appeal to Core Maintainers)
-* Escalate blocked decisions to Core Maintainers with clear context
-* Maintain the working group's roadmap
-* Solicit feedback from one or more Core Maintainers on the general direction of the group on a continuous basis
-* Provide quarterly status updates to the Community and Core Maintainer Group
-
-### Participation Levels
-
-All groups use the following participation tiers. Note that **WG Member** is a group-specific participation level distinct from the org-wide **Member** role — an individual may be a WG Member in a specific group without holding org-wide Member status, and vice versa.
+## Participation levels
 
 | Level | Description | Privileges |
 | - | - | - |
-| **Observer** | Anyone interested in following the group's work | Read access, may attend meetings, limited discussion participation |
-| **Participant** | Active contributor to group discussions | Can propose agenda items, participate in async votes |
-| **WG Member** | Sustained contributor with demonstrated expertise | Counted for quorum (WGs only) |
-| **Lead/Facilitator** | Operational leadership of the group | Sets agenda, facilitates, escalates |
+| Observer | Anyone interested in following the group's work | Read access, may attend meetings, limited discussion participation |
+| Participant | Active contributor to group discussions | Can propose agenda items, participate in async votes |
+| WG Member | Sustained contributor with demonstrated expertise | Counted for quorum (WGs only) |
+| Lead/Facilitator | Operational leadership of the group | Sets agenda, facilitates, escalates |
 
-Interest Groups primarily operate with Observers, Participants, and Facilitators. IGs may adopt the WG Member tier if their work warrants formal decision-making, but are not required to.
+WG Member is a group-level tier distinct from the project-wide [Member](/community/contributor-ladder#member) role: a person may be a WG Member without holding Member status, and the reverse. Interest groups primarily operate with Observers, Participants and Facilitators, and may adopt the WG Member tier if their work warrants formal decision-making.
 
-**Becoming a WG Member** (WGs, and IGs that adopt the WG Member tier):
+In a working group, or an interest group that has adopted the tier, becoming a WG Member requires three things: sustained participation over 3 months with contributions of code, specification text, reviews or documentation; nomination by an existing WG Member or Lead; and no objection from the Leads, Core Maintainers or Lead Maintainers within 7 days. WG Members keep their name, organization and Discord handle current in the group's member list. A WG Member who does not participate for 3 consecutive months is moved to emeritus status and may return by demonstrating renewed participation.
 
-* Sustained participation over 3 months
-* Meaningful contributions (code, spec text, reviews, or documentation)
-* Nomination by existing WG Member or Lead
-* No objections from Leads, Core Maintainers, or Lead Maintainers within 7 days
+## Making decisions
 
-**WG Member Responsibilities:**
+Working groups make binding decisions within their scope through three steps, each attempted before the next.
 
-* Continue contributing in good faith
-* Maintain name, organization, and Discord name in the respective group's member list
+1. Lazy consensus. A proposal is announced with a clear deadline of at least 5 days for minor items and 10 days for significant items. Silence is consent. Any WG Member may block with a documented objection, which must propose alternatives or clear criteria for resolution. If no block is raised by the deadline, the proposal is accepted.
+2. Formal vote. A vote is triggered when a WG Member blocks during the lazy consensus period, or when a Lead or three or more WG Members request one. Quorum is 50% of active WG Members. Routine matters pass by simple majority and scope changes by a two-thirds majority. Core Maintainer feedback is advisory unless explicitly stated as binding. Every vote is documented with rationale.
+3. Escalation. If the vote fails to resolve the matter (no quorum, no passage, or a contested result), the Lead escalates to Core Maintainers under [Escalation](#escalation).
 
-**Active vs. Emeritus:** WG Members who do not participate for 3 consecutive months are moved to emeritus status and may return by demonstrating renewed participation.
+Interest groups operate by rough consensus and their output is non-binding. An interest group that has adopted the WG Member tier may use these steps for internal decisions.
 
-### Decision-Making Process
+Each working group's charter records, in its Authority and Decision Rights table, the decisions the group takes at each level. That table is approved with the charter and changed under [Amending or retiring a group](#amending-or-retiring-a-group).
 
-This section applies primarily to Working Groups, which make binding decisions (consensus on technical designs, spec changes, etc.). Interest Groups typically operate by rough consensus in discussions and do not make binding decisions — their output is recommendations, problem statements, and use cases. IGs that adopt the WG Member tier may use this process for internal decisions.
+## Escalation
 
-**WG Consensus** is achieved through the following progression. Each step is attempted before moving to the next.
+The generic escalation procedure and response-time matrix are defined in the [Contributor Ladder](/community/contributor-ladder#escalation).
 
-**1. Lazy Consensus (default)**
+Technical and design disagreements within a group's scope are resolved in the group before Core Maintainers are involved: a working group uses [Making decisions](#making-decisions), and an interest group's Facilitator seeks rough consensus. Scope disputes (whether a topic falls within the charter), authority disputes (whether the group may decide a matter), cross-group conflicts, Code of Conduct or behavioral concerns, and membership or participation disputes should be escalated directly to Core Maintainers.
 
-* Proposals announced with clear deadline (5 days minimum for minor items, 10 days for significant items)
-* Silence is consent
-* Any WG Member may block with documented objection
-* Blocks must propose alternatives or clear criteria for resolution
-* If no blocks are raised by the deadline, the proposal is accepted
+When a Lead escalates, the Core Maintainer group designates one of its members, who should not share organizational affiliation with the parties involved, to resolve the issue and report back to the group. That Core Maintainer provides binding guidance, requests more information, or recommends that the full Core Maintainer group deliberate. An escalation should receive an initial response within 5 business days.
 
-**2. Formal Vote (when lazy consensus is blocked)**
+## Meetings and channels
 
-A formal vote is triggered when a WG Member blocks during the lazy consensus period, or when a Lead or three or more WG Members request one.
+Leads set each group's meeting frequency, format and duration; there is no fixed cadence. Every group meeting must:
 
-* Quorum: 50% of active WG Members
-* Passage: simple majority for routine matters; 2/3 majority for scope changes
-* Core Maintainer feedback is advisory unless explicitly stated as binding
-* All votes documented with rationale
+* be open to all community participants, with no closed or organization-internal meetings
+* be published on [meet.modelcontextprotocol.io](https://meet.modelcontextprotocol.io) at least 7 days in advance
+* have a public agenda; the agenda or a link to it should be posted as a [GitHub Discussion in the Meeting Notes category](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/) before the meeting
+* have its notes published to the same discussion within 48 hours
+* use the official Google Meet transcription as its only automated record; third-party AI notetakers and meeting bots are not permitted, per the [Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md#community-meetings)
+* run under the [Code of Conduct](/community/policies#code-of-conduct) and the [Antitrust Policy](/community/antitrust), whose Conduct of Meetings section requires agendas and minutes
+* link [Project Policies](/community/policies) from its agenda
 
-**3. Escalation (when voting does not resolve)**
+Leads should involve WG Members and Participants in preparing agendas, taking notes and facilitating.
 
-If a vote fails to resolve the matter (no quorum, does not pass, or the result is contested), the Lead escalates to Core Maintainers following the escalation path below.
+Each group has a Discord channel (naming at [Communication](/community/communication#discord)) for quick questions and coordination; responses there are best effort. Long-form technical discussion goes to [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/), which are triaged weekly, and a group may have its own Discussions category on request. Leads are granted the roles needed to manage and moderate both.
 
-### Escalation Path
+## Reporting
 
-For technical and design disagreements within a group's scope, groups should resolve disagreements locally before involving Core Maintainers. For WGs, this means using the decision-making progression above. For IGs, the Facilitator should attempt to find rough consensus before escalating.
+Each working group posts a quarterly update at the end of January, April, July and October as a document in its GitHub Discussions category, covering progress against deliverables, blocked items and escalations, membership changes, upcoming priorities, and resource needs. Core Maintainers may take it up at their meeting. Interest groups have no reporting requirement but should keep their charter and member list current.
 
-Some disagreements are not appropriate for group-level resolution and should be escalated directly to Core Maintainers:
+## Forming a group
 
-* Scope disputes (whether a topic falls within the group's charter)
-* Authority disputes (whether the group has the right to decide a matter)
-* Cross-group conflicts (disagreements spanning multiple WGs or IGs)
-* Code of conduct or behavioral concerns
-* Membership or participation disputes
+### Working group
 
-When escalation is necessary:
+A working group is formed when a widely acknowledged problem needs coordinated work. Prior discussion in an interest group helps but is not required. With a clear deliverable you may propose a working group directly. The group and its Leads need the sponsorship set out under [Leadership](#leadership); ask in the Discord channel closest to the topic or in `#wg-ig-group-creation`. Once sponsored, the proposers submit a charter as described in [Submitting a charter](/community/charter-template#submitting-a-charter). The WG Lead approves the initial member list.
 
-1. Lead documents the decision, options considered, and points of disagreement
-2. Lead presents the escalation to the Core Maintainer group with a clear ask
-3. The Core Maintainer group designates a CM — who should not share organizational affiliation with the parties involved — to resolve the issue and report back to the group
-4. The designated CM either: (a) provides binding guidance, (b) requests more information, or (c) recommends the full Core Maintainer group deliberate
-5. Timeline: escalations should receive initial response within 5 business days
+### Interest group
 
-### Meeting Requirements
+Fill out the creation template in the `#wg-ig-group-creation` channel on [Discord](https://discord.gg/6CSzBmMkjX). A Core Maintainer reviews the proposal, and the group and its Facilitators need the same sponsorship. Once sponsored, the Facilitators organize the group and submit a charter the same way, with the file under `docs/community/interest-groups/`.
 
-Leads determine meeting frequency, format, and duration based on the group's current needs and lifecycle stage. There is no fixed cadence requirement — a WG near a specification release may meet weekly, while an IG in early exploration may meet monthly or work primarily asynchronously.
+## Amending or retiring a group
 
-Regardless of format or frequency, all group meetings must:
+A change to a group's charter is proposed by a Lead, a Facilitator or a Core Maintainer, approved by Core Maintainers, and recorded in the charter's Changelog.
 
-* Be open to all community participants (no closed or organization-internal meetings)
-* Be published on [meet.modelcontextprotocol.io](https://meet.modelcontextprotocol.io) at least 7 days in advance
-* Have agendas published and publicly available. The agenda or a link to the agenda should be published as a [GitHub Discussion in the Meeting Notes category](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/)
-* Have notes published within 48 hours to the same discussion
-* Use the official Google Meet transcription as the only automated record of the meeting. Third-party AI notetakers and meeting bots are not permitted, per the [Code of Conduct](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CODE_OF_CONDUCT.md#community-meetings)
+A working group is retired when its Lead or a Core Maintainer proposes retirement with rationale and a Core Maintainer or Lead Maintainer approves. It is also retired when it has completed all planned deliverables or has had no active work for a sustained period. Core Maintainers or Lead Maintainers may retire an interest group that is no longer active or needed.
 
-Leads should actively involve WG Members and Participants in operational duties such as preparing agendas, taking meeting notes, and facilitating discussions.
-
-### Communication Channels
-
-All groups use the following channels:
-
-| Channel | Purpose | Response Expectation |
-| - | - | - |
-| Discord `#{name}-wg` or `#{name}-ig` | Quick questions, coordination | Best effort |
-| GitHub Discussions | Long-form technical discussion | Weekly triage |
-
-In addition to Discord, groups can establish a discussion category in [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/). Leads will be granted the appropriate roles to manage and moderate discussions.
-
-### Reporting
-
-**Working Groups** provide quarterly updates (end of January, April, July, October) including:
-
-* Progress against deliverables
-* Blocked items and escalations
-* Membership changes
-* Upcoming priorities
-* Resource needs
-
-The quarterly updates are provided as a document posted in the [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/) category of the Working Group. They are optionally discussed with the Core Maintainers in a core maintainer meeting.
-
-**Interest Groups** do not have formal reporting requirements but should keep their charter and member list current.
-
-### Lifecycle
-
-**Working Group Formation:**
-
-* There must be a widely acknowledged concern requiring coordination
-* PR adding the WG charter as `docs/community/working-groups/<name>.mdx`, written from the [Group Charter Template](/community/charter-template) and including the corresponding navigation entry in `docs/docs.json`, gated by CODEOWNERS requiring approval from Core Maintainers
-* Initial member list approved by WG Lead
-
-**Interest Group Formation:**
-
-* Fill out the creation template in the `#wg-ig-group-creation` channel on [Discord](https://discord.gg/6CSzBmMkjX)
-* A Core Maintainer reviews the proposal; the IG and its Facilitator(s) must be sponsored by at least two Core Maintainers or one Lead Maintainer
-* Once sponsored, the Facilitator(s) organize the IG and create a charter via a PR adding `docs/community/interest-groups/<name>.mdx`, written from the same template and including the corresponding navigation entry in `docs/docs.json`, gated by CODEOWNERS requiring approval from Core Maintainers
-
-**Retirement:**
-
-* **WGs**: WG Lead or Core Maintainer proposes retirement with rationale; Core Maintainer or Lead Maintainer approval required. WGs are also retired when they have no active work for a sustained period or have completed all planned deliverables.
-* **IGs**: Core Maintainers or Lead Maintainers may retire an IG that is no longer active or needed.
-* In both cases, documentation is archived and channels are marked inactive.
-
-### Charter Amendments
-
-Changes to a group's charter (WG or IG) require:
-
-* Proposal by Lead/Facilitator or Core Maintainer
-* Approval by Core Maintainers
-
-## Charters
-
-Every MCP Working Group and Interest Group must maintain a charter document that captures its specific mission, scope, leadership, membership, and operations. The governance rules above apply automatically and do not need to be repeated in the charter.
-
-See the [Group Charter Template](/community/charter-template) for the required structure and a copyable template.
-
-## FAQ
-
-### How do I get involved contributing to MCP?
-
-These groups provide an on-ramp:
-
-1. [Join Discord](https://discord.gg/6CSzBmMkjX) and follow IGs relevant to you. Attend [live calls](https://meet.modelcontextprotocol.io/). Participate in discussions.
-2. Offer to help with operational duties — facilitating calls, preparing agendas, taking notes. Share your use cases in SEP discussions.
-3. When ready for hands-on work, contribute to WG deliverables.
-4. Sustained contribution is a recognized pathway to WG Member status and contributor ladder advancement.
-
-### Where can I find a list of all current WGs and IGs?
-
-On the [MCP Contributor Discord](https://discord.gg/6CSzBmMkjX), there is a section of channels for each Working and Interest Group. Chartered groups also have documentation under `docs/community/` in the [modelcontextprotocol repository](https://github.com/modelcontextprotocol/modelcontextprotocol).
-
-### Do I need to join an IG before starting a WG?
-
-No. IG participation can help validate ideas and build support, but it's not required. You can propose a WG directly if you have a clear deliverable in mind and can secure Core Maintainer sponsorship.
-
-### Do I need to be in a WG to submit a SEP?
-
-No. Anyone can submit a SEP, and group membership is not required. The proposal must still be brought to the relevant group's Discord channel before the SEP pull request is opened, as described in the [SEP guidelines](/community/sep-guidelines#step-by-step-process). Beyond that requirement, closer WG collaboration can strengthen your proposal and help it find a sponsor.
-
-### What if my IG discussion leads to a concrete solution?
-
-You can either:
-
-* Form a new WG to build the solution
-* Join an existing WG if one covers the area
-* Submit a SEP directly if the solution is well-defined
-
-### Can one person be in multiple IGs/WGs?
-
-Yes. Participate in as many groups as your time allows.
+In both cases the group's documentation is archived and its channels are marked inactive.
 
 
 # Roadmap

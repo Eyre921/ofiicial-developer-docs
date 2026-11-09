@@ -8,7 +8,7 @@ Create a legacy vector index that stores dense or sparse vectors you generate wi
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 A legacy vector index stores dense or sparse vectors that you generate with an external embedding model, and it's read and written through the legacy Vectors API. To store vectors in a document index instead, declare a `dense_vector` or `sparse_vector` field. See [Create a document index](/guides/indexes/create-an-index#create-a-document-index).
 

@@ -6,7 +6,7 @@ path: guides/indexes/move-to-the-documents-api
 
 Move your data from a legacy vector index or legacy integrated index to a document index, and update your code to call the Documents API.
 
-An index stays on the API it was created with. An index on the legacy Vectors API or legacy Records API never moves to the Documents API on its own, even after you upgrade your SDK, and requests sent to the wrong API are refused. To use the Documents API, put your data in a new document index and point your code at it. Your legacy indexes and the code that calls them keep working in the meantime.
+An index stays on the API it was created with. An index on the legacy Vectors API or legacy Records API never moves to the [Documents API](/guides/get-started/documents-api) on its own, even after you upgrade your SDK, and requests sent to the wrong API are refused. To use the Documents API, put your data in a new document index and point your code at it. Your legacy indexes and the code that calls them keep working in the meantime.
 
 ## Move your data
 

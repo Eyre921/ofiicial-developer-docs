@@ -10,6 +10,8 @@ Returns a paginated list of [Users](/reference/user) for the workspace. The resp
 Guests are not included in the response.
 If you already know a guest's ID, [Retrieve a user](/reference/get-user) can return that guest when they belong to the connected workspace.
 
+Custom Agents are not included in the response. To find an agent's bot user ID, read a [`people` page property](/reference/page-property-values#people) where the agent is assigned.
+
 See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 
 The API does not guarantee a particular sort order for returned users.

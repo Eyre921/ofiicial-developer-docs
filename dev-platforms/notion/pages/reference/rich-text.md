@@ -288,6 +288,8 @@ If the type key is `"template_mention_user"`, then the rich text object contains
 
 If a rich text object’s `type` value is `"user"`, then the corresponding user field contains a [user object](/reference/user).
 
+A `user` mention can reference a person or a connection's bot. A Custom Agent can't be mentioned: the request returns a `validation_error`. To hand work to an agent, assign it in a [`people` page property](/reference/page-property-values#people).
+
 > [!NOTE]
 >
 > If your connection doesn’t yet have access to the mentioned user, then the `plain_text` that would include a user’s name reads as `"@Anonymous"`. To update the connection to get access to the user, update the connection capabilities on the connection settings page.

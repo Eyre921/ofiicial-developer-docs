@@ -19,10 +19,12 @@ Presets endpoints
 ### Available Operations
 
 * [list](#list) - List presets
+* [delete](#delete) - Delete a preset
 * [get](#get) - Get a preset
 * [create\_presets\_chat\_completions](#create_presets_chat_completions) - Create a preset from a chat-completions request body
 * [create\_presets\_messages](#create_presets_messages) - Create a preset from a messages request body
 * [create\_presets\_responses](#create_presets_responses) - Create a preset from a responses request body
+* [restore](#restore) - Restore a preset
 * [list\_versions](#list_versions) - List versions of a preset
 * [get\_version](#get_version) - Get a specific version of a preset
 
@@ -62,6 +64,7 @@ with OpenRouter(
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *OptionalNullable\[int]* | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100) | 50 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -75,8 +78,61 @@ with OpenRouter(
 | errors.BadRequestResponseError | 400 | application/json |
 | errors.UnauthorizedResponseError | 401 | application/json |
 | errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
+
+## delete
+
+Archives a preset: it no longer resolves for inference and is hidden from get and list. The preset and its versions are kept, so the slug stays taken; restore it with `POST /presets/{slug}/restore`. Deleting an already-archived preset succeeds again. A disabled preset returns 409. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys); inference API keys are rejected. `workspace_id` may be sent as a query parameter or a JSON body field.
+
+### Example Usage
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.presets.delete(slug="my-preset")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. | my-preset |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
+
+### Response
+
+**[components.GetPresetResponse](../../components/getpresetresponse.mdx)**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get
@@ -112,6 +168,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -173,7 +230,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `workspace_id` | *Optional\[str]* | ➖ | Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
 | `debug` | [Optional\[components.ChatDebugOptions\]](../../components/chatdebugoptions.mdx) | ➖ | Debug options for inspecting request transformations (streaming only) | \{ "echo\_upstream\_body": true } |
 | `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation. The portable profile needs the catalog unchanged across a continuation; the universal profile accepts a changed catalog and, with `announce_catalog_changes`, tells the model about it. | \{ "profile": "portable", "protocol": "v1", "search": \{ "max\_results": 5, "type": "bm25" }, "validation": "runtime" } |
@@ -273,7 +330,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `workspace_id` | *Optional\[str]* | ➖ | Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
 | `context_management` | [OptionalNullable\[components.ContextManagement\]](../../components/contextmanagement.mdx) | ➖ | N/A | |
 | `deferred_tools` | [Optional\[components.DeferredToolsControl\]](../../components/deferredtoolscontrol.mdx) | ➖ | Opt-in versioned router-level deferred-tool protocol. Replay assistant reasoning unchanged on continuation. The portable profile needs the catalog unchanged across a continuation; the universal profile accepts a changed catalog and, with `announce_catalog_changes`, tells the model about it. | \{ "profile": "portable", "protocol": "v1", "search": \{ "max\_results": 5, "type": "bm25" }, "validation": "runtime" } |
@@ -351,7 +408,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `workspace_id` | *Optional\[str]* | ➖ | Workspace to create the preset in. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `access_programs` | [Optional\[components.ResponsesRequestAccessPrograms\]](../../components/responsesrequestaccessprograms.mdx) | ➖ | OpenAI access programs for this request. `cyber` selects the Cyber access program: `standard`, `daybreak_blue`, or `daybreak_red`. A program other than `standard` is supported only on BYOK requests that run on your own OpenAI key enrolled in that program; any other endpoint, including OpenRouter's own OpenAI credentials, rejects it with a 400 error. Requests on OpenRouter's OpenAI credentials always run `standard`. Omit the field unless your key is enrolled in a Daybreak program. | \{ "cyber": "standard" } |
 | `background` | *OptionalNullable\[bool]* | ➖ | N/A | |
 | `cache_control` | [Optional\[components.AnthropicCacheControlDirective\]](../../components/anthropiccachecontroldirective.mdx) | ➖ | Enable automatic prompt caching. When set at the top level, the system automatically applies cache breakpoints to the last cacheable block in the request. When set on an individual content block, it marks an explicit cache breakpoint; block-level markers also work on OpenAI models that support explicit prompt caching — OpenRouter converts them to the provider's native format. | \{ "type": "ephemeral" } |
@@ -411,6 +468,58 @@ with OpenRouter(
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
+## restore
+
+Re-activates an archived preset so it resolves for inference again. No version is created and the designated version is unchanged. Restoring an active preset returns it unchanged. A disabled preset returns 409. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys); inference API keys are rejected. `workspace_id` may be sent as a query parameter or a JSON body field.
+
+### Example Usage
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.presets.restore(slug="my-preset")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `slug` | *str* | ✔️ | URL-safe slug identifying the preset. | my-preset |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
+
+### Response
+
+**[components.GetPresetResponse](../../components/getpresetresponse.mdx)**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
+
 ## list\_versions
 
 Lists all versions of a preset, ordered by version number ascending (oldest first).
@@ -448,6 +557,7 @@ with OpenRouter(
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *OptionalNullable\[int]* | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100) | 50 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -500,6 +610,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response

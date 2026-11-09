@@ -30,8 +30,6 @@ There are different rules for when and how you need to register to collect tax d
 
 See [Needs attention](https://dashboard.stripe.com/tax/locations?primary_tab=needs_attention) tab to get insights about your potential tax registration obligations in each location. Stripe only monitors if you’ve reached a tax threshold for sales outside of the country your business is based in. Stripe also notifies you with email and Dashboard alerts when you might need to register to collect tax. Learn more about how the [monitoring tool works](https://docs.stripe.com/tax/monitoring.md).
 
-You can check your tax obligations with Stripe MCP and Stripe CLI searching for `threshold monitoring`.
-
 After you’ve registered with a country, go to [Locations](https://dashboard.stripe.com/tax/locations) to add your registrations to Stripe in the Dashboard to start collecting tax on your transactions in that location.
 
 ## How we calculate taxes 

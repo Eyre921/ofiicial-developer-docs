@@ -38,7 +38,7 @@ You can send money from a financial account to a third-party recipient using the
 
 - [Create a recipient](https://docs.stripe.com/treasury/connect/build-an-integration.md#create-a-recipient) with `active` capabilities for relevant networks like `bank_accounts.local` and `bank_accounts.ach`.
 
-- [Look up the recipient’s payout method](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#list-payout-methods).
+- [Look up the recipient’s payout method](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#list-payout-methods). For paper checks, [create a Check Send payout method](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#create-a-check-send-payout-method) first.
 
   > #### Check confirmation of payee
   > 
@@ -264,6 +264,7 @@ You can create the following types of `OutboundPayment`:
 | Wire | `bank_accounts.wire` | Typically 1 business day |
 | Push-to-card (Private preview) | `card` | Immediate |
 | Real-time payment (RTP) (Private preview) | `bank_accounts.instant` | Within a few seconds to a few minutes |
+| Paper check (Check Send) (Private preview) | `paper_checks` | 1-5 business days |
 
 ## Move money from a platform to connected account 
 
@@ -684,6 +685,160 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
     "outbound_payment_quote": "{{OUTBOUNDPAYMENTQUOTEID_ID}}"
   }'
 ```
+
+## Send a paper check  (Private preview)
+Available in: US
+> #### Request access
+> 
+> Check send requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
+
+Before sending a paper check, request `configuration.recipient.capabilities.paper_checks` on the recipient Account and confirm that its status is `active`.
+
+### Create a Check Send payout method 
+
+Create a reusable payout method with an [OutboundSetupIntent](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents/create.md?api-version=preview). Set `payout_method_data.type` to `check_send` and `usage_intent` to `payment`. Provide the name printed on the check in `payout_method_data.check_send.payee_name`, up to 35 characters, and the US mailing address in `payout_method_data.check_send.mailing_address`.
+
+For a recipient of a connected account, set the `Stripe-Context` header to `{{CONNECTED_ACCOUNT_ID}}/{{RECIPIENT_ACCOUNT_ID}}`. For a recipient of your platform, use `{{RECIPIENT_ACCOUNT_ID}}` alone. Store your API key securely. See [best practices for managing secret keys](https://docs.stripe.com/keys-best-practices.md).
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "payout_method_data": {
+        "type": "check_send",
+        "check_send": {
+            "payee_name": "Jenny Rosen",
+            "mailing_address": {
+                "line1": "510 Townsend St",
+                "city": "San Francisco",
+                "state": "CA",
+                "postal_code": "94103",
+                "country": "US"
+            }
+        }
+    },
+    "usage_intent": "payment"
+  }'
+```
+
+After successful creation, the `OutboundSetupIntent` has status `succeeded`. Save the `payout_method.id` from the response to use as `to.payout_method` when creating a payment.
+
+### Create the payment 
+
+Create an `OutboundPayment` with the recipient Account ID in `to.recipient` and the Check Send payout method ID in `to.payout_method`. Provide a sender signature, up to 30 characters, in `to.payout_method_options.check_send.signature`. You can also provide a memo, up to 100 characters, in `to.payout_method_options.check_send.memo`. Stripe prints both on the check.
+
+For a connected account’s payment, set `Stripe-Context` to the connected account ID alone. Omit the header to send from your platform’s financial account.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "payout_method_options": {
+            "check_send": {
+                "signature": "Jenny Rosen",
+                "memo": "Streamer earnings",
+                "shipping_speed": "standard"
+            }
+        }
+    },
+    "amount": {
+        "value": 1999,
+        "currency": "usd"
+    },
+    "description": "Streamer earnings"
+  }'
+```
+
+### Add attachments to a paper check 
+
+You can include a PDF attachment with a paper check, such as an invoice or receipt. Stripe supports PDF files only. The maximum page count depends on the shipping speed: 5 pages for standard shipping and 50 pages for priority shipping.
+
+Upload the file with the [Files API](https://docs.stripe.com/api/files.md) and set `purpose` to `check_send_attachment`. For a connected account’s payment, include the `Stripe-Account` header with the ID of the connected account that owns the sending financial account. Omit the header for your platform’s payment.
+
+```bash
+curl https://files.stripe.com/v1/files \
+  -u "{{SECRET_KEY}}:" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
+  -F purpose=check_send_attachment \
+  -F "file=@/path/to/document.pdf"
+```
+
+Pass the returned file ID in `to.payout_method_options.check_send.attachment_file` when you create the outbound payment.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "payout_method_options": {
+            "check_send": {
+                "signature": "Jenny Rosen",
+                "memo": "Streamer earnings",
+                "shipping_speed": "standard",
+                "attachment_file": "{{FILE_ID}}"
+            }
+        }
+    },
+    "amount": {
+        "value": 1999,
+        "currency": "usd"
+    },
+    "description": "Streamer earnings"
+  }'
+```
+
+### Delivery options 
+
+Choose a `to.payout_method_options.check_send.shipping_speed` of `standard` or `priority` to control how Stripe prints and mails the check. The default is `standard`.
+
+| Delivery option | Printing and mailing deadline |
+| --- | --- |
+| Standard (USPS First Class) | 10:59pm ET for shipment by the end of the next business day. Arrives in 3-5 business days. |
+| Priority (FedEx Overnight) 1 | 1pm ET for same-day shipment. Arrives the next business morning. |
+
+1 FedEx Overnight doesn’t deliver to P.O. boxes.
+
+### Returned checks 
+
+If a check is undeliverable, Stripe updates the `OutboundPayment.status` to `failed` and sets `status_details.failed.reason` to `check_undeliverable` after the return mail address receives the check.
+
+### Expired checks 
+
+Checks expire after 90 days. An expired check transitions to `failed`, with reason `check_expired`.
+
+### Void a check 
+
+Unlike bank payments, you can cancel paper checks after mailing and before deposit. To issue a stop payment, [cancel the check’s OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/cancel.md?api-version=preview) if its `status` is `processing` and `cancelable` is `true`. For a connected account’s payment, include the `Stripe-Context` header with that account’s ID.
+
+Successful cancellation returns status `canceled`, and Stripe sends the `v2.money_management.outbound_payment.canceled` event. Stripe doesn’t automatically reissue the check. Confirm cancellation succeeded before creating a replacement `OutboundPayment`.
+
+### Retrieve a file attachment 
+
+You can [download a file attached to a check](https://docs.stripe.com/file-upload.md#download-file-contents) in the command line, specifying the file ID from the `to.payout_method_options.check_send.attachment_file` parameter.
+
+### Sample paper check 
+
+Set the check amount with `amount.value` and `amount.currency`, the signature with `to.payout_method_options.check_send.signature`, and an optional memo with `to.payout_method_options.check_send.memo`. Stripe uses `check_send.payee_name` and `check_send.mailing_address` from the payout method for the recipient details.
+![Sample paper check with annotations identifying the payer, recipient name and address, amount, signature, and memo.](https://b.stripecdn.com/docs-statics-srv/assets/sample-paper-check.b318a7e4cca8bf5d145bef1ef8b8a199.png)
 
 ## See also
 

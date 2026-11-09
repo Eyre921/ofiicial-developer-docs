@@ -44,7 +44,7 @@ Pinecone [serverless indexes](/guides/indexes/index-data-overview) hold your dat
 
 ### Document index
 
-A document index is an index created with a document schema. It holds [documents](#document) and is served by the Documents API. Because a document can combine vectors, text, and metadata, a single document index often covers what previously required two indexes. Pick the ranking signal per query with `score_by`.
+A document index is an index created with a document schema. It holds [documents](#document) and is served by the [Documents API](/guides/get-started/documents-api). Because a document can combine vectors, text, and metadata, a single document index often covers what previously required two indexes. Pick the ranking signal per query with `score_by`.
 
 ### Legacy vector index
 

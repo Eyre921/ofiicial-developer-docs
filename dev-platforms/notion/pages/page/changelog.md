@@ -4,6 +4,16 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 9, 2026**
+
+### Custom Agents in people properties
+
+You can now assign a Custom Agent to a `people` [page property value](/reference/page-property-values#people) when you [create a page](/reference/post-page) or [update page properties](/reference/patch-page). The connection needs the [View sessions and interact with agents](/reference/capabilities#agent-capabilities) capability, and the agent must be selected in the connection's **Agent access** tab. Assigning an agent can start a run, the same as assigning it in Notion.
+
+Page responses now include assigned Custom Agents as [bot user objects](/reference/user#bots). Before, they were left out of `people` arrays. A bot's `avatar_url` is now `null` when its icon isn't an image URL.
+
+Two limits apply. A `user` [rich text mention](/reference/rich-text#user-mention-type-object) of a Custom Agent still returns a `validation_error`. [List all users](/reference/get-users) doesn't include Custom Agents, so read an agent's bot user ID from a `people` property where the agent is already assigned.
+
 **November 5, 2026**
 
 ### Sync health on data source reads

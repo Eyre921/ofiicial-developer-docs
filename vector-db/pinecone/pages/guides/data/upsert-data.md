@@ -20,7 +20,7 @@ For a legacy vector index, see [Upsert vectors](/guides/legacy/vectors-api/upser
 
 [Documents](/guides/get-started/key-terms#document) are the unit of data in a document index. Each field in a document is indexed according to the configuration you declared for it in the schema, not just its type. For example, a `string` field can be indexed for BM25 with the `full_text_search` config, and a separate `dense_vector` field can store vector values you provide at upsert time. A `string` field can also declare `embed` or `sparse_embed` so Pinecone embeds its text with [integrated embedding](/guides/search/integrated-embedding).
 
-The following example upserts two documents into the `articles` namespace with the Documents API. Each document is indexed for BM25 ranking on `body`. The `category` field isn't declared in the schema, so it's stored as metadata and automatically indexed for filtering:
+The following example upserts two documents into the `articles` namespace with the [Documents API](/guides/get-started/documents-api). Each document is indexed for BM25 ranking on `body`. The `category` field isn't declared in the schema, so it's stored as metadata and automatically indexed for filtering:
 
 ```python Python theme={null}
 from pinecone import Pinecone

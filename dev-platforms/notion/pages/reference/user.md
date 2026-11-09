@@ -53,7 +53,7 @@ User objects that represent people have the `type` property set to `"person"`. T
 
 ## Bots
 
-A user object's `type` property is `"bot"` when the user object represents a bot. A bot user object has the following properties:
+A user object's `type` property is `"bot"` when the user object represents a bot. Custom Agents appear as bots in `people` page properties. [List all users](/reference/get-users) doesn't include them, and a `user` mention can't reference one. A bot's `avatar_url` is `null` when its icon isn't an image URL. A bot user object has the following properties:
 
 | Property | Updatable | Type | Description | Example value |
 | :- | :- | :- | :- | :- |

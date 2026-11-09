@@ -1,5 +1,5 @@
 ---
-title: "API Reference (182 pages)"
+title: "API Reference (184 pages)"
 source: https://openrouter.ai/docs/_llms/api-reference.txt
 path: docs/_llms/api-reference.txt
 ---

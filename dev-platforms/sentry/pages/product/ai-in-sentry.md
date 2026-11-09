@@ -20,11 +20,19 @@ Sentry leverages artificial intelligence (AI) and machine learning (ML) to enhan
 
 [Seer](https://docs.sentry.io/product/ai-in-sentry/seer.md) is Sentry's AI debugging agent that helps resolve errors and performance issues in your applications. Seer combines issue detection, analysis, and automated fixing capabilities to streamline your debugging workflow. Seer is an [add-on](https://docs.sentry.io/pricing.md#seer-pricing) to your Sentry subscription.
 
+##### Seer Billing Changes December 8
+
+On December 8, 2026, Seer moves from active-contributor pricing to usage-based credits. Instead of tracking repository commits, manage your [Seer Wallet](https://sentry.io/orgredirect/organizations/:orgslug/settings/billing/overview/) in organization settings to add funds, set a daily spend limit, and turn Seer on or off.
+
 Use Seer to:
 
 * **[Fix Issues](https://docs.sentry.io/product/ai-in-sentry/seer/autofix.md)**: Use Autofix to find root causes and generate suggested code fixes for errors and performance issues, or hand off to a [coding agent](https://docs.sentry.io/product/ai-in-sentry/seer/autofix.md#handoff-to-coding-agents).
 * **[Investigate Problems and Take Action](https://docs.sentry.io/product/ai-in-sentry/seer.md#seer-agent)**: Ask Seer Agent to investigate application problems, archive issues, and create dashboards, monitors, and alerts from a conversation in Sentry or Slack.
 * **[Review Code Changes](https://docs.sentry.io/product/ai-in-sentry/seer/code-review.md)**: Have Seer review your code changes in GitHub or GitLab, catching bugs before merging.
+
+##### Code Review Ends December 8
+
+Seer Code Review is deprecated and will be removed on December 8, 2026. Automatic reviews and `@sentry review` stop on that date. Autofix will still come with Seer.
 
 ### [Issue Summary](https://docs.sentry.io/product/ai-in-sentry.md#issue-summary)
 

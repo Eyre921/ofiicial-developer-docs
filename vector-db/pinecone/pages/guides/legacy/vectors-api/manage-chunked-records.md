@@ -8,7 +8,7 @@ Fetch, search, delete, and replace all chunks of a source document in a legacy v
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 When you split a long source document into chunks, each chunk is stored as its own record in a legacy vector index. To work with all of a source document's chunks at once, give each chunk a [structured ID](/guides/indexes/data-modeling#use-structured-ids) prefixed with the source document's ID, and a `document_id` metadata field. The code on this page assumes you generate the vectors yourself. For a document index, see [Manage document chunks](/guides/data/manage-document-chunks).
 

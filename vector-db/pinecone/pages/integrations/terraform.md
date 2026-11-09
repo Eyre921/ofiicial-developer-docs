@@ -243,7 +243,7 @@ resource "pinecone_index" "example_index_byoc" {
 >
 > Provider v5.0.0 requires `read_capacity.dedicated` on new BYOC indexes. Upgrade to v5.1.0 or later to create on-demand BYOC indexes.
 >
-> Provider v5.1.0 and earlier reject document indexes and `cmek_id` on BYOC at plan time. Upgrade to v5.1.1 or later to use them.
+> Provider v5.1.0 and earlier reject document indexes on BYOC at plan time. Upgrade to v5.1.1 or later to use them.
 
 #### Read capacity
 
@@ -283,7 +283,7 @@ Creating an index with `read_capacity`, or changing `read_capacity`, waits until
 
 #### Encryption
 
-To encrypt an index with [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek), set `cmek_id` to the ID of your key. `cmek_id` is available only in the `schema` style, and only when you create the index. With provider v5.1.0 or earlier, it also requires a managed deployment.
+To encrypt an index with [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek), set `cmek_id` to the ID of your key. `cmek_id` is available only in the `schema` style, and only when you create the index. [BYOC](/guides/production/bring-your-own-cloud) indexes don't support CMEK, and setting `cmek_id` on one fails at apply with `Encryption is not supported for BYOC indexes`. To encrypt BYOC data, use your cloud provider's key management service on the resources in your account.
 
 ```hcl Terraform theme={null}
 resource "pinecone_index" "example_index_cmek" {

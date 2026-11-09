@@ -224,7 +224,7 @@ FROM pinecone.search_doc_index('faq',
   '{"type": "text", "fields": ["question"], "query": "invoices"}', k => 3);
 ```
 
-Upserted documents become searchable shortly after Pinecone indexes them, so a search run immediately after an upsert may return nothing. The schema and query use the same JSON as the [Documents API](/guides/search/full-text-search).
+Upserted documents become searchable shortly after Pinecone indexes them, so a search run immediately after an upsert may return nothing. The schema and query use the same JSON as the [Documents API](/guides/get-started/documents-api).
 
 To delete the index when you're done:
 

@@ -531,17 +531,15 @@ vector_store.similarity_search(
 > [accordion] Azure Cosmos DB Mongo vCore
 >
 > ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> pip install -qU langchain-azure-ai pymongo
+> pip install -qU langchain-azure-cosmosdb pymongo
 > ```
 >
 > ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> uv add pymongo
+> uv add langchain-azure-cosmosdb pymongo
 > ```
 >
 > ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> from langchain_azure_ai.vectorstores.azure_cosmos_db_mongo_vcore import (
->     AzureCosmosDBMongoVCoreVectorSearch,
-> )
+> from langchain_azure_cosmosdb import AzureCosmosDBMongoVCoreVectorSearch
 >
 > vectorstore = AzureCosmosDBMongoVCoreVectorSearch.from_documents(
 >     docs,

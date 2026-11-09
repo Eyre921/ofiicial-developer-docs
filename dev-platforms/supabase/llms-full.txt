@@ -103822,6 +103822,7 @@ Query logs for events, inspect database statistics, or review advisor findings. 
 
 - **[Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering):** Query ClickHouse events through MCP, the API, or Explorer.
 - **[Logs in Studio](https://supabase.com/docs/guides/observability/logs):** Filter, inspect, and export events in the unified Logs view.
+- **[Logs in the CLI](https://supabase.com/docs/guides/observability/cli-logs):** Browse, filter, and export logs with Supabase CLI v3.
 - **[Log sources and fields](https://supabase.com/docs/guides/observability/log-field-reference):** Look up sources, ClickHouse query fields, and capture limits.
 - **[Metrics API](https://supabase.com/docs/guides/observability/metrics):** Scrape Prometheus-compatible database metrics, or chart a subset in Reports.
 - **[Inspect the database](https://supabase.com/docs/guides/observability/inspect):** Inspect live Postgres stats from the CLI, Explorer, or MCP.
@@ -103906,7 +103907,7 @@ The selected range is applied to the query. The **Logs** query source chooses Cl
 
 ### Terminal access
 
-The Supabase CLI does not query ClickHouse logs. Use the Management API command above. For live database statistics, use [`supabase inspect db`](https://supabase.com/docs/guides/observability/inspect).
+Supabase CLI v2 does not query ClickHouse logs. Use the Management API command above. [Supabase CLI v3](https://supabase.com/docs/guides/observability/cli-logs#query-with-sql) supports ClickHouse queries with `supabase logs --remote --sql`. For live database statistics, use [`supabase inspect db`](https://supabase.com/docs/guides/observability/inspect).
 
 ## Sources and fields
 
@@ -106737,6 +106738,231 @@ Create a Cursor automation that runs the Resources prompt once each morning.
 
 ---
 
+# Logs in the CLI
+
+Browse local and hosted logs, filter events, and export results with Supabase CLI v3
+
+Use `supabase logs` to inspect local or hosted service events from your terminal. Export full records for scripts, or query hosted logs with SQL.
+
+This guide requires Supabase CLI v3.
+
+## Query local logs
+
+The command reads your local stack by default. Local reads require the [experimental stack runtime](https://supabase.com/docs/guides/local-development/running-multiple-local-projects). Set `SUPABASE_EXPERIMENTAL_STACK=1`, or set `stack = true` under `[experimental]` in your CLI configuration.
+
+```sh
+supabase logs
+supabase logs sources
+supabase logs sources --output-format json
+```
+
+Local reads work while a stack is stopped. They never start a stack or service.
+
+```sh
+supabase logs --stack feature-a --since start
+supabase logs --stack-id stack-id-prefix --service postgres --output-format text
+supabase logs --resource instance-id --since 2d
+```
+
+`--stack` selects an existing stack by name. `--stack-id` accepts an ID or unique prefix. `--service postgres` selects the local `database` service. Local selectors also include service names, instance IDs, and `gateway` when the stack exposes the shared API listener.
+
+`--resource` selects a local instance ID and cannot be combined with `--service`. `--since start` reads from each selected service's latest launch. Local reads do not support `--level`, `--search`, `--kind`, or SQL.
+
+Local source discovery lists existing stack instances and gateway support. A listed source does not guarantee retained events.
+
+## Query remote project logs
+
+Use `--remote` to query the linked project. Select another project with `--remote=<ref>`, or a branch of the linked project with `--remote=<branch>`. Hosted reads require authentication and access to that project. Database URLs are unsupported.
+
+```sh
+supabase logs --remote
+supabase logs --remote=abcdefghijklmnopqrst --service postgres
+supabase logs --remote=feature-branch --service auth
+```
+
+Discover service selectors and supported filters before narrowing your query:
+
+```sh
+supabase logs sources --remote
+supabase logs sources --remote --service postgres
+```
+
+Hosted discovery describes service capabilities. A listed source does not imply that it contains events.
+
+Hosted selectors include `edge`, `postgres`, `postgrest`, `auth`, `auth-audit`, `storage`, `realtime`, `functions`, `function-edge`, `supavisor`, `pgbouncer`, `pg-upgrade`, and experimental `compute`. `functions` selects console events; `function-edge` selects invocation events.
+
+## Filter logs
+
+```sh
+supabase logs --remote --service postgres --level error --since 30m
+supabase logs --remote --service auth --search "invalid token"
+supabase logs --remote --service functions --resource function-id --limit 500
+supabase logs --remote --service postgres --service auth --level error --level warn
+```
+
+Repeat `--service` or `--level` to select multiple values. `--search` matches a case-insensitive literal substring in hosted messages. `%` and `_` have no wildcard meaning.
+
+Severity comes from service fields, such as Postgres severity or HTTP status. Unknown severity stays unknown. `--level` requires a supported severity mapping. Without `--service`, a level filter selects `postgres`, `edge`, `auth`, `functions`, and `function-edge`. Use `logs sources --remote --service <service>` to check support.
+
+### Set the time range
+
+The default range is the last hour, with an initial history limit of 100 rows. Set `--limit` from 1 to 1000 to change that count.
+
+```sh
+supabase logs --remote --since 30m --limit 500
+supabase logs --remote --from 2026-11-01T09:00:00Z --to 2026-11-01T10:00:00Z
+```
+
+`--since` accepts a duration or UTC timestamp. Use `--from` and `--to` for fixed UTC bounds ending in `Z`. With only `--to`, the range covers the hour ending at that timestamp. Do not combine `--since` with `--from` or `--to`.
+
+Each hosted request can span at most 24 hours. Local ranges have no 24-hour ceiling. The displayed lower bound stays fixed during refreshes. If a later load requires a wider request window, restart with a narrower range.
+
+## Interactive vs JSON output
+
+An interactive terminal opens the browser when you omit `--output-format`. Explicit `--output-format text` always performs one finite read. The browser also stays closed in CI, with `TERM=dumb`, or when stdin or stdout is not a terminal.
+
+Use `--output-format json` for an indented array, or `--output-format stream-json` for newline-delimited JSON. Both formats perform one read and exit.
+
+```sh
+supabase logs --remote --service postgres
+supabase logs --remote --service postgres --output-format json
+supabase logs --remote --service postgres --output-format stream-json
+```
+
+| Format        | Result                                                                                                                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `text`        | Plain text. Piped filtered output keeps one event per line, escapes embedded newlines and carriage returns, and avoids hard wrapping.                                         |
+| `json`        | An indented array of full records.                                                                                                                                            |
+| `stream-json` | Newline-delimited JSON events. Filtered reads emit `log-entry` or `log-marker` events with the record in `data`. SQL reads emit a `result` event containing the result array. |
+
+### Use the interactive browser
+
+![Local log explorer with a UTC time window, nine retained events, and the final database checkpoint row selected.](https://supabase.com/docs/img/guides/observability/cli-logs/explorer.jpg)
+
+Example local logs in the interactive explorer.
+
+| Key              | Action                                          |
+| ---------------- | ----------------------------------------------- |
+| Up or down arrow | Select a row.                                   |
+| Enter            | Open the selected record's details.             |
+| Escape           | Return to the list, or close an error panel.    |
+| `C`              | Copy the full selected record as indented JSON. |
+| `L`              | Load newer filtered logs, or rerun custom SQL.  |
+| `q`              | Exit.                                           |
+| Ctrl+C           | Cancel and exit with status 130.                |
+
+![Selected database record showing kind, timestamp, launch ID, text, position, service, and instance ID, with scroll, back, load, copy, and quit controls.](https://supabase.com/docs/img/guides/observability/cli-logs/details.jpg)
+
+Press Enter to inspect the selected record.
+
+The header shows the hosted project name and ref, or the local stack, plus active filters. If name lookup fails, it shows the project ref. **Window** shows the requested UTC range, even when results contain no timestamps.
+
+Empty results keep the browser open. `L` loads on demand and reports the number of new logs, including zero. The browser does not poll or follow in the background. Filtered loads append newer results and preserve selection and viewport. The browser retains up to 1000 filtered rows and approximately 8 MiB. A notice appears when older rows are discarded. An open detail view stays pinned to its record.
+
+Hosted filtered loads read up to five pages of 1000 rows per load. **More pending** means `L` continues toward the same captured end time. After that range completes, the next load advances the end. The footer reports page progress. Refreshes use an overlap to catch recent arrivals; they cannot guarantee capture of events that arrive after that overlap.
+
+A rate-limited page retries once after at least 60 seconds, or longer if `Retry-After` requires it. The footer shows the wait and UTC retry time. You can quit during the wait. Other load failures open a scrollable error panel. Use arrows to scroll, Escape to return, or `L` to retry. Existing rows and selection remain available.
+
+Copying reports success or failure in the footer. On Linux, install `wl-clipboard`, `xclip`, or `xsel` if no clipboard tool is available. `C` is inactive in the error panel.
+
+## Export results
+
+Pipes and machine-readable output perform one read and exit. The unified command has no `--follow` flag, `tail` subcommand, or `query` subcommand.
+
+```sh
+supabase logs --remote --service postgres --level error --output-format text
+supabase logs --remote --service postgres --output-format json > postgres.json
+supabase logs --remote --service postgres --output-format stream-json > postgres.ndjson
+```
+
+Hosted records retain IDs, severity, timestamps, and attributes. `service` uses the selector name, such as `postgres`; `source` keeps the original value, such as `postgres_logs`. Local records retain instance IDs, launch IDs, positions, and loss markers. Progress and retry messages go to stderr.
+
+Use `--output-format` for both `logs` and `logs sources`. These commands reject the legacy `-o` and `--output` flags.
+
+## Query with SQL
+
+For ClickHouse SQL syntax, available columns, and query examples, see [Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering).
+
+Pass SQL with `--sql`, `--file <path>`, or `--file -` for piped input. SQL requires an explicit hosted target:
+
+```sh
+supabase logs --remote --sql "select timestamp, id, event_message, log_attributes from logs order by timestamp desc limit 20"
+```
+
+Save this query as `postgres.sql`:
+
+```sql
+select timestamp, id, event_message, log_attributes
+from logs
+where source = 'postgres_logs'
+order by timestamp desc
+limit 20;
+```
+
+```sh
+supabase logs --remote --file postgres.sql --since 30m --output-format json
+cat postgres.sql | supabase logs --remote --file - --output-format stream-json
+```
+
+The CLI reads stdin only with `--file -`. This flag requires piped, nonempty input. `--file` has no `-f` alias. Choose either `--sql` or `--file`. SQL cannot be combined with `--service`, `--resource`, `--kind`, `--level`, `--search`, `--stack`, or `--stack-id`. Time-range flags still apply. SQL controls its own `limit`; the CLI's `--limit` applies to filtered history.
+
+In the browser, SQL rows stay in result order. `L` reruns the query from the original lower bound through the current time. A successful query replaces the previous results and reports **Query reloaded**. SQL keeps the full returned result without the filtered browser's 1000-row or memory cap. Missing row timestamps appear as a dash; record details retain the full raw result.
+
+Queries use a Management API GET endpoint. Server query limits, project retention, and access controls apply. A long SQL file can exceed the server URL limit. The CLI reports that HTTP error without splitting or rewriting the query.
+
+## Command options
+
+Run `supabase logs --help` or `supabase logs sources --help` for the help included with your installed version.
+
+| Option for `supabase logs`        | Behavior                                                                                                      |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `--remote[=<ref\|branch>]`        | Read the linked project, a project ref, or a branch of the linked project. Default: local.                    |
+| `--stack <name>`                  | Select an existing local stack by name.                                                                       |
+| `--stack-id <id>`                 | Select an existing local stack by ID or unique prefix.                                                        |
+| `--service <selector>`            | Filter by service. Repeat for multiple services.                                                              |
+| `--resource <id-or-name>`         | Select a hosted function ID, Compute name, or local instance ID.                                              |
+| `--kind <kind>`                   | Select a Compute stream: `app`, `requests`, or `builds`. Requires `--service compute`.                        |
+| `--level <level>`                 | Filter severity: `error`, `warn`, `warning`, `info`, `debug`, `log`, or `notice`. Repeat for multiple levels. |
+| `--search <text>`                 | Match a case-insensitive hosted message substring.                                                            |
+| `--since <duration-or-timestamp>` | Set the lower time bound. Default: `1h`. Local stacks also accept `start`.                                    |
+| `--from <timestamp>`              | Set the lower UTC bound with a timestamp ending in `Z`.                                                       |
+| `--to <timestamp>`                | Set the initial upper UTC bound with a timestamp ending in `Z`. `L` can advance it.                           |
+| `--limit <count>`                 | Set initial filtered history count from 1 to 1000. Default: 100.                                              |
+| `--sql <query>`                   | Query hosted logs with ClickHouse SQL. Requires `--remote`.                                                   |
+| `--file <path>`                   | Read SQL from a file. Use `-` for stdin. Requires `--remote`.                                                 |
+
+Compute sources require `SUPABASE_EXPERIMENTAL_COMPUTE=true`. Compute app output has no reliable severity mapping; `--level` requires `--kind requests` or `--kind builds`.
+
+`supabase logs sources` accepts `--remote`, `--stack`, `--stack-id`, and `--service`. Its `--service` describes one service rather than filtering log rows.
+
+Both commands accept shared flags, including `--output-format text|json|stream-json`, `--profile <name>`, and `--workdir <path>`. `--workdir` identifies the directory containing your `supabase/` folder. An explicit path is used as given, without searching parent directories.
+
+## Migrate existing log commands
+
+In v3, `supabase compute logs` and `supabase stack logs` are deprecated and warn on stderr. They retain their existing flags, defaults, and follow behavior until removal in v4.
+
+| Existing command                        | Unified command                                           |
+| --------------------------------------- | --------------------------------------------------------- |
+| `supabase compute logs api`             | `supabase logs --remote --service compute --resource api` |
+| `supabase stack logs --stack feature-a` | `supabase logs --stack feature-a`                         |
+
+The unified browser uses `L` for manual loads. Scripts perform a finite read. Remove `--follow` or `-f` when moving to `supabase logs`. On the deprecated commands, `-f` still means `--follow`; SQL files use the full `--file` flag on the unified command.
+
+## Troubleshoot
+
+| Symptom                              | Next step                                                                                                                                                                                                                                                                                                      |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No events                            | Check the target, time range, service, and filters. Discovery lists support, not event volume. Check [logging configuration](https://supabase.com/docs/guides/observability/configure-logging) and [source capture limits](https://supabase.com/docs/guides/observability/log-field-reference#capture-limits). |
+| Local stack unavailable              | Turn on the experimental stack runtime and select an existing stack. Log reads never create or start one.                                                                                                                                                                                                      |
+| Unsupported level, resource, or kind | Inspect `logs sources --remote --service <service>`. Local reads do not support level, search, kind, or SQL filters.                                                                                                                                                                                           |
+| Invalid time range                   | End `--from` and `--to` timestamps in `Z`, separate `--since` from explicit bounds, and keep hosted ranges within 24 hours.                                                                                                                                                                                    |
+| SQL error                            | Check ClickHouse syntax and columns on `logs`. Remove filter-selector flags and select `--remote`. Shorten oversized queries if the server rejects the URL.                                                                                                                                                    |
+| Access denied                        | Check authentication, profile, project access, and scoped token permissions. Hosted log reads require `analytics_logs_read`; project or branch resolution can also require read permissions.                                                                                                                   |
+| Clipboard failure                    | Check the footer error and install a supported clipboard tool on Linux. Export JSON if clipboard access is unavailable.                                                                                                                                                                                        |
+
+
+---
+
 # Client-side tracing
 
 Propagate W3C trace context from the Supabase JS, Swift, and Dart SDKs through Supabase services
@@ -108234,6 +108460,8 @@ When Postgres logs an event, it also records subfields, such as the [error code]
 Filter, inspect, and export project events in the Logs view
 
 Use [Logs](https://supabase.com/dashboard/project/_/logs) to inspect events across your hosted project's services. For SQL queries through [Explorer](https://supabase.com/dashboard/project/_/explorer), MCP, or the API, see [Query logs with SQL](https://supabase.com/docs/guides/observability/advanced-log-filtering).
+
+For terminal workflows with Supabase CLI v3, see [Logs in the CLI](https://supabase.com/docs/guides/observability/cli-logs).
 
 ## Find events
 
@@ -166399,6 +166627,8 @@ Supabase CLI supports global flags for every command.
 
 ## Bootstrap a Supabase project from a starter template
 
+Bootstrap a Supabase project from a starter template.
+
 ```sh
 supabase bootstrap [template] [flags]
 ```
@@ -166413,7 +166643,7 @@ A `supabase/config.toml` file is created in your current working directory. This
 
 In addition to `config.toml`, the `supabase` directory may also contain other Supabase objects, such as `migrations`, `functions`, `tests`, etc.
 
-To use OrioleDB as the Postgres storage engine, run `supabase init --use-orioledb`. The command writes the OrioleDB version to `db.orioledb_version` in `supabase/config.toml`.
+To use OrioleDB as the Postgres storage engine, run `supabase init --use-orioledb`. The command writes the OrioleDB version to `db.orioledb_version` in `supabase/config.toml`; `--experimental` is not required.
 
 ```sh
 supabase init [flags]
@@ -166421,21 +166651,39 @@ supabase init [flags]
 
 ## Authenticate using an access token
 
-Connect the Supabase CLI to your Supabase account by signing in with your [personal access token](https://supabase.com/dashboard/account/tokens).
+Connect the Supabase CLI to your Supabase account by logging in with your [personal access token](https://supabase.com/dashboard/account/tokens).
 
-Your access token is stored securely in [native credentials storage](https://github.com/zalando/go-keyring#dependencies). If native credentials storage is unavailable, it will be written to a plain text file at `~/.supabase/access-token`.
+Your access token is stored securely in native credentials storage (the operating system keyring). If native credentials storage is unavailable, it will be written to a plain text file at `<SUPABASE_HOME or ~/.supabase>/access-token`.
 
 > If this behavior is not desired, such as in a CI environment, you may skip login by specifying the `SUPABASE_ACCESS_TOKEN` environment variable in other commands.
 
 The Supabase CLI uses the stored token to access Management APIs for projects, functions, secrets, etc.
 
+> The Management API client retries retryable failures up to 5 times by default. Set `SUPABASE_API_MAX_RETRIES` to change that. It counts retries after the first attempt, so `0` sends each request once.
+
 ```sh
 supabase login [flags]
 ```
 
+## Log out and delete access tokens locally
+
+Log out and delete access tokens locally.
+
+```sh
+supabase logout [flags]
+```
+
+## Show the current user
+
+Show information about the currently logged-in user.
+
+```sh
+supabase whoami [flags]
+```
+
 ## Link to a Supabase project
 
-Link your local development project to a hosted Supabase project.
+Link your local development project to a hosted Supabase project. Pass the project ref, or the name of one of its branches, as the argument: `supabase link <ref>`. The `--project-ref` flag still works.
 
 PostgREST configurations are fetched from the Supabase platform and validated against your local configuration file.
 
@@ -166443,13 +166691,73 @@ Optionally, database settings can be validated if you provide a password. Your d
 
 > If you do not want to be prompted for the database password, such as in a CI environment, you may specify it explicitly via the `SUPABASE_DB_PASSWORD` environment variable.
 
-Some commands like `db dump`, `db push`, and `db pull` require your project to be linked first.
+Passing `--remote` to commands like `db dump`, `db push`, and `db pull` targets the linked project, so it must be linked first.
 
 ```sh
-supabase link [flags]
+supabase link [ref-or-branch] [flags]
 ```
 
-## Start containers for Supabase local development
+## Unlink a Supabase project
+
+Unlink a Supabase project.
+
+```sh
+supabase unlink [flags]
+```
+
+## Pull remote project state into the local checkout
+
+Refreshes local project state from a linked Supabase project or branch in one step, instead of running `config pull`, `db pull`, `migration fetch`, and `functions download` individually. It runs four steps, always in this order: pull config into `supabase/config.toml`, optionally fetch the remote migration history table into `supabase/migrations`, pull the database schema into `supabase/migrations` (also updating that database's own migration history table), and download every Edge Function's source into `supabase/functions`. The order is fixed rather than parallel: the database step depends on `db.major_version` in the config file the first step may have just changed, and on the local migration history the second step may have just populated.
+
+Pass `--remote=<ref|branch>` to target a specific project, or the name (or UUID) of a branch of the currently linked project — values that are exactly 20 lowercase letters are always treated as project refs. Without it, the linked project is the target. `--project-ref` still works in v3 but is deprecated and removed in v4; use `--remote`. `--remote-label` overrides the `[remotes.*]` block the config step would otherwise reuse or create for that target, identically to `config pull`'s own flag of the same name (see `supabase config pull`'s docs for the reuse/creation rules it follows).
+
+On a fresh checkout, the migration history step runs automatically even without `--with-migration-history`, whenever `supabase/migrations` is missing or a raw directory listing of it turns up no entries at all — the same "existing files" check `migration fetch` itself uses, so a directory holding only a `.gitkeep`/`README.md` already counts as non-empty for this purpose (the listing is unfiltered — any entry at all disqualifies it) and the two commands never disagree about it. There's nothing local to overwrite when the directory is truly empty or missing, and it's what lets the database step run at all: without it, `db pull` would hard-fail comparing an empty local directory against a remote project that already has migration history. Pass `--with-migration-history` to force a re-fetch whenever the directory already has any files in it, including only non-migration ones — unlike the bootstrap case, this DOES overwrite: any local migration file that shares a name with a remote history entry is replaced.
+
+`supabase pull` prints the resolved target once (`Target: …` on stderr), then shows one confirmation before writing anything, covering all four steps. It opens by naming the target (`Pulling from project <ref>`, or with `(branch "<name>")` appended when the target is a branch), then lists the four steps in the order they run: the config step's part is a real diff, computed the same way `config diff`/`config pull` compute theirs (or "No config differences found." when there is nothing to change); the migration-history line only appears when that step will actually run this invocation, and calls out that it overwrites same-named local files when it's running because of `--with-migration-history` rather than the bootstrap case; the database line notes that it also updates the remote migration history table and requires Docker; the functions line describes the download. `--dry-run` prints this exact same disclosure body — not a placeholder or a status-only summary — before exiting without writing or changing anything.
+
+Because the database step records the pulled migration in the remote migration history table, the confirmation is a hosted-mutation consent that defaults to **No**: `Pull project state and update the remote migration history table on <target>?`. Declining exits non-zero with `context canceled` and nothing is written. `--yes`, or `SUPABASE_YES` set in the shell environment, confirms it; a `SUPABASE_YES` in `supabase/.env` does not. `--output-format json|stream-json` and non-interactive runs cannot prompt, so they need `--yes`; an answer piped to stdin is ignored. `--yes` also lets the database connection remove a network ban that blocks the temporary login role; without it the step fails and suggests re-running with `--yes`, or running `supabase network-bans remove --remote=<ref>` for the project whose ban blocked the connection.
+
+`supabase pull` checks THREE locations for uncommitted or untracked changes in git before writing: `supabase/config.toml` (or `config.json`), `supabase/migrations`, and `supabase/functions`. The config check only fires when the config step itself has work to write — a config that's already fully converged with the target never triggers it. The other two fire unconditionally: the database step always attempts to run and has no way to know in advance whether it will find schema drift and write into `supabase/migrations`, and the functions step always runs with no equivalent "nothing to do" signal available without calling the API first — so both are checked every run to avoid silently missing real uncommitted work. Each location's dirty state is tracked separately: the confirmation body and any abort message name exactly which path(s) are actually dirty, e.g. `supabase/config.toml has uncommitted or untracked changes...` for one, or `supabase/config.toml, supabase/migrations, and supabase/functions have uncommitted or untracked changes...` when all three are. `--force` writes even when any of the three is dirty — without it, an interactive run's confirmation body carries the warning, and every other case (non-interactive, machine output format, or `--yes` on any TTY) aborts outright rather than silently overwriting local edits.
+
+**This command is not purely a local, read-only refresh.** Pulling the database schema also updates that database's own migration history table on the **remote** project — the same behavior `db pull` has always had — not just a local file write. The database step also requires Docker (it runs a shadow Postgres container, and — on the very first pull — a `pg_dump` container) to compute the schema diff. Without Docker running, that one step fails and is reported as such, but the other three steps (config, migration history, functions) still run and complete normally; a project with nothing in its database yet can still successfully pull its config and functions without Docker installed.
+
+If the database is already in sync with the local migrations, that step reports `unchanged` rather than failing — this differs from running `supabase db pull` directly, which treats "nothing to pull" as an error condition.
+
+Storage bucket definitions are not pulled by this command: the Management API doesn't currently return enough detail (file size limits, allowed MIME types, the storage backend path) to populate `storage.buckets` config faithfully.
+
+## Example
+
+```sh
+supabase pull
+```
+
+Pulls config, database schema, and functions from the linked project, fetching migration history first if `supabase/migrations` is empty.
+
+```sh
+supabase pull --remote=staging
+```
+
+Pulls from the `staging` branch of the linked project.
+
+```sh
+supabase pull --dry-run
+```
+
+Prints the full confirmation body — the target header, the real config diff (or "No config differences found."), the migration-history/database/functions lines (including the Docker mention and, if applicable, the uncommitted-changes warning) — without writing or changing anything.
+
+```sh
+supabase pull --remote-label staging
+```
+
+Pulls into the `[remotes.staging]` block instead of whatever block the target would otherwise reuse or create.
+
+Machine-readable output is available through `--output-format json|stream-json` — a single object (`schema_version`, `target`, `dry_run`, `confirmed`, `wrote`, `step_order`, `steps`, `counts`) with one entry per step under `steps`, keyed `config`, `migration_history`, `db`, and `functions`, each carrying its own `status` (`changed`, `unchanged`, `skipped`, `planned`, or `failed`), the paths it wrote, and a step-specific `detail` object. `target` carries `kind: "linked"`, `project_ref`, `environment` (`production`, `branch`, or `unverified`), `project_name` and `parent_project_ref` when known, and `branch` when `--remote` named one. The legacy global `-o`/`--output` flag is not supported by this command; use `--output-format json|stream-json` instead.
+
+```sh
+supabase pull [flags]
+```
+
+## Start local Supabase stack
 
 Starts the Supabase local development stack.
 
@@ -166473,7 +166781,7 @@ Stops the Supabase local development stack.
 
 Requires `supabase/config.toml` to be created in your current working directory by running `supabase init`.
 
-All Docker resources are maintained across restarts.  Use `--no-backup` flag to reset your local development data between restarts.
+All Docker resources are maintained across restarts. Use `--no-backup` flag to reset your local development data between restarts.
 
 Use the `--all` flag to stop all local Supabase projects instances on the machine. Use with caution with `--no-backup` as it will delete all supabase local projects data.
 
@@ -166497,11 +166805,19 @@ supabase status [flags]
 
 ## Run tests on local Supabase containers
 
-## Tests local database with pgTAP
+Run tests on local Supabase containers.
 
-Executes pgTAP tests against the local database.
+## Tests a database with pgTAP
+
+Executes pgTAP tests against a database.
 
 Requires the local development stack to be started by running `supabase start`.
+
+Runs against the local database by default. Pass `--remote` for the linked project, or `--remote=<ref|branch|url>` for another project, a branch of the linked project, or a database URL. The command prints a `Target:` line on stderr naming the database it resolved.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
+Running the tests enables the pgTAP extension and drops it again afterwards, so a hosted database (the linked project or a remote database URL) asks for one confirmation (default No) before anything runs. Piped answers are never read, so a script, a JSON run or an agent must pass `--yes` or set `SUPABASE_YES` in the shell; a `SUPABASE_YES` in `supabase/.env` does not count. The local database never asks.
 
 Runs `pg_prove` in a container with unit test files volume mounted from `supabase/tests` directory. The test file can be suffixed by either `.sql` or `.pg` extension.
 
@@ -166513,6 +166829,8 @@ supabase test db [path] ... [flags]
 
 ## Create a new test file
 
+Create a new test file.
+
 ```sh
 supabase test new <name> [flags]
 ```
@@ -166523,11 +166841,13 @@ supabase test new <name> [flags]
 
 Automatically generates type definitions based on your Postgres database schema.
 
-This command connects to your database (local or remote) and generates typed definitions that match your database tables, views, and stored procedures. By default, it generates TypeScript definitions, but also supports Go and Swift.
+This command connects to your database and generates typed definitions that match your database tables, views, and stored procedures. It reads the local database unless you pass `--remote` for the linked project, or `--remote=<ref|branch|url>` for another project, a branch of the linked project, or a database URL. By default, it generates TypeScript definitions, but also supports Go and Swift.
 
 Generated types give you type safety and autocompletion when working with your database in code, helping prevent runtime errors and improving developer experience.
 
 The types respect relationships, constraints, and custom types defined in your database schema.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`. `--project-id` is also deprecated; use `--remote=<ref>`.
 
 ## Generate a JWT signing key
 
@@ -166543,44 +166863,82 @@ supabase gen signing-key [flags]
 
 ## Generate types from Postgres schema
 
+Generate types from Postgres schema.
+
 ```sh
 supabase gen types [flags]
 ```
 
+## Generate a Bearer Auth JWT for accessing Data API
+
+Generate a Bearer Auth JWT for accessing Data API
+
+```sh
+supabase gen bearer-jwt [flags]
+```
+
 ## Database
 
-## Manage Postgres databases
+## Manage databases
 
-## Pull schema from the remote database
+Manage Postgres databases.
 
-Pulls schema changes from a remote database. A new migration file will be created under `supabase/migrations` directory.
+## Pull schema from a database
 
-Requires your local project to be linked to a remote database by running `supabase link`. For self-hosted databases, you can pass in the connection parameters using `--db-url` flag.
+Pulls schema changes from a database. A new migration file will be created under `supabase/migrations` directory.
 
-> Note this command requires Docker Desktop (or a running Docker daemon), as it starts a local Postgres container to diff your remote schema.
+Pulls from the local database by default. Pass `--remote` to pull from the linked project, which requires your local project to be linked by running `supabase link`. Pass `--remote=<ref|branch|url>` to pull from another project, a branch of the linked project, or a database URL such as a self-hosted database. In a linked checkout, a run without `--remote` prints a hint naming the linked project. The command prints a `Target:` line on stderr naming the database it resolved.
 
-Optionally, a new row can be inserted into the migration history table to reflect the current state of the remote database.
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
 
-If no entries exist in the migration history table, the behavior depends on the diff engine. Under `pg-delta`, the remote database is diffed against an empty shadow database. Under the legacy `migra` engine, the CLI uses `pg_dump` to capture all contents of the remote schemas you have created. Otherwise, this command only diffs schema changes against the remote database, similar to running `db diff --linked`.
+> Note this command requires Docker Desktop (or a running Docker daemon), as it starts a local Postgres container to diff the schema you pull.
 
-When `[experimental.pgdelta] enabled = true`, the migration-file `db pull` workflow uses pg-delta for the shadow diff step; pass `--diff-engine migra` to fall back for a single run. Projects without that setting use migra; pass `--diff-engine pg-delta` to use pg-delta for a single run. Pass `--declarative` to export the selected database into the declarative schema tree (`supabase/schemas` by default, configurable with `experimental.pgdelta.declarative_schema_path`) instead of creating a migration.
+After the migration file is written, a new row is inserted into the migration history table to reflect the current state of the database. A hosted database asks for one confirmation first (default No), after the diff and before any file is written; declining stops the command without writing anything. Non-interactive, JSON and agent runs need `--yes` (or `SUPABASE_YES` in the shell environment, not in `supabase/.env`). A pull from the local database and `--declarative` ask nothing.
 
-On a project without pg-delta enabled, don't use `--declarative`. The export also points `[db.migrations].schema_paths` at the tree it writes. The next local `db diff` applies those files in lexicographic order without resolving dependencies between them, so it fails when a file sorts before an object it depends on. If you've already run it, enable pg-delta, or undo both changes:
+If no entries exist in the migration history table, pg-delta (the default diff engine) produces the full migration from the shadow diff alone; with `--diff-engine migra`, the initial pull instead uses `pg_dump` to capture all contents of the schemas you have created. Otherwise, this command will only diff schema changes against the target database, similar to running `db diff --remote`.
+
+Pass `--declarative` to switch to the declarative pg-delta export workflow instead of writing a migration file. The tree lives in `supabase/schemas` by default. Change the location with `experimental.pgdelta.declarative_schema_path`.
+
+On a project that falls back to the legacy migra engine, don't use `--declarative`. The export also points `[db.migrations].schema_paths` at the tree it writes. The next local `db diff` applies those files in lexicographic order without resolving dependencies between them, so it fails when a file sorts before an object it depends on. If you've already run it, re-enable pg-delta, or undo both changes:
 
 1. Delete the files the export wrote to the declarative directory (`supabase/schemas/` by default). Files that were already there are left in place.
 2. Restore `[db.migrations].schema_paths` in `config.toml` to its previous value, or remove it if the export added it.
 
-Under the pg-delta engine, your own customizations in Supabase-managed schemas are captured automatically, such as triggers on managed tables like `auth.users` and RLS policies on `storage.objects` and `storage.buckets`. Under the legacy migra engine, the initial pull's `pg_dump` skips managed schemas, but the diff pass that follows appends your trigger and RLS policy changes there to the same migration. If an older CLI reports that `auth` and `storage` were excluded, capture existing customizations there with `--schema auth,storage`.
+pg-delta plans are execution-aware: when a plan crosses a transaction boundary — for example `ALTER TYPE ... ADD VALUE` followed by a statement that uses the new enum value, which cannot run in the same transaction — `db pull` writes one ordered migration file per plan unit instead of a single file (for example `<ts>_remote_schema_1.sql` and `<ts+1s>_remote_schema_2.sql`), each recorded in the migration history. Units whose statements cannot run inside a transaction start with a `-- pg-delta: transaction=false` directive that the CLI apply paths honor. The common case (a single unit) still produces exactly one `<ts>_remote_schema.sql` file.
+
+By default the emitted SQL is formatted with the same settings the declarative export uses (uppercase keywords, wrapped at a max width of 180, indented and column-aligned). Configure overrides with `[experimental.pgdelta] format_options` in `config.toml`, or set `format_options = "null"` to opt out and emit raw, unformatted statements.
+
+pg-delta is the default diff engine: the migration-file `db pull` workflow uses pg-delta for the shadow diff step unless configured otherwise; it does not switch to declarative output. With pg-delta, `[db.migrations] schema_paths` does not affect this workflow (migra still reads it, for local targets only); use `supabase db schema declarative sync` for declarative schema files. To fall back to the legacy migra engine, set `enabled = false` under `[experimental.pgdelta]` in `config.toml`, or pass `--diff-engine migra` for a single run.
+
+When pulling with `--remote=<url>`, prefer a direct connection (`db.<project-ref>.supabase.co:5432`) over the connection pooler so pg-delta can introspect the full catalog reliably.
+
+Under the pg-delta engine, a plain `db pull` captures your own customizations in Supabase-managed schemas: triggers on managed tables whose function lives outside the managed schemas (for example a trigger on `auth.users` calling a function in `public`), RLS policies on any `auth` table, and RLS policies on `storage.objects`, `storage.buckets`, and `realtime.messages`. Other objects you create inside managed schemas, such as your own functions or indexes, are not diffed. On later pulls, `--schema` restricts the diff to the listed schemas, so a customization in `auth` is only captured when `auth` is listed or `--schema` is omitted; the initial pull ignores `--schema`. Under the legacy migra engine, the initial pull's `pg_dump` skips the managed schemas, and the migra diff pass that follows appends your trigger and RLS policy changes there to the same migration file. If an older CLI reports that `auth` and `storage` were excluded, capture existing customizations there with `--schema auth,storage`.
+
+## Debugging empty pg-delta pulls
+
+If `db pull` reports `No schema changes found` but you expect schema output, set `PGDELTA_DEBUG=1` before running the command. Unlike `--debug`, this keeps SSL enabled for hosted Supabase connections.
+
+```sh
+PGDELTA_DEBUG=1 supabase db pull --remote="$DATABASE_URL"
+```
+
+When pg-delta returns zero statements, the CLI writes a debug bundle under `supabase/.temp/pgdelta/v2/debug/<timestamp>-diff/` containing the source/desired catalog snapshots, the plan, and coverage diagnostics. Catalog files are not written during normal `db pull` runs.
+
+For TLS tracing without disabling SSL, use `SUPABASE_SSL_DEBUG=true` alongside `PGDELTA_DEBUG=1`.
 
 ```sh
 supabase db pull [migration name] [flags]
 ```
 
-## Push new migrations to the remote database
+## Push new migrations to a database
 
-Pushes all local migrations to a remote database.
+Pushes all local migrations to a database.
 
-Requires your local project to be linked to a remote database by running `supabase link`. For self-hosted databases, you can pass in the connection parameters using `--db-url` flag.
+Pushes to the local database by default. Pass `--remote` to push to the linked project, which requires your local project to be linked by running `supabase link`. Pass `--remote=<ref|branch|url>` to push to another project, a branch of the linked project, or a database URL such as a self-hosted database. In a linked checkout, a run without `--remote` prints a hint naming the linked project. The command prints a `Target:` line on stderr naming the database it resolved.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
+Before changing a hosted database, the command lists what it will do (migrations, custom roles, seed files and vault secrets) and asks once for confirmation, defaulting to No. Pass `--yes` to confirm without a prompt; JSON output, piped input and agent runs need it. A `SUPABASE_YES` set in `supabase/.env` does not confirm, but one set in your shell does.
 
 The first time this command is run, a migration history table will be created under `supabase_migrations.schema_migrations`. After successfully applying a migration, a new row will be inserted into the migration history table with timestamp as its unique id. Subsequent pushes will skip migrations that have already been applied.
 
@@ -166592,25 +166950,37 @@ Use the `--dry-run` flag to view the list of changes before applying.
 supabase db push [flags]
 ```
 
-## Resets the local database to current migrations
+## Resets a database to current migrations
 
-Resets the local database to a clean state.
+Resets a database to a clean state.
 
 Requires the local development stack to be started by running `supabase start`.
 
 Recreates the local Postgres container and applies all local migrations found in `supabase/migrations` directory. If test data is defined in `supabase/seed.sql`, it will be seeded after the migrations are run. Any other data or schema changes made during local development will be discarded.
 
-When running db reset with `--linked` or `--db-url` flag, a SQL script is executed to identify and drop all user created entities in the remote database. Since Postgres roles are cluster level entities, any custom roles created through the dashboard or `supabase/roles.sql` will not be deleted by remote reset.
+Use the `--no-seed` flag to skip seeding entirely. To override `[db.seed].sql_paths` for a single reset, pass one or more `--sql-paths` flags. Each value accepts the same file path or glob pattern syntax as `sql_paths`, relative to the `supabase` directory. Passing `--sql-paths` force-enables seeding for that reset even when `[db.seed].enabled = false`.
+
+Resets the local database by default. Pass `--remote` to reset the linked project, or `--remote=<ref|branch|url>` to reset another project, a branch of the linked project, or a database URL. The command prints a `Target:` line on stderr naming the database it resolved.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
+When running db reset with `--remote`, a SQL script is executed to identify and drop all user created entities in the remote database. Since Postgres roles are cluster level entities, any custom roles created through the dashboard or `supabase/roles.sql` will not be deleted by remote reset.
+
+A remote reset asks for one confirmation (default No) after it has worked out what it will do and before anything is dropped. The question lists dropping every user schema, any vault secrets it will upsert, the migrations or schema files it will apply, and the seed files it will run. Declining stops the command without changing the database. Piped answers are never read, so a script, a JSON run or an agent must pass `--yes` or set `SUPABASE_YES` in the shell; a `SUPABASE_YES` in `supabase/.env` does not count. The local database never asks.
+
+If you combine `--sql-paths` with `--remote`, the override seed files are applied to the selected remote database after migrations. Use this only when you intend to seed that remote target.
 
 ```sh
 supabase db reset [flags]
 ```
 
-## Dumps data or schemas from the remote database
+## Dumps data or schemas from a database
 
-Dumps contents from a remote database.
+Dumps contents from a database.
 
-Requires your local project to be linked to a remote database by running `supabase link`. For self-hosted databases, you can pass in the connection parameters using `--db-url` flag.
+Dumps the local database by default. Pass `--remote` to dump the linked project, which requires your local project to be linked by running `supabase link`. Pass `--remote=<ref|branch|url>` to dump another project, a branch of the linked project, or a database URL such as a self-hosted database. The command prints a `Target:` line on stderr naming the database it resolved, and never asks for confirmation.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
 
 Runs `pg_dump` in a container with additional flags to exclude Supabase managed schemas. The ignored schemas include auth, storage, and those created by extensions.
 
@@ -166629,35 +166999,46 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL ON TABLES FROM anon, authen
 supabase db dump [flags]
 ```
 
-## Diffs the local database for schema changes
+## Diffs a database for schema changes
 
-Diffs schema changes made to the local or remote database.
+Diffs schema changes made to a database.
 
-Requires the local development stack to be running when diffing against the local database. To diff against a remote or self-hosted database, specify the `--linked` or `--db-url` flag respectively.
+Diffs the local database by default, which requires the local development stack to be running. Pass `--remote` to diff the linked project, or `--remote=<ref|branch|url>` to diff another project, a branch of the linked project, or a database URL such as a self-hosted database. The command prints a `Target:` line on stderr naming the database it resolved, and never asks for confirmation.
 
-Compares schema differences between the target database and a shadow database. Projects with `[experimental.pgdelta] enabled = true` use the bundled pg-delta engine; other projects run the legacy [djrobstep/migra](https://github.com/djrobstep/migra) engine in a container, unless you pass `--use-pg-delta` for a single run. The shadow database is created by applying migrations in local `supabase/migrations` directory in a separate container. Output is written to stdout by default. For convenience, you can also save the schema diff as a new migration file by passing in `-f` flag.
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
+Compares schema differences between the target database and a shadow database, using the bundled pg-delta engine by default. The legacy [djrobstep/migra](https://github.com/djrobstep/migra) engine, which runs in a container, remains available as a fallback (see below). The shadow database is created by applying migrations in local `supabase/migrations` directory in a separate container. Output is written to stdout by default. For convenience, you can also save the schema diff as a new migration file by passing in `-f` flag.
+
+In `--from`/`--to`, `remote` means the linked project; passing `--remote` together with `--from` or `--to` is an error. The deprecated aliases still work there and warn: `--project-ref` points a `remote` side at the project it names, and the rest change nothing. Explicit `--from`/`--to` mode always uses pg-delta. In this mode, `-f` is ignored and stdout (or `--output`) is a flattened representation for review, not a portable apply script. Do not apply it directly with plain `psql -f`: transactional units can contain `SET LOCAL` preambles that only take effect inside a transaction, while plans that mix transactional and non-transactional units cannot safely be wrapped in one transaction. To create an applicable migration, use normal target mode with `supabase db diff -f <name>`, then apply it through `supabase db reset` locally or `supabase db push --remote` against the linked project. These paths preserve the plan's per-unit transaction semantics.
 
 By default, all schemas in the target database are diffed. Use the `--schema public,extensions` flag to restrict diffing to a subset of schemas.
 
-Projects created by a recent `supabase init` default to pg-delta (`[experimental.pgdelta] enabled = true` in `config.toml`). Existing projects keep using migra unless they opt in. To fall back to migra for a single run on a pg-delta project, pass `--use-migra`.
+pg-delta is the default diff engine for all projects. To fall back to the legacy migra engine, set `enabled = false` under `[experimental.pgdelta]` in `config.toml`, or pass `--use-migra` for a single run.
 
-Under the legacy migra engine, the diff is known to miss some changes. This could happen if your schema contains:
+When migra diffs the local database and declarative schema files exist, it diffs against those files instead of the live database, choosing them in this order: `[db.migrations] schema_paths` when set; otherwise the `declarative_schema_path` directory while `[experimental.pgdelta] enabled` is true (so with `--use-migra` and the default config); otherwise `supabase/schemas`. Setting `enabled = false` therefore makes migra skip a custom `declarative_schema_path` and fall back to `supabase/schemas`.
+
+With pg-delta, `[db.migrations] schema_paths` and declarative schema files (such as `supabase/schemas`) are not inputs: `db diff` always compares local migrations with the selected database. `db diff -f` prints a note, with next steps, when it finds declarative files it did not read. To generate a migration from declarative schema files, use `supabase db schema declarative sync`.
+
+With the bundled pg-delta engine, diff SQL defaults to uppercase keywords, indent 2, a maximum width of 180, trailing commas, and column/key alignment, matching its declarative export. When `-f` writes migrations, execution-aware transaction semantics are preserved as ordered per-unit files; non-transactional units carry a directive that the CLI apply path honors. Flattened review output retains the rendered SQL and preambles, but not the unit boundaries supplied to a migration runner. Configure overrides with `[experimental.pgdelta] format_options`, or set `format_options = "null"` to emit raw, unformatted statements.
+
+Storage buckets are data, not schema, so no diff engine captures them. Under the legacy migra engine, the diff can also miss:
 
 - Changes to publication
-- Changes to storage buckets
 - Views with `security_invoker` attributes
 
 ```sh
 supabase db diff [flags]
 ```
 
-## Checks local database for typing error
+## Checks a database for typing error
 
-Lints local database for schema errors.
+Lints a database for schema errors.
 
-Requires the local development stack to be running when linting against the local database. To lint against a remote or self-hosted database, specify the `--linked` or `--db-url` flag respectively.
+Lints the local database by default, which requires the local development stack to be running. Pass `--remote` to lint the linked project, or `--remote=<ref|branch|url>` to lint another project, a branch of the linked project, or a database URL such as a self-hosted database. The command prints a `Target:` line on stderr naming the database it resolved, and never asks for confirmation.
 
-Runs `plpgsql_check` extension in the local Postgres container to check for errors in all schemas. The default lint level is `warning` and can be raised to error via the `--level` flag.
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
+Runs the `plpgsql_check` extension against the local database (native or container) to check for errors in all schemas. The default lint level is `warning` and can be raised to error via the `--level` flag.
 
 To lint against specific schemas only, pass in the `--schema` flag.
 
@@ -166673,7 +167054,46 @@ This flag is particularly useful in CI/CD pipelines where you want to fail the b
 supabase db lint [flags]
 ```
 
+## Checks database for security and performance issues
+
+Inspects the database for common security and performance issues such as missing RLS policies, unindexed foreign keys, exposed auth.users, and more.
+
+Inspects the local database by default. Pass `--remote` for the linked project, or `--remote=<ref|branch|url>` for another project, a branch of the linked project, or a database URL. The command prints a `Target:` line on stderr naming the database it resolved, and never asks for confirmation.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
+```sh
+supabase db advisors [flags]
+```
+
+## Execute a SQL query against the database
+
+Execute a SQL query against a database.
+
+Runs against the local database by default. Pass `--remote` for the linked project, or `--remote=<ref|branch|url>` for another project, a branch of the linked project, or a database URL. The command prints a `Target:` line on stderr naming the database it resolved.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
+The command cannot tell a read from a write, so a hosted database (the linked project or a remote database URL) asks for one confirmation (default No) before the statement is sent. Piped answers are never read, so a script, a JSON run or an agent must pass `--yes` or set `SUPABASE_YES` in the shell; a `SUPABASE_YES` in `supabase/.env` does not count. The local database never asks.
+
+Pass `--read-only` to run a statement that must not change anything. It skips the confirmation on a hosted database. Before the statement is sent or any question is asked, every statement must start with `SELECT`, `WITH`, `VALUES`, `TABLE`, `SHOW`, `EXPLAIN` or a parenthesised query (after whitespace and comments). Any other statement (`COMMIT`, `SET`, `CALL`, `DO`, `COPY`, `LOCK` and so on), input that ends inside a comment, quote or dollar quote, and input that contains a `BEGIN ATOMIC` function body is rejected. The words `begin atomic` inside a string, quoted identifier, dollar quote or comment, as in `select 'begin atomic'`, are not. Drop `--read-only` to run one of these.
+
+The local database or a database URL then runs the statement in a read-only transaction that is always rolled back, with a 5 second `lock_timeout` so the read cannot wait on heavy locks; Postgres rejects writes inside it. A linked project runs it through the Management API's `read_only` mode, and the API enforces it.
+
+`--read-only` does not stop a read statement from calling a function that has side effects, such as `pg_terminate_backend` or `dblink_exec`; those still run.
+
+When used by an AI coding agent (auto-detected or via --agent=yes), the default
+output format is JSON with an untrusted data warning envelope. When used by a
+human (--agent=no or no agent detected), the default output format is table
+without the envelope.
+
+```sh
+supabase db query [sql] [flags]
+```
+
 ## Starts local Postgres database
+
+Starts local Postgres database.
 
 ```sh
 supabase db start [flags]
@@ -166681,15 +167101,19 @@ supabase db start [flags]
 
 ## Manage database schema
 
+Manage database schema.
+
 ## Manage declarative database schemas
+
+Manage declarative database schemas.
 
 ## Generate a new migration from declarative schema
 
 Generate a new migration by diffing your declarative schema files against the current migration state.
 
-When no declarative schema exists yet, the command offers to run `generate` first. After computing the diff, you can optionally name the migration and apply it to the local database.
+When no declarative schema exists yet, the command offers to run `generate` first, exporting from the local database. To start from a linked project or a database URL, run `generate --remote` or `generate --remote=<url>` yourself first. After computing the diff, you can optionally name the migration and apply it to the local database.
 
-Requires `--experimental` flag or `[experimental.pgdelta] enabled = true` in config.
+Enabled by default. When `[experimental.pgdelta] enabled = false` is set in config, pass the `--experimental` flag to run it.
 
 ```sh
 supabase db schema declarative sync [flags]
@@ -166699,9 +167123,17 @@ supabase db schema declarative sync [flags]
 
 Generate declarative schema files from a database.
 
-Exports the schema of a live database (local, linked, or custom URL) into SQL files under the declarative schema directory. This is the entrypoint for bootstrapping declarative mode.
+Exports the schema of a live database into SQL files under the declarative schema directory. This is the entrypoint for bootstrapping declarative mode.
 
-Requires `--experimental` flag or `[experimental.pgdelta] enabled = true` in config.
+The database is the local one unless you pass `--remote` for the linked project, or `--remote=<ref|branch|url>` for another project, a branch of the linked project, or a database URL. The command never asks which database to use. With the local database, `--reset` recreates it from your migrations first. When the destination already holds files, the command asks before overwriting them (pass `--overwrite` or `--yes` to skip the question).
+
+The bundled pg-delta engine writes one directory per schema at the root of that directory (`supabase/schemas/public/tables/users.sql`, `supabase/schemas/public/schema.sql`), with cluster-level objects that belong to no schema under a reserved `_cluster/` directory (`supabase/schemas/_cluster/roles.sql`). When platform default grants (`anon`/`authenticated`/`service_role`) need an overlay `REVOKE ALL`, the export writes `adp_wipes.sql` after `schema.sql` in that schema — or `_cluster/adp_wipes.sql` for cluster-wide overlays — so a load onto a fresh project keeps privileges that were revoked in the source. A schema literally named `_cluster` or `_custom`, in any casing, has its leading underscore percent-encoded (`%5Fcluster/`) so it can never claim a directory the export owns. Hand-authored SQL that pg-delta does not model belongs in `_custom/`, which the export never writes to and never prunes.
+
+Emitted SQL uses the same default format as `db pull` (uppercase keywords, indent 2, width 180, column-aligned). Override with `[experimental.pgdelta] format_options`, or set `format_options = "null"` for raw statements.
+
+Enabled by default. When `[experimental.pgdelta] enabled = false` is set in config, pass the `--experimental` flag to run it.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
 
 ```sh
 supabase db schema declarative generate [flags]
@@ -166710,6 +167142,8 @@ supabase db schema declarative generate [flags]
 ## Migrations
 
 ## Manage database migration scripts
+
+Manage database migration scripts.
 
 ## Create an empty migration script
 
@@ -166720,18 +167154,20 @@ A `supabase/migrations` directory will be created if it does not already exists 
 Outputs from other commands like `db diff` may be piped to `migration new <name>` via stdin.
 
 ```sh
-supabase migration new <migration name>
+supabase migration new <migration name> [flags]
 ```
 
-## List local and remote migrations
+## List local files and the target database's migration history
 
-Lists migration history in both local and remote databases.
+Lists the migration files in `supabase/migrations` next to the migration history of the target database.
 
-Requires your local project to be linked to a remote database by running `supabase link`. For self-hosted databases, you can pass in the connection parameters using `--db-url` flag.
+By default, it lists the migration history of your local database. Pass `--remote` to list the linked project instead, which requires running `supabase link`. Pass `--remote=<ref|branch|url>` to list another project, a branch of the linked project, or a database URL such as a self-hosted database.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
 
 > Note that URL strings must be escaped according to [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986).
 
-Local migrations are stored in `supabase/migrations` directory while remote migrations are tracked in `supabase_migrations.schema_migrations` table. Only the timestamps are compared to identify any differences.
+Local migrations are stored in `supabase/migrations` directory while the target database tracks applied migrations in the `supabase_migrations.schema_migrations` table. The second column is headed `Remote` for a project or database URL passed with `--remote`, and `Local DB` for the local database. Only the timestamps are compared to identify any differences.
 
 In case of discrepancies between the local and remote migration history, you can resolve them using the `migration repair` command.
 
@@ -166741,22 +167177,27 @@ supabase migration list [flags]
 
 ## Fetch migration files from history table
 
+Fetch migration files from history table.
+
 ```sh
 supabase migration fetch [flags]
 ```
 
 ## Repair the migration history table
 
-Repairs the remote migration history table.
+Repairs the migration history table.
 
-Requires your local project to be linked to a remote database by running `supabase link`.
+By default, it repairs your local database. Pass `--remote` to repair the linked project, which requires running `supabase link`. Pass `--remote=<ref|branch|url>` to repair another project, a branch of the linked project, or a specific database. Repairing a hosted database asks for confirmation before it changes anything (the default answer is No); pass `--yes` to confirm in scripts and other non-interactive runs.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
 
 If your local and remote migration history goes out of sync, you can repair the remote history by marking specific migrations as `--status applied` or `--status reverted`. Marking as `reverted` will delete an existing record from the migration history table while marking as `applied` will insert a new record.
 
 For example, your migration history may look like the table below, with missing entries in either local or remote.
 
 ```bash
-$ supabase migration list
+$ supabase migration list --remote
+Target: project My Project (abcdefghijklmnopqrst) · production
         LOCAL      │     REMOTE     │     TIME (UTC)
   ─────────────────┼────────────────┼──────────────────────
                    │ 20230103054303 │ 2023-01-03 05:43:03
@@ -166768,7 +167209,8 @@ To reset your migration history to a clean state, first delete your local migrat
 ```bash
 $ rm supabase/migrations/20230103054315_remote_commit.sql
 
-$ supabase migration list
+$ supabase migration list --remote
+Target: project My Project (abcdefghijklmnopqrst) · production
         LOCAL      │     REMOTE     │     TIME (UTC)
   ─────────────────┼────────────────┼──────────────────────
                    │ 20230103054303 │ 2023-01-03 05:43:03
@@ -166777,12 +167219,16 @@ $ supabase migration list
 Then mark the remote migration `20230103054303` as reverted.
 
 ```bash
-$ supabase migration repair 20230103054303 --status reverted
-Connecting to remote database...
-Repaired migration history: [20220810154537] => reverted
+$ supabase migration repair 20230103054303 --status reverted --remote
+Target: project My Project (abcdefghijklmnopqrst) · production
+ • 20230103054303
+◇  Mark 1 migration as reverted on project My Project (abcdefghijklmnopqrst) · production?
+│  Yes
+Repaired migration history: [20230103054303] => reverted
 Finished supabase migration repair.
 
-$ supabase migration list
+$ supabase migration list --remote
+Target: project My Project (abcdefghijklmnopqrst) · production
         LOCAL      │     REMOTE     │     TIME (UTC)
   ─────────────────┼────────────────┼──────────────────────
 ```
@@ -166790,14 +167236,17 @@ $ supabase migration list
 Now you can run `db pull` again to dump the remote schema as a local migration file.
 
 ```bash
-$ supabase db pull
-Connecting to remote database...
+$ supabase db pull --remote
+Target: project My Project (abcdefghijklmnopqrst) · production
+Write 1 migration file to supabase/migrations.
+Record them as applied in the remote migration history.
+◇  Update the remote migration history table on project My Project (abcdefghijklmnopqrst) · production?
+│  Yes
 Schema written to supabase/migrations/20240414044403_remote_schema.sql
-Update remote migration history table? [Y/n]
-Repaired migration history: [20240414044403] => applied
 Finished supabase db pull.
 
-$ supabase migration list
+$ supabase migration list --remote
+Target: project My Project (abcdefghijklmnopqrst) · production
         LOCAL      │     REMOTE     │     TIME (UTC)
   ─────────────────┼────────────────┼──────────────────────
     20240414044403 │ 20240414044403 │ 2024-04-14 04:44:03
@@ -166819,11 +167268,17 @@ By default, the latest `<timestamp>_<name>.sql` file will be updated to contain 
 
 If your `supabase/migrations` directory is empty, running `supabase squash` will do nothing.
 
+Squashing rewrites your local migration files. When the target is a hosted database (`--remote` or `--remote=<ref|branch|url>`), it also resets the remote migration history table to the squashed migration. That asks for confirmation before any file is changed (the default answer is No); pass `--yes` to confirm in scripts and other non-interactive runs. With the default local target it only squashes the files and suggests running `supabase migration repair --status applied --remote` for the remote history.
+
+`--linked`, `--project-ref`, `--db-url` and `--local` still work in v3 but are deprecated and removed in v4; use `--remote`.
+
 ```sh
 supabase migration squash [flags]
 ```
 
-## Apply pending migrations to local database
+## Apply pending migrations to a database
+
+Apply pending migrations to a database.
 
 ```sh
 supabase migration up [flags]
@@ -166831,25 +167286,37 @@ supabase migration up [flags]
 
 ## Resets applied migrations up to the last n versions
 
+Resets applied migrations up to the last n versions.
+
 ```sh
 supabase migration down [flags]
 ```
 
 ## Seed
 
-## Seed a Supabase project from supabase/config.toml
+## Seed a Supabase project
 
-## Seed buckets declared in \[storage.buckets]
+Seed a Supabase project from its config file.
+
+## Seed buckets declared in storage.buckets
+
+Seed buckets declared in storage.buckets.
 
 ```sh
-supabase seed buckets
+supabase seed buckets [flags]
 ```
 
 ## Inspect
 
-## Tools to inspect your Supabase database
+## Inspect project tools
 
-## Estimates space allocated to a relation that is full of dead tuples
+Tools to inspect your Supabase project.
+
+## Inspect database
+
+Tools to inspect your Supabase database. They inspect the local database by default; pass --remote for the linked project, or --remote=\<ref|branch|url> for another database.
+
+## Show relation bloat
 
 This command displays an estimation of table "bloat" - Due to Postgres' [MVCC](https://www.postgresql.org/docs/current/mvcc.html) when data is updated or deleted new rows are created and old rows are made invisible and marked as "dead tuples". Usually the [autovaccum](https://supabase.com/docs/guides/platform/database-size#vacuum-operations) process will asynchronously clean the dead tuples. Sometimes the autovaccum is unable to work fast enough to reduce or prevent tables from becoming bloated. High bloat can slow down queries, cause excessive IOPS and waste space in your database.
 
@@ -166863,10 +167330,10 @@ Tables with a high bloat ratio should be investigated to see if there are vacuum
         index │ public      │ happy_table::my_nice_index │   0.7 │ 880 kB
 
 ```sh
-supabase inspect db bloat
+supabase inspect db bloat [flags]
 ```
 
-## Show queries that are holding locks and the queries that are waiting for them to be released
+## Show blocking queries
 
 This command shows you statements that are currently holding locks and blocking, as well as the statement that is being blocked. This can be used in conjunction with `inspect db locks` to determine which statements need to be terminated in order to resolve lock contention.
 
@@ -166875,10 +167342,10 @@ This command shows you statements that are currently holding locks and blocking,
         253         │ select count(*) from mytable │ 00:00:03.838314   │        13495 │ UPDATE "mytable" SET "updated_at" = '2023─08─03 14:07:04.746688' WHERE "id" = 83719341 │ 00:00:03.821826
 
 ```sh
-supabase inspect db blocking
+supabase inspect db blocking [flags]
 ```
 
-## Show queries from pg\_stat\_statements ordered by total times called
+## Show queries by call count
 
 This command is much like the `supabase inspect db outliers` command, but ordered by the number of times a statement has been called.
 
@@ -166895,22 +167362,26 @@ You can use this information to see which queries are called most often, which c
 ```
 
 ```sh
-supabase inspect db calls
+supabase inspect db calls [flags]
 ```
 
-## Show stats such as cache hit rates, total sizes, and WAL size
+## Show database stats
+
+Show stats such as cache hit rates, total sizes, and WAL size.
 
 ```sh
-supabase inspect db db-stats
+supabase inspect db db-stats [flags]
 ```
 
-## Show combined index size, usage percent, scan counts, and unused status
+## Show index stats
+
+Show combined index size, usage percent, scan counts, and unused status.
 
 ```sh
-supabase inspect db index-stats
+supabase inspect db index-stats [flags]
 ```
 
-## Show queries which have taken out an exclusive lock on a relation
+## Show exclusive locks
 
 This command displays queries that have taken out an exclusive lock on a relation. Exclusive locks typically prevent other operations on that relation from taking place, and can be a cause of "hung" queries that are waiting for a lock to be granted.
 
@@ -166921,10 +167392,10 @@ If you see a query that is hanging for a very long time or causing blocking issu
         328112 │ null    │              0 │ t       │ SELECT * FROM logs;                     │ 00:04:20
 
 ```sh
-supabase inspect db locks
+supabase inspect db locks [flags]
 ```
 
-## Show currently running queries running for longer than 5 minutes
+## Show long-running queries
 
 This command displays currently running queries, that have been running for longer than 5 minutes, descending by duration. Very long running queries can be a source of multiple issues, such as preventing DDL statements completing or vacuum being unable to update `relfrozenxid`.
 
@@ -166935,10 +167406,10 @@ This command displays currently running queries, that have been running for long
      19632 | 02:24:46.962818 | EXPLAIN SELECT  "students".* FROM "students"  WHERE "students"."id" = 1581884 LIMIT 1
 
 ```sh
-supabase inspect db long-running-queries
+supabase inspect db long-running-queries [flags]
 ```
 
-## Show queries from pg\_stat\_statements ordered by total execution time
+## Show query outliers by time
 
 This command displays statements, obtained from `pg_stat_statements`, ordered by the amount of time to execute in aggregate. This includes the statement itself, the total execution time for that statement, the proportion of total execution time for all statements that statement has taken up, the number of times that statement has been called, and the amount of time that statement spent on synchronous I/O (reading/writing from the file system).
 
@@ -166956,10 +167427,10 @@ Typically, an efficient query will have an appropriate ratio of calls to total e
 ```
 
 ```sh
-supabase inspect db outliers
+supabase inspect db outliers [flags]
 ```
 
-## Show information about replication slots on the database
+## Show replication slots
 
 This command shows information about [logical replication slots](https://www.postgresql.org/docs/current/logical-replication.html) that are setup on the database. It shows if the slot is active, the state of the WAL sender process ('startup', 'catchup', 'streaming', 'backup', 'stopping') the replication client address and the replication lag in GB.
 
@@ -166971,22 +167442,26 @@ This command is useful to check that the amount of replication lag is as low as 
         datastream                                 │ t      │ catchup │ 24.201.24.106              │                 45
 
 ```sh
-supabase inspect db replication-slots
+supabase inspect db replication-slots [flags]
 ```
 
-## Show information about roles on the database
+## Show role stats
+
+Show information about roles on the database.
 
 ```sh
-supabase inspect db role-stats
+supabase inspect db role-stats [flags]
 ```
 
-## Show combined table size, index size, and estimated row count
+## Show table stats
+
+Show combined table size, index size, and estimated row count.
 
 ```sh
-supabase inspect db table-stats
+supabase inspect db table-stats [flags]
 ```
 
-## Show read/write activity ratio for tables based on block I/O operations
+## Show traffic profile
 
 This command analyzes table I/O patterns to show read/write activity ratios based on block-level operations. It combines data from PostgreSQL's `pg_stat_user_tables` (for tuple operations) and `pg_statio_user_tables` (for block I/O) to categorize each table's workload profile.
 
@@ -167011,10 +167486,10 @@ The command classifies tables into categories:
 **Note:** This command only displays tables that have had both read and write activity. Tables with no I/O operations are not shown. The classification ratio threshold (default: 5:1) determines when a table is considered "heavy" in one direction versus balanced.
 
 ```sh
-supabase inspect db traffic-profile
+supabase inspect db traffic-profile [flags]
 ```
 
-## Show statistics related to vacuum operations per table
+## Show vacuum stats
 
 This shows you stats about the vacuum activities for each table. Due to Postgres' [MVCC](https://www.postgresql.org/docs/current/mvcc.html) when data is updated or deleted new rows are created and old rows are made invisible and marked as "dead tuples". Usually the [autovaccum](https://supabase.com/docs/guides/platform/database-size#vacuum-operations) process will aysnchronously clean the dead tuples.
 
@@ -167033,10 +167508,12 @@ The command lists when the last vacuum and last auto vacuum took place, the row 
 ```
 
 ```sh
-supabase inspect db vacuum-stats
+supabase inspect db vacuum-stats [flags]
 ```
 
 ## Generate a CSV output for all inspect commands
+
+Generate a CSV output for all inspect commands. It reports on the local database by default; pass --remote for the linked project, or --remote=\<ref|branch|url> for another database.
 
 ```sh
 supabase inspect report [flags]
@@ -167046,25 +167523,27 @@ supabase inspect report [flags]
 
 ## Manage Supabase organizations
 
+Manage Supabase organizations
+
 ## Create an organization
 
-Create an organization for the signed-in user.
+Create an organization for the logged-in user.
 
 ```sh
-supabase orgs create
+supabase orgs create <name> [flags]
 ```
 
 ## List all organizations
 
-List all organizations the signed-in user belongs to.
+List all organizations the logged-in user belongs.
 
 ```sh
-supabase orgs list
+supabase orgs list [flags]
 ```
 
 ## Projects
 
-## Manage Supabase projects
+## Manage projects
 
 Provides tools for creating and managing your Supabase projects.
 
@@ -167072,49 +167551,143 @@ This command group allows you to list all projects in your organizations, create
 
 Project management via CLI is especially useful for automation scripts and when you need to provision environments in a repeatable way.
 
-## Create a project on Supabase
+Commands that change your account or projects ask for confirmation first: `create` defaults to yes, `delete` defaults to no. Pass `--yes` (or set `SUPABASE_YES` in your shell) to confirm in scripts and CI; without it, a run that cannot prompt fails before making any change.
+
+## Create a project
+
+Create a project on Supabase.
 
 ```sh
-supabase projects create [project name] [flags]
+supabase projects create [name] [flags]
 ```
 
-## List all Supabase projects
+## List all projects
 
-List all Supabase projects the signed-in user can access.
+List all Supabase projects the logged-in user can access.
 
 ```sh
-supabase projects list
+supabase projects list [flags]
 ```
 
-## List all API keys for a Supabase project
+## List API keys
+
+List all API keys for a Supabase project.
 
 ```sh
 supabase projects api-keys [flags]
 ```
 
-## Delete a Supabase project
+## Delete a project
+
+Delete a Supabase project.
 
 ```sh
-supabase projects delete [ref]
+supabase projects delete [ref] [flags]
 ```
 
 ## Config
 
-## Manage Supabase project configurations
+## Manage project configurations
 
-## Pushes local config.toml to the linked project
+Manage Supabase project configurations.
+
+## Push local config to linked project
 
 Updates the configurations of a linked Supabase project with the local `supabase/config.toml` file.
 
 This command allows you to manage project configuration as code by defining settings locally and then pushing them to your remote project.
 
+Pass `--remote=<ref|branch>` to push to a specific project, or the name (or UUID) of a branch of the currently linked project — values that are exactly 20 lowercase letters are always treated as project refs. Without it, the linked project is the target. `--project-ref` still works in v3 but is deprecated and removed in v4; use `--remote`.
+
+Before anything is pushed, the command prints the `Target:` line for the project or branch it resolved (name, ref, and for a branch its parent project), then shows the exact diff for every resource that will change. It then asks once — a single question covering every changed resource, with a default answer of no — and sends nothing until you confirm. If a change enables a paid add-on, its price is printed before the question.
+
+A push with nothing to change never asks. Declining fails the command and writes nothing. Piped answers are never read, so a script, a JSON run (`-o json`, `--output-format json`) or an agent must pass `--yes` or set `SUPABASE_YES` in the shell; a `SUPABASE_YES` in `supabase/.env` does not count. With `--yes` the command echoes `Confirmed by --yes: …` to stderr and pushes.
+
+In `json` output the result carries a `target` object with the resolved identity (`kind`, `project_ref`, `project_name`, `environment`, and `parent_project_ref` for a branch) next to the push summary.
+
 ```sh
-supabase config push
+supabase config push [flags]
+```
+
+## Pull remote config into the project config file
+
+Writes the effective configuration of a remote project or branch into the local `supabase/config.toml`/`config.json` — the write side of `supabase config diff`. Every write is a surgical, format-preserving edit: comments, key ordering, and quoting elsewhere in the file are left untouched, and only the values that actually change are rewritten.
+
+Pass `--remote=<ref|branch>` to pull from a specific project, or the name (or UUID) of a branch of the currently linked project — values that are exactly 20 lowercase letters are always treated as project refs. Without it, the linked project is the target. `--project-ref` still works in v3 but is deprecated and removed in v4; use `--remote`.
+
+Where a pulled value lands depends on whether the target is already tracked by a `[remotes.*]` block, not on how you named it: if any block's `project_id` already matches the resolved ref, that block is reused — whatever its own label — and every value lands there. Otherwise, if the target was named as a branch, a new `[remotes.<branch-name>]` block is created (a branch resolved by UUID falls back to the project ref itself as its label). Only when neither applies — `--remote=<ref>` naming a project directly, or the linked project (a bare `--remote` or no flag) with no branch involved — do values land at the config root. `--remote-label` overrides the block config pull would otherwise reuse or create; naming a block that already tracks a different project, or naming nothing while a different block already tracks this exact ref, is an error rather than a silent overwrite. A `[remotes.*]` block whose `project_id` is an `env(...)` reference that merely *resolves* to the target ref is never reused or rewritten — that is a hard error naming the variable, since a value written there would never actually take effect on the next load. Creating a new block always writes its `project_id`, even when every value it would otherwise carry already matches the local defaults — otherwise the block could never be reused on a later pull.
+
+Writing to the config root can also affect `supabase start`: a handful of root-scoped settings — `auth.site_url`, `db.settings.*`, `db.major_version` (which changes what `supabase start` boots), `db.pooler.*`, and similar — also govern the local stack, so pulling a hosted value into them is a real change to local dev behavior, not just a record of the hosted project's own setting. `config pull` warns about this rather than refusing; writing the same value into a `[remotes.*]` block is unaffected. Passing `--remote-label` is the escape hatch: it diverts what would otherwise be a root-bound pull into a `[remotes.<label>]` block instead, leaving local dev untouched.
+
+Several kinds of values are never written, and are reported instead of silently skipped: a value whose local declaration resolves from an `env(VAR)` reference (reported by variable name — replace the reference yourself, or pass `--remote-label` to target a different block); a value the REMOTE itself spells as an `env(VAR)` reference (`remote_env_reference`) — the loader would resolve it against the local environment on the next load, so writing it verbatim would let a remote value read whatever this machine's environment holds at that name; secret values, which the platform never returns in plaintext (a masked-credentials note); a value the file declares that the remote does not report (`local-only` — never removed); and a handful of already-declared properties `config push` cannot communicate back at all (an unmanaged note). Local-stack-only sections — `[studio]`, `[analytics]`, `[functions]`, `[edge_runtime]`, port numbers, image version pins, and similar — have no hosted counterpart and are never touched. One family of properties is written despite `config push` having no way to send it back (`auth.oauth_server`, disabled `storage.analytics`/`storage.vector`, …) — pulling still records the hosted value, with a warning that it cannot be pushed back.
+
+`config pull` never writes a `config.toml`/`.json` it cannot load back on the next command. Pulling a value that GATES other declared fields — e.g. flipping a disabled provider's `enabled` on — also pulls its now-required sibling values into the same write (not just the gate), so the file never comes out half-configured. When one of those siblings genuinely can't be supplied — the remote doesn't report it, or supplying it would still leave a REQUIRED value missing — the whole toggle is skipped instead, reported with a new reason (`requires values pull cannot write` in text output, `would_invalidate` in the machine payload) plus a note naming the missing field(s) and, when a missing field's local spelling is itself an unresolved `env(VAR)` reference, the exact environment variable to set before rerunning.
+
+`--dry-run` computes and prints exactly what `config diff` would show, then stops — no git check, no prompt, no write. `--output-format json|stream-json` never prompts at all — it returns the confirmation's default value without reading anything, so use `--dry-run` for a preview in those shapes rather than relying on the prompt. A non-interactive run in the default text format (no TTY on stdin) still prints the confirmation to stderr and reads a single line from piped stdin: an explicit `y`/`yes`/`n`/`no` answer is honored, an empty line falls back to the default, and any other answer declines. `--yes` (or `SUPABASE_YES`) answers the confirmation prompt without asking on an interactive TTY; it does not bypass the uncommitted-changes guard — on the contrary, `--yes` together with uncommitted (or untracked) changes aborts instead of silently overwriting them, since no human is left to read the warning. `--force` writes even when `supabase/config.toml` has uncommitted or untracked changes in git — without it, an interactive run's prompt defaults to "no" instead of "yes", and every other case (non-interactive text, machine-format, or `--yes` on any TTY) aborts outright.
+
+A second `config pull` against an already-tracked, unchanged remote always writes nothing — that convergence is the design's own acceptance property, not a special case. It never even checks for uncommitted local changes to the config file in that case, since there is nothing to write either way. A target that isn't tracked yet (a branch or `--remote-label` name with no existing `[remotes.*]` block) still creates that block on its first pull, even when every value it carries already matches the local defaults — it's the second pull against that now-tracked block that then writes nothing.
+
+## Example
+
+Given `supabase/config.toml`:
+
+```toml
+project_id = "abcdefghijklmnopqrst"
+
+[api]
+enabled = true
+max_rows = 1000
+```
+
+`supabase config pull --remote=staging`, where `staging` is a branch of the linked project and no existing `[remotes.*]` block already tracks it, creates a new block at the end of the file — `max_rows` lands under its own `[remotes.staging.api]` sub-table, the same way `[api]` itself is a sub-table of the document root, not a key directly under `[remotes.staging]`:
+
+```toml
+project_id = "abcdefghijklmnopqrst"
+
+[api]
+enabled = true
+max_rows = 1000
+
+[remotes.staging]
+project_id = "cccccccccccccccccccc"
+
+[remotes.staging.api]
+max_rows = 250
+```
+
+Running the same command again finds no differences and writes nothing.
+
+Machine-readable output is available through `--output-format json|stream-json` — a versioned payload (`schema_version`, `config_schema`, `config_path`, `format`, `target`, `destination`, `dry_run`, `wrote`, `scope`, `changes[]`, `warnings[]`, `masked[]`, `unmanaged[]`, `counts`) — `target` identifies the pulled project the same way `config diff` does (`kind`, `project_ref`, `project_name`, `environment`, `parent_project_ref`, `branch`, `local_scope`) — with per-change `path`s as segment arrays, each carrying `written` and, when unwritten, a `skipped_reason` (`env_reference | local_only | remote_env_reference | unwritable | would_invalidate | declined | dry_run`). A `would_invalidate` warning additionally carries `missing_fields` (`[{path, env_variable?}]`) naming what actually blocked the family. The legacy global `-o`/`--output` flag is not supported by this command; use `--output-format json|stream-json` instead. Note: the payload spells the root scope `"base"` (`target.local_scope`), while text output calls the same thing `config root`.
+
+```sh
+supabase config pull [flags]
+```
+
+## Diff local config against a remote project
+
+Shows the configuration differences between the local `supabase/config.toml` and the effective configuration of a remote project or branch. Read-only: it never modifies the local file or any remote configuration.
+
+Pass `--remote=<ref|branch>` to compare against a specific project, or the name (or UUID) of a branch of the currently linked project — values that are exactly 20 lowercase letters are always treated as project refs. Without it, the linked project is the target. `--project-ref` still works in v3 but is deprecated and removed in v4; use `--remote`. When the target ref matches a `[remotes.*]` block's `project_id`, that block's merged config is the local side of the comparison.
+
+Only platform-managed properties are compared. Local-stack-only sections — `[studio]`, `[analytics]`, `[functions]`, `[edge_runtime]`, port numbers, image version pins, `[db.migrations]`, and similar — have no hosted counterpart and are never reported, whether or not your file declares them.
+
+Each difference is classified as `update` (the file declares a value that differs remotely), `remote-only` (the remote differs while the file is silent — the shown local value is the schema default a `config push` would write), or `local-only` (the file declares a value the remote did not report). `(unset)` means the local side has no value at all; `(not returned)` means the response did not carry the property. Secret values are never compared — the platform only reports digests — and are listed in a masked-credentials note instead, as are declared properties that `config push` cannot communicate and any block the response omitted entirely.
+
+Local values are shown as the configuration your file would produce once pushed, not its literal spelling: a duration written as `"1m"` renders as `"1m0s"`, and byte sizes are shown in the units you wrote.
+
+With `--exit-code`, the command exits `2` when any difference is found, keeping exit `1` for errors — so scripts can distinguish drift from failure.
+
+Machine-readable output is available through `--output-format json|stream-json` — a versioned payload (`schema_version`, `config_schema`, `target`, `scope`, `changes[]`, `masked[]`, `unmanaged[]`, `counts`) with per-change `path`s as segment arrays. `target` identifies the compared project: `kind` (`linked`), `project_ref`, `project_name` and `environment` (`production`, `branch` or `unverified`) when known, `parent_project_ref` for a branch, `branch` when it was named, and `local_scope` (`base` or `remotes.<name>`). The legacy global `-o`/`--output` flag is not supported by this command; use `--output-format json|stream-json` instead.
+
+```sh
+supabase config diff [flags]
 ```
 
 ## Branches
 
-## Manage Supabase preview branches
+## Manage preview branches
+
+Manage Supabase preview branches.
 
 ## Create a preview branch
 
@@ -167129,15 +167702,17 @@ supabase branches create [name] [flags]
 List all preview branches of the linked project.
 
 ```sh
-supabase branches list
+supabase branches list [flags]
 ```
 
 ## Retrieve details of a preview branch
 
 Retrieve details of the specified preview branch.
 
+Note: For the main branch, password-dependent fields (POSTGRES\_URL, POSTGRES\_URL\_NON\_POOLING) are not populated because production database credentials are not retrievable via API.
+
 ```sh
-supabase branches get [name]
+supabase branches get [name] [flags]
 ```
 
 ## Update a preview branch
@@ -167150,14 +167725,18 @@ supabase branches update [name] [flags]
 
 ## Pause a preview branch
 
+Pause a preview branch.
+
 ```sh
-supabase branches pause [name]
+supabase branches pause [name] [flags]
 ```
 
 ## Unpause a preview branch
 
+Unpause a preview branch.
+
 ```sh
-supabase branches unpause [name]
+supabase branches unpause [name] [flags]
 ```
 
 ## Delete a preview branch
@@ -167165,7 +167744,29 @@ supabase branches unpause [name]
 Delete a preview branch by its name or ID.
 
 ```sh
-supabase branches delete [name]
+supabase branches delete [name] [flags]
+```
+
+## Backups
+
+## Manage Supabase physical backups
+
+Manage Supabase physical backups.
+
+## Lists available physical backups
+
+Lists available physical backups
+
+```sh
+supabase backups list [flags]
+```
+
+## Restore to a specific timestamp using PITR
+
+Restore to a specific timestamp using PITR
+
+```sh
+supabase backups restore [flags]
 ```
 
 ## Edge Functions
@@ -167180,13 +167781,15 @@ Edge Functions allow you to execute custom server-side code without deploying or
 
 Edge Functions are written in TypeScript and run on Deno compatible edge runtime, which is a secure runtime with no package management needed, fast cold starts, and built-in security.
 
+Commands that change the hosted project — `functions deploy` (including `--prune`) and `functions delete` — print the `Target:` line, then ask for confirmation before changing anything; the default answer is no. `functions deploy` asks one question covering every function it will deploy and every function `--prune` will delete. Piped answers are never read, so scripts, JSON runs and agents must pass `--yes` or set `SUPABASE_YES` in the shell (a `SUPABASE_YES` in `supabase/.env` does not count). `functions list` and `functions download` only read and never ask.
+
 ## Create a new Function locally
 
 Creates a new Edge Function with boilerplate code in the `supabase/functions` directory.
 
 This command generates a starter TypeScript file with the necessary Deno imports and a basic function structure. The function is created as a new directory with the name you specify, containing an `index.ts` file with the function code.
 
-After creating the function, you can edit it locally and then use `supabase functions serve`  to test it before deploying with `supabase functions deploy`.
+After creating the function, you can edit it locally and then use `supabase functions serve` to test it before deploying with `supabase functions deploy`.
 
 ```sh
 supabase functions new <Function name> [flags]
@@ -167238,7 +167841,7 @@ Additionally, the following properties can be customized via `supabase/config.to
    - `oneshot` will force the worker to process a single HTTP request and then exit. (Debugging purpose, This is especially useful if you want to reflect changes you've made immediately.)
 
 ```sh
-supabase functions serve [flags]
+supabase functions serve [Function name] ... [flags]
 ```
 
 ## Deploy a Function to Supabase
@@ -167246,7 +167849,7 @@ supabase functions serve [flags]
 Deploy a Function to the linked Supabase project.
 
 ```sh
-supabase functions deploy [Function name] [flags]
+supabase functions deploy [Function name] ... [flags]
 ```
 
 ## Delete a Function from Supabase
@@ -167272,6 +167875,8 @@ Secrets management through the CLI is useful for:
 
 Secrets can be set individually or loaded from .env files for convenience.
 
+`secrets set` and `secrets unset` print the `Target:` line, then ask for confirmation before changing anything; the default answer is no, and the question lists the secret names (never their values). Piped answers are never read, so scripts, JSON runs and agents must pass `--yes` or set `SUPABASE_YES` in the shell (a `SUPABASE_YES` in `supabase/.env` does not count). `secrets unset --dry-run` and `secrets list` only read and never ask.
+
 ## Set a secret(s) on Supabase
 
 Set a secret(s) to the linked Supabase project.
@@ -167285,7 +167890,7 @@ supabase secrets set <NAME=VALUE> ... [flags]
 List all secrets in the linked project.
 
 ```sh
-supabase secrets list
+supabase secrets list [flags]
 ```
 
 ## Unset a secret(s) on Supabase
@@ -167293,14 +167898,18 @@ supabase secrets list
 Unset a secret(s) from the linked Supabase project.
 
 ```sh
-supabase secrets unset [NAME] ...
+supabase secrets unset [NAME] ... [flags]
 ```
 
 ## Storage
 
 ## Manage Supabase Storage objects
 
+Manage Supabase Storage objects.
+
 ## List objects by path prefix
+
+List objects by path prefix.
 
 ```sh
 supabase storage ls [path] [flags]
@@ -167308,11 +167917,15 @@ supabase storage ls [path] [flags]
 
 ## Copy objects from src to dst path
 
+Copy objects from src to dst path.
+
 ```sh
 supabase storage cp <src> <dst> [flags]
 ```
 
 ## Move objects from src to dst path
+
+Move objects from src to dst path.
 
 ```sh
 supabase storage mv <src> <dst> [flags]
@@ -167320,13 +167933,17 @@ supabase storage mv <src> <dst> [flags]
 
 ## Remove objects by file path
 
+Remove objects by file path.
+
 ```sh
 supabase storage rm <file> ... [flags]
 ```
 
 ## Authentication
 
-## Manage Single Sign-On (SSO) authentication for projects
+## Manage Single Sign-On (SSO) authentication
+
+Manage Single Sign-On (SSO) authentication for projects.
 
 ## Add a new SSO identity provider
 
@@ -167336,12 +167953,12 @@ Add and configure a new connection to a SSO identity provider to your Supabase p
 supabase sso add [flags]
 ```
 
-## List all SSO identity providers for a project
+## List all SSO identity providers
 
-List all connections to a SSO identity provider to your Supabase project.
+List all SSO identity providers for a project.
 
 ```sh
-supabase sso list
+supabase sso list [flags]
 ```
 
 ## Show information about an SSO identity provider
@@ -167357,7 +167974,7 @@ supabase sso show <provider-id> [flags]
 Returns all of the important SSO information necessary for your project to be registered with a SAML 2.0 compatible identity provider.
 
 ```sh
-supabase sso info
+supabase sso info [flags]
 ```
 
 ## Update information about an SSO identity provider
@@ -167370,19 +167987,17 @@ supabase sso update <provider-id> [flags]
 
 ## Remove an existing SSO identity provider
 
-Remove a connection to an already added SSO identity provider. Removing the provider will prevent existing users from signing in. Please treat this command with care.
+Remove a connection to an already added SSO identity provider. Removing the provider will prevent existing users from logging in. Please treat this command with care.
 
 ```sh
-supabase sso remove <provider-id>
+supabase sso remove <provider-id> [flags]
 ```
 
 ## Custom Domains
 
 ## Manage custom domain names for Supabase projects
 
-Manage custom domain names for Supabase projects.
-
-Use of custom domains and vanity subdomains is mutually exclusive.
+Manage custom domain names for Supabase projects. Use of custom domains and vanity subdomains is mutually exclusive.
 
 ## Activate the custom hostname for a project
 
@@ -167392,15 +168007,15 @@ This reconfigures your Supabase project to respond to requests on your custom ho
 
 After the custom hostname is activated, your project's third-party auth providers will no longer function on the Supabase-provisioned subdomain. Please refer to [Prepare to activate your domain](https://supabase.com/docs/guides/platform/custom-domains#prepare-to-activate-your-domain) section in our documentation to learn more about the steps you need to follow.
 
+Asks for confirmation before activating, with a default of No. Pass `--yes` (or set `SUPABASE_YES` in the shell) to run without a prompt, which JSON output and non-interactive runs require.
+
 ```sh
-supabase domains activate
+supabase domains activate [flags]
 ```
 
 ## Create a custom hostname
 
-Create a custom hostname for your Supabase project.
-
-Expects your custom hostname to have a CNAME record to your Supabase project's subdomain.
+Create a custom hostname for your Supabase project. Expects your custom hostname to have a CNAME record to your Supabase project's subdomain.
 
 ```sh
 supabase domains create [flags]
@@ -167411,35 +168026,38 @@ supabase domains create [flags]
 Retrieve the custom hostname config for your project, as stored in the Supabase platform.
 
 ```sh
-supabase domains get
+supabase domains get [flags]
 ```
 
-## Re-verify the custom hostname config for your project
+## Re-verify the custom hostname config
+
+Re-verify the custom hostname config for your project.
 
 ```sh
-supabase domains reverify
+supabase domains reverify [flags]
 ```
 
-## Deletes the custom hostname config for your project
+## Delete the custom hostname config
+
+Deletes the custom hostname config for your project.
 
 ```sh
-supabase domains delete
+supabase domains delete [flags]
 ```
 
 ## Vanity Subdomains
 
-## Manage vanity subdomains for Supabase projects
+## Manage vanity subdomains
 
 Manage vanity subdomains for Supabase projects.
 
 Usage of vanity subdomains and custom domains is mutually exclusive.
 
+`activate` and `delete` ask for confirmation, with a default of No. Pass `--yes` (or set `SUPABASE_YES` in the shell) to run without a prompt, which JSON output and non-interactive runs require.
+
 ## Activate a vanity subdomain
 
-Activate a vanity subdomain for your Supabase project.
-
-This reconfigures your Supabase project to respond to requests on your vanity subdomain.
-After the vanity subdomain is activated, your project's auth services will no longer function on the {project-ref}.{supabase-domain} hostname.
+Activate a vanity subdomain for your Supabase project. This reconfigures your Supabase project to respond to requests on your vanity subdomain. After the vanity subdomain is activated, your project's auth services will no longer function on the {project-ref}.{supabase-domain} hostname.
 
 ```sh
 supabase vanity-subdomains activate [flags]
@@ -167447,22 +168065,48 @@ supabase vanity-subdomains activate [flags]
 
 ## Get the current vanity subdomain
 
+Get the current vanity subdomain.
+
 ```sh
-supabase vanity-subdomains get
+supabase vanity-subdomains get [flags]
 ```
 
-## Checks if a desired subdomain is available for use
+## Check subdomain availability
+
+Checks if a desired subdomain is available for use.
 
 ```sh
 supabase vanity-subdomains check-availability [flags]
 ```
 
-## Deletes a project's vanity subdomain
+## Delete the vanity subdomain
 
 Deletes the vanity subdomain for a project, and reverts to using the project ref for routing.
 
 ```sh
-supabase vanity-subdomains delete
+supabase vanity-subdomains delete [flags]
+```
+
+## Encryption
+
+## Manage encryption keys
+
+Manage encryption keys of Supabase projects
+
+## Get root encryption key
+
+Get the root encryption key of a Supabase project
+
+```sh
+supabase encryption get-root-key [flags]
+```
+
+## Update the root encryption key
+
+Update root encryption key of a Supabase project
+
+```sh
+supabase encryption update-root-key [flags]
 ```
 
 ## Network Bans
@@ -167473,13 +168117,19 @@ Network bans are IPs that get temporarily blocked if their traffic pattern looks
 
 The subcommands help you view the current bans, and unblock IPs if desired.
 
+`remove` asks for confirmation (default No) before unblocking. Pass `--yes` to confirm without asking; JSON, stream-json, `-o` and non-interactive runs fail without it.
+
 ## Get the current network bans
 
+Get the current network bans.
+
 ```sh
-supabase network-bans get
+supabase network-bans get [flags]
 ```
 
 ## Remove a network ban
+
+Remove a network ban.
 
 ```sh
 supabase network-bans remove [flags]
@@ -167489,13 +168139,19 @@ supabase network-bans remove [flags]
 
 ## Manage network restrictions
 
+Manage network restrictions.
+
 ## Get the current network restrictions
 
+Get the current network restrictions.
+
 ```sh
-supabase network-restrictions get
+supabase network-restrictions get [flags]
 ```
 
 ## Update network restrictions
+
+Update network restrictions.
 
 ```sh
 supabase network-restrictions update [flags]
@@ -167503,15 +168159,21 @@ supabase network-restrictions update [flags]
 
 ## SSL Enforcement
 
-## Manage SSL enforcement configuration
+## Manage SSL enforcement
 
-## Get the current SSL enforcement configuration
+Manage SSL enforcement configuration.
+
+## Get SSL enforcement configuration
+
+Get the current SSL enforcement configuration.
 
 ```sh
-supabase ssl-enforcement get
+supabase ssl-enforcement get [flags]
 ```
 
 ## Update SSL enforcement configuration
+
+Update SSL enforcement configuration.
 
 ```sh
 supabase ssl-enforcement update [flags]
@@ -167521,24 +168183,29 @@ supabase ssl-enforcement update [flags]
 
 ## Manage Postgres database config
 
-## Get the current Postgres database config overrides
+Manage Postgres database config.
+
+## Get Postgres database config
+
+Get the current Postgres database config overrides.
 
 ```sh
-supabase postgres-config get
+supabase postgres-config get [flags]
 ```
 
 ## Update Postgres database config
 
 Overriding the default Postgres config could result in unstable database behavior.
 Custom configuration also overrides the optimizations generated based on the compute add-ons in use.
+The update asks for confirmation (default No) before changing the overrides. Pass `--yes` to confirm without asking; JSON, stream-json, `-o` and non-interactive runs fail without it.
 
 ```sh
 supabase postgres-config update [flags]
 ```
 
-## Delete specific Postgres database config overrides
+## Delete Postgres database config overrides
 
-Delete specific config overrides, reverting them to their default values.
+Delete specific Postgres database config overrides.
 
 ```sh
 supabase postgres-config delete [flags]
@@ -167548,12 +168215,14 @@ supabase postgres-config delete [flags]
 
 ## Manage Supabase SQL snippets
 
+Manage Supabase SQL snippets.
+
 ## List all SQL snippets
 
 List all SQL snippets of the linked project.
 
 ```sh
-supabase snippets list
+supabase snippets list [flags]
 ```
 
 ## Download contents of a SQL snippet
@@ -167561,15 +168230,39 @@ supabase snippets list
 Download contents of the specified SQL snippet.
 
 ```sh
-supabase snippets download <snippet-id>
+supabase snippets download <snippet-id> [flags]
+```
+
+## Notebooks
+
+## Manage Supabase notebooks
+
+Manage Supabase notebooks: SQL and markdown cells stored with your project, kept in supabase/notebooks/<name>.json.
+
+## Pull notebooks from Supabase
+
+Write the linked Supabase project's notebooks into supabase/notebooks. Without a notebook id, existing local files are preserved and only missing notebooks are written.
+
+```sh
+supabase notebooks pull [Notebook id] [flags]
+```
+
+## Push notebooks to Supabase
+
+Write supabase/notebooks into the linked Supabase project. If no notebook name is provided, pushes all of them and asks what to do about project notebooks the directory does not have.
+
+```sh
+supabase notebooks push [Notebook name] [flags]
 ```
 
 ## Services
 
 ## Show versions of all Supabase services
 
+Show versions of all Supabase services.
+
 ```sh
-supabase services
+supabase services [flags]
 ```
 
 ## Autocompletion Scripts
@@ -167665,12 +168358,88 @@ To load completions for every new session, execute once:
 You will need to start a new shell for this setup to take effect.
 
 ```sh
-supabase completion bash
+supabase completion bash [flags]
 ```
 
 ## Telemetry
 
-## Manage CLI telemetry settings
+## Manage telemetry
+
+Manage CLI telemetry settings.
+
+## Enable telemetry
+
+Enable CLI telemetry.
+
+```sh
+supabase telemetry enable [flags]
+```
+
+## Disable telemetry
+
+Disable CLI telemetry.
+
+```sh
+supabase telemetry disable [flags]
+```
+
+## Show telemetry status
+
+Show CLI telemetry status.
+
+```sh
+supabase telemetry status [flags]
+```
+
+## Feedback
+
+## Send feedback to the Supabase team
+
+Send feedback about the Supabase CLI to the Supabase team.
+
+## Send feedback to the Supabase team
+
+Send quick feedback about the Supabase CLI to the Supabase team.
+
+```sh
+supabase feedback add [message] ... [flags]
+```
+
+## Delete previously submitted feedback
+
+Delete previously submitted feedback using its deletion token.
+
+```sh
+supabase feedback delete <token> [flags]
+```
+
+## Open GitHub issue forms
+
+Open Supabase CLI GitHub issue forms.
+
+## Open a bug report
+
+Open a GitHub bug report with local CLI details prefilled.
+
+```sh
+supabase issue bug [flags]
+```
+
+## Open a documentation issue
+
+Open a GitHub documentation issue with useful context prefilled.
+
+```sh
+supabase issue docs [flags]
+```
+
+## Open a feature request
+
+Open a GitHub feature request with useful context prefilled.
+
+```sh
+supabase issue feature [flags]
+```
 
 
 ---

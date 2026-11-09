@@ -767,7 +767,9 @@ A new option name adds an option to the schema if your connection can write to t
 
 The Person property uses the API key `people`. A page response contains an array of people or groups. [User objects](/reference/user) can be partial, so do not assume that a name or email is present.
 
-Writes accept user IDs, including bots that appear as user objects in the API. Bots used internally by Notion may not be assignable. [Retrieve a page property item](/reference/retrieve-a-page-property) returns a paginated list with one user in each item’s `people` field. Use it when a page response omits people.
+Writes accept user IDs, including bots that appear as user objects in the API. To assign a Custom Agent, use its bot user ID, which you can read from a `people` property where the agent is already assigned. [List all users](/reference/get-users) doesn't include Custom Agents. The connection needs the [View sessions and interact with agents](/reference/capabilities#agent-capabilities) capability, and the agent must be selected in the connection's **Agent access** tab. Other bots used internally by Notion can't be assigned.
+
+[Retrieve a page property item](/reference/retrieve-a-page-property) returns a paginated list with one user in each item’s `people` field. Use it when a page response omits people.
 
 > [tab] Schema
 >

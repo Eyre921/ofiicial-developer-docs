@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 159 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 160 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -12,11 +12,11 @@
 
 - `community/antitrust` — [Antitrust Policy](pages/community/antitrust.md) · [原文](https://modelcontextprotocol.io/community/antitrust)
 - `community/charter-template` — [Group Charter Template](pages/community/charter-template.md) · [原文](https://modelcontextprotocol.io/community/charter-template)
-- `community/communication` — [Contributor Communication](pages/community/communication.md) · [原文](https://modelcontextprotocol.io/community/communication)
+- `community/communication` — [Communication](pages/community/communication.md) · [原文](https://modelcontextprotocol.io/community/communication)
 - `community/contributing` — [Contributing to MCP](pages/community/contributing.md) · [原文](https://modelcontextprotocol.io/community/contributing)
 - `community/contributor-ladder` — [Contributor Ladder](pages/community/contributor-ladder.md) · [原文](https://modelcontextprotocol.io/community/contributor-ladder)
 - `community/design-principles` — [Design Principles](pages/community/design-principles.md) · [原文](https://modelcontextprotocol.io/community/design-principles)
-- `community/feature-lifecycle` — [Feature Lifecycle and Deprecation Policy](pages/community/feature-lifecycle.md) · [原文](https://modelcontextprotocol.io/community/feature-lifecycle)
+- `community/feature-lifecycle` — [Feature Lifecycle and Deprecation](pages/community/feature-lifecycle.md) · [原文](https://modelcontextprotocol.io/community/feature-lifecycle)
 - `community/governance` — [Governance and Stewardship](pages/community/governance.md) · [原文](https://modelcontextprotocol.io/community/governance)
 - `community/interest-groups/agents` — [Agents Charter](pages/community/interest-groups/agents.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/agents)
 - `community/interest-groups/auth` — [Authorization Charter](pages/community/interest-groups/auth.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/auth)
@@ -26,9 +26,10 @@
 - `community/interest-groups/scientific-computing` — [Scientific Computing Charter](pages/community/interest-groups/scientific-computing.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/scientific-computing)
 - `community/interest-groups/security` — [Security Charter](pages/community/interest-groups/security.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/security)
 - `community/interest-groups/tool-annotations` — [Tool Annotations Charter](pages/community/interest-groups/tool-annotations.md) · [原文](https://modelcontextprotocol.io/community/interest-groups/tool-annotations)
-- `community/sdk-tiers` — [SDK Tiering System](pages/community/sdk-tiers.md) · [原文](https://modelcontextprotocol.io/community/sdk-tiers)
-- `community/security` — [Security Policy](pages/community/security.md) · [原文](https://modelcontextprotocol.io/community/security)
+- `community/policies` — [Project Policies](pages/community/policies.md) · [原文](https://modelcontextprotocol.io/community/policies)
+- `community/sdk-tiers` — [SDK Tiers](pages/community/sdk-tiers.md) · [原文](https://modelcontextprotocol.io/community/sdk-tiers)
 - `community/sep-guidelines` — [SEP Guidelines](pages/community/sep-guidelines.md) · [原文](https://modelcontextprotocol.io/community/sep-guidelines)
+- `community/working-groups/apps` — [MCP Apps Working Group Charter](pages/community/working-groups/apps.md) · [原文](https://modelcontextprotocol.io/community/working-groups/apps)
 - `community/working-groups/file-uploads` — [File Uploads Charter](pages/community/working-groups/file-uploads.md) · [原文](https://modelcontextprotocol.io/community/working-groups/file-uploads)
 - `community/working-groups/filesystems` — [Filesystems Charter](pages/community/working-groups/filesystems.md) · [原文](https://modelcontextprotocol.io/community/working-groups/filesystems)
 - `community/working-groups/governance` — [Governance Working Group Charter](pages/community/working-groups/governance.md) · [原文](https://modelcontextprotocol.io/community/working-groups/governance)
@@ -42,7 +43,7 @@
 - `community/working-groups/skills-over-mcp` — [Skills Over MCP Charter](pages/community/working-groups/skills-over-mcp.md) · [原文](https://modelcontextprotocol.io/community/working-groups/skills-over-mcp)
 - `community/working-groups/tasks-events` — [Tasks and Events Charter](pages/community/working-groups/tasks-events.md) · [原文](https://modelcontextprotocol.io/community/working-groups/tasks-events)
 - `community/working-groups/transports` — [Transports Charter](pages/community/working-groups/transports.md) · [原文](https://modelcontextprotocol.io/community/working-groups/transports)
-- `community/working-interest-groups` — [Working and Interest Groups](pages/community/working-interest-groups.md) · [原文](https://modelcontextprotocol.io/community/working-interest-groups)
+- `community/working-interest-groups` — [Working Groups and Interest Groups](pages/community/working-interest-groups.md) · [原文](https://modelcontextprotocol.io/community/working-interest-groups)
 
 ## development
 

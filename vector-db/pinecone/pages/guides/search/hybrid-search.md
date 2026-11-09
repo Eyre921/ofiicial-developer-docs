@@ -25,7 +25,7 @@ RRF is a fusion method, not a synonym for hybrid search. It's one way to merge r
 
 ## Choose an approach
 
-For a new document or text workload, use the Documents API. Declare one `string` field with both `full_text_search` and `embed`, so Pinecone indexes its text for full-text search and embeds it for semantic search. Then either filter an `embed` search with a text-match filter on that field, or run a `text` search and an `embed` search and fuse them with RRF. See [Integrated embedding](/guides/search/integrated-embedding).
+For a new document or text workload, use the [Documents API](/guides/get-started/documents-api). Declare one `string` field with both `full_text_search` and `embed`, so Pinecone indexes its text for full-text search and embeds it for semantic search. Then either filter an `embed` search with a text-match filter on that field, or run a `text` search and an `embed` search and fuse them with RRF. See [Integrated embedding](/guides/search/integrated-embedding).
 
 If you generate your own embeddings, declare a `dense_vector` field alongside one or more full-text `string` fields instead. See the full-text search [example schemas](/guides/search/full-text-search#example-schemas).
 

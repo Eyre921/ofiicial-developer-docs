@@ -8,7 +8,7 @@ Run hybrid search on one Pinecone index storing a dense and a sparse vector per 
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 Store a dense vector and a sparse vector on each record in a single Pinecone index, then query both signals in one request. Pinecone combines them server-side. Because sparse (BM25-style) scores are unbounded, you set the balance between the two signals client-side, by scaling the query vectors before the request (an `alpha` weighting). This is the legacy Vectors API single-index hybrid pattern.
 

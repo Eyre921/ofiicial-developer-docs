@@ -26,7 +26,7 @@ This guide helps you set up Langfuse Gateway as an admin.
 
 ### Configure the gateway [#configure-the-gateway]
 
-Go to **Organization settings → AI Gateway → Setup** and choose:
+Go to **AI Gateway → Overview** and choose:
 
 - the **project**, where the gateway records generations
 - the [ingestion mode](/docs/gateway/features/tracing#ingestion-modes): `FULL` (input and output) or `USAGE` (usage and cost only, the default). Self-hosted deployments also offer `NONE` (route without recording).
@@ -59,7 +59,7 @@ Use **Notify your team** to email teammates. People who are not in the organizat
 
 ## Not seeing what you expected? [#not-seeing-what-you-expected]
 
-- [Why don't I see Gateway pages like Models, Keys, and Analytics?](/faq/all/ai-gateway-pages-missing)
+- [Why can't I open AI Gateway pages like Providers & Models or Gateway keys?](/faq/all/ai-gateway-pages-missing)
 
 [Ask another question](/docs/ask-ai)
 

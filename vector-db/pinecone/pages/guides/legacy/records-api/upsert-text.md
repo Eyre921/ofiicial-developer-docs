@@ -8,7 +8,7 @@ Upsert source text into a legacy integrated index with the legacy Records API, a
 
 > [!NOTE]
 >
-> New projects should use the [Documents API](/guides/indexes/create-an-index#create-a-document-index). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
+> New projects should use the [Documents API](/guides/get-started/documents-api). To move an existing index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 This page shows you how to upsert source text into a legacy integrated index created with `create_index_for_model`. The legacy Records API converts the text to vectors with the hosted embedding model associated with the index. For a document index with [integrated embedding](/guides/search/integrated-embedding), see [Upsert data](/guides/data/upsert-data).
 
