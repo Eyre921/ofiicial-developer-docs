@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1523 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1519 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -428,7 +428,6 @@
 - `docs/api-reference/workspace/update` — [Update settings](pages/docs/api-reference/workspace/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/update.md)
 - `docs/changelog/llms.txt` — [Changelog](pages/docs/changelog/llms.txt.md) · [原文](https://elevenlabs.io/docs/changelog/llms.txt)
 - `docs/eleven-agents/api-reference/agents/branches/create` — [Create agent branch](pages/docs/eleven-agents/api-reference/agents/branches/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md)
-- `docs/eleven-agents/api-reference/agents/branches/get` — [Get agent branch](pages/docs/eleven-agents/api-reference/agents/branches/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md)
 - `docs/eleven-agents/api-reference/agents/branches/list` — [List agent branches](pages/docs/eleven-agents/api-reference/agents/branches/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list.md)
 - `docs/eleven-agents/api-reference/agents/branches/merge` — [Merge agent branch](pages/docs/eleven-agents/api-reference/agents/branches/merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/merge.md)
 - `docs/eleven-agents/api-reference/agents/branches/preview-merge` — [Preview merged configuration](pages/docs/eleven-agents/api-reference/agents/branches/preview-merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-merge.md)
@@ -452,7 +451,6 @@
 - `docs/eleven-agents/api-reference/agents/merge-proposals/add-comment` — [Comment On A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/add-comment.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/add-comment.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/create` — [Create A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/create.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/get` — [Get A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/get.md)
-- `docs/eleven-agents/api-reference/agents/merge-proposals/list` — [List Proposals](pages/docs/eleven-agents/api-reference/agents/merge-proposals/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/list.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/merge` — [Merge A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/submit-review` — [Review A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/update` — [Update A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/update.md)
@@ -1346,7 +1344,6 @@
 - `docs/help-center/technical/where-can-i-learn-more-about-api` — [Where can I learn more about ElevenAPI?](pages/docs/help-center/technical/where-can-i-learn-more-about-api.md) · [原文](https://elevenlabs.io/docs/help-center/technical/where-can-i-learn-more-about-api.md)
 - `docs/help-center/technical/why-does-my-voice-sound-different-in-the-api-compared-to-the-website` — [Why does my voice sound different in the API compared to the website?](pages/docs/help-center/technical/why-does-my-voice-sound-different-in-the-api-compared-to-the-website.md) · [原文](https://elevenlabs.io/docs/help-center/technical/why-does-my-voice-sound-different-in-the-api-compared-to-the-website.md)
 - `docs/help-center/troubleshooting` — [General Troubleshooting FAQ](pages/docs/help-center/troubleshooting.md) · [原文](https://elevenlabs.io/docs/help-center/troubleshooting.md)
-- `docs/help-center/troubleshooting/how-can-i-make-sure-my-microphone-is-working` — [How can I make sure my microphone is working?](pages/docs/help-center/troubleshooting/how-can-i-make-sure-my-microphone-is-working.md) · [原文](https://elevenlabs.io/docs/help-center/troubleshooting/how-can-i-make-sure-my-microphone-is-working.md)
 - `docs/help-center/troubleshooting/im-having-issues-with-a-third-party-service-can-you-help-me` — [I'm having issues with a third-party service, can you help me?](pages/docs/help-center/troubleshooting/im-having-issues-with-a-third-party-service-can-you-help-me.md) · [原文](https://elevenlabs.io/docs/help-center/troubleshooting/im-having-issues-with-a-third-party-service-can-you-help-me.md)
 - `docs/help-center/troubleshooting/what-are-some-issues-i-might-encounter-and-how-can-i-avoid-them` — [What are some issues I might encounter and how can I avoid them?](pages/docs/help-center/troubleshooting/what-are-some-issues-i-might-encounter-and-how-can-i-avoid-them.md) · [原文](https://elevenlabs.io/docs/help-center/troubleshooting/what-are-some-issues-i-might-encounter-and-how-can-i-avoid-them.md)
 - `docs/help-center/troubleshooting/what-audio-formats-do-you-support` — [What audio formats do you support?](pages/docs/help-center/troubleshooting/what-audio-formats-do-you-support.md) · [原文](https://elevenlabs.io/docs/help-center/troubleshooting/what-audio-formats-do-you-support.md)
@@ -1402,7 +1399,6 @@
 - `docs/overview/capabilities/voice-isolator` — [Voice isolator](pages/docs/overview/capabilities/voice-isolator.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-isolator.md)
 - `docs/overview/capabilities/voice-remixing` — [Voice remixing](pages/docs/overview/capabilities/voice-remixing.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-remixing.md)
 - `docs/overview/capabilities/voices` — [Voices](pages/docs/overview/capabilities/voices.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voices.md)
-- `docs/overview/intro` — [ElevenLabs Documentation](pages/docs/overview/intro.md) · [原文](https://elevenlabs.io/docs/overview/intro.md)
 - `docs/overview/models` — [Models](pages/docs/overview/models.md) · [原文](https://elevenlabs.io/docs/overview/models.md)
 - `docs/reception-ai/billing/plans-and-pricing` — [Plans and pricing](pages/docs/reception-ai/billing/plans-and-pricing.md) · [原文](https://elevenlabs.io/docs/reception-ai/billing/plans-and-pricing.md)
 - `docs/reception-ai/billing/referral-program` — [Referral program](pages/docs/reception-ai/billing/referral-program.md) · [原文](https://elevenlabs.io/docs/reception-ai/billing/referral-program.md)

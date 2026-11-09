@@ -27486,7 +27486,7 @@ Set `LANGSMITH_API_KEY` to the setup credential. Set `LANGSMITH_WORKSPACE_ID` to
 >
 > Create the agent and print its identifier:
 >
-> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > from langsmith import Client
 >
 > client = Client()
@@ -27533,7 +27533,7 @@ Some integrations still require a `project_name` or `LANGSMITH_PROJECT` setting.
 
 Retrieve the agent with a credential that can read its environments. With the Python SDK:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
 client = Client()
@@ -212185,6 +212185,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > In-memory database with vector search capabilities.
 
+> [card] [RushDBVectorStore](https://docs.rushdb.com/connect/langchain)
+>
+> RushDB vector store and hybrid (vector + BM25) retriever, plus a LangGraph store and checkpointer, for RushDB Cloud or a self-hosted engine.
+
 > [card] [SAP HANA Cloud Vector Engine](/oss/javascript/integrations/vectorstores/sap_hanavector)
 >
 > Vector store fully integrated into the SAP HANA Cloud database.
@@ -212265,6 +212269,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > DeFi safety tools for agents: transaction simulation, signature phishing checks, sanctions screening and token rug checks, paid per call over x402.
 
+> [card] [AgentReader](https://github.com/grokbot1233/agentreader/tree/master/packages/agentreader-langchain)
+>
+> AgentReader provides pay-per-call LangChain.js tools for UK/EU company due diligence, sanctions screening, and registry data over x402.
+
 > [card] [AgentSearch](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26)
 >
 > Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
@@ -212272,6 +212280,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [agentsvc](https://agentsvc.io/docs/langchain)
 >
 > Pay-per-call web, data, crypto, memory, and inbox tools for agents, paid with a credit token or USDC via x402.
+
+> [card] [Agentum](https://github.com/Algiras/agentum-skills/tree/main/packages/agentum-langchain)
+>
+> Tools for company registry resolution, EU VAT, sanctions screening, vendor KYB, IBAN and wallet checks; free tier, then USDC per call via x402.
 
 > [card] [aiworker](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain)
 >
@@ -212288,6 +212300,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [Azure Dynamic Sessions](/oss/javascript/integrations/tools/azure_dynamic_sessions)
 >
 > Secure code execution in Azure Dynamic Sessions.
+
+> [card] [Channel3Toolkit](https://channel3.ai/docs/langchain)
+>
+> Product search across thousands of retailers, with each retailer's offer and live price.
 
 > [card] [ClawFetch](https://github.com/clawfetch/integrations#readme)
 >
@@ -214474,6 +214490,8 @@ The following table shows tools that generate video, image, or audio assets:
 | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-pexafy?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-pexafy) |
 | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://img.shields.io/npm/dm/@agentsearchhq/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@agentsearchhq/langchain) |
 | [`SafePromptCallbackHandler`](https://safeprompt.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@safeprompt.dev/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@safeprompt.dev/langchain) |
+| [`AgentumToolkit`](https://github.com/Algiras/agentum-skills/tree/main/packages/agentum-langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/agentum-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/agentum-langchain) |
+| [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@channel3/agent-toolkit?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@channel3/agent-toolkit) |
 | [`DataBazaar`](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/databazaar-agent-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/databazaar-agent-tools) |
 | [`M91`](https://github.com/MSG91/m91-sdk#langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@msg91comm/m91?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@msg91comm/m91) |
 | [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@atomicmail/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@atomicmail/langchain) |
@@ -214482,6 +214500,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`InstantExpertToolkit`](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-instant-expert?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-instant-expert) |
 | [`AgentForge`](https://github.com/acarchidi/agentforge-tools#langchain-js) | [  ![Downloads per month](https://img.shields.io/npm/dm/agentforge-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/agentforge-tools) |
 | [`Respan`](https://www.respan.ai/docs/documentation/overview) | [  ![Downloads per month](https://img.shields.io/npm/dm/@respan/instrumentation-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@respan/instrumentation-langchain) |
+| [`AgentReader`](https://github.com/grokbot1233/agentreader/tree/master/packages/agentreader-langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@axiomworks/agentreader-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@axiomworks/agentreader-langchain) |
 | [`WebExtract`](https://webextract.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@webextract/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@webextract/langchain) |
 | [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://img.shields.io/npm/dm/@fidacy/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@fidacy/langchain) |
 | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/@tubeagentkit/langchain-getyoutubetranscript?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@tubeagentkit/langchain-getyoutubetranscript) |
@@ -215764,6 +215783,7 @@ LangChain.js integrates with a variety of vector stores. You can check out a ful
 | [`Azure DocumentDB`](/oss/javascript/integrations/vectorstores/azure_documentdb) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/azure-cosmosdb?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
 | [`Neo4jVectorStore`](/oss/javascript/integrations/vectorstores/neo4jvector) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/neo4j?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/neo4j) |
 | [`SAP HANA Cloud Vector Engine`](/oss/javascript/integrations/vectorstores/sap_hanavector) | [  ![Downloads per month](https://img.shields.io/npm/dm/@sap/hana-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@sap/hana-langchain) |
+| [`RushDBVectorStore`](https://docs.rushdb.com/connect/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@rushdb/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@rushdb/langchain) |
 | [`LambdaDB`](https://docs.lambdadb.ai/guides/get-started/quickstart) | [  ![Downloads per month](https://img.shields.io/npm/dm/@functional-systems/langchain-lambdadb?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@functional-systems/langchain-lambdadb) |
 | [`Infino`](https://infino.ai/docs) | [  ![Downloads per month](https://img.shields.io/npm/dm/@infino-ai/langchain-infino?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@infino-ai/langchain-infino) |
 | [`YDB`](/oss/javascript/integrations/vectorstores/ydb) | [  ![Downloads per month](https://img.shields.io/npm/dm/@ydbjs/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@ydbjs/langchain) |
@@ -306199,6 +306219,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Governed tool execution for LangChain agents: exposes a self-hosted Algenta decision engine as BaseTools with policy-gated execution.
 
+> [card] [AlionToolkit](https://github.com/alion-io/alion-sdk/tree/main/langchain#readme)
+>
+> Company, startup, investor, job posting and pay statistics tools backed by Alion's live graph of companies worldwide.
+
 > [card] [AlphaAI](https://alphai.io/developers)
 >
 > AI-scored financial news and SEC Form 4 insider events for agents and RAG.
@@ -306515,6 +306539,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > High-performance analytics and data processing.
 
+> [card] [BoscoToolkit](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco)
+>
+> Official-records tools: KYB counterparty checks, sanctions, company registers, SEC EDGAR and law, with source URLs.
+
 > [card] [BotsRatedPreflightTool](https://github.com/botsrated/botsrated/tree/main/integrations/langchain)
 >
 > Tools that check an x402 seller against BotsRated's latest unpaid probe before an agent pays, plus an optional paid check capped by a budget.
@@ -306538,6 +306566,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Brightdata](https://docs.brightdata.com/integrations/langchain)
 >
 > Web data platform and proxy services.
+
+> [card] [BriqSandbox](https://github.com/briq-cloud/langchain-briq#readme)
+>
+> Sandbox backend for Deep Agents: runs shell commands and file operations in an isolated briq sandbox.
 
 > [card] [Browser Use](/oss/python/integrations/providers/browser_use)
 >
@@ -306578,6 +306610,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ChainAnalyzerToolkit](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer)
 >
 > Blockchain AML screening tools: sanctions, known-hack exposure, stablecoin freezes, and risk scores across 12 chains (x402 or API key).
+
+> [card] [Channel3Toolkit](https://channel3.ai/docs/langchain)
+>
+> Product search across thousands of retailers, with each retailer's offer and live price.
 
 > [card] [Cheaper Inference](https://cheaperinference.com/docs)
 >
@@ -307979,6 +308015,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > In-memory data structure store and cache.
 
+> [card] [ReefAPIToolkit](https://reefapi.com/docs/langchain)
+>
+> One API key for 600+ site-specific live web-data APIs (Amazon, eBay, Zillow, Reddit, Google Maps, ...) that return JSON.
+
 > [card] [RelayShield](https://api.relayshield.net/developers)
 >
 > Identity and agentic-attack-surface threat intelligence.
@@ -308018,6 +308058,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Rostam](https://github.com/rostamlabs/rostam/tree/main/clients/langchain-rostam)
 >
 > Self-hosted vector database and key-value store in a single Go binary.
+
+> [card] [RushDBVectorStore](https://docs.rushdb.com/connect/langchain)
+>
+> RushDB vector store and hybrid (vector + BM25) retriever, plus a LangGraph store and checkpointer, for RushDB Cloud or a self-hosted engine.
 
 > [card] [RustChain](https://pypi.org/project/langchain-rustchain-tools/)
 >
@@ -308233,7 +308277,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > [card] [SpecStream](https://specstream.ai/docs/langchain)
 >
-> SpecStream finds lists of companies, places, filings, and other live web records from plain-language requests with source pages and code-set price caps.
+> Web search tool for the live web. Returns ranked results with page content and the source URL for each result.
 
 > [card] [SpiceDB](https://github.com/authzed/langchain-spicedb)
 >
@@ -311518,6 +311562,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`RuntimeSandbox`](https://withruntime.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-withruntime/month)](https://pypi.org/project/langchain-withruntime/) |
 | [`NovitaSandbox`](https://github.com/novitalabs/langchain-novita) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-novita/month)](https://pypi.org/project/langchain-novita/) |
 | [`UpstashBoxSandbox`](https://upstash.com/docs/box/overall/quickstart) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upstash-box/month)](https://pypi.org/project/langchain-upstash-box/) |
+| [`BriqSandbox`](https://github.com/briq-cloud/langchain-briq#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-briq/month)](https://pypi.org/project/langchain-briq/) |
 | [`Leap0Sandbox`](https://leap0.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-leap0/month)](https://pypi.org/project/langchain-leap0/) |
 | [`BaponiSandbox`](https://baponi.ai/docs/guides/deep-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-baponi/month)](https://pypi.org/project/langchain-baponi/) |
 | [`SuperserveSandbox`](https://docs.superserve.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-superserve/month)](https://pypi.org/project/langchain-superserve/) |
@@ -311933,12 +311978,14 @@ The following table shows tools that generate video, image, or audio assets:
 | [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
 | [`VerdixAddressRiskTool`](https://github.com/verdixapi/langchain-verdix#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verdix/month)](https://pypi.org/project/langchain-verdix/) |
 | [`APIVerveToolkit`](https://docs.apiverve.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apiverve/month)](https://pypi.org/project/langchain-apiverve/) |
+| [`SpecStreamWebSearch`](https://specstream.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-specstream/month)](https://pypi.org/project/langchain-specstream/) |
 | [`AgentGuardTool`](https://github.com/datumline/datumline-agent-guard#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/datumline-agent-guard/month)](https://pypi.org/project/datumline-agent-guard/) |
 | [`You.com search`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-youdotcom/month)](https://pypi.org/project/langchain-youdotcom/) |
 | [`GateCoreToolkit`](https://gatecoreai.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/gatecore-langchain/month)](https://pypi.org/project/gatecore-langchain/) |
 | [`MachineLibraryToolkit`](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-machinelibrary/month)](https://pypi.org/project/langchain-machinelibrary/) |
 | [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
 | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
+| [`ReefAPIToolkit`](https://reefapi.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reefapi/month)](https://pypi.org/project/langchain-reefapi/) |
 | [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
 | [`DiffbotAskTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
@@ -312191,11 +312238,14 @@ The following table shows tools that generate video, image, or audio assets:
 | [`LaneRouterToolkit`](https://lanerouter.com/docs#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lanerouter/month)](https://pypi.org/project/langchain-lanerouter/) |
 | [`ChainAnalyzerToolkit`](https://github.com/rascal-3/chainanalyzer-mcp/tree/main/packages/langchain-chainanalyzer) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-chainanalyzer/month)](https://pypi.org/project/langchain-chainanalyzer/) |
 | [`Agent Data Hub`](https://github.com/Jona1245/agentdatahub-python#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/agentdatahub/month)](https://pypi.org/project/agentdatahub/) |
+| [`AlionToolkit`](https://github.com/alion-io/alion-sdk/tree/main/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alion/month)](https://pypi.org/project/langchain-alion/) |
 | [`EtfiqToolkit`](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-etfiq/month)](https://pypi.org/project/langchain-etfiq/) |
+| [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-channel3/month)](https://pypi.org/project/langchain-channel3/) |
 | [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
 | [`ArcnmToolkit`](https://github.com/arcnm/langchain-arcnm#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arcnm/month)](https://pypi.org/project/langchain-arcnm/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`StophyToolkit`](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stophy/month)](https://pypi.org/project/langchain-stophy/) |
+| [`BoscoToolkit`](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bosco/month)](https://pypi.org/project/langchain-bosco/) |
 | [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
 | [`X402CleanWebTool`](https://github.com/nohosa001-pixel/x402-cleanweb-agent/tree/main/packages/langchain-x402-cleanweb#readme) | N/A |
 | [`x402checkToolkit`](https://x402check.dev) | N/A |
@@ -313237,6 +313287,7 @@ vector_store.similarity_search(
 | [`LindormVectorStore`](https://help.aliyun.com/en/lindorm/user-guide/enable-vector-engine) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lindorm-integration/month)](https://pypi.org/project/langchain-lindorm-integration/) |
 | [`ChDBVectorStore`](https://github.com/chdb-io/langchain-chdb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-chdb/month)](https://pypi.org/project/langchain-chdb/) |
 | [`YantrikDBVectorStore`](https://github.com/yantrikos/langchain-yantrikdb) | ✅ | | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yantrikdb/month)](https://pypi.org/project/langchain-yantrikdb/) |
+| [`RushDBVectorStore`](https://docs.rushdb.com/connect/langchain) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-rushdb/month)](https://pypi.org/project/langchain-rushdb/) |
 | [`DXMTVectorDB`](https://github.com/dxmt/dxmt/tree/main/vectordb/clients/langchain-dxmt) | ✅ | ✅ | ✅ | ✅ | ✅ | | | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dxmt/month)](https://pypi.org/project/langchain-dxmt/) |
 | [`FAISS`](https://github.com/facebookresearch/faiss) | | | | | | | | | N/A |
 | [`InMemoryVectorStore`](/oss/python/integrations/vectorstores/in_memory) | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ | N/A |

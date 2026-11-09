@@ -111,7 +111,7 @@ Every self-hosted installation runs on the same underlying product. You can stic
 
 For the differences between editions and how to register or license an instance, see [Compare plans and editions](/deploy/host-n8n/community-edition-features). For what each plan includes, see the [pricing page](https://n8n.io/pricing/).
 
-To register a Community edition instance for the extra free features, go to **Settings > Usage and plan** and select **Unlock**.
+To register a Community edition instance for the extra free features, go to **Settings > Plan & usage** and select **Unlock**.
 
 ## Which features need a paid plan or edition <a href="#which-features-need-a-paid-plan-or-edition" id="which-features-need-a-paid-plan-or-edition"></a>
 
@@ -1100,7 +1100,7 @@ Due to the human steps in this process, the alert system isn't perfect. If warni
 
 ### Change instance ownership <a href="#change-instance-ownership" id="change-instance-ownership"></a>
 
-You can change the ownership of an instance by navigating to the **Settings > Personal** page in the owner's account and editing the **Email** field. After making the changes, scroll down and press **Save**. Note that for the change to be effective, the new email address must not be associated with any other n8n account, as each instance can have only one **unique owner email**. If the intended email is already linked to an existing user, change or delete that user first so the email becomes available.
+You can change the ownership of an instance by navigating to the **Settings > Profile & preferences** page in the owner's account and editing the **Email** field. After making the changes, scroll down and press **Save**. Note that for the change to be effective, the new email address must not be associated with any other n8n account, as each instance can have only one **unique owner email**. If the intended email is already linked to an existing user, change or delete that user first so the email becomes available.
 
 Changing emails will change the owner of the instance, the email you log in with, and the email your invoices and general communication gets sent to.
 
@@ -2366,7 +2366,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2624,7 +2624,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2996,7 +2996,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3098,7 +3098,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3468,7 +3468,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -4416,7 +4416,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -4632,7 +4632,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -4915,7 +4915,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -6209,7 +6209,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.46.6 Current `beta`: 2.47.2
+Current `stable`: 2.46.7 Current `beta`: 2.47.3
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -7174,9 +7174,9 @@ To enable certain licensed features, you must first activate your license. You c
 
 | Variable                                  | Type    | Default                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ----------------------------------------- | ------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_HIDE_USAGE_PAGE`                     | boolean | `false`                        | Hide the usage and plans page in the app.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `N8N_HIDE_USAGE_PAGE`                     | boolean | `false`                        | Hide the **Plan & usage** page in the app.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `N8N_LICENSE_ACTIVATION_KEY`              | String  | `''`                           | Activation key to initialize license. Not applicable if the n8n instance was already activated.                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| `N8N_LICENSE_AUTO_RENEW_ENABLED`          | Boolean | `true`                         | <p>Enables (true) or disables (false) autorenewal for licenses.<br>If disabled, you need to manually renew the license every 10 days by navigating to <strong>Settings</strong> > <strong>Usage and plan</strong>, and pressing <code>F5</code>. Failure to renew the license will disable all licensed features.</p>                                                                                                                                                                                                         |
+| `N8N_LICENSE_AUTO_RENEW_ENABLED`          | Boolean | `true`                         | <p>Enables (true) or disables (false) autorenewal for licenses.<br>If disabled, you need to manually renew the license every 10 days by navigating to <strong>Settings</strong> > <strong>Plan & usage</strong>, and pressing <code>F5</code>. Failure to renew the license will disable all licensed features.</p>                                                                                                                                                                                                           |
 | `N8N_LICENSE_CERT`                        | String  | `''`                           | Base64-encoded license certificate provided by n8n. Used instead of `N8N_LICENSE_ACTIVATION_KEY` for special use cases, e.g. air-gapped environments.                                                                                                                                                                                                                                                                                                                                                                         |
 | `N8N_LICENSE_DETACH_FLOATING_ON_SHUTDOWN` | Boolean | `true`                         | <p>Controls whether the instance releases <a href="/key-concept-glossary#entitlement-n8n">floating entitlements</a> back to the pool upon shutdown. Set to <code>true</code> to allow other instances to reuse the entitlements, or <code>false</code> to retain them.<br>For production instances that must always keep their licensed features, set this to <code>false</code>.<br>Ignored when multi-main mode is enabled: all main instances share one seat, and a main instance that shuts down does not release it.</p> |
 | `N8N_LICENSE_SERVER_URL`                  | String  | `https://license.n8n.io/v1`    | Server URL to retrieve license.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -10292,7 +10292,7 @@ This variable expects a pre-hashed bcrypt value. Setting a plaintext password br
 You can now invite other people to your n8n instance.
 
 1. Sign in to your n8n instance with your owner account. On n8n Cloud, if you're in the n8n Cloud console, select **Open instance** on the **Overview** page.
-2. Click the three dots next to your user icon at the bottom left and click **Settings**. n8n opens your **Personal settings** page.
+2. Click the three dots next to your user icon at the bottom left and click **Settings**.
 3. Click **Users** to go to the **Users** page.
 4. Click **Invite**.
 5. Enter the new user's email address.
@@ -10320,7 +10320,7 @@ Changing the owner email updates the existing instance owner account. It doesn't
 ## Change the owner email in the UI <a href="#change-the-owner-email-in-the-ui" id="change-the-owner-email-in-the-ui"></a>
 
 1. Log in as the instance owner.
-2. Go to **Settings** > **Personal**.
+2. Go to **Settings** > **Profile & preferences**.
 3. Update the **Email** field.
 4. Select **Save**.
 

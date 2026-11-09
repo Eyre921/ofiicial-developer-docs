@@ -154961,7 +154961,7 @@ let session = try await supabase.auth.mfa.verifyWebAuthnFactor(
 
 ## mfa.challengeAndVerify()
 
-- An [enrolled factor](https://supabase.com/docs/swift/javascript/auth-mfa-enroll) is required before invoking `challengeAndVerify()`.
+- An [enrolled factor](https://supabase.com/docs/reference/swift/auth-mfa-enroll) is required before invoking `challengeAndVerify()`.
 - Executes [`mfa.challenge()`](https://supabase.com/docs/reference/swift/auth-mfa-challenge) and [`mfa.verify()`](https://supabase.com/docs/reference/swift/auth-mfa-verify) in a single step.
 
 ### Examples

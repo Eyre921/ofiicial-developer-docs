@@ -38,7 +38,7 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 255,
+    "pages": 256,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
@@ -58,7 +58,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 587,
+    "pages": 678,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -187,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 89,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -203,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1523,
+    "pages": 1519,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-08T23:31:09Z"
+  "_last_crawl": "2026-11-09T11:30:49Z"
 }
