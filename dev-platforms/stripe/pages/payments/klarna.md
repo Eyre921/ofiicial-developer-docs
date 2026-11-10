@@ -780,7 +780,7 @@ In addition to the payment option availability described above, the following li
 
 ## Cross-border payments 
 
-The following table describes the requirements for using Klarna internationally. For example, a Swedish business can present in EUR to a customer in Germany because they’re both in the *European Economic Area (EEA)* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and three additional states that are part of the European Free Trade Association). However, an Australian business must present in AUD, and can only accept payments from customers in Australia.
+The following table describes the requirements for using Klarna internationally. For example, a Swedish business can present in EUR to a customer in Germany because they’re both in the *European Economic Area (EEA)* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and additional states that are part of the European Free Trade Association). However, an Australian business must present in AUD, and can only accept payments from customers in Australia.
 
 | Business location | Customer location | Presentment currency |
 | --- | --- | --- |

@@ -158,7 +158,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
 
 ## Webhook changes 
 
-Since `line_items` is includable, the `checkout.session.completed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) response doesn’t list items by default. The smaller response object enables you to receive your Checkout webhooks faster. You can retrieve items with the `line_items` endpoint:
+Since `line_items` is includable, the `checkout.session.completed` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) response doesn’t list items by default. The smaller response object enables you to receive your Checkout webhooks faster. You can retrieve items with the `line_items` endpoint:
 
 #### curl
 

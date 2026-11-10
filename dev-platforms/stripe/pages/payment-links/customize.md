@@ -30,7 +30,7 @@ To limit the number of payments using the Dashboard:
 
 #### API
 
-To limit the number of payments with the API, pass the `restrictions[completed_sessions][limit]` parameter when you [create](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-restrictions-completed_sessions-limit) or [update](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-restrictions-completed_sessions-limit) a payment link. A payment link is considered “paid for” when Stripe sends the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event.
+To limit the number of payments with the API, pass the `restrictions[completed_sessions][limit]` parameter when you [create](https://docs.stripe.com/api/payment-link/create.md#create_payment_link-restrictions-completed_sessions-limit) or [update](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-restrictions-completed_sessions-limit) a payment link. A payment link is considered “paid for” when Stripe sends the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) event.
 
 ```curl
 curl https://api.stripe.com/v1/payment_links \
@@ -103,7 +103,7 @@ To collect a customer’s shipping address in a payment link, pass the `shipping
 
 When you collect a shipping address, you must also specify which countries to allow shipping to. Configure the `allowed_countries` property with an array of [two-letter ISO country codes](https://www.nationsonline.org/oneworld/country_code_list.htm).
 
-When the customer completes the session, the [Checkout Session](https://docs.stripe.com/api/checkout/sessions/object.md) object saves the collected shipping address on the `shipping_details` property and includes it in the payload of the `checkout.session.completed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests). You can also see shipping information in the payment details page in the Dashboard.
+When the customer completes the session, the [Checkout Session](https://docs.stripe.com/api/checkout/sessions/object.md) object saves the collected shipping address on the `shipping_details` property and includes it in the payload of the `checkout.session.completed` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination). You can also see shipping information in the payment details page in the Dashboard.
 
 ### Collect a phone number
 
@@ -228,7 +228,7 @@ Labels for custom fields aren’t translated, but you can use the `locale` [URL 
 After your customer completes the payment, you can view the fields on the payment details page in the Dashboard.
 ![](https://b.stripecdn.com/docs-statics-srv/assets/payment.56e708902bb56215b40e523371418a6e.png)
 
-The custom fields are also included in the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) upon payment completion.
+The custom fields are also included in the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) upon payment completion.
 
 #### API
 
@@ -247,7 +247,7 @@ curl https://api.stripe.com/v1/payment_links \
 
 After your customer completes the Checkout Session, the fields are available on the payments details page in the Dashboard, or you can [retrieve the completed custom fields](https://docs.stripe.com/payments/checkout/custom-components.md#retrieve-fields).
 
-The custom fields are also included in the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) upon payment completion.
+The custom fields are also included in the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) upon payment completion.
 
 ## Automatically convert prices to local currencies 
 

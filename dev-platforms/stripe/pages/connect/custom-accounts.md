@@ -98,7 +98,7 @@ You can collect required information when you [create the account](https://docs.
 
 ## Webhooks
 
-After an account is created, all notifications about changes to the account are sent to your [webhooks](https://docs.stripe.com/connect/webhooks.md) as `account.updated` events. Provide your *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) URL in your [account settings](https://dashboard.stripe.com/account/webhooks) and then watch for these events and respond to them as needed.
+After an account is created, all notifications about changes to the account are sent to your [webhooks](https://docs.stripe.com/connect/webhooks.md) as `account.updated` events. Provide your *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) URL in your [account settings](https://dashboard.stripe.com/account/webhooks) and then watch for these events and respond to them as needed.
 
 ## See also
 

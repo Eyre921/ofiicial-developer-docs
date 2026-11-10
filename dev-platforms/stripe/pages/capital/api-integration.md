@@ -85,7 +85,7 @@ curl https://api.stripe.com/v1/capital/financing_offers/financingoffer_abc123 \
 
 ### Handle offer creation with a webhook
 
-To send your own financing offer emails, listen for the `capital.financing_offer.created` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests), which Stripe sends after it creates a financing offer. When you receive this webhook, send the offer email to the connected account immediately.
+To send your own financing offer emails, listen for the `capital.financing_offer.created` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination), which Stripe sends after it creates a financing offer. When you receive this webhook, send the offer email to the connected account immediately.
 
 You must configure Capital webhook events from your account, not as Connect webhooks. Although these events carry data about connected accounts, Stripe creates and manages financing offers on your platform account. Set up your Capital webhook endpoint in the [Dashboard](https://dashboard.stripe.com/webhooks) or using the [Webhook Endpoints API](https://docs.stripe.com/api/webhook_endpoints/create.md) without a `connect` parameter to register it as a platform account webhook rather than a Connect webhook that listens for activity on connected accounts.
 

@@ -14,7 +14,7 @@ Before creating a rule, you need to understand how they’re processed and what 
 
 ## Transaction rule processing and ordering
 
-*Radar* (Stripe Radar helps detect and block fraud for any type of business using machine learning that trains on data across millions of global companies. It’s built into Stripe and requires no additional setup to get started) evaluates each payment against the rules you create according to their action type, using the following prioritization:
+*Radar* (Stripe Radar helps detect and block fraud by using machine learning. It's built into Stripe and requires no additional setup to get started) evaluates each payment against the rules you create according to their action type, using the following prioritization:
 
 1. **Request 3DS**: Rules that when used with the [Payment Intents API](https://docs.stripe.com/payments/payment-intents.md) or [Checkout](https://docs.stripe.com/payments/checkout.md), *request* the issuer to do *3D Secure authentication* (3D Secure (3DS) provides an additional layer of authentication for credit card transactions that protects businesses from liability for fraudulent card payments) if supported. Radar evaluates these before any block, review, or allow rules.
 2. **Allow**: Rules that *allow* a payment to be processed. Payments that fall under allow rules aren’t evaluated against any block or review rules.

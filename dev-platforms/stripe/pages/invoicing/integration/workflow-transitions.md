@@ -15,7 +15,7 @@ Status transitions and finalization
 
 ## Transitions and endpoints 
 
-The following table outlines the status transitions and their endpoints. It also lists the *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) that are emitted by the endpoint, and the resulting status for each:
+The following table outlines the status transitions and their endpoints. It also lists the *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) that are emitted by the endpoint, and the resulting status for each:
 
 | Status | API Endpoint | Emitted Webhook | End Status |
 | --- | --- | --- | --- |

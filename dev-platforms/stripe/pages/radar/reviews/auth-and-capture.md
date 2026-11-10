@@ -62,7 +62,7 @@ end
 
 ### Capture a payment after a review is approved 
 
-In the previous step, you left payments in `review` and uncaptured. Use *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to automatically capture these payments after approval.
+In the previous step, you left payments in `review` and uncaptured. Use *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to automatically capture these payments after approval.
 
 Configure your webhooks to listen for the `review.closed` event. The event includes the [Review object](https://docs.stripe.com/api.md#review_object), and its `reason` attribute indicates whether the review was approved or closed for another reason (for example, the payment was refunded).
 

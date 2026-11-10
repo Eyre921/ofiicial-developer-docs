@@ -8,7 +8,7 @@ path: connect/webhooks
 
 Learn how to use webhooks with Connect to be notified of Stripe activity.
 
-Stripe uses *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to notify your application when an event happens in your account. All *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) integrations should establish a [webhook endpoint](https://dashboard.stripe.com/account/webhooks) to listen for Connect events.
+Stripe uses *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to notify your application when an event happens in your account. All *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) integrations should establish a [webhook endpoint](https://dashboard.stripe.com/account/webhooks) to listen for Connect events.
 
 ## Connect webhooks
 

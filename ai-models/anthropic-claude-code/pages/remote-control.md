@@ -198,7 +198,7 @@ The VS Code extension and the Desktop app also have an auto-connect toggle:
 * **VS Code extension**: **Enable Remote Control for all sessions** in the [command menu's](/docs/en/vs-code#use-the-prompt-box) Settings section.
 * **Desktop app**: **Connect new sessions to Remote Control** in **Settings > Code** or **Settings > Claude Code**. See [Control which sessions appear on your other devices](/docs/en/desktop#control-which-sessions-appear-on-your-other-devices).
 
-To turn auto-connect on from a settings file instead, set [`remoteControlAtStartup`](/docs/en/settings-reference#remotecontrolatstartup) to `true` in your user `~/.claude/settings.json` or in [managed settings](/docs/en/managed-settings). In project or local settings (`.claude/settings.json`, `.claude/settings.local.json`), Claude Code honors a `false` and turns auto-connect off for that repository, but ignores a `true`, so a checked-in file can't turn on Remote Control for everyone who opens the repository.
+To turn auto-connect on from a settings file instead, set [`remoteControlAtStartup`](/docs/en/settings-reference#remotecontrolatstartup) to `true` in your user `~/.claude/settings.json` or in [managed settings](/docs/en/managed-settings). In project or local settings (`.claude/settings.json`, `.claude/settings.local.json`), Claude Code honors a `false` and turns auto-connect off for that repository. It ignores a `true`, so you can't use a checked-in file to turn on Remote Control for everyone who opens the repository.
 
 Auto-connect signs in with your own claude.ai account, so a session it starts appears only in your own account's Claude apps and grants no one else access.
 

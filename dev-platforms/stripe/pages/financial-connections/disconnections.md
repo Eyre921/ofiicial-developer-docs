@@ -39,5 +39,5 @@ This request returns the account with an updated `status` to reflect the success
 }
 ```
 
-After account disconnection, Stripe emits a `financial_connections.account.disconnected` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests).
+After account disconnection, Stripe emits a `financial_connections.account.disconnected` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination).
 

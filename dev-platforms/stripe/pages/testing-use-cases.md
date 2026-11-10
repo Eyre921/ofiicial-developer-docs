@@ -44,7 +44,7 @@ If your account still has the legacy test mode sandbox, you can use it for exist
 
 ## Sandboxes versus live mode 
 
-All Stripe API requests occur in either a sandbox or *live mode* (Use this mode when you’re ready to launch your app. Card networks or payment providers process payments). API objects in one mode aren’t accessible to the other. For example, a test [Product](https://docs.stripe.com/api/products/object.md) object can’t be part of a live mode payment.
+All Stripe API requests occur in either a sandbox or *live mode* (Use this mode when you're ready to launch your app in production. Live mode processes real payments). API objects in one mode aren’t accessible to the other. For example, a test [Product](https://docs.stripe.com/api/products/object.md) object can’t be part of a live mode payment.
 
 | Type | When to use | Objects | How to use | Considerations |
 | --- | --- | --- | --- | --- |

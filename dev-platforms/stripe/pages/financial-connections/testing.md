@@ -22,7 +22,7 @@ When you provide [Stripe.js](https://docs.stripe.com/js.md) with a Financial Con
 
 Features like [balances](https://docs.stripe.com/financial-connections/balances.md), [account ownership](https://docs.stripe.com/financial-connections/ownership.md), and [transactions](https://docs.stripe.com/financial-connections/transactions.md) work the same way as they do in live mode, except they return testing data instead of real account data.
 
-Sandbox *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) are separate from live webhooks. Learn about [testing your webhook integrations](https://docs.stripe.com/webhooks.md#test-webhook).
+Sandbox *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) are separate from live webhooks. Learn about [testing your webhook integrations](https://docs.stripe.com/webhooks.md#test-webhook).
 
 ## Testing different user authentication scenarios [Client-side]
 

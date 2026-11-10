@@ -569,7 +569,7 @@ curl https://api.stripe.com/v1/transfers/{{TRANSFER_ID}}/reversals \
   -d amount=1000
 ```
 
-To automatically create a Transfer Reversal when the Checkout Session is completed, create a *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to be notified for [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) events.
+To automatically create a Transfer Reversal when the Checkout Session is completed, create a *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to be notified for [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) events.
 
 This option is best suited for transactions that don’t require currency exchange.
 
@@ -637,7 +637,7 @@ curl https://api.stripe.com/v1/transfers/{{TRANSFER_ID}}/reversals \
   -d amount=1000
 ```
 
-To automatically create a Transfer Reversal when the Invoice is paid, create a *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to be notified for [invoice.payment_succeeded](https://docs.stripe.com/api/events/types.md#event_types-invoice.payment_succeeded) events.
+To automatically create a Transfer Reversal when the Invoice is paid, create a *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to be notified for [invoice.payment_succeeded](https://docs.stripe.com/api/events/types.md#event_types-invoice.payment_succeeded) events.
 
 This option is best suited for transactions that don’t require currency exchange.
 
@@ -722,7 +722,7 @@ curl https://api.stripe.com/v1/transfers/{{TRANSFER_ID}}/reversals \
   -d amount=1000
 ```
 
-To automatically create a Transfer Reversal when the Subscription Invoice is paid, create a *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to be notified of [invoice.payment_succeeded](https://docs.stripe.com/api/events/types.md#event_types-invoice.payment_succeeded) events.
+To automatically create a Transfer Reversal when the Subscription Invoice is paid, create a *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to be notified of [invoice.payment_succeeded](https://docs.stripe.com/api/events/types.md#event_types-invoice.payment_succeeded) events.
 
 This option is best suited for transactions that don’t require currency exchange.
 
@@ -790,7 +790,7 @@ curl https://api.stripe.com/v1/transfers/{{TRANSFER_ID}}/reversals \
   -d amount=1000
 ```
 
-To automatically create a Transfer Reversal when the PaymentIntent succeeds, create a *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to be notified of [payment_intent.succeeded](https://docs.stripe.com/api/events/types.md#event_types-payment_intent.succeeded) events.
+To automatically create a Transfer Reversal when the PaymentIntent succeeds, create a *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to be notified of [payment_intent.succeeded](https://docs.stripe.com/api/events/types.md#event_types-payment_intent.succeeded) events.
 
 This option is best suited for transactions that don’t require currency exchange.
 

@@ -100,7 +100,7 @@ If you use hosted or embedded checkout pages and enable tax ID collection, the U
 
 ## Retrieve customer tax ID details after a session
 
-Checkout includes provided tax IDs on the resulting [Session](https://docs.stripe.com/api/checkout/sessions/object.md) object. After each completed Session, Checkout emits a [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event that you can listen for in a *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) endpoint. If you want to retrieve the collected tax ID from the Session object, it’s available under the Session’s [customer_details.tax_ids](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details-tax_ids) array:
+Checkout includes provided tax IDs on the resulting [Session](https://docs.stripe.com/api/checkout/sessions/object.md) object. After each completed Session, Checkout emits a [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event that you can listen for in a *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) endpoint. If you want to retrieve the collected tax ID from the Session object, it’s available under the Session’s [customer_details.tax_ids](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details-tax_ids) array:
 
 ```json
 {

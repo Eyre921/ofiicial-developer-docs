@@ -512,7 +512,7 @@ Stripe reports both risk and compliance requirements in the `Capability` object�
 
 You can preview what information is needed from your connected account for a particular capability either before or after that capability has been requested.
 
-When you request capabilities, it triggers an `account.updated` *event* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) and the `Account`’s requirements can change. To enable a requirement faster and avoid disabling the `Account`, preview the requirements and collect any required information before requesting the capability.
+When you request capabilities, it triggers an `account.updated` *event* (A configurable endpoint that executes when it receives certain event notifications from an event destination) and the `Account`’s requirements can change. To enable a requirement faster and avoid disabling the `Account`, preview the requirements and collect any required information before requesting the capability.
 
 The following example [lists](https://docs.stripe.com/api/capabilities/retrieve.md) the requirements for an `Account`’s `card_payments` capability.
 

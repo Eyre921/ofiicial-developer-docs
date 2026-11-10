@@ -6,6 +6,10 @@ path: fine-tuning/managed-finetuning-intro
 
 Fine-tune open-weight models on Fireworks-managed infrastructure with no custom training code, using supervised fine-tuning or preference optimization.
 
+> [!WARNING]
+>
+> Managed SFT and DPO no longer accept new jobs. Your trained models stay deployable. To keep training, follow [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
+
 Give Fireworks your data and configuration. The platform handles scheduling, training, checkpointing, and model output. Training data uses the **OpenAI-compatible chat completion format**, so existing OpenAI SFT datasets work with no conversion required.
 
 ## How to launch managed training

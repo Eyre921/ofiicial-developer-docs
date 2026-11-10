@@ -2115,6 +2115,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/reference/enterprise-administrators/agentic-audit-log-events
 /en/copilot/reference/enterprise-administrators/enterprise-managed-settings
 /en/copilot/reference/enterprise-administrators/mcp-private-registry-enforcement
+/en/copilot/reference/enterprise-administrators/opentelemetry-reference
 /en/copilot/reference/enterprise-administrators/policy-conflicts
 /en/copilot/tutorials
 /en/copilot/tutorials/copilot-cookbook
@@ -2717,6 +2718,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/commits/statuses
 /en/rest/copilot
 /en/rest/copilot/copilot-cloud-agent-management
+/en/rest/copilot/copilot-code-review
 /en/rest/copilot/copilot-coding-agent-management
 /en/rest/copilot/copilot-content-exclusion-management
 /en/rest/copilot/copilot-team-customizations
@@ -2821,6 +2823,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/pulls
 /en/rest/pulls/agent-merge
 /en/rest/pulls/comments
+/en/rest/pulls/copilot-code-review
 /en/rest/pulls/pulls
 /en/rest/pulls/review-requests
 /en/rest/pulls/reviews

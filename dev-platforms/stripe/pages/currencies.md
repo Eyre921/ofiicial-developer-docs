@@ -149,7 +149,7 @@ You can accept additional [payment methods](https://docs.stripe.com/payments/pay
 
 ### Review EEA card pricing 
 
-Cards issued in the *European Economic Area* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and three additional states that are part of the European Free Trade Association) (EEA) often have fees that differ from other regions. Processing costs can vary by issuing region because of cross-border fees and exchange rates, which means EEA-issued cards can incur different fees depending on the transaction currency.
+Cards issued in the *European Economic Area* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and additional states that are part of the European Free Trade Association) (EEA) often have fees that differ from other regions. Processing costs can vary by issuing region because of cross-border fees and exchange rates, which means EEA-issued cards can incur different fees depending on the transaction currency.
 
 Use these region-specific fees to inform your pricing when you accept multiple currencies. Stripe defines EEA cards as cards issued in the following countries:
 

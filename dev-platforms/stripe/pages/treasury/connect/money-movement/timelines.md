@@ -14,7 +14,7 @@ The banking partners and payment networks Treasury for platforms integrates with
 
 | Network | Behavior |
 | --- | --- |
-| `ach` | `OutboundPayment` and `OutboundTransfer` requests processed before the cutoff time are submitted to our banking partner on the same day. These transfers are expected to arrive at the receiving bank within the next 1–2 business days. Same-day *ACH* (Automated Clearing House (ACH) is a US financial network used for electronic payments and money transfers that doesn’t rely on paper checks, credit card networks, wire transfers, or cash) transactions arrive at the receiving bank the same business day if the request is received before the cutoff time. |
+| `ach` | `OutboundPayment` and `OutboundTransfer` requests processed before the cutoff time are submitted to our banking partner on the same day. These transfers are expected to arrive at the receiving bank within the next 1–2 business days. Same-day *ACH* (Automated Clearing House (ACH) is a US financial network used for electronic payments and money transfers that doesn't rely on paper checks, credit card networks, wire transfers, or cash) transactions arrive at the receiving bank the same business day if the request is received before the cutoff time. |
 | `us_domestic_wire` | `OutboundPayment` and `OutboundTransfer` requests processed before the cutoff are expected to arrive at the receiving bank on the same business day. |
 | `stripe` | `OutboundPayment` and `OutboundTransfer` requests using the `stripe` network post immediately and arrive at the receiving financial account within 30 minutes, both during and outside of business hours. |
 

@@ -202,7 +202,7 @@ To configure the Stripe library, call `loadStripe()` with your Stripe publishabl
 
 ### Load Stripe.js
 
-Use *Stripe.js* (Use Stripe.js’ APIs to tokenize customer information, collect sensitive card data, and accept payments with browser payment APIs) to remain *PCI compliant* (Any party involved in processing, transmitting, or storing credit card data must comply with the rules specified in the Payment Card Industry (PCI) Data Security Standards. PCI compliance is a shared responsibility and applies to both Stripe and your business) by sending payment details directly to Stripe without hitting your server. Always load Stripe.js from *js.stripe.com* to remain compliant. Don’t include the script in a bundle or host it yourself.
+Use *Stripe.js* (A library you can use to tokenize customer information, collect sensitive card data, and accept payments in a browser) to remain *PCI compliant* (Any party involved in processing, transmitting, or storing credit card data must comply with the rules specified in the Payment Card Industry (PCI) Data Security Standards. PCI compliance is a shared responsibility and applies to both Stripe and your business) by sending payment details directly to Stripe without hitting your server. Always load Stripe.js from *js.stripe.com* to remain compliant. Don’t include the script in a bundle or host it yourself.
 
 You can load Stripe.js by including the script in your HTML file or using [loadStripe](https://github.com/stripe/stripe-js/blob/master/README.md#loadstripe).
 

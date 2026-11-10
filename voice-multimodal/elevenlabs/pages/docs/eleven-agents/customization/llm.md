@@ -73,6 +73,13 @@ Currently, the following models are natively supported and can be configured via
 |                | Claude Sonnet 4.5      |
 |                | Claude Haiku 4.5       |
 
+> **Warning**
+>
+> Gemini 2.5 Flash and Gemini 2.5 Flash Lite are deprecated and will be removed on **November 30,
+> 2026**. From November 15, 2026, conversations on agents that use them move in stages to Gemini 3.5
+> Flash and Gemini 3.5 Flash-Lite respectively. Agents keep running without changes. To use a
+> different model, select it in the agent settings.
+
 > **Note**
 >
 > Pricing is typically denoted in USD per 1 million tokens unless specified otherwise. A token is a

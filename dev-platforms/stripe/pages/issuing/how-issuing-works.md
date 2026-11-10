@@ -12,7 +12,7 @@ Stripe [Issuing](https://stripe.com/issuing) allows you to create, manage, and s
 
 We partner with multiple trusted banks to provide an embedded finance infrastructure for you to build new financial service offerings. We also partner with the Mastercard and Visa card networks so you can issue cards [on either network or on both](https://docs.stripe.com/issuing/customize-your-program.md#network-preference).
 
-> Issuing is available in the US, UK, and many *European Economic Area* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and three additional states that are part of the European Free Trade Association) (EEA) countries. Stablecoin-backed card programs are also available in more than 60 countries across the US, Latin America, the Caribbean, Africa, and Asia.
+> Issuing is available in the US, UK, and many *European Economic Area* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and additional states that are part of the European Free Trade Association) (EEA) countries. Stablecoin-backed card programs are also available in more than 60 countries across the US, Latin America, the Caribbean, Africa, and Asia.
 
 In the US, you can provide cards to individuals who live in the same country where the business is established. If your business is established in the EU or the UK, you can provide cards to individuals who live in EEA countries and the UK. See [Globally integrate Issuing](https://docs.stripe.com/issuing/global.md) for a full list of supported countries.
 

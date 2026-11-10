@@ -144,7 +144,7 @@ If you [automatically charge](https://docs.stripe.com/invoicing/automatic-chargi
 
 ## Disable Stripe invoice emails and send your own 
 
-Stripe can use *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to notify you of changes to your invoices—when they’re finalized, paid, marked uncollectible, and so on. For each event that you receive, you can construct and deliver your own emails. If you disable finalized invoice emails, Stripe continues to send webhooks as a reminder for your own email solution. Learn more about [webhook endpoints and invoices](https://docs.stripe.com/billing/subscriptions/webhooks.md#understand).
+Stripe can use *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to notify you of changes to your invoices—when they’re finalized, paid, marked uncollectible, and so on. For each event that you receive, you can construct and deliver your own emails. If you disable finalized invoice emails, Stripe continues to send webhooks as a reminder for your own email solution. Learn more about [webhook endpoints and invoices](https://docs.stripe.com/billing/subscriptions/webhooks.md#understand).
 
 ## Email PDF attachments 
 

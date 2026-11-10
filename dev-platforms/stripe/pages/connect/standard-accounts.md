@@ -105,7 +105,7 @@ Stripe issues a redirect to this URL when the user completes the Connect Onboard
 
 No state is passed through this URL. After redirecting a user to your `return_url`, check the state of the `details_submitted` parameter on their account by doing either of the following:
 
-- Listening to `account.updated` *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests)
+- Listening to `account.updated` *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination)
 - Calling the [Accounts](https://docs.stripe.com/api/accounts.md) API and inspecting the returned object
 
 #### refresh_url

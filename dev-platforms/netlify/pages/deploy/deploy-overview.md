@@ -365,7 +365,7 @@ Recognized authors include Owners, Developers, and [Git Contributors](/manage/ac
 
 Unrecognized authors, or non-team members, are people, automated services, or bots who are not associated with a Netlify team member account. This includes some Git-based services, like a CMS. This policy does not apply to build hooks. Deploys triggered by build hooks are treated as trusted deploys.
 
-Similar to the [Sensitive Variables policy](/build/environment-variables/get-started/#sensitive-variable-policy), the Deploy Request Policy treats deploys from unrecognized authors as "untrusted."
+Similar to the [untrusted deploys policy](#untrusted-deploys-policy), the Deploy Request Policy treats deploys from unrecognized authors as "untrusted."
 
 ### Working with deploy requests from non-team members
 
@@ -467,9 +467,42 @@ To reject a non-team member's pending deploy request, go to the
 Site overview
  page and select **Reject** next to the pending deploy. The pull/merge request or changes from a Git commit will not be deployed, even if it is merged, and any future deploys by the same contributor will continue to require approval.
 
-### Sensitive variable policy
+### Untrusted deploys policy
 
-For sites connected to public repositories, Netlify may block some deploys depending on sensitive variable policy settings. A site member can approve or reject these deploys. Check out our [sensitive variable policy](/build/environment-variables/get-started/#sensitive-variable-policy) docs for more information.
+Projects connected to public repositories can receive Deploy Previews from anyone who makes a pull/merge request from a fork. These builds run code you haven't reviewed yet. They can access your environment variables and cause unexpected resource and compute consumption on your team's account. Deploys from people, automated services, or bots from outside your Netlify team ([unrecognized authors](#deploy-permissions)) are always treated as untrusted deploys. This policy can be set for a specific project and is separate from the Deploy Request Policy, which is set for your entire team and covers deploys from private repositories.
+
+### Tip - Site members' deploys are trusted
+
+Team members can trigger deploys without restrictions, even from forks, as long as their user account with a Git provider is connected to their Netlify user ID on your team. 
+
+If a team member's deploys are being treated as untrusted, make sure they [connect their Git provider account](/manage/accounts-and-billing/user-settings#connect-your-git-provider-accounts) to their Netlify user.
+
+Netlify allows you to control how untrusted deploys are handled by choosing an untrusted deploys policy. The policy is only available for projects connected to public repositories, and it includes the following options:
+
+- **Require approval** (default)**:** policy that requires all untrusted deploys to be approved by a [team member with access to the project](/manage/accounts-and-billing/team-management/manage-team-members#manage-site-member-access) before the build can start. Deploys awaiting approval can be found at the top of the deploy list on the site **Deploys** tab. Accepting or rejecting a deploy request does not affect the status of the originating pull/merge request.
+
+  ![deploy list entry for an untrusted deploy request, including the Deploy Preview number, Git author username, link to review changes, and buttons to accept or reject.](/images/deploy-overview-untrusted-deploy-request.png)
+
+- **Build without sensitive variables:** policy that lets untrusted deploys build automatically, but variables identified as sensitive will not be passed to the deploy environment. You can adjust your site code to accommodate builds without sensitive variables present, or you can declare "public" variable values for the `deploy-preview` context. These deploys can still cause unexpected resource and compute consumption on your team's account.
+- **Build without restrictions:** policy that treats untrusted deploys like any other Deploy Preview, building automatically with all variables present. Use this option only if you're comfortable potentially revealing your environment variables publicly and allowing unexpected resource and compute consumption on your team's account.
+
+By default, all untrusted deploys require approval. Learn more about how [sensitive variables](/build/environment-variables/get-started#untrusted-deploys-and-sensitive-variables) are identified and excluded under the **Build without sensitive variables** option.
+
+You can change this policy at any time in 
+### NavigationPath Component:
+
+Project configuration > Developer settings > Continuous deployment > Untrusted deploys policy
+.
+
+![Untrusted deploys policy settings in edit mode, with options to require approval, build without sensitive variables, or build without restrictions.](/images/deploy-overview-untrusted-deploys-policy.png)
+
+### Caution - Untrusted deploys policy for GitHub Enterprise Server or GitLab self-managed
+
+Because [GitHub Enterprise Server and GitLab self-managed instances]( /build/git-workflows/self-hosted-git) enable a higher degree of access control, we treat all repositories from these instances as private. This means you won't be able to set an untrusted deploys policy for a site linked to a GitHub Enterprise Server or GitLab self-managed repository.
+
+#### Deploy request notifications
+
+When your untrusted deploys policy is set to require approval for all untrusted deploys, you can add deploy notifications to trigger when a deploy request is **pending**, **approved**, or **rejected**. Visit the [deploy notifications doc](/deploy/deploy-notifications) to learn more about the types of notifications available and how to configure them.
 
 ## Netlify deploys as previews
 

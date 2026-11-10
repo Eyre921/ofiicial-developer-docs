@@ -13,7 +13,7 @@ description: "Use environment variables to configure your site's build and funct
 
 Netlify offers multiple ways to securely create, update, and use environment variables for your sites.
 
-This page outlines how to [create and manage](#create-environment-variables) site environment variables and shared environment variables, how to [use environment variables](#use-environment-variables) once they are declared, how to work with [`.env` files](#work-with-env-files) on Netlify, and how to configure your site's [sensitive variable policy](#sensitive-variable-policy).
+This page outlines how to [create and manage](#create-environment-variables) site environment variables and shared environment variables, how to [use environment variables](#use-environment-variables) once they are declared, how to work with [`.env` files](#work-with-env-files) on Netlify, and how [untrusted deploys](#untrusted-deploys-and-sensitive-variables) handle sensitive variables.
 
 ## Create environment variables
 
@@ -269,38 +269,17 @@ netlify env:list --plain --context production
 netlify env:list --plain --context production > .env
 ```
 
-## Sensitive variable policy
+## Untrusted deploys and sensitive variables
 
-Some environment variables you may want to keep private. This can pose a challenge for sites connected to public repositories, where anyone can trigger a Deploy Preview by making a pull/merge request from a fork. Deploys from people, automated services, or bots from outside your Netlify team ([unrecognized authors](/deploy/deploy-overview#deploy-permissions) are always treated as untrusted deploys.
+If your project is connected to a public repository, Deploy Previews from forks are handled by your project's [untrusted deploys policy](/deploy/deploy-overview#untrusted-deploys-policy).
 
-### Tip - Site members' deploys are trusted
+If your untrusted deploys policy is set to **Build without sensitive variables**, untrusted deploys build automatically, but variables identified as sensitive are not passed to the deploy environment. This means that extensions or integrations that rely on those variables may not work in these Deploy Previews. Learn more about the [untrusted deploys policy options](/deploy/deploy-overview#untrusted-deploys-policy).
 
-Git provider accounts connected to a site member can trigger deploys without restrictions, even from forks. If a site member's deploys are being treated as untrusted, make sure they [connect their Git provider account](/manage/accounts-and-billing/user-settings#connect-your-git-provider-accounts) to their Netlify user.
+You can adjust your project's code to accommodate builds without sensitive variables present, or you can set a [separate value for the `deploy-preview` deploy context](/build/environment-variables/overview#value-per-deploy-context) that's safe to expose publicly.
 
-Netlify allows you to control whether untrusted deploys can access sensitive environment variables by choosing a sensitive variable policy. The policy is only available for sites connected to public repositories, and it includes the following options:
+Netlify always treats an environment variable as sensitive if it's marked as **Contains secret values** (via the [Secrets Controller](/build/environment-variables/secrets-controller) feature). For variables not explicitly marked in this way, Netlify automatically attempts to detect if the variable is likely to hold a secret. 
 
-- **Require approval** (default)**:** policy that requires all untrusted deploys to be approved by a [site member](/manage/accounts-and-billing/team-management/manage-team-members#manage-site-member-access) before the build can start. Deploys awaiting approval can be found at the top of the deploy list on the site **Deploys** tab. Accepting or rejecting a deploy request does not affect the status of the originating pull/merge request.
+Automatic detection looks at both the variable name (e.g., names including terms like `PASSWORD`, `TOKEN`, `SECRET`, `API_KEY`) and its value (e.g., values that match a known credential format such as AWS access keys).
 
-  ![deploy list entry for an untrusted deploy request, including the Deploy Preview number, Git author username, link to review changes, and buttons to accept or reject.](/images/environment-variables-sensitive-variable-policy-deploy-request.png)
-
-- **Deploy without sensitive variables:** policy that lets untrusted deploys build automatically, but variables identified as sensitive will not be passed to the deploy environment. You can adjust your site code to accommodate builds without sensitive variables present, or you can declare "public" variable values for the `deploy-preview` context.
-- **Deploy without restrictions:** policy that treats untrusted deploys like any other Deploy Preview, building automatically with all variables present. Use this option only if you are not concerned about the potential exposure of any of your site's environment variables.
-
-By default, when Netlify detects potentially sensitive environment variables in your project configuration, we automatically apply the default setting above, requiring approval for all untrusted deploys. For customers using Netlify's [Secrets Controller](/build/environment-variables/secrets-controller) feature, all environment variables marked as `Contains secret values` are included in the sensitive variable policy enforcement.
-
-You can change this policy at any time in 
-### NavigationPath Component:
-
-Project configuration > Environment variables > Site policies
-.
-
-![](/images/environment-variables-overview-sensitive-variable-policy.png)
-
-### Caution - Sensitive variable policy for GitHub Enterprise Server or GitLab self-managed
-
-Because [GitHub Enterprise Server and GitLab self-managed instances]( /build/git-workflows/self-hosted-git) enable a higher degree of access control, we treat all repositories from these instances as private. This means you won't be able to set a sensitive variable policy for a site linked to a GitHub Enterprise Server or GitLab self-managed repository.
-
-#### Deploy request notifications
-
-When your sensitive variable policy is set to require approval for all untrusted deploys, you can add deploy notifications to trigger when a deploy request is **pending**, **approved**, or **rejected**. Visit the [deploy notifications doc](/deploy/deploy-notifications) to learn more about the types of notifications available and how to configure them.
+Automatic detection is based on heuristics, so to make sure a value is always treated as sensitive, it's best to explicitly mark it as **Contains secret values**.
 

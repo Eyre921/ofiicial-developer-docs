@@ -20,7 +20,7 @@ To use the API and webhook examples in this guide, complete an [API integration]
 
 1. Stripe evaluates Capital connected accounts with active financing for refill financing eligibility on a daily basis.
 
-2. When a refill offer is created, you receive a `capital.financing_offer.created` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) which contains `"product_type": "refill"` to indicate it’s a refill offer.
+2. When a refill offer is created, you receive a `capital.financing_offer.created` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) which contains `"product_type": "refill"` to indicate it’s a refill offer.
 
 3. Depending on the `product_type` and `offered_terms.campaign_type` fields, use approved messaging to communicate the financing offer to the connected account through email, [embedded component](https://docs.stripe.com/capital/embedded-component-integration.md), or in-app push notification.
 
@@ -28,7 +28,7 @@ To use the API and webhook examples in this guide, complete an [API integration]
 
 5. Connected accounts who accept the refill offer might be offered a discount (taken as a percentage on the remaining premium of their existing balance). This discount rate is exposed as `previous_financing_fee_discount_rate` under `offered_terms`.
 
-6. If the connected account accepts the refill offer, we send a `capital.financing_offer.accepted` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. The event payload contains an `accepted_terms` field with the amounts selected by the connected account. The `previous_financing_fee_discount_amount` field is `null` until the connected account fully pays the previous financing, and we determine the discount amount. If there’s no discount, `previous_financing_fee_discount_amount` remains `null` even after the previous financing is fully repaid.
+6. If the connected account accepts the refill offer, we send a `capital.financing_offer.accepted` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) event. The event payload contains an `accepted_terms` field with the amounts selected by the connected account. The `previous_financing_fee_discount_amount` field is `null` until the connected account fully pays the previous financing, and we determine the discount amount. If there’s no discount, `previous_financing_fee_discount_amount` remains `null` even after the previous financing is fully repaid.
 
    Example webhook:
 

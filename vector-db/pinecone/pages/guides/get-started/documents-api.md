@@ -36,6 +36,10 @@ Each search request ranks results by the clauses in `score_by`, and an optional 
 
 Full-text clauses can be combined in one request, but a vector or embedding clause must be the only one. Any search can also [filter on metadata](/guides/search/filter-by-metadata), such as `{"category": {"$eq": "accessories"}}`.
 
+For when to use each approach, see [Search overview](/guides/search/search-overview).
+
+### Example
+
 In this example, the first search is a full-text search for an exact model number. The second is a semantic search with integrated embedding, filtered to accessories whose title contains that number:
 
 ```python Python expandable theme={null}
@@ -87,8 +91,6 @@ for match in results.matches:
 ```
 
 The first search returns both KB-1024 products. The second returns only the keycaps. The keyboard isn't an accessory, and the mouse's title doesn't contain KB-1024.
-
-For when to use each approach, see [Search overview](/guides/search/search-overview).
 
 ## Legacy indexes
 

@@ -182,7 +182,7 @@ When your customer clicks on your logo in a Checkout Session without completing 
 
 When your customer completes a payment, they’re redirected to the URL that you specified as the `success_url`. This is typically a page on your website that informs your customer that their payment was successful.
 
-Use the Dashboard, a custom *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests), or a third-party plugin to handle post-payment events like sending an order confirmation email to your customer, logging the sale in a database, or starting a shipping workflow.
+Use the Dashboard, a custom *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination), or a third-party plugin to handle post-payment events like sending an order confirmation email to your customer, logging the sale in a database, or starting a shipping workflow.
 
 #### Dashboard
 
@@ -323,7 +323,7 @@ const {error} = await stripe.redirectToCheckout({
 
 You can collect a customer’s shipping address in Checkout by setting `shippingAddressCollection` in the `redirectToCheckout` call. You must also specify which countries you ship to by configuring the `allowedCountries` property with an array of [two-letter ISO country codes](https://www.nationsonline.org/oneworld/country_code_list.htm). These countries appear in the Country dropdown in the shipping address form on Checkout.
 
-The collected shipping address is saved to the Checkout Session object on the `shipping` property when the session has been completed by the customer and is included in the payload of the `checkout.session.completed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests). Additionally, shipping information appears in the **Checkout summary** section of your payments details page in the Dashboard.
+The collected shipping address is saved to the Checkout Session object on the `shipping` property when the session has been completed by the customer and is included in the payload of the `checkout.session.completed` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination). Additionally, shipping information appears in the **Checkout summary** section of your payments details page in the Dashboard.
 
 > Shipping country options are specified client-side, so be sure to validate that addresses are from your expected countries during *fulfillment* (Fulfillment is the process of providing the goods or services purchased by a customer, typically after payment is collected). If you require stricter validation up front, use the [client & server integration](https://docs.stripe.com/payments/accept-a-payment.md?integration=checkout).
 
@@ -384,5 +384,5 @@ const {error} = await stripe.redirectToCheckout({
 // using `error.message`.
 ```
 
-> Stripe creates a new *Customer* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) object when the Checkout Session completes successfully. Passing the email address of a returning customer results in the creation of a new Customer object with a duplicate email address. Consider using the [client & server integration](https://docs.stripe.com/payments/accept-a-payment.md?integration=checkout) if you want to reuse existing Customer objects.
+> Stripe creates a new *Customer* (Customer objects and some v2 Account objects represent customers of your business. They let you reuse payment methods and track multiple payments) object when the Checkout Session completes successfully. Passing the email address of a returning customer results in the creation of a new Customer object with a duplicate email address. Consider using the [client & server integration](https://docs.stripe.com/payments/accept-a-payment.md?integration=checkout) if you want to reuse existing Customer objects.
 

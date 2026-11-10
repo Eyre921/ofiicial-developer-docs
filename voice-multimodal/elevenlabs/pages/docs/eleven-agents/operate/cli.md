@@ -305,7 +305,7 @@ Each agent configuration includes:
       "language": "en",
       "prompt": {
         "prompt": "You are a helpful AI assistant.",
-        "llm": "gemini-2.5-flash",
+        "llm": "gemini-3.5-flash",
         "temperature": 0.0
       }
     },

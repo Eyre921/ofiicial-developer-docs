@@ -52,7 +52,7 @@ Saved payment method details can continue to work even if the issuing bank repla
 
 Automatic card updates require *card issuers* (The entity that issued a payment card to a cardholder. This could be a bank, such as with the Visa or Mastercard network, or it could be the card network itself, such as with American Express) to participate with the network and provide this information. It’s widely supported in the United States, allowing Stripe to automatically update most American Express, Visa, Mastercard, and Discover cards issued there. International support varies from country to country. It isn’t possible to identify cards that support automatic updates.
 
-You can listen for Stripe *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) to learn of card update activity:
+You can listen for Stripe *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) to learn of card update activity:
 
 - The `payment_method.updated` event notifies you of updates to a card through an API call.
 - The `payment_method.automatically_updated` event notifies you of automatic card updates from the network.

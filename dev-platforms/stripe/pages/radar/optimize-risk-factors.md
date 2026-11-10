@@ -8,7 +8,7 @@ path: radar/optimize-risk-factors
 
 Follow our recommendations to maximize the effectiveness of Stripe Radar.
 
-Stripe *Radar* (Stripe Radar helps detect and block fraud for any type of business using machine learning that trains on data across millions of global companies. It’s built into Stripe and requires no additional setup to get started) uses AI models that evaluate many risk factors to distinguish fraudulent and legitimate payments. It computes some risk factors automatically, but many depend on the data your integration sends. When you provide more relevant data, fraud prevention improves across all [supported payment methods](https://docs.stripe.com/radar/supported-payment-methods.md). Try to collect enough information to support accurate risk assessment without overloading your checkout flow.
+Stripe *Radar* (Stripe Radar helps detect and block fraud by using machine learning. It's built into Stripe and requires no additional setup to get started) uses AI models that evaluate many risk factors to distinguish fraudulent and legitimate payments. It computes some risk factors automatically, but many depend on the data your integration sends. When you provide more relevant data, fraud prevention improves across all [supported payment methods](https://docs.stripe.com/radar/supported-payment-methods.md). Try to collect enough information to support accurate risk assessment without overloading your checkout flow.
 
 ## Integrations and risk factor completeness 
 

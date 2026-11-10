@@ -223,7 +223,7 @@ These attributes apply across multiple [supported payment methods](https://docs.
 
 ### Payment instrument fingerprint
 
-Payment instrument fingerprint attributes work with the unique identifier for payment instruments across cards, *ACH* (Automated Clearing House (ACH) is a US financial network used for electronic payments and money transfers that doesn’t rely on paper checks, credit card networks, wire transfers, or cash) bank accounts, and *SEPA* (Single Euro Payments Area (SEPA) is a payment-integration initiative to simplify bank transfers involving euros. Several dozen countries comprise SEPA. Most of the participating countries are in the European Union and have euro-based economies, but this is not a requirement) bank accounts.
+Payment instrument fingerprint attributes work with the unique identifier for payment instruments across cards, *ACH* (Automated Clearing House (ACH) is a US financial network used for electronic payments and money transfers that doesn't rely on paper checks, credit card networks, wire transfers, or cash) bank accounts, and *SEPA* (Single Euro Payments Area (SEPA) is a payment-integration initiative to simplify bank transfers involving euros. Several dozen countries comprise SEPA. Most of the participating countries are in the European Union and have euro-based economies, but this is not a requirement) bank accounts.
 
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |

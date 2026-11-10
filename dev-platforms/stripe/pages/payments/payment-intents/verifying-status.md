@@ -101,7 +101,7 @@ The following are some [possible statuses](https://docs.stripe.com/api/payment_i
 
 ## Monitor a PaymentIntent with webhooks 
 
-Stripe can send *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) events to your server to notify you when the status of a PaymentIntent changes, which you can use for purposes such as determining when to fulfill goods and services.
+Stripe can send *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) events to your server to notify you when the status of a PaymentIntent changes, which you can use for purposes such as determining when to fulfill goods and services.
 
 Don’t attempt to handle order *fulfillment* (Fulfillment is the process of providing the goods or services purchased by a customer, typically after payment is collected) on the client side because customers can leave the page after payment is complete but before the fulfillment process initiates. Instead, use webhooks to monitor the `payment_intent.succeeded` event and handle its completion asynchronously instead of attempting to initiate fulfillment on the client side.
 

@@ -215,7 +215,7 @@ Maximum amount: 30,000.00 USD
 
 Depending on the cart order size, Affirm presents customers with Pay in 30, Pay in 4, or monthly installment offers. Term lengths and cart ranges are determined by Affirm and might change at their discretion. Regardless of the underlying payment option selected, Stripe makes the full amount of the funds (minus fees) available to you upfront and Affirm collects the purchase amount from your customer, who repays Affirm directly.
 
-Affirm supports two *financing packages* (A financing package is a configuration on your Stripe account to set the Affirm payment option terms for your buyers): Standard and Enhanced. By default, businesses get the Standard financing package. Businesses with Stripe Dashboard access can view or change their financing package on the [Payment methods settings page](https://dashboard.stripe.com/login?redirect=%2Fsettings%2Fpayment_methods), except for connected accounts and platforms. Financing packages are identical across the available countries.
+Affirm supports two *financing packages* (A payment method configuration on your Stripe account that sets the Affirm payment option terms for your customers): Standard and Enhanced. By default, businesses get the Standard financing package. Businesses with Stripe Dashboard access can view or change their financing package on the [Payment methods settings page](https://dashboard.stripe.com/login?redirect=%2Fsettings%2Fpayment_methods), except for connected accounts and platforms. Financing packages are identical across the available countries.
 
 #### Standard
 
@@ -310,7 +310,7 @@ Affirm refunds are never processed as reversals. When you issue a refund, Affirm
 
 To check a refund’s status, open the payment in the [Dashboard](https://dashboard.stripe.com/payments) and click **View details** on the refund entry. You can also [retrieve the Refund object](https://docs.stripe.com/api/refunds/retrieve.md) and check its `status` field.
 
-Stripe notifies you of the final status through a `refund.updated` or `refund.failed` *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) event. When a refund succeeds, the [Refund object](https://docs.stripe.com/api/refunds/object.md) status changes to `succeeded`. If the refund fails, the status changes to `failed` and Stripe returns the amount to your Stripe balance. You must refund the customer using another method.
+Stripe notifies you of the final status through a `refund.updated` or `refund.failed` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) event. When a refund succeeds, the [Refund object](https://docs.stripe.com/api/refunds/object.md) status changes to `succeeded`. If the refund fails, the status changes to `failed` and Stripe returns the amount to your Stripe balance. You must refund the customer using another method.
 
 ### Disputes 
 

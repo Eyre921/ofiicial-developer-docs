@@ -98,7 +98,7 @@ For payments integrations such as Setup Intents, you can configure the authentic
 Financial Connections enables your users to connect their accounts in fewer steps with [Link](https://support.stripe.com/questions/link-for-financial-connections-support-for-businesses), allowing them to save and reuse their bank account details across Stripe businesses.
 ![Return user authentication flow with {% $link.brand_name %}](https://docs.stripecdn.com/391e2442acf78b631e2216e7a9c0d658f1ed689e69e9033cfe1b851318d1c673.png)
 
-For return users, launch the Financial Connections authentication flow with a *Customer* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) that has an email address. See our [use case guide](https://docs.stripe.com/financial-connections/use-cases.md) for examples of how to do this for your specific use case.
+For return users, launch the Financial Connections authentication flow with a *Customer* (Customer objects and some v2 Account objects represent customers of your business. They let you reuse payment methods and track multiple payments) that has an email address. See our [use case guide](https://docs.stripe.com/financial-connections/use-cases.md) for examples of how to do this for your specific use case.
 
 ```curl
 curl https://api.stripe.com/v1/customers \

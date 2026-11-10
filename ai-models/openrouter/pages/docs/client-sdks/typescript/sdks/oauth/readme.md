@@ -203,6 +203,7 @@ run();
 | errors.ForbiddenResponseError | 403 | application/json |
 | errors.ConflictResponseError | 409 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## listOauthJwks

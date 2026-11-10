@@ -151,7 +151,7 @@ Campaign calls count toward your workspace and agent concurrency limits. By defa
 
 ## API
 
-Campaign creation, management, and analytics are available through the ElevenLabs API, which lets you integrate campaigns into your existing workflows and applications. See the [API reference](/docs/api-reference/introduction) for the available endpoints.
+Campaign configuration, creation, management, and analytics are available through the ElevenLabs API, which lets you integrate campaigns into your existing workflows and applications. See the [Campaigns API reference](/docs/api-reference/campaigns/create) to get started.
 
 ## Best practices
 

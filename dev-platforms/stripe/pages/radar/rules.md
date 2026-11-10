@@ -213,17 +213,17 @@ You can add and manage rules from the [Radar Rules page](https://dashboard.strip
 #### To add a transaction rule
 
 1. Click **+ Add rule**.
-2. Select the rule type.
-3. In the rule editor, construct a rule using the syntax `{action} if {attribute} {operator} {value}` where:
-   - `{action}`: is how Radar responds when the rule criteria is met. This value is pre-populated based on the rule type you selected.
+2. In **When this happens**, select **Payment is attempted**.
+3. In **Then do this**, select how Radar responds when the rule criteria is met, such as **Block** or **Review**.
+4. In **If this condition is met**, enter the rule’s condition using the syntax `{attribute} {operator} {value}` where:
    - `{attribute}`: is the element of the payment to evaluate, such as the amount or card type. Begin typing with `:` to open a list of valid attributes. You can also evaluate your custom metadata by enclosing it in double colons, for example, `::product_sku::`.
    - `{operator}`: is how to compare the attribute to the value, such as `=`, `>`, `!=`, and so on.
    - `{value}`: is the value of the attribute to evaluate.
-4. Click **Test rule**.
-5. Correct any detected validation errors, if necessary.
-6. On the **Review new rule** page, review how this rule performs against your recent payments to confirm whether you want to enable it. If the rule might impact payments from more than one payment method, use the filter to view rule performance by payment method (for example, ACH or Cards).
-7. Click **Adjust traffic allocation** to change the percentage of matching payments affected by the rule. Select a percentage, then click **Apply**. Start with a small percentage and increase it as you review the rule’s performance.
-8. Click **Add rule** to apply this rule to all future transactions.
+5. Click **Test rule**.
+6. Correct any detected validation errors, if necessary.
+7. On the **Review new rule** page, review how this rule performs against your recent payments to confirm whether you want to enable it. If the rule might impact payments from more than one payment method, use the filter to view rule performance by payment method (for example, ACH or Cards).
+8. Click **Adjust traffic allocation** to change the percentage of matching payments affected by the rule. Select a percentage, then click **Apply**. Start with a small percentage and increase it as you review the rule’s performance.
+9. Click **Add rule** to apply this rule to all future transactions.
 
 ### Roll out a rule gradually
 
@@ -256,14 +256,15 @@ The Stripe rule editor has a built-in LLM assistant that constructs a Radar tran
 #### To use Radar Assistant
 
 1. On the [Radar Rules page](https://dashboard.stripe.com/test/radar/rules), click **+ Add rule**.
-2. Select the rule type.
-3. In the rule editor, click **Radar Assistant**.
-4. In the message field, enter your rule request. You might ask to:
+2. In **When this happens**, select **Payment is attempted**.
+3. In **Then do this**, select the action for your rule.
+4. Click **Radar Assistant**.
+5. In the message field, enter your rule request. You might ask to:
    - *Review payments where the card and IP countries are different.*
    - *Block Discover card payments of more than $1000.*
    - *Allow payments from stripe.com email addresses.*
-5. When the Assistant returns its suggestion, you can either enter an additional command to make adjustments to the rule, or you can click **Test rule** to see how the rule performs against your recent transaction history.
-6. When you’re satisfied with the rule, click **Add rule** to enable it for all future transactions.
+6. When the Assistant returns its suggestion, you can either enter an additional command to make adjustments to the rule, or you can click **Test rule** to see how the rule performs against your recent transaction history.
+7. When you’re satisfied with the rule, click **Add rule** to enable it for all future transactions.
 
 > #### Share your feedback
 > 
@@ -442,16 +443,16 @@ You can add and manage account rules from the **Rules** tab on the Radar page in
 #### To add an account rule
 
 1. Click **+ Add rule**.
-2. Select the rule type: **Review** or **Payout pause** (which raises a review AND payout pause).
-3. In the rule editor, construct a rule using the syntax `{action} if {attribute} {operator} {value}` where:
-   - `{action}`: is how Radar responds when the rule criteria is met. This value is pre-populated based on the rule type you selected.
+2. In **When this happens**, select **Connected account is reassessed**.
+3. In **Then do this**, select **Review connected account** or **Pause payouts** (which also raises a review).
+4. In **If this condition is met**, enter the rule’s condition using the syntax `{attribute} {operator} {value}` where:
    - `{attribute}`: is the element of the payment to evaluate, such as the amount or card type. Begin typing with `:` to open a list of valid attributes.
    - `{operator}`: is how to compare the attribute to the value, such as `=`, `>`, `!=`, and so on.
    - `{value}`: is the value of the attribute to evaluate.
-4. Click **Test rule**.
-5. Correct any detected validation errors, if necessary.
-6. On the **Review new rule** page, view the accounts that would match this rule today to confirm whether you want to enable it.
-7. Click **Activate rule** to apply this rule to all existing and future accounts.
+5. Click **Test rule**.
+6. Correct any detected validation errors, if necessary.
+7. On the **Review new rule** page, view the accounts that would match this rule today to confirm whether you want to enable it.
+8. Click **Activate rule** to apply this rule to all existing and future accounts.
 
 Testing account-level rules takes longer than transaction testing, however we recommend testing to avoid unintentionally raising accounts for review or pausing automatic payouts. First, test raising accounts for review behavior. Then, test automatic payout pauses after you’re confident the rule impacts accounts as expected.
 

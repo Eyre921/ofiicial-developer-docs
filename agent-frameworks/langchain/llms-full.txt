@@ -55429,6 +55429,19 @@ If your Slack workspace requires an admin to approve each app, Fleet saves the n
 
 Self-hosted deployments do not use the Fleet Slack manager. Instead, configure a Slack OAuth provider once for the instance, then create a custom Slack app for each agent from a manifest that Fleet generates.
 
+### Allow inbound Slack requests
+
+On BYOC and self-hosted deployments, the generated Slack app requires inbound HTTPS access to the data plane. Slack sends events and button interactions to the event subscription and interactivity URLs in the app manifest. Outbound access to the Slack Web API alone is not sufficient.
+
+Before creating the Slack app, configure one of these options:
+
+* **Public endpoint**: Make the data plane's Slack webhook endpoints publicly reachable over HTTPS. Contact support if you wish to change your data plane to have a public load balancer.
+* **Proxy service**: Keep the data plane private and forward Slack requests into the cluster through a reverse proxy with a public HTTPS endpoint. Alternatively, use a Socket Mode proxy that maintains an outbound WebSocket connection to Slack and forwards events to the trigger server. Contact support for help with the private-cluster proxy setup.
+
+Preserve the request body and Slack signature headers when reverse proxying requests. The generated app disables Socket Mode by default; using a Socket Mode proxy requires additional app and proxy configuration.
+
+This requirement applies to agents invoked from Slack. It does not apply to outbound-only Slack tools or Engine and alert notifications.
+
 ### Step 1. Set up the Slack OAuth provider
 
 Every self-hosted instance needs this one-time setup before agents can use Slack. It enables [Slack tools](#add-slack-tools) for your agents and turns on the Slack channel, which is what lets you add custom apps in Step 2.
@@ -55619,6 +55632,7 @@ To add Slack tools:
 
 If your agent is not responding, try the following:
 
+* On BYOC or self-hosted deployments, verify that Slack can reach both manifest request URLs through your public endpoint or reverse proxy. A private-only endpoint cannot receive Slack events.
 * Check the thread in the Fleet UI for errors.
 * Verify the agent was invited to the channel.
 * Confirm the Slack channel is not paused in the **Channels** drawer.
@@ -72185,7 +72199,7 @@ Amazon Bedrock supports three credential methods, which you set in the provider 
 
 | Method | Secrets | Notes |
 | - | - | - |
-| IAM role (recommended) | `AWS_IAM_ROLE_ARN` | The gateway assumes the role and uses short-lived credentials, so LangSmith stores no long-lived AWS secret. Available on LangSmith Cloud only. |
+| IAM role (recommended) | `AWS_IAM_ROLE_ARN` | The gateway assumes the role and uses short-lived credentials, so LangSmith stores no long-lived AWS secret. Available on LangSmith Cloud and on BYOC AWS data planes. |
 | AWS credentials | `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`, plus `AWS_SESSION_TOKEN` for temporary credentials | Both keys are required. Temporary credentials stop working when they expire. |
 | Bearer token | `AWS_BEARER_TOKEN_BEDROCK` | An [Amazon Bedrock API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html). |
 
@@ -72199,16 +72213,38 @@ Every method also reads an optional `AWS_BEDROCK_REGION`, which defaults to `us-
 
 > [!NOTE]
 >
-> The IAM role method is available on LangSmith Cloud only. The provider form does not show it on [self-hosted LangSmith](/langsmith/self-hosted) or [BYOC](/langsmith/byoc). On BYOC, use AWS credentials or a bearer token. On self-hosted, give the gateway pod its own AWS credentials instead, as described in [Configure Amazon Bedrock](#configure-amazon-bedrock).
+> The IAM role method is not available on [self-hosted LangSmith](/langsmith/self-hosted) or on BYOC GCP and Azure data planes. On self-hosted, give the gateway pod its own AWS credentials instead, as described in [Configure Amazon Bedrock](#configure-amazon-bedrock). On BYOC GCP and Azure data planes, use AWS credentials or a bearer token. On [BYOC](/langsmith/byoc) AWS data planes, the role needs the `LangSmithBedrock=true` tag and a different trust policy. See [IAM trusted entity on BYOC](/langsmith/playground-model-providers#iam-trusted-entity-on-byoc).
 
-On LangSmith Cloud, the `AWS_IAM_ROLE_ARN` secret set here is shared with the [Playground and LLM-as-a-judge evaluators](/langsmith/playground-model-providers#iam-trusted-entity-recommended). One role covers all three.
+On LangSmith Cloud, the `AWS_IAM_ROLE_ARN` secret set here is shared with the [Playground and LLM-as-a-judge evaluators](/langsmith/playground-model-providers#iam-trusted-entity-recommended). One role covers all three. The permissions below also cover the Playground and evaluators.
 
 To let the gateway assume an IAM role:
 
-1. In AWS, create an IAM role with permission to invoke the Bedrock models you use.
+1. In AWS, create an IAM role with permission to invoke the Bedrock models you use. The gateway calls Bedrock with short-term API keys. The role therefore also needs `bedrock:CallWithBearerToken` and `bedrock-mantle:*`:
+
+   ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": [
+           "bedrock:InvokeModel",
+           "bedrock:InvokeModelWithResponseStream",
+           "bedrock:CallWithBearerToken",
+           "bedrock-mantle:*"
+         ],
+         "Resource": "*"
+       }
+     ]
+   }
+   ```
+
 2. In LangSmith, select the workspace that calls Bedrock. Go to **Settings > Integrations > Provider secrets** and click **+ Secret**.
+
 3. Under **Provider**, select **Amazon Bedrock**, then select the **IAM role** method. Enter the role ARN and, optionally, the AWS Region.
-4. Copy the example trust policy that the form shows, and add it to the role in AWS. The policy lets LangSmith's AWS account assume the role, and requires your workspace ID as the external ID.
+
+4. Copy the example trust policy that the form shows, and add it to the role in AWS. On LangSmith Cloud, the policy lets LangSmith's AWS account assume the role. On BYOC AWS data planes, it lets your data plane's roles assume the role instead. In both cases, the policy requires your workspace ID as the external ID.
+
 5. Click **Save**.
 
 The gateway limits each session to Bedrock actions, even if the role allows more. Sessions last one hour, and the gateway renews them automatically. In AWS CloudTrail, the session name is `langsmith-gw-` followed by the workspace ID.
@@ -85717,16 +85753,33 @@ Amazon Bedrock supports three authentication methods. **IAM trusted entity is th
 
 > [!NOTE]
 >
-> **Not available for [self-hosted LangSmith](/langsmith/self-hosted) or [BYOC](/langsmith/byoc).** Use access keys or the Bedrock API key instead.
+> **Not available for [self-hosted LangSmith](/langsmith/self-hosted) or for [BYOC](/langsmith/byoc) on GCP or Azure.** Use access keys or the Bedrock API key instead. On BYOC AWS data planes, follow [IAM trusted entity on BYOC](#iam-trusted-entity-on-byoc) instead of the steps below.
 
 With IAM trusted entity authentication, you create an IAM role in your AWS account and allow LangSmith to assume it. No access keys are stored in LangSmith. Instead, LangSmith uses [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) to assume the role on each request.
 
-The `AWS_IAM_ROLE_ARN` secret set here is also read by the [LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role). One role covers Playground, LLM-as-a-judge evaluators, and gateway requests.
+The `AWS_IAM_ROLE_ARN` secret set here is also read by the [LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role). One role covers Playground, LLM-as-a-judge evaluators, and gateway requests. If you also use the role with the gateway, add the [gateway's permissions](/langsmith/llm-gateway-provider-authentication#use-an-iam-role) to the role.
 
 To set this up:
 
-1. Create an IAM role in your AWS account with permissions to invoke Bedrock models (e.g., `bedrock:InvokeModel`).
-2. Add a trust policy that allows LangSmith's AWS account (`808407022534`) to assume the role, using your LangSmith workspace ID as the external ID:
+1. Create an IAM role in your AWS account with permissions to invoke Bedrock models:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+2. Add a trust policy that allows LangSmith's AWS account (`808407022534`) to assume the role, using your LangSmith workspace ID as the external ID. You can copy this policy, with your workspace ID filled in, from the Bedrock provider's secrets configuration:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -85757,6 +85810,47 @@ To set this up:
    ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](https://mintcdn.com/langchain-5e9cc07a/5xyMbImu-yvQUeiG/images/langsmith/bedrock-secrets-config.png?fit=max\&auto=format\&n=5xyMbImu-yvQUeiG\&q=85\&s=5ba03ea30f7bba78bc51d0fa8e273878)
 
 For more details on trust policies, see the [AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/).
+
+#### IAM trusted entity on BYOC
+
+On [BYOC](/langsmith/byoc) AWS data planes, two roles in your data plane's AWS account assume your role. LangSmith's AWS account does not. A playground role serves the Playground and LLM-as-a-judge evaluators. The data plane's workload role serves the [LLM Gateway](/langsmith/llm-gateway-provider-authentication#use-an-iam-role). Both can only assume roles that carry the `LangSmithBedrock=true` tag, and only with an external ID.
+
+If your data plane uses [bring your own IAM](/langsmith/byoc-byoiam-aws), create it with version `v0.17.67` or later of the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam). If your data plane was created with an earlier version, upgrade the module to `v0.17.67` or later and re-apply it. Then contact [LangSmith support](https://support.langchain.com) to turn on IAM trusted entity authentication for the data plane.
+
+To set this up:
+
+1. Create an IAM role with the permissions policy from [IAM trusted entity (recommended)](#iam-trusted-entity-recommended). If the LLM Gateway also uses the role, add the [gateway's permissions](/langsmith/llm-gateway-provider-authentication#use-an-iam-role) as well.
+2. Add the tag `LangSmithBedrock` with the value `true` to the role.
+3. Add a trust policy that allows both roles to assume your role, using your LangSmith workspace ID as the external ID. Because the roles tag their sessions, the policy must also allow `sts:TagSession` in a separate statement without the `sts:ExternalId` condition. Without that statement, AWS denies the role assumption. You can copy this policy, with both role ARNs and your workspace ID filled in, from the Bedrock provider's secrets configuration:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ["<playground-role-arn>", "<gateway-role-arn>"]
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {
+          "sts:ExternalId": "<your-langsmith-workspace-id>"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ["<playground-role-arn>", "<gateway-role-arn>"]
+      },
+      "Action": "sts:TagSession"
+    }
+  ]
+}
+```
+
+4. In the Playground, enter the role ARN in the Bedrock provider's **IAM Trusted Entity** section, as described in step 3 of [IAM trusted entity (recommended)](#iam-trusted-entity-recommended).
 
 #### Access keys
 

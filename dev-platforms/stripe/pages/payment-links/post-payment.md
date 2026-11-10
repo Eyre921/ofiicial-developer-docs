@@ -43,7 +43,7 @@ You can automatically handle fulfillment through a Stripe partner or programmati
 
 - **Automation with a Stripe partner:** To automate post-purchase activities such as order *fulfillment* (Fulfillment is the process of providing the goods or services purchased by a customer, typically after payment is collected), emailing customers, and recording data to a spreadsheet, you can use a Stripe partner, such as [Zapier](https://help.zapier.com/hc/articles/10821467221133), to connect Stripe data to other applications.
 
-- **Handle fulfillment programmatically:** If you’re interested in handling fulfillment programmatically using the Stripe API and *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests), learn how to [fulfill orders after a customer pays](https://docs.stripe.com/checkout/fulfillment.md).
+- **Handle fulfillment programmatically:** If you’re interested in handling fulfillment programmatically using the Stripe API and *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination), learn how to [fulfill orders after a customer pays](https://docs.stripe.com/checkout/fulfillment.md).
 
 ## Change confirmation behavior 
 

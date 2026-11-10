@@ -338,7 +338,7 @@ curl https://api.stripe.com/v1/credit_notes \
 
 ## Use webhooks 
 
-We recommend listening to subscription events with *webhooks* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) because most subscription activity happens asynchronously.
+We recommend listening to subscription events with *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) because most subscription activity happens asynchronously.
 
 When you start using Stripe Tax, make sure to listen to [invoice.finalization_failed](https://docs.stripe.com/api/events/types.md#event_types-invoice.finalization_failed) events. If the [automatic_tax.status](https://docs.stripe.com/api/invoices/object.md#invoice_object-automatic_tax-status) of the invoice is `requires_location_inputs`, it means that the address details of your customer are invalid or insufficient. In this case, Stripe can’t calculate the taxes, can’t finalize the invoice, and can’t collect the payment. Notify your customer to re-enter their address details or provide an accurate address.
 

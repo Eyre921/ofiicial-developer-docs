@@ -22,10 +22,10 @@ The cascading process follows a defined sequence:
 
 2. **Backup LLM Sequence:** If the preferred LLM fails, the system automatically falls back to a predefined sequence of backup LLMs. This sequence is curated based on model performance, speed, and reliability. The current default sequence (subject to change) is:
 
-   1. Gemini 2.5 Flash
+   1. Gemini 3.5 Flash
    2. GPT-4o
-   3. Gemini 2.5 Flash Lite
-   4. Claude Sonnet 4.5
+   3. Gemini 3.5 Flash-Lite
+   4. Claude Sonnet 4.6
 
 3. **HIPAA Compliance:** If the agent operates in a mode requiring strict data privacy (HIPAA compliance / zero data retention), the backup list is filtered to include only compliant models from the sequence above.
 

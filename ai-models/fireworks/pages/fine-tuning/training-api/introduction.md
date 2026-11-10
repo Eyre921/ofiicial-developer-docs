@@ -22,6 +22,8 @@ Most users should start from [Cookbook recipes](/fine-tuning/training-api/cookbo
 
 Use the Python SDK directly when you need full control over Training API behavior.
 
+Already have a Tinker loop? See [Migrate from Tinker](/fine-tuning/training-api/migrate-from-tinker) for SDK setup, type conversion, sampling, checkpoints, and compatibility differences.
+
 | Starting point | Best for | How you use it |
 | - | - | - |
 | **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent |

@@ -159,7 +159,7 @@ Manage the settings for individual Stripe products directly from the Dashboard. 
 
 ## Monitor and test your integration 
 
-[Workbench](https://dashboard.stripe.com/workbench) gives you information about the performance and health of your integration. You can view your API and *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) usage, upgrade your API version, and review API errors that can be filtered by endpoint or type. To access Workbench, enable it under **Beta features** in the [Dashboard](https://dashboard.stripe.com/settings/early_access). To learn more, see [Workbench](https://docs.stripe.com/workbench.md).
+[Workbench](https://dashboard.stripe.com/workbench) gives you information about the performance and health of your integration. You can view your API and *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) usage, upgrade your API version, and review API errors that can be filtered by endpoint or type. To access Workbench, enable it under **Beta features** in the [Dashboard](https://dashboard.stripe.com/settings/early_access). To learn more, see [Workbench](https://docs.stripe.com/workbench.md).
 
 Workbench also [logs](https://dashboard.stripe.com/workbench/logs) every successful or failed request made using your API keys. Each log contains details about the original request, whether it succeeded or failed, the response from Stripe, and a reference to any related API resources.
 

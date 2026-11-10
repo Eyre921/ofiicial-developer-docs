@@ -322,7 +322,6 @@
 - [Vapi MCP Server](https://docs.vapi.ai/sdk/mcp-server.md): Use the Vapi MCP Server to expose Vapi APIs as tools over the Model Context Protocol, managing assistants, phone numbers, and calls from any MCP client.
 - [Ecosystem](https://docs.vapi.ai/resources.md): Explore the Vapi ecosystem in one place, with links to the CLI, client and server SDKs, code examples, MCP server, API reference, and community resources.
 - [Project integration](https://docs.vapi.ai/cli/init.md): Initialize Vapi in your existing projects with intelligent auto-detection
-- [MCP integration](https://docs.vapi.ai/cli/mcp.md): Turn your IDE into a Vapi expert with Model Context Protocol
 - [Local webhook testing](https://docs.vapi.ai/cli/webhook.md): Forward webhooks to your local development server with vapi listen
 - [Authentication management](https://docs.vapi.ai/cli/auth.md): Manage multiple Vapi accounts and environments with the CLI
 - [What's New?](https://docs.vapi.ai/whats-new.md)

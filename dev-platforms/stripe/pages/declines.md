@@ -34,7 +34,7 @@ When issuers provide specific explanations, such as an incorrect card number or 
 
 ## Blocked payments 
 
-*Stripe Radar* (Stripe Radar helps detect and block fraud for any type of business using machine learning that trains on data across millions of global companies. It’s built into Stripe and requires no additional setup to get started) blocks high risk payments, including those that violate your custom rules or have high risk scores. This automated fraud prevention product evaluates each payment, without requiring any action from you.
+*Stripe Radar* (Stripe Radar helps detect and block fraud by using machine learning. It's built into Stripe and requires no additional setup to get started) blocks high risk payments, including those that violate your custom rules or have high risk scores. This automated fraud prevention product evaluates each payment, without requiring any action from you.
 
 When Stripe blocks a payment, it doesn’t obtain authorization from the card issuer. This precaution helps prevent potential fraudulent payments that might lead to disputes.
 

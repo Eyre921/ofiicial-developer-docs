@@ -91,7 +91,7 @@ In the Dashboard, you can view each financing offer for your connected accounts 
 
    Use `replacement_type` to determine whether the replacement is a pre-submission upgrade or a post-submission counteroffer. The replacement offer has a `delivered` status. When a connected account receives a replacement offer, it becomes the current active offer.
 
-3. Update your *webhook* (A webhook is a real-time push notification sent to your application as a JSON payload through HTTPS requests) integration to handle the `capital.financing_offer.replacement_created` webhook. If your internal data models store the connected account’s active financing offer ID, make sure you update the ID to the connected account’s replacement offer.
+3. Update your *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) integration to handle the `capital.financing_offer.replacement_created` webhook. If your internal data models store the connected account’s active financing offer ID, make sure you update the ID to the connected account’s replacement offer.
 
 ## Retrieve the replaced offer
 

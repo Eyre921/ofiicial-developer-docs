@@ -36,7 +36,7 @@ Custom rules override Stripe’s default revenue treatment behaviors where appli
 You can apply rules to:
 
 - *Products* (Products represent what your business sells—whether that's a good or a service)
-- *Customers* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments)
+- *Customers* (Customer objects and some v2 Account objects represent customers of your business. They let you reuse payment methods and track multiple payments)
 - [Invoice line items](https://docs.stripe.com/api/invoice-line-item/object.md)
 - [Other payments](https://docs.stripe.com/api/charges.md) (that is, payments that aren’t associated with invoices)
 - [Credit Notes](https://docs.stripe.com/api/credit_notes.md)

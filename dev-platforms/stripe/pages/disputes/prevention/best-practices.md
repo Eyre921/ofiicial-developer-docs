@@ -62,7 +62,7 @@ If none of the above apply, you might want to be more conservative with how freq
 
 If you ship physical goods, consider delaying the shipment by 24-48 hours. This time gives cardholders a chance to spot and report any fraud on their accounts. You would still receive a fraud dispute in this scenario, but at least you wouldn’t also lose the merchandise. Not all cardholders check their statements on a daily basis, however, and their card issuer might not proactively notify them about the transaction.
 
-Consider *customers* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) who request overnight or expedited shipping to be higher risk, because the increased cost of these services doesn’t matter to fraudulent actors. One tactic you can use to identify these types of payments is to offer same day or overnight shipping at a disproportionally high cost, many times more expensive than any other shipping option you provide.
+Consider *customers* (Customer objects and some v2 Account objects represent customers of your business. They let you reuse payment methods and track multiple payments) who request overnight or expedited shipping to be higher risk, because the increased cost of these services doesn’t matter to fraudulent actors. One tactic you can use to identify these types of payments is to offer same day or overnight shipping at a disproportionally high cost, many times more expensive than any other shipping option you provide.
 
 It’s less likely that a legitimate customer would pay such a high cost, but a fraudulent actor would want the goods to be shipped as soon as possible regardless of the additional cost. You can then manually screen any customers that opt for the anomalously expensive shipping option and examine the order to determine if it looks genuine. Using a [separate auth and capture process](https://docs.stripe.com/disputes/prevention/best-practices.md#use-auth-and-capture-when-creating-payments) together with [Radar reviews](https://docs.stripe.com/disputes/prevention/best-practices.md#manually-review-payments) is a good way to do so.
 
@@ -136,7 +136,7 @@ Some disputes are lost because only the minimum information was required during 
 
 Use [Checkout](https://docs.stripe.com/payments/checkout.md) or [Advanced fraud detection](https://docs.stripe.com/disputes/prevention/advanced-fraud-detection.md) to make sure your integration is best equipped to provide relevant payment information, such as:
 
-- *Customer* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) name
+- *Customer* (Customer objects and some v2 Account objects represent customers of your business. They let you reuse payment methods and track multiple payments) name
 - Customer email address
 - CVC number
 - Full billing address and postal code

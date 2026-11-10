@@ -222,7 +222,7 @@ Example values:
 
 This report shows why payments failed or were declined, including both card and local payment method payments.
 
-A payment attempt can fail at multiple stages. For card payments, it might fail even before the payment is sent to the card network, such as failing [3D Secure authentication](https://docs.stripe.com/payments/3d-secure.md) or getting blocked by *Stripe Radar* (Stripe Radar helps detect and block fraud for any type of business using machine learning that trains on data across millions of global companies. It’s built into Stripe and requires no additional setup to get started). A card network or payment provider can decline a payment for reasons such as insufficient funds, incorrect payment information, or suspected fraud. Occasionally, payment providers incorrectly decline legitimate payments for suspected fraud.
+A payment attempt can fail at multiple stages. For card payments, it might fail even before the payment is sent to the card network, such as failing [3D Secure authentication](https://docs.stripe.com/payments/3d-secure.md) or getting blocked by *Stripe Radar* (Stripe Radar helps detect and block fraud by using machine learning. It's built into Stripe and requires no additional setup to get started). A card network or payment provider can decline a payment for reasons such as insufficient funds, incorrect payment information, or suspected fraud. Occasionally, payment providers incorrectly decline legitimate payments for suspected fraud.
 
 ### Before the payment is sent to the payment provider
 

@@ -178,15 +178,13 @@ To turn off smart detection:
 
 **Note:** Setting `SECRETS_SCAN_SMART_DETECTION_ENABLED=false` only disables smart detection. Normal secret scanning will still run for environment variables you've explicitly marked as secrets. This allows you to continue protecting secrets defined in your environment variables while opting out of automatic smart detection. If you want to disable all secret scanning completely, set `SECRETS_SCAN_ENABLED=false` instead (though this means you lose protection for all secrets, including those defined in environment variables). 
 
-## Enhancing the sensitive variable policy
+## Secrets and the untrusted deploys policy
 
-Netlify provides all customers who are using public repositories the ability to keep sensitive variables private and away from untrusted deploys through the [sensitive variable policy](/build/environment-variables/get-started/#sensitive-variable-policy). This feature provides you with the ability to protect sensitive variables on sites that use **public** repositories. To provide the sensitive variable policy capabilities, Netlify attempts to detect sensitive values based on heuristics such as the key name and the shape of the value.
+For sites that use **public** repositories, the [untrusted deploys policy](/build/environment-variables/get-started#untrusted-deploys-and-sensitive-variables) includes a **Build without sensitive variables** option that keeps sensitive variables away from untrusted deploys. To provide this option, Netlify attempts to detect sensitive values based on heuristics such as the key name and the shape of the value.
 
 Secrets Controller is designed to offer advanced security around explicitly flagged secrets.
 
-When using Secrets Controller with a public repository, the sensitive variable policy applies to these environment variables:
+When using Secrets Controller with a public repository, the **Build without sensitive variables** option excludes these environment variables:
 - any variables that Netlify automatically detects as sensitive, even if they are not specifically flagged with `Contains secret values`
 - any variables explicitly flagged as sensitive by selecting `Contains secret values`
-
-With the sensitive variable policy, you can choose how to manage access to sensitive values for deploys from your public repo. Explicitly marked secret values are included in this policy.
 

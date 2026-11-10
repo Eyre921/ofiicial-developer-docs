@@ -1,0 +1,202 @@
+---
+title: "Get follow-up requests"
+source: https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-follow-up-requests.md
+path: docs/eleven-agents/api-reference/campaigns/get-follow-up-requests
+---
+
+> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Get follow-up requests
+
+GET https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/{campaign_id}/follow-up-requests
+
+Count the callbacks and redirects contacts asked for during an outbound campaign's calls.
+
+Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-follow-up-requests
+
+## Servers
+
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
+
+## Request
+
+### Path parameters
+
+- `campaign_id` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `callbacks` (FollowUpRequestCounts, required)
+- `redirects` (FollowUpRequestCounts, required)
+
+## Errors
+
+### 422 Outbound Campaigns Get Follow up Requests Request Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### FollowUpRequestCounts
+
+- `requested` (integer, required) — How many times contacts asked.
+- `requested_by_disposition` (map from string to integer, required) — Requests by what the campaign did about them; adds up to `requested`. Missing keys mean none.
+- `distinct_leads` (integer, required) — Leads that asked at least once.
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItem, required)
+- `msg` (string, required)
+- `type` (string, required)
+
+### ValidationErrorLocItem
+
+- string
+- integer
+
+## Examples
+
+**Response**
+
+```json
+{
+  "callbacks": {
+    "requested": 1,
+    "requested_by_disposition": {
+      "key": 1
+    },
+    "distinct_leads": 1
+  },
+  "redirects": {
+    "requested": 1,
+    "requested_by_disposition": {
+      "key": 1
+    },
+    "distinct_leads": 1
+  }
+}
+```
+
+**SDK Code**
+
+```python
+import requests
+
+url = "https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests"
+
+response = requests.get(url)
+
+print(response.json())
+```
+
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests';
+const options = {method: 'GET'};
+
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io"
+)
+
+func main() {
+
+	url := "https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+
+request = Net::HTTP::Get.new(url)
+
+response = http.request(request)
+puts response.read_body
+```
+
+```java
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests")
+  .asString();
+```
+
+```php
+<?php
+require_once('vendor/autoload.php');
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests');
+
+echo $response->getBody();
+```
+
+```csharp
+using RestSharp;
+
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests");
+var request = new RestRequest(Method.GET);
+IRestResponse response = client.Execute(request);
+```
+
+```swift
+import Foundation
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/outbound-campaigns/campaigns/campaign_id/follow-up-requests")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```

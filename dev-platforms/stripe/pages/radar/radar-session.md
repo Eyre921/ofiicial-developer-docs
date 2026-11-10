@@ -8,7 +8,7 @@ path: radar/radar-session
 
 Learn how to provide critical data for improved fraud protection.
 
-If you perform card tokenization yourself, through a third-party, or send raw credit card numbers to Stripe from your servers, critical device details won’t be automatically captured. With fewer data points, *Radar* (Stripe Radar helps detect and block fraud for any type of business using machine learning that trains on data across millions of global companies. It’s built into Stripe and requires no additional setup to get started) might produce less accurate fraud scores. Inaccurate fraud scores can result in fraudulent charges not being blocked.
+If you perform card tokenization yourself, through a third-party, or send raw credit card numbers to Stripe from your servers, critical device details won’t be automatically captured. With fewer data points, *Radar* (Stripe Radar helps detect and block fraud by using machine learning. It's built into Stripe and requires no additional setup to get started) might produce less accurate fraud scores. Inaccurate fraud scores can result in fraudulent charges not being blocked.
 
 By using Radar Sessions, you can capture critical fraud information without tokenizing on Stripe. A Radar Session is a snapshot of the browser metadata and device details that helps Radar make more accurate predictions on your payments. This metadata includes information like IP address, browser, screen or device information, and other device characteristics. You can find more details about how Radar uses this data by reading about how Radar performs [advanced fraud detection](https://docs.stripe.com/disputes/prevention/advanced-fraud-detection.md).
 

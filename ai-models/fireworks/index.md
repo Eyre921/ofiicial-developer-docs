@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 378 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -194,6 +194,7 @@
 - `fine-tuning/fine-tuning-models` — [Supervised Fine-Tuning - Text](pages/fine-tuning/fine-tuning-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/fine-tuning-models)
 - `fine-tuning/finetuning-intro` — [Training Overview](pages/fine-tuning/finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/finetuning-intro)
 - `fine-tuning/managed-finetuning-intro` — [Managed Training Overview](pages/fine-tuning/managed-finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro)
+- `fine-tuning/migrate-from-managed-training` — [Migrate from Managed Training to the Training API](pages/fine-tuning/migrate-from-managed-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/migrate-from-managed-training)
 - `fine-tuning/models` — [Models](pages/fine-tuning/models.md) · [原文](https://docs.fireworks.ai/fine-tuning/models)
 - `fine-tuning/multi-turn-cost-comparison` — [RL rollout cost comparison vs Tinker](pages/fine-tuning/multi-turn-cost-comparison.md) · [原文](https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison)
 - `fine-tuning/rft-parameters-reference` — [RL parameters reference](pages/fine-tuning/rft-parameters-reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/rft-parameters-reference)
@@ -210,6 +211,7 @@
 - `fine-tuning/training-api/cookbook/sft` — [Cookbook: Supervised Fine-Tuning](pages/fine-tuning/training-api/cookbook/sft.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft)
 - `fine-tuning/training-api/dedicated` — [Dedicated Training](pages/fine-tuning/training-api/dedicated.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/dedicated)
 - `fine-tuning/training-api/introduction` — [Overview](pages/fine-tuning/training-api/introduction.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/introduction)
+- `fine-tuning/training-api/migrate-from-tinker` — [Migrate from Tinker](pages/fine-tuning/training-api/migrate-from-tinker.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/migrate-from-tinker)
 - `fine-tuning/training-api/reference/cleanup` — [Cleanup and Teardown](pages/fine-tuning/training-api/reference/cleanup.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/cleanup)
 - `fine-tuning/training-api/reference/deployment-manager` — [DeploymentManager (Compatibility)](pages/fine-tuning/training-api/reference/deployment-manager.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-manager)
 - `fine-tuning/training-api/reference/deployment-sampler` — [DeploymentSampler](pages/fine-tuning/training-api/reference/deployment-sampler.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/deployment-sampler)

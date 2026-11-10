@@ -8,7 +8,7 @@ path: billing/customer
 
 Learn how to use the Customer object with Stripe Billing.
 
-The *Customer* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) object is a core entity within Stripe. Use it to store all of the profile, billing, and tax information required to bill a customer for *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) and *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice).
+The *Customer* (Customer objects and some v2 Account objects represent customers of your business. They let you reuse payment methods and track multiple payments) object is a core entity within Stripe. Use it to store all of the profile, billing, and tax information required to bill a customer for *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) and *invoices* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice).
 
 > #### Use the Accounts v2 API to represent customers
 > 
