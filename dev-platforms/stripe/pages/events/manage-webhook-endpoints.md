@@ -34,7 +34,7 @@ Call the [List Events](https://docs.stripe.com/api/events/list.md) API with the 
 
 - `ending_before`: An event ID that was successfully delivered immediately before the outage. This anchors the list to the window of events you missed.
 - `types`: The event types your endpoint listens for.
-- `delivery_success`: Set to `false` to return only events that failed delivery to at least one of your endpoints.
+- `delivery_success`: Set to `false` to return events with deliveries that are still pending or have failed all delivery attempts to at least one of your endpoints.
 
 Stripe only returns events created in the last 30 days.
 
@@ -100,28 +100,28 @@ Implement the following functions against your own data store:
 
 ### Respond to automatic retries 
 
-Stripe still considers manually processed events as undelivered and continues its automatic retry schedule. When your endpoint receives an event you’ve already processed, skip it and return a `200` response to stop further retries.
+Stripe still considers manually processed events as undelivered and continues its automatic retry schedule. [Verify the webhook signature](https://docs.stripe.com/webhooks.md#verify-events) before checking whether you’ve already processed the event. If you have, skip it and return a `200` response to stop further retries.
+
+Set the `STRIPE_WEBHOOK_SECRET` environment variable to your endpoint’s signing secret. See [Resolve signature verification errors](https://docs.stripe.com/events/manage-webhook-endpoints.md#signature-errors) to find the correct secret.
 
 #### Ruby
 
 ```ruby
 require 'json'
+require 'sinatra'
 require 'stripe'
 
-client = Stripe::StripeClient.new(ENV.fetch('STRIPE_API_KEY'))
+endpoint_secret = ENV.fetch('STRIPE_WEBHOOK_SECRET')
 
 # Using Sinatra
 post '/webhook' do
   payload = request.body.read
-  event = nil
+  signature = request.env['HTTP_STRIPE_SIGNATURE']
 
   begin
-    event = Stripe::Event.construct_from(
-      JSON.parse(payload, symbolize_names: true)
-    )
-  rescue JSON::ParserError => e
-    status 400
-    return
+    event = Stripe::Webhook.construct_event(payload, signature, endpoint_secret)
+  rescue JSON::ParserError, Stripe::SignatureVerificationError
+    halt 400
   end
 
   if is_processing_or_processed(event)
@@ -144,7 +144,7 @@ end
 
 When processing webhook events, verify that each request came from Stripe using the `Stripe-Signature` header. Call `constructEvent()` (for snapshot events) or `parseEventNotification()` (for thin events) with three parameters:
 
-- `requestBody`: The raw request body string Stripe sent.
+- `requestBody`: The raw HTTP request body string Stripe sent.
 - `signature`: The `Stripe-Signature` header value.
 - `endpointSecret`: The secret associated with your endpoint.
 
@@ -154,11 +154,17 @@ When processing webhook events, verify that each request came from Stripe using 
 Stripe::Webhook.construct_event(request_body, signature, endpoint_secret)
 ```
 
-If you see this error, at least one of the three parameters you passed is incorrect:
+If you see an error like this, at least one of the three parameters you passed is incorrect:
 
 ```
 Webhook signature verification failed. Err: No signatures found matching the expected signature for payload.
 ```
+
+Some deliveries include optional `secret`, `destination`, and `payload` debug metadata in the `Stripe-Signature` header. The `payload` entry contains a suffix of the hexadecimal SHA-256 digest of the exact request body, which can help diagnose whether your code is changing the body before verification.
+
+> #### Don't use debug metadata for verification
+> 
+> The `secret`, `destination`, and `payload` entries are for debugging only and aren’t signed. An attacker can construct values that match a forged request, so don’t use them to authenticate a request or verify payload integrity. Only a valid `v1` HMAC signature authenticates the request and verifies payload integrity.
 
 ### Check the endpoint secret 
 
@@ -167,11 +173,11 @@ The most common cause is using the wrong endpoint secret. The secret for a CLI-f
 - **Dashboard endpoint**: Open the endpoint in [Workbench](https://dashboard.stripe.com/test/webhooks) and click **Reveal secret**.
 - **CLI**: The secret is printed in the terminal when you run `stripe listen`.
 
-Both secrets start with `whsec_`. Print the `endpointSecret` value your code uses and confirm it matches what you find above.
+Both secrets start with `whsec_`. Print the `endpointSecret` value your code uses and confirm it matches what you find above, and doesn’t include any extra whitespace.
 
 ### Check the request body 
 
-The request body must be the exact UTF-8 string Stripe sent, without any modifications. When printed, it looks similar to this:
+The `requestBody` must be the exact UTF-8 string Stripe sent, without any modifications. When printed, it looks similar to this:
 
 ```
 {
@@ -226,15 +232,15 @@ In your Lambda function, access the raw body from `event.rawBody` and the header
 
 ### Check the signature header 
 
-Print the `signature` parameter and confirm it matches this format:
+Print the `signature` parameter and confirm it looks similar to this:
 
 ```
-t=xxx,v1=yyy,v0=zzz
+t=xxx,v1=yyy,v0=zzz,secret=whsec_****************************PzVt,destination=we_xyz,payload=a25aefc6
 ```
 
-If not, check how your code extracts the `Stripe-Signature` header value.
+The `v0` entry is only present for test events, and the debug metadata entries are optional. If the header doesn’t contain `t` and at least one `v1` entry, check how your code extracts the `Stripe-Signature` header value. Your integration must accept unknown entries and must not depend on a fixed entry count or order.
 
-> For complete signature verification instructions, see [Check webhook signatures](https://docs.stripe.com/events/set-up-events.md#signature-checking). In addition to signature verification, configure your server to only accept webhook requests from Stripe’s [IP addresses](https://docs.stripe.com/ips.md).
+> For complete signature verification instructions, see [Check webhook signatures](https://docs.stripe.com/events/set-up-events.md#signature-checking). In addition to signature verification, configure your server to only accept webhook requests from Stripe’s [IP addresses](https://docs.stripe.com/ips.md#webhook-notifications).
 
 ## Debug webhook deliveries 
 
@@ -555,7 +561,7 @@ The secret used for verifying that events come from Stripe is modifiable in the 
 To roll a secret:
 
 1. Click each endpoint in the Workbench [Webhooks](https://dashboard.stripe.com/webhooks) tab that you want to roll the secret for.
-2. Navigate to the overflow menu (⋯) and click **Roll secret**. You can choose to immediately expire the current secret or delay its expiration for up to 24 hours to allow yourself time to update the verification code on your server. During this time, multiple secrets are active for the endpoint. Stripe generates one signature per secret until expiration.
+2. Navigate to the overflow menu (⋯) and click **Roll secret**. You can choose to immediately expire the current secret or delay its expiration for up to 7 days to allow yourself time to update the verification code on your server. During this time, multiple secrets are active for the endpoint. Stripe generates one signature per secret until expiration.
 
 ### Verify events are sent from Stripe 
 
@@ -563,7 +569,7 @@ Without verification, an attacker could send fake webhook events to your endpoin
 
 Use both of these protections:
 
-- **IP allowlisting**: Stripe sends webhook events from a set list of [IP addresses](https://docs.stripe.com/ips.md). Configure your server or firewall to only accept webhook requests from these addresses.
+- **IP allowlisting**: Stripe sends webhook events from a set list of [IP addresses](https://docs.stripe.com/ips.md#webhook-notifications). Configure your server or firewall to only accept webhook requests from these addresses.
 - **Signature verification**: Stripe signs every webhook event by including a signature in the `Stripe-Signature` header. Verify this signature using the [official libraries](https://docs.stripe.com/events/set-up-events.md#signature-checking) to confirm the event wasn’t sent or modified by a third party.
 
 ## See also

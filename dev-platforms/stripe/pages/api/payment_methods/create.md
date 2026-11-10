@@ -14,7 +14,7 @@ Instead of creating a PaymentMethod directly, we recommend using the [PaymentInt
 
 ```curl
 curl https://api.stripe.com/v1/payment_methods \
-  -u "<<YOUR_SECRET_KEY>>" \
+  -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-10-28.endive" \
   -d type=us_bank_account \
   -d "us_bank_account[account_holder_type]=individual" \

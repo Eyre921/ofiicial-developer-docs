@@ -8,6 +8,8 @@ path: connect/identity-verification
 
 Use identity verification to reduce risk on your platform when using Connect.
 
+This content applies to connected accounts where the platform is [responsible for collecting and submitting requirements](https://docs.stripe.com/connect/accounts-v2/connected-account-configuration.md#kyc-requirements).
+
 Every country has its own requirements that accounts must meet so that Stripe can pay out funds to individuals and companies. These are typically known as [Know Your Customer](https://support.stripe.com/questions/know-your-customer-obligations) (KYC) requirements. Regardless of the country, broadly speaking, the requirements Stripe must meet are:
 
 - Collecting information about the individual or company receiving funds
@@ -43,6 +45,46 @@ You must collect and verify specific information to enable charges and *payouts*
 At certain variable thresholds—usually when a specified amount of time has passed or volume of charges have been made—you might need to collect and verify additional information. Stripe temporarily pauses charges or payouts if the information isn’t provided or verified according to the thresholds for [required information](https://docs.stripe.com/connect/required-verification-information.md). For example, additional information might include verification of the company tax ID number.
 
 ## Onboarding flows 
+
+#### Accounts v2
+
+As the platform, you must decide if you want to collect the required information from your connected accounts *up front* (A type of onboarding where you collect all required verification information from your connected accounts at signup) or *incrementally* (Incremental onboarding is a type of onboarding where you gradually collect required verification information from your users. You collect a minimum amount of information at sign-up, and you collect more information as the connected account earns more revenue). Up-front onboarding collects the `eventually_due` requirements for the account, while incremental onboarding only collects the `currently_due` requirements. You can control this behavior using the [collection_options.fields](https://docs.stripe.com/api/account_links/create.md#create_account_link-collection_options-fields) parameter.
+
+| Onboarding type | Advantages |
+| --- | --- |
+| **Up-front** | - Normally requires only one request for all information
+- Avoids the possibility of payout and processing issues due to missed deadlines
+- Exposes potential risk early when accounts refuse to provide information |
+| **Incremental** | - Accounts can onboard quickly because they don’t have to provide as much information |
+
+To determine whether to use up-front or incremental onboarding, review the [requirements](https://docs.stripe.com/connect/required-verification-information.md) for your connected accounts’ locations and capabilities. While Stripe tries to minimize any impact to connected accounts, requirements might change over time.
+
+For connected accounts where you’re responsible for requirement collection, you can customize the behavior of [future requirements](https://docs.stripe.com/connect/handle-verification-updates.md) using the `collection_options` parameter. To collect the account’s future requirements, set [collection_options.future_requirements](https://docs.stripe.com/api/v2/core/account-links/create.md#create_account_links-collection_options-future_requirements) to `include`.
+
+### Collect additional public details
+
+Stripe collects the required public details for each connected account. You can choose additional fields to collect during onboarding according to your business needs. Any fields you choose that Stripe doesn’t require appear as optional, and connected accounts can choose whether to provide them.
+
+1. In the [Public details](https://dashboard.stripe.com/settings/connect/onboarding-options/public-details) settings in the Dashboard, enable the **Collect public details** toggle.
+2. Select the fields to show to connected accounts during onboarding.
+3. Click **Save**.
+
+#### Available fields
+
+You can collect the following public details:
+
+| Field | Description |
+| --- | --- |
+| [Statement descriptor](https://docs.stripe.com/connect/statement-descriptors.md) | The text that appears on a customer’s credit card or bank statement for payments made to the connected account. |
+| Customer support phone number | A phone number customers can call for support related to the connected account. |
+| Customer support address | A mailing address customers can use to contact the connected account. |
+| Customer support email | An email address customers can use to contact the connected account. |
+
+> #### Requirements vary
+> 
+> Stripe’s requirements vary by connected account based on their business type, country, and requested capabilities. Enable fields to make sure they always appear during onboarding, whether or not they’re required.
+
+#### Accounts v1
 
 As the platform, you must decide if you want to collect the required information from your connected accounts *up front* (A type of onboarding where you collect all required verification information from your connected accounts at signup) or *incrementally* (Incremental onboarding is a type of onboarding where you gradually collect required verification information from your users. You collect a minimum amount of information at sign-up, and you collect more information as the connected account earns more revenue). Up-front onboarding collects the `eventually_due` requirements for the account, while incremental onboarding only collects the `currently_due` requirements. You can control this behavior using the [collection_options.fields](https://docs.stripe.com/api/account_links/create.md#create_account_link-collection_options-fields) parameter.
 
@@ -82,7 +124,7 @@ You can collect the following public details:
 
 ## Business type 
 
-The specific KYC information depends on the [type of business entity](https://docs.stripe.com/api/accounts/object.md#account_object-business_type). They’re:
+The specific KYC information depends on the type of [identity.entity_type](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-identity-entity_type) (Accounts v2 API) or [business_entity](https://docs.stripe.com/api/accounts/object.md#account_object-business_type) (Accounts v1 API). They’re:
 
 - `individual`: Collect information about the person.
 - `company`: Collect information about the company. Depending on the countries your connected accounts are in, you might also have to collect information about [beneficial owners](https://support.stripe.com/questions/beneficial-owner-and-director-definitions).
@@ -95,7 +137,7 @@ See the [list of requirements](https://docs.stripe.com/connect/required-verifica
 
 ## Business structure 
 
-For all business types other than `individual`, you can further classify your user’s business by identifying its legal (business) structure. A business structure describes the details of a business entity such as day-to-day operations, tax burdens, liability, and organizational schema. You can classify it by using [company[structure]](https://docs.stripe.com/api/accounts/create.md#create_account-company-structure) in the `Accounts` object.
+For all business types other than `individual`, you can further classify your user’s business by identifying its legal (business) structure. A business structure describes the details of a business entity such as day-to-day operations, tax burdens, liability, and organizational schema. You can classify it by using [identity.business_details.structure](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-identity-business_details-structure) (Accounts v2 API) or [company[structure]](https://docs.stripe.com/api/accounts/create.md#create_account-company-structure) (Accounts v1 API).
 
 Providing this information to Stripe gets you the most accurate business classification for compliance purposes. While it isn’t required, it can reduce onboarding requirements. For example, you’re required to provide owner information for private companies, but not for public companies. If you don’t provide information on the `structure`, Stripe defaults to classifying the company as private and requires you to provide owner information. See the [list of requirements](https://docs.stripe.com/connect/required-verification-information.md) for the supported business structures in all countries.
 

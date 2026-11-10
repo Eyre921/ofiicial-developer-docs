@@ -10,7 +10,7 @@ Connect a deployed task to a resource that lives only inside a private GCP VPC: 
 
 The whole pattern is build-extension code, runtime code, and environment variables. There are no changes to Trigger.dev itself, so you can adopt it today.
 
-> **[View the example repo on GitHub](https://github.com/triggerdotdev/gcp-tailscale-example)**
+> [card] [View the example repo on GitHub](https://github.com/triggerdotdev/gcp-tailscale-example)
 >
 > The full source for both tunnels, local Docker proofs (no cloud account needed), and GCP provisioning scripts. This guide walks through the key pieces; clone the repo for the complete, copy-paste-ready files.
 
@@ -73,90 +73,90 @@ Use **WireGuard** when you control a stable endpoint in the VPC and want the fas
 
 The build extension downloads the userspace client and copies it into `/usr/local/bin` in the deployed image. The auth key is never baked in; you provide it at runtime as an environment variable so it stays encrypted and out of the image.
 
-**Tailscale**
+> [tab] Tailscale
+>
+> ```ts extension/tailscaleTunnel.ts theme={"theme":"css-variables"}
+> import type { BuildExtension } from "@trigger.dev/build";
+>
+> export type TailscaleTunnelOptions = {
+>   /** Tailscale static build version. See https://pkgs.tailscale.com/stable/#static */
+>   version?: string;
+>   /** Trigger.dev cloud builds linux/amd64. */
+>   arch?: "amd64" | "arm64";
+> };
+>
+> export function tailscaleTunnel(options: TailscaleTunnelOptions = {}): BuildExtension {
+>   const version = options.version ?? "1.102.3";
+>   const arch = options.arch ?? "amd64";
+>   const dir = `tailscale_${version}_${arch}`;
+>   const url = `https://pkgs.tailscale.com/stable/${dir}.tgz`;
+>
+>   return {
+>     name: "tailscaleTunnel",
+>     onBuildComplete(context) {
+>       if (context.target === "dev") return;
+>
+>       context.addLayer({
+>         id: "tailscale-tunnel",
+>         image: {
+>           instructions: [
+>             `RUN apt-get update \\`,
+>             `  && apt-get install -y --no-install-recommends curl \\`,
+>             `  && curl -fsSL "${url}" -o /tmp/ts.tgz \\`,
+>             `  && tar -xzf /tmp/ts.tgz -C /tmp \\`,
+>             `  && cp /tmp/${dir}/tailscale /tmp/${dir}/tailscaled /usr/local/bin/ \\`,
+>             `  && chmod 755 /usr/local/bin/tailscale /usr/local/bin/tailscaled \\`,
+>             `  && mkdir -p /home/node/.ts-state \\`,
+>             `  && chown -R node:node /home/node/.ts-state \\`,
+>             `  && rm -rf /tmp/ts.tgz /tmp/${dir} \\`,
+>             `  && apt-get clean && rm -rf /var/lib/apt/lists/*`,
+>           ],
+>         },
+>       });
+>     },
+>   };
+> }
+> ```
 
-```ts extension/tailscaleTunnel.ts theme={"theme":"css-variables"}
-import type { BuildExtension } from "@trigger.dev/build";
-
-export type TailscaleTunnelOptions = {
-  /** Tailscale static build version. See https://pkgs.tailscale.com/stable/#static */
-  version?: string;
-  /** Trigger.dev cloud builds linux/amd64. */
-  arch?: "amd64" | "arm64";
-};
-
-export function tailscaleTunnel(options: TailscaleTunnelOptions = {}): BuildExtension {
-  const version = options.version ?? "1.102.3";
-  const arch = options.arch ?? "amd64";
-  const dir = `tailscale_${version}_${arch}`;
-  const url = `https://pkgs.tailscale.com/stable/${dir}.tgz`;
-
-  return {
-    name: "tailscaleTunnel",
-    onBuildComplete(context) {
-      if (context.target === "dev") return;
-
-      context.addLayer({
-        id: "tailscale-tunnel",
-        image: {
-          instructions: [
-            `RUN apt-get update \\`,
-            `  && apt-get install -y --no-install-recommends curl \\`,
-            `  && curl -fsSL "${url}" -o /tmp/ts.tgz \\`,
-            `  && tar -xzf /tmp/ts.tgz -C /tmp \\`,
-            `  && cp /tmp/${dir}/tailscale /tmp/${dir}/tailscaled /usr/local/bin/ \\`,
-            `  && chmod 755 /usr/local/bin/tailscale /usr/local/bin/tailscaled \\`,
-            `  && mkdir -p /home/node/.ts-state \\`,
-            `  && chown -R node:node /home/node/.ts-state \\`,
-            `  && rm -rf /tmp/ts.tgz /tmp/${dir} \\`,
-            `  && apt-get clean && rm -rf /var/lib/apt/lists/*`,
-          ],
-        },
-      });
-    },
-  };
-}
-```
-
-**WireGuard**
-
-```ts wireguard/extension/wireguardTunnel.ts theme={"theme":"css-variables"}
-import type { BuildExtension } from "@trigger.dev/build";
-
-export type WireguardTunnelOptions = {
-  /** wireproxy release version. */
-  version?: string;
-  arch?: "amd64" | "arm64";
-};
-
-export function wireguardTunnel(options: WireguardTunnelOptions = {}): BuildExtension {
-  const version = options.version ?? "v1.1.3";
-  const arch = options.arch ?? "amd64";
-  const url = `https://github.com/windtf/wireproxy/releases/download/${version}/wireproxy_linux_${arch}.tar.gz`;
-
-  return {
-    name: "wireguardTunnel",
-    onBuildComplete(context) {
-      if (context.target === "dev") return;
-      context.addLayer({
-        id: "wireguard-tunnel",
-        image: {
-          instructions: [
-            `RUN apt-get update \\`,
-            `  && apt-get install -y --no-install-recommends curl ca-certificates \\`,
-            `  && curl -fsSL "${url}" -o /tmp/wp.tgz \\`,
-            `  && tar -xzf /tmp/wp.tgz -C /usr/local/bin wireproxy \\`,
-            `  && chmod 755 /usr/local/bin/wireproxy \\`,
-            `  && mkdir -p /home/node/.wg-state && chown -R node:node /home/node/.wg-state \\`,
-            `  && rm -f /tmp/wp.tgz \\`,
-            `  && apt-get clean && rm -rf /var/lib/apt/lists/*`,
-          ],
-        },
-      });
-    },
-  };
-}
-```
+> [tab] WireGuard
+>
+> ```ts wireguard/extension/wireguardTunnel.ts theme={"theme":"css-variables"}
+> import type { BuildExtension } from "@trigger.dev/build";
+>
+> export type WireguardTunnelOptions = {
+>   /** wireproxy release version. */
+>   version?: string;
+>   arch?: "amd64" | "arm64";
+> };
+>
+> export function wireguardTunnel(options: WireguardTunnelOptions = {}): BuildExtension {
+>   const version = options.version ?? "v1.1.3";
+>   const arch = options.arch ?? "amd64";
+>   const url = `https://github.com/windtf/wireproxy/releases/download/${version}/wireproxy_linux_${arch}.tar.gz`;
+>
+>   return {
+>     name: "wireguardTunnel",
+>     onBuildComplete(context) {
+>       if (context.target === "dev") return;
+>       context.addLayer({
+>         id: "wireguard-tunnel",
+>         image: {
+>           instructions: [
+>             `RUN apt-get update \\`,
+>             `  && apt-get install -y --no-install-recommends curl ca-certificates \\`,
+>             `  && curl -fsSL "${url}" -o /tmp/wp.tgz \\`,
+>             `  && tar -xzf /tmp/wp.tgz -C /usr/local/bin wireproxy \\`,
+>             `  && chmod 755 /usr/local/bin/wireproxy \\`,
+>             `  && mkdir -p /home/node/.wg-state && chown -R node:node /home/node/.wg-state \\`,
+>             `  && rm -f /tmp/wp.tgz \\`,
+>             `  && apt-get clean && rm -rf /var/lib/apt/lists/*`,
+>           ],
+>         },
+>       });
+>     },
+>   };
+> }
+> ```
 
 This is a [custom build extension](/docs/config/extensions/custom). The `onBuildComplete` hook returns early for the `dev` target because the tunnel is only needed in the deployed image.
 
@@ -360,52 +360,52 @@ export const queryPrivateGcp = task({
 
 Set these on your Trigger.dev project through the dashboard or the API. Never commit them. See [environment variables](/docs/deploy-environment-variables).
 
-**Tailscale**
+> [tab] Tailscale
+>
+> | Variable | Value |
+> | - | - |
+> | `TS_AUTHKEY` | An ephemeral, reusable, tagged (`tag:trigger`) auth key |
+> | `PGHOST` | The resource's tailnet IP or MagicDNS name (or a subnet-routed private IP) |
+> | `PGPORT` | `5432` |
+> | `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres credentials |
+> | `TS_LOGIN_SERVER` | Optional. A self-hosted Headscale URL |
 
-| Variable | Value |
-| - | - |
-| `TS_AUTHKEY` | An ephemeral, reusable, tagged (`tag:trigger`) auth key |
-| `PGHOST` | The resource's tailnet IP or MagicDNS name (or a subnet-routed private IP) |
-| `PGPORT` | `5432` |
-| `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres credentials |
-| `TS_LOGIN_SERVER` | Optional. A self-hosted Headscale URL |
-
-**WireGuard**
-
-| Variable | Value |
-| - | - |
-| `WG_PRIVATE_KEY` | The client (task) WireGuard private key |
-| `WG_SERVER_PUBLIC_KEY` | The server's WireGuard public key |
-| `WG_ENDPOINT` | `<server public ip>:51820` |
-| `WG_ALLOWED_IPS` | The server's WG address, plus any subnet-routed IPs to reach |
-| `PGHOST` | The WireGuard server's own address (for example `10.9.0.1`) |
-| `PGPORT` / `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres connection details |
+> [tab] WireGuard
+>
+> | Variable | Value |
+> | - | - |
+> | `WG_PRIVATE_KEY` | The client (task) WireGuard private key |
+> | `WG_SERVER_PUBLIC_KEY` | The server's WireGuard public key |
+> | `WG_ENDPOINT` | `<server public ip>:51820` |
+> | `WG_ALLOWED_IPS` | The server's WG address, plus any subnet-routed IPs to reach |
+> | `PGHOST` | The WireGuard server's own address (for example `10.9.0.1`) |
+> | `PGPORT` / `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres connection details |
 
 ## 6. Provision the private resource
 
 The example repo includes scripts that stand up a GCP VM running Postgres, joined to the tunnel and with default-deny ingress so the database is never reachable from the public internet.
 
-**Tailscale**
+> [tab] Tailscale
+>
+> ```bash theme={"theme":"css-variables"}
+> # A VM running Postgres that joins your tailnet. The task reaches it by tailnet IP.
+> TS_AUTHKEY=tskey-auth-xxxx GCP_PROJECT=my-proj ./gcp/provision.sh
+> ```
+>
+> In your tailnet policy, add `tagOwners` for `tag:trigger` and the resource's tag, plus a grant from `tag:trigger` to the resource on `tcp:5432` (and `8123` for ClickHouse). Mint one auth key for the resource and one tagged `tag:trigger` for the tasks.
 
-```bash theme={"theme":"css-variables"}
-# A VM running Postgres that joins your tailnet. The task reaches it by tailnet IP.
-TS_AUTHKEY=tskey-auth-xxxx GCP_PROJECT=my-proj ./gcp/provision.sh
-```
-
-In your tailnet policy, add `tagOwners` for `tag:trigger` and the resource's tag, plus a grant from `tag:trigger` to the resource on `tcp:5432` (and `8123` for ClickHouse). Mint one auth key for the resource and one tagged `tag:trigger` for the tasks.
-
-**WireGuard**
-
-```bash theme={"theme":"css-variables"}
-# Generate a client keypair first.
-wg genkey | tee priv | wg pubkey
-
-# Stand up the server VM (opens UDP 51820), passing the task's public key.
-GCP_PROJECT=my-proj WG_CLIENT_PUB=<task pubkey> ./gcp/provision-wireguard.sh
-
-# Read back the server public key for WG_SERVER_PUBLIC_KEY.
-gcloud compute ssh <vm> --command 'sudo wg show wg0 public-key'
-```
+> [tab] WireGuard
+>
+> ```bash theme={"theme":"css-variables"}
+> # Generate a client keypair first.
+> wg genkey | tee priv | wg pubkey
+>
+> # Stand up the server VM (opens UDP 51820), passing the task's public key.
+> GCP_PROJECT=my-proj WG_CLIENT_PUB=<task pubkey> ./gcp/provision-wireguard.sh
+>
+> # Read back the server public key for WG_SERVER_PUBLIC_KEY.
+> gcloud compute ssh <vm> --command 'sudo wg show wg0 public-key'
+> ```
 
 ## 7. Deploy and trigger
 
@@ -448,43 +448,43 @@ flowchart LR
 
 Create the Cloud SQL instance with a private IP (Private Service Access), note its private IP, then configure the subnet router:
 
-**Tailscale**
-
-On the router VM (enable IP forwarding with `sudo sysctl -w net.ipv4.ip_forward=1`):
-
-```bash theme={"theme":"css-variables"}
-sudo tailscale set --advertise-routes=CLOUDSQL_IP/32
-```
-
-Then in the Tailscale admin, **approve the route** for that machine, and **add an ACL grant for the subnet destination**. This grant is the step people forget: a grant to the router's own tag does not cover the IPs behind it, so the destination IP must be allowed explicitly.
-
-```jsonc theme={"theme":"css-variables"}
-{ "src": ["tag:trigger"], "dst": ["CLOUDSQL_IP/32"], "ip": ["tcp:5432"] }
-```
-
-Set `PGHOST=CLOUDSQL_IP` on the project.
-
-**WireGuard**
-
-WireGuard has no ACL layer, so there is no grant step. On the server (IP forwarding on):
-
-```bash theme={"theme":"css-variables"}
-PRIMARY_IF=$(ip -o route get 8.8.8.8 | grep -oE 'dev [^ ]+' | awk '{print $2}')
-sudo iptables -t nat -A POSTROUTING -s 10.9.0.0/24 -d CLOUDSQL_IP/32 -o "$PRIMARY_IF" -j MASQUERADE
-sudo iptables -A FORWARD -i wg0 -o "$PRIMARY_IF" -j ACCEPT
-sudo iptables -A FORWARD -i "$PRIMARY_IF" -o wg0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-```
-
-Add the Cloud SQL IP to `WG_ALLOWED_IPS` so wireproxy routes it into the tunnel, and point `PGHOST` at it:
-
-```bash .env theme={"theme":"css-variables"}
-WG_ALLOWED_IPS=10.9.0.1/32, CLOUDSQL_IP/32
-PGHOST=CLOUDSQL_IP
-```
-
-> [!NOTE]
+> [tab] Tailscale
 >
-> The wireproxy config is written when the tunnel first starts, so a running worker keeps its old `WG_ALLOWED_IPS` until a fresh (cold) process picks up the new value.
+> On the router VM (enable IP forwarding with `sudo sysctl -w net.ipv4.ip_forward=1`):
+>
+> ```bash theme={"theme":"css-variables"}
+> sudo tailscale set --advertise-routes=CLOUDSQL_IP/32
+> ```
+>
+> Then in the Tailscale admin, **approve the route** for that machine, and **add an ACL grant for the subnet destination**. This grant is the step people forget: a grant to the router's own tag does not cover the IPs behind it, so the destination IP must be allowed explicitly.
+>
+> ```jsonc theme={"theme":"css-variables"}
+> { "src": ["tag:trigger"], "dst": ["CLOUDSQL_IP/32"], "ip": ["tcp:5432"] }
+> ```
+>
+> Set `PGHOST=CLOUDSQL_IP` on the project.
+
+> [tab] WireGuard
+>
+> WireGuard has no ACL layer, so there is no grant step. On the server (IP forwarding on):
+>
+> ```bash theme={"theme":"css-variables"}
+> PRIMARY_IF=$(ip -o route get 8.8.8.8 | grep -oE 'dev [^ ]+' | awk '{print $2}')
+> sudo iptables -t nat -A POSTROUTING -s 10.9.0.0/24 -d CLOUDSQL_IP/32 -o "$PRIMARY_IF" -j MASQUERADE
+> sudo iptables -A FORWARD -i wg0 -o "$PRIMARY_IF" -j ACCEPT
+> sudo iptables -A FORWARD -i "$PRIMARY_IF" -o wg0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+> ```
+>
+> Add the Cloud SQL IP to `WG_ALLOWED_IPS` so wireproxy routes it into the tunnel, and point `PGHOST` at it:
+>
+> ```bash .env theme={"theme":"css-variables"}
+> WG_ALLOWED_IPS=10.9.0.1/32, CLOUDSQL_IP/32
+> PGHOST=CLOUDSQL_IP
+> ```
+>
+> > [!NOTE]
+> >
+> > The wireproxy config is written when the tunnel first starts, so a running worker keeps its old `WG_ALLOWED_IPS` until a fresh (cold) process picks up the new value.
 
 ## Cold start
 
@@ -539,18 +539,18 @@ On a real Trigger.dev Cloud project (managed workers in AWS, GCP resource in us-
 
 ## Next steps
 
-> **[Custom build extensions](/docs/config/extensions/custom)**
+> [card] [Custom build extensions](/docs/config/extensions/custom)
 >
 > Learn how build extensions hook into the deploy build and modify the container image.
 
-> **[Middleware and locals](/docs/tasks/overview#middleware-and-locals-functions)**
+> [card] [Middleware and locals](/docs/tasks/overview#middleware-and-locals-functions)
 >
 > Run setup logic before and after every task run.
 
-> **[Environment variables](/docs/deploy-environment-variables)**
+> [card] [Environment variables](/docs/deploy-environment-variables)
 >
 > Set the encrypted secrets this pattern relies on.
 
-> **[The example repo](https://github.com/triggerdotdev/gcp-tailscale-example)**
+> [card] [The example repo](https://github.com/triggerdotdev/gcp-tailscale-example)
 >
 > Complete source, local Docker proofs, and provisioning scripts.

@@ -67,26 +67,26 @@ Four primitives, related but distinct:
 
 ## Next steps
 
-> **[Quick Start](/docs/ai-chat/quick-start)**
+> [card] [Quick Start](/docs/ai-chat/quick-start)
 >
 > Get a working chat in three steps — agent, token, frontend.
 
-> **[How it works](/docs/ai-chat/how-it-works)**
+> [card] [How it works](/docs/ai-chat/how-it-works)
 >
 > Sessions, the turn loop, durable streams, and what survives a refresh.
 
-> **[Backend](/docs/ai-chat/backend)**
+> [card] [Backend](/docs/ai-chat/backend)
 >
 > `chat.agent` options, lifecycle hooks, and the raw-task primitives.
 
-> **[Tools](/docs/ai-chat/tools)**
+> [card] [Tools](/docs/ai-chat/tools)
 >
 > Declare tools so `toModelOutput` survives across turns, typed in `run()`.
 
-> **[Patterns](/docs/ai-chat/patterns/sub-agents)**
+> [card] [Patterns](/docs/ai-chat/patterns/sub-agents)
 >
 > HITL approvals, branching, sub-agents, OOM/crash recovery.
 
-> **[Database connections](/docs/database-connections)**
+> [card] [Database connections](/docs/database-connections)
 >
 > Size and release connection pools so agents don't exhaust your database.

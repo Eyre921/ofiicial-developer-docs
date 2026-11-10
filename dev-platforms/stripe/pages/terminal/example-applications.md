@@ -73,13 +73,7 @@ git clone https://github.com/stripe/stripe-terminal-android.git
 git clone https://github.com/stripe/stripe-terminal-react-native.git
 ```
 
-1. Install the [Expo CLI](https://docs.expo.dev/get-started/installation/) and package dependencies
-
-```bash
-yarn global add expo-cli
-```
-
-1. Install the example app’s package dependencies
+1. Install the example app’s package dependencies. The example app runs the [Expo CLI](https://docs.expo.dev/more/expo-cli/) from its own dependencies with `npx expo`, so you don’t need to install a global CLI.
 
 ```bash
 cd stripe-terminal-react-native/example-app

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1572 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1578 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -225,6 +225,7 @@
 - `docs/api-reference/legacy/dubbing/get-transcript-for-dub` — [Get dubbed transcript](pages/docs/api-reference/legacy/dubbing/get-transcript-for-dub.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/get-transcript-for-dub.md)
 - `docs/api-reference/legacy/dubbing/list` — [List dubs](pages/docs/api-reference/legacy/dubbing/list.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/list.md)
 - `docs/api-reference/legacy/dubbing/transcripts/get` — [Retrieve a transcript](pages/docs/api-reference/legacy/dubbing/transcripts/get.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/transcripts/get.md)
+- `docs/api-reference/legacy/knowledge-base/add-to-knowledge-base` — [Add To Knowledge Base](pages/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md)
 - `docs/api-reference/legacy/usage/get` — [Get character metrics usage](pages/docs/api-reference/legacy/usage/get.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/usage/get.md)
 - `docs/api-reference/legacy/voices/create-previews` — [Voice design](pages/docs/api-reference/legacy/voices/create-previews.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/create-previews.md)
 - `docs/api-reference/legacy/voices/get-all` — [List voices](pages/docs/api-reference/legacy/voices/get-all.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/get-all.md)
@@ -376,6 +377,7 @@
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
 - `docs/api-reference/users/list` — [List users](pages/docs/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/api-reference/users/list.md)
+- `docs/api-reference/voices/accents/get` — [Get Voice Accents](pages/docs/api-reference/voices/accents/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/accents/get.md)
 - `docs/api-reference/voices/collections/add-voice` — [Add Voice To Collection](pages/docs/api-reference/voices/collections/add-voice.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/add-voice.md)
 - `docs/api-reference/voices/collections/create` — [Create Voice Collection](pages/docs/api-reference/voices/collections/create.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/create.md)
 - `docs/api-reference/voices/collections/delete` — [Delete Voice Collection](pages/docs/api-reference/voices/collections/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/delete.md)
@@ -721,6 +723,7 @@
 - `docs/eleven-agents/customization/llm/custom-llm` — [Integrate your own model](pages/docs/eleven-agents/customization/llm/custom-llm.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm.md)
 - `docs/eleven-agents/customization/llm/custom-llm/cloudflare` — [Cloudflare Workers AI](pages/docs/eleven-agents/customization/llm/custom-llm/cloudflare.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/cloudflare.md)
 - `docs/eleven-agents/customization/llm/custom-llm/groq-cloud` — [Groq Cloud](pages/docs/eleven-agents/customization/llm/custom-llm/groq-cloud.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/groq-cloud.md)
+- `docs/eleven-agents/customization/llm/custom-llm/samba-nova-cloud` — [SambaNova Cloud](pages/docs/eleven-agents/customization/llm/custom-llm/samba-nova-cloud.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/samba-nova-cloud.md)
 - `docs/eleven-agents/customization/llm/custom-llm/together-ai` — [Together AI](pages/docs/eleven-agents/customization/llm/custom-llm/together-ai.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/together-ai.md)
 - `docs/eleven-agents/customization/llm/llm-cascading` — [LLM Cascading](pages/docs/eleven-agents/customization/llm/llm-cascading.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/llm-cascading.md)
 - `docs/eleven-agents/customization/llm/optimizing-costs` — [Optimizing LLM costs](pages/docs/eleven-agents/customization/llm/optimizing-costs.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/optimizing-costs.md)
@@ -829,7 +832,7 @@
 - `docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect` — [Amazon Connect](pages/docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect.md)
 - `docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9` — [Five9](pages/docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9.md)
 - `docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys` — [Genesys](pages/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys.md)
-- `docs/eleven-agents/phone-numbers/campaigns` — [Campaigns](pages/docs/eleven-agents/phone-numbers/campaigns.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/campaigns.md)
+- `docs/eleven-agents/phone-numbers/campaigns` — [ElevenAgents Campaign Manager](pages/docs/eleven-agents/phone-numbers/campaigns.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/campaigns.md)
 - `docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services` — [Azure Communication Services](pages/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services.md)
 - `docs/eleven-agents/phone-numbers/microsoft-teams/graph-media-bot` — [Graph calling bot](pages/docs/eleven-agents/phone-numbers/microsoft-teams/graph-media-bot.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/graph-media-bot.md)
 - `docs/eleven-agents/phone-numbers/microsoft-teams/overview` — [Microsoft Teams](pages/docs/eleven-agents/phone-numbers/microsoft-teams/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/overview.md)
@@ -889,12 +892,15 @@
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection` — [Entity detection](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting` — [Keyterm prompting](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription` — [Multichannel speech-to-text](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/multichannel-transcription.md)
+- `docs/eleven-api/guides/how-to/speech-to-text/batch/number-and-language-options` — [Number and language options](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/number-and-language-options.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/number-and-language-options.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/telegram-bot` — [Transcription Telegram Bot](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/telegram-bot.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/telegram-bot.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing` — [Transcript editing](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/vercel-ai-sdk` — [Vercel AI SDK](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/vercel-ai-sdk.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/vercel-ai-sdk.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks` — [Asynchronous Speech to Text](pages/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming` — [Client-side streaming](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streaming.md)
+- `docs/eleven-api/guides/how-to/speech-to-text/realtime/diarization` — [Speaker diarization](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/diarization.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/diarization.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference` — [Realtime event reference](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/event-reference.md)
+- `docs/eleven-api/guides/how-to/speech-to-text/realtime/language-options` — [Language options](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/language-options.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/language-options.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming` — [Server-side streaming](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streaming.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing` — [Transcript editing](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing.md)
 - `docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies` — [Transcripts and commit strategies](pages/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies.md)

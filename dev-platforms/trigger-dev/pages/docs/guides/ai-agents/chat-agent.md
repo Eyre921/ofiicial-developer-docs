@@ -103,19 +103,19 @@ See the [Quick Start](/docs/ai-chat/quick-start) for the complete frontend compo
 
 For a complete, real-world chat agent, see the ClickHouse chat agent example. It builds on everything above with generative UI, a versioned system prompt, and real tools against a live database.
 
-> **[ClickHouse chat agent](/docs/guides/example-projects/clickhouse-chat-agent)**
+> [card] [ClickHouse chat agent](/docs/guides/example-projects/clickhouse-chat-agent)
 >
 > A full example project: a chat agent that answers questions about your data with charts, tables
 > and maps.
 
-> **[AI chat overview](/docs/ai-chat/overview)**
+> [card] [AI chat overview](/docs/ai-chat/overview)
 >
 > How chat agents, sessions and the turn loop work.
 
-> **[Tools](/docs/ai-chat/tools)**
+> [card] [Tools](/docs/ai-chat/tools)
 >
 > Declaring tools on your agent and how they persist across turns.
 
-> **[Fast starts](/docs/ai-chat/fast-starts)**
+> [card] [Fast starts](/docs/ai-chat/fast-starts)
 >
 > Cut first-turn latency with preload and head start.

@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 372 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 378 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -53,6 +53,7 @@
 - `docs/ai/observability` — [LLM observability](pages/docs/ai/observability.md) · [原文](https://trigger.dev/docs/ai/observability)
 - `docs/ai/prompts` — [Prompts](pages/docs/ai/prompts.md) · [原文](https://trigger.dev/docs/ai/prompts)
 - `docs/apikeys` — [API keys](pages/docs/apikeys.md) · [原文](https://trigger.dev/docs/apikeys)
+- `docs/apikeys/custom-access` — [Custom API key access](pages/docs/apikeys/custom-access.md) · [原文](https://trigger.dev/docs/apikeys/custom-access)
 - `docs/billing-limits` — [Billing limits and alerts](pages/docs/billing-limits.md) · [原文](https://trigger.dev/docs/billing-limits)
 - `docs/building-with-ai` — [Building with AI: overview](pages/docs/building-with-ai.md) · [原文](https://trigger.dev/docs/building-with-ai)
 - `docs/bulk-actions` — [Bulk actions in the dashboard](pages/docs/bulk-actions.md) · [原文](https://trigger.dev/docs/bulk-actions)
@@ -99,6 +100,7 @@
 - `docs/deployment/dev-branches` — [Development branches](pages/docs/deployment/dev-branches.md) · [原文](https://trigger.dev/docs/deployment/dev-branches)
 - `docs/deployment/overview` — [Deployment](pages/docs/deployment/overview.md) · [原文](https://trigger.dev/docs/deployment/overview)
 - `docs/deployment/preview-branches` — [Preview branches](pages/docs/deployment/preview-branches.md) · [原文](https://trigger.dev/docs/deployment/preview-branches)
+- `docs/deployment/trusted-publishing` — [Trusted publishing](pages/docs/deployment/trusted-publishing.md) · [原文](https://trigger.dev/docs/deployment/trusted-publishing)
 - `docs/errors-retrying` — [Errors & Retrying](pages/docs/errors-retrying.md) · [原文](https://trigger.dev/docs/errors-retrying)
 - `docs/github-actions` — [CI / GitHub Actions](pages/docs/github-actions.md) · [原文](https://trigger.dev/docs/github-actions)
 - `docs/github-integration` — [GitHub integration](pages/docs/github-integration.md) · [原文](https://trigger.dev/docs/github-integration)
@@ -302,7 +304,11 @@
 - `docs/migration-n8n` — [Migrating from n8n](pages/docs/migration-n8n.md) · [原文](https://trigger.dev/docs/migration-n8n)
 - `docs/observability/dashboards` — [Dashboards](pages/docs/observability/dashboards.md) · [原文](https://trigger.dev/docs/observability/dashboards)
 - `docs/observability/query` — [Query](pages/docs/observability/query.md) · [原文](https://trigger.dev/docs/observability/query)
-- `docs/oidc` — [Workload identity](pages/docs/oidc.md) · [原文](https://trigger.dev/docs/oidc)
+- `docs/oidc` — [OpenID Connect (OIDC)](pages/docs/oidc.md) · [原文](https://trigger.dev/docs/oidc)
+- `docs/oidc/anthropic` — [Connect to Anthropic](pages/docs/oidc/anthropic.md) · [原文](https://trigger.dev/docs/oidc/anthropic)
+- `docs/oidc/aws` — [Connect to AWS](pages/docs/oidc/aws.md) · [原文](https://trigger.dev/docs/oidc/aws)
+- `docs/oidc/custom` — [Custom OIDC integrations](pages/docs/oidc/custom.md) · [原文](https://trigger.dev/docs/oidc/custom)
+- `docs/oidc/infisical` — [Connect to Infisical](pages/docs/oidc/infisical.md) · [原文](https://trigger.dev/docs/oidc/infisical)
 - `docs/open-source-contributing` — [Contributing](pages/docs/open-source-contributing.md) · [原文](https://trigger.dev/docs/open-source-contributing)
 - `docs/private-networking/aws-console-setup` — [Setting up PrivateLink in the AWS Console](pages/docs/private-networking/aws-console-setup.md) · [原文](https://trigger.dev/docs/private-networking/aws-console-setup)
 - `docs/private-networking/overview` — [Private networking](pages/docs/private-networking/overview.md) · [原文](https://trigger.dev/docs/private-networking/overview)

@@ -97,34 +97,34 @@ Each plan sets limits on the ingest rate, waiting runs, processing concurrency a
 
 Every endpoint can produce a setup prompt for an AI coding agent. It holds the URL, the events your subscribers filter on, and the steps for registering the endpoint and its signing secret with the provider. Copy it from the endpoints list or the endpoint's page, or read it with the MCP server's `get_webhook_endpoint_details` tool. See [Connect a provider](/docs/webhooks/connect).
 
-> **[Connect a provider](/docs/webhooks/connect)**
+> [card] [Connect a provider](/docs/webhooks/connect)
 >
 > Register the URL and signing secret, then send a test event.
 
-> **[Sources and verification](/docs/webhooks/sources)**
+> [card] [Sources and verification](/docs/webhooks/sources)
 >
 > Choose a provider source or define a custom verification scheme.
 
-> **[Filters](/docs/webhooks/filters)**
+> [card] [Filters](/docs/webhooks/filters)
 >
 > Choose which events reach each subscriber.
 
-> **[Waiters](/docs/webhooks/waiters)**
+> [card] [Waiters](/docs/webhooks/waiters)
 >
 > Pause a run until a matching webhook arrives.
 
-> **[Deliveries and endpoints](/docs/webhooks/deliveries)**
+> [card] [Deliveries and endpoints](/docs/webhooks/deliveries)
 >
 > Inspect received events and where each one went.
 
-> **[Session routing](/docs/webhooks/session-routing)**
+> [card] [Session routing](/docs/webhooks/session-routing)
 >
 > Route deliveries to a durable per-key agent session.
 
-> **[Channels](/docs/webhooks/channels)**
+> [card] [Channels](/docs/webhooks/channels)
 >
 > Turn a webhook into a chat frontend for an agent.
 
-> **[Human-in-the-loop](/docs/webhooks/human-in-the-loop)**
+> [card] [Human-in-the-loop](/docs/webhooks/human-in-the-loop)
 >
 > Approvals and interactive controls over a channel.

@@ -180,7 +180,7 @@ Add `loadContext` only when your database decides what the model sees each turn:
 ```ts lib/transcript-storage.ts theme={"theme":"css-variables"}
 loadContext: async ({ chatId, clientData }, { incomingMessages }) => {
   const branch = await db.activeBranch(chatId, clientData.userId);
-  return [...branch, ...incomingMessages];
+  return [...branch, ...incomingMessages.filter((m) => m.role === "user")];
 },
 ```
 

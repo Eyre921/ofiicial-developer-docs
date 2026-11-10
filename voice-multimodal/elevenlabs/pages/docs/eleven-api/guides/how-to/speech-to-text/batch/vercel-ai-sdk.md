@@ -66,10 +66,10 @@ You can use the following optional settings to customize the ElevenLabs provider
 You can create models that call the [ElevenLabs transcription API](https://elevenlabs.io/speech-to-text)
 using the `.transcription()` factory method.
 
-The first argument is the model id e.g. `scribe_v2`.
+The first argument is the model id e.g. `scribe_v3`.
 
 ```ts
-const model = elevenlabs.transcription("scribe_v2");
+const model = elevenlabs.transcription("scribe_v3");
 ```
 
 You can also pass additional provider-specific options using the `providerOptions` argument. For example, supplying the input language in ISO-639-1 (e.g. `en`) format can sometimes improve transcription performance if known beforehand.
@@ -79,7 +79,7 @@ import { elevenlabs } from "@ai-sdk/elevenlabs";
 import { experimental_transcribe as transcribe } from "ai";
 
 const result = await transcribe({
-  model: elevenlabs.transcription("scribe_v2"),
+  model: elevenlabs.transcription("scribe_v3"),
   audio: new Uint8Array([1, 2, 3, 4]),
   providerOptions: { elevenlabs: { languageCode: "en" } },
 });

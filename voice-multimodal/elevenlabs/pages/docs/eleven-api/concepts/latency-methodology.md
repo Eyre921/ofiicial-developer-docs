@@ -56,7 +56,9 @@ Requests are routed to the nearest serving cluster, and the round-trip to it add
 
 ## Models without a published latency figure
 
-ElevenLabs does not publish a latency figure for Eleven v4, Eleven v3, Eleven Multilingual v2, Scribe v2 or Scribe v2 Medical. These models are designed for quality rather than real-time use. Latency figures for the real-time models above do not apply to them.
+ElevenLabs does not publish a latency figure for Eleven v4, Eleven v3, Eleven Multilingual v2, Scribe v3, Scribe v2 or Scribe v2 Medical. These models are designed for quality rather than real-time use. Latency figures for the real-time models above do not apply to them.
+
+ElevenLabs has not yet published a latency figure for Scribe v3 Live. The Scribe v2 Realtime figure above does not apply to it.
 
 ## Related
 

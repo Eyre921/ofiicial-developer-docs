@@ -62,7 +62,7 @@ Add a button to redirect to the customer portal to allow customers to manage the
 
 ### Redirect to the customer portal session
 
-Make a request to the endpoint on your server to redirect to a new customer portal session. This example uses the `session_id` from the [Checkout session](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-id) to demonstrate retrieving the `customer_id`. In a production environment, we recommend that you store this value alongside the authenticated user in your database.
+Make a request to the endpoint on your server to redirect to a new customer portal session. This example uses the `session_id` from the [Checkout session](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-id) to demonstrate retrieving the `customer_account`. In a production environment, we recommend that you store this value alongside the authenticated user in your database.
 
 ### Install the Stripe Node library
 
@@ -1125,6 +1125,7 @@ $stripe = new \Stripe\StripeClient($stripeSecretKey);
         'coupon' => '{{COUPON_ID}}',
     ]],
     'customer' => 'cus_123',
+    'customer_account' => 'acct_123',
     'automatic_tax' => [
       'enabled' => true,
     ],

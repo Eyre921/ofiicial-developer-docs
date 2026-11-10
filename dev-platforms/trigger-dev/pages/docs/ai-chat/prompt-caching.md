@@ -190,18 +190,18 @@ If `cacheReadTokens` stays 0 across turns with an identical prefix, a silent inv
 
 ## Next steps
 
-> **[Compaction](/docs/ai-chat/compaction)**
+> [card] [Compaction](/docs/ai-chat/compaction)
 >
 > Keep long conversations within token limits — and re-warm the cache after.
 
-> **[Fast starts](/docs/ai-chat/fast-starts)**
+> [card] [Fast starts](/docs/ai-chat/fast-starts)
 >
 > Cut cold-start latency so a cached prefix is the only thing between a message and a reply.
 
-> **[chat.agent reference](/docs/ai-chat/reference#chatagentoptions)**
+> [card] [chat.agent reference](/docs/ai-chat/reference#chatagentoptions)
 >
 > Full option surface, including `prepareMessages` and `toStreamTextOptions`.
 
-> **[Building agents: backend](/docs/ai-chat/backend)**
+> [card] [Building agents: backend](/docs/ai-chat/backend)
 >
 > The three ways to build a chat backend and when to reach for each.

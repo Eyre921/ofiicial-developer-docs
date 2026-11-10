@@ -16,7 +16,7 @@ When you use `confirm=true` during creation, it’s equivalent to creating and c
 
 ```curl
 curl https://api.stripe.com/v1/payment_intents \
-  -u "<<YOUR_SECRET_KEY>>" \
+  -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-10-28.endive" \
   -d amount=2000 \
   -d currency=usd \

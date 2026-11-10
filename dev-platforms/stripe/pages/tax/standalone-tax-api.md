@@ -162,6 +162,10 @@ curl https://api.stripe.com/v1/tax/calculations \
 
 ## Use an existing Account or Customer 
 
+> #### Use v2 Account's Customer ID
+> 
+> The Tax Calculations API doesn’t support the `customer_account` parameter to identify customer-configured v2 `Account` objects. To specify an `Account`, retrieve its associated `Customer` ID by passing the `Account` ID in the [retrieve a Customer](https://docs.stripe.com/api/customers/retrieve.md) request.
+
 The tax calculation automatically uses the relevant [Customer](https://docs.stripe.com/api/customers/object.md) address and tax IDs according to the availability of customer data:
 
 - The customer shipping address populates the calculation’s `customer_details.address`.

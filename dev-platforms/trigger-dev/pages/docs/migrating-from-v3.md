@@ -86,7 +86,7 @@ Note that between steps 4 and 5, runs triggered with the v4 package will continu
 
 Use the prompt in the accordion below to help you migrate your v3 tasks to v4. The prompt gives good results when using Claude 4 Sonnet. You’ll need a relatively large token limit.
 
-> **Copy paste this prompt in full**
+> [accordion] Copy paste this prompt in full
 >
 > ```md theme={"theme":"css-variables"}
 >

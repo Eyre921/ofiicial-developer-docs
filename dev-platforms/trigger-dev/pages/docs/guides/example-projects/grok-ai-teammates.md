@@ -37,7 +37,7 @@ Grok AI Teammates is an open-source, fullstack app where each bot has a name, a 
 
 ## GitHub repo
 
-> **[View the AI Teammates repo](https://github.com/code-with-antonio/ai-teammates)**
+> [card] [View the AI Teammates repo](https://github.com/code-with-antonio/ai-teammates)
 >
 > Click here to view the full code for this project on GitHub. It's maintained by Code With Antonio,
 > and you can fork it and use it as a starting point for your own project.
@@ -279,18 +279,18 @@ To deploy, run `npx trigger.dev@latest deploy` and add the tasks' variables (`DA
 
 ## Learn more
 
-> **[AI chat overview](/docs/ai-chat/overview)**
+> [card] [AI chat overview](/docs/ai-chat/overview)
 >
 > How chat agents, sessions, and the turn loop work.
 
-> **[Frontend](/docs/ai-chat/frontend)**
+> [card] [Frontend](/docs/ai-chat/frontend)
 >
 > The chat transport, session tokens, and reconnection.
 
-> **[Tools](/docs/ai-chat/tools)**
+> [card] [Tools](/docs/ai-chat/tools)
 >
 > Declaring tools on your agent and how they persist across turns.
 
-> **[Scheduled tasks](/docs/tasks/scheduled)**
+> [card] [Scheduled tasks](/docs/tasks/scheduled)
 >
 > Run tasks on a cron schedule.

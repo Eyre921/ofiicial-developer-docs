@@ -32,7 +32,7 @@ The task runs daily at 5pm ET to find the cheapest Broadway tickets available fo
 
 ## GitHub repo
 
-> **[View the Anchor Browser web scraper repo](https://github.com/triggerdotdev/examples/tree/main/anchor-browser-web-scraper)**
+> [card] [View the Anchor Browser web scraper repo](https://github.com/triggerdotdev/examples/tree/main/anchor-browser-web-scraper)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.

@@ -10,18 +10,18 @@ Trigger.dev handles workflows that traditional platforms struggle with: long-run
 
 ## Featured use cases
 
-> **[Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)**
+> [card] [Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)
 >
 > Build complex data pipelines that process large datasets without timeouts.
 
-> **[Media processing workflows](/docs/guides/use-cases/media-processing)**
+> [card] [Media processing workflows](/docs/guides/use-cases/media-processing)
 >
 > Batch process videos, images, audio, and documents with no execution time limits.
 
-> **[AI media generation workflows](/docs/guides/use-cases/media-generation)**
+> [card] [AI media generation workflows](/docs/guides/use-cases/media-generation)
 >
 > Generate images, videos, audio, documents and other media using AI models.
 
-> **[Marketing workflows](/docs/guides/use-cases/marketing)**
+> [card] [Marketing workflows](/docs/guides/use-cases/marketing)
 >
 > Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.

@@ -53,10 +53,11 @@ User objects that represent people have the `type` property set to `"person"`. T
 
 ## Bots
 
-A user object's `type` property is `"bot"` when the user object represents a bot. Custom Agents appear as bots in `people` page properties. [List all users](/reference/get-users) doesn't include them, and a `user` mention can't reference one. A bot's `avatar_url` is `null` when its icon isn't an image URL. A bot user object has the following properties:
+A user object's `type` property is `"bot"` when the user object represents a bot. Custom Agents appear as bots in [people properties](/reference/page-property-values#people) and [user mentions](/reference/rich-text#user-mention-type-object). The user object's `id` identifies the bot. A bot's `avatar_url` is `null` when its icon isn't an image URL. A bot user object has the following properties:
 
 | Property | Updatable | Type | Description | Example value |
 | :- | :- | :- | :- | :- |
+| `agent_id` | Display-only | `string` (UUID, optional) | ID of the Custom Agent this bot acts for. | `"ef82a3bc-58dc-47ca-8ab6-56d144d166cc"` |
 | `bot` | Display-only | `object` | If you're using `GET /v1/users/me` or `GET /v1/users/{{your_bot_id}}`, then this field returns data about the bot, including `owner`, `owner.type`, and `workspace_name`. These properties are detailed below. | `{ "object": "user", "id": "9188c6a5-7381-452f-b3dc-d4865aa89bdf", "name": "Test Connection", "avatar_url": null, "type": "bot", "bot": { "owner": { "type": "workspace", "workspace": true }, "workspace_name": "Ada Lovelace’s Notion" } }` |
 | `owner` | Display-only | `object` | Information about who owns this bot. | `{ "type": "workspace", "workspace": true }` |
 | `owner.type` | Display-only | `string` enum | The type of owner, either `"workspace"` or `"user"`. | `"workspace"` |

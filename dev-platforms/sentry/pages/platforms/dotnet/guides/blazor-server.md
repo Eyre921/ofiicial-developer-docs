@@ -79,16 +79,26 @@ However, on .NET 10 and later, Blazor emits OpenTelemetry activities for circuit
 
 #### [Install OpenTelemetry](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md#install-opentelemetry)
 
-See [OpenTelemetry Support](https://docs.sentry.io/platforms/dotnet/guides/blazor-server/tracing/instrumentation/opentelemetry.md) for installation and setup instructions.
+Install the OTLP exporter and OpenTelemetry instrumentation:
+
+```shell
+dotnet add package Sentry.OpenTelemetry.Exporter -v 6.12.1
+dotnet add package OpenTelemetry.Extensions.Hosting
+dotnet add package OpenTelemetry.Instrumentation.AspNetCore
+```
+
+*Other available variations of the above snippet: Package Manager*
+
+See [OpenTelemetry (OTLP)](https://docs.sentry.io/platforms/dotnet/guides/blazor-server/tracing/instrumentation/opentelemetry-otlp.md) for sampling and trace propagation.
 
 #### [Configure OpenTelemetry](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md#configure-opentelemetry)
 
-Wire up Sentry as an OpenTelemetry exporter, subscribe to the Blazor activity sources, and register helper services for circuit and breadcrumb tracking:
+Copy the [helper services](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md#circuit-lifecycle-tracking-services) into your application and add a `using` directive for their namespace. Then configure the OTLP exporter, subscribe to the Blazor activity sources, and register the helpers:
 
 ```csharp
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using OpenTelemetry.Trace;
-using Sentry.OpenTelemetry;
+using Sentry;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,18 +111,14 @@ builder.Services.AddOpenTelemetry()
         tracing.AddSource("Microsoft.AspNetCore.Components");
         tracing.AddSource("Microsoft.AspNetCore.Components.Server.Circuits");
         tracing.AddAspNetCoreInstrumentation();
-        // Export traces to Sentry
-        tracing.AddSentry();
+        tracing.SetSampler(new ParentBasedSampler(new TraceIdRatioBasedSampler(0.1)));
+        tracing.AddSentryOtlpExporter("https://<key>@o<orgId>.ingest.sentry.io/<projectId>");
     });
 
 builder.WebHost.UseSentry(options =>
 {
     options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
-    options.UseOpenTelemetry();
-    // Enables Tracing.
-    // Set to 1.0 to capture 100% of spans for tracing.
-    // We recommend reducing this value in production.
-    options.TracesSampleRate = 0.1;
+    options.UseOtlp();
     // Rewrites /_blazor SignalR transaction names to the actual Blazor route
     options.AddEventProcessor(new BlazorEventProcessor());
 });
@@ -133,6 +139,8 @@ app.MapFallbackToPage("/_Host");
 
 app.Run();
 ```
+
+OpenTelemetry handles sampling in this configuration. Don't also set `TracesSampleRate` on the Sentry options.
 
 #### [Circuit Lifecycle Tracking Services](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md#circuit-lifecycle-tracking-services)
 
@@ -191,7 +199,15 @@ catch (Exception ex)
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Samples](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md#samples)
 

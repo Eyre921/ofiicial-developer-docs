@@ -10,10 +10,10 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
-    "pages": 231,
+    "pages": 206,
     "status": "ok"
   },
   "ai-models/groq": {
@@ -26,7 +26,7 @@
     "status": "error: curl failed (22) for https://docs.together.ai/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/fireworks": {
-    "pages": 380,
+    "pages": 382,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -42,7 +42,8 @@
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 9852976 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 4160757 bytes received\ncurl: (28) Operation timed out a"
+    "pages": 0,
+    "status": "ok"
   },
   "agent-frameworks/langchain": {
     "pages": 1726,
@@ -57,7 +58,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 589,
+    "pages": 590,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -89,14 +90,15 @@
     "status": "ok"
   },
   "dev-platforms/cloudflare": {
-    "status": "error: curl failed (28) for https://developers.cloudflare.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 14970344 out of 70313623 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 8769117 out of 70313623 bytes received"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/drizzle": {
     "pages": 0,
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 423,
+    "pages": 424,
     "status": "ok"
   },
   "ai-models/google-gemini": {
@@ -142,7 +144,7 @@
     "status": "ok"
   },
   "dev-platforms/trigger-dev": {
-    "pages": 372,
+    "pages": 378,
     "status": "ok"
   },
   "dev-platforms/sentry": {
@@ -185,11 +187,11 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 83,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 480,
+    "pages": 481,
     "status": "ok"
   },
   "ai-models/openrouter": {
@@ -201,8 +203,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1572,
+    "pages": 1578,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-10T11:30:56Z"
+  "_last_crawl": "2026-11-10T23:31:45Z"
 }

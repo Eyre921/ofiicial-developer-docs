@@ -102,6 +102,37 @@ If you use hosted or embedded checkout pages and enable tax ID collection, the U
 
 Checkout includes provided tax IDs on the resulting [Session](https://docs.stripe.com/api/checkout/sessions/object.md) object. After each completed Session, Checkout emits a [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event that you can listen for in a *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) endpoint. If you want to retrieve the collected tax ID from the Session object, it’s available under the Session’s [customer_details.tax_ids](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details-tax_ids) array:
 
+#### Accounts v2
+
+```json
+{
+  "object": {
+    "id": "cs_test_a1dJwt0TCJTBsDkbK7RcoyJ91vJxe2Y",
+    "object": "checkout.session",
+    ...
+    "customer_account": {{CUSTOMER_ACCOUNT_ID}},
+    "customer_details": {
+      ...
+      "tax_ids": [
+        {
+          "type": "eu_vat",
+          "value": "FRAB123456789"
+        }
+      ]
+    },
+    ...
+    "tax_id_collection": {
+      "enabled": true
+    }
+    ...
+  }
+}
+```
+
+Checkout saves collected tax IDs and business names to the [v2 Account](https://docs.stripe.com/api/v2/core/accounts/object.md) object when you associate the Checkout Session with a v2 Account. You can retrieve all tax IDs associated with a v2 Account using the [Tax IDs](https://docs.stripe.com/api/tax_ids/list.md) resource by setting [owner.type](https://docs.stripe.com/api/tax_ids/list.md#list_tax_ids-owner-type) to `customer` and [owner.customer_account](https://docs.stripe.com/api/tax_ids/list.md#list_tax_ids-owner-customer_account) to the Account ID. Checkout saves the business name to the v2 Account’s [display_name](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-display_name) and [registered_name](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-registered_name) properties. Your subscription invoices always show the collected legal business name.
+
+#### Customer v1
+
 ```json
 {
   "object": {

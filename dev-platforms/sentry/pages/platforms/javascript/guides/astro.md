@@ -12,6 +12,11 @@ url: https://docs.sentry.io/platforms/javascript/guides/astro/
 
 # Sentry for Astro
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/astro.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md)
+
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/astro.md#prerequisites)
 
 You need:
@@ -23,7 +28,7 @@ You need:
 
 ##### What runtime do you use?
 
-This SDK currently only works on Node runtimes, such as Node adapter or Vercel with Lambda functions. If you use Cloudflare Workers or Cloudflare Pages, refer to our [Astro on Cloudflare guide](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/astro.md). Other non-Node runtimes, like Vercel's Edge runtime, are currently **not supported**.
+This SDK currently only works on Node runtimes, such as Node adapter or Vercel with Lambda functions. If you use Cloudflare Workers or Cloudflare Pages, refer to our [Astro on Cloudflare guide](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md). Other non-Node runtimes, like Vercel's Edge runtime, are currently **not supported**.
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/astro.md#install)
 
@@ -301,6 +306,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/astro/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/astro/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/astro/logs.md)

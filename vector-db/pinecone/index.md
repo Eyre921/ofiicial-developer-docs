@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 589 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 590 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -228,6 +228,7 @@
 - `guides/pg-pinecone/full-text-search` — [Search a table with full-text search](pages/guides/pg-pinecone/full-text-search.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/full-text-search)
 - `guides/pg-pinecone/overview` — [pg_pinecone](pages/guides/pg-pinecone/overview.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/overview)
 - `guides/pg-pinecone/quickstart` — [pg_pinecone quickstart](pages/guides/pg-pinecone/quickstart.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/quickstart)
+- `guides/pg-pinecone/semantic-search` — [Search a table with semantic search](pages/guides/pg-pinecone/semantic-search.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/semantic-search)
 - `guides/pg-pinecone/storage-engines` — [pg_pinecone storage engines](pages/guides/pg-pinecone/storage-engines.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/storage-engines)
 - `guides/pg-pinecone/support` — [pg_pinecone support](pages/guides/pg-pinecone/support.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/support)
 - `guides/pg-pinecone/switch-from-pgvector` — [Switch from pgvector to native](pages/guides/pg-pinecone/switch-from-pgvector.md) · [原文](https://docs.pinecone.io/guides/pg-pinecone/switch-from-pgvector)

@@ -31,7 +31,7 @@ This example is a fullstack [chat agent](/docs/ai-chat/overview) that answers na
 
 ## GitHub repo
 
-> **[View the ClickHouse chat agent repo](https://github.com/triggerdotdev/examples/tree/main/clickhouse-chat-agent)**
+> [card] [View the ClickHouse chat agent repo](https://github.com/triggerdotdev/examples/tree/main/clickhouse-chat-agent)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -276,18 +276,18 @@ With a dataset like [NYC Taxi](https://clickhouse.com/docs/getting-started/examp
 
 ## Learn more
 
-> **[AI chat overview](/docs/ai-chat/overview)**
+> [card] [AI chat overview](/docs/ai-chat/overview)
 >
 > How chat agents, sessions, and the turn loop work.
 
-> **[Frontend](/docs/ai-chat/frontend)**
+> [card] [Frontend](/docs/ai-chat/frontend)
 >
 > The chat transport, session tokens, and reconnection.
 
-> **[AI Prompts](/docs/ai/prompts)**
+> [card] [AI Prompts](/docs/ai/prompts)
 >
 > Versioned prompts with dashboard overrides and generation tracking.
 
-> **[Tools](/docs/ai-chat/tools)**
+> [card] [Tools](/docs/ai-chat/tools)
 >
 > Declaring tools on your agent and how they persist across turns.

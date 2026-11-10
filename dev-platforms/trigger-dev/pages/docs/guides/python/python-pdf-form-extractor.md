@@ -24,7 +24,7 @@ This demo showcases how to use Trigger.dev with Python to extract structured for
 
 ## GitHub repo
 
-> **[View the project on GitHub](https://github.com/triggerdotdev/examples/edit/main/python-pdf-form-extractor/)**
+> [card] [View the project on GitHub](https://github.com/triggerdotdev/examples/edit/main/python-pdf-form-extractor/)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -189,7 +189,7 @@ if __name__ == "__main__":
 
 ## Learn more about using Python with Trigger.dev
 
-> **[Python build extension](/docs/config/extensions/pythonExtension)**
+> [card] [Python build extension](/docs/config/extensions/pythonExtension)
 >
 > Learn how to use our built-in Python build extension to install dependencies and run your Python
 > code.

@@ -12,11 +12,14 @@ url: https://docs.sentry.io/platforms/javascript/guides/mastra/
 
 # Sentry for Mastra
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/mastra.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md)
+
 [Mastra](https://mastra.ai/) is a TypeScript framework for building AI applications and agents. This guide sets up the Sentry SDK in a Mastra app so agent runs, model generations, tool calls, workflows, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
 
 This guide covers the Sentry SDK-based setup, which replaces the earlier `@mastra/sentry` exporter. It requires JavaScript SDK version `11.0.0` or later. If you previously used the `@mastra/sentry` exporter, remove it from your Mastra `exporters` — it calls `Sentry.init()` itself and conflicts with the built-in integration.
-
-Running Mastra on Cloudflare Workers? Follow the [Cloudflare Quick Start](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md) instead.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/mastra.md#prerequisites)
 
@@ -224,7 +227,7 @@ Spans are tagged with `sentry.origin: auto.ai.mastra`.
 
 ## Topics
 
-- [Cloudflare Quick Start](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md)
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/mastra/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/mastra/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/mastra/logs.md)

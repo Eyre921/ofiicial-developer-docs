@@ -22,7 +22,7 @@ This demo shows how to build an AI agent using the Claude Agent SDK that clones 
 
 ## GitHub repo
 
-> **[View the Claude GitHub wiki agent repo](https://github.com/triggerdotdev/examples/tree/main/claude-agent-github-wiki)**
+> [card] [View the Claude GitHub wiki agent repo](https://github.com/triggerdotdev/examples/tree/main/claude-agent-github-wiki)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.

@@ -41,7 +41,7 @@ On .NET for Android, you also get:
   * [Capture Application Not Responding (ANR) errors](https://docs.sentry.io/platforms/android/configuration/app-not-respond.md) when the app is unresponsive
   * Automatically [attach screenshots to Java exceptions](https://docs.sentry.io/platforms/android/enriching-events/screenshots.md)
   * Automatic breadcrumbs for Activity lifecycle, App lifecycle, System and Network events and User Interactions
-  * Automatic [Activity lifecycle tracing](https://docs.sentry.io/platforms/android/tracing/instrumentation/automatic-instrumentation.md#activity-instrumentation) and [User Interaction tracing](https://docs.sentry.io/platforms/android/tracing/instrumentation/automatic-instrumentation.md#user-interaction-instrumentation)
+  * Opt-in automatic [Activity lifecycle tracing](https://docs.sentry.io/platforms/android/tracing/instrumentation/automatic-instrumentation.md#activity-instrumentation) and [User Interaction tracing](https://docs.sentry.io/platforms/android/tracing/instrumentation/automatic-instrumentation.md#user-interaction-instrumentation) through the embedded Android SDK. See [`Native.EnableTracing`](https://docs.sentry.io/platforms/dotnet/guides/android/configuration/native-options.md#Native.EnableTracing).
   * Device Root checking
 
 * Native crash reporting for Android, leveraging our [Android NDK](https://docs.sentry.io/platforms/android/configuration/using-ndk.md)
@@ -58,6 +58,11 @@ The snippet also turns on:
 Don't need a feature? Remove its options from the snippet.
 
 ```csharp
+using Android.App;
+using Android.OS;
+using Sentry;
+using Sentry.Android;
+
 [Activity(Label = "@string/app_name", MainLauncher = true)]
 public class MainActivity : Activity
 {
@@ -77,7 +82,7 @@ public class MainActivity : Activity
 #endif
 
             // Android specific .NET features are under the Android properties:
-            options.Android.LogCatIntegration = LogCatIntegrationType.Errors; // Get logcat logs for both handled and unhandled errors; default is unhandled only
+            options.Android.LogCatIntegration = LogCatIntegrationType.Errors; // Attach logcat logs to handled and unhandled errors; default is None.
             options.Android.LogCatMaxLines = 1000; // Defaults to 1000
 
             // Native Android SDK options are available via options.Native
@@ -181,7 +186,15 @@ catch (Exception ex)
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/android.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Next Steps](https://docs.sentry.io/platforms/dotnet/guides/android.md#next-steps)
 

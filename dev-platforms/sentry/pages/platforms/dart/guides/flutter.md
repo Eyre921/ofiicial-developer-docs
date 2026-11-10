@@ -6,7 +6,7 @@ path: platforms/dart/guides/flutter
 
 ---
 title: "Flutter"
-description: "Learn how to set up Sentry in your Flutter app, capture your first errors and traces, and view them in Sentry."
+description: "Learn how to set up Sentry in your Flutter app, capture your first events, and view them in Sentry."
 url: https://docs.sentry.io/platforms/dart/guides/flutter/
 ---
 
@@ -38,7 +38,7 @@ brew install getsentry/tools/sentry-wizard && sentry-wizard -i flutter
 **Windows**
 
 ```powershell
-$downloadUrl = "https://github.com/getsentry/sentry-wizard/releases/download/v5.1.0/sentry-wizard-win-x64.exe"
+$downloadUrl = "https://github.com/getsentry/sentry-wizard/releases/download/v9.1.0/sentry-wizard-win-x64.exe"
 Invoke-WebRequest $downloadUrl -OutFile sentry-wizard.exe
 ./sentry-wizard.exe -i flutter
 ```
@@ -46,7 +46,7 @@ Invoke-WebRequest $downloadUrl -OutFile sentry-wizard.exe
 **macOS (Intel/x64)**
 
 ```bash
-downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v5.1.0/sentry-wizard-darwin-x64"
+downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v9.1.0/sentry-wizard-darwin-x64"
 curl -L $downloadUrl -o sentry-wizard
 chmod +x sentry-wizard
 ./sentry-wizard -i flutter
@@ -55,7 +55,7 @@ chmod +x sentry-wizard
 **macOS (Apple Silicon/arm64)**
 
 ```bash
-downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v5.1.0/sentry-wizard-darwin-arm64"
+downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v9.1.0/sentry-wizard-darwin-arm64"
 curl -L $downloadUrl -o sentry-wizard
 chmod +x sentry-wizard
 ./sentry-wizard -i flutter
@@ -64,7 +64,7 @@ chmod +x sentry-wizard
 **Linux (x64)**
 
 ```bash
-downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v5.1.0/sentry-wizard-linux-x64"
+downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v9.1.0/sentry-wizard-linux-x64"
 curl -L $downloadUrl -o sentry-wizard
 chmod +x sentry-wizard
 ./sentry-wizard -i flutter
@@ -73,7 +73,7 @@ chmod +x sentry-wizard
 **Linux (arm64)**
 
 ```bash
-downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v5.1.0/sentry-wizard-linux-arm64"
+downloadUrl="https://github.com/getsentry/sentry-wizard/releases/download/v9.1.0/sentry-wizard-linux-arm64"
 curl -L $downloadUrl -o sentry-wizard
 chmod +x sentry-wizard
 ./sentry-wizard -i flutter
@@ -85,7 +85,7 @@ chmod +x sentry-wizard
 npx @sentry/wizard@latest -i flutter
 ```
 
-This will patch your project and configure the SDK. You only need to patch the project once, then you can add the patched files to your version control system. If you prefer, you can also [set up the SDK manually](https://docs.sentry.io/platforms/dart/guides/flutter/manual-setup.md).
+This will patch your project and configure the SDK. **Logs** and **Application Metrics** are enabled by default in SDK v10, and you'll learn how to send them in steps [#2](https://docs.sentry.io/platforms/dart/guides/flutter.md#send-logs) and [#3](https://docs.sentry.io/platforms/dart/guides/flutter.md#send-application-metrics-). You only need to patch the project once, then you can add the patched files to your version control system. If you prefer, you can also [set up the SDK manually](https://docs.sentry.io/platforms/dart/guides/flutter/manual-setup.md).
 
 The following tasks will be performed by the Sentry Wizard
 
@@ -94,68 +94,47 @@ The following tasks will be performed by the Sentry Wizard
 * Prompt you for optional features and patch `main.dart` with `SentryFlutter.init`.
 * Add a sample exception that is captured when the app starts so you can verify the setup.
 
-The wizard will prompt you to enable optional features. Select the same options here so this guide can show you how to verify them:
+## [Send Logs](https://docs.sentry.io/platforms/dart/guides/flutter.md#send-logs)
 
-Error Monitoring\[ ]Tracing\[ ]Session Replay
+Call `Sentry.logger` from your application code after initialization to send structured logs at different levels. You can add attributes to make logs easier to search and filter.
 
-Want to learn more about these features?
+See [Set Up Logs](https://docs.sentry.io/platforms/dart/guides/flutter/logs.md) for all available logging methods and message formatting.
 
-* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Sentry's core error monitoring product that automatically reports errors, uncaught exceptions, and crashes. If you have something that looks like an exception, Sentry can capture it.
-* [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
-* [**Session Replay**](https://docs.sentry.io/product/session-replay.md): Get to the root cause of an issue faster by viewing a video-like reproduction of what users saw in your app before, during, and after the problem.
-* [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
-* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
+```dart
+Sentry.logger.info('Order completed', attributes: {
+  'order_id': SentryAttribute.string('12345'),
+  'total': SentryAttribute.double(99.99),
+});
+
+Sentry.logger.warn('Slow operation detected');
+Sentry.logger.error('Validation failed');
+```
+
+If you use the Dart `logging` package, add the [`sentry_logging` integration](https://docs.sentry.io/platforms/dart/guides/flutter/integrations/logging.md) to send its records to Sentry.
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/dart/guides/flutter.md#send-application-metrics-)
+
+Call `Sentry.metrics` from your application code after initialization to send counters, gauges, and distributions. Add attributes to filter and group metrics in Sentry.
+
+See [Set Up Metrics](https://docs.sentry.io/platforms/dart/guides/flutter/metrics.md) for metric types, attributes, and configuration options.
+
+```dart
+Sentry.metrics.count('checkout.failed', 1);
+Sentry.metrics.gauge('queue.depth', 42);
+Sentry.metrics.distribution('api_latency', 187, unit: 'millisecond');
+```
 
 ## [Verify Your Setup](https://docs.sentry.io/platforms/dart/guides/flutter.md#verify-your-setup)
 
 Let's test your setup and confirm that data reaches your Sentry project.
 
-### [Issues](https://docs.sentry.io/platforms/dart/guides/flutter.md#issues)
-
-The wizard added a sample exception to `main.dart` that is captured when the app starts. Run your app to send it to Sentry:
+The wizard added a sample exception to main.dart that is captured when the app starts. Run your app to send it to Sentry:
 
 ```bash
 flutter run
 ```
 
 After you've confirmed the issue in Sentry, remove the sample exception from `main.dart` so it isn't captured on every launch.
-
-### [Tracing](https://docs.sentry.io/platforms/dart/guides/flutter.md#tracing)
-
-To test your tracing configuration, create a custom transaction and span:
-
-```dart
-final transaction = Sentry.startTransaction('test-transaction', 'task');
-final span = transaction.startChild('test-span');
-await span.finish();
-await transaction.finish();
-```
-
-### [Logs](https://docs.sentry.io/platforms/dart/guides/flutter.md#logs)
-
-Logs are enabled by default. Use the Sentry logger to send structured logs from anywhere in your application:
-
-```dart
-Sentry.logger.info('User clicked checkout button');
-
-Sentry.logger.info('Order completed', attributes: {
-  'order_id': SentryAttribute.string('12345'),
-  'total': SentryAttribute.double(99.99),
-});
-
-Sentry.logger.warn('Warning message');
-Sentry.logger.error('Error occurred');
-```
-
-### [Metrics NEW](https://docs.sentry.io/platforms/dart/guides/flutter.md#metrics-)
-
-Metrics are enabled by default. Send test metrics from your app to verify that metrics are arriving in Sentry:
-
-```dart
-Sentry.metrics.count('checkout.failed', 1);
-Sentry.metrics.gauge('queue.depth', 42);
-Sentry.metrics.distribution('cart.amount_usd', 187.5);
-```
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dart/guides/flutter.md#view-captured-data-in-sentry)
 
@@ -171,15 +150,12 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/dart/guides/flutter.md#next-steps)
 
-At this point, you should have integrated Sentry into your Flutter application and should already be sending data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your Flutter application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/dart/guides/flutter/configuration.md)
-* Add readable [stack traces](https://docs.sentry.io/platforms/dart/guides/flutter/debug-symbols.md#when-to-upload-debug-symbols) to errors
-* Learn about the [features of Sentry's Flutter SDK](https://docs.sentry.io/platforms/dart/guides/flutter/features.md)
-* Add [performance instrumentation to your app](https://docs.sentry.io/platforms/dart/guides/flutter/tracing/instrumentation.md)
+* Upload [debug symbols and source maps](https://docs.sentry.io/platforms/dart/guides/flutter/debug-symbols.md) for readable production stack traces. The wizard configures `sentry_dart_plugin`; run `dart run sentry_dart_plugin` after each production build to upload the files. In CI, provide `SENTRY_AUTH_TOKEN` to the upload step.
+* Learn about [Session Replay](https://docs.sentry.io/platforms/dart/guides/flutter/session-replay.md) and its privacy controls
+* Add [performance instrumentation](https://docs.sentry.io/platforms/dart/guides/flutter/tracing/instrumentation.md) to your app
 
 Are you having problems setting up the SDK?
 

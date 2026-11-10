@@ -77,7 +77,7 @@ To better understand why an OOM error occurred, we've published a helper class t
 
 First, add this `ResourceMonitor` class to your project:
 
-> **View ResourceMonitor class**
+> [accordion] View ResourceMonitor class
 >
 > ```ts /src/resourceMonitor.ts theme={"theme":"css-variables"}
 > import { promisify } from "node:util";

@@ -16,7 +16,7 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/client-side-streamin
 
 The ElevenLabs Realtime Speech to Text API enables you to transcribe audio streams in real-time with ultra-low latency using the Scribe Realtime v2 model. Whether you're building voice assistants, transcription services, or any application requiring live speech recognition, this WebSocket-based API delivers partial transcripts as you speak and committed transcripts when speech segments are complete.
 
-Scribe v2 Realtime can be implemented on the client side to transcribe audio in realtime, either via the microphone or manually chunking the audio.
+Scribe v3 Live can be implemented on the client side to transcribe audio in realtime, either via the microphone or manually chunking the audio.
 
 The client side implementation differs from server side in a few ways:
 
@@ -90,7 +90,7 @@ import { useScribe } from "@elevenlabs/react";
 
 function MyComponent() {
   const scribe = useScribe({
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     onPartialTranscript: (data) => {
       console.log("Partial:", data.text);
     },
@@ -149,7 +149,7 @@ const { token } = await response.json();
 
 const connection = Scribe.connect({
   token,
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   includeTimestamps: true,
   microphone: {
     echoCancellation: true,
@@ -210,7 +210,7 @@ import { useScribe, AudioFormat } from "@elevenlabs/react";
 function FileTranscription() {
   const [file, setFile] = useState<File | null>(null);
   const scribe = useScribe({
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     audioFormat: AudioFormat.PCM_16000,
     sampleRate: 16000,
   });
@@ -281,7 +281,7 @@ const { token } = await response.json();
 
 const connection = Scribe.connect({
   token,
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   includeTimestamps: true,
   audioFormat: AudioFormat.PCM_16000,
   sampleRate: 16000,

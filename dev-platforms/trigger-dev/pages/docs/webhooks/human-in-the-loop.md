@@ -144,18 +144,18 @@ When the turn resumes, the channel reply shows the agent's answer, not the text 
 
 ## Next steps
 
-> **[Channels](/docs/webhooks/channels)**
+> [card] [Channels](/docs/webhooks/channels)
 >
 > Point Slack or any surface at an agent so messages become turns.
 
-> **[Browser human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop)**
+> [card] [Browser human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop)
 >
 > The same no-execute pause, rendered in a React frontend.
 
-> **[Sessions](/docs/ai-chat/sessions)**
+> [card] [Sessions](/docs/ai-chat/sessions)
 >
 > The durable per-conversation state a channel turn runs on.
 
-> **[Filters](/docs/webhooks/filters)**
+> [card] [Filters](/docs/webhooks/filters)
 >
 > Gate which verified deliveries reach the agent.

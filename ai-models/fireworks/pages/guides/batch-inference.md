@@ -6,6 +6,10 @@ path: guides/batch-inference
 
 Use the Fireworks Batch API to run large-scale asynchronous inference jobs at a discount, with job-level system prompts, file inputs, and result retrieval.
 
+> [!WARNING]
+>
+> **Batch is paused.** We're moving to a more secure way of running Batch jobs. New Batch jobs are no longer accepted, dataset uploads return an error, and all Batch input datasets and job outputs stored on Fireworks will be permanently deleted. To keep your bulk workloads running, see [Migrating Batch API workloads to preemptible deployments](/guides/batch-migration).
+
 Process large volumes of requests asynchronously at **50% off** [Serverless per-token prices](https://docs.fireworks.ai/serverless/pricing). Batch API is ideal for:
 
 * Data labeling and synthetic data generation

@@ -14,6 +14,8 @@ url: https://docs.sentry.io/platforms/dotnet/guides/maui/
 
 Sentry has an integration for the [.NET Multi-platform App UI (MAUI)](https://dotnet.microsoft.com/apps/maui) through the [Sentry.Maui NuGet package](https://www.nuget.org/packages/Sentry.Maui).
 
+`Sentry.Maui` 6.x requires .NET MAUI 9 or later. For .NET MAUI 8, use a compatible 5.x SDK version.
+
 **Overview of the features**
 
 * Easy MAUI integration by calling `UseSentry` on your `MauiAppBuilder`
@@ -84,7 +86,7 @@ public static MauiApp CreateMauiApp()
             options.AttachScreenshot = true;
 
             // Other Sentry options can be set here.
-        })
+        });
 
         // ... the remainder of your MAUI app setup
 
@@ -180,7 +182,15 @@ catch (Exception ex)
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/maui.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Next Steps](https://docs.sentry.io/platforms/dotnet/guides/maui.md#next-steps)
 

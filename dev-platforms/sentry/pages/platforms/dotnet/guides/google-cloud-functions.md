@@ -34,7 +34,7 @@ Or, manually add the Sentry dependency into your csproj file:
 
 This package extends `Sentry.AspNetCore`, which in turn extends `Sentry`'s main SDK. That means that besides the logging-related features, through this package you'll also get access to all API and features available in those packages.
 
-Messages logged from assemblies with the name starting with `Sentry` will not generate events.
+The logging integration excludes the Sentry SDK's own logger categories to avoid capturing its diagnostic messages as events.
 
 ## [Configure](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md#configure)
 
@@ -105,10 +105,12 @@ using Microsoft.AspNetCore.Http;
 
 public class Function : IHttpFunction
 {
+    public Task HandleAsync(HttpContext context) =>
+        context.Response.WriteAsync("Hello from Google Cloud Functions");
 }
 ```
 
-Some of the settings require actual code. For those, like the `BeforeSend` callback, you will need to create a new class implementing the abstract class `FunctionsStartup` to set it up:
+Some settings, such as the `BeforeSend` callback, require code. Keep the `SentryStartup` assembly registration above and add another `FunctionsStartup` registration for your custom configuration:
 
 ```csharp
 using Google.Cloud.Functions.Hosting;
@@ -145,13 +147,13 @@ Much of the behavior of the Google cloud functions integration with Sentry can b
 
 When opting in to `SendDefaultPii`, the SDK will automatically read the user from the request by inspecting `HttpContext.User`. Default claim values like `NameIdentifier` for the *Id* will be used.
 
-If you wish to change the behavior of how to read the user from the request, you can register a new `IUserFactory` into the container:
+To customize how Sentry reads the user from the request, implement `ISentryUserFactory` and register it in the container. Keep the `SentryStartup` registration when adding this startup class:
 
 ```csharp
 using Google.Cloud.Functions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Sentry.AspNetCore;
+using Sentry;
 
 [assembly: FunctionsStartup(typeof(UserFactoryStartup))]
 
@@ -160,7 +162,7 @@ public class UserFactoryStartup : FunctionsStartup
     public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
     {
         base.ConfigureServices(context, services);
-        services.AddSingleton<IUserFactory, MyUserFactory>();
+        services.AddSingleton<ISentryUserFactory, MyUserFactory>();
     }
 }
 ```
@@ -203,7 +205,15 @@ catch (Exception ex)
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Next Steps](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md#next-steps)
 

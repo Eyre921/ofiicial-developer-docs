@@ -57,14 +57,13 @@ builder.UseSentry(options =>
     // Enables Tracing.
     // Set to 1.0 to capture 100% of spans for tracing.
     // We recommend reducing this value in production.
-    options.TracesSampleRate = 0.1;
+    options.TracesSampleRate = 1.0;
 });
-
-// Captures logError and higher as events
-builder.Logging.AddSentry(o => o.InitializeSdk = false);
 
 await builder.Build().RunAsync();
 ```
+
+`UseSentry` also registers the logging integration. Don't call `builder.Logging.AddSentry` separately.
 
 ## [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md#send-logs)
 
@@ -123,9 +122,28 @@ catch (Exception ex)
 
 *Other available variations of the above snippet: fsharp*
 
+To verify tracing for code without automatic instrumentation, create and finish a test transaction after initializing Sentry:
+
+```csharp
+var transaction = SentrySdk.StartTransaction("quickstart-test", "test");
+transaction.Finish();
+```
+
+`TracesSampleRate` controls sampling; it doesn't create transactions by itself. See [Custom Instrumentation](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly/tracing/instrumentation/custom-instrumentation.md) to trace work in your application.
+
+If you enabled profiling, run a longer sampled transaction after the profiler has initialized. A short verification transaction might finish before the profiler collects any samples.
+
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Samples](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md#samples)
 

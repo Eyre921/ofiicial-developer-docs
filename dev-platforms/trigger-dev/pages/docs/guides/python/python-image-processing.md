@@ -25,7 +25,7 @@ This demo showcases how to use Trigger.dev with Python to process an image using
 
 ## GitHub repo
 
-> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/python-image-processing)**
+> [card] [View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/python-image-processing)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -542,7 +542,7 @@ Deploy the task to production using the CLI command `npx trigger.dev@latest depl
 
 ## Learn more about using Python with Trigger.dev
 
-> **[Python build extension](/docs/config/extensions/pythonExtension)**
+> [card] [Python build extension](/docs/config/extensions/pythonExtension)
 >
 > Learn how to use our built-in Python build extension to install dependencies and run your Python
 > code.

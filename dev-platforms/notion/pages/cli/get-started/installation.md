@@ -50,6 +50,8 @@ After you install, restart your terminal so `ntn` is on your `PATH`.
 ntn --version
 ```
 
+Once `ntn --version` prints a version, run [`ntn login`](/cli/get-started/authentication#log-in) to connect your workspace. For scripts and CI, [set `NOTION_API_TOKEN` to a personal access token](/cli/get-started/authentication#use-a-personal-access-token).
+
 ## Update
 
 If you used the install script, run:

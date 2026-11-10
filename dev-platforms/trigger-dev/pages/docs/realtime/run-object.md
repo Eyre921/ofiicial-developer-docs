@@ -42,7 +42,7 @@ Timestamp when the run was last updated.
 
 Current status of the run.
 
-> **RunStatus enum**
+> [accordion] RunStatus enum
 >
 > | Status | Description |
 > | - | - |

@@ -400,6 +400,10 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
   Use the REST API to manage repository-level settings for Copilot cloud agent.
 
+* [REST API endpoints for Copilot code review](/en/rest/copilot/copilot-code-review)
+
+  Use the REST API to manage Copilot code review.
+
 * [REST API endpoints for Copilot cloud agent management](/en/rest/copilot/copilot-coding-agent-management)
 
   Use the REST API to manage settings for Copilot cloud agent.
@@ -723,6 +727,10 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 * [REST API endpoints for pull request review comments](/en/rest/pulls/comments)
 
   Use the REST API to interact with pull request review comments.
+
+* [REST API endpoints for Copilot code review](/en/rest/pulls/copilot-code-review)
+
+  Use the REST API to manage Copilot code review.
 
 * [REST API endpoints for pull requests](/en/rest/pulls/pulls)
 

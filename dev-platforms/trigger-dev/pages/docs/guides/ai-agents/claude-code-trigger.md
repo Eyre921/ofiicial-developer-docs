@@ -160,18 +160,18 @@ allowedTools: [
 
 ## GitHub repo
 
-> **[View the Claude Agent SDK + Trigger.dev example](https://github.com/triggerdotdev/examples/tree/main/claude-agent-sdk-trigger)**
+> [card] [View the Claude Agent SDK + Trigger.dev example](https://github.com/triggerdotdev/examples/tree/main/claude-agent-sdk-trigger)
 >
 > A complete example with two agent patterns: basic safe code generation and advanced with bash
 > execution.
 
 ## Example projects using the Claude Agent SDK
 
-> **[Claude changelog generator](/docs/guides/example-projects/claude-changelog-generator)**
+> [card] [Claude changelog generator](/docs/guides/example-projects/claude-changelog-generator)
 >
 > Generate changelogs from git commits using custom MCP tools.
 
-> **[Claude GitHub wiki agent](/docs/guides/example-projects/claude-github-wiki)**
+> [card] [Claude GitHub wiki agent](/docs/guides/example-projects/claude-github-wiki)
 >
 > Analyze repositories and answer questions with real-time streaming.
 

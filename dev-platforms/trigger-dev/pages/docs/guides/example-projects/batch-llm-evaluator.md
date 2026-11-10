@@ -17,7 +17,7 @@ This demo is a full stack example that uses the following:
 
 ## GitHub repo
 
-> **[View the Batch LLM Evaluator repo](https://github.com/triggerdotdev/examples/tree/main/batch-llm-evaluator)**
+> [card] [View the Batch LLM Evaluator repo](https://github.com/triggerdotdev/examples/tree/main/batch-llm-evaluator)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.

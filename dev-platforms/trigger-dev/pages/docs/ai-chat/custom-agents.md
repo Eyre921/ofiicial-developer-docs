@@ -425,7 +425,12 @@ export const myChat = chat.customAgent({
       const incoming = currentPayload.message ? [currentPayload.message] : [];
       const turnInput =
         turn === 0 && continuationSeed.length > 0
-          ? [...continuationSeed.filter((s) => !incoming.some((m) => m.id === s.id)), ...incoming]
+          ? [
+              ...continuationSeed.filter(
+                (s) => !incoming.some((m) => m.role === "user" && m.id === s.id)
+              ),
+              ...incoming,
+            ]
           : incoming;
       const messages = await conversation.addIncoming(turnInput, currentPayload.trigger, turn);
 
@@ -490,6 +495,8 @@ export const myChat = chat.customAgent({
 * **Turn 0 or `trigger === "regenerate-message"`: replaces** the accumulator with exactly what you pass. This is why continuation seeding goes through `addIncoming` (above), and why a regenerate needs you to slice your own history — the wire omits the message on regenerate, so pass the stored history minus the last assistant message.
 * **Every other turn: appends** what you pass (the wire carries at most the one new user message).
 
+In both modes, a tool approval or tool output from the client is merged onto the stored tool call it answers, found in the accumulator or earlier in what you pass, rather than appended as a new message. One that answers no pending call is dropped.
+
 ```ts theme={"theme":"css-variables"}
 const conversation = new chat.MessageAccumulator();
 
@@ -534,18 +541,18 @@ Things the managed levels do for you that a raw loop has to get right:
 
 ## Next steps
 
-> **[Backend overview](/docs/ai-chat/backend)**
+> [card] [Backend overview](/docs/ai-chat/backend)
 >
 > The three abstraction levels compared, and everything chat.agent() adds on top.
 
-> **[Sessions](/docs/ai-chat/sessions)**
+> [card] [Sessions](/docs/ai-chat/sessions)
 >
 > The durable stream pair every agent — managed or custom — is built on.
 
-> **[Compaction](/docs/ai-chat/compaction)**
+> [card] [Compaction](/docs/ai-chat/compaction)
 >
 > Automatic context compression — works with createSession and MessageAccumulator.
 
-> **[Client protocol](/docs/ai-chat/client-protocol)**
+> [card] [Client protocol](/docs/ai-chat/client-protocol)
 >
 > The wire format your loop is speaking, chunk by chunk.

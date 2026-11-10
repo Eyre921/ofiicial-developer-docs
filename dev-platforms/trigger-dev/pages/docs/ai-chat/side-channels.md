@@ -164,10 +164,10 @@ const token = await auth.createPublicToken({
 
 ## Next steps
 
-> **[Sessions](/docs/ai-chat/sessions)**
+> [card] [Sessions](/docs/ai-chat/sessions)
 >
 > The durable, cross-run primitive side channels are built on.
 
-> **[Read a session channel in React](/docs/realtime/react-hooks/session-stream)**
+> [card] [Read a session channel in React](/docs/realtime/react-hooks/session-stream)
 >
 > The `useSessionStream` hook `useSessionStreamChannel` mirrors.

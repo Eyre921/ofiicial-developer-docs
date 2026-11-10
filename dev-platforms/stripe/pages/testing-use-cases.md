@@ -183,7 +183,7 @@ This is an asynchronous outcome.
   "object": {
     "id": "du_orWziM4j7CiRL8J4",
     "object": "dispute",
-    "charge_id": "ch_orWziM4j7CiRL8J4",
+    "charge": "ch_orWziM4j7CiRL8J4",
     ...
     "status": "needs_response"
   }
@@ -198,7 +198,7 @@ This is an asynchronous outcome.
   "object": {
     "id": "du_orWziM4j7CiRL8J4",
     "object": "dispute",
-    "charge_id": "ch_orWziM4j7CiRL8J4",
+    "charge": "ch_orWziM4j7CiRL8J4",
     ...
     "is_charge_refundable": true,
     ...
@@ -206,7 +206,7 @@ This is an asynchronous outcome.
   }
 }
 ``` |
-| Dispute won | - When a customer wins a dispute, the funds of the original charge are restored to the account, less the dispute fee.
+| Dispute won | - When you win a dispute, the funds of the original charge are restored to the account, less the dispute fee.
 - Stripe updates the existing `Dispute` object, and fires a `charge.dispute.closed` event.
 
 This is an asynchronous outcome.
@@ -216,13 +216,13 @@ This is an asynchronous outcome.
   "object": {
     "id": "du_orWziM4j7CiRL8J4",
     "object": "dispute",
-    "charge_id": "ch_orWziM4j7CiRL8J4",
+    "charge": "ch_orWziM4j7CiRL8J4",
     ...
     "status": "won"
   }
 }
 ``` |
-| Dispute lost | When a customer loses a dispute, Stripe updates the existing `Dispute` object, and fires a `charge.dispute.closed` event.
+| Dispute lost | When you lose a dispute, Stripe updates the existing `Dispute` object, and fires a `charge.dispute.closed` event.
 
 This is an asynchronous outcome.
 
@@ -231,7 +231,7 @@ This is an asynchronous outcome.
   "object": {
     "id": "du_orWziM4j7CiRL8J4",
     "object": "dispute",
-    "charge_id": "ch_orWziM4j7CiRL8J4",
+    "charge": "ch_orWziM4j7CiRL8J4",
     ...
     "status": "lost"
   }
@@ -246,7 +246,7 @@ This is an asynchronous outcome.
   "object": {
     "id": "du_orWziM4j7CiRL8J4",
     "object": "dispute",
-    "charge_id": "ch_orWziM4j7CiRL8J4",
+    "charge": "ch_orWziM4j7CiRL8J4",
     ...
     "status": "warning_closed"
   }
@@ -262,7 +262,7 @@ This is an asynchronous outcome.
   "object": {
     "id": "du_orWziM4j7CiRL8J4",
     "object": "dispute",
-    "charge_id": "ch_orWziM4j7CiRL8J4",
+    "charge": "ch_orWziM4j7CiRL8J4",
     ...
     "status": "needs_response"
   }

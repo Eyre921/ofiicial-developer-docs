@@ -12,7 +12,7 @@ url: https://docs.sentry.io/platforms/dotnet/guides/entityframework/
 
 # Sentry for Entity Framework
 
-Sentry provides an integration with `EntityFramework` through the of the [Sentry.EntityFramework NuGet package](https://www.nuget.org/packages/Sentry.EntityFramework).
+Sentry provides an integration with Entity Framework 6 through the [Sentry.EntityFramework NuGet package](https://www.nuget.org/packages/Sentry.EntityFramework).
 
 > Looking for `EntityFramework Core`? If you're targeting .NET Core 3.1 or newer, that's already built in to the main Sentry .NET SDK. It's also enabled by default for our ASP.NET or ASP.NET Core integrations, even for older targets. For other scenarios, you may need to add the `Sentry.DiagnosticSource` package and call `AddDiagnosticSourceIntegration`, [as described here](https://docs.sentry.io/platforms/dotnet/tracing/instrumentation/automatic-instrumentation.md#diagnosticsource-integration). (The rest of this page describes our EF6 integration, not EFCore.)
 
@@ -45,7 +45,13 @@ Add the Entity Framework 6 support to your project in one step:
 
 ### [Example configuration](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md#example-configuration)
 
-For example, configuring an ASP.NET app with *global.asax*:
+The following example configures an ASP.NET application in `Global.asax.cs`. In addition to `Sentry.EntityFramework`, install [Sentry.AspNet](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md), which provides request context, request-scoped data, and the HTTP transaction helpers used here:
+
+```powershell
+Install-Package Sentry.AspNet -Version 6.12.1
+```
+
+*Other available variations of the above snippet: .NET Core CLI*
 
 The snippet also turns on:
 
@@ -56,11 +62,12 @@ Don't need a feature? Remove its options from the snippet.
 ```csharp
 using System;
 using System.Configuration;
+using Sentry;
 using Sentry.AspNet;
 
 public class MvcApplication : System.Web.HttpApplication
 {
-    private IDisposable _sentrySdk;
+    private static IDisposable _sentrySdk;
 
     protected void Application_Start()
     {
@@ -74,7 +81,7 @@ public class MvcApplication : System.Web.HttpApplication
             // Set to 1.0 to capture 100% of spans for tracing.
             // We recommend reducing this value in production.
             options.TracesSampleRate = 1.0;
-            // Add the EntityFramework integration
+            options.AddAspNet();
             options.AddEntityFramework();
         });
     }
@@ -90,10 +97,9 @@ public class MvcApplication : System.Web.HttpApplication
     {
         Context.FinishSentryTransaction();
     }
-    public override void Dispose()
+    protected void Application_End()
     {
-        _sentrySdk.Dispose();
-        base.Dispose();
+        _sentrySdk?.Dispose();
     }
 }
 ```
@@ -143,11 +149,19 @@ catch (Exception ex)
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Sample](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md#sample)
 
-Check out a complete working [sample](https://github.com/getsentry/sentry-dotnet-ef/tree/master/samples/Sentry.Samples.AspNet.Mvc) to see it in action.
+See the [Entity Framework sample](https://github.com/getsentry/sentry-dotnet/tree/main/samples/Sentry.Samples.EntityFramework) for a standalone application using this integration.
 
 ## [Next Steps](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md#next-steps)
 

@@ -16,7 +16,7 @@ path: docs/eleven-api/guides/how-to/speech-to-text/realtime/server-side-streamin
 
 The ElevenLabs Realtime Speech to Text API enables you to transcribe audio streams in real-time with ultra-low latency using the Scribe Realtime v2 model. Whether you're building voice assistants, transcription services, or any application requiring live speech recognition, this WebSocket-based API delivers partial transcripts as you speak and committed transcripts when speech segments are complete.
 
-Scribe v2 Realtime can be implemented on the server side to transcribe audio in realtime, either via a URL, file or your own audio stream.
+Scribe v3 Live can be implemented on the server side to transcribe audio in realtime, either via a URL, file or your own audio stream.
 
 The server side implementation differs from client side in a few ways:
 
@@ -66,7 +66,7 @@ async def main():
 
     # Connect to a streaming audio URL
     connection = await elevenlabs.speech_to_text.realtime.connect(RealtimeUrlOptions(
-        model_id="scribe_v2_realtime",
+        model_id="scribe_v3_live",
         url="https://npr-ice.streamguys1.com/live.mp3",
         include_timestamps=True,
     ))
@@ -123,7 +123,7 @@ import { ElevenLabsClient, RealtimeEvents } from "@elevenlabs/elevenlabs-js";
 const elevenlabs = new ElevenLabsClient();
 
 const connection = await elevenlabs.speechToText.realtime.connect({
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   url: "https://npr-ice.streamguys1.com/live.mp3",
   includeTimestamps: true,
 });
@@ -181,7 +181,7 @@ async def main():
 
     # Connect with manual audio chunk mode
     connection = await elevenlabs.speech_to_text.realtime.connect(RealtimeAudioOptions(
-        model_id="scribe_v2_realtime",
+        model_id="scribe_v3_live",
         audio_format=AudioFormat.PCM_16000,
         sample_rate=16000,
         commit_strategy=CommitStrategy.MANUAL,
@@ -295,7 +295,7 @@ import { ElevenLabsClient, RealtimeEvents, AudioFormat } from "@elevenlabs/eleve
 const elevenlabs = new ElevenLabsClient();
 
 const connection = await elevenlabs.speechToText.realtime.connect({
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   audioFormat: AudioFormat.PCM_16000,
   sampleRate: 16000,
   includeTimestamps: true,
@@ -436,7 +436,7 @@ async def receive_transcripts(ws):
 
 
 async def transcribe():
-    url = "wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v2_realtime"
+    url = "wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v3_live"
     headers = {"xi-api-key": os.getenv("ELEVENLABS_API_KEY")}
 
     async with websockets.connect(url, additional_headers=headers) as ws:
@@ -467,7 +467,7 @@ asyncio.run(transcribe())
     // Make sure to install the "ws" library beforehand
     import WebSocket from "ws";
 
-    const uri = "wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v2_realtime";
+    const uri = "wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v3_live";
     const websocket = new WebSocket(uri, {
       headers: {
         "xi-api-key": process.env.ELEVENLABS_API_KEY,

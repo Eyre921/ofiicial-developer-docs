@@ -70787,6 +70787,748 @@ await db.select().from(usersTable)
 ```
 
 
+Source: https://orm.drizzle.team/docs/pg/realtime-live-collections
+
+import Callout from "@mdx/Callout.astro";
+import Prerequisites from "@mdx/Prerequisites.astro";
+
+# Live collections and CDC event streams
+
+<Prerequisites>
+- [Drizzle Pulse overview](/docs/realtime-overview)
+- [Queries](/docs/realtime-queries)
+- A started runtime. See [Server setup](/docs/realtime-server-setup).
+</Prerequisites>
+
+For each query that you pass to `createRuntime()`, the runtime gives you two ways to get its data:
+
+1. `runtime.client.<queryName>()` creates a [live collection](#live-collections): the current rows of the query, kept up to date in memory.
+2. `runtime.events.<queryName>()` subscribes to a [CDC event stream](#cdc-event-streams): each row change of the query, one event at a time.
+
+The examples on this page use the `allOrders` and `ordersByStatus` queries from [Server setup](/docs/realtime-server-setup#create-and-start-the-runtime).
+
+## Live collections
+
+A live collection is like the result of a Drizzle `select` that stays up to date by itself. The runtime reads the rows that match the query once, keeps them in memory, and updates them after each commit that changes them. Use it when your code needs the current rows, for example to render a list or to answer requests from memory.
+
+### Create a live collection
+
+Create a live collection with `runtime.client.<queryName>()`. If the query has arguments, pass them as the only parameter. The call returns a promise that resolves when the live collection has loaded its first rows. The promise rejects if the runtime is not started.
+
+```ts copy
+const orders = await runtime.client.ordersByStatus({ status: 'accepted' });
+const everyOrder = await runtime.client.allOrders();
+```
+
+Each call creates a new, independent live collection. Create a live collection once, keep it for as long as you need it, and then dispose it.
+
+### Read rows
+
+`list()` returns the current rows synchronously. The rows are sorted by primary key, in the direction that the query's `.order()` sets. Call it whenever you need the rows, for example in a request handler.
+
+```ts copy
+import type { PulseRow } from 'drizzle-pulse/embedded';
+
+// The row type of a live collection: the selected columns of the query.
+type AcceptedOrder = PulseRow<typeof orders>;
+
+const rows: readonly AcceptedOrder[] = orders.list();
+```
+
+### Change notifications
+
+`onChange()` calls your listener after each change to the rows. The listener gets three fields:
+
+1. `events`: the changes that the runtime applied. Each change has `op` set to `'insert'`, `'update'`, or `'delete'`, as described in [Events](#events).
+2. `state`: the rows after the change. It is the same as `list()`.
+3. `lsn`: the log sequence number of the commit.
+
+```ts copy
+const removeListener = orders.onChange(({ events, state, lsn }) => {
+  for (const event of events) {
+    switch (event.op) {
+      case 'insert':
+        console.log('added', event.pk, event.row);
+        break;
+      case 'update':
+        console.log('changed', event.pk, event.oldRow, '->', event.row);
+        break;
+      case 'delete':
+        console.log('removed', event.pk, event.oldRow);
+        break;
+    }
+  }
+  console.log(`${state.length} rows at ${lsn}`);
+});
+
+// Later, when you no longer need the notifications.
+removeListener();
+```
+
+`onChange()` returns a function that removes the listener.
+
+<Callout type="warning">
+The runtime calls listeners synchronously and does not wait for a promise that a listener returns. If a listener is `async`, catch its errors inside the listener. A rejected promise that nobody catches is an unhandled rejection, and Node.js stops the process on it by default. This applies to all listeners on this page, including the callbacks of CDC event streams.
+</Callout>
+
+### Resync
+
+After a connection loss, the live collection loads its rows again. The runtime does not know which rows changed during the connection loss, so `onChange()` does not fire for those changes. Instead, the live collection calls the listeners that you register with `onResync()`. The listener gets the new `state` and the `lsn` from which the live collection continues.
+
+```ts copy
+orders.onResync(({ state }) => {
+  // Send the full list again, for example to connected clients.
+  broadcast(state);
+});
+```
+
+<Callout type="warning">
+If your code uses `state` from `onChange()`, for example to render a list, register the same handling in `onResync()` too. Otherwise your code keeps the rows from before the connection loss until the next change.
+</Callout>
+
+`onResync()` also returns a function that removes the listener.
+
+### Errors
+
+`onError()` calls your listener when the live collection fails after you create it. This happens in two cases:
+
+1. The live collection cannot load its rows again after a reconnect.
+2. Replication [fails permanently](/docs/realtime-server-setup#fatal-errors).
+
+`onError()` also returns a function that removes the listener.
+
+```ts copy
+orders.onError((error) => {
+  console.error('Live collection failed', error);
+});
+```
+
+### Dispose
+
+`dispose()` stops the live collection. After that, the runtime calls none of its listeners. You can call it more than once.
+
+```ts copy
+orders.dispose();
+```
+
+## CDC event streams
+
+A CDC event stream delivers the row changes for one query with its arguments, one by one. Use it when you want to react to changes, for example to send a notification or to update another system. The stream keeps no rows and has no first load. It reports only changes that happen after you subscribe.
+
+### Subscribe
+
+Subscribe to a CDC event stream with `runtime.events.<queryName>()`. Pass these parameters in this order:
+
+1. The arguments, if the query has them.
+2. A callback.
+3. Optional options.
+
+The call returns a function that closes the stream. It throws an error if the runtime is not started.
+
+```ts copy
+const stop = runtime.events.ordersByStatus(
+  { status: 'accepted' },
+  (event, lsn) => {
+    switch (event.op) {
+      case 'insert':
+        console.log('entered the result', event.row);
+        break;
+      case 'update':
+        console.log('changed', event.oldRow, '->', event.row);
+        break;
+      case 'delete':
+        console.log('left the result', event.oldRow);
+        break;
+    }
+  },
+  {
+    onResync: () => {
+      // Load your state again.
+    },
+    onError: (error) => {
+      console.error('CDC event stream closed', error);
+    },
+  },
+);
+
+stop();
+```
+
+A query without arguments takes the callback first:
+
+```ts copy
+const stopAll = runtime.events.allOrders((event, lsn) => {
+  console.log(event.op, event.pk, lsn);
+});
+```
+
+The callback must handle its own errors, the same as the [listeners of a live collection](#change-notifications).
+
+### Events
+
+Events describe changes to the query result. For this reason, one table update can produce different events for different queries. For example, if an order changes from `requested` to `accepted`, a query for accepted orders gets an `insert` and a query for requested orders gets a `delete`.
+
+There are three kinds of events:
+
+1. `insert`: a row starts to match the query, or a matching row is inserted.
+   Fields: `op`, `row`, `pk`.
+2. `update`: a row changes and still matches the query.
+   Fields: `op`, `row`, `oldRow`, `pk`.
+3. `delete`: a row stops matching the query, or a matching row is deleted.
+   Fields: `op`, `oldRow`, `pk`.
+
+Every row in an event is a full row with the columns of the query. Columns outside the query never reach your callback. Your callback cannot tell a table insert from a table update that made a row match.
+
+### Order and repeated delivery
+
+Events arrive in commit order. All events of one transaction share one `lsn`. If a disconnect happens between a delivery and its acknowledgement, the runtime can deliver the same commit again after the reconnect. If your callback has side effects, use the pair `(event.pk, lsn)` as an idempotency key:
+
+```ts copy
+runtime.events.allOrders((event, lsn) => {
+  // The same commit can arrive again after a reconnect, with the same key.
+  const idempotencyKey = `${event.pk}:${lsn}`;
+  enqueueNotification(idempotencyKey, event);
+});
+```
+
+### Resync after a reconnect
+
+After a connection loss, the runtime creates a new replication slot. It does not deliver the changes from commits that happened during the outage. Instead, the runtime calls `onResync`. When this happens, load again any state that you build from the events.
+
+### Stream errors
+
+The runtime calls `onError` when replication fails permanently. After this call, the runtime closes the CDC event stream.
+
+
+Source: https://orm.drizzle.team/docs/pg/realtime-overview
+
+import Npm from "@mdx/Npm.astro";
+import Prerequisites from "@mdx/Prerequisites.astro";
+
+# Drizzle Pulse
+
+<Prerequisites>
+- Database [connection basics](/docs/connect-overview) with Drizzle
+- [Schema declaration](/docs/sql-schema-declaration)
+- A PostgreSQL database
+</Prerequisites>
+
+Drizzle Pulse keeps your application in sync with your PostgreSQL database as rows change. You describe the rows that you care about as a query on a Drizzle table, for example "all accepted orders". Drizzle Pulse then keeps those rows in memory and updates them shortly after each transaction commits.
+
+Drizzle Pulse is a library that runs inside your existing server process, next to your request handlers. It connects to the database that your application already uses, so there is no extra service to deploy and operate. You add a package and a few lines of code, and you deploy your application as before.
+
+Use it to:
+
+- answer requests from an in-memory list of rows that is always up to date, such as the open orders on a dispatch screen;
+- send changes to connected clients, for example over WebSockets or server-sent events;
+- run code when data changes, such as sending a notification or updating a search index.
+
+Your application writes to the database as before. Drizzle Pulse reads the changes from PostgreSQL itself, so it also sees changes from other services, scripts and manual SQL.
+
+Here is a complete example. It uses a plain Drizzle table, starts Drizzle Pulse in the same process as an HTTP server, and serves the current accepted orders:
+
+```ts copy
+import { createServer } from 'node:http';
+import { drizzle } from 'drizzle-orm/postgres';
+import { integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
+import { pulse } from 'drizzle-pulse';
+import { createRuntime } from 'drizzle-pulse/embedded';
+
+// An ordinary Drizzle table.
+const orders = pgTable('orders', {
+  id: serial('id').primaryKey(),
+  status: text('status').notNull(),
+  price: integer('price').notNull(),
+});
+
+// The rows to keep in sync: all orders with the status 'accepted'.
+const acceptedOrders = pulse(orders).query((ctx) => ctx.query({ status: 'accepted' }));
+
+// The runtime runs inside your application process.
+const runtime = createRuntime({
+  queries: { acceptedOrders },
+  databaseUrl: process.env.DATABASE_URL!,
+  sourceDb: drizzle(process.env.DATABASE_URL!),
+});
+await runtime.start();
+
+// A live collection holds the matching rows and stays up to date.
+const collection = await runtime.client.acceptedOrders();
+
+createServer((req, res) => {
+  res.setHeader('content-type', 'application/json');
+  res.end(JSON.stringify(collection.list()));
+}).listen(3000);
+```
+
+The code expects an `orders` table with these columns in the database. Each request returns the current accepted orders from memory, without a database query. Insert a row with the status `accepted`, or change the status of a row to or from `accepted`, from anywhere, for example from `psql`. The next request returns the new list.
+
+You can also run code when the rows change. Register a listener on the live collection, or subscribe to a CDC event stream to get each row change as an event:
+
+```ts
+// Called after each change to the accepted orders.
+collection.onChange(({ events, state }) => {
+  for (const event of events) {
+    // event.op is 'insert', 'update' or 'delete'.
+    console.log(event.op, event.pk);
+  }
+  console.log('Accepted orders now:', state);
+});
+
+// Called for each row that enters, changes in, or leaves the accepted orders.
+runtime.events.acceptedOrders((event) => {
+  if (event.op === 'insert') console.log('New accepted order', event.row);
+});
+```
+
+When an order changes to `accepted`, it appears in the live collection and the CDC event stream gets an `insert`. When the order is completed or deleted, it leaves the live collection and the CDC event stream gets a `delete`.
+
+The example shows the two ways to use a query:
+
+- A **live collection** is the current set of rows that match a query. Drizzle Pulse keeps it in memory and updates it after each change. Read it with `list()` and listen with `onChange()`.
+- A **CDC event stream** delivers each row change for a query as an `insert`, `update` or `delete` event. CDC stands for change data capture. The stream keeps no rows.
+
+Drizzle Pulse works with PostgreSQL only.
+
+To try the example:
+
+1. Turn on [logical replication](/docs/realtime-server-setup#wal_level--logical) in PostgreSQL.
+2. [Install the packages](#installation).
+3. Run the code above.
+
+## Installation
+
+<Npm>
+ drizzle-pulse drizzle-orm@rc
+</Npm>
+
+Drizzle Pulse needs Node.js 20 or newer. Your project must install `drizzle-orm`, version `^1.0.0-rc.6`.
+
+To describe [query arguments](/docs/realtime-queries#arguments), you also need a schema library that supports [Standard Schema](https://standardschema.dev). The examples on these pages use `zod`:
+
+<Npm>
+ zod
+</Npm>
+
+The package has two entrypoints:
+
+1. `drizzle-pulse` has `pulse()`, which defines Pulse tables and queries. See [Queries](/docs/realtime-queries).
+2. `drizzle-pulse/embedded` has the runtime. See [Server setup](/docs/realtime-server-setup).
+
+## How it works
+
+PostgreSQL writes every change to its write-ahead log (WAL). Drizzle Pulse reads the WAL through logical replication, checks each changed row against your queries, and sends the matching changes to your live collections and CDC event streams.
+
+Logical replication needs the PostgreSQL setting `wal_level = logical`, which you must set yourself. Drizzle Pulse creates the other [database objects](/docs/realtime-server-setup#database-objects) that it needs when it starts.
+
+## Next steps
+
+- [Queries](/docs/realtime-queries): define the rows to keep in sync.
+- [Server setup](/docs/realtime-server-setup): create, start and stop the runtime, and set up the database.
+- [Live collections](/docs/realtime-live-collections#live-collections): read the rows of a query and get a notification after each change.
+- [CDC event streams](/docs/realtime-live-collections#cdc-event-streams): react to each row change of a query.
+
+
+Source: https://orm.drizzle.team/docs/pg/realtime-queries
+
+import Callout from "@mdx/Callout.astro";
+import Prerequisites from "@mdx/Prerequisites.astro";
+
+# Queries
+
+<Prerequisites>
+- [Drizzle Pulse overview](/docs/realtime-overview)
+- [Schema declaration](/docs/sql-schema-declaration)
+</Prerequisites>
+
+A query describes the rows that Drizzle Pulse keeps in sync, for example "all orders" or "the orders of one driver". You define queries once, pass them to the [runtime](/docs/realtime-server-setup), and then create [live collections and CDC event streams](/docs/realtime-live-collections) for them.
+
+## Pulse tables
+
+A **source table** is an ordinary Drizzle table whose row changes you want to follow. Wrap it with `pulse(table)` to get a **Pulse table**.
+
+```ts copy
+import { integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
+import { pulse } from 'drizzle-pulse';
+
+export const orders = pgTable('orders', {
+  id: serial('id').primaryKey(),
+  driverId: integer('driver_id'),
+  status: text('status', { enum: ['requested', 'accepted', 'completed', 'cancelled'] }).notNull(),
+  price: integer('price').notNull(),
+});
+
+export const ordersPulse = pulse(orders);
+```
+
+A Pulse table is itself a query that matches every row of the table. Pass it to the runtime as is to follow all orders:
+
+```ts
+const runtime = createRuntime({
+  queries: { allOrders: ordersPulse },
+  // ...
+});
+```
+
+Wrap each table once and build all queries of that table from the same Pulse table. Each method call returns a new query and leaves the Pulse table unchanged, so one Pulse table can be the start of many queries.
+
+A source table must have exactly one primary key column. Drizzle Pulse rejects a composite primary key. The primary key type must be one of `smallint`, `integer`, `bigint`, `smallserial`, `serial`, `bigserial`, `text`, `varchar`, `char`, or `uuid`.
+
+## Filters
+
+To choose rows, call `.query()` with a function. The function gets a context `ctx` and returns a where clause, which you build with `ctx.query()`. A query reads one table.
+
+```ts copy
+export const acceptedOrders = ordersPulse.query((ctx) => ctx.query({ status: 'accepted' }));
+```
+
+The where clause uses the same object syntax as the `where` filters of [Drizzle relational queries](/docs/rqb#select-filters), with a subset of their operators. Each key is a column key from the table definition, such as `driverId`. The database column name, such as `driver_id`, is a type error. Each value is either a value to compare for equality or an object with operators. A row must match all columns in the object, so Drizzle Pulse combines them with `AND`.
+
+```ts copy
+export const bigOpenOrders = ordersPulse.query((ctx) =>
+  ctx.query({
+    price: { gte: 100, lt: 1000 },
+    status: { in: ['requested', 'accepted'] },
+    driverId: { isNotNull: true },
+  })
+);
+
+export const cheapOrders = ordersPulse.query((ctx) =>
+  ctx.query({
+    price: { gt: 0, lte: 20 },
+    status: { ne: 'cancelled' },
+  })
+);
+```
+
+The supported operators are `eq`, `ne`, `gt`, `gte`, `lt`, `lte`, `in`, `isNull`, and `isNotNull`. To combine conditions, use `AND`, `OR`, and `NOT`. An object with `AND`, `OR`, or `NOT` cannot also have column keys:
+
+```ts copy
+export const urgentOrders = ordersPulse.query((ctx) =>
+  ctx.query({
+    OR: [
+      { status: 'requested' },
+      { AND: [{ status: { eq: 'accepted' } }, { driverId: { isNull: true } }] },
+    ],
+  })
+);
+
+export const activeOrders = ordersPulse.query((ctx) =>
+  ctx.query({
+    NOT: { status: { in: ['completed', 'cancelled'] } },
+  })
+);
+```
+
+## Arguments
+
+Often the rows depend on a value that is known only at runtime, such as the current user or a status that the client picks. Call `.args(schema)` to give a query arguments. The schema can come from any library that supports [Standard Schema](https://standardschema.dev). This example uses zod:
+
+```ts copy
+import { z } from 'zod';
+
+export const ordersByStatus = ordersPulse
+  .args(z.object({ status: z.enum(['requested', 'accepted', 'completed', 'cancelled']) }))
+  .query((ctx) => ctx.query({ status: ctx.args.status }));
+```
+
+When you create a live collection or subscribe to a CDC event stream for this query, you pass the arguments, for example `{ status: 'accepted' }`. Drizzle Pulse validates them with the schema and throws an error with the schema's messages if they are invalid.
+
+<Callout type="warning">
+The schema must validate synchronously. A schema with asynchronous checks, such as a zod schema with an async refinement, throws an error when you use the query.
+</Callout>
+
+Call `.args()` before `.query()`. Calling `.args()` after `.query()` throws an error, and so does calling `.query()` twice in one chain. Without `.args()`, `ctx.args` is empty.
+
+If the function returns `null`, the query matches every row. Use it for an optional argument:
+
+```ts copy
+export const ordersWithOptionalStatus = ordersPulse
+  .args(z.object({ status: z.enum(['requested', 'accepted', 'completed', 'cancelled']).optional() }))
+  .query((ctx) => (ctx.args.status ? ctx.query({ status: ctx.args.status }) : null));
+```
+
+### Values from a request
+
+You pass all queries to `createRuntime()` when your application starts. A query that you create later, for example inside a request handler, is not known to the runtime. To get rows for a value from the request, such as the current user, give the query an argument and pass the value when you create the live collection:
+
+```ts copy
+// queries.ts: defined once, next to your schema.
+export const ordersByDriver = ordersPulse
+  .args(z.object({ driverId: z.number().int() }))
+  .query((ctx) => ctx.query({ driverId: ctx.args.driverId }));
+```
+
+```ts copy
+// In a request handler.
+const orders = await runtime.client.ordersByDriver({ driverId: req.user.id });
+```
+
+The schema validates each value before the where function reads it. A value that a client sends, such as a query string parameter, reaches the where clause only through `ctx.args`.
+
+## Columns and order
+
+Call `.columns()` to choose the columns that a query returns. Set columns to `true` to include only those columns, or set columns to `false` to exclude them and keep the rest. Rows from the query contain only the selected columns.
+
+```ts copy
+export const orderStatuses = ordersPulse.columns({ id: true, status: true });
+```
+
+If a query uses `.columns()`, its where clause can use only the selected columns. If a query filters on another column, you cannot create a live collection for it.
+
+Call `.order('asc')` or `.order('desc')` to sort the rows of a live collection by primary key. The default is `'asc'`.
+
+```ts copy
+export const newestOrders = ordersPulse.order('desc');
+```
+
+You can chain `.columns()`, `.args()`, `.order()`, and `.query()` in one definition. Each call returns a new query and leaves the original unchanged, so you can build several queries from one base:
+
+```ts copy
+export const ordersByStatusSummary = ordersPulse
+  .columns({ id: true, status: true })
+  .args(z.object({ status: z.enum(['requested', 'accepted', 'completed', 'cancelled']) }))
+  .order('desc')
+  .query((ctx) => ctx.query({ status: ctx.args.status }));
+```
+
+## Next steps
+
+- [Server setup](/docs/realtime-server-setup): pass your queries to the runtime and start it.
+- [Live collections](/docs/realtime-live-collections): read the rows of a query.
+
+
+Source: https://orm.drizzle.team/docs/pg/realtime-server-setup
+
+import Callout from "@mdx/Callout.astro";
+import Prerequisites from "@mdx/Prerequisites.astro";
+
+# Server setup
+
+<Prerequisites>
+- [Drizzle Pulse overview](/docs/realtime-overview)
+- [Queries](/docs/realtime-queries)
+</Prerequisites>
+
+The runtime runs inside your application process. It reads the PostgreSQL write-ahead log (WAL) and gives your code [live collections and CDC event streams](/docs/realtime-live-collections) for the queries that you defined. You deploy no extra service.
+
+A typical setup has three steps. You create and start the runtime once when your application starts, create live collections or subscribe to CDC event streams wherever you need data, and stop the runtime when the application shuts down.
+
+Import the runtime from `drizzle-pulse/embedded`.
+
+## `wal_level = logical`
+
+Drizzle Pulse reads changes through logical replication, so the PostgreSQL setting `wal_level` must be `logical`. If it has another value, `runtime.start()` throws an error. The runtime cannot change this setting for you, because PostgreSQL applies it only after a restart.
+
+Check the current value:
+
+```sql
+SHOW wal_level;
+```
+
+If the result is not `logical`, set it and then restart PostgreSQL:
+
+```sql
+ALTER SYSTEM SET wal_level = logical;
+```
+
+Some hosted providers set `wal_level` in their dashboard or settings instead of SQL. See your provider's documentation.
+
+## Create and start the runtime
+
+`createRuntime()` takes your queries and two database connections.
+
+```ts copy
+import { drizzle } from 'drizzle-orm/postgres';
+import { createRuntime } from 'drizzle-pulse/embedded';
+import { ordersByStatus, ordersPulse } from './queries';
+
+const runtime = createRuntime({
+  queries: { allOrders: ordersPulse, ordersByStatus },
+  databaseUrl: process.env.DATABASE_URL!,
+  sourceDb: drizzle(process.env.DATABASE_URL!),
+});
+
+await runtime.start();
+```
+
+| Option | Description |
+| :----- | :---------- |
+| `queries` | The query definitions to serve, keyed by query name. The names become the names on `runtime.client` and `runtime.events`. |
+| `databaseUrl` | The connection URL of the database. The database must have [`wal_level = logical`](#wal_level--logical). The runtime uses it for the replication stream and for its own setup statements. Pass either `databaseUrl` or [`client`](#use-your-own-pool), not both. |
+| `sourceDb` | Your own Drizzle database instance for PostgreSQL. A live collection reads its first rows through it, so the first read keeps your session settings, such as row-level security and `search_path`. After a reconnect, the runtime reads the rows again through the `databaseUrl` connection. That read does not use the session settings of `sourceDb`. |
+| `wal` | Optional. `{ publicationName?, slotName? }`. Both default to `drizzle_pulse`. |
+| `logLevel` | Optional. `LogLevel.Silent`, `LogLevel.Error`, `LogLevel.Info`, or `LogLevel.Debug`. The default is `LogLevel.Info`. Import `LogLevel` from `drizzle-pulse/embedded`. |
+| `telemetry` | Optional. A function that receives a [telemetry event](#telemetry) for each applied batch of changes. |
+
+The optional settings look like this:
+
+```ts copy
+import { createRuntime, LogLevel } from 'drizzle-pulse/embedded';
+
+const runtime = createRuntime({
+  queries: { allOrders: ordersPulse, ordersByStatus },
+  databaseUrl: process.env.DATABASE_URL!,
+  sourceDb: drizzle(process.env.DATABASE_URL!),
+  wal: { publicationName: 'orders_pulse', slotName: 'orders_pulse' },
+  logLevel: LogLevel.Error,
+});
+```
+
+`runtime.start()` prepares the [database objects](#database-objects) and then starts the replication stream. Create live collections and subscribe to CDC event streams only after `start()` finishes.
+
+### Use your own pool
+
+By default, the runtime creates its own connections from `databaseUrl`. If your application already has a Drizzle Postgres pool, pass it as `client` instead. The runtime then runs its setup statements on that pool and starts the replication stream with the pool's connection settings.
+
+If you create your database with `drizzle()` from `drizzle-orm/postgres`, its pool is `db.$client`:
+
+```ts copy
+import { drizzle } from 'drizzle-orm/postgres';
+import { createRuntime } from 'drizzle-pulse/embedded';
+
+const db = drizzle(process.env.DATABASE_URL!);
+
+const runtime = createRuntime({
+  queries: { allOrders: ordersPulse, ordersByStatus },
+  client: db.$client,
+  sourceDb: db,
+});
+```
+
+A pool from the standalone `@drizzle-team/postgres` package works too. In that case the runtime uses only that pool and creates no connections with the driver that `drizzle-orm` bundles:
+
+```ts copy
+import { createPool } from '@drizzle-team/postgres';
+import { drizzle } from 'drizzle-orm/postgres';
+import { createRuntime } from 'drizzle-pulse/embedded';
+
+const pool = createPool(process.env.DATABASE_URL!);
+
+const runtime = createRuntime({
+  queries: { allOrders: ordersPulse, ordersByStatus },
+  client: pool,
+  sourceDb: drizzle({ client: pool }),
+});
+```
+
+The role of the pool needs the `REPLICATION` attribute.
+
+<Callout type="info">
+`runtime.stop()` does not close a pool that you passed as `client`, because your application owns it. Close the pool yourself after `runtime.stop()`.
+</Callout>
+
+## Stop the runtime
+
+`runtime.stop()` disposes all live collections and closes all CDC event streams of the runtime. Then it closes the replication stream and the connections of the runtime. It does not close `sourceDb`, because your application owns it.
+
+```ts copy
+await runtime.stop();
+```
+
+## Database objects
+
+When the runtime starts, it creates the database objects that it needs.
+
+1. The runtime sets `REPLICA IDENTITY FULL` on every source table. PostgreSQL then writes the complete old row for each update and delete.
+2. The runtime creates a publication. Its default name is `drizzle_pulse`. The publication has the publish options `insert, update, delete`, so `TRUNCATE` produces no events. The runtime adds every source table of your queries to it.
+3. The runtime creates a temporary replication slot. The slot name is the `slotName` option, an underscore, and a random suffix of 8 characters. PostgreSQL removes the slot when the connection closes, so a crashed process leaves no slot that holds WAL files.
+
+`slotName` must have 1 to 54 characters. It can contain only lower-case letters, digits, and underscores. If `slotName` breaks these rules, `start()` throws an error.
+
+`start()` only adds tables to the publication and sets `REPLICA IDENTITY FULL`. It never removes a table from the publication and never resets a replica identity. This keeps rolling deploys safe. During a rolling deploy, the old and the new version of your application run at the same time with different queries. If `start()` removed tables, each version would remove the tables of the other version.
+
+A table that no query reads any more stays in the publication until the next provisioning. Until then, the runtime reads the changes of the table and discards them. [Provisioning](#provision-with-a-separate-role) removes unused tables from the publication and resets their replica identity to `DEFAULT`.
+
+## Provision with a separate role
+
+By default, the role in `databaseUrl` runs the setup statements when the runtime starts. This role needs:
+
+1. Ownership of every source table, to set `REPLICA IDENTITY FULL`.
+2. The `CREATE` privilege on the database, to create the publication.
+3. Ownership of the publication, after it exists.
+4. The `REPLICATION` attribute, to start the replication stream.
+
+If your application role has fewer privileges, run the setup as a separate deploy step under an elevated role. The elevated role needs items 1 to 3. It does not need the `REPLICATION` attribute, because provisioning does not start the replication stream.
+
+Call `provision()` from `drizzle-pulse/embedded`. It does the same as `runtime.provision()`, but it needs no runtime and no `sourceDb`. Pass the same `queries` and `wal` as the runtime. Like the runtime, it takes either `databaseUrl` or a [`client`](#use-your-own-pool) pool.
+
+```ts copy
+import { provision } from 'drizzle-pulse/embedded';
+import { ordersByStatus, ordersPulse } from './queries';
+
+await provision({
+  queries: { allOrders: ordersPulse, ordersByStatus },
+  databaseUrl: process.env.ADMIN_DATABASE_URL!,
+});
+```
+
+If you already have a runtime object, `runtime.provision()` does the same. It throws an error if the runtime is already started.
+
+```ts copy
+await runtime.provision();
+```
+
+After provisioning, `start()` finds every source table in the publication with `REPLICA IDENTITY FULL`, so it runs no setup statements. The application role then needs:
+
+1. The `REPLICATION` attribute, to start the replication stream.
+2. The `SELECT` privilege on every source table. After a reconnect, the runtime reads the rows of each live collection again through the `databaseUrl` connection.
+
+<Callout type="warning">
+If you add a query with a new source table, run provisioning again before you deploy. Otherwise `start()` tries to change the new table and the publication, and fails if the application role has no privileges for that.
+</Callout>
+
+If a setup statement fails, the error names the statement and the privilege that is probably missing.
+
+## Telemetry
+
+Pass a `telemetry` function to `createRuntime()` to measure the delay between a commit and its delivery. The runtime calls it once for each group of changes in each transaction that it applies. A group holds the changes of one operation on one table. The runtime also calls it once for each live collection after a reconnect. Each call happens after the runtime delivers the changes to live collections and CDC event streams. If your function throws an error, the runtime logs the error and continues replication.
+
+```ts copy
+const runtime = createRuntime({
+  queries: { allOrders: ordersPulse, ordersByStatus },
+  databaseUrl: process.env.DATABASE_URL!,
+  sourceDb,
+  telemetry: (event) => {
+    const latencyMicros = event.appliedAtMicros - event.committedAtMicros;
+    console.log(`${event.schema}.${event.table} ${event.op}: ${latencyMicros} microseconds`);
+  },
+});
+```
+
+| Field | Description |
+| :---- | :---------- |
+| `schema` | The schema of the source table. |
+| `table` | The name of the source table. |
+| `op` | `'insert'`, `'update'`, `'delete'`, or `'rebaseline'`. `'rebaseline'` marks a live collection that loaded its rows again after a reconnect. |
+| `rowCount` | The number of row changes in the group. On `'rebaseline'`, it is the number of recovered rows. |
+| `committedAtMicros` | The commit time on the database host, in epoch microseconds. |
+| `appliedAtMicros` | The time at which this process applied the commit, in epoch microseconds. On `'rebaseline'`, it equals `committedAtMicros`. |
+| `commitLsn` | The log sequence number of the commit. |
+
+`appliedAtMicros - committedAtMicros` is the sync latency in microseconds. `committedAtMicros` comes from the clock of the database server, and `appliedAtMicros` comes from the clock of the server that runs your application. If the two clocks differ, a single latency value can be negative.
+
+A table that two live collections read reports two `'rebaseline'` events, one for each live collection.
+
+## Fatal errors
+
+If all reconnect attempts fail, replication fails permanently and the runtime stops itself. Register a listener with `runtime.onFatalError()` to alert and restart your process. The method returns a function that removes the listener.
+
+```ts copy
+const removeListener = runtime.onFatalError((error) => {
+  console.error('Replication failed', error);
+  process.exit(1);
+});
+```
+
+Before the runtime stops, each live collection calls its [`onError`](/docs/realtime-live-collections#errors) listeners with the error, and each CDC event stream calls its [`onError`](/docs/realtime-live-collections#stream-errors) option. Then the runtime disposes the live collections and closes the CDC event streams.
+
+## Next steps
+
+- [Live collections](/docs/realtime-live-collections#live-collections): read the rows of a query and get a notification after each change.
+- [CDC event streams](/docs/realtime-live-collections#cdc-event-streams): react to each row change of a query.
+
+
 Source: https://orm.drizzle.team/docs/pg/relations-schema-declaration
 
 import Tab from '@mdx/Tab.astro';

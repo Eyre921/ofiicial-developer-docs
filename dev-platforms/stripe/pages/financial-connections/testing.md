@@ -24,6 +24,20 @@ Features like [balances](https://docs.stripe.com/financial-connections/balances.
 
 Sandbox *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination) are separate from live webhooks. Learn about [testing your webhook integrations](https://docs.stripe.com/webhooks.md#test-webhook).
 
+## Test Canadian bank accounts
+
+Use a [Canadian PAD payment or setup integration](https://docs.stripe.com/financial-connections/acss-direct-debit-payments.md) with sandbox test keys. Configure the integration for `acss_debit` and use `cad` for the standard Canadian test accounts.
+
+1. Start your payment or setup flow and choose instant bank verification. The Canadian authentication flow shows test institutions for Canada.
+2. Connect an account using the [successful authentication scenarios](https://docs.stripe.com/financial-connections/testing.md#web-test-institutions). Test both OAuth and non-OAuth connections using the instructions for the selected test institution.
+3. Select **Success** in a **Test** scenario or **Checking** in a **Bank** scenario to test successful collection. Accept the PAD agreement and complete confirmation through your payment or setup integration.
+4. Check the resulting `PaymentMethod` and its `acss_debit.financial_connections_account`. If you requested additional data permissions, retrieve the account’s balances, ownership, or transactions data and check the resulting data refresh status.
+5. For payments, handle the final asynchronous payment result before fulfillment. For setup, wait for the `SetupIntent` to succeed before reusing the attached payment method with the same customer and currency.
+
+The standard Canadian test accounts have a CAD currency. Setting a setup currency to `usd` doesn’t change the test account’s currency. For a USD account, the setup and later payment currencies must match that account’s currency.
+
+To test manual bank account entry and microdeposit verification, use the [PAD test account numbers](https://docs.stripe.com/payments/acss-debit/accept-a-payment.md?payment-ui=checkout#test-integration). Test payment method tokens bypass account collection and verification, so they don’t exercise Financial Connections.
+
 ## Testing different user authentication scenarios [Client-side]
 
 Stripe provides a set of test institutions exercising different success and failure scenarios, each available either in the list of featured institutions or in the authentication flow’s institution search results.

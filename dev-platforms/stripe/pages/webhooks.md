@@ -48,8 +48,6 @@ To create a new webhook endpoint in the Dashboard:
 7. Click **Continue**, then provide the **Endpoint URL** and an optional description for the webhook.
 8. On the webhook settings page, a signing secret beginning with `whsec_` appears. Click **Reveal secret** and copy the value to use when you [create a handler](https://docs.stripe.com/webhooks.md#webhook-endpoint-def).
 
-> [Workbench](https://docs.stripe.com/workbench.md) replaces the existing [Developers Dashboard](https://docs.stripe.com/development/dashboard.md). You can still [create a new webhook endpoint](https://docs.stripe.com/development/dashboard/webhooks.md) in the Developers Dashboard, although we recommend using Workbench.
-
 #### API
 
 Use the [/v2/core/event_destinations](https://docs.stripe.com/api/v2/event-destinations.md) endpoint to register a new endpoint.
@@ -215,7 +213,7 @@ post '/webhook' do
       )
     rescue Stripe::SignatureVerificationError => e
       puts "⚠️  Webhook signature verification failed. #{e.message}"
-      status 400
+      halt 400
     end
   end
 
@@ -649,7 +647,7 @@ The secret used for verifying that events come from Stripe is modifiable in the 
 To roll a secret:
 
 1. Click each endpoint in the Workbench [Webhooks](https://dashboard.stripe.com/webhooks) tab that you want to roll the secret for.
-2. Navigate to the overflow menu (⋯) and click **Roll secret**. You can choose to immediately expire the current secret or delay its expiration for up to 24 hours to allow yourself time to update the verification code on your server. During this time, multiple secrets are active for the endpoint. Stripe generates one signature per secret until expiration.
+2. Navigate to the overflow menu (⋯) and click **Roll secret**. You can choose to immediately expire the current secret or delay its expiration for up to 7 days to allow yourself time to update the verification code on your server. During this time, multiple secrets are active for the endpoint. Stripe generates one signature per secret until expiration.
 
 ### Verify events are sent from Stripe 
 
@@ -679,7 +677,7 @@ Stripe generates a unique secret key for each endpoint. If you use the same endp
 
 We recommend using our official libraries to verify signatures. You perform the verification by providing the event payload, the `Stripe-Signature` header, and the endpoint’s secret. If verification fails, you get an error.
 
-If you get a signature verification error, read our [troubleshooting guide](https://docs.stripe.com/events/manage-webhook-endpoints.md#signature-errors).
+If you get a signature verification error, read our [troubleshooting guide](https://docs.stripe.com/events/manage-webhook-endpoints.md#signature-errors). An SDK error might reference the `payload` entry in the `Stripe-Signature` header to help diagnose whether the request body changed. This entry is unsigned debugging metadata. Only a valid `v1` HMAC signature authenticates the request and verifies payload integrity.
 
 > Stripe requires the raw body of the request to perform signature verification. If you’re using a framework, make sure it doesn’t manipulate the raw body. Any manipulation to the raw body of the request causes the verification to fail.
 
@@ -742,20 +740,39 @@ end
 
 Although we recommend that you use our official libraries to verify webhook event signatures, you can create a custom solution by following this section.
 
-The `Stripe-Signature` header included in each signed event contains a timestamp and one or more signatures that you must verify. The timestamp has a `t=` prefix, and each signature has a *scheme* prefix. Schemes start with `v`, followed by an integer. Currently, the only valid live signature scheme is `v1`. To aid with testing, Stripe sends an additional signature with a fake `v0` scheme, for test events.
+The `Stripe-Signature` header sent with each event contains comma-separated entries, including a timestamp and one or more signatures that you must verify. This example includes line breaks for readability, but the header you receive is on a single line:
 
 ```
 Stripe-Signature:
-t=1492774577,
+t=1798765432,
 v1=5257a869e7ecebeda32affa62cdca3fa51cad7e77a0e56ff536d0ce8e108d8bd,
-v0=6ffbb59b2300aae63f272406069a9788598b792a944a07aba816edb039989a39
+v1=38c9f77a6fdb86d7f67e427e6076f1e38e244eb8ddc7a90f7f9dd4478d5bb2c2,
+v0=6ffbb59b2300aae63f272406069a9788598b792a944a07aba816edb039989a39,
+secret=whsec_****************************PzVt,
+destination=we_1TN7mG6oEAX7HoXLZoZugElv,
+payload=a25aefc6
 ```
 
-> We provide newlines for clarity, but a real `Stripe-Signature` header is on a single line.
+Each signature has a *scheme* prefix. Schemes start with `v`, followed by an integer. Currently, the only valid live signature scheme is `v1`. To help with testing, Stripe sends an additional signature with a fake `v0` scheme for sandbox events.
 
-Stripe generates signatures using a hash-based message authentication code ([HMAC](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code)) with [SHA-256](https://en.wikipedia.org/wiki/SHA-2). To prevent [downgrade attacks](https://en.wikipedia.org/wiki/Downgrade_attack), ignore all schemes that aren’t `v1`.
+Stripe might add the optional `secret`, `destination`, and `payload` entries to support debugging. Your integration must accept unknown entries and must not depend on a fixed entry count or order.
 
-You can have multiple signatures with the same scheme-secret pair when you [roll an endpoint’s secret](https://docs.stripe.com/webhooks.md#roll-endpoint-secrets), and keep the previous secret active for up to 24 hours. During this time, your endpoint has multiple active secrets and Stripe generates one signature for each secret.
+| Entry | Description |
+| --- | --- |
+| `t` | The timestamp when this event was signed by Stripe, in seconds since the Unix epoch. This doesn’t represent when the event itself was generated. Use this value only for signature verification. |
+| `v0` | A signature value included only for events related to a sandbox account. This isn’t valid for signature verification. Your code must ignore entries of this type. |
+| `v1` | A signature generated with a hash-based message authentication code ([HMAC](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code)) with [SHA-256](https://en.wikipedia.org/wiki/SHA-2). This incorporates the event payload, the timestamp, and the signing secret for the endpoint. It might appear multiple times. Verify that at least one `v1` entry matches the expected signature. |
+| `secret` | A redacted representation of the endpoint’s newest active signing secret. This can help identify a mismatch between the signing secret used by Stripe, and the value your code is using. |
+| `destination` | The ID of endpoint that the signing secret belongs to, which starts with `we_` or `ed_`. This can help you locate the endpoint and its signing secret on the Dashboard. |
+| `payload` | A suffix of the hexadecimal SHA-256 digest of the exact HTTP request body that was signed. Use it only to help diagnose whether your code is changing the body before calculating the expected signature. |
+
+> #### Don't use debug metadata for verification
+> 
+> The `secret`, `destination`, and `payload` entries aren’t covered by the HMAC. Don’t use them to authenticate a request or verify payload integrity because an attacker can construct debug values that match a forged request. Only a valid `v1` signature authenticates the request and verifies payload integrity.
+
+To prevent [downgrade attacks](https://en.wikipedia.org/wiki/Downgrade_attack), ignore signature schemes other than `v1`, and use only the `t` and `v1` entries for verification.
+
+You can have multiple signatures with the same scheme when you [roll an endpoint’s signing secret](https://docs.stripe.com/webhooks.md#roll-endpoint-secrets), and keep the previous secret active for up to 7 days. During this period, your endpoint has multiple active secrets and Stripe generates one signature for each secret. Verify that at least one `v1` entry is valid.
 
 To create a manual solution for verifying signatures, you must complete the following steps:
 
@@ -763,25 +780,27 @@ To create a manual solution for verifying signatures, you must complete the foll
 
 Split the header using the `,` character as the separator to get a list of elements. Then split each element using the `=` character as the separator to get a prefix and value pair.
 
-The value for the prefix `t` corresponds to the timestamp, and `v1` corresponds to the signature (or signatures). You can discard all other elements.
+The value for the prefix `t` corresponds to the timestamp, and each `v1` value corresponds to a signature. Keep the timestamp and every `v1` value. Discard all other elements for signature calculation, including any debug metadata.
 
 #### Step 2: Prepare the signed_payload string 
 
 The `signed_payload` string is created by concatenating:
 
-- The timestamp (as a string)
+- The timestamp value (as a string)
 - The character `.`
-- The actual JSON payload (that is, the request body)
+- The actual JSON payload (that is, the unmodified HTTP request body)
+
+Don’t format or modify the payload in any way before concatenation. For example, `signed_payload` might start with `1798765432.{`.
 
 #### Step 3: Determine the expected signature 
 
-Compute an HMAC with the SHA256 hash function. Use the endpoint’s signing secret as the key, and use the `signed_payload` string as the message.
+Compute an HMAC with the SHA-256 hash function. Use an active endpoint signing secret as the key, and use the `signed_payload` string as the message.
 
 #### Step 4: Compare the signatures 
 
-Compare the signature (or signatures) in the header to the expected signature. For an equality match, compute the difference between the current timestamp and the received timestamp, then decide if the difference is within your tolerance.
+Use a constant-time string comparison to compare the expected signature to every `v1` signature in the header. If any signature matches, compute the difference between the current timestamp and the received timestamp, and reject the request if the difference is outside your tolerance.
 
-To protect against timing attacks, use a constant-time-string comparison to compare the expected signature to each of the received signatures.
+If no signatures match, reject the request.
 
 ### Preventing replay attacks 
 

@@ -182,6 +182,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Error handling](#error-handling-docs-dictation-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx)
 - [Reduce connection overhead](#reduce-connection-overhead-docs-dictation-connection-pre-warming-mdx)
+- [Inserting at the cursor](#inserting-at-the-cursor-docs-dictation-inserting-at-the-cursor-mdx)
 - [Quickstart](#quickstart-docs-tts-getting-started-quickstart-mdx)
 - [Optimizing Accuracy and Latency](#optimizing-accuracy-and-latency-docs-tts-getting-started-optimizing-accuracy-and-latency-mdx)
 - [Choose an interface](#choose-an-interface-docs-tts-getting-started-choose-an-interface-mdx)
@@ -274,6 +275,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Can you provide a copy of your most recent penetration test executive summary?](#can-you-provide-a-copy-of-your-most-recent-penetration-test-executive-summary-docs-faq-can-you-provide-a-copy-of-your-most-recent-penetration-test-executive-summary-mdx)
 - [Can you provide a recent vulnerability scan?](#can-you-provide-a-recent-vulnerability-scan-docs-faq-can-you-provide-a-recent-vulnerability-scan-mdx)
 - [Will AssemblyAI sign a Business Associate Addendum (BAA) as described in the HIPAA rules and regulations?](#will-assemblyai-sign-a-business-associate-addendum-baa-as-described-in-the-hipaa-rules-and-regulations-docs-faq-can-you-sign-a-baa-mdx)
+- [Which AssemblyAI products are covered under the BAA?](#which-assemblyai-products-are-covered-under-the-baa-docs-faq-which-products-are-covered-under-the-baa-mdx)
 - [Do you have a formal risk assessment policy or process?](#do-you-have-a-formal-risk-assessment-policy-or-process-docs-faq-do-you-have-a-formal-risk-assessment-policy-or-process-mdx)
 - [Do you have documented information security policies? If so, how frequently are they updated?](#do-you-have-documented-information-security-policies-if-so-how-frequently-are-they-updated-docs-faq-do-you-have-documented-information-security-policies-if-so-how-frequently-are-they-updated-mdx)
 - [Do you offer self-hosted solutions?](#do-you-offer-self-hosted-solutions-docs-faq-do-you-offer-self-hosted-solutions-mdx)
@@ -553,11 +555,11 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 
    `llms.txt` is the structured index. For full content, fetch the section files it links (each under 100 KB) rather than the whole `llms-full.txt`.
 
-2. **Docs MCP server** (on-demand lookups): `https://assemblyai.com/docs/mcp` — Streamable HTTP transport. Lets the agent search and fetch AssemblyAI documentation pages on demand.
+2. **Docs MCP server** (on-demand lookups): `https://www.assemblyai.com/docs/mcp` — Streamable HTTP transport. Lets the agent search and fetch AssemblyAI documentation pages on demand.
 
    ```bash
    # Claude Code
-   claude mcp add assemblyai-docs --transport http https://assemblyai.com/docs/mcp
+   claude mcp add assemblyai-docs --transport http https://www.assemblyai.com/docs/mcp
    ```
 
    See the [Coding agent prompts](/coding-agent-prompts) page for Cursor and other clients.
@@ -1169,13 +1171,13 @@ Want an AI app to transcribe audio for you, not write code? Use the [AssemblyAI 
 For on-demand lookups during a session — useful when the agent is iterating on a feature and needs to check several pages mid-task — connect the AssemblyAI docs MCP server:
 
 ```
-https://assemblyai.com/docs/mcp
+https://www.assemblyai.com/docs/mcp
 ```
 
 **Claude Code:**
 
 ```bash
-claude mcp add assemblyai-docs --transport http https://assemblyai.com/docs/mcp
+claude mcp add assemblyai-docs --transport http https://www.assemblyai.com/docs/mcp
 ```
 
 **Cursor** (`.cursor/mcp.json`):
@@ -1184,7 +1186,7 @@ claude mcp add assemblyai-docs --transport http https://assemblyai.com/docs/mcp
 {
   "mcpServers": {
     "assemblyai-docs": {
-      "url": "https://assemblyai.com/docs/mcp"
+      "url": "https://www.assemblyai.com/docs/mcp"
     }
   }
 }
@@ -1225,7 +1227,7 @@ It is not the [docs MCP server](/coding-agent-prompts#docs-mcp-server). That one
 
 | | AssemblyAI MCP server | Docs MCP server |
 |---|---|---|
-| Endpoint | `https://mcp.assemblyai.com/mcp` | `https://assemblyai.com/docs/mcp` |
+| Endpoint | `https://mcp.assemblyai.com/mcp` | `https://www.assemblyai.com/docs/mcp` |
 | What it does | Transcribes, summarizes and analyzes audio | Searches and reads the docs |
 | Sign-in | Your AssemblyAI account or API key | None |
 | Cost | Usage is billed to your account, at your normal API rates | Free |
@@ -4649,7 +4651,7 @@ You'll need:
 **Building with an AI coding agent?** Wire it up to AssemblyAI's live docs (MCP server) and the AssemblyAI skill so it writes correct, up-to-date code instead of relying on stale training data:
 
 ```bash
-claude mcp add --transport http --scope user assemblyai-docs https://assemblyai.com/docs/mcp
+claude mcp add --transport http --scope user assemblyai-docs https://www.assemblyai.com/docs/mcp
 npx skills add AssemblyAI/assemblyai-skill --global
 ```
 
@@ -6022,7 +6024,7 @@ Your transcript is still returned using standard transcription, and you will not
 
 AssemblyAI offers a Business Associate Agreement (BAA) for customers who need to process Protected Health Information (PHI). AssemblyAI is SOC 2 Type 2, ISO 27001:2022, and PCI DSS v4.0 certified. Medical Mode does not change existing data handling or retention policies.
 
-Paid customers can review and sign our standard online BAA self-serve, at no additional cost, from the [**Data Controls** page](https://www.assemblyai.com/dashboard/settings/data-controls) in the dashboard. You must have an upgraded (paid) account to see the BAA option. See [Data Controls](/data-controls#business-associate-agreement-baa) for details, or [contact sales](https://www.assemblyai.com/contact-sales) for enterprise pricing.
+Paid customers can review and sign our standard online BAA self-serve, at no additional cost, from the [**Data Controls** page](https://www.assemblyai.com/dashboard/settings/data-controls) in the dashboard. You must have an upgraded (paid) account to see the BAA option. See [Data Controls](/data-controls#business-associate-agreement-baa) for details, or [contact sales](https://www.assemblyai.com/contact/sales) for enterprise pricing.
 
 ---
 
@@ -22378,7 +22380,7 @@ You'll need:
 **Building with an AI coding agent?** Wire it up to AssemblyAI's live docs (MCP server) and the AssemblyAI skill so it writes correct, up-to-date code instead of relying on stale training data:
 
 ```bash
-claude mcp add --transport http --scope user assemblyai-docs https://assemblyai.com/docs/mcp
+claude mcp add --transport http --scope user assemblyai-docs https://www.assemblyai.com/docs/mcp
 npx skills add AssemblyAI/assemblyai-skill --global
 ```
 
@@ -24148,7 +24150,7 @@ If you are using a Universal Streaming model (not U3 Pro), do not set `end_of_tu
 
 AssemblyAI offers a Business Associate Agreement (BAA) for customers who need to process Protected Health Information (PHI). AssemblyAI is SOC 2 Type 2, ISO 27001:2022, and PCI DSS v4.0 certified. Medical Mode does not change existing data handling or retention policies.
 
-Paid customers can review and sign our standard online BAA self-serve, at no additional cost, from the [**Data Controls** page](https://www.assemblyai.com/dashboard/settings/data-controls) in the dashboard. You must have an upgraded (paid) account to see the BAA option. See [Data Controls](/data-controls#business-associate-agreement-baa) for details, or [contact sales](https://www.assemblyai.com/contact-sales) for enterprise pricing.
+Paid customers can review and sign our standard online BAA self-serve, at no additional cost, from the [**Data Controls** page](https://www.assemblyai.com/dashboard/settings/data-controls) in the dashboard. You must have an upgraded (paid) account to see the BAA option. See [Data Controls](/data-controls#business-associate-agreement-baa) for details, or [contact sales](https://www.assemblyai.com/contact/sales) for enterprise pricing.
 
 ---
 
@@ -24292,7 +24294,7 @@ Tune how aggressively each variant suppresses background audio with the followin
 
 | Parameter               | Type  | Default | Description                                                                                                                                          |
 | ----------------------- | ----- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `voice_focus_threshold` | float | `0.7`   | Optional. A float between `0.0` and `1.0` that controls how aggressively background audio is suppressed. Higher values are more aggressive. Defaults to `0.7` for both variants. |
+| `voice_focus_threshold` | float | `0.5`   | Optional. A float between `0.0` and `1.0` that controls how aggressively background audio is suppressed. Higher values are more aggressive. Defaults to `0.5` for both variants. |
 
 ## Quickstart
 
@@ -24303,7 +24305,7 @@ CONNECTION_PARAMS = {
     "sample_rate": 16000,
     "speech_model": "universal-3-6-pro",
     "voice_focus": "near-field",
-    # "voice_focus_threshold": 0.7,  # Optional, defaults to 0.7. Higher is more aggressive.
+    # "voice_focus_threshold": 0.5,  # Optional, defaults to 0.5. Higher is more aggressive.
 }
 ```
 
@@ -24313,7 +24315,7 @@ client.connect(
         sample_rate=16000,
         speech_model="universal-3-6-pro",
         voice_focus="near-field",
-        # voice_focus_threshold=0.7,  # Optional, defaults to 0.7. Higher is more aggressive.
+        # voice_focus_threshold=0.5,  # Optional, defaults to 0.5. Higher is more aggressive.
     )
 )
 ```
@@ -24323,7 +24325,7 @@ const CONNECTION_PARAMS = {
   sample_rate: 16000,
   speech_model: "universal-3-6-pro",
   voice_focus: "near-field",
-  // voice_focus_threshold: 0.7, // Optional, defaults to 0.7. Higher is more aggressive.
+  // voice_focus_threshold: 0.5, // Optional, defaults to 0.5. Higher is more aggressive.
 };
 ```
 
@@ -24332,7 +24334,7 @@ const transcriber = client.streaming.transcriber({
   sampleRate: 16_000,
   speechModel: "universal-3-6-pro",
   voiceFocus: "near-field",
-  // voiceFocusThreshold: 0.7, // Optional, defaults to 0.7. Higher is more aggressive.
+  // voiceFocusThreshold: 0.5, // Optional, defaults to 0.5. Higher is more aggressive.
 });
 ```
 
@@ -47800,6 +47802,7 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe \
 - [Achieve lowest latency](/dictation/uploading-while-recording) — start the request before the speaker stops
 - [Recordings over two minutes](/dictation/recordings-over-two-minutes): fall back to `/v1/transcribe` when a dictation runs long
 - [Examples](/dictation/examples) — end-to-end requests for a clinical note and a travel booking
+- [Inserting at the cursor](/dictation/inserting-at-the-cursor): fit a dictation into existing text
 - [Transcript rewriting](/dictation/transcript-rewriting) — reshape the transcript with `llm_instruction`
 - [Prompting and keyterms](/dictation/prompting-and-keyterms) — steer the transcript with context and exact terms
 - [Language selection](/dictation/language-selection) — transcribe in one or more of 32 languages
@@ -48704,6 +48707,18 @@ with what the service already does.
 |---|---|
 | "You are a helpful medical scribe. Output only the note, nothing else. If the input is already clean, return it unchanged. Rewrite as a chart note." | "Rewrite as a concise clinical chart note." |
 | "Return JSON with a summary field." | Describe the prose you want, then parse it yourself |
+| "Lowercase unless it's a name. No final punctuation. Don't capitalize the first word." | "Write the dictated words as a mid-sentence continuation of: "I think"." |
+
+Describe the shape you want rather than listing what not to do. The model
+leans toward complete, punctuated sentences, and a prohibition has to fight
+that on every request, so "don't" rules are the least reliable kind of
+instruction. A positive description such as "a mid-sentence continuation" gets
+the casing and punctuation right as a side effect.
+
+Leave mechanical edits to your own code. The rewrite output is trimmed, so it
+can't return a leading space, and stripping a trailing full stop is exact and
+free in code. [Inserting at the cursor](/dictation/inserting-at-the-cursor)
+shows how to split the work for text that lands mid-sentence.
 
 Some instructions that work well:
 
@@ -49811,6 +49826,421 @@ dictation app that is the moment the user starts recording: the handshake then
 runs concurrently with the recording, and by the time they stop speaking the
 connection is open and fresh. `/warm` is idempotent and cheap, so calling it
 again to refresh an aging connection is fine.
+
+---
+
+<a id="inserting-at-the-cursor-docs-dictation-inserting-at-the-cursor-mdx"></a>
+
+# Inserting at the cursor
+
+URL: https://www.assemblyai.com/docs/dictation/inserting-at-the-cursor
+Source: docs/dictation/inserting-at-the-cursor.mdx
+Navigation: Dictation API > Guides
+Description: Fit a dictation into text that's already there, with the right spacing, capitalization and punctuation.
+
+When the user dictates into a field that already has text, the words have to
+fit where the cursor is. Dictating "tomorrow works" into `I think| we should go`
+should give `I think tomorrow works we should go`.
+
+By default, the rewrite returns a complete sentence, with a capital letter at
+the start and a full stop at the end. Insert that at the cursor as it is, and
+you get `I thinkTomorrow works. we should go`.
+
+To get it right, split the job in two:
+
+- **The rewrite fixes the words.** Tell it what comes before the cursor, and it
+  writes the dictation as a continuation: lowercase for ordinary words, capitals
+  kept for names. Only a model can tell those apart.
+- **Your code fixes the joins.** Spacing and end punctuation follow fixed rules
+  from the text on either side of the cursor, so code gets them right every
+  time. The rewrite output is trimmed, so it can't return a leading space
+  anyway.
+
+The four steps below explain each part. For working code, go to the
+[complete example](#complete-example).
+
+## 1. Read the text around the cursor
+
+Take the text before the cursor and the text after it, each up to a few
+hundred characters. How you read them depends on the platform:
+
+| Platform | Text before and after the cursor |
+|---|---|
+| Web | `value.slice(0, selectionStart)` and `value.slice(selectionEnd)` on the `<textarea>` or `<input>` |
+| iOS keyboard extension | `textDocumentProxy.documentContextBeforeInput` and `documentContextAfterInput` |
+| macOS | The focused element's `kAXValueAttribute` and `kAXSelectedTextRangeAttribute`, through the Accessibility API |
+
+Some fields don't expose their text, such as password fields and some
+canvas-based editors. Treat those as empty, and add no spacing.
+
+## 2. Set `rewrite_mode` to `smart`
+
+Send every insertion with `"rewrite_mode": "smart"`. The instruction in the
+next step only works on `smart`. On the default `fast` mode, the rewrite
+usually ignores it and returns the whole sentence, so the text before the
+cursor appears twice: `I think I think tomorrow works`.
+
+`smart` adds some latency to the rewrite. See
+[Choosing a rewrite mode](/dictation/transcript-rewriting#choosing-a-rewrite-mode)
+for the trade-off.
+
+## 3. Tell the rewrite where the words land
+
+Decide in code whether the cursor sits mid-sentence:
+
+- **At the start of a sentence**, when the field is empty or the text before
+  the cursor ends with `.`, `!`, `?` or a line break: send no instruction. The
+  default cleanup writes a normal sentence.
+- **Mid-sentence**: send an `llm_instruction` that says the dictated words
+  continue the text before them.
+
+In both cases, send the text before the cursor as `stt_prompt` too. It's
+context for the transcription itself, so spellings, names and casing carry
+over from what the user already wrote. Keep it as plain text, with no
+instructions in it. See [Prompting and keyterms](/dictation/prompting-and-keyterms).
+
+For `I think| we should go`, the config is:
+
+```json
+{
+  "rewrite_mode": "smart",
+  "stt_prompt": "I think",
+  "llm_instruction": "Remove filler words and false starts from the dictated words, then write them as a mid-sentence continuation of this text, which comes before them: \"I think\". Return only the dictated words, with no terminal punctuation, since the sentence carries on after them."
+}
+```
+
+The instruction describes the shape you want, a mid-sentence continuation,
+instead of listing rules such as "lowercase unless it's a name" or "no final
+punctuation". The model leans toward complete sentences, and a rule against
+that has to fight it on every request, so it's followed less reliably.
+
+## 4. Join the result in code
+
+When the response comes back:
+
+- **Spacing.** Add a space before the words when the text before the cursor
+  doesn't end in whitespace, and after them when the text after the cursor
+  doesn't start with whitespace or punctuation.
+- **End punctuation.** Remove a trailing `.`, `!` or `?` when the text after
+  the cursor carries on the sentence, such as a lowercase word or a comma.
+- **A failed rewrite.** If the rewrite fails, `llm_response` is `null`. Apply
+  the same joins to `text`, the verbatim transcript. In the SDKs,
+  `final_text` already falls back to it.
+
+## Complete example
+
+Each tab is a complete program. Add your API key, save a recording as
+`clip.wav`, and run it. The four helpers are the same in every tab, so you can
+copy them into your app as they are:
+
+| Python | JavaScript | What it does |
+|---|---|---|
+| `continues_sentence` | `continuesSentence` | Decides whether the cursor sits mid-sentence |
+| `carries_on` | `carriesOn` | Decides whether the text after the cursor continues the sentence |
+| `rewrite_instruction` | `rewriteInstruction` | Builds the `llm_instruction` mid-sentence, and returns nothing at the start of one |
+| `fit_at_cursor` | `fitAtCursor` | Joins the result onto the text around the cursor |
+
+```python expandable
+import assemblyai as aai
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+SENTENCE_ENDS = (".", "!", "?")
+
+def continues_sentence(before):
+    """True when the cursor sits mid-sentence, False at the start of one."""
+    if not before or before.endswith("\n"):
+        return False
+    tail = before.rstrip()
+    return bool(tail) and not tail.endswith(SENTENCE_ENDS)
+
+def carries_on(after):
+    """True when the text after the cursor continues the same sentence."""
+    next_char = after.lstrip()[:1]
+    return next_char.islower() or next_char in (",", ";", ":")
+
+def rewrite_instruction(before, after):
+    """The llm_instruction for this insertion, or None for the default cleanup."""
+    if not continues_sentence(before):
+        return None
+    ending = (
+        "with no terminal punctuation, since the sentence carries on after them"
+        if carries_on(after)
+        else "ending the sentence"
+    )
+    return (
+        "Remove filler words and false starts from the dictated words, then write "
+        "them as a mid-sentence continuation of this text, which comes before them: "
+        f'"{before.rstrip()[-300:]}". Return only the dictated words, {ending}.'
+    )
+
+def fit_at_cursor(dictated, before, after):
+    """Join the dictated text onto the text around the cursor."""
+    text = dictated.strip()
+    if not text:
+        return text
+    # The text after the cursor carries on the sentence: no full stop.
+    if carries_on(after):
+        text = text.rstrip(".!?")
+    # One space between this and the text before the cursor.
+    if before and not before[-1].isspace() and text[0] not in ".,;:!?":
+        text = " " + text
+    # One space between this and the text after the cursor.
+    if after and not after[0].isspace() and after[0] not in ".,;:!?":
+        text = text + " "
+    return text
+
+def dictate_at_cursor(audio, before, after):
+    """Transcribe a dictation and return the text to insert at the cursor."""
+    config = aai.DictationConfig(
+        rewrite_mode="smart",  # required: see step 2
+        stt_prompt=before[-1000:] or None,
+        llm_instruction=rewrite_instruction(before, after),
+    )
+    result = aai.DictationTranscriber().transcribe_live(audio, config)
+    # final_text is the rewrite, or the transcript if the rewrite failed.
+    return fit_at_cursor(result.final_text, before, after)
+
+before, after = "I think", " we should go"  # the text around the cursor
+insert = dictate_at_cursor("clip.wav", before, after)
+print(before + insert + after)  # I think tomorrow works we should go
+```
+
+```javascript expandable
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+const SENTENCE_END = /[.!?]$/;
+
+// True when the cursor sits mid-sentence, false at the start of one.
+function continuesSentence(before) {
+  if (!before || before.endsWith("\n")) return false;
+  const tail = before.trimEnd();
+  return tail.length > 0 && !SENTENCE_END.test(tail);
+}
+
+// True when the text after the cursor continues the same sentence.
+function carriesOn(after) {
+  return /^[\p{Ll},;:]/u.test(after.trimStart());
+}
+
+// The llm_instruction for this insertion, or null for the default cleanup.
+function rewriteInstruction(before, after) {
+  if (!continuesSentence(before)) return null;
+  const ending = carriesOn(after)
+    ? "with no terminal punctuation, since the sentence carries on after them"
+    : "ending the sentence";
+  return (
+    "Remove filler words and false starts from the dictated words, then write " +
+    "them as a mid-sentence continuation of this text, which comes before them: " +
+    `"${before.trimEnd().slice(-300)}". Return only the dictated words, ${ending}.`
+  );
+}
+
+// Join the dictated text onto the text around the cursor.
+function fitAtCursor(dictated, before, after) {
+  let text = dictated.trim();
+  if (!text) return text;
+  // The text after the cursor carries on the sentence: no full stop.
+  if (carriesOn(after)) text = text.replace(/[.!?]+$/, "");
+  // One space between this and the text before the cursor.
+  if (before && !/\s$/.test(before) && !/^[.,;:!?]/.test(text)) text = " " + text;
+  // One space between this and the text after the cursor.
+  if (after && !/^[\s.,;:!?]/.test(after)) text = text + " ";
+  return text;
+}
+
+// Transcribe a dictation and return the text to insert at the cursor.
+async function dictateAtCursor(audio, before, after) {
+  const config = {
+    rewrite_mode: "smart", // required: see step 2
+    stt_prompt: before.slice(-1000) || undefined,
+    llm_instruction: rewriteInstruction(before, after) ?? undefined,
+  };
+  const result = await client.dictation.transcribeLive(audio, config);
+  // final_text is the rewrite, or the transcript if the rewrite failed.
+  return fitAtCursor(result.final_text, before, after);
+}
+
+const before = "I think"; // the text around the cursor
+const after = " we should go";
+const insert = await dictateAtCursor("clip.wav", before, after);
+console.log(before + insert + after); // I think tomorrow works we should go
+```
+
+```python expandable
+import json
+
+import requests
+
+SENTENCE_ENDS = (".", "!", "?")
+
+def continues_sentence(before):
+    """True when the cursor sits mid-sentence, False at the start of one."""
+    if not before or before.endswith("\n"):
+        return False
+    tail = before.rstrip()
+    return bool(tail) and not tail.endswith(SENTENCE_ENDS)
+
+def carries_on(after):
+    """True when the text after the cursor continues the same sentence."""
+    next_char = after.lstrip()[:1]
+    return next_char.islower() or next_char in (",", ";", ":")
+
+def rewrite_instruction(before, after):
+    """The llm_instruction for this insertion, or None for the default cleanup."""
+    if not continues_sentence(before):
+        return None
+    ending = (
+        "with no terminal punctuation, since the sentence carries on after them"
+        if carries_on(after)
+        else "ending the sentence"
+    )
+    return (
+        "Remove filler words and false starts from the dictated words, then write "
+        "them as a mid-sentence continuation of this text, which comes before them: "
+        f'"{before.rstrip()[-300:]}". Return only the dictated words, {ending}.'
+    )
+
+def fit_at_cursor(dictated, before, after):
+    """Join the dictated text onto the text around the cursor."""
+    text = dictated.strip()
+    if not text:
+        return text
+    # The text after the cursor carries on the sentence: no full stop.
+    if carries_on(after):
+        text = text.rstrip(".!?")
+    # One space between this and the text before the cursor.
+    if before and not before[-1].isspace() and text[0] not in ".,;:!?":
+        text = " " + text
+    # One space between this and the text after the cursor.
+    if after and not after[0].isspace() and after[0] not in ".,;:!?":
+        text = text + " "
+    return text
+
+def dictate_at_cursor(path, before, after):
+    """Transcribe a dictation and return the text to insert at the cursor."""
+    config = {"rewrite_mode": "smart"}  # required: see step 2
+    if before:
+        config["stt_prompt"] = before[-1000:]
+    instruction = rewrite_instruction(before, after)
+    if instruction:
+        config["llm_instruction"] = instruction
+
+    with open(path, "rb") as f:
+        response = requests.post(
+            "https://dictation.assemblyai.com/v1/transcribe/live",
+            headers={"Authorization": "<YOUR_API_KEY>"},
+            files={
+                "config": (None, json.dumps(config), "application/json"),
+                "audio": ("clip.wav", f.read(), "audio/wav"),
+            },
+            timeout=90,
+        )
+    response.raise_for_status()
+    result = response.json()
+    # llm_response is null if the rewrite failed: fall back to the transcript.
+    return fit_at_cursor(result["llm_response"] or result["text"], before, after)
+
+before, after = "I think", " we should go"  # the text around the cursor
+insert = dictate_at_cursor("clip.wav", before, after)
+print(before + insert + after)  # I think tomorrow works we should go
+```
+
+```javascript expandable
+import { readFileSync } from "fs";
+
+const SENTENCE_END = /[.!?]$/;
+
+// True when the cursor sits mid-sentence, false at the start of one.
+function continuesSentence(before) {
+  if (!before || before.endsWith("\n")) return false;
+  const tail = before.trimEnd();
+  return tail.length > 0 && !SENTENCE_END.test(tail);
+}
+
+// True when the text after the cursor continues the same sentence.
+function carriesOn(after) {
+  return /^[\p{Ll},;:]/u.test(after.trimStart());
+}
+
+// The llm_instruction for this insertion, or null for the default cleanup.
+function rewriteInstruction(before, after) {
+  if (!continuesSentence(before)) return null;
+  const ending = carriesOn(after)
+    ? "with no terminal punctuation, since the sentence carries on after them"
+    : "ending the sentence";
+  return (
+    "Remove filler words and false starts from the dictated words, then write " +
+    "them as a mid-sentence continuation of this text, which comes before them: " +
+    `"${before.trimEnd().slice(-300)}". Return only the dictated words, ${ending}.`
+  );
+}
+
+// Join the dictated text onto the text around the cursor.
+function fitAtCursor(dictated, before, after) {
+  let text = dictated.trim();
+  if (!text) return text;
+  // The text after the cursor carries on the sentence: no full stop.
+  if (carriesOn(after)) text = text.replace(/[.!?]+$/, "");
+  // One space between this and the text before the cursor.
+  if (before && !/\s$/.test(before) && !/^[.,;:!?]/.test(text)) text = " " + text;
+  // One space between this and the text after the cursor.
+  if (after && !/^[\s.,;:!?]/.test(after)) text = text + " ";
+  return text;
+}
+
+// Transcribe a dictation and return the text to insert at the cursor.
+async function dictateAtCursor(path, before, after) {
+  const config = { rewrite_mode: "smart" }; // required: see step 2
+  if (before) config.stt_prompt = before.slice(-1000);
+  const instruction = rewriteInstruction(before, after);
+  if (instruction) config.llm_instruction = instruction;
+
+  const form = new FormData();
+  form.append("config", new Blob([JSON.stringify(config)], { type: "application/json" }));
+  form.append("audio", new Blob([readFileSync(path)], { type: "audio/wav" }), "clip.wav");
+
+  const response = await fetch("https://dictation.assemblyai.com/v1/transcribe/live", {
+    method: "POST",
+    headers: { Authorization: "<YOUR_API_KEY>" },
+    body: form,
+  });
+  if (!response.ok) throw new Error(`Dictation failed: ${response.status} ${await response.text()}`);
+  const result = await response.json();
+  // llm_response is null if the rewrite failed: fall back to the transcript.
+  return fitAtCursor(result.llm_response ?? result.text, before, after);
+}
+
+const before = "I think"; // the text around the cursor
+const after = " we should go";
+const insert = await dictateAtCursor("clip.wav", before, after);
+console.log(before + insert + after); // I think tomorrow works we should go
+```
+
+## What to expect
+
+These are results from the complete example, run against Dictation:
+
+| Text before the cursor | The user says | Text after the cursor | Result |
+|---|---|---|---|
+| `I think` | "tomorrow works" | `we should go` | I think tomorrow works we should go |
+| `I'll send it to` | "the team in London" | `, then we can review.` | I'll send it to the team in London, then we can review. |
+| `We need to` | "uh, finish the report and, and send it out before Friday" | None | We need to finish the report and send it out before Friday. |
+| `The meeting is on` | "um, Thursday at three" | None | The meeting is on Thursday at 3. |
+| `That works for me.` | "let's meet at noon" | None | That works for me. Let's meet at noon. |
+| None | "let's meet at noon" | None | Let's meet at noon. |
+
+The rewrite lowercases ordinary words mid-sentence but keeps names such as
+"London" and "Friday" capitalized, drops filler words and repeats, and ends
+with a full stop only when the sentence ends there.
+
+## Related pages
+
+- [Transcript rewriting](/dictation/transcript-rewriting): `llm_instruction`, `rewrite_mode` and writing a good instruction
+- [Prompting and keyterms](/dictation/prompting-and-keyterms): `stt_prompt` and `keyterms_prompt`
+- [Error handling](/dictation/error-handling#a-failed-rewrite-is-not-a-failed-request): what to do when `llm_response` is `null`
 
 ---
 
@@ -75020,6 +75450,23 @@ Paid customers can review and sign our standard online BAA terms self-serve, at 
 
 ---
 
+<a id="which-assemblyai-products-are-covered-under-the-baa-docs-faq-which-products-are-covered-under-the-baa-mdx"></a>
+
+# Which AssemblyAI products are covered under the BAA?
+
+URL: https://www.assemblyai.com/docs/faq/which-products-are-covered-under-the-baa
+Source: docs/faq/which-products-are-covered-under-the-baa.mdx
+Navigation: FAQ > Overview > Privacy & Security
+Description: Learn which AssemblyAI products are covered under the AssemblyAI Business Associate Addendum (BAA).
+
+The AssemblyAI Business Associate Addendum (BAA) applies to the full AssemblyAI product.
+
+The only exception is for some [LLM Gateway](/llm-gateway/quickstart) providers. Not every LLM Gateway provider has a signed BAA with AssemblyAI. To see which providers do, check the **BAA Signed** column in the [provider summary](/llm-gateway/providers#provider-summary).
+
+To learn how to review and sign the BAA, see [Will AssemblyAI sign a Business Associate Addendum (BAA)?](/faq/can-you-sign-a-baa).
+
+---
+
 <a id="do-you-have-a-formal-risk-assessment-policy-or-process-docs-faq-do-you-have-a-formal-risk-assessment-policy-or-process-mdx"></a>
 
 # Do you have a formal risk assessment policy or process?
@@ -76843,11 +77290,11 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 
    `llms.txt` is the structured index. For full content, fetch the section files it links (each under 100 KB) rather than the whole `llms-full.txt`.
 
-2. **Docs MCP server** (on-demand lookups): `https://assemblyai.com/docs/mcp` — Streamable HTTP transport. Lets the agent search and fetch AssemblyAI documentation pages on demand.
+2. **Docs MCP server** (on-demand lookups): `https://www.assemblyai.com/docs/mcp` — Streamable HTTP transport. Lets the agent search and fetch AssemblyAI documentation pages on demand.
 
    ```bash
    # Claude Code
-   claude mcp add assemblyai-docs --transport http https://assemblyai.com/docs/mcp
+   claude mcp add assemblyai-docs --transport http https://www.assemblyai.com/docs/mcp
    ```
 
    See the [Build with AI agents](/coding-agent-prompts) page for Cursor and other clients.
@@ -88637,7 +89084,7 @@ channels:
       voice_focus_threshold:
         description: Controls how aggressively Voice Focus suppresses background audio, from `0.0` (least) to `1.0` (most). Higher values are more aggressive. Requires `voice_focus` to be set, otherwise a validation error is returned.
         location: $message.payload#/voice_focus_threshold
-        default: "0.7"
+        default: "0.5"
 
       redact_pii:
         description: Redact PII from the transcribed text using the Redact PII model, can be true or false. Only applies to final turns. See [PII Redaction](https://www.assemblyai.com/docs/streaming/pii-redaction) for more details.

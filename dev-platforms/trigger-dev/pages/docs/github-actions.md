@@ -4,9 +4,9 @@ source: https://trigger.dev/docs/github-actions
 path: docs/github-actions
 ---
 
-Deploy your tasks from GitHub Actions and other CI environments using an environment API key.
+Deploy your tasks from CI using trusted deploys or an environment API key.
 
-The instructions below are specific to GitHub Actions, but the same concepts apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions.
+For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions.
 
 > [!TIP]
 >

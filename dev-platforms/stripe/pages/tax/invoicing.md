@@ -207,6 +207,34 @@ To replace invoice [tax rates](https://docs.stripe.com/tax/tax-rates.md) with au
 
 #### API
 
+#### Accounts v2
+
+After specifying a tax behavior and tax code, you can add the price to the account as an invoice item:
+
+```curl
+curl https://api.stripe.com/v1/invoiceitems \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "pricing[price]={{PRICE_ID}}"
+```
+
+In the API, pass the `automatic_tax` parameter to enable or disable automatic tax calculation.
+
+```curl
+curl https://api.stripe.com/v1/invoices \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "automatic_tax[enabled]=true"
+```
+
+To enable automatic tax calculation when you update an invoice, set `automatic_tax[enabled]` to `true`:
+
+```curl
+curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "automatic_tax[enabled]=true"
+```
+
 #### Customer v1
 
 After specifying a tax behavior and tax code, you can add the price to the customer as an invoice item:

@@ -32,6 +32,12 @@ The version to promote, e.g. `20250208.1`.
 
 ## Options
 
+**Authentication method** `--auth-method \<method\>`
+
+Use `auto` (default) or `oidc`. In GitHub Actions, `auto` uses OIDC when no
+`TRIGGER_ACCESS_TOKEN` is set. Explicit `oidc` ignores stored credentials and tokens.
+The workflow must match the target environment's [trusted-publishing settings](/docs/deployment/trusted-publishing).
+
 **Config file** `-c, --config \<config file\>`
 
 The name of the config file.

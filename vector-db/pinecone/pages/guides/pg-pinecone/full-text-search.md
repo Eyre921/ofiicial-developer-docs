@@ -4,13 +4,13 @@ source: https://docs.pinecone.io/guides/pg-pinecone/full-text-search
 path: guides/pg-pinecone/full-text-search
 ---
 
-Use pg_pinecone to keep a Pinecone index for full-text search in sync with a Postgres table, then run BM25, filtered, and hybrid searches in SQL.
+Search a Postgres table with BM25 keyword search and filters in SQL, using a Pinecone index that pg_pinecone keeps in sync.
 
 pg\_pinecone can keep a Pinecone index for [full-text search](/guides/search/full-text-search) in sync with a Postgres table's text columns. You declare the searchable columns once and search them with SQL, and Postgres stays the system of record.
 
 ## Before you begin
 
-* pg\_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
+* [pg\_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
 * A table with a single-column primary key, which becomes each document's ID. You must own the table.
@@ -19,7 +19,7 @@ pg\_pinecone can keep a Pinecone index for [full-text search](/guides/search/ful
 
 ### 1. Create a sample table
 
-This guide uses a table of help-center articles. The embeddings are only needed to [combine text and vector search](#combine-text-and-vector-search):
+This guide uses a table of help-center articles. The embeddings are only needed to [combine text and vector search](/guides/pg-pinecone/semantic-search#combine-text-and-vector-search):
 
 ```sql SQL theme={null}
 CREATE TABLE articles (
@@ -48,7 +48,7 @@ JOIN pinecone.embed_batch((SELECT array_agg(title || '. ' || body ORDER BY id) F
 
 ### 2. Declare the searchable columns
 
-Call `pinecone.track_docs()` with the text columns to index. `metadata_columns` lists columns you want to filter on, and `vector_column` is optional. `text_columns` takes a JSON list, and `metadata_columns` takes a Postgres array:
+Call `pinecone.track_docs()` with the text columns to index. `metadata_columns` lists columns you want to filter on, and `vector_column` is optional. To search by meaning instead, see [Search a table with semantic search](/guides/pg-pinecone/semantic-search). `text_columns` takes a JSON list, and `metadata_columns` takes a Postgres array:
 
 ```sql SQL theme={null}
 SELECT pinecone.track_docs(
@@ -131,25 +131,6 @@ JOIN articles a ON a.id = s.id::bigint
 ORDER BY s.rank;
 ```
 
-## Combine text and vector search
-
-If you declared a `vector_column`, pass a query vector with `vector`, and name the column the text query must match with `field`. The text query narrows the results to rows that match it in that column, and the vector ranks what's left:
-
-```sql SQL theme={null}
-SELECT a.id, a.title
-FROM pinecone.search_docs('articles', 'billing', field => 'body',
-       vector => pinecone.embed('how do I get a receipt for my payment'), k => 3) s
-JOIN articles a ON a.id = s.id::bigint
-ORDER BY s.rank;
-```
-
-```text Output theme={null}
- id |          title
-----+--------------------------
-  6 | Download past invoices
-  5 | Change your billing plan
-```
-
 ## Search one tenant
 
 To keep each tenant's documents in their own Pinecone [namespace](/guides/indexes/index-data-overview#namespaces), pass a tenant column as `partition_column` when you call `pinecone.track_docs()`. Then name the tenant with `partition` on every search. This example uses a `tickets` table with a `tenant_id` column:
@@ -196,7 +177,7 @@ JOIN articles a ON a.id = s.id::bigint
 ORDER BY s.rank;
 ```
 
-The local engine reflects writes immediately. It also works on tables you haven't declared with `track_docs()` if you name a column with `field`. It ranks results with Postgres's `ts_rank_cd` instead of BM25 and requires every query word to match, so it can return fewer results than the remote engine, in a different order. It doesn't support `filter`, `must`, `vector`, or `mode => 'query_string'`, and it doesn't create an index, so add a [GIN index](https://www.postgresql.org/docs/current/textsearch-indexes.html) on large tables.
+The local engine reflects writes immediately. It also works on tables you haven't declared with `track_docs()` if you name a column with `field`. It ranks results with Postgres's `ts_rank_cd` instead of BM25 and requires every query word to match, so it can return fewer results than the remote engine, in a different order. It doesn't support `filter`, `must`, `vector`, `mode => 'query_string'`, or `mode => 'embed'`, and it doesn't create an index, so add a [GIN index](https://www.postgresql.org/docs/current/textsearch-indexes.html) on large tables.
 
 ## Manage a tracked table
 

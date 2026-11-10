@@ -88,35 +88,37 @@ Faster model, 50% lower price per character for API generations
 
 ### Speech to Text
 
-#### [Scribe v2](/docs/overview/models#scribe-v2)
+#### [Scribe v3](/docs/overview/models#scribe-v3)
 
-State-of-the-art speech recognition model
+Our most accurate speech recognition model for recorded audio
 
-Accurate transcription in 90+ languages
-
-Keyterm prompting, up to 1000 terms
-
-Entity detection, 65 entity types
-
-Transcript editing with natural-language instructions
-
-Precise word-level timestamps
+27% fewer word errors than Scribe v2 on FLEURS
 
 Speaker diarization, up to 32 speakers
 
-Dynamic audio tagging
+Numbers as digits or words
 
-Smart language detection
+Secondary languages for mixed-language audio
 
-#### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
+Keyterm prompting, up to 1,000 terms
 
-Real-time speech recognition model
+Entity detection and transcript editing
 
-Accurate transcription in 90+ languages
+Precise word-level timestamps
 
-Real-time transcription
+#### [Scribe v3 Live](/docs/overview/models#scribe-v3-live)
 
-Low latency (\~150ms†)
+Our most accurate real-time speech recognition model
+
+44% lower semantic WER than Scribe v2 Realtime on FLEURS
+
+Turn prediction from conversation context
+
+Multilingual mode for mid-sentence language switches
+
+Keyterm library, up to 100,000 terms
+
+Entity detection and transcript editing
 
 Precise word-level timestamps
 
@@ -211,8 +213,10 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `eleven_multilingual_sts_v2` | State-of-the-art multilingual voice changer model (Speech to Speech)                                                                                                                   | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
 | `eleven_multilingual_ttv_v2` | State-of-the-art multilingual voice designer model (Text to Voice)                                                                                                                     | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
 | `eleven_english_sts_v2`      | English-only voice changer model (Speech to Speech)                                                                                                                                    | `en`                                                                                                                                                                          |
+| `scribe_v3`                  | Our most accurate speech recognition model for recorded audio, successor to `scribe_v2`                                                                                                | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
+| `scribe_v3_live`             | Our most accurate real-time speech recognition model, with turn prediction. Successor to `scribe_v2_realtime`                                                                          | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2_realtime`         | Real-time speech recognition model                                                                                                                                                     | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
-| `scribe_v2`                  | State-of-the-art speech recognition model                                                                                                                                              | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
+| `scribe_v2`                  | Our previous state-of-the-art speech recognition model, succeeded by `scribe_v3`                                                                                                       | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `scribe_v2_medical`          | Speech recognition model specialized for medical and clinical audio                                                                                                                    | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                               |
 | `eleven_text_to_sound_v3`    | Sound effects generation from text prompts, with closer prompt following and better vocal and musical sounds than `eleven_text_to_sound_v2`.                                           | N/A                                                                                                                                                                           |
 | `eleven_realtime_v1_mini`    | Complete voice agent model configuration, optimized for fast, natural conversation                                                                                                     | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
@@ -445,9 +449,95 @@ The maximum number of characters supported in a single text-to-speech request va
 >
 > For longer content, consider splitting the input into multiple requests.
 
+## Scribe v3
+
+Scribe v3 is our most accurate speech recognition model for recorded audio. It is the successor to [Scribe v2](#scribe-v2) and uses the same [Speech to Text API](/docs/api-reference/speech-to-text/convert) (`POST /v1/speech-to-text`). Pass `scribe_v3` as `model_id`.
+
+This model is well-suited for:
+
+* **Meeting and note-taking tools**: Speaker-labeled transcripts of recorded meetings and calls
+* **Media**: Subtitles and captions with speaker labels and word-level timestamps
+* **Education**: Recorded lectures with accented or mixed-language speech
+* **Contact centers**: Recorded calls for quality assurance and analytics
+
+Compared with Scribe v2, Scribe v3 provides:
+
+* Fewer transcription errors. On the FLEURS benchmark across 102 languages, Scribe v3 lowers the word error rate (WER) from 16.94% to 12.38%, 27% fewer word errors than Scribe v2, and improves on every language tested.
+* More accurate speaker labels on multi-speaker audio.
+* The `numbers_format` parameter, which writes numbers as digits (`42`) or words (`forty-two`).
+* The `secondary_language_codes` parameter, which lists other languages expected in the audio alongside `language_code` to improve accuracy on mixed-language audio.
+
+See [number and language options](/docs/eleven-api/guides/how-to/speech-to-text/batch/number-and-language-options) to use the new parameters.
+
+> **Note**
+>
+> ElevenLabs computes FLEURS WER per clip and then averages per language. This produces higher
+> figures than the corpus-level WER that is commonly published, so the numbers are not comparable
+> with results computed another way.
+
+Scribe v3 keeps the Scribe v2 feature set:
+
+* Support for 90+ languages
+* Speaker diarization, up to 32 speakers
+* Word-level or character-level timestamps
+* Audio event tagging
+* [Keyterm prompting](/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting), up to 1,000 terms
+* [Entity detection](/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection)
+* [Transcript editing](/docs/eleven-api/guides/how-to/speech-to-text/batch/transcript-editing)
+* No verbatim mode
+* Export to additional formats such as SRT, DOCX and PDF
+* [Webhooks](/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks) for asynchronous results
+
+### Upgrading from Scribe v2
+
+Change `model_id` from `scribe_v2` to `scribe_v3`. Existing request parameters work without changes. Scribe v2 remains available.
+
+## Scribe v3 Live
+
+Scribe v3 Live is our most accurate real-time speech recognition model. It is the successor to [Scribe v2 Realtime](#scribe-v2-realtime) and uses the same [realtime WebSocket](/docs/api-reference/speech-to-text/v-1-speech-to-text-realtime) (`wss://api.elevenlabs.io/v1/speech-to-text/realtime`). Pass `scribe_v3_live` as the `model_id` query parameter.
+
+Scribe v3 Live is a speech to text model. It is separate from [Eleven Realtime](#eleven-realtime), the speech to speech models for voice agents.
+
+This model is well-suited for:
+
+* **Voice agents and contact centers**: Committing a turn when the caller has finished speaking, not at the first pause
+* **Live captioning**: Real-time transcripts with word-level timestamps
+* **Education and language learning**: Speakers with accents and speakers who switch languages
+* **Dictation and assistants**: Domain vocabulary through keyterms
+
+Compared with Scribe v2 Realtime, Scribe v3 Live provides:
+
+* Fewer transcription errors. On the FLEURS benchmark across 73 languages, Scribe v3 Live has a 44% lower semantic WER than Scribe v2 Realtime. On Earnings-22 (accented English financial calls), WER drops from 5.99% to 3.91%, and on VoxPopuli (European Parliament speech) from 2.13% to 1.71%.
+* [Turn prediction](/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies#turn-prediction). With `commit_strategy=turn_prediction`, the server commits a segment when the model predicts that the speaker has finished their turn, instead of waiting for silence alone.
+* [Multilingual mode](/docs/eleven-api/guides/how-to/speech-to-text/realtime/language-options#multilingual-mode). With `multilang_mode=true`, each language is transcribed in its own script, including switches in the middle of a sentence.
+* A [keyterm library](/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting#keyterm-library) of up to 10,000 terms that the model uses only when it hears a likely match, in addition to the 50 standard keyterms.
+* [Realtime diarization](/docs/eleven-api/guides/how-to/speech-to-text/realtime/diarization). With `diarize=true`, draft speaker labels appear in partial transcripts, and each committed transcript is followed by a separate diarized transcript without delaying the committed text.
+
+Scribe v3 Live keeps the Scribe v2 Realtime feature set:
+
+* Support for 90+ languages, with automatic language detection
+* Streaming support: send audio in chunks while receiving transcripts in real time
+* Multiple audio formats: PCM (8 kHz to 48 kHz) and μ-law encoding
+* Manual and Voice Activity Detection (VAD) commit strategies
+* Word-level timestamps
+* `secondary_languages` to limit language detection to a set of languages
+* Keyterm prompting, up to 50 terms
+* Entity detection
+* Transcript editing
+* Background audio filtering
+
+### Upgrading from Scribe v2 Realtime
+
+Change `model_id` from `scribe_v2_realtime` to `scribe_v3_live`. The default commit strategy is still `manual`, so existing integrations behave the same until you set `commit_strategy` to `turn_prediction`. Scribe v2 Realtime remains available.
+
+> **Note**
+>
+> The official SDKs don't support turn prediction, multilingual mode or the keyterm library yet. To
+> use them, connect to the WebSocket API directly.
+
 ## Scribe v2
 
-Scribe v2 is our state-of-the-art speech recognition model designed for accurate transcription across 90+ languages. It provides precise word-level timestamps and advanced features like speaker diarization and dynamic audio tagging.
+Scribe v2 is our previous state-of-the-art speech recognition model, succeeded by [Scribe v3](#scribe-v3). It is designed for accurate transcription across 90+ languages. It provides precise word-level timestamps and advanced features like speaker diarization and dynamic audio tagging.
 
 This model excels in scenarios requiring accurate speech-to-text conversion:
 
@@ -470,7 +560,7 @@ Read more about Scribe v2 [here](/docs/overview/capabilities/speech-to-text).
 
 ## Scribe v2 Realtime
 
-Scribe v2 Realtime, our fastest and most accurate live speech recognition model, delivers state-of-the-art accuracy in over 90 languages with a median time to committed transcript of \~150ms. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
+Scribe v2 Realtime is our previous state-of-the-art live speech recognition model, succeeded by [Scribe v3 Live](#scribe-v3-live). It transcribes over 90 languages with a median time to committed transcript of \~150ms. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).
 
 This model excels in conversational use cases:
 

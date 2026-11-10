@@ -18,7 +18,7 @@ This project demonstrates how to build an AI-powered product image generator tha
 
 Clone this repo and follow the instructions in the `README.md` file to get started.
 
-> **[View the product image generator repo](https://github.com/triggerdotdev/examples/tree/main/product-image-generator)**
+> [card] [View the product image generator repo](https://github.com/triggerdotdev/examples/tree/main/product-image-generator)
 >
 > Click here to view the full code in our examples repository on GitHub. You can fork it and use it
 > as a starting point for your project.

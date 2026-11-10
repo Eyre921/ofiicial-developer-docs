@@ -12,14 +12,375 @@ path: docs/eleven-agents/customization/tools/system-tools/transfer-to-number
 
 The `transfer_to_number` system tool allows an ElevenLabs agent to transfer the ongoing call to a specified phone number or SIP URI when certain conditions are met. This enables agents to hand off complex issues, specific requests, or situations requiring human intervention to a live operator.
 
-This feature supports transfers via Twilio and SIP trunk numbers. When triggered, the agent can provide a message to the user while they wait and a separate message summarizing the situation for the human operator receiving the call.
+This feature supports transfers via telephony numbers. When triggered, the agent can provide a message to the user while they wait and a separate message summarizing the situation for the human operator receiving the call.
 
 > **Note**
 >
 > The `transfer_to_number` system tool is only available for phone calls and is not available in the
 > chat widget.
 
-## Transfer Types
+## Transfer rules
+
+* A **transfer rule** says *when* the agent should transfer and *how* each phone provider carries out the transfer.
+
+* Each rule has **one condition** and **one setup per provider**.
+
+* Tool can be configured with multiple transfer rules.
+
+* During a call, the agent only sees the rules for the provider the call is running on.
+
+* **Condition**: Plain text supporting dynamic variables, that describes when to use this transfer method, e.g. "Caller asks about billing"
+
+* **Provider configuration** is a list with **at most one entry per provider**. If a rule has no entry for a provider, it **doesn't exist** on that provider's calls.
+
+## Transfer types
+
+* **Conference**: Default behavior that calls the destination and places the caller and human operator into a conference room
+* **SIP REFER**: Uses the SIP REFER protocol to transfer calls directly to the destination. Works with both phone numbers and SIP URIs, but only available when using SIP protocol during the conversation and requires your SIP Trunk to allow transfer via SIP REFER
+
+## Transfer strategies
+
+* **Cold**: Transfers the call directly without the summary of the situation to the human operator receiving the call.
+* **Warm**: Transfers the call summarizing the situation for the human operator receiving the call.
+
+## Available transfer options per provider
+
+### SIP
+
+* **Cold conference**: (`sip_cold_conference_transfer`) The receiver is added to the call with no announcement
+  * Supports phone numbers only
+* **SIP REFER**: (`sip_cold_refer_transfer`) The call is handed to the destination via SIP REFER with no announcement
+  * Supports both phone numbers and SIP URIs
+  * **Custom SIP headers**, static or dynamic variables
+  * **UUI** (User-to-User Information) to carry context such as a CRM ID
+  * **Play ringing tone** (on by default): the caller hears ringing while the transfer completes. Turn it off and they hear silence.
+
+### Twilio
+
+* **Cold**: (`twilio_cold_blind_transfer`) The receiver is added to the call with no announcement
+  * Supports phone numbers only
+  * Post-dial digits: DTMF tones sent after the call connects
+* **Warm**: (`twilio_warm_conference_transfer`) The receiver hears the agent's summary, then gets connected
+  * Supports phone numbers only
+  * Post-dial digits: DTMF tones sent after the call connects
+
+### Exotel
+
+* **Cold**: (`exotel_warm_transfer`) The receiver is added to the call with no announcement
+  * Supports phone numbers only
+* **Warm**: (`twilio_warm_conference_transfer`) The receiver hears the agent's summary, then gets connected
+  * Supports phone numbers only
+
+## Additional configuration detailed
+
+### Post-dial digits
+
+* DTMF tones sent after the call connects, e.g. `w1W234`
+* Each `w` is a 0.5s pause
+* Each `W` is a 1s pause
+
+### Custom SIP headers
+
+Extra SIP headers sent with the transfer, so the receiving system (PBX, contact center) gets your data, e.g. `X-Customer-ID`: 12345.
+
+* Where: SIP trunk, SIP REFER only.
+* Limits:
+  * Max 20 headers per transfer.
+  * Name: up to 64 characters. Letters, digits and single hyphens only
+
+> **Warning**
+>
+> System headers `X-Conversation-ID` and `X-Caller-ID` are automatically included by ElevenLabs and
+> will override any custom headers with the same names (case-insensitive).
+
+### UUI (User-to-User Information)
+
+Configure UUI per transfer rule with the `uui` object:
+
+* **`data`**: The payload to send, as plaintext. ElevenLabs hex-encodes it and appends `;encoding=hex`. Can be static text or include [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables). Maximum 256 bytes (UTF-8), enforced after dynamic variables are substituted — for plain ASCII that is 256 characters, fewer for multi-byte characters.
+* **`protocol_discriminator`**: A single hex octet, for example `04`. Include it for platforms that strip the first octet of the payload; omit it for platforms that pass the payload through.
+* **`protocol_discriminator_mode`**: `prefix` (default) prepends the octet, producing `04<hex>;encoding=hex`. `pd_parameter` adds it as a separate parameter, producing `<hex>;pd=04;encoding=hex`.
+
+> **Note**
+>
+> Talkdesk passes the value through unchanged, so omit the protocol discriminator. Genesys Cloud
+> strips the first octet of the payload unless a discriminator is present, so include a
+> `protocol_discriminator`. See [Genesys UUI data formats](https://help.genesys.cloud/articles/uui-data-formats/).
+
+> **Warning**
+>
+> The 256-byte limit applies after dynamic variables are substituted. Pass identifiers or short
+> codes such as an account ID, not free-form text like a full call summary, which exceeds the limit
+> and is dropped from the transfer.
+
+To receive UUI on inbound SIP calls, no configuration is required. When an incoming INVITE contains a `User-to-User` header, its value is exposed to the agent as the `{{sip_uui_raw}}` and `{{sip_uui_data}}` dynamic variables. See the [SIP reference](/docs/eleven-agents/phone-numbers/sip-reference).
+
+## Enabling human transfer
+
+#### Add the transfer tool
+
+Enable human transfer by selecting the `transfer_to_number` system tool in your agent's configuration within the `Agent` tab. Choose "Transfer to Human" when adding a tool.
+
+#### Configure tool description (optional)
+
+You can provide a custom description to guide the LLM on when to trigger a transfer. If left blank, a default description listing the transfer rules for the current call's telephony provider is used.
+
+#### (Legacy configurations only) Switch to per-provider transfer rules
+
+Skip this step unless the tool still uses legacy transfers. In **Human Transfer Rules**, select **Per-provider**. Per-provider rules let you configure how each transfer runs on every telephony provider your agent uses (Twilio, SIP trunk, Exotel), and they get all new transfer options.
+
+Your legacy transfers are converted into equivalent per-provider rules when you switch. Nothing changes in how existing calls behave until you edit the rules.
+
+> **Note**
+>
+> A tool uses either legacy transfers or per-provider rules, never both. The legacy setup applies one transfer type across every provider and won't get new providers or transfer options.
+
+#### Add a rule and its condition
+
+Click **Add Rule** and fill in the **Condition**: a natural language description of when the agent should use this transfer (for example, "User explicitly requests to speak to a human" or "User needs to update sensitive account information"). The condition can include [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables).
+
+The LLM uses these conditions, along with the tool description, to decide when and where to transfer. When the agent picks a destination that doesn't exist and only one is configured, that one is used; with several, the transfer is rejected and the agent is told the valid options.
+
+#### Add a configuration for each telephony provider
+
+Under **Provider configuration**, add one entry for every telephony provider the agent can take calls on. A new rule starts with the providers of the phone numbers assigned to the agent. Click `+` to add more.
+
+Each provider can be configured once per rule.
+
+Then set the destination:
+
+* **Destination type**: **Phone Number** or **SIP URI**. Only SIP REFER can transfer to a SIP URI. Every other transfer type takes a phone number.
+* **Phone Number / SIP URI**: the target in the appropriate format, typed directly or as a dynamic variable (for example `{{phone_number}}`):
+  * Phone numbers: E.164 format (e.g., +12125551234)
+  * SIP URIs: SIP format (e.g., sip:[1234567890@example.com](mailto:1234567890@example.com))
+
+> **Warning**
+>
+> A rule only exists on calls whose provider it has a configuration for. If a call runs on a SIP trunk number and the rule has only a Twilio configuration, the agent can't offer that transfer on the call.
+
+> **Note**
+>
+> **SIP REFER transfers** require SIP protocol during the conversation and your SIP Trunk must allow transfer via SIP REFER.
+
+> **Note**
+>
+> Two rules can't point to the same destination on the same provider, because the agent couldn't tell them apart. You can always change the condition to include both cases.
+
+### API Implementation
+
+You can configure the `transfer_to_number` system tool when creating or updating an agent via the API ([Create agent](/docs/api-reference/agents/create), [Update agent](/docs/api-reference/agents/update)). The tool allows specifying messages for both the client (user being transferred) and the agent (human operator receiving the call).
+
+```python
+from elevenlabs import AgentConfig, ConversationalConfig, ElevenLabs
+
+elevenlabs = ElevenLabs(api_key="YOUR_API_KEY")
+
+billing_destination = {"type": "phone", "destination": "+15551234567"}
+human_destination = {"type": "phone", "destination": "+15559876543"}
+
+# Each rule lists one config per telephony provider. A call only sees the rules
+# that have a config for its provider (twilio, sip_trunk or exotel).
+transfer_rules = [
+    {
+        "condition": "When the user asks for billing support.",
+        "provider_configs": [
+            {
+                "type": "twilio",
+                "config": {
+                    "type": "twilio_warm_conference_transfer",
+                    "transfer_destination": billing_destination,
+                    # Wait 1s, then dial extension 1234 (Twilio only)
+                    "post_dial_digits": {"type": "static", "value": "ww1234"},
+                },
+            },
+            {
+                "type": "sip_trunk",
+                "config": {
+                    "type": "sip_cold_conference_transfer",
+                    "transfer_destination": billing_destination,
+                },
+            },
+            {
+                "type": "exotel",
+                "config": {
+                    "type": "exotel_warm_transfer",
+                    "transfer_destination": billing_destination,
+                },
+            },
+        ],
+    },
+    {
+        "condition": "When the user asks to speak to a human.",
+        "provider_configs": [
+            {
+                "type": "twilio",
+                "config": {
+                    # Preserves caller ID, no warm transfer message
+                    "type": "twilio_cold_blind_transfer",
+                    "transfer_destination": human_destination,
+                },
+            },
+            {
+                "type": "exotel",
+                "config": {
+                    "type": "exotel_cold_blind_transfer",
+                    "transfer_destination": human_destination,
+                },
+            },
+        ],
+    },
+    {
+        "condition": "When the user requests to file a formal complaint.",
+        "provider_configs": [
+            {
+                "type": "sip_trunk",
+                "config": {
+                    "type": "sip_cold_refer_transfer",
+                    "transfer_destination": {"type": "sip_uri", "destination": "sip:support@example.com"},
+                    "custom_sip_headers": [
+                        {"type": "static", "key": "X-Department", "value": "complaints"},
+                        {"type": "static", "key": "X-Priority", "value": "high"},
+                        # "dynamic" takes the dynamic variable's name, without {{ }}
+                        {"type": "dynamic", "key": "X-Customer-ID", "value": "customer_id"},
+                    ],
+                    "uui": {
+                        "data": "account_id={{customer_id}}",
+                        "protocol_discriminator": "04",           # Genesys Cloud; omit for Talkdesk
+                        "protocol_discriminator_mode": "prefix",  # or "pd_parameter"
+                    },
+                },
+            },
+        ],
+    },
+]
+
+response = elevenlabs.conversational_ai.agents.create(
+    conversation_config=ConversationalConfig(
+        agent=AgentConfig(
+            first_message="Hi, how can I help you today?",
+            prompt={
+                "prompt": "You are a helpful assistant.",
+                "built_in_tools": {
+                    "transfer_to_number": {
+                        "type": "system",
+                        "name": "transfer_to_number",
+                        "description": "Transfer the user to a human operator based on their request.",
+                        "params": {
+                            "system_tool_type": "transfer_to_number",
+                            # Still required, and must be empty when transfer_rules is set
+                            "transfers": [],
+                            "transfer_rules": transfer_rules,
+                        },
+                    }
+                },
+            },
+        ),
+    ),
+)
+```
+
+```javascript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+const elevenlabs = new ElevenLabsClient({ apiKey: "YOUR_API_KEY" });
+
+const billingDestination = { type: "phone", destination: "+15551234567" };
+const humanDestination = { type: "phone", destination: "+15559876543" };
+
+// transfer_rules isn't in the SDK's types, so its keys stay snake_case (the wire format)
+const transferRules = [
+  {
+    condition: "When the user asks for billing support.",
+    provider_configs: [
+      {
+        type: "twilio",
+        config: {
+          type: "twilio_warm_conference_transfer",
+          transfer_destination: billingDestination,
+          // Wait 1s, then dial extension 1234 (Twilio only)
+          post_dial_digits: { type: "static", value: "ww1234" },
+        },
+      },
+      {
+        type: "sip_trunk",
+        config: { type: "sip_cold_conference_transfer", transfer_destination: billingDestination },
+      },
+      {
+        type: "exotel",
+        config: { type: "exotel_warm_transfer", transfer_destination: billingDestination },
+      },
+    ],
+  },
+  {
+    condition: "When the user asks to speak to a human.",
+    provider_configs: [
+      {
+        type: "twilio",
+        // Preserves caller ID, no warm transfer message
+        config: { type: "twilio_cold_blind_transfer", transfer_destination: humanDestination },
+      },
+      {
+        type: "exotel",
+        config: { type: "exotel_cold_blind_transfer", transfer_destination: humanDestination },
+      },
+    ],
+  },
+  {
+    condition: "When the user requests to file a formal complaint.",
+    provider_configs: [
+      {
+        type: "sip_trunk",
+        config: {
+          type: "sip_cold_refer_transfer",
+          transfer_destination: { type: "sip_uri", destination: "sip:support@example.com" },
+          custom_sip_headers: [
+            { type: "static", key: "X-Department", value: "complaints" },
+            { type: "static", key: "X-Priority", value: "high" },
+            // "dynamic" takes the dynamic variable's name, without {{ }}
+            { type: "dynamic", key: "X-Customer-ID", value: "customer_id" },
+          ],
+          uui: {
+            data: "account_id={{customer_id}}",
+            protocol_discriminator: "04", // Genesys Cloud; omit for Talkdesk
+            protocol_discriminator_mode: "prefix", // or "pd_parameter"
+          },
+        },
+      },
+    ],
+  },
+];
+
+await elevenlabs.conversationalAi.agents.create({
+  conversationConfig: {
+    agent: {
+      firstMessage: "Hi, how can I help you today?",
+      prompt: {
+        prompt: "You are a helpful assistant.",
+        builtInTools: {
+          transferToNumber: {
+            type: "system",
+            name: "transfer_to_number",
+            description: "Transfer the user to a human operator based on their request.",
+            params: {
+              systemToolType: "transfer_to_number",
+              transfers: [], // Still required, and must be empty when transfer_rules is set
+              transfer_rules: transferRules,
+            },
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+[API Docs Reference](https://elevenlabs.io/docs/api-reference/agents/create#request.body.conversation_config.agent.prompt.built_in_tools.transfer_to_number)
+
+## Legacy setup
+
+#### Legacy Transfers Documentation
+
+### Transfer Types
 
 The system supports three types of transfers:
 
@@ -69,11 +430,11 @@ The system supports three types of transfers:
 
 **Implementation**: Configure transfer phone numbers and conditions. Define messages for both customer and receiving human operator. Works with both Twilio and SIP trunking.
 
-## Numbers that can be transferred to
+### Numbers that can be transferred to
 
 Human transfer supports transferring to external phone numbers using both [SIP trunking](/docs/eleven-agents/phone-numbers/sip-trunking) and [Twilio phone numbers](/docs/eleven-agents/phone-numbers/twilio-integration/native-integration).
 
-## Enabling human transfer
+### Enabling human transfer
 
 Human transfer is configured using the `transfer_to_number` system tool.
 
@@ -177,7 +538,7 @@ For example, `ww1234` waits 1 second after the call connects, then dials extensi
 >
 > Post-dial digits are supported for **conference** and **blind** transfer types only. SIP REFER transfers do not support post-dial digits.
 
-## API Implementation
+### API Implementation
 
 You can configure the `transfer_to_number` system tool when creating or updating an agent via the API ([Create agent](/docs/api-reference/agents/create), [Update agent](/docs/api-reference/agents/update)). The tool allows specifying messages for both the client (user being transferred) and the agent (human operator receiving the call).
 

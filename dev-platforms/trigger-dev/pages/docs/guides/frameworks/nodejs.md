@@ -88,18 +88,18 @@ If you go back to your terminal you'll see that the dev command also shows the t
 
 ## Useful next steps
 
-> **[Tasks overview](/docs/tasks/overview)**
+> [card] [Tasks overview](/docs/tasks/overview)
 >
 > Learn what tasks are and their options
 
-> **[Writing tasks](/docs/writing-tasks-introduction)**
+> [card] [Writing tasks](/docs/writing-tasks-introduction)
 >
 > Learn how to write your own tasks
 
-> **[Deploy using the CLI](/docs/cli-deploy-commands)**
+> [card] [Deploy using the CLI](/docs/cli-deploy-commands)
 >
 > Learn how to deploy your task manually using the CLI
 
-> **[Deploy using GitHub actions](/docs/github-actions)**
+> [card] [Deploy using GitHub actions](/docs/github-actions)
 >
 > Learn how to deploy your task using GitHub actions

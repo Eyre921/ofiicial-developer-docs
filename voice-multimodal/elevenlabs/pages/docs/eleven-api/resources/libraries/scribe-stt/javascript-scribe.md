@@ -47,7 +47,7 @@ const token = await fetchTokenFromServer();
 
 const connection = Scribe.connect({
   token,
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   microphone: {
     echoCancellation: true,
     noiseSuppression: true,
@@ -108,7 +108,7 @@ const fetchToken = async () => {
 | Property                    | Type             | Default                     | Description                                                                         |
 | --------------------------- | ---------------- | --------------------------- | ----------------------------------------------------------------------------------- |
 | **token**                   | `string`         |                             | Single-use token for WebSocket authentication.                                      |
-| **modelId**                 | `string`         |                             | Model ID (e.g., `"scribe_v2_realtime"`).                                            |
+| **modelId**                 | `string`         |                             | Model ID (e.g., `"scribe_v3_live"`).                                                |
 | **baseUri**                 | `string`         | `"wss://api.elevenlabs.io"` | Custom WebSocket base URI.                                                          |
 | **commitStrategy**          | `CommitStrategy` | `"manual"`                  | `"manual"` or `"vad"`.                                                              |
 | **vadSilenceThresholdSecs** | `number`         | `1.5`                       | Seconds of silence before VAD commits (0.3-3.0).                                    |
@@ -125,7 +125,7 @@ Pass a `microphone` object to stream audio directly from the user's microphone. 
 ```js
 const connection = Scribe.connect({
   token,
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   microphone: {
     deviceId: "optional-device-id",
     echoCancellation: true,
@@ -151,7 +151,7 @@ import { AudioFormat } from "@elevenlabs/client";
 
 const connection = Scribe.connect({
   token,
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   audioFormat: AudioFormat.PCM_16000,
   sampleRate: 16000,
 });
@@ -188,7 +188,7 @@ async function transcribeFromMicrophone() {
 
   const connection = Scribe.connect({
     token,
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     microphone: {
       echoCancellation: true,
       noiseSuppression: true,
@@ -225,7 +225,7 @@ async function transcribeFile(file) {
 
   const connection = Scribe.connect({
     token,
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     audioFormat: AudioFormat.PCM_16000,
     sampleRate: 16000,
   });
@@ -386,7 +386,7 @@ import { Scribe, CommitStrategy } from '@elevenlabs/client';
 // Manual (default): you control when to commit
 const connection = Scribe.connect({
   token,
-  modelId: 'scribe_v2_realtime',
+  modelId: 'scribe_v3_live',
   audioFormat: AudioFormat.PCM_16000,
   sampleRate: 16000,
   commitStrategy: CommitStrategy.MANUAL,
@@ -399,7 +399,7 @@ connection.commit();
 // Voice Activity Detection: Scribe detects silences and commits automatically
 const connection = Scribe.connect({
   token,
-  modelId: 'scribe_v2_realtime',
+  modelId: 'scribe_v3_live',
   microphone: { echoCancellation: true },
   commitStrategy: CommitStrategy.VAD,
 });
@@ -419,7 +419,7 @@ async function startTranscription() {
 
   const connection = Scribe.connect({
     token,
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     commitStrategy: CommitStrategy.VAD,
     microphone: {
       echoCancellation: true,

@@ -12,6 +12,11 @@ url: https://docs.sentry.io/platforms/javascript/guides/nuxt/
 
 # Sentry for Nuxt
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/nuxt.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/nuxt/cloudflare.md)
+
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#prerequisites)
 
 You need:
@@ -255,6 +260,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/nuxt/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nuxt/manual-setup.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nuxt/manual-setup__v10.x.md)
 - [Installation Methods](https://docs.sentry.io/platforms/javascript/guides/nuxt/install__v10.x.md)

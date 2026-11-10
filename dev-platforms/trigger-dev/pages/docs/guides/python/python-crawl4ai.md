@@ -45,7 +45,7 @@ Once you have a proxy service, set the following environment variables in your T
 
 ## GitHub repo
 
-> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/python-crawl4ai)**
+> [card] [View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/python-crawl4ai)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -226,7 +226,7 @@ Deploy the task to production using the Trigger.dev CLI `deploy` command.
 
 ## Learn more about using Python with Trigger.dev
 
-> **[Python build extension](/docs/config/extensions/pythonExtension)**
+> [card] [Python build extension](/docs/config/extensions/pythonExtension)
 >
 > Learn how to use our built-in Python build extension to install dependencies and run your Python
 > code.

@@ -17,7 +17,7 @@ This guide describes how Stripe processes disputes for each charge type and how 
 
 | Behavior | Direct charges | Indirect charges |
 | --- | --- | --- |
-| Account to use when responding through the API | Connected account. Use its ID in the [`Stripe-Account` header](https://docs.stripe.com/connect/authentication.md#stripe-account-header). | Platform account. |
+| Account to use when responding through the API | Connected account. Use its ID in the [Stripe-Account header](https://docs.stripe.com/connect/authentication.md#stripe-account-header). | Platform account. |
 | Balance debited for the disputed amount | Connected account’s balance. | Platform’s balance, with or without `on_behalf_of`. |
 | Account debited for dispute-related fees | Depends on the connected account’s [fee configuration](https://docs.stripe.com/connect/direct-charges-fee-payer-behavior.md). | Platform account. |
 

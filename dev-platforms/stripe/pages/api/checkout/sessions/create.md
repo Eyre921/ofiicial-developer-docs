@@ -19,7 +19,7 @@ POST /v1/prices {"currency":"usd","unit_amount":1000,"recurring":{"interval":"mo
 
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
-  -u "<<YOUR_SECRET_KEY>>" \
+  -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-10-28.endive" \
   --data-urlencode "success_url=https://example.com/success" \
   -d "line_items[0][price]={{PRICE_ID}}" \

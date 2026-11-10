@@ -550,6 +550,24 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
 }
 ```
 
+### Test Confirmation of Payee (UK only) 
+
+In a sandbox, Confirmation of Payee (CoP) checks for UK bank accounts return simulated results instead of contacting the recipient’s bank. Use sort code `108800` with the following account numbers to test each result. For account number `00012345`, the result depends on the name and business type that you check against the bank account. Names must match exactly, including capitalization.
+
+| Account number | Name and business type | Result |
+| --- | --- | --- |
+| `00012345` | `Jenny Rosen`, personal (individual) | Match. |
+| `00012345` | `Best Cookie Co`, business (company) | Match. |
+| `00012345` | `Jennifer Rosen`, personal (individual) | Partial match. The name is close to the bank’s records, which return `Jenny Rosen` as the matched name. |
+| `00012345` | `Jenny Rosen`, business (company) | Partial match. The name matches, but the business type doesn’t. |
+| `00012345` | `Best Cookie Co`, personal (individual) | Partial match. The name matches, but the business type doesn’t. |
+| `00012345` | Any other name or business type | No match. |
+| `90012345`, `33333335`, `93333335`, `22222227`, or `92222227` | Any | Unavailable. Stripe couldn’t complete the check with the recipient’s bank. |
+
+Any other sort code and account number combination returns a match, except account number `55555559` with sort code `108800`. That combination simulates an internal error, so don’t use it to test CoP results.
+
+A [RecipientVerification](https://docs.stripe.com/api/v2/money-management/recipient-verifications/object.md) reports these results in `match_result` as `match`, `close_match`, `no_match`, and `unavailable`. A [GB bank account](https://docs.stripe.com/api/v2/core/vault/gb-bank-accounts/object.md?api-version=preview) reports them in `confirmation_of_payee.result.match_result` as `match`, `partial_match`, `mismatch`, and `unavailable`. Some test bank account numbers that simulate payout failures, such as `22222227` and `33333335`, also return an unavailable CoP result. Acknowledge the result before you send a payout to these bank accounts.
+
 ### List payout methods
 
 You can list all payout methods for a connected account using the [Payout Methods v2 API](https://docs.stripe.com/api/v2/money-management/payout-methods/list.md?api-version=preview). Review properties such as `available_payout_speeds`, `enabled_delivery_options`, and `usage_status` to help you determine how to use them.

@@ -12,6 +12,11 @@ url: https://docs.sentry.io/platforms/javascript/guides/remix/
 
 # Sentry for Remix
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/remix.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/remix/cloudflare.md)
+
 ##### Using Remix 3?
 
 This guide covers Remix 2. Support for [Remix 3](https://remix.run/blog/remix-3-beta-preview) is in alpha and has its own setup, see [Remix 3 (Alpha)](https://docs.sentry.io/platforms/javascript/guides/remix/remix-3.md).
@@ -239,8 +244,10 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/remix/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup__v8.x.md)
+- [Hydrogen (Legacy)](https://docs.sentry.io/platforms/javascript/guides/remix/hydrogen.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/remix/usage.md)
 - [Remix 3 (Alpha)](https://docs.sentry.io/platforms/javascript/guides/remix/remix-3.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/remix/sourcemaps.md)
@@ -264,5 +271,4 @@ Are you having problems setting up the SDK?
 - [Special Use Cases](https://docs.sentry.io/platforms/javascript/guides/remix/best-practices.md)
 - [Migration Guide](https://docs.sentry.io/platforms/javascript/guides/remix/migration.md)
 - [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/remix/troubleshooting.md)
-- [Cloudflare SDK Guide](https://docs.sentry.io/platforms/javascript/guides/remix/frameworks.md)
 

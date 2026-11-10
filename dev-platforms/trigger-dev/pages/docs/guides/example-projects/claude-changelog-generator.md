@@ -23,7 +23,7 @@ This demo how to build an AI agent using the Claude Agent SDK that explores GitH
 
 ## GitHub repo
 
-> **[View the changelog generator repo](https://github.com/triggerdotdev/examples/tree/main/changelog-generator)**
+> [card] [View the changelog generator repo](https://github.com/triggerdotdev/examples/tree/main/changelog-generator)
 >
 > Click here to view the full open source code for this project in our examples repository on
 > GitHub. You can fork it and use it as a starting point for your own project.

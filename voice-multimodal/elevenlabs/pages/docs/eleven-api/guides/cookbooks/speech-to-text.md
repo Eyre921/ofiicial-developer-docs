@@ -125,7 +125,7 @@ audio_data = BytesIO(response.content)
 
 transcription = elevenlabs.speech_to_text.convert(
     file=audio_data,
-    model_id="scribe_v2", # Model to use
+    model_id="scribe_v3", # Model to use
     tag_audio_events=True, # Tag audio events like laughter, applause, etc.
     language_code="eng", # Language of the audio file. If set to None, the model will detect the language automatically.
     diarize=True, # Whether to annotate who is speaking
@@ -148,7 +148,7 @@ const audioBlob = new Blob([await response.arrayBuffer()], { type: "audio/mp3" }
 
 const transcription = await elevenlabs.speechToText.convert({
   file: audioBlob,
-  modelId: "scribe_v2", // Model to use
+  modelId: "scribe_v3", // Model to use
   tagAudioEvents: true, // Tag audio events like laughter, applause, etc.
   languageCode: "eng", // Language of the audio file. If set to null, the model will detect the language automatically.
   diarize: true, // Whether to annotate who is speaking
@@ -183,7 +183,7 @@ curl -O https://storage.googleapis.com/eleven-public-cdn/audio/marketing/nicole.
 
 elevenlabs speech-to-text convert \
   --file nicole.mp3 \
-  --model-id scribe_v2 \
+  --model-id scribe_v3 \
   --tag-audio-events true \
   --language-code eng \
   --diarize true

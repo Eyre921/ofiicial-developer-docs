@@ -20,6 +20,8 @@ pnpm dlx trigger.dev@latest deploy
 yarn dlx trigger.dev@latest deploy
 ```
 
+For GitHub Actions workflows without stored API keys, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC.
+
 ## Deploying 101
 
 Let's assume you have an existing trigger.dev project with a few tasks that you have been running locally but now want to deploy to the Trigger.dev cloud (or your self-hosted instance).

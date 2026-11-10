@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -234,6 +234,7 @@
 ## guides
 
 - `guides/batch-inference` — [Batch API](pages/guides/batch-inference.md) · [原文](https://docs.fireworks.ai/guides/batch-inference)
+- `guides/batch-migration` — [Migrating Batch API workloads to preemptible deployments](pages/guides/batch-migration.md) · [原文](https://docs.fireworks.ai/guides/batch-migration)
 - `guides/completions-api` — [Completions API](pages/guides/completions-api.md) · [原文](https://docs.fireworks.ai/guides/completions-api)
 - `guides/function-calling` — [Tool Calling](pages/guides/function-calling.md) · [原文](https://docs.fireworks.ai/guides/function-calling)
 - `guides/inference-error-codes` — [Inference Error Codes](pages/guides/inference-error-codes.md) · [原文](https://docs.fireworks.ai/guides/inference-error-codes)
@@ -366,6 +367,7 @@
 - `tools-sdks/firectl/commands/identity-provider-create` — [firectl identity-provider create](pages/tools-sdks/firectl/commands/identity-provider-create.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/identity-provider-create)
 - `tools-sdks/firectl/commands/identity-provider-get` — [firectl identity-provider get](pages/tools-sdks/firectl/commands/identity-provider-get.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/identity-provider-get)
 - `tools-sdks/firectl/commands/identity-provider-list` — [firectl identity-provider list](pages/tools-sdks/firectl/commands/identity-provider-list.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/identity-provider-list)
+- `tools-sdks/firectl/commands/identity-provider-update` — [firectl identity-provider update](pages/tools-sdks/firectl/commands/identity-provider-update.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/identity-provider-update)
 - `tools-sdks/firectl/commands/model-create` — [firectl model create](pages/tools-sdks/firectl/commands/model-create.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/model-create)
 - `tools-sdks/firectl/commands/model-delete` — [firectl model delete](pages/tools-sdks/firectl/commands/model-delete.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/model-delete)
 - `tools-sdks/firectl/commands/model-download` — [firectl model download](pages/tools-sdks/firectl/commands/model-download.md) · [原文](https://docs.fireworks.ai/tools-sdks/firectl/commands/model-download)

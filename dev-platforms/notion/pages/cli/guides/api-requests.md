@@ -6,13 +6,11 @@ path: cli/guides/api-requests
 
 Make Notion API requests from the terminal.
 
-Use `ntn api` to make authenticated Notion API requests from your terminal. It is useful when you want to inspect an endpoint, test a request body, script an API call, or debug a response without setting up a separate HTTP client.
-
-`ntn api` adds the `Authorization` and `Notion-Version` headers for you. It uses your [CLI authentication](/cli/get-started/authentication) by default, or a token from `NOTION_API_TOKEN` when you set one.
+Use `ntn api` to call the Notion API from your terminal. It adds the `Authorization` and `Notion-Version` headers. [Log in with the CLI](/cli/get-started/authentication) or set `NOTION_API_TOKEN` to the token you want to use.
 
 ## Make a request
 
-Pass a Notion API path after `ntn api`. The leading slash is optional:
+Set `PAGE_ID` to the ID of a page you can read. Pass its API path to `ntn api`. The leading slash is optional.
 
 ```bash theme={null}
 ntn api v1/pages/$PAGE_ID
@@ -21,20 +19,20 @@ ntn api /v1/pages/$PAGE_ID
 
 Without request body input, `ntn api` sends a `GET` request.
 
-To send a request body, add inline body fields:
+To create a child page, set `PARENT_PAGE_ID` to the ID of a page you can add content to. Pass the parent and title as body fields.
 
 ```bash theme={null}
 ntn api v1/pages \
-  parent[page_id]="$PARENT_PAGE_ID" \
-  properties[Name][title][0][text][content]="CLI-created page"
+  "parent[page_id]=$PARENT_PAGE_ID" \
+  'properties[title][title][0][text][content]=CLI-created page'
 ```
 
 When body fields are present, `ntn api` sends a `POST` request unless you override the method.
 
-Use `-X` when the endpoint needs a different method:
+Use `-X` to choose the method. This request restores a page from the trash.
 
 ```bash theme={null}
-ntn api "v1/pages/$PAGE_ID" -X PATCH archived:=true
+ntn api "v1/pages/$PAGE_ID" -X PATCH in_trash:=false
 ```
 
 ## Build request data inline
@@ -44,7 +42,7 @@ Inline inputs after the path can set body fields, query parameters, and request 
 | Form | Meaning | Example |
 | :- | :- | :- |
 | `path=value` | Body field with a string value | `parent[page_id]=abc123` |
-| `path:=json` | Body field parsed as JSON | `archived:=true` |
+| `path:=json` | Body field parsed as JSON | `in_trash:=false` |
 | `name==value` | Query parameter | `page_size==100` |
 | `Header:Value` | Request header | `Accept:application/json` |
 
@@ -54,12 +52,11 @@ Use `=` when the value should be a string:
 ntn api v1/search query=roadmap
 ```
 
-Use `:=` when the value should keep its JSON type:
+Use `:=` to send a number. This page must have a number property named `Priority`.
 
 ```bash theme={null}
 ntn api "v1/pages/$PAGE_ID" -X PATCH \
-  archived:=false \
-  properties[Priority][number]:=2
+  'properties[Priority][number]:=2'
 ```
 
 Typed values can be booleans, numbers, strings, arrays, objects, or `null`:
@@ -72,38 +69,38 @@ ntn api v1/search \
 
 ## Choose body syntax
 
-For nested objects, use bracket or dot notation:
+For nested objects, use brackets or dots. Quote the whole argument when it contains brackets or spaces so your shell passes it as one field.
 
 ```bash theme={null}
 ntn api v1/pages \
-  parent[page_id]="$PARENT_PAGE_ID" \
-  properties.Name.title[0].text.content="Meeting notes"
+  "parent[page_id]=$PARENT_PAGE_ID" \
+  'properties.title.title[0].text.content=Meeting notes'
 ```
 
 Use explicit array indexes when order matters:
 
 ```bash theme={null}
 ntn api "v1/blocks/$PAGE_ID/children" -X PATCH \
-  children[0][type]=paragraph \
-  children[0][paragraph][rich_text][0][text][content]="First paragraph" \
-  children[1][type]=heading_2 \
-  children[1][heading_2][rich_text][0][text][content]="Next section"
+  'children[0][type]=paragraph' \
+  'children[0][paragraph][rich_text][0][text][content]=First paragraph' \
+  'children[1][type]=heading_2' \
+  'children[1][heading_2][rich_text][0][text][content]=Next section'
 ```
 
 Use `[]` to append repeated values in input order:
 
 ```bash theme={null}
 ntn api v1/comments \
-  parent[page_id]="$PAGE_ID" \
-  rich_text[][text][content]="First comment line" \
-  rich_text[][text][content]="Second comment line"
+  "parent[page_id]=$PAGE_ID" \
+  'rich_text[][text][content]=First comment line' \
+  'rich_text[][text][content]=Second comment line'
 ```
 
-Bracket notation is safest for keys that contain punctuation or spaces:
+For a rich text property named `Build version`, put the name in brackets.
 
 ```bash theme={null}
 ntn api "v1/pages/$PAGE_ID" -X PATCH \
-  properties[Build version][rich_text][0][text][content]="2026.05.11"
+  'properties[Build version][rich_text][0][text][content]=2026.05.11'
 ```
 
 > [!NOTE]
@@ -144,10 +141,10 @@ Only use one body source per request: stdin JSON, `--data`, or inline body field
 
 ## Add query parameters and headers
 
-Use `==` for query parameters:
+Use `==` for query parameters. This request lists up to 10 users.
 
 ```bash theme={null}
-ntn api v1/search query==roadmap page_size==10
+ntn api v1/users page_size==10
 ```
 
 Use `Header:Value` for request headers:

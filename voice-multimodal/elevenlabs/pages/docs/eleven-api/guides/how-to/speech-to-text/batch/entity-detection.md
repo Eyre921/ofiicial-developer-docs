@@ -86,7 +86,7 @@ audio_data = BytesIO(response.content)
 
 transcription = elevenlabs.speech_to_text.convert(
     file=audio_data,
-    model_id="scribe_v2", # Model to use
+    model_id="scribe_v3", # Model to use
     # Entity types to detect, accepts a list of specific entity types or categories.
     # To detect all entity types, use the "all" category.
     entity_detection=["pii"],
@@ -110,7 +110,7 @@ const audioBlob = new Blob([await response.arrayBuffer()], { type: "audio/mp3" }
 
 const transcription = await elevenlabs.speechToText.convert({
   file: audioBlob,
-  modelId: "scribe_v2", // Model to use
+  modelId: "scribe_v3", // Model to use
   // Entity types to detect, accepts a list of specific entity types or categories.
   // To detect all entity types, use the "all" category.
   entityDetection: ["pii"],
@@ -232,7 +232,7 @@ response.
 ```python
 transcription = elevenlabs.speech_to_text.convert(
     file=audio_file,
-    model_id="scribe_v2",
+    model_id="scribe_v3",
     entity_detection=["pii"],
     entity_redaction=["pii"],
     entity_redaction_mode="enumerated_entity_type",
@@ -245,7 +245,7 @@ print(transcription.text)
 ```typescript
 const transcription = await elevenlabs.speechToText.convert({
   file: audioBlob,
-  modelId: "scribe_v2",
+  modelId: "scribe_v3",
   entityDetection: ["pii"],
   entityRedaction: ["pii"],
   entityRedactionMode: "enumerated_entity_type",

@@ -67,8 +67,7 @@ You may not use Stripe Identity for any of the following purposes:
 - Verifying anyone considered a minor or who is under the age of 16.
 - Verifying anyone who is linked directly or indirectly with the jurisdictions listed below or that Stripe has deemed high risk, as may be updated from time to time on our [Prohibited and Restricted Business](https://stripe.com/restricted-businesses) page:
   - Cuba, Iran, North Korea, Syria, and the Crimea, Donetsk, and Luhansk Regions, or persons Stripe has deemed high risk, such as those individuals or entities named to a restricted person or party list of the US, United Kingdom, European Union or United Nations, including the sanctions lists maintained by the U.S. Office of Foreign Assets Control or the Denied Persons List or Entity List maintained by the U.S. Department of Commerce
-  - Russian Federation
-  - China
+- Verifying anyone who is located in, or a resident of, the Russian Federation or China.
 - As, or in furtherance of, any [Prohibited or Restricted Business](https://stripe.com/restricted-businesses); provided, however, that for the purpose of using Stripe Identity as a stand-alone service and only in the US or UK, the following restricted business categories may use Stripe Identity without pre-approval:
   - Financial products and services
   - Non-fiat currency and stored value

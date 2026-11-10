@@ -6,7 +6,7 @@ path: platforms/dart
 
 ---
 title: "Dart"
-description: "Learn how to set up Sentry in your Dart app, capture your first errors and traces, and view them in Sentry."
+description: "Learn how to set up Sentry in your Dart app, capture your first events, and view them in Sentry."
 url: https://docs.sentry.io/platforms/dart/
 ---
 
@@ -18,10 +18,12 @@ This guide focuses on plain Dart. If you're building a Flutter app, use the dedi
 
 ## [Prerequisites](https://docs.sentry.io/platforms/dart.md#prerequisites)
 
-You need:
+These instructions use Sentry Dart SDK v10. You need:
 
 * A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
-* Your application up and running
+* An application using **Dart 3.12.0** or later
+
+For an existing Sentry integration, review the [v10 breaking changes](https://github.com/getsentry/sentry-dart/releases/tag/10.0.0) before upgrading.
 
 ## [Install](https://docs.sentry.io/platforms/dart.md#install)
 
@@ -34,13 +36,11 @@ dependencies:
 
 ## [Configure](https://docs.sentry.io/platforms/dart.md#configure)
 
-Choose the features you want to configure, and this guide will show you how:
-
-Error Monitoring\[ ]Tracing
+Initialize **Error Monitoring** with `Sentry.init()` and run your application in its `appRunner` callback to capture uncaught exceptions and unhandled asynchronous errors. **Logs** and **Application Metrics** are enabled by default in SDK v10, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/dart.md#send-logs) and [#4](https://docs.sentry.io/platforms/dart.md#send-application-metrics-). This guide also enables **Tracing**.
 
 Want to learn more about these features?
 
-* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Sentry's core error monitoring product that automatically reports errors, uncaught exceptions, and crashes. If you have something that looks like an exception, Sentry can capture it.
+* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Capture uncaught exceptions and unhandled asynchronous errors in your application's guarded error zone. Report handled errors with Sentry.captureException.
 * [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
 * [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
 * [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
@@ -49,40 +49,83 @@ Want to learn more about these features?
 
 Configuration should happen as **early as possible** in your application's lifecycle.
 
-Import and initialize the SDK in your app's entry point:
+Import and initialize the SDK in your app's entry point as shown in the code snippet below.
+
+The snippet also turns on:
+
+* Tracing: via [`tracesSampleRate`](https://docs.sentry.io/platforms/dart/configuration/options.md#tracesSampleRate)
+* Additional user and request data: via [`sendDefaultPii`](https://docs.sentry.io/platforms/dart/configuration/options.md#sendDefaultPii)
+
+To skip tracing, omit `tracesSampleRate`. To discard logs or metrics, return `null` from [`beforeSendLog`](https://docs.sentry.io/platforms/dart/logs.md#beforesendlog) or [`beforeSendMetric`](https://docs.sentry.io/platforms/dart/metrics.md#beforesendmetric).
 
 ```dart
 import 'package:sentry/sentry.dart';
 
 Future<void> main() async {
-  await Sentry.init((options) {
-    options.dsn = 'https://<key>@o<orgId>.ingest.sentry.io/<projectId>';
-    // Adds request headers and IP for users, for more info visit:
-    // https://docs.sentry.io/platforms/dart/data-management/data-collected/
-    options.sendDefaultPii = true;
-    // ___PRODUCT_OPTION_START___ performance
-    // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
-    // We recommend adjusting this value in production.
-    options.tracesSampleRate = 1.0;
-    // ___PRODUCT_OPTION_END___ performance
-  });
+  await Sentry.init(
+    (options) {
+      options.dsn = 'https://<key>@o<orgId>.ingest.sentry.io/<projectId>';
 
-  // you can also configure SENTRY_DSN, SENTRY_RELEASE, SENTRY_DIST, and
-  // SENTRY_ENVIRONMENT via Dart environment variable (--dart-define)
+      // Allows sending default personal data, such as IP addresses,
+      // when available from the SDK's integrations.
+      options.sendDefaultPii = true;
+
+      // Enables Tracing.
+      // Set to 1.0 to capture 100% of spans for tracing.
+      // We recommend reducing this value in production.
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () async {
+      // Start your application here.
+    },
+  );
+
+  // You can also configure SENTRY_DSN, SENTRY_RELEASE, SENTRY_DIST, and
+  // SENTRY_ENVIRONMENT via Dart environment variables (--dart-define).
 }
+```
+
+The `appRunner` callback runs in a guarded error zone. This is required for automatic error capture on Dart web, where isolate error listeners are unavailable. For additional isolates, register an error listener with [`addSentryErrorListener`](https://pub.dev/documentation/sentry/latest/sentry_io/SentryIsolateExtension/addSentryErrorListener.html) from `package:sentry/sentry_io.dart`.
+
+For finite command-line applications, call `await Sentry.close()` after all awaited application work finishes to flush buffered telemetry and close SDK resources, including the isolate error-listener port.
+
+## [Send Logs](https://docs.sentry.io/platforms/dart.md#send-logs)
+
+Call `Sentry.logger` from your application code after initialization to send structured logs at different levels. You can add attributes to make logs easier to search and filter.
+
+See [Set Up Logs](https://docs.sentry.io/platforms/dart/logs.md) for all available logging methods and message formatting.
+
+```dart
+Sentry.logger.info('Order completed', attributes: {
+  'order_id': SentryAttribute.string('12345'),
+  'total': SentryAttribute.double(99.99),
+});
+
+Sentry.logger.warn('Slow operation detected');
+Sentry.logger.error('Validation failed');
+```
+
+If you use the Dart `logging` package, add the [`sentry_logging` integration](https://docs.sentry.io/platforms/dart/integrations/logging.md) to send its records to Sentry.
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/dart.md#send-application-metrics-)
+
+Call `Sentry.metrics` from your application code after initialization to send counters, gauges, and distributions. Add attributes to filter and group metrics in Sentry.
+
+See [Set Up Metrics](https://docs.sentry.io/platforms/dart/metrics.md) for metric types, attributes, and configuration options.
+
+```dart
+Sentry.metrics.count('checkout.failed', 1);
+Sentry.metrics.gauge('queue.depth', 42);
+Sentry.metrics.distribution('api_latency', 187, unit: 'millisecond');
 ```
 
 ## [Verify Your Setup](https://docs.sentry.io/platforms/dart.md#verify-your-setup)
 
 Let's test your setup and confirm that data reaches your Sentry project.
 
-### [Issues](https://docs.sentry.io/platforms/dart.md#issues)
-
-To verify that Sentry captures errors and creates issues in your Sentry project, add this intentional error to your application:
+Add this inside the async `appRunner` callback to trigger and capture a test error:
 
 ```dart
-import 'package:sentry/sentry.dart';
-
 try {
   throw StateError('Sentry Test Error');
 } catch (exception, stackTrace) {
@@ -91,43 +134,6 @@ try {
     stackTrace: stackTrace,
   );
 }
-```
-
-### [Tracing](https://docs.sentry.io/platforms/dart.md#tracing)
-
-To test your tracing configuration, create a custom transaction and span:
-
-```dart
-final transaction = Sentry.startTransaction('test-transaction', 'task');
-final span = transaction.startChild('test-span');
-await span.finish();
-await transaction.finish();
-```
-
-### [Logs](https://docs.sentry.io/platforms/dart.md#logs)
-
-Logs are enabled by default. Use the Sentry logger to send structured logs from anywhere in your application:
-
-```dart
-Sentry.logger.info('User clicked checkout button');
-
-Sentry.logger.info('Order completed', attributes: {
-  'order_id': SentryAttribute.string('12345'),
-  'total': SentryAttribute.double(99.99),
-});
-
-Sentry.logger.warn('Warning message');
-Sentry.logger.error('Error occurred');
-```
-
-### [Metrics NEW](https://docs.sentry.io/platforms/dart.md#metrics-)
-
-Metrics are enabled by default. Send test metrics from your app to verify that metrics are arriving in Sentry:
-
-```dart
-Sentry.metrics.count('checkout.failed', 1);
-Sentry.metrics.gauge('queue.depth', 42);
-Sentry.metrics.distribution('cart.amount_usd', 187.5);
 ```
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dart.md#view-captured-data-in-sentry)
@@ -143,15 +149,11 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/dart.md#next-steps)
 
-At this point, you should have integrated Sentry into your Dart application and should already be sending data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your Dart application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/dart/configuration.md)
 * Learn more about [manually capturing errors or messages](https://docs.sentry.io/platforms/dart/usage.md)
-* Learn about the [features of Sentry's Dart SDK](https://docs.sentry.io/platforms/dart/features.md)
-* Add [performance instrumentation to your app](https://docs.sentry.io/platforms/dart/tracing/instrumentation.md)
+* Add [performance instrumentation](https://docs.sentry.io/platforms/dart/tracing/instrumentation.md) to your app
 
 Are you having problems setting up the SDK?
 

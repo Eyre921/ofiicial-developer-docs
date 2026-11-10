@@ -12,6 +12,11 @@ url: https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 # Sentry for Next.js
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/nextjs.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/nextjs/cloudflare.md)
+
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/nextjs.md#prerequisites)
 
 You need:
@@ -394,6 +399,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/nextjs/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/nextjs/capturing-errors.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/nextjs/sourcemaps.md)

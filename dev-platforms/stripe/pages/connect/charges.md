@@ -123,7 +123,7 @@ To make the connected account the business of record for the payment, use the `o
 - Uses the fee structure for the connected account’s country.
 - Uses the [connected account’s statement descriptor](https://docs.stripe.com/connect/statement-descriptors.md).
 - Uses the connected account’s address and phone number (rather than the platform’s) on the customer’s statement if the connected account is in a different country than the platform.
-- Pays out a connected account, depending on the days specified in its `delays_days` setting.
+- Pays out a connected account, depending on the days specified in its `delay_days` setting.
 
 ## Stripe fees
 
@@ -145,15 +145,15 @@ You can issue a refund to pay a customer back for money spent on a returned good
 | --- | --- |
 | **Direct charges** | Stripe debits the refund amount from the connected account’s balance directly when you create a refund.
 
-If the connected account’s balance is insufficient, we set the refund status to `pending`. When the connected account’s balance has enough funds, Stripe automatically processes pending refunds in the order they were created and updates their status to `successful`. |
+If the connected account’s balance is insufficient, we set the refund status to `pending`. When the connected account’s balance has enough funds, Stripe automatically processes pending refunds in the order they were created and updates their status to `succeeded`. |
 | **Destination charges** | Stripe debits your platform balance for the refund amount. You can reverse the transfers made to your connected accounts to recover your refund cost.
 
-If your platform’s account balance doesn’t have the funds when you [issue the Refund](https://docs.stripe.com/connect/destination-charges.md#issue-refunds), we set the refund status to `pending`. When your platform’s balance has enough funds, Stripe automatically processes pending refunds and updates their status to `successful`.
+If your platform’s account balance doesn’t have the funds when you [issue the Refund](https://docs.stripe.com/connect/destination-charges.md#issue-refunds), we set the refund status to `pending`. When your platform’s balance has enough funds, Stripe automatically processes pending refunds and updates their status to `succeeded`.
 
 If the refund request also attempts a transfer reversal, but the connected account has an insufficient balance, the refund request returns an error instead of creating a refund with `pending` status. |
 | **Separate charges and transfers** | Stripe debits your platform balance for the refund amount. You can reverse the transfers made to your connected accounts to recover your refund cost.
 
-If your platform’s account balance doesn’t have the funds when you [issue the Refund](https://docs.stripe.com/connect/separate-charges-and-transfers.md#issue-refunds), we set the refund status to `pending`. When your platform balance has enough funds, Stripe automatically processes pending refunds and updates their status to `successful`. |
+If your platform’s account balance doesn’t have the funds when you [issue the Refund](https://docs.stripe.com/connect/separate-charges-and-transfers.md#issue-refunds), we set the refund status to `pending`. When your platform balance has enough funds, Stripe automatically processes pending refunds and updates their status to `succeeded`. |
 
 ## Disputes and chargebacks
 

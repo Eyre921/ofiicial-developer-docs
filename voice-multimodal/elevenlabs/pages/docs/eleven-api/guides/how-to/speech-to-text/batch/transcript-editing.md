@@ -65,7 +65,7 @@ elevenlabs = ElevenLabs(
 with open("voicemail.mp3", "rb") as audio_file:
     transcription = elevenlabs.speech_to_text.convert(
         file=audio_file,
-        model_id="scribe_v2",
+        model_id="scribe_v3",
         # Natural-language instruction applied to the finished transcript.
         transcript_edit="Write all dates in ISO 8601 format (YYYY-MM-DD)",
     )
@@ -87,7 +87,7 @@ const audioBlob = new Blob([await readFile("voicemail.mp3")], { type: "audio/mp3
 
 const transcription = await elevenlabs.speechToText.convert({
   file: audioBlob,
-  modelId: "scribe_v2",
+  modelId: "scribe_v3",
   // Natural-language instruction applied to the finished transcript.
   transcriptEdit: "Write all dates in ISO 8601 format (YYYY-MM-DD)",
 });
@@ -98,7 +98,7 @@ console.log("Edited:", transcription.editedTranscript);
 
 Transcript editing works with both synchronous requests and [webhook](/docs/eleven-api/guides/how-to/speech-to-text/batch/webhooks) requests. For webhook requests, `edited_transcript` is included in the `transcription` object of the webhook payload.
 
-Scribe v2 Realtime supports the same instructions on each committed transcript. See the [realtime transcript editing guide](/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing).
+Scribe v3 Live and Scribe v2 Realtime support the same instructions on each committed transcript. See the [realtime transcript editing guide](/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcript-editing).
 
 ## Writing instructions
 
@@ -120,8 +120,10 @@ The following examples illustrate the range of supported instructions:
 > Some adjustments have dedicated parameters that are cheaper and more predictable than an edit
 > instruction. Use [keyterm prompting](/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting) to bias
 > recognition towards specific names and terms, `no_verbatim` to remove filler words and
-> disfluencies, and `numbers_format` (where supported) to choose between digits and words. Reserve
-> transcript editing for changes those options do not cover.
+> disfluencies, and
+> [`numbers_format`](/docs/eleven-api/guides/how-to/speech-to-text/batch/number-and-language-options#format-numbers)
+> (Scribe v3) to choose between digits and words. Reserve transcript editing for changes those
+> options do not cover.
 
 Keep the following in mind when writing instructions:
 

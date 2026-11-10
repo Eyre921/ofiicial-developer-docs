@@ -27,7 +27,7 @@ Figure: AI Gateway architecture.
 3. The AI gateway sends the API request to the external model provider (OpenAI, Anthropic) and returns the response to the client.
 4. Langfuse tracing captures the request data, with different tracing options.
 
-On Langfuse Cloud, Langfuse runs the gateway in the EU, US, JP, and HIPAA regions, each with its own [gateway host](/docs/gateway/features/rest-api#gateway-hosts). Gateway traces are stored in your organization's Langfuse region. Requests are forwarded to OpenAI or Anthropic and processed under your agreement with them.
+On Langfuse Cloud, Langfuse runs the gateway in the EU, US, JP, and HIPAA regions, each with its own [gateway host](/docs/gateway/features/rest-api#gateway-hosts). Gateway traces are stored in your organization's Langfuse region. Requests are forwarded to your model providers and processed under your agreement with them.
 
 On self-hosted Langfuse, the gateway is a separate service that you deploy next to your instance. See [Self-hosting the AI Gateway](/self-hosting/configuration/ai-gateway).
 
@@ -56,7 +56,8 @@ An organization can add several provider credentials, including more than one pe
 - `/anthropic/v1/messages` uses the Anthropic Messages API.
 
   The gateway doesn't convert one API format into the other, so a client that
-  uses the OpenAI API can only call OpenAI models.
+  uses the OpenAI API can only call models from providers that support it, see
+  [supported providers](/docs/gateway/features/models#supported-providers).
 
 **The model ID decides the credential.** Each model ID starts with the name of a credential, in the form `<credential>:<model>`. For example, `openai-prod:<model>` calls `<model>` with the credential named `openai-prod`.
 

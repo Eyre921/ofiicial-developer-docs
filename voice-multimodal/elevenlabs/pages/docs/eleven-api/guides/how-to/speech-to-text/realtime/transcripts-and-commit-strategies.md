@@ -26,7 +26,7 @@ The commit transcript can optionally contain word-level timestamps. This is only
 ```python
 # Initialize the connection
 connection = await elevenlabs.speech_to_text.realtime.connect(RealtimeUrlOptions(
-  model_id="scribe_v2_realtime",
+  model_id="scribe_v3_live",
   include_timestamps=True, # Include this to receive the RealtimeEvents.COMMITTED_TRANSCRIPT_WITH_TIMESTAMPS event with word-level timestamps
 ))
 ```
@@ -34,7 +34,7 @@ connection = await elevenlabs.speech_to_text.realtime.connect(RealtimeUrlOptions
 ```typescript
 // Initialize the connection
 const connection = await elevenlabs.speechToText.realtime.connect({
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   includeTimestamps: true, // Include this to receive the RealtimeEvents.COMMITTED_TRANSCRIPT_WITH_TIMESTAMPS event with word-level timestamps
 });
 ```
@@ -43,7 +43,7 @@ const connection = await elevenlabs.speechToText.realtime.connect({
 
 ```typescript title="React"
 const connection = useScribe({
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   // Configuring this callback will automatically set the `includeTimestamps` option to `true`
   onCommittedTranscriptWithTimestamps: (data) => {
     console.log("Committed with timestamps:", data.text);
@@ -56,14 +56,14 @@ const connection = useScribe({
 
 ```typescript title="JavaScript"
 const connection = Scribe.connect({
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   includeTimestamps: true, // Include this to receive the RealtimeEvents.COMMITTED_TRANSCRIPT_WITH_TIMESTAMPS event with word-level timestamps
 });
 ```
 
 ## Commit strategies
 
-When sending audio chunks via the WebSocket, transcript segments can be committed in two ways: Manual Commit or Voice Activity Detection (VAD).
+When sending audio chunks via the WebSocket, transcript segments can be committed in three ways: Manual Commit, Voice Activity Detection (VAD) or [turn prediction](#turn-prediction). Turn prediction is only available with Scribe v3 Live.
 
 ### Manual commit
 
@@ -142,7 +142,7 @@ import { Scribe, AudioFormat, CommitStrategy } from "@elevenlabs/client";
 
 const connection = Scribe.connect({
   token: "sutkn_1234567890",
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   audioFormat: AudioFormat.PCM_16000,
   commitStrategy: CommitStrategy.VAD,
   vadSilenceThresholdSecs: 1.5,
@@ -162,7 +162,7 @@ elevenlabs = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
 
 connection = await elevenlabs.speech_to_text.realtime.connect(
     RealtimeAudioOptions(
-        model_id="scribe_v2_realtime",
+        model_id="scribe_v3_live",
         audio_format=AudioFormat.PCM_16000,
         commit_strategy=CommitStrategy.VAD,
         vad_silence_threshold_secs=1.5,
@@ -181,7 +181,7 @@ import { ElevenLabsClient, AudioFormat, CommitStrategy } from '@elevenlabs/eleve
 const elevenlabs = new ElevenLabsClient();
 
 const connection = await elevenlabs.speechToText.realtime.connect({
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   audioFormat: AudioFormat.PCM_16000,
   commitStrategy: CommitStrategy.VAD,
   vadSilenceThresholdSecs: 1.5,
@@ -190,6 +190,41 @@ const connection = await elevenlabs.speechToText.realtime.connect({
   minSilenceDurationMs: 100,
 });
 ```
+
+### Turn prediction
+
+> **Info**
+>
+> Turn prediction is only available with [Scribe v3 Live](/docs/overview/models#scribe-v3-live)
+> (`scribe_v3_live`). Other models reject `commit_strategy=turn_prediction` with an
+> `invalid_request` error and close the connection.
+
+A short VAD silence threshold can cut speakers off when they pause, and a long one adds lag before each commit. Turn prediction uses the context of the conversation, not just silence, to estimate whether the speaker has finished their turn. A caller who pauses halfway through reading out a phone number is less likely to be cut off.
+
+Scribe v3 Live includes `turn_probability`, the estimated probability that the speaker has finished their turn, on every `partial_transcript` message:
+
+```json
+{
+  "message_type": "partial_transcript",
+  "text": "My phone number is 415",
+  "turn_probability": 0.08
+}
+```
+
+With `commit_strategy=turn_prediction`, the server commits the current segment when a partial transcript reaches a `turn_probability` of `0.9` or higher. VAD stays active, so the server also commits when the `vad_silence_threshold_secs` silence threshold is reached. The VAD parameters (`vad_silence_threshold_secs`, `vad_threshold`, `min_speech_duration_ms` and `min_silence_duration_ms`) apply to turn prediction in the same way as to VAD.
+
+The default commit strategy is `manual` for every model, including Scribe v3 Live. Set `commit_strategy=turn_prediction` explicitly to enable turn prediction.
+
+> **Note**
+>
+> The `CommitStrategy` enums in the Python and JavaScript SDKs don't include `turn_prediction` yet.
+> To use turn prediction, connect to the WebSocket API directly and set the query parameter.
+
+```text
+wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v3_live&audio_format=pcm_16000&commit_strategy=turn_prediction
+```
+
+`turn_probability` is sent with every commit strategy when the model is Scribe v3 Live. With the `manual` strategy, you can read it to decide when to commit in your own application.
 
 ## Filtering background audio
 
@@ -229,7 +264,7 @@ The official SDKs don't drop the connection when no messages arrive, so most int
 Add the parameter to the WebSocket URL:
 
 ```text
-wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v2_realtime&commit_strategy=vad&keepalive_interval_ms=1000
+wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v3_live&commit_strategy=vad&keepalive_interval_ms=1000
 ```
 
 ## Supported audio formats

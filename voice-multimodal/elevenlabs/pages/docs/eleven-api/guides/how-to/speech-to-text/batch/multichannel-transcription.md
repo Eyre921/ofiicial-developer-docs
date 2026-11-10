@@ -135,7 +135,7 @@ def transcribe_multichannel(audio_file_path):
     with open(audio_file_path, 'rb') as audio_file:
         result = elevenlabs.speech_to_text.convert(
             file=audio_file,
-            model_id='scribe_v2',
+            model_id='scribe_v3',
             use_multi_channel=True,
             diarize=False,
             timestamps_granularity='word'
@@ -172,7 +172,7 @@ async function transcribeMultichannel(audioFilePath) {
 
     const result = await elevenlabs.speechToText.convert({
       file: audioFile,
-      modelId: "scribe_v2",
+      modelId: "scribe_v3",
       useMultiChannel: true,
       diarize: false,
       timestampsGranularity: "word",
@@ -197,7 +197,7 @@ async function transcribeMultichannel(audioFilePath) {
 curl -X POST "https://api.elevenlabs.io/v1/speech-to-text" \
   -H "xi-api-key: YOUR_API_KEY" \
   -F "file=@stereo_audio_file.wav" \
-  -F "model_id=scribe_v2" \
+  -F "model_id=scribe_v3" \
   -F "use_multi_channel=true" \
   -F "diarize=false" \
   -F "timestamps_granularity=word"
@@ -213,7 +213,7 @@ The easiest way to get a time-ordered, conversation-style transcript is to reque
 with open("stereo_interview.wav", "rb") as audio_file:
     result = elevenlabs.speech_to_text.convert(
         file=audio_file,
-        model_id="scribe_v2",
+        model_id="scribe_v3",
         use_multi_channel=True,
         multichannel_output_style="combined",
         diarize=False,
@@ -298,7 +298,7 @@ async def transcribe_multichannel_with_webhook(audio_file_path):
     with open(audio_file_path, 'rb') as audio_file:
         result = await elevenlabs.speech_to_text.convert_async(
             file=audio_file,
-            model_id='scribe_v2',
+            model_id='scribe_v3',
             use_multi_channel=True,
             diarize=False,
             webhook=True  # Enable webhook delivery
@@ -414,7 +414,7 @@ def process_large_multichannel_file(file_path, chunk_duration=300):
         with open(chunk_file, 'rb') as audio_file:
             result = elevenlabs.speech_to_text.convert(
                 file=audio_file,
-                model_id='scribe_v2',
+                model_id='scribe_v3',
                 use_multi_channel=True,
                 diarize=False,
                 timestamps_granularity='word'
@@ -477,7 +477,7 @@ async function processLargeMultichannelFile(filePath, chunkDuration = 300) {
       const audioFile = fs.createReadStream(chunkFile);
       const result = await elevenlabs.speechToText.convert({
         file: audioFile,
-        modelId: "scribe_v2",
+        modelId: "scribe_v3",
         useMultiChannel: true,
         diarize: false,
         timestampsGranularity: "word",

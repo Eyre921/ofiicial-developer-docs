@@ -107,18 +107,18 @@ See [Triggering](/docs/triggering) for the full guide, or jump straight to frame
 
 ## Next steps
 
-> **[Building with AI](/docs/building-with-ai)**
+> [card] [Building with AI](/docs/building-with-ai)
 >
 > Build Trigger.dev projects using AI coding assistants
 
-> **[How to trigger your tasks](/docs/triggering)**
+> [card] [How to trigger your tasks](/docs/triggering)
 >
 > Trigger tasks from your backend code
 
-> **[Writing tasks](/docs/tasks/overview)**
+> [card] [Writing tasks](/docs/tasks/overview)
 >
 > Task options, lifecycle hooks, retries, and queues
 
-> **[Guides and example projects](/docs/guides/introduction)**
+> [card] [Guides and example projects](/docs/guides/introduction)
 >
 > Framework guides and working example repos

@@ -145,18 +145,18 @@ An unknown report key returns `404` with the list of available keys.
 
 ## Next steps
 
-> **[MCP server](/docs/mcp-introduction)**
+> [card] [MCP server](/docs/mcp-introduction)
 >
 > Connect your AI coding tool to Trigger.dev.
 
-> **[MCP tools](/docs/mcp-tools)**
+> [card] [MCP tools](/docs/mcp-tools)
 >
 > Every tool the MCP server exposes, including `get_report`.
 
-> **[Concurrency](/docs/concurrency)**
+> [card] [Concurrency](/docs/concurrency)
 >
 > Configure the concurrency limits the Flow verdict checks against.
 
-> **[Query your data](/docs/observability/query)**
+> [card] [Query your data](/docs/observability/query)
 >
 > Run TRQL queries against the same telemetry the report reads.

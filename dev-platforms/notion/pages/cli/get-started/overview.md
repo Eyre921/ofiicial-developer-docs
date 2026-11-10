@@ -98,12 +98,11 @@ See the [Workers guide](/workers/get-started/overview) to get started.
 
 ### Make API requests
 
-Make authenticated requests to the Notion API with inline JSON construction and shell completion:
+List workspace users or search for pages and data sources by title:
 
 ```bash theme={null}
-ntn api v1/users                             # GET users
-ntn api v1/pages parent[page_id]=abc123      # POST with inline body fields
-ntn api v1/pages/abc123 -X PATCH archived:=true  # PATCH with typed assignment
+ntn api v1/users
+ntn api v1/search query=roadmap
 ```
 
 See the [API requests guide](/cli/guides/api-requests) for the full inline syntax reference.

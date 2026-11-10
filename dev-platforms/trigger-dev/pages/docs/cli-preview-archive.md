@@ -34,6 +34,14 @@ The path to the project. Defaults to the current directory.
 
 ## Options
 
+**Authentication method** `--auth-method \<method\>`
+
+Use `auto` (default) or `oidc`. In GitHub Actions, `auto` uses OIDC when no
+`TRIGGER_ACCESS_TOKEN` is set. Explicit `oidc` ignores stored credentials and tokens.
+See [Trusted publishing](/docs/deployment/trusted-publishing).
+
+You can also authenticate with a parent Preview environment API key in `TRIGGER_ACCESS_TOKEN`.
+
 **Preview branch** `--branch | -b`
 
 When using `--env preview` the branch is automatically detected from git. But you can manually

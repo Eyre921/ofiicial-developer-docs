@@ -19249,7 +19249,7 @@ A couple features of loading data have important implications for auth checks:
 There are a few possible strategies to ensure an auth check occurs before protected code.
 
 To prevent data waterfalls and preserve layout `load` caches:
-- Use [hooks](hooks) to protect multiple routes before any `load` functions run
+- Use the [`handle`](auth#Integration-points-Protecting-multiple-routes) hook to protect multiple routes, before any `load` functions run
 - Use auth guards directly in `+page.server.js` `load` functions for route specific protection
 
 Putting an auth guard in `+layout.server.js` requires all child pages to call `await parent()` before protected code. Unless every child page depends on returned data from `await parent()`, the other options will be more performant.
@@ -20378,7 +20378,7 @@ The query returned from `getPosts` works as a [`Promise`](https://developer.mozi
 <h1>Recent posts</h1>
 
 <ul>
-	{#each await getPosts() as { title, slug }}
+	{#each await getPosts() as { title, slug } (slug)}
 		<li><a href="/blog/{slug}">{title}</a></li>
 	{/each}
 </ul>
@@ -20404,7 +20404,7 @@ While using `await` is recommended, as an alternative the query also has `loadin
 	<p>loading...</p>
 {:else}
 	<ul>
-		{#each query.current as { title, slug }}
+		{#each query.current as { title, slug } (slug)}
 			<li><a href="/blog/{slug}">{title}</a></li>
 		{/each}
 	</ul>
@@ -20540,7 +20540,7 @@ export const getWeather = query.batch(v.string(), async (cityIds) => {
 
 <h2>Weather</h2>
 
-{#each cities.slice(0, limit) as city}
+{#each cities.slice(0, limit) as city (city.id)}
 	<h3>{city.name}</h3>
 	<CityWeather weather={await getWeather(city.id)} />
 {/each}
@@ -21143,7 +21143,7 @@ When each instance should render different values, pass them as the second argum
 
 <h1>Todos</h1>
 
-{#each await getTodos() as todo}
+{#each await getTodos() as todo (todo.id)}
 	{const modify = modifyTodo.for(todo.id)}
 	<form {...modify}>
 		<input {...modify.fields.description.as('text', todo.description)} />
@@ -21490,6 +21490,8 @@ You can use `prerender` functions on pages that are otherwise dynamic, allowing 
 
 In the browser, prerendered data is saved using the [`Cache`](https://developer.mozilla.org/en-US/docs/Web/API/Cache) API. This cache survives page reloads, and will be cleared when the user first visits a new deployment of your app.
 
+> [!NOTE] `prerender` functions should not be used for private data, as they run at build time, and their results are served publicly as static files.
+
 ### Prerender arguments
 
 As with queries, prerender functions can accept an argument, which should be [validated](#query-Query-arguments) with a [Standard Schema](https://standardschema.dev/):
@@ -21643,6 +21645,83 @@ Note that some properties of `RequestEvent` are different inside remote function
 - you cannot set headers (other than writing cookies, and then only inside `form` and `command` functions)
 - inside `query` functions (including `query.batch` and `query.live`), accessing `route`, `params` or `url` throws an error. Queries are cached by their arguments and are not re-run when the user navigates, so results depending on these values would go stale without the cache noticing. Pass values from the page as arguments to the query instead. You can still derive trusted context from cookies or headers in the [`handle`](hooks#handle) hook and put it on `locals`, but note that for query requests `handle` sees the URL of the remote endpoint, not of the page
 - in `form` and `command` functions, `route`, `params` and `url` relate to the page the remote function was called from, _not_ the URL of the endpoint SvelteKit creates for the remote function. Never use them to determine whether or not a user is authorized to access certain data, as these values are part of the request which could be manipulated
+
+## Implications for authentication
+
+Since a remote function call can come from any page, the request event URL may be manipulated by the client. Therefore, you _must_ run your authentication checks directly inside your remote functions that need it. This check can be created as a shared helper:
+
+```js
+/// file: src/lib/server/auth.js
+// @filename: ambient.d.ts
+interface User {
+	id: string;
+	name: string;
+}
+
+declare namespace App {
+	interface Locals {
+		user: User | null;
+	}
+}
+
+// @filename: index.js
+// ---cut---
+import { redirect } from '@sveltejs/kit';
+import { getRequestEvent } from '$app/server';
+
+export function requireLogin() {
+	const { locals } = getRequestEvent();
+
+	if (!locals.user) redirect(303, '/login');
+
+	return locals.user;
+}
+```
+
+Now you can use it in whichever remote functions require authentication:
+
+```js
+/// file: src/lib/projects.remote.js
+// @filename: ambient.d.ts
+declare module '#lib/server/auth.js' {
+	export function requireLogin(): { id: string; name: string };
+}
+
+declare module '#lib/server/database.js' {
+	export function getProjects(
+		userId: string
+	): Promise<Array<{ id: string; name: string }>>;
+}
+
+// @filename: index.js
+// ---cut---
+import { query } from '$app/server';
+import { requireLogin } from '#lib/server/auth.js';
+import { getProjects } from '#lib/server/database.js';
+
+export const getMyProjects = query(async () => {
+	const user = requireLogin();
+
+	return await getProjects(user.id);
+});
+```
+
+> [!NOTE] `redirect` can't be used inside `command` functions, so commands should use [`error(401)`](@sveltejs-kit#error) instead.
+
+Now, any component that calls `getMyProjects` will only be rendered if the user is logged in, regardless of which page uses it:
+
+```svelte
+<!--- file: src/lib/ProjectList.svelte --->
+<script>
+	import { getMyProjects } from '$lib/projects.remote';
+</script>
+
+<ul>
+	{#each await getMyProjects() as project (project.id)}
+		<li><a href="/projects/{project.id}">{project.name}</a></li>
+	{/each}
+</ul>
+```
 
 ## Redirects
 
@@ -22053,14 +22132,20 @@ export default defineConfig({
 		sveltekit({
 			adapter: adapter(),
 			paths: {
-				origin: process.env.ORIGIN
+				origin: 'https://my.site'
 			}
 		})
 	]
 });
 ```
 
-When `paths.origin` is not set (the default), `adapter-node` derives the origin from the request — using the `host` header (and `PROTOCOL_HEADER`/`PORT_HEADER` if set) — and sets `request.url` accordingly. Otherwise, the configured value is used as the trusted self-origin for CSRF checks on form submissions and remote function calls, and as the value of `url.origin` during prerendering.
+When `paths.origin` is not set (the default), `adapter-node` uses a set `ORIGIN` environment variable at runtime:
+
+```sh
+ORIGIN=https://my.site node build
+```
+
+Otherwise, it derives the origin from the request — using the `host` header (and `PROTOCOL_HEADER`/`PORT_HEADER` if set) — and sets `request.url` accordingly. Otherwise, the configured value is used as the trusted self-origin for CSRF checks on form submissions and remote function calls, and as the value of `url.origin` during prerendering.
 
 Alternatively, you can specify headers that tell SvelteKit about the request protocol and host, from which it can construct the origin URL:
 
@@ -22292,9 +22377,7 @@ bun ./build
 
 You will need the output directory, the project's `package.json`, and the production dependencies in `node_modules` to run the application. Production dependencies can be generated by copying the `package.json` and `bun.lock` and then running `bun install --production --frozen-lockfile` (you can skip this step if your app doesn't have any dependencies). Development dependencies are bundled into your app. To control whether a given package is bundled or externalised, place it in `devDependencies` or `dependencies` respectively in your `package.json`.
 
-Client assets and prerendered output are registered as native Bun routes. Only `GET` and `HEAD` requests are served by those routes; other methods continue to SvelteKit. Every asset carries an ETag computed during the build, so conditional requests revalidate with an empty `304` response. Bun supplies MIME types, byte ranges for filesystem-backed files, and streaming without buffering every asset in memory. Files below SvelteKit's `immutable` directory receive `Cache-Control: public,max-age=31536000,immutable`.
-
-> [!NOTE] Bun treats `*` in a route pathname as a wildcard. The adapter rejects client and prerendered filenames that contain a literal `*`; rename those files before building.
+Client assets and prerendered output are served before a request reaches SvelteKit. Only `GET` and `HEAD` requests are served this way; other methods continue to SvelteKit. Every asset carries an ETag computed during the build, so conditional requests revalidate with an empty `304` response. Bun supplies MIME types, byte ranges for filesystem-backed files, and streaming without buffering every asset in memory. Files below SvelteKit's `immutable` directory receive `Cache-Control: public,max-age=31536000,immutable`.
 
 ## Options
 
@@ -22326,7 +22409,7 @@ The output directory. It defaults to `build`.
 
 ### precompress
 
-Set `precompress: true` to generate `.br` and `.gz` variants of client and prerendered assets during the build. The generated routes negotiate `Accept-Encoding` per request, preferring brotli over gzip, and each variant carries its own ETag. The option is ignored when `buildOptions.compile` is set, because embedded assets are imported by identity path.
+Set `precompress: true` to generate `.br` and `.gz` variants of client and prerendered assets during the build. The server negotiates `Accept-Encoding` per request, preferring brotli over gzip, and each variant carries its own ETag. The option is ignored when `buildOptions.compile` is set, because embedded assets are imported by identity path.
 
 ### envPrefix
 
@@ -22408,7 +22491,7 @@ adapter({
 });
 ```
 
-The result in this example is `dist/application`. Platform targets, native dependencies, and other limitations follow [Bun's executable compilation rules](https://bun.com/docs/bundler/executables).
+The result in this example is `dist/application`. Platform targets, native dependencies, and other limitations follow [Bun's executable compilation rules](https://bun.com/docs/compiler/executables).
 
 Executables bundle production dependencies, since there is no `node_modules` to resolve them from. To resolve a package from `node_modules` at runtime instead, list it in `external` and set `compile: { autoloadPackageJson: true }`. Packages that read files relative to their own location, such as `jsdom`, only work this way.
 
@@ -22442,7 +22525,7 @@ SOCKET_PATH=/tmp/sveltekit.sock bun ./build
 
 ### Public origin behind a proxy
 
-If [`paths.origin`](@sveltejs-kit-vite#paths) is configured, that value is the trusted origin for every request. Otherwise, the adapter derives the host from the `Host` header and assumes the scheme is `https`, since production deployments usually terminate TLS upstream. Configure `paths.origin` or `PROTOCOL_HEADER` if that assumption is wrong, for example when serving plain HTTP directly.
+If [`paths.origin`](@sveltejs-kit-vite#paths) is configured, or the `ORIGIN` environment variable is set at runtime, that value is the trusted origin for every request. Otherwise, the adapter derives the host from the `Host` header and assumes the scheme is `https`, since production deployments usually terminate TLS upstream. Configure `paths.origin`, `ORIGIN` or `PROTOCOL_HEADER` if that assumption is wrong, for example when serving plain HTTP directly.
 
 Behind a trusted reverse proxy, `PROTOCOL_HEADER`, `HOST_HEADER`, and `PORT_HEADER` name headers that contain the public scheme, host, and port:
 
@@ -23896,14 +23979,24 @@ Code in these modules will run when the application starts up, making them usefu
 
 > [!NOTE] Can be added to `src/hooks.server.js`
 
-This function runs every time the SvelteKit server receives a [request](web-standards#Fetch-APIs-Request) — whether that happens while the app is running, or during [prerendering](page-options#prerender) — and determines the [response](web-standards#Fetch-APIs-Response). It receives an `event` object representing the request and a function called `resolve`, which renders the route and generates a `Response`. This allows you to modify response headers or bodies, or bypass SvelteKit entirely (for implementing routes programmatically, for example).
+This function runs every time the SvelteKit server receives a [request](web-standards#Fetch-APIs-Request) — whether that happens while the app is running, or during [prerendering](page-options#prerender) — and determines the [response](web-standards#Fetch-APIs-Response). It receives an `event` object representing the request and a function called `resolve`, which renders the route and generates a `Response`. This allows you to modify response headers or bodies, or implement a middleware (for rejecting rate-limited requests, for example).
 
 ```js
 /// file: src/hooks.server.js
+// @filename: ambient.d.ts
+declare module '#lib/server/rate-limit.js' {
+	export function isRateLimited(key: string): Promise<boolean>;
+}
+
+// @filename: index.js
+// ---cut---
+import { building } from '$app/env';
+import { isRateLimited } from '#lib/server/rate-limit.js';
+
 /** @type {import('@sveltejs/kit/hooks').Handle} */
 export async function handle({ event, resolve }) {
-	if (event.url.pathname.startsWith('/custom')) {
-		return new Response('custom response');
+	if (!building && (await isRateLimited(event.getClientAddress()))) {
+		return new Response('Too many requests', { status: 429 });
 	}
 
 	const response = await resolve(event);
@@ -25535,7 +25628,81 @@ In contrast, JWT generally are not checked against a datastore, which means they
 
 ## Integration points
 
-Auth [cookies](@sveltejs-kit#Cookies) can be checked inside the [`handle`](hooks#handle) hook. If a user is found matching the provided credentials, the user information can be stored in [`locals`](hooks#handle-locals).
+Auth [cookies](@sveltejs-kit#Cookies) can be checked inside the [`handle`](hooks#handle) hook. If a user is found matching the provided credentials, the user information can be stored in [`locals`](hooks#handle-locals):
+
+```js
+/// file: src/hooks.server.js
+// @filename: ambient.d.ts
+type User = {
+	name: string;
+};
+
+declare namespace App {
+	interface Locals {
+		user: User | null;
+	}
+}
+
+const getUserInformation: (cookie: string | void) => Promise<User | null>;
+
+// @filename: index.js
+// ---cut---
+/** @type {import('@sveltejs/kit/hooks').Handle} */
+export async function handle({ event, resolve }) {
+	event.locals.user = await getUserInformation(event.cookies.get('sessionid'));
+
+	return resolve(event);
+}
+```
+
+You can then use [`getRequestEvent`]($app-server#getRequestEvent) to read `locals.user` and check if the user is authenticated. This check can live in a shared helper, then reused in each load function, as shown in [this example](load#Using-getRequestEvent).
+
+> [!NOTE] Always prefer checks in `+page.server.js` over `+layout.server.js` — see [implications for authentication](load#Implications-for-authentication)
+
+### Protecting multiple routes
+
+To protect your private routes, add an authentication guard that checks against a whitelist of public routes in your `handle` hook:
+
+```js
+/// file: src/hooks.server.js
+// @filename: ambient.d.ts
+type User = {
+	name: string;
+};
+
+declare namespace App {
+	interface Locals {
+		user: User | null;
+	}
+}
+
+const getUserInformation: (cookie: string | void) => Promise<User | null>;
+
+// @filename: index.js
+// ---cut---
+import { redirect } from '@sveltejs/kit';
+
+const PUBLIC_ROUTES = new Set(['/', '/login', '/signup']);
+
+/** @type {import('@sveltejs/kit/hooks').Handle} */
+export async function handle({ event, resolve }) {
+	event.locals.user = await getUserInformation(event.cookies.get('sessionid'));
+
+	if (!event.locals.user && !PUBLIC_ROUTES.has(event.route.id ?? '')) {
+		redirect(303, '/login');
+	}
+
+	return resolve(event);
+}
+```
+
+Whenever possible, you should match on `event.route.id` rather than `event.url.pathname` because `event.route.id` is the actual route the SvelteKit router has matched, and therefore represents the content that will be served if the request is allowed to progress. Simple string checks against the URL's pathname can run into all sorts of issues — for example, the URL pathname can be [encoded](advanced-routing#Encoding), so a check such as `event.url.pathname.startsWith('/admin')` can be bypassed with the encoded equivalent `/%61dmin`. If you absolutely must match on any raw part of the URL, ensure you use proper decoding and write thorough tests.
+
+> [!NOTE] Prerendered pages and static assets are served without invoking `handle`, so they can't be protected this way.
+
+### Remote functions
+
+If you're using [remote functions](remote-functions), you _must_ run the authentication check directly inside the function — see [implications for authentication](remote-functions#Implications-for-authentication).
 
 ## Libraries
 
@@ -25829,7 +25996,7 @@ In some cases, the images may not be accessible at build time — e.g. they may 
 
 Using a content delivery network (CDN) can allow you to optimize these images dynamically, and provides more flexibility with regards to sizes, but it may involve some setup overhead and usage costs. Depending on caching strategy, the browser may not be able to use a cached copy of the asset until a [304 response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/304) is received from the CDN. Building HTML to target CDNs allows using an `<img>` tag since the CDN can serve the appropriate format based on the `User-Agent` header, whereas build-time optimizations must produce `<picture>` tags with multiple sources. Finally, some CDNs may generate images lazily, which could have a negative performance impact for sites with low traffic and frequently changing images.
 
-CDNs can generally be used without any need for a library. However, there are a number of libraries with Svelte support that make it easier. [`@unpic/svelte`](https://unpic.pics/img/svelte/) is a CDN-agnostic library with support for a large number of providers. You may also find that specific CDNs like [Cloudinary](https://svelte.cloudinary.dev/) have Svelte support. Finally, some content management systems (CMS) which support Svelte (such as [Contentful](https://www.contentful.com/sveltekit-starter-guide/), [Storyblok](https://www.storyblok.com/docs/guides/svelte), and [Contentstack](https://www.contentstack.com/docs/developers/sample-apps/build-a-starter-website-with-sveltekit-and-contentstack)) have built-in support for image handling.
+CDNs can generally be used without any need for a library. However, there are a number of libraries with Svelte support that make it easier. [`@unpic/svelte`](https://unpic.pics/img/svelte/) is a CDN-agnostic library with support for a large number of providers. You may also find that specific CDNs like [Cloudinary](https://svelte.cloudinary.dev/) have Svelte support. Finally, some content management systems (CMS) which support Svelte (such as [Contentful](https://www.contentful.com/sveltekit-starter-guide/), [Storyblok](https://www.storyblok.com/docs/guides/svelte), and [Contentstack](https://www.contentstack.com/docs/headless-cms/sveltekit)) have built-in support for image handling.
 
 ## Best practices
 
@@ -26607,7 +26774,7 @@ The following options are obsolete and should be removed from your `vite.config.
 
 - `output.linkHeaderPreload` determines whether to use `Link` HTTP headers to preload resources like `.js` and `.css` files rather than injecting `<link>` elements in the rendered HTML. This can cause issues when the headers grow too large, so SvelteKit 3 uses `<link>` elements by default instead.
 - `csrf.trustedOrigins` allows you to specify external origins that are allowed to make form submissions.
-- `paths.origin` replaces `prerender.origin`, and should reflect your app's public-facing origin if it can't reliably be derived from request headers (for example because it's behind a reverse proxy). It will be used for CSRF checks on form submissions and remote function calls. If using `adapter-node`, this replaces the `ORIGIN` environment variable.
+- `paths.origin` replaces `prerender.origin`, and should reflect your app's public-facing origin if it can't reliably be derived from request headers (for example because it's behind a reverse proxy). It will be used for CSRF checks on form submissions and remote function calls. If using `adapter-node`, this takes precedence over the `ORIGIN` environment variable.
 
 ### Changed options
 
@@ -27041,7 +27208,6 @@ await myCache.match(request);
 ### `adapter-node`
 
 - bundling now happens with `rolldown`
-- the `ORIGIN` environment variable is removed (set `paths.origin` in your Vite config instead)
 - static assets are served from a list recorded at build time; files added to the output directory afterwards are not served, and replaced ones keep their old size and `ETag` (use environment variables for runtime configuration)
 - `ETag`s for static assets are content hashes, and `Last-Modified` is no longer sent
 - only `GET` and `HEAD` requests are served static assets; other methods result in a 405 response

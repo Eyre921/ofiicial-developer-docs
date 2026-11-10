@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 10, 2026**
+
+### Mention or assign a Custom Agent by ID
+
+With the [View sessions and interact with agents](/reference/capabilities#agent-capabilities) capability, you can now mention a shared Custom Agent in [rich text](/reference/rich-text#user-mention-type-object). Use its agent ID or bot user ID for a mention or a [people property](/reference/page-property-values#people) assignment. Either action can start an agent run.
+
+When you read a mention or assignment, the [bot user object](/reference/user#bots) gives you the agent ID in `agent_id` and the bot user ID in `id`.
+
 **November 9, 2026**
 
 ### Custom Agents in people properties
@@ -12,7 +20,7 @@ You can now assign a Custom Agent to a `people` [page property value](/reference
 
 Page responses now include assigned Custom Agents as [bot user objects](/reference/user#bots). Before, they were left out of `people` arrays. A bot's `avatar_url` is now `null` when its icon isn't an image URL.
 
-Two limits apply. A `user` [rich text mention](/reference/rich-text#user-mention-type-object) of a Custom Agent still returns a `validation_error`. [List all users](/reference/get-users) doesn't include Custom Agents, so read an agent's bot user ID from a `people` property where the agent is already assigned.
+At launch, assignments required the agent's bot user ID, and rich text mentions returned a `validation_error`. The [November 10 update](/page/changelog#mention-or-assign-a-custom-agent-by-id) adds support for agent IDs and mentions. [List all users](/reference/get-users) still omits Custom Agents.
 
 **November 5, 2026**
 

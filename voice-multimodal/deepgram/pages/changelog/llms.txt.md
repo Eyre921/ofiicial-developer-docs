@@ -11,6 +11,7 @@ path: changelog/llms.txt
 
 ## Entries
 
+- [November 10, 2026](https://developers.deepgram.com/changelog/2026/11/10.md): Deepgram Self-Hosted release 261110 rejects unsupported language hints on Nova-3 Multilingual and Flux STT, changes how to verify callbacks, speeds up preloaded models, and improves Flux TTS shutdown and Portuguese formatting.
 - [October 27, 2026](https://developers.deepgram.com/changelog/2026/10/27.md)
 - [October 23, 2026](https://developers.deepgram.com/changelog/2026/10/23.md)
 - [October 20, 2026](https://developers.deepgram.com/changelog/2026/10/20.md): Deepgram Self-Hosted release 261020 moves Flux STT to a new Engine runtime that requires new Flux model files, adds mid-stream keyterm updates for Nova-3, makes Flux Force End Turn always available, and improves formatting and media handling.

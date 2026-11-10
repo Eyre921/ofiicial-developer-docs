@@ -44,13 +44,12 @@ Don't need a feature? Remove its options from the snippet.
 ```csharp
 using System;
 using System.Web;
+using Sentry;
 using Sentry.AspNet;
-using Sentry.EntityFramework; // If you also installed Sentry.EntityFramework
-using Sentry.Extensibility;
 
 public class MvcApplication : HttpApplication
 {
-    private IDisposable _sentry;
+    private static IDisposable _sentry;
 
     protected void Application_Start()
     {
@@ -68,8 +67,6 @@ public class MvcApplication : HttpApplication
             // We recommend reducing this value in production.
             options.TracesSampleRate = 1.0;
 
-            // If you also installed the Sentry.EntityFramework package
-            options.AddEntityFramework();
             options.AddAspNet();
         });
     }
@@ -94,6 +91,8 @@ public class MvcApplication : HttpApplication
 }
 ```
 
+If you also use Entity Framework 6, install `Sentry.EntityFramework` and add `options.AddEntityFramework()` to the same initialization callback. See the [Entity Framework guide](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md) for setup details.
+
 ### [Capturing the affected user](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md#capturing-the-affected-user)
 
 When opting-in to [SendDefaultPii](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md#senddefaultpii), the SDK will automatically read the user from the request by inspecting `HttpContext.User`. Default claim values like `NameIdentifier` for the *Id* will be used.
@@ -107,7 +106,7 @@ options.SendDefaultPii = true;
 
 ### [SendDefaultPii](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md#senddefaultpii)
 
-Although this setting is part of the [Sentry](https://docs.sentry.io/platforms/dotnet.md) package, in the context of ASP.NET Core, it means reporting the user by reading the frameworks `HttpContext.User`. The strategy to create the `SentryUser` can be customized.
+Although this setting is part of the [Sentry](https://docs.sentry.io/platforms/dotnet.md) package, in ASP.NET it also enables reporting the user from `HttpContext.User`.
 
 ### [IncludeRequestPayload](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md#includerequestpayload)
 
@@ -164,7 +163,15 @@ catch (Exception ex)
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Troubleshooting](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md#troubleshooting)
 

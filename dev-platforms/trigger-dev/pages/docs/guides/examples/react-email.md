@@ -347,10 +347,10 @@ See our [common problems guide](/docs/troubleshooting#reactdomserver-rendertopip
 
 Check out the [React Email docs](https://react.email/docs) and learn how to set up and use React Email, including how to preview your emails locally.
 
-> **[Components](https://react.email/components)**
+> [card] [Components](https://react.email/components)
 >
 > Pre-built components you can copy and paste into your emails.
 
-> **[Templates](https://react.email/templates)**
+> [card] [Templates](https://react.email/templates)
 >
 > Extensive pre-built templates ready to use.

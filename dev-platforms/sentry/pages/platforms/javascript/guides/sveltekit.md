@@ -12,6 +12,11 @@ url: https://docs.sentry.io/platforms/javascript/guides/sveltekit/
 
 # Sentry for SvelteKit
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
+
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#prerequisites)
 
 You need:
@@ -43,7 +48,7 @@ The SvelteKit Sentry SDK is designed to work out of the box with several SvelteK
   * [Adapter-node](https://kit.svelte.dev/docs/adapter-node)
 
 * **Supported non-Node.js runtimes**
-  * [Adapter-cloudflare](https://kit.svelte.dev/docs/adapter-cloudflare) requires [additional setup](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/sveltekit.md)
+  * [Adapter-cloudflare](https://kit.svelte.dev/docs/adapter-cloudflare) requires [additional setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
 
 * **Currently not supported**
   * Non-Node.js server runtimes, such as Vercel's edge runtime, are not yet supported.
@@ -191,7 +196,7 @@ Now's a good time to customize your setup and look into more advanced topics. Ou
 * Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/guides/sveltekit/usage.md)
 * Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration.md)
 * Learn how to [manually instrument](https://docs.sentry.io/platforms/javascript/guides/sveltekit/apis.md#load-function-instrumentation) SvelteKit-specific features
-* Learn more about [deploying SvelteKit apps to Cloudflare Pages](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/sveltekit.md)
+* Learn more about [deploying SvelteKit apps to Cloudflare Pages](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
 * Get familiar with [Sentry's product features](https://docs.sentry.io/product.md) like tracing, insights, and alerts
 
 Are you having problems setting up the SDK?
@@ -244,6 +249,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup__v10.7.0.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup__v8.x.md)

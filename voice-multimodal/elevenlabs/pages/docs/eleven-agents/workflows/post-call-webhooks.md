@@ -388,6 +388,8 @@ The `data` object contains:
 | `has_user_audio`                      | boolean | Whether user audio is available for the conversation                   |
 | `has_response_audio`                  | boolean | Whether agent response audio is available for the conversation         |
 
+`conversation_initiation_client_data.dynamic_variables` maps variable names to any JSON value, including lists and objects. It includes the built-in `system__` variables, and new ones can be added, so don't reject keys or value types you don't recognize. See [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables).
+
 ### Audio webhooks (`post_call_audio`)
 
 Contains minimal data with the full conversation audio as base64-encoded MP3.

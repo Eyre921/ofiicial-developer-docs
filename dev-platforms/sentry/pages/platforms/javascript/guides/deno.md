@@ -12,6 +12,14 @@ url: https://docs.sentry.io/platforms/javascript/guides/deno/
 
 # Sentry for Deno
 
+Agent frameworks:
+
+* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable/deno.md)
+
+Frameworks with their own setup guide:
+
+* [Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)
+
 This SDK is currently in **beta**. Beta features are still in progress and may have bugs. Please reach out on [GitHub](https://github.com/getsentry/sentry-javascript/issues/new/choose) if you have any feedback or concerns
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/deno.md#prerequisites)

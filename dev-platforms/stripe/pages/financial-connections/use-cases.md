@@ -8,7 +8,7 @@ path: financial-connections/use-cases
 
 View options for integrating Financial Connections and common use cases.
 
-Financial Connections allows your users to link their financial accounts to collect *ACH* (Automated Clearing House (ACH) is a US financial network used for electronic payments and money transfers that doesn't rely on paper checks, credit card networks, wire transfers, or cash) payments, facilitate Connect *payouts* (A payout is the transfer of funds to an external account, usually a bank account, in the form of a deposit), and build financial data products. It also enables your users to connect their accounts in fewer steps with [Link](https://docs.stripe.com/payments/link.md), allowing them to save and reuse their bank account details across Stripe businesses. View the following integration paths based on your requirements, and some common use cases for Financial Connections data below.
+Financial Connections allows your users to link their financial accounts to collect *ACH* (Automated Clearing House (ACH) is a US financial network used for electronic payments and money transfers that doesn't rely on paper checks, credit card networks, wire transfers, or cash) payments, accept [Canadian pre-authorized debit](https://docs.stripe.com/payments/acss-debit.md) (PAD) payments, facilitate Connect *payouts* (A payout is the transfer of funds to an external account, usually a bank account, in the form of a deposit), and build financial data products. It also enables your users to connect their accounts in fewer steps with [Link](https://docs.stripe.com/payments/link.md), allowing them to save and reuse their bank account details across Stripe businesses. View the following integration paths based on your requirements, and some common use cases for Financial Connections data below.
 
 How you integrate Financial Connections depends on your desired use cases.
 
@@ -21,6 +21,10 @@ How you integrate Financial Connections depends on your desired use cases.
 - [Payment Intents](https://docs.stripe.com/api/payment_intents.md)
 - [Checkout](https://docs.stripe.com/payments/checkout.md)
 - [Invoices](https://docs.stripe.com/invoicing.md) |
+| [Canadian pre-authorized debit (PAD) payments](https://docs.stripe.com/financial-connections/use-cases.md#acss-direct-debit) (Public preview) | - Bank-based payments from customers in Canada | A PAD payments integration:
+- [Setup Intents](https://docs.stripe.com/api/setup_intents.md)
+- [Payment Intents](https://docs.stripe.com/api/payment_intents.md)
+- [Checkout](https://docs.stripe.com/payments/checkout.md) |
 | [Connect payouts](https://docs.stripe.com/financial-connections/use-cases.md#custom-connect-payouts) | - Pay out funds to Connected Accounts | A Connect onboarding integration:
 - [Hosted onboarding](https://docs.stripe.com/connect/payouts-bank-accounts.md?bank-account-collection-integration=prebuilt-web-form)
 - [Setup Intents](https://docs.stripe.com/connect/payouts-bank-accounts.md?bank-account-collection-integration=direct-api#create-a-setup-intent) |
@@ -30,7 +34,7 @@ How you integrate Financial Connections depends on your desired use cases.
 | [Financial insights for agents](https://docs.stripe.com/financial-connections/use-cases.md#agents) | - Agent-powered spending analysis
 - Balance and transaction monitoring | [Link Agent Wallet](https://docs.stripe.com/financial-connections/agents/financial-insights.md) |
 
-To process ACH payments or facilitate Connect payouts, use a recommended payments integration in the table above, such as Setup Intents. This makes sure that the collected accounts are compatible with [ACH transfers](https://docs.stripe.com/payments/ach-direct-debit.md).
+To process ACH payments, Canadian PAD payments, or facilitate Connect payouts, use a recommended payments integration in the table above, such as Setup Intents. This makes sure that the collected accounts are compatible with [ACH transfers](https://docs.stripe.com/payments/ach-direct-debit.md) or [PAD payments](https://docs.stripe.com/payments/acss-debit.md).
 
 The Financial Connections Sessions API provides more flexibility for use cases that won’t use the collected accounts for ACH payments or Connect payouts. It has configuration options that let your users link additional [account types](https://docs.stripe.com/api/financial_connections/accounts/object.md#financial_connections_account_object-category) that aren’t compatible with ACH, and you can collect multiple accounts in a single session.
 
@@ -53,6 +57,22 @@ To verify a bank account to accept an ACH Direct Debit payment with Financial Co
 Learn how to [collect a bank account to accept an ACH Direct Debit payment](https://docs.stripe.com/financial-connections/ach-direct-debit-payments.md).
 
 Optionally, you can request permission from your customers to retrieve additional data on their [Financial Connections account](https://docs.stripe.com/api/financial_connections/accounts/object.md). We recommend that you access [balances](https://docs.stripe.com/financial-connections/balances.md) data to perform balance checks prior to processing the payment.
+
+Manual account entry and microdeposit verification are available as a fallback method for this use case. However, accounts that you add through microdeposits won’t have access to additional account data.
+
+## Canadian pre-authorized debit (PAD) payments  (Public preview)
+
+- [Balances](https://docs.stripe.com/financial-connections/balances.md)
+
+Stripe offers several ways to accept [Canadian pre-authorized debit](https://docs.stripe.com/payments/acss-debit.md) (PAD) payments, and all of them require that you verify a customer’s bank account before you can debit it. With Financial Connections, your customer authenticates with their bank instead of entering their account details manually.
+
+Collecting a Canadian bank account with Financial Connections can help you:
+
+- Reduce payment failures caused by incorrect or inactive account details.
+- Improve conversion by keeping customers in your flow, instead of having them locate their institution, transit, and account numbers.
+- Save development time by removing the need to build a custom bank account collection form.
+
+Learn how to [collect a bank account to accept a Canadian pre-authorized debit payment](https://docs.stripe.com/financial-connections/acss-direct-debit-payments.md).
 
 Manual account entry and microdeposit verification are available as a fallback method for this use case. However, accounts that you add through microdeposits won’t have access to additional account data.
 

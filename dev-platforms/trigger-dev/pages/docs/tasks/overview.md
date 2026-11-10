@@ -705,10 +705,10 @@ export const taskWithCleanup = task({
 
 ## Next steps
 
-> **[Triggering](/docs/triggering)**
+> [card] [Triggering](/docs/triggering)
 >
 > Learn how to trigger your tasks from your code.
 
-> **[Writing tasks](/docs/writing-tasks-introduction)**
+> [card] [Writing tasks](/docs/writing-tasks-introduction)
 >
 > Tasks are the core of Trigger.dev. Learn how to write them.

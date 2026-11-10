@@ -126,11 +126,11 @@ All three conditions must be true. No organization can route traffic to another 
 
 ## Next steps
 
-> **[Create a Private Link in the AWS Console](/docs/private-networking/aws-console-setup)**
+> [card] [Create a Private Link in the AWS Console](/docs/private-networking/aws-console-setup)
 >
 > Step-by-step instructions for creating the NLB, target group, and VPC Endpoint Service in your
 > AWS account.
 
-> **[Troubleshooting](/docs/private-networking/troubleshooting)**
+> [card] [Troubleshooting](/docs/private-networking/troubleshooting)
 >
 > Common problems when setting up a private connection and how to resolve them.

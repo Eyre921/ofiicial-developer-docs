@@ -1,12 +1,12 @@
 ---
-title: "Campaigns"
+title: "ElevenAgents Campaign Manager"
 source: https://elevenlabs.io/docs/eleven-agents/phone-numbers/campaigns.md
 path: docs/eleven-agents/phone-numbers/campaigns
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Campaigns
+# ElevenAgents Campaign Manager
 
 > **Info**
 >

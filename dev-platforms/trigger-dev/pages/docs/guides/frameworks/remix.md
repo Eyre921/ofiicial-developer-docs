@@ -187,13 +187,13 @@ yarn dlx trigger.dev@latest deploy
 
 ### Other ways to deploy
 
-**GitHub Actions**
+> [tab] GitHub Actions
+>
+> Use GitHub Actions to automatically deploy your tasks whenever new code is pushed and when the `trigger` directory has changes in it. Follow [this guide](/docs/github-actions) to set up GitHub Actions.
 
-Use GitHub Actions to automatically deploy your tasks whenever new code is pushed and when the `trigger` directory has changes in it. Follow [this guide](/docs/github-actions) to set up GitHub Actions.
-
-**Vercel Integration**
-
-Use the official [Vercel integration](/docs/vercel-integration) to deploy your tasks automatically.
+> [tab] Vercel Integration
+>
+> Use the official [Vercel integration](/docs/vercel-integration) to deploy your tasks automatically.
 
 ## Deploying to Vercel Edge Functions
 
@@ -299,34 +299,34 @@ The `runtime: "edge"` configuration in the API route allows for better performan
 
 The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your React components. Show progress bars, stream AI responses, or display run status in real time.
 
-> **[React hooks](/docs/realtime/react-hooks/overview)**
+> [card] [React hooks](/docs/realtime/react-hooks/overview)
 >
 > Hooks for subscribing to runs, streaming data, and triggering tasks from the frontend.
 
-> **[Streams](/docs/tasks/streams)**
+> [card] [Streams](/docs/tasks/streams)
 >
 > Pipe continuous data (like AI completions) from your tasks to the client while they run.
 
 ## Additional resources for Remix
 
-> **[Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)**
+> [card] [Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)
 >
 > How to create a webhook handler in a Remix app, and trigger a task from it.
 
 ## Useful next steps
 
-> **[Tasks overview](/docs/tasks/overview)**
+> [card] [Tasks overview](/docs/tasks/overview)
 >
 > Learn what tasks are and their options
 
-> **[Writing tasks](/docs/writing-tasks-introduction)**
+> [card] [Writing tasks](/docs/writing-tasks-introduction)
 >
 > Learn how to write your own tasks
 
-> **[Deploy using the CLI](/docs/cli-deploy-commands)**
+> [card] [Deploy using the CLI](/docs/cli-deploy-commands)
 >
 > Learn how to deploy your task manually using the CLI
 
-> **[Deploy using GitHub actions](/docs/github-actions)**
+> [card] [Deploy using GitHub actions](/docs/github-actions)
 >
 > Learn how to deploy your task using GitHub actions

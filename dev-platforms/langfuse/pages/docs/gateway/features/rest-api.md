@@ -55,7 +55,7 @@ Every endpoint requires a [gateway API key](/docs/gateway/features/api-keys):
 | `POST /anthropic/v1/messages`              | [Create a message](https://platform.claude.com/docs/en/api/messages/create)                                                    |
 | `POST /anthropic/v1/messages/count_tokens` | [Count tokens](https://platform.claude.com/docs/en/api/messages/count_tokens)                                                  |
 
-The models endpoints return the models your key can call, with IDs in the form `<credential>:<model>` (see [model IDs](/docs/gateway/features/models#model-ids)). The gateway doesn't translate between formats, so the OpenAI endpoints need an OpenAI provider credential and the Anthropic endpoints an Anthropic credential.
+The models endpoints return the models your key can call, with IDs in the form `<credential>:<model>` (see [model IDs](/docs/gateway/features/models#model-ids)). The gateway doesn't translate between formats, so each endpoint needs a credential from a provider that supports its API format.
 
   Other paths return `404`, including websockets and realtime APIs. Request
   bodies must be uncompressed: a `Content-Encoding` other than `identity` fails

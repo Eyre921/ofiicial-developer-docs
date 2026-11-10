@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 480 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 481 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -569,6 +569,7 @@
 - `treasury/connect/fraud-guide` — [Manage fraud](pages/treasury/connect/fraud-guide.md) · [原文](https://docs.stripe.com/treasury/connect/fraud-guide.md)
 - `treasury/connect/handle-complaints` — [Handle complaints](pages/treasury/connect/handle-complaints.md) · [原文](https://docs.stripe.com/treasury/connect/handle-complaints.md)
 - `treasury/connect/how-treasury-for-platforms-works` — [How Treasury for platforms works](pages/treasury/connect/how-treasury-for-platforms-works.md) · [原文](https://docs.stripe.com/treasury/connect/how-treasury-for-platforms-works.md)
+- `treasury/connect/legacy/v1` — [Treasury for platforms v1](pages/treasury/connect/legacy/v1.md) · [原文](https://docs.stripe.com/treasury/connect/legacy/v1.md)
 - `treasury/connect/legacy/v1/examples/sample-app` — [Issuing and Treasury for platforms sample app](pages/treasury/connect/legacy/v1/examples/sample-app.md) · [原文](https://docs.stripe.com/treasury/connect/legacy/v1/examples/sample-app.md)
 - `treasury/connect/marketing` — [Treasury for platforms messaging](pages/treasury/connect/marketing.md) · [原文](https://docs.stripe.com/treasury/connect/marketing.md)
 - `treasury/connect/money-movement/timelines` — [Money movement timelines](pages/treasury/connect/money-movement/timelines.md) · [原文](https://docs.stripe.com/treasury/connect/money-movement/timelines.md)

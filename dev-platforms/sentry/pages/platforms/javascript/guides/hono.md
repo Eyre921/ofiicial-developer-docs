@@ -421,6 +421,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/hono/cloudflare.md)
 - [Installation Methods](https://docs.sentry.io/platforms/javascript/guides/hono/install.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/hono/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/hono/sourcemaps.md)

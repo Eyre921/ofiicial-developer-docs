@@ -12,7 +12,7 @@ This method is deprecated and will be removed soon. If your integration uses it,
 
 ```curl
 curl https://api.stripe.com/v1/charges \
-  -u "<<YOUR_SECRET_KEY>>" \
+  -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-10-28.endive" \
   -d amount=1099 \
   -d currency=usd \

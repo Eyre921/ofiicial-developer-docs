@@ -6,7 +6,7 @@ path: guides/pg-pinecone/overview
 
 pg_pinecone is an open-source PostgreSQL extension that runs the search engine Pinecone uses at scale inside Postgres, or on an index in Pinecone's cloud.
 
-pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine and full-text search also need a server setting.
+pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine, full-text search, and semantic search also need a server setting.
 
 > [card] [Quickstart](/guides/pg-pinecone/quickstart)
 >
@@ -50,7 +50,7 @@ The diagram names these index types:
 * **Scale**: The `remote` engine moves a table's vector search to a Pinecone index, and Postgres keeps the rows.
 * **Unchanged queries**: A pgvector query like `ORDER BY embedding <=> $1` works the same on every engine.
 * **Tenant isolation**: With the `remote` engine, each tenant can have its own Pinecone namespace, so a query searches only that tenant's data.
-* **Full-text search**: pg\_pinecone keeps a Pinecone index for full-text search in sync with a table's text columns, and you run BM25, vector, or hybrid searches on it from SQL.
+* **Full-text and semantic search**: pg\_pinecone keeps a Pinecone index in sync with a table's text columns, and you run [BM25](/guides/pg-pinecone/full-text-search), [semantic](/guides/pg-pinecone/semantic-search), or hybrid searches on it from SQL.
 * **SQL functions**: You can generate embeddings and rerank results in SQL. See the [SQL reference](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/reference.md).
 
 ## Choose your path

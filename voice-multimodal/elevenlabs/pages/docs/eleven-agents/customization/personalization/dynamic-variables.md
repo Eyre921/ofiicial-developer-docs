@@ -26,7 +26,7 @@ Here are a few examples where dynamic variables are useful:
 * **Customizing behavior** based on subscription tiers
 * **Accessing system information** like conversation ID or call duration
 
-Dynamic variables support three value types:
+A dynamic variable can hold any JSON value:
 
 #### String
 
@@ -39,6 +39,18 @@ Numeric values
 #### Boolean
 
 True/false values
+
+#### List
+
+Arrays of any JSON values
+
+#### Object
+
+Nested key-value data
+
+When a list or object is inserted into a prompt, URL, or other text template, it's inserted as its JSON text. A tool parameter bound to a list variable receives the list itself.
+
+Dynamic variables are returned as they are in the conversation details API and in [post-call webhooks](/docs/eleven-agents/workflows/post-call-webhooks), including the `system__` variables below. Parse `dynamic_variables` as a map of JSON values. Don't reject keys or value types you don't recognize, because new `system__` variables can be added.
 
 ## System dynamic variables
 
@@ -84,13 +96,14 @@ These variables are populated when applicable for telephony and messaging channe
 
 ### Per-turn conversation state
 
-| Variable                           | Type      | Description                                                                                                                                                                            | Example                |
-| ---------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `system__call_duration_secs` †     | `integer` | Elapsed conversation time in seconds. Re-evaluated on every turn.                                                                                                                      | `142`                  |
-| `system__agent_turns` †            | `integer` | Total number of agent turns in the conversation so far. Increments on every turn.                                                                                                      | `5`                    |
-| `system__current_agent_turns` †    | `integer` | Number of agent turns for the current agent; resets to `0` after an agent transfer.                                                                                                    | `3`                    |
-| `system__current_subagent_turns` † | `integer` | Number of agent turns in the current workflow node; resets to `0` on node transition.                                                                                                  | `2`                    |
-| `system__conversation_history` †   | `string`  | JSON-serialized conversation transcript up to the current turn (`{"entries": [{"role": "user", "message": "..."}]}`). See [Conversation history format](#conversation-history-format). | `'{"entries": [...]}'` |
+| Variable                           | Type               | Description                                                                                                                                                                            | Example                                    |
+| ---------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `system__call_duration_secs` †     | `integer`          | Elapsed conversation time in seconds. Re-evaluated on every turn.                                                                                                                      | `142`                                      |
+| `system__agent_turns` †            | `integer`          | Total number of agent turns in the conversation so far. Increments on every turn.                                                                                                      | `5`                                        |
+| `system__current_agent_turns` †    | `integer`          | Number of agent turns for the current agent; resets to `0` after an agent transfer.                                                                                                    | `3`                                        |
+| `system__current_subagent_turns` † | `integer`          | Number of agent turns in the current workflow node; resets to `0` on node transition.                                                                                                  | `2`                                        |
+| `system__conversation_history` †   | `string`           | JSON-serialized conversation transcript up to the current turn (`{"entries": [{"role": "user", "message": "..."}]}`). See [Conversation history format](#conversation-history-format). | `'{"entries": [...]}'`                     |
+| `system__uploaded_file_ids` †      | `string[] \| null` | IDs of every file the user attached in the conversation so far, oldest first. `null` until a file is attached. See [Uploaded files](#uploaded-files).                                  | `["01a1c47f-1427-71ab-9898-775cce521078"]` |
 
 ### Conversation history format
 
@@ -123,6 +136,41 @@ Each entry includes a `role` (`"user"`, `"agent"`, or `"tool"`) and one of:
 If a tool result or parameter contains a nested conversation history, it is redacted to a placeholder (such as `[conversation_history (5 turns)]`) to avoid unbounded recursive expansion.
 
 This variable is useful for passing conversation context to tools (such as webhooks or custom LLMs) or for including conversation history in sub-agent prompts during handoffs.
+
+### Uploaded files
+
+`system__uploaded_file_ids` lists the IDs of the files the user attached in chat, for example in the widget or on WhatsApp. It's updated on every turn, so a file attached in the current message is already in the list when the agent calls a tool.
+
+To process an attachment while the conversation is still active, bind the list to an array parameter of a server tool, together with `system__conversation_id`. If the agent calls the tool before the user has attached a file, the parameter receives an empty list.
+
+```json
+"request_body_schema": {
+  "type": "object",
+  "required": ["file_ids", "conversation_id"],
+  "properties": {
+    "file_ids": {
+      "type": "array",
+      "description": "",
+      "dynamic_variable": "system__uploaded_file_ids",
+      "items": { "type": "string", "description": "File ID" }
+    },
+    "conversation_id": {
+      "type": "string",
+      "dynamic_variable": "system__conversation_id"
+    }
+  }
+}
+```
+
+Your server then downloads each file with your API key:
+
+```bash
+curl https://api.elevenlabs.io/v1/convai/conversations/$CONVERSATION_ID/files/$FILE_ID \
+  -H "xi-api-key: $ELEVENLABS_API_KEY" \
+  -o attachment
+```
+
+The response is the original file, with its `Content-Type` (for example `image/jpeg` or `application/pdf`). A file ID that doesn't belong to the conversation returns `404`. The last ID in the list is the most recent upload.
 
 ## Secret dynamic variables
 

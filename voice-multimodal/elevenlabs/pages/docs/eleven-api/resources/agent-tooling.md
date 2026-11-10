@@ -50,7 +50,7 @@ Stream live transcription with low latency.
 
 ```text
 Use the speech to text skill to start a real-time transcription session for microphone input.
-Model: scribe_v2_realtime.
+Model: scribe_v3_live.
 Stream partial transcripts and return committed transcripts with word-level timestamps.
 ```
 

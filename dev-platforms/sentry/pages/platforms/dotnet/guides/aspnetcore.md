@@ -32,9 +32,9 @@ This package extends [Sentry.Extensions.Logging](https://docs.sentry.io/platform
 
 This guide also enables **Tracing**.
 
-The simplest way to initialize Sentry in ASP.NET Core is by using the `UseSentry` extension method from the `Sentry.AspNetCore` package in conjunction with the [framework configuration system](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-7.0).
+The simplest way to initialize Sentry in ASP.NET Core is by using the `UseSentry` extension method from the `Sentry.AspNetCore` package in conjunction with the [framework configuration system](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/).
 
-Call `UseSentry` with your DSN and the options you want. The SDK provides this as extension methods to support ASP.NET Core `2.X`, `3.X`, and `5.X` and later.
+`Sentry.AspNetCore` 6.x requires .NET 8 or later. Call `UseSentry` with your DSN and the options you want. For .NET 6 or 7, use `Sentry.AspNetCore` 4.x.
 
 The snippet also turns on:
 
@@ -91,6 +91,7 @@ public static IWebHost BuildWebHost(string[] args) =>
             // We recommend reducing this value in production.
             options.TracesSampleRate = 1.0;
         })
+        .Build();
 ```
 
 ### [Additional configuration](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#additional-configuration)
@@ -330,7 +331,15 @@ catch (Exception ex)
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Samples](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#samples)
 

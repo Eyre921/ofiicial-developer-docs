@@ -58,7 +58,7 @@ def transcribe_with_webhook(audio_file):
   try:
     result = elevenlabs.speech_to_text.convert(
       file=audio_file,
-      model_id="scribe_v2",
+      model_id="scribe_v3",
       webhook=True,
     )
     print(f"Transcription started: {result.request_id}")
@@ -79,7 +79,7 @@ async function transcribeWithWebhook(audioFile) {
   try {
     const result = await elevenlabs.speechToText.convert({
       file: audioFile,
-      modelId: 'scribe_v2',
+      modelId: 'scribe_v3',
       webhook: true,
     });
 
@@ -259,7 +259,7 @@ async function testWebhook() {
 
   const result = await elevenlabs.speechToText.convert({
     file: audioFile,
-    modelId: "scribe_v2",
+    modelId: "scribe_v3",
     webhook: true,
   });
 

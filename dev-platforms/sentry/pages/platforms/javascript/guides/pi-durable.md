@@ -12,11 +12,16 @@ url: https://docs.sentry.io/platforms/javascript/guides/pi-durable/
 
 # Sentry for Pi Durable
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md)
+* [Deno](https://docs.sentry.io/platforms/javascript/guides/pi-durable/deno.md)
+* [Bun](https://docs.sentry.io/platforms/javascript/guides/pi-durable/bun.md)
+
 [Pi Durable](https://earendil.com/posts/pi-durable/) is Earendil's durable agent harness, built on the same foundations as the Pi coding agent. It runs many conversations at once and survives crashes, picking each run up from its last checkpoint. This guide sets up the Sentry SDK in a Pi Durable app so agent runs, model requests, tool calls, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
 
 Pi Durable is experimental, and its API can change between releases. The Sentry integration supports `@earendil-works/pi-durable` `>=1.0.0 <2.0.0` and requires JavaScript SDK version `11.6.0` or later.
-
-Running Pi Durable in a Cloudflare Durable Object? Follow the [Cloudflare Quick Start](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md) instead.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#prerequisites)
 
@@ -24,7 +29,7 @@ Before you begin, you need:
 
 * A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md). The project's DSN tells the SDK where to send data.
 * A Node.js application using `@earendil-works/pi-durable` version `1.0.0` or later.
-* `@sentry/node` version `11.6.0` or later, or [`@sentry/cloudflare@^11.6.0` when running on Cloudflare](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md). Browser runtimes are not supported.
+* `@sentry/node` version `11.6.0` or later. Browser runtimes are not supported.
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#install)
 
@@ -212,6 +217,8 @@ Failures Pi Durable only passes to `onReport`, such as a hook or system prompt s
 
 * `@sentry/node`: `>=11.6.0`
 * `@sentry/cloudflare`: `>=11.6.0`
+* `@sentry/deno`: `>=11.6.0`
+* `@sentry/bun`: `>=11.6.0`
 * `@earendil-works/pi-durable`: `>=1.0.0 <2.0.0`
 
 ## Other JavaScript Frameworks
@@ -258,7 +265,9 @@ Failures Pi Durable only passes to `onReport`, such as a hook or system prompt s
 
 ## Topics
 
-- [Cloudflare Quick Start](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md)
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md)
+- [Quick Start (Deno)](https://docs.sentry.io/platforms/javascript/guides/pi-durable/deno.md)
+- [Quick Start (Bun)](https://docs.sentry.io/platforms/javascript/guides/pi-durable/bun.md)
 - [Installation Methods](https://docs.sentry.io/platforms/javascript/guides/pi-durable/install.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/pi-durable/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/pi-durable/sourcemaps.md)

@@ -601,13 +601,13 @@ onAction: async ({ action }) => {
 },
 
 // Side-effect once per net-new tool result when wire messages come in
-hydrateMessages: async ({ incomingMessages }) => {
+hydrateMessages: async ({ incomingMessages, previousMessages }) => {
   for (const msg of incomingMessages) {
     for (const r of chat.history.extractNewToolResults(msg)) {
       await onToolResolved({ id: r.toolCallId, output: r.output, errorText: r.errorText });
     }
   }
-  return incomingMessages;
+  return [...previousMessages, ...incomingMessages.filter((m) => m.role === "user")];
 },
 ```
 
@@ -925,6 +925,6 @@ export const manualChat = task({
 
 Both lower levels — `chat.createSession()` (managed turn iterator, your turn body) and `chat.customAgent()` with raw primitives (hand-rolled loop, full stream-conversion control) — are covered together on the Custom agents page, including the `ChatTurn` surface, the continuation-seeding pattern, and the hand-rolled-loop checklist:
 
-> **[Custom agents](/docs/ai-chat/custom-agents)**
+> [card] [Custom agents](/docs/ai-chat/custom-agents)
 >
 > Build agents without the managed lifecycle — createSession or raw primitives.

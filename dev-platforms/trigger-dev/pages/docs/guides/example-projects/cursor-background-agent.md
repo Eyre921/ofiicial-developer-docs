@@ -31,7 +31,7 @@ This example runs [Cursor's headless CLI](https://cursor.com/cli) in a Trigger.d
 
 ## GitHub repo
 
-> **[View the Cursor background agent repo](https://github.com/triggerdotdev/examples/tree/main/cursor-cli-demo)**
+> [card] [View the Cursor background agent repo](https://github.com/triggerdotdev/examples/tree/main/cursor-cli-demo)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.

@@ -149,8 +149,8 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
 - [Overview](https://qdrant.tech/documentation/overview.md): Get oriented with Qdrant: how vector search works, the retrieval process, the client-server architecture, and core data structures.
   - [What is Qdrant?](https://qdrant.tech/documentation/overview/what-is-qdrant.md): Introduction to Qdrant, the vector similarity search engine that stores points with vectors and payloads for semantic search and RAG.
   - [Understanding Vector Search in Qdrant](https://qdrant.tech/documentation/overview/vector-search.md): Understand how vector search works, why it goes beyond keyword matching, and where Qdrant fits in the modern retrieval ecosystem.
-- [Local Quickstart](https://qdrant.tech/documentation/quickstart.md): Run Qdrant locally with Docker, connect a client SDK, and create your first collection for vector search.
 - [Cloud Quickstart](https://qdrant.tech/documentation/cloud-quickstart.md): Spin up a free Qdrant Cloud cluster, connect with the official SDKs, and run your first semantic search in minutes.
+- [Local Quickstart](https://qdrant.tech/documentation/quickstart.md): Run Qdrant locally with Docker, connect a client SDK, and create your first collection for vector search.
 
 ### User Manual
 
@@ -711,6 +711,7 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
 ### Embeddings & Machine Learning
 
 - [Embeddings & Machine Learning](https://qdrant.tech/articles/embedding-research.md): Explore embedding models, sparse retrieval, late interaction, and metric learning.
+- [Embedding at the Speed of Light](https://qdrant.tech/articles/embedding-at-the-speed-of-light.md): Static embedding models in FastEmbed: how they work, how fast they run, and the retrieval tradeoffs.
 - [miniCOIL EN-ES: Sparse Neural Retrieval Across the Language Barrier](https://qdrant.tech/articles/minicoil-en-es.md): miniCOIL goes bilingual: concept-based exact matching for English and Spanish, research preview.
 - [Why Hyperbolic Embeddings Matter for Hierarchical Data](https://qdrant.tech/articles/hyperbolic-embeddings-qdrant.md): An early look at hierarchical data in curved space, and how to search it in Qdrant.
 - [MUVERA: Making Multivectors More Performant](https://qdrant.tech/articles/muvera-embeddings.md): Making multi-vector retrieval more efficient by approximating it with single-vector search

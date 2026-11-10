@@ -286,9 +286,19 @@ If the type key is `"template_mention_user"`, then the rich text object contains
 
 #### User mention type object
 
-If a rich text object’s `type` value is `"user"`, then the corresponding user field contains a [user object](/reference/user).
+When `mention.type` is `"user"`, `mention.user` contains a [user object](/reference/user). A user mention can reference a person, a connection's bot, or a Custom Agent.
 
-A `user` mention can reference a person or a connection's bot. A Custom Agent can't be mentioned: the request returns a `validation_error`. To hand work to an agent, assign it in a [`people` page property](/reference/page-property-values#people).
+To mention a Custom Agent in structured rich text, pass its agent ID or bot user ID in `mention.user.id`. Your connection needs [access to the agent](/reference/capabilities#agent-capabilities).
+
+```json theme={null}
+{
+  "type": "mention",
+  "mention": {
+    "type": "user",
+    "user": { "id": "ef82a3bc-58dc-47ca-8ab6-56d144d166cc" }
+  }
+}
+```
 
 > [!NOTE]
 >

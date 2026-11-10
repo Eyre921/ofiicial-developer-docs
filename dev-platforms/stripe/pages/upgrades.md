@@ -26,11 +26,11 @@ Your account has a *default API version* (If an API request doesn't specify a ve
 
 #### Ruby
 
-The [stripe-ruby](https://github.com/stripe/stripe-ruby) library allows you to set the API version globally or on a per-request basis.
+The [stripe-ruby](https://github.com/stripe/stripe-ruby) library allows you to set the API version for a client or on a per-request basis.
 
 If you don’t set an API version, recent versions of stripe-ruby use the API version that was latest at the time your version of stripe-ruby was released. Versions of stripe-ruby before [v9](https://github.com/stripe/stripe-ruby/blob/master/CHANGELOG.md#900---2023-08-16) use your account’s default API version.
 
-To set the API version **globally** with the SDK, assign the version to the `Stripe.api_version` property:
+To set the API version for all requests made by a `StripeClient`, provide the `stripe_version` option when you create the client:
 
 ```ruby
 require 'stripe'
@@ -53,7 +53,7 @@ intent = client.v1.payment_intents.retrieve(
 intent.capture
 ```
 
-> When you override the version globally or per-request, the API response objects are also returned in that version.
+> When you override the version for a client or per-request, the API response objects are also returned in that version.
 
 #### Python
 
@@ -144,11 +144,11 @@ const intent = await stripe.paymentIntents.retrieve('pi_1DlIVK2eZvKYlo2CW4yj5l2C
 
 The TypeScript types reflect the latest API version at the time of release. This version is encoded in the [API_VERSION file](https://github.com/stripe/stripe-node/blob/master/API_VERSION).
 
-Import Stripe as a default import and instantiate it as `new Stripe()` with the latest API version.
+Import Stripe as a default import and instantiate it as `new Stripe()` with the latest API version. Load your secret key from the `STRIPE_SECRET_KEY` environment variable.
 
 ```javascript
 import Stripe from 'stripe';
-const stripe = new Stripe('<<YOUR_PUBLISHABLE_KEY>>', {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2026-10-28.endive'
 });
 ```

@@ -58,7 +58,7 @@ If you prefer a lightweight/passive approach, paste the snippet below into a con
 
 Create the file that matches your AI tool (or multiple files if your team uses different tools) and paste the snippet below. This gives the AI essential Trigger.dev context without installing anything.
 
-> **Copy the snippet**
+> [accordion] Copy the snippet
 >
 > ````markdown theme={"theme":"css-variables"}
 > # Trigger.dev rules
@@ -219,18 +219,18 @@ These follow the [llms.txt standard](https://llmstxt.org) and can be fed directl
 
 ## Troubleshooting
 
-> **AI keeps generating old v2/v3 code**
+> [accordion] AI keeps generating old v2/v3 code
 >
 > Install [Skills](/docs/skills); they override the outdated patterns in the AI's training data. The [context snippet](#project-level-context-snippet) above is a quick alternative.
 
-> **MCP server won't connect**
+> [accordion] MCP server won't connect
 >
 > 1. Make sure you've restarted your AI client after adding the config
 > 2. Run `npx trigger.dev@latest install-mcp` again — it will detect and fix common issues
 > 3. Check that `npx trigger.dev@latest mcp` runs without errors in your terminal
 > 4. See the [MCP introduction](/docs/mcp-introduction) for client-specific config details
 
-> **Which tool should I install?**
+> [accordion] Which tool should I install?
 >
 > Both if possible:
 >
@@ -239,14 +239,14 @@ These follow the [llms.txt standard](https://llmstxt.org) and can be fed directl
 
 ## Next steps
 
-> **[MCP Server](/docs/mcp-introduction)**
+> [card] [MCP Server](/docs/mcp-introduction)
 >
 > Install and configure the MCP Server for live project interaction.
 
-> **[Skills](/docs/skills)**
+> [card] [Skills](/docs/skills)
 >
 > Install Trigger.dev agent skills into any AI coding assistant.
 
-> **[Writing tasks](/docs/tasks/overview)**
+> [card] [Writing tasks](/docs/tasks/overview)
 >
 > Learn the task patterns your AI assistant will follow.

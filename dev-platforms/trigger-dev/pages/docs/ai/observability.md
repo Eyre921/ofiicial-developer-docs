@@ -166,10 +166,10 @@ Set the time window with the query's [period filter](/docs/observability/query#t
 
 ## Next steps
 
-> **[Prompts](/docs/ai/prompts)**
+> [card] [Prompts](/docs/ai/prompts)
 >
 > Version prompts as code and link generations to the exact prompt version that produced them.
 
-> **[Query (TRQL)](/docs/observability/query)**
+> [card] [Query (TRQL)](/docs/observability/query)
 >
 > Write custom queries against your runs, metrics, and LLM usage.

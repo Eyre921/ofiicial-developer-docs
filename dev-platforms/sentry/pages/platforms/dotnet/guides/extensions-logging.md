@@ -42,45 +42,34 @@ Install-Package Sentry.Extensions.Logging -Version 6.12.1
 
 This package extends `Sentry` main SDK. That means that besides the logging related features, through this package you'll also get access to all API and features available in the main `Sentry` SDK.
 
-Messages logged from assemblies with the name starting with `Sentry` will not generate events.
+The integration excludes the Sentry SDK's own logger categories to avoid capturing its diagnostic messages as events. Application categories that happen to start with `Sentry` aren't excluded solely because of that prefix.
 
 ## [Configure](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#configure)
 
-There are two ways to add this integration into your project. In both cases it means calling an extension method. The places where it's available are:
+Call `AddSentry` on an `ILoggingBuilder`, either through a generic host or `LoggerFactory.Create`. This registers the providers for error events, breadcrumbs, and structured logs.
 
-* `ILoggingBuilder`
-* `ILoggerFactory`
-
-The `ILoggingBuilder` extension is useful when using a `WebHostBuilder` or a `HostBuilder`, also known as *Generic host*. This extension method is used by the ASP.NET Core integration under the hood to automatically.
-
-The extension to `ILoggerFactory` is a convenient way when only the `LoggerFactory` is being used, without any framework integration.
-
-In both cases the method call is:
-
-**AddSentry()**
+The legacy `ILoggerFactory.AddSentry` extension registers only the error-event and breadcrumb provider. Use `LoggerFactory.Create` with `builder.AddSentry` to capture structured logs too. ASP.NET Core's `UseSentry` already registers the providers, so it doesn't need a separate `AddSentry` call.
 
 ### [Example configuration](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#example-configuration)
 
 #### [Through `ILoggingBuilder`](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#through-iloggingbuilder)
 
+This example uses a generic host from the `Microsoft.Extensions.Hosting` package:
+
 ```csharp
-public static Task Main()
-    => new HostBuilder()
-        .ConfigureHostConfiguration(c =>
-        {
-            c.SetBasePath(Directory.GetCurrentDirectory());
-            c.AddJsonFile("appsettings.json", optional: false);
-        })
-        .ConfigureLogging((c, l) =>
-        {
-            l.AddConfiguration(c.Configuration);
-            // Adding Sentry integration to Microsoft.Extensions.Logging
-            l.AddSentry();
-        })
-        .Build();
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+var builder = Host.CreateApplicationBuilder(args);
+// Lets Sentry read the top-level "Sentry" section of appsettings.json
+builder.Logging.AddConfiguration(builder.Configuration);
+builder.Logging.AddSentry();
+
+using var host = builder.Build();
+await host.RunAsync();
 ```
 
-In this example, a *generic host* is being built and the MEL integration with Sentry added through `ConfigureLogging`. The example also demonstrates how to bind the `appsettings.json` configuration to make the values available to the Sentry integration.
+The host loads `appsettings.json` and environment variables. Sentry reads its options from the `Sentry` configuration section.
 
 With this approach, options like `Dsn`, `SendDefaultPii`, `MinimumBreadcrumbLevel`, to name a few, can be set in `appsettings.json`.
 
@@ -96,6 +85,7 @@ Example using `appsettings.json`:
   },
   "Sentry": {
     "Dsn": "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+    "EnableLogs": true,
     "SendDefaultPii": true,
     "MinimumBreadcrumbLevel": "Debug",
     "MinimumEventLevel": "Warning",
@@ -109,11 +99,20 @@ Above we set the application wide minimum log level to `Debug` and we configure 
 #### [Through `ILoggerFactory`](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#through-iloggerfactory)
 
 ```csharp
-using (var loggerFactory = new LoggerFactory()
-            .AddConsole(LogLevel.Trace)
-            .AddSentry(o => o.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"))
+using Microsoft.Extensions.Logging;
+
+using (var loggerFactory = LoggerFactory.Create(builder =>
 {
-    var logger = loggerFactory.CreateLogger<Program>();
+    builder.SetMinimumLevel(LogLevel.Information);
+    builder.AddSentry(options =>
+    {
+        options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
+        options.EnableLogs = true;
+    });
+}))
+{
+    var logger = loggerFactory.CreateLogger("Example");
+    logger.LogInformation("Order processed {OrderId}", "order-123");
 }
 ```
 
@@ -125,13 +124,17 @@ More settings can be passed via the callback configuring the `SentryOptions`.
 
 In cases where `AddSentry` is called without arguments, it's worth noting that an overload exists where `SentryOptions` can be configured just like if `SentrySdk.Init` had been called.
 
-The SDK needs to be initialized only once. If the `DSN` is made available to this integration, by default it **will** initialize the SDK. If you do not wish to initialize the SDK via this configuration, set the `InitializeSdk` flag to **false**. Not providing a DSN or leaving it as an *empty string* will disable the SDK.
+Initialize the SDK once. `ILoggingBuilder.AddSentry` initializes it by default and can resolve a DSN from configuration or `SENTRY_DSN`. If another integration or `SentrySdk.Init` owns initialization, set `InitializeSdk = false`. Omitting the DSN isn't a substitute for this flag: if no DSN is found, initialization throws. An explicitly empty DSN disables the SDK.
 
 For example:
 
 ```csharp
-using (var loggerFactory = new LoggerFactory()
-            .AddSentry(o => o.InitializeSdk = false))
+using (var loggerFactory = LoggerFactory.Create(builder =>
+    builder.AddSentry(options =>
+    {
+        options.InitializeSdk = false;
+        options.EnableLogs = true;
+    })))
 { }
 ```
 
@@ -169,20 +172,14 @@ options.TagFilters.Add("PROC_");
 
 ## [Verify](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#verify)
 
-This snippet includes an intentional error, so you can test that everything is working as soon as you set it up.
+After creating a logger with one of the configurations above, send an informational log and an error to verify both providers:
 
 ```csharp
-try
-{
-    throw null;
-}
-catch (Exception ex)
-{
-    SentrySdk.CaptureException(ex);
-}
+logger.LogInformation("Sentry logging verification");
+logger.LogError("Sentry error-event verification");
 ```
 
-*Other available variations of the above snippet: fsharp*
+Check **Logs** for the informational log and **Issues** for the error event. Run this code before disposing the host or logger factory.
 
 ## [Samples](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#samples)
 

@@ -12,15 +12,15 @@ Build marketing workflows from email drip sequences to orchestrating full multi-
 
 ## Featured examples
 
-> **[Email sequences with Resend](/docs/guides/examples/resend-email-sequence)**
+> [card] [Email sequences with Resend](/docs/guides/examples/resend-email-sequence)
 >
 > Send multi-day email sequences with wait delays between messages.
 
-> **[Product image generator](/docs/guides/example-projects/product-image-generator)**
+> [card] [Product image generator](/docs/guides/example-projects/product-image-generator)
 >
 > Transform product photos into professional marketing images using Replicate.
 
-> **[Human-in-the-loop workflow](/docs/guides/example-projects/human-in-the-loop-workflow)**
+> [card] [Human-in-the-loop workflow](/docs/guides/example-projects/human-in-the-loop-workflow)
 >
 > Approve marketing content using a human-in-the-loop workflow.
 
@@ -34,98 +34,98 @@ Build marketing workflows from email drip sequences to orchestrating full multi-
 
 ## Production use cases
 
-> **[Icon customer story](https://trigger.dev/customers/icon-customer-story)**
+> [card] [Icon customer story](https://trigger.dev/customers/icon-customer-story)
 >
 > Read how Icon uses Trigger.dev to process and generate thousands of videos per month for their AI-driven video creation platform.
 
 ## Example workflow patterns
 
-**Drip email campaign**
+> [tab] Drip email campaign
+>
+> Simple drip campaign. User signs up, waits specified delay, sends personalized email, tracks engagement.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[userCreateAccount] --> B[sendWelcomeEmail]
+>     B --> C[wait.for 24h]
+>     C --> D[sendProductTipsEmail]
+>     D --> E[wait.for 7d]
+>     E --> F[sendFeedbackEmail]
+>
+> ```
 
-Simple drip campaign. User signs up, waits specified delay, sends personalized email, tracks engagement.
+> [tab] Multi-channel campaigns
+>
+> **Router pattern with delay orchestration**. User action triggers campaign, router selects channel based on preferences (email/SMS/push), coordinates multi-day sequence with delays between messages, tracks engagement across channels.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[startCampaign] --> B[fetchUserProfile]
+>     B --> C[selectChannel]
+>     C --> D{Preferred<br/>Channel?}
+>
+>     D -->|Email| E[sendEmail1]
+>     D -->|SMS| F[sendSMS1]
+>     D -->|Push| G[sendPush1]
+>
+>     E --> H[wait.for 2d]
+>     F --> H
+>     G --> H
+>
+>     H --> I[sendFollowUp]
+>     I --> J[trackConversion]
+> ```
 
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[userCreateAccount] --> B[sendWelcomeEmail]
-    B --> C[wait.for 24h]
-    C --> D[sendProductTipsEmail]
-    D --> E[wait.for 7d]
-    E --> F[sendFeedbackEmail]
+> [tab] AI content with approval
+>
+> **Supervisor pattern with approval gate**. Generates AI marketing content (images, copy, assets), pauses with wait.forToken for human review, applies revisions if needed, publishes to channels after approval.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[createCampaignAssets] --> B[generateAIContent]
+>     B --> C[wait.forToken approval]
+>     C --> D{Approved?}
+>
+>     D -->|Yes| E[publishToChannels]
+>     D -->|Needs revision| F[applyFeedback]
+>     F --> B
+> ```
 
-```
-
-**Multi-channel campaigns**
-
-**Router pattern with delay orchestration**. User action triggers campaign, router selects channel based on preferences (email/SMS/push), coordinates multi-day sequence with delays between messages, tracks engagement across channels.
-
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[startCampaign] --> B[fetchUserProfile]
-    B --> C[selectChannel]
-    C --> D{Preferred<br/>Channel?}
-
-    D -->|Email| E[sendEmail1]
-    D -->|SMS| F[sendSMS1]
-    D -->|Push| G[sendPush1]
-
-    E --> H[wait.for 2d]
-    F --> H
-    G --> H
-
-    H --> I[sendFollowUp]
-    I --> J[trackConversion]
-```
-
-**AI content with approval**
-
-**Supervisor pattern with approval gate**. Generates AI marketing content (images, copy, assets), pauses with wait.forToken for human review, applies revisions if needed, publishes to channels after approval.
-
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[createCampaignAssets] --> B[generateAIContent]
-    B --> C[wait.forToken approval]
-    C --> D{Approved?}
-
-    D -->|Yes| E[publishToChannels]
-    D -->|Needs revision| F[applyFeedback]
-    F --> B
-```
-
-**Survey response enrichment**
-
-**Coordinator pattern with enrichment**. User completes survey, batch triggers parallel enrichment from CRM/analytics, analyzes and scores responses, updates customer profiles, triggers personalized follow-up campaigns.
-
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[processSurveyResponse] --> B[coordinateEnrichment]
-    B --> C[batchTriggerAndWait]
-
-    C --> D[fetchCRMData]
-    C --> E[fetchAnalytics]
-    C --> F[fetchBehaviorData]
-
-    D --> G[analyzeAndScore]
-    E --> G
-    F --> G
-
-    G --> H[updateCRMProfile]
-    H --> I[triggerFollowUp]
-```
+> [tab] Survey response enrichment
+>
+> **Coordinator pattern with enrichment**. User completes survey, batch triggers parallel enrichment from CRM/analytics, analyzes and scores responses, updates customer profiles, triggers personalized follow-up campaigns.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[processSurveyResponse] --> B[coordinateEnrichment]
+>     B --> C[batchTriggerAndWait]
+>
+>     C --> D[fetchCRMData]
+>     C --> E[fetchAnalytics]
+>     C --> F[fetchBehaviorData]
+>
+>     D --> G[analyzeAndScore]
+>     E --> G
+>     F --> G
+>
+>     G --> H[updateCRMProfile]
+>     H --> I[triggerFollowUp]
+> ```
 
 ## Featured use cases
 
-> **[Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)**
+> [card] [Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)
 >
 > Build complex data pipelines that process large datasets without timeouts.
 
-> **[Media processing workflows](/docs/guides/use-cases/media-processing)**
+> [card] [Media processing workflows](/docs/guides/use-cases/media-processing)
 >
 > Batch process videos, images, audio, and documents with no execution time limits.
 
-> **[AI media generation workflows](/docs/guides/use-cases/media-generation)**
+> [card] [AI media generation workflows](/docs/guides/use-cases/media-generation)
 >
 > Generate images, videos, audio, documents and other media using AI models.
 
-> **[Marketing workflows](/docs/guides/use-cases/marketing)**
+> [card] [Marketing workflows](/docs/guides/use-cases/marketing)
 >
 > Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.

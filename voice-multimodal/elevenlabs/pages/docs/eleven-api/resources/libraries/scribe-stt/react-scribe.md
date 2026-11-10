@@ -45,7 +45,7 @@ import { useEffect } from "react";
 
 function MyComponent() {
   const scribe = useScribe({
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     onPartialTranscript: (data) => {
       console.log("Partial:", data.text);
     },
@@ -146,7 +146,7 @@ Configure the hook with default options and callbacks:
 const scribe = useScribe({
   // Connection options (can be overridden in connect())
   token: "optional-default-token",
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   baseUri: "wss://api.elevenlabs.io",
 
   // VAD options
@@ -190,7 +190,7 @@ const scribe = useScribe({
 | Property    | Type     | Description                                                       |
 | ----------- | -------- | ----------------------------------------------------------------- |
 | **token**   | `string` | Single-use token for WebSocket authentication.                    |
-| **modelId** | `string` | Model ID (e.g., `"scribe_v2_realtime"`).                          |
+| **modelId** | `string` | Model ID (e.g., `"scribe_v3_live"`).                              |
 | **baseUri** | `string` | Custom WebSocket base URI. Defaults to `wss://api.elevenlabs.io`. |
 
 ### VAD options
@@ -270,7 +270,7 @@ Stream audio directly from the user's microphone:
 ```tsx
 function MicrophoneTranscription() {
   const scribe = useScribe({
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
   });
 
   const startRecording = async () => {
@@ -319,7 +319,7 @@ import { useState } from "react";
 function FileTranscription() {
   const [file, setFile] = useState<File | null>(null);
   const scribe = useScribe({
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     audioFormat: AudioFormat.PCM_16000,
     sampleRate: 16000,
   });
@@ -507,7 +507,7 @@ import { useEffect } from "react";
 
 function ScribeDemo() {
   const scribe = useScribe({
-    modelId: "scribe_v2_realtime",
+    modelId: "scribe_v3_live",
     commitStrategy: CommitStrategy.VAD,
     onSessionStarted: () => console.log("Started"),
     onCommittedTranscript: (data) => console.log("Committed:", data.text),

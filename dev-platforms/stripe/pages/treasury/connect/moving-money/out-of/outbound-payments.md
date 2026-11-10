@@ -711,10 +711,10 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
         "check_send": {
             "payee_name": "Jenny Rosen",
             "mailing_address": {
-                "line1": "510 Townsend St",
-                "city": "San Francisco",
-                "state": "CA",
-                "postal_code": "94103",
+                "line1": "27 Fredrick Ave",
+                "city": "Brothers",
+                "state": "OR",
+                "postal_code": "97712",
                 "country": "US"
             }
         }
@@ -723,11 +723,13 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   }'
 ```
 
-After successful creation, the `OutboundSetupIntent` has status `succeeded`. Save the `payout_method.id` from the response to use as `to.payout_method` when creating a payment.
+After successful creation, the `OutboundSetupIntent` has status `succeeded`. Save the response’s `payout_method.id` (`chksend_...`) to use as `to.payout_method` for each check sent to that destination. A recipient can have multiple check payout methods.
 
 ### Create the payment 
 
-Create an `OutboundPayment` with the recipient Account ID in `to.recipient` and the Check Send payout method ID in `to.payout_method`. Provide a sender signature, up to 30 characters, in `to.payout_method_options.check_send.signature`. You can also provide a memo, up to 100 characters, in `to.payout_method_options.check_send.memo`. Stripe prints both on the check.
+Create an `OutboundPayment` with the recipient Account ID in `to.recipient`.
+
+Set `to.payout_method` to the saved `chksend_...` ID and provide a sender signature, up to 30 characters, in `to.payout_method_options.check_send.signature`. You can also provide a memo, up to 100 characters, in `to.payout_method_options.check_send.memo`. Stripe prints both on the check. Set `to.payout_method_options.check_send.shipping_speed` to `standard` or `priority`. The default is `standard`.
 
 For a connected account’s payment, set `Stripe-Context` to the connected account ID alone. Omit the header to send from your platform’s financial account.
 
@@ -743,7 +745,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
     },
     "to": {
         "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "payout_method": "chksend_...",
         "payout_method_options": {
             "check_send": {
                 "signature": "Jenny Rosen",
@@ -788,7 +790,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
     },
     "to": {
         "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "payout_method": "chksend_...",
         "payout_method_options": {
             "check_send": {
                 "signature": "Jenny Rosen",

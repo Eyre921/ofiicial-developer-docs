@@ -29,7 +29,7 @@ POST /v1/prices {"product":"${node.prerequisites.createProduct.createProduct:id}
 
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
-  -u "<<YOUR_SECRET_KEY>>" \
+  -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-10-28.endive" \
   -d customer={{CUSTOMER_ID}} \
   -d "items[0][price]={{PRICE_ID}}"

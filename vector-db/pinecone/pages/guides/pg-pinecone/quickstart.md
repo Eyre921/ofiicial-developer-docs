@@ -34,14 +34,14 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >
 >    ```bash Linux theme={null}
 >    PG=17
->    tar xzf pg_pinecone-0.11.0-pg$PG-linux-x86_64.tar.gz
+>    tar xzf pg_pinecone-0.12.1-pg$PG-linux-x86_64.tar.gz
 >    sudo cp usr/lib/postgresql/$PG/lib/pg_pinecone.so "$(pg_config --pkglibdir)/"
 >    sudo cp usr/share/postgresql/$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
 >
 >    ```bash macOS theme={null}
 >    PG=17
->    tar xzf pg_pinecone-0.11.0-pg$PG-darwin-arm64.tar.gz
+>    tar xzf pg_pinecone-0.12.1-pg$PG-darwin-arm64.tar.gz
 >    cp opt/homebrew/lib/postgresql@$PG/pg_pinecone.dylib "$(pg_config --pkglibdir)/"
 >    cp opt/homebrew/share/postgresql@$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
@@ -52,10 +52,10 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >
 > The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg\_pinecone added, so it includes Postgres and pgvector. It runs on x86\_64 and arm64 hosts. On x86\_64, it needs a CPU that supports x86-64-v3, like the Linux x86\_64 release archive.
 >
-> 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.11.0-pg18` tag here and in the next step instead:
+> 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.12.1-pg18` tag here and in the next step instead:
 >
 >    ```bash theme={null}
->    docker pull pineconeteam/pg_pinecone:0.11.0-pg17
+>    docker pull pineconeteam/pg_pinecone:0.12.1-pg17
 >    ```
 >
 > 2. Start a container from the image:
@@ -63,11 +63,11 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    ```bash theme={null}
 >    docker run -d --name pg_pinecone \
 >      -e POSTGRES_PASSWORD=secret \
->      pineconeteam/pg_pinecone:0.11.0-pg17 \
+>      pineconeteam/pg_pinecone:0.12.1-pg17 \
 >      -c shared_preload_libraries=pg_pinecone
 >    ```
 >
->    The `shared_preload_libraries` setting isn't needed for this quickstart, but the `remote` engine and full-text search need it, and setting it now saves a restart later.
+>    The `shared_preload_libraries` setting isn't needed for this quickstart, but the `remote` engine, full-text search, and semantic search need it, and setting it now saves a restart later.
 
 ## 2. Connect and create the extensions
 
@@ -260,3 +260,4 @@ DROP TABLE docs;
 * [Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector) on an existing table.
 * [Switch from native to remote](/guides/pg-pinecone/switch-to-remote) when a table outgrows one server.
 * [Search a table with full-text search](/guides/pg-pinecone/full-text-search).
+* [Search a table with semantic search](/guides/pg-pinecone/semantic-search).

@@ -25,7 +25,7 @@ This simple example demonstrates how to use Trigger.dev and Prisma as packages i
 
 Fork the GitHub repo below to get started with this example project.
 
-> **[Check out the Turborepo monorepo demo with Trigger.dev and Prisma packages](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package)**
+> [card] [Check out the Turborepo monorepo demo with Trigger.dev and Prisma packages](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-package)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -119,7 +119,7 @@ This example demonstrates how to use Trigger.dev and Prisma in a monorepo create
 
 Fork the GitHub repo below to get started with this example project.
 
-> **[Check out the Turborepo monorepo demo with a Prisma package and Trigger.dev installed in a Next.js app](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-trigger)**
+> [card] [Check out the Turborepo monorepo demo with a Prisma package and Trigger.dev installed in a Next.js app](https://github.com/triggerdotdev/examples/tree/main/monorepos/turborepo-prisma-tasks-trigger)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.

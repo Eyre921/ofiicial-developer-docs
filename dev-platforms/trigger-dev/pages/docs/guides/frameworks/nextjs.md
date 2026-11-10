@@ -121,238 +121,238 @@ For more information on authenticating with Trigger.dev, see the [API keys page]
 
 Here are the steps to trigger your task in the Next.js App and Pages router and Server Actions.
 
-**App Router**
-
-**1. Create a Route Handler**
-
-Add a Route Handler by creating a `route.ts` file (or `route.js` file) in the `app/api` directory like this: `app/api/hello-world/route.ts`.
-
-**2. Add your task**
-
-Add this code to your `route.ts` file which imports your task along with `NextResponse` to handle the API route response:
-
-```ts app/api/hello-world/route.ts theme={"theme":"css-variables"}
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { helloWorldTask } from "@/trigger/example";
-import { tasks } from "@trigger.dev/sdk";
-import { NextResponse } from "next/server";
-
-//tasks.trigger also works with the edge runtime
-//export const runtime = "edge";
-
-export async function GET() {
-  const handle = await tasks.trigger<typeof helloWorldTask>(
-    "hello-world",
-    "James"
-  );
-
-  return NextResponse.json(handle);
-}
-```
-
-**3. Trigger your task**
-
-Run your Next.js app:
-
-```bash npm theme={"theme":"css-variables"}
-npm run dev
-```
-
-```bash pnpm theme={"theme":"css-variables"}
-pnpm run dev
-```
-
-```bash yarn theme={"theme":"css-variables"}
-yarn dev
-```
-
-Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/nextjs#initial-setup) section above if it's not already running:
-
-```bash npm theme={"theme":"css-variables"}
-npx trigger.dev@latest dev
-```
-
-```bash pnpm theme={"theme":"css-variables"}
-pnpm dlx trigger.dev@latest dev
-```
-
-```bash yarn theme={"theme":"css-variables"}
-yarn dlx trigger.dev@latest dev
-```
-
-Now visit the URL in your browser to trigger the task. Ensure the port number is the same as the one you're running your Next.js app on. For example, if you're running your Next.js app on port 3000, visit:
-
-```bash theme={"theme":"css-variables"}
-http://localhost:3000/api/hello-world
-```
-
-You should see the CLI log the task run with a link to view the logs in the dashboard.
-
-![Trigger.dev CLI showing a successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/trigger-cli-run-success.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=75168b271620e7206a50b041224a98b0)
-
-Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
-
-**App Router (Server Actions)**
-
-**1. Create an `actions.ts` file**
-
-Create an `actions.ts` file in the `app/api` directory and add this code which imports your `helloWorldTask()` task. Make sure to include `"use server";` at the top of the file.
-
-```ts app/api/actions.ts theme={"theme":"css-variables"}
-  "use server";
-
-  import type { helloWorldTask } from "@/trigger/example";
-  import { tasks } from "@trigger.dev/sdk";
-
-  export async function myTask() {
-    try {
-      const handle = await tasks.trigger<typeof helloWorldTask>(
-        "hello-world",
-        "James"
-      );
-
-      return { handle };
-    } catch (error) {
-      console.error(error);
-      return {
-        error: "something went wrong",
-      };
-    }
-  }
-```
-
-**2. Create a button to trigger your task**
-
-For the purposes of this guide, we'll create a button with an `onClick` event that triggers your task. We'll add this to the `page.tsx` file so we can trigger the task by clicking the button. Make sure to import your task and include `"use client";` at the top of your file.
-
-```ts app/page.tsx theme={"theme":"css-variables"}
-"use client";
-
-import { myTask } from "./actions";
-
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <button
-        onClick={async () => {
-          await myTask();
-        }}
-      >
-        Trigger my task
-      </button>
-    </main>
-  );
-}
-```
-
-**3. Trigger your task**
-
-Run your Next.js app:
-
-```bash npm theme={"theme":"css-variables"}
-npm run dev
-```
-
-```bash pnpm theme={"theme":"css-variables"}
-pnpm run dev
-```
-
-```bash yarn theme={"theme":"css-variables"}
-yarn dev
-```
-
-Open your app in a browser, making sure the port number is the same as the one you're running your Next.js app on. For example, if you're running your Next.js app on port 3000, visit:
-
-```bash theme={"theme":"css-variables"}
-http://localhost:3000
-```
-
-Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/nextjs#initial-setup) section above if it's not already running:
-
-```bash npm theme={"theme":"css-variables"}
-npx trigger.dev@latest dev
-```
-
-```bash pnpm theme={"theme":"css-variables"}
-pnpm dlx trigger.dev@latest dev
-```
-
-```bash yarn theme={"theme":"css-variables"}
-yarn dlx trigger.dev@latest dev
-```
-
-Then click the button we created in your app to trigger the task. You should see the CLI log the task run with a link to view the logs.
-
-![Trigger.dev CLI showing a successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/trigger-cli-run-success.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=75168b271620e7206a50b041224a98b0)
-
-Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
-
-**Pages Router**
-
-**1. Create an API route**
-
-Create an API route in the `pages/api` directory. Then create a `hello-world .ts` (or `hello-world.js`) file for your task and copy this code example:
-
-```ts pages/api/hello-world.ts theme={"theme":"css-variables"}
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { helloWorldTask } from "@/trigger/example";
-import { tasks } from "@trigger.dev/sdk";
-import type { NextApiRequest, NextApiResponse } from "next";
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<{ id: string }>
-) {
-  const handle = await tasks.trigger<typeof helloWorldTask>(
-  "hello-world",
-  "James"
-  );
-
-  res.status(200).json(handle);
-}
-```
-
-**2. Trigger your task**
-
-Run your Next.js app:
-
-```bash npm theme={"theme":"css-variables"}
-npm run dev
-```
-
-```bash pnpm theme={"theme":"css-variables"}
-pnpm run dev
-```
-
-```bash yarn theme={"theme":"css-variables"}
-yarn dev
-```
-
-Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/nextjs#initial-setup) section above if it's not already running:
-
-```bash npm theme={"theme":"css-variables"}
-npx trigger.dev@latest dev
-```
-
-```bash pnpm theme={"theme":"css-variables"}
-pnpm dlx trigger.dev@latest dev
-```
-
-```bash yarn theme={"theme":"css-variables"}
-yarn dlx trigger.dev@latest dev
-```
-
-Now visit the URL in your browser to trigger the task. Ensure the port number is the same as the one you're running your Next.js app on. For example, if you're running your Next.js app on port 3000, visit:
-
-```bash theme={"theme":"css-variables"}
-http://localhost:3000/api/hello-world
-```
-
-You should see the CLI log the task run with a link to view the logs in the dashboard.
-
-![Trigger.dev CLI showing a successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/trigger-cli-run-success.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=75168b271620e7206a50b041224a98b0)
-
-Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
+> [tab] App Router
+>
+> **1. Create a Route Handler**
+>
+> Add a Route Handler by creating a `route.ts` file (or `route.js` file) in the `app/api` directory like this: `app/api/hello-world/route.ts`.
+>
+> **2. Add your task**
+>
+> Add this code to your `route.ts` file which imports your task along with `NextResponse` to handle the API route response:
+>
+> ```ts app/api/hello-world/route.ts theme={"theme":"css-variables"}
+> // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+> import type { helloWorldTask } from "@/trigger/example";
+> import { tasks } from "@trigger.dev/sdk";
+> import { NextResponse } from "next/server";
+>
+> //tasks.trigger also works with the edge runtime
+> //export const runtime = "edge";
+>
+> export async function GET() {
+>   const handle = await tasks.trigger<typeof helloWorldTask>(
+>     "hello-world",
+>     "James"
+>   );
+>
+>   return NextResponse.json(handle);
+> }
+> ```
+>
+> **3. Trigger your task**
+>
+> Run your Next.js app:
+>
+> ```bash npm theme={"theme":"css-variables"}
+> npm run dev
+> ```
+>
+> ```bash pnpm theme={"theme":"css-variables"}
+> pnpm run dev
+> ```
+>
+> ```bash yarn theme={"theme":"css-variables"}
+> yarn dev
+> ```
+>
+> Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/nextjs#initial-setup) section above if it's not already running:
+>
+> ```bash npm theme={"theme":"css-variables"}
+> npx trigger.dev@latest dev
+> ```
+>
+> ```bash pnpm theme={"theme":"css-variables"}
+> pnpm dlx trigger.dev@latest dev
+> ```
+>
+> ```bash yarn theme={"theme":"css-variables"}
+> yarn dlx trigger.dev@latest dev
+> ```
+>
+> Now visit the URL in your browser to trigger the task. Ensure the port number is the same as the one you're running your Next.js app on. For example, if you're running your Next.js app on port 3000, visit:
+>
+> ```bash theme={"theme":"css-variables"}
+> http://localhost:3000/api/hello-world
+> ```
+>
+> You should see the CLI log the task run with a link to view the logs in the dashboard.
+>
+> ![Trigger.dev CLI showing a successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/trigger-cli-run-success.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=75168b271620e7206a50b041224a98b0)
+>
+> Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
+
+> [tab] App Router (Server Actions)
+>
+> **1. Create an `actions.ts` file**
+>
+> Create an `actions.ts` file in the `app/api` directory and add this code which imports your `helloWorldTask()` task. Make sure to include `"use server";` at the top of the file.
+>
+> ```ts app/api/actions.ts theme={"theme":"css-variables"}
+>   "use server";
+>
+>   import type { helloWorldTask } from "@/trigger/example";
+>   import { tasks } from "@trigger.dev/sdk";
+>
+>   export async function myTask() {
+>     try {
+>       const handle = await tasks.trigger<typeof helloWorldTask>(
+>         "hello-world",
+>         "James"
+>       );
+>
+>       return { handle };
+>     } catch (error) {
+>       console.error(error);
+>       return {
+>         error: "something went wrong",
+>       };
+>     }
+>   }
+> ```
+>
+> **2. Create a button to trigger your task**
+>
+> For the purposes of this guide, we'll create a button with an `onClick` event that triggers your task. We'll add this to the `page.tsx` file so we can trigger the task by clicking the button. Make sure to import your task and include `"use client";` at the top of your file.
+>
+> ```ts app/page.tsx theme={"theme":"css-variables"}
+> "use client";
+>
+> import { myTask } from "./actions";
+>
+> export default function Home() {
+>   return (
+>     <main className="flex min-h-screen flex-col items-center justify-center p-24">
+>       <button
+>         onClick={async () => {
+>           await myTask();
+>         }}
+>       >
+>         Trigger my task
+>       </button>
+>     </main>
+>   );
+> }
+> ```
+>
+> **3. Trigger your task**
+>
+> Run your Next.js app:
+>
+> ```bash npm theme={"theme":"css-variables"}
+> npm run dev
+> ```
+>
+> ```bash pnpm theme={"theme":"css-variables"}
+> pnpm run dev
+> ```
+>
+> ```bash yarn theme={"theme":"css-variables"}
+> yarn dev
+> ```
+>
+> Open your app in a browser, making sure the port number is the same as the one you're running your Next.js app on. For example, if you're running your Next.js app on port 3000, visit:
+>
+> ```bash theme={"theme":"css-variables"}
+> http://localhost:3000
+> ```
+>
+> Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/nextjs#initial-setup) section above if it's not already running:
+>
+> ```bash npm theme={"theme":"css-variables"}
+> npx trigger.dev@latest dev
+> ```
+>
+> ```bash pnpm theme={"theme":"css-variables"}
+> pnpm dlx trigger.dev@latest dev
+> ```
+>
+> ```bash yarn theme={"theme":"css-variables"}
+> yarn dlx trigger.dev@latest dev
+> ```
+>
+> Then click the button we created in your app to trigger the task. You should see the CLI log the task run with a link to view the logs.
+>
+> ![Trigger.dev CLI showing a successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/trigger-cli-run-success.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=75168b271620e7206a50b041224a98b0)
+>
+> Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
+
+> [tab] Pages Router
+>
+> **1. Create an API route**
+>
+> Create an API route in the `pages/api` directory. Then create a `hello-world .ts` (or `hello-world.js`) file for your task and copy this code example:
+>
+> ```ts pages/api/hello-world.ts theme={"theme":"css-variables"}
+> // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+> import { helloWorldTask } from "@/trigger/example";
+> import { tasks } from "@trigger.dev/sdk";
+> import type { NextApiRequest, NextApiResponse } from "next";
+>
+> export default async function handler(
+>   req: NextApiRequest,
+>   res: NextApiResponse<{ id: string }>
+> ) {
+>   const handle = await tasks.trigger<typeof helloWorldTask>(
+>   "hello-world",
+>   "James"
+>   );
+>
+>   res.status(200).json(handle);
+> }
+> ```
+>
+> **2. Trigger your task**
+>
+> Run your Next.js app:
+>
+> ```bash npm theme={"theme":"css-variables"}
+> npm run dev
+> ```
+>
+> ```bash pnpm theme={"theme":"css-variables"}
+> pnpm run dev
+> ```
+>
+> ```bash yarn theme={"theme":"css-variables"}
+> yarn dev
+> ```
+>
+> Run the dev server from Step 2. of the [Initial Setup](/docs/guides/frameworks/nextjs#initial-setup) section above if it's not already running:
+>
+> ```bash npm theme={"theme":"css-variables"}
+> npx trigger.dev@latest dev
+> ```
+>
+> ```bash pnpm theme={"theme":"css-variables"}
+> pnpm dlx trigger.dev@latest dev
+> ```
+>
+> ```bash yarn theme={"theme":"css-variables"}
+> yarn dlx trigger.dev@latest dev
+> ```
+>
+> Now visit the URL in your browser to trigger the task. Ensure the port number is the same as the one you're running your Next.js app on. For example, if you're running your Next.js app on port 3000, visit:
+>
+> ```bash theme={"theme":"css-variables"}
+> http://localhost:3000/api/hello-world
+> ```
+>
+> You should see the CLI log the task run with a link to view the logs in the dashboard.
+>
+> ![Trigger.dev CLI showing a successful run](https://mintcdn.com/trigger/0bD0UfsjaINxS6Tw/images/trigger-cli-run-success.png?fit=max\&auto=format\&n=0bD0UfsjaINxS6Tw\&q=85\&s=75168b271620e7206a50b041224a98b0)
+>
+> Visit the [Trigger.dev dashboard](https://cloud.trigger.dev) to see your run.
 
 ## Automatically sync environment variables from your Vercel project (optional)
 
@@ -415,13 +415,13 @@ yarn dlx trigger.dev@latest deploy
 
 ### Other ways to deploy
 
-**GitHub Actions**
+> [tab] GitHub Actions
+>
+> Use GitHub Actions to automatically deploy your tasks whenever new code is pushed and when the `trigger` directory has changes in it. Follow [this guide](/docs/github-actions) to set up GitHub Actions.
 
-Use GitHub Actions to automatically deploy your tasks whenever new code is pushed and when the `trigger` directory has changes in it. Follow [this guide](/docs/github-actions) to set up GitHub Actions.
-
-**Vercel Integration**
-
-Use the official [Vercel integration](/docs/vercel-integration) to deploy your tasks automatically.
+> [tab] Vercel Integration
+>
+> Use the official [Vercel integration](/docs/vercel-integration) to deploy your tasks automatically.
 
 ## Troubleshooting & extra resources
 
@@ -595,11 +595,11 @@ Whereas this does not work:
 
 The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your React components. Show progress bars, stream AI responses, or display run status in real time.
 
-> **[React hooks](/docs/realtime/react-hooks/overview)**
+> [card] [React hooks](/docs/realtime/react-hooks/overview)
 >
 > Hooks for subscribing to runs, streaming data, and triggering tasks from the frontend.
 
-> **[Streams](/docs/tasks/streams)**
+> [card] [Streams](/docs/tasks/streams)
 >
 > Pipe continuous data (like AI completions) from your tasks to the client while they run.
 
@@ -607,47 +607,47 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 
 ### Walk-through guides from development to deployment
 
-> **[Next.js - setup guide](/docs/guides/frameworks/nextjs)**
+> [card] [Next.js - setup guide](/docs/guides/frameworks/nextjs)
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> **[Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)**
+> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
 ### Task examples
 
-> **[Fal.ai with Realtime in Next.js](/docs/guides/examples/fal-ai-realtime)**
+> [card] [Fal.ai with Realtime in Next.js](/docs/guides/examples/fal-ai-realtime)
 >
 > Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
 
-> **[Generate a cartoon using Fal.ai in Next.js](/docs/guides/examples/fal-ai-image-to-cartoon)**
+> [card] [Generate a cartoon using Fal.ai in Next.js](/docs/guides/examples/fal-ai-image-to-cartoon)
 >
 > Convert an image to a cartoon using Fal.ai.
 
-> **[Vercel sync environment variables](/docs/guides/examples/vercel-sync-env-vars)**
+> [card] [Vercel sync environment variables](/docs/guides/examples/vercel-sync-env-vars)
 >
 > Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
 
-> **[Vercel AI SDK](/docs/guides/examples/vercel-ai-sdk)**
+> [card] [Vercel AI SDK](/docs/guides/examples/vercel-ai-sdk)
 >
 > Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
 > providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.
 
 ## Useful next steps
 
-> **[Tasks overview](/docs/tasks/overview)**
+> [card] [Tasks overview](/docs/tasks/overview)
 >
 > Learn what tasks are and their options
 
-> **[Writing tasks](/docs/writing-tasks-introduction)**
+> [card] [Writing tasks](/docs/writing-tasks-introduction)
 >
 > Learn how to write your own tasks
 
-> **[Deploy using the CLI](/docs/cli-deploy-commands)**
+> [card] [Deploy using the CLI](/docs/cli-deploy-commands)
 >
 > Learn how to deploy your task manually using the CLI
 
-> **[Deploy using GitHub actions](/docs/github-actions)**
+> [card] [Deploy using GitHub actions](/docs/github-actions)
 >
 > Learn how to deploy your task using GitHub actions

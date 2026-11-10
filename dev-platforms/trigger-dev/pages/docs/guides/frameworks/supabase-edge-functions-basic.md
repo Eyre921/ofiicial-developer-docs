@@ -22,7 +22,7 @@ This guide shows you how to set up and deploy a simple Supabase edge function ex
 
 ## GitHub repo
 
-> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/supabase-edge-functions)**
+> [card] [View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/supabase-edge-functions)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -289,25 +289,25 @@ See [Trigger task via API](/docs/management/tasks/trigger) for full request/resp
 
 ### Full walkthrough guides from development to deployment
 
-> **[Edge function hello world guide](/docs/guides/frameworks/supabase-edge-functions-basic)**
+> [card] [Edge function hello world guide](/docs/guides/frameworks/supabase-edge-functions-basic)
 >
 > Learn how to trigger a task from a Supabase edge function when a URL is visited.
 
-> **[Database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)**
+> [card] [Database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)
 >
 > Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
 
-> **[Supabase authentication guide](/docs/guides/frameworks/supabase-authentication)**
+> [card] [Supabase authentication guide](/docs/guides/frameworks/supabase-authentication)
 >
 > Learn how to authenticate Supabase tasks using JWTs for Row Level Security (RLS) or service role
 > keys for admin access.
 
 ### Task examples with code you can copy and paste
 
-> **[Supabase database operations](/docs/guides/examples/supabase-database-operations)**
+> [card] [Supabase database operations](/docs/guides/examples/supabase-database-operations)
 >
 > Run basic CRUD operations on a table in a Supabase database using Trigger.dev.
 
-> **[Supabase Storage upload](/docs/guides/examples/supabase-storage-upload)**
+> [card] [Supabase Storage upload](/docs/guides/examples/supabase-storage-upload)
 >
 > Download a video from a URL and upload it to Supabase Storage using S3.

@@ -54,26 +54,59 @@ In the example above, the `SendIdentity` flag was switched on. The SDK then will
 
 ### [DSN](https://docs.sentry.io/platforms/dotnet/guides/log4net.md#dsn)
 
-Also in the example above, you can find the DSN being set. That will instruct the `SentryAppender` to initialize the SDK.
+The appender initializes the SDK lazily when it processes its first log entry and no SDK is already enabled. Setting `Dsn` in the configuration doesn't initialize the SDK immediately.
 
 This is only one of the ways to initialize the SDK. If you wish to configure the SDK programmatically, you could **leave the DSN out** from the appender configuration section. The SDK needs to be initialized only **once** and since other integrations (like ASP.NET) are also able to initialize the SDK, you only need to pass the DSN to one of these integrations. One common case to not add the DSN to the XML configuration file (which would initialize it via the log4net integration) is to have full access to the [SDK option](https://docs.sentry.io/platforms/dotnet/guides/log4net/configuration/options.md).
 
-## [Verify](https://docs.sentry.io/platforms/dotnet/guides/log4net.md#verify)
+### [Structured Logs](https://docs.sentry.io/platforms/dotnet/guides/log4net.md#structured-logs)
 
-This snippet includes an intentional error, so you can test that everything is working as soon as you set it up.
+To send structured logs, initialize Sentry in code before logging and omit `Dsn` from the appender configuration:
 
 ```csharp
-try
+SentrySdk.Init(options =>
 {
-    throw null;
-}
-catch (Exception ex)
-{
-    SentrySdk.CaptureException(ex);
-}
+    options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
+    options.EnableLogs = true;
+});
 ```
 
-*Other available variations of the above snippet: fsharp*
+If another integration already initializes Sentry, set `EnableLogs = true` there instead. The appender uses the existing SDK.
+
+## [Verify](https://docs.sentry.io/platforms/dotnet/guides/log4net.md#verify)
+
+Ensure log4net loads your configuration and the appender is referenced by a logger. For example, add this inside your `<log4net>` element alongside the appender:
+
+```xml
+<root>
+  <level value="INFO" />
+  <appender-ref ref="SentryAppender" />
+</root>
+```
+
+Run this code during application startup to initialize through the appender and verify error capture:
+
+```csharp
+using System;
+using log4net;
+using log4net.Config;
+using Sentry;
+
+XmlConfigurator.Configure();
+var logger = LogManager.GetLogger("SentryVerification");
+
+try
+{
+    throw new InvalidOperationException("Sentry log4net verification");
+}
+catch (Exception exception)
+{
+    logger.Error("Sentry error-event verification", exception);
+}
+
+SentrySdk.FlushAsync().GetAwaiter().GetResult();
+```
+
+Check **Issues** for the error event. If you enabled structured logs, also check **Logs**. A direct `SentrySdk.CaptureException` call won't initialize the appender, so it can't verify this setup before the first log entry.
 
 ## [Sample](https://docs.sentry.io/platforms/dotnet/guides/log4net.md#sample)
 

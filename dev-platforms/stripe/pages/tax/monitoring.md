@@ -71,8 +71,7 @@ To attribute a location, Stripe Tax uses available information for that transact
 Stripe Tax uses information in the following order:
 
 1. **Stripe Tax validated address:** if we calculated tax for the transaction, Stripe Tax already validated the address. We use the same address when calculating the tax threshold.
-2. **Customer address:** property in the [Customer](https://docs.stripe.com/api/customers/object.md) object responsible for the transaction.
-Stripe Tax uses the country, state, and postal code fields to determine a jurisdiction.
+2. **Customer address:** from the [v1 Customer](https://docs.stripe.com/api/customers/object.md) or [v2 Account](https://docs.stripe.com/api/v2/core/accounts/object.md) object responsible for the transaction. Stripe Tax uses the country, state, and postal code fields to determine a jurisdiction.
 3. **Address Verification (AVS) postal code:** [AVS](https://docs.stripe.com/disputes/prevention/verification.md#avs-check) is a service that verifies the authenticity of a transaction by checking if the provided address matches the cardholder’s billing address. If the transaction is successful, Stripe Tax converts a US or Canadian postal code into a state and determines the jurisdiction.
 4. **Country of the card issuer:** Stripe Tax uses the credit card issuer’s bank country to determine a jurisdiction for the transaction. For transactions in the US and Canada, we might also need state information.
 5. **Payment method:** Stripe Tax uses country-specific payment methods to determine the location of a payment. We assume that a transaction through *iDeal* (iDeal is a payment method in the Netherlands that uses direct, online transfers from the user's bank account) is from the Netherlands and that a transaction through Giropay is from Germany, for example.

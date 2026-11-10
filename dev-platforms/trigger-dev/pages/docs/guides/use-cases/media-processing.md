@@ -12,15 +12,15 @@ Build media processing pipelines that handle large files and long-running operat
 
 ## Featured examples
 
-> **[FFmpeg video processing](/docs/guides/examples/ffmpeg-video-processing)**
+> [card] [FFmpeg video processing](/docs/guides/examples/ffmpeg-video-processing)
 >
 > Process videos and upload results to R2 storage using FFmpeg.
 
-> **[Product image generator](/docs/guides/example-projects/product-image-generator)**
+> [card] [Product image generator](/docs/guides/example-projects/product-image-generator)
 >
 > Transform product photos into professional marketing images using Replicate.
 
-> **[LibreOffice PDF conversion](/docs/guides/examples/libreoffice-pdf-conversion)**
+> [card] [LibreOffice PDF conversion](/docs/guides/examples/libreoffice-pdf-conversion)
 >
 > Convert documents to PDF using LibreOffice.
 
@@ -34,144 +34,144 @@ Build media processing pipelines that handle large files and long-running operat
 
 ## Example workflow patterns
 
-**Video transcode**
+> [tab] Video transcode
+>
+> Simple video transcoding pipeline. Downloads video from storage, batch triggers parallel transcoding to multiple formats and thumbnail extraction, uploads all results.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[processVideo] --> B[downloadFromStorage]
+>     B --> C[batchTriggerAndWait]
+>
+>     C --> D[transcodeToHD]
+>     C --> E[transcodeToSD]
+>     C --> F[extractThumbnail]
+>
+>     D --> G[uploadToStorage]
+>     E --> G
+>     F --> G
+> ```
 
-Simple video transcoding pipeline. Downloads video from storage, batch triggers parallel transcoding to multiple formats and thumbnail extraction, uploads all results.
+> [tab] Adaptive video processing
+>
+> **Router + Coordinator pattern**. Analyzes video metadata to determine source resolution, routes to appropriate transcoding preset, batch triggers parallel post-processing for thumbnails, preview clips, and chapter detection.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[processVideoUpload] --> B[analyzeMetadata]
+>     B --> C{Source<br/>Resolution?}
+>
+>     C -->|4K Source| D[transcode4K]
+>     C -->|HD Source| E[transcodeHD]
+>     C -->|SD Source| F[transcodeSD]
+>
+>     D --> G[coordinatePostProcessing]
+>     E --> G
+>     F --> G
+>
+>     G --> H[batchTriggerAndWait]
+>     H --> I[extractThumbnails]
+>     H --> J[generatePreview]
+>     H --> K[detectChapters]
+>
+>     I --> L[uploadToStorage]
+>     J --> L
+>     K --> L
+>
+>     L --> M[notifyComplete]
+> ```
 
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[processVideo] --> B[downloadFromStorage]
-    B --> C[batchTriggerAndWait]
+> [tab] Smart image optimization
+>
+> **Router + Coordinator pattern**. Analyzes image content to detect type, routes to specialized processing (background removal for products, face detection for portraits, scene analysis for landscapes), upscales with AI, batch triggers parallel variant generation.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[processImageUpload] --> B[analyzeContent]
+>     B --> C{Content<br/>Type?}
+>
+>     C -->|Product| D[removeBackground]
+>     C -->|Portrait| E[detectFaces]
+>     C -->|Landscape| F[analyzeScene]
+>
+>     D --> G[upscaleWithAI]
+>     E --> G
+>     F --> G
+>
+>     G --> H[batchTriggerAndWait]
+>     H --> I[generateWebP]
+>     H --> J[generateThumbnails]
+>     H --> K[generateSocialCrops]
+>
+>     I --> L[uploadToStorage]
+>     J --> L
+>     K --> L
+> ```
 
-    C --> D[transcodeToHD]
-    C --> E[transcodeToSD]
-    C --> F[extractThumbnail]
+> [tab] Podcast production
+>
+> **Coordinator pattern**. Pre-processes raw audio with noise reduction and speaker diarization, batch triggers parallel tasks for transcription (Deepgram), audio enhancement, and chapter detection, aggregates results to generate show notes and publish.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[processAudioUpload] --> B[cleanAudio]
+>     B --> C[coordinateProcessing]
+>
+>     C --> D[batchTriggerAndWait]
+>     D --> E[transcribeWithDeepgram]
+>     D --> F[enhanceAudio]
+>     D --> G[detectChapters]
+>
+>     E --> H[generateShowNotes]
+>     F --> H
+>     G --> H
+>
+>     H --> I[publishToPlatforms]
+> ```
 
-    D --> G[uploadToStorage]
-    E --> G
-    F --> G
-```
-
-**Adaptive video processing**
-
-**Router + Coordinator pattern**. Analyzes video metadata to determine source resolution, routes to appropriate transcoding preset, batch triggers parallel post-processing for thumbnails, preview clips, and chapter detection.
-
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[processVideoUpload] --> B[analyzeMetadata]
-    B --> C{Source<br/>Resolution?}
-
-    C -->|4K Source| D[transcode4K]
-    C -->|HD Source| E[transcodeHD]
-    C -->|SD Source| F[transcodeSD]
-
-    D --> G[coordinatePostProcessing]
-    E --> G
-    F --> G
-
-    G --> H[batchTriggerAndWait]
-    H --> I[extractThumbnails]
-    H --> J[generatePreview]
-    H --> K[detectChapters]
-
-    I --> L[uploadToStorage]
-    J --> L
-    K --> L
-
-    L --> M[notifyComplete]
-```
-
-**Smart image optimization**
-
-**Router + Coordinator pattern**. Analyzes image content to detect type, routes to specialized processing (background removal for products, face detection for portraits, scene analysis for landscapes), upscales with AI, batch triggers parallel variant generation.
-
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[processImageUpload] --> B[analyzeContent]
-    B --> C{Content<br/>Type?}
-
-    C -->|Product| D[removeBackground]
-    C -->|Portrait| E[detectFaces]
-    C -->|Landscape| F[analyzeScene]
-
-    D --> G[upscaleWithAI]
-    E --> G
-    F --> G
-
-    G --> H[batchTriggerAndWait]
-    H --> I[generateWebP]
-    H --> J[generateThumbnails]
-    H --> K[generateSocialCrops]
-
-    I --> L[uploadToStorage]
-    J --> L
-    K --> L
-```
-
-**Podcast production**
-
-**Coordinator pattern**. Pre-processes raw audio with noise reduction and speaker diarization, batch triggers parallel tasks for transcription (Deepgram), audio enhancement, and chapter detection, aggregates results to generate show notes and publish.
-
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[processAudioUpload] --> B[cleanAudio]
-    B --> C[coordinateProcessing]
-
-    C --> D[batchTriggerAndWait]
-    D --> E[transcribeWithDeepgram]
-    D --> F[enhanceAudio]
-    D --> G[detectChapters]
-
-    E --> H[generateShowNotes]
-    F --> H
-    G --> H
-
-    H --> I[publishToPlatforms]
-```
-
-**Document extraction with approval**
-
-**Router pattern with human-in-the-loop**. Detects file type and routes to appropriate processor, classifies document with AI to determine type (invoice/contract/receipt), extracts structured data fields, optionally pauses with wait.forToken for human approval.
-
-```mermaid theme={"theme":"css-variables"}
-graph TB
-    A[processDocumentUpload] --> B[detectFileType]
-
-    B -->|PDF| C[extractText]
-    B -->|Word/Excel| D[convertToPDF]
-    B -->|Image| E[runOCR]
-
-    C --> F[classifyDocument]
-    D --> F
-    E --> F
-
-    F -->|Invoice| G[extractLineItems]
-    F -->|Contract| H[extractClauses]
-    F -->|Receipt| I[extractExpenses]
-
-    G --> J{Needs<br/>Review?}
-    H --> J
-    I --> J
-
-    J -->|Yes| K[wait.forToken approval]
-    J -->|No| L[processAndIntegrate]
-    K --> L
-```
+> [tab] Document extraction with approval
+>
+> **Router pattern with human-in-the-loop**. Detects file type and routes to appropriate processor, classifies document with AI to determine type (invoice/contract/receipt), extracts structured data fields, optionally pauses with wait.forToken for human approval.
+>
+> ```mermaid theme={"theme":"css-variables"}
+> graph TB
+>     A[processDocumentUpload] --> B[detectFileType]
+>
+>     B -->|PDF| C[extractText]
+>     B -->|Word/Excel| D[convertToPDF]
+>     B -->|Image| E[runOCR]
+>
+>     C --> F[classifyDocument]
+>     D --> F
+>     E --> F
+>
+>     F -->|Invoice| G[extractLineItems]
+>     F -->|Contract| H[extractClauses]
+>     F -->|Receipt| I[extractExpenses]
+>
+>     G --> J{Needs<br/>Review?}
+>     H --> J
+>     I --> J
+>
+>     J -->|Yes| K[wait.forToken approval]
+>     J -->|No| L[processAndIntegrate]
+>     K --> L
+> ```
 
 ## Featured use cases
 
-> **[Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)**
+> [card] [Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)
 >
 > Build complex data pipelines that process large datasets without timeouts.
 
-> **[Media processing workflows](/docs/guides/use-cases/media-processing)**
+> [card] [Media processing workflows](/docs/guides/use-cases/media-processing)
 >
 > Batch process videos, images, audio, and documents with no execution time limits.
 
-> **[AI media generation workflows](/docs/guides/use-cases/media-generation)**
+> [card] [AI media generation workflows](/docs/guides/use-cases/media-generation)
 >
 > Generate images, videos, audio, documents and other media using AI models.
 
-> **[Marketing workflows](/docs/guides/use-cases/marketing)**
+> [card] [Marketing workflows](/docs/guides/use-cases/marketing)
 >
 > Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.

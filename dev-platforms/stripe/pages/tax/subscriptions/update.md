@@ -83,6 +83,83 @@ The CSV file includes a Boolean column named **Tax Location Recognized** that yo
 
 #### API
 
+#### Accounts v2
+
+To check an account’s tax location status using the API, retrieve the [v2 Account object](https://docs.stripe.com/api/v2/core/accounts/object.md) and [include](https://docs.stripe.com/api/include_dependent_response_values.md) the customer configuration by adding `include[0]=configuration.customer` to your request. You must use `include` because the default response doesn’t include the customer configuration.
+
+```curl
+curl -G https://api.stripe.com/v2/core/accounts/{{CUSTOMERACCOUNT_ID}} \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -d "include[0]=configuration.customer"
+```
+
+The response includes the [customer configuration](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer) that contains the computed tax location and whether you can use automatic tax calculation with the given account.
+
+```json
+{
+  "id": "acct_1234567890",
+  "object": "v2.core.account",
+  "configuration": {
+    "customer": {
+      "automatic_indirect_tax": {
+        "exempt": "none",
+        "ip_address": "86.41.74.24",
+        "location": {
+          "country": "US",
+          "state": "CA"
+        },
+        "location_source": "identity_address"
+      },
+      "capabilities": {
+        "automatic_indirect_tax": {
+          "status": "active",
+          "status_details": []
+        }
+      },
+      ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+The `status` field indicates whether you can use automatic tax calculation with the given account:
+
+| Status | Description | Possible Action |
+| --- | --- | --- |
+| `active` | Automatic tax is fully supported. | No further action required. |
+| `pending` | Stripe is carrying out an action prior to activating the Capability. | Wait for Stripe to complete activation. |
+| `restricted` | The Capability requires further action before it can be activated. | Review the [status_details](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-capabilities-automatic_indirect_tax-status_details) array for specific error codes. You may need to update the account’s address in the [identity](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-identity) object or [register](https://docs.stripe.com/tax/registering.md) for tax collection in the appropriate jurisdiction. |
+| `unsupported` | The Capability is unsupported. | Review the [status_details](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-capabilities-automatic_indirect_tax-status_details) array to understand why automatic tax isn’t supported (e.g., unsupported country or entity type). |
+
+If the status is `restricted`, review the [status_details](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-capabilities-automatic_indirect_tax-status_details) array and the [requirements](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-requirements) object to determine what action is needed. Often, the account needs [a valid address](https://docs.stripe.com/tax/customer-locations.md) for Stripe Tax to determine the tax location.
+
+To update the account’s address, use the [v2 Account](https://docs.stripe.com/api/v2/core/accounts/update.md) API:
+
+```curl
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CUSTOMERACCOUNT_ID}} \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  --json '{
+    "identity": {
+        "individual": {
+            "address": {
+                "line1": "27 Fredrick Ave",
+                "city": "Brothers",
+                "postal_code": "97712",
+                "state": "OR",
+                "country": "US"
+            }
+        }
+    },
+    "include[0]": "configuration.customer"
+  }'
+```
+
+#### Customer v1
+
 To check a customer’s tax location status using the API, retrieve the [Customer object](https://docs.stripe.com/api/customers/object.md) and [expand](https://docs.stripe.com/api/expanding_objects.md) the response by adding `expand: ['tax']` to your request. You must use `expand` because the default response doesn’t include the [tax](https://docs.stripe.com/api/customers/object.md#customer_object-tax) field.
 
 ```curl
@@ -392,7 +469,7 @@ You can retrieve the tax amounts from the [tax](https://docs.stripe.com/api/invo
 | Status | Description | Possible Action |
 | --- | --- | --- |
 | `complete` | Stripe Tax has successfully assessed the taxes on the payment. | You can retrieve the tax amounts from the tax and `total_tax_amounts` fields on the latest invoice, and from the per-line item `tax_amounts` fields. |
-| `requires_location_inputs`1 | Stripe Tax was unable to assess taxes because it didn’t have enough information to determine the customer’s location. | Collect more information from a customer (such as a full street address) and update the [customer.address](https://docs.stripe.com/api/customers/update.md#update_customer-address) field. |
+| `requires_location_inputs`1 | Stripe Tax was unable to assess taxes because it didn’t have enough information to determine the customer’s location. | Collect more information from a customer (such as a full street address) and update the [customer.address](https://docs.stripe.com/api/customers/update.md#update_customer-address) field for v1 Customers, or update the [address](https://docs.stripe.com/api/v2/core/accounts/update.md) in the account’s identity or customer configuration for v2 Accounts. |
 | `failed` | Internal Stripe error. | Try the request again or contact Stripe support for additional assistance. |
 
 1 If you enable inferred locations, subscriptions that previously returned `requires_location_inputs` might update to complete with tax calculated based on the [inferred location](https://docs.stripe.com/tax/subscriptions/update.md#inferred-locations).

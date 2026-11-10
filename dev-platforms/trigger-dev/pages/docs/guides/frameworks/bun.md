@@ -8,11 +8,6 @@ This guide will show you how to setup Trigger.dev in your existing Bun project, 
 
 > [!WARNING]
 >
-> The trigger.dev CLI does not yet support Bun. So you will need to run the CLI using Node.js. Bun
-> will still be used to execute your tasks, even in the `dev` environment.
-
-> [!WARNING]
->
 > **`runtime: "bun"` is deprecated.** It deploys on Bun 1.3.3 with a Node.js 20 binary alongside it
 > (`bun-legacy` is the same runtime). Deploys that use it will be rejected from **January 5, 2027**.
 > Switch to `runtime: "bun-1.4"` (Bun 1.4.4) and redeploy; already-deployed versions keep their

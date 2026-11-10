@@ -71,18 +71,18 @@ The API guidance updates on its own: it lives in `@trigger.dev/sdk` and is read 
 
 ## Next steps
 
-> **[MCP Server](/docs/mcp-introduction)**
+> [card] [MCP Server](/docs/mcp-introduction)
 >
 > Give your AI assistant direct access to Trigger.dev tools and APIs.
 
-> **[Building with AI](/docs/building-with-ai)**
+> [card] [Building with AI](/docs/building-with-ai)
 >
 > See how skills and the MCP server compare, plus a copy-paste context snippet.
 
-> **[Writing tasks](/docs/tasks/overview)**
+> [card] [Writing tasks](/docs/tasks/overview)
 >
 > Learn the task patterns that skills teach your AI assistant.
 
-> **[AI agents](/docs/ai-chat/overview)**
+> [card] [AI agents](/docs/ai-chat/overview)
 >
 > Build durable chat agents with chat.agent, the focus of two of the skills.

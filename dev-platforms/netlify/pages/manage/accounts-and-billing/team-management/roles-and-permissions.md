@@ -25,11 +25,9 @@ A Team Owner can manage team roles and invite or remove new members from
 Team settings > Members
  unless you've set up [SCIM](/manage/security/secure-netlify-access/directory-sync) to manage access control through an identity provider. Learn more about your options to [manage a team](/manage/accounts-and-billing/team-management/manage-team-members).
 
-To optimize content publishing workflows, a Team Owner, Developer, or Publisher can customize even more granular [editorial permissions](/manage/visual-editor/editorial-permissions/) for Visual Editor.
-
 ## Access
 
-Owners can customize project access and Visual Editor access for most types of roles. Other roles have predetermined access that Owners can't modify, such as Billing Admins who have limited access to the Netlify platform beyond reviewing and managing the billing dashboard.
+Owners can customize project access for most types of roles. Other roles have predetermined access that Owners can't modify, such as Billing Admins who have limited access to the Netlify platform beyond reviewing and managing the billing dashboard.
 
 Team Owners can access all settings, web projects (sites/apps), and resources owned by the team. Only Organization Owners can access organization settings for [Enterprise plans](https://www.netlify.com/pricing/?category=enterprise) that have set up an organization.
 
@@ -53,16 +51,6 @@ To learn more, check out our docs on [managing project access](/manage/accounts-
 Git Contributors have no access to the Netlify platform beyond being able to trigger a deploy and access site preview links that appear in pull/merge requests, Slack, or other places. 
 
 Git Contributors can access Deploy Preview and branch deploy links as long as the links do not require Netlify Team Login, Netlify SSO, or other forms of authentication that a Git Contributor does not have.
-
-### Visual Editor access
-
-Visual Editor is only available for teams that already have it. For all other teams, the **Visual editor dashboard** link is hidden from team navigation and the **Visual Editor** section is hidden from project configuration. Learn more in the [Visual Editor docs](/manage/visual-editor/overview/).
-
-On a team with the Visual Editor enabled, all Developers, Publishers, and [Internal Builders](#internal-builder) can access that team's Visual Editor dashboard by default. Reviewers can access Deploy Preview and branch deploy links from Visual Editor. 
-
-Within Visual Editor workspace, Owners, Developers, and Publishers can customize more granular access to Visual Editor projects, which are sites that have Visual Editor enabled and configured. Learn more about [editorial permissions](/manage/visual-editor/editorial-permissions/) for Visual Editor.
-
-Before a site can be edited with Visual Editor, a Team Owner or Developer must enable Visual Editor for that site and complete any necessary configuration so the site works with Visual Editor.
 
 ## Roles and permissions
 
@@ -119,7 +107,7 @@ Preview Servers provide a live development environment where authenticated colla
 - Owners
 - Developers
 - Reviewers
-- Publishers (Visual Editor role)
+- Publishers
 - [Internal Builders](#internal-builder)
 
 **Who can manage Preview Servers:**
@@ -130,26 +118,11 @@ Preview Servers provide a live development environment where authenticated colla
 - Git Contributors
 - Billing Admins
 
-### Note - Visual Editor roles and Preview Servers
+### Note - Publisher and Internal Builder roles and Preview Servers
 
-Publishers and [Internal Builders](#internal-builder) can access Preview Server URLs but cannot manage Preview Servers. The table above shows platform-wide roles; for more details on Publisher and [Internal Builder](#internal-builder) permissions, see [Visual Editor roles and permissions](#visual-editor-roles-and-permissions).
+Publishers and [Internal Builders](#internal-builder) can access Preview Server URLs but cannot manage Preview Servers.
 
 Learn more about [Preview Servers](/manage/preview-servers/overview).
-
-### Visual Editor roles and permissions
-
-These roles can access Visual Editor: 
-- Publisher
-- [Internal Builder](#internal-builder)
-- Developer
-- Team Owner
-- Reviewer
-
-There are more customizable permissions available in Visual Editor. 
-
-Team Owners, Developers, Publishers, and other users with the **Manage Collaborators** permission can customize editorial permissions, create and manage member groups that can be assigned to projects, and choose who can access a project in Visual Editor workspace. Note that a project is a site that you can edit with Visual Editor. 
-
-Learn more about these options in [Editorial permissions](/manage/visual-editor/editorial-permissions/).
 
 ## Roles
 
@@ -187,15 +160,9 @@ If you have an [Enterprise plan](https://www.netlify.com/pricing/?category=enter
 
 ### Developer
 
-### Note - Collaborators are now Developers
-
-As a part of expanding Netlify roles, the role formerly called Collaborator is now called the Developer role. The role retains the same main permissions with some [expanded access and permissions in Visual Editor](/manage/visual-editor/editorial-permissions/). Learn more about this change in the [blog post](https://www.netlify.com/blog/new-roles-for-better-team-management).
-
 Developers can manage site deploys and other site configuration needs.
 
 Team Owners can [change site access](/manage/accounts-and-billing/team-management/manage-team-members#manage-site-member-access) to allow Developers to work on all sites within the team, or only on specific sites. Developers with access to a site can do things like trigger builds, edit site configuration, and more.
-
-Developers can configure a site for use in Visual Editor. They can also edit, publish, and manage project collaborators in Visual Editor. Learn more about what [Developers can do in Visual Editor](/manage/visual-editor/editorial-permissions/#definitions).
 
 Developers can also [approve or block Reviewers](/manage/accounts-and-billing/team-management/manage-team-members#approve-or-block-reviewers) so Reviewers can use the [Netlify Drawer](/deploy/review-deploys/netlify-drawer-for-feedback/overview) to review branch deploys or Deploy Previews.
 
@@ -209,7 +176,7 @@ On the Credit Pro plan, team member seats are unlimited and included in the base
 
 ### Publisher
 
-A Publisher can do everything an [Internal Builder](#internal-builder) can do in Visual Editor but they can also publish content, schedule when to publish content, and manage Visual Editor project collaborators. Learn more about [Publishers](/manage/visual-editor/editorial-permissions/#definitions).
+A Publisher can do much of what an [Internal Builder](#internal-builder) can do except they cannot start new projects.
 
 ### Note - Team members are free on the Credit Pro plan
 
@@ -229,10 +196,6 @@ The Internal Builder role is optimized for these example personas:
 - Marketing team member who needs to build campaign landing pages quickly
 - HR team member who wants to build an information site for a company trip to Mexico
 - Sales rep building internal tools for their team
-
-#### In the visual editor
-
-In the Visual Editor, the Internal Builder role was previously called the Content Editor role. Internal Builders in the Visual Editor can edit content but they cannot publish content live to your site. Content editing includes drafting and saving text, managing images, managing SEO settings, and customizing layouts. Internal Builders can save a version of their work for review or follow-up with a Publisher. Learn more about [Internal Builders in the Visual Editor](/manage/visual-editor/editorial-permissions/#definitions).
 
 ### Note - Team members are free on the Credit Pro plan
 
@@ -276,7 +239,7 @@ If you have a [Legacy plan](/manage/accounts-and-billing/billing/billing-for-leg
 
 Once a Team Owner or Developer [approves](/manage/accounts-and-billing/team-management/manage-team-members#approve-or-block-reviewers) a Reviewer, that person can access Deploy Preview and branch deploy links across sites in the team so they can [share site feedback on Deploy Previews](/deploy/review-deploys/netlify-drawer-for-feedback/overview) or on [branch deploys](/deploy/review-deploys/netlify-drawer-for-feedback/overview#configure-the-netlify-drawer).
 
-Reviewers can also access read-only Deploy Preview and branch deploy links from Visual Editor, as well as [Preview Server](/manage/preview-servers/overview) URLs.
+Reviewers can also access [Preview Server](/manage/preview-servers/overview) URLs.
 
 ### Note - Reviewers and Preview Servers
 

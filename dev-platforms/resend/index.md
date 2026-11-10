@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 423 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 424 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -304,6 +304,7 @@
 - `docs/knowledge-base/how-do-i-send-with-an-avatar` — [How to send with an avatar](pages/docs/knowledge-base/how-do-i-send-with-an-avatar.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-send-with-an-avatar)
 - `docs/knowledge-base/how-do-i-set-up-apple-branded-mail` — [How to set up Apple Branded Mail](pages/docs/knowledge-base/how-do-i-set-up-apple-branded-mail.md) · [原文](https://resend.com/docs/knowledge-base/how-do-i-set-up-apple-branded-mail)
 - `docs/knowledge-base/how-to-add-more-domains` — [How to add more domains](pages/docs/knowledge-base/how-to-add-more-domains.md) · [原文](https://resend.com/docs/knowledge-base/how-to-add-more-domains)
+- `docs/knowledge-base/how-to-collect-a-har-log` — [How to collect a HAR log](pages/docs/knowledge-base/how-to-collect-a-har-log.md) · [原文](https://resend.com/docs/knowledge-base/how-to-collect-a-har-log)
 - `docs/knowledge-base/how-to-handle-a-leaked-api-key` — [How to handle a leaked API key](pages/docs/knowledge-base/how-to-handle-a-leaked-api-key.md) · [原文](https://resend.com/docs/knowledge-base/how-to-handle-a-leaked-api-key)
 - `docs/knowledge-base/how-to-handle-api-keys` — [How to handle API keys](pages/docs/knowledge-base/how-to-handle-api-keys.md) · [原文](https://resend.com/docs/knowledge-base/how-to-handle-api-keys)
 - `docs/knowledge-base/introduction` — [Introduction](pages/docs/knowledge-base/introduction.md) · [原文](https://resend.com/docs/knowledge-base/introduction)

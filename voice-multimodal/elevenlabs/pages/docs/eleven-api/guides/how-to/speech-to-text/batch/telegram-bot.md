@@ -156,7 +156,7 @@ async function scribe({
 
     const scribeResult = await elevenlabs.speechToText.convert({
       file: sourceBlob,
-      model_id: "scribe_v2",
+      model_id: "scribe_v3",
       tag_audio_events: false,
     });
 
@@ -351,7 +351,7 @@ async function scribe({
 
     const scribeResult = await elevenlabs.speechToText.convert({
       file: sourceBlob,
-      model_id: 'scribe_v2',
+      model_id: 'scribe_v3',
       tag_audio_events: false,
     });
 

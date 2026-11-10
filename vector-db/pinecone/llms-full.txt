@@ -86689,13 +86689,13 @@ curl -fsS -X POST "$NEXUS_BASE_URL/query" \
 # Search a table with full-text search
 Source: https://docs.pinecone.io/guides/pg-pinecone/full-text-search
 
-Use pg_pinecone to keep a Pinecone index for full-text search in sync with a Postgres table, then run BM25, filtered, and hybrid searches in SQL.
+Search a Postgres table with BM25 keyword search and filters in SQL, using a Pinecone index that pg_pinecone keeps in sync.
 
 pg\_pinecone can keep a Pinecone index for [full-text search](/guides/search/full-text-search) in sync with a Postgres table's text columns. You declare the searchable columns once and search them with SQL, and Postgres stays the system of record.
 
 ## Before you begin
 
-* pg\_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
+* [pg\_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
 * A table with a single-column primary key, which becomes each document's ID. You must own the table.
@@ -86704,7 +86704,7 @@ pg\_pinecone can keep a Pinecone index for [full-text search](/guides/search/ful
 
 ### 1. Create a sample table
 
-This guide uses a table of help-center articles. The embeddings are only needed to [combine text and vector search](#combine-text-and-vector-search):
+This guide uses a table of help-center articles. The embeddings are only needed to [combine text and vector search](/guides/pg-pinecone/semantic-search#combine-text-and-vector-search):
 
 ```sql SQL theme={null}
 CREATE TABLE articles (
@@ -86733,7 +86733,7 @@ JOIN pinecone.embed_batch((SELECT array_agg(title || '. ' || body ORDER BY id) F
 
 ### 2. Declare the searchable columns
 
-Call `pinecone.track_docs()` with the text columns to index. `metadata_columns` lists columns you want to filter on, and `vector_column` is optional. `text_columns` takes a JSON list, and `metadata_columns` takes a Postgres array:
+Call `pinecone.track_docs()` with the text columns to index. `metadata_columns` lists columns you want to filter on, and `vector_column` is optional. To search by meaning instead, see [Search a table with semantic search](/guides/pg-pinecone/semantic-search). `text_columns` takes a JSON list, and `metadata_columns` takes a Postgres array:
 
 ```sql SQL theme={null}
 SELECT pinecone.track_docs(
@@ -86816,25 +86816,6 @@ JOIN articles a ON a.id = s.id::bigint
 ORDER BY s.rank;
 ```
 
-## Combine text and vector search
-
-If you declared a `vector_column`, pass a query vector with `vector`, and name the column the text query must match with `field`. The text query narrows the results to rows that match it in that column, and the vector ranks what's left:
-
-```sql SQL theme={null}
-SELECT a.id, a.title
-FROM pinecone.search_docs('articles', 'billing', field => 'body',
-       vector => pinecone.embed('how do I get a receipt for my payment'), k => 3) s
-JOIN articles a ON a.id = s.id::bigint
-ORDER BY s.rank;
-```
-
-```text Output theme={null}
- id |          title
-----+--------------------------
-  6 | Download past invoices
-  5 | Change your billing plan
-```
-
 ## Search one tenant
 
 To keep each tenant's documents in their own Pinecone [namespace](/guides/indexes/index-data-overview#namespaces), pass a tenant column as `partition_column` when you call `pinecone.track_docs()`. Then name the tenant with `partition` on every search. This example uses a `tickets` table with a `tenant_id` column:
@@ -86881,7 +86862,7 @@ JOIN articles a ON a.id = s.id::bigint
 ORDER BY s.rank;
 ```
 
-The local engine reflects writes immediately. It also works on tables you haven't declared with `track_docs()` if you name a column with `field`. It ranks results with Postgres's `ts_rank_cd` instead of BM25 and requires every query word to match, so it can return fewer results than the remote engine, in a different order. It doesn't support `filter`, `must`, `vector`, or `mode => 'query_string'`, and it doesn't create an index, so add a [GIN index](https://www.postgresql.org/docs/current/textsearch-indexes.html) on large tables.
+The local engine reflects writes immediately. It also works on tables you haven't declared with `track_docs()` if you name a column with `field`. It ranks results with Postgres's `ts_rank_cd` instead of BM25 and requires every query word to match, so it can return fewer results than the remote engine, in a different order. It doesn't support `filter`, `must`, `vector`, `mode => 'query_string'`, or `mode => 'embed'`, and it doesn't create an index, so add a [GIN index](https://www.postgresql.org/docs/current/textsearch-indexes.html) on large tables.
 
 ## Manage a tracked table
 
@@ -86923,7 +86904,7 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/overview
 
 pg_pinecone is an open-source PostgreSQL extension that runs the search engine Pinecone uses at scale inside Postgres, or on an index in Pinecone's cloud.
 
-pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine and full-text search also need a server setting.
+pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine, full-text search, and semantic search also need a server setting.
 
 > [card] [Quickstart](/guides/pg-pinecone/quickstart)
 >
@@ -86967,7 +86948,7 @@ The diagram names these index types:
 * **Scale**: The `remote` engine moves a table's vector search to a Pinecone index, and Postgres keeps the rows.
 * **Unchanged queries**: A pgvector query like `ORDER BY embedding <=> $1` works the same on every engine.
 * **Tenant isolation**: With the `remote` engine, each tenant can have its own Pinecone namespace, so a query searches only that tenant's data.
-* **Full-text search**: pg\_pinecone keeps a Pinecone index for full-text search in sync with a table's text columns, and you run BM25, vector, or hybrid searches on it from SQL.
+* **Full-text and semantic search**: pg\_pinecone keeps a Pinecone index in sync with a table's text columns, and you run [BM25](/guides/pg-pinecone/full-text-search), [semantic](/guides/pg-pinecone/semantic-search), or hybrid searches on it from SQL.
 * **SQL functions**: You can generate embeddings and rerank results in SQL. See the [SQL reference](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/reference.md).
 
 ## Choose your path
@@ -87011,14 +86992,14 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >
 >    ```bash Linux theme={null}
 >    PG=17
->    tar xzf pg_pinecone-0.11.0-pg$PG-linux-x86_64.tar.gz
+>    tar xzf pg_pinecone-0.12.1-pg$PG-linux-x86_64.tar.gz
 >    sudo cp usr/lib/postgresql/$PG/lib/pg_pinecone.so "$(pg_config --pkglibdir)/"
 >    sudo cp usr/share/postgresql/$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
 >
 >    ```bash macOS theme={null}
 >    PG=17
->    tar xzf pg_pinecone-0.11.0-pg$PG-darwin-arm64.tar.gz
+>    tar xzf pg_pinecone-0.12.1-pg$PG-darwin-arm64.tar.gz
 >    cp opt/homebrew/lib/postgresql@$PG/pg_pinecone.dylib "$(pg_config --pkglibdir)/"
 >    cp opt/homebrew/share/postgresql@$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
@@ -87029,10 +87010,10 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >
 > The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg\_pinecone added, so it includes Postgres and pgvector. It runs on x86\_64 and arm64 hosts. On x86\_64, it needs a CPU that supports x86-64-v3, like the Linux x86\_64 release archive.
 >
-> 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.11.0-pg18` tag here and in the next step instead:
+> 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.12.1-pg18` tag here and in the next step instead:
 >
 >    ```bash theme={null}
->    docker pull pineconeteam/pg_pinecone:0.11.0-pg17
+>    docker pull pineconeteam/pg_pinecone:0.12.1-pg17
 >    ```
 >
 > 2. Start a container from the image:
@@ -87040,11 +87021,11 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    ```bash theme={null}
 >    docker run -d --name pg_pinecone \
 >      -e POSTGRES_PASSWORD=secret \
->      pineconeteam/pg_pinecone:0.11.0-pg17 \
+>      pineconeteam/pg_pinecone:0.12.1-pg17 \
 >      -c shared_preload_libraries=pg_pinecone
 >    ```
 >
->    The `shared_preload_libraries` setting isn't needed for this quickstart, but the `remote` engine and full-text search need it, and setting it now saves a restart later.
+>    The `shared_preload_libraries` setting isn't needed for this quickstart, but the `remote` engine, full-text search, and semantic search need it, and setting it now saves a restart later.
 
 ## 2. Connect and create the extensions
 
@@ -87237,6 +87218,122 @@ DROP TABLE docs;
 * [Switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector) on an existing table.
 * [Switch from native to remote](/guides/pg-pinecone/switch-to-remote) when a table outgrows one server.
 * [Search a table with full-text search](/guides/pg-pinecone/full-text-search).
+* [Search a table with semantic search](/guides/pg-pinecone/semantic-search).
+
+
+# Search a table with semantic search
+Source: https://docs.pinecone.io/guides/pg-pinecone/semantic-search
+
+Search a Postgres table by meaning in SQL, with a hosted embedding model or your own vectors, using a Pinecone index that pg_pinecone keeps in sync.
+
+pg\_pinecone can rank a Postgres table's rows by meaning with [semantic search](/guides/search/semantic-search), using a Pinecone index it keeps in sync with the table. Pinecone can embed one of the table's text columns with a hosted model, or you can store your own vectors in a vector column.
+
+## Before you begin
+
+* [pg\_pinecone installed](/guides/pg-pinecone/quickstart).
+* A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
+* `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
+* A table with a single-column primary key, which becomes each document's ID. You must own the table.
+* A Pinecone plan that includes the hosted model you use. For example, [`gemini-embedding-2`](/models/gemini-embedding-2) requires a Builder, Standard, or Enterprise plan.
+
+## Search by meaning
+
+### 1. Create a sample table
+
+This guide uses a table of notes:
+
+```sql SQL theme={null}
+CREATE TABLE notes (
+    id       bigint PRIMARY KEY,
+    body     text,
+    category text
+);
+
+INSERT INTO notes (id, body, category) VALUES
+    (1, 'Semantic search finds documents by concept rather than by exact keyword matches.', 'search'),
+    (2, 'Our office closes at 5 PM on Fridays.', 'admin'),
+    (3, 'Vector embeddings capture the meaning of text so similar ideas land close together.', 'search'),
+    (4, 'Remember to submit expense reports by the end of the month.', 'admin');
+```
+
+### 2. Embed a text column
+
+Call `pinecone.track_docs()` and give one text column an `embed` option. Pinecone then embeds that column's text with a hosted model on every write and every query, using [integrated embedding](/guides/search/integrated-embedding):
+
+```sql SQL theme={null}
+SELECT pinecone.track_docs('notes',
+    text_columns     => '{"body": {"language": "en", "embed": {"model": "gemini-embedding-2"}}}',
+    metadata_columns => ARRAY['category']);
+```
+
+This creates a Pinecone index and copies the table's existing rows to it, then keeps it in sync. To check when the initial copy is done, see the [full-text search guide](/guides/pg-pinecone/full-text-search#wait-for-the-initial-copy).
+
+### 3. Search the table
+
+Search with `mode => 'embed'`. Pinecone embeds the query with the same model and ranks rows by similarity:
+
+```sql SQL theme={null}
+SELECT n.id, n.body, s.score
+FROM pinecone.search_docs('notes', 'finding information by concept instead of exact words',
+       mode => 'embed', k => 3) s
+JOIN notes n ON n.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+The two notes about search rank first, though neither contains the words "finding information":
+
+```text Output theme={null}
+ id |                                        body                                         |   score
+----+-------------------------------------------------------------------------------------+-----------
+  1 | Semantic search finds documents by concept rather than by exact keyword matches.    | 0.8373871
+  3 | Vector embeddings capture the meaning of text so similar ideas land close together. | 0.7104721
+  4 | Remember to submit expense reports by the end of the month.                         | 0.5482254
+```
+
+Keep these points in mind:
+
+* **Model settings**: pg\_pinecone passes the `embed` object to Pinecone. `model` is required, and you can also set `dimension`, `metric`, `processing_location`, `write_parameters`, and `read_parameters`. Pinecone fills in defaults for anything you leave out.
+* **Keyword and semantic search on one column**: The column keeps its full-text index, so `mode => 'text'` still ranks it with BM25. Semantic and BM25 scores use different scales. To rank by both, run two searches and merge the results by rank.
+* **Filters**: `mode => 'embed'` works with `filter` and `must`, so you can rank by meaning within rows that match a metadata value or required text. For examples, see the [full-text search guide](/guides/pg-pinecone/full-text-search#filter-results).
+* **One embedded column**: Only one text column can set `embed`, and you can't combine it with `vector_column`.
+* **Empty text**: A row whose `embed` column is `NULL` or blank isn't indexed. If Pinecone already has a copy of that row, pg\_pinecone deletes it.
+
+## Combine text and vector search
+
+If your table already stores embeddings, declare the column with `vector_column` instead of using `embed`. Then pass a query vector with `vector`, and name the column the text query must match with `field`. The text query narrows the results to rows that match it in that column, and the vector ranks what's left.
+
+This example uses the `articles` table from [Search a table with full-text search](/guides/pg-pinecone/full-text-search), which declares `vector_column => 'embedding'`:
+
+```sql SQL theme={null}
+SELECT a.id, a.title
+FROM pinecone.search_docs('articles', 'billing', field => 'body',
+       vector => pinecone.embed('how do I get a receipt for my payment'), k => 3) s
+JOIN articles a ON a.id = s.id::bigint
+ORDER BY s.rank;
+```
+
+```text Output theme={null}
+ id |          title
+----+--------------------------
+  6 | Download past invoices
+  5 | Change your billing plan
+```
+
+## Embed a field on an index directly
+
+To embed a field on an index that isn't tied to a table, add the same `embed` object to the field in `pinecone.create_doc_index()`, then search it with an `embed` clause in `pinecone.search_doc_index()`:
+
+```sql SQL theme={null}
+SELECT pinecone.create_doc_index('faq-semantic',
+  '{"fields": {"question": {"type": "string", "full_text_search": {"language": "en"},
+                            "embed": {"model": "gemini-embedding-2"}}}}');
+
+SELECT id, score
+FROM pinecone.search_doc_index('faq-semantic',
+  '{"type": "embed", "fields": ["question"], "query": "billing statements"}', k => 3);
+```
+
+To add documents with `pinecone.upsert_docs()` and delete the index with `pinecone.drop_doc_index()`, see the [full-text search guide](/guides/pg-pinecone/full-text-search#search-an-index-directly).
 
 
 # pg_pinecone storage engines
@@ -89350,6 +89447,12 @@ Source: https://docs.pinecone.io/release-notes/2026
 Every change to Pinecone in 2026, including new features, API updates, deprecations, and pricing and plan changes.
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
+
+**2026-11-08**
+
+### Search by meaning in pg\_pinecone
+
+[pg\_pinecone](/guides/pg-pinecone/overview) can now embed a table's text column with a hosted model, such as [`gemini-embedding-2`](/models/gemini-embedding-2), so you can [search by meaning](/guides/pg-pinecone/semantic-search) without a vector column. It's available in [v0.12.1](https://github.com/pinecone-io/pg_pinecone/releases/tag/v0.12.1). To upgrade an existing install, see the [operator runbook](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/runbook.md#upgrading-from-0100-and-later).
 
 **2026-11-04**
 

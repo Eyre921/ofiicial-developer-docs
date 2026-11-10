@@ -16,13 +16,93 @@ Stripe Tax uses a single address as your customer’s location when calculating 
 
 You can see which location an automatic tax calculated payment used in the **Tax calculation** section of the Transactions details page in your Dashboard.
 
-You can also review the [tax.location.source](https://docs.stripe.com/api/customers/object.md#customer_object-tax-location-source) field on the Customer API object.
+You can also review the API object for the tax location source:
+
+- [Customer](https://docs.stripe.com/api/customers/object.md): Check the [tax.location.source](https://docs.stripe.com/api/customers/object.md#customer_object-tax-location-source) field.
+- [Customer-configured account](https://docs.stripe.com/api/v2/core/accounts/object.md): Check the [automatic_indirect_tax.location_source](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-automatic_indirect_tax-location_source).
 
 ### Checkout and Payment Links 
 
 Checkout and Payment Links use the address collected during the session.
 
 ### Invoicing, Subscriptions, and custom payment integrations  
+
+#### Accounts v2
+
+We use the first viable item in the list below to determine your account’s location:
+
+1. We use the account’s [shipping address](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-shipping), if present.
+
+- If a shipping address is present but invalid, we raise a `customer_tax_location_invalid` error instead of trying the next address in this list.
+
+1. We use the account’s [identity address](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-identity-individual-address), if present.
+
+- If an identity address is present but invalid, we raise a `customer_tax_location_invalid` error instead of trying the next address in this list.
+
+1. We use the [billing details](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-billing_details) of the most specific payment method, if present: 
+   1. [Default payment method](https://docs.stripe.com/api/invoices/object.md#invoice_object-default_payment_method) of the invoice, if present.
+   2. [Default payment method](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-default_payment_method) of the subscription, if present.
+   3. [Default payment method](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-billing-default_payment_method) of the account’s customer configuration, if present.
+2. We use the account’s [IP address](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-configuration-customer-automatic_indirect_tax-ip_address) from the customer configuration, if present.
+
+Display of the precedence order of account addresses that Stripe Tax uses for v2 Accounts. (See full diagram at https://docs.stripe.com/tax/customer-locations)
+
+```text
++----------------------------------------------------------------------+
+| Account object                                                       |
++----------------------------------------------------------------------+
+| id: acct_1234                                                        |
+| identity.individual.address: Address #1                              |
+| configuration.customer.billing.default_payment_method: pm_qux        |
+| configuration.customer.automatic_indirect_tax.ip_address: Address #5 |
++----------------------------------------------------------------------+
+
++--------------------------------+
+| Subscription object            |
++--------------------------------+
+| id: sub_1234                   |
+| customer_account: acct_1234    |
+| default_payment_method: pm_bar |
++--------------------------------+
+
++--------------------------------+
+| Invoice object                 |
++--------------------------------+
+| id: in_1234                    |
+| subscription: sub_1234         |
+| default_payment_method: pm_foo |
++--------------------------------+
+
++-------------------------------------+
+| PaymentMethod object                |
++-------------------------------------+
+| id: pm_foo                          |
+| type: card                          |
+| billing_details.address: Address #2 |
++-------------------------------------+
+
++-------------------------------------+
+| PaymentMethod object                |
++-------------------------------------+
+| id: pm_bar                          |
+| type: card                          |
+| billing_details.address: Address #3 |
++-------------------------------------+
+
++-------------------------------------+
+| PaymentMethod object                |
++-------------------------------------+
+| id: pm_qux                          |
+| type: card                          |
+| billing_details.address: Address #4 |
++-------------------------------------+
+
+[Subscription object.customer_account] --> [Account object]
+[Invoice object.subscription] --> [Subscription object]
+[Invoice object.default_payment_method] --> [PaymentMethod object]
+[Subscription object.default_payment_method] --> [PaymentMethod object]
+[Account object.configuration.customer.billing.default_payment_method] --> [PaymentMethod object]
+```
 
 #### Customer v1
 
@@ -305,6 +385,11 @@ Checkout handles the collection of customer addresses for you, including those c
 
 If you don’t use Payment Links or Checkout, you’re responsible for the collection of customer addresses.
 
+#### Accounts v2
+
+- Collect and set both the country and postal code fields in the [identity](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-identity) object on your `Account`.
+- When updating an `Account`, set [configuration.customer.automatic_indirect_tax.validate_location](https://docs.stripe.com/api/v2/core/accounts/update.md#v2_update_accounts-configuration-customer-automatic_indirect_tax-validate_location) to `immediately` to prevent [customer_tax_location_invalid](https://docs.stripe.com/error-codes.md#customer-tax-location-invalid) errors later.
+
 #### Customer v1
 
 - Collect and set both the [country](https://docs.stripe.com/api/customers/object.md#customer_object-address-country) and the [postal_code](https://docs.stripe.com/api/customers/object.md#customer_object-address-postal_code) fields on your `Customer`.
@@ -315,7 +400,7 @@ If you don’t use Payment Links or Checkout, you’re responsible for the colle
 
 ## Handle invoice finalization errors 
 
-Finalizing invoices with Stripe Tax requires a recognized customer location. Location details might be missing or invalid if you update or remove a customer’s default payment method, or if you didn’t provide `tax[validate_location]="immediately"` when creating or updating a `Customer`.
+Finalizing invoices with Stripe Tax requires a recognized customer location. Location details might be missing or invalid if you update or remove a customer’s default payment method, or if you didn’t provide `tax[validate_location]="immediately"` when creating or updating a `Customer` or `configuration[customer][automatic_indirect_tax][validate_location]="immediately"` when updating an `Account`.
 
 If we don’t have a recognized customer location, invoices for a `Subscription` continue to [finalize automatically](https://docs.stripe.com/invoicing/integration/automatic-advancement-collection.md) but without calculating taxes. This has the following effects:
 
@@ -336,9 +421,14 @@ Stripe returns an error and leaves the `Invoice` in a `draft` status when you fi
 
 Similarly, for automatic finalization of standalone invoices without a `Subscription`, the `Invoice` remains a draft if the customer location isn’t valid. We send an [invoice.finalization_failed](https://docs.stripe.com/api/events/types.md#event_types-invoice.finalization_failed) event with the `Invoice` [last_finalization_error[code]](https://docs.stripe.com/api/invoices/object.md#invoice_object-last_finalization_error-code) being `customer_tax_location_invalid`.
 
-How you recover from a `customer_tax_location_invalid` error depends on whether you have or can collect a `Customer` address.
+How you recover from a `customer_tax_location_invalid` error depends on whether you have or can collect an `Account` or a `Customer` address.
 
-If you have a `Customer` address, or can collect one, update the `Customer` and finalize the `Invoice` manually.
+If you have an `Account` or a `Customer` address, or can collect one, update the `Account` or `Customer` and finalize the `Invoice` manually.
+
+#### Accounts v2
+
+1. Update [configuration.customer.automatic_indirect_tax.validate_location](https://docs.stripe.com/api/v2/core/accounts/update.md#v2_update_accounts-configuration-customer-automatic_indirect_tax-validate_location) to `immediately` to make sure that the new address is valid.
+2. [Finalize](https://docs.stripe.com/api/invoices/finalize.md) the `Invoice`.
 
 #### Customer v1
 

@@ -30,7 +30,7 @@ This agent drafts replies to the email in a [Resend Inboxes](https://resend.com/
 
 ## GitHub repo
 
-> **[View the Resend email agent repo](https://github.com/triggerdotdev/examples/tree/main/resend-slack-email-agent)**
+> [card] [View the Resend email agent repo](https://github.com/triggerdotdev/examples/tree/main/resend-slack-email-agent)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -142,18 +142,18 @@ An endpoint without its secret shows "Needs secret" on the Webhooks page.
 
 ## Learn more
 
-> **[Webhooks](/docs/webhooks/overview)**
+> [card] [Webhooks](/docs/webhooks/overview)
 >
 > Hosted endpoints that verify and deliver events to your tasks.
 
-> **[Wait for token](/docs/wait-for-token)**
+> [card] [Wait for token](/docs/wait-for-token)
 >
 > Pause a run until an external event completes a token.
 
-> **[Webhook sources](/docs/webhooks/sources)**
+> [card] [Webhook sources](/docs/webhooks/sources)
 >
 > Every built-in source, including `resend()`, and how each is verified.
 
-> **[Slack](/docs/webhooks/slack)**
+> [card] [Slack](/docs/webhooks/slack)
 >
 > The Slack source and channel in `@trigger.dev/slack`.

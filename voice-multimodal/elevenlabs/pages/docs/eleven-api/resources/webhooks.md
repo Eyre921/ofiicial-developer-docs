@@ -91,11 +91,11 @@ The retry payload is identical to the original delivery attempt. Webhook consume
 
 ### Top-level fields
 
-| Field             | Type   | Description              |
-| ----------------- | ------ | ------------------------ |
-| `type`            | string | Type of event            |
-| `data`            | object | Data for the event       |
-| `event_timestamp` | string | When this event occurred |
+| Field             | Type   | Description                               |
+| ----------------- | ------ | ----------------------------------------- |
+| `type`            | string | Type of event                             |
+| `data`            | object | Data for the event                        |
+| `event_timestamp` | number | When this event occurred in unix time UTC |
 
 ## Example webhook payload
 
@@ -191,6 +191,86 @@ The retry payload is identical to the original delivery attempt. Webhook consume
   }
 }
 ```
+
+## Voice removal webhooks
+
+A workspace receives these events for a shared voice from the [Voice Library](/docs/eleven-creative/voices/voice-library) that it has added, when the voice's owner or ElevenLabs removes it from the Voice Library.
+
+### Removal notice (`voice_removal_notice`)
+
+The voice has a notice period. It stays usable until `future_removal_timestamp`.
+
+No further event is sent when the notice period elapses.
+
+#### Data object structure
+
+| Field                      | Type   | Description                                                       |
+| -------------------------- | ------ | ----------------------------------------------------------------- |
+| `voice_id`                 | string | The ID of the voice that is scheduled to be removed               |
+| `future_removal_timestamp` | number | When the voice will stop being usable, in unix time UTC           |
+| `suggested_voices`         | array  | Up to 3 similar voices. See [Suggested voices](#suggested-voices) |
+
+```json
+{
+  "type": "voice_removal_notice",
+  "event_timestamp": 1739537297,
+  "data": {
+    "voice_id": "21m00Tcm4TlvDq8ikWAM",
+    "future_removal_timestamp": 1742129297,
+    "suggested_voices": [
+      ["https://elevenlabs.io/app/voice-lab/share/a1b2c3d4e5f6/EXAVITQu4vr4xnSDxMaL", "Sarah"]
+    ]
+  }
+}
+```
+
+### Removal notice withdrawn (`voice_removal_notice_withdrawn`)
+
+The voice is no longer scheduled for removal, and stays usable.
+
+#### Data object structure
+
+| Field      | Type   | Description                                         |
+| ---------- | ------ | --------------------------------------------------- |
+| `voice_id` | string | The ID of the voice that is no longer being removed |
+
+```json
+{
+  "type": "voice_removal_notice_withdrawn",
+  "event_timestamp": 1739537297,
+  "data": {
+    "voice_id": "21m00Tcm4TlvDq8ikWAM"
+  }
+}
+```
+
+### Voice removed (`voice_removed`)
+
+The voice was removed without a notice period, and is no longer usable.
+
+#### Data object structure
+
+| Field              | Type   | Description                                                       |
+| ------------------ | ------ | ----------------------------------------------------------------- |
+| `voice_id`         | string | The ID of the voice that was removed                              |
+| `suggested_voices` | array  | Up to 3 similar voices. See [Suggested voices](#suggested-voices) |
+
+```json
+{
+  "type": "voice_removed",
+  "event_timestamp": 1739537297,
+  "data": {
+    "voice_id": "21m00Tcm4TlvDq8ikWAM",
+    "suggested_voices": [
+      ["https://elevenlabs.io/app/voice-lab/share/a1b2c3d4e5f6/EXAVITQu4vr4xnSDxMaL", "Sarah"]
+    ]
+  }
+}
+```
+
+### Suggested voices
+
+Each item in `suggested_voices` is a two-item array: the voice's Voice Library share URL, then the voice's name. The list can be empty.
 
 ## Authentication
 

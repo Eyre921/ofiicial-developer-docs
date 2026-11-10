@@ -183,14 +183,14 @@ The [ElevenAgents quickstart](/docs/eleven-agents/quickstart) builds a first age
 
 Start from your use case. Each model ID below is the value to pass as `model_id` in API requests.
 
-| Use case                          | Recommended model  | Model ID             | Why                                                                                                                                                                                                        |
-| --------------------------------- | ------------------ | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Real-time voice agents            | Eleven v4 Turbo    | `eleven_v4_turbo`    | Median latency of \~100ms† with the most expressive real-time delivery. `eleven_flash_v2_5` has a similar median latency.                                                                                  |
-| Expressive or long-form narration | Eleven v4          | `eleven_v4`          | The most expressive model, suited to audiobooks and character voiceovers. Up to 10,000 characters (\~10 minutes of audio) per request. For the most stable long-form output, use `eleven_multilingual_v2`. |
-| Multilingual content              | Eleven v4          | `eleven_v4`          | 90+ languages with consistent voice quality across language switches. `eleven_v4_turbo` covers the same languages in real time.                                                                            |
-| Lowest cost                       | Eleven Flash v2.5  | `eleven_flash_v2_5`  | 50% lower price per character for API generations, 32 languages, and up to 40,000 characters per request.                                                                                                  |
-| Speech to text, batch             | Scribe v2          | `scribe_v2`          | Transcription in 90+ languages with word-level timestamps, speaker diarization for up to 32 speakers, and keyterm prompting. Use `scribe_v2_medical` for clinical audio.                                   |
-| Speech to text, realtime          | Scribe v2 Realtime | `scribe_v2_realtime` | Streams transcripts with \~150ms† latency in 90+ languages.                                                                                                                                                |
+| Use case                          | Recommended model | Model ID            | Why                                                                                                                                                                                                        |
+| --------------------------------- | ----------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Real-time voice agents            | Eleven v4 Turbo   | `eleven_v4_turbo`   | Median latency of \~100ms† with the most expressive real-time delivery. `eleven_flash_v2_5` has a similar median latency.                                                                                  |
+| Expressive or long-form narration | Eleven v4         | `eleven_v4`         | The most expressive model, suited to audiobooks and character voiceovers. Up to 10,000 characters (\~10 minutes of audio) per request. For the most stable long-form output, use `eleven_multilingual_v2`. |
+| Multilingual content              | Eleven v4         | `eleven_v4`         | 90+ languages with consistent voice quality across language switches. `eleven_v4_turbo` covers the same languages in real time.                                                                            |
+| Lowest cost                       | Eleven Flash v2.5 | `eleven_flash_v2_5` | 50% lower price per character for API generations, 32 languages, and up to 40,000 characters per request.                                                                                                  |
+| Speech to text, batch             | Scribe v3         | `scribe_v3`         | Our most accurate transcription model, in 90+ languages with word-level timestamps, speaker diarization for up to 32 speakers, and keyterm prompting. Use `scribe_v2_medical` for clinical audio.          |
+| Speech to text, realtime          | Scribe v3 Live    | `scribe_v3_live`    | Our most accurate real-time transcription model, in 90+ languages, with turn prediction to commit transcripts when the speaker finishes.                                                                   |
 
 See [Choosing the right model](/docs/eleven-api/choosing-the-right-model) for more use cases and the [models reference](/docs/overview/models) for full specifications.
 
@@ -266,35 +266,37 @@ Ultra-low latency (\~100ms†)
 
 Faster model, 50% lower price per character for API generations
 
-#### [Scribe v2](/docs/overview/models#scribe-v2)
+#### [Scribe v3](/docs/overview/models#scribe-v3)
 
-State-of-the-art speech recognition model
+Our most accurate speech recognition model for recorded audio
 
-Accurate transcription in 90+ languages
-
-Keyterm prompting, up to 1000 terms
-
-Entity detection, 65 entity types
-
-Transcript editing with natural-language instructions
-
-Precise word-level timestamps
+27% fewer word errors than Scribe v2 on FLEURS
 
 Speaker diarization, up to 32 speakers
 
-Dynamic audio tagging
+Numbers as digits or words
 
-Smart language detection
+Secondary languages for mixed-language audio
 
-#### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
+Keyterm prompting, up to 1,000 terms
 
-Real-time speech recognition model
+Entity detection and transcript editing
 
-Accurate transcription in 90+ languages
+Precise word-level timestamps
 
-Real-time transcription
+#### [Scribe v3 Live](/docs/overview/models#scribe-v3-live)
 
-Low latency (\~150ms†)
+Our most accurate real-time speech recognition model
+
+44% lower semantic WER than Scribe v2 Realtime on FLEURS
+
+Turn prediction from conversation context
+
+Multilingual mode for mid-sentence language switches
+
+Keyterm library, up to 100,000 terms
+
+Entity detection and transcript editing
 
 Precise word-level timestamps
 

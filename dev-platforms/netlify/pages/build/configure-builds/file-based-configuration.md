@@ -309,6 +309,19 @@ Meanwhile, the following properties apply only for functions written in TypeScri
   included_files = ["!files/post-2.md", "package.json", "images/**"]
 ```
 
+### Server
+
+The `[server]` section configures your project's [Netlify Server](/build/server/). It accepts the same settings as the server's [configuration](/build/server/configuration/). If your entry file also sets a property, the entry file takes precedence.
+
+```toml
+[server]
+  # Run the server in Frankfurt.
+  region = "fra"
+
+  # Run it on medium instances, with 2 GB of memory.
+  size = "medium"
+```
+
 ### Netlify Dev
 
 [Netlify Dev](/api-and-cli-guides/cli-guides/local-development) uses [detectors](/api-and-cli-guides/cli-guides/local-development#project-detection) to enable a local development environment for most tools and frameworks without any additional setup.

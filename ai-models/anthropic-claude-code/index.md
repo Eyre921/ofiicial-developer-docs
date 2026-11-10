@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 231 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 206 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -217,31 +217,3 @@
 - `plugins/relevance` — [Recommend plugins for your org](pages/plugins/relevance.md) · [原文](https://code.claude.com/docs/en/plugins/relevance)
 - `plugins/security` — [Plugin security and trust](pages/plugins/security.md) · [原文](https://code.claude.com/docs/en/plugins/security)
 - `plugins/troubleshooting` — [Troubleshoot plugins](pages/plugins/troubleshooting.md) · [原文](https://code.claude.com/docs/en/plugins/troubleshooting)
-
-## whats-new
-
-- `whats-new/2026-w13` — [Week 13 · March 23–27, 2026](pages/whats-new/2026-w13.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w13)
-- `whats-new/2026-w14` — [Week 14 · March 30 – April 3, 2026](pages/whats-new/2026-w14.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w14)
-- `whats-new/2026-w15` — [Week 15 · April 6–10, 2026](pages/whats-new/2026-w15.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w15)
-- `whats-new/2026-w16` — [Week 16 · April 13–17, 2026](pages/whats-new/2026-w16.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w16)
-- `whats-new/2026-w17` — [Week 17 · April 20–24, 2026](pages/whats-new/2026-w17.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w17)
-- `whats-new/2026-w18` — [Week 18 · April 27 – May 1, 2026](pages/whats-new/2026-w18.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w18)
-- `whats-new/2026-w19` — [Week 19 · May 4–8, 2026](pages/whats-new/2026-w19.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w19)
-- `whats-new/2026-w20` — [Week 20 · May 11–15, 2026](pages/whats-new/2026-w20.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w20)
-- `whats-new/2026-w21` — [Week 21 · May 18–22, 2026](pages/whats-new/2026-w21.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w21)
-- `whats-new/2026-w22` — [Week 22 · May 25–29, 2026](pages/whats-new/2026-w22.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w22)
-- `whats-new/2026-w23` — [Week 23 · June 1–5, 2026](pages/whats-new/2026-w23.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w23)
-- `whats-new/2026-w24` — [Week 24 · June 8–12, 2026](pages/whats-new/2026-w24.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w24)
-- `whats-new/2026-w25` — [Week 25 · June 15–19, 2026](pages/whats-new/2026-w25.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w25)
-- `whats-new/2026-w26` — [Week 26 · June 22–26, 2026](pages/whats-new/2026-w26.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w26)
-- `whats-new/2026-w27` — [Week 27 · June 29 – July 3, 2026](pages/whats-new/2026-w27.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w27)
-- `whats-new/2026-w28` — [Week 28 · July 6–10, 2026](pages/whats-new/2026-w28.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w28)
-- `whats-new/2026-w29` — [Week 29 · July 13–17, 2026](pages/whats-new/2026-w29.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w29)
-- `whats-new/2026-w30` — [Week 30 · July 20–24, 2026](pages/whats-new/2026-w30.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w30)
-- `whats-new/2026-w32` — [Week 32 · August 3–7, 2026](pages/whats-new/2026-w32.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w32)
-- `whats-new/2026-w33` — [Week 33 · August 10–14, 2026](pages/whats-new/2026-w33.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w33)
-- `whats-new/2026-w34` — [Week 34 · August 17–21, 2026](pages/whats-new/2026-w34.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w34)
-- `whats-new/2026-w35` — [Week 35 · August 24–28, 2026](pages/whats-new/2026-w35.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w35)
-- `whats-new/2026-w36` — [Week 36 · August 31 – September 4, 2026](pages/whats-new/2026-w36.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w36)
-- `whats-new/2026-w37` — [Week 37 · September 7–11, 2026](pages/whats-new/2026-w37.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w37)
-- `whats-new/index` — [What's new](pages/whats-new/index.md) · [原文](https://code.claude.com/docs/en/whats-new/index)

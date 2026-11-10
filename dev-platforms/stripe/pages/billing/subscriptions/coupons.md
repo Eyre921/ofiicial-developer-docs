@@ -96,6 +96,8 @@ To customize how a coupon calculates discounts, configure a [Stripe-authored dis
 
 ### Set eligible products
 
+You can restrict a coupon to up to 100 products.
+
 #### Dashboard
 
 To set the products that are eligible for discounts, add the relevant product in the **Apply to specific product** field. Any promotion codes that are associated with the coupon are also restricted to this list of eligible products.

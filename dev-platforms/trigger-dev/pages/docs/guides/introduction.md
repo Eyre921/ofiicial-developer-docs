@@ -8,15 +8,15 @@ A growing list of guides and examples to get the most out of Trigger.dev.
 
 ## Frameworks
 
-> **[Bun](/docs/guides/frameworks/bun)**
+> [card] [Bun](/docs/guides/frameworks/bun)
 
-> **[Next.js](/docs/guides/frameworks/nextjs)**
+> [card] [Next.js](/docs/guides/frameworks/nextjs)
 
-> **[Node.js](/docs/guides/frameworks/nodejs)**
+> [card] [Node.js](/docs/guides/frameworks/nodejs)
 
-> **[Remix](/docs/guides/frameworks/remix)**
+> [card] [Remix](/docs/guides/frameworks/remix)
 
-> **[SvelteKit](/docs/guides/community/sveltekit)**
+> [card] [SvelteKit](/docs/guides/community/sveltekit)
 
 ## Guides
 
@@ -47,19 +47,19 @@ Get set up fast using our detailed walk-through guides.
 
 ## Featured use cases
 
-> **[Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)**
+> [card] [Data processing & ETL workflows](/docs/guides/use-cases/data-processing-etl)
 >
 > Build complex data pipelines that process large datasets without timeouts.
 
-> **[Media processing workflows](/docs/guides/use-cases/media-processing)**
+> [card] [Media processing workflows](/docs/guides/use-cases/media-processing)
 >
 > Batch process videos, images, audio, and documents with no execution time limits.
 
-> **[AI media generation workflows](/docs/guides/use-cases/media-generation)**
+> [card] [AI media generation workflows](/docs/guides/use-cases/media-generation)
 >
 > Generate images, videos, audio, documents and other media using AI models.
 
-> **[Marketing workflows](/docs/guides/use-cases/marketing)**
+> [card] [Marketing workflows](/docs/guides/use-cases/marketing)
 >
 > Build drip campaigns, create marketing content, and orchestrate multi-channel campaigns.
 

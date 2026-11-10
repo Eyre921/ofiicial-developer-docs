@@ -50,6 +50,6 @@ When running in dev, you will first have to download the Lightpanda browser bina
 
 ## Next steps
 
-> **[Lightpanda](/docs/guides/examples/lightpanda)**
+> [card] [Lightpanda](/docs/guides/examples/lightpanda)
 >
 > Learn how to use Lightpanda in your project.

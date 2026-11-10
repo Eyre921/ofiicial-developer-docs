@@ -140,24 +140,25 @@ Learn more about [setting up your integration](https://docs.stripe.com/terminal/
 
 ### Serverless initialization
 
-For Apps on Devices, you can use `AppsOnDevicesConnectionTokenProvider` instead of a back-end token provider. This enables initialization without a back-end server providing connection tokens.
+Serverless initialization removes the need to set up a dedicated endpoint on your back end that provides Terminal connection tokens. Instead, the SDK requests connection tokens through the Stripe Reader app. Stripe creates the connection token for the Stripe account and location where you registered the reader. This doesn’t otherwise change the back-end requirements for your integration.
 
-```tsx
-import {
-  StripeTerminalProvider,
-  AppsOnDevicesConnectionTokenProvider,
-} from '@stripe/stripe-terminal-react-native';
+For Connect integrations, register the reader to the account that owns the charge:
 
-function Root() {
-  return (
-    <StripeTerminalProvider
-      tokenProvider={AppsOnDevicesConnectionTokenProvider}
-      localeConfig={{ type: 'cardLanguagePreferenceIfAvailable' }}
-    >
-      <App />
-    </StripeTerminalProvider>
-  );
-}
+- For [direct charges](https://docs.stripe.com/terminal/features/connect.md#direct-connected-account), register the reader to the connected account. The connection token and `PaymentIntent` belong to that connected account.
+- For [destination charges](https://docs.stripe.com/terminal/features/connect.md#destination-locations), register the reader to the platform account. The connection token and `PaymentIntent` belong to the platform account.
+
+Serverless initialization isn’t currently available for self-service adoption.
+
+### Register your interest in serverless initialization
+
+Enter your email to register your interest in serverless initialization for Apps on Devices. Registration doesn't provide access or imply a launch timeline. Stripe might contact you if an appropriate testing opportunity becomes available.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/terminal/features/apps-on-devices/build" \
+  -d '{"email": "EMAIL", "preview": "terminal_aod_serverless_interest"}'
 ```
 
 ## Build the app [Client-side]

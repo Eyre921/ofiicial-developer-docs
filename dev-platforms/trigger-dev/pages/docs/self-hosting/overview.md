@@ -135,14 +135,14 @@ It's dangerous to go alone! Join the self-hosting channel on our [Discord server
 
 ## Next steps
 
-> **[Docker compose](/docs/self-hosting/docker)**
+> [card] [Docker compose](/docs/self-hosting/docker)
 >
 > Learn how to self-host Trigger.dev with Docker compose.
 
-> **[Kubernetes](/docs/self-hosting/kubernetes)**
+> [card] [Kubernetes](/docs/self-hosting/kubernetes)
 >
 > Learn how to self-host Trigger.dev with Kubernetes.
 
-> **[Security](/docs/self-hosting/security)**
+> [card] [Security](/docs/self-hosting/security)
 >
 > Report vulnerabilities and stay informed about security releases.

@@ -12,11 +12,14 @@ url: https://docs.sentry.io/platforms/javascript/guides/flue/
 
 # Sentry for Flue
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/flue.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md)
+
 [Flue](https://flueframework.com/) is an open TypeScript framework for building AI agents, made by the Astro team. This guide sets up the Sentry SDK in a Flue app so agent turns, model calls, tool executions, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
 
 This guide covers the Sentry SDK-based setup, which replaces the `flue add tooling sentry` blueprint. If you previously ran the blueprint, remove its `createOpenTelemetryInstrumentation` call — otherwise, you will get duplicate spans.
-
-Deploying Flue agents to Cloudflare Workers? Follow the [Cloudflare Quick Start](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md) instead.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/flue.md#prerequisites)
 
@@ -221,7 +224,7 @@ A tool that throws is captured as an error and its span is marked failed. Flue c
 
 ## Topics
 
-- [Cloudflare Quick Start](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md)
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/flue/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/flue/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/flue/logs.md)

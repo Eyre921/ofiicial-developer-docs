@@ -12,6 +12,27 @@ url: https://docs.sentry.io/platforms/javascript/guides/node/
 
 # Sentry for Node.js
 
+Agent frameworks:
+
+* [Eve](https://docs.sentry.io/platforms/javascript/guides/eve.md)
+* [Flue](https://docs.sentry.io/platforms/javascript/guides/flue.md)
+* [Mastra](https://docs.sentry.io/platforms/javascript/guides/mastra.md)
+* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md)
+
+Frameworks with their own setup guide:
+
+* [Astro](https://docs.sentry.io/platforms/javascript/guides/astro.md)
+* [Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)
+* [NestJS](https://docs.sentry.io/platforms/javascript/guides/nestjs.md)
+* [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs.md)
+* [Nitro](https://docs.sentry.io/platforms/javascript/guides/nitro.md)
+* [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt.md)
+* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router.md)
+* [Remix](https://docs.sentry.io/platforms/javascript/guides/remix.md)
+* [SolidStart](https://docs.sentry.io/platforms/javascript/guides/solidstart.md)
+* [SvelteKit](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md)
+* [TanStack Start](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md)
+
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/node.md#prerequisites)
 
 You need:

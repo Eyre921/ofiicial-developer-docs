@@ -540,13 +540,13 @@ With external datastores, secrets, registry, and authentication in place, you ha
 
 Your generated secrets, data volumes, and the bundled ClickHouse are preserved and migrated automatically. Before running `helm upgrade`, complete any prerequisites below that apply to your installation.
 
-> **You upgrade from a chart that deploys Electric**
+> [accordion] You upgrade from a chart that deploys Electric
 >
 > Unset the global `realtimeBackend` feature flag and any organization overrides, or set them to `native`, before upgrading. Organization overrides take precedence over the global flag, and the global flag takes precedence over `REALTIME_BACKEND_DEFAULT`.
 >
 > The chart enables native realtime and removes the Electric service. A remaining `electric` or `shadow` flag value directs run subscriptions to that removed service and breaks realtime updates.
 
-> **You supply your own secret (secrets.existingSecret)**
+> [accordion] You supply your own secret (secrets.existingSecret)
 >
 > With `secrets.existingSecret` set, the chart reads every key from your Secret and generates none, so any key the app needs must already be present there.
 >
@@ -559,7 +559,7 @@ Your generated secrets, data volumes, and the bundled ClickHouse are preserved a
 >
 > If a required key is missing, the upgrade stops before touching your running release and tells you which to add.
 
-> **Something outside the chart reads a datastore password**
+> [accordion] Something outside the chart reads a datastore password
 >
 > The bundled datastore passwords live in the `trigger-datastore` Secret. If a maintenance job, a dashboard, or a secret sync reads one directly, point it there:
 >
@@ -570,7 +570,7 @@ Your generated secrets, data volumes, and the bundled ClickHouse are preserved a
 >
 > The keys are `clickhouse-admin-password`, `postgres-password`, and `minio-root-user` / `minio-root-password`.
 
-> **You render manifests without cluster access (Argo CD, plain helm template)**
+> [accordion] You render manifests without cluster access (Argo CD, plain helm template)
 >
 > During an upgrade the chart reads the cluster to keep your data and to check your Secret. Renderers that run offline can't do that, so set these yourself:
 >

@@ -39,6 +39,8 @@ On the same page, select **Add credential** and add [API keys](/docs/gateway/con
 
   ![Add provider credential dialog with the provider, name, and secret key fields](/images/docs/ai-gateway/setup-add-provider-credential.png)
 
+For the providers you can add and their API formats, see [supported providers](/docs/gateway/features/models#supported-providers).
+
   Provider credentials are separate from project [LLM
   connections](/docs/administration/llm-connection), which power the Playground
   and LLM-as-a-Judge.

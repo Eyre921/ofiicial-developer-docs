@@ -13,7 +13,7 @@ Learn how to trigger a task from a webhook in a Next.js app.
 
 ## GitHub repo
 
-> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/nextjs-webhooks/my-app)**
+> [card] [View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/nextjs-webhooks/my-app)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -131,29 +131,29 @@ If you now go to your [Trigger.dev dashboard](https://cloud.trigger.dev), you sh
 
 ### Walk-through guides from development to deployment
 
-> **[Next.js - setup guide](/docs/guides/frameworks/nextjs)**
+> [card] [Next.js - setup guide](/docs/guides/frameworks/nextjs)
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> **[Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)**
+> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
 ### Task examples
 
-> **[Fal.ai with Realtime in Next.js](/docs/guides/examples/fal-ai-realtime)**
+> [card] [Fal.ai with Realtime in Next.js](/docs/guides/examples/fal-ai-realtime)
 >
 > Generate an image from a prompt using Fal.ai and Trigger.dev Realtime.
 
-> **[Generate a cartoon using Fal.ai in Next.js](/docs/guides/examples/fal-ai-image-to-cartoon)**
+> [card] [Generate a cartoon using Fal.ai in Next.js](/docs/guides/examples/fal-ai-image-to-cartoon)
 >
 > Convert an image to a cartoon using Fal.ai.
 
-> **[Vercel sync environment variables](/docs/guides/examples/vercel-sync-env-vars)**
+> [card] [Vercel sync environment variables](/docs/guides/examples/vercel-sync-env-vars)
 >
 > Learn how to automatically sync environment variables from your Vercel projects to Trigger.dev.
 
-> **[Vercel AI SDK](/docs/guides/examples/vercel-ai-sdk)**
+> [card] [Vercel AI SDK](/docs/guides/examples/vercel-ai-sdk)
 >
 > Learn how to use the Vercel AI SDK, which is a simple way to use AI models from different
 > providers, including OpenAI, Anthropic, Amazon Bedrock, Groq, Perplexity etc.

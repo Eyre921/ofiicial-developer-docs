@@ -14,24 +14,24 @@ A webhook handler is code that executes in response to an event. They can be end
 
 ## Webhook guides
 
-> **[Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)**
+> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
 >
 > How to create a webhook handler in a Next.js app, and trigger a task from it.
 
-> **[Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)**
+> [card] [Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)
 >
 > How to create a webhook handler in a Remix app, and trigger a task from it.
 
-> **[Stripe webhooks](/docs/guides/examples/stripe-webhook)**
+> [card] [Stripe webhooks](/docs/guides/examples/stripe-webhook)
 >
 > How to create a Stripe webhook handler and trigger a task when a 'checkout session completed'
 > event is received.
 
-> **[Hookdeck webhooks](/docs/guides/examples/hookdeck-webhook)**
+> [card] [Hookdeck webhooks](/docs/guides/examples/hookdeck-webhook)
 >
 > Use Hookdeck to receive webhooks and forward them to Trigger.dev tasks with logging and replay
 > capabilities.
 
-> **[Supabase database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)**
+> [card] [Supabase database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)
 >
 > Learn how to trigger a task from a Supabase edge function when an event occurs in your database.

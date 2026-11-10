@@ -89,9 +89,9 @@ For example, append an image block to a page:
 FILE_UPLOAD_ID=$(ntn files create --plain < ./photo.png | cut -f1)
 
 ntn api "v1/blocks/$PAGE_ID/children" -X PATCH \
-  children[0][type]=image \
-  children[0][image][type]=file_upload \
-  children[0][image][file_upload][id]="$FILE_UPLOAD_ID"
+  'children[0][type]=image' \
+  'children[0][image][type]=file_upload' \
+  "children[0][image][file_upload][id]=$FILE_UPLOAD_ID"
 ```
 
 To attach the upload as a generic file block, change the block type and file field:
@@ -100,9 +100,9 @@ To attach the upload as a generic file block, change the block type and file fie
 FILE_UPLOAD_ID=$(ntn files create --plain < ./contract.pdf | cut -f1)
 
 ntn api "v1/blocks/$PAGE_ID/children" -X PATCH \
-  children[0][type]=file \
-  children[0][file][type]=file_upload \
-  children[0][file][file_upload][id]="$FILE_UPLOAD_ID"
+  'children[0][type]=file' \
+  'children[0][file][type]=file_upload' \
+  "children[0][file][file_upload][id]=$FILE_UPLOAD_ID"
 ```
 
 To attach the upload to a files property on an existing database page:
@@ -111,9 +111,9 @@ To attach the upload to a files property on an existing database page:
 FILE_UPLOAD_ID=$(ntn files create --plain < ./contract.pdf | cut -f1)
 
 ntn api "v1/pages/$PAGE_ID" -X PATCH \
-  properties[Attachments][files][0][type]=file_upload \
-  properties[Attachments][files][0][file_upload][id]="$FILE_UPLOAD_ID" \
-  properties[Attachments][files][0][name]=contract.pdf
+  'properties[Attachments][files][0][type]=file_upload' \
+  "properties[Attachments][files][0][file_upload][id]=$FILE_UPLOAD_ID" \
+  'properties[Attachments][files][0][name]=contract.pdf'
 ```
 
 Replace `Attachments` with the name of your files property.

@@ -776,7 +776,7 @@ Philippines is only available for [Connect cross-border payouts](https://docs.st
 
 | Bank account information | Example data |
 | --- | --- |
-| SWIFT / BIC Code | AAAAMK2XXXX (11 digits) |
+| SWIFT / BIC Code | AAAAQAQAXXX (11 characters) |
 | Account number | QA87CITI123456789012345678901 (29 digits) |
 
 Qatar is only available for [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md) accounts.

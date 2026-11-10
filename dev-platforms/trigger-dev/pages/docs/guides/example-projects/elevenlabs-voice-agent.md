@@ -37,7 +37,7 @@ The agent is a single [`chat.agent()`](/docs/ai-chat/overview) task that holds t
 
 ## GitHub repo
 
-> **[View the ElevenLabs Voice agent repo](https://github.com/triggerdotdev/examples/tree/main/voice-agent-demo)**
+> [card] [View the ElevenLabs Voice agent repo](https://github.com/triggerdotdev/examples/tree/main/voice-agent-demo)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.
@@ -229,18 +229,18 @@ pnpm dev           # the Next.js app
 
 ## Learn more
 
-> **[AI chat overview](/docs/ai-chat/overview)**
+> [card] [AI chat overview](/docs/ai-chat/overview)
 >
 > How chat agents, sessions, and the turn loop work.
 
-> **[Fast starts](/docs/ai-chat/fast-starts)**
+> [card] [Fast starts](/docs/ai-chat/fast-starts)
 >
 > Head Start: run turn 1 in your web server while the agent boots.
 
-> **[Frontend](/docs/ai-chat/frontend)**
+> [card] [Frontend](/docs/ai-chat/frontend)
 >
 > The chat transport, session tokens, and reconnection.
 
-> **[Sessions](/docs/ai-chat/sessions)**
+> [card] [Sessions](/docs/ai-chat/sessions)
 >
 > Durable sessions, idle timeouts, and checkpoint/resume between turns.

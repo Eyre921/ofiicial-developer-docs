@@ -54,7 +54,7 @@ We recommend using the Netlify UI, CLI, or API, where possible, to avoid storing
 | Set a different value for each deploy context | &check; | &check; |
 | Set specific scopes for variables| &check; |  |
 | Available to [builds](/build/configure-builds/environment-variables) | &check; | &check; |
-| Available to [Functions](/build/functions/overview), [Edge Functions](/build/edge-functions/overview), and [On-demand Builders](/build/configure-builds/on-demand-builders) | &check; |  |
+| Available to [Functions](/build/functions/overview), [Edge Functions](/build/edge-functions/overview), [Netlify Server](/build/server/), and [On-demand Builders](/build/configure-builds/on-demand-builders) | &check; |  |
 | Available to [snippet injection](/build/post-processing/snippet-injection/) | &check; | &check;|
 | Available to [forms](/manage/forms/spam-filters#custom-recaptcha-2) | &check; |  |
 | Available to [signed proxy redirects](/manage/routing/redirects/rewrites-proxies#signed-proxy-redirects) | &check; |  |
@@ -86,7 +86,7 @@ The ability to set contextual values opens up more possibilities for how you can
 By default, environment variables apply to all scopes. Alternatively, you can limit variables to one or more of the following scopes:
 
 - **Builds**: includes [site builds](/build/configure-builds/overview). You can use environment variables with this scope during the build step to configure your site, framework, and function builds. Learn more about [build environment variables](/build/configure-builds/environment-variables).
-- **Functions**: includes [Functions](/build/functions/overview), [Edge Functions](/build/edge-functions/overview), and [On-demand Builders](/build/configure-builds/on-demand-builders). You can use environment variables with this scope to securely provide sensitive values for your functions to use while they run - values such as API keys and tokens. Learn more about environment variables with [serverless functions](/build/functions/environment-variables) and [edge functions](/build/edge-functions/environment-variables).
+- **Functions**: includes [Functions](/build/functions/overview), [Edge Functions](/build/edge-functions/overview), [Netlify Server](/build/server/), and [On-demand Builders](/build/configure-builds/on-demand-builders). You can use environment variables with this scope to securely provide sensitive values for your functions to use while they run - values such as API keys and tokens. Learn more about environment variables with [serverless functions](/build/functions/environment-variables) and [edge functions](/build/edge-functions/environment-variables).
 - **Runtime**: includes [forms](/manage/forms/spam-filters#netlify-provided-recaptcha-2) and [signed proxy redirects](/manage/routing/redirects/rewrites-proxies#signed-proxy-redirects). You can use environment variables with this scope to provide security tokens for your forms and redirects to use while your site runs in the browser.
 - **Post processing**: includes [snippet injection](/build/post-processing/snippet-injection/). You can use environment variables with this scope as Netlify serves your site in the browser - for example, you may add data for an analytics script that you inject.
 

@@ -218,6 +218,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
+- [Quick Start (Hydrogen)](https://docs.sentry.io/platforms/javascript/guides/react-router/hydrogen.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/react-router/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/react-router/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/react-router/sourcemaps.md)

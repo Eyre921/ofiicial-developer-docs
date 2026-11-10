@@ -573,18 +573,18 @@ The shape is identical outside Next.js. The agent task and the React component d
 
 ## Next steps
 
-> **[Backend](/docs/ai-chat/backend)**
+> [card] [Backend](/docs/ai-chat/backend)
 >
 > Every `chat.agent` option, `chat.pipe`, custom data parts, and runtime config.
 
-> **[Lifecycle hooks](/docs/ai-chat/lifecycle-hooks)**
+> [card] [Lifecycle hooks](/docs/ai-chat/lifecycle-hooks)
 >
 > Every hook, its payload, and the exact per-turn firing order.
 
-> **[Database persistence](/docs/ai-chat/patterns/database-persistence)**
+> [card] [Database persistence](/docs/ai-chat/patterns/database-persistence)
 >
 > The full per-hook persistence mapping and the race conditions to avoid.
 
-> **[How it works](/docs/ai-chat/how-it-works)**
+> [card] [How it works](/docs/ai-chat/how-it-works)
 >
 > Sessions, runs, the durable channels, and what survives which failure.

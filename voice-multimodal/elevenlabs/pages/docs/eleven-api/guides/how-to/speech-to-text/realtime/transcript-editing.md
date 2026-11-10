@@ -50,7 +50,7 @@ const { token } = await response.json();
 
 const connection = Scribe.connect({
   token,
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   transcriptEdit: "Write all dates in ISO 8601 format (YYYY-MM-DD)",
   microphone: {
     echoCancellation: true,
@@ -83,7 +83,7 @@ async def main():
     elevenlabs = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
 
     connection = await elevenlabs.speech_to_text.realtime.connect(RealtimeAudioOptions(
-        model_id="scribe_v2_realtime",
+        model_id="scribe_v3_live",
         audio_format=AudioFormat.PCM_16000,
         sample_rate=16000,
         transcript_edit="Write all dates in ISO 8601 format (YYYY-MM-DD)",
@@ -112,7 +112,7 @@ import "dotenv/config";
 const elevenlabs = new ElevenLabsClient();
 
 const connection = await elevenlabs.speechToText.realtime.connect({
-  modelId: "scribe_v2_realtime",
+  modelId: "scribe_v3_live",
   audioFormat: AudioFormat.PCM_16000,
   sampleRate: 16000,
   transcriptEdit: "Write all dates in ISO 8601 format (YYYY-MM-DD)",

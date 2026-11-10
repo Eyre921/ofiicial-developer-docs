@@ -19,7 +19,7 @@ This demo is a full stack example that uses the following:
 
 ## GitHub repo
 
-> **[View the human-in-the-loop workflow repo](https://github.com/triggerdotdev/examples/tree/main/article-summary-workflow)**
+> [card] [View the human-in-the-loop workflow repo](https://github.com/triggerdotdev/examples/tree/main/article-summary-workflow)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.

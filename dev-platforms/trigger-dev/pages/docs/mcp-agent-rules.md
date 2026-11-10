@@ -27,18 +27,18 @@ The old task and realtime guidance now lives in the `trigger-authoring-tasks` an
 
 ## Next steps
 
-> **[Skills](/docs/skills)**
+> [card] [Skills](/docs/skills)
 >
 > Install Trigger.dev agent skills into your AI coding assistant.
 
-> **[MCP Server](/docs/mcp-introduction)**
+> [card] [MCP Server](/docs/mcp-introduction)
 >
 > Give your AI assistant direct access to Trigger.dev tools and APIs.
 
-> **[Building with AI](/docs/building-with-ai)**
+> [card] [Building with AI](/docs/building-with-ai)
 >
 > See how skills and the MCP server compare.
 
-> **[Writing tasks](/docs/tasks/overview)**
+> [card] [Writing tasks](/docs/tasks/overview)
 >
 > Learn the task patterns that skills teach your AI assistant.

@@ -8,17 +8,36 @@ path: docs/eleven-agents/quickstart
 
 # Quickstart
 
-In this guide, you'll learn how to create your first conversational agent. This will serve as a foundation for building conversational workflows tailored to your business use cases.
+In this guide, you'll learn how to create your first conversational agent. This will serve as a foundation for building conversational workflows tailored to your business use cases. Let your coding agent set it up, or follow the steps below by hand.
+
+## Set up with your coding agent
+
+You do not need an account or an API key before you start. Paste this into your coding agent:
+
+```text
+Add ElevenLabs to my project: run `npx -y @elevenlabs/cli@latest onboard init` and follow what it prints.
+```
+
+The ElevenLabs CLI takes it from there and tells your coding agent each step. Your browser opens once so you can sign in or create an account and click **Authorize**. The key is saved in your project's env file (`.env.local`, or `.env` in a Python project) and kept out of git; it is never shown in the chat. When your coding agent asks what you'd like to build, describe the agent you want: what it should do, and where people will talk to it, such as a widget on your website or a voice button in your app. Your coding agent then creates it, adds it to your app, and gives you a link to try it.
+
+> **Note**
+>
+> If your coding agent runs somewhere your browser cannot reach, such as a remote machine over SSH
+> or a cloud sandbox, the CLI asks you to [create a key](https://elevenlabs.io/app/api/api-keys?quickstart=true) yourself and paste it into the env
+> file, then continues. The command needs [Node.js](https://nodejs.org) for `npx`. Without it,
+> [install the ElevenLabs CLI](https://github.com/elevenlabs/cli#installation) with Homebrew (macOS
+> and Linux) or Scoop (Windows), or update it if you already have it (`brew upgrade elevenlabs`,
+> `scoop update elevenlabs`), and ask your coding agent to run `elevenlabs onboard init` instead.
 
 > **Tip**
 >
-> Use the [ElevenLabs agents skill](https://github.com/elevenlabs/skills/tree/main/agents) to build and manage voice agents from your AI coding assistant:
+> To keep the [ElevenLabs agents skill](https://github.com/elevenlabs/skills/tree/main/agents) in your coding agent for later work on your agents, install it:
 >
 > ```bash
 > npx skills add elevenlabs/skills --skill agents
 > ```
 >
-> You can also connect the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp) to Claude or any other MCP client to create and manage agents through natural language.
+> To build agents from Claude, ChatGPT or another MCP client instead, connect the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp).
 
 ## Getting started
 

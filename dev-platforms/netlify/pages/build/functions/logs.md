@@ -58,12 +58,12 @@ The [Netlify CLI](/api-and-cli-guides/cli-guides/get-started-with-cli) `logs` co
 netlify logs
 ```
 
-By default, the command shows the last 10 minutes of activity from functions and edge functions on the current project. Pass `--follow` (or `-f`) to switch to a live tail.
+By default, the command shows the last 10 minutes of activity from functions, edge functions, and the [server](/build/server/logs/#netlify-cli) on the current project. Pass `--follow` (or `-f`) to switch to a live tail.
 
 ### Common options
 
 - **`--follow`**, **`-f`** - stream logs in real time. Cannot be combined with `--since` or `--until`.
-- **`--source <type...>`**, **`-s`** - one or more of `functions`, `edge-functions`, or `deploy`. Defaults to `functions` and `edge-functions`.
+- **`--source <type...>`**, **`-s`** - one or more of `functions`, `edge-functions`, `deploy`, or [`server`](/build/server/logs/#netlify-cli). Defaults to `functions`, `edge-functions`, and `server`.
 - **`--function <name...>`** - limit to specific functions by name. Pass multiple times to include more than one.
 - **`--edge-function <name...>`** - limit to specific edge functions by name or path.
 - **`--since <time>`** - start of the historical window. Accepts a duration (`10m`, `1h`, `24h`) or an ISO 8601 timestamp.
@@ -75,7 +75,7 @@ By default, the command shows the last 10 minutes of activity from functions and
 ### Examples
 
 ```bash
-# Live tail of all function and edge function activity
+# Live tail of all function, edge function, and server activity
 netlify logs --follow
 
 # Last hour of logs for the "checkout" function only

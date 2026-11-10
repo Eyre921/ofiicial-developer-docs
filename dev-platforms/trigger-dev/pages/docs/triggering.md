@@ -304,7 +304,7 @@ export const myTask = task({
 
 This is where it gets interesting. You can trigger a task and then wait for the result. This is useful when you need to call a different task and then use the result to continue with your task.
 
-> **Don't use this in parallel, e.g. with `Promise.all()`**
+> [accordion] Don't use this in parallel, e.g. with `Promise.all()`
 >
 > Instead, use `batchTriggerAndWait()` if you can, or a for loop if you can't.
 >
@@ -414,7 +414,7 @@ export const parentTask = task({
 
 You can batch trigger a task and wait for all the results. This is useful for the fan-out pattern, where you need to call a task multiple times and then wait for all the results to continue with your task.
 
-> **Don't use this in parallel, e.g. with `Promise.all()`**
+> [accordion] Don't use this in parallel, e.g. with `Promise.all()`
 >
 > Instead, pass in all items at once and set an appropriate `maxConcurrency`. Alternatively, use sequentially with a for loop.
 >
@@ -454,7 +454,7 @@ You can batch trigger a task and wait for all the results. This is useful for th
 > });
 > ```
 
-> **How to handle run failures**
+> [accordion] How to handle run failures
 >
 > When using `batchTriggerAndWait`, you have full control over how to handle failures within the batch. The method returns an array of run results, allowing you to inspect each run's outcome individually and implement custom error handling.
 >

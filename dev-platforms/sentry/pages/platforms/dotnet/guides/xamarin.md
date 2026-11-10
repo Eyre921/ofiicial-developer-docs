@@ -16,7 +16,7 @@ Sentry's .NET SDK works with Xamarin applications through the [Sentry Xamarin Nu
 
 The SDK is compatible with the following versions or higher:
 
-* Xamarin.Android 9.0
+* Xamarin.Android 11.0
 * Xamarin.iOS 10.14
 * Universal Windows Platform 10.0.16299
 * Tizen 4.0
@@ -50,7 +50,8 @@ Don't need a feature? Remove its options from the snippet.
 ```csharp
 SentryXamarin.Init(options =>
 {
-    options.AddXamarinFormsIntegration();
+    // Add this only if you installed Sentry.Xamarin.Forms:
+    // options.AddXamarinFormsIntegration();
     // Tells which project in Sentry to send events to:
     options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
     // When configuring for the first time, to see what the SDK is doing:

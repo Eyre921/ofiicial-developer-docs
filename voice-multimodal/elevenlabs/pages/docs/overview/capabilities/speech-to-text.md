@@ -10,7 +10,7 @@ path: docs/overview/capabilities/speech-to-text
 
 ## Overview
 
-The ElevenLabs [Speech to Text (STT) API](/docs/eleven-api/guides/cookbooks/speech-to-text) turns spoken audio into text with state of the art accuracy. Our [Scribe v2 model](/docs/overview/models) adapts to textual cues across 90+ languages and multiple voice styles. To try a live demo please visit our [Speech to Text](https://elevenlabs.io/speech-to-text) showcase page.
+The ElevenLabs [Speech to Text (STT) API](/docs/eleven-api/guides/cookbooks/speech-to-text) turns spoken audio into text with state of the art accuracy across 90+ languages. Use [Scribe v3](/docs/overview/models#scribe-v3) for recorded audio and [Scribe v3 Live](/docs/overview/models#scribe-v3-live) for real-time audio. To try a live demo please visit our [Speech to Text](https://elevenlabs.io/speech-to-text) showcase page.
 
 #### [Products](/docs/eleven-creative/playground/speech-to-text)
 
@@ -36,35 +36,37 @@ Full API reference for the Speech to Text endpoint.
 
 ## Models
 
-#### [Scribe v2](/docs/overview/models#scribe-v2)
+#### [Scribe v3](/docs/overview/models#scribe-v3)
 
-State-of-the-art speech recognition model
+Our most accurate speech recognition model for recorded audio
 
-Accurate transcription in 90+ languages
-
-Keyterm prompting, up to 1000 terms
-
-Entity detection, 65 entity types
-
-Transcript editing with natural-language instructions
-
-Precise word-level timestamps
+27% fewer word errors than Scribe v2 on FLEURS
 
 Speaker diarization, up to 32 speakers
 
-Dynamic audio tagging
+Numbers as digits or words
 
-Smart language detection
+Secondary languages for mixed-language audio
 
-#### [Scribe v2 Realtime](/docs/overview/models#scribe-v2-realtime)
+Keyterm prompting, up to 1,000 terms
 
-Real-time speech recognition model
+Entity detection and transcript editing
 
-Accurate transcription in 90+ languages
+Precise word-level timestamps
 
-Real-time transcription
+#### [Scribe v3 Live](/docs/overview/models#scribe-v3-live)
 
-Low latency (\~150ms†)
+Our most accurate real-time speech recognition model
+
+44% lower semantic WER than Scribe v2 Realtime on FLEURS
+
+Turn prediction from conversation context
+
+Multilingual mode for mid-sentence language switches
+
+Keyterm library, up to 100,000 terms
+
+Entity detection and transcript editing
 
 Precise word-level timestamps
 
@@ -483,8 +485,8 @@ For example, a 15 minute audio file will be transcribed with a concurrency of 2,
 
 > **Info**
 >
-> The above calculation is only applicable to Scribe v2 and Scribe v2 Medical. For Scribe v2
-> Realtime, see the [concurrency limit chart](/docs/overview/models#concurrency-and-priority).
+> The above calculation is only applicable to batch models such as Scribe v3, Scribe v2 and Scribe
+> v2 Medical. For Scribe v3 Live and Scribe v2 Realtime, see the [concurrency limit chart](/docs/overview/models#concurrency-and-priority).
 
 ## Advanced features
 
@@ -497,17 +499,72 @@ For example, a 15 minute audio file will be transcribed with a concurrency of 2,
 
 > **Info**
 >
-> Keyterm prompting is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
+> Keyterm prompting is available with Scribe v3, Scribe v3 Live, Scribe v2, Scribe v2 Medical
+> (batch), and Scribe v2 Realtime.
 
 Highlight words or phrases to bias the model towards transcribing them. This is useful for transcribing specific words or sentences that are not common in the audio, such as product names, names, or other specific terms. Keyterms are more powerful than biased keywords or customer vocabularies offered by other models, because it relies on the context to decide whether to transcribe that term or not. Batch supports up to 1000 keyterms (50 characters each), while realtime supports up to 50 keyterms (20 characters each).
 
 To learn more about how to use keyterm prompting, see the [keyterm prompting documentation](/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting).
 
+### Keyterm library
+
+> **Info**
+>
+> The keyterm library is available with Scribe v3 Live.
+
+A keyterm library is a large vocabulary for a whole domain, such as a medical dictionary, legal terms or a product catalog. The model consults the library only when it hears a likely match. A library can contain up to 10,000 terms. Use it alongside keyterm prompting, which is best for the few terms you know will appear. Sessions that use a keyterm library are billed the same additional cost as keyterm prompting.
+
+To learn more, see the [keyterm library documentation](/docs/eleven-api/guides/how-to/speech-to-text/batch/keyterm-prompting#keyterm-library).
+
+### Turn prediction
+
+> **Info**
+>
+> Turn prediction is available with Scribe v3 Live.
+
+Silence-based voice activity detection (VAD) commits a transcript segment after a period of silence. A short silence threshold cuts speakers off when they pause, and a long one adds lag. Turn prediction uses the context of the conversation to estimate whether the speaker has finished their turn, so a caller who pauses halfway through a phone number is not cut off. This is the same turn detection that ElevenAgents uses.
+
+To learn more, see [turn prediction](/docs/eleven-api/guides/how-to/speech-to-text/realtime/transcripts-and-commit-strategies#turn-prediction).
+
+### Realtime diarization
+
+> **Info**
+>
+> Realtime diarization is available with Scribe v3 Live.
+
+Set `diarize=true` to label who is speaking in realtime transcripts. Draft speaker labels appear in partial transcripts, and each committed transcript is followed by a separate diarized transcript without delaying the committed text.
+
+To learn more, see the [realtime speaker diarization guide](/docs/eleven-api/guides/how-to/speech-to-text/realtime/diarization).
+
+### Number formatting
+
+> **Info**
+>
+> Number formatting is available with Scribe v3.
+
+Choose whether numbers in the transcript are written as digits (42) or as words (forty-two). If you don't set a format, the model chooses one.
+
+To learn more, see [number and language options](/docs/eleven-api/guides/how-to/speech-to-text/batch/number-and-language-options).
+
+### Mixed-language audio
+
+> **Info**
+>
+> Secondary language codes are available with Scribe v3. Multilingual mode is available with Scribe
+> v3 Live.
+
+When speakers use more than one language, list the languages you expect so the model can transcribe each one accurately. For realtime audio, multilingual mode transcribes each language in its own script and follows switches in the middle of a sentence.
+
+Scribe does not translate. Speech is transcribed in the language it is spoken in.
+
+To learn more, see [number and language options](/docs/eleven-api/guides/how-to/speech-to-text/batch/number-and-language-options) for batch transcription and [realtime language options](/docs/eleven-api/guides/how-to/speech-to-text/realtime/language-options) for realtime transcription.
+
 ### No verbatim mode
 
 > **Info**
 >
-> No verbatim mode is available with Scribe v2, Scribe v2 Medical (batch), and Scribe v2 Realtime.
+> No verbatim mode is available with Scribe v3, Scribe v2, Scribe v2 Medical (batch), and Scribe v2
+> Realtime.
 
 When `no_verbatim` is enabled, the model removes filler words, false starts and disfluencies from the transcript. This produces a cleaner output suitable for subtitles, summaries, or any use case where readability is more important than capturing every spoken word.
 
@@ -515,9 +572,9 @@ When `no_verbatim` is enabled, the model removes filler words, false starts and 
 
 > **Info**
 >
-> Entity detection is available with all batch models and Scribe v2 Realtime.
+> Entity detection is available with all batch models, Scribe v3 Live, and Scribe v2 Realtime.
 
-Batch models and Scribe v2 Realtime can detect several categories of entities in the transcript, providing their exact timestamps. This is useful to highlight credit card numbers, names, medical conditions or SSNs.
+Batch and realtime models can detect several categories of entities in the transcript, providing their exact timestamps. This is useful to highlight credit card numbers, names, medical conditions or SSNs.
 
 For a full list of supported entities, see the [entity detection documentation](/docs/eleven-api/guides/how-to/speech-to-text/batch/entity-detection).
 
@@ -525,8 +582,8 @@ For a full list of supported entities, see the [entity detection documentation](
 
 > **Info**
 >
-> Transcript editing is an experimental feature available with all batch models and Scribe v2
-> Realtime. It is not currently available in [data residency](/docs/overview/administration/data-residency) environments.
+> Transcript editing is an experimental feature available with all batch models, Scribe v3 Live, and
+> Scribe v2 Realtime. It is not currently available in [data residency](/docs/overview/administration/data-residency) environments.
 
 Pass a natural-language instruction with the `transcript_edit` parameter and it will be applied to the finished transcript. The edited text is returned in `edited_transcript` alongside the original transcript, so timestamps and speaker labels stay intact. This is useful for normalizing how dates, times or units are written, applying a different style, or rewriting the transcript in a single request.
 
@@ -534,7 +591,7 @@ To learn more, see the [transcript editing documentation](/docs/eleven-api/guide
 
 ## Supported languages
 
-Scribe v2 supports 90+ languages, including:
+Scribe v3 and Scribe v2 support 90+ languages, including:
 
 *Afrikaans (afr), Amharic (amh), Arabic (ara), Armenian (hye), Assamese (asm), Asturian (ast), Azerbaijani (aze), Belarusian (bel), Bengali (ben), Bosnian (bos), Bulgarian (bul), Burmese (mya), Cantonese (yue), Catalan (cat), Cebuano (ceb), Chichewa (nya), Croatian (hrv), Czech (ces), Danish (dan), Dutch (nld), English (eng), Estonian (est), Filipino (fil), Finnish (fin), French (fra), Fulah (ful), Galician (glg), Ganda (lug), Georgian (kat), German (deu), Greek (ell), Gujarati (guj), Hausa (hau), Hebrew (heb), Hindi (hin), Hungarian (hun), Icelandic (isl), Igbo (ibo), Indonesian (ind), Irish (gle), Italian (ita), Japanese (jpn), Javanese (jav), Kabuverdianu (kea), Kannada (kan), Kazakh (kaz), Khmer (khm), Korean (kor), Kurdish (kur), Kyrgyz (kir), Lao (lao), Latvian (lav), Lingala (lin), Lithuanian (lit), Luo (luo), Luxembourgish (ltz), Macedonian (mkd), Malay (msa), Malayalam (mal), Maltese (mlt), Mandarin Chinese (zho), Māori (mri), Marathi (mar), Mongolian (mon), Nepali (nep), Northern Sotho (nso), Norwegian (nor), Occitan (oci), Odia (ori), Pashto (pus), Persian (fas), Polish (pol), Portuguese (por), Punjabi (pan), Romanian (ron), Russian (rus), Serbian (srp), Shona (sna), Sindhi (snd), Sinhala (sin), Slovak (slk), Slovenian (slv), Somali (som), Spanish (spa), Swahili (swa), Swedish (swe), Tamil (tam), Tajik (tgk), Telugu (tel), Thai (tha), Turkish (tur), Ukrainian (ukr), Umbundu (umb), Urdu (urd), Uzbek (uzb), Vietnamese (vie), Welsh (cym), Wolof (wol), Xhosa (xho) and Zulu (zul).*
 
@@ -578,10 +635,10 @@ Yes, the API supports uploading both audio and video files for transcription.
 
 #### What are the file size and duration limits for the Speech to Text API?
 
-Files up to 3 GB in size are supported. Duration limits depend on the transcription mode:
+Files up to 5 GB in size are supported. Duration limits depend on the transcription mode:
 
-* **Standard mode** (`use_multi_channel=false`): Up to 10 hours
-* **Multi-channel mode** (`use_multi_channel=true`): The combined duration of all channels must be less than 10 hours
+* **Standard mode** (`use_multi_channel=false`): Up to 15 hours
+* **Multi-channel mode** (`use_multi_channel=true`): The combined duration of all channels must be less than 15 hours
 
 #### Which audio and video formats are supported in the API?
 
@@ -638,8 +695,8 @@ Silence counts toward the billed duration. Both batch and realtime transcription
 ## Key facts
 
 * **Supported input**: Both audio and video files are accepted
-* **Maximum file size**: 3 GB
-* **Maximum duration**: 10 hours (standard mode), 1 hour (multichannel mode)
+* **Maximum file size**: 5 GB
+* **Maximum duration**: 15 hours (standard mode), 15 hours combined across all channels (multichannel mode)
 * **Multichannel mode**: Up to 5 channels; each processed independently with a speaker ID assigned by channel number
 * **Webhooks**: Asynchronous transcription results can be delivered to a webhook — configure in workspace settings
 * **Supported audio formats**: AAC, AIFF, OGG, MP3, OPUS, WAV, FLAC, M4A, WebM

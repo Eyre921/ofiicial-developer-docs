@@ -10,6 +10,18 @@ path: docs/eleven-agents/overview
 
 Agents accomplish tasks through natural dialogue - from quick requests to complex, open-ended workflows. ElevenLabs provides voice-rich, expressive models, developer tools for building multimodal agents, and tools to monitor and evaluate agent performance at scale.
 
+> **Tip**
+>
+> Build your agent with your coding agent. No account or API key needed beforehand.
+>
+> Paste this into Claude Code, Cursor or Codex. It signs you in or creates an account, creates a key, and asks what you'd like to build: describe the agent you want, and your coding agent creates it and adds it to your app.
+>
+> ```text
+> Add ElevenLabs to my project: run `npx -y @elevenlabs/cli@latest onboard init` and follow what it prints.
+> ```
+>
+> [See how it works](/docs/eleven-agents/quickstart#set-up-with-your-coding-agent), or read the [`onboard` command's source](https://github.com/elevenlabs/cli/tree/main/cli/elevenlabs/workflow/onboard) to see exactly what it tells your coding agent.
+
 [![](/docs/_fern-files/_img/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e.webp)](/docs/eleven-agents/build/overview)
 
 ### Configure

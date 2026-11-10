@@ -20,6 +20,12 @@ In other words, Stripe issues 1099-K forms for your connected accounts that have
 
 Stripe doesn’t issue a 1099-K to your connected account in the following scenarios:
 
+#### Accounts v2
+
+- Where [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-defaults-responsibilities-fees_collector) equals `application` or `application_express` or `application_custom`
+
+#### Accounts v1
+
 - Where [controller.fees.payer](https://docs.stripe.com/api/accounts/object.md#account_object-controller-fees-payer) equals `application` or `application_express` or `application_custom`
 
 Consider issuing a Form 1099 to report income and payment transactions. There are several types of 1099 forms, and the applicable form depends on the type of payments you make to your connected account.

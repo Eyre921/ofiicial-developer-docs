@@ -12,8 +12,6 @@ url: https://docs.sentry.io/concepts/otlp/
 
 # OpenTelemetry Protocol (OTLP) | Sentry Docs
 
-This feature is currently in open beta. Please reach out to <feedback-tracing@sentry.io> if you have feedback or questions. Features in beta are still in-progress and may have bugs. We recognize the irony.
-
 Sentry can ingest OpenTelemetry traces and logs via OTLP endpoints, either directly from an [OTel SDK](https://opentelemetry.io/docs/languages/) or through a pipeline tool like the [OpenTelemetry Collector](https://docs.sentry.io/concepts/otlp/forwarding/pipelines/collector.md). Sentry does not support OTLP metrics at this time.
 
 ## [Linking Traces with a Sentry SDK](https://docs.sentry.io/concepts/otlp.md#linking-traces-with-a-sentry-sdk)

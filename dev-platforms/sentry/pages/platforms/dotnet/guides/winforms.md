@@ -49,6 +49,7 @@ Don't need a feature? Remove its options from the snippet.
 ```csharp
 using System;
 using System.Windows.Forms;
+using Sentry;
 
 namespace WindowsFormsApp1
 {
@@ -133,18 +134,21 @@ Module Program
         Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException)
 
         ' Configure the options for Sentry
-        Dim sentryOptions = New SentryOptions With
-        {
-            .Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+        Dim sentryOptions As New SentryOptions()
+        With sentryOptions
+            .Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
 
             ' Adds request URL and headers, IP and name for users, etc.
-            .SendDefaultPii = True,
+            .SendDefaultPii = True
+
+            ' Enable tracing; reduce this value in production.
+            .TracesSampleRate = 1.0
 
             ' Enable Global Mode since this is a client app
-            .IsGlobalModeEnabled = True,
+            .IsGlobalModeEnabled = True
 
             ' any other options you need go here
-        }
+        End With
 
         ' Initialize Sentry and run the main form of the application
         Using SentrySdk.Init(sentryOptions)
@@ -191,18 +195,21 @@ Namespace My
         Private Sub MyApplication_Startup(sender As Object, e As StartupEventArgs) Handles Me.Startup
 
             ' Configure the options for Sentry
-            Dim sentryOptions = New SentryOptions With
-            {
-                .Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+            Dim sentryOptions As New SentryOptions()
+            With sentryOptions
+                .Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
 
                 ' Adds request URL and headers, IP and name for users, etc.
-                .SendDefaultPii = True,
+                .SendDefaultPii = True
+
+                ' Enable tracing; reduce this value in production.
+                .TracesSampleRate = 1.0
 
                 ' Enable Global Mode since this is a client app
-                .IsGlobalModeEnabled = True,
+                .IsGlobalModeEnabled = True
 
                 ' any other options you need go here
-            }
+            End With
 
             ' Initialize Sentry
             _sentry = SentrySdk.Init(sentryOptions)
@@ -275,9 +282,28 @@ catch (Exception ex)
 
 *Other available variations of the above snippet: fsharp*
 
+To verify tracing for code without automatic instrumentation, create and finish a test transaction after initializing Sentry:
+
+```csharp
+var transaction = SentrySdk.StartTransaction("quickstart-test", "test");
+transaction.Finish();
+```
+
+`TracesSampleRate` controls sampling; it doesn't create transactions by itself. See [Custom Instrumentation](https://docs.sentry.io/platforms/dotnet/guides/winforms/tracing/instrumentation/custom-instrumentation.md) to trace work in your application.
+
+If you enabled profiling, run a longer sampled transaction after the profiler has initialized. A short verification transaction might finish before the profiler collects any samples.
+
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/dotnet/guides/winforms.md#view-captured-data-in-sentry)
 
-Open your Sentry project to view the captured event.
+Run any log and metric examples you've added after SDK initialization. To verify automatic tracing, exercise an instrumented operation, such as an incoming HTTP request or a supported UI interaction.
+
+Logs and metrics are batched. In an async test method, flush pending data before a short-lived test exits:
+
+```csharp
+await SentrySdk.FlushAsync();
+```
+
+Check **Issues** for the captured error, **Logs** for log messages, **Metrics** for application metrics, and **Traces** for sampled transactions. Error capture alone doesn't verify the other features.
 
 ## [Resources](https://docs.sentry.io/platforms/dotnet/guides/winforms.md#resources)
 

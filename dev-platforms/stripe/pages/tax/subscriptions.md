@@ -19,6 +19,28 @@ Stripe Tax allows you to calculate the tax amount on your recurring payments whe
 
 Watch a demonstration enabling Stripe Tax with a subscription Checkout. 
 [Watch on YouTube](https://www.youtube.com/watch?v=3QBRs4IfDNo)
+#### Accounts v2
+
+A diagram providing a high level overview of a Stripe Tax and Billing integration using Accounts v2. (See full diagram at https://docs.stripe.com/tax/subscriptions)
+
+```text
+[Customer] -- Go to your payment page --> [Client]
+[Customer] -- Enter address information --> [Client]
+[Client] -- Estimate taxes and total --> [Server]
+[Server] -- POST /v1/invoices/create_preview --> [Stripe]
+[Stripe] -- Return a preview invoice --> [Server]
+[Server] -- Return taxes and total --> [Client]
+[Customer] -- Submit --> [Client]
+[Client] -- Submit --> [Server]
+[Server] -- POST /v2/core/accounts/:id --> [Stripe]
+[Stripe] -- Return the updated Account --> [Server]
+[Server] -- POST /v1/subscriptions --> [Stripe]
+[Stripe] -- Return a new subscription --> [Server]
+[Server] -- Return client secret --> [Client]
+[Client] -- stripe.confirmPayment() --> [Stripe]
+[Stripe] -- Redirect to return_url --> [Customer]
+```
+
 #### Customer v1
 
 A diagram providing a high level overview of a Stripe Tax and Billing integration using Customer v1. (See full diagram at https://docs.stripe.com/tax/subscriptions)
@@ -188,6 +210,85 @@ document.querySelector("#form").addEventListener("submit", async function(event)
 
 ## Save customer details [Server-side]
 
+#### Accounts v2
+
+Update your Account object using the details you’ve collected from your customer, so that Stripe Tax can determine their precise location for accurate results.
+
+> If your customer is in the United States, provide a full address if possible. We use the term **rooftop-accurate** to mean that we can attribute your customer’s location to a specific house or building. This provides greater accuracy, where two houses located side-by-side on the same street might be subject to different tax rates, because of complex jurisdiction boundaries.
+
+If you haven’t already created an Account object (for example, when your customer first signs up on your website), you can [create](https://docs.stripe.com/api/v2/core/accounts/create.md) one now.
+
+#### Update account
+
+```curl
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CUSTOMERACCOUNT_ID}} \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2025-11-17.preview" \
+  --json '{
+    "identity": {
+        "individual": {
+            "address": {
+                "line1": "{{LINE1}}",
+                "line2": "{{LINE2}}",
+                "city": "{{CITY}}",
+                "state": "{{STATE}}",
+                "postal_code": "{{POSTAL_CODE}}",
+                "country": "{{COUNTRY}}"
+            }
+        }
+    },
+    "configuration": {
+        "customer": {
+            "automatic_indirect_tax": {
+                "validate_location": "immediately"
+            }
+        }
+    }
+  }'
+```
+
+> If your customer has other existing subscriptions with automatic tax enabled and you update their address information, the tax and total amounts on their future invoices might be different. This is because tax rates vary depending on customer location.
+
+#### Create account
+
+```curl
+curl -X POST https://api.stripe.com/v2/core/accounts \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2025-11-17.preview" \
+  --json '{
+    "identity": {
+        "country": "{{COUNTRY}}",
+        "individual": {
+            "given_name": "{{GIVEN_NAME}}",
+            "address": {
+                "line1": "{{LINE1}}",
+                "line2": "{{LINE2}}",
+                "city": "{{CITY}}",
+                "state": "{{STATE}}",
+                "postal_code": "{{POSTAL_CODE}}",
+                "country": "{{COUNTRY}}"
+            }
+        }
+    },
+    "configuration": {
+        "customer": {
+            "capabilities": {
+                "automatic_indirect_tax": {
+                    "requested": true
+                }
+            }
+        }
+    },
+    "include": [
+        "configuration.customer"
+    ]
+  }'
+```
+
+When creating an account, request the `automatic_indirect_tax` capability and check the response. If the address is invalid, `configuration.customer.automatic_indirect_tax.status` is `restricted` with status details indicating a validation issue. You can’t create an automatic-tax-enabled subscription for an account with an invalid tax location.
+
+When updating an account, set [configuration.customer.automatic_indirect_tax.validate_location](https://docs.stripe.com/api/v2/core/accounts/update.md#v2_update_accounts-configuration-customer-automatic_indirect_tax-validate_location) to `immediately` to validate the address. If validation fails, Stripe fails your request with the [customer_tax_location_invalid](https://docs.stripe.com/error-codes.md#customer-tax-location-invalid) error code. Checking the [automatic_tax.status](https://docs.stripe.com/api/invoices/object.md#invoice_object-automatic_tax-status) of your preview invoices helps avoid this failure.
+
 #### Customer v1
 
 [Update](https://docs.stripe.com/api/customers/update.md) your `Customer` object using the details you’ve collected from your customer, so that Stripe Tax can determine their precise location for accurate results.
@@ -231,6 +332,19 @@ Your customer must have a valid tax location in order to enable automatic tax on
 ## Create subscription [Server-side]
 
 [Create](https://docs.stripe.com/api/subscriptions/create.md) a subscription with automatic tax enabled.
+
+#### Accounts v2
+
+```curl
+curl https://api.stripe.com/v1/subscriptions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -H "Stripe-Version: 2025-04-30.preview" \
+  -d "automatic_tax[enabled]=true" \
+  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "items[0][price]={{PRICE_ID}}" \
+  -d "payment_settings[save_default_payment_method]=on_subscription" \
+  -d "expand[0]=latest_invoice.confirmation_secret"
+```
 
 #### Customer v1
 

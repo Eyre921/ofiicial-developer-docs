@@ -12,6 +12,15 @@ url: https://docs.sentry.io/platforms/javascript/guides/bun/
 
 # Sentry for Bun
 
+Agent frameworks:
+
+* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable/bun.md)
+
+Frameworks with their own setup guide:
+
+* [Elysia](https://docs.sentry.io/platforms/javascript/guides/elysia.md)
+* [Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)
+
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/bun.md#prerequisites)
 
 You need:

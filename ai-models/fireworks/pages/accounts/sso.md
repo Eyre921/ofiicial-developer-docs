@@ -155,6 +155,53 @@ When SSO enforcement is enabled, account access is restricted to users with appr
 
 To enforce SSO, use the [`--enforce-sso`](/tools-sdks/firectl/commands/identity-provider-create) flag when creating your identity provider with firectl, or toggle "Enforce SSO for all users" in the Fireworks console.
 
+## Rotate your OIDC client secret
+
+You can replace the client secret of an OIDC identity provider without changing your sign-in URL, redirect URL, or users. Fireworks updates the secret in place, so existing sessions stay signed in and users don't need to do anything.
+
+You need the `admin` role on your Fireworks account. If your account's SSO was set up by your Fireworks AI representative and the identity provider doesn't appear on the [SSO page](https://app.fireworks.ai/account/sso) or in `firectl identity-provider list`, contact your representative to rotate the secret instead.
+
+> [!WARNING]
+>
+> If **Enforce SSO** is on, a wrong secret blocks sign-in for every user on your tenant domains, including admins. API keys keep working. Keep the old secret active until you've confirmed sign-in works with the new one, and keep an API key with the `admin` role on hand so you can roll back with firectl.
+
+**1. Create a new secret in your identity provider**
+
+Generate a new client secret for the Fireworks OIDC application in your identity provider. Keep the old secret active. Most providers, including Okta and Microsoft Entra ID, allow two active secrets at once.
+
+**2. Update the secret in Fireworks**
+
+**Console:** Open the [SSO page](https://app.fireworks.ai/account/sso), edit your identity provider, replace the contents of **Client Secret** with the new secret, and select **Update**. Don't leave the field blank.
+
+**firectl:** Pass only the new secret. The issuer and client ID stay as they are.
+
+```bash theme={null}
+firectl identity-provider list
+firectl identity-provider update <provider-id> --oidc-client-secret="<new-client-secret>"
+```
+
+> [!NOTE]
+>
+> If you set a custom email claim on your identity provider with firectl, update the secret with firectl rather than the console.
+
+**3. Confirm the provider is ready**
+
+The provider shows `UPDATING` while the change is applied, then `READY`, usually within a minute.
+
+```bash theme={null}
+firectl identity-provider get <provider-id>
+```
+
+Check that `State` is `READY` and `Status` shows no error. If it stays `UPDATING` or shows an error, check the secret and run the update again. While the provider is `UPDATING`, SSO enforcement is paused, and new users can't be added through JIT provisioning.
+
+**4. Test sign-in**
+
+Open an incognito or private window, sign in to [app.fireworks.ai](https://app.fireworks.ai) through your identity provider, and confirm you reach your account. Fireworks doesn't check the secret when you save it, so a mistyped secret only shows up here, as a failed sign-in.
+
+**5. Revoke the old secret**
+
+After sign-in works with the new secret, delete the old one in your identity provider.
+
 ## Troubleshooting
 
 ### Invalid samlResponse or relayState from identity provider

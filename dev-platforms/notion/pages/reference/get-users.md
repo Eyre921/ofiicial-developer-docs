@@ -10,7 +10,7 @@ Returns a paginated list of [Users](/reference/user) for the workspace. The resp
 Guests are not included in the response.
 If you already know a guest's ID, [Retrieve a user](/reference/get-user) can return that guest when they belong to the connected workspace.
 
-Custom Agents are not included in the response. To find an agent's bot user ID, read a [`people` page property](/reference/page-property-values#people) where the agent is assigned.
+This endpoint omits Custom Agents. To find them, use [Query agents](/reference/notion-agent-apis/query-agents) if your connection has Agents API access. You can also read the agent ID from the [bot user object](/reference/user#bots) in a people property or user mention.
 
 See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
 

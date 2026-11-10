@@ -8,7 +8,7 @@ This example task generates an image from a prompt using Fal.ai and shows the pr
 
 ## GitHub repo
 
-> **[View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/realtime-fal-ai-image-generation)**
+> [card] [View the project on GitHub](https://github.com/triggerdotdev/examples/tree/main/realtime-fal-ai-image-generation)
 >
 > Click here to view the full code for this project in our examples repository on GitHub. You can
 > fork it and use it as a starting point for your own project.

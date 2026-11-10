@@ -1256,6 +1256,53 @@ When SSO enforcement is enabled, account access is restricted to users with appr
 
 To enforce SSO, use the [`--enforce-sso`](/tools-sdks/firectl/commands/identity-provider-create) flag when creating your identity provider with firectl, or toggle "Enforce SSO for all users" in the Fireworks console.
 
+## Rotate your OIDC client secret
+
+You can replace the client secret of an OIDC identity provider without changing your sign-in URL, redirect URL, or users. Fireworks updates the secret in place, so existing sessions stay signed in and users don't need to do anything.
+
+You need the `admin` role on your Fireworks account. If your account's SSO was set up by your Fireworks AI representative and the identity provider doesn't appear on the [SSO page](https://app.fireworks.ai/account/sso) or in `firectl identity-provider list`, contact your representative to rotate the secret instead.
+
+> [!WARNING]
+>
+> If **Enforce SSO** is on, a wrong secret blocks sign-in for every user on your tenant domains, including admins. API keys keep working. Keep the old secret active until you've confirmed sign-in works with the new one, and keep an API key with the `admin` role on hand so you can roll back with firectl.
+
+**1. Create a new secret in your identity provider**
+
+Generate a new client secret for the Fireworks OIDC application in your identity provider. Keep the old secret active. Most providers, including Okta and Microsoft Entra ID, allow two active secrets at once.
+
+**2. Update the secret in Fireworks**
+
+**Console:** Open the [SSO page](https://app.fireworks.ai/account/sso), edit your identity provider, replace the contents of **Client Secret** with the new secret, and select **Update**. Don't leave the field blank.
+
+**firectl:** Pass only the new secret. The issuer and client ID stay as they are.
+
+```bash theme={null}
+firectl identity-provider list
+firectl identity-provider update <provider-id> --oidc-client-secret="<new-client-secret>"
+```
+
+> [!NOTE]
+>
+> If you set a custom email claim on your identity provider with firectl, update the secret with firectl rather than the console.
+
+**3. Confirm the provider is ready**
+
+The provider shows `UPDATING` while the change is applied, then `READY`, usually within a minute.
+
+```bash theme={null}
+firectl identity-provider get <provider-id>
+```
+
+Check that `State` is `READY` and `Status` shows no error. If it stays `UPDATING` or shows an error, check the secret and run the update again. While the provider is `UPDATING`, SSO enforcement is paused, and new users can't be added through JIT provisioning.
+
+**4. Test sign-in**
+
+Open an incognito or private window, sign in to [app.fireworks.ai](https://app.fireworks.ai) through your identity provider, and confirm you reach your account. Fireworks doesn't check the secret when you save it, so a mistyped secret only shows up here, as a failed sign-in.
+
+**5. Revoke the old secret**
+
+After sign-in works with the new secret, delete the old one in your identity provider.
+
 ## Troubleshooting
 
 ### Invalid samlResponse or relayState from identity provider
@@ -12300,7 +12347,7 @@ curl -X DELETE \
               \<th>Max context</th></tr></thead>
           \<tbody /></table>
 
-## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the cached rate, 80% off.
+## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the lower cached prefill rate.
 - **Sample:** tokens the sampler generates.
 - **Train:** tokens you train on (passed through `forward_backward`).Rates are USD per 1 million tokens. Available models and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and the [pricing page](https://fireworks.ai/pricing) before launch.| Base model | Context | Prefill | Cached prefill | Sample | Train |
 | - | - | - | - | - | - |
@@ -12311,6 +12358,7 @@ curl -X DELETE \
 | GLM 5.3 | 256K | \$4.86 | \$0.972 | \$12.15 | \$14.58 |
 | Qwen 3.6 35B A3B | 256K | \$0.45 | \$0.09 | \$1.335 | \$2.14 |
 | Qwen 3.8 27B | 128K | \$1.86 | \$0.372 | \$5.595 | \$4.103 |
+| Kimi K3.1 Pro | 256K | \$2.40 | \$0.24 | \$12.00 | \$25.00 |
 | Kimi K3 | 192K | \$10.87 | \$2.17 | \$27.11 | \$32.55 |
 | Muse Glimmer 30B | 128K | \$1.96 | \$0.39 | \$4.88 | \$5.86 |Nemotron 3.5 Super VL uses the current Tinker 256K card, which includes a limited-time 50% discount.## Write your own training loopThe DeepMath example wraps a loop you can write yourself with the SDK. To use the SDK without the cookbook, install it on its own:```bash theme={null}
 pip install "fireworks-ai[training]"
@@ -14900,6 +14948,10 @@ Source: https://docs.fireworks.ai/guides/batch-inference
 
 Use the Fireworks Batch API to run large-scale asynchronous inference jobs at a discount, with job-level system prompts, file inputs, and result retrieval.
 
+> [!WARNING]
+>
+> **Batch is paused.** We're moving to a more secure way of running Batch jobs. New Batch jobs are no longer accepted, dataset uploads return an error, and all Batch input datasets and job outputs stored on Fireworks will be permanently deleted. To keep your bulk workloads running, see [Migrating Batch API workloads to preemptible deployments](/guides/batch-migration).
+
 Process large volumes of requests asynchronously at **50% off** [Serverless per-token prices](https://docs.fireworks.ai/serverless/pricing). Batch API is ideal for:
 
 * Data labeling and synthetic data generation
@@ -15248,6 +15300,214 @@ The equivalent HTTP field is `systemPrompt`:
 > [card] [API Reference](/api-reference/create-batch-inference-job)
 >
 > Full API documentation for Batch API
+
+
+# Migrating Batch API workloads to preemptible deployments
+Source: https://docs.fireworks.ai/guides/batch-migration
+
+Run your existing Batch input files on a preemptible deployment with the Batch migration script
+
+We're moving to a more secure way of running Batch jobs and changing how Fireworks handles customer data for Batch. As part of this change, Batch is paused: new Batch jobs are no longer accepted, dataset uploads return an error, and all Batch input datasets and job outputs stored on Fireworks will be permanently deleted.
+
+This guide walks you through moving your Batch workloads to preemptible deployments.
+
+## Options for running large, non-urgent workloads on Fireworks
+
+*For example, evals, synthetic data generation, or backfill workloads.*
+
+We will no longer support an async Batch dataset upload interface. Instead, you keep your dataset locally and send each request to the inference API yourself, so your client has to:
+
+1. Control how many requests run at once
+2. Retry requests that fail for lack of capacity, rate limits or a lost replica
+3. Save results and resume after an interruption
+
+### Preemptible deployments (50% off on-demand pricing)
+
+Run your own deployment on spare capacity at a discount. This works with any model you can deploy on demand, including custom and fine-tuned models, and it suits bulk non-urgent jobs that can handle occasional interruptions.
+
+**How it works.** Passing `--preemptible` to `firectl deployment create` opts the deployment into borrowing capacity:
+
+* The deployment runs on GPUs that are currently idle, tapping into a large fleet.
+* When higher priority jobs need the GPUs back, your replica can be preempted at any time, including mid-request. There is currently no advance notice.
+* Fireworks doesn't guarantee how many GPUs are available at a given time or how long a replica stays up although historically they stay available for a few hours. A preempted replica is placed again automatically when GPUs free up, so you don't need to create another deployment.
+
+**Before you use it:**
+
+* **Bulk and non-urgent work only.** Treat a preempted replica as a normal outcome, not an error. We do not recommend sending production or latency-sensitive traffic to a preemptible deployment.
+* **`--preemptible` is immutable.** It's set at creation and can't be turned on or off later. To change it, delete the deployment and create a new one.
+* **Clean up when done.** Delete the deployment when the job finishes, so you stop paying for it and release the borrowed capacity.
+
+> [!TIP]
+>
+> **Use the [Batch migration script](https://github.com/fw-ai-external/cookbook/tree/main/case-studies/batch-migration) to make the switch.** It reads your existing Batch JSONL files and sends the requests with concurrency and retries, writing results back to JSONL in the Batch output format. It handles all three steps above, so your downstream parsing keeps working. Use it as is, or as a reference for your own client.
+
+## What you need
+
+Set up the following before you run the script:
+
+| Requirement | How to get it |
+| - | - |
+| **Python 3.10 or newer** | The script uses only the Python standard library, so there is nothing else to install. Check with `python3 --version`. |
+| **A Fireworks API key** | Create one on the [API keys page](https://app.fireworks.ai/settings/users/api-keys), then `export FIREWORKS_API_KEY=<your key>` in the shell that runs the script. |
+| **`firectl` 1.7.26 or newer, signed in** | [Install `firectl`](/tools-sdks/firectl/firectl), then run `firectl signin`. Check the version with `firectl version`: older builds silently ignore `--preemptible` and create a regular on-demand deployment. |
+| **Your account ID** | Run `firectl whoami` to see the account you're signed in to. |
+| **Preemptible GPU quota** | Preemptible deployments have their own account-wide GPU quota per accelerator type, separate from your on-demand quota. Check it on the [Quotas page](https://app.fireworks.ai/settings/quotas) (**Settings → Quotas**) in the app, or with `firectl quota get preemptible-<accelerator>-count` (for example `preemptible-h100-count`). If you need more, contact your account team and we'll review it based on your recent Batch usage. |
+| **Your Batch input file, stored locally** | The JSONL file you used to upload to Batch, in the [OpenAI batch format](/guides/batch-inference) (`custom_id` plus `body`). The script reads local files only, not `gs://` paths. If your file is in Cloud Storage, copy it down first with `gcloud storage cp gs://<BUCKET>/<PATH>/batch_input.jsonl .`, and copy `results.jsonl` back up when the run finishes. |
+| **The script** | Download [`batch_to_realtime.py`](https://github.com/fw-ai-external/cookbook/blob/main/case-studies/batch-migration/batch_to_realtime.py). |
+
+## Step 1: Create a preemptible deployment
+
+Use the model ID of the model your Batch jobs ran on:
+
+* A Fireworks model: `accounts/fireworks/models/<MODEL>`
+* Your own fine-tuned or uploaded model, including LoRA adapters: `accounts/<ACCOUNT_ID>/models/<MODEL_ID>`. Point the deployment at your fine-tuned model ID, not the base model.
+
+Pick an explicit deployment shape. For control over cost based on which hardware and number of GPUs per replica, don't use `--deployment-shape default` for a preemptible deployment. List the shapes your account can deploy the model on:
+
+```bash theme={null}
+firectl deployment-shape-version match --model <MODEL_ID> -a <ACCOUNT_ID>
+```
+
+Then create the deployment with one of those shapes:
+
+```bash theme={null}
+firectl deployment create <MODEL_ID> \
+  -a <ACCOUNT_ID> \
+  --deployment-id <DEPLOYMENT_ID> \
+  --display-name <DISPLAY_NAME> \
+  --deployment-shape <DEPLOYMENT_SHAPE> \
+  --min-replica-count 1 --max-replica-count 1 \
+  --preemptible --wait
+```
+
+Replace the placeholders:
+
+* `<MODEL_ID>`: the full model ID from the list above.
+* `<DEPLOYMENT_ID>` / `<DISPLAY_NAME>`: a name of your choice, for example `batch-migration`.
+* `<DEPLOYMENT_SHAPE>`: a shape from `deployment-shape-version match`. See [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).
+
+`--wait` blocks until the deployment is ready (1 hour by default; change it with `--wait-timeout`). A create that would go over your preemptible quota fails with `RESOURCE_EXHAUSTED` and a message naming the quota.
+
+## Step 2: Check the deployment status
+
+A deployment answers `404` until it's ready, and the script stops on that `404`, so confirm the deployment is ready before you start.
+
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl deployment get <DEPLOYMENT_ID> -a <ACCOUNT_ID>
+> ```
+>
+> Wait for `State: READY`. The other states are `CREATING`, `UPDATING`, `DELETING`, `DELETED` and `FAILED`; see [Deployment status states](/guides/ondemand-deployments#deployment-status-states).
+>
+> > [!NOTE]
+> >
+> > `State` stays `READY` when a replica is preempted, and while it's placed again. It isn't marked `FAILED` or `UPDATING`. To see whether replicas are serving, check `replicaStats` instead:
+>
+> ```bash theme={null}
+> firectl deployment get <DEPLOYMENT_ID> -a <ACCOUNT_ID> -o json
+> ```
+>
+> | `replicaStats` field | What it means for a preemptible deployment |
+> | - | - |
+> | `readyReplicaCount` | Replicas serving traffic. It drops when a replica is preempted, and is `0` if every replica was preempted. |
+> | `pendingSchedulingReplicaCount` | Replicas waiting for free GPUs. A preempted replica is counted here until it's placed again. |
+> | `downloadingModelReplicaCount` | Replicas that were placed and are downloading model weights. |
+> | `initializingReplicaCount` | Replicas starting the model server. Once it's up, the replica moves back to `readyReplicaCount`. |
+>
+> A field that's `0` can be left out of the output.
+>
+> To see what happened to the deployment, including preempted replicas:
+>
+> ```bash theme={null}
+> firectl deployment events list <DEPLOYMENT_ID> -a <ACCOUNT_ID>
+> ```
+
+> [tab] Fireworks app
+>
+> Open the [Deployments page](https://app.fireworks.ai/dashboard/deployments) and select your deployment. The page shows its status; wait until it's ready before you start the script. As with `firectl`, the status stays ready after a preemption, so check how many replicas are ready.
+>
+> The deployment's activity log shows what happened to it. Each preempted replica adds a "Replica preempted to free capacity; it will restart when capacity is available" event.
+
+Then send one test request to confirm the deployment answers:
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "<MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'
+```
+
+## Step 3: Run your Batch file
+
+Point `--model` at your deployment with the `<MODEL>#<DEPLOYMENT>` form:
+
+```bash theme={null}
+python batch_to_realtime.py --input batch_input.jsonl --output results.jsonl \
+  --model "<MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>" \
+  --concurrency 16
+```
+
+The script:
+
+* Reads your existing Batch input file in the [OpenAI batch format](/guides/batch-inference) (`custom_id` plus `body`)
+* Writes successful rows to `--output` and failed rows to `<output>.errors.jsonl`, in the matching Batch output format
+* Retries `408`, `409`, `425`, `429`, `5xx` (except `501` and `505`), timeouts and dropped connections, honoring `Retry-After`, for up to 30 minutes per row
+* Resumes where it stopped when you rerun the same command, sending every row without a result: failed rows and rows a stopped run never finished. Add `--skip-errors` to rerun without resending rows that already failed.
+
+Rows are written as they finish, so match output rows on `custom_id`, not line order. See the [script README](https://github.com/fw-ai-external/cookbook/tree/main/case-studies/batch-migration) for every flag, the output formats and the exit codes.
+
+### Tips
+
+* **Validate on a sample first.** Run a few hundred rows and compare outputs with your Batch results before running the full file.
+* **Tune `--concurrency`** (default 16, up to 256). Start at about 8 to 16 per replica and raise it while latency stays acceptable.
+* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and the deployment stays `READY`, so you don't need to recreate it. Watch `replicaStats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than 30 minutes, raise `--max-retry-time`, or rerun the same command later.
+* **Know when it happens.** Each preempted replica adds an event to the deployment's activity log, in the app and in `firectl deployment events list` (see [Step 2](#step-2-check-the-deployment-status)). If preemption leaves the deployment with no ready replicas, the user who created it gets an email, and another when it can serve again.
+
+## Step 4: Delete the deployment
+
+Delete the deployment when the job is done to stop billing and release the borrowed capacity:
+
+```bash theme={null}
+firectl deployment delete <DEPLOYMENT_ID> -a <ACCOUNT_ID>
+```
+
+## Errors
+
+| Status | Meaning | What the script does |
+| - | - | - |
+| `429` | Rate limited, or the deployment is saturated | Retries with backoff and jitter |
+| `503` | The deployment has no running replica (`DEPLOYMENT_SCALING_UP`), for example after preemption | Retries, waiting for `Retry-After` when sent |
+| `404` | Model or deployment not available, including a deployment that isn't `READY` | Stops the run (exit 2); rerun once it's available |
+| `401` | Bad API key | Stops the run (exit 2) |
+| Other `4xx` | Request problem, such as a prompt that's too long | Writes the row to the errors file |
+
+See [Reliability and Error Handling](/guides/reliability) for more patterns.
+
+## FAQ
+
+> [accordion] Can I choose the region for a preemptible deployment?
+>
+> Yes, you can choose a multi-region: `GLOBAL` (the default), `US`, `CANADA`, `EUROPE` or `APAC`. Pass it with `--region` when you create the deployment:
+>
+> ```bash theme={null}
+> firectl deployment create <MODEL_ID> \
+>   -a <ACCOUNT_ID> \
+>   --deployment-id <DEPLOYMENT_ID> \
+>   --deployment-shape <DEPLOYMENT_SHAPE> \
+>   --min-replica-count 1 --max-replica-count 1 \
+>   --region US \
+>   --preemptible --wait
+> ```
+>
+> There is less capacity if you specify a region other than `GLOBAL`.
+
+## Get help
+
+We understand this change may disrupt your workflow, and we're sorry for the inconvenience. Contact your Fireworks account team with questions about your migration or to request more preemptible GPU quota.
 
 
 # Completions API
@@ -30225,6 +30485,59 @@ firectl identity-provider list
   -o, --output string       Set the output format to "text" or "json". (default "text")
       --page-size int32     The maximum number of resources to list.
       --page-token string   The page to list. A number from 0 to the total number of pages (number of entities / page size).
+```
+
+### Global flags
+
+```
+  -a, --account-id string   The Fireworks account ID. If not specified, reads account_id from ~/.fireworks/auth.ini.
+      --api-key string      An API key used to authenticate with Fireworks.
+  -p, --profile string      fireworks auth and settings profile to use.
+```
+
+
+# firectl identity-provider update
+Source: https://docs.fireworks.ai/tools-sdks/firectl/commands/identity-provider-update
+
+Updates an identity provider.
+
+```
+firectl identity-provider update [flags]
+```
+
+Only the flags you pass are changed. For example, passing only `--oidc-client-secret` replaces the client secret and keeps the stored OIDC issuer and client ID. Requires the `admin` role.
+
+### Examples
+
+```
+# Rename an identity provider
+firectl identity-provider update my-provider --display-name="Updated Company SSO"
+
+# Rotate an OIDC client secret (other OIDC settings are kept)
+firectl identity-provider update my-provider --oidc-client-secret="<new-client-secret>"
+
+# Change the SAML metadata URL
+firectl identity-provider update accounts/my-account/identityProviders/my-provider \
+  --saml-metadata-url="https://company.okta.com/app/xyz/sso/saml/metadata"
+```
+
+### Flags
+
+```
+      --display-name string             The display name of the identity provider
+      --dry-run                         Print the request proto without running it.
+      --enable-idp-initiated-sso        Enable IdP-initiated SAML SSO. When enabled, users can login from their identity provider's portal. Only supported for SAML providers.
+      --enable-jit-user-provisioning    Enable Just-In-Time (JIT) user provisioning
+      --enforce-sso                     Enforce SSO authentication and restrict account access to approved email domains only
+  -h, --help                            help for update
+      --jit-default-role string         Default role for JIT-provisioned users (admin, user, contributor, inference-user). Defaults to inference-user.
+      --oidc-client-id string           The OIDC client ID for OIDC providers
+      --oidc-client-secret string       The OIDC client secret for OIDC providers
+      --oidc-issuer string              The OIDC issuer URL for OIDC providers
+  -o, --output Output                   Set the output format to "text", "json", or "flag". (default text)
+      --saml-metadata-url string        The SAML metadata URL for SAML providers
+      --saml-metadata-xml-file string   Path to SAML metadata XML file. Use when your IdP metadata URL is not publicly accessible (e.g., behind a VPN).
+      --tenant-domains string           Comma-separated list of allowed domains for the organization (e.g., 'example.com,example.co.uk')
 ```
 
 ### Global flags

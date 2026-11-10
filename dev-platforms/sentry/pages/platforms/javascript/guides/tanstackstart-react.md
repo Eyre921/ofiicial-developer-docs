@@ -12,6 +12,11 @@ url: https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/
 
 # Sentry for TanStack Start React
 
+Runtime
+
+* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md)
+* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/cloudflare.md)
+
 ##### Beta
 
 This SDK is compatible with TanStack Start 1.0 RC and is currently in **beta**. Beta features are still in progress and may have bugs. Please reach out on [GitHub](https://github.com/getsentry/sentry-javascript/issues/new/choose) if you have any feedback or concerns.
@@ -190,6 +195,7 @@ You've successfully integrated Sentry into your TanStack Start React application
 
 ## Topics
 
+- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/sourcemaps.md)

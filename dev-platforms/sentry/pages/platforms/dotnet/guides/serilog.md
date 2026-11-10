@@ -26,7 +26,7 @@ By default, any message with log level `Information` or higher will be kept as a
 
 The default value to report a log entry as an event to Sentry is `Error`.
 
-This means that out of the box, any `LogError` call will create an `Event` which will include breadcrumbs for all prior log messages of level `Information`, `Warning`, `Error` and `Critical`.
+This means that out of the box, any `Log.Error` call will create an `Event` which will include breadcrumbs for prior log messages of level `Information`, `Warning`, `Error`, and `Fatal`.
 
 Additionally, when enabled, log messages are sent to Sentry as [Structured Logs](https://docs.sentry.io/platforms/dotnet/guides/serilog/logs.md). You can control which logs are captured using the [Serilog MinimumLogLevel](https://github.com/serilog/serilog/wiki/Configuration-Basics#minimum-level).
 
@@ -44,16 +44,21 @@ This package extends `Sentry` main SDK. That means that besides the logging rela
 
 ##### Note
 
-Messages logged from assemblies with the name starting with `Sentry` will not generate events.
+The integration excludes the Sentry SDK's own logger categories to avoid capturing its diagnostic messages as events. Application categories that happen to start with `Sentry` aren't excluded solely because of that prefix.
 
 ## [Configure](https://docs.sentry.io/platforms/dotnet/guides/serilog.md#configure)
 
-You can configure the Sentry Serilog sink as follows:
+If another integration already initializes Sentry, configure the Serilog sink without reinitializing the SDK. Enable `EnableLogs` on the options used by that integration to send structured logs.
 
 ```csharp
+using Serilog;
+using Serilog.Events;
+
 Log.Logger = new LoggerConfiguration()
+  .MinimumLevel.Debug()
   .WriteTo.Sentry(o =>
   {
+    o.InitializeSdk = false;
     // Debug and higher are stored as breadcrumbs (default is Information)
     o.MinimumBreadcrumbLevel = LogEventLevel.Debug;
     // Warning and higher is sent as event (default is Error)
@@ -64,17 +69,23 @@ Log.Logger = new LoggerConfiguration()
 
 *Other available variations of the above snippet: json*
 
-It's also possible to initialize the SDK through the Serilog integration. This is useful when the Serilog is the only integration being used in your application. To initialize the Sentry SDK through the Serilog integration, provide it with the DSN:
+When Serilog owns initialization, provide the DSN and enable structured logs in the sink configuration:
 
 ```csharp
 Log.Logger = new LoggerConfiguration()
-  .WriteTo.Sentry(o => o.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>")
+  .WriteTo.Sentry(o =>
+  {
+    o.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
+    o.EnableLogs = true;
+  })
   .CreateLogger();
 ```
 
 *Other available variations of the above snippet: json*
 
-The SDK only needs to be initialized once. If a `DSN` is made available to this integration, by default it **will** initialize the SDK. If you do not wish to initialize the SDK via this integration, set the `InitializeSdk` flag to **false**. Not providing a DSN or leaving it as `null` instructs the integration not to initialize the SDK and unless another integration initializes it or you call `SentrySdk.Init`, the SDK will stay disabled.
+Initialize the SDK once. The C# callback overload defaults `InitializeSdk` to `true` and can resolve a DSN from `SENTRY_DSN`. Set `InitializeSdk = false` when another integration or `SentrySdk.Init` owns initialization. Omitting the DSN from that callback doesn't prevent reinitialization: it uses `SENTRY_DSN` if set and replaces the existing SDK configuration, and otherwise throws because no DSN was found.
+
+The configuration-file overload infers initialization from its `dsn` argument. In the first JSON example, Sentry must already be initialized elsewhere; supplying `dsn`, as in the second example, enables initialization through the sink.
 
 ### [Options](https://docs.sentry.io/platforms/dotnet/guides/serilog.md#options)
 
@@ -106,20 +117,14 @@ An optional `LoggingLevelSwitch` that allows the sink's minimum level to be chan
 
 ## [Verify](https://docs.sentry.io/platforms/dotnet/guides/serilog.md#verify)
 
-This snippet includes an intentional error, so you can test that everything is working as soon as you set it up.
+After configuring Serilog, send an informational log and an error:
 
 ```csharp
-try
-{
-    throw null;
-}
-catch (Exception ex)
-{
-    SentrySdk.CaptureException(ex);
-}
+Log.Information("Sentry logging verification");
+Log.Error("Sentry error-event verification");
 ```
 
-*Other available variations of the above snippet: fsharp*
+With `EnableLogs = true`, the informational message appears in **Logs**. The error message also creates an event in **Issues**. Call `Log.CloseAndFlush()` when your application exits to dispose the sink and flush pending data.
 
 ## [Samples](https://docs.sentry.io/platforms/dotnet/guides/serilog.md#samples)
 

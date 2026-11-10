@@ -14,16 +14,24 @@ url: https://docs.sentry.io/platforms/javascript/guides/cloudflare/
 
 This guide covers Cloudflare Workers. If you're deploying a Cloudflare Pages application, see [Cloudflare Pages](https://docs.sentry.io/platforms/javascript/guides/cloudflare/features/pages.md) instead, which is set up with middleware rather than a wrapper.
 
-If you're using any of the listed frameworks, follow their specific setup instructions:
+If you're using a framework, select it to open its setup instructions:
 
-* **[Astro](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/astro.md)**
-* **[Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)** (with @sentry/hono)
-* **[Hydrogen](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/hydrogen-react-router.md)**
-* **[Next.js](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/nextjs.md)**
-* **[Nuxt](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/nuxt.md)**
-* **[Remix](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/remix.md)**
-* **[SvelteKit](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/sveltekit.md)**
-* **[TanStack Start](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks/tanstack-start.md)**
+Agent frameworks:
+
+* [Flue](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md)
+* [Mastra](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md)
+* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md)
+
+Frameworks with their own setup guide:
+
+* [Astro](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md)
+* [Hono](https://docs.sentry.io/platforms/javascript/guides/hono/cloudflare.md)
+* [Hydrogen](https://docs.sentry.io/platforms/javascript/guides/react-router/hydrogen.md)
+* [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs/cloudflare.md)
+* [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt/cloudflare.md)
+* [Remix](https://docs.sentry.io/platforms/javascript/guides/remix/cloudflare.md)
+* [SvelteKit](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
+* [TanStack Start](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/cloudflare.md)
 
 ##### Cloudflare Workers limitations
 
@@ -272,7 +280,7 @@ At this point, you should have integrated Sentry into your Cloudflare Worker. He
 
 Are you having problems setting up the SDK?
 
-* Check out setup instructions for popular [frameworks on Cloudflare](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks.md)
+* Using a framework? Select it in the [framework selector](https://docs.sentry.io/platforms/javascript/guides/cloudflare.md#framework-selector) at the top of this page
 * Find various support topics in [troubleshooting](https://docs.sentry.io/platforms/javascript/guides/cloudflare/troubleshooting.md)
 * [Get support](https://www.sentry.help/en/)
 
@@ -339,5 +347,4 @@ Are you having problems setting up the SDK?
 - [Migration Guide](https://docs.sentry.io/platforms/javascript/guides/cloudflare/migration.md)
 - [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/cloudflare/troubleshooting.md)
 - [Cloudflare Features](https://docs.sentry.io/platforms/javascript/guides/cloudflare/features.md)
-- [Frameworks on Cloudflare](https://docs.sentry.io/platforms/javascript/guides/cloudflare/frameworks.md)
 

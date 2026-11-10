@@ -6,19 +6,19 @@ path: docs/introduction
 
 Build and run durable AI agents and workflows in TypeScript. Long-running tasks with retries, queues, webhooks, observability, and elastic scaling. Open source and self-hostable.
 
-> **[Quick start](/docs/quick-start)**
+> [card] [Quick start](/docs/quick-start)
 >
 > Go from zero to your first task in 3 minutes.
 
-> **[Build AI agents](/docs/ai-chat/overview)**
+> [card] [Build AI agents](/docs/ai-chat/overview)
 >
 > Durable, multi-turn agents with `chat.agent`, from your frontend to Slack and Linear.
 
-> **[AI coding assistants](/docs/building-with-ai)**
+> [card] [AI coding assistants](/docs/building-with-ai)
 >
 > Let Claude Code, Cursor and Windsurf write correct Trigger.dev code with the MCP server, Skills and rules.
 
-> **[Guides & examples](/docs/guides/introduction)**
+> [card] [Guides & examples](/docs/guides/introduction)
 >
 > Frameworks like Next.js, worked example projects, and step-by-step how-to guides.
 
@@ -59,27 +59,27 @@ export const supportAgent = chat.agent({
 });
 ```
 
-> **[Agent quick start](/docs/ai-chat/quick-start)**
+> [card] [Agent quick start](/docs/ai-chat/quick-start)
 >
 > Build a chat agent and its frontend end to end.
 
-> **[Sessions](/docs/ai-chat/sessions)**
+> [card] [Sessions](/docs/ai-chat/sessions)
 >
 > Each conversation's durable state and two-way stream, across all its runs.
 
-> **[Tools](/docs/ai-chat/tools)**
+> [card] [Tools](/docs/ai-chat/tools)
 >
 > Declare tools on your agent and get them back typed in `run()`.
 
-> **[Human in the loop](/docs/ai-chat/patterns/human-in-the-loop)**
+> [card] [Human in the loop](/docs/ai-chat/patterns/human-in-the-loop)
 >
 > Pause a tool call for approval and resume when a person decides.
 
-> **[Slack agents](/docs/webhooks/slack)**
+> [card] [Slack agents](/docs/webhooks/slack)
 >
 > Turn an agent into a native Slack agent with `@trigger.dev/slack`.
 
-> **[Linear agents](/docs/webhooks/linear)**
+> [card] [Linear agents](/docs/webhooks/linear)
 >
 > Assign Linear issues to an agent with `@trigger.dev/linear`.
 
@@ -87,63 +87,63 @@ Version your [prompts](/docs/ai/prompts) in code and change them from the dashbo
 
 ## Run work
 
-> **[Writing tasks](/docs/tasks/overview)**
+> [card] [Writing tasks](/docs/tasks/overview)
 >
 > The durable functions at the core of Trigger.dev, written in your existing codebase.
 
-> **[Triggering tasks](/docs/triggering)**
+> [card] [Triggering tasks](/docs/triggering)
 >
 > Trigger a task from your backend, your frontend, or another task.
 
-> **[Runs](/docs/runs)**
+> [card] [Runs](/docs/runs)
 >
 > Every execution of a task is a run, with its status, retries, logs and trace.
 
-> **[Realtime](/docs/realtime/overview)**
+> [card] [Realtime](/docs/realtime/overview)
 >
 > Stream run status and LLM output to your frontend with React hooks.
 
 ## React to events
 
-> **[Webhooks](/docs/webhooks/overview)**
+> [card] [Webhooks](/docs/webhooks/overview)
 >
 > Hosted, verified endpoints for Stripe, GitHub and more, delivered to your tasks and agents.
 
-> **[Scheduled tasks](/docs/tasks/scheduled)**
+> [card] [Scheduled tasks](/docs/tasks/scheduled)
 >
 > Run a task on a cron schedule, with timezone support.
 
-> **[Webhook waiters](/docs/webhooks/waiters)**
+> [card] [Webhook waiters](/docs/webhooks/waiters)
 >
 > Pause a run until a matching webhook arrives, like a payment confirmation.
 
-> **[Waits](/docs/wait)**
+> [card] [Waits](/docs/wait)
 >
 > Pause a run for a duration, until a date, or until a token is completed. A waiting run doesn't use compute.
 
 ## Run in production
 
-> **[Queues & concurrency](/docs/queues)**
+> [card] [Queues & concurrency](/docs/queues)
 >
 > Control how many runs execute at once, globally or per tenant.
 
-> **[Machines](/docs/machines)**
+> [card] [Machines](/docs/machines)
 >
 > Choose the CPU and memory each task runs on.
 
-> **[Deployment](/docs/deployment/overview)**
+> [card] [Deployment](/docs/deployment/overview)
 >
 > Atomic, versioned deploys, with preview branches and environments.
 
-> **[Errors & retries](/docs/errors-retrying)**
+> [card] [Errors & retries](/docs/errors-retrying)
 >
 > Retry failed attempts automatically, and decide what happens when a task throws.
 
-> **[Logs, traces & metrics](/docs/logging)**
+> [card] [Logs, traces & metrics](/docs/logging)
 >
 > A full trace of every run, with your logs and spans.
 
-> **[Query & dashboards](/docs/observability/query)**
+> [card] [Query & dashboards](/docs/observability/query)
 >
 > Query your runs with TRQL, and build dashboards from the results.
 
@@ -167,19 +167,19 @@ Version your [prompts](/docs/ai/prompts) in code and change them from the dashbo
 
 We'd love to hear from you or give you a hand getting started. Here are some ways to get in touch with us.
 
-> **[Join our Discord server](https://discord.gg/kA47vcd8P6)**
+> [card] [Join our Discord server](https://discord.gg/kA47vcd8P6)
 >
 > Our Discord is the best place to get help with any questions about Trigger.dev.
 
-> **[Follow us on X](https://twitter.com/triggerdotdev)**
+> [card] [Follow us on X](https://twitter.com/triggerdotdev)
 >
 > Follow us to get the latest updates and news.
 
-> **[Schedule a call](https://cal.com/team/triggerdotdev/founders-call)**
+> [card] [Schedule a call](https://cal.com/team/triggerdotdev/founders-call)
 >
 > Arrange a call with one of the founders to get help with any questions.
 
-> **[Give us a star on GitHub](https://github.com/triggerdotdev/trigger.dev)**
+> [card] [Give us a star on GitHub](https://github.com/triggerdotdev/trigger.dev)
 >
 > Check out our GitHub repo, and give us a star if you like what we're doing.
 

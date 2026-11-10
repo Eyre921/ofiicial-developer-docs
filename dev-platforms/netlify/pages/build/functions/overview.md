@@ -17,6 +17,10 @@ Your functions are version-controlled, built, and deployed along with the rest o
 
 Seamless integrations with [Database](/build/data-and-storage/netlify-database/), [Blobs](/build/data-and-storage/netlify-blobs/), [Caching](/build/caching/caching-overview/), and [AI Gateway](/build/ai-gateway/overview/) give you a powerful foundation to build any full-stack application on Netlify.
 
+### Tip - Building your app's backend?
+
+For your app's backend, start with [Netlify Server](/build/server/), a long-lived server that holds connections open and keeps state between requests. Use functions alongside it for individual tasks, scheduled jobs, and events. Refer to [When to use a server](/build/server/#when-to-use-a-server).
+
 ## How functions work
 
 A function is a file in your project that contains server-side code for responding to an event.

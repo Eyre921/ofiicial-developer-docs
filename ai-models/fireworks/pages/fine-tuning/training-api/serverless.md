@@ -41,7 +41,7 @@ curl -X DELETE \
               \<th>Max context</th></tr></thead>
           \<tbody /></table>
 
-## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the cached rate, 80% off.
+## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the lower cached prefill rate.
 - **Sample:** tokens the sampler generates.
 - **Train:** tokens you train on (passed through `forward_backward`).Rates are USD per 1 million tokens. Available models and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and the [pricing page](https://fireworks.ai/pricing) before launch.| Base model | Context | Prefill | Cached prefill | Sample | Train |
 | - | - | - | - | - | - |
@@ -52,6 +52,7 @@ curl -X DELETE \
 | GLM 5.3 | 256K | \$4.86 | \$0.972 | \$12.15 | \$14.58 |
 | Qwen 3.6 35B A3B | 256K | \$0.45 | \$0.09 | \$1.335 | \$2.14 |
 | Qwen 3.8 27B | 128K | \$1.86 | \$0.372 | \$5.595 | \$4.103 |
+| Kimi K3.1 Pro | 256K | \$2.40 | \$0.24 | \$12.00 | \$25.00 |
 | Kimi K3 | 192K | \$10.87 | \$2.17 | \$27.11 | \$32.55 |
 | Muse Glimmer 30B | 128K | \$1.96 | \$0.39 | \$4.88 | \$5.86 |Nemotron 3.5 Super VL uses the current Tinker 256K card, which includes a limited-time 50% discount.## Write your own training loopThe DeepMath example wraps a loop you can write yourself with the SDK. To use the SDK without the cookbook, install it on its own:```bash theme={null}
 pip install "fireworks-ai[training]"

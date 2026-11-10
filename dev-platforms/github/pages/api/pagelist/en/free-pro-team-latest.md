@@ -1345,8 +1345,8 @@ path: api/pagelist/en/free-pro-team-latest
 /en/issues/tracking-your-work-with-issues/using-issues/creating-a-branch-for-an-issue
 /en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue
 /en/issues/tracking-your-work-with-issues/using-issues/about-slash-commands
-/en/issues/tracking-your-work-with-issues/using-issues/managing-issue-types-in-an-organization
-/en/issues/tracking-your-work-with-issues/using-issues/managing-issue-fields-in-your-organization
+/en/issues/tracking-your-work-with-issues/using-issues/managing-issue-types
+/en/issues/tracking-your-work-with-issues/using-issues/managing-issue-fields
 /en/issues/tracking-your-work-with-issues/using-issues/adding-and-managing-issue-fields
 /en/issues/tracking-your-work-with-issues/administering-issues
 /en/issues/tracking-your-work-with-issues/administering-issues/triaging-an-issue-with-ai

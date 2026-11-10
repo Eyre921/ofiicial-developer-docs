@@ -282,7 +282,7 @@ You can only cancel a PaymentIntent when it has one of the following statuses:
 - `requires_capture`
 - `requires_confirmation`
 - `requires_action`
-- `processing` (only when the associated payment method is US Bank Account)
+- `processing` (when the payment method is ACH, ACSS, AU BECS, BACS, NZ BECS, or SEPA, within the payment method’s cancellation window)
 
 A PaymentIntent can’t be canceled after it has succeeded. When a PaymentIntent is canceled, you can no longer use it to perform additional charges. Any operations that your application attempts to perform on a canceled PaymentIntent fails with an error.
 
