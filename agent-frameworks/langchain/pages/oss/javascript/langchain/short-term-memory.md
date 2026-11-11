@@ -87,7 +87,7 @@ const getUserInfo = tool(() => "No user profile on file.", {
 const checkpointer = new MemorySaver(); // [!code highlight]
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [getUserInfo],
   checkpointer,
 });
@@ -323,7 +323,7 @@ const stateExtensionMiddleware = createMiddleware({
 
 const checkpointer = new MemorySaver();
 const agent = createAgent({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     tools: [],
     middleware: [stateExtensionMiddleware],  // [!code highlight]
     checkpointer,
@@ -397,7 +397,7 @@ const trimMessages = createMiddleware({
 
 const checkpointer = new MemorySaver();
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [trimMessages],
   checkpointer,
@@ -459,7 +459,7 @@ const deleteOldMessages = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   systemPrompt: "Please be concise and to the point.",
   middleware: [deleteOldMessages],
@@ -532,7 +532,7 @@ import { MemorySaver } from "@langchain/langgraph";
 const checkpointer = new MemorySaver();
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [],
   middleware: [
     summarizationMiddleware({

@@ -141,7 +141,7 @@ In a new Codex session, ask:
 Use Pinecone's quickstart to create an index, add sample data, and run my first search.
 ```
 
-Codex invokes the `pinecone:quickstart` skill, checks the connection to the Pinecone MCP server, creates an integrated index, upserts sample records, and runs a search.
+Codex invokes the `pinecone:quickstart` skill, which creates an index, loads sample data, and runs a search.
 
 ## Available skills
 

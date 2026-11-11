@@ -130,13 +130,21 @@ Start your server after adding the new endpoint.
 
 ## Install and set up the Stripe CLI
 
-Install the Stripe CLI with [npm](https://www.npmjs.com/):
+Install the Stripe CLI using the installation script for your operating system. Script installations enable [automatic updates](https://docs.stripe.com/cli/upgrade) by default.
+
+On macOS or Linux:
 
 ```bash
-npm install -g @stripe/cli@latest
+curl -fsSL https://cli.stripe.com/install.sh | sh
 ```
 
-After installation, log in to your Stripe account:
+On Windows, run the following command in PowerShell:
+
+```powershell
+irm https://cli.stripe.com/install.ps1 | iex
+```
+
+After installation, open a new terminal and log in to your Stripe account:
 
 ```bash
 stripe login

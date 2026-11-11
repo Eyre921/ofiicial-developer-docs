@@ -352,7 +352,7 @@ def retry_model(
             print(f"Retry {attempt + 1}/3 after error: {e}")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     middleware=[log_before_model, retry_model],
     tools=[...],
 )
@@ -410,7 +410,7 @@ class LoggingMiddleware(AgentMiddleware):
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     middleware=[LoggingMiddleware()],
     tools=[...],
 )
@@ -465,7 +465,7 @@ If your middleware needs to track state across hooks, middleware can extend the 
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     middleware=[check_call_limit, increment_counter],
 >     tools=[],
 > )
@@ -507,7 +507,7 @@ If your middleware needs to track state across hooks, middleware can extend the 
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     middleware=[CallCounterMiddleware()],
 >     tools=[],
 > )
@@ -556,7 +556,7 @@ When using multiple middleware, understand how they execute:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     middleware=[middleware1, middleware2, middleware3],
     tools=[...],
 )
@@ -825,7 +825,7 @@ Select relevant tools at runtime to improve performance and accuracy. This secti
 >     return handler(request.override(tools=relevant_tools))
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=all_tools,  # All available tools need to be registered upfront
 >     middleware=[select_tools],
 > )
@@ -851,7 +851,7 @@ Select relevant tools at runtime to improve performance and accuracy. This secti
 >         return handler(request.override(tools=relevant_tools))
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=all_tools,  # All available tools need to be registered upfront
 >     middleware=[ToolSelectorMiddleware()],
 > )

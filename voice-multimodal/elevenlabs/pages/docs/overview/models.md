@@ -116,7 +116,7 @@ Turn prediction from conversation context
 
 Multilingual mode for mid-sentence language switches
 
-Keyterm library, up to 100,000 terms
+Keyterm library, up to 10,000 terms
 
 Entity detection and transcript editing
 
@@ -704,6 +704,8 @@ Your subscription plan determines how many requests can be processed simultaneou
 Speech to Text has an elevated concurrency limit.
 Once the concurrency limit is met, subsequent requests are processed in a queue alongside lower-priority requests.
 In practice this typically only adds \~50ms of latency.
+
+To estimate the concurrency limit your traffic needs, use the [concurrency estimator](/docs/overview/administration/workspaces/concurrency-estimator).
 
 | Plan       | Concurrency Limit  (Multilingual v2) | Concurrency Limit  (Flash) | STT Concurrency Limit | Realtime STT Concurrency limit | Music Concurrency limit | SFX Concurrency limit | Priority level |
 | ---------- | ------------------------------------ | -------------------------- | --------------------- | ------------------------------ | ----------------------- | --------------------- | -------------- |

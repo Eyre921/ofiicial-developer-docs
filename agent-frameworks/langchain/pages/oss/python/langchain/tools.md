@@ -337,7 +337,7 @@ def get_account_info(runtime: ToolRuntime[UserContext]) -> str:
     return "User not found"
 
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 agent = create_agent(
     model,
     tools=[get_account_info],
@@ -401,7 +401,7 @@ def save_user_info(user_id: str, name: str, age: int, email: str, runtime: ToolR
     store.put(("users",), user_id, {"name": name, "age": age, "email": email})
     return "Successfully saved user info."
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 
 store = InMemoryStore()
 agent = create_agent(
@@ -802,7 +802,7 @@ def handle_tool_errors(
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     middleware=[handle_tool_errors],
 )
@@ -1021,7 +1021,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[public_search, private_search, advanced_search],
 > >     middleware=[state_based_tools]
 > > )
@@ -1063,7 +1063,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[search_tool, analysis_tool, export_tool],
 > >     middleware=[store_based_tools],
 > >     context_schema=Context,
@@ -1113,7 +1113,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > >     return handler(request)
 > >
 > > agent = create_agent(
-> >     model="gpt-5.5",
+> >     model="gpt-6.1-sol",
 > >     tools=[read_data, write_data, delete_data],
 > >     middleware=[context_based_tools],
 > >     context_schema=Context
@@ -1165,7 +1165,7 @@ There are two approaches depending on whether tools are known ahead of time:
 >         return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_weather],  # Only static tools registered here
 >     middleware=[DynamicToolMiddleware()],
 > )

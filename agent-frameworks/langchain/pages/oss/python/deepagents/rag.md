@@ -70,7 +70,7 @@ from langchain.messages import HumanMessage
 EXAMPLE_QUERY = "How do I stream intermediate tool results from a subagent?"
 
 baseline_agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[],
     system_prompt=(
         "You are a helpful LangChain documentation assistant. "
@@ -1041,7 +1041,7 @@ chunk_analyst_subagent = {
     "system_prompt": CHUNK_ANALYST_INSTRUCTIONS,
 }
 
-model = init_chat_model(model="openai:gpt-5.5")
+model = init_chat_model(model="openai:gpt-6.1-sol")
 
 agent = create_deep_agent(
     model=model,

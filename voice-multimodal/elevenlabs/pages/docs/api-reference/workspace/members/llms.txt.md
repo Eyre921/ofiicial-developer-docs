@@ -15,6 +15,7 @@ path: docs/api-reference/workspace/members/llms.txt
 
 - Members [Get Workspace Members](https://elevenlabs.io/docs/api-reference/workspace/members/list.md)
 - Members [Update member](https://elevenlabs.io/docs/api-reference/workspace/members/update.md)
+- Members [Update Member Usage Limit](https://elevenlabs.io/docs/api-reference/workspace/members/update-usage-limit.md)
 
 ## OpenAPI Specification
 

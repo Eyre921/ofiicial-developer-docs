@@ -55,4 +55,5 @@ path: docs/overview/llms.txt
 - [User groups](https://elevenlabs.io/docs/overview/administration/workspaces/user-groups.md): An overview on how to create and manage user groups.
 - [Model approvals](https://elevenlabs.io/docs/overview/administration/workspaces/model-approvals.md): Control which image and video generation models are available to workspace members.
 - [Audit logs](https://elevenlabs.io/docs/overview/administration/workspaces/audit-logs.md): Retrieve a structured record of administrative actions within your workspace.
+- [Concurrency estimator](https://elevenlabs.io/docs/overview/administration/workspaces/concurrency-estimator.md): Estimate the concurrency limit your ElevenAgents, Text to Speech or Speech to Text workload needs from your traffic volume and hours of activity.
 

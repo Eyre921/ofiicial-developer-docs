@@ -122,5 +122,5 @@ You must use Accounts v1 in the following cases:
 
 > #### Cross-border payouts
 > 
-> Use [Global payouts](https://docs.stripe.com/global-payouts.md) to send cross-border payouts.
+> Use [Global Payouts](https://docs.stripe.com/global-payouts.md) to send cross-border payouts.
 

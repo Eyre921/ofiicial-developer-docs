@@ -163,7 +163,7 @@ const agent = createDeepAgent({
 import { createDeepAgent, FilesystemBackend } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
 });
 ```
@@ -300,7 +300,7 @@ import { createDeepAgent, LocalShellBackend } from "deepagents";
 const backend = new LocalShellBackend({ workingDirectory: "." });
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend,
 });
 ```
@@ -396,7 +396,7 @@ import { InMemoryStore } from "@langchain/langgraph";
 const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new StoreBackend({
     namespace: (rt) => [rt.serverInfo.user.identity],
   }),
@@ -622,7 +622,7 @@ import { InMemoryStore } from "@langchain/langgraph";
 const store = new InMemoryStore();
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   backend: new CompositeBackend(new StateBackend(), {
     "/memories/": new StoreBackend({
       namespace: () => ["memories"],

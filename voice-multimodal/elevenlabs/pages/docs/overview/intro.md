@@ -74,7 +74,7 @@ Eleven v4 Turbo and Eleven Flash v2.5 both return the first audio with a median 
 
 ### How does ElevenLabs handle scale?
 
-Your plan sets how many requests are processed at the same time. A concurrency limit is not a cap on simultaneous conversations: as a rule of thumb, a limit of 5 can typically support around 100 simultaneous audio broadcasts, depending on the voices used and the use case. Enterprise plans have elevated limits. See [Concurrency and priority](/docs/overview/models#concurrency-and-priority) for per-plan limits and load testing guidance.
+Your plan sets how many requests are processed at the same time. A concurrency limit is not a cap on simultaneous conversations: as a rule of thumb, a limit of 5 can typically support around 100 simultaneous audio broadcasts, depending on the voices used and the use case. Enterprise plans have elevated limits. See [Concurrency and priority](/docs/overview/models#concurrency-and-priority) for per-plan limits and load testing guidance, and the [concurrency estimator](/docs/overview/administration/workspaces/concurrency-estimator) to estimate the limit your traffic needs.
 
 ### Enterprise controls
 
@@ -294,7 +294,7 @@ Turn prediction from conversation context
 
 Multilingual mode for mid-sentence language switches
 
-Keyterm library, up to 100,000 terms
+Keyterm library, up to 10,000 terms
 
 Entity detection and transcript editing
 

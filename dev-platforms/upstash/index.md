@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 1006 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1007 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -639,6 +639,7 @@
 - `docs/redis/commands/vector/vector-query` — [VECTOR.QUERY](pages/docs/redis/commands/vector/vector-query.md) · [原文](https://upstash.com/docs/redis/commands/vector/vector-query)
 - `docs/redis/features/auto-upgrade` — [Auto Upgrade](pages/docs/redis/features/auto-upgrade.md) · [原文](https://upstash.com/docs/redis/features/auto-upgrade)
 - `docs/redis/features/backup` — [Backup/Restore](pages/docs/redis/features/backup.md) · [原文](https://upstash.com/docs/redis/features/backup)
+- `docs/redis/features/branching` — [Database Branching](pages/docs/redis/features/branching.md) · [原文](https://upstash.com/docs/redis/features/branching)
 - `docs/redis/features/consistency` — [Consistency](pages/docs/redis/features/consistency.md) · [原文](https://upstash.com/docs/redis/features/consistency)
 - `docs/redis/features/credential-protection` — [Credential Protection](pages/docs/redis/features/credential-protection.md) · [原文](https://upstash.com/docs/redis/features/credential-protection)
 - `docs/redis/features/durability` — [Durable Storage](pages/docs/redis/features/durability.md) · [原文](https://upstash.com/docs/redis/features/durability)

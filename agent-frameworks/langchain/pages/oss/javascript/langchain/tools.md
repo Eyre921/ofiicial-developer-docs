@@ -84,7 +84,8 @@ const contextSchema = z.object({
 });
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-5.5" }),
+  // GPT-6 models need the Responses API for tool calling in @langchain/openai.
+  model: new ChatOpenAI({ model: "gpt-6.1-sol", useResponsesApi: true }),
   tools: [getUserName],
   checkpointer: new MemorySaver(),
   contextSchema,
@@ -171,7 +172,7 @@ const saveUserInfo = tool(
 );
 
 const agent = createAgent({
-  model: new ChatOpenAI({ model: "gpt-5.5" }),
+  model: new ChatOpenAI({ model: "gpt-6.1-sol" }),
   tools: [getUserInfo, saveUserInfo],
   store,
 });
@@ -548,7 +549,7 @@ const handleToolErrors = createMiddleware({
 });
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [],
   middleware: [handleToolErrors],
 });
@@ -887,7 +888,7 @@ There are two approaches depending on whether tools are known ahead of time:
 > });
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [getWeather], // Only static tools registered here
 >   middleware: [dynamicToolMiddleware],
 > });

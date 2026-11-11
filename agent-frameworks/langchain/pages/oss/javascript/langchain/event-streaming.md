@@ -149,7 +149,7 @@ const getWeather = tool(
 );
 
 const weatherAgent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [getWeather],
   name: "weather_agent",
 });
@@ -165,7 +165,7 @@ const callWeather = tool(
 );
 
 const supervisor = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [callWeather],
   name: "supervisor",
 });

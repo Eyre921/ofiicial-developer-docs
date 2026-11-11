@@ -18401,6 +18401,18 @@ yarn dlx trigger.dev@latest login
 
 When the CLI opens your browser, approving the login sends you back to the CLI automatically. If the browser is on another machine, for example when you're connected over SSH, use `--no-browser`: after you approve, the page shows a code to paste into the terminal.
 
+## Login expiry
+
+A login stops working after 7 days without use. The 7 days count from the last command that used it, or from when you logged in if you never used it. Running a command that uses your login, such as `dev` or `deploy`, at least once a week keeps you logged in.
+
+When a login has expired, commands that log you in, such as `login`, `dev` and `deploy`, start a new login. You don't need to log out first. The [MCP server](/docs/mcp-introduction#authentication) does the same on its next tool call.
+
+* **In CI**, the CLI can't complete a login, so it fails and tells you to run `npx trigger.dev@latest login`. To deploy from CI, use an environment API key in `TRIGGER_ACCESS_TOKEN` instead of a copied CLI login. See [CI / GitHub Actions](/docs/github-actions).
+* **CLI versions before 4.8.4** show the server's error but can't start a new login over an expired one. Run `trigger.dev logout`, then `trigger.dev login`.
+* **Logins made before login expiry was introduced** (in 4.8.4 for self-hosted instances) don't expire.
+
+If you self-host, `CLI_LOGIN_IDLE_TIMEOUT_DAYS` sets the window (default `7`), and `0` turns idle expiry off for new logins. Each login keeps the setting it was created with. See the [webapp environment variables](/docs/self-hosting/env/webapp).
+
 ## Options
 
 **No browser** `--no-browser`
@@ -23634,7 +23646,7 @@ If your secrets live in [Infisical](https://infisical.com), sync them natively, 
 
 Set it up in Infisical in two steps:
 
-1. Add a **Trigger.dev App Connection** using a Trigger.dev Personal Access Token from your account settings. Self-hosted instances are supported.
+1. Add a **Trigger.dev App Connection** using a Trigger.dev Personal Access Token from your account settings. Self-hosted instances are supported. The token [expires](/docs/management/authentication#pat-expiry) after the lifetime you choose, so replace it in the App Connection before then to keep the sync running.
 2. Create a **Secret Sync**: choose the connection, pick the target organization, project and environment (Production, Staging, Development, or Preview), and set the secret path to sync.
 
 Follow the [Trigger.dev Secret Sync guide](https://infisical.com/docs/integrations/secret-syncs/trigger-dev) in the Infisical docs for the full walkthrough.
@@ -24932,6 +24944,10 @@ Deploy from GitHub Actions without storing a Trigger.dev API key.
 
 Trusted publishing uses GitHub Actions OIDC tokens to authorize deployments. No Personal Access Token or environment API key is needed in GitHub secrets. Builds run entirely on Trigger.dev's build server.
 
+## Prerequisites
+
+* Use the Trigger.dev CLI (`trigger.dev`) **4.8.4 or later**, including the CLI used in CI.
+
 ## Configure trust
 
 1. Select **Staging**, **Preview**, or **Production**, then open [**Trusted publishing**](https://cloud.trigger.dev/_/trusted-publishing) under **Security**.
@@ -25486,7 +25502,7 @@ Source: https://trigger.dev/docs/github-actions
 
 Deploy your tasks from CI using trusted deploys or an environment API key.
 
-For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions.
+For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions. A Personal Access Token also [expires](/docs/management/authentication#pat-expiry) after the lifetime chosen when it was created, and a copied CLI login [expires after 7 days without use](/docs/cli-login-commands#login-expiry).
 
 > [!TIP]
 >
@@ -42698,6 +42714,29 @@ await envvars.upload("proj_1234", "dev", {
 });
 ```
 
+#### PAT expiry
+
+A PAT you create on the [Personal Access Tokens](https://cloud.trigger.dev/account/tokens) page expires after the lifetime you choose when you create it: 30 days, 90 days, or 1 year. Every new dashboard token has an expiry. Tokens created before expiry was introduced (in 4.8.4 for self-hosted instances) don't expire.
+
+The tokens page shows when each token expires. A token that expires within 7 days is flagged, and an expired one is marked as expired. We also email you twice about each token that expires, naming it and linking to the tokens page: once 7 days before it expires, and again when it has. On a self-hosted instance, the emails are only sent when `EMAIL_TRANSPORT` is set.
+
+The tokens the CLI and the MCP server create when you log in work differently: they stop working after 7 days without use. See [CLI login expiry](/docs/cli-login-commands#login-expiry).
+
+A request made with an expired PAT gets a `401` response whose `code` says why, and whose `error` says what to do:
+
+```json theme={"theme":"css-variables"}
+{
+  "error": "This personal access token expired on 2026-12-01 (UTC). Create a new one at https://cloud.trigger.dev/account/tokens.",
+  "code": "personal_access_token_expired"
+}
+```
+
+To keep an integration running, create a new token before the old one expires and replace it wherever it's stored, such as a CI secret. An expired CLI or MCP login gets `code: "cli_login_expired"` instead, and the CLI and MCP server log in again by themselves.
+
+A user-actor token from `trigger.dev mint-token`, or an environment JWT exchanged from a PAT, expires no later than the PAT.
+
+If you self-host, you can change the PAT lifetimes and turn the expiry emails off. See the [webapp environment variables](/docs/self-hosting/env/webapp).
+
 ### Preview branch targeting
 
 When working with preview branches, you may need to target a specific branch when making API calls. This is particularly useful for managing environment variables or other resources that are scoped to individual preview branches.
@@ -44795,7 +44834,9 @@ After adding the config, restart your client. You should see a server named **tr
 
 ## Authentication
 
-The `search_docs` tool works without authentication, and so do the local-only tools `list_profiles`, `dev_server_status` and `stop_dev_server`. All other tools require you to be logged in via the [Trigger.dev CLI](/docs/cli-login-commands). The first time you use an authenticated tool, your MCP client will prompt you to log in.
+The `search_docs` tool works without authentication, and so do the local-only tools `list_profiles`, `dev_server_status` and `stop_dev_server`. All other tools require you to be logged in via the [Trigger.dev CLI](/docs/cli-login-commands). The first time you use an authenticated tool, your MCP client prompts you to log in.
+
+A login stops working after 7 days without use. The next authenticated tool call starts the login flow again. If your client supports confirmation prompts, it asks first. Then the browser opens, and the call continues once you approve. See [CLI login expiry](/docs/cli-login-commands#login-expiry).
 
 > [accordion] CLI Options
 >
@@ -60117,6 +60158,13 @@ If you see "Connection error" when running `trigger login` (or "Failed to create
 2. **VPN or firewall:** Disconnect from VPN or check firewall/proxy; try `npx trigger.dev@latest login --log-level debug` for more detail.
 3. **TLS / certificate store:** Node may use a different CA store than your OS (e.g. `curl` works but the CLI fails). Try `export NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem` (macOS/Linux) then login again, or reinstall Node so it gets updated certs. Behind a corporate proxy or custom CA? Set `NODE_EXTRA_CA_CERTS` to that CA file.
 
+### `personal_access_token_expired` or `cli_login_expired`
+
+If a request fails with `401` and one of these codes, the token has expired:
+
+* **`personal_access_token_expired`**: a personal access token from the dashboard reached the end of the lifetime chosen when it was created. Create a new one on the [Personal Access Tokens](https://cloud.trigger.dev/account/tokens) page and replace the old one wherever it's stored. See [PAT expiry](/docs/management/authentication#pat-expiry).
+* **`cli_login_expired`**: a CLI or MCP login went unused for 7 days. Run `npx trigger.dev@latest login`. With a CLI version before 4.8.4, `login` can't replace an expired login, so run `trigger.dev logout` first. See [CLI login expiry](/docs/cli-login-commands#login-expiry).
+
 ### Runs never dequeue in dev
 
 If runs sit in the queue and never start while running `trigger.dev dev`, check whether you have more than one local instance running against the same project. Each project has a single dev environment, and only one `trigger.dev dev` instance can consume from it at a time, so a second instance causes runs to be split between them and some appear stuck. Keep a single `trigger.dev dev` running per project. [Upvote isolated dev sessions](https://triggerdev.featurebase.app/p/isolated-dev-sessions-for-multiple-local-trigger-dev-instances) if you need to run multiple local instances.
@@ -60479,7 +60527,7 @@ Or change the tsconfig jsx setting:
 
 This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER\_SECRET\_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
 
-```ts theme={"theme":"css-variables"}
+```ts theme={"theme":"css-variables"} theme={"theme":"css-variables"}
 export const dynamic = "force-dynamic";
 ```
 
@@ -60489,13 +60537,13 @@ An issue can sometimes arise when you try to pass a function directly to the `on
 
 This works:
 
-```tsx theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
 <Button onClick={() => myTask()}>Trigger my task</Button>
 ```
 
 Whereas this does not work:
 
-```tsx theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
 <Button onClick={myTask}>Trigger my task</Button>
 ```
 

@@ -147,7 +147,7 @@ import { z } from "zod";
 const contextSchema = z.object({ userId: z.string() });
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   contextSchema,
 });
 

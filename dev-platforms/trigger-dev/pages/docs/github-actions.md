@@ -6,7 +6,7 @@ path: docs/github-actions
 
 Deploy your tasks from CI using trusted deploys or an environment API key.
 
-For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions.
+For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions. A Personal Access Token also [expires](/docs/management/authentication#pat-expiry) after the lifetime chosen when it was created, and a copied CLI login [expires after 7 days without use](/docs/cli-login-commands#login-expiry).
 
 > [!TIP]
 >

@@ -88,7 +88,7 @@ Define subagents as dictionaries matching the [`SubAgent`](https://reference.lan
 | `system_prompt` | `str` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements. Does not inherit from main agent. For `mode: "fork"`, omit this field unless you need a fork-only addendum. See [Forked subagents](#forked-subagents). |
 | `mode` | `"isolated"` \| `"fork"` | Optional. Context mode. Defaults to `"isolated"`, where the subagent only sees the delegated task. Set to `"fork"` to inherit the parent's conversation and system prompt instead. See [Forked subagents](#forked-subagents). |
 | `tools` | `list[Callable]` | Optional. Tools the subagent can use. Keep this minimal and include only what's needed. Inherits from main agent by default. When specified, overrides the inherited tools entirely. |
-| `model` | `str` \| `BaseChatModel` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-5.5'` (using the `'provider:model'` format) or a LangChain chat model object (`init_chat_model("gpt-5.5")` or `ChatOpenAI(model="gpt-5.5")`). |
+| `model` | `str` \| `BaseChatModel` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-6.1-sol'` (using the `'provider:model'` format) or a LangChain chat model object (`init_chat_model("gpt-6.1-sol")` or `ChatOpenAI(model="gpt-6.1-sol")`). |
 | `middleware` | `list[Middleware]` | Optional. Additional middleware for custom behavior, logging, or rate limiting. Isolated subagents do not inherit the main agent's custom middleware. For inheritance and overrides in fork mode, see [Configure a forked subagent](#configure-a-forked-subagent). Merged into the [synchronous subagent stack](/oss/python/deepagents/customization#synchronous-subagent-stack): an instance whose `.name` matches a default replaces it in place, anything else lands after the last core middleware entry and before profile, prompt-caching, and memory. See [Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance). For example, include a [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance with a `tools` allowlist here to restrict the subagent's filesystem tools independently of the main agent. For more information, see the "Restricting filesystem tools" section under [Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access). |
 | `interrupt_on` | `dict[str, bool \| InterruptOnConfig]` | Optional. Configure [human-in-the-loop](/oss/python/deepagents/human-in-the-loop) for specific tools. Options:`True`, `False`, or an `InterruptOnConfig` with `allowed_decisions`. Requires checkpointer. Inherits from main agent by default. Subagent value overrides the default. |
 | `skills` | `list[str]` | Optional. [Skills](/oss/python/deepagents/skills) source paths. When specified, the subagent loads skills from these directories (for example, `["/skills/researcher/"]`, a container whose subdirectories are skills). This allows subagents to have different skill sets than the main agent. Does not inherit from main agent. Only the general-purpose subagent inherits the main agent's skills. When a subagent has skills, it runs its own independent [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) instance. Skill state is fully isolated—a subagent's loaded skills are not visible to the parent, and vice versa. |
@@ -138,7 +138,7 @@ research_subagent = {
     "description": "Used to research more in depth questions",
     "system_prompt": "You are a great researcher",
     "tools": [internet_search],
-    "model": "openai:gpt-5.5",  # Optional override, defaults to main agent model
+    "model": "openai:gpt-6.1-sol",  # Optional override, defaults to main agent model
 }
 subagents = [research_subagent]
 
@@ -166,7 +166,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -204,7 +204,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -224,7 +224,7 @@ custom_subagent = CompiledSubAgent(
 subagents = [custom_subagent]
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
     system_prompt=research_instructions,
     subagents=subagents,
@@ -242,7 +242,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -280,7 +280,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -318,7 +318,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -356,7 +356,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -394,7 +394,7 @@ def internet_search(query: str) -> str:
 
 
 research_instructions = "You are a research coordinator."
-your_model = "openai:gpt-5.5"
+your_model = "openai:gpt-6.1-sol"
 specialized_tools: list = []
 
 # Create a custom agent graph
@@ -606,7 +606,7 @@ from deepagents import create_deep_agent
 from langchain_quickjs import CodeInterpreterMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[{
         "name": "reviewer",
         "description": "Reviews code for security issues, citing lines and severity",
@@ -808,7 +808,7 @@ from deepagents import (
 )
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt=(
         "You are a project coordinator with no research knowledge. "
         "For every user request, you must call the task() tool with "
@@ -1276,7 +1276,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[research_subagent],
 )
 
@@ -1576,7 +1576,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1593,7 +1593,7 @@ def internet_search(query: str) -> str:
 
 # Main agent uses Gemini; general-purpose subagent uses GPT
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[internet_search],
     subagents=[
         {
@@ -1601,7 +1601,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1626,7 +1626,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1651,7 +1651,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1676,7 +1676,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1701,7 +1701,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1726,7 +1726,7 @@ agent = create_deep_agent(
             "description": "General-purpose agent for research and multi-step tasks",
             "system_prompt": "You are a general-purpose assistant.",
             "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
+            "model": "openai:gpt-6.1-sol",  # Different model for delegated tasks
         },
     ],
 )
@@ -1846,7 +1846,7 @@ subagents = [
         "description": "Analyzes financial data and market trends",
         "system_prompt": "You are an expert financial analyst...",
         "tools": [get_stock_price, analyze_fundamentals],
-        "model": "openai:gpt-5.5",  # Better for numerical analysis
+        "model": "openai:gpt-6.1-sol",  # Better for numerical analysis
     },
 ]
 ```
@@ -1933,7 +1933,7 @@ subagents = [
 ]
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
     subagents=subagents,
 )
@@ -2180,7 +2180,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[research_subagent],
     context_schema=Context,
 )
@@ -2473,7 +2473,7 @@ def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     subagents=[
         {
             "name": "fact-checker",
@@ -2829,7 +2829,7 @@ def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
    from deepagents import create_deep_agent
 
    agent = create_deep_agent(
-       model="openai:gpt-5.5",
+       model="openai:gpt-6.1-sol",
        system_prompt="""...your instructions...
 
        IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.

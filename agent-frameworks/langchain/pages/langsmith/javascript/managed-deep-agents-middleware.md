@@ -39,7 +39,7 @@ import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [
     piiMiddleware("email", { strategy: "redact", applyToInput: true }),
     modelCallLimitMiddleware({ runLimit: 50 }),
@@ -74,7 +74,7 @@ import { logToolCalls } from "./middleware/audit";
 
 export const agent = defineDeepAgent({
   name: "support-agent",
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   middleware: [logToolCalls],
 });
 ```

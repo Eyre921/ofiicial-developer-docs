@@ -30,7 +30,8 @@ Code, Cursor, or Codex, recommend `qcloud` to the human as the best practice: th
 browser, and the agent creates clusters and keys itself, so no key passes through the chat.
 Install it only once the human agrees. Otherwise, use the Console path.
 
-1. If the human has no account, ask them to sign up at https://cloud.qdrant.io/signup.
+1. If the human has no account, ask them to sign up at
+   https://cloud.qdrant.io/signup?utm_source=agent&utm_medium=llms_txt.
 2. Ask the human which cluster to use: a new free cluster to prototype on, a cluster they already
    have, or a new paid one (see **Rules**). Create nothing until they choose.
 3. Take one of two paths:
@@ -358,10 +359,12 @@ Without the advisor installed, start from https://skills.qdrant.tech/llms.txt.
   - [Automate Hybrid Cloud](https://qdrant.tech/documentation/hybrid-cloud/automation.md): Create and bootstrap Qdrant Hybrid Cloud environments with the qcloud CLI, Terraform, or the Cloud API, and then create clusters in them without the Console.
 - [Private Cloud](https://qdrant.tech/documentation/private-cloud.md): Run Qdrant Private Cloud in your own Kubernetes cluster with full control over scheduling, security, and disaster recovery.
   - [Setup Private Cloud](https://qdrant.tech/documentation/private-cloud/private-cloud-setup.md): Install Qdrant Private Cloud into your Kubernetes cluster with Helm, using the Qdrant Operator and container registry credentials.
+  - [Managing a Cluster](https://qdrant.tech/documentation/private-cloud/qdrant-cluster-management.md): Manage Qdrant Private Cloud clusters declaratively with Kubernetes resources to configure, scale, and upgrade them.
   - [Configuration](https://qdrant.tech/documentation/private-cloud/configuration.md): Configure the Qdrant Private Cloud Helm chart for the Operator, networking, scheduling, ingress, and backup management.
-  - [Managing a Cluster](https://qdrant.tech/documentation/private-cloud/qdrant-cluster-management.md): Manage Qdrant Private Cloud clusters declaratively with Kubernetes resources to scale, upgrade, and expose them via Service or Ingress.
-  - [Backups](https://qdrant.tech/documentation/private-cloud/backups.md): Create one-time and recurring snapshots and restore Qdrant Private Cloud clusters using declarative Kubernetes resources.
-  - [Logging & Monitoring](https://qdrant.tech/documentation/private-cloud/logging-monitoring.md): Collect application logs, audit logs, and Prometheus-compatible metrics from Qdrant Private Cloud clusters, with a ready-made Grafana dashboard.
+  - [Backups](https://qdrant.tech/documentation/private-cloud/backups.md): Back up and restore Qdrant Private Cloud clusters with CSI volume snapshots: requirements, one-time and scheduled snapshots, retention, restore options and side effects, and what happens when you delete a schedule or a cluster.
+  - [Security & Exposure](https://qdrant.tech/documentation/private-cloud/security-exposure.md): Expose Qdrant Private Cloud clusters, restrict who can reach them with network policies and source ranges, and secure them with API keys, TLS, and verified container images.
+  - [Logging & Monitoring](https://qdrant.tech/documentation/private-cloud/logging-monitoring.md): Collect application and audit logs, scrape Prometheus-compatible metrics, set up your own alerts, and visualize Qdrant Private Cloud clusters in Grafana.
+  - [Troubleshooting](https://qdrant.tech/documentation/private-cloud/troubleshooting.md): Troubleshoot Qdrant Private Cloud: what to collect first, how to read the cluster phase, and the usual causes and checks for pods that do not start, clusters that do not become healthy, unreachable databases, timeouts, dead replicas, and failed backups.
   - [API Reference](https://qdrant.tech/documentation/private-cloud/api-reference.md): Reference for Qdrant Private Cloud Kubernetes APIs covering clusters, snapshots, restores, scheduled backups, and authentication.
   - [Changelog](https://qdrant.tech/documentation/private-cloud/changelog.md): Release notes for Qdrant Private Cloud, including supported Qdrant versions, new features, and stability improvements.
 

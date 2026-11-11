@@ -64,7 +64,7 @@ for await (const [namespace, chunk] of await agent.stream(
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt: "You are a helpful research assistant",
   subagents: [
     {
@@ -386,7 +386,7 @@ for await (const [namespace, chunk] of await agent.stream(
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt:
     "You are a project coordinator with no research knowledge. " +
     "For every user request, you must call the task() tool with " +
@@ -953,7 +953,7 @@ const analyzeData = tool(
 );
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt:
     "You are a coordinator. For any analysis request, you MUST delegate " +
     "to the analyst subagent using the task tool. Never try to answer directly. " +

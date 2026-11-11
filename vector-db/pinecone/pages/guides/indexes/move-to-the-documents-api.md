@@ -10,9 +10,9 @@ An index stays on the API it was created with. An index on the legacy Vectors AP
 
 ## Move your data
 
-To move a serverless index without reloading your data, [convert it](/guides/indexes/convert-an-index). Pinecone creates a new document index with the schema you choose and fills it from the source index's records, and the source index is left unchanged. Conversion is available on Standard and Enterprise plans.
+To move a serverless or Bring Your Own Cloud (BYOC) index without reloading your data, [convert it](/guides/indexes/convert-an-index). Pinecone creates a new document index with the schema you choose and fills it from the source index's records, and the source index is left unchanged. Conversion is available on Standard and Enterprise plans.
 
-If you can't convert, such as for a Bring Your Own Cloud (BYOC) index, or you want to reshape your data on the way in, create a new index and load your data into it:
+If you can't convert your index, or you want to reshape your data on the way in, create a new index and load your data into it:
 
 ### 1. Upgrade your SDK
 

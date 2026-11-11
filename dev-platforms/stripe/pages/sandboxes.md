@@ -12,7 +12,7 @@ A sandbox is an isolated test environment. You can use your sandbox to test Stri
 
 For new integrations, use general sandboxes instead of your test mode sandbox. Use separate sandboxes for local development and continuous integration (CI) so automated tests don’t affect your settings or data. Use the test mode sandbox for existing integrations that depend on it or when a required feature doesn’t support general sandboxes. Learn more about [the differences between general sandboxes and the test mode sandbox](https://docs.stripe.com/testing-use-cases.md#compare).
 
-Coding agents should install the Stripe CLI (`npm i -g @stripe/cli`) and run the command `stripe sandbox create --help` to provision an anonymous Stripe sandbox with working API keys. No account registration required.
+Coding agents: [install the Stripe CLI](https://docs.stripe.com/cli/install) using the installation script for your operating system. Open a new terminal and run `stripe sandbox create --help` to provision an anonymous Stripe sandbox with working API keys. It doesn’t require account registration.
 
 ## Use cases
 

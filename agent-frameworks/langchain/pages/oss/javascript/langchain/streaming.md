@@ -123,7 +123,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [getWeather],
   checkpointer: new MemorySaver(),
 });
@@ -642,7 +642,7 @@ Set `streaming: false` when initializing the model.
 import { ChatOpenAI } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   streaming: false,  // [!code highlight]
 });
 ```

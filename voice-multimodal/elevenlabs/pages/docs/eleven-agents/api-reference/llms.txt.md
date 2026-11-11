@@ -92,6 +92,7 @@ path: docs/eleven-agents/api-reference/llms.txt
 - API Reference > Conversations [Create realtime client secret](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create-client-secret.md)
 - API Reference > Conversations [Send conversation feedback](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create.md)
 - API Reference > Conversations [Upload conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file.md)
+- API Reference > Conversations [Get conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-file.md)
 - API Reference > Conversations [Delete conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete-file.md)
 - API Reference > Conversations [Get SIP messages for a conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-sip-messages.md)
 - API Reference > Conversations [Resolve conversation reference](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/resolve.md)

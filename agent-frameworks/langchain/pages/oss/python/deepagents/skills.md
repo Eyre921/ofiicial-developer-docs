@@ -561,7 +561,7 @@ Deep Agents supports different backends depending on how you want to store and m
 > }
 >
 > agent = create_deep_agent(
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     backend=backend,
 >     skills=["/skills/"],
 >     checkpointer=checkpointer,
@@ -1124,7 +1124,7 @@ from langgraph.store.memory import InMemoryStore
 store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
@@ -1580,7 +1580,7 @@ async def main() -> None:
 
     try:
         agent = create_deep_agent(
-            model="openai:gpt-5.5",
+            model="openai:gpt-6.1-sol",
             backend=backend,
             skills=["/skills/"],
             store=store,

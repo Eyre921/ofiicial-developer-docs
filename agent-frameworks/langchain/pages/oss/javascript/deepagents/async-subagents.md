@@ -87,7 +87,7 @@ const asyncSubagents: AsyncSubAgent[] = [
 ];
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [...asyncSubagents],
 });
 ```
@@ -417,7 +417,7 @@ function researcher(config: LangGraphRunnableConfig) {
   // Set when a supervisor launched this run with `start_async_task`
   const parentThreadId = config.metadata?.parent_thread_id;
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     systemPrompt: "You research topics thoroughly.",
   });
 }

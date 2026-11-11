@@ -1285,7 +1285,7 @@ Start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)
 > def create_content_writer():
 >     """Create a content writer agent configured by filesystem files."""
 >     return create_deep_agent(
->         model="openai:gpt-5.5",
+>         model="openai:gpt-6.1-sol",
 >         memory=["./AGENTS.md"],
 >         skills=["./skills/"],
 >         tools=[generate_cover, generate_social_image],

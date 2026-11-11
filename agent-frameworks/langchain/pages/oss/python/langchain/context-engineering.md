@@ -124,7 +124,7 @@ The system prompt sets the LLM's behavior and capabilities. Different users, con
 >     return base
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[state_aware_prompt]
 > )
@@ -161,7 +161,7 @@ The system prompt sets the LLM's behavior and capabilities. Different users, con
 >     return base
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[store_aware_prompt],
 >     context_schema=Context,
@@ -202,7 +202,7 @@ The system prompt sets the LLM's behavior and capabilities. Different users, con
 >     return base
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[context_aware_prompt],
 >     context_schema=Context
@@ -255,7 +255,7 @@ It's critical to manage the content of messages to ensure that the LLM has the r
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[inject_file_context]
 > )
@@ -308,7 +308,7 @@ It's critical to manage the content of messages to ensure that the LLM has the r
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[inject_writing_style],
 >     context_schema=Context,
@@ -368,7 +368,7 @@ It's critical to manage the content of messages to ensure that the LLM has the r
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[inject_compliance_rules],
 >     context_schema=Context
@@ -455,7 +455,7 @@ Not every tool is appropriate for every situation. Too many tools may overwhelm 
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[public_search, private_search, advanced_search],
 >     middleware=[state_based_tools]
 > )
@@ -497,7 +497,7 @@ Not every tool is appropriate for every situation. Too many tools may overwhelm 
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool, analysis_tool, export_tool],
 >     middleware=[store_based_tools],
 >     context_schema=Context,
@@ -543,7 +543,7 @@ Not every tool is appropriate for every situation. Too many tools may overwhelm 
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[read_data, write_data, delete_data],
 >     middleware=[context_based_tools],
 >     context_schema=Context
@@ -569,7 +569,7 @@ might change during an agent run.
 >
 > # Initialize models once outside the middleware
 > large_model = init_chat_model("claude-sonnet-4-6")
-> standard_model = init_chat_model("gpt-5.5")
+> standard_model = init_chat_model("gpt-6.1-sol")
 > efficient_model = init_chat_model("gpt-5.4-mini")
 >
 > @wrap_model_call
@@ -620,7 +620,7 @@ might change during an agent run.
 >
 > # Initialize available models once
 > MODEL_MAP = {
->     "gpt-5.5": init_chat_model("gpt-5.5"),
+>     "gpt-6.1-sol": init_chat_model("gpt-6.1-sol"),
 >     "gpt-5.4-mini": init_chat_model("gpt-5.4-mini"),
 >     "claude-sonnet": init_chat_model("claude-sonnet-4-6"),
 > }
@@ -645,7 +645,7 @@ might change during an agent run.
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[store_based_model],
 >     context_schema=Context,
@@ -671,7 +671,7 @@ might change during an agent run.
 >
 > # Initialize models once outside the middleware
 > premium_model = init_chat_model("claude-sonnet-4-6")
-> standard_model = init_chat_model("gpt-5.5")
+> standard_model = init_chat_model("gpt-6.1-sol")
 > budget_model = init_chat_model("gpt-5.4-mini")
 >
 > @wrap_model_call
@@ -699,7 +699,7 @@ might change during an agent run.
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[context_based_model],
 >     context_schema=Context
@@ -781,7 +781,7 @@ Dynamic response format selection adapts schemas based on user preferences, conv
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[state_based_output]
 > )
@@ -834,7 +834,7 @@ Dynamic response format selection adapts schemas based on user preferences, conv
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[store_based_output],
 >     context_schema=Context,
@@ -888,7 +888,7 @@ Dynamic response format selection adapts schemas based on user preferences, conv
 >     return handler(request)
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[...],
 >     middleware=[context_based_output],
 >     context_schema=Context
@@ -930,7 +930,7 @@ Most real-world tools need more than just the LLM's parameters. They need user I
 >         return "User is not authenticated"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[check_authentication]
 > )
 > ```
@@ -968,7 +968,7 @@ Most real-world tools need more than just the LLM's parameters. They need user I
 >         return "No preferences found"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_preference],
 >     context_schema=Context,
 >     store=InMemoryStore()
@@ -1007,7 +1007,7 @@ Most real-world tools need more than just the LLM's parameters. They need user I
 >     return f"Found {len(results)} results for user {user_id}"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[fetch_user_data],
 >     context_schema=Context
 > )
@@ -1053,7 +1053,7 @@ and update the memory of the agent to make important context available to future
 >         return Command(update={"authenticated": False})
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[authenticate_user]
 > )
 > ```
@@ -1095,7 +1095,7 @@ and update the memory of the agent to make important context available to future
 >     return f"Saved preference: {preference_key} = {preference_value}"
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[save_preference],
 >     context_schema=Context,
 >     store=InMemoryStore()
@@ -1126,7 +1126,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[...],
     middleware=[
         SummarizationMiddleware(

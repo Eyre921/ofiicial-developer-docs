@@ -109,7 +109,7 @@ Quit the app completely (not just the window), reopen it, choose **Codex**, and 
 
 ## Troubleshooting
 
-* **Auth errors or "Missing Authentication header":** The app could not read `OPENROUTER_API_KEY`. Set it with `launchctl setenv` on macOS or `setx` on Windows, then quit and reopen the app. An `export` in your shell profile alone is not visible to the desktop app.
+* **Auth errors, "No API key in the Authorization header", or "Missing Authentication header":** The app could not read `OPENROUTER_API_KEY`. Set it with `launchctl setenv` on macOS or `setx` on Windows, then quit and reopen the app. An `export` in your shell profile alone is not visible to the desktop app. A 401 saying the key is not an OpenRouter API key means the app read a key from another provider, such as `OPENAI_API_KEY`; set `OPENROUTER_API_KEY` to your OpenRouter key instead.
 * **Changes to `config.toml` not taking effect:** Make sure you edited the user-level `~/.codex/config.toml`, not a project-scoped `.codex/config.toml`, and restart the app. If the changes still don't apply, see [Background processes keep the old configuration](#background-processes-keep-the-old-configuration).
 * **Model not found:** Verify the model ID on [openrouter.ai/models](https://openrouter.ai/models) and use the exact slug.
 * **Privacy:** OpenRouter does not log your source code prompts unless you opt in to prompt logging. See our [Privacy Policy](https://openrouter.ai/privacy) for details.

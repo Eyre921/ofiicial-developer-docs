@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 590 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 587 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -154,9 +154,6 @@
 - `guides/get-started/key-terms` — [Pinecone key terms](pages/guides/get-started/key-terms.md) · [原文](https://docs.pinecone.io/guides/get-started/key-terms)
 - `guides/get-started/overview` — [Pinecone Database](pages/guides/get-started/overview.md) · [原文](https://docs.pinecone.io/guides/get-started/overview)
 - `guides/get-started/quickstart` — [Pinecone quickstart](pages/guides/get-started/quickstart.md) · [原文](https://docs.pinecone.io/guides/get-started/quickstart)
-- `guides/get-started/quickstart/bring-your-own-vectors` — [Bring your own vectors](pages/guides/get-started/quickstart/bring-your-own-vectors.md) · [原文](https://docs.pinecone.io/guides/get-started/quickstart/bring-your-own-vectors)
-- `guides/get-started/quickstart/full-text-search` — [Try full-text search](pages/guides/get-started/quickstart/full-text-search.md) · [原文](https://docs.pinecone.io/guides/get-started/quickstart/full-text-search)
-- `guides/get-started/quickstart/ingest-files` — [Ingest your own files](pages/guides/get-started/quickstart/ingest-files.md) · [原文](https://docs.pinecone.io/guides/get-started/quickstart/ingest-files)
 - `guides/indexes/back-up-an-index` — [Back up an index](pages/guides/indexes/back-up-an-index.md) · [原文](https://docs.pinecone.io/guides/indexes/back-up-an-index)
 - `guides/indexes/backups-overview` — [Backups overview](pages/guides/indexes/backups-overview.md) · [原文](https://docs.pinecone.io/guides/indexes/backups-overview)
 - `guides/indexes/configure-metadata-indexing` — [Configure metadata indexing](pages/guides/indexes/configure-metadata-indexing.md) · [原文](https://docs.pinecone.io/guides/indexes/configure-metadata-indexing)
@@ -244,6 +241,7 @@
 - `guides/production/mock-the-api` — [Mock the Pinecone API for testing](pages/guides/production/mock-the-api.md) · [原文](https://docs.pinecone.io/guides/production/mock-the-api)
 - `guides/production/monitor-performance` — [Monitor performance](pages/guides/production/monitor-performance.md) · [原文](https://docs.pinecone.io/guides/production/monitor-performance)
 - `guides/production/production-checklist` — [Production checklist](pages/guides/production/production-checklist.md) · [原文](https://docs.pinecone.io/guides/production/production-checklist)
+- `guides/search/bring-your-own-vectors` — [Bring your own vectors](pages/guides/search/bring-your-own-vectors.md) · [原文](https://docs.pinecone.io/guides/search/bring-your-own-vectors)
 - `guides/search/filter-by-metadata` — [Filter by metadata](pages/guides/search/filter-by-metadata.md) · [原文](https://docs.pinecone.io/guides/search/filter-by-metadata)
 - `guides/search/full-text-search` — [Full-text search overview](pages/guides/search/full-text-search.md) · [原文](https://docs.pinecone.io/guides/search/full-text-search)
 - `guides/search/full-text-search/query-syntax` — [Full-text search query syntax](pages/guides/search/full-text-search/query-syntax.md) · [原文](https://docs.pinecone.io/guides/search/full-text-search/query-syntax)
@@ -529,7 +527,6 @@
 - `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-6.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
 - `reference/architecture/assistant-architecture` — [Pinecone Assistant architecture](pages/reference/architecture/assistant-architecture.md) · [原文](https://docs.pinecone.io/reference/architecture/assistant-architecture)
 - `reference/architecture/assistant-architecture` — [Pinecone Assistant architecture](pages/reference/architecture/assistant-architecture-2.md) · [原文](https://docs.pinecone.io/reference/architecture/assistant-architecture)
-- `reference/architecture/assistant-architecture` — [Pinecone Assistant architecture](pages/reference/architecture/assistant-architecture-3.md) · [原文](https://docs.pinecone.io/reference/architecture/assistant-architecture)
 - `reference/cli/authentication` — [CLI authentication](pages/reference/cli/authentication.md) · [原文](https://docs.pinecone.io/reference/cli/authentication)
 - `reference/cli/authentication` — [CLI authentication](pages/reference/cli/authentication-2.md) · [原文](https://docs.pinecone.io/reference/cli/authentication)
 - `reference/cli/authentication` — [CLI authentication](pages/reference/cli/authentication-3.md) · [原文](https://docs.pinecone.io/reference/cli/authentication)

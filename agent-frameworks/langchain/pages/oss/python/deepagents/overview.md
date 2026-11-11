@@ -70,7 +70,7 @@ def get_weather(city: str) -> str:
 
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[get_weather],
     system_prompt="You are a helpful assistant",
 )
@@ -453,7 +453,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import TodoListMiddleware
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[TodoListMiddleware()],
 )
 ```

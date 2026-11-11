@@ -81,7 +81,7 @@ from langgraph_sdk.runtime import ServerRuntime
 
 from my_agent.utils.state import AgentState
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 
 
 def make_graph_for_user(user_id: str):
@@ -115,7 +115,7 @@ from langgraph_sdk.runtime import ServerRuntime
 
 from my_agent.utils.state import AgentState
 
-model = ChatOpenAI(model="gpt-5.5")
+model = ChatOpenAI(model="gpt-6.1-sol")
 
 
 def make_agent_graph(tools: list):

@@ -33,7 +33,7 @@ Provide a `template[type]` of `default`, or of `template_id` alongside a `templa
 
 If your connection needs to perform additional steps once a template has finished applying to a page and it's ready for use, wait for Notion's systems to populate the page content before proceeding.
 
-1. Register an handler for [connection webhooks](/reference/webhooks) that listens to `page.created` and `page.content_updated` events and uses the [Retrieve block children](/reference/get-block-children) API to confirm the page contents are populated.
+1. Register a handler for [connection webhooks](/reference/webhooks) that listens to `page.created` and `page.content_updated` events and uses the [Retrieve block children](/reference/get-block-children) API to confirm the page contents are populated.
 
 ## Step 1: Identify the template to use
 
@@ -127,9 +127,9 @@ Go through the [Webhooks](/reference/webhooks) guide to set up a webhook URL for
 
 ### How aggregated events work
 
-Internally, Notion produces a `page.content_updated` event once the template duplication is complete, but in the API, such events might be aggregated into the base `page.created` event if they take place in a short enough time window, which will generally be the case. As a result, you might not see the `page.created` event immediately after Step 2 (the [Create a page](/reference/post-page) call). In these cases, the `page.created` event will be deferred until the page is ready.
+Notion sends the `page.created` event right away, usually within a few seconds of the [Create a page](/reference/post-page) call in Step 2. The template usually hasn't finished applying yet, so the page is often still blank when this event arrives.
 
-In rare cases, or for complex templates, Notion's processing of the page might take longer. In this case, your connection may receive the `page.created` event for the blank page created from Step 2, and subsequently, a `page.content_updated` event when the page is ready.
+When the template finishes applying, Notion sends a `page.content_updated` event. Content updates are aggregated, so this event usually arrives about a minute after the template starts applying. Complex templates can take longer.
 
 For more information on event aggregation, refer to [the detailed event types reference](/reference/webhooks-events-delivery#event-aggregation) .
 
@@ -145,6 +145,8 @@ Putting the above flow together, your webhook handler can implement logic as fol
 
     * If the page contents have been populated, you know the template has finished applying, and can proceed to any further steps your connection needs to take ✅,
     * Otherwise, stop processing and wait for a `page.content_updated` event signaling the completion of applying the template ⏳.
+
+  * If the template finished applying before your handler checked the page, a `page.content_updated` event can still arrive later. Ignore events for pages your handler has already processed.
 
 > [!NOTE]
 >

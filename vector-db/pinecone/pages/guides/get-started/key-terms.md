@@ -98,7 +98,7 @@ A record is the unit of data in a [legacy vector index](#legacy-vector-index). I
 * One vector, or a dense and a sparse vector for single-index [hybrid search](/guides/search/hybrid-search).
 * Optional [metadata](#metadata).
 
-In a [legacy integrated index](/guides/indexes/index-data-overview#integrated-embedding) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
+In a [legacy integrated index](/guides/legacy/records-api/create-an-integrated-index) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
 
 For more information, see [Upsert data](/guides/data/upsert-data).
 

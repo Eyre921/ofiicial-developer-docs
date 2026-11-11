@@ -51,11 +51,11 @@ Below, you’ll find the list of available type values, a short description of w
 | Type | Description | Is aggregated? |
 | :- | :- | :- |
 | `page.content_updated` | Triggered when the content of a page changes — for example adding or removing a block on the page. | Yes |
-| `page.created` | Triggered when a new page is created. | Yes |
+| `page.created` | Triggered when a new page is created. | No |
 | `page.deleted` | Triggered when a page is moved to the trash. | Yes |
 | `page.locked` | Triggered when a page is locked from editing. | No |
 | `page.moved` | Triggered when a page is moved to another location. | Yes |
-| `page.properties_updated` | Triggered when a page's property is updated. | Yes |
+| `page.properties_updated` | Triggered when a page's property is updated. | After the first edit. See [Event aggregation](#event-aggregation). |
 | `page.undeleted` | Triggered when a page is restored from the trash. | Yes |
 | `page.unlocked` | Triggered when a page is unlocked | No |
 | `database.content_updated` | Triggered when a database's content is updated— for example, adding or removing a child page.  **Deprecated** in 2025-09-03 API version. | Yes |
@@ -78,17 +78,21 @@ Below, you’ll find the list of available type values, a short description of w
 >
 > **What does “aggregated” mean?**
 >
-> For high-frequency events like `page.content_updated`, Notion batches changes that occur within a short time window into a single webhook event. Events such as `page.created`, `page.deleted`, `page.undeleted` occur in quick succession, you may only recieve the most meaningful result event -- or none at all if the state returns to its original one.
+> For high-frequency events like `page.content_updated`, Notion batches changes that occur within a short time window into a single webhook event. If `page.deleted` and `page.undeleted` events occur in quick succession, you may only receive the final event, or none at all if the page ends up back where it started.
 >
-> Event aggregration helps reduce redundant calls and improves reliability. Aggregated events may have a slight delivery delay (typically under one minute).
+> Event aggregation helps reduce redundant calls and improves reliability. Aggregated events may have a slight delivery delay (typically under one minute).
 
 ## Event delivery
 
-Events should be delivered within 5 minutes of their occurrences. Most should be be delivered within a minute. Here are a few things to keep in mind when consuming webhook events.
+Events should be delivered within 5 minutes of their occurrences. Most should be delivered within a minute. Here are a few things to keep in mind when consuming webhook events.
 
 ### Event aggregation
 
-Certain events that occur frequently, like page.content\_updated, are aggregated by their entity within a brief time window. As a result, there may be a slight delay between the first occurrence of an event and its delivery to your webhook URL.
+Certain events that occur frequently, like `page.content_updated`, are aggregated by their entity within a time window of about one minute. As a result, there may be a delay of about a minute between the first occurrence of an event and its delivery to your webhook URL.
+
+`page.created` isn't aggregated. Notion sends it right away, usually within a few seconds of the page being created. Changes made right after the page is created arrive as their own events. They aren't combined into `page.created`.
+
+If no other change to a page is waiting to be sent, Notion sends the first `page.properties_updated` event for that page right away. That event starts a one-minute window. Notion combines any later property edits in that window into one `page.properties_updated` event, which arrives about a minute after the first edit.
 
 ### Event ordering
 

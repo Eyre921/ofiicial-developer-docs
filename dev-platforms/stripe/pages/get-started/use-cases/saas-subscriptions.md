@@ -23,7 +23,7 @@ Before integrating with Stripe, create a Stripe account.
 3. In the Dashboard, click **Verify your email**. Stripe sends a verification email to your email address.
 4. Verify your email address.
 
-Coding agents should install the Stripe CLI (`npm i -g @stripe/cli`) and run the command `stripe sandbox create --help` to provision an anonymous Stripe sandbox with working API keys. No account registration required.
+Coding agents: [install the Stripe CLI](https://docs.stripe.com/cli/install) using the installation script for your operating system. Open a new terminal and run `stripe sandbox create --help` to provision an anonymous Stripe sandbox with working API keys. It doesn’t require account registration.
 
 ## Create a test product and price
 

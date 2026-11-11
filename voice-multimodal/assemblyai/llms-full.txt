@@ -5085,6 +5085,8 @@ The `speech_models` parameter lets you specify which model(s) to use for transcr
 
 **Known limitations of `universal-3-6-pro-preview`:** Punctuation could be less frequent for some European languages (e.g., Danish), and accuracy may drop on complex code-switching audio where the language changes frequently at the word or sentence level. We're actively working on improvements to both.
 
+**Universal-3.6 Pro Preview keeps filler words by default.** When `universal-3-6-pro-preview` is the first model in `speech_models` and you don't set `disfluencies`, the transcript keeps filler words such as "um" and "uh". To remove them, set `disfluencies` to `false`. Universal-3.5 Pro and Universal-2 remove filler words unless you set `disfluencies` to `true`. See [Filler Words](/pre-recorded-audio/include-filler-words).
+
 ## Set the model
 
 You can change the model by setting the `speech_models` in the POST request body:
@@ -9508,9 +9510,25 @@ Source: docs/pre-recorded-audio/include-filler-words.mdx
 Navigation: Pre-recorded STT > Features
 Description: Filler Words documentation.
 
-Filler words help you capture interruptions and hesitations in your audio, like "uh" and "um," so the transcript reflects exactly what was said.
+Filler words help you capture interruptions and hesitations in your audio, like "uh" and "um," so the transcript reflects exactly what was said. The `disfluencies` parameter controls whether they're kept.
 
-By default, filler words are removed from the transcript before it's returned. If you want them preserved instead, set `disfluencies` to `true` in your transcription config.
+## Defaults by model
+
+The filler word default depends on the speech model. Universal-3.6 Pro Preview keeps filler words by default. Universal-3.5 Pro and Universal-2 remove them by default. To get the same behavior on every model, set `disfluencies` explicitly.
+
+| Model | Default when `disfluencies` isn't set | Filler word languages |
+|-------|---------------------------------------|-----------------------|
+| Universal-3.6 Pro Preview (`universal-3-6-pro-preview`) | **Kept** (`true`) | Most supported languages, with varying effectiveness. Strongest for English, Spanish, German, French, Portuguese, and Italian |
+| Universal-3.5 Pro (`universal-3-5-pro`) | **Removed** (`false`) | English, Spanish, German, French, Portuguese, Italian |
+| Universal-2 (`universal-2`) | **Removed** (`false`) | English only |
+
+### When you list more than one model
+
+If `speech_models` contains more than one model, the default comes from the first model in the list.
+
+## Include filler words
+
+On Universal-3.5 Pro and Universal-2, set `disfluencies` to `true` in your transcription config to keep filler words.
 
 ```python title="Python SDK" highlight={6} 
 from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
@@ -9655,14 +9673,17 @@ while (true) {
 }
 ```
 
-## Supported languages
+## Remove filler words on Universal-3.6 Pro Preview
 
-Filler words (`disfluencies: true`) are supported in the following languages:
+Universal-3.6 Pro Preview keeps filler words unless you turn them off. Set `disfluencies` to `false` to remove them:
 
-| Model | Supported languages |
-|-------|---------------------|
-| Universal-3.5 Pro | English, Spanish, German, French, Portuguese, Italian |
-| Universal-2 | English only |
+```json
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["universal-3-6-pro-preview"],
+  "disfluencies": false
+}
+```
 
 ---
 
@@ -81954,9 +81975,8 @@ components:
 
         disfluencies:
           x-label: Disfluencies
-          description: Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3.5 Pro and Universal-2.
+          description: Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3.6 Pro Preview, Universal-3.5 Pro and Universal-2. Defaults to true when the first `speech_models` entry is `universal-3-6-pro-preview`, and to false otherwise.
           type: boolean
-          default: false
 
         domain:
           x-label: Domain
@@ -83550,7 +83570,7 @@ components:
 
         disfluencies:
           x-label: Disfluencies
-          description: Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3.5 Pro and Universal-2.
+          description: Whether [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", are transcribed; either true or false. This is the value that was applied to the transcript, which is the value from the request or, when the request did not set it, the default for the first `speech_models` entry (true for `universal-3-6-pro-preview`, false otherwise).
           type: [boolean, "null"]
 
         domain:

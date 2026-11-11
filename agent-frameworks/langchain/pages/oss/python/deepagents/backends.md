@@ -101,11 +101,11 @@ from deepagents import create_deep_agent
 from deepagents.backends import StateBackend
 
 # By default we provide a StateBackend
-agent = create_deep_agent(model="openai:gpt-5.5")
+agent = create_deep_agent(model="openai:gpt-6.1-sol")
 
 # Under the hood, it looks like
 agent2 = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=StateBackend(),
 )
 ```
@@ -245,7 +245,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=FilesystemBackend(root_dir=".", virtual_mode=True),
 )
 ```
@@ -386,7 +386,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import LocalShellBackend
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
 )
 ```
@@ -475,7 +475,7 @@ from deepagents.backends import StoreBackend
 from langgraph.store.memory import InMemoryStore
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=StoreBackend(
         namespace=lambda rt: (rt.server_info.user.identity,),
     ),
@@ -654,7 +654,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import ContextHubBackend
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=ContextHubBackend("my-agent"),
 )
 ```
@@ -757,7 +757,7 @@ from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 from langgraph.store.memory import InMemoryStore
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={

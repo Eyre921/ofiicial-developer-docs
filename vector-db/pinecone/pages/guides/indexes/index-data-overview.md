@@ -147,23 +147,13 @@ To turn your source data into vectors, you use an embedding model. You can eithe
 
 ### Integrated embedding
 
-You can get integrated embedding two ways. On a [document index](/guides/search/integrated-embedding), declare a `string` field with `embed` or `sparse_embed` and read and write it through the Documents API. The steps below cover the other way, a legacy integrated index created with `pc.create_index_for_model` and served by the legacy Records API. Either way, Pinecone generates the vectors from your text automatically, both when you upsert and when you search.
+On a document index, declare `embed` (or `sparse_embed`) on a `string` field, and Pinecone generates the vectors from the field's text when you upsert and when you search. You send and query with plain text, and Pinecone uses the same [hosted model](/models/overview) both times. For a step-by-step walkthrough, see the [quickstart](/guides/get-started/quickstart#set-it-up-yourself). For model options, dimensions, and limits, see [Integrated embedding](/guides/search/integrated-embedding).
 
-1. [Create an index](/guides/indexes/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/indexes/index-configuration#embedding-models).
-2. [Upsert](/guides/data/upsert-data) your source text. Pinecone uses the integrated model to convert the text to vectors automatically.
-3. [Search](/guides/search/search-overview) with a query text. Again, Pinecone uses the integrated model to convert the text to a vector automatically.
-
-> [!NOTE]
->
-> Legacy integrated indexes (created with `create_index_for_model` and served by the legacy Records API) don't support [updating](/guides/data/update-data) or [importing](/guides/data/import-data) with text.
+Legacy integrated indexes created with `create_index_for_model` work differently. See [Create a legacy integrated index](/guides/legacy/records-api/create-an-integrated-index).
 
 ### Bring your own vectors
 
-1. Use an embedding model to convert your text to vectors. The model can be [hosted by Pinecone](/reference/api/latest/inference/generate-vectors) or an external provider.
-2. [Create an index](/guides/indexes/create-an-index) that matches the characteristics of the model.
-3. [Upsert](/guides/data/upsert-data) your vectors directly.
-4. Use the same external embedding model to convert a query to a vector.
-5. [Search](/guides/search/search-overview) with your query vector directly.
+If you generate embeddings yourself, store them in a `dense_vector` field whose dimension and metric match your model. Pinecone doesn't embed anything for you: you embed each document before you upsert it and each query before you search, with the same model. This fits a model Pinecone doesn't host, a model you've fine-tuned, or vectors you've already computed. For the steps, see [Bring your own vectors](/guides/search/bring-your-own-vectors).
 
 ## Metadata
 

@@ -111,7 +111,7 @@ The system prompt sets the LLM's behavior and capabilities. Different users, con
 > import { createAgent } from "langchain";
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   middleware: [
 >     dynamicSystemPromptMiddleware((state) => {
@@ -145,7 +145,7 @@ The system prompt sets the LLM's behavior and capabilities. Different users, con
 > type Context = z.infer<typeof contextSchema>;
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   contextSchema,
 >   middleware: [
@@ -185,7 +185,7 @@ The system prompt sets the LLM's behavior and capabilities. Different users, con
 > type Context = z.infer<typeof contextSchema>;
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   contextSchema,
 >   middleware: [
@@ -254,7 +254,7 @@ It's critical to manage the content of messages to ensure that the LLM has the r
 > });
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [...],
 >   middleware: [injectFileContext],
 > });
@@ -520,7 +520,7 @@ might change during an agent run.
 >
 > // Initialize models once outside the middleware
 > const largeModel = initChatModel("claude-sonnet-4-6");
-> const standardModel = initChatModel("gpt-5.5");
+> const standardModel = initChatModel("gpt-6.1-sol");
 > const efficientModel = initChatModel("gpt-5.4-mini");
 >
 > const stateBasedModel = createMiddleware({
@@ -557,7 +557,7 @@ might change during an agent run.
 >
 > // Initialize available models once
 > const MODEL_MAP = {
->   "gpt-5.5": initChatModel("gpt-5.5"),
+>   "gpt-6.1-sol": initChatModel("gpt-6.1-sol"),
 >   "gpt-5.4-mini": initChatModel("gpt-5.4-mini"),
 >   "claude-sonnet": initChatModel("claude-sonnet-4-6"),
 > };
@@ -601,7 +601,7 @@ might change during an agent run.
 >
 > // Initialize models once outside the middleware
 > const premiumModel = initChatModel("claude-sonnet-4-6");
-> const standardModel = initChatModel("gpt-5.5");
+> const standardModel = initChatModel("gpt-6.1-sol");
 > const budgetModel = initChatModel("gpt-5.4-mini");
 >
 > const contextBasedModel = createMiddleware({
@@ -896,7 +896,7 @@ Most real-world tools need more than just the LLM's parameters. They need user I
 > );
 >
 > const agent = createAgent({
->   model: "gpt-5.5",
+>   model: "gpt-6.1-sol",
 >   tools: [fetchUserData],
 >   contextSchema,
 > });
@@ -998,7 +998,7 @@ LangChain offers built-in middleware for this:
 import { createAgent, summarizationMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [...],
   middleware: [
     summarizationMiddleware({

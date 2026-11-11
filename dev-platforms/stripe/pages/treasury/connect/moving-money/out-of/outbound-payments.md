@@ -38,7 +38,7 @@ You can send money from a financial account to a third-party recipient using the
 
 - [Create a recipient](https://docs.stripe.com/treasury/connect/build-an-integration.md#create-a-recipient) with `active` capabilities for relevant networks like `bank_accounts.local` and `bank_accounts.ach`.
 
-- [Look up the recipient’s payout method](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#list-payout-methods). For paper checks, [create a Check Send payout method](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#create-a-check-send-payout-method) first.
+- [Look up the recipient’s payout method](https://docs.stripe.com/treasury/connect/account-management/connected-accounts.md#list-payout-methods). For paper checks, first follow the payout method setup instructions for [Payout Intents](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md?payout-api=payout-intents#check-send-payout-method-payout-intents) or [Outbound Payments](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md?payout-api=outbound-payment#create-a-check-send-payout-method).
 
   > #### Check confirmation of payee
   > 
@@ -151,6 +151,133 @@ The PayoutIntent stays in a `pending` state until Stripe sends the payout on you
 You can [update the PayoutIntent](https://docs.stripe.com/api/v2/money-management/payout-intents/update.md?api-version=preview) any time before the scheduled send date.
 
 Stripe doesn’t hold funds for a scheduled payout. If your financial account doesn’t have enough funds on the scheduled date, the PayoutIntent updates to `requires_action` with `next_action.handle_failure.failure_reason` set to `insufficient_funds`. Add funds and create a new PayoutIntent.
+
+### Send a paper check  (Private preview)
+Available in: US
+> #### Request access
+> 
+> Check send requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
+
+Before sending a paper check, request the following capabilities and confirm that both have an `active` status:
+
+- `configuration.money_manager.capabilities.outbound_payments.paper_checks` on the Account that owns the sending financial account.
+- `configuration.recipient.capabilities.paper_checks` on the recipient Account.
+
+#### Create a Check Send payout method 
+
+Create a reusable payout method with an [OutboundSetupIntent](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents/create.md?api-version=preview). Set `payout_method_data.type` to `check_send` and `usage_intent` to `payment`. Provide the name printed on the check in `payout_method_data.check_send.payee_name`, up to 35 characters, and the US mailing address in `payout_method_data.check_send.mailing_address`.
+
+For a recipient of a connected account, set the `Stripe-Context` header to `{{CONNECTED_ACCOUNT_ID}}/{{RECIPIENT_ACCOUNT_ID}}`. For a recipient of your platform, use `{{RECIPIENT_ACCOUNT_ID}}` alone. Store your API key securely. See [best practices for managing secret keys](https://docs.stripe.com/keys-best-practices.md).
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "payout_method_data": {
+        "type": "check_send",
+        "check_send": {
+            "payee_name": "Jenny Rosen",
+            "mailing_address": {
+                "line1": "27 Fredrick Ave",
+                "city": "Brothers",
+                "state": "OR",
+                "postal_code": "97712",
+                "country": "US"
+            }
+        }
+    },
+    "usage_intent": "payment"
+  }'
+```
+
+After successful creation, the `OutboundSetupIntent` has status `succeeded`. Save the response’s `payout_method.id` (`chksend_...`) to use as `to.payout_method` for each check sent to that destination. A recipient can have multiple check payout methods.
+
+#### Create the PayoutIntent 
+
+Create a `PayoutIntent` with the recipient Account ID in `to.recipient`.
+
+Set `to.payout_method` to the saved `chksend_...` ID and provide a sender signature, up to 30 characters, in `to.payout_method_options.check_send.signature`. You can also provide a memo, up to 100 characters, in `to.payout_method_options.check_send.memo`. Stripe prints both on the check. Set `to.payout_method_options.check_send.shipping_speed` to `standard` or `priority`. The default is `standard`.
+
+For a connected account’s payment, set `Stripe-Context` to the connected account ID alone. Omit the header to send from your platform’s financial account.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "chksend_...",
+        "payout_method_options": {
+            "check_send": {
+                "signature": "Jenny Rosen",
+                "memo": "Streamer earnings",
+                "shipping_speed": "standard"
+            }
+        }
+    },
+    "amount": {
+        "value": 1999,
+        "currency": "usd"
+    },
+    "description": "Streamer earnings"
+  }'
+```
+
+To review the payout before Stripe sends it, set `confirmation_method` to `manual` and [confirm the payout](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#review-confirm-payout-intent) when you’re ready. After creation, [inspect the payout status](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#inspect-payout-intent) and [handle any required action](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-payments.md#handle-required-action).
+
+#### Add attachments to a paper check 
+
+You can include a PDF attachment with a paper check, such as an invoice or receipt. Stripe supports PDF files only. The maximum page count depends on the shipping speed: 5 pages for standard shipping and 50 pages for priority shipping.
+
+Upload the file with the [Files API](https://docs.stripe.com/api/files.md) and set `purpose` to `check_send_attachment`. For a connected account’s payment, include the `Stripe-Account` header with the ID of the connected account that owns the sending financial account. Omit the header for your platform’s payment.
+
+```bash
+curl https://files.stripe.com/v1/files \
+  -u "{{SECRET_KEY}}:" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
+  -F purpose=check_send_attachment \
+  -F "file=@/path/to/document.pdf"
+```
+
+Pass the returned file ID in `to.payout_method_options.check_send.attachment_file` when you create the `PayoutIntent`.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "from": {
+        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "currency": "usd"
+    },
+    "to": {
+        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "payout_method": "chksend_...",
+        "payout_method_options": {
+            "check_send": {
+                "signature": "Jenny Rosen",
+                "memo": "Streamer earnings",
+                "shipping_speed": "standard",
+                "attachment_file": "{{FILE_ID}}"
+            }
+        }
+    },
+    "amount": {
+        "value": 1999,
+        "currency": "usd"
+    },
+    "description": "Streamer earnings"
+  }'
+```
 
 ## Review and confirm the PayoutIntent 
 
@@ -692,7 +819,10 @@ Available in: US
 > 
 > Check send requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
 
-Before sending a paper check, request `configuration.recipient.capabilities.paper_checks` on the recipient Account and confirm that its status is `active`.
+Before sending a paper check, request the following capabilities and confirm that both have an `active` status:
+
+- `configuration.money_manager.capabilities.outbound_payments.paper_checks` on the Account that owns the sending financial account.
+- `configuration.recipient.capabilities.paper_checks` on the recipient Account.
 
 ### Create a Check Send payout method 
 

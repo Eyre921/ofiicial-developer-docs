@@ -62,7 +62,7 @@ from tools.customer import lookup_customer
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[lookup_customer],
 )
 ```
@@ -82,7 +82,7 @@ from tools.customer import lookup_customer
 
 agent = define_deep_agent(
     name="support-agent",
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     tools=[lookup_customer],
     interrupt_on={"lookup_customer": True},
 )

@@ -188,7 +188,7 @@ Select the tab for UI or SDK workflows:
 >    formatted_prompt = prompt.invoke({"question": "What is the color of the sky?"})
 >
 >    response = oai_client.chat.completions.create(
->        model="gpt-5.5",
+>        model="gpt-6.1-sol",
 >        messages=convert_to_openai_messages(formatted_prompt.messages),
 >    )
 >    ```
@@ -206,7 +206,7 @@ Select the tab for UI or SDK workflows:
 >    const formattedPrompt = await prompt.invoke({ question: "What is the color of the sky?" });
 >
 >    const response = await oaiClient.chat.completions.create({
->        model: "gpt-5.5",
+>        model: "gpt-6.1-sol",
 >        messages: convertPromptToOpenAI(formattedPrompt).messages,
 >    });
 >    ```

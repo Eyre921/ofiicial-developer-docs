@@ -33,7 +33,7 @@ A managed deep agent consists of a project folder that contains the business log
 >
 > agent = define_deep_agent(
 >     name="research-assistant",
->     model="openai:gpt-5.5",
+>     model="openai:gpt-6.1-sol",
 >     tools=[internet_search],
 >     middleware=[log_tool_calls],
 > )

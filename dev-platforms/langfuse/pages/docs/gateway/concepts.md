@@ -53,6 +53,8 @@ An organization can add several provider connections, including more than one pe
 
 - `/openai/v1/responses` uses the OpenAI Responses API.
 - `/openai/v1/chat/completions` uses the OpenAI Chat Completions API.
+- `/openai/v1/decisions` uses the OpenAI Decisions API.
+- `/openai/v1/embeddings` uses the OpenAI Embeddings API.
 - `/anthropic/v1/messages` uses the Anthropic Messages API.
 
   The gateway doesn't convert one API format into the other, so a client that

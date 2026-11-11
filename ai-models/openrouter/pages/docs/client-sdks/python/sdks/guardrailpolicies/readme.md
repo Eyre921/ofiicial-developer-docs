@@ -283,7 +283,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.guardrail_policies.get_api_key_policy_assignment(hash="c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11", policy_type="budget")
+    res = open_router.guardrail_policies.get_api_key_policy_assignment(hash="c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93", policy_type="budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
 
     # Handle response
     print(res)
@@ -295,11 +295,11 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `hash` | *str* | ✔️ | API key hash | c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93 |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `policy_type` | [operations.GetAPIKeyPolicyAssignmentPolicyType](../../operations/getapikeypolicyassignmentpolicytype.mdx) | ✔️ | Policy type the assignment is read or changed for | budget |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -341,7 +341,7 @@ with OpenRouter(
         "workspace_default_policy_ids": [
             "2c6f1a4e-0b7d-4e59-9a61-3f8d2e7c1b90",
         ],
-    }, policy_id="550e8400-e29b-41d4-a716-446655440000", policy_type="budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    }, policy_id="550e8400-e29b-41d4-a716-446655440000", policy_type="budget")
 
     # Handle response
     print(res)
@@ -357,10 +357,10 @@ with OpenRouter(
 | `expected_assignment` | [components.GuardrailPolicyAssignmentState](../../components/guardrailpolicyassignmentstate.mdx) | ✔️ | N/A | |
 | `policy_id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
 | `policy_type` | [components.ChangeGuardrailPolicyAssignmentRequestPolicyType](../../components/changeguardrailpolicyassignmentrequestpolicytype.mdx) | ✔️ | Policy type the assignment is read or changed for | budget |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -397,7 +397,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.guardrail_policies.get_member_policy_assignment(member_id="user_2abcDEFghiJKLmnoPQRstu", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11", policy_type="budget")
+    res = open_router.guardrail_policies.get_member_policy_assignment(member_id="user_2abcDEFghiJKLmnoPQRstu", policy_type="budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
 
     # Handle response
     print(res)
@@ -409,11 +409,11 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `member_id` | *str* | ✔️ | Organization member user ID | user\_2abcDEFghiJKLmnoPQRstu |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `policy_type` | [operations.GetMemberPolicyAssignmentPolicyType](../../operations/getmemberpolicyassignmentpolicytype.mdx) | ✔️ | Policy type the assignment is read or changed for | budget |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -455,7 +455,7 @@ with OpenRouter(
         "workspace_default_policy_ids": [
             "2c6f1a4e-0b7d-4e59-9a61-3f8d2e7c1b90",
         ],
-    }, policy_id="550e8400-e29b-41d4-a716-446655440000", policy_type="budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    }, policy_id="550e8400-e29b-41d4-a716-446655440000", policy_type="budget")
 
     # Handle response
     print(res)
@@ -471,10 +471,10 @@ with OpenRouter(
 | `expected_assignment` | [components.GuardrailPolicyAssignmentState](../../components/guardrailpolicyassignmentstate.mdx) | ✔️ | N/A | |
 | `policy_id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
 | `policy_type` | [components.ChangeGuardrailPolicyAssignmentRequestPolicyType](../../components/changeguardrailpolicyassignmentrequestpolicytype.mdx) | ✔️ | Policy type the assignment is read or changed for | budget |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -524,12 +524,12 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *Optional\[int]* | ➖ | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned | 50 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -569,7 +569,7 @@ with OpenRouter(
         "include_byok_in_budgets": False,
         "limit_usd": 200.0,
         "reset_interval": "monthly",
-    }, name="Engineering monthly budget", policy_type="budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    }, name="Engineering monthly budget", policy_type="budget")
 
     # Handle response
     print(res)
@@ -583,7 +583,6 @@ with OpenRouter(
 | `config` | [components.GuardrailBudgetPolicyAuthoringConfig](../../components/guardrailbudgetpolicyauthoringconfig.mdx) | ✔️ | N/A | \{ "include\_byok\_in\_budgets": false, "limit\_usd": 200, "reset\_interval": "monthly" } |
 | `name` | *str* | ✔️ | Policy name | Engineering monthly budget |
 | `policy_type` | [components.CreateBudgetGuardrailPolicyRequestPolicyType](../../components/createbudgetguardrailpolicyrequestpolicytype.mdx) | ✔️ | N/A | |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -592,6 +591,7 @@ with OpenRouter(
 | `member_ids` | List\[*str*] | ➖ | Organization member user IDs | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
 | `opted_out_api_key_hashes` | List\[*str*] | ➖ | API keys that should not inherit the policy when it is the workspace default | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `opted_out_member_ids` | List\[*str*] | ➖ | Members that should not inherit the policy when it is the workspace default | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -640,10 +640,10 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -692,10 +692,10 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -735,7 +735,7 @@ with OpenRouter(
         "include_byok_in_budgets": False,
         "limit_usd": 200.0,
         "reset_interval": "monthly",
-    }, name="Engineering monthly budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    }, name="Engineering monthly budget")
 
     # Handle response
     print(res)
@@ -749,7 +749,6 @@ with OpenRouter(
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
 | `config` | [components.GuardrailBudgetPolicyAuthoringConfig](../../components/guardrailbudgetpolicyauthoringconfig.mdx) | ✔️ | N/A | \{ "include\_byok\_in\_budgets": false, "limit\_usd": 200, "reset\_interval": "monthly" } |
 | `name` | *str* | ✔️ | Policy name | Engineering monthly budget |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -758,6 +757,7 @@ with OpenRouter(
 | `member_ids` | List\[*str*] | ➖ | Complete new list of assigned members. Send together with `api_key_hashes`, or omit both to keep the stored assignments. | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
 | `opted_out_api_key_hashes` | List\[*str*] | ➖ | API key hashes | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `opted_out_member_ids` | List\[*str*] | ➖ | Organization member user IDs | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -807,12 +807,12 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *Optional\[int]* | ➖ | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned | 50 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -848,7 +848,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.guardrail_policies.create_model_availability_policy(config={}, name="Engineering monthly budget", policy_type="model_availability", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    res = open_router.guardrail_policies.create_model_availability_policy(config={}, name="Engineering monthly budget", policy_type="model_availability")
 
     # Handle response
     print(res)
@@ -862,7 +862,6 @@ with OpenRouter(
 | `config` | [components.GuardrailModelAvailabilityPolicyAuthoringConfig](../../components/guardrailmodelavailabilitypolicyauthoringconfig.mdx) | ✔️ | N/A | \{ "allowed\_models": \[ "openai/gpt-4o", "anthropic/claude-sonnet-4" ], "allowed\_providers": \[ "openai", "anthropic" ], "enforce\_zdr\_anthropic": true, "enforce\_zdr\_openai": true } |
 | `name` | *str* | ✔️ | Policy name | Engineering monthly budget |
 | `policy_type` | [components.CreateModelAvailabilityGuardrailPolicyRequestPolicyType](../../components/createmodelavailabilityguardrailpolicyrequestpolicytype.mdx) | ✔️ | N/A | |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -871,6 +870,7 @@ with OpenRouter(
 | `member_ids` | List\[*str*] | ➖ | Organization member user IDs | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
 | `opted_out_api_key_hashes` | List\[*str*] | ➖ | API keys that should not inherit the policy when it is the workspace default | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `opted_out_member_ids` | List\[*str*] | ➖ | Members that should not inherit the policy when it is the workspace default | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -919,10 +919,10 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -971,10 +971,10 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -1010,7 +1010,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.guardrail_policies.update_model_availability_policy(id="550e8400-e29b-41d4-a716-446655440000", config={}, name="Engineering monthly budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    res = open_router.guardrail_policies.update_model_availability_policy(id="550e8400-e29b-41d4-a716-446655440000", config={}, name="Engineering monthly budget")
 
     # Handle response
     print(res)
@@ -1024,7 +1024,6 @@ with OpenRouter(
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
 | `config` | [components.GuardrailModelAvailabilityPolicyAuthoringConfig](../../components/guardrailmodelavailabilitypolicyauthoringconfig.mdx) | ✔️ | N/A | \{ "allowed\_models": \[ "openai/gpt-4o", "anthropic/claude-sonnet-4" ], "allowed\_providers": \[ "openai", "anthropic" ], "enforce\_zdr\_anthropic": true, "enforce\_zdr\_openai": true } |
 | `name` | *str* | ✔️ | Policy name | Engineering monthly budget |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -1033,6 +1032,7 @@ with OpenRouter(
 | `member_ids` | List\[*str*] | ➖ | Complete new list of assigned members. Send together with `api_key_hashes`, or omit both to keep the stored assignments. | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
 | `opted_out_api_key_hashes` | List\[*str*] | ➖ | API key hashes | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `opted_out_member_ids` | List\[*str*] | ➖ | Organization member user IDs | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -1082,12 +1082,12 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *Optional\[int]* | ➖ | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned | 50 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -1123,7 +1123,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.guardrail_policies.create_moderation_policy(config=components.GuardrailModerationPolicyConfig(), name="Engineering monthly budget", policy_type="moderation", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    res = open_router.guardrail_policies.create_moderation_policy(config=components.GuardrailModerationPolicyConfig(), name="Engineering monthly budget", policy_type="moderation")
 
     # Handle response
     print(res)
@@ -1137,7 +1137,6 @@ with OpenRouter(
 | `config` | [components.GuardrailModerationPolicyConfig](../../components/guardrailmoderationpolicyconfig.mdx) | ✔️ | N/A | \{ "content\_filter\_builtins": \[ \{ "action": "block", "slug": "secrets" } ] } |
 | `name` | *str* | ✔️ | Policy name | Engineering monthly budget |
 | `policy_type` | [components.CreateModerationGuardrailPolicyRequestPolicyType](../../components/createmoderationguardrailpolicyrequestpolicytype.mdx) | ✔️ | N/A | |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -1146,6 +1145,7 @@ with OpenRouter(
 | `member_ids` | List\[*str*] | ➖ | Organization member user IDs | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
 | `opted_out_api_key_hashes` | List\[*str*] | ➖ | API keys that should not inherit the policy when it is the workspace default | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `opted_out_member_ids` | List\[*str*] | ➖ | Members that should not inherit the policy when it is the workspace default | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -1194,10 +1194,10 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -1246,10 +1246,10 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -1285,7 +1285,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.guardrail_policies.update_moderation_policy(id="550e8400-e29b-41d4-a716-446655440000", config=components.GuardrailModerationPolicyConfig(), name="Engineering monthly budget", workspace_id="0df9e665-d932-5740-b2c7-b52af166bc11")
+    res = open_router.guardrail_policies.update_moderation_policy(id="550e8400-e29b-41d4-a716-446655440000", config=components.GuardrailModerationPolicyConfig(), name="Engineering monthly budget")
 
     # Handle response
     print(res)
@@ -1299,7 +1299,6 @@ with OpenRouter(
 | `id` | *str* | ✔️ | Policy ID | 550e8400-e29b-41d4-a716-446655440000 |
 | `config` | [components.GuardrailModerationPolicyConfig](../../components/guardrailmoderationpolicyconfig.mdx) | ✔️ | N/A | \{ "content\_filter\_builtins": \[ \{ "action": "block", "slug": "secrets" } ] } |
 | `name` | *str* | ✔️ | Policy name | Engineering monthly budget |
-| `workspace_id` | *str* | ✔️ | Workspace the policy belongs to | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
@@ -1308,6 +1307,7 @@ with OpenRouter(
 | `member_ids` | List\[*str*] | ➖ | Complete new list of assigned members. Send together with `api_key_hashes`, or omit both to keep the stored assignments. | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
 | `opted_out_api_key_hashes` | List\[*str*] | ➖ | API key hashes | \[ "c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93" ] |
 | `opted_out_member_ids` | List\[*str*] | ➖ | Organization member user IDs | \[ "user\_2abcDEFghiJKLmnoPQRstu" ] |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace the policy belongs to. Required for an organization management key; a workspace-scoped key defaults to its own workspace and gets 403 for any other. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response

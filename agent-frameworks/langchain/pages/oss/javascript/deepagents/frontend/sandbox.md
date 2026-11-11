@@ -186,7 +186,7 @@ export async function agent(config: LangGraphRunnableConfig) {
   const backend = await getOrCreateSandboxForThread(threadId);
 
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend,
     systemPrompt: "You are an expert developer working on a project in /app.",
   });

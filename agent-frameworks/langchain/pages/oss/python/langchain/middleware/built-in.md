@@ -30,6 +30,8 @@ The following middleware work with any LLM provider:
 | [PII detection](#pii-detection) | Detect and handle Personally Identifiable Information (PII). |
 | [To-do list](#to-do-list) | Equip agents with task planning and tracking capabilities. |
 | [LLM tool selector](#llm-tool-selector) | Use an LLM to select relevant tools before calling main model. |
+| [Model router](#model-router) | Use a decision model to choose the model for each agent run. |
+| [Auto mode](#auto-mode) | Use a decision model to block risky tool calls before they run. |
 | [Provider tool search](#provider-tool-search) | Defer tools behind providers' server-side tool search, surfacing them on demand. |
 | [Shell tool](#shell-tool) | Expose a persistent shell session to agents for command execution. |
 | [Filesystem](#filesystem-middleware) | Provide agents with a filesystem for storing context and long-term memories. |
@@ -69,7 +71,7 @@ def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[your_tools],
     middleware=[ToolErrorMiddleware(on_error)],
 )
@@ -114,7 +116,7 @@ agent = create_agent(
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool, database_tool],
 >     middleware=[
 >         # Place retry inner so exceptions reach ToolErrorMiddleware after retries are exhausted
@@ -125,7 +127,7 @@ agent = create_agent(
 >
 > # Async-only: pass aon_error alone (do not pass on_error)
 > async_agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[api_tool],
 >     middleware=[ToolErrorMiddleware(aon_error=aon_error)],
 > )
@@ -150,7 +152,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import ToolRetryMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, database_tool],
     middleware=[
         ToolRetryMiddleware(
@@ -226,7 +228,7 @@ agent = create_agent(
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool, database_tool, api_tool],
 >     middleware=[
 >         ToolRetryMiddleware(
@@ -258,7 +260,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import ModelRetryMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, database_tool],
     middleware=[
         ModelRetryMiddleware(
@@ -315,7 +317,7 @@ agent = create_agent(
 >
 > # Basic usage with default settings (2 retries, exponential backoff)
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool],
 >     middleware=[ModelRetryMiddleware()],
 > )
@@ -395,7 +397,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import ModelFallbackMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     middleware=[
         ModelFallbackMiddleware(
@@ -549,7 +551,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[your_weather_tool, your_calculator_tool],
     middleware=[
         SummarizationMiddleware(
@@ -574,7 +576,7 @@ agent = create_agent(
 > >     "max_input_tokens": 100_000,
 > >     # ...
 > > }
-> > model = init_chat_model("gpt-5.5", profile=custom_profile)
+> > model = init_chat_model("gpt-6.1-sol", profile=custom_profile)
 > > ```
 >
 > **model** `string | BaseChatModel` *required*
@@ -659,7 +661,7 @@ agent = create_agent(
 >
 > # Single condition: trigger if tokens >= 4000
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[your_weather_tool, your_calculator_tool],
 >     middleware=[
 >         SummarizationMiddleware(
@@ -672,7 +674,7 @@ agent = create_agent(
 >
 > # Multiple conditions: trigger if number of tokens >= 3000 OR messages >= 6
 > agent2 = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[your_weather_tool, your_calculator_tool],
 >     middleware=[
 >         SummarizationMiddleware(
@@ -688,7 +690,7 @@ agent = create_agent(
 >
 > # AND logic: trigger only when tokens >= 4000 AND messages >= 10
 > agent3 = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[your_weather_tool, your_calculator_tool],
 >     middleware=[
 >         SummarizationMiddleware(
@@ -702,7 +704,7 @@ agent = create_agent(
 > # Combine AND and OR: trigger if (tokens >= 5000 AND messages >= 3)
 > # OR (tokens >= 3000 AND messages >= 6)
 > agent4 = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[your_weather_tool, your_calculator_tool],
 >     middleware=[
 >         SummarizationMiddleware(
@@ -718,7 +720,7 @@ agent = create_agent(
 >
 > # Using fractional limits
 > agent5 = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[your_weather_tool, your_calculator_tool],
 >     middleware=[
 >         SummarizationMiddleware(
@@ -761,7 +763,7 @@ def your_send_email_tool(recipient: str, subject: str, body: str) -> str:
     return f"Email sent to {recipient} with subject '{subject}'"
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[your_read_email_tool, your_send_email_tool],
     checkpointer=InMemorySaver(),
     middleware=[
@@ -799,7 +801,7 @@ from langchain.agents.middleware import ModelCallLimitMiddleware
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     checkpointer=InMemorySaver(),  # Required for thread limiting
     tools=[],
     middleware=[
@@ -844,7 +846,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import ToolCallLimitMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool, database_tool],
     middleware=[
         # Global limit
@@ -909,7 +911,7 @@ Watch this [video guide](https://www.youtube.com/watch?v=6gYlaJJ8t0w) demonstrat
 > strict_limiter = ToolCallLimitMiddleware(tool_name="scrape_webpage", run_limit=2, exit_behavior="error")
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool, database_tool, scraper_tool],
 >     middleware=[global_limiter, search_limiter, database_limiter, strict_limiter],
 > )
@@ -934,7 +936,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import PIIMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     middleware=[
         PIIMiddleware("email", strategy="redact", apply_to_input=True),
@@ -962,7 +964,7 @@ from langchain.agents.middleware import PIIMatch, PIIMiddleware
 
 # Method 1: Regex pattern string
 agent1 = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     middleware=[
         PIIMiddleware(
@@ -975,7 +977,7 @@ agent1 = create_agent(
 
 # Method 2: Compiled regex pattern
 agent2 = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     middleware=[
         PIIMiddleware(
@@ -1005,7 +1007,7 @@ def detect_ssn(content: str) -> list[PIIMatch]:
     return matches
 
 agent3 = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     middleware=[
         PIIMiddleware(
@@ -1097,7 +1099,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import TodoListMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[read_file, write_file, run_tests],
     middleware=[TodoListMiddleware()],
 )
@@ -1132,7 +1134,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import LLMToolSelectorMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[tool1, tool2, tool3, tool4, tool5, ...],
     middleware=[
         LLMToolSelectorMiddleware(
@@ -1163,6 +1165,70 @@ agent = create_agent(
 > **always\_include** `list[string]`
 >
 > Tool names to always include regardless of selection. These do not count against the max\_tools limit.
+
+### Model router
+
+> [!NOTE]
+>
+> `ModelRouterMiddleware` is in beta and requires `langchain>=1.5.0`. Its API may change without notice.
+
+Choose the model for each agent run with a decision model. Before the run starts, the middleware asks the decision model to pick one of your named `ModelChoice` entries based on the latest human message, then uses that model for every model call in the run. The answer is stored in agent state as `model_route`.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelChoice, ModelRouterMiddleware
+from langchain_typesafe import TypeSafeClassifier
+
+router = ModelRouterMiddleware(
+    classifier=TypeSafeClassifier(),
+    choices={
+        "fast": ModelChoice(
+            model="openai:gpt-6-luna",
+            criteria="Direct lookups, extraction, and localized changes with explicit targets.",
+        ),
+        "powerful": ModelChoice(
+            model="openai:gpt-6.1-sol",
+            criteria="Architecture, novel root-cause reasoning, and high-stakes decisions.",
+        ),
+    },
+    instructions="Choose the least costly model that can complete the task safely.",
+)
+
+agent = create_agent("openai:gpt-6-luna", middleware=[router])
+```
+
+### Auto mode
+
+> [!NOTE]
+>
+> `AutoModeMiddleware` is in beta and requires `langchain>=1.5.0`. Its API may change without notice.
+
+Block risky tool calls with a decision model. Before each call to a tool you list, the middleware asks the decision model for the probability that the call is risky or not authorized by the user. Calls with a probability of `0.5` or higher return an error `ToolMessage` instead of running. Tools you do not list run without classification. Auto mode blocks calls; to have a person approve them, use [Human-in-the-loop](#human-in-the-loop).
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import AutoModeMiddleware
+from langchain.tools import tool
+from langchain_typesafe import TypeSafeClassifier
+
+
+@tool
+def delete_all_backups() -> str:
+    """Delete every backup. This action cannot be undone."""
+    return "Backups deleted."
+
+
+agent = create_agent(
+    "openai:gpt-6.1-sol",
+    tools=[delete_all_backups],
+    middleware=[
+        AutoModeMiddleware(
+            tools=[delete_all_backups],
+            classifier=TypeSafeClassifier(),
+        )
+    ],
+)
+```
 
 ### Provider tool search
 
@@ -1248,7 +1314,7 @@ from langchain.agents.middleware import (
 )
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[search_tool],
     middleware=[
         ShellToolMiddleware(
@@ -1323,7 +1389,7 @@ agent = create_agent(
 >
 > # Basic shell tool with host execution
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool],
 >     middleware=[
 >         ShellToolMiddleware(
@@ -1335,7 +1401,7 @@ agent = create_agent(
 >
 > # Docker isolation with startup commands
 > agent_docker = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[],
 >     middleware=[
 >         ShellToolMiddleware(
@@ -1351,7 +1417,7 @@ agent = create_agent(
 >
 > # With output redaction (applied post execution)
 > agent_redacted = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[],
 >     middleware=[
 >         ShellToolMiddleware(
@@ -1435,7 +1501,7 @@ Handing off tasks to subagents isolates context, keeping the main (supervisor) a
 
 The subagents middleware from [Deep Agents](/oss/python/deepagents/overview) allows you to supply subagents through a `task` tool.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1461,7 +1527,7 @@ agent = create_agent(
                         "Use the get_weather tool to get the weather in a city."
                     ),
                     "tools": [get_weather],
-                    "model": "gpt-5.5",
+                    "model": "gpt-6.1-sol",
                     "middleware": [],
                 }
             ],
@@ -1470,7 +1536,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1484,7 +1550,7 @@ def get_weather(city: str) -> str:
 
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         SubAgentMiddleware(
             backend=StateBackend(),
@@ -1496,7 +1562,7 @@ agent = create_agent(
                         "Use the get_weather tool to get the weather in a city."
                     ),
                     "tools": [get_weather],
-                    "model": "gpt-5.5",
+                    "model": "gpt-6.1-sol",
                     "middleware": [],
                 }
             ],
@@ -1505,7 +1571,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1531,7 +1597,7 @@ agent = create_agent(
                         "Use the get_weather tool to get the weather in a city."
                     ),
                     "tools": [get_weather],
-                    "model": "gpt-5.5",
+                    "model": "gpt-6.1-sol",
                     "middleware": [],
                 }
             ],
@@ -1540,7 +1606,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1566,7 +1632,7 @@ agent = create_agent(
                         "Use the get_weather tool to get the weather in a city."
                     ),
                     "tools": [get_weather],
-                    "model": "gpt-5.5",
+                    "model": "gpt-6.1-sol",
                     "middleware": [],
                 }
             ],
@@ -1575,7 +1641,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1601,7 +1667,7 @@ agent = create_agent(
                         "Use the get_weather tool to get the weather in a city."
                     ),
                     "tools": [get_weather],
-                    "model": "gpt-5.5",
+                    "model": "gpt-6.1-sol",
                     "middleware": [],
                 }
             ],
@@ -1610,7 +1676,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1636,7 +1702,7 @@ agent = create_agent(
                         "Use the get_weather tool to get the weather in a city."
                     ),
                     "tools": [get_weather],
-                    "model": "gpt-5.5",
+                    "model": "gpt-6.1-sol",
                     "middleware": [],
                 }
             ],
@@ -1645,7 +1711,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -1671,7 +1737,7 @@ agent = create_agent(
                         "Use the get_weather tool to get the weather in a city."
                     ),
                     "tools": [get_weather],
-                    "model": "gpt-5.5",
+                    "model": "gpt-6.1-sol",
                     "middleware": [],
                 }
             ],
@@ -1684,7 +1750,7 @@ A declarative subagent requires a **name**, **description**, **model**, and **to
 
 For more complex use cases, you can also provide your own prebuilt LangGraph graph as a subagent.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1726,7 +1792,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1758,7 +1824,7 @@ weather_subagent = CompiledSubAgent(
 )
 
 agent = create_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         SubAgentMiddleware(
             backend=StateBackend(),
@@ -1768,7 +1834,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1810,7 +1876,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1852,7 +1918,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1894,7 +1960,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1936,7 +2002,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -1990,7 +2056,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
 
 **API reference:** [`RubricMiddleware`](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2006,12 +2072,12 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 agent = create_deep_agent(
-    model="openai:gpt-5.5",
+    model="openai:gpt-6.1-sol",
     middleware=[
         RubricMiddleware(
             model="anthropic:claude-haiku-4-5",
@@ -2022,7 +2088,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2038,7 +2104,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2054,7 +2120,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2070,7 +2136,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2086,7 +2152,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -2120,7 +2186,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import FilesystemFileSearchMiddleware
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     middleware=[
         FilesystemFileSearchMiddleware(
@@ -2167,7 +2233,7 @@ agent = create_agent(
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[],
 >     middleware=[
 >         FilesystemFileSearchMiddleware(
@@ -2203,7 +2269,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import ContextEditingMiddleware, ClearToolUsesEdit
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     middleware=[
         ContextEditingMiddleware(
@@ -2271,7 +2337,7 @@ agent = create_agent(
 >
 >
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[search_tool, your_calculator_tool, database_tool],
 >     middleware=[
 >         ContextEditingMiddleware(
@@ -2304,7 +2370,7 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import LLMToolEmulator
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[get_weather, search_database, send_email],
     middleware=[
         LLMToolEmulator(),  # Emulate all tools
@@ -2345,21 +2411,21 @@ agent = create_agent(
 >
 > # Emulate all tools (default behavior)
 > agent = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_weather, send_email],
 >     middleware=[LLMToolEmulator()],
 > )
 >
 > # Emulate specific tools only
 > agent2 = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_weather, send_email],
 >     middleware=[LLMToolEmulator(tools=["get_weather"])],
 > )
 >
 > # Use custom model for emulation
 > agent4 = create_agent(
->     model="gpt-5.5",
+>     model="gpt-6.1-sol",
 >     tools=[get_weather, send_email],
 >     middleware=[LLMToolEmulator(model="claude-sonnet-4-6")],
 > )

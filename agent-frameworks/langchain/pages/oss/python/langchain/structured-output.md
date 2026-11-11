@@ -101,7 +101,7 @@ class ContactInfo(BaseModel):
     phone: str = Field(description="The phone number of the person")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     response_format=ContactInfo  # Auto-selects ProviderStrategy
 )
 
@@ -126,7 +126,7 @@ class ContactInfo:
     phone: str # The phone number of the person
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ContactInfo  # Auto-selects ProviderStrategy
 )
@@ -151,7 +151,7 @@ class ContactInfo(TypedDict):
     phone: str # The phone number of the person
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ContactInfo  # Auto-selects ProviderStrategy
 )
@@ -182,7 +182,7 @@ contact_info_schema = {
 }
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ProviderStrategy(contact_info_schema)
 )
@@ -262,7 +262,7 @@ class ProductReview(BaseModel):
     key_points: list[str] = Field(description="The key points of the review. Lowercase, 1-3 words each.")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductReview)
 )
@@ -289,7 +289,7 @@ class ProductReview:
     key_points: list[str]  # The key points of the review
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductReview)
 )
@@ -315,7 +315,7 @@ class ProductReview(TypedDict):
     key_points: list[str]  # The key points of the review
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductReview)
 )
@@ -358,7 +358,7 @@ product_review_schema = {
 }
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(product_review_schema)
 )
@@ -390,7 +390,7 @@ class CustomerComplaint(BaseModel):
     description: str = Field(description="Brief description of the complaint")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(Union[ProductReview, CustomerComplaint])
 )
@@ -420,7 +420,7 @@ class MeetingAction(BaseModel):
     priority: Literal["low", "medium", "high"] = Field(description="Priority level")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(
         schema=MeetingAction,
@@ -484,7 +484,7 @@ class EventDetails(BaseModel):
     date: str = Field(description="Event date")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(Union[ContactInfo, EventDetails])  # Default: handle_errors=True
 )
@@ -549,7 +549,7 @@ class ProductRating(BaseModel):
     comment: str = Field(description="Review comment")
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(ProductRating),  # Default: handle_errors=True
     system_prompt="You are a helpful assistant that parses product reviews. Do not make any field or value up."
@@ -651,7 +651,7 @@ def custom_error_handler(error: Exception) -> str:
 
 
 agent = create_agent(
-    model="gpt-5.5",
+    model="gpt-6.1-sol",
     tools=[],
     response_format=ToolStrategy(
                         schema=Union[ContactInfo, EventDetails],

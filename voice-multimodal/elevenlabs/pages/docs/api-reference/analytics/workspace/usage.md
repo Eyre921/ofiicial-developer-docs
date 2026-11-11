@@ -11,7 +11,7 @@ path: docs/api-reference/analytics/workspace/usage
 POST https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time
 Content-Type: application/json
 
-Returns credit usage broken down by product type over time. The response is a tabular structure with columns, column_types, column_units, and rows. Some id columns also get a display-name column, such as user_label or voice_name, appended after the existing columns.
+Returns credit usage broken down by product type over time, for workspaces billed in credits. The response is a tabular structure with columns, column_types, column_units, and rows. Some id columns also get a display-name column, such as user_label or voice_name, appended after the existing columns. For workspaces billed by cost, ranges that reach the date the workspace moved to cost billing return an error; use /v1/workspace/analytics/usage instead.
 
 Reference: https://elevenlabs.io/docs/api-reference/analytics/workspace/usage
 

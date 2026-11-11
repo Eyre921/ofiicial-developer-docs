@@ -20,7 +20,7 @@ The web search tool allows OpenAI models to search the web for up-to-date inform
 import { ChatOpenAI, tools } from "@langchain/openai";
 
 const model = new ChatOpenAI({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
 });
 
 // Basic usage
@@ -92,7 +92,7 @@ There are two ways to use MCP tools:
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const response = await model.invoke("Roll 2d4+1", {
   tools: [
@@ -137,7 +137,7 @@ Use Code Interpreter for:
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 // Basic usage with auto container (default 1GB memory)
 const response = await model.invoke("Solve the equation 3x + 11 = 14", {
@@ -204,7 +204,7 @@ The File Search tool allows models to search your files for relevant information
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 const response = await model.invoke("What is deep research by OpenAI?", {
   tools: [
@@ -240,7 +240,7 @@ Use Image Generation for:
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
 
-const model = new ChatOpenAI({ model: "gpt-5.5" });
+const model = new ChatOpenAI({ model: "gpt-6.1-sol" });
 
 // Basic usage - generate an image
 const response = await model.invoke(

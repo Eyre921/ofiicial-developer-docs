@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 11, 2026**
+
+### Faster page webhooks
+
+[`page.created`](/reference/webhooks/page-created) webhook events now arrive right away, usually within a few seconds. Before, they waited about a minute so later changes could be combined into them. The first [`page.properties_updated`](/reference/webhooks/page-properties-updated) event for a page also arrives right away, and later property edits in the next minute are combined into one event. See [Event aggregation](/reference/webhooks-events-delivery#event-aggregation) for details. If you apply templates when creating pages, check the updated steps in [Creating pages from templates](/guides/data-apis/creating-pages-from-templates#how-aggregated-events-work).
+
 **November 10, 2026**
 
 ### Mention or assign a Custom Agent by ID

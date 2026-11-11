@@ -18,14 +18,14 @@ Converting builds a new document index from the records in a serverless legacy v
 * **Snapshot**: The job copies the source as it stood when the job starts, as a backup does. Writes to the source after you send the request might not be in the new index.
 * **IDs and fields**: Each record becomes a document with the same ID, and its fields are filled by name, as described in [Plan the schema](#plan-the-schema).
 * **Namespaces**: Each source namespace becomes a namespace of the same name in the new index. Namespaces that have never held records are skipped.
-* **Location**: The new index is created in the source's cloud and region, and is encrypted with the source's customer-managed encryption keys (CMEK) when it has them.
-* **Billing**: A conversion is charged at the [import](/guides/cost/understand-cost#imports) rate, by the size of the source's data. A job that fails because of your data is charged for the data it read. A canceled job, or one that fails because of an internal error, isn't charged. Both indexes are billed for storage until you delete the source.
+* **Location**: The new index is created in the source's cloud and region, or in the source's environment for a Bring Your Own Cloud (BYOC) index. It's encrypted with the source's customer-managed encryption keys (CMEK) when the source has them.
+* **Billing**: A conversion is charged at the [import](/guides/cost/understand-cost#imports) rate, by the size of the source's data. A job that fails because of your data is charged for the data it read. A canceled job, or one that fails because of an internal error, isn't charged. Both indexes are billed for storage until you delete the source. For a BYOC index, neither the conversion nor storage has a separate charge, because [BYOC is billed](/guides/production/bring-your-own-cloud#pricing) by environment and node.
 
 ## Limitations
 
-* Only serverless indexes in the `Ready` state can be converted, including indexes on [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview). An index in any other state, such as one that's being deleted, has failed, or is disabled, is rejected with a `412`.
+* Only serverless and BYOC indexes in the `Ready` state can be converted, including indexes on [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview). An index in any other state, such as one that's being deleted, has failed, or is disabled, is rejected with a `412`.
 * Pod-based indexes can't be converted. [Migrate the index to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) first, then convert the serverless index it creates.
-* Bring Your Own Cloud (BYOC) indexes can't be converted.
+* A few BYOC environments don't support conversion, and an index in one of them is rejected with a `400`. To ask about yours, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 * An index that already has a document schema can't be converted, and neither can a text index.
 * With on-demand read capacity, the new index can take at most 1,000 GB of source data. For a larger source, set `read_capacity` to [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) in the request, or contact support.
 * The new index can't use the source's name or any name already taken in the project, including by an index an earlier conversion created. A name that's taken is rejected with a `409`. You can convert the same source more than once, as long as each new index has its own name.
@@ -462,7 +462,7 @@ These errors are returned when you start a conversion, before a job exists:
 
 | Status | Cause | Fix |
 | - | - | - |
-| `400` | The source is pod-based, BYOC, a text index, or already has a document schema, or the new index has the source's name | The message names the problem |
+| `400` | The source is pod-based, in a BYOC environment that doesn't support conversion, a text index, or already has a document schema, or the new index has the source's name | The message names the problem |
 | `400` | The schema can't hold the source's vectors, or `on_error` isn't `abort` or `continue`. For example, a vector field is missing or doubled, a sparse index's schema has a dense field, a dimension, metric, or embedding doesn't match the source, or the schema has only `_values` and `_sparse_values` | The message names the problem and the value to use |
 | `403` | The organization is on the Starter or Builder plan, the API key can't create indexes, or the project's index quota is exhausted | Upgrade to Standard or Enterprise, use a key with `control::index::create`, or raise the quota |
 | `404` | The source index doesn't exist | Check the index name in the request path |

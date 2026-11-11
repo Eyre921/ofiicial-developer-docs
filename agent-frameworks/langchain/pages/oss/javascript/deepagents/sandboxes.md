@@ -166,7 +166,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       idleTtlSeconds: 3600, // TTL: clean up when idle
     }));
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }
@@ -354,7 +354,7 @@ export async function agent(config: LangGraphRunnableConfig) {
       name: sandboxName,
     }));
   return createDeepAgent({
-    model: "openai:gpt-5.5",
+    model: "openai:gpt-6.1-sol",
     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
   });
 }

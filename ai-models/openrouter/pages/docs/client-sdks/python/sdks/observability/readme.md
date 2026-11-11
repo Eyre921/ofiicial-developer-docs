@@ -116,7 +116,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400. | null |
+| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. Every hash must belong to an API key in the destination's workspace; any other hash returns 400. | null |
 | `broadcast_generation_cost` | *Optional\[bool]* | ➖ | When true, include cost and billing generation metadata. | false |
 | `broadcast_generation_cost_allocation` | *Optional\[bool]* | ➖ | Beta. When true, include openrouter\_cost\_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost. | false |
 | `broadcast_generation_identity` | *Optional\[bool]* | ➖ | When true, include identity generation metadata. | false |
@@ -275,7 +275,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value, including any API key from another workspace that an organization-scoped key attached. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400. | null |
+| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value. Must contain at least one hash if provided. Every hash must belong to an API key in the destination's workspace; any other hash returns 400. A hash the destination already lists is kept even if that key has since moved to another workspace, so an already-listed hash can always be written back. | null |
 | `broadcast_generation_cost` | *Optional\[bool]* | ➖ | Whether to include cost and billing generation metadata. | false |
 | `broadcast_generation_cost_allocation` | *Optional\[bool]* | ➖ | Beta. When true, include openrouter\_cost\_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost. | false |
 | `broadcast_generation_identity` | *Optional\[bool]* | ➖ | Whether to include identity generation metadata. | false |

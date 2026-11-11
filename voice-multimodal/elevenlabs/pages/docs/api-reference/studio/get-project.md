@@ -522,14 +522,14 @@ Validation Error
 - `similarity_boost` (double, optional, nullable, default: 0.75) — Determines how closely the AI should adhere to the original voice when attempting to replicate it.
 - `style` (double, optional, nullable, default: 0) — Determines the style exaggeration of the voice. This setting attempts to amplify the style of the original speaker. It does consume additional computational resources and might increase latency if set to anything other than 0.
 - `speed` (double, optional, nullable, default: 1) — Adjusts the speed of the voice. A value of 1.0 is the default speed, while values less than 1.0 slow down the speech, and values greater than 1.0 speed it up.
-- `clone_strength` (double, optional, nullable) — Controls how closely the voice matches the professional voice clone samples, from 0 (low) to 1 (high). We recommend 0 for most use cases. Increase this value only if you experience issues with the default settings. Only applies to professional voice clones fine-tuned for the selected v4 model.
+- `clone_strength` (double, optional, nullable) — Controls how closely the output matches your professional voice clone samples (0–1). Lower values sound more versatile, while higher values preserve more of the original voice characteristics. We recommend 0 for most use cases, but if you do run into issues 0.5 could be a good fallback. Applies only to professional voice clones fine-tuned for the selected v4 model.
 
 ### VoiceSharingResponseModel
 
 - `status` (enum, optional) — The status of the voice sharing.
   - Allowed values: `enabled`, `disabled`, `copied`, `copied_disabled`
 - `history_item_sample_id` (string, optional, nullable) — The sample ID of the history item.
-- `date_unix` (integer, optional) — The date of the voice sharing in Unix time.
+- `date_unix` (integer, optional) — The Unix time, in seconds, at which the voice was shared.
 - `whitelisted_emails` (list of string, optional) — A list of whitelisted emails.
 - `public_owner_id` (string, optional) — The ID of the public owner.
 - `original_voice_id` (string, optional) — The ID of the original voice.
@@ -539,7 +539,7 @@ Validation Error
 - `rate` (double, optional, nullable) — The rate of the voice sharing.
 - `fiat_rate` (double, optional, nullable) — The rate of the voice sharing in USD per 1000 credits.
 - `notice_period` (integer, optional) — The notice period of the voice sharing.
-- `disable_at_unix` (integer, optional, nullable) — The date of the voice sharing in Unix time.
+- `disable_at_unix` (integer, optional, nullable) — The Unix time, in seconds, at which users who added the voice from the Voice Library lose access to it.
 - `voice_mixing_allowed` (boolean, optional) — Whether voice mixing is allowed.
 - `featured` (boolean, optional) — Whether the voice is featured.
 - `category` (enum, optional) — The category of the voice.

@@ -42,7 +42,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [{
     name: "reviewer",
     description: "Reviews code for security issues, citing lines and severity",
@@ -240,7 +240,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "bug-fixer",
@@ -459,7 +459,7 @@ Discovering files from interpreter code requires [programmatic tool calling (PTC
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [{
 >     name: "reviewer",
 >     description: "Reviews code for security issues, citing lines and severity",
@@ -617,7 +617,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "reviewer",
@@ -810,7 +810,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [{
 >     name: "architect",
 >     description: "Proposes a database schema design with tradeoff analysis",
@@ -962,7 +962,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [
 >     {
 >       name: "writer",
@@ -1152,7 +1152,7 @@ graph LR
 > import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 >
 > const agent = createDeepAgent({
->   model: "openai:gpt-5.5",
+>   model: "openai:gpt-6.1-sol",
 >   subagents: [{
 >     name: "analyzer",
 >     description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -1281,7 +1281,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
   middleware: [createCodeInterpreterMiddleware({ subagents: false })],
 });

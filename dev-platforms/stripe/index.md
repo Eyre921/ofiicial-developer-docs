@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 481 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 480 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -475,10 +475,6 @@
 - `revenue-recognition/reports/waterfall` — [Revenue waterfall](pages/revenue-recognition/reports/waterfall.md) · [原文](https://docs.stripe.com/revenue-recognition/reports/waterfall.md)
 - `revenue-recognition/revenue-settings/accounting-period-control` — [Revenue Recognition accounting period control](pages/revenue-recognition/revenue-settings/accounting-period-control.md) · [原文](https://docs.stripe.com/revenue-recognition/revenue-settings/accounting-period-control.md)
 - `revenue-recognition/rules` — [Revenue Recognition rules](pages/revenue-recognition/rules.md) · [原文](https://docs.stripe.com/revenue-recognition/rules.md)
-
-## samples
-
-- `samples/identity/redirect` — [Identity verification (redirect)](pages/samples/identity/redirect.md) · [原文](https://docs.stripe.com/samples/identity/redirect.md)
 
 ## security
 

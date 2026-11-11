@@ -1285,7 +1285,7 @@ Start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overv
 >   };
 >
 >   return createDeepAgent({
->     model: "openai:gpt-5.5",
+>     model: "openai:gpt-6.1-sol",
 >     memory: ["./AGENTS.md"],
 >     skills: ["./skills/"],
 >     tools: [generateCover, generateSocialImage],

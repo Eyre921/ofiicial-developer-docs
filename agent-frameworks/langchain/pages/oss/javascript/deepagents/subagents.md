@@ -88,7 +88,7 @@ Define subagents as dictionaries matching the [`SubAgent`](https://reference.lan
 | `systemPrompt` | `string` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements. Does not inherit from main agent. For `mode: "fork"`, omit this field unless you need a fork-only addendum. See [Forked subagents](#forked-subagents). |
 | `mode` | `"isolated"` \| `"fork"` | Optional. Context mode. Defaults to `"isolated"`, where the subagent only sees the delegated task. Set to `"fork"` to inherit the parent's conversation and system prompt instead. See [Forked subagents](#forked-subagents). |
 | `tools` | `StructuredTool[]` | Optional. Tools the subagent can use. Keep this minimal and include only what's needed. Inherits from main agent by default. When specified, overrides the inherited tools entirely. |
-| `model` | `LanguageModelLike \| string` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-5.5'` (using the `'provider:model'` format) or a LangChain chat model object (`await initChatModel("gpt-5.5")` or `new ChatOpenAI({ model: "gpt-5.5" })`). |
+| `model` | `LanguageModelLike \| string` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-6.1-sol'` (using the `'provider:model'` format) or a LangChain chat model object (`await initChatModel("gpt-6.1-sol")` or `new ChatOpenAI({ model: "gpt-6.1-sol" })`). |
 | `middleware` | `AgentMiddleware[]` | Optional. Additional middleware for custom behavior, logging, or rate limiting. Does not inherit from the main agent. Appended to the [synchronous subagent stack](/oss/javascript/deepagents/customization#synchronous-subagent-stack). |
 | `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` | Optional. Configure [human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) for specific tools. Options: `True`, `False`. or an `InterruptOnConfig` with `allowed_decisions`. Requires checkpointer. Inherits from main agent by default. Subagent value overrides the default. |
 | `skills` | `string[]` | Optional. [Skills](/oss/javascript/deepagents/skills) source paths. When specified, the subagent will load skills from these directories (e.g., `["/skills/research/", "/skills/web-search/"]`). This allows subagents to have different skill sets than the main agent. Does not inherit from main agent. Only the general-purpose subagent inherits the main agent's skills. When a subagent has skills, it runs its own independent [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware) instance. Skill state is fully isolated—a subagent's loaded skills are not visible to the parent, and vice versa. |
@@ -210,7 +210,7 @@ const researchSubagent: SubAgent = {
   description: "Used to research more in depth questions",
   systemPrompt: "You are a great researcher",
   tools: [internetSearch],
-  model: "openai:gpt-5.5", // Optional override, defaults to main agent model
+  model: "openai:gpt-6.1-sol", // Optional override, defaults to main agent model
 };
 const subagents = [researchSubagent];
 
@@ -586,7 +586,7 @@ const customSubagent: CompiledSubAgent = {
 const subagents = [customSubagent];
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
   systemPrompt: researchInstructions,
   subagents: subagents,
@@ -985,7 +985,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [{
     name: "reviewer",
     description: "Reviews code for security issues, citing lines and severity",
@@ -1191,7 +1191,7 @@ async function streamSubagentProgress() {
 import { createDeepAgent } from "deepagents";
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   name: "main-agent",
   systemPrompt:
     "You are a project coordinator with no research knowledge. " +
@@ -1689,7 +1689,7 @@ const researchSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [researchSubagent],
 });
 
@@ -1981,7 +1981,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2003,7 +2003,7 @@ const internetSearch = tool(
 
 // Main agent uses Gemini; general-purpose subagent uses GPT
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
   subagents: [
     {
@@ -2011,7 +2011,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2041,7 +2041,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2071,7 +2071,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2101,7 +2101,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2131,7 +2131,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2161,7 +2161,7 @@ const agent = await createDeepAgent({
       description: "General-purpose agent for research and multi-step tasks",
       systemPrompt: "You are a general-purpose assistant.",
       tools: [internetSearch],
-      model: "openai:gpt-5.5", // Different model for delegated tasks
+      model: "openai:gpt-6.1-sol", // Different model for delegated tasks
     },
   ],
 });
@@ -2282,7 +2282,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2294,14 +2294,14 @@ const subagents = [
     description: "Reviews legal documents and contracts",
     systemPrompt: "You are an expert legal reviewer...",
     tools: [readDocument, analyzeContract],
-    model: "openai:gpt-5.5", // Large context for long documents
+    model: "openai:gpt-6.1-sol", // Large context for long documents
   },
   {
     name: "financial-analyst",
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2320,7 +2320,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2339,7 +2339,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2358,7 +2358,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2377,7 +2377,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2396,7 +2396,7 @@ const subagents = [
     description: "Analyzes financial data and market trends",
     systemPrompt: "You are an expert financial analyst...",
     tools: [getStockPrice, analyzeFundamentals],
-    model: "openai:gpt-5.5", // Better for numerical analysis
+    model: "openai:gpt-6.1-sol", // Better for numerical analysis
   },
 ];
 ```
@@ -2484,7 +2484,7 @@ const subagents = [
 ];
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   systemPrompt:
     "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
   subagents: subagents,
@@ -2741,7 +2741,7 @@ const researchSubagent = {
 };
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   subagents: [researchSubagent],
   contextSchema,
 });

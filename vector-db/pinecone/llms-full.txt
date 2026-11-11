@@ -6998,7 +6998,7 @@ A record is the unit of data in a [legacy vector index](#legacy-vector-index). I
 * One vector, or a dense and a sparse vector for single-index [hybrid search](/guides/search/hybrid-search).
 * Optional [metadata](#metadata).
 
-In a [legacy integrated index](/guides/indexes/index-data-overview#integrated-embedding) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
+In a [legacy integrated index](/guides/legacy/records-api/create-an-integrated-index) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
 
 For more information, see [Upsert data](/guides/data/upsert-data).
 
@@ -7179,87 +7179,100 @@ With Pinecone Database, you can:
 # Pinecone quickstart
 Source: https://docs.pinecone.io/guides/get-started/quickstart
 
-Get started with Pinecone in minutes. Pick the path that matches what you're searching for and run your first search.
+Get started with Pinecone in minutes. Create an index that searches your text by meaning and by exact terms, load sample documents, and run both searches.
 
-Add Pinecone to your app or agent and run your first search. Choose the path that fits what you're searching for.
+One document index handles both kinds of search: by meaning, and by exact terms like IDs, error codes, and phrases. You upsert plain text, and Pinecone embeds it for you with [integrated embedding](/guides/search/integrated-embedding).
 
 ## Prerequisites
 
 * A Pinecone account and API key ([get one](https://app.pinecone.io) or [view pricing](https://www.pinecone.io/pricing/)).
 
-## Recommended: Let your agent set everything up
+## Let your agent set it up
 
-If you use an AI coding agent, the quickest path is to let it do the setup: it designs your schema, ingests your data, and runs your first query, all conversationally.
+The quickest way to start is to let your AI coding agent do the setup: it designs your schema, ingests your data, and runs your first query, all conversationally.
 
-The steps below use Claude Code. Using Cursor, Codex, or another agent? See [all supported AI coding tools](/integrations/ai-coding-tools) for the equivalent setup.
+The steps below cover Claude Code and Codex, which share the same Pinecone skills. Using Cursor or another agent? See [all supported AI coding tools](/integrations/ai-coding-tools) for the equivalent setup.
 
-**1. Set your API key and install the plugin**
+### 1. Set your API key and install the plugin
 
 The plugin needs [Node.js](https://nodejs.org/) and [uv](https://docs.astral.sh/uv/getting-started/installation/) installed. The quickstart skill uses uv to run its bundled Python scripts.
 
+> [tab] Claude Code
+>
+> ```bash Terminal theme={null}
+> export PINECONE_API_KEY="YOUR_API_KEY"
+> claude plugin install pinecone
+> ```
+>
+> > [!NOTE]
+> >
+> > Installing the plugin requires access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace). Claude Code adds this access automatically the first time you start it. If the install fails with a `Marketplace "claude-plugins-official" not found` error, your network or your organization's Claude Code setup is probably blocking it.
+>
+> Restart Claude Code to activate the plugin.
+
+> [tab] Codex
+>
+> ```bash Terminal theme={null}
+> export PINECONE_API_KEY="YOUR_API_KEY"
+> codex plugin marketplace add pinecone-io/pinecone-codex-plugin
+> codex plugin add pinecone --marketplace pinecone-codex-plugins
+> ```
+>
+> Start Codex from the same shell so it picks up the key. To install from the ChatGPT desktop app instead, see the [Codex plugin](/integrations/codex#installation) page.
+
+### 2. Run the quickstart command
+
+> [tab] Claude Code
+>
+> ```text Claude Code theme={null}
+> /pinecone:quickstart
+> ```
+
+> [tab] Codex
+>
+> ```text Codex theme={null}
+> $pinecone:quickstart
+> ```
+
+## Set it up yourself
+
+Build the index with an SDK or the REST API. Its `chunk_text` field is set up the same way as the default `chunk_text` field in the [Pinecone console's create index form](https://app.pinecone.io/organizations/-/projects/-/create-index/serverless). The steps run on sample documents, so you can finish first and then [use your own files](#use-your-own-files).
+
 > [!NOTE]
 >
-> Installing the plugin requires access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace). Claude Code adds this access automatically the first time you start it. If the install fails with a `Marketplace "claude-plugins-official" not found` error, your network or your organization's Claude Code setup is probably blocking it.
+> If you already generate your own embeddings, store them in a `dense_vector` field instead of declaring `embed`. For the steps, see [Bring your own vectors](/guides/search/bring-your-own-vectors).
 
-```bash theme={null}
-export PINECONE_API_KEY="YOUR_API_KEY"
-claude plugin install pinecone
+### 1. Install an SDK
+
+Install the Pinecone SDK for your language. Integrated embedding needs Python SDK `10.1.0` or later (Python 3.10+), Node.js SDK `9.1.0` or later (Node.js 22+), or Go SDK `7.1.0` or later (Go 1.25+, or Go 1.26+ for SDK `7.2.0` and later). The curl examples need no SDK, but they use `jq` to read the index host.
+
+```bash Python theme={null}
+pip install --upgrade "pinecone>=10.1.0"
 ```
 
-Restart Claude Code to activate the plugin.
-
-**2. Run the quickstart command**
-
-```text theme={null}
-/pinecone:quickstart
+```bash JavaScript theme={null}
+npm install "@pinecone-database/pinecone@>=9.1.0"
 ```
 
-## Manual: Choose your path
-
-Prefer to set it up yourself? Pick the path that matches what you're searching for. Each path page lists its own setup (Python and SDK versions).
-
-```mermaid theme={null}
-flowchart TD
-    A[What are you searching for?] -->|Meaning| B{Have embeddings?}
-    A -->|Exact terms| E["Try full-text search"]
-    B -->|"No — text or files"| C["Ingest your own files"]
-    B -->|"Yes — already embedded"| D["Bring your own vectors"]
+```bash Go theme={null}
+go get github.com/pinecone-io/go-pinecone/v7/pinecone@latest
 ```
 
-* **Meaning** (docs, tickets, knowledge base) — rank by semantic similarity. Then pick based on your embeddings:
-  * **I have text or files** → [Ingest your own files](/guides/get-started/quickstart/ingest-files). Extract text, chunk it, embed the chunks with Pinecone Inference, and index them. The page starts from sample records, so you can run it with no files of your own and swap in yours later.
-  * **I already have embeddings** → [Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors). Upsert your vectors directly and rank by similarity.
-* **Exact terms** (SKUs, IDs, phrases, logs) → [Try full-text search](/guides/get-started/quickstart/full-text-search). Create an index, load documents, and run a keyword (BM25) search in about five minutes.
+The JavaScript examples use top-level `await`, so run them as an ES module, such as a `.mjs` file. The Go examples build one `main` function: the first block is the full program, and each later block adds to it.
 
+### 2. Set your API key
 
-# Bring your own vectors
-Source: https://docs.pinecone.io/guides/get-started/quickstart/bring-your-own-vectors
+Set your API key as an environment variable. The SDKs read it automatically, and the curl examples pass it in a header.
 
-Create an index with a dense-vector field, upsert embeddings you already have, and run semantic search.
-
-If you already generate embeddings, store them directly. Create an index with a dense-vector field, upsert your vectors, and rank by similarity. Pinecone does no embedding on your behalf here.
-
-## Prerequisites
-
-* A Pinecone account and API key ([get one](https://app.pinecone.io)).
-* **Python 3.10+**.
-* The Pinecone Python SDK: `pip install --upgrade pinecone`.
-
-## Upsert your vectors and search
-
-**1. Set your API key**
-
-Set your API key as an environment variable so the SDK can authenticate:
-
-```bash theme={null}
+```bash Terminal theme={null}
 export PINECONE_API_KEY="YOUR_API_KEY"
 ```
 
-**2. Create an index with a dense-vector field**
+### 3. Create an index
 
-Set `dimension` to match your embedding model's output, and pick a distance `metric` (`cosine`, `dotproduct`, or `euclidean`). Only the vector field goes in the schema; other fields like `text` are stored on the documents (non-schema fields are stored as metadata, capped at 40 KB per document).
+Declare one `string` field with both `full_text_search` and `embed`. Pinecone indexes the field's text for keyword (BM25) search and embeds it for semantic search, so one field supports both. An empty `embed` config uses the default model, `llama-text-embed-v2`, at 1,024 dimensions. Only searchable fields go in the schema; other fields are stored on the documents as metadata (capped at 40 KB per document).
 
-```python theme={null}
+```python Python theme={null}
 import os, time
 from pinecone import Pinecone, SchemaBuilder
 
@@ -7267,99 +7280,7 @@ pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 
 schema = (
     SchemaBuilder()
-      .add_dense_vector_field(name="embedding", dimension=1024, metric="cosine")
-      .build()
-)
-if not pc.indexes.exists(name="byo-vectors"):
-    pc.indexes.create(name="byo-vectors", schema=schema)
-
-while not pc.indexes.describe(name="byo-vectors").status.ready:
-    time.sleep(2)
-
-index = pc.index(name="byo-vectors")
-```
-
-**3. Upsert your vectors**
-
-Each document carries its `embedding` (a list of floats matching the schema's `dimension`) plus any fields you want to store. The vectors below are stand-ins with the right dimension. Replace them with your real embeddings.
-
-```python theme={null}
-index.documents.upsert(
-    namespace="__default__",
-    documents=[
-        {"_id": "1", "embedding": [0.1, 0.2] * 512, "text": "Refund requests must be submitted within 30 days."},
-        {"_id": "2", "embedding": [0.2, 0.1] * 512, "text": "Enterprise support responds within 4 hours."},
-    ],
-)
-
-time.sleep(5)  # documents are indexed asynchronously, so wait a moment
-```
-
-**4. Search by vector similarity**
-
-Embed your query with the **same model** you used for the documents, then rank by the dense-vector field (`embedding`).
-
-```python theme={null}
-query_embedding = [0.1, 0.2] * 512  # replace with your query's embedding from the same model
-
-resp = index.documents.search(
-    namespace="__default__",
-    top_k=3,
-    score_by=[{"type": "dense_vector", "fields": ["embedding"], "values": query_embedding}],
-    include_fields=["*"],
-)
-
-for m in resp.matches:
-    print(m._id, m._score, getattr(m, "text", ""))
-```
-
-## Next steps
-
-> [card] [Match keywords](/guides/search/full-text-search#schema-definition)
->
-> Add a `full_text_search` field to your schema for keyword search, or combine it with your vectors for hybrid search.
-
-> [card] [Data modeling](/guides/indexes/data-modeling)
->
-> How to design a schema for your workload
-
-
-# Try full-text search
-Source: https://docs.pinecone.io/guides/get-started/quickstart/full-text-search
-
-Create an index, load documents, and run your first full-text (keyword) search in about five minutes.
-
-Full-text search matches exact terms: IDs, SKUs, error codes, and phrases. Create an index, load a few documents, and run a keyword (BM25) search in about five minutes.
-
-## Prerequisites
-
-* A Pinecone account and API key ([get one](https://app.pinecone.io)).
-* **Python 3.10+**.
-* The Pinecone Python SDK: `pip install --upgrade pinecone`.
-
-## Create an index and search
-
-**1. Set your API key**
-
-Set your API key as an environment variable so the SDK can authenticate:
-
-```bash theme={null}
-export PINECONE_API_KEY="YOUR_API_KEY"
-```
-
-**2. Create an index**
-
-Define a schema with a full-text (BM25) field, then create the index. Only search fields belong in the schema; filterable metadata like `category` goes in the documents and is indexed automatically.
-
-```python theme={null}
-import os, time
-from pinecone import Pinecone, SchemaBuilder
-
-pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-
-schema = (
-    SchemaBuilder()
-      .add_string_field(name="text", full_text_search={"language": "en"})
+      .add_string_field("chunk_text", full_text_search={"language": "en"}, embed={})
       .build()
 )
 if not pc.indexes.exists(name="quickstart"):
@@ -7371,114 +7292,333 @@ while not pc.indexes.describe(name="quickstart").status.ready:
 index = pc.index(name="quickstart")
 ```
 
-**3. Load sample documents**
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
 
-Each document is a JSON object with a required `_id`, the `text` field from your schema (indexed for full-text search), and any metadata you want to attach. Here, `category` is metadata: it's not declared in the schema, but Pinecone indexes it automatically so you can filter on it.
+const pc = new Pinecone(); // reads PINECONE_API_KEY
 
-These five short strings are just samples. Real documents can carry many metadata fields (up to 40 KB per document), plus dense- or sparse-vector fields if your schema declares them, and you can upsert up to 1,000 per request.
+await pc.indexes.create({
+  name: 'quickstart',
+  schema: {
+    fields: {
+      chunk_text: { type: 'string', fullTextSearch: { language: 'en' }, embed: {} },
+    },
+  },
+  waitUntilReady: true,
+  suppressConflicts: true,
+});
 
-```python theme={null}
+const index = pc.index({ name: 'quickstart', namespace: '__default__' });
+```
+
+```go Go theme={null}
+package main
+
+import (
+	"context"
+	"log"
+	"time"
+
+	"github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+	ctx := context.Background()
+
+	pc, err := pinecone.NewClient(pinecone.NewClientParams{}) // reads PINECONE_API_KEY
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if _, err := pc.DescribeIndex(ctx, "quickstart"); err != nil {
+		language := "en"
+		_, err = pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
+			Name: "quickstart",
+			Schema: pinecone.IndexSchema{
+				Fields: map[string]pinecone.IndexSchemaField{
+					"chunk_text": {String: &pinecone.StringField{
+						FullTextSearch: &pinecone.FullTextSearchConfig{Language: &language},
+						Embed:          &pinecone.EmbedConfig{},
+					}},
+				},
+			},
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	idx, err := pc.DescribeIndex(ctx, "quickstart")
+	for err == nil && !idx.Status.Ready {
+		time.Sleep(2 * time.Second)
+		idx, err = pc.DescribeIndex(ctx, "quickstart")
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	index, err := pc.Index(pinecone.NewIndexConnParams{Host: idx.Host, Namespace: "__default__"})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+```bash curl theme={null}
+curl -X POST "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "quickstart",
+    "schema": {
+      "fields": {
+        "chunk_text": {
+          "type": "string",
+          "full_text_search": { "language": "en" },
+          "embed": {}
+        }
+      }
+    }
+  }'
+
+# Wait until the index is ready, then save its host (requires jq)
+until curl -s "https://api.pinecone.io/indexes/quickstart" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" | jq -e '.status.ready' > /dev/null; do
+  sleep 2
+done
+
+INDEX_HOST=$(curl -s "https://api.pinecone.io/indexes/quickstart" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" | jq -r '.host')
+```
+
+### 4. Load sample documents
+
+Each document has a required `_id`, plain text on the `chunk_text` field, and any metadata you want to filter on, like `category` here. Pinecone embeds the text on write, so you don't send vectors. Documents are indexed asynchronously, so the code waits 10 seconds before you search. If a search returns no results, wait a few seconds and run it again.
+
+```python Python theme={null}
 index.documents.upsert(
     namespace="__default__",
     documents=[
-        {"_id": "1", "text": "SKU KB-1024: wireless mechanical keyboard, USB-C, brown switches", "category": "product"},
-        {"_id": "2", "text": "SKU MON-4200: 27-inch 4K monitor, HDMI and USB-C", "category": "product"},
-        {"_id": "3", "text": "Order 88231 shipped on 2026-08-20 via express courier", "category": "order"},
-        {"_id": "4", "text": "Error E1042: connection timeout after 30 seconds", "category": "log"},
-        {"_id": "5", "text": "Ticket 5567 resolved: replaced faulty power adapter", "category": "support"},
+        {"_id": "1", "chunk_text": "Refund requests must be submitted within 30 days of purchase.", "category": "policy"},
+        {"_id": "2", "chunk_text": "Enterprise customers get support with a 4-hour response time.", "category": "policy"},
+        {"_id": "3", "chunk_text": "Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.", "category": "log"},
+        {"_id": "4", "chunk_text": "To reset your password, open Settings and choose Security.", "category": "support"},
+        {"_id": "5", "chunk_text": "Order 88231 shipped on 2026-08-20 via express courier.", "category": "order"},
     ],
 )
 
-time.sleep(5)  # documents are indexed asynchronously, so wait a moment
+time.sleep(10)  # documents are indexed asynchronously, so wait a moment
 ```
 
-**4. Run a full-text search**
+```javascript JavaScript theme={null}
+await index.documents.upsert({
+  documents: [
+    { _id: '1', chunk_text: 'Refund requests must be submitted within 30 days of purchase.', category: 'policy' },
+    { _id: '2', chunk_text: 'Enterprise customers get support with a 4-hour response time.', category: 'policy' },
+    { _id: '3', chunk_text: 'Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.', category: 'log' },
+    { _id: '4', chunk_text: 'To reset your password, open Settings and choose Security.', category: 'support' },
+    { _id: '5', chunk_text: 'Order 88231 shipped on 2026-08-20 via express courier.', category: 'order' },
+  ],
+});
 
-Search the index by choosing a scoring type with `score_by`. Here, `type: "text"` scores documents by BM25 keyword relevance on the `text` field, so an exact identifier like `E1042` surfaces the record that contains it.
+await new Promise((resolve) => setTimeout(resolve, 10000)); // documents are indexed asynchronously, so wait a moment
+```
 
-```python theme={null}
-resp = index.documents.search(
+```go Go theme={null}
+// Add to the main function:
+_, err = index.UpsertDocuments(ctx, &pinecone.UpsertDocumentsRequest{
+	Documents: []pinecone.Document{
+		{"_id": "1", "chunk_text": "Refund requests must be submitted within 30 days of purchase.", "category": "policy"},
+		{"_id": "2", "chunk_text": "Enterprise customers get support with a 4-hour response time.", "category": "policy"},
+		{"_id": "3", "chunk_text": "Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.", "category": "log"},
+		{"_id": "4", "chunk_text": "To reset your password, open Settings and choose Security.", "category": "support"},
+		{"_id": "5", "chunk_text": "Order 88231 shipped on 2026-08-20 via express courier.", "category": "order"},
+	},
+})
+if err != nil {
+	log.Fatal(err)
+}
+
+time.Sleep(10 * time.Second) // documents are indexed asynchronously, so wait a moment
+```
+
+```bash curl theme={null}
+curl -X POST "https://$INDEX_HOST/namespaces/__default__/documents/upsert" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "documents": [
+      { "_id": "1", "chunk_text": "Refund requests must be submitted within 30 days of purchase.", "category": "policy" },
+      { "_id": "2", "chunk_text": "Enterprise customers get support with a 4-hour response time.", "category": "policy" },
+      { "_id": "3", "chunk_text": "Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.", "category": "log" },
+      { "_id": "4", "chunk_text": "To reset your password, open Settings and choose Security.", "category": "support" },
+      { "_id": "5", "chunk_text": "Order 88231 shipped on 2026-08-20 via express courier.", "category": "order" }
+    ]
+  }'
+
+sleep 10  # documents are indexed asynchronously, so wait a moment
+```
+
+### 5. Search by meaning
+
+Score by `embed` and pass the query as text. Pinecone embeds the query with the same model it used for the documents and ranks them by semantic similarity, so a question finds the right passage even when it shares no words with it. The `filter` limits the search to documents whose `category` metadata is `policy`.
+
+```python Python theme={null}
+meaning = index.documents.search(
     namespace="__default__",
     top_k=3,
-    score_by=[{"type": "text", "fields": ["text"], "query": "E1042"}],
-    include_fields=["*"],
+    score_by=[{"type": "embed", "fields": ["chunk_text"], "query": "how do I get my money back?"}],
+    filter={"category": {"$eq": "policy"}},
+    include_fields=["chunk_text"],
 )
 
-for m in resp.matches:
-    print(m._id, m._score, getattr(m, "text", ""))
+for m in meaning.matches:
+    print(m.id, f"{m.score:.3f}", m.chunk_text)
 ```
 
-To narrow results, add a `filter` such as `{"category": {"$eq": "product"}}`. For exact phrase matching, use a `query_string` search instead (see the [query syntax reference](/guides/search/full-text-search/query-syntax)).
+```javascript JavaScript theme={null}
+const meaning = await index.documents.search({
+  topK: 3,
+  scoreBy: [{ type: 'embed', fields: ['chunk_text'], query: 'how do I get my money back?' }],
+  filter: { category: { $eq: 'policy' } },
+  includeFields: ['chunk_text'],
+});
 
-## Use your own data
+for (const m of meaning.matches) {
+  console.log(m._id, m._score.toFixed(3), m.chunk_text);
+}
+```
 
-Swap the sample documents for your own: keep the same `documents.upsert()` call and replace the `text` and metadata with your content. Each document needs a unique `_id` and the `text` field from your schema, plus any metadata fields you want to filter on.
+```go Go theme={null}
+// Add "fmt" to your imports, then add to the main function:
+meaningQuery := "how do I get my money back?"
+meaning, err := index.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+	TopK: 3,
+	ScoreBy: []pinecone.DocumentScoringMethod{
+		{Type: pinecone.DocumentScoringTypeEmbed, Fields: []string{"chunk_text"}, Query: &meaningQuery},
+	},
+	Filter:        map[string]interface{}{"category": map[string]interface{}{"$eq": "policy"}},
+	IncludeFields: []string{"chunk_text"},
+})
+if err != nil {
+	log.Fatal(err)
+}
 
-```python theme={null}
-index.documents.upsert(
-    namespace="__default__",
-    documents=[
-        {"_id": "doc-1", "text": "Your first document...", "category": "your-category"},
-        # ...your documents
+for _, m := range meaning.Matches {
+	fmt.Printf("%s %.3f %s\n", m.Id, *m.Score, m.Fields["chunk_text"])
+}
+```
+
+```bash curl theme={null}
+curl -X POST "https://$INDEX_HOST/namespaces/__default__/documents/search" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "top_k": 3,
+    "score_by": [
+      { "type": "embed", "fields": ["chunk_text"], "query": "how do I get my money back?" }
     ],
+    "filter": { "category": { "$eq": "policy" } },
+    "include_fields": ["chunk_text"]
+  }'
+```
+
+Only the two policy documents are searched, and the refund policy ranks first:
+
+```text Output theme={null}
+1 0.417 Refund requests must be submitted within 30 days of purchase.
+2 0.089 Enterprise customers get support with a 4-hour response time.
+```
+
+### 6. Search by exact terms
+
+Score by `text` to rank the same field by BM25 keyword relevance, so an exact identifier like `E1042` surfaces the document that contains it.
+
+```python Python theme={null}
+terms = index.documents.search(
+    namespace="__default__",
+    top_k=3,
+    score_by=[{"type": "text", "fields": ["chunk_text"], "query": "E1042"}],
+    include_fields=["chunk_text"],
 )
+
+for m in terms.matches:
+    print(m.id, f"{m.score:.3f}", m.chunk_text)
 ```
 
-For large sets, use [Bulk import](/guides/data/import-data) instead of upserting one request at a time.
+```javascript JavaScript theme={null}
+const terms = await index.documents.search({
+  topK: 3,
+  scoreBy: [{ type: 'text', fields: ['chunk_text'], query: 'E1042' }],
+  includeFields: ['chunk_text'],
+});
 
-## Next steps
+for (const m of terms.matches) {
+  console.log(m._id, m._score.toFixed(3), m.chunk_text);
+}
+```
 
-> [card] [Rank by meaning](/guides/search/full-text-search#schema-definition)
->
-> Add a `dense_vector` field to your schema for semantic search, or combine it with text for hybrid search.
+```go Go theme={null}
+// Add to the main function:
+termsQuery := "E1042"
+terms, err := index.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+	TopK: 3,
+	ScoreBy: []pinecone.DocumentScoringMethod{
+		{Type: pinecone.DocumentScoringTypeText, Fields: []string{"chunk_text"}, Query: &termsQuery},
+	},
+	IncludeFields: []string{"chunk_text"},
+})
+if err != nil {
+	log.Fatal(err)
+}
 
-> [card] [Ingest your own files](/guides/get-started/quickstart/ingest-files)
->
-> Embed your own files with Pinecone Inference and search by meaning
+for _, m := range terms.Matches {
+	fmt.Printf("%s %.3f %s\n", m.Id, *m.Score, m.Fields["chunk_text"])
+}
+```
 
-> [card] [Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors)
->
-> Upsert embeddings you already have directly.
+```bash curl theme={null}
+curl -X POST "https://$INDEX_HOST/namespaces/__default__/documents/search" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "top_k": 3,
+    "score_by": [
+      { "type": "text", "fields": ["chunk_text"], "query": "E1042" }
+    ],
+    "include_fields": ["chunk_text"]
+  }'
+```
 
-For the full reference (query syntax, filters, analyzers, and bulk import), see the [Full-text search guide](/guides/search/full-text-search).
+Only the document that contains the term matches:
 
+```text Output theme={null}
+3 1.225 Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.
+```
 
-# Ingest your own files
-Source: https://docs.pinecone.io/guides/get-started/quickstart/ingest-files
+Either search accepts a `filter`. For phrase matching and boolean queries, see the [query syntax reference](/guides/search/full-text-search/query-syntax).
 
-Turn a folder of documents into a searchable index: extract text, chunk it, embed the chunks, and upsert.
+Each search returns its own ranking, and the scores are on different scales, so don't compare them across searches. To merge the two rankings into one list, use [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion) in your client.
 
-Make a folder of raw documents searchable. The flow is: extract text, chunk it, embed the chunks, upsert, then search. Your coding agent can run this end to end (see the [Quickstart hub](/guides/get-started/quickstart)), or follow the steps.
+## Use your own files
+
+To search your own documents, upsert text from your files the same way. Pinecone doesn't extract or chunk files, so do those steps in your code before you upsert. If you already have embeddings for your files, see [Bring your own vectors](/guides/search/bring-your-own-vectors) instead.
+
+### 1. Extract text from your files
+
+Convert each file (PDF, DOCX, HTML, and so on) to plain text using a parser of your choice. The result should be a list of records, each with an ID and text, like the `docs` list below.
 
 > [!NOTE]
 >
-> This path uses [Pinecone Inference](/guides/get-started/key-terms#pinecone-inference), Pinecone's hosted embedding service, to turn your text into vectors. If you already generate your own embeddings, skip this and go to [Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors) instead.
+> If you're searching images instead of text, embed them with a multimodal embedding model and store the vectors in a `dense_vector` field, as in [Bring your own vectors](/guides/search/bring-your-own-vectors).
 
-## Prerequisites
-
-* A Pinecone account and API key ([get one](https://app.pinecone.io)).
-* **Python 3.10+**.
-* The Pinecone Python SDK: `pip install --upgrade pinecone`.
-
-## Ingest your own files and search
-
-**1. Set your API key**
-
-Set your API key as an environment variable so the SDK can authenticate:
-
-```bash theme={null}
-export PINECONE_API_KEY="YOUR_API_KEY"
-```
-
-**2. Extract text from your files**
-
-Convert each file (PDF, DOCX, HTML, and so on) to plain text using a parser of your choice. This step happens outside Pinecone. The result should be a list of records, each with an `id` and `text`, like the `docs` list below. It runs as-is, so you can complete the quickstart first and swap in your own extracted text after.
-
-> [!NOTE]
->
-> If you're embedding images instead of text, skip this step and the chunking step. Embed your images directly with a multimodal embedding model, then upsert the resulting vectors following [Bring your own vectors](/guides/get-started/quickstart/bring-your-own-vectors).
-
-```python theme={null}
+```python Python theme={null}
 docs = [
     {"id": "handbook-1", "text": "Refund requests must be submitted within 30 days of purchase."},
     {"id": "handbook-2", "text": "Enterprise customers get support with a 4-hour response time."},
@@ -7486,11 +7626,30 @@ docs = [
 ]
 ```
 
-**3. Chunk the text**
+```javascript JavaScript theme={null}
+const docs = [
+  { id: 'handbook-1', text: 'Refund requests must be submitted within 30 days of purchase.' },
+  { id: 'handbook-2', text: 'Enterprise customers get support with a 4-hour response time.' },
+  // ...extracted from your files
+];
+```
 
-Split your text into smaller pieces so each fits your embedding model's input limit. The function below is a simple length-based split you can run as-is. For smarter approaches (by sentence, token, or document structure), see [chunking strategies](https://www.pinecone.io/learn/chunking-strategies/).
+```go Go theme={null}
+// Add to the main function:
+type Doc struct{ ID, Text string }
 
-```python theme={null}
+docs := []Doc{
+	{"handbook-1", "Refund requests must be submitted within 30 days of purchase."},
+	{"handbook-2", "Enterprise customers get support with a 4-hour response time."},
+	// ...extracted from your files
+}
+```
+
+### 2. Chunk the text
+
+Split your text into smaller pieces so each one is a focused, searchable passage. The embedding model reads only the first 2,048 tokens of a value and truncates the rest, so keep chunks well under that. The function below is a simple length-based split. For smarter approaches (by sentence, token, or document structure), see [chunking strategies](https://www.pinecone.io/learn/chunking-strategies/). Each chunk ID starts with its source document's ID, so you can later [fetch, replace, or delete all of a document's chunks](/guides/data/manage-document-chunks) at once.
+
+```python Python theme={null}
 def chunk(text, size=500):
     return [text[i:i + size] for i in range(0, len(text), size)]
 
@@ -7501,87 +7660,80 @@ chunks = [
 ]
 ```
 
-**4. Create an index with a dense-vector field**
+```javascript JavaScript theme={null}
+const chunk = (text, size = 500) => {
+  const parts = [];
+  for (let i = 0; i < text.length; i += size) parts.push(text.slice(i, i + size));
+  return parts;
+};
 
-Set `dimension` to match your embedding model. `llama-text-embed-v2` outputs 1024 dimensions. Only the vector field goes in the schema; other fields are stored on the documents (non-schema fields are stored as metadata, capped at 40 KB per document).
-
-```python theme={null}
-import os, time
-from pinecone import Pinecone, SchemaBuilder
-
-pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-
-schema = (
-    SchemaBuilder()
-      .add_dense_vector_field(name="embedding", dimension=1024, metric="cosine")
-      .build()
-)
-if not pc.indexes.exists(name="my-files"):
-    pc.indexes.create(name="my-files", schema=schema)
-
-while not pc.indexes.describe(name="my-files").status.ready:
-    time.sleep(2)
-
-index = pc.index(name="my-files")
+const chunks = docs.flatMap((d) =>
+  chunk(d.text).map((part, i) => ({ id: `${d.id}#${i}`, text: part })),
+);
 ```
 
-**5. Embed the chunks and upsert**
+```go Go theme={null}
+// Add to the main function:
+chunk := func(text string, size int) []string {
+	runes := []rune(text)
+	var parts []string
+	for i := 0; i < len(runes); i += size {
+		parts = append(parts, string(runes[i:min(i+size, len(runes))]))
+	}
+	return parts
+}
 
-Use [Pinecone Inference](/guides/get-started/key-terms#pinecone-inference) to embed the chunks (in batches of 96, this model's per-call limit), then `upsert` the vectors alongside the text. For a large dataset, use `batch_upsert` or [Import](/guides/data/import-data) instead.
+var chunks []Doc
+for _, d := range docs {
+	for i, part := range chunk(d.Text, 500) {
+		chunks = append(chunks, Doc{fmt.Sprintf("%s#%d", d.ID, i), part})
+	}
+}
+```
 
-```python theme={null}
-# llama-text-embed-v2 accepts up to 96 inputs per call, so embed in batches.
-embeddings = []
+### 3. Upsert the chunks
+
+An index with an `embed` field accepts up to 96 documents per upsert, so send the chunks in batches. Then search them with the same calls as above.
+
+```python Python theme={null}
 for i in range(0, len(chunks), 96):
-    resp = pc.inference.embed(
-        model="llama-text-embed-v2",
-        inputs=[c["text"] for c in chunks[i:i + 96]],
-        parameters={"input_type": "passage"},
+    index.documents.upsert(
+        namespace="__default__",
+        documents=[
+            {"_id": c["id"], "chunk_text": c["text"]}
+            for c in chunks[i:i + 96]
+        ],
     )
-    embeddings.extend(resp)
-
-index.documents.upsert(
-    namespace="__default__",
-    documents=[
-        {"_id": c["id"], "embedding": e['values'], "text": c["text"]}
-        for c, e in zip(chunks, embeddings)
-    ],
-)
-
-time.sleep(5)  # documents are indexed asynchronously, so wait a moment
 ```
 
-**6. Search your documents**
-
-To search, embed the query with the same model you used for the documents, then rank documents by vector similarity.
-
-```python theme={null}
-q = pc.inference.embed(
-    model="llama-text-embed-v2",
-    inputs=["what is the refund policy?"],
-    parameters={"input_type": "query"},
-)
-
-resp = index.documents.search(
-    namespace="__default__",
-    top_k=3,
-    score_by=[{"type": "dense_vector", "fields": ["embedding"], "values": q[0]['values']}],
-    include_fields=["*"],
-)
-
-for m in resp.matches:
-    print(m._id, m._score, getattr(m, "text", ""))
+```javascript JavaScript theme={null}
+for (let i = 0; i < chunks.length; i += 96) {
+  await index.documents.upsert({
+    documents: chunks.slice(i, i + 96).map((c) => ({ _id: c.id, chunk_text: c.text })),
+  });
+}
 ```
+
+```go Go theme={null}
+// Add to the main function:
+for i := 0; i < len(chunks); i += 96 {
+	var batch []pinecone.Document
+	for _, c := range chunks[i:min(i+96, len(chunks))] {
+		batch = append(batch, pinecone.Document{"_id": c.ID, "chunk_text": c.Text})
+	}
+	if _, err := index.UpsertDocuments(ctx, &pinecone.UpsertDocumentsRequest{Documents: batch}); err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+For a large dataset in Python, use [`batch_upsert`](/guides/optimize/increase-throughput#upsert-in-batches), which sends batches in parallel and returns any failed batches so you can retry them. You can't [bulk import](/guides/data/import-data) into an index with an `embed` field.
 
 ## Next steps
 
-> [card] [Match keywords](/guides/search/full-text-search#schema-definition)
->
-> Add a `full_text_search` field to your schema for keyword search, or combine it with your vectors for hybrid search.
-
-> [card] [Bulk import](/guides/data/import-data)
->
-> Load large document sets efficiently
+* [Design a schema](/guides/indexes/data-modeling) for your own data, with more than one searchable field.
+* [Choose an embedding model or dimension](/guides/search/integrated-embedding), or add `sparse_embed` for learned-sparse search.
+* [Filter by metadata](/guides/search/filter-by-metadata), including text-match filters on full-text search fields.
 
 
 # Back up an index
@@ -9140,14 +9292,14 @@ Converting builds a new document index from the records in a serverless legacy v
 * **Snapshot**: The job copies the source as it stood when the job starts, as a backup does. Writes to the source after you send the request might not be in the new index.
 * **IDs and fields**: Each record becomes a document with the same ID, and its fields are filled by name, as described in [Plan the schema](#plan-the-schema).
 * **Namespaces**: Each source namespace becomes a namespace of the same name in the new index. Namespaces that have never held records are skipped.
-* **Location**: The new index is created in the source's cloud and region, and is encrypted with the source's customer-managed encryption keys (CMEK) when it has them.
-* **Billing**: A conversion is charged at the [import](/guides/cost/understand-cost#imports) rate, by the size of the source's data. A job that fails because of your data is charged for the data it read. A canceled job, or one that fails because of an internal error, isn't charged. Both indexes are billed for storage until you delete the source.
+* **Location**: The new index is created in the source's cloud and region, or in the source's environment for a Bring Your Own Cloud (BYOC) index. It's encrypted with the source's customer-managed encryption keys (CMEK) when the source has them.
+* **Billing**: A conversion is charged at the [import](/guides/cost/understand-cost#imports) rate, by the size of the source's data. A job that fails because of your data is charged for the data it read. A canceled job, or one that fails because of an internal error, isn't charged. Both indexes are billed for storage until you delete the source. For a BYOC index, neither the conversion nor storage has a separate charge, because [BYOC is billed](/guides/production/bring-your-own-cloud#pricing) by environment and node.
 
 ## Limitations
 
-* Only serverless indexes in the `Ready` state can be converted, including indexes on [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview). An index in any other state, such as one that's being deleted, has failed, or is disabled, is rejected with a `412`.
+* Only serverless and BYOC indexes in the `Ready` state can be converted, including indexes on [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview). An index in any other state, such as one that's being deleted, has failed, or is disabled, is rejected with a `412`.
 * Pod-based indexes can't be converted. [Migrate the index to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless) first, then convert the serverless index it creates.
-* Bring Your Own Cloud (BYOC) indexes can't be converted.
+* A few BYOC environments don't support conversion, and an index in one of them is rejected with a `400`. To ask about yours, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 * An index that already has a document schema can't be converted, and neither can a text index.
 * With on-demand read capacity, the new index can take at most 1,000 GB of source data. For a larger source, set `read_capacity` to [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) in the request, or contact support.
 * The new index can't use the source's name or any name already taken in the project, including by an index an earlier conversion created. A name that's taken is rejected with a `409`. You can convert the same source more than once, as long as each new index has its own name.
@@ -9584,7 +9736,7 @@ These errors are returned when you start a conversion, before a job exists:
 
 | Status | Cause | Fix |
 | - | - | - |
-| `400` | The source is pod-based, BYOC, a text index, or already has a document schema, or the new index has the source's name | The message names the problem |
+| `400` | The source is pod-based, in a BYOC environment that doesn't support conversion, a text index, or already has a document schema, or the new index has the source's name | The message names the problem |
 | `400` | The schema can't hold the source's vectors, or `on_error` isn't `abort` or `continue`. For example, a vector field is missing or doubled, a sparse index's schema has a dense field, a dimension, metric, or embedding doesn't match the source, or the schema has only `_values` and `_sparse_values` | The message names the problem and the value to use |
 | `403` | The organization is on the Starter or Builder plan, the API key can't create indexes, or the project's index quota is exhausted | Upgrade to Standard or Enterprise, use a key with `control::index::create`, or raise the quota |
 | `404` | The source index doesn't exist | Check the index name in the request path |
@@ -10102,23 +10254,13 @@ To turn your source data into vectors, you use an embedding model. You can eithe
 
 ### Integrated embedding
 
-You can get integrated embedding two ways. On a [document index](/guides/search/integrated-embedding), declare a `string` field with `embed` or `sparse_embed` and read and write it through the Documents API. The steps below cover the other way, a legacy integrated index created with `pc.create_index_for_model` and served by the legacy Records API. Either way, Pinecone generates the vectors from your text automatically, both when you upsert and when you search.
+On a document index, declare `embed` (or `sparse_embed`) on a `string` field, and Pinecone generates the vectors from the field's text when you upsert and when you search. You send and query with plain text, and Pinecone uses the same [hosted model](/models/overview) both times. For a step-by-step walkthrough, see the [quickstart](/guides/get-started/quickstart#set-it-up-yourself). For model options, dimensions, and limits, see [Integrated embedding](/guides/search/integrated-embedding).
 
-1. [Create an index](/guides/indexes/create-an-index) that's integrated with one of Pinecone's [hosted embedding models](/guides/indexes/index-configuration#embedding-models).
-2. [Upsert](/guides/data/upsert-data) your source text. Pinecone uses the integrated model to convert the text to vectors automatically.
-3. [Search](/guides/search/search-overview) with a query text. Again, Pinecone uses the integrated model to convert the text to a vector automatically.
-
-> [!NOTE]
->
-> Legacy integrated indexes (created with `create_index_for_model` and served by the legacy Records API) don't support [updating](/guides/data/update-data) or [importing](/guides/data/import-data) with text.
+Legacy integrated indexes created with `create_index_for_model` work differently. See [Create a legacy integrated index](/guides/legacy/records-api/create-an-integrated-index).
 
 ### Bring your own vectors
 
-1. Use an embedding model to convert your text to vectors. The model can be [hosted by Pinecone](/reference/api/latest/inference/generate-vectors) or an external provider.
-2. [Create an index](/guides/indexes/create-an-index) that matches the characteristics of the model.
-3. [Upsert](/guides/data/upsert-data) your vectors directly.
-4. Use the same external embedding model to convert a query to a vector.
-5. [Search](/guides/search/search-overview) with your query vector directly.
+If you generate embeddings yourself, store them in a `dense_vector` field whose dimension and metric match your model. Pinecone doesn't embed anything for you: you embed each document before you upsert it and each query before you search, with the same model. This fits a model Pinecone doesn't host, a model you've fine-tuned, or vectors you've already computed. For the steps, see [Bring your own vectors](/guides/search/bring-your-own-vectors).
 
 ## Metadata
 
@@ -10880,7 +11022,7 @@ Before you can delete such an index, you must first [disable deletion protection
 
 ## Associate an embedding model
 
-On a legacy integrated index, [integrated embedding](/guides/indexes/index-data-overview#integrated-embedding) lets you upsert and search without extra steps for embedding data.
+On a legacy integrated index, [integrated embedding](/guides/legacy/records-api/create-an-integrated-index) lets you upsert and search without extra steps for embedding data.
 
 To configure an existing serverless index for an embedding model, use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation as follows:
 
@@ -11868,9 +12010,9 @@ An index stays on the API it was created with. An index on the legacy Vectors AP
 
 ## Move your data
 
-To move a serverless index without reloading your data, [convert it](/guides/indexes/convert-an-index). Pinecone creates a new document index with the schema you choose and fills it from the source index's records, and the source index is left unchanged. Conversion is available on Standard and Enterprise plans.
+To move a serverless or Bring Your Own Cloud (BYOC) index without reloading your data, [convert it](/guides/indexes/convert-an-index). Pinecone creates a new document index with the schema you choose and fills it from the source index's records, and the source index is left unchanged. Conversion is available on Standard and Enterprise plans.
 
-If you can't convert, such as for a Bring Your Own Cloud (BYOC) index, or you want to reshape your data on the way in, create a new index and load your data into it:
+If you can't convert your index, or you want to reshape your data on the way in, create a new index and load your data into it:
 
 ### 1. Upgrade your SDK
 
@@ -13027,6 +13169,1281 @@ So we need 267 p1.x1 pods. We can reduce that by switching to s1 pods instead, s
 ```
 
 So we estimate that we need 54 s1.x1 pods to store very high dimensional data for the face of each of the bank’s customers.
+
+
+# Create a pod-based index
+Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/create-a-pod-based-index
+
+Create a Pinecone pod-based index. Pod indexes are legacy and unavailable to new customers, and serverless is the current option for new indexes.
+
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
+
+> [!NOTE]
+>
+> SDKs that target API version `2026-07` don't support creating pod-based indexes, and they reject creating an index from a collection. You can still list, describe, and delete existing collections. To create or restore a pod-based index, use an [SDK version](/reference/pinecone-sdks#sdk-versions) that targets an earlier API version, or send an earlier `X-Pinecone-Api-Version` with the REST API. To move a pod-based index to serverless, see [Migrate a pod-based index to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless).
+
+This page shows you how to create a pod-based index. For guidance on serverless indexes, see [Create a serverless index](/guides/indexes/create-an-index).
+
+## Create a pod index
+
+To create a pod index, use the [Create an index](/reference/api/latest/control-plane/create_index) operation as follows:
+
+* Provide a `name` for the index.
+* Specify the `dimension` and `metric` of the vectors you'll store in the index. This should match the dimension and metric supported by your embedding model.
+* Set `spec.environment` to the [environment](/guides/indexes/index-configuration#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
+* Set `spec.pod_type` to the [pod type](/guides/legacy/pod-based-indexes/understanding-pod-based-indexes#pod-types) and [size](/guides/indexes/index-data-overview#pod-size-and-performance) that you want.
+
+Other parameters are optional. See the [API reference](/reference/api/latest/control-plane/create_index) for details.
+
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.create_index(
+  name="docs-example",
+  dimension=1536,
+  metric="cosine",
+  spec=PodSpec(
+    environment="us-west1-gcp",
+    pod_type="p1.x1",
+    pods=1
+  ),
+  deletion_protection="disabled"
+
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await pc.createIndex({
+  name: 'docs-example',
+  dimension: 1536,
+  metric: 'cosine',
+  spec: {
+    pod: {
+      environment: 'us-west1-gcp',
+      podType: 'p1.x1',
+      pods: 1
+    }
+  },
+  deletionProtection: 'disabled',
+});
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+
+public class CreateIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
+                "p1.x1", "cosine", null, null, null, null, null, "disabled", null);
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
+    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    indexName := "docs-example"
+  	metric := pinecone.Dotproduct
+	  deletionProtection := pinecone.DeletionProtectionDisabled
+
+    idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
+        Name:               indexName,
+        Metric:             &metric,
+        Dimension:          1536,
+        Environment:        "us-east1-gcp",
+        PodType:            "p1.x1",
+        DeletionProtection: &deletionProtection,
+    })
+    if err != nil {
+        log.Fatalf("Failed to create pod-based index: %v", err)
+    } else {
+        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
+    }
+}
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s "https://api.pinecone.io/indexes" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+         "name": "docs-example",
+         "dimension": 1536,
+         "metric": "cosine",
+         "spec": {
+            "pod": {
+               "environment": "us-west1-gcp",
+               "pod_type": "p1.x1",
+               "pods": 1
+            }
+         },
+         "deletion_protection": "disabled"
+      }'
+```
+
+## Create a pod index from a collection
+
+You can create a pod-based index from a collection. For more details, see [Restore an index](/guides/legacy/pod-based-indexes/restore-a-pod-based-index).
+
+
+# Manage pod-based indexes
+Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/manage-pod-based-indexes
+
+Manage Pinecone pod-based indexes. Pod indexes are legacy and unavailable to new customers, and serverless is recommended for new projects.
+
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
+
+This page shows you how to manage pod-based indexes.
+
+For guidance on serverless indexes, see [Manage serverless indexes](/guides/indexes/manage-indexes).
+
+## Describe a pod-based index
+
+Use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
+
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.describe_index(name="docs-example")
+
+# Response:
+# {'dimension': 1536,
+#  'host': 'docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io',
+#  'metric': 'cosine',
+#  'name': 'docs-example',
+#  'spec': {'pod': {'environment': 'us-east-1-aws',
+#                   'pod_type': 's1.x1',
+#                   'pods': 1,
+#                   'replicas': 1,
+#                   'shards': 1}},
+#  'status': {'ready': True, 'state': 'Ready'}}
+```
+
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+await pc.describeIndex('docs-example');
+
+// Response:
+// {
+//    "name": "docs-example",
+//    "dimension": 1536,
+//    "metric": "cosine",
+//    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
+//    "deletionProtection": "disabled",
+//    "spec": {
+//       "pod": {
+//          "environment": "us-east-1-aws",
+//          "pod_type": "s1.x1",
+//          "pods": 1,
+//          "replicas": 1,
+//          "shards": 1
+//       }
+//    },
+//    "status": {
+//       "ready": true,
+//       "state": "Ready"
+//    }
+// }
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+import org.openapitools.db_control.client.model.*;
+
+public class DescribeIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOURE_API_KEY").build();
+        IndexModel indexModel = pc.describeIndex("docs-example");
+        System.out.println(indexModel);
+    }
+}
+
+// Response:
+// class IndexModel {
+//     name: docs-example
+//     dimension: 1536
+//     metric: cosine
+//     host: docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io
+//     deletionProtection: disabled
+//     spec: class IndexModelSpec {
+//         serverless: null
+//         pod: class PodSpec {
+//             cloud: aws
+//             region: us-east-1
+//             environment: us-east-1-aws,
+//             podType: s1.x1,
+//             pods: 1,
+//             replicas: 1,
+//             shards: 1
+//         }
+//     }
+//     status: class IndexModelStatus {
+//         ready: true
+//         state: Ready
+//     }
+// }
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func prettifyStruct(obj interface{}) string {
+    bytes, _ := json.MarshalIndent(obj, "", "  ")
+    return string(bytes)
+}
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.DescribeIndex(ctx, "docs-example")
+    if err != nil {
+        log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("index: %v\n", prettifyStruct(idx))
+    }
+}
+
+// Response:
+// index: {
+// 	"name": "docs-example",
+// 	"dimension": 1536,
+// 	"host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
+// 	"metric": "cosine",
+//  "deletion_protection": "disabled",
+// 	"spec": {
+// 	  "pod": {
+//       "environment": "us-east-1-aws",
+//       "pod_type": "s1.x1",
+//       "pods": 1,
+//       "replicas": 1,
+//       "shards": 1
+// 	  }
+// 	},
+// 	"status": {
+// 	  "ready": true,
+// 	  "state": "Ready"
+// 	}
+// }
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2025-10"
+# Response:
+# {
+#    "name": "docs-example",
+#    "metric": "cosine",
+#    "dimension": 1536,
+#    "status": {
+#       "ready": true,
+#       "state": "Ready"
+#    },
+#    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
+#    "spec": {
+#       "pod": {
+#          "environment": "us-east-1-aws",
+#          "pod_type": "s1.x1",
+#          "pods": 1,
+#          "replicas": 1,
+#          "shards": 1
+#       }
+#    }
+# }
+```
+
+> [!WARNING]
+>
+> **Do not target an index by name in production.**
+>
+> When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
+
+## Delete a pod-based index
+
+Use the [Delete an index](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
+
+> [!NOTE]
+>
+> You are billed for a pod-based index even when it's not in use.
+
+```python Python theme={null}
+# pip install pinecone
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.delete_index(name="docs-example")
+```
+
+```javascript JavaScript theme={null}
+// npm install @pinecone-database/pinecone
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await pc.deleteIndex('docs-example');
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+
+public class DeleteIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.deleteIndex("docs-example");
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    indexName := "docs-example"
+
+    err = pc.DeleteIndex(ctx, indexName)
+    if err != nil {
+        log.Fatalf("Failed to delete index: %v", err)
+    } else {
+        fmt.Println("Index \"%v\" deleted successfully", indexName)
+    }
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -i -X DELETE "https://api.pinecone.io/indexes/docs-example" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10"
+```
+
+If deletion protection is enabled on an index, requests to delete it will fail and return a `403 - FORBIDDEN` status with the following error:
+
+```
+Deletion protection is enabled for this index. Disable deletion protection before retrying.
+```
+
+Before you can delete such an index, you must first [disable deletion protection](/guides/indexes/manage-indexes#configure-deletion-protection).
+
+> [!TIP]
+>
+> You can delete an index using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). For the index you want to delete, click the three dots to the right of the index name, then click **Delete**.
+
+## Selective metadata indexing
+
+For pod-based indexes, Pinecone indexes all metadata fields by default. When metadata fields contains many unique values, pod-based indexes will consume significantly more memory, which can lead to performance issues, pod fullness, and a reduction in the number of possible vectors that fit per pod.
+
+To avoid indexing high-cardinality metadata that's not needed for [filtering your queries](/guides/indexes/index-data-overview#metadata) and keep memory utilization low, specify which metadata fields to index using the `metadata_config` parameter.
+
+> [!NOTE]
+>
+> Since high-cardinality metadata doesn't cause high memory utilization in serverless indexes, selective metadata indexing isn't supported.
+
+The value for the `metadata_config` parameter is a JSON object containing the names of the metadata fields to index.
+
+```JSON JSON theme={null}
+{
+    "indexed": [
+        "metadata-field-1",
+        "metadata-field-2",
+        "metadata-field-n"
+    ]
+}
+```
+
+**Example**
+
+The following example creates a pod-based index that only indexes the `genre` metadata field. Queries against this index that filter for the `genre` metadata field may return results; queries that filter for other metadata fields behave as though those fields don't exist.
+
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.create_index(
+  name="docs-example",
+  dimension=1536,
+  metric="cosine",
+  spec=PodSpec(
+    environment="us-west1-gcp",
+    pod_type="p1.x1",
+    pods=1,
+    metadata_config = {
+      "indexed": ["genre"]
+    }
+  ),
+  deletion_protection="disabled"
+
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await pc.createIndex({
+  name: 'docs-example',
+  dimension: 1536,
+  metric: 'cosine',
+  spec: {
+    pod: {
+      environment: 'us-west1-gcp',
+      podType: 'p1.x1',
+      pods: 1,
+      metadata_config: {
+        indexed: ["genre"]
+      }
+    }
+  },
+  deletionProtection: 'disabled',
+});
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+import org.openapitools.db_control.client.model.PodSpecMetadataConfig;
+import java.util.Arrays;
+import java.util.List;
+
+public class CreateIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        PodSpecMetadataConfig podSpecMetadataConfig = new PodSpecMetadataConfig();
+        List<String> indexedItems = Arrays.asList("genre", "year");
+        podSpecMetadataConfig.setIndexed(indexedItems);
+        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
+                "p1.x1", "cosine", null, null, null, podSpecMetadataConfig, null, "disabled", null);
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
+    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    podIndexMetadata := &pinecone.PodSpecMetadataConfig{
+        Indexed: &[]string{"genre"},
+    }
+
+    indexName := "docs-example"
+  	metric := pinecone.Dotproduct
+	deletionProtection := pinecone.DeletionProtectionDisabled
+
+	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
+        Name:               indexName,
+        Metric:             &metric,
+        Dimension:          1536,
+        Environment:        "us-east1-gcp",
+        PodType:            "p1.x1",
+        MetadataConfig:     podIndexMetadata,
+        DeletionProtection: &deletionProtection,
+  	})
+  	if err != nil {
+        log.Fatalf("Failed to create pod-based index: %v", err)
+    } else {
+        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
+    }
+}
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s https://api.pinecone.io/indexes \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+         "name": "docs-example",
+         "dimension": 1536,
+         "metric": "cosine",
+         "spec": {
+            "pod": {
+               "environment": "us-west1-gcp",
+               "pod_type": "p1.x1",
+               "pods": 1,
+               "metadata_config": {
+                  "indexed": ["genre"]
+               }
+            }
+         },
+         "deletion_protection": "disabled"
+      }'
+```
+
+## Prevent index deletion
+
+> [!NOTE]
+>
+> This feature requires [Pinecone API version](/reference/api/versioning) `2024-07`, [Python SDK](/reference/sdks/python/overview) v5.0.0, [Node.js SDK](/reference/sdks/node/overview) v3.0.0, [Java SDK](/reference/sdks/java/overview) v2.0.0, or [Go SDK](/reference/sdks/go/overview) v1.0.0 or later.
+
+You can prevent an index and its data from accidental deleting when [creating a new index](/guides/indexes/create-an-index) or when [configuring an existing index](/guides/legacy/pod-based-indexes/manage-pod-based-indexes). In both cases, you set the `deletion_protection` parameter to `enabled`.
+
+To enable deletion protection when creating a new index:
+
+```python Python theme={null}
+# pip install pinecone
+from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.create_index(
+  name="docs-example",
+  dimension=1536,
+  metric="cosine",
+  spec=PodSpec(
+    environment="us-west1-gcp",
+    pod_type="p1.x1",
+    pods=1
+  ),
+    deletion_protection="enabled"
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await pc.createIndex({
+  name: 'docs-example',
+  dimension: 1536,
+  metric: 'cosine',
+  spec: {
+    pod: {
+      environment: 'us-west1-gcp',
+      podType: 'p1.x1',
+      pods: 1
+    }
+  },
+  deletionProtection: 'enabled',
+});
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+
+public class CreateIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
+                "p1.x1", "cosine", null, null, null, null, null, "enabled", null);
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
+    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    indexName := "docs-example"
+  	metric := pinecone.Dotproduct
+	deletionProtection := pinecone.DeletionProtectionDisabled
+
+	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
+        Name:               indexName,
+        Metric:             &metric,
+        Dimension:          1536,
+        Environment:        "us-east1-gcp",
+        PodType:            "p1.x1",
+        DeletionProtection: &deletionProtection,
+  	})
+  	if err != nil {
+        log.Fatalf("Failed to create pod-based index: %v", err)
+    } else {
+        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
+    }
+}
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s "https://api.pinecone.io/indexes" \
+  -H "Accept: application/json" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+         "name": "docs-example",
+         "dimension": 1536,
+         "metric": "cosine",
+         "spec": {
+            "pod": {
+               "environment": "us-west1-gcp",
+               "pod_type": "p1.x1",
+               "pods": 1
+            }
+         },
+         "deletion_protection": "enabled"
+      }'
+```
+
+To enable deletion protection when configuring an existing index:
+
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.configure_index(
+   name="docs-example", 
+   deletion_protection="enabled"
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+await client.configureIndex('docs-example', { deletionProtection: 'enabled' });
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+
+public class ConfigureIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.configurePodsIndex("docs-example", "enabled");
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "enabled"})
+  	if err != nil {
+        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
+    }
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
+    -H "Content-Type: application/json" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2025-10" \
+    -d '{
+        "deletion_protection": "enabled"
+        }'
+```
+
+When deletion protection is enabled on an index, requests to delete the index fail and return a `403 - FORBIDDEN` status with the following error:
+
+```
+Deletion protection is enabled for this index. Disable deletion protection before retrying.
+```
+
+## Disable deletion protection
+
+Before you can [delete an index](#delete-a-pod-based-index) with deletion protection enabled, you must first disable deletion protection as follows:
+
+```python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.configure_index(
+   name="docs-example", 
+   deletion_protection="disabled"
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+await client.configureIndex('docs-example', { deletionProtection: 'disabled' });
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+
+public class ConfigureIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        pc.configurePodsIndex("docs-example", "disabled");
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "disabled"})
+  	if err != nil {
+        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
+    }
+}
+```
+
+```shell curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
+    -H "Content-Type: application/json" \
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H "X-Pinecone-Api-Version: 2025-10" \
+    -d '{
+        "deletion_protection": "disabled"
+        }'
+```
+
+## Delete an entire namespace
+
+In pod-based indexes, reads and writes share compute resources, so deleting an entire namespace with many records can increase the latency of read operations. In such cases, consider [deleting records in batches](#delete-records-in-batches).
+
+## Delete records in batches
+
+In pod-based indexes, reads and writes share compute resources, so deleting an entire namespace or a large number of records can increase the latency of read operations. To avoid this, delete records in batches of up to 1000, with a brief sleep between requests. Consider using smaller batches if the index has active read traffic.
+
+```python Batch delete a namespace theme={null}
+from pinecone import Pinecone
+import numpy as np
+import time
+
+pc = Pinecone(api_key='API_KEY')
+
+INDEX_NAME = 'INDEX_NAME'
+NAMESPACE = 'NAMESPACE_NAME'
+# Consider using smaller batches if you have a high RPS for read operations
+BATCH = 1000
+
+index = pc.index(name=INDEX_NAME)
+dimensions = index.describe_index_stats()['dimension']
+
+# Create the query vector
+query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
+results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
+
+# Delete in batches until the query returns no results
+while len(results['matches']) > 0:
+    ids = [i['id'] for i in results['matches']]
+    index.delete(ids=ids, namespace=NAMESPACE)
+    time.sleep(0.01)
+    results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
+```
+
+```python Batch delete by metadata theme={null}
+from pinecone import Pinecone
+import numpy as np
+import time
+
+pc = Pinecone(api_key='API_KEY')
+
+INDEX_NAME = 'INDEX_NAME'
+NAMESPACE = 'NAMESPACE_NAME'
+# Consider using smaller batches if you have a high RPS for read operations
+BATCH = 1000
+
+index = pc.index(name=INDEX_NAME)
+dimensions = index.describe_index_stats()['dimension']
+
+METADATA_FILTER = {}
+
+# Create the query vector with a filter
+query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
+results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
+
+# Delete in batches until the query returns no results
+while len(results['matches']) > 0:
+    ids = [i['id'] for i in results['matches']]
+    index.delete(ids=ids, namespace=NAMESPACE)
+    time.sleep(0.01)
+    results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
+```
+
+## Delete records by metadata
+
+> [!NOTE]
+>
+> In pod-based indexes, if you are targeting a large number of records for deletion and the index has active read traffic, consider [deleting records in batches](#delete-records-in-batches).
+
+To delete records from a namespace based on their metadata values, pass a [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions) to the `delete` operation. This deletes all records in the namespace that match the filter expression.
+
+For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
+
+```Python Python theme={null}
+# pip install pinecone
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+# To get the unique host for an index, 
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+index = pc.index(host="INDEX_HOST", grpc=True)
+
+index.delete(
+    filter={
+        "genre": {"$eq": "documentary"}
+    },
+    namespace="example-namespace" 
+)
+```
+
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
+
+// To get the unique host for an index, 
+// see https://docs.pinecone.io/guides/indexes/target-an-index
+const index = pc.index("INDEX_NAME", "INDEX_HOST")
+
+const ns = index.namespace('example-namespace')
+
+await ns.deleteMany({
+  genre: { $eq: "documentary" },
+});
+```
+
+```java Java theme={null}
+import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
+import io.pinecone.clients.Index;
+import io.pinecone.configs.PineconeConfig;
+import io.pinecone.configs.PineconeConnection;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class DeleteExample {
+    public static void main(String[] args) {
+        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
+        // To get the unique host for an index, 
+        // see https://docs.pinecone.io/guides/indexes/target-an-index
+        config.setHost("INDEX_HOST");
+        PineconeConnection connection = new PineconeConnection(config);
+        Index index = new Index(config, connection, "INDEX_NAME");
+        Struct filter = Struct.newBuilder()
+                .putFields("genre", Value.newBuilder()
+                        .setStructValue(Struct.newBuilder()
+                                .putFields("$eq", Value.newBuilder()
+                                        .setStringValue("documentary")
+                                        .build()))
+                        .build())
+                .build();
+        index.deleteByFilter(filter, "example-namespace");
+        
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    // To get the unique host for an index, 
+    // see https://docs.pinecone.io/guides/indexes/target-an-index
+    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
+    if err != nil {
+        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
+  	}
+
+    metadataFilter := map[string]interface{}{
+		"genre": map[string]interface{}{
+			"$eq": "documentary",
+		},
+    }
+
+    filter, err := structpb.NewStruct(metadataFilter)
+    if err != nil {
+        log.Fatalf("Failed to create metadata filter: %v", err)
+    }
+
+    err = idxConnection.DeleteVectorsByFilter(ctx, filter)
+    if err != nil {
+        log.Fatalf("Failed to delete vector(s) with filter %+v: %v", filter, err)
+    }
+}
+```
+
+```bash curl theme={null}
+# To get the unique host for an index,
+# see https://docs.pinecone.io/guides/indexes/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl -i "https://$INDEX_HOST/vectors/delete" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "filter": {"genre": {"$eq": "documentary"}},
+    "namespace": "example-namespace"
+  }'
+```
+
+## Tag an index
+
+When configuring an index, you can tag the index to help with index organization and management. For more details, see [Tag an index](/guides/indexes/manage-indexes#configure-index-tags).
+
+## Manage costs
+
+### Set a project pod limit
+
+To control costs, [project owners](/admin/projects/projects-overview#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
+
+> [tab] Pinecone console
+>
+> 1. Go to [Settings > Projects](https://app.pinecone.io/organizations/-/settings/projects).
+> 2. For the project you want to update, click the **ellipsis (...) menu > Configure**.
+> 3. In the **Pod Limit** section, update the number of pods.
+> 4. Click **Save Changes**.
+
+> [tab] API
+>
+> <token />
+>
+> ```bash curl theme={null}
+> PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+> PROJECT_ID="YOUR_PROJECT_ID"
+>
+> curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+>   -H "accept: application/json" \
+>   -H "Content-Type: application/json" \
+> 	-H "X-Pinecone-Api-Version: 2025-10" \
+>   -d '{
+>     "max_pods": 5
+>     }'
+> ```
+>
+> The example returns a response like the following:
+>
+> ```json theme={null}
+> {
+>   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+>   "name": "example-project",
+>   "max_pods": 5,
+>   "force_encryption_with_cmek": false,
+>   "organization_id": "string",
+>   "created_at": "2025-03-17T00:42:31.912Z"
+> }
+> ```
+
+### Back up inactive pod-based indexes
+
+For each pod-based index, billing is determined by the per-minute price per pod and the number of pods the index uses, regardless of index activity. When a pod-based index isn't in use, [back it up using collections](/guides/legacy/pod-based-indexes/back-up-a-pod-based-index) and delete the inactive index. When you're ready to use the vectors again, you can [create a new index from the collection](/guides/legacy/pod-based-indexes/create-a-pod-based-index#create-a-pod-index-from-a-collection). This new index can also use a different index type or size. Because it's relatively cheap to store collections, you can reduce costs by only running an index when it's in use.
+
+### Choose the right index type and size
+
+Pod sizes are designed for different applications, and some are more expensive than others. [Choose the appropriate pod type and size](/guides/legacy/pod-based-indexes/choose-a-pod-type-and-size), so you pay for the resources you need. For example, the `s1` pod type provides large storage capacity and lower overall costs with slightly higher query latencies than `p1` pods. By switching to a different pod type, you may be able to reduce costs while still getting the performance your application needs.
+
+> [!NOTE]
+>
+> For pod-based indexes, project owners can [set limits for the total number of pods](/guides/legacy/pod-based-indexes/manage-pod-based-indexes#set-a-project-pod-limit) across all indexes in the project. The default pod limit is 5.
+
+## Monitor performance
+
+Pinecone generates time-series performance metrics for each Pinecone index. You can monitor these metrics directly in the Pinecone console or with tools like Prometheus or Datadog.
+
+### Use the Pinecone Console
+
+To view performance metrics in the Pinecone console:
+
+1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+2. Select the project containing the index you want to monitor.
+3. Go to **Database > Indexes**.
+4. Select the index.
+5. Go to the **Metrics** tab.
+
+### Use Datadog
+
+To monitor Pinecone with Datadog, use Datadog's [Pinecone integration](/integrations/datadog).
+
+> [!NOTE]
+>
+> This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
+
+### Use Prometheus
+
+> [!NOTE]
+>
+> This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/). When using [Bring Your Own Cloud](/guides/production/bring-your-own-cloud), you must configure Prometheus monitoring within your VPC.
+
+To monitor all pod-based indexes in a specific region of a project, insert the following snippet into the [`scrape_configs`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config) section of your `prometheus.yml` file and update it with values for your Prometheus integration:
+
+```YAML theme={null}
+scrape_configs:
+  - job_name: "pinecone-pod-metrics"
+    scheme: https
+    metrics_path: '/metrics'
+    authorization:
+      credentials: API_KEY
+    static_configs:
+      - targets: ["metrics.ENVIRONMENT.pinecone.io" ]
+```
+
+* Replace `API_KEY` with an API key for the project you want to monitor. If necessary, you can [create an new API key](/reference/api/authentication) in the Pinecone console.
+
+* Replace `ENVIRONMENT` with the [environment](/guides/legacy/pod-based-indexes/understanding-pod-based-indexes#pod-environments) of the pod-based indexes you want to monitor.
+
+For more configuration details, see the [Prometheus docs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
+
+#### Available metrics
+
+The following metrics are available when you integrate Pinecone with Prometheus:
+
+| Name | Type | Description |
+| :- | :- | :- |
+| `pinecone_vector_count` | gauge | The number of records per pod in the index. |
+| `pinecone_request_count_total` | counter | The number of data plane calls made by clients. |
+| `pinecone_request_error_count_total` | counter | The number of data plane calls made by clients that resulted in errors. |
+| `pinecone_request_latency_seconds` | histogram | The distribution of server-side processing latency for pinecone data plane calls. |
+| `pinecone_index_fullness` | gauge | The fullness of the index on a scale of 0 to 1. |
+
+#### Metric labels
+
+Each metric contains the following labels:
+
+| Label | Description |
+| :- | :- |
+| `pid` | Process identifier. |
+| `index_name` | Name of the index to which the metric applies. |
+| `project_name` | Name of the project containing the index. |
+| `request_type` | Type of request: `upsert`, `delete`, `fetch`, `query`, or `describe_index_stats`. This label is included only in `pinecone_request_*` metrics. |
+
+#### Example queries
+
+Return the average latency in seconds for all requests against the Pinecone index `docs-example`:
+
+```shell theme={null}
+avg by (request_type) (pinecone_request_latency_seconds{index_name="docs-example"})
+```
+
+Return the vector count for the Pinecone index `docs-example`:
+
+```shell theme={null}
+sum ((avg by (app) (pinecone_vector_count{index_name="docs-example"})))
+```
+
+Return the total number of requests against the Pinecone index `docs-example` over one minute:
+
+```shell theme={null}
+sum by (request_type)(increase(pinecone_request_count_total{index_name="docs-example"}[60s]))
+```
+
+Return the total number of upsert requests against the Pinecone index `docs-example` over one minute:
+
+```shell theme={null}
+sum by (request_type)(increase(pinecone_request_count_total{index_name="docs-example", request_type="upsert"}[60s]))
+```
+
+Return the total errors returned by the Pinecone index `docs-example` over one minute:
+
+```shell theme={null}
+sum by (request_type) (increase(pinecone_request_error_count{
+      index_name="docs-example"}[60s]))
+```
+
+Return the index fullness metric for the Pinecone index `docs-example`:
+
+```
+round(max (pinecone_index_fullness{index_name="docs-example"} * 100))
+```
+
+## Troubleshooting
+
+### Index fullness errors
+
+Serverless indexes automatically scale as needed.
+
+However, pod-based indexes can run out of capacity. When that happens, upserting new records will fail with the following error:
+
+```console console theme={null}
+Index is full, cannot accept data.
+```
+
+### High-cardinality metadata and over-provisioning
+
+This [Loom video walkthrough](https://www.loom.com/share/ce6f5dd0c3e14ba0b988fe32d96b703a?sid=48646dfe-c10c-4143-82c6-031fefe05a68) shows you how to manage two scenarios:
+
+* The first scenario involves customers loading an index replete with high cardinality metadata. This can trigger a series of unforeseen challenges, and hence, it's vital to comprehend how to manage this situation effectively. This methodology can be applied whenever you need to change your metadata configuration.
+
+* The second scenario that we will address involves customers who have over-provisioned the number of pods they need. More specifically, we will discuss the process of re-scaling an index in instances where the customer has previously scaled vertically and now desires to scale the index back down.
 
 
 # Migrate a pod-based index to serverless
@@ -26680,6 +28097,390 @@ Prepare to [monitor the production performance and availability of your indexes]
 If you need help, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket), or talk to the [Pinecone community](https://www.pinecone.io/community/). Ensure that your [plan tier](https://www.pinecone.io/pricing/) matches the support and availability SLAs you need. This may require you to upgrade to Enterprise.
 
 
+# Bring your own vectors
+Source: https://docs.pinecone.io/guides/search/bring-your-own-vectors
+
+Store embeddings you generate yourself in a document index, then search them by vector similarity with a query vector from the same model.
+
+If you already generate embeddings, store them in a `dense_vector` field on a document index. This fits when you use a model Pinecone doesn't host, a model you've fine-tuned, or vectors you've already computed. You embed every document before you upsert it and every query before you search. To have Pinecone embed your text instead, use [integrated embedding](/guides/search/integrated-embedding).
+
+For a legacy vector index, see [Create a vector index](/guides/legacy/vectors-api/create-a-vector-index), [Upsert vectors](/guides/legacy/vectors-api/upsert-vectors), and [Query vectors](/guides/legacy/vectors-api/query-vectors).
+
+The steps use an SDK or the REST API, with your API key in the `PINECONE_API_KEY` environment variable. To set them up, see the [quickstart](/guides/get-started/quickstart#set-it-up-yourself). The JavaScript examples use top-level `await`, so run them as an ES module. The Go examples build one `main` function: the first block is the full program, and each later block adds to it.
+
+### 1. Generate embeddings for your documents
+
+Embed each document's text with the model of your choice. So the example runs as is, it uses Pinecone's hosted `llama-text-embed-v2` model through the [standalone embedding API](/reference/api/latest/inference/generate-vectors), which returns 1,024-dimension vectors. Set `input_type` to `passage` for documents.
+
+```python Python theme={null}
+import os, time
+from pinecone import Pinecone, SchemaBuilder
+
+pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+texts = [
+    "Refund requests must be submitted within 30 days of purchase.",
+    "Enterprise customers get support with a 4-hour response time.",
+    "Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.",
+    "To reset your password, open Settings and choose Security.",
+    "Order 88231 shipped on 2026-08-20 via express courier.",
+]
+
+embeddings = pc.inference.embed(
+    model="llama-text-embed-v2",
+    inputs=texts,
+    parameters={"input_type": "passage"},
+)
+```
+
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone(); // reads PINECONE_API_KEY
+
+const texts = [
+  'Refund requests must be submitted within 30 days of purchase.',
+  'Enterprise customers get support with a 4-hour response time.',
+  'Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.',
+  'To reset your password, open Settings and choose Security.',
+  'Order 88231 shipped on 2026-08-20 via express courier.',
+];
+
+const embeddings = await pc.inference.embed({
+  model: 'llama-text-embed-v2',
+  inputs: texts,
+  parameters: { inputType: 'passage' },
+});
+```
+
+```go Go theme={null}
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+	ctx := context.Background()
+
+	pc, err := pinecone.NewClient(pinecone.NewClientParams{}) // reads PINECONE_API_KEY
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	texts := []string{
+		"Refund requests must be submitted within 30 days of purchase.",
+		"Enterprise customers get support with a 4-hour response time.",
+		"Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.",
+		"To reset your password, open Settings and choose Security.",
+		"Order 88231 shipped on 2026-08-20 via express courier.",
+	}
+
+	embeddings, err := pc.Inference.Embed(ctx, &pinecone.EmbedRequest{
+		Model:      "llama-text-embed-v2",
+		TextInputs: texts,
+		Parameters: pinecone.EmbedParameters{"input_type": "passage"},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+```bash curl theme={null}
+TEXTS='[
+  "Refund requests must be submitted within 30 days of purchase.",
+  "Enterprise customers get support with a 4-hour response time.",
+  "Error E1042: the connection timed out after 30 seconds. Retry with a longer timeout.",
+  "To reset your password, open Settings and choose Security.",
+  "Order 88231 shipped on 2026-08-20 via express courier."
+]'
+
+# Embed the texts and save the response (requires jq)
+jq -n --argjson t "$TEXTS" \
+  '{model: "llama-text-embed-v2", parameters: {input_type: "passage"}, inputs: [$t[] | {text: .}]}' |
+curl -s -X POST "https://api.pinecone.io/embed" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d @- > embeddings.json
+```
+
+### 2. Create an index with a dense\_vector field
+
+Declare a `dense_vector` field whose `dimension` matches your model's output and whose `metric` matches what the model was trained for. `llama-text-embed-v2` uses `cosine`. This schema also declares `chunk_text` with `full_text_search`, so the index stores each document's text and can rank it by keyword too. Fields you don't declare are stored as metadata.
+
+```python Python theme={null}
+schema = (
+    SchemaBuilder()
+      .add_dense_vector_field("embedding", dimension=1024, metric="cosine")
+      .add_string_field("chunk_text", full_text_search={"language": "en"})
+      .build()
+)
+if not pc.indexes.exists(name="byo-vectors"):
+    pc.indexes.create(name="byo-vectors", schema=schema)
+
+while not pc.indexes.describe(name="byo-vectors").status.ready:
+    time.sleep(2)
+
+index = pc.index(name="byo-vectors")
+```
+
+```javascript JavaScript theme={null}
+await pc.indexes.create({
+  name: 'byo-vectors',
+  schema: {
+    fields: {
+      embedding: { type: 'dense_vector', dimension: 1024, metric: 'cosine' },
+      chunk_text: { type: 'string', fullTextSearch: { language: 'en' } },
+    },
+  },
+  waitUntilReady: true,
+  suppressConflicts: true,
+});
+
+const index = pc.index({ name: 'byo-vectors', namespace: '__default__' });
+```
+
+```go Go theme={null}
+// Add "time" to your imports, then add to the main function:
+if _, err := pc.DescribeIndex(ctx, "byo-vectors"); err != nil {
+	language := "en"
+	_, err = pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
+		Name: "byo-vectors",
+		Schema: pinecone.IndexSchema{
+			Fields: map[string]pinecone.IndexSchemaField{
+				"embedding": {DenseVector: &pinecone.DenseVectorField{
+					Dimension: 1024,
+					Metric:    pinecone.IndexMetricCosine,
+				}},
+				"chunk_text": {String: &pinecone.StringField{
+					FullTextSearch: &pinecone.FullTextSearchConfig{Language: &language},
+				}},
+			},
+		},
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+idx, err := pc.DescribeIndex(ctx, "byo-vectors")
+for err == nil && !idx.Status.Ready {
+	time.Sleep(2 * time.Second)
+	idx, err = pc.DescribeIndex(ctx, "byo-vectors")
+}
+if err != nil {
+	log.Fatal(err)
+}
+
+index, err := pc.Index(pinecone.NewIndexConnParams{Host: idx.Host, Namespace: "__default__"})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+```bash curl theme={null}
+curl -X POST "https://api.pinecone.io/indexes" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "name": "byo-vectors",
+    "schema": {
+      "fields": {
+        "embedding": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" },
+        "chunk_text": { "type": "string", "full_text_search": { "language": "en" } }
+      }
+    }
+  }'
+
+# Wait until the index is ready, then save its host
+until curl -s "https://api.pinecone.io/indexes/byo-vectors" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" | jq -e '.status.ready' > /dev/null; do
+  sleep 2
+done
+
+INDEX_HOST=$(curl -s "https://api.pinecone.io/indexes/byo-vectors" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-07" | jq -r '.host')
+```
+
+### 3. Upsert documents with their vectors
+
+Put each vector on the `embedding` field, next to the text it came from. Each vector must have exactly 1,024 values. Documents are indexed asynchronously, so the code waits 10 seconds before you search.
+
+```python Python theme={null}
+index.documents.upsert(
+    namespace="__default__",
+    documents=[
+        {"_id": str(i + 1), "chunk_text": text, "embedding": e.values}
+        for i, (text, e) in enumerate(zip(texts, embeddings))
+    ],
+)
+
+time.sleep(10)  # documents are indexed asynchronously, so wait a moment
+```
+
+```javascript JavaScript theme={null}
+await index.documents.upsert({
+  documents: texts.map((text, i) => ({
+    _id: String(i + 1),
+    chunk_text: text,
+    embedding: embeddings.data[i].values,
+  })),
+});
+
+await new Promise((resolve) => setTimeout(resolve, 10000)); // documents are indexed asynchronously, so wait a moment
+```
+
+```go Go theme={null}
+// Add "strconv" to your imports, then add to the main function:
+var documents []pinecone.Document
+for i, text := range texts {
+	documents = append(documents, pinecone.Document{
+		"_id":        strconv.Itoa(i + 1),
+		"chunk_text": text,
+		"embedding":  embeddings.Data[i].DenseEmbedding.Values,
+	})
+}
+
+if _, err := index.UpsertDocuments(ctx, &pinecone.UpsertDocumentsRequest{Documents: documents}); err != nil {
+	log.Fatal(err)
+}
+
+time.Sleep(10 * time.Second) // documents are indexed asynchronously, so wait a moment
+```
+
+```bash curl theme={null}
+jq -n --argjson t "$TEXTS" --slurpfile e embeddings.json \
+  '{documents: [range(0; $t | length) as $i |
+    {_id: ($i + 1 | tostring), chunk_text: $t[$i], embedding: $e[0].data[$i].values}]}' |
+curl -X POST "https://$INDEX_HOST/namespaces/__default__/documents/upsert" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d @-
+
+sleep 10  # documents are indexed asynchronously, so wait a moment
+```
+
+### 4. Embed your query
+
+Embed the query with the same model you used for the documents. Vectors from different models aren't comparable, so a different model returns meaningless rankings. For `llama-text-embed-v2`, set `input_type` to `query`.
+
+```python Python theme={null}
+query = pc.inference.embed(
+    model="llama-text-embed-v2",
+    inputs=["how do I get my money back?"],
+    parameters={"input_type": "query"},
+)
+```
+
+```javascript JavaScript theme={null}
+const query = await pc.inference.embed({
+  model: 'llama-text-embed-v2',
+  inputs: ['how do I get my money back?'],
+  parameters: { inputType: 'query' },
+});
+```
+
+```go Go theme={null}
+// Add to the main function:
+query, err := pc.Inference.Embed(ctx, &pinecone.EmbedRequest{
+	Model:      "llama-text-embed-v2",
+	TextInputs: []string{"how do I get my money back?"},
+	Parameters: pinecone.EmbedParameters{"input_type": "query"},
+})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+```bash curl theme={null}
+curl -s -X POST "https://api.pinecone.io/embed" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d '{
+    "model": "llama-text-embed-v2",
+    "parameters": { "input_type": "query" },
+    "inputs": [{ "text": "how do I get my money back?" }]
+  }' | jq '.data[0].values' > query.json
+```
+
+### 5. Search by vector similarity
+
+Score by `dense_vector` and pass the query vector in `values`. Pinecone ranks documents by the field's `metric`.
+
+```python Python theme={null}
+results = index.documents.search(
+    namespace="__default__",
+    top_k=3,
+    score_by=[{"type": "dense_vector", "fields": ["embedding"], "values": query.data[0].values}],
+    include_fields=["chunk_text"],
+)
+
+for m in results.matches:
+    print(m.id, f"{m.score:.3f}", m.chunk_text)
+```
+
+```javascript JavaScript theme={null}
+const results = await index.documents.search({
+  topK: 3,
+  scoreBy: [{ type: 'dense_vector', fields: ['embedding'], values: query.data[0].values }],
+  includeFields: ['chunk_text'],
+});
+
+for (const m of results.matches) {
+  console.log(m._id, m._score.toFixed(3), m.chunk_text);
+}
+```
+
+```go Go theme={null}
+// Add "fmt" to your imports, then add to the main function:
+queryVector := query.Data[0].DenseEmbedding.Values
+results, err := index.SearchDocuments(ctx, &pinecone.SearchDocumentsRequest{
+	TopK: 3,
+	ScoreBy: []pinecone.DocumentScoringMethod{
+		{Type: pinecone.DocumentScoringTypeDenseVector, Fields: []string{"embedding"}, Values: &queryVector},
+	},
+	IncludeFields: []string{"chunk_text"},
+})
+if err != nil {
+	log.Fatal(err)
+}
+
+for _, m := range results.Matches {
+	fmt.Printf("%s %.3f %s\n", m.Id, *m.Score, m.Fields["chunk_text"])
+}
+```
+
+```bash curl theme={null}
+jq -n --slurpfile q query.json \
+  '{top_k: 3, score_by: [{type: "dense_vector", fields: ["embedding"], values: $q[0]}], include_fields: ["chunk_text"]}' |
+curl -X POST "https://$INDEX_HOST/namespaces/__default__/documents/search" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
+  -d @-
+```
+
+The refund policy ranks first:
+
+```text Output theme={null}
+1 0.417 Refund requests must be submitted within 30 days of purchase.
+4 0.119 To reset your password, open Settings and choose Security.
+2 0.089 Enterprise customers get support with a 4-hour response time.
+```
+
+Because `chunk_text` declares `full_text_search`, the same index also supports a [full-text search](/guides/search/full-text-search) on the text, and either search accepts a [metadata filter](/guides/search/filter-by-metadata).
+
+
 # Filter by metadata
 Source: https://docs.pinecone.io/guides/search/filter-by-metadata
 
@@ -30813,1281 +32614,6 @@ curl -i -X DELETE "https://api.pinecone.io/collections/example-collection" \
 > You can delete a collection using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups).
 
 
-# Create a pod-based index
-Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/create-a-pod-based-index
-
-Create a Pinecone pod-based index. Pod indexes are legacy and unavailable to new customers, and serverless is the current option for new indexes.
-
-> [!WARNING]
->
-> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-
-> [!NOTE]
->
-> SDKs that target API version `2026-07` don't support creating pod-based indexes, and they reject creating an index from a collection. You can still list, describe, and delete existing collections. To create or restore a pod-based index, use an [SDK version](/reference/pinecone-sdks#sdk-versions) that targets an earlier API version, or send an earlier `X-Pinecone-Api-Version` with the REST API. To move a pod-based index to serverless, see [Migrate a pod-based index to serverless](/guides/legacy/pod-based-indexes/migrate-a-pod-based-index-to-serverless).
-
-This page shows you how to create a pod-based index. For guidance on serverless indexes, see [Create a serverless index](/guides/indexes/create-an-index).
-
-## Create a pod index
-
-To create a pod index, use the [Create an index](/reference/api/latest/control-plane/create_index) operation as follows:
-
-* Provide a `name` for the index.
-* Specify the `dimension` and `metric` of the vectors you'll store in the index. This should match the dimension and metric supported by your embedding model.
-* Set `spec.environment` to the [environment](/guides/indexes/index-configuration#cloud-regions) where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
-* Set `spec.pod_type` to the [pod type](/guides/legacy/pod-based-indexes/understanding-pod-based-indexes#pod-types) and [size](/guides/indexes/index-data-overview#pod-size-and-performance) that you want.
-
-Other parameters are optional. See the [API reference](/reference/api/latest/control-plane/create_index) for details.
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.create_index(
-  name="docs-example",
-  dimension=1536,
-  metric="cosine",
-  spec=PodSpec(
-    environment="us-west1-gcp",
-    pod_type="p1.x1",
-    pods=1
-  ),
-  deletion_protection="disabled"
-
-)
-```
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
-
-await pc.createIndex({
-  name: 'docs-example',
-  dimension: 1536,
-  metric: 'cosine',
-  spec: {
-    pod: {
-      environment: 'us-west1-gcp',
-      podType: 'p1.x1',
-      pods: 1
-    }
-  },
-  deletionProtection: 'disabled',
-});
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class CreateIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
-                "p1.x1", "cosine", null, null, null, null, null, "disabled", null);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
-    "github.com/pinecone-io/go-pinecone/v6/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    indexName := "docs-example"
-  	metric := pinecone.Dotproduct
-	  deletionProtection := pinecone.DeletionProtectionDisabled
-
-    idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
-        Name:               indexName,
-        Metric:             &metric,
-        Dimension:          1536,
-        Environment:        "us-east1-gcp",
-        PodType:            "p1.x1",
-        DeletionProtection: &deletionProtection,
-    })
-    if err != nil {
-        log.Fatalf("Failed to create pod-based index: %v", err)
-    } else {
-        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
-    }
-}
-```
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s "https://api.pinecone.io/indexes" \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
-  -d '{
-         "name": "docs-example",
-         "dimension": 1536,
-         "metric": "cosine",
-         "spec": {
-            "pod": {
-               "environment": "us-west1-gcp",
-               "pod_type": "p1.x1",
-               "pods": 1
-            }
-         },
-         "deletion_protection": "disabled"
-      }'
-```
-
-## Create a pod index from a collection
-
-You can create a pod-based index from a collection. For more details, see [Restore an index](/guides/legacy/pod-based-indexes/restore-a-pod-based-index).
-
-
-# Manage pod-based indexes
-Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/manage-pod-based-indexes
-
-Manage Pinecone pod-based indexes. Pod indexes are legacy and unavailable to new customers, and serverless is recommended for new projects.
-
-> [!WARNING]
->
-> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-
-This page shows you how to manage pod-based indexes.
-
-For guidance on serverless indexes, see [Manage serverless indexes](/guides/indexes/manage-indexes).
-
-## Describe a pod-based index
-
-Use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.describe_index(name="docs-example")
-
-# Response:
-# {'dimension': 1536,
-#  'host': 'docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io',
-#  'metric': 'cosine',
-#  'name': 'docs-example',
-#  'spec': {'pod': {'environment': 'us-east-1-aws',
-#                   'pod_type': 's1.x1',
-#                   'pods': 1,
-#                   'replicas': 1,
-#                   'shards': 1}},
-#  'status': {'ready': True, 'state': 'Ready'}}
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone';
-
-const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-
-await pc.describeIndex('docs-example');
-
-// Response:
-// {
-//    "name": "docs-example",
-//    "dimension": 1536,
-//    "metric": "cosine",
-//    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
-//    "deletionProtection": "disabled",
-//    "spec": {
-//       "pod": {
-//          "environment": "us-east-1-aws",
-//          "pod_type": "s1.x1",
-//          "pods": 1,
-//          "replicas": 1,
-//          "shards": 1
-//       }
-//    },
-//    "status": {
-//       "ready": true,
-//       "state": "Ready"
-//    }
-// }
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-import org.openapitools.db_control.client.model.*;
-
-public class DescribeIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOURE_API_KEY").build();
-        IndexModel indexModel = pc.describeIndex("docs-example");
-        System.out.println(indexModel);
-    }
-}
-
-// Response:
-// class IndexModel {
-//     name: docs-example
-//     dimension: 1536
-//     metric: cosine
-//     host: docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io
-//     deletionProtection: disabled
-//     spec: class IndexModelSpec {
-//         serverless: null
-//         pod: class PodSpec {
-//             cloud: aws
-//             region: us-east-1
-//             environment: us-east-1-aws,
-//             podType: s1.x1,
-//             pods: 1,
-//             replicas: 1,
-//             shards: 1
-//         }
-//     }
-//     status: class IndexModelStatus {
-//         ready: true
-//         state: Ready
-//     }
-// }
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "encoding/json"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func prettifyStruct(obj interface{}) string {
-    bytes, _ := json.MarshalIndent(obj, "", "  ")
-    return string(bytes)
-}
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    idx, err := pc.DescribeIndex(ctx, "docs-example")
-    if err != nil {
-        log.Fatalf("Failed to describe index \"%v\": %v", idx.Name, err)
-    } else {
-        fmt.Printf("index: %v\n", prettifyStruct(idx))
-    }
-}
-
-// Response:
-// index: {
-// 	"name": "docs-example",
-// 	"dimension": 1536,
-// 	"host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
-// 	"metric": "cosine",
-//  "deletion_protection": "disabled",
-// 	"spec": {
-// 	  "pod": {
-//       "environment": "us-east-1-aws",
-//       "pod_type": "s1.x1",
-//       "pods": 1,
-//       "replicas": 1,
-//       "shards": 1
-// 	  }
-// 	},
-// 	"status": {
-// 	  "ready": true,
-// 	  "state": "Ready"
-// 	}
-// }
-```
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10"
-# Response:
-# {
-#    "name": "docs-example",
-#    "metric": "cosine",
-#    "dimension": 1536,
-#    "status": {
-#       "ready": true,
-#       "state": "Ready"
-#    },
-#    "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
-#    "spec": {
-#       "pod": {
-#          "environment": "us-east-1-aws",
-#          "pod_type": "s1.x1",
-#          "pods": 1,
-#          "replicas": 1,
-#          "shards": 1
-#       }
-#    }
-# }
-```
-
-> [!WARNING]
->
-> **Do not target an index by name in production.**
->
-> When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
-
-## Delete a pod-based index
-
-Use the [Delete an index](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
-
-> [!NOTE]
->
-> You are billed for a pod-based index even when it's not in use.
-
-```python Python theme={null}
-# pip install pinecone
-from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.delete_index(name="docs-example")
-```
-
-```javascript JavaScript theme={null}
-// npm install @pinecone-database/pinecone
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
-
-await pc.deleteIndex('docs-example');
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class DeleteIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        pc.deleteIndex("docs-example");
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    indexName := "docs-example"
-
-    err = pc.DeleteIndex(ctx, indexName)
-    if err != nil {
-        log.Fatalf("Failed to delete index: %v", err)
-    } else {
-        fmt.Println("Index \"%v\" deleted successfully", indexName)
-    }
-}
-```
-
-```shell curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -i -X DELETE "https://api.pinecone.io/indexes/docs-example" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10"
-```
-
-If deletion protection is enabled on an index, requests to delete it will fail and return a `403 - FORBIDDEN` status with the following error:
-
-```
-Deletion protection is enabled for this index. Disable deletion protection before retrying.
-```
-
-Before you can delete such an index, you must first [disable deletion protection](/guides/indexes/manage-indexes#configure-deletion-protection).
-
-> [!TIP]
->
-> You can delete an index using the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). For the index you want to delete, click the three dots to the right of the index name, then click **Delete**.
-
-## Selective metadata indexing
-
-For pod-based indexes, Pinecone indexes all metadata fields by default. When metadata fields contains many unique values, pod-based indexes will consume significantly more memory, which can lead to performance issues, pod fullness, and a reduction in the number of possible vectors that fit per pod.
-
-To avoid indexing high-cardinality metadata that's not needed for [filtering your queries](/guides/indexes/index-data-overview#metadata) and keep memory utilization low, specify which metadata fields to index using the `metadata_config` parameter.
-
-> [!NOTE]
->
-> Since high-cardinality metadata doesn't cause high memory utilization in serverless indexes, selective metadata indexing isn't supported.
-
-The value for the `metadata_config` parameter is a JSON object containing the names of the metadata fields to index.
-
-```JSON JSON theme={null}
-{
-    "indexed": [
-        "metadata-field-1",
-        "metadata-field-2",
-        "metadata-field-n"
-    ]
-}
-```
-
-**Example**
-
-The following example creates a pod-based index that only indexes the `genre` metadata field. Queries against this index that filter for the `genre` metadata field may return results; queries that filter for other metadata fields behave as though those fields don't exist.
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.create_index(
-  name="docs-example",
-  dimension=1536,
-  metric="cosine",
-  spec=PodSpec(
-    environment="us-west1-gcp",
-    pod_type="p1.x1",
-    pods=1,
-    metadata_config = {
-      "indexed": ["genre"]
-    }
-  ),
-  deletion_protection="disabled"
-
-)
-```
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
-
-await pc.createIndex({
-  name: 'docs-example',
-  dimension: 1536,
-  metric: 'cosine',
-  spec: {
-    pod: {
-      environment: 'us-west1-gcp',
-      podType: 'p1.x1',
-      pods: 1,
-      metadata_config: {
-        indexed: ["genre"]
-      }
-    }
-  },
-  deletionProtection: 'disabled',
-});
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-import org.openapitools.db_control.client.model.PodSpecMetadataConfig;
-import java.util.Arrays;
-import java.util.List;
-
-public class CreateIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        PodSpecMetadataConfig podSpecMetadataConfig = new PodSpecMetadataConfig();
-        List<String> indexedItems = Arrays.asList("genre", "year");
-        podSpecMetadataConfig.setIndexed(indexedItems);
-        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
-                "p1.x1", "cosine", null, null, null, podSpecMetadataConfig, null, "disabled", null);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
-    "github.com/pinecone-io/go-pinecone/v6/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    podIndexMetadata := &pinecone.PodSpecMetadataConfig{
-        Indexed: &[]string{"genre"},
-    }
-
-    indexName := "docs-example"
-  	metric := pinecone.Dotproduct
-	deletionProtection := pinecone.DeletionProtectionDisabled
-
-	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
-        Name:               indexName,
-        Metric:             &metric,
-        Dimension:          1536,
-        Environment:        "us-east1-gcp",
-        PodType:            "p1.x1",
-        MetadataConfig:     podIndexMetadata,
-        DeletionProtection: &deletionProtection,
-  	})
-  	if err != nil {
-        log.Fatalf("Failed to create pod-based index: %v", err)
-    } else {
-        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
-    }
-}
-```
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s https://api.pinecone.io/indexes \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
-  -d '{
-         "name": "docs-example",
-         "dimension": 1536,
-         "metric": "cosine",
-         "spec": {
-            "pod": {
-               "environment": "us-west1-gcp",
-               "pod_type": "p1.x1",
-               "pods": 1,
-               "metadata_config": {
-                  "indexed": ["genre"]
-               }
-            }
-         },
-         "deletion_protection": "disabled"
-      }'
-```
-
-## Prevent index deletion
-
-> [!NOTE]
->
-> This feature requires [Pinecone API version](/reference/api/versioning) `2024-07`, [Python SDK](/reference/sdks/python/overview) v5.0.0, [Node.js SDK](/reference/sdks/node/overview) v3.0.0, [Java SDK](/reference/sdks/java/overview) v2.0.0, or [Go SDK](/reference/sdks/go/overview) v1.0.0 or later.
-
-You can prevent an index and its data from accidental deleting when [creating a new index](/guides/indexes/create-an-index) or when [configuring an existing index](/guides/legacy/pod-based-indexes/manage-pod-based-indexes). In both cases, you set the `deletion_protection` parameter to `enabled`.
-
-To enable deletion protection when creating a new index:
-
-```python Python theme={null}
-# pip install pinecone
-from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.create_index(
-  name="docs-example",
-  dimension=1536,
-  metric="cosine",
-  spec=PodSpec(
-    environment="us-west1-gcp",
-    pod_type="p1.x1",
-    pods=1
-  ),
-    deletion_protection="enabled"
-)
-```
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
-
-await pc.createIndex({
-  name: 'docs-example',
-  dimension: 1536,
-  metric: 'cosine',
-  spec: {
-    pod: {
-      environment: 'us-west1-gcp',
-      podType: 'p1.x1',
-      pods: 1
-    }
-  },
-  deletionProtection: 'enabled',
-});
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class CreateIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        pc.createPodsIndex("docs-example", 1536, "us-west1-gcp",
-                "p1.x1", "cosine", null, null, null, null, null, "enabled", null);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    // CreatePodIndex was removed in v7 (API version 2026-07). Use v6 to create pod-based indexes.
-    "github.com/pinecone-io/go-pinecone/v6/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    indexName := "docs-example"
-  	metric := pinecone.Dotproduct
-	deletionProtection := pinecone.DeletionProtectionDisabled
-
-	idx, err := pc.CreatePodIndex(ctx, &pinecone.CreatePodIndexRequest{
-        Name:               indexName,
-        Metric:             &metric,
-        Dimension:          1536,
-        Environment:        "us-east1-gcp",
-        PodType:            "p1.x1",
-        DeletionProtection: &deletionProtection,
-  	})
-  	if err != nil {
-        log.Fatalf("Failed to create pod-based index: %v", err)
-    } else {
-        fmt.Printf("Successfully created pod-based index: %v", idx.Name)
-    }
-}
-```
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s "https://api.pinecone.io/indexes" \
-  -H "Accept: application/json" \
-  -H "Content-Type: application/json" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
-  -d '{
-         "name": "docs-example",
-         "dimension": 1536,
-         "metric": "cosine",
-         "spec": {
-            "pod": {
-               "environment": "us-west1-gcp",
-               "pod_type": "p1.x1",
-               "pods": 1
-            }
-         },
-         "deletion_protection": "enabled"
-      }'
-```
-
-To enable deletion protection when configuring an existing index:
-
-```python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.configure_index(
-   name="docs-example", 
-   deletion_protection="enabled"
-)
-```
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone';
-
-const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-
-await client.configureIndex('docs-example', { deletionProtection: 'enabled' });
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class ConfigureIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        pc.configurePodsIndex("docs-example", "enabled");
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "enabled"})
-  	if err != nil {
-        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
-    } else {
-        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
-    }
-}
-```
-
-```shell curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
-    -d '{
-        "deletion_protection": "enabled"
-        }'
-```
-
-When deletion protection is enabled on an index, requests to delete the index fail and return a `403 - FORBIDDEN` status with the following error:
-
-```
-Deletion protection is enabled for this index. Disable deletion protection before retrying.
-```
-
-## Disable deletion protection
-
-Before you can [delete an index](#delete-a-pod-based-index) with deletion protection enabled, you must first disable deletion protection as follows:
-
-```python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.configure_index(
-   name="docs-example", 
-   deletion_protection="disabled"
-)
-```
-
-```javascript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone';
-
-const client = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-
-await client.configureIndex('docs-example', { deletionProtection: 'disabled' });
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class ConfigureIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        pc.configurePodsIndex("docs-example", "disabled");
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{DeletionProtection: "disabled"})
-  	if err != nil {
-        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
-    } else {
-        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
-    }
-}
-```
-
-```shell curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example" \
-    -H "Content-Type: application/json" \
-    -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
-    -d '{
-        "deletion_protection": "disabled"
-        }'
-```
-
-## Delete an entire namespace
-
-In pod-based indexes, reads and writes share compute resources, so deleting an entire namespace with many records can increase the latency of read operations. In such cases, consider [deleting records in batches](#delete-records-in-batches).
-
-## Delete records in batches
-
-In pod-based indexes, reads and writes share compute resources, so deleting an entire namespace or a large number of records can increase the latency of read operations. To avoid this, delete records in batches of up to 1000, with a brief sleep between requests. Consider using smaller batches if the index has active read traffic.
-
-```python Batch delete a namespace theme={null}
-from pinecone import Pinecone
-import numpy as np
-import time
-
-pc = Pinecone(api_key='API_KEY')
-
-INDEX_NAME = 'INDEX_NAME'
-NAMESPACE = 'NAMESPACE_NAME'
-# Consider using smaller batches if you have a high RPS for read operations
-BATCH = 1000
-
-index = pc.index(name=INDEX_NAME)
-dimensions = index.describe_index_stats()['dimension']
-
-# Create the query vector
-query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
-results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
-
-# Delete in batches until the query returns no results
-while len(results['matches']) > 0:
-    ids = [i['id'] for i in results['matches']]
-    index.delete(ids=ids, namespace=NAMESPACE)
-    time.sleep(0.01)
-    results = index.query(vector=query_vector, namespace=NAMESPACE, top_k=BATCH)
-```
-
-```python Batch delete by metadata theme={null}
-from pinecone import Pinecone
-import numpy as np
-import time
-
-pc = Pinecone(api_key='API_KEY')
-
-INDEX_NAME = 'INDEX_NAME'
-NAMESPACE = 'NAMESPACE_NAME'
-# Consider using smaller batches if you have a high RPS for read operations
-BATCH = 1000
-
-index = pc.index(name=INDEX_NAME)
-dimensions = index.describe_index_stats()['dimension']
-
-METADATA_FILTER = {}
-
-# Create the query vector with a filter
-query_vector = np.random.uniform(-1, 1, size=dimensions).tolist()
-results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
-
-# Delete in batches until the query returns no results
-while len(results['matches']) > 0:
-    ids = [i['id'] for i in results['matches']]
-    index.delete(ids=ids, namespace=NAMESPACE)
-    time.sleep(0.01)
-    results = index.query(vector=query_vector, namespace=NAMESPACE, filter=METADATA_FILTER, top_k=BATCH)
-```
-
-## Delete records by metadata
-
-> [!NOTE]
->
-> In pod-based indexes, if you are targeting a large number of records for deletion and the index has active read traffic, consider [deleting records in batches](#delete-records-in-batches).
-
-To delete records from a namespace based on their metadata values, pass a [metadata filter expression](/guides/indexes/index-data-overview#metadata-filter-expressions) to the `delete` operation. This deletes all records in the namespace that match the filter expression.
-
-For example, the following code deletes all records with a `genre` field set to `documentary` from namespace `example-namespace`:
-
-```Python Python theme={null}
-# pip install pinecone
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-# To get the unique host for an index, 
-# see https://docs.pinecone.io/guides/indexes/target-an-index
-index = pc.index(host="INDEX_HOST", grpc=True)
-
-index.delete(
-    filter={
-        "genre": {"$eq": "documentary"}
-    },
-    namespace="example-namespace" 
-)
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({ apiKey: "YOUR_API_KEY" })
-
-// To get the unique host for an index, 
-// see https://docs.pinecone.io/guides/indexes/target-an-index
-const index = pc.index("INDEX_NAME", "INDEX_HOST")
-
-const ns = index.namespace('example-namespace')
-
-await ns.deleteMany({
-  genre: { $eq: "documentary" },
-});
-```
-
-```java Java theme={null}
-import com.google.protobuf.Struct;
-import com.google.protobuf.Value;
-import io.pinecone.clients.Index;
-import io.pinecone.configs.PineconeConfig;
-import io.pinecone.configs.PineconeConnection;
-
-import java.util.Arrays;
-import java.util.List;
-
-public class DeleteExample {
-    public static void main(String[] args) {
-        PineconeConfig config = new PineconeConfig("YOUR_API_KEY");
-        // To get the unique host for an index, 
-        // see https://docs.pinecone.io/guides/indexes/target-an-index
-        config.setHost("INDEX_HOST");
-        PineconeConnection connection = new PineconeConnection(config);
-        Index index = new Index(config, connection, "INDEX_NAME");
-        Struct filter = Struct.newBuilder()
-                .putFields("genre", Value.newBuilder()
-                        .setStructValue(Struct.newBuilder()
-                                .putFields("$eq", Value.newBuilder()
-                                        .setStringValue("documentary")
-                                        .build()))
-                        .build())
-                .build();
-        index.deleteByFilter(filter, "example-namespace");
-        
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    // To get the unique host for an index, 
-    // see https://docs.pinecone.io/guides/indexes/target-an-index
-    idxConnection, err := pc.Index(pinecone.NewIndexConnParams{Host: "INDEX_HOST", Namespace: "example-namespace"})
-    if err != nil {
-        log.Fatalf("Failed to create IndexConnection for Host: %v", err)
-  	}
-
-    metadataFilter := map[string]interface{}{
-		"genre": map[string]interface{}{
-			"$eq": "documentary",
-		},
-    }
-
-    filter, err := structpb.NewStruct(metadataFilter)
-    if err != nil {
-        log.Fatalf("Failed to create metadata filter: %v", err)
-    }
-
-    err = idxConnection.DeleteVectorsByFilter(ctx, filter)
-    if err != nil {
-        log.Fatalf("Failed to delete vector(s) with filter %+v: %v", filter, err)
-    }
-}
-```
-
-```bash curl theme={null}
-# To get the unique host for an index,
-# see https://docs.pinecone.io/guides/indexes/target-an-index
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_HOST="INDEX_HOST"
-
-curl -i "https://$INDEX_HOST/vectors/delete" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "X-Pinecone-Api-Version: 2026-07" \
-  -d '{
-    "filter": {"genre": {"$eq": "documentary"}},
-    "namespace": "example-namespace"
-  }'
-```
-
-## Tag an index
-
-When configuring an index, you can tag the index to help with index organization and management. For more details, see [Tag an index](/guides/indexes/manage-indexes#configure-index-tags).
-
-## Manage costs
-
-### Set a project pod limit
-
-To control costs, [project owners](/admin/projects/projects-overview#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
-
-> [tab] Pinecone console
->
-> 1. Go to [Settings > Projects](https://app.pinecone.io/organizations/-/settings/projects).
-> 2. For the project you want to update, click the **ellipsis (...) menu > Configure**.
-> 3. In the **Pod Limit** section, update the number of pods.
-> 4. Click **Save Changes**.
-
-> [tab] API
->
-> <token />
->
-> ```bash curl theme={null}
-> PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-> PROJECT_ID="YOUR_PROJECT_ID"
->
-> curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
->   -H "accept: application/json" \
->   -H "Content-Type: application/json" \
-> 	-H "X-Pinecone-Api-Version: 2025-10" \
->   -d '{
->     "max_pods": 5
->     }'
-> ```
->
-> The example returns a response like the following:
->
-> ```json theme={null}
-> {
->   "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
->   "name": "example-project",
->   "max_pods": 5,
->   "force_encryption_with_cmek": false,
->   "organization_id": "string",
->   "created_at": "2025-03-17T00:42:31.912Z"
-> }
-> ```
-
-### Back up inactive pod-based indexes
-
-For each pod-based index, billing is determined by the per-minute price per pod and the number of pods the index uses, regardless of index activity. When a pod-based index isn't in use, [back it up using collections](/guides/legacy/pod-based-indexes/back-up-a-pod-based-index) and delete the inactive index. When you're ready to use the vectors again, you can [create a new index from the collection](/guides/legacy/pod-based-indexes/create-a-pod-based-index#create-a-pod-index-from-a-collection). This new index can also use a different index type or size. Because it's relatively cheap to store collections, you can reduce costs by only running an index when it's in use.
-
-### Choose the right index type and size
-
-Pod sizes are designed for different applications, and some are more expensive than others. [Choose the appropriate pod type and size](/guides/legacy/pod-based-indexes/choose-a-pod-type-and-size), so you pay for the resources you need. For example, the `s1` pod type provides large storage capacity and lower overall costs with slightly higher query latencies than `p1` pods. By switching to a different pod type, you may be able to reduce costs while still getting the performance your application needs.
-
-> [!NOTE]
->
-> For pod-based indexes, project owners can [set limits for the total number of pods](/guides/legacy/pod-based-indexes/manage-pod-based-indexes#set-a-project-pod-limit) across all indexes in the project. The default pod limit is 5.
-
-## Monitor performance
-
-Pinecone generates time-series performance metrics for each Pinecone index. You can monitor these metrics directly in the Pinecone console or with tools like Prometheus or Datadog.
-
-### Use the Pinecone Console
-
-To view performance metrics in the Pinecone console:
-
-1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-2. Select the project containing the index you want to monitor.
-3. Go to **Database > Indexes**.
-4. Select the index.
-5. Go to the **Metrics** tab.
-
-### Use Datadog
-
-To monitor Pinecone with Datadog, use Datadog's [Pinecone integration](/integrations/datadog).
-
-> [!NOTE]
->
-> This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
-
-### Use Prometheus
-
-> [!NOTE]
->
-> This feature is available on [Standard and Enterprise plans](https://www.pinecone.io/pricing/). When using [Bring Your Own Cloud](/guides/production/bring-your-own-cloud), you must configure Prometheus monitoring within your VPC.
-
-To monitor all pod-based indexes in a specific region of a project, insert the following snippet into the [`scrape_configs`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config) section of your `prometheus.yml` file and update it with values for your Prometheus integration:
-
-```YAML theme={null}
-scrape_configs:
-  - job_name: "pinecone-pod-metrics"
-    scheme: https
-    metrics_path: '/metrics'
-    authorization:
-      credentials: API_KEY
-    static_configs:
-      - targets: ["metrics.ENVIRONMENT.pinecone.io" ]
-```
-
-* Replace `API_KEY` with an API key for the project you want to monitor. If necessary, you can [create an new API key](/reference/api/authentication) in the Pinecone console.
-
-* Replace `ENVIRONMENT` with the [environment](/guides/legacy/pod-based-indexes/understanding-pod-based-indexes#pod-environments) of the pod-based indexes you want to monitor.
-
-For more configuration details, see the [Prometheus docs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
-
-#### Available metrics
-
-The following metrics are available when you integrate Pinecone with Prometheus:
-
-| Name | Type | Description |
-| :- | :- | :- |
-| `pinecone_vector_count` | gauge | The number of records per pod in the index. |
-| `pinecone_request_count_total` | counter | The number of data plane calls made by clients. |
-| `pinecone_request_error_count_total` | counter | The number of data plane calls made by clients that resulted in errors. |
-| `pinecone_request_latency_seconds` | histogram | The distribution of server-side processing latency for pinecone data plane calls. |
-| `pinecone_index_fullness` | gauge | The fullness of the index on a scale of 0 to 1. |
-
-#### Metric labels
-
-Each metric contains the following labels:
-
-| Label | Description |
-| :- | :- |
-| `pid` | Process identifier. |
-| `index_name` | Name of the index to which the metric applies. |
-| `project_name` | Name of the project containing the index. |
-| `request_type` | Type of request: `upsert`, `delete`, `fetch`, `query`, or `describe_index_stats`. This label is included only in `pinecone_request_*` metrics. |
-
-#### Example queries
-
-Return the average latency in seconds for all requests against the Pinecone index `docs-example`:
-
-```shell theme={null}
-avg by (request_type) (pinecone_request_latency_seconds{index_name="docs-example"})
-```
-
-Return the vector count for the Pinecone index `docs-example`:
-
-```shell theme={null}
-sum ((avg by (app) (pinecone_vector_count{index_name="docs-example"})))
-```
-
-Return the total number of requests against the Pinecone index `docs-example` over one minute:
-
-```shell theme={null}
-sum by (request_type)(increase(pinecone_request_count_total{index_name="docs-example"}[60s]))
-```
-
-Return the total number of upsert requests against the Pinecone index `docs-example` over one minute:
-
-```shell theme={null}
-sum by (request_type)(increase(pinecone_request_count_total{index_name="docs-example", request_type="upsert"}[60s]))
-```
-
-Return the total errors returned by the Pinecone index `docs-example` over one minute:
-
-```shell theme={null}
-sum by (request_type) (increase(pinecone_request_error_count{
-      index_name="docs-example"}[60s]))
-```
-
-Return the index fullness metric for the Pinecone index `docs-example`:
-
-```
-round(max (pinecone_index_fullness{index_name="docs-example"} * 100))
-```
-
-## Troubleshooting
-
-### Index fullness errors
-
-Serverless indexes automatically scale as needed.
-
-However, pod-based indexes can run out of capacity. When that happens, upserting new records will fail with the following error:
-
-```console console theme={null}
-Index is full, cannot accept data.
-```
-
-### High-cardinality metadata and over-provisioning
-
-This [Loom video walkthrough](https://www.loom.com/share/ce6f5dd0c3e14ba0b988fe32d96b703a?sid=48646dfe-c10c-4143-82c6-031fefe05a68) shows you how to manage two scenarios:
-
-* The first scenario involves customers loading an index replete with high cardinality metadata. This can trigger a series of unforeseen challenges, and hence, it's vital to comprehend how to manage this situation effectively. This methodology can be applied whenever you need to change your metadata configuration.
-
-* The second scenario that we will address involves customers who have over-provisioned the number of pods they need. More specifically, we will discuss the process of re-scaling an index in instances where the customer has previously scaled vertically and now desires to scale the index back down.
-
-
 # Restore a pod-based index
 Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/restore-a-pod-based-index
 
@@ -32742,6 +33268,20 @@ Source: https://docs.pinecone.io/reference/api/2026-07/admin/projects/update-a-p
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml patch /admin/projects/{project_id}
 Update a project's name, maximum number of Pods, or customer-managed encryption key (CMEK).
+
+
+# Create a service account
+Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/create-a-service-account
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml post /admin/service-accounts
+Create a service account with optional initial role bindings; the client secret is returned only once.
+
+
+# Get service account details
+Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/get-service-account-details
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml get /admin/service-accounts/{service_account_id}
+Get a service account by ID; the client secret is returned only from create and rotate-secret requests.
 
 
 # List service accounts
@@ -39622,25 +40162,11 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 List role bindings in the caller's organization, optionally filtered by principal, resource, and role.
 
 
-# Create a service account
-Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/create-a-service-account
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml post /admin/service-accounts
-Create a service account with optional initial role bindings; the client secret is returned only once.
-
-
 # Delete a service account
 Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/delete-a-service-account
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml delete /admin/service-accounts/{service_account_id}
 Delete a service account and its role bindings; tokens it minted are revoked within a few seconds.
-
-
-# Get service account details
-Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/get-service-account-details
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml get /admin/service-accounts/{service_account_id}
-Get a service account by ID; the client secret is returned only from create and rotate-secret requests.
 
 
 # Rotate a service account's OAuth client secret
@@ -63611,7 +64137,7 @@ In a new Codex session, ask:
 Use Pinecone's quickstart to create an index, add sample data, and run my first search.
 ```
 
-Codex invokes the `pinecone:quickstart` skill, checks the connection to the Pinecone MCP server, creates an integrated index, upserts sample records, and runs a search.
+Codex invokes the `pinecone:quickstart` skill, which creates an index, loads sample data, and runs a search.
 
 ## Available skills
 
@@ -66538,6 +67064,18 @@ The Pinecone integration with Unstructured lets you load data from any source or
 [Get started](https://docs.unstructured.io/ui/destinations/pinecone-destination-quickstart)
 
 
+# Vercel
+Source: https://docs.pinecone.io/integrations/vercel
+
+Use the Pinecone integration for Vercel to connect your Vercel AI projects to Pinecone indexes for long-term memory and search.
+
+Vercel is a developer platform with the tools, workflows, and infrastructure you need to build and deploy web apps without additional configuration. Vercel supports popular frontend frameworks out of the box, and its infrastructure is globally distributed to serve content from data centers near your users.
+
+Pinecone provides long-term memory for your Vercel AI projects. The integration lets you set up and authenticate a connection to your Pinecone data and indexes, then scale to billions of data points. It's self-serve. You can keep the default settings or configure optional advanced settings.
+
+[Get started](https://vercel.com/integrations/pinecone)
+
+
 # VoltAgent
 Source: https://docs.pinecone.io/integrations/voltagent
 
@@ -66558,6 +67096,22 @@ The integration provides:
 Use this integration to build AI agents that search and retrieve information from Pinecone indexes, with full observability and control over the retrieval process.
 
 [Get started](https://voltagent.dev/docs/rag/pinecone/)
+
+
+# Zapier
+Source: https://docs.pinecone.io/integrations/zapier
+
+Use Zapier to connect Pinecone to 6,000+ apps, trigger workflows when an index changes, and add data or run searches without writing code.
+
+[Zapier](https://zapier.com/) lets you connect Pinecone with thousands of popular apps and automate your work without writing code.
+
+With this integration, Pinecone can trigger workflows when your index status changes, and other apps can command Pinecone to perform actions. This means you can automatically add or remove data, run searches, or manage indexes based on events happening in your other tools.
+
+For example, you might use this integration to automatically add spreadsheet entries to your Pinecone index, or build a bot that searches for answers and posts them directly to your team chat. The integration brings Pinecone search and data operations into your existing workflows.
+
+[Get started](https://zapier.com/apps/pinecone/integrations)
+
+[View setup guide](https://help.zapier.com/hc/articles/38950923151117)
 
 
 # Model gallery
@@ -81019,18 +81573,6 @@ Together, Twelve Labs and Pinecone let developers process and understand video c
 For more information and code examples, see the [Twelve Labs documentation](https://docs.twelvelabs.io).
 
 
-# Vercel
-Source: https://docs.pinecone.io/integrations/vercel
-
-Use the Pinecone integration for Vercel to connect your Vercel AI projects to Pinecone indexes for long-term memory and search.
-
-Vercel is a developer platform with the tools, workflows, and infrastructure you need to build and deploy web apps without additional configuration. Vercel supports popular frontend frameworks out of the box, and its infrastructure is globally distributed to serve content from data centers near your users.
-
-Pinecone provides long-term memory for your Vercel AI projects. The integration lets you set up and authenticate a connection to your Pinecone data and indexes, then scale to billions of data points. It's self-serve. You can keep the default settings or configure optional advanced settings.
-
-[Get started](https://vercel.com/integrations/pinecone)
-
-
 # Voyage AI
 Source: https://docs.pinecone.io/integrations/voyage
 
@@ -81232,22 +81774,6 @@ When you're finished with the index, delete it.
 ```Python Python theme={null}
 pc.delete_index(name=index_name)
 ```
-
-
-# Zapier
-Source: https://docs.pinecone.io/integrations/zapier
-
-Use Zapier to connect Pinecone to 6,000+ apps, trigger workflows when an index changes, and add data or run searches without writing code.
-
-[Zapier](https://zapier.com/) lets you connect Pinecone with thousands of popular apps and automate your work without writing code.
-
-With this integration, Pinecone can trigger workflows when your index status changes, and other apps can command Pinecone to perform actions. This means you can automatically add or remove data, run searches, or manage indexes based on events happening in your other tools.
-
-For example, you might use this integration to automatically add spreadsheet entries to your Pinecone index, or build a bot that searches for answers and posts them directly to your team chat. The integration brings Pinecone search and data operations into your existing workflows.
-
-[Get started](https://zapier.com/apps/pinecone/integrations)
-
-[View setup guide](https://help.zapier.com/hc/articles/38950923151117)
 
 
 # Create an API key
@@ -83203,6 +83729,31 @@ During a [chat](/guides/assistant/chat-standard-interface), the assistant proces
 After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
 
 
+# Assistant examples
+Source: https://docs.pinecone.io/examples/assistant
+
+Notebooks and Next.js sample apps for Pinecone Assistant: quickstart, context snippet retrieval, and a full-stack chat UI with citations.
+
+## [Quickstart](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-quickstart.ipynb)
+
+Get started with Pinecone Assistant
+
+Python
+
+## [Retrieve context snippets](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-retrieve-context-snippets.ipynb)
+
+Retrieve relevant information snippets for your queries
+
+Python
+
+## [Pinecone Assistant](/examples/sample-apps/pinecone-assistant)
+
+Connect your existing Pinecone Assistant to a chat interface with citations and file references.
+
+![](/images/examples/nextjs.svg)
+NextJS
+
+
 # Create an API key
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_api_key
 
@@ -84632,31 +85183,6 @@ Source: https://docs.pinecone.io/api-reference/tasks/list-tasks-project-wide-pag
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks
 Task records across the project, newest first. Filter by workflow, state, or context, and page with `limit` plus `page` or `offset`.
-
-# Assistant examples
-Source: https://docs.pinecone.io/examples/assistant
-
-Notebooks and Next.js sample apps for Pinecone Assistant: quickstart, context snippet retrieval, and a full-stack chat UI with citations.
-
-## [Quickstart](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-quickstart.ipynb)
-
-Get started with Pinecone Assistant
-
-Python
-
-## [Retrieve context snippets](https://colab.research.google.com/github/pinecone-io/examples/blob/master/docs/assistant-retrieve-context-snippets.ipynb)
-
-Retrieve relevant information snippets for your queries
-
-Python
-
-## [Pinecone Assistant](/examples/sample-apps/pinecone-assistant)
-
-Connect your existing Pinecone Assistant to a chat interface with citations and file references.
-
-![](/images/examples/nextjs.svg)
-NextJS
-
 
 # Deploy Nexus BYOC
 Source: https://docs.pinecone.io/guides/nexus/byoc/deploy
@@ -87697,34 +88223,6 @@ https://YOUR_WORKSPACE_HOST/api
 ## Versioning
 
 Nexus uses date-based versioning through the `X-Pinecone-Api-Version` header. Send the version you built against, for example `2026-07`. Omit it to use the default version. The older `/api/v0` path stays functional as a legacy alias.
-
-
-# Pinecone Assistant architecture
-Source: https://docs.pinecone.io/reference/architecture/assistant-architecture
-
-Pinecone Assistant architecture overview covering document ingestion, chunking, vector retrieval, and LLM response generation for RAG.
-
-This page describes the architecture for [Pinecone Assistant](/guides/assistant/overview).
-
-## Overview
-
-[Pinecone Assistant](/guides/assistant/overview) runs as a managed service on the Pinecone platform. It uses a combination of machine learning models and information retrieval techniques to provide responses that are informed by your documents. The assistant is designed to be easy to use, requiring minimal setup and no machine learning expertise.
-
-Pinecone Assistant simplifies complex tasks like data chunking, vector search, embedding, and querying while ensuring privacy and security.
-
-![](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/assistant-architecture_light.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=fac1ffcff3fc58b8c48abb41070f76bd)
-
-## Data ingestion
-
-When a [document is uploaded](/guides/assistant/manage-files), the assistant processes the content by chunking it into smaller parts and generating [vector embeddings](https://www.pinecone.io/learn/vector-embeddings-for-developers/) for each chunk. These embeddings are stored in an [index](/guides/indexes/index-data-overview), making them ready for retrieval.
-
-## Data retrieval
-
-During a [chat](/guides/assistant/chat-standard-interface), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
-
-## Response generation
-
-After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
 
 
 # pg_pinecone operator runbook

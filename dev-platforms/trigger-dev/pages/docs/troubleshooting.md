@@ -51,6 +51,13 @@ If you see "Connection error" when running `trigger login` (or "Failed to create
 2. **VPN or firewall:** Disconnect from VPN or check firewall/proxy; try `npx trigger.dev@latest login --log-level debug` for more detail.
 3. **TLS / certificate store:** Node may use a different CA store than your OS (e.g. `curl` works but the CLI fails). Try `export NODE_EXTRA_CA_CERTS=/etc/ssl/cert.pem` (macOS/Linux) then login again, or reinstall Node so it gets updated certs. Behind a corporate proxy or custom CA? Set `NODE_EXTRA_CA_CERTS` to that CA file.
 
+### `personal_access_token_expired` or `cli_login_expired`
+
+If a request fails with `401` and one of these codes, the token has expired:
+
+* **`personal_access_token_expired`**: a personal access token from the dashboard reached the end of the lifetime chosen when it was created. Create a new one on the [Personal Access Tokens](https://cloud.trigger.dev/account/tokens) page and replace the old one wherever it's stored. See [PAT expiry](/docs/management/authentication#pat-expiry).
+* **`cli_login_expired`**: a CLI or MCP login went unused for 7 days. Run `npx trigger.dev@latest login`. With a CLI version before 4.8.4, `login` can't replace an expired login, so run `trigger.dev logout` first. See [CLI login expiry](/docs/cli-login-commands#login-expiry).
+
 ### Runs never dequeue in dev
 
 If runs sit in the queue and never start while running `trigger.dev dev`, check whether you have more than one local instance running against the same project. Each project has a single dev environment, and only one `trigger.dev dev` instance can consume from it at a time, so a second instance causes runs to be split between them and some appear stuck. Keep a single `trigger.dev dev` running per project. [Upvote isolated dev sessions](https://triggerdev.featurebase.app/p/isolated-dev-sessions-for-multiple-local-trigger-dev-instances) if you need to run multiple local instances.
@@ -413,7 +420,7 @@ Or change the tsconfig jsx setting:
 
 This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER\_SECRET\_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
 
-```ts theme={"theme":"css-variables"}
+```ts theme={"theme":"css-variables"} theme={"theme":"css-variables"}
 export const dynamic = "force-dynamic";
 ```
 
@@ -423,12 +430,12 @@ An issue can sometimes arise when you try to pass a function directly to the `on
 
 This works:
 
-```tsx theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
 <Button onClick={() => myTask()}>Trigger my task</Button>
 ```
 
 Whereas this does not work:
 
-```tsx theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
 <Button onClick={myTask}>Trigger my task</Button>
 ```

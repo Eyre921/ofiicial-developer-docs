@@ -30,7 +30,7 @@ For each issue, the page displays:
 
 For error issues, to see the stack trace of the latest event, you can hover over the issue title. You can also hover over the colored square to the left of the issue information to see the error level (error, info, fatal, warning, debug, or sample) of the latest event:
 
-You can save your issue queries and access them later by clicking the "Saved Searches" button in the header. Learn more in [Saved Searches](https://docs.sentry.io/concepts/search/saved-searches.md). You can also add issues data to your [custom dashboards](https://docs.sentry.io/product/dashboards/custom-dashboards.md) as widgets using the [dataset selector](https://docs.sentry.io/product/dashboards/widget-builder.md#choose-your-dataset).
+You can save your issue queries as [Issue Views](https://docs.sentry.io/product/issues/issue-views.md) and open them later from the **Issues** sidebar. You can also add issues data to your [custom dashboards](https://docs.sentry.io/product/dashboards/custom-dashboards.md) as widgets using the [dataset selector](https://docs.sentry.io/product/dashboards/widget-builder.md#choose-your-dataset).
 
 When you click on an issue on the main **Issues** page, the **Issue Details** page for that issue is displayed. Learn more in [Issue Details](https://docs.sentry.io/product/issues/issue-details.md).
 
@@ -46,13 +46,14 @@ Sentry creates issues for more than just errors. The **Issues** page sidebar gro
 
 ## [Issue Triage](https://docs.sentry.io/product/issues.md#issue-triage)
 
-From the **Issues** page, you can begin to triage. The page is organized into tabs, each corresponding to a filtered list of issues, and these different lists help you with triaging:
+From the **Issues** page, you can begin to triage. The **Feed** shows all unresolved issues (`is:unresolved`) by default. Use the sidebar categories to narrow it to one kind of problem, or search with one of these filters:
 
-* All Unresolved (`is:unresolved`): All unresolved issues, including issues that need review.
-* For Review (`is:unresolved is:for_review`). Also called **Review List**, for-review issues are a subset of all unresolved issues and can include new issues or regressions that haven't been reviewed yet.
-* Regressed (`is:regressed`): All regressed issues; resolved issues that have come up again.
-* Archived (`is:archived`): All archived issues.
-* Escalating (`is:escalating`): All escalating issues; previously archived issues that have exceeded their forecasted event volume.
+* `is:for_review`: Also called **Review List**, for-review issues are a subset of all unresolved issues and can include new issues or regressions that haven't been reviewed yet.
+* `is:regressed`: All regressed issues; resolved issues that have come up again.
+* `is:archived`: All archived issues.
+* `is:escalating`: All escalating issues; previously archived issues that have exceeded their forecasted event volume.
+
+To keep a list you use often, save it as an [Issue View](https://docs.sentry.io/product/issues/issue-views.md).
 
 Learn more about triaging issues and their different states in [Issue States and Triage](https://docs.sentry.io/product/issues/states-triage.md).
 
@@ -66,7 +67,7 @@ Change how issues are sorted in the issues stream by selecting from the sort dro
 
 * **Last Seen**: The most recent events are shown first.
 
-* **First Seen**: The newest issues are shown first.
+* **Age**: The newest issues are shown first.
 
 * **Trends**: New issues and escalating issues (with event volumes trending upward) are shown first. Older issues and issues with fewer recent events are sorted lower. The ranking currently relies on three primary factors:
 

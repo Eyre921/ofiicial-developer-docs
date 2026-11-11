@@ -41,7 +41,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "gpt-5.5",
+  model: "gpt-6.1-sol",
   tools: [getWeather],
 });
 
@@ -237,7 +237,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "azure_openai:gpt-5.5",
+  model: "azure_openai:gpt-6.1-sol",
   tools: [getWeather],
 });
 
@@ -265,7 +265,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "bedrock:gpt-5.5",
+  model: "bedrock:gpt-6.1-sol",
   tools: [getWeather],
 });
 

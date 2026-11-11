@@ -24,7 +24,7 @@ import { createDeepAgent } from "deepagents";
 
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [search, fetchUrl, runQuery],
 });
 ```
@@ -173,7 +173,7 @@ const internetSearch = tool(
 );
 
 const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools: [internetSearch],
 });
 ```
@@ -468,7 +468,7 @@ const client = new MultiServerMCPClient({
 const tools = await client.getTools();
 
 const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
+  model: "openai:gpt-6.1-sol",
   tools,
 });
 

@@ -92,7 +92,7 @@ post "/my/webhook/url" do
   event = client.v1.events.retrieve(event_json["id"])
 
   if event.type == 'review.closed'
-    review = event.object
+    review = event.data.object
     if review.reason == 'approved'
       pi = client.v1.payment_intents.retrieve(review.payment_intent)
       client.v1.payment_intents.capture(pi.id)

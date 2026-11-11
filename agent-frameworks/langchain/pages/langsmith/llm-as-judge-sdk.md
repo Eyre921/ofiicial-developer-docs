@@ -56,7 +56,7 @@ for the answer is logically valid and consistent with the question and the answe
 
     # Call the LLM to judge the output
     response = oai_client.beta.chat.completions.parse(
-        model="gpt-5.5",
+        model="gpt-6.1-sol",
         messages=[{"role": "system", "content": instructions}, {"role": "user", "content": msg}],
         response_format=Response
     )
@@ -117,7 +117,7 @@ actual answer is semantically equivalent to the expected answer."""
     )
 
     response = oai_client.beta.chat.completions.parse(
-        model="gpt-5.5",
+        model="gpt-6.1-sol",
         messages=[{"role": "system", "content": instructions}, {"role": "user", "content": msg}],
         response_format=Response,
     )
@@ -177,7 +177,7 @@ actual answer is semantically equivalent to the expected answer.`;
   const msg = `Question: ${inputs.question}\nExpected answer: ${referenceOutputs?.answer}\nActual answer: ${outputs.answer}`;
 
   const response = await oaiClient.beta.chat.completions.parse({
-    model: "gpt-5.5",
+    model: "gpt-6.1-sol",
     messages: [
       { role: "system", content: instructions },
       { role: "user", content: msg },

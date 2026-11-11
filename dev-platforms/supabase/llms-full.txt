@@ -287,23 +287,23 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 
 ## Pick your agent
 
-- **[Antigravity](https://supabase.com/docs/guides/ai-tools/plugins):** Experience liftoff with the next-gen agent platform.
-- **[Claude Code](https://supabase.com/docs/guides/ai-tools/plugins):** Work with Claude directly in your codebase, from your terminal, IDE, and more.
-- **[Codex](https://supabase.com/docs/guides/ai-tools/plugins):** A lightweight coding agent that runs in your terminal.
-- **[Cursor](https://supabase.com/docs/guides/ai-tools/plugins):** Your coding agent for building ambitious software.
-- **[Devin Desktop](https://supabase.com/docs/guides/ai-tools/mcp):** The first agentic IDE. Tomorrow's editor, today.
-- **[Factory](https://supabase.com/docs/guides/ai-tools/mcp):** A self-improving system for your SDLC.
-- **[fx](https://supabase.com/docs/guides/ai-tools/mcp):** Connect using the Supabase MCP server or plugin.
-- **[Gemini CLI](https://supabase.com/docs/guides/ai-tools/plugins):** Build, debug & deploy with AI.
-- **[GitHub Copilot](https://supabase.com/docs/guides/ai-tools/plugins):** Your AI accelerator for every workflow, from the editor to the enterprise.
-- **[Goose](https://supabase.com/docs/guides/ai-tools/mcp):** Your native open source AI agent — desktop app, CLI, and API.
-- **[Grok](https://supabase.com/docs/guides/ai-tools/plugins):** Connect using the Supabase MCP server or plugin.
-- **[Kimi Code](https://supabase.com/docs/guides/ai-tools/plugins):** Engineered to drop into any dev workflow and get programming tasks done fast.
-- **[Kiro](https://supabase.com/docs/guides/ai-tools/mcp):** Move beyond AI coding to agentic engineering.
-- **[omp](https://supabase.com/docs/guides/ai-tools/plugins):** A coding agent with the IDE wired in.
-- **[OpenCode](https://supabase.com/docs/guides/ai-tools/mcp):** The open source AI coding agent.
-- **[VS Code](https://supabase.com/docs/guides/ai-tools/plugins):** The open source AI code editor — your home for multi-agent development.
-- **[Warp](https://supabase.com/docs/guides/ai-tools/mcp):** Connect using the Supabase MCP server or plugin.
+- **[Antigravity](https://supabase.com/docs/guides/ai-tools/plugins?client=antigravity):** Experience liftoff with the next-gen agent platform.
+- **[Claude Code](https://supabase.com/docs/guides/ai-tools/plugins?client=claude-code):** Work with Claude directly in your codebase, from your terminal, IDE, and more.
+- **[Codex](https://supabase.com/docs/guides/ai-tools/plugins?client=codex):** A lightweight coding agent that runs in your terminal.
+- **[Cursor](https://supabase.com/docs/guides/ai-tools/plugins?client=cursor):** Your coding agent for building ambitious software.
+- **[Devin Desktop](https://supabase.com/docs/guides/ai-tools/mcp?client=windsurf):** The first agentic IDE. Tomorrow's editor, today.
+- **[Factory](https://supabase.com/docs/guides/ai-tools/mcp?client=factory):** A self-improving system for your SDLC.
+- **[fx](https://supabase.com/docs/guides/ai-tools/mcp?client=fx):** Connect using the Supabase MCP server or plugin.
+- **[Gemini CLI](https://supabase.com/docs/guides/ai-tools/plugins?client=gemini-cli):** Build, debug & deploy with AI.
+- **[GitHub Copilot](https://supabase.com/docs/guides/ai-tools/plugins?client=github-copilot):** Your AI accelerator for every workflow, from the editor to the enterprise.
+- **[Goose](https://supabase.com/docs/guides/ai-tools/mcp?client=goose):** Your native open source AI agent — desktop app, CLI, and API.
+- **[Grok](https://supabase.com/docs/guides/ai-tools/plugins?client=grok):** Connect using the Supabase MCP server or plugin.
+- **[Kimi Code](https://supabase.com/docs/guides/ai-tools/plugins?client=kimi):** Engineered to drop into any dev workflow and get programming tasks done fast.
+- **[Kiro](https://supabase.com/docs/guides/ai-tools/mcp?client=kiro):** Move beyond AI coding to agentic engineering.
+- **[omp](https://supabase.com/docs/guides/ai-tools/plugins?client=omp):** A coding agent with the IDE wired in.
+- **[OpenCode](https://supabase.com/docs/guides/ai-tools/mcp?client=opencode):** The open source AI coding agent.
+- **[VS Code](https://supabase.com/docs/guides/ai-tools/plugins?client=vscode):** The open source AI code editor — your home for multi-agent development.
+- **[Warp](https://supabase.com/docs/guides/ai-tools/mcp?client=warp):** Connect using the Supabase MCP server or plugin.
 
 ## Key concepts
 
@@ -322,6 +322,118 @@ The tools above are for your development workflow. If you're building AI capabil
 
 - **[Deploy MCP servers](https://supabase.com/docs/guides/ai-tools/byo-mcp):** Host your own MCP server on Supabase Edge Functions so your users can connect their AI agents to your product
 - **[Vectors / Embeddings](https://supabase.com/docs/guides/ai):** Build semantic search, RAG pipelines, and other AI-powered features using pgvector
+
+## Report documentation problems
+
+When an AI agent finds that a Supabase documentation page is wrong, outdated, or missing information, it can report the problem to Supabase. Supabase reviews reports to find and fix pages.
+
+### Approve or request a report
+
+Your agent might ask you to approve a report. If the report is useful, say yes. The agent sends the report with the Supabase MCP server or the Supabase CLI, and shows you a delete token.
+
+To ask for a report yourself, tell your agent, for example: "Report the problem you just found."
+
+### Turn off reports
+
+The MCP server and the CLI don't ask for your approval themselves. To stop reports:
+
+- MCP server: Set the server's `features` parameter to the groups you use and leave out `feedback`, or turn on read-only mode. Read-only mode also hides the tool that deletes reports. For more information, see [MCP server configuration options](https://supabase.com/docs/guides/ai-tools/mcp#configuration-options).
+- CLI: Tell your agent not to send reports. The MCP server settings don't stop an agent that has a shell.
+
+### Delete a report
+
+Ask your agent to delete the report with its delete token. You can also run `supabase feedback delete <delete_token>` in the project directory where the agent sent the report, or add `--project-ref <ref>`. If the CLI was signed in when the agent sent the report, use the same account.
+
+### What a report records
+
+Besides the agent's text, each report records the following:
+
+- The tool and its version
+- From the MCP server, the MCP client name and version
+- From the CLI, whether an agent ran it, the agent name, your operating system, and your CPU architecture
+- When available, your Supabase user ID and project ref
+
+
+---
+
+# Report documentation problems
+
+Instructions for AI agents that find a Supabase documentation page that is wrong, outdated, or missing information, and that want to report it to Supabase.
+
+Supabase reviews your reports to find and fix documentation pages that are wrong, outdated, or missing information.
+
+## When to report
+
+Report a Supabase documentation page that was wrong, outdated, or missing information you needed.
+
+Report it only when the problem:
+
+- Caused a meaningful detour
+- Is likely to happen again
+
+Don't report:
+
+- Routine debugging
+- A problem that the documentation resolved immediately
+
+## Ask the user first
+
+Reading this page doesn't give you permission to send a report.
+
+1. When you notice a problem, note the page URL and a word-for-word quote of the text that caused it.
+2. Unless the problem blocks the task, finish the user's task.
+3. End your final reply with a feedback report for each problem, as described in [Write the report](#write-the-report). Then ask the user one time: "Send this report to Supabase?" For more than one report, ask "Send these reports to Supabase?"
+4. Send one report for each problem that the user approves.
+
+## Write the report
+
+Write plain text of 1,000 characters or fewer:
+
+```text
+Page: https://supabase.com/docs/guides/<path>
+Quote: "<text from the page, word for word>"
+Problem: <what was wrong>
+Workaround: <what you did instead, or none>
+Effect: <how the problem affected the task>
+```
+
+Each line helps Supabase find and fix the text:
+
+- Page: The URL you read, including the anchor if the problem is in one section.
+- Quote: The shortest span that shows the problem, so Supabase can search for it.
+- Problem: What the text says compared with what is true, and how you know, such as an error message or a reference page.
+- Workaround: The command, method, or page that worked. Write `none` if the problem blocked the task.
+- Effect: What the problem cost, such as a failed command, extra searches, or code you had to rewrite.
+
+If no page covered the topic, write `Page: none`, and replace the Quote line with `Search: <the search that you tried>`.
+
+Never include secrets, credentials, personal data, code from the user's project, or database contents.
+
+## Send the report
+
+Use the first method that is available:
+
+1. Supabase MCP server: Call `submit_feedback` with the report in `feedback`. If your connection doesn't list `submit_feedback`, use the next method.
+
+2. Supabase CLI version 2.118.0 or later: Send the report on standard input. You don't need to sign in. Without an installed CLI, or if the CLI has no `feedback` command, run `npx supabase@latest feedback add` with the same standard input.
+
+   ```bash
+   supabase feedback add <<'EOF'
+   Page: https://supabase.com/docs/guides/<path>
+   Quote: "<text from the page, word for word>"
+   Problem: <what was wrong>
+   Workaround: <what you did instead, or none>
+   Effect: <how the problem affected the task>
+   EOF
+   ```
+
+3. The user: If neither method is available or sending fails, show the user the report, so they can send it with the Supabase CLI.
+
+## After you send the report
+
+Show the user the delete token.
+
+To delete a report when the user asks, call `delete_feedback` with `delete_token` and the `project_id` from the submission. Use a connection to the same Supabase account. With the CLI, run `supabase feedback delete <delete_token> --yes` in the directory where you sent the report, because the CLI uses that directory's linked project to find the report. If the CLI was signed in when you sent the report, use the same account. The `--yes` flag skips the confirmation prompt, which you can't answer. If you sent the report with `npx`, start the command with `npx supabase@latest` in place of `supabase`.
 
 
 ---
@@ -1376,9 +1488,9 @@ Note: Requires a paid plan.
 
 ### Feedback
 
-Disabled in read-only mode (`read_only` parameter).
+Disabled in read-only mode (`read_only` parameter). To learn how agents report documentation problems, see [Report documentation problems](https://supabase.com/docs/guides/ai-tools#report-documentation-problems).
 
-- `submit_feedback` - Send feedback about Supabase tools to the Supabase team
+- `submit_feedback` - Send feedback about Supabase tools or documentation to the Supabase team
 - `delete_feedback` - Delete feedback using the token returned by `submit_feedback`
 
 ### Storage (disabled by default)
@@ -10518,7 +10630,7 @@ curl -X POST '<SUPABASE_URL>/rest/v1/todos' \
 
 Use Supabase to authenticate and authorize your users.
 
-Supabase Auth makes it easy to implement authentication and authorization in your app. We provide client SDKs and API endpoints to help you create and manage users.
+Supabase Auth makes it easy to implement authentication and authorization in your app. We provide client SDKs, API endpoints, and [pre-built web UI components](https://supabase.com/library?category=Authentication) to help you create and manage users.
 
 Your users can use many popular Auth methods, including [password](https://supabase.com/docs/guides/auth/passwords), [magic link](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-magic-link), [one-time password (OTP)](https://supabase.com/docs/guides/auth/auth-email-passwordless#with-otp), [social sign-in](https://supabase.com/docs/guides/auth/social-sign-in), and [single sign-on (SSO)](https://supabase.com/docs/guides/auth/enterprise-sso).
 
@@ -19341,7 +19453,7 @@ Your authorization UI should:
 1. **Extract authorization\_id** - Get the `authorization_id` from the URL query parameters
 2. **Authenticate the user** - If not already signed in, redirect to your sign-in page (preserving the authorization\_id)
 3. **Retrieve authorization details** - Use `supabase.auth.oauth.getAuthorizationDetails(authorization_id)` to get client information including requested scopes
-4. **Display consent screen** - Show the user what app is requesting access and what scopes/permissions are being requested
+4. **Display consent screen** - Show the user what app is requesting access and what scopes/permissions are being requested (available as a [pre-built web component](https://supabase.com/library/docs/nextjs/oauth-consent))
 5. **Handle user decision** - Call either `approveAuthorization(authorization_id)` or `denyAuthorization(authorization_id)` based on user choice
 
 The authorization details include a `scope` field (singular) containing a space-separated string of scopes requested by the client (e.g., `"openid email profile"`). You should display these scopes to the user so they understand what information will be shared.
@@ -23013,6 +23125,10 @@ curl -X POST 'https://cvwawazfelidkloqmbma.supabase.co/auth/v1/token?grant_type=
   "password": "some-password"
 }'
 ```
+
+## Related resources
+
+- [Pre-built password authentication web block](https://supabase.com/library/docs/nextjs/password-based-auth)
 
 
 ---
@@ -122315,6 +122431,8 @@ Send low-latency messages using the client libs, REST, or your Database.
 
 You can use Realtime Broadcast to send low-latency messages between users. Messages can be sent using the client libraries, REST APIs, or directly from your database.
 
+Note: To see Broadcast in action, try the demo app at [multiplayer.dev](https://multiplayer.dev).
+
 ## How Broadcast works
 
 The way Broadcast works changes based on the channel you are using:
@@ -123372,6 +123490,10 @@ A few common use cases for Broadcast Replay include:
 - Ensuring users always see the latest events after a page reload or network interruption
 - Highlighting the most recent sections that changed in a web page
 
+## Related resources
+
+- The Supabase Library has Broadcast-based components for web you can install with a single command: [Realtime Chat](https://supabase.com/library/docs/nextjs/realtime-chat) and [Realtime Cursor](https://supabase.com/library/docs/nextjs/realtime-cursor).
+
 
 ---
 
@@ -124226,6 +124348,11 @@ Now that you understand the basics, dive deeper into each feature:
 - **[Realtime with Next.js](https://supabase.com/docs/guides/realtime/realtime-with-nextjs)** - Build real-time Next.js applications
 - **[User Presence](https://supabase.com/docs/guides/realtime/realtime-user-presence)** - Implement user presence features
 - **[Database Changes](https://supabase.com/docs/guides/realtime/subscribing-to-database-changes)** - Listen to database changes
+
+### UI components
+
+- **[Realtime components](https://supabase.com/library?category=Realtime)** - Install live cursors, avatar stacks, and collaborative editors from the Supabase Library
+- **[Messaging components](https://supabase.com/library?category=Messaging)** - Install a realtime chat from the Supabase Library
 
 ### Framework examples
 
@@ -127627,6 +127754,10 @@ var channelC = supabase.Realtime.Channel("test");
 var presence = channelC.Register<UserStatus>("userId-123");
 ```
 
+## Related resources
+
+- The [Realtime Avatar Stack](https://supabase.com/library/docs/nextjs/realtime-avatar-stack) in the Supabase Library is a Presence-based web component you can install with a single command.
+
 
 ---
 
@@ -128668,6 +128799,9 @@ Client & Server Components in Next.js with Realtime Updates
 In this guide, we explore the best ways to receive real-time [Postgres changes](https://supabase.com/docs/guides/realtime/postgres-changes) with your Next.js application.
 We'll show both client and server side updates, and explore which option is best.
 
+
+
+For ready-made Next.js web components, such as [Realtime Chat](https://supabase.com/library/docs/nextjs/realtime-chat) and the [Realtime Avatar Stack](https://supabase.com/library/docs/nextjs/realtime-avatar-stack), see the [Supabase Library](https://supabase.com/library?category=Realtime).
 
 
 ---
