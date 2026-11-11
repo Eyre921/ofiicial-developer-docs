@@ -123,11 +123,7 @@ Before the first structured question, the skills show a one-line privacy notice.
 
 > [card] [Training Overview](/fine-tuning/finetuning-intro#choose-a-surface)
 >
-> Compare managed training and the Training API.
-
-> [card] [Managed Training](/fine-tuning/managed-finetuning-intro)
->
-> Drive the same training infra directly when you know your config.
+> Compare Serverless and Dedicated Training.
 
 > [card] [Training API](/fine-tuning/training-api/introduction)
 >
@@ -135,4 +131,4 @@ Before the first structured question, the skills show a one-line privacy notice.
 
 > [card] [CLI reference](/tools-sdks/firectl/firectl)
 >
-> Inspect managed training yourself with `firectl`.
+> Manage trainers, models, and deployments with `firectl`.

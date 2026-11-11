@@ -55,7 +55,7 @@ nexus claude-desktop on
 
 Check the connection with `nexus claude-desktop status`.
 
-**3. Quit, reopen, and pick Auto**
+**3. Quit, reopen, and pick Nexus Auto**
 
 Quit and reopen Claude Desktop. Nexus Auto appears along with your Claude models.
 

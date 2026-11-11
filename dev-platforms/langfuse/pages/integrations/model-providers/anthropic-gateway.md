@@ -18,7 +18,7 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
-Use Anthropic's official [client SDKs](https://platform.claude.com/docs/en/cli-sdks-libraries/overview) for Python and TypeScript with the gateway by changing the base URL and the API key. Requests need an `ANTHROPIC` provider credential in your organization.
+Use Anthropic's official [client SDKs](https://platform.claude.com/docs/en/cli-sdks-libraries/overview) for Python and TypeScript with the gateway by changing the base URL and the API key. Requests need an `ANTHROPIC` provider connection in your organization.
 
   For tracing the Anthropic SDK without the gateway, see the [Anthropic (Python)](/integrations/model-providers/anthropic) and [Anthropic (JS/TS)](/integrations/model-providers/anthropic-js) integrations.
 

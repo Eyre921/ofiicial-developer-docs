@@ -42,26 +42,6 @@ for h in await search_in_sources(srcs, "purchase price"):
 
 Independent searches run concurrently, and the model reuses lookups it already holds in a variable. The loop has a step cap, so the model aims to gather what it needs and answer in a few steps.
 
-### Tool output limit
-
-By default, the model sees at most 10,000 characters of each `run_python` result. A longer result is cut off and ends with a notice, such as `[truncated: showing 10,000 of 46,212 chars]`, so the model knows the result is partial.
-
-You can raise the limit to as much as 100,000 characters for a single query. This helps with questions whose answers are long lists, such as "List every company with a change-of-control clause." A higher limit makes the query slower and more expensive. Every extra 10,000 characters adds about 2,500 input tokens, which are sent again on every later step.
-
-To raise it, set `max_tool_output_chars` to a value from 1 to 100,000 in the `POST /query` request body. A value outside that range returns a `400` error. This field requires `X-Pinecone-Api-Version: unstable`, and the unstable API can change without notice.
-
-```bash curl theme={null}
-curl -fsS -X POST "$NEXUS_BASE_URL/query" \
-  -H "Authorization: Bearer $NEXUS_TOKEN" \
-  -H 'Content-Type: application/json' \
-  -H 'X-Pinecone-Api-Version: unstable' \
-  -d '{
-    "scope": ["company-filings"],
-    "ask": "List every company with a change-of-control clause.",
-    "max_tool_output_chars": 100000
-  }'
-```
-
 ## Retrieval SDK
 
 The Composable Retriever loads these primitives into the REPL. The model reads artifacts off disk first because it's cheapest, falls back to search over the index, and uses SQL for counts and enumerations.

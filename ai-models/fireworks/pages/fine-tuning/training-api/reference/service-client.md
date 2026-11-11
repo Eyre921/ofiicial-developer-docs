@@ -199,7 +199,7 @@ Separate API calls define separate logical batches. Do not split one intended ba
 >
 > If retrieving a large future result times out, manually enable metadata-only future retrieval for the trainer and client. This mode is currently opt-in while backend support is being rolled out.
 
-### `forward(datums, loss_type)`
+### `forward(datums, loss_type, loss_fn_config=None)`
 
 Forward-only pass (no gradient computation). Useful for computing reference logprobs in GRPO/DPO:
 
@@ -211,6 +211,34 @@ logprobs = result.loss_fn_outputs[0]["logprobs"].data
 > [!NOTE]
 >
 > Built-in loss types like `"cross_entropy"` require datums with `target_tokens` in `loss_fn_inputs`. Datums built with `datum_from_model_input_weights` will fail with built-in losses; use them with `forward_backward_custom` instead. For datum examples for built-in and custom losses, see the cookbook skill's [`training-api-losses` reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
+
+#### Top-K token predictions
+
+Pass `loss_fn_config={"top_k": K}` to also get the K most likely tokens at each position, with their logprobs, from the same forward pass. With `top_k=1`, you get the model's predicted (argmax) token at each position. Compare it with `target_tokens` at positions with nonzero `weights` to compute token accuracy or F1, for example to select a checkpoint when eval loss doesn't track your metric. This example assumes your datums include `weights`, so prompt tokens aren't scored:
+
+```python theme={null}
+result = training_client.forward(datums, "cross_entropy", loss_fn_config={"top_k": 1}).result()
+
+correct, total = 0, 0
+for datum, output in zip(datums, result.loss_fn_outputs):
+    top_k_ids = output["top_k_indices"].to_numpy()        # [seq_len, K] int64 token IDs
+    top_k_logprobs = output["top_k_logprobs"].to_numpy()  # [seq_len, K] float32
+    predicted = top_k_ids[:, 0]
+    targets = datum.loss_fn_inputs["target_tokens"].to_numpy()
+    mask = datum.loss_fn_inputs["weights"].to_numpy() > 0
+    correct += int((predicted[mask] == targets[mask]).sum())
+    total += int(mask.sum())
+
+accuracy = correct / total
+```
+
+* Each prediction is conditioned on the preceding tokens of your datum (teacher forcing), not on the model's own earlier predictions. This measures next-token accuracy. To score answers the model generates, sample instead.
+* Row `i` is the prediction for `target_tokens[i]`, the token after position `i` of the model input. It lines up with `logprobs[i]`. Columns are sorted from highest to lowest logprob.
+* `.to_numpy()` returns a `[seq_len, K]` array and `.tolist()` returns nested lists. `.data` is a flat list.
+* `top_k` must be an integer of `0` or more. The default `0` returns only `logprobs`.
+* Only `forward` returns these fields. `forward_backward` ignores `top_k`, and `forward_backward_custom` doesn't take `loss_fn_config`.
+* When tokens have the same or nearly the same logprob, their order can change with K, so the top-1 token can differ between `top_k=1` and a larger K.
+* Response size grows with sequence length times K. A large K can make results slow to retrieve. See [Large-result timeouts](#large-result-timeouts).
 
 ### `forward_backward(datums, loss_type, loss_fn_config=None)`
 

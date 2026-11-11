@@ -4,100 +4,13 @@ source: https://docs.fireworks.ai/fine-tuning/migrate-from-managed-training
 path: fine-tuning/migrate-from-managed-training
 ---
 
-Move managed SFT and DPO jobs to the Training API: clone an existing job with its settings, or start a new job with the settings you choose.
+Move managed SFT and DPO jobs to the Training API: start a new job with your training data and the settings you choose.
 
 Managed supervised fine-tuning (SFT) and DPO no longer accept new jobs. Train on the [Training API](/fine-tuning/training-api/introduction) instead. Models and LoRA adapters from managed jobs stay in your account and stay deployable.
 
-> [card] [Clone an existing job](#clone-an-existing-job)
->
-> Rerun a managed job on the Training API with the same settings.
-
-> [card] [Start a new job](#start-a-new-job)
->
-> Pick the model, data and settings yourself, and get a price estimate first.
-
 > [!NOTE]
 >
-> **Bring your own copy of the training data.** The Training API reads your training file directly: a local JSONL file, a directory of `.jsonl` shards, or a Google Cloud Storage path (`gs://<BUCKET>/train.jsonl`). It can't read datasets stored in Fireworks (`accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>`). Use the same file you uploaded for the managed job, and its evaluation file if it had one. The row format doesn't change. For data in Amazon S3 or Azure Blob Storage, copy it to a local file or to Cloud Storage first.
-
-## Clone an existing job
-
-> [!NOTE]
->
-> **Migration tool: [`migrate_managed_job.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/tools/migrate_managed_job.py)** in the Fireworks cookbook. It reads your old job's settings, maps them onto the matching training recipe, runs it, and promotes the result to a new model. See the [tool README](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/tools#migrating-a-managed-fine-tuning-job) for how each setting maps.
-
-Paste this into Claude Code, Cursor, Codex or another coding agent, from the folder that holds your training data. Fill in the values in square brackets; the [FAQ](#faq) shows where to find your job name and account ID.
-
-> [!WARNING]
->
-> Set `FIREWORKS_API_KEY` in your shell before you start the agent, and never paste the key into the agent chat. See [FAQ](#faq): "How do I keep my API key safe with a coding agent?"
-
-```text wrap theme={null}
-Set up Fireworks training for me: fetch https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents.md and follow it. Then clone my managed fine-tuning job to the Training API with the same settings, following https://docs.fireworks.ai/fine-tuning/migrate-from-managed-training.md.
-
-- Job: [accounts/ACCOUNT_ID/supervisedFineTuningJobs/JOB_ID, or for DPO: accounts/ACCOUNT_ID/dpoJobs/JOB_ID]
-- Training data: [./train.jsonl]
-- New model ID: [NEW_MODEL_ID]
-
-My API key is already set as FIREWORKS_API_KEY in this shell. Never ask me to paste it, and never print it.
-
-Do a dry run first. Show me the plan and a price estimate, and wait for my approval before you start training.
-```
-
-> [accordion] Run it with the Python API instead
->
-> **Set up once.**
->
-> * Create an API key in the account that owns the job, in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) or with `firectl api-key create`. The Training API rejects keys that can reach more than one account. If you belong to several Fireworks accounts, use a [service account](/accounts/service-accounts) key created in the job's account.
-> * Install Python 3.11 or newer and [uv](https://docs.astral.sh/uv/getting-started/installation/).
->
-> ```bash theme={null}
-> read -s FIREWORKS_API_KEY && export FIREWORKS_API_KEY
-> git clone https://github.com/fw-ai-external/cookbook.git
-> cd cookbook/training
-> uv venv --python 3.12 && source .venv/bin/activate
-> uv pip install -e .
-> ```
->
-> Call the migration tool from Python, and review the plan before you train:
->
-> ```python theme={null}
-> import logging
-> import os
->
-> from training.examples.tools.migrate_managed_job import (
->     FireworksReader,
->     MigrationInputs,
->     describe_plan,
->     read_plan,
->     run_plan,
-> )
->
-> logging.basicConfig(level=logging.INFO)
->
-> plan = read_plan(
->     FireworksReader(os.environ["FIREWORKS_API_KEY"]),
->     MigrationInputs(
->         dataset_path="./train.jsonl",
->         output_model_id="<NEW_MODEL_ID>",
->         log_path="./migrated_runs/<JOB_ID>",
->     ),
->     "accounts/<ACCOUNT_ID>/supervisedFineTuningJobs/<JOB_ID>",
-> )
-> print(describe_plan(plan))  # the recipe, serverless or dedicated, and the full config
-> run_plan(plan)
-> ```
->
-> * For a DPO or ORPO job, pass `accounts/<ACCOUNT_ID>/dpoJobs/<JOB_ID>`.
-> * `MigrationInputs` also takes `eval_dataset_path`, `mode` (`"auto"`, `"serverless"` or `"dedicated"`), `tokenizer_model` and `max_seq_len`.
-> * `plan.config` is the recipe `Config` the run uses. The tool saves a resumable checkpoint every 20 steps, as managed training did.
->
-> **Run, watch and resume**
->
-> * The training loop runs in your Python process for the whole job, not on Fireworks. If the process stops, training stops. For long runs, use a machine that stays on, such as a cloud VM, and keep the output in a log file: `nohup python train.py > train.log 2>&1 &`.
-> * Watch the loss in the log, in Weights & Biases, or on the [training dashboard](https://app.fireworks.ai/dashboard/fine-tuning).
-> * If the run stops early, the tool prints how to continue it from its newest checkpoint, with the same `log_path`. Lost the output? See "My run stopped. How do I resume it?" in the [FAQ](#faq).
-> * A dedicated trainer [stops after 60 minutes](/fine-tuning/training-api/reference/cleanup) without activity. If your process dies, the trainer keeps billing until then.
+> **Bring your own copy of the training data.** The Training API reads your training file directly: a local JSONL file, a directory of `.jsonl` shards, or a Google Cloud Storage path (`gs://<BUCKET>/train.jsonl`). It can't read datasets stored in Fireworks (`accounts/<ACCOUNT_ID>/datasets/<DATASET_ID>`). Use the same file you uploaded for the managed job, and its evaluation file if it had one. The row format doesn't change, except that the DPO and ORPO recipes don't read tool definitions in a row's `input.tools`. For data in Amazon S3 or Azure Blob Storage, copy it to a local file or to Cloud Storage first.
 
 ## Start a new job
 
@@ -105,7 +18,11 @@ Do a dry run first. Show me the plan and a price estimate, and wait for my appro
 >
 > **Training recipes: [`sft_loop.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/sft_loop.py) and [`dpo_loop.py`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/dpo_loop.py)** in the Fireworks cookbook. Each one runs the whole job from your data to a deployable model. For step-by-step guides, see [Cookbook: SFT](/fine-tuning/training-api/cookbook/sft) and [Cookbook: DPO](/fine-tuning/training-api/cookbook/dpo).
 
-Use this path if you have no managed job to clone, for example because you only used the dashboard, or if you want different settings. Paste this into your coding agent, from the folder that holds your training data. Fill in the values in square brackets. Leave a setting as `[default]` to let the agent choose it and show you its choice in the plan.
+Paste this into Claude Code, Cursor, Codex or another coding agent, from the folder that holds your training data. Fill in the values in square brackets. Leave a setting as `[default]` to let the agent choose it and show you its choice in the plan. To match a managed job's settings, see "Which managed job settings carry over?" in the [FAQ](#faq).
+
+> [!WARNING]
+>
+> Set `FIREWORKS_API_KEY` in your shell before you start the agent, and never paste the key into the agent chat. See [FAQ](#faq): "How do I keep my API key safe with a coding agent?"
 
 ```text wrap theme={null}
 Set up Fireworks training for me: fetch https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents.md and follow it. Then start a new training job on the Fireworks Training API, following https://docs.fireworks.ai/fine-tuning/migrate-from-managed-training.md.
@@ -129,7 +46,20 @@ Check my data first. Then show me the full configuration and a price estimate, a
 
 > [accordion] Run it with the Python API instead
 >
-> Set up as in [Clone an existing job](#clone-an-existing-job), then build the recipe `Config` and run it. These examples train a LoRA adapter on [serverless training](/fine-tuning/training-api/serverless), which needs no provisioning and bills per token. Every setting is a field on the recipe's `Config`.
+> **Set up once.**
+>
+> * Create an API key in your account, in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) or with `firectl api-key create`. The Training API rejects keys that can reach more than one account. If you belong to several Fireworks accounts, use a [service account](/accounts/service-accounts) key.
+> * Install Python 3.11 or newer and [uv](https://docs.astral.sh/uv/getting-started/installation/).
+>
+> ```bash theme={null}
+> read -s FIREWORKS_API_KEY && export FIREWORKS_API_KEY
+> git clone https://github.com/fw-ai-external/cookbook.git
+> cd cookbook/training
+> uv venv --python 3.12 && source .venv/bin/activate
+> uv pip install -e .
+> ```
+>
+> Then build the recipe `Config` and run it. These examples train a LoRA adapter on [serverless training](/fine-tuning/training-api/serverless), which needs no provisioning and bills per token. Every setting is a field on the recipe's `Config`.
 >
 > ```python SFT theme={null}
 > import logging
@@ -223,13 +153,20 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 * Jobs that are queued or running finish normally.
 * You can get, list, cancel and delete them in the dashboard, with `firectl`, and through the API.
 * You can export DPO job metrics (`firectl dpo-job export-metrics`) and promote the checkpoints of existing jobs.
+* You can't resume a failed or cancelled job. Start a new job on the Training API instead.
 * The models they produced stay in your account and deploy as before.
+
+### Reference for existing jobs
+
+* [Managed Training overview](/fine-tuning/managed-finetuning-intro): view, stop, delete, and re-run existing jobs
+* [Supervised Fine-Tuning](/fine-tuning/fine-tuning-models): dataset format and job settings
+* [Preference Optimization (DPO and ORPO)](/fine-tuning/dpo-fine-tuning): dataset format and monitoring
 
 ## Troubleshooting
 
 | Error | Fix |
 | - | - |
-| `no eligible shared trainer found for base model` | The model has no serverless pool. Train on a dedicated trainer: remove `serverless=True`, or use the migration tool, which falls back to dedicated. See "Should I use Serverless or Dedicated Training?" in the [FAQ](#faq). |
+| `no eligible shared trainer found for base model` | The model has no serverless pool. Train on a dedicated trainer: remove `serverless=True`. See "Should I use Serverless or Dedicated Training?" in the [FAQ](#faq). |
 | `create_session: account not found` | Your API key reaches more than one account. Create a key in a single account. |
 | HTTP 403 `tier_required` | Dedicated training needs a payment method or credits on the account. |
 | HTTP 403 `quota_exceeded` | Request more [GPU quota](/guides/quotas_usage/account-quotas#training-gpu-quota), or use serverless training. |
@@ -238,7 +175,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 
 > [accordion] Where do I find my job name and account ID?
 >
-> The agent prompt and the migration tool need the full job name, such as `accounts/<ACCOUNT_ID>/supervisedFineTuningJobs/<JOB_ID>`.
+> To look up a managed job, use its full name, such as `accounts/<ACCOUNT_ID>/supervisedFineTuningJobs/<JOB_ID>`.
 >
 > * **Account ID:** run `firectl whoami`, which prints `Account ID: <ACCOUNT_ID>`.
 > * **SFT job names:** run `firectl sftj list`.
@@ -255,7 +192,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 > ```
 >
 > * Never paste the key into the agent chat. Chat messages can be logged and sent to the agent's model provider.
-> * The agent prompts on this page tell the agent the key is already set, and not to ask for it or print it.
+> * The agent prompt on this page tells the agent the key is already set, and not to ask for it or print it.
 > * If you pasted a key into a chat by mistake, delete it in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) and create a new one.
 
 
@@ -295,7 +232,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 \>     batch\_size=32,
 \>     dcp\_save\_interval=20,
 \> )
-\> \`\`\`A dedicated trainer uses your \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) and bills per GPU hour while it runs. Without a reservation, it can wait in a queue for capacity, for up to 48 hours by default. The migration tool chooses serverless or dedicated for you.
+\> \`\`\`A dedicated trainer uses your \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) and bills per GPU hour while it runs. Without a reservation, it can wait in a queue for capacity, for up to 48 hours by default.
 
 
 
@@ -328,7 +265,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 >   nohup python train.py > train.log 2>&1 &
 >   ```
 >
-> * Save checkpoints regularly: set `dcp_save_interval=20`, and `checkpoint_interval_minutes=30` for LoRA SFT and DPO. The migration tool sets both. Without them, a stopped run has nothing to resume from.
+> * Save checkpoints regularly: set `dcp_save_interval=20`, and `checkpoint_interval_minutes=30` for LoRA SFT and DPO. Without them, a stopped run has nothing to resume from.
 >
 > **Find the checkpoint**
 >
@@ -343,31 +280,14 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 > * **Serverless:** find the run ID in the log line `Serverless training session <SESSION_ID>, run <RUN_ID>` (for example, `grep "Serverless training session" train.log`). Rerun with the same `log_path` and `init_from_checkpoint="<ACCOUNT_ID>/<RUN_ID>/<CHECKPOINT>"`.
 > * **Dedicated, trainer still running:** find the trainer job ID in the log (`Created trainer job: <TRAINER_JOB_ID>`). Rerun with the same `log_path` and `trainer=TrainerConfig(job_id="<TRAINER_JOB_ID>")` (from `training.utils`). The trainer stops after 60 minutes without activity.
 > * **Dedicated, trainer gone:** rerun with the same `log_path` and `init_from_checkpoint="<TRAINER_JOB_ID>:<CHECKPOINT>"`. This starts a new trainer from that checkpoint's weights, and the dataset starts again from its first row.
-> * **Migration tool:** pass the same `log_path`, plus `init_from_checkpoint` or `trainer_job_id`, to `MigrationInputs`.
 
 > [accordion] What happens to my evaluation settings?
 >
-> * **Evaluation dataset.** Pass your own copy: `evaluation_dataset` on the recipe `Config`, or `eval_dataset_path` in the migration tool. The run reports evaluation loss on it.
-> * **Automatic carve-out.** `eval_auto_carveout=True` holds out part of the training data for evaluation: by default 10% of the rows, at most 20 examples. Change the size with `eval_carve_ratio` and `max_eval_seqs`. The migration tool turns it on for jobs that used it.
+> * **Evaluation dataset.** Pass your own copy: `evaluation_dataset` on the recipe `Config`. The run reports evaluation loss on it.
+> * **Automatic carve-out.** `eval_auto_carveout=True` holds out part of the training data for evaluation: by default 10% of the rows, at most 20 examples. Change the size with `eval_carve_ratio` and `max_eval_seqs`.
 > * **ORPO** has no held-out evaluation in the cookbook, so its evaluation settings are ignored.
 >
 > Evaluation loss is a training signal, not a quality check. When the run finishes, it promotes the final checkpoint to `accounts/<ACCOUNT_ID>/models/<NEW_MODEL_ID>`. Evaluate that model on your own prompts before you move traffic, and compare it with your managed model. [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models) covers sampling serverless checkpoints, loading a promoted LoRA onto serverless, and preemptible deployments.
-
-> [accordion] The migration tool refused my job or warned me. What do I do?
->
-> | Message | Do this instead |
-> | - | - |
-> | The job belongs to a CMEK (customer-managed encryption key) account | The Training API can't write CMEK-encrypted models yet. Your existing models keep working. Contact your Fireworks account team about training. |
-> | The API key reaches more than one account, or belongs to a different account than the job | Create a key in the job's account only, such as a [service account](/accounts/service-accounts) key, and set `FIREWORKS_API_KEY` to it. |
-> | No training data given | Pass your own copy of the job's training data as a local file or directory, or a `gs://` path. |
-> | The dataset is a Fireworks dataset name (`accounts/.../datasets/...`) | Pass a local file or a `gs://` path instead. The Training API can't read Fireworks datasets. |
-> | The output model ID is the managed job's output model | Choose a new model ID. |
-> | ORPO with `gs://` data | Copy the data to a local file. |
-> | The job can't run on serverless training (with `mode="serverless"`) | Use `mode="auto"` or `mode="dedicated"`. |
-> | The tool can't tell which tokenizer the base model uses | Pass `tokenizer_model`, the Hugging Face repo of the base model. For a model you uploaded, use the repo it came from. |
-> | The job has no max context length | Pass `max_seq_len`. |
-> | LoRA rank above 64 (a warning) | Training runs, but the adapter can't be hosted as a serverless LoRA. Deploy it on an on-demand deployment, or train with a rank of 64 or less to serve it on serverless. |
-> | `lora_rank N exceeds the maximum supported LoRA rank of M` (from training) | Lower `lora_rank` to `M` or less. |
 
 > [accordion] Which managed job settings carry over?
 >

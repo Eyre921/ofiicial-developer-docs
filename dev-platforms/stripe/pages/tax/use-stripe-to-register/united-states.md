@@ -52,7 +52,7 @@ Under [Locations](https://dashboard.stripe.com/tax/locations) on the Tax page:
 
 Gather key business information such as address, EIN, contact and ID information (for business owners and your business representative), and any state-specific information such as previous year sales and the date you want your registration to become effective.
 
-> Some state tax registrations require complete business ownership details, including investor information, cap table data, and ownership percentages. This detailed ownership information only needs to be provided once, and will be used for all applicable state registrations.
+> Some state tax registrations require complete business ownership details, including investor information, cap table data, and ownership percentages. You only need to provide this detailed ownership information once, and Stripe uses it for all applicable state registrations.
 
 ### After you submit your application
 

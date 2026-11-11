@@ -26,7 +26,7 @@
     "status": "error: curl failed (22) for https://docs.together.ai/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/fireworks": {
-    "pages": 382,
+    "pages": 380,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -34,8 +34,7 @@
     "status": "ok"
   },
   "agent-frameworks/mcp": {
-    "pages": 160,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://modelcontextprotocol.io/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 737280 bytes received\ncurl: (28) Operation timed out after 90001 milliseconds with 0 bytes received\ncurl: (16) Error in the HTTP2 framing l"
   },
   "agent-frameworks/crewai": {
     "pages": 256,
@@ -102,15 +101,14 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
     "status": "ok"
   },
   "dev-platforms/neon": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://neon.com/llms-full.txt: curl: (28) Operation timed out after 90002 milliseconds with 1211533 out of 7576882 bytes received\ncurl: (28) Operation timed out after 90001 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_"
   },
   "dev-platforms/clerk": {
     "pages": 0,
@@ -121,8 +119,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 1006,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://upstash.com/docs/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1277952 bytes received\ncurl: (28) Operation timed out after 90001 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_read: OpenSSL/3"
   },
   "dev-platforms/expo": {
     "pages": 0,
@@ -152,7 +149,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 284,
+    "pages": 659,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -187,7 +184,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 79,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -203,8 +200,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1578,
+    "pages": 75,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-10T23:31:45Z"
+  "_last_crawl": "2026-11-11T11:31:50Z"
 }

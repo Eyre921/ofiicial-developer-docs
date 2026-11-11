@@ -10,7 +10,11 @@ Service accounts in Fireworks allow applications, scripts, and automated systems
 
 Service accounts can take actions using an API key, like creating deployments, running models or creating datasets (see [API reference](https://fireworks.ai/docs/api-reference/introduction)). Service accounts cannot login through the web interface or use OIDC tokens.
 
-To manage service accounts via the Fireworks web UI visit [app.fireworks.ai/account/users](https://app.fireworks.ai/account/users).
+> [!NOTE]
+>
+> This page is for Fireworks Platform accounts on [app.fireworks.ai](https://app.fireworks.ai). On a Nexus account ([nexus.fireworks.ai](https://nexus.fireworks.ai)), create service accounts and their keys under **Settings → API Keys**. See [Nexus Service Accounts](/nexus/service-accounts).
+
+To manage service accounts in the Platform web UI, visit [app.fireworks.ai/account/users](https://app.fireworks.ai/account/users).
 
 ## Creating a Service Account
 

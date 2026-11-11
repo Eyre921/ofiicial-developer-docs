@@ -856,6 +856,14 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
   Use the REST API to manage GPG keys of authenticated users.
 
+* [REST API endpoints for issue fields](/en/rest/users/issue-fields)
+
+  Use the REST API to create and manage issue fields for the authenticated user.
+
+* [REST API endpoints for issue types](/en/rest/users/issue-types)
+
+  Use the REST API to create and manage issue types for the authenticated user.
+
 * [REST API endpoints for Git SSH keys](/en/rest/users/keys)
 
   Use the REST API to manage Git SSH keys of authenticated users.

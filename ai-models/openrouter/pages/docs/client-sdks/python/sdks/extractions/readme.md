@@ -61,7 +61,7 @@ with OpenRouter(
             "type": "number",
             "unit": "USD",
         },
-    }, model="cloudflare/clairic", state="Invoice INV-2291 issued 2026-09-02, net 30. Contacts: Dana Ruiz, Priya Shah. Total $1080.", reference_date="2026-10-28")
+    }, model="cloudflare/clairic", reference_date="2026-10-28", state="Invoice INV-2291 issued 2026-09-02, net 30. Contacts: Dana Ruiz, Priya Shah. Total $1080.")
 
     # Handle response
     print(res)
@@ -74,14 +74,14 @@ with OpenRouter(
 | - | - | - | - | - |
 | `fields` | Dict\[str, [components.Fields](../../components/fields.mdx)] | ✔️ | Map of field name to typed field spec. | |
 | `model` | *str* | ✔️ | N/A | |
-| `state` | *str* | ✔️ | The text to read from. May be empty only when the request carries image assets. | |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `assets` | Dict\[str, [components.ExtractionAsset](../../components/extractionasset.mdx)] | ➖ | Assets keyed by reference string. Write a reference wherever the asset belongs in `state` or a field `instructions`; every asset must be referenced at least once. A `state` that is exactly the sole asset's key carries no text of its own and is read as file-only. A model that reads either text or a document per request, not both (ScaleDown Extract with a PDF), needs that form: any other text around the key is state text and is rejected with 400. | |
+| `assets` | Dict\[str, [components.ExtractionAsset](../../components/extractionasset.mdx)] | ➖ | Assets keyed by reference string. Write a reference wherever the asset belongs in `state` or a field `instructions`; every asset must be referenced at least once, unless `state` is empty or omitted, in which case the assets are read without a reference. A `state` that is exactly the sole asset's key carries no text of its own and is read as file-only. A model that reads either text or a document per request, not both (ScaleDown Extract with a PDF), takes that form or an empty or omitted `state`: any other text around the key is state text and is rejected with 400. | |
 | `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | N/A | \{ "allow\_fallbacks": true } |
 | `reference_date` | *Optional\[str]* | ➖ | ISO date that anchors dates written without a year. | |
 | `session_id` | *Optional\[str]* | ➖ | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | session-1234 |
+| `state` | *Optional\[str]* | ➖ | The text to read from. May be empty or omitted only when the request carries assets, which are then read without being referenced by key. | |
 | `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{ "trace\_id": "trace-abc123", "trace\_name": "my-app-trace" } |
 | `user` | *Optional\[str]* | ➖ | N/A | |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |

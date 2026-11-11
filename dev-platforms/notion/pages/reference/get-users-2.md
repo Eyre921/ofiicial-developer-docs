@@ -1,0 +1,35 @@
+---
+title: "List all users"
+source: https://developers.notion.com/reference/get-users
+path: reference/get-users
+---
+
+get /v1/users
+Returns a paginated list of [Users](/reference/user) for the workspace. The response may contain fewer than `page_size` of results.
+
+Guests are not included in the response.
+If you already know a guest's ID, [Retrieve a user](/reference/get-user) can return that guest when they belong to the connected workspace.
+
+This endpoint omits Custom Agents. To find them, use [Query agents](/reference/notion-agent-apis/query-agents) if your connection has Agents API access. You can also read the agent ID from the [bot user object](/reference/user#bots) in a people property or user mention.
+
+See [Pagination](/reference/pagination) for details about how to use a cursor to iterate through the list.
+
+The API does not guarantee a particular sort order for returned users.
+
+> [!NOTE]
+>
+> [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens) cannot list workspace users. Use [Retrieve token's bot user](/reference/get-self) to retrieve the PAT's bot user. Its `bot.owner.user` is the PAT creator. To retrieve the creator, use [Retrieve a user](/reference/get-user) with that user's ID.
+
+### Errors
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
+
+> [!NOTE]
+>
+> The API does not currently support filtering users by their email and/or name.
+
+> [!NOTE]
+>
+> **Connection capabilities**
+>
+> This endpoint requires a connection to have user information capabilities. Attempting to call this API without user information capabilities will return an HTTP response with a 403 status code. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).

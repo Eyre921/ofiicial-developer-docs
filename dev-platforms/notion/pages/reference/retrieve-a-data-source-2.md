@@ -1,0 +1,54 @@
+---
+title: "Retrieve a data source"
+source: https://developers.notion.com/reference/retrieve-a-data-source
+path: reference/retrieve-a-data-source
+---
+
+get /v1/data_sources/{data_source_id}
+
+Retrieves a [data source](/reference/data-source) object — information that describes the structure and columns of a data source — for a provided data source ID. The response adheres to any limits to a connection’s capabilities and the permissions of the data source and its containing database.
+
+Readable synced data sources may also include optional [stored sync metadata](/reference/data-source#sync-metadata), with provider information and ISO 8601 timestamps when available.
+
+To fetch data source *rows* (i.e. the child pages of a data source) rather than columns, use the [Query a data source](/reference/query-a-data-source) endpoint.
+
+### Finding a data source ID
+
+First, find the containing database's ID in its Notion URL. The database ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
+
+![The database ID appears in the URL path before the question mark.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-3.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=051ded818c1263e52bb87f66a3d05ce5)
+
+Notion database ID
+
+Use [Retrieve a database](/reference/retrieve-database) with that database ID. Its `data_sources` array lists each data source's ID and name. Use the desired data source ID with this endpoint to retrieve its `properties`.
+
+To get a data source ID from the Notion app directly, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
+
+![The Tasks data source menu offers Copy data source ID.](https://mintcdn.com/notion-demo/S-I3qLQnwRa7HjdK/images/reference/image-4.png?fit=max\&auto=format\&n=S-I3qLQnwRa7HjdK\&q=85\&s=292ed34c84b1b7161b282444678c3bc6)
+
+Screenshot of the 'Manage data sources' menu for a database in Notion, with 'Copy data source ID' button.
+
+Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
+
+### Errors
+
+Returns a 404 HTTP response if the data source doesn't exist or if the connection doesn't have access to it.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
+
+### Additional resources
+
+* [How to share a database with your connection](/guides/connections-and-tokens/overview#content-access)
+* [Working with databases guide](/guides/data-apis/working-with-databases)
+
+> [!NOTE]
+>
+> **Data source relations must be shared with your connection**
+>
+> To retrieve data source properties from [database relations](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation), the related database must be shared with your connection in addition to the database being retrieved. If the related database is not shared, properties based on relations will not be included in the API response.
+
+> [!WARNING]
+>
+> **The Notion API does not support retrieving linked data sources**
+>
+> To fetch the information in a [linked data source](https://www.notion.com/help/guides/using-linked-databases), share the original source database with your Notion connection.

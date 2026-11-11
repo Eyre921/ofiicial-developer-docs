@@ -18,7 +18,7 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
-**Requires** Codex CLI 0.157 or later and an `OPENAI` provider credential. Verified with Codex 0.157.0.
+**Requires** Codex CLI 0.157 or later and an `OPENAI` provider connection. Verified with Codex 0.157.0.
 
   For tracing Codex without the gateway, see the [Codex integration](/integrations/developer-tools/codex).
 

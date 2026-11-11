@@ -22,8 +22,8 @@ Both Copilot surfaces support bring-your-own-key (BYOK) model providers. Only th
 
   For tracing GitHub Copilot without the gateway, see the [GitHub Copilot integration](/integrations/developer-tools/github-copilot).
 
-- [Copilot CLI](#cli): `ANTHROPIC` or `OPENAI` provider credential.
-- [GitHub Copilot app](#app): `OPENAI` provider credential. BYOK in the app is in public preview.
+- [Copilot CLI](#cli): `ANTHROPIC` or `OPENAI` provider connection.
+- [GitHub Copilot app](#app): `OPENAI` provider connection. BYOK in the app is in public preview.
 
 **Start with Langfuse** [Sign up](/cloud)
 
@@ -98,7 +98,7 @@ See GitHub's [guide to adding models to the Copilot app](https://docs.github.com
    }
    ```
 
-7. Select **Add provider**. The models of your `OPENAI` provider credential appear in the model picker alongside the GitHub-hosted models. Select one to start a session.
+7. Select **Add provider**. The models of your `OPENAI` provider connection appear in the model picker alongside the GitHub-hosted models. Select one to start a session.
 
 ### Verify [#app-verify]
 

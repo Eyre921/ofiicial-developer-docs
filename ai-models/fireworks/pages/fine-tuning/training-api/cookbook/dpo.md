@@ -75,6 +75,10 @@ DPO expects preference pairs. Supported formats:
 }
 ```
 
+`input` can also be a list of messages or a plain string, which is read as one user message. Multi-turn history in `input` is fine: the preferred and non-preferred outputs are added after it, so they're always the last turn. The DPO and ORPO recipes don't read `input.tools`, so tool definitions in a row are dropped, and they skip a pair when either side is longer than `max_seq_len` once rendered.
+
+Whether earlier reasoning stays in later turns depends on the base model. See [Thinking history in training](/fine-tuning/thinking-history).
+
 ## Loss and reference
 
 DPO increases the chosen-versus-rejected policy margin relative to a frozen

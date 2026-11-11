@@ -19,9 +19,9 @@ Use a Fireworks open model directly when you want Fireworks to serve every turn.
 nexus claude
 ```
 
-After you restart Claude Code, **Auto** is the default model in `/model`, and no `--model` flag is required.
+After you restart Claude Code, **Nexus Auto** is the default model in `/model`, and no `--model` flag is required.
 
-In Claude Code, the Opus, Sonnet, and Haiku slots keep Claude's own models, and `/model` also lists **Auto**. Enterprise accounts also see the Fireworks models.
+In Claude Code, the Opus, Sonnet, and Haiku slots keep Claude's own models, and `/model` also lists **Nexus Auto**. Enterprise accounts also see the Fireworks models.
 
 ## Choose a family, tier, or version
 

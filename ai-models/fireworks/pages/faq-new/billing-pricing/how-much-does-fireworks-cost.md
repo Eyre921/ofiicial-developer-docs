@@ -14,7 +14,8 @@ Fireworks AI uses a **usage-based pre-paid** billing system. You purchase credit
 
 * **Per token** for serverless inference
 * **Per GPU usage time** for on-demand deployments
-* **Per training token** for Managed Training
+* **Per training token** for Serverless Training
+* **Per GPU hour** for Dedicated Training
 
 For customers needing **enterprise-grade security and reliability**, please reach out to us at [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) to discuss options.
 

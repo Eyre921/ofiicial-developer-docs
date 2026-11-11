@@ -18,7 +18,7 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
-Use the official [OpenAI SDKs](https://developers.openai.com/api/docs/libraries) for Python and TypeScript with the gateway by changing the base URL and the API key. Requests need an `OPENAI` provider credential in your organization.
+Use the official [OpenAI SDKs](https://developers.openai.com/api/docs/libraries) for Python and TypeScript with the gateway by changing the base URL and the API key. Requests need an `OPENAI` provider connection in your organization.
 
   For tracing the OpenAI SDK without the gateway, see the [OpenAI (Python)](/integrations/model-providers/openai-py) and [OpenAI (JS/TS)](/integrations/model-providers/openai-js) integrations.
 

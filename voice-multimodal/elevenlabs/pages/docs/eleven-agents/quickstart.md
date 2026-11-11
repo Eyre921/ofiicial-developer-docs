@@ -1,10 +1,10 @@
 ---
-title: "Quickstart"
+title: "ElevenAgents quickstart"
 source: https://elevenlabs.io/docs/eleven-agents/quickstart.md
 path: docs/eleven-agents/quickstart
 ---
 
-> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+> This is a page from the ElevenLabs documentation. For an index of the documentation, fetch https://elevenlabs.io/docs/llms.txt.
 
 # Quickstart
 

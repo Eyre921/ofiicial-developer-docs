@@ -17,7 +17,7 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
-**Requires** Pi 1.5.0 or later and an `ANTHROPIC` and/or `OPENAI` provider credential.
+**Requires** Pi 1.5.0 or later and an `ANTHROPIC` and/or `OPENAI` provider connection.
 
   For tracing Pi without the gateway, see the [Pi Agent integration](/integrations/developer-tools/pi-agent).
 

@@ -4,7 +4,7 @@ source: https://docs.fireworks.ai/fine-tuning/thinking-history
 path: fine-tuning/thinking-history
 ---
 
-Choose how prior turn reasoning is rendered in Fireworks managed fine-tuning datasets so training behavior matches inference for thinking-capable models.
+Choose how reasoning from earlier turns appears in Fireworks training data, with the thinking_trace_history_mode recipe setting, so a fine-tuned thinking model matches how you serve it.
 
 Thinking models can store an assistant turn's reasoning in `reasoning_content`. A thinking-history mode controls whether that existing reasoning remains visible in the context of later turns.
 
@@ -25,27 +25,30 @@ These names align with the serving API's `reasoning_history="interleaved"` and `
 
 Models expose one of four capability shapes:
 
-* **Selectable:** the job can explicitly select Interleaved or Preserved.
+* **Selectable:** you can choose Interleaved or Preserved.
 * **Fixed Interleaved:** only Interleaved is supported.
 * **Fixed Preserved:** only Preserved is supported.
 * **Automatic:** neither explicit mode describes the model-native behavior; the renderer selects behavior from each dataset row's input shape.
 
-| Base model | Available modes | Default | Interleaved boundary | Managed SFT datums |
+| Base model | Available modes | Default | Interleaved boundary | SFT datums |
 | - | - | - | - | - |
 | GLM 5.1 | Interleaved, Preserved | Interleaved | Last real user query; keeps the complete current assistant/tool trajectory | Both modes unroll per user turn |
 | GLM 5.2 | Interleaved, Preserved | Interleaved | Same as GLM 5.1 | Interleaved unrolls; Preserved keeps one complete datum |
+| GLM 5.3 and GLM 5.3 Flash | Interleaved, Preserved | Preserved | Same as GLM 5.1 | Interleaved unrolls; Preserved keeps one complete datum |
 | Qwen 3.5 | Interleaved only | Interleaved | Last real user query; tool results do not reset the boundary | Unrolls per user turn |
 | Qwen 3.6 | Interleaved, Preserved | Interleaved | Same as Qwen 3.5 | Interleaved unrolls; Preserved keeps one complete datum |
+| Qwen 3.8 27B | Interleaved, Preserved | Preserved | Same as Qwen 3.5 | Interleaved unrolls; Preserved keeps one complete datum |
 | Kimi K2.5 | Interleaved only | Interleaved | Keeps thinking in the trailing/current assistant-tool trajectory | Unrolls per user turn |
 | Kimi K2.6 | Interleaved, Preserved | Interleaved | Same as Kimi K2.5 | Interleaved unrolls; Preserved keeps one complete datum |
 | Kimi K2.7 Code | Preserved only | Preserved | Not applicable | Keeps one complete datum |
-| DeepSeek V4 Flash and Pro | Automatic only; no mode toggle | Automatic (`UNSPECIFIED`) | Depends on whether the row declares tools | Without tools, unrolls; with declared tools, keeps one complete datum |
+| Nemotron 3 Nano, Super, and Ultra; Nemotron 3.5 Lightning | Interleaved, Preserved | Interleaved | Last real user query | Interleaved unrolls; Preserved keeps one complete datum |
+| DeepSeek V4 Flash and Pro | Automatic only; no mode toggle | Automatic | Depends on whether the row declares tools | Without tools, unrolls; with declared tools, keeps one complete datum |
 
-Base models not listed above keep their existing model-default renderer behavior and do not expose an explicit thinking-history choice.
+Base models not listed above keep their default renderer behavior and do not offer a thinking-history choice.
 
-### GLM 5.1 compared with GLM 5.2
+### GLM 5.1, 5.2, and 5.3
 
-Both versions expose the upstream `clear_thinking` template control. Fireworks maps Interleaved to `clear_thinking=true` and Preserved to `clear_thinking=false`. Both default to Interleaved, and both use the last real user query as the clearing boundary.
+All three expose the upstream `clear_thinking` template control. Fireworks maps Interleaved to `clear_thinking=true` and Preserved to `clear_thinking=false`. GLM 5.1 and 5.2 default to Interleaved, GLM 5.3 defaults to Preserved (see below), and all three use the last real user query as the clearing boundary.
 
 The difference is in Preserved mode:
 
@@ -54,12 +57,15 @@ The difference is in Preserved mode:
 
 GLM 5.1 unrolling does not remove preserved reasoning. It creates one training datum per user turn so that every target is rendered with the correct template context.
 
-### Qwen 3.5 compared with Qwen 3.6
+**GLM 5.3 and GLM 5.3 Flash** default to Preserved, because their template defaults to `clear_thinking=false`. Preserved keeps one complete datum, and Interleaved unrolls.
 
-Both versions use the same Interleaved boundary: the last real user query, not the last assistant response. In a user → assistant tool call → tool result → assistant response trajectory, thinking from both assistant messages is retained.
+### Qwen 3.5, 3.6, and 3.8
+
+All three use the same Interleaved boundary: the last real user query, not the last assistant response. In a user → assistant tool call → tool result → assistant response trajectory, thinking from both assistant messages is retained.
 
 * **Qwen 3.5** has no supported history toggle and is fixed to Interleaved.
 * **Qwen 3.6** adds the upstream `preserve_thinking` control. Fireworks maps Interleaved to `preserve_thinking=false` and Preserved to `preserve_thinking=true`. Preserved is prefix-stable and stays one complete datum.
+* **Qwen 3.8 27B** offers both modes and defaults to Preserved, which stays one complete datum. Interleaved unrolls.
 
 For byte-level parity with the official Qwen 3.6 template, Preserved mode can emit an empty think wrapper for a historical assistant message that has no `reasoning_content`. This does not synthesize reasoning; it preserves the template's exact structure.
 
@@ -71,18 +77,18 @@ For byte-level parity with the official Qwen 3.6 template, Preserved mode can em
 
 ### DeepSeek V4 automatic behavior
 
-DeepSeek V4 Flash and Pro do not expose an Interleaved/Preserved toggle. Leave the job field omitted or `UNSPECIFIED`.
+DeepSeek V4 Flash and Pro do not expose an Interleaved/Preserved toggle. Leave `thinking_trace_history_mode` empty.
 
 The model-native renderer makes a deterministic choice for each row:
 
 * A row without declared tools removes thinking across user turns and unrolls per user turn.
 * A row with declared tools preserves thinking and remains one complete datum.
 
-This is determined by the row's input shape, not chosen autonomously or stochastically by the model. Render-preview clients should display one read-only automatic option.
+This is determined by the row's input shape, not chosen autonomously or stochastically by the model.
 
 ## Why some modes unroll
 
-Managed SFT trains all assistant messages. When a renderer removes historical thinking, Fireworks unrolls the conversation at **user boundaries** so every assistant response gets one opportunity to be the current target.
+The SFT recipe trains every assistant message by default. When a renderer removes historical thinking, the recipe unrolls the conversation at **user boundaries** so every assistant response gets one opportunity to be the current target. DPO and ORPO do not unroll: each side of a preference pair is rendered as one datum.
 
 Consider this conversation:
 
@@ -96,7 +102,7 @@ Tool result
 A3 (thinking 3, final answer)
 ```
 
-For an Interleaved renderer that unrolls, Fireworks produces:
+For an Interleaved renderer that unrolls, the recipe produces:
 
 * Datum 0 trains A1.
 * Datum 1 removes thinking 1 from the historical context and trains A2 and A3 together. Thinking 2 and thinking 3 both remain because they belong to the same user turn.
@@ -105,34 +111,30 @@ For a prefix-stable Preserved renderer, the row remains one datum and thinking 1
 
 Because unrolled datums duplicate conversation context, the tuned token count can exceed the raw dataset token count. Unrolling is independent of context-length truncation or splitting.
 
-## Configure a training job
+## Set the mode
 
-The optional, immutable REST field is `thinkingTraceHistoryMode`:
+The SFT, DPO, and ORPO recipes take the mode as `thinking_trace_history_mode`:
 
-* `THINKING_TRACE_HISTORY_MODE_UNSPECIFIED`: use the registered model's default behavior. For an unregistered model, keep its existing renderer fallback.
-* `THINKING_TRACE_HISTORY_MODE_INTERLEAVED`: explicitly request Interleaved when supported.
-* `THINKING_TRACE_HISTORY_MODE_PRESERVED`: explicitly request Preserved when supported.
-
-`UNSPECIFIED` is the default for clients that omit the field; it is not a third user-selectable history mode.
-
-```json theme={null}
-{
-  "thinkingTraceHistoryMode": "THINKING_TRACE_HISTORY_MODE_PRESERVED"
-}
+```python theme={null}
+cfg = Config(
+    # ... other fields ...
+    thinking_trace_history_mode="preserved",
+)
 ```
 
-An explicitly requested unsupported mode fails configuration validation before GPU training starts. Managed SFT, DPO, and ORPO use the same field and enum. The unrolling behavior described above applies to managed SFT; RFT does not expose this setting.
+* `""` (the default): load the model's original renderer. For Qwen 3.5, Qwen 3.6, Kimi K2.5, Kimi K2.6, Kimi K2.7 Code, GLM 5.1, and GLM 5.2, that renderer doesn't fully match the behavior on this page, so set the mode explicitly. For DeepSeek V4 and models not in the table, leave it empty.
+* `"interleaved"`: request Interleaved.
+* `"preserved"`: request Preserved.
 
-## Preview before training
+A mode the model doesn't support fails when the recipe starts, before any training. Models not in the table accept only the empty value.
 
-A render-preview request does not select a thinking-history mode. It returns every available option for the base model in `thinkingTraceHistoryModeOptions` and one rendering per option for each example.
+## Check what the trainer sees
 
-* Selectable models return two options for a toggle.
-* Fixed and automatic models return one read-only option.
-* A rendering can contain multiple `renderedDatums` when that dataset row unrolls.
-* Within each datum, concatenate `segments[].text` in order. A `lossWeight` of `0` is masked context; a value greater than `0` is trained.
+In the SFT recipe, set `render_samples_file` to write rendered examples to a JSONL file, with one record per datum, so you can see where a conversation unrolls and which tokens are trained. See "Check tokenization" in [Cookbook: Supervised Fine-Tuning](/fine-tuning/training-api/cookbook/sft).
 
-Select one of the returned modes when creating the training job. After the job starts, use [Render Samples](/fine-tuning/fine-tuning-models#debug-sft-tokenization) to inspect the exact token IDs and loss mask seen by the trainer.
+## Existing managed jobs
+
+Managed SFT, DPO, and ORPO jobs, which no longer accept new jobs, store this setting in the `thinkingTraceHistoryMode` field: `THINKING_TRACE_HISTORY_MODE_UNSPECIFIED` (the model default), `THINKING_TRACE_HISTORY_MODE_INTERLEAVED`, or `THINKING_TRACE_HISTORY_MODE_PRESERVED`. To train the same way on the Training API, set `thinking_trace_history_mode` from that field: `"interleaved"` or `"preserved"` for an explicit mode. For `UNSPECIFIED`, managed training used the Default column in the table above, so set that mode explicitly. For DeepSeek V4 or a model not in the table, leave it empty. See [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
 
 ## How Fireworks verifies model behavior
 
@@ -147,6 +149,6 @@ Renderer tests pin upstream Hugging Face template revisions and verify token-for
 
 The relevant upstream templates are [GLM 5.1](https://huggingface.co/zai-org/GLM-5.1/blob/main/chat_template.jinja), [GLM 5.2](https://huggingface.co/zai-org/GLM-5.2/blob/main/chat_template.jinja), [Qwen 3.5](https://huggingface.co/Qwen/Qwen3.5-35B-A3B/blob/main/tokenizer_config.json), [Qwen 3.6](https://huggingface.co/Qwen/Qwen3.6-27B/blob/main/tokenizer_config.json), [Kimi K2.5](https://huggingface.co/moonshotai/Kimi-K2.5/blob/main/chat_template.jinja), [Kimi K2.6](https://huggingface.co/moonshotai/Kimi-K2.6/blob/main/chat_template.jinja), and [Kimi K2.7 Code](https://huggingface.co/moonshotai/Kimi-K2.7-Code/blob/main/chat_template.jinja).
 
-> [card] [Prepare an SFT dataset](/fine-tuning/fine-tuning-models)
+> [card] [Prepare an SFT dataset](/fine-tuning/training-api/cookbook/sft#dataset-format)
 >
 > Add `reasoning_content` to assistant messages in your JSONL dataset.

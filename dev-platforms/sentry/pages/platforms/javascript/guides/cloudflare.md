@@ -101,7 +101,7 @@ Since the SDK needs access to the `AsyncLocalStorage` API, you need to set the `
 ```jsonc
 {
   // Set this to today's date
-  "compatibility_date": "2026-11-10",
+  "compatibility_date": "2026-11-11",
   "compatibility_flags": ["nodejs_compat"],
 }
 ```

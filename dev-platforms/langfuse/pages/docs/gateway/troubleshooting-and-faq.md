@@ -28,7 +28,7 @@ If you don't find a solution to your issue here, try using [Ask AI](/docs/ask-ai
 - [How do I troubleshoot AI Gateway errors?](/faq/all/ai-gateway-error-codes)
 - [How is gateway usage billed?](/faq/all/ai-gateway-pricing)
 - [What are the known limitations of the AI Gateway beta?](/faq/all/ai-gateway-known-limitations)
-- [Which provider credentials are used?](/faq/all/ai-gateway-provider-credentials)
+- [Which provider API keys are used?](/faq/all/ai-gateway-provider-credentials)
 - [Why can't I open AI Gateway pages like Providers & Models or Gateway keys?](/faq/all/ai-gateway-pages-missing)
 
 [Ask another question](/docs/ask-ai)

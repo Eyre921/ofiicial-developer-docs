@@ -14,7 +14,7 @@ Specialized Model Inference runs your LoRA adapters on Fireworks' shared serverl
 
 ```mermaid theme={null}
 flowchart LR
-  T["Train or import a LoRA adapter<br/>Use Fireworks Training API or Managed Training"]
+  T["Train or import a LoRA adapter<br/>Use the Fireworks Training API"]
   L["Load<br/>#lt;5 min<br/>Wait until loaded before making a request"]
   F["First request<br/>#lt;1 min<br/>Usage keeps the LoRA in cache"]
   S["Subsequent requests<br/>Approximately base-model latency"]
@@ -120,55 +120,6 @@ Skip this step if you already have an adapter in the `READY` state on a [support
 > ```
 >
 > The adapter is ready to load when its state is `READY`.
-
-> [tab] Managed Training (firectl)
->
-> [Managed Training](/fine-tuning/managed-finetuning-intro) runs as a managed training job, not on the serverless trainer pool. The adapter it produces loads onto serverless the same way.
->
-> **1. Pick a dataset**
->
-> Your account comes with SFT onboarding datasets, such as receipts and prompt router. List your datasets and copy an ID:
->
-> ```bash theme={null}
-> firectl dataset list
-> export DATASET_ID="paste-a-dataset-id-here"
-> ```
->
-> To use your own data instead, upload a chat-format JSONL file:
->
-> ```bash theme={null}
-> firectl dataset create "$DATASET_ID" ./train.jsonl
-> ```
->
-> **2. Start the training job**
->
-> Set `--lora-rank` to 64 or lower. Serverless can't load adapters above rank 64.
->
-> ```bash theme={null}
-> firectl sftj create \
->   --base-model accounts/fireworks/models/glm-5p3-flash \
->   --dataset "$DATASET_ID" \
->   --lora-rank 16 \
->   --output-model my-lora
-> ```
->
-> **3. Wait for the adapter to be ready**
->
-> Depending on the size of your dataset, training can take from 10 minutes to several hours. We suggest using our [Serverless Training API](/fine-tuning/training-api/serverless) or [Managed Training](/fine-tuning/managed-finetuning-intro). The adapter is ready when its state is `READY`.
->
-> ```bash theme={null}
-> firectl model get my-lora
-> ```
-
-> [tab] Managed Training (UI)
->
-> 1. Go to **Fine-tuning** and select **Create job**.
-> 2. Choose **GLM 5.3 Flash** as the base model and **LoRA** as the method.
-> 3. Pick an onboarding dataset (receipts or prompt router) or upload your own.
-> 4. Set the LoRA rank to 64 or lower.
-> 5. Name the output model, for example `my-lora`. Use that name in place of `my-lora` in the commands below.
->
-> When the job finishes, the adapter appears under **Models** with the state `READY`.
 
 > [tab] Import an adapter
 >

@@ -12,7 +12,7 @@ Displaying a customer’s tax ID and legal business name on *invoices* (Invoices
 
 > #### Business tax IDs only
 > 
-> The Checkout Sessions API only collects business tax IDs, which might have formats similar to personal tax IDs in certain jurisdictions. You must make sure that only business tax IDs, as designated for this field, are provided when using this feature.
+> The Checkout Sessions API only collects business tax IDs, which might have formats similar to personal tax IDs in certain jurisdictions. You must make sure that you provide only business tax IDs, as designated for this field, when using this feature.
 
 ## Enable tax ID collection [Server-side]
 

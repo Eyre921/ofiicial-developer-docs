@@ -26,7 +26,7 @@ Observability endpoints
 
 ## list
 
-List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+List the observability destinations configured for the authenticated entity's default workspace, or a workspace-scoped management key's own workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. A workspace-scoped management key can only list its own workspace; any other `workspace_id` returns 403. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -108,7 +108,7 @@ run();
 
 ## create
 
-Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace, or a workspace-scoped management key's own workspace; use the `workspace_id` body field to scope to a different workspace. A workspace-scoped management key can only create in its own workspace; any other `workspace_id` returns 403. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -207,7 +207,7 @@ run();
 
 ## delete
 
-Delete an existing observability destination. This performs a soft delete. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing observability destination. This performs a soft delete. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -289,7 +289,7 @@ run();
 
 ## get
 
-Fetch a single observability destination by its UUID. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Fetch a single observability destination by its UUID. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -371,7 +371,7 @@ run();
 
 ## update
 
-Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
+Update an existing observability destination. Only the fields provided in the request body are updated. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](https://openrouter.ai/docs/client-sdks/typescript/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 

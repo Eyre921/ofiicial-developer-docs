@@ -67,13 +67,13 @@ A model that accepts images as well as text. Video and audio support depends on 
 The Serverless rate-limit unit. Fireworks limits total prompt tokens per minute and generated tokens per minute. A `429` means you crossed a limit. A `503` means Fireworks is overloaded. See [Serverless rate limits](/serverless/rate-limits).
 
 **Managed Training**\
-Fireworks runs the training loop for you. You supply data and a method. Managed Training currently accepts SFT, DPO, and ORPO. It uses LoRA by default, and select models also support full-parameter training. See [Managed Training](/fine-tuning/managed-finetuning-intro).
+Fireworks ran the training loop for you on a dataset you uploaded, with SFT, DPO, or ORPO. Managed Training is paused and doesn't accept new jobs. Models it produced stay deployable. To keep training, see [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
 
 **Training API**\
 You write the training loop in Python, and Fireworks runs it on GPUs. Use it for custom losses, full-parameter training, and reinforcement learning. See [Training API](/fine-tuning/training-api/introduction).
 
 **DPO (Direct Preference Optimization)**\
-Training on pairs of answers: one you prefer and one you do not. Use it when you can say which reply is better but cannot score a reply with a rule. ORPO is a related preference method. See [Preference optimization](/fine-tuning/dpo-fine-tuning).
+Training on pairs of answers: one you prefer and one you do not. Use it when you can say which reply is better but cannot score a reply with a rule. ORPO is a related preference method. See [Preference optimization](/fine-tuning/training-api/cookbook/dpo).
 
 **Full-parameter training**\
 Training that updates all of the model weights, not only a LoRA adapter. This runs on the Training API.
@@ -209,7 +209,7 @@ API parameter that controls how much thinking a reasoning model performs before 
 ## Training
 
 **SFT (Supervised Fine-Tuning)**\
-Training a model on labeled input-output pairs to adapt it to a specific task or style. Available via the Fireworks managed training pipeline.
+Training a model on labeled input-output pairs to adapt it to a specific task or style. Available on Serverless and Dedicated Training. See [Cookbook: Supervised Fine-Tuning](/fine-tuning/training-api/cookbook/sft).
 
 **LoRA (Low-Rank Adaptation)**\
 A parameter-efficient fine-tuning technique that trains a small set of adapter weights rather than the full model. The adapter can be loaded on top of the base model at inference time.
@@ -224,7 +224,7 @@ A reinforcement learning variant used in RFT. Optimizes model outputs using grou
 Fine-tuning that uses a reward signal instead of labeled examples. Managed RFT has been removed. New reinforcement learning runs on the [Training API](/fine-tuning/training-api/cookbook/rl), where you write the rollout and training loop.
 
 **Training shape**\
-A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`; managed training jobs select a compatible shape for you.
+A validated trainer configuration for one base model and one training method. It fixes the GPU type and count per trainer replica, plus the maximum training context length. On the [Training API](/fine-tuning/training-api/training-shapes) you pass a shape ID such as `accounts/fireworks/trainingShapes/qwen3-8b-128k`.
 
 **`dcp_save_interval`**\
 RFT training parameter that controls how often full training state (weights + optimizer) is checkpointed. Default is `0` (disabled). Set to a positive integer to enable full checkpoint-and-resume including optimizer state.

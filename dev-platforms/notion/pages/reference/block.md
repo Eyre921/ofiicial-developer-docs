@@ -946,418 +946,127 @@ Original synced block objects contain the following information within the `sync
                 "callout": {
                     "rich_text": [
                         {
-                            "type": "text",
-                            "text": {
-                                "content": "Callout in synced block"
-                            }
-                        }
-                    ]
-                }
-            }
-        ]
-    }
-}
+    # Authentication
+Source: https://developers.notion.com/cli/get-started/authentication
+
+Log in to your Notion workspace and manage CLI credentials.
+
+## Log in
+
+Authenticate with your Notion workspace:
+
+```bash theme={null}
+ntn login
 ```
 
-#### Duplicate synced block
+This opens your browser to an authorization page. Confirm that the code in the browser matches the code printed in your terminal before approving. This prevents another page from completing the login in your name.
 
-Duplicate synced block objects contain the following information within the `synced_from` object:
+Your workspace-scoped token will be stored securely in your system's keychain.
 
-| Field | Type | Description |
-| :- | :- | :- |
-| `type` | `string` (enum) | The type of the synced from object.  Possible values are:  - `"block_id"` |
-| `block_id` | `string` (UUIDv4) | An identifier for the original `synced_block`. |
-
-```json Example Duplicate synced block object theme={null}
-{
-    //...other keys excluded
-  	"type": "synced_block",
-    "synced_block": {
-        "synced_from": {
-            "block_id": "original_synced_block_id"
-        }
-    }
-}
-```
-
-> [!WARNING]
->
-> The API does not supported updating synced block content.
-
-### Table
-
-Table block objects are parent blocks for table row children. Table block objects contain the following fields within the `table` property:
-
-| Field | Type | Description |
-| :- | :- | :- |
-| `table_width` | `integer` | The number of columns in the table.  **Note that this cannot be changed using the API once a table is created.** |
-| `has_column_header` | `boolean` | Whether the table has a column header. If `true`, then the first row in the table appears visually distinct from the other rows. |
-| `has_row_header` | `boolean` | Whether the table has a header row. If `true`, then the first column in the table appears visually distinct from the other columns. |
-
-```json Example Table block object theme={null}
-{
-  //...other keys excluded
-  "type": "table",
-  "table": {
-    "table_width": 2,
-    "has_column_header": false,
-    "has_row_header": false
-  }
-}
-```
-
-> [!WARNING]
->
-> **`table_width` can only be set when the table is first created.**
->
-> Note that the number of columns in a table can only be set when the table is first created. Calls to the Update block endpoint to update `table_width` fail.
-
-#### Table rows
-
-Follow these steps to fetch the `table_row`s of a `table`:
-
-**Step 1**
-
-Get the `table` ID from a query to [Retrieve block children](/reference/get-block-children) for the parent page.
-
-**Step 2**
-
-Get the `table_rows` from a query to Retrieve block children for the `table`.
-
-A `table_row` block object contains the following fields within the `table_row` property:
-
-| Property | Type | Description |
-| :- | :- | :- |
-| `cells` | `array` of array of [rich text objects](/reference/rich-text) | An array of cell contents in horizontal display order. Each cell is an array of rich text objects. |
-
-```json Example Table row block object expandable theme={null}
-{
-  //...other keys excluded
-  "type": "table_row",
-  "table_row": {
-    "cells": [
-      [
-        {
-          "type": "text",
-          "text": {
-            "content": "column 1 content",
-            "link": null
-          },
-          "annotations": {
-            "bold": false,
-            "italic": false,
-            "strikethrough": false,
-            "underline": false,
-            "code": false,
-            "color": "default"
-          },
-          "plain_text": "column 1 content",
-          "href": null
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "text": {
-            "content": "column 2 content",
-            "link": null
-          },
-          "annotations": {
-            "bold": false,
-            "italic": false,
-            "strikethrough": false,
-            "underline": false,
-            "code": false,
-            "color": "default"
-          },
-          "plain_text": "column 2 content",
-          "href": null
-        }
-      ],
-      [
-        {
-          "type": "text",
-          "text": {
-            "content": "column 3 content",
-            "link": null
-          },
-          "annotations": {
-            "bold": false,
-            "italic": false,
-            "strikethrough": false,
-            "underline": false,
-            "code": false,
-            "color": "default"
-          },
-          "plain_text": "column 3 content",
-          "href": null
-        }
-      ]
-    ]
-  }
-}
-```
+If you've already logged in to one or more workspaces, you can pick existing workspace to switch the default, or pick **Authenticate with new workspace** to start a fresh browser flow and add another workspace.
 
 > [!NOTE]
 >
-> When creating a table block using the [Append block children](/reference/patch-block-children) endpoint, the `table` must have at least one `table_row` whose `cells` array has the same length as the `table_width`.
+> `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens) for more on who can create tokens.
 
-### Table of contents
+## Log in without a browser
 
-Table of contents block objects contain the following information within the `table_of_contents` property:
+On a remote machine, container, or CI runner that can't open a browser, use `--no-browser` to get a two-step login flow:
 
-| Property | Type | Description |
-| :- | :- | :- |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+1. Run `ntn login --no-browser`. It prints a URL, a verification code, and a `ntn login poll` command.
+2. Open the URL in any browser, sign in, and confirm the verification code.
+3. Run `ntn login poll` on the original machine to redeem the token.
 
-```json Example Table of contents block object theme={null}
-{
-  //...other keys excluded
-	"type": "table_of_contents",
-  "table_of_contents": {
-  	"color": "default"
-  }
-}
+`ntn login` also falls back to this flow automatically when it detects there is no terminal (e.g. piped input).
+
+Login sessions expire after a short window. If polling fails because the session expired, run `ntn login` again to start over.
+
+For unattended use (CI, scripts, bots), prefer a [personal access token](#use-a-personal-access-token) instead.
+
+## Target a specific workspace
+
+To run a single command against a non-default workspace without switching defaults, set `NOTION_WORKSPACE_ID`:
+
+```bash theme={null}
+NOTION_WORKSPACE_ID=<workspace-id> ntn api v1/users/me
 ```
 
-### Tab
+Workspace IDs are listed in the output of `ntn debug`.
 
-Tab block objects represent a tabbed container. The `tab` property is an empty object (`{}`). Each tab within the container is a [paragraph](/reference/block#paragraph) child block — the paragraph's `rich_text` serves as the tab label, the paragraph's `icon` sets the tab icon, and the paragraph's `children` contain the tab's content.
+## Use a personal access token
 
-Only `paragraph` blocks can be direct children of a tab block. When creating tabs via [Append block children](/reference/patch-block-children), provide a `tab` block with paragraph children, each containing their own nested content blocks. Each paragraph child can optionally include an `icon` to display alongside the tab label.
+For unattended use, authenticate with a [personal access token](/guides/connections-and-tokens/personal-access-tokens) (PAT) by exporting it as `NOTION_API_TOKEN`:
 
-| Field | Type | Description |
-| :- | :- | :- |
-| *(empty)* | `object` | The `tab` property is an empty object. Tab metadata is expressed through its paragraph children. |
-
-```json Example Tab block object theme={null}
-{
-  "object": "block",
-  "type": "tab",
-  "has_children": true,
-  //...other keys excluded
-  "tab": {}
-}
+```bash theme={null}
+export NOTION_API_TOKEN=ntn_xxx...
+ntn api v1/users/me
 ```
 
-```json Creating a tab block with icons theme={null}
-{
-  "type": "tab",
-  "tab": {
-    "children": [
-      {
-        "type": "paragraph",
-        "paragraph": {
-          "rich_text": [{ "type": "text", "text": { "content": "Overview" } }],
-          "icon": { "emoji": "📋" },
-          "children": [
-            {
-              "type": "paragraph",
-              "paragraph": {
-                "rich_text": [{ "type": "text", "text": { "content": "Tab 1 content" } }]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "type": "paragraph",
-        "paragraph": {
-          "rich_text": [{ "type": "text", "text": { "content": "Details" } }],
-          "icon": { "emoji": "🔍" },
-          "children": [
-            {
-              "type": "paragraph",
-              "paragraph": {
-                "rich_text": [{ "type": "text", "text": { "content": "Tab 2 content" } }]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+`NOTION_API_TOKEN` takes precedence over anything stored in the keychain, so the same shell can mix `ntn login`-based commands and PAT-based commands depending on what's exported.
+
+## Inspect your session
+
+```bash theme={null}
+ntn doctor
 ```
 
-### Template
+## Log out
 
-> [!CAUTION]
+```bash theme={null}
+ntn logout
+```
+
+This forgets every cached workspace, deletes each one's token from the keychain, and clears the default workspace. The `config.json` and `workspaces.json` files themselves stay in place — run `ntn login` to repopulate them.
+
+## Where credentials are stored
+
+Tokens live in your OS credential store (Keychain on macOS, Secret Service on Linux) under the service name `notion-cli`, with the workspace ID as the account.
+
+Two files sit alongside them in the CLI config directory:
+
+* `config.json` — CLI version, default workspace per, and the optional `keyring` toggle.
+* `workspaces.json` — cached workspace IDs and names for the interactive picker.
+
+The config directory is `NOTION_HOME` if set, otherwise `$XDG_CONFIG_HOME/notion`, `$HOME/.config/notion`, or `$HOME/.notion` as fallbacks.
+
+### Opt out of the OS keychain
+
+On systems without a usable keychain, `ntn login` fails with a keychain error. Common examples include Docker containers, CI runners, SSH sessions to a Linux server, etc.
+
+Set `NOTION_KEYRING=0` to store tokens in plain JSON at `auth.json` in the config directory instead. Treat that file like any other secret.
+
+```bash theme={null}
+NOTION_KEYRING=0 ntn login
+```
+
+To make it permanent, set `"keyring": false` in `config.json`. The env var always wins.
+
+## Environment variables
+
+| Variable | Purpose |
+| :- | :- |
+| `NOTION_API_TOKEN` | When this is set, it'll take precedence over `ntn login`'s keychain entry. Handy for scripts and CI. |
+| `NOTION_WORKSPACE_ID` | Override the default workspace for a single command. |
+| `NOTION_KEYRING` | Set to `0` to use file-based storage instead of the OS keychain. |
+| `NOTION_HOME` | Override the config directory. |
+| `NOTION_ENV` | Same as `--env`. Rarely needed. |
+
+Run `ntn login --help` for the full list.
+
+## Next steps
+
+> [card] [Workers quickstart](/workers/get-started/quickstart)
 >
-> **Deprecation Notice**
+> Create and deploy your first Notion Worker.
+
+> [card] [API requests](/cli/guides/api-requests)
 >
-> As of March 27, 2023 creation of template blocks will no longer be supported.
+> Make Notion API requests from the terminal.
 
-Template blocks represent [template buttons](https://www.notion.com/help/template-buttons) in the Notion UI.
-
-Template block objects contain the following information within the `template` property:
-
-| Field | Type | Description |
-| :- | :- | :- |
-| `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the title of the template. |
-| `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the template block. These blocks are duplicated when the template block is used in the UI. |
-
-```json Example Template block object theme={null}
-{
-  //...other keys excluded
-  "template": {
-    "rich_text": [
-      {
-        "type": "text",
-        "text": {
-          "content": "Add a new to-do",
-          "link": null
-        },
-        "annotations": {
-          //...other keys excluded
-        },
-        "plain_text": "Add a new to-do",
-        "href": null
-      }
-    ]
-  }
-}
-```
-
-### To do
-
-To do block objects contain the following information within the `to_do` property:
-
-| Field | Type | Description |
-| :- | :- | :- |
-| `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the To do block. |
-| `checked` | `boolean` (optional) | Whether the To do is checked. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
-| `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the To do block. |
-
-```json Example To do block object theme={null}
-{
-  //...other keys excluded
-  "type": "to_do",
-  "to_do": {
-    "rich_text": [{
-      "type": "text",
-      "text": {
-        "content": "Finish Q3 goals",
-        "link": null
-      }
-    }],
-    "checked": false,
-    "color": "default",
-    "children":[{
-      "type": "paragraph"
-      // ..other keys excluded
-    }]
-  }
-}
-```
-
-### Toggle blocks
-
-Toggle block objects contain the following information within the `toggle` property:
-
-| Field | Type | Description |
-| :- | :- | :- |
-| `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the Toggle block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
-| `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the Toggle block. |
-
-```json Toggle Block theme={null}
-{
-  //...other keys excluded
-  "type": "toggle",
-  "toggle": {
-    "rich_text": [{
-      "type": "text",
-      "text": {
-        "content": "Additional project details",
-        "link": null
-      }
-      //...other keys excluded
-    }],
-    "color": "default",
-    "children":[{
-      "type": "paragraph"
-      // ..other keys excluded
-    }]
-  }
-}
-```
-
-### Transcription
-
-> [!WARNING]
+> [card] [Command reference](/cli/reference/commands)
 >
-> **Deprecated in `2026-03-11`** — This block type has been renamed to [`meeting_notes`](/reference/block#meeting-notes). The `transcription` type name is still returned for API versions prior to `2026-03-11`.
+> Full reference for every ntn command.
 
-The `transcription` block type is identical to [`meeting_notes`](/reference/block#meeting-notes) except for the type name. In responses, `type` is `"transcription"` and the content object key is `transcription` instead of `meeting_notes`. All fields are the same — see the [meeting notes reference](/reference/block#meeting-notes) for details.
-
-### Unsupported
-
-When a block type is not yet supported by the API, the response includes `type` set to `"unsupported"` and an `unsupported` object with a `block_type` field. The `block_type` value is a plain string identifying the underlying internal block type (e.g., `"form"`, `"button"`, `"drive"`). This field is informational only and does not expose block content.
-
-| Field | Type | Description |
-| :- | :- | :- |
-| `block_type` | `string` | The underlying block type that is not currently supported by the Notion API. Example values include: `form`, `button`, `drive`. |
-
-```json Example Unsupported block object theme={null}
-{
-  "object": "block",
-  "id": "7af38973-3787-41b3-bd75-0ed3a1edfac9",
-  "type": "unsupported",
-  //...other keys excluded
-  "unsupported": {
-    "block_type": "form"
-  }
-}
-```
-
-> [!NOTE]
+> [card] [Personal access tokens](/guides/connections-and-tokens/personal-access-tokens)
 >
-> The `block_type` value is a plain string, not an enum. New values may appear as Notion adds new block types. Do not rely on a fixed set of values.
-
-### Video
-
-Video block objects contain a [file object](/reference/file-object) detailing information about the video.
-
-```json Example Video block object theme={null}
-{
-  "type": "video",
-  //...other keys excluded
-  "video": {
-    "type": "external",
-    "external": {
-      "url": "https://companywebsite.com/files/video.mp4"
-    }
-  }
-}
-```
-
-#### Supported video types
-
-* `.amv`
-* `.asf`
-* `.avi`
-* `.f4v`
-* `.flv`
-* `.gifv`
-* `.mkv`
-* `.mov`
-* `.mpg`
-* `.mpeg`
-* `.mpv`
-* `.mp4`
-* `.m4v`
-* `.qt`
-* `.wmv`
-* YouTube video links that include `embed` or `watch`. E.g. `https://www.youtube.com/watch?v=[id]`, `https://www.youtube.com/embed/[id]`
-
-> [!NOTE]
->
-> Vimeo video links are not currently supported by the video block type. However, they can be embedded in Notion pages using the `embed` block type. See [Embed](/reference/block#embed) for more information.
-
-#### Supported file upload types
-
-See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
-
-Video blocks only support file types in the "video" section of the table.
+> Create tokens for scripts and CI.

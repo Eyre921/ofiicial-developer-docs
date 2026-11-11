@@ -2864,6 +2864,8 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/users/emails
 /en/rest/users/followers
 /en/rest/users/gpg-keys
+/en/rest/users/issue-fields
+/en/rest/users/issue-types
 /en/rest/users/keys
 /en/rest/users/social-accounts
 /en/rest/users/ssh-signing-keys

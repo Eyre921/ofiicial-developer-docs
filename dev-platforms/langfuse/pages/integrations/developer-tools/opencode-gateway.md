@@ -18,7 +18,7 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
-**Requires** OpenCode 2.0 or later and an `ANTHROPIC` and/or `OPENAI` provider credential. Verified with OpenCode 2.0.25.
+**Requires** OpenCode 2.0 or later and an `ANTHROPIC` and/or `OPENAI` provider connection. Verified with OpenCode 2.0.25.
 
   For tracing OpenCode without the gateway, see the [OpenCode integration](/integrations/developer-tools/opencode).
 

@@ -42,7 +42,7 @@ nexus claude
 
 Nexus Auto is the default model. To pick another one, run `nexus claude --model <id>`.
 
-`--model` sets the default model for new sessions and adds it to `/model`. `/model` also lists an **Auto** row for Nexus Auto (`auto`). Enterprise accounts, which get general access to open models, also see the Fireworks catalog. Your own picker rows are not changed. Set [effort](/nexus/orchestration-preferences) in that same picker.
+`--model` sets the default model for new sessions and adds it to `/model`. `/model` also lists a **Nexus Auto** row (model ID `auto`). Enterprise accounts, which get general access to open models, also see the Fireworks catalog. Your own picker rows are not changed. Set [effort](/nexus/orchestration-preferences) in that same picker.
 
 To send one Anthropic model tier or your subagents to a specific model, pin that slot:
 
@@ -54,9 +54,9 @@ Tier flags are `--opus`, `--sonnet`, `--haiku`, `--fable`, and `--subagent`. Unp
 
 `nexus claude status` shows the provider, where the key comes from, and the configured model.
 
-**3. Restart and pick Auto**
+**3. Restart and pick Nexus Auto**
 
-Start a new session, then pick **Auto** in `/model`.
+Start a new session, then pick **Nexus Auto** in `/model`.
 
 To keep a session, exit and run `claude --resume <id>`. The Fireworks catalog in `/model` needs Claude Code 2.1.242 or later. On an older version, `nexus claude` says so. Run `claude update`, then `nexus claude` again.
 
@@ -146,7 +146,11 @@ Files: `~/.claude/settings.json`, `~/.claude.json`, and a backup under `~/.nexus
   },
   "modelPicker": {
     "options": [
-      { "model": "auto[1m]", "label": "Auto" }
+      {
+        "model": "auto[1m]",
+        "label": "Nexus Auto",
+        "description": "Smart routing: automatically picks the best model for the task."
+      }
     ]
   },
   "model": "auto[1m]",

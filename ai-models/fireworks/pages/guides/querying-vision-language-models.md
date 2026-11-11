@@ -364,7 +364,7 @@ VLMs do not natively accept PDF or Word (`.docx`) files as input. Convert them o
 
 ## Advanced capabilities
 
-> [card] [Vision training](/fine-tuning/fine-tuning-models#vision-training)
+> [card] [Vision training](/fine-tuning/training-api/cookbook/sft#vision-datasets)
 >
 > Train VLMs for specialized visual tasks
 

@@ -197,7 +197,17 @@ Add your auth token to a `.env.local` file in the root of your project:
 SENTRY_AUTH_TOKEN=<your-sentry-auth-token>
 ```
 
-Do not commit your auth token. Add `.env.local` to your `.gitignore`. For EAS builds, add `SENTRY_AUTH_TOKEN` as an [EAS secret](https://docs.expo.dev/eas/environment-variables/) instead of using a `.env.local` file.
+Do not commit your auth token. Add `.env.local` to your `.gitignore`.
+
+For EAS Build, store the token as an [EAS environment variable](https://docs.expo.dev/eas/environment-variables/manage/) instead of a `.env.local` file. Set it for each environment you build. You can pass `--environment` more than once:
+
+```bash
+eas env:set --name SENTRY_AUTH_TOKEN --value <your-sentry-auth-token> --environment production --environment preview --visibility sensitive
+```
+
+Each EAS build uses the environment set by the [`environment`](https://docs.expo.dev/eas/environment-variables/usage/#using-environment-variables-with-expo-build) field of its build profile in `eas.json`. If a profile doesn't set `environment`, EAS uses `production` for store builds (`distribution: "store"`), `development` for development builds (`developmentClient: true`), and `preview` for everything else. Set the token for every environment your profiles use, or source maps won't upload for those builds.
+
+Use `sensitive` visibility if you also upload source maps from your machine, for example after `eas update`. The upload command reads the token from your local environment or `.env` files, not from EAS. Pull it with `eas env:pull --environment production`, or run the upload through `eas env:exec production 'npx @sentry/expo-upload-sourcemaps dist'`. Values with `secret` visibility never leave Expo servers, so they work for EAS Build but can't be pulled for local uploads.
 
 ### [Add the Sentry Metro Plugin](https://docs.sentry.io/platforms/react-native/guides/expo.md#add-the-sentry-metro-plugin)
 
@@ -253,7 +263,7 @@ To see Sentry issues and replays in the Expo dashboard, create an [EAS Update ch
 
 ### [Build Notes](https://docs.sentry.io/platforms/react-native/guides/expo.md#build-notes)
 
-* Don't commit your auth token. Store it in `.env.local` as `SENTRY_AUTH_TOKEN` for local builds, and as an [EAS secret](https://docs.expo.dev/eas/environment-variables/) for EAS builds.
+* Don't commit your auth token. Store it in `.env.local` as `SENTRY_AUTH_TOKEN` for local builds, and as an [EAS environment variable](https://docs.expo.dev/eas/environment-variables/manage/) for EAS builds.
 * Source maps for the `Release` version of your application are uploaded automatically during the native application build.
 * During development, the source code is resolved using the Metro Server and source maps aren't used. This currently doesn't work on web.
 

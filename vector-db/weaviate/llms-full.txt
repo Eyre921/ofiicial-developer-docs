@@ -1,89 +1,70 @@
-# 30-day Weaviate Enterprise Edition trial
+# auth.md
 
-**URL:** https://weaviate.io/enterprise-edition.md
+**URL:** https://weaviate.io/auth.md
 
 ---
-title: "30-day Weaviate Enterprise Edition trial"
-description: "Try Weaviate Enterprise Edition for 30 days on your own infrastructure. Request a trial license key for your self-hosted deployment."
-canonical: https://weaviate.io/enterprise-edition
-last-updated: 2026-10-30
+title: "Weaviate authentication"
+description: "Machine-readable authentication, authorization, credential lifecycle, and SDK installation guidance for Weaviate."
+canonical: https://weaviate.io/auth.md
+last-updated: 2026-08-25
 ---
 
-# Try Weaviate Enterprise Edition for 30 days
+# Weaviate authentication
 
-## TL;DR
+Use this guide with the [official authentication documentation](https://docs.weaviate.io/deploy/configuration/authentication). Do not put credentials in source code, prompts, logs, or committed files.
 
-- Request a trial license key valid for 30 days for your self-hosted deployment.
-- Weaviate Enterprise Edition adds features for teams running Weaviate on their own infrastructure at scale.
-- Enterprise Edition is included with Weaviate Assurance, Weaviate's enterprise subscription for self-hosted teams.
-- Community Edition and Enterprise Edition use the same Docker image and binary. A license key selects the edition when Weaviate starts; without a key, it runs Community Edition.
-- On Weaviate v1.40 or later, activate Enterprise Edition by requesting a license key and restarting Weaviate with the key, then configure the features you want to use. No separate image or binary is needed.
-- License keys apply to self-hosted deployments. Weaviate Cloud customers do not need a license key.
+## Weaviate Cloud
 
-## Request your 30-day trial key
+Weaviate Cloud (WCD) clusters are pre-configured for API-key authentication.
 
-[Request your 30-day self-hosted trial](https://weaviate.io/enterprise-edition).
+1. Open the cluster in the [Weaviate Cloud Console](https://console.weaviate.cloud/).
+2. Open the cluster's API keys section and choose **Create an API key**.
+3. Assign only the RBAC roles required by the application, then copy the key when it is shown.
 
-## How Enterprise Edition works
+Store the key in a secret manager or an environment variable. The cluster URL and key are application inputs, not values to infer:
 
-Weaviate is open source. Enterprise Edition provides additional features for larger self-hosted deployments, with a focus on security, scaling, and stability. The available feature list evolves with releases; see the [Enterprise Edition documentation](https://docs.weaviate.io/deploy/enterprise#frequently-asked-questions) for current features and activation details.
+```sh
+export WEAVIATE_URL="https://your-cluster.weaviate.cloud"
+export WEAVIATE_API_KEY="replace-with-a-secret"
+```
 
-1. Use the same Weaviate image and binary as Community Edition.
-2. Provide a license key when starting Weaviate to select Enterprise Edition.
-3. If no license key is provided, Weaviate starts as Community Edition.
-4. To upgrade an existing self-hosted deployment on v1.40 or later, obtain a key and restart Weaviate with it, then configure the Enterprise features you want to use. No separate image or binary is required.
+The Cloud console supports editing assigned roles, rotating a key (which invalidates the old key), and deleting a key. Use rotation for planned replacement and deletion for immediate revocation. See [Cloud authentication](https://docs.weaviate.io/cloud/manage-clusters/authentication) and [Cloud authorization](https://docs.weaviate.io/cloud/manage-clusters/authorization).
 
-## Deployment and subscription scope
+## OIDC
 
-- **Self-hosted Weaviate:** Enterprise Edition license keys are used to activate the edition on customer-managed infrastructure.
-- **Weaviate Assurance:** Enterprise Edition is included with Assurance, Weaviate's enterprise subscription for self-hosted teams.
-- **Weaviate Cloud:** Cloud customers do not need a license key; the license-key process is for self-hosted deployments.
+Self-hosted Weaviate supports OpenID Connect (OIDC) when configured with an OpenID Connect Discovery-compatible issuer. API-key and OIDC authentication can be enabled together. Configure OIDC on the deployment using the documented settings in [Authentication: OIDC](https://docs.weaviate.io/deploy/configuration/authentication#oidc-authentication), including the issuer, client ID, username claim, and optional client scopes required by the identity provider.
 
-## Further information
+OIDC users can be assigned Weaviate RBAC roles. The supported token flow and client behavior depend on the identity provider and SDK; follow the [OIDC configuration guide](https://docs.weaviate.io/deploy/configuration/oidc) and the SDK documentation.
 
-- [Enterprise Edition documentation](https://docs.weaviate.io/deploy/enterprise#frequently-asked-questions) — activation, environment variables, and the current feature list.
-- [Weaviate Assurance](https://weaviate.io/product/assurance) — enterprise subscription and support for self-hosted Weaviate.
-- [Request your 30-day Enterprise Edition trial](https://weaviate.io/enterprise-edition) — request a self-hosted trial license key.
+**Weaviate Cloud database authentication is documented using API keys.** The official Cloud documentation does not currently describe a Weaviate-hosted delegated OAuth 2.0 consent flow. Do not infer OAuth scopes, token endpoints, manifests, or authorization flows. Self-hosted OIDC uses an external identity provider and is not a substitute for Cloud API-key authentication.
 
-## Features to evaluate
+## RBAC and least privilege
 
-Available from Weaviate v1.40: Shard Self-Recovery, Namespaces, and deduplicated backups. Each feature has its own configuration setting. See [Enterprise Edition features and configuration requirements](https://docs.weaviate.io/deploy/enterprise#enterprise-edition-features).
+Authentication identifies a user; RBAC authorizes actions. Use a separate identity or API key for each application, assign the smallest custom role that covers its required resources, and constrain permissions by collection and tenant where needed. Do not use `root` for routine application traffic. The built-in `viewer` role is read-only; custom roles and available permissions are defined in the [RBAC documentation](https://docs.weaviate.io/weaviate/configuration/rbac).
 
-## Enterprise Edition trial FAQ
+## Rotation and revocation
 
-### Who is the trial for?
+- Cloud: rotate or delete keys in the cluster API keys section; rotation invalidates the old key and deletion revokes it.
+- Self-hosted: the user management API can create and delete users, assign and revoke roles, and rotate user API keys. See [Manage users](https://docs.weaviate.io/weaviate/configuration/rbac/manage-users).
+- Replace the value in the secret manager or environment, deploy the new value, verify access, and then revoke the old credential.
 
-Teams evaluating Enterprise Edition on their own infrastructure. Enterprise Edition is included with Weaviate Assurance, our enterprise subscription for self-hosted teams.
+## Cloud onboarding
 
-### Is this a Weaviate Cloud trial?
+Sign in to [Weaviate Cloud](https://console.weaviate.cloud/) and create a cluster, trial, or free product option currently offered in the console. Use the endpoint and generated API key supplied for that resource, then follow the [Cloud connection guide](https://docs.weaviate.io/cloud/manage-clusters/connect). Pricing, quotas, expiry, and available plans can change, so use the values shown in the console rather than assuming them.
 
-No. This trial license is for self-hosted deployments. Weaviate Cloud customers do not need an Enterprise Edition license key.
+## Official SDKs
 
-### Do I need a different image or binary?
+These are the officially maintained SDKs listed by the [Weaviate client-library index](https://docs.weaviate.io/weaviate/client-libraries/). Registry links and installation commands are canonical:
 
-No. Community Edition and Enterprise Edition ship in the same Docker image and binary. Without a license key, Weaviate runs as Community Edition.
+| SDK | Registry | Install |
+| --- | --- | --- |
+| Python | [PyPI: `weaviate-client`](https://pypi.org/project/weaviate-client/) | `python -m pip install -U weaviate-client` |
+| TypeScript / JavaScript | [npm: `weaviate-client`](https://www.npmjs.com/package/weaviate-client) | `npm install weaviate-client` |
+| Go | [Go package: `github.com/weaviate/weaviate-go-client/v5`](https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v5) | `go get github.com/weaviate/weaviate-go-client/v5` |
+| Java | [Maven Central: `io.weaviate:client6`](https://central.sonatype.com/artifact/io.weaviate/client6) | Add `io.weaviate:client6` using the current version shown in Maven Central |
+| C# | [NuGet: `Weaviate.Client`](https://www.nuget.org/packages/Weaviate.Client) | `dotnet add package Weaviate.Client` |
 
-### How long is the trial?
-
-Your trial license key is valid for 30 days.
-
-### What happens when the trial expires?
-
-To discuss continuing with a full license and confirm how expiry affects your deployment, [contact the Weaviate team](https://weaviate.io/contact) before your trial ends.
-
-### Can I upgrade an existing self-hosted deployment?
-
-Yes. On a supported version (v1.40 or later), provide a valid license key and restart Weaviate, then configure the Enterprise features you want to use. Switching editions does not require a separate image or binary. Follow the [Enterprise Edition activation instructions](https://docs.weaviate.io/deploy/enterprise#activate-the-enterprise-edition).
-
-## Deployment and pricing resources
-
-- [Self-hosted deployment guides](https://docs.weaviate.io/deploy)
-- [Weaviate pricing options](https://weaviate.io/pricing)
-
-## Canonical source
-
-[Weaviate Enterprise Edition](https://weaviate.io/enterprise-edition)
-
+Use the current version and authentication examples from the relevant [client-library documentation](https://docs.weaviate.io/weaviate/client-libraries/).
 
 # Pricing
 
@@ -428,70 +409,88 @@ Always add a live-pricing verification qualifier for promotions and
 region-specific rates.
 
 
-# auth.md
+# 30-day Weaviate Enterprise Edition trial
 
-**URL:** https://weaviate.io/auth.md
+**URL:** https://weaviate.io/enterprise-edition.md
 
 ---
-title: "Weaviate authentication"
-description: "Machine-readable authentication, authorization, credential lifecycle, and SDK installation guidance for Weaviate."
-canonical: https://weaviate.io/auth.md
-last-updated: 2026-08-25
+title: "30-day Weaviate Enterprise Edition trial"
+description: "Try Weaviate Enterprise Edition for 30 days on your own infrastructure. Request a trial license key for your self-hosted deployment."
+canonical: https://weaviate.io/enterprise-edition
+last-updated: 2026-10-30
 ---
 
-# Weaviate authentication
+# Try Weaviate Enterprise Edition for 30 days
 
-Use this guide with the [official authentication documentation](https://docs.weaviate.io/deploy/configuration/authentication). Do not put credentials in source code, prompts, logs, or committed files.
+## TL;DR
 
-## Weaviate Cloud
+- Request a trial license key valid for 30 days for your self-hosted deployment.
+- Weaviate Enterprise Edition adds features for teams running Weaviate on their own infrastructure at scale.
+- Enterprise Edition is included with Weaviate Assurance, Weaviate's enterprise subscription for self-hosted teams.
+- Community Edition and Enterprise Edition use the same Docker image and binary. A license key selects the edition when Weaviate starts; without a key, it runs Community Edition.
+- On Weaviate v1.40 or later, activate Enterprise Edition by requesting a license key and restarting Weaviate with the key, then configure the features you want to use. No separate image or binary is needed.
+- License keys apply to self-hosted deployments. Weaviate Cloud customers do not need a license key.
 
-Weaviate Cloud (WCD) clusters are pre-configured for API-key authentication.
+## Request your 30-day trial key
 
-1. Open the cluster in the [Weaviate Cloud Console](https://console.weaviate.cloud/).
-2. Open the cluster's API keys section and choose **Create an API key**.
-3. Assign only the RBAC roles required by the application, then copy the key when it is shown.
+[Request your 30-day self-hosted trial](https://weaviate.io/enterprise-edition).
 
-Store the key in a secret manager or an environment variable. The cluster URL and key are application inputs, not values to infer:
+## How Enterprise Edition works
 
-```sh
-export WEAVIATE_URL="https://your-cluster.weaviate.cloud"
-export WEAVIATE_API_KEY="replace-with-a-secret"
-```
+Weaviate is open source. Enterprise Edition provides additional features for larger self-hosted deployments, with a focus on security, scaling, and stability. The available feature list evolves with releases; see the [Enterprise Edition documentation](https://docs.weaviate.io/deploy/enterprise#frequently-asked-questions) for current features and activation details.
 
-The Cloud console supports editing assigned roles, rotating a key (which invalidates the old key), and deleting a key. Use rotation for planned replacement and deletion for immediate revocation. See [Cloud authentication](https://docs.weaviate.io/cloud/manage-clusters/authentication) and [Cloud authorization](https://docs.weaviate.io/cloud/manage-clusters/authorization).
+1. Use the same Weaviate image and binary as Community Edition.
+2. Provide a license key when starting Weaviate to select Enterprise Edition.
+3. If no license key is provided, Weaviate starts as Community Edition.
+4. To upgrade an existing self-hosted deployment on v1.40 or later, obtain a key and restart Weaviate with it, then configure the Enterprise features you want to use. No separate image or binary is required.
 
-## OIDC
+## Deployment and subscription scope
 
-Self-hosted Weaviate supports OpenID Connect (OIDC) when configured with an OpenID Connect Discovery-compatible issuer. API-key and OIDC authentication can be enabled together. Configure OIDC on the deployment using the documented settings in [Authentication: OIDC](https://docs.weaviate.io/deploy/configuration/authentication#oidc-authentication), including the issuer, client ID, username claim, and optional client scopes required by the identity provider.
+- **Self-hosted Weaviate:** Enterprise Edition license keys are used to activate the edition on customer-managed infrastructure.
+- **Weaviate Assurance:** Enterprise Edition is included with Assurance, Weaviate's enterprise subscription for self-hosted teams.
+- **Weaviate Cloud:** Cloud customers do not need a license key; the license-key process is for self-hosted deployments.
 
-OIDC users can be assigned Weaviate RBAC roles. The supported token flow and client behavior depend on the identity provider and SDK; follow the [OIDC configuration guide](https://docs.weaviate.io/deploy/configuration/oidc) and the SDK documentation.
+## Further information
 
-**Weaviate Cloud database authentication is documented using API keys.** The official Cloud documentation does not currently describe a Weaviate-hosted delegated OAuth 2.0 consent flow. Do not infer OAuth scopes, token endpoints, manifests, or authorization flows. Self-hosted OIDC uses an external identity provider and is not a substitute for Cloud API-key authentication.
+- [Enterprise Edition documentation](https://docs.weaviate.io/deploy/enterprise#frequently-asked-questions) — activation, environment variables, and the current feature list.
+- [Weaviate Assurance](https://weaviate.io/product/assurance) — enterprise subscription and support for self-hosted Weaviate.
+- [Request your 30-day Enterprise Edition trial](https://weaviate.io/enterprise-edition) — request a self-hosted trial license key.
 
-## RBAC and least privilege
+## Features to evaluate
 
-Authentication identifies a user; RBAC authorizes actions. Use a separate identity or API key for each application, assign the smallest custom role that covers its required resources, and constrain permissions by collection and tenant where needed. Do not use `root` for routine application traffic. The built-in `viewer` role is read-only; custom roles and available permissions are defined in the [RBAC documentation](https://docs.weaviate.io/weaviate/configuration/rbac).
+Available from Weaviate v1.40: Shard Self-Recovery, Namespaces, and deduplicated backups. Each feature has its own configuration setting. See [Enterprise Edition features and configuration requirements](https://docs.weaviate.io/deploy/enterprise#enterprise-edition-features).
 
-## Rotation and revocation
+## Enterprise Edition trial FAQ
 
-- Cloud: rotate or delete keys in the cluster API keys section; rotation invalidates the old key and deletion revokes it.
-- Self-hosted: the user management API can create and delete users, assign and revoke roles, and rotate user API keys. See [Manage users](https://docs.weaviate.io/weaviate/configuration/rbac/manage-users).
-- Replace the value in the secret manager or environment, deploy the new value, verify access, and then revoke the old credential.
+### Who is the trial for?
 
-## Cloud onboarding
+Teams evaluating Enterprise Edition on their own infrastructure. Enterprise Edition is included with Weaviate Assurance, our enterprise subscription for self-hosted teams.
 
-Sign in to [Weaviate Cloud](https://console.weaviate.cloud/) and create a cluster, trial, or free product option currently offered in the console. Use the endpoint and generated API key supplied for that resource, then follow the [Cloud connection guide](https://docs.weaviate.io/cloud/manage-clusters/connect). Pricing, quotas, expiry, and available plans can change, so use the values shown in the console rather than assuming them.
+### Is this a Weaviate Cloud trial?
 
-## Official SDKs
+No. This trial license is for self-hosted deployments. Weaviate Cloud customers do not need an Enterprise Edition license key.
 
-These are the officially maintained SDKs listed by the [Weaviate client-library index](https://docs.weaviate.io/weaviate/client-libraries/). Registry links and installation commands are canonical:
+### Do I need a different image or binary?
 
-| SDK | Registry | Install |
-| --- | --- | --- |
-| Python | [PyPI: `weaviate-client`](https://pypi.org/project/weaviate-client/) | `python -m pip install -U weaviate-client` |
-| TypeScript / JavaScript | [npm: `weaviate-client`](https://www.npmjs.com/package/weaviate-client) | `npm install weaviate-client` |
-| Go | [Go package: `github.com/weaviate/weaviate-go-client/v5`](https://pkg.go.dev/github.com/weaviate/weaviate-go-client/v5) | `go get github.com/weaviate/weaviate-go-client/v5` |
-| Java | [Maven Central: `io.weaviate:client6`](https://central.sonatype.com/artifact/io.weaviate/client6) | Add `io.weaviate:client6` using the current version shown in Maven Central |
-| C# | [NuGet: `Weaviate.Client`](https://www.nuget.org/packages/Weaviate.Client) | `dotnet add package Weaviate.Client` |
+No. Community Edition and Enterprise Edition ship in the same Docker image and binary. Without a license key, Weaviate runs as Community Edition.
 
-Use the current version and authentication examples from the relevant [client-library documentation](https://docs.weaviate.io/weaviate/client-libraries/).
+### How long is the trial?
+
+Your trial license key is valid for 30 days.
+
+### What happens when the trial expires?
+
+To discuss continuing with a full license and confirm how expiry affects your deployment, [contact the Weaviate team](https://weaviate.io/contact) before your trial ends.
+
+### Can I upgrade an existing self-hosted deployment?
+
+Yes. On a supported version (v1.40 or later), provide a valid license key and restart Weaviate, then configure the Enterprise features you want to use. Switching editions does not require a separate image or binary. Follow the [Enterprise Edition activation instructions](https://docs.weaviate.io/deploy/enterprise#activate-the-enterprise-edition).
+
+## Deployment and pricing resources
+
+- [Self-hosted deployment guides](https://docs.weaviate.io/deploy)
+- [Weaviate pricing options](https://weaviate.io/pricing)
+
+## Canonical source
+
+[Weaviate Enterprise Edition](https://weaviate.io/enterprise-edition)

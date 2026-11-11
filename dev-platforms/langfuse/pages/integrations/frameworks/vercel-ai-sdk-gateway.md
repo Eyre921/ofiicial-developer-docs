@@ -18,7 +18,7 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
-Use the [AI SDK](https://ai-sdk.dev/docs/introduction) by Vercel with the gateway by pointing its OpenAI or Anthropic provider at the gateway. Each provider needs the matching provider credential in your organization: `OPENAI` for OpenAI models, `ANTHROPIC` for Anthropic models.
+Use the [AI SDK](https://ai-sdk.dev/docs/introduction) by Vercel with the gateway by pointing its OpenAI or Anthropic provider at the gateway. Each provider needs the matching provider connection in your organization: `OPENAI` for OpenAI models, `ANTHROPIC` for Anthropic models.
 
   For tracing the Vercel AI SDK without the gateway, see the [Vercel AI SDK integration](/integrations/frameworks/vercel-ai-sdk).
 

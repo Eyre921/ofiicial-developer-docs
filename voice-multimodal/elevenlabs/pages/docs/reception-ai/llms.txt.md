@@ -1,0 +1,140 @@
+---
+title: "Reception.ai"
+source: https://elevenlabs.io/docs/reception-ai/llms.txt
+path: docs/reception-ai/llms.txt
+---
+
+> This is a page from the ElevenLabs documentation. For an index of the documentation, fetch https://elevenlabs.io/docs/llms.txt.
+
+# Reception.ai
+
+> ElevenLabs provides APIs and SDKs for text to speech, voice cloning, speech to text, sound effects, voice isolator, voice changer, and conversational AI agents. Build voice-enabled applications with lifelike audio generation.
+
+## Docs
+
+- [Reception.ai](https://elevenlabs.io/docs/reception-ai/overview.md): An AI phone receptionist that answers calls, books appointments, and manages operations around the clock.
+- [Quickstart](https://elevenlabs.io/docs/reception-ai/quickstart.md): Set up your AI receptionist and start receiving calls in under 5 minutes.
+- [Your receptionist](https://elevenlabs.io/docs/reception-ai/receptionist/overview.md): How the AI receptionist works and where to configure it.
+- [Voice and personality](https://elevenlabs.io/docs/reception-ai/receptionist/voice-and-personality.md): Configure your receptionist's voice, tone, greeting, languages, and instructions.
+- [Rules and procedures](https://elevenlabs.io/docs/reception-ai/receptionist/rules-and-procedures.md): Teach your receptionist what to always do and how to handle specific requests.
+- [Call handling](https://elevenlabs.io/docs/reception-ai/receptionist/call-handling.md): Configure who answers first, call forwarding, transfers, caller verification, and blocked numbers.
+- [Advanced settings](https://elevenlabs.io/docs/reception-ai/receptionist/advanced-settings.md): Choose the AI model and fine-tune call behavior.
+- [Testing your receptionist](https://elevenlabs.io/docs/reception-ai/receptionist/testing.md): Verify your receptionist handles calls correctly before and after changes.
+- [Scheduling](https://elevenlabs.io/docs/reception-ai/scheduling/overview.md): How appointments, services, and availability work in Reception.ai.
+- [Services](https://elevenlabs.io/docs/reception-ai/scheduling/services.md): How service types, pricing, and options shape what customers can book.
+- [Hours and booking rules](https://elevenlabs.io/docs/reception-ai/scheduling/hours-and-booking-rules.md): How opening hours, closures, time off, and booking rules control availability.
+- [Staff](https://elevenlabs.io/docs/reception-ai/scheduling/staff.md): How staff members, schedules, and assignments affect when appointments can be booked.
+- [Locations](https://elevenlabs.io/docs/reception-ai/scheduling/locations.md): Manage addresses, opening hours, and what each location offers.
+- [Home](https://elevenlabs.io/docs/reception-ai/features/home.md): See your receptionist's status, today's activity, and what needs your attention.
+- [Inbox](https://elevenlabs.io/docs/reception-ai/features/inbox.md): Review calls, chats, and messages left by callers.
+- [Clients](https://elevenlabs.io/docs/reception-ai/features/clients.md): A built-in client list with contact details, bookings, and interaction history.
+- [Account](https://elevenlabs.io/docs/reception-ai/features/account.md): Manage your sign-in, two-factor authentication, and the language of the dashboard.
+- [Team](https://elevenlabs.io/docs/reception-ai/features/team.md): Invite people to your workspace and choose who can manage it.
+- [Notifications and SMS](https://elevenlabs.io/docs/reception-ai/features/notifications.md): Keep your team and your clients informed by email and text message.
+- [Booking page](https://elevenlabs.io/docs/reception-ai/features/booking-page.md): Let customers book online, and add your receptionist to your own website.
+- [Quote requests](https://elevenlabs.io/docs/reception-ai/features/quote-requests.md): Collect details for jobs you can't price up front, then turn them into bookings or orders.
+- [Orders and shop](https://elevenlabs.io/docs/reception-ai/features/orders.md): Take product orders by phone and online, and track them from order to pickup or delivery.
+- [Business assistant](https://elevenlabs.io/docs/reception-ai/features/assistant.md): Manage your business through natural language conversation.
+- [Analytics](https://elevenlabs.io/docs/reception-ai/features/analytics.md): Track what your receptionist handles and how your business performs.
+- [Phone numbers](https://elevenlabs.io/docs/reception-ai/phone-numbers/overview.md): How phone numbers work in Reception.ai.
+- [Bring your own number](https://elevenlabs.io/docs/reception-ai/phone-numbers/bring-your-own-number.md): Use phone numbers from your Twilio account or SIP trunk with your receptionist.
+- [International numbers](https://elevenlabs.io/docs/reception-ai/phone-numbers/international-numbers.md): Get a local number outside the US and Canada by submitting a regulatory request.
+- [Knowledge base](https://elevenlabs.io/docs/reception-ai/knowledge-base/overview.md): Teach your receptionist about your business so it can answer questions accurately.
+- [Website scraping](https://elevenlabs.io/docs/reception-ai/knowledge-base/website-scraping.md): Import information from your website into your receptionist's knowledge base.
+- [File uploads](https://elevenlabs.io/docs/reception-ai/knowledge-base/file-uploads.md): Upload documents to expand your receptionist's knowledge.
+- [FAQ](https://elevenlabs.io/docs/reception-ai/knowledge-base/faq.md): Answer questions your receptionist couldn't, so it can answer them next time.
+- [Integrations](https://elevenlabs.io/docs/reception-ai/integrations/overview.md): Connect Reception.ai to your existing tools and workflows.
+- [Google Calendar](https://elevenlabs.io/docs/reception-ai/integrations/google-calendar.md): Sync staff calendars so your receptionist knows real-time availability.
+- [Calendly](https://elevenlabs.io/docs/reception-ai/integrations/calendly.md): Let your receptionist book appointments through your Calendly account.
+- [Cal.com](https://elevenlabs.io/docs/reception-ai/integrations/cal-com.md): Let your receptionist book appointments through your Cal.com account.
+- [HubSpot](https://elevenlabs.io/docs/reception-ai/integrations/hubspot.md): Log every conversation on the matching HubSpot contact.
+- [Zapier](https://elevenlabs.io/docs/reception-ai/integrations/zapier.md): Connect Reception.ai to thousands of apps through Zapier's MCP server.
+- [Webhooks](https://elevenlabs.io/docs/reception-ai/integrations/webhooks.md): Give your receptionist custom tools that call your HTTP endpoints.
+- [MCP server](https://elevenlabs.io/docs/reception-ai/integrations/mcp-server.md): Connect custom tool servers using the Model Context Protocol.
+- [RingCentral](https://elevenlabs.io/docs/reception-ai/integrations/ringcentral.md): Answer calls to your RingCentral number with your receptionist.
+- [Quo (formerly OpenPhone)](https://elevenlabs.io/docs/reception-ai/integrations/quo.md): Answer calls to your Quo number with your receptionist.
+- [Grasshopper](https://elevenlabs.io/docs/reception-ai/integrations/grasshopper.md): Answer calls to your Grasshopper number with your receptionist.
+- [Dialpad](https://elevenlabs.io/docs/reception-ai/integrations/dialpad.md): Answer calls to your Dialpad main line with your receptionist.
+- [Zoom Phone](https://elevenlabs.io/docs/reception-ai/integrations/zoom-phone.md): Answer calls to your Zoom Phone number with your receptionist.
+- [Microsoft Teams Phone](https://elevenlabs.io/docs/reception-ai/integrations/microsoft-teams-phone.md): Answer calls to your Teams Phone number with your receptionist.
+- [Google Voice](https://elevenlabs.io/docs/reception-ai/integrations/google-voice.md): Answer calls to your Google Voice number with your receptionist.
+- [Aircall](https://elevenlabs.io/docs/reception-ai/integrations/aircall.md): Answer calls to your Aircall number with your receptionist.
+- [8x8](https://elevenlabs.io/docs/reception-ai/integrations/8x8.md): Answer calls to your 8x8 number with your receptionist.
+- [Vonage Business Communications](https://elevenlabs.io/docs/reception-ai/integrations/vonage.md): Answer calls to your Vonage business number with your receptionist.
+- [Nextiva](https://elevenlabs.io/docs/reception-ai/integrations/nextiva.md): Answer calls to your Nextiva number with your receptionist.
+- [GoTo Connect](https://elevenlabs.io/docs/reception-ai/integrations/goto-connect.md): Answer calls to your GoTo Connect number with your receptionist.
+- [Ooma](https://elevenlabs.io/docs/reception-ai/integrations/ooma.md): Answer calls to your Ooma Office number with your receptionist.
+- [Phone.com](https://elevenlabs.io/docs/reception-ai/integrations/phone-com.md): Answer calls to your Phone.com number with your receptionist.
+- [Webex Calling](https://elevenlabs.io/docs/reception-ai/integrations/webex-calling.md): Answer calls to your Webex Calling number with your receptionist.
+- [Ozonetel](https://elevenlabs.io/docs/reception-ai/integrations/ozonetel.md): Answer calls to your Ozonetel numbers with your receptionist.
+- [Telnyx](https://elevenlabs.io/docs/reception-ai/integrations/telnyx.md): Answer calls to your Telnyx numbers with your receptionist over a SIP trunk.
+- [Plivo](https://elevenlabs.io/docs/reception-ai/integrations/plivo.md): Answer calls to your Plivo numbers with your receptionist over a SIP trunk.
+- [Sinch](https://elevenlabs.io/docs/reception-ai/integrations/sinch.md): Answer calls to your Sinch numbers with your receptionist over a SIP trunk.
+- [DIDWW](https://elevenlabs.io/docs/reception-ai/integrations/didww.md): Answer calls to your DIDWW numbers with your receptionist over a SIP trunk.
+- [Flowroute](https://elevenlabs.io/docs/reception-ai/integrations/flowroute.md): Answer calls to your Flowroute numbers with your receptionist over a SIP trunk.
+- [FreePBX and Asterisk](https://elevenlabs.io/docs/reception-ai/integrations/freepbx.md): Send calls from your FreePBX or Asterisk phone system to your receptionist over a SIP trunk.
+- [3CX](https://elevenlabs.io/docs/reception-ai/integrations/3cx.md): Send calls from your 3CX phone system to your receptionist over a SIP trunk.
+- [Salesforce](https://elevenlabs.io/docs/reception-ai/integrations/salesforce.md): Find callers, create leads, and schedule follow-up tasks in Salesforce during calls.
+- [HighLevel](https://elevenlabs.io/docs/reception-ai/integrations/highlevel.md): Save callers as contacts in HighLevel with a webhook tool.
+- [Zoho CRM](https://elevenlabs.io/docs/reception-ai/integrations/zoho-crm.md): Look up callers and add leads in Zoho CRM through a Zoho MCP server.
+- [Pipedrive](https://elevenlabs.io/docs/reception-ai/integrations/pipedrive.md): Look up callers and log deals and follow-ups in Pipedrive with webhook tools.
+- [Follow Up Boss](https://elevenlabs.io/docs/reception-ai/integrations/follow-up-boss.md): Recognize callers and send new leads to Follow Up Boss.
+- [Close](https://elevenlabs.io/docs/reception-ai/integrations/close.md): Look up callers and log leads, notes, and tasks in Close through its MCP server.
+- [Keap](https://elevenlabs.io/docs/reception-ai/integrations/keap.md): Find and add Keap contacts, and log notes and follow-up tasks during calls.
+- [Freshsales](https://elevenlabs.io/docs/reception-ai/integrations/freshsales.md): Find and add Freshsales contacts, and log notes and follow-up tasks during calls.
+- [Copper](https://elevenlabs.io/docs/reception-ai/integrations/copper.md): Find callers, add leads, and log notes and follow-up tasks in Copper during calls.
+- [Capsule CRM](https://elevenlabs.io/docs/reception-ai/integrations/capsule-crm.md): Find and add Capsule contacts, and log notes and follow-up tasks during calls.
+- [Nutshell](https://elevenlabs.io/docs/reception-ai/integrations/nutshell.md): Find callers, and add new people and leads to Nutshell during calls.
+- [Clio](https://elevenlabs.io/docs/reception-ai/integrations/clio.md): Find and add Clio contacts, log calls, and create follow-up tasks for your firm.
+- [MyCase](https://elevenlabs.io/docs/reception-ai/integrations/mycase.md): Recognize callers, add new leads, and log calls in MyCase.
+- [PracticePanther](https://elevenlabs.io/docs/reception-ai/integrations/practicepanther.md): Find or add PracticePanther contacts, log calls, and create follow-up tasks.
+- [Lawmatics](https://elevenlabs.io/docs/reception-ai/integrations/lawmatics.md): Recognize callers, open new matters for intake, and request consultations in Lawmatics.
+- [Filevine](https://elevenlabs.io/docs/reception-ai/integrations/filevine.md): Find or add Filevine contacts and open intake projects for new callers.
+- [Smokeball](https://elevenlabs.io/docs/reception-ai/integrations/smokeball.md): Recognize callers, add new leads, and create follow-up tasks in Smokeball.
+- [Rocket Matter](https://elevenlabs.io/docs/reception-ai/integrations/rocket-matter.md): Add new callers as Rocket Matter contacts and create follow-up tasks for your team.
+- [Jobber](https://elevenlabs.io/docs/reception-ai/integrations/jobber.md): Find or add Jobber clients and turn calls into work requests.
+- [Housecall Pro](https://elevenlabs.io/docs/reception-ai/integrations/housecall-pro.md): Add new callers to Housecall Pro as customers.
+- [ServiceTitan](https://elevenlabs.io/docs/reception-ai/integrations/servicetitan.md): Find customers, send new bookings to ServiceTitan, and tell callers when their appointment is.
+- [ServiceM8](https://elevenlabs.io/docs/reception-ai/integrations/servicem8.md): Turn calls into ServiceM8 quotes and jobs with webhook tools.
+- [Workiz](https://elevenlabs.io/docs/reception-ai/integrations/workiz.md): Turn calls into Workiz leads for your team to schedule.
+- [JobNimbus](https://elevenlabs.io/docs/reception-ai/integrations/jobnimbus.md): Add new callers to JobNimbus as leads with a webhook tool.
+- [Service Fusion](https://elevenlabs.io/docs/reception-ai/integrations/service-fusion.md): Add new callers to Service Fusion and turn calls into jobs or follow-up tasks.
+- [FieldPulse](https://elevenlabs.io/docs/reception-ai/integrations/fieldpulse.md): Find or add FieldPulse customers and log call details with webhook tools.
+- [Acuity Scheduling](https://elevenlabs.io/docs/reception-ai/integrations/acuity-scheduling.md): Check open times and book appointments in Acuity Scheduling with webhook tools.
+- [Square Appointments](https://elevenlabs.io/docs/reception-ai/integrations/square-appointments.md): Find or add Square customers and create appointments at a time the caller asks for.
+- [SimplyBook.me](https://elevenlabs.io/docs/reception-ai/integrations/simplybook.md): Answer service questions, check availability, and book appointments through SimplyBook.me's MCP server.
+- [Setmore](https://elevenlabs.io/docs/reception-ai/integrations/setmore.md): Add callers to Setmore and create appointments at a time the caller asks for.
+- [Microsoft Outlook](https://elevenlabs.io/docs/reception-ai/integrations/microsoft-outlook.md): Check your Outlook calendar, add events, and email your team from calls.
+- [Apple Calendar](https://elevenlabs.io/docs/reception-ai/integrations/apple-calendar.md): See your Reception.ai bookings in Apple Calendar on your iPhone, iPad, or Mac.
+- [Shopmonkey](https://elevenlabs.io/docs/reception-ai/integrations/shopmonkey.md): Put appointment requests on your Shopmonkey calendar with a webhook tool.
+- [Zendesk](https://elevenlabs.io/docs/reception-ai/integrations/zendesk.md): Recognize callers, open Zendesk tickets from calls, and add updates to existing tickets.
+- [Freshdesk](https://elevenlabs.io/docs/reception-ai/integrations/freshdesk.md): Create Freshdesk tickets from calls with a webhook tool.
+- [Intercom](https://elevenlabs.io/docs/reception-ai/integrations/intercom.md): Look up customers, conversations, and help articles through Intercom's MCP server.
+- [Slack](https://elevenlabs.io/docs/reception-ai/integrations/slack.md): Post call updates to a Slack channel with a webhook tool.
+- [Microsoft Teams](https://elevenlabs.io/docs/reception-ai/integrations/microsoft-teams.md): Post call updates to a Teams channel with a webhook tool.
+- [Google Chat](https://elevenlabs.io/docs/reception-ai/integrations/google-chat.md): Post call updates to a Google Chat space with a webhook tool.
+- [Discord](https://elevenlabs.io/docs/reception-ai/integrations/discord.md): Post call updates to a Discord channel with a webhook tool.
+- [Telegram](https://elevenlabs.io/docs/reception-ai/integrations/telegram.md): Send call updates to a Telegram chat or group with a webhook tool.
+- [Mailchimp](https://elevenlabs.io/docs/reception-ai/integrations/mailchimp.md): Add callers to your Mailchimp audience with a webhook tool.
+- [Brevo](https://elevenlabs.io/docs/reception-ai/integrations/brevo.md): Text callers a follow-up and manage Brevo contacts.
+- [Postmark](https://elevenlabs.io/docs/reception-ai/integrations/postmark.md): Email your team a summary of each message a caller leaves.
+- [Resend](https://elevenlabs.io/docs/reception-ai/integrations/resend.md): Email your team a summary of each message a caller leaves.
+- [Monday.com](https://elevenlabs.io/docs/reception-ai/integrations/monday.md): Create and find Monday.com items during calls with webhook tools.
+- [Asana](https://elevenlabs.io/docs/reception-ai/integrations/asana.md): Create Asana tasks from calls and check a project's open tasks.
+- [Airtable](https://elevenlabs.io/docs/reception-ai/integrations/airtable.md): Look up and add Airtable records during calls.
+- [Google Sheets](https://elevenlabs.io/docs/reception-ai/integrations/google-sheets.md): Log calls and leads to a Google Sheet and look up callers in your customer list.
+- [ClickUp](https://elevenlabs.io/docs/reception-ai/integrations/clickup.md): Turn caller requests into ClickUp tasks with a webhook tool.
+- [Trello](https://elevenlabs.io/docs/reception-ai/integrations/trello.md): Turn caller requests into Trello cards with a webhook tool.
+- [Todoist](https://elevenlabs.io/docs/reception-ai/integrations/todoist.md): Turn caller requests into Todoist tasks with a webhook tool.
+- [Jotform](https://elevenlabs.io/docs/reception-ai/integrations/jotform.md): Look up Jotform submissions and form questions during calls with webhook tools.
+- [Stripe](https://elevenlabs.io/docs/reception-ai/integrations/stripe.md): Look up customers, invoices, and payments through Stripe's MCP server.
+- [Shopify](https://elevenlabs.io/docs/reception-ai/integrations/shopify.md): Answer product and store policy questions through your store's MCP server.
+- [WooCommerce](https://elevenlabs.io/docs/reception-ai/integrations/woocommerce.md): Answer order status questions from your WooCommerce store with a webhook tool.
+- [BigCommerce](https://elevenlabs.io/docs/reception-ai/integrations/bigcommerce.md): Answer order status questions from your BigCommerce store with a webhook tool.
+- [n8n](https://elevenlabs.io/docs/reception-ai/integrations/n8n.md): Run n8n workflows during calls with a webhook tool.
+- [Make](https://elevenlabs.io/docs/reception-ai/integrations/make.md): Run Make scenarios during calls with a webhook tool.
+- [Supabase](https://elevenlabs.io/docs/reception-ai/integrations/supabase.md): Save and look up records in your Supabase database with webhook tools.
+- [Plans and pricing](https://elevenlabs.io/docs/reception-ai/billing/plans-and-pricing.md): Choose the right plan for your business.
+- [Usage and limits](https://elevenlabs.io/docs/reception-ai/billing/usage-and-limits.md): How credits, overage, and resource limits work.
+- [Referral program](https://elevenlabs.io/docs/reception-ai/billing/referral-program.md): Give a friend their first month free and earn a month of credit.
+

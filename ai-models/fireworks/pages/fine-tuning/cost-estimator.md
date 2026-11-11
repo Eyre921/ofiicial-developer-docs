@@ -4,13 +4,13 @@ source: https://docs.fireworks.ai/fine-tuning/cost-estimator
 path: fine-tuning/cost-estimator
 ---
 
-Estimate Managed Training, compare Fireworks Serverless with Dedicated, or compare Fireworks Dedicated with Tinker
+Compare Fireworks Serverless with Dedicated, or compare Fireworks Dedicated with Tinker
 
 > [!NOTE]
 >
 > <ul>
 >   <li>
->     Managed and Serverless are [priced per
+>     Serverless is [priced per
 >     token](https://fireworks.ai/pricing#training-pricing).
 >   </li>
 >
@@ -25,8 +25,8 @@ Training cost estimator
 ## Configure once. Compare every supported path.
 
 Keep the method, model, workload, and assumptions visible while
-estimating Managed and comparing Fireworks Serverless vs Dedicated or
-Fireworks Dedicated vs Tinker.
+comparing Fireworks Serverless vs Dedicated or Fireworks Dedicated vs
+Tinker.
 
 Training method
 
@@ -36,8 +36,9 @@ Training method
 >   <li>Planning estimates are not quotes.</li>
 >
 >   <li>
->     Managed estimates can be low when rendered-token inputs omit multi-turn
->     unrolling. Dedicated compute floors can be low when sequences pack poorly.
+>     Estimates can be low when token counts omit multi-turn
+>     unrolling. Dedicated compute floors can also be low when
+>     sequences pack poorly.
 >   </li>
 >
 >   <li>
@@ -50,7 +51,7 @@ Training method
 ## Prepare inputs with the Training Skill
 
 The [Fireworks Training Skill](/fine-tuning/agent/use-with-coding-agents)
-prepares inputs and calculates Managed and Serverless estimates from published
+prepares inputs and calculates Serverless estimates from published
 rates. It can inspect a local dataset or an existing job and identify
 assumptions. It does not calculate Dedicated numbers. Use this page for
 Dedicated planning.

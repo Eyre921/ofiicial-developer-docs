@@ -135830,7 +135830,7 @@ Supabase Storage is a robust, scalable solution for managing files of any size w
 Choose the bucket type that fits your use case:
 
 - **[Files buckets](https://supabase.com/docs/guides/storage/quickstart):** Store and serve images, videos, documents, and general-purpose files with direct URL access and row-level security.
-- **[Analytics buckets](https://supabase.com/docs/guides/storage/analytics/introduction):** Store data in Apache Iceberg tables for data lakes, logs, and Supabase Pipelines. Query from Postgres via foreign tables with partitioning.
+- **[Analytics buckets](https://supabase.com/docs/guides/storage/analytics/introduction):** Store data in Apache Iceberg tables for data lakes and logs. Query from Postgres via foreign tables with partitioning.
 - **[Vector buckets](https://supabase.com/docs/guides/storage/vector/introduction):** Store embeddings and run similarity search for semantic matching, AI, and RAG. Use HNSW indexing, distance metrics, and metadata filtering.
 
 ## Examples

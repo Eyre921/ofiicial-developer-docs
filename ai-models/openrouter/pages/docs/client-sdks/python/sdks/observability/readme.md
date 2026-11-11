@@ -26,7 +26,7 @@ Observability endpoints
 
 ## list
 
-List the observability destinations configured for the authenticated entity's default workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+List the observability destinations configured for the authenticated entity's default workspace, or a workspace-scoped management key's own workspace. Use the `workspace_id` query parameter to scope the result to a different workspace. A workspace-scoped management key can only list its own workspace; any other `workspace_id` returns 403. Only destinations with stable release status are surfaced — destinations of other types are excluded. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -60,7 +60,7 @@ with OpenRouter(
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `offset` | *OptionalNullable\[int]* | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 100) | 50 |
-| `workspace_id` | *Optional\[str]* | ➖ | Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace. | 550e8400-e29b-41d4-a716-446655440000 |
+| `workspace_id` | *Optional\[str]* | ➖ | Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace, or a workspace-scoped management key's own workspace. | 550e8400-e29b-41d4-a716-446655440000 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -79,7 +79,7 @@ with OpenRouter(
 
 ## create
 
-Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace; use the `workspace_id` body field to scope to a different workspace. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Create a new observability destination. A maximum of 5 destinations per type is allowed. Defaults to the authenticated entity's default workspace, or a workspace-scoped management key's own workspace; use the `workspace_id` body field to scope to a different workspace. A workspace-scoped management key can only create in its own workspace; any other `workspace_id` returns 403. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -116,7 +116,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. | null |
+| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes whose traffic is forwarded. `null` or omitted means all keys. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400. | null |
 | `broadcast_generation_cost` | *Optional\[bool]* | ➖ | When true, include cost and billing generation metadata. | false |
 | `broadcast_generation_cost_allocation` | *Optional\[bool]* | ➖ | Beta. When true, include openrouter\_cost\_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost. | false |
 | `broadcast_generation_identity` | *Optional\[bool]* | ➖ | When true, include identity generation metadata. | false |
@@ -126,7 +126,7 @@ with OpenRouter(
 | `privacy_mode` | *Optional\[bool]* | ➖ | When true, request/response bodies are not forwarded — only metadata. | false |
 | `regions` | List\[[components.ObservabilityDataRegionInput](../../components/observabilitydataregioninput.mdx)] | ➖ | Data regions this destination applies to. `eu` is accepted as an alias for `europe` and normalizes to `europe`. Omitting this field defaults to \['global']; the array must be non-empty. | \[ "global" ] |
 | `sampling_rate` | *Optional\[float]* | ➖ | Sampling rate between 0.0001 and 1 (1 = 100%). | 1 |
-| `workspace_id` | *Optional\[str]* | ➖ | Optional workspace ID. Defaults to the authenticated entity's default workspace. | 550e8400-e29b-41d4-a716-446655440000 |
+| `workspace_id` | *Optional\[str]* | ➖ | Optional workspace ID. Defaults to the authenticated entity's default workspace, or a workspace-scoped management key's own workspace. | 550e8400-e29b-41d4-a716-446655440000 |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -146,7 +146,7 @@ with OpenRouter(
 
 ## delete
 
-Delete an existing observability destination. This performs a soft delete. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing observability destination. This performs a soft delete. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -195,7 +195,7 @@ with OpenRouter(
 
 ## get
 
-Fetch a single observability destination by its UUID. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Fetch a single observability destination by its UUID. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -244,7 +244,7 @@ with OpenRouter(
 
 ## update
 
-Update an existing observability destination. Only the fields provided in the request body are updated. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Update an existing observability destination. Only the fields provided in the request body are updated. A workspace-scoped management key only reaches destinations in its own workspace; any other `id` returns 404. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -275,7 +275,7 @@ with OpenRouter(
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
-| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value. Must contain at least one hash if provided. | null |
+| `api_key_hashes` | List\[*str*] | ➖ | Optional allowlist of OpenRouter API key hashes. `null` clears the filter (all keys). Omitting leaves the current value, including any API key from another workspace that an organization-scoped key attached. Must contain at least one hash if provided. A workspace-scoped management key can only name API keys in its own workspace; any other hash returns 400. | null |
 | `broadcast_generation_cost` | *Optional\[bool]* | ➖ | Whether to include cost and billing generation metadata. | false |
 | `broadcast_generation_cost_allocation` | *Optional\[bool]* | ➖ | Beta. When true, include openrouter\_cost\_allocation: per-token-kind usage and cost, sent only when they reconcile with the billed cost. | false |
 | `broadcast_generation_identity` | *Optional\[bool]* | ➖ | Whether to include identity generation metadata. | false |

@@ -118,7 +118,7 @@ Fireworks also supports additional features in the training schema:
 * **Per-sample weights** for weighted training
 * **Vision inputs** using the same OpenAI-compatible multimodal content format
 
-To get started with training, see the [Supervised Fine-Tuning guide](/fine-tuning/fine-tuning-models) or the [Training overview](/fine-tuning/finetuning-intro).
+To get started with training, see the [Training overview](/fine-tuning/finetuning-intro).
 
 ## API compatibility
 

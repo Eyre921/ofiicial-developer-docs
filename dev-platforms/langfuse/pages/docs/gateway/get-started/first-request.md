@@ -45,16 +45,16 @@ export LANGFUSE_GATEWAY_HOST="https://gateway.cloud.langfuse.com"
 
 ### Pick a model [#list-models]
 
-Pick a model you can call. Its ID has the form `<credential>:<model>`, for example `openai-prod:<model>`. See [model IDs](/docs/gateway/features/models#model-ids) for which form to send.
+Pick a model you can call. Its ID has the form `<connection>:<model>`, for example `openai-prod:<model>`. See [model IDs](/docs/gateway/features/models#model-ids) for which form to send.
 
 **Langfuse UI**
 
-Go to **AI Gateway → Providers & Models → Models** and choose a provider credential in the filter. The list shows each model's name without the credential prefix, the routes it supports, and whether it's enabled. Add the credential's name as the prefix when you call a model.
+Go to **AI Gateway → Providers & Models → Models** and choose a provider connection in the filter. The list shows each model's name without the connection prefix, the routes it supports, and whether it's enabled. Add the connection's name as the prefix when you call a model.
 
-  ![Providers & Models page on the Models tab, filtered to one provider credential, listing model names with a copy button, their supported routes, and an Enabled switch per model](/images/docs/ai-gateway/models-list.png)
+  ![Providers & Models page on the Models tab, filtered to one provider connection, listing model names with a copy button, their supported routes, and an Enabled switch per model](/images/docs/ai-gateway/models-list.png)
 
   If the page says "No providers yet", your organization hasn't added a
-  provider credential yet. Ask your admin.
+  provider connection yet. Ask your admin.
 
 **API**
 
@@ -73,7 +73,7 @@ curl -s "$LANGFUSE_GATEWAY_HOST/anthropic/v1/models?limit=1000" \
 
 **Claude Code**
 
-_**Requires** Claude Code 2.1 or later and an `ANTHROPIC` provider credential._
+_**Requires** Claude Code 2.1 or later and an `ANTHROPIC` provider connection._
 
 Log out of any Claude subscription, point Claude Code at the gateway's Anthropic route, and run a prompt:
 
@@ -89,7 +89,7 @@ claude -p "Reply with: hello gateway"
 
 **Claude Desktop**
 
-_**Requires** an `ANTHROPIC` provider credential._
+_**Requires** an `ANTHROPIC` provider connection._
 
 1. Open **Developer → Configure Third-Party Inference**. If the **Developer** menu is unavailable, open **Help → Troubleshooting** and enable Developer Mode.
 2. Under **Connection**, set **Inference provider** to **Gateway** and **Gateway base URL** to `https://gateway.cloud.langfuse.com/anthropic`, without `/v1`. Set **Credential kind** to **Static API key**, enter your gateway key under **Gateway API key**, and select **Bearer** as the **Gateway auth scheme**.
@@ -102,7 +102,7 @@ _This example uses the EU host. If your organization is in another region, use y
 
 **Codex**
 
-_**Requires** Codex CLI 0.157 or later and an `OPENAI` provider credential._
+_**Requires** Codex CLI 0.157 or later and an `OPENAI` provider connection._
 
 Export the gateway key:
 
@@ -135,7 +135,7 @@ codex exec "Reply with exactly: PONG"
 
 **OpenCode**
 
-_**Requires** OpenCode 2.0 or later and an `ANTHROPIC` provider credential._
+_**Requires** OpenCode 2.0 or later and an `ANTHROPIC` provider connection._
 
 Point OpenCode's Anthropic provider at the gateway in `opencode.json` (project root or `~/.config/opencode/opencode.json`). Remove any stored OpenCode account connection first, otherwise OpenCode keeps using it.
 
@@ -167,7 +167,7 @@ opencode run "Reply with exactly: pong"
 
 **Pi**
 
-_**Requires** Pi 1.5.0 or later and an `ANTHROPIC` provider credential._
+_**Requires** Pi 1.5.0 or later and an `ANTHROPIC` provider connection._
 
 Install Pi:
 
@@ -211,7 +211,7 @@ pi -p --provider langfuse-anthropic --model <anthropic-model-id> "Reply with exa
 
 **GitHub Copilot**
 
-_**Requires** an `ANTHROPIC` provider credential._
+_**Requires** an `ANTHROPIC` provider connection._
 
 Point Copilot CLI at the gateway's Anthropic route and start it:
 

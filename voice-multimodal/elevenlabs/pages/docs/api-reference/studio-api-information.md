@@ -1,10 +1,10 @@
 ---
-title: "ElevenCreative Studio API"
+title: "Studio API information"
 source: https://elevenlabs.io/docs/api-reference/studio-api-information.md
 path: docs/api-reference/studio-api-information
 ---
 
-> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+> This is a page from the ElevenLabs documentation. For an index of the documentation, fetch https://elevenlabs.io/docs/llms.txt.
 
 # ElevenCreative Studio API
 

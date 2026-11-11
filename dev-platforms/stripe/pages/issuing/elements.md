@@ -70,7 +70,8 @@ const app = express();
 
 app.use(express.json());
 
-const stripe = require('stripe')('sk_test_51SwlWHCo8vLtpLsixyTaljaqf0iIAgSoH5A2TG21adZ9nas0LWFGEwJhpmAKZ3LaM0nMhR0a7AWzCR3CBxnyyQrK000Y8iN4CQ');
+// Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
+const stripe = require('stripe')('<<YOUR_SECRET_KEY>>');
 
 app.post('/ephemeral-keys', async (request, response) => {
   const { card_id, nonce } = request.body;

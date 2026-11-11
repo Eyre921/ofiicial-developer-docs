@@ -606,6 +606,17 @@ See the [`reasoning_history`](/api-reference/post-chatcompletions) parameter for
 >
 > When `reasoning_history` is set to `"preserved"`, the model receives the full reasoning context from all previous turns. This is particularly useful for complex multi-turn conversations where maintaining reasoning continuity is important.
 
+For Qwen 3.6 and Qwen 3.8, Fireworks removes `reasoning_content` as the mode requires and passes `preserve_thinking` to the model's chat template: `true` for `"preserved"`, `false` for `"interleaved"` and `"disabled"`, and nothing when `reasoning_history` is unset, so the template's own default applies. With `preserve_thinking` on, the official Qwen template adds an empty `<think>\n\n</think>\n\n` block to earlier assistant turns that have no `reasoning_content`:
+
+| Model | Default (`reasoning_history` unset) | `"preserved"` | `"interleaved"` | `"disabled"` |
+| - | - | - | - | - |
+| Qwen 3.8 27B | Same as `"preserved"` | Keeps earlier reasoning and adds the empty block to turns without it | Renders turns before the last user message without a `<think>` block | Drops all reasoning. No `<think>` block before the last user message |
+| Qwen 3.6 (27B, 35B-A3B) | Same as `"interleaved"` | Keeps earlier reasoning and adds the empty block to turns without it | Renders turns before the last user message without a `<think>` block | Drops all reasoning. No `<think>` block before the last user message |
+
+In every mode, assistant turns after the last user message, such as an in-progress tool-calling loop, keep a `<think>` block. With `"disabled"`, that block is empty.
+
+If you train with [thinking history](/fine-tuning/thinking-history), use the same mode when you serve the model.
+
 The following script demonstrates preserved thinking across multiple turns and validates that
 `reasoning_content` from all previous turns is included in subsequent requests:
 

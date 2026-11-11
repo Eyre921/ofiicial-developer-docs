@@ -110,7 +110,7 @@ while True:
 
 > [!NOTE]
 >
-> Set `huggingFaceUrl` if this uploaded custom base model should be considered for Fireworks managed training. Fireworks uses the Hugging Face URL to infer the training renderer and locate compatible training shapes. The tunability check runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after the URL is set.
+> Set `huggingFaceUrl` if this uploaded custom base model should be considered for fine-tuning on Fireworks. Fireworks uses the Hugging Face URL to infer the training renderer and locate compatible training shapes. The tunability check runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after the URL is set.
 
 > [!TIP]
 >

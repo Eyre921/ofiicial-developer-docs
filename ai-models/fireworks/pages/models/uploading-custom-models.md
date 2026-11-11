@@ -184,14 +184,14 @@ For larger models, you can upload directly from cloud storage (S3 or Azure Blob 
 
 > [!NOTE]
 >
-> To use Fireworks managed training with an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
+> To fine-tune an uploaded custom base model, provide the corresponding Hugging Face model URL when you create the model:
 >
 > ```bash theme={null}
 > firectl model create <MODEL_ID> /path/to/files/ \
 >   --hugging-face-url https://huggingface.co/<ORG>/<MODEL>
 > ```
 >
-> Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for managed training until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
+> Fireworks uses this URL to infer the training renderer and determine whether a compatible training shape exists. Custom uploads without a Hugging Face URL can be deployed for inference, but they are not eligible for fine-tuning until the URL is set and tunability is refreshed. This refresh runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after you provide the URL. We are working to make this refresh faster.
 
 ## Verifying your upload
 

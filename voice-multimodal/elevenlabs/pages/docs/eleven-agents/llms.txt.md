@@ -1,0 +1,445 @@
+---
+title: "ElevenAgents"
+source: https://elevenlabs.io/docs/eleven-agents/llms.txt
+path: docs/eleven-agents/llms.txt
+---
+
+> This is a page from the ElevenLabs documentation. For an index of the documentation, fetch https://elevenlabs.io/docs/llms.txt.
+
+# ElevenAgents
+
+> ElevenLabs provides APIs and SDKs for text to speech, voice cloning, speech to text, sound effects, voice isolator, voice changer, and conversational AI agents. Build voice-enabled applications with lifelike audio generation.
+
+## Docs
+
+- [ElevenAgents](https://elevenlabs.io/docs/eleven-agents/overview.md): Learn how to build, launch, and scale agents with ElevenLabs.
+- [Quickstart](https://elevenlabs.io/docs/eleven-agents/quickstart.md): Build your first conversational agent in as little as 5 minutes.
+- [Build](https://elevenlabs.io/docs/eleven-agents/build/overview.md): Design and configure conversational AI agents with powerful customization options.
+- [Prompting guide](https://elevenlabs.io/docs/eleven-agents/best-practices/prompting-guide.md): System design principles for production-grade conversational AI
+- [Models](https://elevenlabs.io/docs/eleven-agents/customization/llm.md): Learn how to choose the right model for your use-case
+- [Realtime models](https://elevenlabs.io/docs/eleven-agents/customization/realtime-models.md): Use ElevenLabs models built for low-latency voice agents.
+- [Workflows](https://elevenlabs.io/docs/eleven-agents/customization/agent-workflows.md): Build sophisticated conversation flows with visual graph-based workflows
+- [Workflows as code](https://elevenlabs.io/docs/eleven-agents/customization/agent-workflows-as-code.md): Build, edit, and version agent workflows with the Python and JavaScript SDKs
+- [Procedures](https://elevenlabs.io/docs/eleven-agents/customization/procedures.md): Task-specific instructions your agent loads when relevant
+- [Free-form procedures](https://elevenlabs.io/docs/eleven-agents/customization/procedures/free-form-procedures.md): Task-specific instructions written in natural language
+- [Structured procedures](https://elevenlabs.io/docs/eleven-agents/customization/procedures/structured-procedures.md): A fixed sequence of typed steps your agent runs the same way every time
+- [Multimodal input](https://elevenlabs.io/docs/eleven-agents/customization/multimodal-input.md): Configure file attachments and keypad input for your agent.
+- [Conversation flow](https://elevenlabs.io/docs/eleven-agents/customization/conversation-flow.md): Configure how your assistant handles timeouts, interruptions, and turn-taking during conversations.
+- [Channel behavior](https://elevenlabs.io/docs/eleven-agents/customization/channel-behavior.md): Tailor reply style and turn limits for each text channel.
+- [Guardrails](https://elevenlabs.io/docs/eleven-agents/best-practices/guardrails.md): Control how agents behave in production with protections to keep responses safe, compliant, and reliable.
+- [Voice customization](https://elevenlabs.io/docs/eleven-agents/customization/voice.md): Learn how to customize your AI agent's voice and speech patterns.
+- [Multi-voice support](https://elevenlabs.io/docs/eleven-agents/customization/voice/multi-voice-support.md): Enable your AI agent to switch between different voices for multi-character conversations and enhanced storytelling.
+- [Pronunciation dictionaries](https://elevenlabs.io/docs/eleven-agents/customization/voice/pronunciation-dictionary.md): Learn how to control how your AI agent pronounces specific words and phrases.
+- [Speed control](https://elevenlabs.io/docs/eleven-agents/customization/voice/speed-control.md): Learn how to adjust the speaking speed of your ElevenLabs agent.
+- [Expressive mode](https://elevenlabs.io/docs/eleven-agents/customization/voice/expressive-mode.md): Build voice agents that adapt tone, timing, and emotional delivery based on conversational context.
+- [Audio environment](https://elevenlabs.io/docs/eleven-agents/customization/voice/audio-environment.md): Add a background sound and apply a voice filter to outbound agent audio.
+- [Conversational voice design](https://elevenlabs.io/docs/eleven-agents/customization/voice/best-practices/conversational-voice-design.md): Learn how to design lifelike, engaging voices for ElevenLabs Agents
+- [Language](https://elevenlabs.io/docs/eleven-agents/customization/voice/customization/language.md): Learn how to configure your agent to speak multiple languages.
+- [Knowledge base](https://elevenlabs.io/docs/eleven-agents/customization/knowledge-base.md): Equip your agent with custom knowledge to deliver accurate, context-aware answers.
+- [Manage documents](https://elevenlabs.io/docs/eleven-agents/customization/knowledge-base/manage-documents.md): Create, edit, organize, and keep your knowledge base documents up to date.
+- [Retrieval-Augmented Generation](https://elevenlabs.io/docs/eleven-agents/customization/knowledge-base/rag.md): Enhance your agent with large knowledge bases using RAG.
+- [Tools](https://elevenlabs.io/docs/eleven-agents/customization/tools.md): Enhance ElevenLabs agents with custom functionalities and external integrations.
+- [Client tools](https://elevenlabs.io/docs/eleven-agents/customization/tools/client-tools.md): Empower your assistant to trigger client-side operations.
+- [Webhook tools](https://elevenlabs.io/docs/eleven-agents/customization/tools/webhook-tools.md): Connect your assistant to external data & systems.
+- [Code tools](https://elevenlabs.io/docs/eleven-agents/customization/tools/code-tools.md): Run custom JavaScript logic directly on ElevenLabs' infrastructure.
+- [Model Context Protocol](https://elevenlabs.io/docs/eleven-agents/customization/tools/mcp.md): Connect your ElevenLabs conversational agents to external tools and data sources using the Model Context Protocol.
+- [MCP integration security](https://elevenlabs.io/docs/eleven-agents/customization/tools/mcp/security.md): Tips for securely integrating third-party Model Context Protocol servers with your ElevenLabs conversational agents.
+- [System tools](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools.md): Update the internal state of conversations without external requests.
+- [End call](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/end-call.md): Let your agent automatically hang up on the user.
+- [Language detection](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/language-detection.md): Let your agent automatically switch to the language
+- [Agent transfer](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/agent-transfer.md): Seamlessly transfer the user between ElevenLabs agents based on defined conditions.
+- [Transfer to number](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/transfer-to-number.md): Transfer calls to external phone numbers or SIP URIs based on defined conditions.
+- [Skip turn](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/skip-turn.md): Allow your agent to pause and wait for the user to speak next.
+- [Play keypad touch tone](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/play-keypad-touch-tone.md): Enable agents to play DTMF tones to interact with automated phone systems and navigate menus.
+- [Voicemail detection](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/voicemail-detection.md): Enable agents to automatically detect voicemail systems and optionally leave messages.
+- [Update state](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/update-state.md): Let your agent update dynamic variables mid-conversation using expressions.
+- [Flag issue for review](https://elevenlabs.io/docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review.md): Let a live agent raise an agent issue for a problem it can't resolve, without interrupting the caller.
+- [Tool Call Sounds](https://elevenlabs.io/docs/eleven-agents/customization/tools/tool-configuration/tool-call-sounds.md): Add ambient audio during tool execution to enhance user experience.
+- [Tool interruptions](https://elevenlabs.io/docs/eleven-agents/customization/tools/tool-configuration/tool-interruptions.md): Control whether users can interrupt the agent while a tool runs.
+- [Editing tools safely](https://elevenlabs.io/docs/eleven-agents/customization/tools/tool-configuration/editing-tools.md): Learn how tool edits interact with agent branches and versions, and how to test a tool change without affecting production.
+- [Personalization](https://elevenlabs.io/docs/eleven-agents/customization/personalization.md): Learn how to personalize your agent's behavior using dynamic variables and overrides.
+- [Dynamic variables](https://elevenlabs.io/docs/eleven-agents/customization/personalization/dynamic-variables.md): Pass runtime values to personalize your agent's behavior.
+- [Overrides](https://elevenlabs.io/docs/eleven-agents/customization/personalization/overrides.md): Tailor each conversation with personalized context for each user.
+- [Twilio personalization](https://elevenlabs.io/docs/eleven-agents/customization/personalization/twilio-personalization.md): Configure personalization for incoming Twilio calls using webhooks.
+- [Agent authentication](https://elevenlabs.io/docs/eleven-agents/customization/authentication.md): Learn how to secure access to your conversational agents
+- [Cal.com](https://elevenlabs.io/docs/eleven-agents/customization/integrations/calcom.md): Connect your ElevenLabs agents with Cal.com scheduling.
+- [Calendly](https://elevenlabs.io/docs/eleven-agents/customization/integrations/calendly.md): Connect your ElevenLabs agents with Calendly scheduling
+- [Cursor](https://elevenlabs.io/docs/eleven-agents/customization/integrations/cursor.md): Launch and manage AI coding agents from your ElevenLabs agents
+- [Custom Channel](https://elevenlabs.io/docs/eleven-agents/customization/integrations/custom_channel.md): Connect an external text channel to an ElevenLabs agent with webhooks
+- [Exa](https://elevenlabs.io/docs/eleven-agents/customization/integrations/exa.md): Give your ElevenLabs agents real-time web search
+- [Freshdesk](https://elevenlabs.io/docs/eleven-agents/customization/integrations/freshdesk.md): Connect your ElevenLabs agents with Freshdesk
+- [Genesys](https://elevenlabs.io/docs/eleven-agents/customization/integrations/genesys.md): Connect your ElevenLabs agents with Genesys Cloud
+- [Google Calendar](https://elevenlabs.io/docs/eleven-agents/customization/integrations/google_calendar.md): Connect your ElevenLabs agents with Google Calendar scheduling
+- [Google Drive](https://elevenlabs.io/docs/eleven-agents/customization/integrations/google_drive.md): Sync Google Drive files to your knowledge base
+- [HubSpot](https://elevenlabs.io/docs/eleven-agents/customization/integrations/hubspot.md): Connect your ElevenLabs agents with HubSpot CRM
+- [Intercom](https://elevenlabs.io/docs/eleven-agents/customization/integrations/intercom.md): Connect your ElevenLabs agents with Intercom
+- [Jira](https://elevenlabs.io/docs/eleven-agents/customization/integrations/jira.md): Connect your ElevenLabs agents with Jira Cloud
+- [Parallel](https://elevenlabs.io/docs/eleven-agents/customization/integrations/parallel.md): Connect your ElevenLabs agents with Parallel web search
+- [Perplexity](https://elevenlabs.io/docs/eleven-agents/customization/integrations/perplexity.md): Give your ElevenLabs agents answers and web search grounded in live sources
+- [Salesforce](https://elevenlabs.io/docs/eleven-agents/customization/integrations/salesforce.md): Connect your ElevenLabs agents with Salesforce CRM
+- [ServiceNow](https://elevenlabs.io/docs/eleven-agents/customization/integrations/servicenow.md): Connect your ElevenLabs agents with ServiceNow ITSM
+- [Slack](https://elevenlabs.io/docs/eleven-agents/customization/integrations/slack.md): Connect a Slack workspace to ElevenLabs Agents to chat with an agent in channels and threads
+- [Tavily](https://elevenlabs.io/docs/eleven-agents/customization/integrations/tavily.md): Give your ElevenLabs agents real-time web search
+- [Telegram](https://elevenlabs.io/docs/eleven-agents/customization/integrations/telegram.md): Connect your ElevenLabs agents with Telegram
+- [Twilio API](https://elevenlabs.io/docs/eleven-agents/customization/integrations/twilio.md): Connect your ElevenLabs agents with Twilio Voice and SMS
+- [Zendesk](https://elevenlabs.io/docs/eleven-agents/customization/integrations/zendesk.md): Connect your ElevenLabs agents with Zendesk Support
+- [ElevenAgents Architect](https://elevenlabs.io/docs/eleven-agents/operate/architect.md): The ElevenAgents assistant for building, investigating, and improving your agents.
+- [Starting a conversation](https://elevenlabs.io/docs/eleven-agents/operate/architect/entry-points.md): Every place you can open ElevenAgents Architect, and the context each one passes in automatically.
+- [How ElevenAgents Architect works](https://elevenlabs.io/docs/eleven-agents/operate/architect/how-it-works.md): What ElevenAgents Architect knows when a conversation starts, how it investigates, and how it turns a question into a validated change.
+- [What ElevenAgents Architect can change](https://elevenlabs.io/docs/eleven-agents/operate/architect/capabilities.md): The full list of what ElevenAgents Architect can read and edit, where each change lands, and which actions ask for your approval.
+- [Proposals and validation](https://elevenlabs.io/docs/eleven-agents/operate/architect/proposals.md): How ElevenAgents Architect's changes are tested, reviewed, and rolled out to live traffic.
+- [Permissions, approvals, and drafts](https://elevenlabs.io/docs/eleven-agents/operate/architect/authentication.md): How ElevenAgents Architect acts on your behalf, when it asks for approval, and how changes are staged before they reach live callers.
+- [Customizing ElevenAgents Architect](https://elevenlabs.io/docs/eleven-agents/operate/architect/customization.md): Define the standards ElevenAgents Architect follows for each agent and for you, and reuse your team's prompts.
+- [Claude, Cursor, and other AI assistants](https://elevenlabs.io/docs/eleven-agents/operate/architect/external-assistants.md): Build and manage ElevenAgents from the AI assistants your team already uses.
+- [Architect Premium and Lite](https://elevenlabs.io/docs/eleven-agents/operate/architect/premium-and-lite.md): The two model tiers ElevenAgents Architect runs on, which one your conversation uses, and how to choose.
+- [Pricing and usage](https://elevenlabs.io/docs/eleven-agents/operate/architect/pricing.md): How ElevenAgents Architect is billed, the difference between Premium and Lite, and how to track and control usage in your workspace.
+- [Limitations and FAQ](https://elevenlabs.io/docs/eleven-agents/operate/architect/faq.md): What ElevenAgents Architect doesn't do yet, and answers to common questions.
+- [Integrate](https://elevenlabs.io/docs/eleven-agents/integrate/overview.md): Deploy your agents across web, mobile, and telephony platforms.
+- [Environment variables](https://elevenlabs.io/docs/eleven-agents/integrate/environment-variables.md): Deploy the same agent across dev, staging, and production without duplicating resources.
+- [Widget customization](https://elevenlabs.io/docs/eleven-agents/customization/widget.md): Learn how to customize the widget appearance to match your brand, and personalize the agent's behavior from html.
+- [SIP trunking](https://elevenlabs.io/docs/eleven-agents/phone-numbers/sip-trunking.md): Connect your existing phone system with ElevenLabs Agents using SIP trunking
+- [SIP reference](https://elevenlabs.io/docs/eleven-agents/phone-numbers/sip-reference.md): A glossary of the SIP, networking, and audio terms used when configuring SIP trunking with ElevenLabs Agents.
+- [Twilio native integration](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/native-integration.md): Learn how to configure inbound calls for your agent with Twilio.
+- [Custom LLM integration](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/custom-llm-integration.md): Power a Twilio phone agent with your own LLM using the Speech Engine SDK.
+- [SMS conversations](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/sms-conversations.md): Let users text your ElevenLabs agent through a Twilio phone number.
+- [Twilio regional routing](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/regional-routing.md): Configure regional routing for Twilio phone numbers to ensure data residency compliance.
+- [Register Twilio calls](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/register-call.md): Use your own Twilio infrastructure to connect calls to ElevenLabs agents.
+- [SMS OTP verification](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification.md): Send and verify one-time passcodes over SMS during an agent conversation using Twilio Verify.
+- [Vonage integration](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/vonage.md): Integrate ElevenAgents with Vonage voice calls using a WebSocket connector.
+- [Telnyx SIP trunking](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/telnyx.md): Connect Telnyx SIP trunks with ElevenLabs Agents.
+- [Plivo](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/plivo.md): Integrate ElevenLabs Agents with your Plivo SIP trunks
+- [Exotel integration](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/exotel.md): Connect Exotel phone numbers to ElevenAgents for inbound and outbound calls.
+- [Bandwidth SIP trunking](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/bandwidth.md): Connect Bandwidth SIP trunks with ElevenLabs Agents.
+- [Sinch SIP trunking](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/sinch.md): Connect Sinch Elastic SIP Trunking with ElevenLabs Agents.
+- [Vobiz](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/vobiz.md): Integrate ElevenAgents with your Vobiz SIP trunks.
+- [Voximplant](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/voximplant.md): Stream Voximplant calls to ElevenAgents from a VoxEngine scenario over Media Streams.
+- [Amazon Connect](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect.md): Hand Amazon Connect voice contacts to ElevenAgents through Amazon Connect's native third-party AI agent (A2A) integration.
+- [Genesys](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys.md): Integrate ElevenLabs Agents with Genesys using native Audio Connector integration.
+- [Five9](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/five9.md): Transfer calls from Five9 VCC to ElevenAgents using Five9 AI Agent Connect.
+- [Microsoft Teams](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/overview.md): Put an ElevenLabs agent inside Microsoft Teams.
+- [Widget tab](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/widget-tab.md): Embed the ElevenLabs agent widget in a Microsoft Teams tab for click-to-talk.
+- [Azure Communication Services](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/azure-communication-services.md): Let users dial a phone number that your ElevenLabs agent answers, via ACS Call Automation.
+- [Graph calling bot](https://elevenlabs.io/docs/eleven-agents/phone-numbers/microsoft-teams/graph-media-bot.md): Call or chat with your ElevenLabs agent by name inside Microsoft Teams, like a colleague.
+- [WhatsApp](https://elevenlabs.io/docs/eleven-agents/whatsapp.md): Connect your WhatsApp business account with ElevenLabs Agents
+- [Getting started](https://elevenlabs.io/docs/eleven-agents/whatsapp/getting-started.md): Connect your WhatsApp number to an agent and send your first outbound message
+- [Outbound messages & templates](https://elevenlabs.io/docs/eleven-agents/whatsapp/outbound.md): Start WhatsApp conversations and calls from your agent
+- [Interactive messages](https://elevenlabs.io/docs/eleven-agents/whatsapp/interactive-messages.md): Let your agent offer tappable buttons and lists in WhatsApp conversations
+- [WhatsApp tools](https://elevenlabs.io/docs/eleven-agents/whatsapp/tools.md): Let your agent send messages on WhatsApp with tools
+- [Troubleshooting & FAQ](https://elevenlabs.io/docs/eleven-agents/whatsapp/troubleshooting.md): Diagnose common WhatsApp issues and find answers to frequent questions
+- [Batch calling](https://elevenlabs.io/docs/eleven-agents/phone-numbers/batch-calls.md): Initiate multiple outbound calls simultaneously with your ElevenLabs agents.
+- [ElevenAgents Campaign Manager](https://elevenlabs.io/docs/eleven-agents/phone-numbers/campaigns.md): Run outbound campaigns with retries, callbacks, and calling windows.
+- [Operate](https://elevenlabs.io/docs/eleven-agents/operate/overview.md): Monitor, test, and optimize your agents at scale.
+- [Users](https://elevenlabs.io/docs/eleven-agents/operate/users.md): Browse end users who have talked to your agents and view their conversations.
+- [Agent Testing](https://elevenlabs.io/docs/eleven-agents/customization/agent-testing.md): Build confidence in your agent's behavior with automated testing
+- [Experiments](https://elevenlabs.io/docs/eleven-agents/operate/experiments.md): Run controlled A/B tests on production traffic to optimize agent performance with data, not intuition
+- [Agent versioning](https://elevenlabs.io/docs/eleven-agents/operate/versioning.md): Safely experiment with agent configurations using branches, versions, and traffic deployment
+- [Merge proposals](https://elevenlabs.io/docs/eleven-agents/operate/merge-proposals.md): Ask for a branch's changes to be reviewed before they reach another branch.
+- [Conversation analysis](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis.md): Analyze conversation quality and extract structured data from customer interactions.
+- [Success evaluation](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/success-evaluation.md): Define custom criteria to assess conversation quality, goal achievement, and customer satisfaction.
+- [Data collection](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/data-collection.md): Extract structured information from conversations such as contact details and business data.
+- [Analysis library](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/analysis-library.md): Manage evaluation criteria and data collection fields in one place and share them across agents.
+- [Sentiment analysis](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/sentiment-analysis.md): Understand user sentiment across agent conversations.
+- [Searching conversations](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/smart-search.md): Find messages across your conversation history using keyword or semantic search.
+- [Analytics](https://elevenlabs.io/docs/eleven-agents/dashboard.md): Track agent performance, compare experiments, and identify optimization opportunities across your workspace
+- [Spotlight](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight.md): Understand what is happening across your agent conversations.
+- [Real-time insights](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight/real-time-insights.md): Monitor live activity, trends, and suggested actions for your agents.
+- [Topic discovery](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight/topic-discovery.md): Understand recurring conversation topics, sentiment, and success trends.
+- [Real-time monitoring](https://elevenlabs.io/docs/eleven-agents/guides/realtime-monitoring.md): Observe live conversations and send control commands during active calls
+- [OpenTelemetry traces](https://elevenlabs.io/docs/eleven-agents/customization/opentelemetry-traces.md): Export OpenTelemetry traces to your observability stack as OTLP JSON.
+- [Alerts](https://elevenlabs.io/docs/eleven-agents/operate/alerts.md): Get notified when agent error rates spike, in the dashboard or through webhooks, Slack, or PagerDuty.
+- [Privacy](https://elevenlabs.io/docs/eleven-agents/customization/privacy.md): Manage how your agent handles data storage and privacy.
+- [Retention](https://elevenlabs.io/docs/eleven-agents/customization/privacy/retention.md): Control how long your agent retains conversation history and recordings.
+- [Audio saving](https://elevenlabs.io/docs/eleven-agents/customization/privacy/audio-saving.md): Control whether call audio recordings are retained.
+- [Conversation history redaction](https://elevenlabs.io/docs/eleven-agents/customization/privacy/conversation-history-redaction.md): Automatically redact sensitive entities from stored conversation history.
+- [Zero Retention Mode (per-agent)](https://elevenlabs.io/docs/eleven-agents/customization/privacy/zrm.md): Learn how to enable Zero Retention Mode for individual agents to enhance data privacy.
+- [Optimizing LLM costs](https://elevenlabs.io/docs/eleven-agents/customization/llm/optimizing-costs.md): Practical strategies to reduce LLM inference expenses on the ElevenLabs platform.
+- [ElevenLabs CLI](https://elevenlabs.io/docs/eleven-agents/operate/cli.md): Manage your voice agents as code from your command line.
+- [Hosted MCP server](https://elevenlabs.io/docs/eleven-agents/operate/hosted-mcp.md): Create and manage your agents from Claude and other MCP clients.
+- [Issues](https://elevenlabs.io/docs/eleven-agents/operate/triage.md): Review problems flagged in your agent's conversations, without reading every transcript.
+- [Events](https://elevenlabs.io/docs/eleven-agents/customization/events.md): Understand real-time communication events exchanged between client and server in ElevenLabs Agents
+- [Client events](https://elevenlabs.io/docs/eleven-agents/customization/events/client-events.md): Understand and handle real-time events received by the client during conversational applications.
+- [Client to server events](https://elevenlabs.io/docs/eleven-agents/customization/events/client-to-server-events.md): Send contextual information from the client to enhance conversational applications in real-time.
+- [Integrate your own model](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm.md): Connect an agent to your own LLM or host your own server.
+- [Cloudflare Workers AI](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/cloudflare.md): Connect an agent to a custom LLM on Cloudflare Workers AI.
+- [Groq Cloud](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/groq-cloud.md): Connect an agent to a custom LLM on Groq Cloud.
+- [SambaNova Cloud](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/samba-nova-cloud.md): Connect an agent to a custom LLM on SambaNova Cloud.
+- [Together AI](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/together-ai.md): Connect an agent to a custom LLM on Together AI.
+- [LLM Cascading](https://elevenlabs.io/docs/eleven-agents/customization/llm/llm-cascading.md): Learn how Agents Platform ensures reliable LLM responses using a cascading fallback mechanism.
+- [Post-call webhooks](https://elevenlabs.io/docs/eleven-agents/workflows/post-call-webhooks.md): Get notified when calls end and analysis is complete through webhooks.
+- [Python SDK](https://elevenlabs.io/docs/eleven-agents/libraries/python.md): ElevenAgents SDK: deploy customized, interactive voice agents in minutes.
+- [React SDK](https://elevenlabs.io/docs/eleven-agents/libraries/react.md): ElevenAgents SDK: deploy customized, interactive voice agents in minutes.
+- [React Native SDK](https://elevenlabs.io/docs/eleven-agents/libraries/react-native.md): ElevenAgents SDK: deploy customized, interactive voice agents in minutes for React Native apps.
+- [JavaScript SDK](https://elevenlabs.io/docs/eleven-agents/libraries/java-script.md): ElevenAgents SDK: deploy customized, interactive voice agents in minutes.
+- [Kotlin SDK](https://elevenlabs.io/docs/eleven-agents/libraries/kotlin.md): ElevenAgents SDK: deploy customized, interactive voice agents in minutes for Android apps.
+- [Swift SDK](https://elevenlabs.io/docs/eleven-agents/libraries/swift.md): ElevenAgents SDK: deploy customized, interactive voice agents in your Swift applications.
+- [Unity SDK](https://elevenlabs.io/docs/eleven-agents/libraries/unity.md): ElevenAgents SDK: deploy customized, interactive voice agents in your Unity games.
+- [WebSocket](https://elevenlabs.io/docs/eleven-agents/libraries/web-sockets.md): Create real-time, interactive voice conversations with AI agents
+- [Next.JS](https://elevenlabs.io/docs/eleven-agents/guides/quickstarts/next-js.md): Learn how to create a web application that enables voice conversations with ElevenLabs AI agents
+- [Vite (Javascript)](https://elevenlabs.io/docs/eleven-agents/guides/quickstarts/java-script.md): Learn how to create a web application that enables voice conversations with ElevenLabs AI agents
+- [Chat Mode](https://elevenlabs.io/docs/eleven-agents/guides/chat-mode.md): Configure your agent for text-only conversations with chat mode
+- [Burst pricing](https://elevenlabs.io/docs/eleven-agents/guides/burst-pricing.md): Optimize call capacity with burst concurrency to handle traffic spikes.
+- [Call queueing](https://elevenlabs.io/docs/eleven-agents/guides/call-queueing.md): Hold callers in a queue when an agent is at its concurrency limit, instead of rejecting them.
+- [OpenAI Realtime API compatibility](https://elevenlabs.io/docs/eleven-agents/guides/openai-realtime-compatibility.md): Connect an existing OpenAI Realtime client to ElevenLabs Realtime by changing the endpoint and session configuration.
+- [Building the ElevenLabs documentation agent](https://elevenlabs.io/docs/eleven-agents/guides/elevenlabs-docs-agent.md): Learn how we built our documentation assistant using ElevenLabs Agents
+- [Building the ElevenLabs customer interview agent](https://elevenlabs.io/docs/eleven-agents/guides/user-interviews-agent.md): Learn how we conducted 230 user interviews in 24 hours using ElevenLabs Agents
+- [Simulate Conversations](https://elevenlabs.io/docs/eleven-agents/guides/simulate-conversation.md): Learn how to test and evaluate your ElevenLabs agent with simulated conversations
+- [ElevenAgents in Ghost](https://elevenlabs.io/docs/eleven-agents/guides/no-code/ghost.md): Learn how to deploy a ElevenLabs agent to Ghost
+- [ElevenAgents in Framer](https://elevenlabs.io/docs/eleven-agents/guides/no-code/framer.md): Learn how to deploy a ElevenLabs agent to Framer
+- [ElevenAgents in Squarespace](https://elevenlabs.io/docs/eleven-agents/guides/no-code/squarespace.md): Learn how to deploy a ElevenLabs agent to Squarespace
+- [ElevenAgents in Webflow](https://elevenlabs.io/docs/eleven-agents/guides/no-code/webflow.md): Learn how to deploy a ElevenLabs agent to Webflow
+- [ElevenAgents in Wix](https://elevenlabs.io/docs/eleven-agents/guides/no-code/wix.md): Learn how to deploy a ElevenLabs agent to Wix
+- [ElevenAgents in WordPress](https://elevenlabs.io/docs/eleven-agents/guides/no-code/word-press.md): Learn how to deploy a ElevenLabs agent to WordPress
+- [Cross-platform Voice Agents with Expo React Native](https://elevenlabs.io/docs/eleven-agents/guides/integrations/expo-react-native.md): Build ElevenLabs agents that work across iOS and Android using Expo and the ElevenLabs React Native SDK with WebRTC support.
+- [LiveAvatar](https://elevenlabs.io/docs/eleven-agents/guides/integrations/live-avatar.md): Learn how to integrate ElevenAgents with HeyGen's LiveAvatar for real-time avatar streaming
+- [Build a Voice Assistant with Agents Platform on a Raspberry Pi](https://elevenlabs.io/docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant.md): Build a voice assistant with Agents Platform on a Raspberry Pi.
+- [Data Collection and Analysis with Agents Platform in Next.js](https://elevenlabs.io/docs/eleven-agents/guides/integrations/upstash-redis.md): Collect and analyse data in post-call webhooks using Agents Platform and Next.js.
+- [HIPAA](https://elevenlabs.io/docs/eleven-agents/legal/hipaa.md): Learn how ElevenLabs Agents, coupled with Zero Retention Mode, is designed to promote HIPAA compliance for healthcare applications. Please refer to our [compliance page](https://compliance.elevenlabs.io/) for the latest information.
+- [TCPA Compliance](https://elevenlabs.io/docs/eleven-agents/legal/tcpa.md): Understand key TCPA requirements for using AI agents in outbound calling
+- [Disclosure requirements](https://elevenlabs.io/docs/eleven-agents/legal/disclosure-requirement.md): Informing end users about your use of ElevenAgents
+
+## API Docs
+
+- ElevenAgents [Agent WebSockets](https://elevenlabs.io/docs/eleven-agents/api-reference/eleven-agents/websocket.md)
+- API Reference > Agents > Branches [List agent branches](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list.md)
+- API Reference > Agents > Branches [Create agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md)
+- API Reference > Agents > Branches [Get agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md)
+- API Reference > Agents > Branches [Update agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/update.md)
+- API Reference > Agents > Branches [Preview merged configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-merge.md)
+- API Reference > Agents > Branches [Merge agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/merge.md)
+- API Reference > Agents > Branches [Preview rebased configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-rebase.md)
+- API Reference > Agents > Branches [Rebase a branch onto main](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/rebase.md)
+- API Reference > Agents > Procedures [List Procedures](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/list.md)
+- API Reference > Agents > Procedures [Create Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/create.md)
+- API Reference > Agents > Procedures [Compile Procedures (legacy)](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md)
+- API Reference > Agents > Procedures [Get Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get.md)
+- API Reference > Agents > Procedures [Remove Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/remove.md)
+- API Reference > Agents > Procedures [Get Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get-draft.md)
+- API Reference > Agents > Procedures [Delete Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/delete.md)
+- API Reference > Agents > Procedures [Update Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/update.md)
+- API Reference > Agents > Merge proposals [List Proposals](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/list.md)
+- API Reference > Agents > Merge proposals [Create A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/create.md)
+- API Reference > Agents > Merge proposals [Get A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/get.md)
+- API Reference > Agents > Merge proposals [Update A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/update.md)
+- API Reference > Agents > Merge proposals [Review A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md)
+- API Reference > Agents > Merge proposals [Comment On A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/add-comment.md)
+- API Reference > Agents > Merge proposals [Merge A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md)
+- API Reference > Agents > Deployments [Create deployment](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/create.md)
+- API Reference > Agents > Deployments [List Agent Deployments](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/list.md)
+- API Reference > Agents > Drafts [Create draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/create.md)
+- API Reference > Agents > Drafts [Delete draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/delete.md)
+- API Reference > Agents > Versions [Get agent version metadata](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/versions/get.md)
+- API Reference > Agents > Hold audio [Post agent hold audio](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/create.md)
+- API Reference > Agents > Hold audio [Delete agent hold audio](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/delete.md)
+- API Reference > Agents [Create agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/create.md)
+- API Reference > Agents [Get agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get.md)
+- API Reference > Agents [List agents](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list.md)
+- API Reference > Agents [Update agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update.md)
+- API Reference > Agents [Delete agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/delete.md)
+- API Reference > Agents [Duplicate agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/duplicate.md)
+- API Reference > Agents [Get link](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link.md)
+- API Reference > Agents [Simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation.md)
+- API Reference > Agents [Stream simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation-stream.md)
+- API Reference > Agents [Calculate expected LLM usage](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/calculate.md)
+- API Reference > Agents [Get agent summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-summaries.md)
+- API Reference > Conversations > Analysis [Run conversation analysis](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-analysis.md)
+- API Reference > Conversations > Analysis [Run conversation evaluation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-evaluation.md)
+- API Reference > Conversations > Analysis items [List analysis items](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/list.md)
+- API Reference > Conversations > Analysis items [Create analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/create.md)
+- API Reference > Conversations > Analysis items [Get analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/get.md)
+- API Reference > Conversations > Analysis items [Update analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/update.md)
+- API Reference > Conversations > Analysis items [Delete analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/delete.md)
+- API Reference > Conversations > Analysis items [Update analysis item attachments](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/update-attachments.md)
+- API Reference > Conversations > Analysis items [List analysis item versions](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/list-versions.md)
+- API Reference > Conversations > Analysis items [Copy analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/copy.md)
+- API Reference > Conversations > Realtime conversation groups [List realtime conversation groups](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/list-conversation-groups.md)
+- API Reference > Conversations > Realtime conversation groups [Create realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/create-conversation-group.md)
+- API Reference > Conversations > Realtime conversation groups [Get realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/get-conversation-group.md)
+- API Reference > Conversations > Realtime conversation groups [Update realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/update-conversation-group.md)
+- API Reference > Conversations > Realtime conversation groups [Delete realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/delete-conversation-group.md)
+- API Reference > Conversations > Realtime conversation groups [Set realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/set-conversation-group.md)
+- API Reference > Conversations > Realtime conversation groups [Clear realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/clear-conversation-group.md)
+- API Reference > Conversations > Messages [Text search](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/messages/text-search.md)
+- API Reference > Conversations > Messages [Smart search](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/messages/search.md)
+- API Reference > Conversations > Topics [Get agent conversation topics](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/topics/get.md)
+- API Reference > Conversations > Tags [List tags](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/list.md)
+- API Reference > Conversations > Tags [Create tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/create.md)
+- API Reference > Conversations > Tags [Get tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/get.md)
+- API Reference > Conversations > Tags [Update tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/update.md)
+- API Reference > Conversations > Tags [Delete tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/delete.md)
+- API Reference > Conversations > Tags [Add tag to conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/assign.md)
+- API Reference > Conversations > Tags [Remove tag from conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/unassign.md)
+- API Reference > Conversations [List conversations](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/list.md)
+- API Reference > Conversations [Get conversation details](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get.md)
+- API Reference > Conversations [Get conversation summary](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-summary.md)
+- API Reference > Conversations [Delete conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete.md)
+- API Reference > Conversations [Get conversation audio](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-audio.md)
+- API Reference > Conversations [Get signed URL](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-signed-url.md)
+- API Reference > Conversations [Get conversation token](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-webrtc-token.md)
+- API Reference > Conversations [Create realtime client secret](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create-client-secret.md)
+- API Reference > Conversations [Send conversation feedback](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create.md)
+- API Reference > Conversations [Upload conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file.md)
+- API Reference > Conversations [Delete conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete-file.md)
+- API Reference > Conversations [Get SIP messages for a conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-sip-messages.md)
+- API Reference > Conversations [Resolve conversation reference](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/resolve.md)
+- API Reference > Triage Tickets [List workspace tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md)
+- API Reference > Triage Tickets [Create conversation ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create.md)
+- API Reference > Triage Tickets [List tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list.md)
+- API Reference > Triage Tickets [Create manual ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create-manual.md)
+- API Reference > Triage Tickets [List assignable users](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-assignable-users.md)
+- API Reference > Triage Tickets [Get ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/get.md)
+- API Reference > Triage Tickets [Update ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/update.md)
+- API Reference > Triage Tickets [Delete ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/delete.md)
+- API Reference > Triage Tickets [Add comment](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-comment.md)
+- API Reference > Triage Tickets [Add turn comment](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-turn-comment.md)
+- API Reference > Triage Tickets [Merge tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/merge.md)
+- API Reference > Users [List users](https://elevenlabs.io/docs/eleven-agents/api-reference/users/list.md)
+- API Reference > Tools [List tools](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/list.md)
+- API Reference > Tools [Get tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get.md)
+- API Reference > Tools [Create tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/create.md)
+- API Reference > Tools [Update tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/update.md)
+- API Reference > Tools [Delete tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/delete.md)
+- API Reference > Tools [Get dependent agents](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-dependent-agents.md)
+- API Reference > Tools [Get tool executions](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-executions.md)
+- API Reference > Knowledge Base > Documents [List knowledge base documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list.md)
+- API Reference > Knowledge Base > Documents [Delete knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete.md)
+- API Reference > Knowledge Base > Documents [Bulk delete knowledge base documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-delete.md)
+- API Reference > Knowledge Base > Documents [Get knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-document.md)
+- API Reference > Knowledge Base > Documents [Update knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update.md)
+- API Reference > Knowledge Base > Documents [Create knowledge base document from URL](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-url.md)
+- API Reference > Knowledge Base > Documents [Create knowledge base document from text](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-text.md)
+- API Reference > Knowledge Base > Documents [Create knowledge base document from file](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file.md)
+- API Reference > Knowledge Base > Documents [Get document content](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-content.md)
+- API Reference > Knowledge Base > Documents [Get document chunk](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md)
+- API Reference > Knowledge Base > Documents [Get source file URL](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-source-file-url.md)
+- API Reference > Knowledge Base > Documents [Refresh knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/refresh.md)
+- API Reference > Knowledge Base > Documents [Get RAG chunks for a document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md)
+- API Reference > Knowledge Base > Documents [Update document file](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update-file.md)
+- API Reference > Knowledge Base > Folders [Create folder](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-folder.md)
+- API Reference > Knowledge Base > Folders [Move document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/move-document.md)
+- API Reference > Knowledge Base > Folders [Bulk move documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md)
+- API Reference > Knowledge Base > RAG [Compute RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md)
+- API Reference > Knowledge Base > RAG [Get RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-rag-index.md)
+- API Reference > Knowledge Base > RAG [Get RAG index overview](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/rag-index-overview.md)
+- API Reference > Knowledge Base > RAG [Compute RAG index in batch](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index-batch.md)
+- API Reference > Knowledge Base > RAG [Delete RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete-rag-index.md)
+- API Reference > Knowledge Base > Crawl jobs [List crawl jobs](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list-crawl-jobs.md)
+- API Reference > Knowledge Base > Crawl jobs [Create crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-crawl-job.md)
+- API Reference > Knowledge Base > Crawl jobs [Get crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-crawl-job.md)
+- API Reference > Knowledge Base > Crawl jobs [Cancel crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md)
+- API Reference > Knowledge Base [Search knowledge base](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/search.md)
+- API Reference > Knowledge Base [Get dependent agents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-agents.md)
+- API Reference > Knowledge Base [Get dependent agents for multiple documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/dependent-agents-multiple.md)
+- API Reference > Knowledge Base [Get knowledge base size](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/size.md)
+- API Reference > Knowledge Base [Get knowledge base summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-summaries.md)
+- API Reference > Tests [List tests](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/list.md)
+- API Reference > Tests [Get test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/get.md)
+- API Reference > Tests [Create test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create.md)
+- API Reference > Tests [Update test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update.md)
+- API Reference > Tests [Delete test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/delete.md)
+- API Reference > Tests [Get test summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/summaries.md)
+- API Reference > Tests [Run tests on agent](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests.md)
+- API Reference > Tests > Test Folders [Create folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/create.md)
+- API Reference > Tests > Test Folders [Get folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/get.md)
+- API Reference > Tests > Test Folders [Update folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/update.md)
+- API Reference > Tests > Test Folders [Delete folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/delete.md)
+- API Reference > Tests > Test Folders [Bulk move tests to folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/move.md)
+- API Reference > Tests > Test Invocations [Get test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/get.md)
+- API Reference > Tests > Test Invocations [Update test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/update.md)
+- API Reference > Tests > Test Invocations [Resubmit test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/resubmit.md)
+- API Reference > Tests > Test Invocations [Cancel Test Invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/cancel.md)
+- API Reference > Tests > Test Invocations [List test invocations](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/list.md)
+- API Reference > Phone Numbers [Import phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/create.md)
+- API Reference > Phone Numbers [List phone numbers](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list.md)
+- API Reference > Phone Numbers [Get phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get.md)
+- API Reference > Phone Numbers [Update phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/update.md)
+- API Reference > Phone Numbers [Delete phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/delete.md)
+- API Reference > Phone Numbers [Get SIP messages for a phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get-sip-messages.md)
+- API Reference > Phone Numbers [List Phone Numbers Page](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list-v-2.md)
+- API Reference > Widget [Get widget](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/get.md)
+- API Reference > Widget [Create widget avatar](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/create.md)
+- API Reference > Workspace > Settings [Get settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/get.md)
+- API Reference > Workspace > Settings [Update settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/update.md)
+- API Reference > Workspace > Secrets [Get secrets](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/list.md)
+- API Reference > Workspace > Secrets [Create secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/create.md)
+- API Reference > Workspace > Secrets [Get secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get.md)
+- API Reference > Workspace > Secrets [Update secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/update.md)
+- API Reference > Workspace > Secrets [Delete secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/delete.md)
+- API Reference > Workspace > Secrets [Get secret dependencies](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies.md)
+- API Reference > Workspace > Dashboard [Get dashboard settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/get.md)
+- API Reference > Workspace > Dashboard [Update Convai Dashboard Settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/update.md)
+- API Reference > SIP Trunk [Outbound call via SIP trunk](https://elevenlabs.io/docs/eleven-agents/api-reference/sip-trunk/outbound-call.md)
+- API Reference > Integrations > Twilio [Outbound call via twilio](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/outbound-call.md)
+- API Reference > Integrations > Twilio [Register call](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/register-call.md)
+- API Reference > Integrations > Exotel [Outbound call via Exotel](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/exotel/outbound-call.md)
+- API Reference > Integrations > WhatsApp > Accounts [List WhatsApp accounts](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/list.md)
+- API Reference > Integrations > WhatsApp > Accounts [Get WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/get.md)
+- API Reference > Integrations > WhatsApp > Accounts [Update WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/update.md)
+- API Reference > Integrations > WhatsApp > Accounts [Delete WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/delete.md)
+- API Reference > Integrations > WhatsApp [Outbound call via WhatsApp](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/outbound-call.md)
+- API Reference > Integrations > WhatsApp [Outbound message via WhatsApp](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/outbound-message.md)
+- API Reference > Batch Calling [Submit batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/create.md)
+- API Reference > Batch Calling [List workspace batch calling jobs](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/list.md)
+- API Reference > Batch Calling [Get batch call information](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/get.md)
+- API Reference > Batch Calling [Export batch call results](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/export.md)
+- API Reference > Batch Calling [Cancel batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/cancel.md)
+- API Reference > Batch Calling [Retry batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/retry.md)
+- API Reference > Batch Calling [Delete batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/delete.md)
+- API Reference > Campaigns [List campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/list.md)
+- API Reference > Campaigns [Create campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/create.md)
+- API Reference > Campaigns [Get campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get.md)
+- API Reference > Campaigns [Get campaign progress](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-progress.md)
+- API Reference > Campaigns [Get follow-up requests](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-follow-up-requests.md)
+- API Reference > Campaigns [Pause campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/pause.md)
+- API Reference > Campaigns [Resume campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/resume.md)
+- API Reference > Campaigns [Stop campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/stop.md)
+- API Reference > Campaigns [Pause all campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/pause-all.md)
+- API Reference > Campaigns [Stop all campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/stop-all.md)
+- API Reference > Campaigns > Config [Get campaign config](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/config/get.md)
+- API Reference > Campaigns > Config [Replace campaign config](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/config/update.md)
+- API Reference > Campaigns > Leads [List leads](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/list.md)
+- API Reference > Campaigns > Leads [Get lead](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/get.md)
+- API Reference > Campaigns > Leads [Remove lead](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/delete.md)
+- API Reference > Campaigns > Calls [List calls](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/calls/list.md)
+- API Reference > Campaigns > Calls [Export calls](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/calls/export.md)
+- API Reference > Campaigns > Attention [List attention items](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/list.md)
+- API Reference > Campaigns > Attention [Retry attention item](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/retry.md)
+- API Reference > Campaigns > Attention [Resolve attention item](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/resolve.md)
+- API Reference > LLM [List LLMs](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/list.md)
+- API Reference > LLM [Calculate expected LLM usage](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/calculate.md)
+- API Reference > MCP [Create MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/create.md)
+- API Reference > MCP [Delete MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/delete.md)
+- API Reference > MCP [List MCP servers](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/list.md)
+- API Reference > MCP [Get MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/get.md)
+- API Reference > MCP [List MCP server tools](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/list-tools.md)
+- API Reference > MCP [Update MCP server configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/update.md)
+- API Reference > MCP > Approval Policies [Update MCP server approval policy](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/update.md)
+- API Reference > MCP > Approval Policies [Create MCP server tool approval](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/create.md)
+- API Reference > MCP > Approval Policies [Delete MCP server tool approval](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/delete.md)
+- API Reference > MCP > Tool Configuration [Create configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/create.md)
+- API Reference > MCP > Tool Configuration [Get configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/get.md)
+- API Reference > MCP > Tool Configuration [Update configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/update.md)
+- API Reference > MCP > Tool Configuration [Delete configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/delete.md)
+- API Reference > Analytics [Get live count](https://elevenlabs.io/docs/eleven-agents/api-reference/analytics/get.md)
+- API Reference > Environment Variables [List environment variables](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/list.md)
+- API Reference > Environment Variables [Create environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/create.md)
+- API Reference > Environment Variables [Get environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/get.md)
+- API Reference > Environment Variables [Update environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md)
+- API Reference > Environment Variables [Delete environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/delete.md)
+- API Reference > Environments [List environments](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/list.md)
+- API Reference > Environments [Create environment](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/create.md)
+- API Reference > Environments [Delete environment](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/delete.md)
+- API Reference > Speech Engine Upstream [Speech Engine Upstream](https://elevenlabs.io/docs/eleven-agents/api-reference/speech-engine-upstream/speech-engine-upstream.md)
+
+## OpenAPI Specification
+
+The raw OpenAPI 3.1 specification for this API is available at:
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+
+
+## AsyncAPI Specification
+
+The raw AsyncAPI 2.6.0 specification for the WebSocket channels is available at:
+- [AsyncAPI JSON](https://elevenlabs.io/docs/asyncapi.json)
+- [AsyncAPI YAML](https://elevenlabs.io/docs/asyncapi.yaml)
+

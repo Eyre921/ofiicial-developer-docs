@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -189,11 +189,8 @@
 - `fine-tuning/agent/use-with-coding-agents` — [Agent Skills](pages/fine-tuning/agent/use-with-coding-agents.md) · [原文](https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents)
 - `fine-tuning/cost-estimator` — [Training cost estimator](pages/fine-tuning/cost-estimator.md) · [原文](https://docs.fireworks.ai/fine-tuning/cost-estimator)
 - `fine-tuning/deploying-loras` — [Deploying Trained Models](pages/fine-tuning/deploying-loras.md) · [原文](https://docs.fireworks.ai/fine-tuning/deploying-loras)
-- `fine-tuning/dpo-fine-tuning` — [Preference Optimization with DPO or ORPO](pages/fine-tuning/dpo-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning)
 - `fine-tuning/evaluating-fine-tuned-models` — [Evaluating Trained Models](pages/fine-tuning/evaluating-fine-tuned-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models)
-- `fine-tuning/fine-tuning-models` — [Supervised Fine-Tuning - Text](pages/fine-tuning/fine-tuning-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/fine-tuning-models)
 - `fine-tuning/finetuning-intro` — [Training Overview](pages/fine-tuning/finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/finetuning-intro)
-- `fine-tuning/managed-finetuning-intro` — [Managed Training Overview](pages/fine-tuning/managed-finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro)
 - `fine-tuning/migrate-from-managed-training` — [Migrate from Managed Training to the Training API](pages/fine-tuning/migrate-from-managed-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/migrate-from-managed-training)
 - `fine-tuning/models` — [Models](pages/fine-tuning/models.md) · [原文](https://docs.fireworks.ai/fine-tuning/models)
 - `fine-tuning/multi-turn-cost-comparison` — [RL rollout cost comparison vs Tinker](pages/fine-tuning/multi-turn-cost-comparison.md) · [原文](https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison)
@@ -299,6 +296,7 @@
 - `nexus/provider-keys/bedrock` — [Amazon Bedrock Setup](pages/nexus/provider-keys/bedrock.md) · [原文](https://docs.fireworks.ai/nexus/provider-keys/bedrock)
 - `nexus/quickstart` — [Quickstart](pages/nexus/quickstart.md) · [原文](https://docs.fireworks.ai/nexus/quickstart)
 - `nexus/release-notes` — [Release Notes](pages/nexus/release-notes.md) · [原文](https://docs.fireworks.ai/nexus/release-notes)
+- `nexus/service-accounts` — [Service Accounts](pages/nexus/service-accounts.md) · [原文](https://docs.fireworks.ai/nexus/service-accounts)
 - `nexus/usage-limits` — [Spend Limits](pages/nexus/usage-limits.md) · [原文](https://docs.fireworks.ai/nexus/usage-limits)
 
 ## serverless

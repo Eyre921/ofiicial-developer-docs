@@ -7,6 +7,10 @@ path: api-reference/create-supervised-fine-tuning-job
 post /v1/accounts/{account_id}/supervisedFineTuningJobs
 Create a supervised fine-tuning job via the Fireworks API, submitting training datasets, hyperparameters, and model configuration for managed SFT runs.
 
+> [!WARNING]
+>
+> Managed SFT and DPO no longer accept new jobs. Your trained models stay deployable. To keep training, follow [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
+
 ## Learning rate scheduler
 
 Supervised fine-tuning jobs accept an optional `lrScheduler` object on the request body. Set **exactly one** of `constant`, `linear`, or `cosine`. When omitted, the trainer uses a constant learning rate after warmup.
