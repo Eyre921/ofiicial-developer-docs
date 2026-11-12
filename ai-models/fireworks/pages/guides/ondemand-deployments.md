@@ -37,9 +37,7 @@ firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
 >
 > **Deployment placement (`--region`) must be set at creation time and cannot be changed in place.**
 >
-> If you do not specify `--region`, the deployment is pinned to a single datacenter at creation time and will not be automatically migrated later.
->
-> For production workloads that need geographic availability or capacity failover, always set `--region` explicitly:
+> If you do not specify `--region`, the deployment uses the `GLOBAL` multi-region: Fireworks can place its replicas in any region and move waiting replicas to another region when capacity frees up there. To limit where it runs, set `--region` to a multi-region or a single region:
 >
 > ```bash theme={null}
 > firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
@@ -406,63 +404,121 @@ More GPUs = faster generation. Note that scaling is sub-linear (2x GPUs ≠ 2x p
 
 ## Preemptible deployments (eval / batch)
 
-For the training eval workflow, see [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models).
-
-Preemptible deployments let you run **evaluation and batch workloads without holding dedicated on-demand capacity**. Passing `--preemptible` at creation opts the deployment into *borrowing idle reserved GPUs* instead of reserving GPUs exclusively for you, so you do not pay to hold dedicated capacity for an eval that only runs occasionally.
-
-Because the capacity is borrowed, it can be **reclaimed (preempted) at any time** and is not guaranteed. In practice a preemptible deployment usually stays up long enough to run an eval end to end, but you must treat disappearance as a normal outcome, not an error.
-
-> [!WARNING]
->
-> **Eval and batch workloads only.** A preemptible deployment can be preempted mid-request and disappear with no warning. **Never** point production or latency-sensitive traffic at a preemptible deployment.
-
-### Guarantees vs. risks
-
-| | Preemptible (`--preemptible`) | Standard on-demand |
-| - | - | - |
-| **Capacity model** | Borrows idle reserved GPUs | Reserves dedicated GPUs for you |
-| **Cost** | No charge to hold dedicated capacity | Billed by GPU-second while replicas are active |
-| **Can be reclaimed mid-request?** | Yes, at any time, without warning | No |
-| **Availability guarantee** | None (treat as best-effort) | Held for you once scheduled |
-| **Safe for production / latency-sensitive traffic?** | No | Yes |
-| **Intended for** | Evaluation, batch, one-off runs | Production and interactive serving |
+A preemptible deployment borrows idle reserved GPUs. It serves the same API as any other deployment, but Fireworks can take the GPUs back at any time, so use it only for evals and bulk offline work whose client retries failed requests. For the training eval workflow, see [Evaluating Trained Models](/fine-tuning/evaluating-fine-tuned-models).
 
 > [!NOTE]
 >
-> **No unique availability risk.** Preemptible does not make capacity *harder* to get. If there is no capacity for a preemptible deployment, there is no capacity for an on-demand one either. The only difference is that a preemptible deployment can also be taken back after it starts.
-
-### Requirements
-
-* **`firectl` >= 1.7.26.** `--preemptible` is a newer flag and is **silently ignored** on older builds (no error, and the deployment is created as standard on-demand). Check with `firectl version` and upgrade if you are below this version.
-
-### Create a preemptible deployment
-
-```bash theme={null}
-firectl deployment create accounts/fireworks/models/<MODEL> \
-  -a <ACCOUNT_ID> \
-  --deployment-id <NAME> --display-name <NAME> \
-  --deployment-shape default \
-  --min-replica-count 1 --max-replica-count 1 \
-  --preemptible --wait
-```
-
-`--wait` blocks until the deployment is ready (1 hour default; tune with `--wait-timeout`).
+> **Moving off Batch inference?** Batch is paused and accepts no new jobs, and Fireworks will permanently delete stored Batch input datasets and job outputs. To run your Batch input files on a preemptible deployment, follow [Migrating Batch API workloads to preemptible deployments](/guides/batch-migration). It includes a migration script that handles concurrency, retries and resume.
 
 > [!WARNING]
 >
-> **`--preemptible` is immutable.** It is set at creation time and cannot be toggled on or off later. To change it, delete the deployment and recreate it.
+> A replica can be preempted mid-request without warning. Never send production or latency-sensitive traffic to a preemptible deployment.
 
-Check status and then send eval requests as you would to any deployment:
+### Preemptible vs. on-demand
+
+| | Preemptible (`preemptible: true`) | On-demand |
+| - | - | - |
+| **Capacity** | Borrows idle reserved GPUs at low priority; can be reclaimed at any time | GPUs held for your deployment once scheduled |
+| **Price** | 50% off the on-demand GPU rate, billed per GPU-second as "Preemptible deployment GPU-hours" | On-demand GPU rate, billed per GPU-second |
+| **GPU quota** | Separate account-wide quota per accelerator (`preemptible-<accelerator>-count`) | Regular quota per accelerator and placement |
+| **Use for** | Evals, bulk offline jobs, one-off runs | Production and interactive serving |
+
+Preemptible capacity is no harder to get than on-demand capacity: if a preemptible deployment can't be placed, an on-demand one can't either. The difference is that a preemptible replica can also lose its GPUs after it starts.
+
+### When to use it
+
+| Option | Choose it when |
+| - | - |
+| [Serverless](/serverless/overview) | The model is on serverless and per-token pricing with shared rate limits fits your volume. |
+| Preemptible deployment | You run bulk or offline work (evals, dataset generation, former Batch jobs), or the model isn't on serverless, such as a fine-tuned model, and your client can retry and resume. |
+| On-demand deployment | Traffic is production or latency-sensitive and must not be interrupted. |
+
+### Create a preemptible deployment
+
+Set `preemptible` at creation. You can't change it later; to switch, delete the deployment and create a new one.
+
+Pass an explicit deployment shape. `default` can pick costlier hardware than you expect. List the shapes your account can use for the model:
 
 ```bash theme={null}
-firectl deployment get <NAME> -a <ACCOUNT_ID>
+firectl deployment-shape-version match --model accounts/fireworks/models/<MODEL> -a <ACCOUNT_ID>
 ```
 
-When the eval is done, delete the deployment to release the borrowed capacity:
+> [tab] firectl
+>
+> ```bash theme={null}
+> firectl deployment create accounts/fireworks/models/<MODEL> \
+>   -a <ACCOUNT_ID> \
+>   --deployment-id <NAME> --display-name <NAME> \
+>   --deployment-shape <DEPLOYMENT_SHAPE> \
+>   --min-replica-count 1 --max-replica-count 1 \
+>   --preemptible --wait
+> ```
+>
+> `--wait` blocks until the deployment is ready, for up to 1 hour by default (`--wait-timeout` changes it).
+>
+> You need `firectl` 1.7.26 or newer; older builds ignore `--preemptible` and create an on-demand deployment. Run `firectl version` to check. Some versions hide the flag from `--help` but still accept it.
+
+> [tab] REST API
+>
+> ```bash theme={null}
+> curl -X POST "https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/deployments?deploymentId=<NAME>" \
+>   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+>   -H "Content-Type: application/json" \
+>   -d '{
+>     "baseModel": "accounts/fireworks/models/<MODEL>",
+>     "deploymentShape": "<DEPLOYMENT_SHAPE>",
+>     "minReplicaCount": 1,
+>     "maxReplicaCount": 1,
+>     "preemptible": true
+>   }'
+> ```
+>
+> Get `<DEPLOYMENT_SHAPE>` from `deployment-shape-version match` or the [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) API.
+
+Check status with `firectl deployment get <NAME> -a <ACCOUNT_ID>`, then send requests as you would to any deployment. Delete the deployment when the job finishes, to stop billing:
 
 ```bash theme={null}
 firectl deployment delete <NAME> -a <ACCOUNT_ID>
 ```
+
+### GPU quota
+
+Preemptible deployments have their own GPU quota, separate from on-demand. Each accelerator type has one account-wide quota, `preemptible-<accelerator>-count`. It counts max replica count times GPUs per replica across your preemptible deployments that aren't deleted or failed.
+
+```bash theme={null}
+firectl quota get preemptible-h100-count
+```
+
+A create over the quota fails with `RESOURCE_EXHAUSTED` and names the quota. For defaults and increases, see [Account quotas](/guides/quotas_usage/account-quotas#preemptible-deployment-quotas).
+
+### Placement: partial and cross-region
+
+Fireworks places each replica on its own. If you ask for 20 replicas and 8 fit, those 8 start serving while the other 12 wait. The deployment shows `PARTIAL_READY` until every replica is ready, then `READY`, and its status message reports progress, for example `no available capacity for NVIDIA_H100_80GB x8 (placed 8 of 20 replicas)`. Fireworks keeps retrying the rest and doesn't fail the deployment for waiting on capacity.
+
+Without `--region`, or with a multi-region such as `GLOBAL` or `US`, replicas can land in different regions of that placement, and requests are routed across all of them. If replicas wait more than about 5 minutes and another region in the placement has room for all of them, Fireworks can move them there, both at creation and after a preemption. To keep every replica in one region, set `--region` to a single region. See [Regions](/deployments/regions).
+
+### What happens when a replica is preempted
+
+Fireworks reclaims a replica when the workload that reserved its GPUs needs them back. This can happen at any time, mid-request, with no notice.
+
+* Requests in flight on that replica fail. Other ready replicas keep serving.
+* Fireworks recreates the replica, and it restarts when GPUs free up, possibly in another region. If 10 of 20 replicas are preempted, the other 10 keep serving while the 10 wait. Fireworks doesn't guarantee how long the wait is.
+* The deployment's state doesn't change, and you don't need to recreate it. If every replica is preempted, requests fail until one is ready again. To see how many replicas are serving, check `replicaStats.readyReplicaCount` in `firectl deployment get <NAME> -a <ACCOUNT_ID> -o json` or the [Get Deployment](/api-reference/get-deployment) response.
+
+### How you are notified
+
+Each preempted replica adds an event to the deployment's activity log, in the dashboard and in `firectl deployment events list`: "Replica preempted to free capacity; it will restart when capacity is available". Rollouts, scale-downs and other restarts don't add this event.
+
+If preemption leaves no replica ready, the deployment's creator gets an email, and a second one when the deployment can serve again. A partial preemption sends no email.
+
+### Your responsibilities
+
+Your client must handle replicas disappearing:
+
+* Retry connection errors, HTTP 5xx and 429 with exponential backoff and jitter. Expect bursts of failures while a replica restarts, and longer gaps if every replica was preempted.
+* Give each input a stable ID and write each result once under that ID, so a retry doesn't create a duplicate.
+* Record finished inputs as results arrive, so you can resume from the rest after an interruption.
+* Set an overall deadline. If no replica is ready for longer than you can wait, delete the deployment and retry later, or move the work to on-demand or serverless.
 
 ## Advanced
 

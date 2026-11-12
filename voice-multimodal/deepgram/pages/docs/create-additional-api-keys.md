@@ -1,5 +1,5 @@
 ---
-title: "Creating API Keys"
+title: "Creating API keys"
 source: https://developers.deepgram.com/docs/create-additional-api-keys.md
 path: docs/create-additional-api-keys
 ---
@@ -7,7 +7,7 @@ path: docs/create-additional-api-keys
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Creating API Keys
+# Creating API keys
 
 API keys are associated with Deepgram [Projects](/guides/deep-dives/managing-projects), which organize all of your Deepgram resources and consist of a set of users, a set of API keys, and billing and monitoring settings.
 
@@ -38,11 +38,11 @@ You must create your first API key using the [Deepgram Console](https://console.
    | **Friendly Name (Comment)** | Name or comment to help you identify and differentiate between your keys.                                                                                                                                                                                                                     |
    | **Permissions**             | Role to assign to the API Key. The API Key may perform only the actions allowed by the permissions associated with this role. To learn more about roles, see [Working with Roles](/guides/deep-dives/working-with-roles).                                                                     |
    | **Expiration**              | Expiration date to assign to the API Key. You can enter a specific date, select a duration of time to keep the key valid, or set the key to never expire.                                                                                                                                     |
-   | **Tag**                     | Labels to associate with the API Key. Any requests sent using the key will also be tagged with the associated labels. Once set, tags cannot be changed. To learn more about managing multiple projects using tags, see [Using Multiple Projects](/guides/deep-dives/using-multiple-projects). |
+   | **Tag**                     | Labels to associate with the API Key. Any requests sent using the key will also be tagged with the associated labels. Once set, tags cannot be changed. To learn more about managing multiple projects using tags, see [Using multiple projects](/guides/deep-dives/using-multiple-projects). |
 
 7. Copy the **key secret** and save it somewhere safe, then select **Got it**. For security reasons, we won't be able to show you the key again.
 
-### Create an API Key using the Deepgram API
+### Create an API key using the Deepgram API
 
 Once you created your first API key using the Deepgram Console you can now use the API to create additional keys as needed.
 
@@ -72,7 +72,7 @@ curl --request POST \
 '
 ```
 
-### Temporary API Key Limits
+### Temporary API key limits
 
 If you choose to create temporary API keys, please be aware that those are limited to **250 per day**. If you need temporary API tokens for your application we recommend using [Token-Based Authentication](/guides/fundamentals/token-based-authentication).
 
@@ -80,4 +80,4 @@ If you choose to create temporary API keys, please be aware that those are limit
 
 What’s Next
 
-* [Make Your First API Request](/guides/fundamentals/make-your-first-api-request)
+* [Make your first API request](/guides/fundamentals/make-your-first-api-request)

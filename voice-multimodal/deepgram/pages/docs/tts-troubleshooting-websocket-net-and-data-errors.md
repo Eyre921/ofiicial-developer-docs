@@ -9,25 +9,25 @@ path: docs/tts-troubleshooting-websocket-net-and-data-errors
 
 # TTS Troubleshooting WebSocket, NET, and DATA Errors
 
-When working with Deepgram's Text To Speech Streaming API, you may encounter WebSocket errors. This troubleshooting guide helps you quickly identify and resolve the most common issues.
+When working with Deepgram's text-to-speech streaming API, you may encounter WebSocket errors. This troubleshooting guide helps you quickly identify and resolve the most common issues.
 
-## WebSocket Basics
+## WebSocket basics
 
 * WebSocket enables two-way, real-time communication between client and server.
 * The connection is established via an HTTP handshake and upgraded to WebSocket.
 * If the handshake fails, you'll get an HTTP `4xx` or `5xx` error.
 * The connection stays open until closed by either side.
 
-### Establishing a WebSocket Connection
+### Establishing a WebSocket connection
 
 * The client initiates a WebSocket connection with an HTTP handshake, optionally including query parameters or headers (for authentication, etc.).
 * Most libraries handle the handshake automatically (e.g., `websockets.connect`).
 * If successful, the server responds with HTTP `101` and upgrades the connection.
 * If unsuccessful, you'll receive an HTTP `4xx` or `5xx` error and the connection won't be established.
 
-### Closing the WebSocket Connection
+### Closing the WebSocket connection
 
-* A successfully opened WebSocket connection will stay alive until it is eventually closed by either the client or the server. When this occurs, a [WebSocket Close Frame](https://tools.ietf.org/html/rfc6455#section-5.5.1) will be returned.
+* A successfully opened WebSocket connection will stay alive until it's eventually closed by either the client or the server. When this occurs, a [WebSocket Close Frame](https://tools.ietf.org/html/rfc6455#section-5.5.1) will be returned.
 * The body of the Close frame will indicate the reason for closing with a [pre-defined status code](https://tools.ietf.org/html/rfc6455#section-7.4.1) followed by a UTF-8-encoded payload that represents the reason for the error.
 * To close the WebSocket connection from your client, send a [Close](/docs/tts-ws-close) message. The server will then finish processing any remaining data, send a final response and summary metadata, and terminate the connection.
 * After sending a Close message, the endpoint considers the WebSocket connection closed and will close the underlying TCP connection.
@@ -43,14 +43,14 @@ If a failure to connect occurs, Deepgram returns custom HTTP headers for debuggi
 
 > **Info**
 >
-> Access to these headers will depend on the WebSocket library you are using. For example, browser-based WebSocket libraries like the JavaScript WebSocket library only allow access to HTTP header information for successful WebSocket connections.
+> Access to these headers will depend on the WebSocket library you're using. For example, browser-based WebSocket libraries like the JavaScript WebSocket library only allow access to HTTP header information for successful WebSocket connections.
 
-### Debugging Connection Failures
+### Debugging connection failures
 
 If you're unable to connect the Deepgram API provides custom HTTP headers that contain debugging information:
 
 * Regardless of the success or failure of the WebSocket upgrade, all requests include the `dg-request-id` HTTP header, which contains the request ID.
-* Requests that do not successfully upgrade to a WebSocket connection also include the `dg-error` HTTP header, which contains a detailed error message concerning why the connection could not be upgraded. This error message is also sent back in the body of the HTTP response.
+* Requests that don't successfully upgrade to a WebSocket connection also include the `dg-error` HTTP header, which contains a detailed error message concerning why the connection couldn't be upgraded. This error message is also sent back in the body of the HTTP response.
 
 ### Abrupt WebSocket Closures
 
@@ -72,7 +72,7 @@ Below are the most common WebSocket Close frame status codes and their descripti
 
 #### Troubleshooting `1003` - `MESSAGE-0000`
 
-* Ensure you are sending supported TTS WebSocket message types of `text`.
+* Ensure you're sending supported TTS WebSocket message types of `text`.
 * Refer to the [Documentation](/reference/text-to-speech/speak-streaming) for valid message types.
 
 #### Troubleshooting `1008` - `DATA-0000`
@@ -82,7 +82,7 @@ Below are the most common WebSocket Close frame status codes and their descripti
 
 #### Troubleshooting `1008` - `DATA-0001`
 
-* Reduce the rate at which you are sending characters into the websocket via input messages.
+* Reduce the rate at which you're sending characters into the websocket via input messages.
 * The limit is on the total number of characters submitted for speaking, not the distinct number of input messages used to submit those characters.
 * Check the [Documentation](/docs/errors#413-input-text-exceeded-character-limit) for the maximum allowed character limit.
 
@@ -106,7 +106,7 @@ Below are the most common WebSocket Close frame status codes and their descripti
 
 #### Troubleshooting `1011` - `NET-0001`
 
-* The server did not receive a message from the client in time.
+* The server didn't receive a message from the client in time.
 * Ensure your client is sending data promptly after connecting.
 * Check for network issues or dropped connections.
 * Retry the connection if needed.
@@ -122,7 +122,7 @@ Below are the most common WebSocket Close frame status codes and their descripti
 
 * The request took too long to complete (time limit exceeded).
 * Try reducing the size or complexity of your request.
-* Ensure your client is not waiting too long before sending or receiving data.
+* Ensure your client isn't waiting too long before sending or receiving data.
 * Retry the request if appropriate.
 
 ---

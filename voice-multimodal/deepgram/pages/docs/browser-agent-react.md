@@ -1,5 +1,5 @@
 ---
-title: "React Hooks & Provider"
+title: "React hooks & provider"
 source: https://developers.deepgram.com/docs/browser-agent-react.md
 path: docs/browser-agent-react
 ---
@@ -7,13 +7,13 @@ path: docs/browser-agent-react
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# React Hooks & Provider
+# React hooks & provider
 
 > API reference for @deepgram/react — AgentProvider, connection state hooks, playback-aware mode tracking, conversation hooks, component-scoped client tools, and standalone useDeepgramAgent for simpler apps.
 
 > **Info**
 >
-> Looking for pre-built UI components? See [React UI Components](/docs/browser-agent-react-ui). For the core JavaScript SDK, see [JavaScript](/docs/browser-agent-javascript).
+> Looking for pre-built UI components? See [React UI components](/docs/browser-agent-react-ui). For the core JavaScript SDK, see [JavaScript](/docs/browser-agent-javascript).
 
 ## Installation
 
@@ -73,7 +73,7 @@ function VoiceAgent() {
 }
 ```
 
-Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent Configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
+Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
 
 ## AgentProvider
 
@@ -210,7 +210,7 @@ const {
 
 Action methods only, no state. Like the other focused hooks, it consumes `AgentContext`, so its component re-renders when the provider value changes.
 
-Use this for components that dispatch commands but do not display state, such as a toolbar or keyboard shortcut handler.
+Use this for components that dispatch commands but don't display state, such as a toolbar or keyboard shortcut handler.
 
 ```tsx
 const {
@@ -310,9 +310,9 @@ const ctx = useAgentContext();
 // ctx.state, ctx.mode, ctx.conversation, ctx.micMuted, etc.
 ```
 
-## Standalone Hook
+## Standalone hook
 
-For simpler apps that do not need shared state across multiple components, `useDeepgramAgent` manages the session, microphone, and player internally without requiring a provider.
+For simpler apps that don't need shared state across multiple components, `useDeepgramAgent` manages the session, microphone, and player internally without requiring a provider.
 
 ```tsx
 import { useDeepgramAgent } from "@deepgram/react";

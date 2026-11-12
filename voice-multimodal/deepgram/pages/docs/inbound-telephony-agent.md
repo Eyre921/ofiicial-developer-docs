@@ -1,5 +1,5 @@
 ---
-title: "Build an Inbound Telephony Agent"
+title: "Build an inbound telephony agent"
 source: https://developers.deepgram.com/docs/inbound-telephony-agent.md
 path: docs/inbound-telephony-agent
 ---
@@ -7,15 +7,15 @@ path: docs/inbound-telephony-agent
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Build an Inbound Telephony Agent
+# Build an inbound telephony agent
 
 > **Info**
 >
 > For more information and to use our reference implementation, visit the [Deepgram Inbound Telephony Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-inbound-telephony).
 
-# Inbound Telephony Voice Agent
+# Inbound telephony Voice Agent
 
-A reference implementation for building a secure inbound telephony voice agent using [Deepgram's Voice Agent API](https://developers.deepgram.com/docs/voice-agent) and [Twilio](https://www.twilio.com/). Uses [Deepgram Flux](https://developers.deepgram.com/docs/models-overview) for speech-to-text with native turn-taking optimized for real-time voice agent conversations. Includes webhook endpoint protection and Twilio request signature validation out of the box.
+A reference implementation for building a secure inbound telephony voice agent using [Deepgram's Voice Agent API](https://developers.deepgram.com/docs/voice-agent) and [Twilio](https://www.twilio.com/). Uses [Deepgram Flux STT](https://developers.deepgram.com/docs/models-overview) with native turn-taking optimized for real-time voice agent conversations. Includes webhook endpoint protection and Twilio request signature validation out of the box.
 
 Callers dial a phone number and talk to an AI receptionist that can check appointment availability, book appointments, look up existing appointments, and cancel appointments, all through natural voice conversation. While this example is specific to a dental office, it's a great jumping off point for any inbound use case – simply edit the prompts and function calls accordingly.
 
@@ -63,7 +63,7 @@ Callers dial a phone number and talk to an AI receptionist that can check appoin
               └─────────────────────────────┘
 ```
 
-### Audio Flow
+### Audio flow
 
 1. Caller speaks into their phone
 2. Twilio captures the audio and streams it as base64-encoded mulaw over WebSocket
@@ -73,7 +73,7 @@ Callers dial a phone number and talk to an AI receptionist that can check appoin
 6. The application server encodes to base64 and sends as JSON to Twilio
 7. Twilio plays the audio to the caller
 
-### Key Technical Concepts
+### Key technical concepts
 
 **Single WebSocket bridge**: The core of the system is `VoiceAgentSession`, which bridges two WebSocket connections (one to Twilio, one to Deepgram). It translates between Twilio's JSON-based protocol and Deepgram's binary audio protocol.
 
@@ -85,7 +85,7 @@ Callers dial a phone number and talk to an AI receptionist that can check appoin
 
 For a deeper look at the call flow, session lifecycle, and component details, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Quick Start
+## Quick start
 
 The fastest path to a working telephony voice agent is the setup wizard, which configures Twilio and deploys to [Fly.io](https://fly.io).
 
@@ -101,7 +101,7 @@ The fastest path to a working telephony voice agent is the setup wizard, which c
 
 Note: Twilio trial accounts play a short disclaimer before connecting callers.
 
-### 1. Clone and Install
+### 1. Clone and install
 
 ```bash
 git clone https://github.com/deepgram-devs/deepgram-voice-agent-inbound-telephony.git
@@ -125,7 +125,7 @@ Edit `.env` and add your Deepgram API key:
 DEEPGRAM_API_KEY=your_key_here
 ```
 
-### 3. Run the Setup Wizard
+### 3. Run the setup wizard
 
 ```bash
 python setup.py
@@ -148,7 +148,7 @@ python setup.py --status            # Show current config
 python setup.py --teardown          # Clean up deployment
 ```
 
-### Viewing Logs
+### Viewing logs
 
 After deployment, view your application logs with:
 
@@ -175,11 +175,11 @@ See [Fly.io pricing](https://fly.io/docs/about/pricing/) for details.
 
 Depending on your region, Twilio may require address verification before you can purchase a phone number. The setup wizard will surface any errors from Twilio. Follow the instructions in the [Twilio console](https://www.twilio.com/console) if prompted.
 
-## Alternative: Tunnel + Twilio
+## Alternative: tunnel + Twilio
 
 If you prefer to run the server locally instead of deploying to Fly.io, you can use a tunnel to expose your locally running voice agent server via a public URL.
 
-### 1. Start a Tunnel
+### 1. Start a tunnel
 
 ```bash
 # ngrok
@@ -191,7 +191,7 @@ zrok share public localhost:8080
 
 Copy the public URL (e.g., `https://xxxx.ngrok.io`).
 
-### 2. Update Configuration
+### 2. Update configuration
 
 Add to your `.env`:
 
@@ -199,7 +199,7 @@ Add to your `.env`:
 SERVER_EXTERNAL_URL=https://xxxx.ngrok.io
 ```
 
-### 3. Start the Server
+### 3. Start the server
 
 ```bash
 python main.py
@@ -243,7 +243,7 @@ Speak into your microphone to have a conversation with the agent. See [docs/LOCA
 
 > **Note:** `dev_client.py` is for local development only. If you've deployed to Fly.io, call the phone number directly instead.
 
-## Example Conversation
+## Example conversation
 
 ```
 Agent: "Thank you for calling Bright Smile Dental! How can I help you today?"
@@ -287,7 +287,7 @@ Agent: "You're welcome! We'll see you on Tuesday. Have a great day!"
   [Agent calls end_call(reason="appointment_booked")]
 ```
 
-## Project Structure
+## Project structure
 
 ```
 telephony-voice-agent/
@@ -322,11 +322,11 @@ telephony-voice-agent/
 
 ## Customization
 
-### Change the Agent's Personality
+### Change the agent's personality
 
 Edit the `SYSTEM_PROMPT` in `voice_agent/agent_config.py`. This is where you define who the agent is, what it knows, and how it behaves. See [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) for voice-specific prompt best practices.
 
-### Add or Modify Functions
+### Add or modify functions
 
 1. Define the function in `voice_agent/agent_config.py` (in the `FUNCTIONS` list)
 2. Add the handler in `voice_agent/function_handlers.py`
@@ -345,9 +345,9 @@ VOICE_MODEL=aura-2-orion-en  # Default: aura-2-thalia-en
 
 ### Multilingual Support
 
-This reference implementation is configured for English using Deepgram Flux (`flux-general-en`) for STT, which provides native turn-taking optimized for voice agents. To add multilingual support, switch the STT model to `flux-general-multi` and set `language_hints` to an array of BCP-47 codes to bias toward expected languages. For building voice agents in other languages, see the [Deepgram multilingual voice agent guide](https://developers.deepgram.com/docs/multilingual-voice-agent).
+This reference implementation is configured for English using Deepgram Flux STT (`flux-general-en`), which provides native turn-taking optimized for voice agents. To add multilingual support, switch the STT model to `flux-general-multi` and set `language_hints` to an array of BCP-47 codes to bias toward expected languages. For building voice agents in other languages, see the [Deepgram multilingual voice agent guide](https://developers.deepgram.com/docs/multilingual-voice-agent).
 
-### Replace the Mock Backend
+### Replace the mock backend
 
 The `backend/` directory contains an in-memory mock. To connect to a real scheduling system:
 
@@ -357,7 +357,7 @@ The `backend/` directory contains an in-memory mock. To connect to a real schedu
 
 The function dispatch in `voice_agent/function_handlers.py` uses lazy imports, making the boundary between voice agent and backend explicit.
 
-## Additional Resources
+## Additional resources
 
 * [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Detailed architecture, data flow diagrams, and component details
 * [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) - Best practices for writing voice agent prompts

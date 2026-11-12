@@ -1,5 +1,5 @@
 ---
-title: "Tagging TTS Requests"
+title: "Tagging TTS requests"
 source: https://developers.deepgram.com/docs/tts-tagging.md
 path: docs/tts-tagging
 ---
@@ -7,17 +7,17 @@ path: docs/tts-tagging
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Tagging TTS Requests
+# Tagging TTS requests
 
 `tag` *string*
 
-Text to Speech Request  Text to Speech Stream  All available languages
+Text-to-Speech Request  Text-to-Speech Stream  All available languages
 
-Deepgram's Tagging feature allows you to label your Text-to-Speech API requests for the purpose of identification during usage reporting. You can also apply tags to API Keys; if you do, any tags applied to the API Key running the API request will also be applied to the request itself.
+Our Tagging feature allows you to label your text-to-speech API requests for the purpose of identification during usage reporting. You can also apply tags to API Keys; if you do, any tags applied to the API Key running the API request will also be applied to the request itself.
 
-## Enable Feature
+## Enable feature
 
-To enable Tagging, when you call Deepgram's Text-to-Speech API, add a `tag` parameter in the query string and set it to the tag you would like to recognize:
+To enable Tagging, when you call Deepgram's text-to-speech API, add a `tag` parameter in the query string and set it to the tag you would like to recognize:
 
 `tag=VALUE`
 
@@ -39,7 +39,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Filter Requests by Tag
+## Filter requests by tag
 
 Once applied, you can identify tags associated with API requests returned by the [Get All Requests](/reference/manage/requests/list), [Get Request](/reference/manage/requests/get), and [Get Fields](/reference/manage/billing/fields/get) endpoints.
 
@@ -59,11 +59,11 @@ curl \
 >
 > Replace the placeholder `PROJECT_ID` with your Deepgram Console Project ID, `VALUE` with your tag, and `YOUR_DEEPGRAM_API_KEY` with your Deepgram API Key.
 
-## Tag Limits
+## Tag limits
 
 Tags are limited to 128 characters per tag and 500 unique tags per day.
 
-## Special Considerations
+## Special considerations
 
 ### White Space or Special Characters
 
@@ -71,7 +71,7 @@ If your tag or extra metadata includes spaces or special characters, be sure to 
 
 `tag=marketing%20team` or `tag=marketing+team`
 
-### Apply Multiple Instances
+### Apply multiple instances
 
 To apply multiple tags or multiple extra key-value pairs, submit the query parameter multiple times in your API request:
 

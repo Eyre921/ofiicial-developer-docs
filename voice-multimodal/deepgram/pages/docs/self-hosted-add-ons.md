@@ -9,7 +9,7 @@ path: docs/self-hosted-add-ons
 
 # Self-Hosted Add Ons
 
-Deepgram's interconnected self-hosted optional components support advanced features that enhance the Deepgram Engine and API.
+Our interconnected self-hosted optional components support advanced features that enhance the Deepgram Engine and API.
 
 > **Info**
 >
@@ -19,6 +19,6 @@ Optional components include:
 
 * **[License Proxy Server](/docs/license-proxy)**: Serves as an intermediary between our hosted license server and your self-hosted deployment. We recommend installing this component to ensure constant uptime for request authorizations.
 
-* **SIPREC**: For customers who would prefer to use Deepgram's real-time transcription on a traditional telephony stack rather than with websockets, Deepgram offers a native SIPREC integration solution.
+* **SIPREC**: For customers who would prefer to use our real-time transcription on a traditional telephony stack rather than with websockets, we offer a native SIPREC integration solution.
 
 * **[UniMRCP Plugin](/docs/deepgram-unimrcp-plugin)**: Offers speech recognition for cross-platform MRCP services.

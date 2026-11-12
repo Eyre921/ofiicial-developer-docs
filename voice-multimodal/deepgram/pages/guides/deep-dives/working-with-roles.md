@@ -1,5 +1,5 @@
 ---
-title: "Working With Roles & API Scopes"
+title: "Working with roles & API scopes"
 source: https://developers.deepgram.com/guides/deep-dives/working-with-roles.md
 path: guides/deep-dives/working-with-roles
 ---
@@ -7,15 +7,15 @@ path: guides/deep-dives/working-with-roles
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Working With Roles & API Scopes
+# Working with roles & API scopes
 
 Deepgram uses a tiered system of access control to provide granular access to its endpoints. These tiers include account (or global) permissions and project permissions. Applying different tiers of permissions allows for more granularity at the project level. For example, an account may have the `project:kick` permission for one project but not for another project.
 
-## Account Roles
+## Account roles
 
 At the account level, certain permissions imply other specific permissions. For example, an account that has access to the `project:write` permission also implicitly has access to the `project:read` permission. Similarly, `account:write` access implies access to every other account permission.
 
-## Project Roles
+## Project roles
 
 At the project level, users can have access to several roles, including `owner`, `admin`, and `member`, which, similar to account permissions, imply access to another set of permissions:
 
@@ -27,7 +27,7 @@ At the project level, users can have access to several roles, including `owner`,
 
 ## Self-Hosted Product Scopes
 
-Deepgram self-hosted users have been assigned self-hosted product scopes in accordance with their contracts. Any user with these scopes may create [self-hosted API keys and distribution credentials](/docs/self-hosted-self-service-tutorial).
+Deepgram Self-Hosted users have been assigned self-hosted product scopes in accordance with their contracts. Any user with these scopes may create [self-hosted API keys and distribution credentials](/docs/self-hosted-self-service-tutorial).
 
 The full list of self-hosted product scopes is as follows:
 
@@ -43,11 +43,11 @@ For example an API key has the `self-hosted:product:api`, `self-hosted:product:e
 | ---------------------- | ------------------------------------------------------------------------------------------ |
 | `self-hosted:products` | `self-hosted:product:api` `self-hosted:product:engine` `self-hosted:product:license-proxy` |
 
-### Product Scopes and Project Roles
+### Product scopes and project roles
 
 Self-hosted API keys can also be created with Console project roles. To do so, simply include the desired role in the same `scopes` list as the self-hosted product scopes when submitting the key creation request.
 
-Here is an example of an self-hosted API key which includes both the `member` project role as well as the `self-hosted:products` scopes.
+Here's an example of an self-hosted API key which includes both the `member` project role as well as the `self-hosted:products` scopes.
 
 **`JSON`**
 

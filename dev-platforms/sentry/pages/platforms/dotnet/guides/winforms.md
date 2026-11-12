@@ -19,7 +19,7 @@ Sentry's .NET SDK works with WinForms applications through the [Sentry NuGet pac
 Install the **NuGet** package to add the Sentry dependency:
 
 ```shell
-dotnet add package Sentry -v 6.13.0
+dotnet add package Sentry -v 7.0.0
 ```
 
 *Other available variations of the above snippet: Package Manager, Paket CLI*

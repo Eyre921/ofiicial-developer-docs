@@ -1,5 +1,5 @@
 ---
-title: "Voice Agent Message Flow"
+title: "Voice Agent message flow"
 source: https://developers.deepgram.com/docs/voice-agent-message-flow.md
 path: docs/voice-agent-message-flow
 ---
@@ -7,7 +7,7 @@ path: docs/voice-agent-message-flow
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Voice Agent Message Flow
+# Voice Agent message flow
 
 This guide walks you through implementing the correct message flow when building a Voice Agent client. Follow these steps to establish a connection, configure settings, and handle the conversation loop.
 
@@ -63,7 +63,7 @@ This guide walks you through implementing the correct message flow when building
 >
 > Do not send audio or inject messages until you receive `SettingsApplied`.
 
-## Stream Audio and Inject Text
+## Stream audio and inject text
 
 5. After receiving `SettingsApplied`, begin streaming binary audio data (PCM) continuously to the server.
 
@@ -73,7 +73,7 @@ This guide walks you through implementing the correct message flow when building
 { "type": "InjectUserMessage", "content": "Hello" }
 ```
 
-## Handle Server Events
+## Handle server events
 
 7. Process the following events as the conversation progresses:
 
@@ -87,7 +87,7 @@ This guide walks you through implementing the correct message flow when building
 | [`AgentAudioDone`](/docs/voice-agent-agent-audio-done)                                                      | Agent finished speaking.                                                    |
 | [`Error`](/docs/voice-agent-errors-warnings#error) / [`Warning`](/docs/voice-agent-errors-warnings#warning) | Issues occurred during processing.                                          |
 
-## Message Flow Diagram
+## Message flow diagram
 
 ```mermaid
 sequenceDiagram
@@ -113,7 +113,7 @@ sequenceDiagram
     CLIENT->>SERVER (Deepgram): Close
 ```
 
-## Verify the Implementation
+## Verify the implementation
 
 Confirm your implementation works correctly by checking:
 
@@ -122,7 +122,7 @@ Confirm your implementation works correctly by checking:
 * The agent responds with `ConversationText` and binary audio when you speak or inject text.
 * Audio playback stops when you receive `UserStartedSpeaking` (barge-in detection).
 
-## Next Steps
+## Next steps
 
 * [Configure the Voice Agent](/docs/configure-voice-agent) for detailed settings options.
-* [Outputs: Server Events](/docs/voice-agent-outputs) for detailed event documentation.
+* [Outputs: server events](/docs/voice-agent-outputs) for detailed event documentation.

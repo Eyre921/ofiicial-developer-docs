@@ -98,9 +98,9 @@ Similar to other integrations, you need to implement a server endpoint to [creat
 
 Generate a crypto onramp session with a `redirect_url` by running the following curl command:
 
-```bash
+```curl
 curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  -u <<YOUR_SECRET_KEY>>:
+  -u "<<YOUR_SECRET_KEY>>:"
 ```
 
 You receive a response similar to the following:

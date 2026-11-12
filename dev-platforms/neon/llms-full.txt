@@ -2161,6 +2161,52 @@ $10
 
 $50
 
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-fable-5-2.md) ---
+
+# Claude Fable 5.2
+
+## About
+
+Claude Fable 5.2 is listed in the Neon AI Gateway model catalog. Verified availability and code examples are not currently available for this model.
+
+## Command
+
+### Text generation
+
+Code examples are not currently available for this model.
+
+## Model ID
+
+claude-fable-5-2
+
+## Lab
+
+Anthropic makes Claude Fable 5.2. Verified AI Gateway code examples are not currently available for this model.
+
+## Provider
+
+Databricks
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Nov 2026
+
+## Input /M
+
+$8
+
+## Output /M
+
+$40
+
 --- [Document source](https://neon.com/docs/ai-gateway/models/claude-fable-5.md) ---
 
 # Claude Fable 5
@@ -5823,6 +5869,52 @@ $4
 ## Output /M
 
 $20
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/gemini-4-carbon.md) ---
+
+# Gemini 4 Carbon
+
+## About
+
+Gemini 4 Carbon is listed in the Neon AI Gateway model catalog. Verified availability and code examples are not currently available for this model.
+
+## Command
+
+### Text generation
+
+Code examples are not currently available for this model.
+
+## Model ID
+
+gemini-4-carbon
+
+## Lab
+
+Google makes Gemini 4 Carbon. Verified AI Gateway code examples are not currently available for this model.
+
+## Provider
+
+Databricks
+
+## Inputs
+
+Text, image, video, audio, pdf
+
+## Context
+
+1M
+
+## Released
+
+Nov 2026
+
+## Input /M
+
+Free
+
+## Output /M
+
+Free
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gemma-3-12b.md) ---
 
@@ -12577,11 +12669,11 @@ Nov 2026
 
 ## Input /M
 
-Free
+$2
 
 ## Output /M
 
-Free
+$10
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/kimi-k3.md) ---
 
@@ -14197,6 +14289,7 @@ Browse the full catalog below. Switch between the **Text**, **Image**, **Embeddi
 
 | Model                                                                             | Model ID            | Inputs           | Context | Released | Reasoning | Input /M | Output /M | Endpoints                             | License |
 | --------------------------------------------------------------------------------- | ------------------- | ---------------- | ------- | -------- | --------- | -------- | --------- | ------------------------------------- | ------- |
+| [Claude Fable 5.2](https://neon.com/docs/ai-gateway/models/claude-fable-5-2.md)   | `claude-fable-5-2`  | text, image, pdf | 1M      | Nov 2026 | Yes       | $8       | $40       | —                                     | —       |
 | [Claude Haiku 5.5](https://neon.com/docs/ai-gateway/models/claude-haiku-5-5.md)   | `claude-haiku-5-5`  | text, image, pdf | 200K    | Oct 2026 | Yes       | $0.10    | $0.50     | chat/completions · anthropic/messages | —       |
 | [Claude Sonnet 5.5](https://neon.com/docs/ai-gateway/models/claude-sonnet-5-5.md) | `claude-sonnet-5-5` | text, image, pdf | 1M      | Sep 2026 | Yes       | $2       | $10       | chat/completions · anthropic/messages | —       |
 | [Claude Opus 5.5](https://neon.com/docs/ai-gateway/models/claude-opus-5-5.md)     | `claude-opus-5-5`   | text, image, pdf | 1M      | Sep 2026 | Yes       | $4       | $20       | chat/completions · anthropic/messages | —       |
@@ -14242,6 +14335,7 @@ Browse the full catalog below. Switch between the **Text**, **Image**, **Embeddi
 
 | Model                                                                                     | Model ID                | Inputs                         | Context | Released | Reasoning | Input /M | Output /M | Endpoints                 | License      |
 | ----------------------------------------------------------------------------------------- | ----------------------- | ------------------------------ | ------- | -------- | --------- | -------- | --------- | ------------------------- | ------------ |
+| [Gemini 4 Carbon](https://neon.com/docs/ai-gateway/models/gemini-4-carbon.md)             | `gemini-4-carbon`       | text, image, video, audio, pdf | 1M      | Nov 2026 | Yes       | Free     | Free      | —                         | —            |
 | [Gemini 4 Argon](https://neon.com/docs/ai-gateway/models/gemini-4-argon.md)               | `gemini-4-argon`        | text, image, video, audio, pdf | 1M      | Oct 2026 | Yes       | $4       | $20       | chat/completions · gemini | —            |
 | [Gemini 3.8 Flash](https://neon.com/docs/ai-gateway/models/gemini-3-8-flash.md)           | `gemini-3-8-flash`      | text, image, video, audio, pdf | 1M      | Sep 2026 | Yes       | $1.50    | $7.50     | chat/completions · gemini | —            |
 | [Gemini 3.7 Flash](https://neon.com/docs/ai-gateway/models/gemini-3-7-flash.md)           | `gemini-3-7-flash`      | text, image, video, audio, pdf | 1M      | Aug 2026 | Yes       | $1.50    | $7.50     | chat/completions · gemini | —            |
@@ -14280,7 +14374,7 @@ Browse the full catalog below. Switch between the **Text**, **Image**, **Embeddi
 
 | Model                                                                     | Model ID        | Inputs             | Context | Released | Reasoning | Input /M | Output /M | Endpoints        | License      |
 | ------------------------------------------------------------------------- | --------------- | ------------------ | ------- | -------- | --------- | -------- | --------- | ---------------- | ------------ |
-| [Kimi K3.1 Pro](https://neon.com/docs/ai-gateway/models/kimi-k3-1-pro.md) | `kimi-k3-1-pro` | text, image        | 1M      | Nov 2026 | Yes       | Free     | Free      | chat/completions | Open weights |
+| [Kimi K3.1 Pro](https://neon.com/docs/ai-gateway/models/kimi-k3-1-pro.md) | `kimi-k3-1-pro` | text, image        | 1M      | Nov 2026 | Yes       | $2       | $10       | chat/completions | Open weights |
 | [Kimi K3](https://neon.com/docs/ai-gateway/models/kimi-k3.md)             | `kimi-k3`       | text, image, video | 1M      | Jul 2026 | Yes       | $3       | $15       | chat/completions | Open weights |
 
 #### xAI
@@ -14297,6 +14391,8 @@ Browse the full catalog below. Switch between the **Text**, **Image**, **Embeddi
 | [DeepSeek V4.1 Flash](https://neon.com/docs/ai-gateway/models/deepseek-v4-1-flash.md) | `deepseek-v4-1-flash` | text, image | 128K    | Sep 2026 | Yes       | $0.30    | $1.20     | chat/completions | Open weights |
 
 Select a linked model for code examples matched to its measured AI Gateway capabilities.
+
+Verified code examples are not currently available for: `claude-fable-5-2`, `gemini-4-carbon`.
 
 ### Image models
 
@@ -33989,15 +34085,18 @@ Runs a `SELECT` query as a live subscription and prints its results as they chan
 neon realtime subscribe "<query>" [options]
 ```
 
-| Option         | Description                      | Type    | Default | Required |
-| -------------- | -------------------------------- | ------- | ------- | :------: |
-| `--branch`     | Branch ID or name                | string  | —       |    No    |
-| `--changes`    | Show raw rows and changes events | boolean | `false` |    No    |
-| `--project-id` | Project ID                       | string  | —       |    No    |
+| Option         | Description                                                                                                                    | Type    | Default | Required |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------- | ------- | :------: |
+| `--changes`    | Show raw rows and changes events                                                                                               | boolean | `false` |    No    |
+| `--debug`      | Show full database error details, including SQLSTATE and PostgreSQL's message. Details can name schema objects and row values. | boolean | `false` |    No    |
+| `--branch`     | Branch ID or name                                                                                                              | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                                     | string  | —       |    No    |
 
 The CLI resolves the branch's Realtime URL, secret, and database name for you, the same values [`neon env pull`](https://neon.com/docs/cli/env) writes, so you don't need a `.env` file first. If Realtime is still provisioning, it waits until it's ready. Quote the query so your shell passes it as one argument. If `--project-id` is omitted, it reads it from your [context file](https://neon.com/docs/cli/link) or auto-selects your only project. If `--branch` is omitted, it uses the context file's branch, or the project's default branch.
 
 The subscription runs until you press Ctrl+C, or until the server closes it or reports an error.
+
+`--debug` turns on [debug mode](https://neon.com/docs/realtime/guides/subscribing#show-full-database-errors) for the subscription, the same as setting `debugMode` in the SDK. When a query is rejected or fails, you see the database's own error message, with its SQLSTATE code when there is one, instead of a generic message.
 
 ### Output
 
@@ -34103,6 +34202,12 @@ remove  1257d5759a0894512f6859dd60b504e69cbf6f8d9d4d977ee9b3b396661928bf
 ```
 
 </details>
+
+Show the database's full error when a query is rejected or fails:
+
+```bash
+neon realtime subscribe --debug "SELECT * FROM items"
+```
 
 Stream events as newline-delimited JSON, for example to pipe into another tool. Each event is a full snapshot of the result:
 
@@ -48968,6 +49073,10 @@ The Neon Data API is the HTTP query service in the Neon backend for apps and age
 **Important: Secure your data before exposing it**
 
 The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial), and run the [Data API advisors](https://neon.com/docs/data-api/database-advisor) to catch misconfigurations.
+
+**Warning: Not yet HIPAA-compliant**
+
+The Data API isn't covered by Neon's [HIPAA compliance](https://neon.com/docs/security/hipaa) yet. Don't use it with protected health information (PHI) in a HIPAA-enabled project.
 
 ## PostgREST compatibility
 
@@ -82261,7 +82370,7 @@ Learn how to use the Neon CircleCI Orb to provision ephemeral Postgres branches 
 
 Last updated: 2026-08-11
 
-The **Neon CircleCI Orb** provisions a real Lakebase Postgres branch per pipeline run (or per parallel node), instead of a generic Postgres-in-Docker service container. That means your CI database behaves like production - same managed Postgres, network, and extensions, so you get fewer "works in CI, breaks in prod" issues.
+The **Neon CircleCI Orb** provisions a real Lakebase Postgres branch per pipeline run (or per parallel node), instead of a generic Postgres-in-Docker service container. That means your CI database behaves like production. It uses the same managed Postgres, network, and extensions, so you get fewer "works in CI, breaks in prod" issues.
 
 Each run gets an isolated, ephemeral branch; you can branch from a pre-migrated parent to skip running migrations from scratch, and the orb handles cleanup and TTL so tests stay deterministic and parallel jobs never share state. This guide covers the `neon/run_tests` job and the `neon/create_branch`, `neon/delete_branch`, and `neon/reset_branch` commands.
 
@@ -82331,6 +82440,8 @@ The job accepts the following parameters:
 
 - `api_key`: (Optional) Environment variable name containing the Neon API key. Defaults to `NEON_API_KEY`. Ensure this variable is set in your CircleCI project settings.
 - `project_id`: (Optional) Environment variable name containing the Neon project ID. Defaults to `NEON_PROJECT_ID`. Ensure this variable is set in your CircleCI project settings.
+- `executor`: (Optional) The executor for the job. Defaults to `cimg/base:stable`.
+- `resource_class`: (Optional) The CircleCI resource class. Defaults to `small`.
 - `parent_branch`: (Optional) The branch to fork from. Defaults to your project's default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console).
 - `migrate_command`: The command to prepare the database (e.g., run migrations). This command runs after the branch is ready but before tests start. You can chain multiple commands here if needed (for example, installing dependencies and running migrations).
 - `test_command`: The command to execute your tests. This command runs after the `migrate_command` completes. It should be configured to run your test suite (e.g., unit tests, integration tests, or end-to-end tests with Playwright) against the database using the `DATABASE_URL` environment variable.
@@ -82350,13 +82461,13 @@ The job accepts the following parameters:
 - `NEON_AUTH_URL`: The Managed Better Auth URL (if `get_auth_url` is `true` and Managed Better Auth is enabled).
 - `NEON_DATA_API_URL`: The Neon Data API URL (if `get_data_api_url` is `true` and Data API is enabled).
 
-An example usage of the `neon/run_tests` job is provided in the [Example: CircleCI configuration](https://neon.com/docs/guides/branching-circleci#example-circleci-configuration) section below.
+An example usage of the `neon/run_tests` job is provided in the [CircleCI configuration example](https://neon.com/docs/guides/branching-circleci#circleci-configuration-example) section below.
 
 ### How it works
 
 When the `neon/run_tests` job runs, it performs the following steps automatically:
 
-1. **Provision**: Creates a Neon branch from `parent_branch`. The orb auto‑names it as `circle-ci-${CIRCLE_PIPELINE_NUM}-${CIRCLE_NODE_INDEX}` (pipeline run ID + parallel executor index).
+1. **Provision**: Creates a Neon branch from `parent_branch`. The orb auto-names it as `circle-ci-${CIRCLE_PIPELINE_NUM}-${CIRCLE_NODE_INDEX}` (pipeline run ID + parallel executor index).
 2. **Connect**: Exports the connection string as `DATABASE_URL` (and individual PG variables like `PGHOST`, `PGUSER`, `PGPASSWORD`, `PGHOST_POOLED`) to the job environment.
 3. **Prepare**: Runs the `migrate_command` you provided.
 4. **Test**: Runs the `test_command` you provided.
@@ -82368,7 +82479,7 @@ The `neon/run_tests` job automatically sets the `DATABASE_URL` environment varia
 
 This means that any tool, migration script, or test runner that relies on `DATABASE_URL` can use it directly without extra configuration. For example, a migration command such as `npx drizzle-kit migrate` or a test command like `npm test` can connect to the Neon branch using the provided connection string. Alternatively, you can use the individual connection parameters (`PGHOST`, `PGUSER`, `PGPASSWORD`, etc.) if your tools require them.
 
-### Example: CircleCI configuration
+### CircleCI configuration example
 
 To better understand how to use `neon/run_tests` job, consider the following example CircleCI (`.circleci/config.yml`) configuration:
 
@@ -82412,7 +82523,7 @@ The Orb provides the following commands for building custom workflows.
 
 ### `neon/create_branch`
 
-Creates a new database branch. This command waits for the branch to be active ("ready") and exports the connection details to the environment.
+Creates a new database branch and exports the connection details to the environment.
 
 | Input              | Type           | Default             | Description                                                                                                                                    |
 | :----------------- | :------------- | :------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -82449,7 +82560,7 @@ Deletes a Neon branch. This is typically used in the final step of a job to clea
 | `project_id` | env\_var\_name | `NEON_PROJECT_ID` | Environment variable name containing the Neon project ID.                                    |
 | `branch_id`  | string         | `$NEON_BRANCH_ID` | The branch ID to delete. If omitted, the command uses `NEON_BRANCH_ID` from `create_branch`. |
 
-If the branch is already gone (for example, expired via TTL), delete returns a safe no-op instead of failing.
+If the branch already expired through its TTL, the Neon API returns HTTP 422 and this command exits with an error. Set `ttl_seconds` to a value longer than your longest job.
 
 ### `neon/reset_branch`
 
@@ -82466,7 +82577,7 @@ Resets a branch to the latest state of its parent. This is useful for long-lived
 
 Unlike `neon/create_branch`, this command does not export a `DATABASE_URL`. It also does not support options like `role`, `database`, `password`, `schema_only`, `get_auth_url`, or `get_data_api_url`. You must ensure your job has access to the connection details for the target branch (e.g., via CircleCI context or project environment variables).
 
-### Example: Custom job configuration
+### Custom job configuration example
 
 Here is how to compose these commands manually:
 
@@ -82495,8 +82606,7 @@ jobs:
           name: Run Tests
           command: npm test
 
-      - neon/delete_branch:
-          when: always  # Ensure branch is deleted even if tests fail
+      - neon/delete_branch  # Runs even if the tests fail
 
 workflows:
   main:
@@ -82504,11 +82614,16 @@ workflows:
       - custom-test
 ```
 
-### Example: Resetting a long-lived branch
+### Resetting a long-lived branch
 
 Instead of creating a new branch every time, you can reset a persistent branch like a staging environment to the latest state of your parent branch.
 
 ```yaml
+version: 2.1
+
+orbs:
+  neon: dhanushreddy291/neon@1.0
+
 jobs:
   reset-staging:
     docker:
@@ -82516,8 +82631,8 @@ jobs:
     steps:
       - checkout
       - neon/reset_branch:
-          # The ID of your persistent staging branch, stored as an environment variable
-          branch_id: $STAGING_BRANCH_ID
+          # The name or ID of your persistent staging branch
+          branch_id: staging
           # The parent branch to reset from
           parent_branch: production
 
@@ -82525,6 +82640,11 @@ jobs:
           name: Run Integration Tests
           # Ensure DATABASE_URL is set in your environment (e.g., via CircleCI Project Settings)
           command: npm run test:integration
+
+workflows:
+  reset_workflow:
+    jobs:
+      - reset-staging
 ```
 
 ## Best practices
@@ -82537,7 +82657,7 @@ To optimize costs don't set the TTL too high for ephemeral branches. For long-li
 
 ### Concurrency
 
-The Neon Orb is designed for concurrency. If you run parallel tests (e.g., CircleCI `parallelism: 4`), the Orb creates a unique branch for every parallel executor. This ensures that tests running at the same time never read or write to the same database, eliminating race conditions and "flaky" tests caused by shared state.
+The Neon Orb is designed for concurrency. If you run parallel tests (e.g., CircleCI `parallelism: 4`), the Orb creates a unique branch for every parallel executor. Tests that run at the same time don't read or write the same database.
 
 The default branch names are generated from `CIRCLE_PIPELINE_NUM` and include a suffix for parallel executors (for example, `1234-1`, `1234-2`). This allows you to identify which branch corresponds to which test executor in your CircleCI dashboard.
 
@@ -89837,13 +89957,15 @@ curl --request POST \
      --data '{
   "project": {
     "name": "user-database-123",
-    "pg_version": 16,
+    "pg_version": 18,
     "region_id": "aws-us-east-1"
   }
 }' | jq
 ```
 
 The response includes connection details you can provide to your user. Projects are created in under 1 second.
+
+If your API key belongs to more than one organization, add the organization ID to the `project` object with `"org_id": "$ORG_ID"`. Without it, Neon creates the project in a default organization. List your organization IDs with `GET /users/me/organizations`.
 
 **Tip: Custom names**
 
@@ -89872,7 +89994,7 @@ curl --request POST \
       "autoscaling_limit_max_cu": 4,
       "suspend_timeout_seconds": 600
     },
-    "pg_version": 16
+    "pg_version": 18
   }
 }'
 ```
@@ -89903,7 +90025,7 @@ curl --request POST \
       }
     },
     "name": "starter-tier-user",
-    "pg_version": 16
+    "pg_version": 18
   }
 }'
 ```
@@ -89925,16 +90047,16 @@ For real-world examples, see how [Koyeb defines their database instance types an
 
 ## Monitor usage
 
-Query consumption metrics to track usage across your projects and implement billing:
+Query consumption metrics to track usage across your projects and implement billing. Set `ORG_ID` to your organization ID, and set `FROM` and `TO` to a date range within the last 60 days. Daily metrics are available for 60 days, and requests outside that window return an error.
 
 ```bash
 curl --request GET \
-     --url 'https://console.neon.tech/api/v2/consumption_history/v2/projects?org_id=$ORG_ID&from=2024-11-01T00:00:00Z&to=2024-11-30T23:59:59Z&granularity=daily&metrics=compute_unit_seconds,root_branch_bytes_month,child_branch_bytes_month,public_network_transfer_bytes' \
+     --url "https://console.neon.tech/api/v2/consumption_history/v2/projects?org_id=$ORG_ID&from=$FROM&to=$TO&granularity=daily&metrics=compute_unit_seconds,root_branch_bytes_month,child_branch_bytes_month,public_network_transfer_bytes" \
      --header 'accept: application/json' \
      --header "authorization: Bearer $NEON_API_KEY"
 ```
 
-The v2 project metrics endpoint returns billing-aligned metrics including compute, storage, and data transfer. To break usage down by branch within a project, use the [branch metrics endpoint](https://neon.com/docs/guides/consumption-metrics#branch-metrics) (`GET /consumption_history/v2/branches`).
+The v2 project metrics endpoint returns billing-aligned metrics including compute, storage, and data transfer. To break usage down by branch within a project, use the [branch metrics endpoint](https://neon.com/docs/guides/consumption-metrics#branch-metrics) (`GET /consumption_history/v2/branches`). This endpoint requires a `project_ids` query parameter.
 
 For details on querying metrics, see [Query consumption metrics](https://neon.com/docs/guides/consumption-metrics).
 
@@ -100364,9 +100486,9 @@ For syntax details, see [CREATE PUBLICATION](https://www.postgresql.org/docs/cur
 
 ### Allow connections from Neon
 
-Neon connects in to Lakebase over the public internet. Private Link isn't supported for logical replication on Lakebase.
+Neon connects to Lakebase over the public internet. Private Link isn't supported for logical replication on Lakebase.
 
-If your Databricks workspace uses an IP access list, add the NAT gateway IP addresses for your Neon project's region to it. Neon uses 3 to 6 IP addresses per region for outbound communication, one for each availability zone, so be sure to add all of them. See [NAT Gateway IP addresses](https://neon.com/docs/introduction/regions#nat-gateway-ip-addresses) for the list, and [Manage the IP access list](https://docs.databricks.com/aws/en/security/network/front-end/ip-access-list) in the Databricks documentation for instructions.
+If your Databricks workspace uses an IP access list, add the NAT gateway IP addresses for your Neon project's region to it. Neon uses several NAT gateway IP addresses per region for outbound communication, and the list changes over time, so add all of the addresses listed for your region. See [NAT Gateway IP addresses](https://neon.com/docs/introduction/regions#nat-gateway-ip-addresses) for the list, and [Manage the IP access list](https://docs.databricks.com/aws/en/security/network/front-end/ip-access-list) in the Databricks documentation for instructions.
 
 ## Prepare your Neon destination database
 
@@ -100477,7 +100599,7 @@ DROP SUBSCRIPTION my_subscription;
 
 --- [Document source](https://neon.com/docs/guides/logical-replication-manage.md) ---
 
-> Summary: SQL command reference for managing PostgreSQL logical replication objects on Neon: publications, subscriptions, and replication slots. Covers CREATE, ALTER, and DROP syntax, pg_create_logical_replication_slot and pg_drop_replication_slot, and monitoring lag with pg_stat_replication and pg_replication_slots. Use this page after initial setup to reconfigure or remove replication objects. Also explains why DDL changes such as ALTER TABLE require manual intervention on the subscriber.
+> Summary: SQL command reference for managing Postgres logical replication objects on Neon: publications, subscriptions, and replication slots. Covers CREATE, ALTER, and DROP syntax, pg_create_logical_replication_slot and pg_drop_replication_slot, and monitoring lag with pg_stat_replication and pg_replication_slots. Use this page after initial setup to reconfigure or remove replication objects. Also explains why DDL changes such as ALTER TABLE require manual intervention on the subscriber.
 
 # Logical replication commands
 
@@ -100540,7 +100662,7 @@ DROP PUBLICATION IF EXISTS my_publication;
 
 ### Recreate a publication
 
-This command recreates a publication within a single transaction:
+This command recreates a publication within a single transaction. The `CREATE PUBLICATION` statement must list the tables to publish. Without them, the new publication contains no tables.
 
 ```sql
 BEGIN;
@@ -100548,7 +100670,7 @@ BEGIN;
   DROP PUBLICATION IF EXISTS my_publication;
 
   -- re-create the publication
-  CREATE PUBLICATION my_publication;
+  CREATE PUBLICATION my_publication FOR TABLE users;
 COMMIT;
 ```
 
@@ -100558,17 +100680,17 @@ This section outlines how to manage **subscriptions** in your replication setup.
 
 ### Create a subscription
 
-Building on the `my_publication` example in the preceding section, here's how you can create a subscription:
+Use the `my_publication` publication from the preceding section to create a subscription:
 
 ```sql
 CREATE SUBSCRIPTION my_subscription
-CONNECTION 'postgresql://username:password@host:port/dbname'
+CONNECTION 'postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require'
 PUBLICATION my_publication;
 ```
 
 A subscription requires a unique name, a database connection string, the name and password of your replication role, and the name of the publication that it subscribes to.
 
-In the example above, `my_subscription` is the name of the subscription that connects to a publication named `my_publication`. In the example above, you would replace the connection details with your Neon database connection string. You can find your Neon connection string by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal.
+In the example above, `my_subscription` is the name of the subscription that connects to a publication named `my_publication`. Replace the connection details with the connection string for your replication role on your Neon database. You can find your Neon connection string by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal.
 
 ### Create a subscription with two publications
 
@@ -100576,7 +100698,7 @@ This command creates a subscription that receives data from two publications:
 
 ```sql
 CREATE SUBSCRIPTION my_subscription
-CONNECTION 'postgresql://username:password@host:port/dbname'
+CONNECTION 'postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require'
 PUBLICATION my_publication, sales_publication;
 ```
 
@@ -100588,9 +100710,15 @@ This command creates a subscription with `enabled = false` so that you can enabl
 
 ```sql
 CREATE SUBSCRIPTION my_subscription
-CONNECTION 'postgresql://username:password@host:port/dbname'
+CONNECTION 'postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require'
 PUBLICATION my_publication
 WITH (enabled = false);
+```
+
+Neon creates the replication slot on the publisher when you create the subscription, even if it's disabled. A disabled subscription that stays disabled for about 40 hours leaves an inactive slot, which Neon removes. To enable the subscription later, run:
+
+```sql
+ALTER SUBSCRIPTION my_subscription ENABLE;
 ```
 
 ### Change the publication subscribed to
@@ -100598,7 +100726,7 @@ WITH (enabled = false);
 This command modifies an existing subscription to set it to a different publication:
 
 ```sql
-ALTER SUBSCRIPTION my_subscription SET PUBLICATION new_new_publication;
+ALTER SUBSCRIPTION my_subscription SET PUBLICATION new_publication;
 ```
 
 ### Change the subscription connection
@@ -100629,7 +100757,7 @@ DROP SUBSCRIPTION my_subscription;
 
 Replication slots are created on the publisher database to track replication progress, ensuring that no data in the WAL is purged before the subscriber has successfully replicated it. This mechanism serves to maintain data consistency and prevent data loss in cases of network interruption or subscriber downtime.
 
-**Important:** To prevent storage bloat, **Neon automatically removes _inactive_ replication slots after a period of time. Please see [Unused replication slots](https://neon.com/docs/guides/logical-replication-neon#unused-replication-slots) to learn more.
+**Important:** To prevent storage bloat, Neon automatically removes _inactive_ replication slots after approximately 40 hours. See [Unused replication slots](https://neon.com/docs/guides/logical-replication-neon#unused-replication-slots) to learn more.
 
 ### Create a replication slot
 
@@ -100643,7 +100771,7 @@ The first value, `my_replication_slot` is the name given to the replication slot
 
 The `max_replication_slots` configuration parameter defines the maximum number of replication slots that can be used to manage database replication connections. Each replication slot tracks changes in the publisher database to ensure that the connected subscriber stays up to date. You'll want a replication slot for each replication connection. For example, if you expect to have 10 separate subscribers replicating from your database, you would set `max_replication_slots` to 10 to accommodate each connection.
 
-The `max_replication_slots` configuration parameter on Neon is set to `10` by default.
+The `max_replication_slots` configuration parameter is set to `10` on Neon. For a different value, contact [Neon Support](https://neon.com/docs/introduction/support).
 
 ```ini
 max_replication_slots = 10
@@ -100657,7 +100785,7 @@ To drop a logical replication slot that you created, you can use the `pg_drop_re
 SELECT pg_drop_replication_slot('my_replication_slot');
 ```
 
-This command removes the specified replication slot (`my_replication_slot` in this case) from your database. It's important to ensure that the replication slot is no longer in use or required before dropping it, as this action is irreversible and could affect replication processes relying on this slot.
+This command removes the specified replication slot (`my_replication_slot` in this case) from your database. Make sure no subscriber still uses the slot before you drop it. Postgres returns an error for a slot that an active subscription uses. Dropping a slot can't be undone, and it breaks any replication process that depends on it.
 
 ## Data Definition Language (DDL) operations
 
@@ -100675,7 +100803,7 @@ SELECT * FROM pg_stat_replication;
 
 The view provides details like the state of the replication, the last received WAL location, sent location, write location, and the delay between the publisher and subscriber.
 
-Additionally, the [pg_replication_slots](https://www.postgresql.org/docs/current/view-pg-replication-slots.html) view shows information about the current replication slots on the publisher, including their size.
+Additionally, the [pg_replication_slots](https://www.postgresql.org/docs/current/view-pg-replication-slots.html) view shows information about the current replication slots on the publisher, including whether each slot is `active` and its `restart_lsn`.
 
 ```sql
 SELECT * FROM pg_replication_slots;
@@ -101085,7 +101213,7 @@ SHOW wal_level;
 
 ### Create a Postgres role for replication
 
-Create a dedicated Postgres role for Lakebase to connect as. The role must have the `REPLICATION` privilege. Roles created using the Neon CLI, Console, or API are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role, which has the required `REPLICATION` privilege. Roles created with SQL don't have this privilege, and it can't be granted. See [Replication roles](https://neon.com/docs/guides/logical-replication-neon#replication-roles).
+Create a dedicated Postgres role for Lakebase to connect as. The role must have the `REPLICATION` privilege. Roles created using the Neon CLI, Console, or API are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role, which has the required `REPLICATION` privilege. Roles created with SQL don't have this privilege by default. A role that can grant privileges, such as the project owner, can add it with `ALTER ROLE replication_user REPLICATION`. See [Replication roles](https://neon.com/docs/guides/logical-replication-neon#replication-roles).
 
 **CLI**
 
@@ -102213,7 +102341,7 @@ When working with Postgres logical replication, managing schema changes is a tas
 
 "_The database schema and DDL commands are not replicated. The initial schema can be copied by hand using `pg_dump --schema-only`. Subsequent schema changes would need to be kept in sync manually. (Note, however, that there is no need for the schemas to be absolutely the same on both sides.) Logical replication is robust when schema definitions change in a live database: When the schema is changed on the publisher and replicated data starts arriving at the subscriber but does not fit into the table schema, replication will error until the schema is updated. In many cases, intermittent errors can be avoided by applying additive schema changes to the subscriber first._"
 
-This guidelines below outline some recommended practices for handling schema changes in a logical replication setup.
+The following guidelines outline recommended practices for handling schema changes in a logical replication setup.
 
 ## Schema management in a logical replication context
 
@@ -102241,13 +102369,15 @@ Additive changes, such as adding a new column or creating an index, should be ap
 
 Applying additive schema changes in this order will help prevent replication errors caused by the subscriber not recognizing the additive change in the incoming data.
 
+If you add the column to the publisher first, replication stops with apply errors until the subscriber has the column. Adding the column to the subscriber resumes replication without re-creating the subscription, and the held-up changes apply.
+
 ### 2. Handle non-additive schema changes with caution
 
 Non-additive changes, such as dropping a column or altering a column's data type, require careful handling. When performing a non-additive schema change like dropping a column, apply the change on the publisher first, then on the subscriber.
 
 Non-additive changes are often feasible if applied in the correct order (publisher first). However, always carefully assess how the schema change will impact replication to the subscriber. Will writes still succeed on the subscriber after the change on the publisher? It's best practice to test schema changes before implementing them in production. For example, test whether writes to the modified publisher schema still execute successfully on the unmodified subscriber schema.
 
-Mistakes in the schema update process could disrupt replication on the subscriber, requiring troubleshooting and reestablishing replication.
+If you drop the column on the subscriber first, the publisher keeps sending values for it, and replication stops with apply errors. Dropping the column on the publisher afterward doesn't resume replication. Add the column back to the subscriber to resume. The held-up changes then apply.
 
 For an added degree of safety or for complex schema changes, consider temporarily pausing write activity on the publisher before applying schema changes. The steps for this approach include:
 
@@ -102264,6 +102394,12 @@ To do this, you can run the following query on the subscriber to make sure the `
 
 ```sql
 SELECT subname, received_lsn, latest_end_lsn, last_msg_receipt_time FROM pg_catalog.pg_stat_subscription;
+```
+
+To check for apply errors, run the following query on the subscriber. The `apply_error_count` and `sync_error_count` values increase each time a change fails to apply. This view is available in Postgres 15 and later.
+
+```sql
+SELECT subname, apply_error_count, sync_error_count FROM pg_stat_subscription_stats;
 ```
 
 You can also perform a row count on the publisher and subscriber databases to make sure results are as expected. If you're actively adding rows, the results may be close but not exactly the same.
@@ -108491,6 +108627,7 @@ Neon's protected branches feature implements a series of protections:
 
 - Protected branches cannot be deleted.
 - Protected branches cannot be [reset](https://neon.com/docs/manage/branches#reset-a-branch-from-parent).
+- Protected branches can be [instantly restored](https://neon.com/docs/postgres/backup-restore/branch-restore) only if you keep a backup of the current state. [See below](https://neon.com/docs/guides/protected-branches#restore-a-protected-branch).
 - Projects with protected branches cannot be deleted.
 - Computes associated with a protected branch cannot be deleted.
 - New passwords are automatically generated for Postgres roles on branches created from protected branches. [See below](https://neon.com/docs/guides/protected-branches#new-passwords-generated-for-postgres-roles-on-child-branches).
@@ -108499,8 +108636,10 @@ Neon's protected branches feature implements a series of protections:
 
 The protected branches feature is available on Neon [paid plans](https://neon.com/docs/introduction/plans).
 
-- The **Launch** plan supports up to 2 protected branches
-- The **Scale** plan supports up to 5 protected branches
+- The **Launch** plan supports up to 2 protected branches per project
+- The **Scale** plan supports up to 5 protected branches per project
+
+Every protected branch in a project counts toward this limit, including protected backup branches created when you restore a protected branch.
 
 ## Set a branch as protected
 
@@ -108516,7 +108655,7 @@ To set a branch as protected:
 
 3. Select a branch from the table. In this example, we'll configure our default branch (named `main` if the project was created with the CLI or API, or `production` if created in the Console) as a protected branch.
 
-4. On the branch page, click **Protect**.
+4. On the branch page, click **Protect**. The **Protect** button appears for branches created in the Console. For other branches, open the three-dot menu (⋮) on the branch page and select **Set as protected**.
 
    ![Set as protected](https://neon.com/docs/guides/ip_allow_set_as_protected.png)
 
@@ -108628,9 +108767,20 @@ This option removes IP restrictions from _all branches_ in your Neon project and
 
 After you've selected the protected branches option, click **Save changes** to apply the new configuration.
 
+## Restore a protected branch
+
+You can't [reset a protected branch from its parent](https://neon.com/docs/manage/branches#reset-a-branch-from-parent), but you can [instantly restore](https://neon.com/docs/postgres/backup-restore/branch-restore) it to an earlier point in its own history or from another branch. The restore must keep a backup of the branch's current state. The Console always creates one. With the CLI or API, pass a backup name (`--preserve-under-name` or `preserve_under_name`), or the restore fails with `cannot restore protected branch without preserving under a new name`.
+
+The backup branch is also protected. Keep in mind:
+
+- It counts toward your plan's protected branch limit. Each restore adds another protected backup branch.
+- You can't delete it until you remove its protection. See [Remove branch protection](https://neon.com/docs/guides/protected-branches#remove-branch-protection).
+
+If you can't protect a branch because you've reached your limit, check the **Branches** page for protected backup branches (named `{branch_name}_old_{head_timestamp}`) that you no longer need.
+
 ## Remove branch protection
 
-Removing a protected branch designation can be performed by selecting **Set as unprotected** from the three-dot menu (⋮) on the branch page.
+To remove protection, select **Set as unprotected** from the three-dot menu (⋮) on the branch page. For branches created in the Console, you can also click **Unprotect** on the branch page. With the API, update the branch with `"protected": false`.
 
 --- [Document source](https://neon.com/docs/guides/python.md) ---
 
@@ -114494,7 +114644,7 @@ To complete this tutorial, you'll need:
   - Install the [Neon CLI](https://neon.com/docs/cli/install)
   - Download and install the [psql](https://www.postgresql.org/download/) client
 
-## Create the Initial Schema
+## Create the initial schema
 
 First, create a new database called `people` on the `production` branch and add some sample data to it.
 
@@ -114528,10 +114678,10 @@ First, create a new database called `people` on the `production` branch and add 
 
    **Note:**
 
-   If you have multiple projects, include `--project-id`. Or set the project context so you don't have to specify project id in every command. Example:
+   If you have multiple projects, include `--project-id`. Or link the directory to your project so you don't have to specify the project ID in every command. Example:
 
    ```bash
-   neon set-context --project-id empty-glade-66712572
+   neon link --project-id empty-glade-66712572
    ```
 
    You can find your project ID on the **Settings** page in the Neon Console.
@@ -114571,7 +114721,7 @@ First, create a new database called `people` on the `production` branch and add 
    --data '{
       "database": {
          "name": "people",
-         "owner_name": "alex"
+         "owner_name": "neondb_owner"
       }
    }'
    ```
@@ -114580,7 +114730,7 @@ First, create a new database called `people` on the `production` branch and add 
 
    ```bash
    curl --request GET \
-     --url 'https://console.neon.tech/api/v2/projects/royal-band-06902338/connection_uri?branch_id=br-bitter-bird-a56n6lh4&database_name=people&role_name=alex' \
+     --url 'https://console.neon.tech/api/v2/projects/royal-band-06902338/connection_uri?branch_id=br-bitter-bird-a56n6lh4&database_name=people&role_name=neondb_owner' \
      --header 'accept: application/json' \
      --header "authorization: Bearer $NEON_API_KEY"
    ```
@@ -114589,14 +114739,14 @@ First, create a new database called `people` on the `production` branch and add 
 
    ```json
    {
-     "uri": "postgresql://alex:*********@ep-green-surf-a5yaumj3-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require"
+     "uri": "postgresql://neondb_owner:*********@ep-green-surf-a5yaumj3-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require"
    }
    ```
 
 3. Connect to the `people` database with `psql`:
 
    ```bash
-   psql 'postgresql://alex:*********@ep-green-surf-a5yaumj3-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require'
+   psql 'postgresql://neondb_owner:*********@ep-green-surf-a5yaumj3-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require'
    ```
 
 4. Create the schema:
@@ -114744,8 +114894,8 @@ CREATE TABLE address (
    Response:
 
    ```bash
-   Connecting to the database; launching psql...
-   psql (16.1, server 16.2)
+   Neon connection: people as neondb_owner on ep-hidden-rain-a5pe72oi.us-east-2.aws.neon.tech; launching psql...
+   psql (18.6, server 18.6)
    SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off)
    Type "help" for help.
 
@@ -114772,7 +114922,7 @@ CREATE TABLE address (
 
    ```bash
    curl --request GET \
-     --url 'https://console.neon.tech/api/v2/projects/royal-band-06902338/connection_uri?branch_id=br-mute-dew-a5930esi&database_name=people&role_name=alex' \
+     --url 'https://console.neon.tech/api/v2/projects/royal-band-06902338/connection_uri?branch_id=br-mute-dew-a5930esi&database_name=people&role_name=neondb_owner' \
      --header 'accept: application/json' \
      --header "authorization: Bearer $NEON_API_KEY"
    ```
@@ -114781,14 +114931,14 @@ CREATE TABLE address (
 
    ```json
    {
-     "uri": "postgresql://alex:*********@ep-hidden-sun-a5de9i5h-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require"
+     "uri": "postgresql://neondb_owner:*********@ep-hidden-sun-a5de9i5h-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require"
    }
    ```
 
 2. Connect to the `people` database on the `feature/address` branch with `psql`:
 
    ```bash
-   psql 'postgresql://alex:*********@ep-hidden-sun-a5de9i5h-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require'
+   psql 'postgresql://neondb_owner:*********@ep-hidden-sun-a5de9i5h-pooler.us-east-2.aws.neon.tech/people?sslmode=require&channel_binding=require'
    ```
 
 3. Add a new `address` table.
@@ -114865,7 +115015,7 @@ Compare the schema of the `feature/address` branch to its parent branch using th
 
 ```bash
 curl --request GET \
-     --url 'https://console.neon.tech/api/v2/projects/royal-band-06902338/branches/br-mute-dew-a5930esi/compare_schema?base_branch_id=br-bitter-bird-a56n6lh4&db_name=neondb' \
+     --url 'https://console.neon.tech/api/v2/projects/royal-band-06902338/branches/br-mute-dew-a5930esi/compare_schema?base_branch_id=br-bitter-bird-a56n6lh4&db_name=people' \
      --header 'accept: application/json' \
      --header "authorization: Bearer $NEON_API_KEY" | jq -r '.diff'
 ```
@@ -114889,7 +115039,7 @@ The result shows a comparison between the `feature/address` branch and its paren
  SET default_table_access_method = heap;
 
  --
-+-- Name: address; Type: TABLE; Schema: public; Owner: alex
++-- Name: address; Type: TABLE; Schema: public; Owner: neondb_owner
 +--
 +
 +CREATE TABLE public.address (
@@ -114902,10 +115052,10 @@ The result shows a comparison between the `feature/address` branch and its paren
 +);
 +
 +
-+ALTER TABLE public.address OWNER TO alex;
++ALTER TABLE public.address OWNER TO neondb_owner;
 +
 +--
-+-- Name: address_id_seq; Type: SEQUENCE; Schema: public; Owner: alex
++-- Name: address_id_seq; Type: SEQUENCE; Schema: public; Owner: neondb_owner
 +--
 +
 +CREATE SEQUENCE public.address_id_seq
@@ -114917,38 +115067,38 @@ The result shows a comparison between the `feature/address` branch and its paren
 +    CACHE 1;
 +
 +
-+ALTER SEQUENCE public.address_id_seq OWNER TO alex;
++ALTER SEQUENCE public.address_id_seq OWNER TO neondb_owner;
 +
 +--
-+-- Name: address_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: alex
++-- Name: address_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: neondb_owner
 +--
 +
 +ALTER SEQUENCE public.address_id_seq OWNED BY public.address.id;
 +
 +
 +--
- -- Name: person; Type: TABLE; Schema: public; Owner: alex
+ -- Name: person; Type: TABLE; Schema: public; Owner: neondb_owner
  --
 
 @@ -56,6 +94,13 @@
 
 
  --
-+-- Name: address id; Type: DEFAULT; Schema: public; Owner: alex
++-- Name: address id; Type: DEFAULT; Schema: public; Owner: neondb_owner
 +--
 +
 +ALTER TABLE ONLY public.address ALTER COLUMN id SET DEFAULT nextval('public.address_id_seq'::regclass);
 +
 +
 +--
- -- Name: person id; Type: DEFAULT; Schema: public; Owner: alex
+ -- Name: person id; Type: DEFAULT; Schema: public; Owner: neondb_owner
  --
 
 @@ -63,6 +108,14 @@
 
 
  --
-+-- Name: address address_pkey; Type: CONSTRAINT; Schema: public; Owner: alex
++-- Name: address address_pkey; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
 +--
 +
 +ALTER TABLE ONLY public.address
@@ -114956,14 +115106,14 @@ The result shows a comparison between the `feature/address` branch and its paren
 +
 +
 +--
- -- Name: person person_email_key; Type: CONSTRAINT; Schema: public; Owner: alex
+ -- Name: person person_email_key; Type: CONSTRAINT; Schema: public; Owner: neondb_owner
  --
 
 @@ -79,6 +132,14 @@
 
 
  --
-+-- Name: address address_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: alex
++-- Name: address address_person_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: neondb_owner
 +--
 +
 +ALTER TABLE ONLY public.address
@@ -125566,7 +125716,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon-post
 
 # Neon plans
 
-Last updated: 2026-11-11
+Last updated: 2026-11-12
 
 Neon offers plans to support you at every stage, from your first prototype to production at scale.
 Start for free, then **pay only for what you use** as your needs grow.
@@ -126165,9 +126315,9 @@ The Free plan costs $0/month and includes 100 projects, 10 branches per project,
 
 On the Free plan, when you run out of CU-hours or public network transfer, your compute is suspended until the next billing period or until you upgrade. Exceeding the 1 GB per-project storage cap, or the 20 GB total cap across all your projects, causes operations that increase storage (inserts, updates, and deletes) to fail until you free space or upgrade. Branch creation fails once you reach 10 branches per project. None of these limits delete your data.
 
-### How do I get my data out of a Free plan project that hit its limits?
+### How do I restore a Free plan project that hit its limits before the reset?
 
-A suspended compute can't accept connections, so `pg_dump` fails until the next billing period. To export sooner, upgrade the organization that contains the project to Launch (**Billing** > **Change plan** in the Neon Console). The compute resumes, so you can export with [pg_dump](https://neon.com/docs/import/migrate-from-postgres) and restore the data wherever you want, including a project in a Free organization. Launch has no minimum monthly fee and invoices under $0.50 are not collected, so a one-time export of a small database typically costs nothing; usage you keep running in the upgraded organization is billed. Projects can't be [transferred](https://neon.com/docs/manage/orgs-project-transfer) from a Launch organization to a Free one, so move the data with a dump and restore.
+A suspended compute can't accept connections until the next billing period. To restore it sooner and stay on Free, upgrade the organization that contains the project to Launch, then downgrade it back to Free right away (**Billing** > **Change plan** in the Neon Console). The plan change resets the Free plan allowances, and the project keeps its database. Launch has no minimum monthly fee and invoices under $0.50 are not collected, so the round trip costs nothing. If you ran out of public network transfer, fix what caused it first, or the project hits the limit again. See [Reduce network transfer costs](https://neon.com/docs/introduction/network-transfer).
 
 ### How do I upgrade or downgrade my plan?
 
@@ -126552,7 +126702,7 @@ We're also improving and scaling Lakebase Postgres on Neon. Here's what's on the
 - **More coding agents supported by `neon init`**: Factory Droid, fx, Hermes Agent, Junie, Kilo Code, Kimi Code, Kiro CLI, and Pi join more than 20 coding agents you can connect to Neon with one command. [Learn more](https://neon.com/docs/ai/connect-mcp-clients-to-neon#supported-agents-add-mcp).
 - **New Functions templates**: Twenty new Function Registry templates cover AI agents and chat, APIs, workflows, email, uploads, and monitoring, including an MCP server, `openai-agents`, `mastra`, and `x402-paid-api`. They combine Functions with Postgres, AI Gateway, Object Storage, and Managed Better Auth. [Learn more](https://neon.com/functions/templates).
 - **Managed Better Auth general availability**: Managed Better Auth is now generally available. Check the [Managed Better Auth roadmap](https://neon.com/docs/auth/roadmap) for upcoming plugins and features. [Learn more](https://neon.com/docs/auth/overview).
-- **HIPAA support for backend services**: HIPAA compliance now extends to Managed Better Auth, the Data API, Functions, Object Storage, AI Gateway, and Realtime, so you can use them with protected health information in a HIPAA-enabled project. [Learn more](https://neon.com/docs/security/hipaa).
+- **HIPAA support for backend services**: HIPAA compliance now extends to Managed Better Auth, Functions, Object Storage, AI Gateway, and Realtime, so you can use them with protected health information in a HIPAA-enabled project. [Learn more](https://neon.com/docs/security/hipaa).
 - **Set up your coding agent for Neon**: One prompt installs the Neon CLI, signs you in, and adds Neon's agent skills and MCP server. Each backend service overview page also has a prompt that builds a working example in your project. [Learn more](https://neon.com/docs/cli/skills).
 - **Apple and Microsoft sign-in for Managed Better Auth**: Managed Better Auth now supports Apple and Microsoft Entra ID as OAuth providers, alongside Google, GitHub, and Vercel. [Learn more](https://neon.com/docs/auth/guides/setup-oauth).
 - **Tune Lakebase Search indexes**: `lakebase_vector` 1.1.2 adds functions that recommend `lakebase_ann.probes` settings for your index, so you can trade off recall and latency without trial and error. [Learn more](https://neon.com/docs/extensions/lakebase-vector#get-recommended-probes-values).
@@ -129699,7 +129849,7 @@ curl -X POST 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branc
 
 ## Set a branch as protected
 
-This feature is available on all Neon's paid plans, which supports up to five protected branches.
+This feature is available on Neon's paid plans. The number of protected branches you can have per project depends on your plan. See [Protected branches](https://neon.com/docs/guides/protected-branches).
 
 **Console**
 
@@ -133337,10 +133487,10 @@ The [Neon CLI ip-allow command](https://neon.com/docs/cli/ip-allow) supports IP 
 
 ```bash
 neon ip-allow add 203.0.113.0 203.0.113.1
-ID              wispy-haze-123456
-Name            wispy-haze-123456
-IP Addresses    203.0.113.0, 203.0.113.1
-Protected Only  false
+ID                       wispy-haze-123456
+Name                     wispy-haze-123456
+IP Addresses             203.0.113.0, 203.0.113.1
+Protected Branches Only  false
 ```
 
 To apply an IP allowlist to protected branches only, you can use the `--protected-only` option:
@@ -142518,6 +142668,8 @@ export const realtime = createRealtime({
 ```
 
 Every query it seals then reports errors with the database's full message, plus its SQLSTATE code in `sqlState` when there is one. It's a backend option because it travels inside each sealed query.
+
+To check a query's full error from the terminal without writing code, run [`neon realtime subscribe --debug`](https://neon.com/docs/cli/realtime#subscribe).
 
 **Warning: Development only**
 
@@ -152998,9 +153150,9 @@ The `pgaudit` extension is preloaded on HIPAA-enabled Neon projects. For extensi
 
 ## Non-HIPAA-compliant features
 
-The following feature is not currently HIPAA-compliant and should not be used in projects containing HIPAA-protected data:
+The following feature isn't HIPAA-compliant yet. Don't use it with PHI in a HIPAA-enabled project:
 
-- [Data API](https://neon.com/docs/data-api/get-started) – Not covered under Neon's HIPAA compliance.
+- [Data API](https://neon.com/docs/data-api/get-started): not yet covered by Neon's HIPAA compliance.
 
 ## Security incidents
 

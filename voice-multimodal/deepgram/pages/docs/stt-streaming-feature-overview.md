@@ -1,5 +1,5 @@
 ---
-title: "Feature Overview"
+title: "Feature overview"
 source: https://developers.deepgram.com/docs/stt-streaming-feature-overview.md
 path: docs/stt-streaming-feature-overview
 ---
@@ -7,11 +7,11 @@ path: docs/stt-streaming-feature-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Feature Overview
+# Feature overview
 
 > **Info**
 >
-> To learn how to get up and running with Streaming Speech-to-Text, read the [Streaming Speech-to-Text](/docs/live-streaming-audio) getting started guide.
+> To learn how to get up and running with streaming speech-to-text, read the [streaming speech-to-text](/docs/live-streaming-audio) getting started guide.
 
 ## Model Selection
 
@@ -26,26 +26,26 @@ path: docs/stt-streaming-feature-overview
 
 | Feature                                    | Language(s)                                                |
 | ------------------------------------------ | ---------------------------------------------------------- |
-| [Smart Formatting](/docs/smart-format)     | [All available](/docs/models-languages-overview)           |
+| [Smart formatting](/docs/smart-format)     | [All available](/docs/models-languages-overview)           |
 | [Speaker Diarization](/docs/diarization)   | [All available](/docs/models-languages-overview)           |
 | [Numerals](/docs/numerals)                 | [Specific languages only](/docs/models-languages-overview) |
 | [Punctuation](/docs/punctuation)           | [All available](/docs/models-languages-overview)           |
 | [Profanity Filter](/docs/profanity-filter) | [Specific languages only](/docs/models-languages-overview) |
 | [Redaction](/docs/redaction)               | [Specific languages only](/docs/models-languages-overview) |
 
-## Custom Vocabulary
+## Custom vocabulary
 
 | Feature                                                                         | Language(s)                                      |
 | ------------------------------------------------------------------------------- | ------------------------------------------------ |
-| [Find and Replace](/docs/find-and-replace)                                      | [All available](/docs/models-languages-overview) |
-| [Keyterm Prompting](/docs/keyterm) (Also see [Legacy Keywords](/docs/keywords)) | [All available](/docs/models-languages-overview) |
+| [Find and replace](/docs/find-and-replace)                                      | [All available](/docs/models-languages-overview) |
+| [Keyterm prompting](/docs/keyterm) (Also see [Legacy Keywords](/docs/keywords)) | [All available](/docs/models-languages-overview) |
 | [Search](/docs/search)                                                          | [All available](/docs/models-languages-overview) |
 
 ## Intelligence
 
 | Feature                                   | Model Support                  | Language(s)                                                        |
 | ----------------------------------------- | ------------------------------ | ------------------------------------------------------------------ |
-| [Entity Detection](/docs/detect-entities) | Nova, Nova-2, Nova-3, Enhanced | [English (all available regions)](/docs/models-languages-overview) |
+| [Entity detection](/docs/detect-entities) | Nova, Nova-2, Nova-3, Enhanced | [English (all available regions)](/docs/models-languages-overview) |
 
 ## Media Input Settings
 
@@ -56,7 +56,7 @@ path: docs/stt-streaming-feature-overview
 | [Channels](/docs/channels)         | [All available](/docs/models-languages-overview) |
 | [Encoding](/docs/encoding)         | [All available](/docs/models-languages-overview) |
 
-## Results Processing
+## Results processing
 
 | Feature                                  | Language(s)                                      |
 | ---------------------------------------- | ------------------------------------------------ |
@@ -69,7 +69,7 @@ path: docs/stt-streaming-feature-overview
 | [Extra Metadata](/docs/extra-metadata)   | [All available](/docs/models-languages-overview) |
 | [Redact usage](/docs/redact-usage)       | [All available](/docs/models-languages-overview) |
 
-## Control Messages
+## Control messages
 
 | Feature                              |
 | ------------------------------------ |
@@ -78,7 +78,7 @@ path: docs/stt-streaming-feature-overview
 | [Keep Alive](/docs/audio-keep-alive) |
 | [Configure](/docs/configure)         |
 
-## Rate Limits
+## Rate limits
 
 > **Info**
 >

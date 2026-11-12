@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/self-hosted-platform-features
 path: langsmith/self-hosted-platform-features
 ---
 
-Self-hosted-only platform features for LangSmith Deployment, including custom databases, listeners, and resource customization.
+Self-hosted-only platform features for LangSmith Agent Server, including custom databases, listeners, and resource customization.
 
 This page describes the platform features that apply only to [self-hosted](/langsmith/self-hosted) deployments.
 

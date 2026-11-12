@@ -37,7 +37,7 @@ Go to **AI Gateway → Overview** and choose:
 
 On the same page, select **Add connection** and add [API keys](/docs/gateway/concepts#credential-types) for model providers you’d like to use. The connection's **name** becomes the prefix of its [model IDs](/docs/gateway/features/models#model-ids).
 
-  ![Add provider connection dialog with the provider, name, and secret key fields](/images/docs/ai-gateway/setup-add-provider-credential.png)
+  ![Add connection dialog with the provider, name, and secret key fields](/images/docs/ai-gateway/setup-add-provider-credential.png)
 
 For the providers you can add and how to point a connection at your own endpoint, see [supported providers](/docs/gateway/features/models#supported-providers) and [custom base URL](/docs/gateway/features/models#custom-base-url).
 
@@ -61,7 +61,7 @@ Use **Notify your team** to email teammates. People who are not in the organizat
 
 ## Not seeing what you expected? [#not-seeing-what-you-expected]
 
-- [Why can't I open AI Gateway pages like Providers & Models or Gateway keys?](/faq/all/ai-gateway-pages-missing)
+- [Why can't I open AI Gateway pages like Connections & Models or Gateway keys?](/faq/all/ai-gateway-pages-missing)
 
 [Ask another question](/docs/ask-ai)
 

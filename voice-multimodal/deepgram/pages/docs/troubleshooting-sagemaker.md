@@ -16,7 +16,7 @@ If you're experiencing any issues with your Deepgram deployment on Amazon SageMa
 If you open the SageMaker AI Endpoint resource details, there will be a link to open the Amazon CloudWatch Log Group for that endpoint.
 Within the CloudWatch Log Group, there should be a Log Stream that contains the Deepgram logs for all components.
 You can use the Amazon CloudWatch Logs [Live Tail feature](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CloudWatchLogs_LiveTail.html) to watch logs in near-real-time
-while you are sending requests to the Deepgram API, via the SageMaker AI APIs.
+while you're sending requests to the Deepgram API, via the SageMaker AI APIs.
 
 To use the CloudWatch Logs Live Tail feature locally, from the [AWS CLI tool](https://aws.amazon.com/cli/), you can use the following command.
 
@@ -32,16 +32,16 @@ Current Deepgram model packages run a CUDA 13 runtime and require NVIDIA driver 
 [cuda-preflight] To fix this, set InferenceAmiVersion to al2023-ami-sagemaker-inference-gpu-4-1 on your endpoint configuration's ProductionVariant. That AMI provides NVIDIA driver 580 with CUDA 13.
 ```
 
-To fix this, create a new Endpoint Configuration with the AWS CLI, Boto3, or Terraform that sets `InferenceAmiVersion` to `al2023-ami-sagemaker-inference-gpu-4-1` on the production variant, then create or [update](/docs/update-amazon-sagemaker-endpoint) the endpoint with it. See [Inference AMI Versions](/docs/deploy-amazon-sagemaker#inference-ami-versions) for the available versions and Deepgram's recommendation.
+To fix this, create a new Endpoint Configuration with the AWS CLI, Boto3, or Terraform that sets `InferenceAmiVersion` to `al2023-ami-sagemaker-inference-gpu-4-1` on the production variant, then create or [update](/docs/update-amazon-sagemaker-endpoint) the endpoint with it. See [Inference AMI versions](/docs/deploy-amazon-sagemaker#inference-ami-versions) for the available versions and Deepgram's recommendation.
 
 ## Endpoint is InService but every request returns 400
 
-A `400` on every request usually means the request does not match the product you deployed, not that the endpoint is unhealthy.
+A `400` on every request usually means the request doesn't match the product you deployed, not that the endpoint is unhealthy.
 
-* **Multilingual Nova-3 listings require `language=multi`.** Sending `language=en` (or any single language code) to a multilingual Nova-3 endpoint returns `400`, which looks like a dead endpoint. Pass `language=multi` in the query string.
-* **Flux multilingual is selected by model name, not a language parameter.** Use `model=flux-general-multi`; there is no `language` parameter for Flux multilingual.
+* **Multilingual Deepgram Nova-3 listings require `language=multi`.** Sending `language=en` (or any single language code) to a multilingual Nova-3 endpoint returns `400`, which looks like a dead endpoint. Pass `language=multi` in the query string.
+* **Deepgram Flux STT multilingual is selected by model name, not a language parameter.** Use `model=flux-general-multi`; there's no `language` parameter for Flux STT multilingual.
 * **Streaming-mode bundles reject synchronous invocation.** A product listing published for streaming returns `400 No such model/language/tier` when called through the synchronous `/invocations` path (`InvokeEndpoint`). Use `InvokeEndpointWithBidirectionalStream` for streaming listings, or deploy the batch listing for synchronous invocation. See [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
-* **Streaming clients see a 424, not the 400.** When the container rejects a bidirectional streaming request, the streaming client receives HTTP `424` with `Failed to establish WebSocket connection` (for example, `ModelStreamError`). The underlying `400` and its reason are only visible in the endpoint's CloudWatch logs (see [View container logs](#view-container-logs)). The causes are the same as above: a multilingual listing called without `language=multi`, Flux multilingual called with a `language` parameter instead of `model=flux-general-multi`, or a model, language, or tier the deployed listing does not include.
+* **Streaming clients see a 424, not the 400.** When the container rejects a bidirectional streaming request, the streaming client receives HTTP `424` with `Failed to establish WebSocket connection` (for example, `ModelStreamError`). The underlying `400` and its reason are only visible in the endpoint's CloudWatch logs (see [View container logs](#view-container-logs)). The causes are the same as above: a multilingual listing called without `language=multi`, Flux STT multilingual called with a `language` parameter instead of `model=flux-general-multi`, or a model, language, or tier the deployed listing doesn't include.
 
 ## Endpoint stuck in Creating
 
@@ -63,12 +63,12 @@ If you experience any issues using Deepgram services running on the Amazon SageM
 
 * Ensure that your application's AWS IAM User or IAM Role has permission to call the `InvokeEndpointWithBidirectionalStream` SageMaker AI action.
 * Ensure your application is targeting the correct AWS account and region, where your SageMaker Endpoint exists.
-* Ensure the Deepgram product you've deployed (eg. streaming Speech-to-Text), from the AWS Marketplace, corresponds to the Deepgram API you're calling.
-* Ensure the Endpoint Configuration pins `InferenceAmiVersion` to `al2023-ami-sagemaker-inference-gpu-4-1`. The SageMaker AI console does not expose this setting; create the Endpoint Configuration with the AWS CLI or API, or with [Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions). See [Inference AMI Versions](/docs/deploy-amazon-sagemaker#inference-ami-versions).
+* Ensure the Deepgram product you've deployed (eg. streaming speech-to-text), from the AWS Marketplace, corresponds to the Deepgram API you're calling.
+* Ensure the Endpoint Configuration pins `InferenceAmiVersion` to `al2023-ami-sagemaker-inference-gpu-4-1`. The SageMaker AI console doesn't expose this setting; create the Endpoint Configuration with the AWS CLI or API, or with [Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions). See [Inference AMI versions](/docs/deploy-amazon-sagemaker#inference-ami-versions).
 * If you subscribed through a private offer in an AWS organization, ensure the linked account deploying the endpoint has accepted the offer or holds a License Manager entitlement. See [Private offers](/docs/subscribe-aws-marketplace#private-offers).
 
 ## Related resources
 
 * [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint)
-* [Health Checks & Automatic Recovery](/docs/health-checks-sagemaker)
+* [Health checks & automatic recovery](/docs/health-checks-sagemaker)
 * [Observability](/docs/observability-sagemaker)

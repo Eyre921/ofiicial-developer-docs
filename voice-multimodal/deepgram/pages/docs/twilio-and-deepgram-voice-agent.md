@@ -71,7 +71,7 @@ ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
 >
 > ngrok suits development and testing, not production. Each restart issues a new URL, so reserve a static domain or deploy behind your own hostname once the agent works. See the [ngrok documentation](https://ngrok.com/docs/getting-started/) for details.
 
-## Step 1: Set up the project
+## Step 1: set up the project
 
 Clone the companion repository, [deepgram-devs/twilio-voice-agent](https://github.com/deepgram-devs/twilio-voice-agent), which holds the complete `app.py`, `requirements.txt`, and `.env.example` referenced throughout this guide.
 
@@ -100,7 +100,7 @@ Speech-to-text, the language model, and text-to-speech all run inside the Voice 
 >
 > **Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
 
-## Step 2: Serve TwiML to open a bidirectional media stream
+## Step 2: serve TwiML to open a bidirectional media stream
 
 When a call connects, Twilio asks your webhook what to do. You answer with TwiML, Twilio's XML instruction set. The critical instruction is `<Connect><Stream>`, which opens a *bidirectional* WebSocket: you receive the caller's audio and send the agent's audio back over the same socket.
 
@@ -116,7 +116,7 @@ async def twiml(request: Request) -> Response:
     return Response(content=xml, media_type="application/xml")
 ```
 
-The bidirectional stream makes barge-in possible. Its one-way sibling, `<Start><Stream>`, cannot carry the agent's voice and therefore cannot support interruption. With a two-way channel open, the next step bridges it to Deepgram.
+The bidirectional stream makes barge-in possible. Its one-way sibling, `<Start><Stream>`, can't carry the agent's voice and therefore can't support interruption. With a two-way channel open, the next step bridges it to Deepgram.
 
 > **Info**
 >
@@ -138,7 +138,7 @@ If you would rather not host the webhook, paste the same XML into a [TwiML Bin](
 
 Write the `wss://` scheme, not `https://`, and keep the `/media` path. A bin holds a static URL, so update it whenever your tunnel hostname changes — the webhook in Step 7 reads `PUBLIC_HOSTNAME` from `.env` and needs no console edit.
 
-## Step 3: Bridge the Twilio media stream to the Voice Agent
+## Step 3: bridge the Twilio media stream to the Voice Agent
 
 The `/media` WebSocket carries the whole call. Open one Deepgram Voice Agent connection for the call, start a task that relays the agent's output back to Twilio, then forward Twilio's events into the agent.
 
@@ -169,7 +169,7 @@ On `start`, capture `streamSid` (every message you send back to Twilio must refe
 >
 > For EU data processing, connect to `api.eu.deepgram.com` instead of the default host. See [Regional Endpoints](/reference/regional-endpoints) for details.
 
-## Step 4: Configure the agent
+## Step 4: configure the agent
 
 A single `Settings` message tells the Voice Agent everything: the audio format, which models to use for listening and speaking, the language model and its instructions, and a greeting. Requesting mulaw at 8 kHz for both input and output means the audio matches Twilio exactly, with no resampling anywhere.
 
@@ -190,9 +190,9 @@ AGENT_SETTINGS = AgentV1Settings.model_validate({
 })
 ```
 
-The `listen` provider is [**Flux**](/docs/flux/feature-overview), Deepgram's speech-to-text model built for conversational audio. Flux runs on the `/v2/listen` endpoint, so the provider pins `"version": "v2"`; drop that field and the agent falls back to the v1 (Nova) endpoint, where `flux-general-en` is not a valid model. Flux adds model-integrated end-of-turn detection tuned for voice agents, with Nova-3-level accuracy. Twilio's mulaw 8 kHz audio needs no change — the agent resamples it for Flux internally.
+The `listen` provider is [**Flux STT**](/docs/flux/feature-overview), Deepgram's speech-to-text model built for conversational audio. Flux STT runs on the `/v2/listen` endpoint, so the provider pins `"version": "v2"`; drop that field and the agent falls back to the v1 (Nova) endpoint, where `flux-general-en` isn't a valid model. Flux STT adds model-integrated end-of-turn detection tuned for voice agents, with Nova-3-level accuracy. Twilio's mulaw 8 kHz audio needs no change — the agent resamples it for Flux STT internally.
 
-The `speak` provider is **Flux TTS**, Deepgram's streaming text-to-speech model, so both ends of the pipeline are Flux. Flux voices are named `flux-{voice}-en` and run on the `/v2/speak` endpoint, so this provider pins `"version": "v2"` as well; drop it and the agent falls back to v1 (Aura), where `flux-alexis-en` is not a valid voice.
+The `speak` provider is **Flux TTS**, Deepgram's streaming text-to-speech model, so Flux STT and Flux TTS cover both ends of the pipeline. Flux TTS voices are named `flux-{voice}-en` and run on the `/v2/speak` endpoint, so this provider pins `"version": "v2"` as well; drop it and the agent falls back to v1 (Aura), where `flux-alexis-en` isn't a valid voice.
 
 The `think` provider is OpenAI's `gpt-4o-mini`, and a focused `prompt` keeps replies short and speakable: one or two sentences, no markdown — exactly what a phone call needs. Note the missing API key in the `think` block — Deepgram manages the LLM connection on your behalf. Once you send these settings, the agent's replies start flowing back as audio.
 
@@ -221,7 +221,7 @@ An optional `temperature` on the provider tunes how deterministic the replies ar
 >
 > **Verify:** on a connected call, the agent speaks the greeting, and `ConversationText` events print to the console.
 
-## Step 5: Relay the agent's audio back to Twilio
+## Step 5: relay the agent's audio back to Twilio
 
 The Voice Agent streams its responses back in two forms over the one connection: output audio arrives as raw `bytes`, and everything else (transcripts, status, interruption signals) arrives as typed event objects. A single receive loop handles both.
 
@@ -244,7 +244,7 @@ async def agent_to_twilio(twilio_ws, agent, stream_sid_box):
 
 Because the audio is already mulaw 8 kHz, each chunk drops straight into a Twilio `media` frame with no conversion. Driving the loop with `agent.recv()` keeps the audio and the control events in order on a single task, which matters for the interruption handling that comes next.
 
-## Step 6: Handle barge-in
+## Step 6: handle barge-in
 
 Barge-in turns a scripted bot into a conversational agent, and the Voice Agent does the hard part for you. When the caller starts talking over the agent, Deepgram detects it, stops the agent's turn, and sends a `UserStartedSpeaking` event. Your one responsibility is to flush the audio Twilio still has buffered.
 
@@ -255,7 +255,7 @@ elif isinstance(message, AgentV1UserStartedSpeaking):
 
 The `clear` message discards whatever Twilio has queued but not yet played, so the agent falls silent the instant the caller speaks. Deepgram has already stopped generating on its side; the `clear` closes the gap on Twilio's side. That single relayed signal is the whole of barge-in here — far less work than wiring it by hand. That leaves one thing to do: place a real call.
 
-## Step 7: Run and test the agent
+## Step 7: run and test the agent
 
 Start the application and open a tunnel so Twilio can reach it.
 
@@ -282,16 +282,16 @@ A successful interruption test confirms the bridge and the Voice Agent are worki
 Once the core agent runs, several enhancements build on the Voice Agent API.
 
 * **Give the agent tools.** Define functions in the settings and handle `FunctionCallRequest` events to let the agent look things up or take actions mid-conversation.
-* **Choose a different voice or model.** Swap the `speak` model for another [Flux voice](/docs/flux-tts/voices), or change the `think` provider and model, for example to Anthropic's `claude-sonnet-5`. See [Choosing the language model](#choosing-the-language-model) in Step 4.
+* **Choose a different voice or model.** Swap the `speak` model for another [Flux TTS voice](/docs/flux-tts/voices), or change the `think` provider and model, for example to Anthropic's `claude-sonnet-5`. See [Choosing the language model](#choosing-the-language-model) in Step 4.
 * **Inject messages mid-call.** Use the agent's inject and update messages to steer the conversation or update the prompt while the call is live.
 * **Reserve a static ngrok domain** so your `PUBLIC_HOSTNAME` and Twilio webhook stay constant across restarts.
-* **Bridge without the SDK.** If you cannot add the Deepgram SDK, [deepgram-devs/sts-twilio](https://github.com/deepgram-devs/sts-twilio) implements the same bridge against the raw `websockets` library, connecting directly to `wss://agent.deepgram.com/v1/agent/converse`.
+* **Bridge without the SDK.** If you can't add the Deepgram SDK, [deepgram-devs/sts-twilio](https://github.com/deepgram-devs/sts-twilio) implements the same bridge against the raw `websockets` library, connecting directly to `wss://agent.deepgram.com/v1/agent/converse`.
 
 ## Resources
 
 * [Deepgram Voice Agent API](/docs/voice-agent)
 * [Voice Agent API reference](/reference/voice-agent/voice-agent)
-* [Deepgram Flux (conversational STT)](/docs/flux/feature-overview)
+* [Deepgram Flux STT (conversational)](/docs/flux/feature-overview)
 * [Voice Agent STT models](/docs/voice-agent-stt-models)
 * [Voice Agent LLM models](/docs/voice-agent-llm-models)
 * [Flux TTS voices](/docs/flux-tts/voices)

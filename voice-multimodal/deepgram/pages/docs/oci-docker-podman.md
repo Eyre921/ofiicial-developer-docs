@@ -9,15 +9,15 @@ path: docs/oci-docker-podman
 
 # Oracle Cloud Infrastructure
 
-Deploying Deepgram on Oracle Cloud Infrastructure (OCI) requires some preparation. In this section, you will learn how to provision a Virtual Machine where you will deploy Deepgram products. You will need to perform some of these steps in the Oracle Cloud Console and some in your local terminal.
+Deploying Deepgram on Oracle Cloud Infrastructure (OCI) requires some preparation. In this section, you'll learn how to provision a Virtual Machine where you'll deploy Deepgram products. You'll need to perform some of these steps in the Oracle Cloud Console and some in your local terminal.
 
 ## Prerequisites
 
-Make sure you have completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
+Make sure you've completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
 
 ## Accessing Your Cloud Environment
 
-### Create an OCI Compute Instance
+### Create an OCI compute instance
 
 ​To begin your self-hosted installation with OCI as your cloud service provider, you need to create an OCI instance.
 
@@ -84,13 +84,13 @@ Make sure you have completed the requirements in the [Self-Hosted Introduction](
 
 13. The job details for the instance creation will be displayed. The Terraform plan and logs will show, and once completed, the instance creation job will be marked as `Succeeded`.
 
-### Log in to the OCI Compute Instance
+### Log in to the OCI compute instance
 
 To complete the rest of the installation, including configuring your environment and transferring files between your local computer and your OCI instance, you must connect to the instance that you launched.
 
 1. You need to find the instance's Public IPv4 DNS entry. In the OCI Console, navigate back to the `Compute -> Instances` page.
 
-2. Find the newly provisioned compute instance. Take note of the Public IP assigned to this instance. This will be the `IP_ADDR` value that is referenced later.
+2. Find the newly provisioned compute instance. Take note of the Public IP assigned to this instance. This will be the `IP_ADDR` value that's referenced later.
 
 3. Open the terminal application for your computer.
 
@@ -110,14 +110,14 @@ To complete the rest of the installation, including configuring your environment
 
    > **Info**
    >
-   > If you are on a Windows machine, PuTTY is an alternative to `ssh`.
+   > If you're on a Windows machine, PuTTY is an alternative to `ssh`.
 
-5. If you receive a message that indicates that the authenticity of the host can’t be established, type `yes`, then press the `Enter` key on your keyboard. This message should only appear the first time you are connected to the instance.
+5. If you receive a message that indicates that the authenticity of the host can’t be established, type `yes`, then press the `Enter` key on your keyboard. This message should only appear the first time you're connected to the instance.
 
 ---
 
 What’s Next
 
-Now that we have provisioned a deployment environment, we need to start configuring it for inference.
+Now that we've provisioned a deployment environment, we need to start configuring it for inference.
 
 * [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms)

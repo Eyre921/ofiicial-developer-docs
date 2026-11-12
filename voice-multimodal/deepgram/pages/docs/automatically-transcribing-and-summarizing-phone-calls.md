@@ -1,5 +1,5 @@
 ---
-title: "Automatically Transcribe and Summarize Phone Calls"
+title: "Automatically transcribe and summarize phone calls"
 source: https://developers.deepgram.com/docs/automatically-transcribing-and-summarizing-phone-calls.md
 path: docs/automatically-transcribing-and-summarizing-phone-calls
 ---
@@ -7,29 +7,29 @@ path: docs/automatically-transcribing-and-summarizing-phone-calls
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Automatically Transcribe and Summarize Phone Calls
+# Automatically transcribe and summarize phone calls
 
 One use for the Deepgram API is to transcribe calls between a caller and an agent. When paired with Twilio, a cloud communication platform that lets developers integrate a number of communication technologies into their applications, Deepgram's API can be used to streamline your workflow by providing bite-sized versions of call recordings.
 
-In this guide, you'll learn how to use Twilio Functions and Deepgram's [Summarization](/docs/summarization/) feature to send phone call summaries via SMS once a conversation has ended. Using Twilio, you will build a phone number that forwards callers to your agent and begins recording. When the call is complete, Deepgram will provide both a transcript and summary of the call. Finally, the transcript and summary will be sent to both the caller and agent via SMS.
+In this guide, you'll learn how to use Twilio Functions and Deepgram's [Summarization](/docs/summarization/) feature to send phone call summaries via SMS once a conversation has ended. Using Twilio, you'll build a phone number that forwards callers to your agent and begins recording. When the call is complete, Deepgram will provide both a transcript and summary of the call. Finally, the transcript and summary will be sent to both the caller and agent via SMS.
 
 If you need reference material or you'd rather not follow along with this guide, we provide a [full version of the sample code](#full-sample-code) after the tutorial.
 
-## Before You Start
+## Before you start
 
 Before you run the code, you'll need to do a few things.
 
-### Create a Deepgram Account
+### Create a Deepgram account
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
-### Create a Deepgram API Key
+### Create a Deepgram API key
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ### Create a Twilio Account
 
@@ -39,25 +39,25 @@ Before you can use Twilio, you'll need to [sign up for a Twilio account](https:/
 
 To test your project, you'll need access to two phones--one to make a call and one to receive a call.
 
-## Setting Up Twilio
+## Setting up Twilio
 
-To use Twilio, you will need to create a new service, add the Deepgram SDK as a dependency, and add the appropriate environment variables.
+To use Twilio, you'll need to create a new service, add the Deepgram SDK as a dependency, and add the appropriate environment variables.
 
-### Create a Service
+### Create a service
 
 Create a new service, which can contain multiple Twilio Functions and assets related to a single project.
 
 1. Log in to the Twilio Console, and navigate to **Developer Tools** > **Functions & Assets**.
 2. Create a new service. It’s important that you create a new service rather than a standalone function.
 
-### Add Dependencies
+### Add dependencies
 
 Inside your new service, add the Deepgram SDK as a dependency:
 
 1. Locate the **Dependencies** section.
 2. Add `@deepgram/sdk`. To get the latest version, omit the version number.
 
-### Add Environment Variables
+### Add environment variables
 
 Inside your new service, add your Deepgram API Key and your agent phone number as environment variables:
 
@@ -70,7 +70,7 @@ Inside your new service, add your Deepgram API Key and your agent phone number a
    | `DEEPGRAM_KEY`      | Value of your Deepgram API Key generated in your Deepgram Console                                                                                                             |
    | `FORWARDING_NUMBER` | Value of your agent phone number in [E.164 formatting](https://support.twilio.com/hc/en-us/articles/223183008-Formatting-International-Phone-Numbers) (example: +14155552671) |
 
-## Recording and Forwarding Inbound Calls
+## Recording and forwarding inbound calls
 
 Create a Twilio function that receives incoming call data and forwards it to your agent while recording it:
 
@@ -94,13 +94,13 @@ Create a Twilio function that receives incoming call data and forwards it to you
 
 > **Info**
 >
-> When the call is completed, call data will be sent to `/recordings`, which you will create later in this guide.
+> When the call is completed, call data will be sent to `/recordings`, which you'll create later in this guide.
 
 3. Save the function, and select **Deploy All**. Once deployed, this function is ready to be used.
 
 ### Configure Your Twilio Number
 
-Now that you have created a function to receive incoming calls, apply it to your Twilio number:
+Now that you've created a function to receive incoming calls, apply it to your Twilio number:
 
 1. Navigate to your Twilio number settings.
 2. Under **A Call Comes In**, select **Function**.
@@ -109,11 +109,11 @@ Now that you have created a function to receive incoming calls, apply it to your
 
 ![When a call comes in, use a Function. Default service with the /inbound function path.](/_fern-files/_img/a5bb4a59be80060e756877b9fa500702e4695029ec2c7bb02d56dcacb8ddc94c.webp)
 
-## Transcribing and Summarizing Calls
+## Transcribing and summarizing calls
 
 Now that your Twilio number is configured to record the phone call, you can use Deepgram to transcribe and summarize it.
 
-### Transcribe the Call
+### Transcribe the call
 
 When a call is received, use Deepgram to transcribe it:
 
@@ -155,7 +155,7 @@ When a call is received, use Deepgram to transcribe it:
    });
    ```
 
-### Summarize the Call
+### Summarize the call
 
 From Deepgram's transcription, isolate the summary:
 
@@ -165,11 +165,11 @@ From Deepgram's transcription, isolate the summary:
 const summary = result.results.summary.short;
 ```
 
-## Sending Summary Messages
+## Sending summary messages
 
 Now that you have a summary of the call, you can send it to both the caller and the agent.
 
-### Send the Summary via SMS
+### Send the summary via SMS
 
 Finally, you can send Deepgram's summary via SMS:
 
@@ -187,11 +187,11 @@ for (let number of [process.env.FORWARD_NUMBER, caller]) {
 
 Save both files again, and deploy all functions in your service.
 
-## Testing Your Implementation
+## Testing your implementation
 
 To test your implementation, call your Twilio number, pick it up on your "agent device", speak, and hang up. You should receive a summary message via SMS a few seconds later.
 
-## Full Sample Code
+## Full sample code
 
 In case you need it for reference, we provide the full sample code used in this tutorial below:
 

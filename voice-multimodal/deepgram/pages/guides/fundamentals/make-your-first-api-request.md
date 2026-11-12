@@ -1,5 +1,5 @@
 ---
-title: "Make Your First API Request"
+title: "Make your first API request"
 source: https://developers.deepgram.com/guides/fundamentals/make-your-first-api-request.md
 path: guides/fundamentals/make-your-first-api-request
 ---
@@ -7,23 +7,23 @@ path: guides/fundamentals/make-your-first-api-request
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Make Your First API Request
+# Make your first API request
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
-## Create a Deepgram API Key
+## Create a Deepgram API key
 
-To access Deepgram's API, you'll need to [create a Deepgram API Key](https://console.deepgram.com/signup?jump=keys). Make note of your API Key; you will need it later.
+To access Deepgram's API, you'll need to [create a Deepgram API Key](https://console.deepgram.com/signup?jump=keys). Make note of your API Key; you'll need it later.
 
-## Make a Request to the API
+## Make a request to the API
 
 Here are several options for trying out the Deepgram API. These examples are meant to help you make a first request to Deepgram; we encourage you to try out one of our Getting Started guides to learn more.
 
 ### Deepgram Playground
 
-Make a request without writing any code! Head to the [Deepgram Playground](https://playground.deepgram.com/?smart_format=true\&language=en\&model=nova-3) to try out the API. No sign-up required!
+Make a request without writing any code. Head to the [Deepgram Playground](https://playground.deepgram.com/?smart_format=true\&language=en\&model=nova-3) to try out the API. No sign-up required.
 
 ### CURL
 
@@ -44,11 +44,11 @@ For more examples using CURL, check out the [Transcribing Pre-Recorded Audio](/d
 
 ### Deepgram SDKs
 
-This section will help you get set up to use Deepgram's SDKs. Then you can continue on to one of the Getting Started guides, which demonstrate how to make common API requests with Deepgram's officially supported SDKs.
+This section will help you get set up to use our SDKs. Then you can continue on to one of the Getting Started guides, which demonstrate how to make common API requests with our officially supported SDKs.
 
-#### Configure Environment
+#### Configure environment
 
-We provide sample scripts throughout our documentation in the languages of our SDKs and assume you have already configured your development environment. System requirements will vary depending on the programming language you use:
+We provide sample scripts throughout our documentation in the languages of our SDKs and assume you've already configured your development environment. System requirements will vary depending on the programming language you use:
 
 * **Node.js**: node >= 14.14.37
 * **Python**: python >= 3.10
@@ -58,11 +58,11 @@ We provide sample scripts throughout our documentation in the languages of our S
 
 > **Info**
 >
-> If you get stuck at any point, help is just a click away! [Contact Support](/support/).
+> If you get stuck at any point, help is just a click away. [Contact Support](/support/).
 
 #### Install the SDK
 
-If you intend to use one of Deepgram's SDKs to make your request, you must install it.
+If you intend to use one of our SDKs to make your request, you must install it.
 
 Open your terminal, navigate to the location on your drive where you want to create your project, and install the Deepgram SDK.
 
@@ -110,13 +110,13 @@ go get github.com/deepgram/deepgram-go-sdk
 </dependency>
 ```
 
-#### Make a Request with the SDKs
+#### Make a request with the SDKs
 
-Continue on to one of our **Getting Started Guides** where you will find language-specific code samples that show you how to make requests to Deepgram with the SDK of your choice.
+Continue on to one of our **Getting Started Guides** where you'll find language-specific code samples that show you how to make requests to Deepgram with the SDK of your choice.
 
-* [Pre-Recorded Speech to Text](/docs/pre-recorded-audio)
-* [Streaming Speech to Text](/docs/live-streaming-audio)
-* [Text to Speech](/docs/text-to-speech)
+* [Pre-recorded speech-to-text](/docs/pre-recorded-audio)
+* [Streaming speech-to-text](/docs/live-streaming-audio)
+* [Text-to-speech](/docs/text-to-speech)
 * [Audio Intelligence](/docs/audio-intelligence)
 * [Text Intelligence](/docs/text-intelligence)
 

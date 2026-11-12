@@ -21,7 +21,7 @@ The `Settings` message is an initialization command that establishes both the be
 >
 > For a detailed explanation of all the options available for the `Settings` message, see our documentation on how to [Configure the Voice Agent](/docs/configure-voice-agent).
 
-## Example Payloads
+## Example payloads
 
 This example uses a very basic `Settings` to establish a connection. To send the `Settings` message, you need to send the following JSON message to the server:
 
@@ -79,6 +79,6 @@ Upon receiving the `Settings` message, the server will process all remaining aud
 }
 ```
 
-## Next Steps
+## Next steps
 
-* [Voice Agent Message Flow](/docs/voice-agent-message-flow) for the correct message flow when building a Voice Agent client.
+* [Voice Agent message flow](/docs/voice-agent-message-flow) for the correct message flow when building a Voice Agent client.

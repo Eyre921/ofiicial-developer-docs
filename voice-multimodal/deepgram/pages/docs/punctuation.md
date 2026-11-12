@@ -13,9 +13,9 @@ path: docs/punctuation
 
 `punctuate` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
-## Enable Feature
+## Enable feature
 
 To enable punctuation, use the following parameter in the query string when you call Deepgram’s `/listen` endpoint :
 

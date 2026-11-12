@@ -39,7 +39,7 @@ Individual data sources don't have permissions settings, so the set of Notion us
 | `cover` | [File object](/reference/file-object) | Page cover image. | |
 | `parent` | `object` | Information about the database's parent. See [Parent object](/reference/parent-object). | `{ "type": "page_id", "page_id": "af5f89b5-a8ff-4c56-a5e8-69797d11b9f8" }` |
 | `url` | `string` | The URL of the Notion database. | `"https://app.notion.com/p/668d797c76fa49349b05ad288df2d136"` |
-| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
+| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. In API versions before `2026-03-11`, this is an alias for `in_trash` and always returns the same value. Version `2026-03-11` removed `archived` from requests and responses. | `false` |
 | `in_trash` | `boolean` | Whether the database has been trashed. | `false` |
 | `is_inline` | `boolean` | Has the value `true` if the database appears in the page as an inline block. Otherwise has the value `false` if the database appears as a child page. | `false` |
 | `database_type` | `string` or `null` | The type of typed database, such as `tasks`, `projects`, or `skills`. `null` for a regular database. | `"skills"` |

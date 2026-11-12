@@ -70,6 +70,52 @@ with OpenRouter(
 
 ```
 
+### Example Usage: invalid-parameters
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.beta.responses.send(service_tier="auto", stream=False)
+
+    with res as event_stream:
+        for event in event_stream:
+            # handle event
+            print(event, flush=True)
+
+```
+
+### Example Usage: invalid-request-body
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.beta.responses.send(service_tier="auto", stream=False)
+
+    with res as event_stream:
+        for event in event_stream:
+            # handle event
+            print(event, flush=True)
+
+```
+
 ### Parameters
 
 | Parameter | Type | Required | Description | Example |
@@ -129,7 +175,7 @@ with OpenRouter(
 
 | Error Type | Status Code | Content Type |
 | - | - | - |
-| errors.BadRequestResponseError | 400 | application/json |
+| errors.ResponsesBadRequestResponseError | 400 | application/json |
 | errors.UnauthorizedResponseError | 401 | application/json |
 | errors.PaymentRequiredResponseError | 402 | application/json |
 | errors.ForbiddenResponseError | 403 | application/json |

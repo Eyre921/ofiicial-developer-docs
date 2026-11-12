@@ -11,7 +11,7 @@ path: docs/numerals
 
 `numerals` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming:Flux  Specific languages only
+Pre-recorded  Streaming:Nova Streaming:Flux STT  Specific languages only
 
 Deepgram’s Numerals feature converts numbers from written format to numerical format. For example, the cardinal number "nine hundred" would appear in your transcript as "900", and the ordinal number "nine hundredth" would appear in your transcript as "900th".
 
@@ -42,12 +42,12 @@ Supported languages include:
 >
 > Numerals works the same in monolingual and multilingual requests. A multilingual model, such as Nova-3 Multilingual (`model=nova-3`, `language=multi`) or Nova-3 Medical multilingual (`model=nova-3-medical`, `language=multi`), formats numerals only in the languages listed above. It leaves numbers as words in every other language it transcribes, including Hindi.
 
-### Flux support
+### Flux STT support
 
-Numerals are supported on both Flux models:
+Numerals are supported on both Deepgram Flux STT models:
 
-* **Flux English** (`model=flux-general-en`) — full numeral formatting.
-* **Flux Multilingual** (`model=flux-general-multi`) — numeral formatting for English, Spanish, French, German, Russian, Portuguese, Italian, Dutch, and Japanese. Hindi isn't supported.
+* **Flux STT English** (`model=flux-general-en`) — full numeral formatting.
+* **Flux STT Multilingual** (`model=flux-general-multi`) — numeral formatting for English, Spanish, French, German, Russian, Portuguese, Italian, Dutch, and Japanese. Hindi isn't supported.
 
 On Flux STT, set the initial value with the `numerals` query parameter when you open the connection. To change it mid-stream, send a [`Configure`](/docs/flux/configure) message.
 
@@ -57,7 +57,7 @@ On Flux STT, set the initial value with the `numerals` query parameter when you 
 wss://api.deepgram.com/v2/listen?model=flux-general-en&numerals=true&encoding=linear16&sample_rate=16000
 ```
 
-## Enable Feature
+## Enable feature
 
 To enable numerals, when you call Deepgram’s API, add a `numerals` parameter set to `true` in the query string:
 

@@ -35,7 +35,7 @@ It doesn't reason by default. Leave `reasoning_effort` unset or set it to `none`
 
 ## phoneLLM mini
 
-phoneLLM mini is an open-weights text model from Pipecat, trained for voice agent pipelines. Choose it when speed and size are the top priority. It is a 30B-parameter mixture-of-experts model with 3.5B active parameters, based on NVIDIA Nemotron 3 Nano.
+phoneLLM mini is an open-weights text model from Pipecat, trained for voice agent pipelines. Choose it when speed and size are the top priority. It's a 30B-parameter mixture-of-experts model with 3.5B active parameters, based on NVIDIA Nemotron 3 Nano.
 
 * **Tool calling:** supported. The model was trained on synthetic voice agent sessions, including [Pipecat Flows](https://www.pipecat.ai/labs/phonellm-alpha-2) sessions.
 * **Reasoning:** off. Set `reasoning_effort` to `none` or omit it; other values put reasoning text in the reply, ending in `</think>`, which a voice app would read aloud. In the Voice Agent, the same setting is `agent.think.provider.reasoning_mode`.

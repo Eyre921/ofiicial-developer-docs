@@ -1,5 +1,5 @@
 ---
-title: "Analyze Text"
+title: "Analyze text"
 source: https://developers.deepgram.com/reference/text-intelligence/analyze-text.md
 path: reference/text-intelligence/analyze-text
 ---
@@ -7,7 +7,7 @@ path: reference/text-intelligence/analyze-text
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Analyze Text
+# Analyze text
 
 POST https://api.deepgram.com/v1/read
 Content-Type: application/json

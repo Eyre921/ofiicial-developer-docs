@@ -1,5 +1,5 @@
 ---
-title: "Migrating From Amazon Web Services (AWS) Transcribe to Deepgram"
+title: "Migrating from Amazon Web Services (AWS) Transcribe to Deepgram"
 source: https://developers.deepgram.com/docs/migrating-from-amazon-web-services-aws-transcribe-to-deepgram.md
 path: docs/migrating-from-amazon-web-services-aws-transcribe-to-deepgram
 ---
@@ -7,23 +7,23 @@ path: docs/migrating-from-amazon-web-services-aws-transcribe-to-deepgram
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Migrating From Amazon Web Services (AWS) Transcribe to Deepgram
+# Migrating from Amazon Web Services (AWS) Transcribe to Deepgram
 
 This guide covers migrating your transcription processes from Amazon Web Services (AWS) Transcribe to Deepgram, including key differences, code examples, and best practices.
 
-## Getting Started
+## Getting started
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
-## Migration Process
+## Migration process
 
-During the migration process, you will need to perform the following tasks:
+During the migration process, you'll need to perform the following tasks:
 
 | Before Migration                                                                                                                                                                                                                                                                       | During Migration                                                                                                               | After Migration                                          |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
@@ -33,30 +33,30 @@ During the migration process, you will need to perform the following tasks:
 
 Once you’ve selected your [model](/docs/model/), Deepgram provides many features and capabilities to help you transcribe and classify your audio. However, some capabilities and concepts are implemented differently from Amazon Transcribe.
 
-| Features and Capabilities          | Deepgram                                                                                                                  | Amazon Transcribe                                                                                                                                                                                |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Nova Models                        | Yes                                                                                                                       | No                                                                                                                                                                                               |
-| Enhanced model                     | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Base model                         | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Use Case or Domain-specific models | 8                                                                                                                         | 2                                                                                                                                                                                                |
-| Trained model                      | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Batch processing (1 hour of audio) | 20 seconds                                                                                                                | 5 minutes                                                                                                                                                                                        |
-| Streaming processing lag           | 300-800 ms                                                                                                                | 1000-5000 ms, or 1-5 s                                                                                                                                                                           |
-| Maximum number of channels         | No limit                                                                                                                  | 2                                                                                                                                                                                                |
-| Search                             | Yes                                                                                                                       | Yes (part of Post Call Analytics bundle)                                                                                                                                                         |
-| Diarization (separate per speaker) | Up to 16                                                                                                                  | Up to 5                                                                                                                                                                                          |
-| Noise reduction                    | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Custom vocabulary                  | Yes - Keyword Boosting, trained model                                                                                     | Yes - custom vocabulary, custom language model                                                                                                                                                   |
-| Redaction                          | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Punctuation                        | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Profanity filter                   | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Numeral formatting                 | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Audio inputs                       | Supports over 100 file types. Some of these include: - MP3 - MP4 - MP2 - AAC - WAV - FLAC - PCM - M4A - Ogg - Opus - WebM | **Batch** - AMR - FLAC - MP3 - MP4 - Ogg - WebM - WAV**Streaming** - FLAC - Opus-encoded audio in an Ogg container - PCM signed 16-bit little-endian audio (note that this does not include WAV) |
-| [SDK](/sdks/sdk-features)          | Yes: Node.js - .NET - Python - Go                                                                                         | Yes: .NET - Go - Java - JavaScript - PHP - Python - Ruby                                                                                                                                         |
-| Web Sockets                        | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
-| Data logging                       | Yes                                                                                                                       | Yes                                                                                                                                                                                              |
+| Features and Capabilities          | Deepgram                                                                                                                  | Amazon Transcribe                                                                                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nova Models                        | Yes                                                                                                                       | No                                                                                                                                                                                              |
+| Enhanced model                     | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Base model                         | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Use Case or Domain-specific models | 8                                                                                                                         | 2                                                                                                                                                                                               |
+| Trained model                      | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Batch processing (1 hour of audio) | 20 seconds                                                                                                                | 5 minutes                                                                                                                                                                                       |
+| Streaming processing lag           | 300-800 ms                                                                                                                | 1000-5000 ms, or 1-5 s                                                                                                                                                                          |
+| Maximum number of channels         | No limit                                                                                                                  | 2                                                                                                                                                                                               |
+| Search                             | Yes                                                                                                                       | Yes (part of Post Call Analytics bundle)                                                                                                                                                        |
+| Diarization (separate per speaker) | Up to 16                                                                                                                  | Up to 5                                                                                                                                                                                         |
+| Noise reduction                    | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Custom vocabulary                  | Yes - Keyword Boosting, trained model                                                                                     | Yes - custom vocabulary, custom language model                                                                                                                                                  |
+| Redaction                          | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Punctuation                        | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Profanity filter                   | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Numeral formatting                 | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Audio inputs                       | Supports over 100 file types. Some of these include: - MP3 - MP4 - MP2 - AAC - WAV - FLAC - PCM - M4A - Ogg - Opus - WebM | **Batch** - AMR - FLAC - MP3 - MP4 - Ogg - WebM - WAV**Streaming** - FLAC - Opus-encoded audio in an Ogg container - PCM signed 16-bit little-endian audio (note that this doesn't include WAV) |
+| [SDK](/sdks/sdk-features)          | Yes: Node.js - .NET - Python - Go                                                                                         | Yes: .NET - Go - Java - JavaScript - PHP - Python - Ruby                                                                                                                                        |
+| Web Sockets                        | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
+| Data logging                       | Yes                                                                                                                       | Yes                                                                                                                                                                                             |
 
-### Detailed Description of Differences
+### Detailed description of differences
 
 Once you’ve selected your [model](/docs/model/), Deepgram provides many features and capabilities to help you transcribe and classify your audio. However, some capabilities and concepts are implemented differently from Amazon.
 
@@ -72,7 +72,7 @@ Additionally, Amazon provides the following values by default:
 
 * Type
 
-##### Deepgram Default JSON Response
+##### Deepgram default JSON response
 
 **Interim Result**
 
@@ -175,9 +175,9 @@ Additionally, Amazon provides the following values by default:
 }
 ```
 
-#### Use Case or Domain-specific Models
+#### Use case or domain-specific models
 
-Deepgram and Amazon provide speech recognition models that are pre-trained or tuned to identify the words and phrases unique to a specific use case or domain. Deepgram creates our speech recognition models through transfer learning from our highly-performant general models. It is important to test multiple models to see which one meets the accuracy, performance, and scalability needs for your use case.
+Deepgram and Amazon provide speech recognition models that are pre-trained or tuned to identify the words and phrases unique to a specific use case or domain. Deepgram creates our speech recognition models through transfer learning from our highly-performant general models. It's important to test multiple models to see which one meets the accuracy, performance, and scalability needs for your use case.
 
 > **Info**
 >
@@ -205,7 +205,7 @@ Amazon provides:
 
 Deepgram provides acoustic-based search that identifies phrases by audio patterns rather than text matches. Unlike Amazon's Call Analytics text-based search, this approach finds phrases even when transcription is imperfect, offering higher accuracy.
 
-Deepgram’s Search feature uses a query that allows you to pass in a word or phrase to find and then returns results in the response JSON object. In the JSON response, we return information including the start time and end time of when that phrase was possibly uttered and a confidence rating for each match. So, in the response, you will see the query (the word or phrase you searched for), and then hits (an array of objects that give you the confidence, start, end, and snippet of each possible match to your search). You can include up to 25 search terms per request.
+Deepgram’s Search feature uses a query that allows you to pass in a word or phrase to find and then returns results in the response JSON object. In the JSON response, we return information including the start time and end time of when that phrase was possibly uttered and a confidence rating for each match. So, in the response, you'll see the query (the word or phrase you searched for), and then hits (an array of objects that give you the confidence, start, end, and snippet of each possible match to your search). You can include up to 25 search terms per request.
 
 ##### Sample code
 
@@ -213,7 +213,7 @@ You can search for multiple terms individually: `search=epistemology&search=warw
 
 You can search for a phrase. URL-encode the phrase when submitting it: `search=social%20epistemology`
 
-As an example, we used a WAV audio file that contains the first 20 seconds of a college lecture on epistemology. The term "epistemology" in this audio file is sufficiently technical that our model will not transcribe it accurately, but our phonetic search will still be able to find it.
+As an example, we used a WAV audio file that contains the first 20 seconds of a college lecture on epistemology. The term "epistemology" in this audio file is sufficiently technical that our model won't transcribe it accurately, but our phonetic search will still be able to find it.
 
 **Input**
 
@@ -248,21 +248,21 @@ Amazon Transcribe customers need to upgrade to Post Call Analytics (PCA) to have
 * Search on call attributes such as time range, sentiment, or entities
 * Search transcriptions
 
-#### Custom Vocabulary
+#### Custom vocabulary
 
 Both Deepgram and Amazon provide users the ability to improve the accuracy of specific keywords or vocabulary. Deepgram has two methods to perform this: our Keyword Boosting feature and model training. Amazon also has two methods for improving accuracy through custom vocabulary and creating a custom language model using their tools.
 
-##### Deepgram Keyword Boosting
+##### Deepgram keyword boosting
 
 Deepgram's Keywords feature improves transcription accuracy by focusing on specific terms you provide with your audio request.
 
 Key points to consider:
 
 * You can send up to 200 keywords per API request
-* When listing keywords, you do not need to provide any "sounds like" spelling hints.
+* When listing keywords, you don't need to provide any "sounds like" spelling hints.
 * Pro tip: If you want a keyword capitalized in your transcript, capitalize it in the `keywords` parameter.
 
-##### Deepgram AI Model Training
+##### Deepgram AI model training
 
 For more than 200 unique keywords or domain-specific terms that Keyword Boosting doesn't handle effectively, upgrade to a trained AI model. Deepgram can train a custom model using your audio samples and transcripts to learn your specific language, accents, and terminology.
 
@@ -302,7 +302,7 @@ Key considerations:
   * Data must not contain any special characters or formatting, such as HTML tags.
   * Data must be a maximum combined total of 2 GB in size for training data and 200 MB for tuning data.
 
-##### What to Expect in the JSON Response
+##### What to expect in the JSON response
 
 Both Deepgram and Amazon will provide you with the following values:
 
@@ -324,9 +324,9 @@ In addition, by default, Amazon will provide:
 >
 > Every system is different. Whereas Keyword Boosting may have been necessary with another vendor, Deepgram's system may already perform well without the aid of keywords. Additional boosting may negatively affect results. Start without any keywords, add them as you see fit, and cautiously increase boosts using decimal values until you find the best fit for your data. To learn more about Keyword Boosting, see our [Keyword Boosting](/docs/keywords/) feature documentation.
 
-#### Batch Transcription
+#### Batch transcription
 
-Both Deepgram and Amazon provide pre-recorded, or batch, transcriptions. In addition to the limit differences for audio length and processing scale (listed below), Deepgram does not require you to store your audio in an Amazon S3 bucket. You can transcribe audio files from your preferred storage location--your laptop, VPC, or third-party cloud.
+Both Deepgram and Amazon provide pre-recorded, or batch, transcriptions. In addition to the limit differences for audio length and processing scale (listed below), Deepgram doesn't require you to store your audio in an Amazon S3 bucket. You can transcribe audio files from your preferred storage location--your laptop, VPC, or third-party cloud.
 
 Amazon maintains the following limits for batch processing:
 
@@ -341,7 +341,7 @@ Deepgram maintains the following limits for batch processing:
 * Can scale to thousands of concurrent batch transcriptions
 * Maximum processing time of 10 minutes per file (20 minutes for Whisper)
 
-##### What to Expect in the JSON Response
+##### What to expect in the JSON response
 
 Both Deepgram and Amazon will provide you with the following values:
 
@@ -351,7 +351,7 @@ Both Deepgram and Amazon will provide you with the following values:
 * `word` (string)
 * `confidence` (float)
 
-##### Sample Code
+##### Sample code
 
 Deepgram supports both transcription of files on your local machine and transcription of files stored remotely.
 
@@ -434,14 +434,14 @@ if __name__ == '__main__':
 
 To see more, [visit Amazon Transcribe's Developer Guide](https://docs.amazonaws.cn/en_us/transcribe/latest/dg/transcribe-dg.pdf).
 
-#### Live Streaming
+#### Live streaming
 
 Both APIs provide streaming transcription. Deepgram offers lower latency, higher accuracy, and easier implementation.
 
-When using Deepgram to transcribe live streaming audio, two of the features you can use to further understand your audio include [Endpointing](/docs/endpointing/) and [Interim Results](/docs/interim-results/). Both of these features monitor incoming live streaming audio and can indicate the end of a type of processing, but they are used in very different ways:
+When using Deepgram to transcribe live streaming audio, two of the features you can use to further understand your audio include [Endpointing](/docs/endpointing/) and [Interim results](/docs/interim-results/). Both of these features monitor incoming live streaming audio and can indicate the end of a type of processing, but they're used in very different ways:
 
 * Deepgram live streaming looks for any deviation in the natural flow of speech and returns a finalized response at these places. To learn more about this feature, see [Endpointing](/docs/endpointing/).
-* Deepgram live streaming can also return a series of interim transcripts followed by a final transcript. To learn more, see [Interim Results](/docs/interim-results/).
+* Deepgram live streaming can also return a series of interim transcripts followed by a final transcript. To learn more, see [Interim results](/docs/interim-results/).
 * If your downstream natural language processing (NLP) requires complete utterances, review our [Best Practices for Utterance Segmentation](/docs/understand-endpointing-interim-results/#best-practices-for-utterance-segmentation).
 
 | Endpointing                                                                                                                                                  | Interim Results                                                                                                                                                        |
@@ -455,11 +455,11 @@ When using Deepgram to transcribe live streaming audio, two of the features you 
 
 Amazon Transcribe can perform real-time streaming through the AWS SDKs, HTTP/2, WebSockets, and the AWS Management Console. Amazon supports FLAC, OPUS-encoded audio in an Ogg container, and PCM (16-bit little-endian, audio format, no WAV). If using HTTP/2 or WebSockets, Amazon requires a format called event stream encoding. Amazon streaming is [supported in only 12 languages](https://docs.aws.amazon.com/transcribe/latest/dg/supported-languages.html), and Amazon notes that its real-time streaming speed "may have accuracy limitations in some cases."
 
-Amazon real-time streaming automatically provides partial results, passing along a results field called `IsPartial`. If `IsPartial` is set to `true`, then the transcripted segment is not complete. If `IsPartial` is set to `false`, then the transcripted segment is final. Deepgram has a similar interim results field called `is_final`. With Deepgram, if `is_final` is set to `false`, then the results may be improved. If `is_final` is set to `true`, then the transcript is final.
+Amazon real-time streaming automatically provides partial results, passing along a results field called `IsPartial`. If `IsPartial` is set to `true`, then the transcripted segment isn't complete. If `IsPartial` is set to `false`, then the transcripted segment is final. Deepgram has a similar interim results field called `is_final`. With Deepgram, if `is_final` is set to `false`, then the results may be improved. If `is_final` is set to `true`, then the transcript is final.
 
-If you require lower latency, Amazon requires you to enable Partial Results Stabilization, which can continually change the text until the segment is final. This feature adds a field called `Stable` to the results. If `Stable` is set to `true`, then the text will not change. If `Stable` is set to `false`, then the text may change as the segment is transcribed. Turning on Partial Results Stabilization also affects accuracy, depending on the level of stability required. Higher stability transcribes faster but with lower accuracy.
+If you require lower latency, Amazon requires you to enable Partial Results Stabilization, which can continually change the text until the segment is final. This feature adds a field called `Stable` to the results. If `Stable` is set to `true`, then the text won't change. If `Stable` is set to `false`, then the text may change as the segment is transcribed. Turning on Partial Results Stabilization also affects accuracy, depending on the level of stability required. Higher stability transcribes faster but with lower accuracy.
 
-##### What to Expect in the JSON Response
+##### What to expect in the JSON response
 
 By default, both Deepgram and Amazon will provide you with the following values:
 
@@ -475,33 +475,33 @@ Additionally, Amazon and Deepgram provide the following:
 | ------------------------------------------------------------------ | -------------------------------------------------------------- |
 | - punctuate - interim_results - language - is_final - speech_final | - Type - Stable - VocabularyFilterMatch - IsPartial - ResultID |
 
-#### Configure Environment
+#### Configure environment
 
-We provide sample scripts in Python and Node.js and assume you have already configured either a Python or Node development environment. System requirements will vary depending on the programming language you use:
+We provide sample scripts in Python and Node.js and assume you've already configured either a Python or Node development environment. System requirements will vary depending on the programming language you use:
 
 | Pre-recorded                                             | Live Streaming                                                                                     |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | **Node.js** - node >= 14.14.37**Python** - python >= 3.7 | **Node.js** - node >= 14.14.37 - cross-fetch >= 3.1.5**Python** - python >= 3.7 - aiohttp >= 3.8.1 |
 
-### Get Transcripts and Customize Response
+### Get transcripts and customize response
 
 To get transcripts and customize your response, you can use our SDKs and code samples for:
 
 * [Pre-recorded](/reference/speech-to-text/listen-pre-recorded)
 * [Streaming](/reference/speech-to-text/listen-streaming)
 
-## Migration Best Practices
+## Migration best practices
 
 Each API service has different limitations to ensure performance. Known differences between Deepgram and Amazon Transcribe are detailed below, along with information about how our customers address these differences during the migration process.
 
-| AWS Capability            | Deepgram Recommendations                                                                                                                                                                             |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Job queueing              | Job queueing is not required for Deepgram. Due to our architecture built for scalability, we can run as many streams as required for your application. Please speak with us about your requirements. |
-| Language identification   | Not currently available.                                                                                                                                                                             |
-| Custom vocabulary filters | Deepgram’s [Find and Replace](/docs/find-and-replace/) feature matches this Amazon feature; we can find words that need to be replaced with other words.                                             |
-| Interruption              | Not currently analyzed                                                                                                                                                                               |
-| Loudness                  | Not currently analyzed                                                                                                                                                                               |
-| Non-talk time             | We provide timestamps for the talk time, so non-talk time can easily be calculated.                                                                                                                  |
-| Talk speed                | Not currently analyzed                                                                                                                                                                               |
+| AWS Capability            | Deepgram Recommendations                                                                                                                                                                            |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Job queueing              | Job queueing isn't required for Deepgram. Due to our architecture built for scalability, we can run as many streams as required for your application. Please speak with us about your requirements. |
+| Language identification   | Not currently available.                                                                                                                                                                            |
+| Custom vocabulary filters | Deepgram’s [Find and replace](/docs/find-and-replace/) feature matches this Amazon feature; we can find words that need to be replaced with other words.                                            |
+| Interruption              | Not currently analyzed                                                                                                                                                                              |
+| Loudness                  | Not currently analyzed                                                                                                                                                                              |
+| Non-talk time             | We provide timestamps for the talk time, so non-talk time can easily be calculated.                                                                                                                 |
+| Talk speed                | Not currently analyzed                                                                                                                                                                              |
 
 ---

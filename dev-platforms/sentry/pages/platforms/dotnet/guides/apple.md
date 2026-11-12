@@ -19,7 +19,7 @@ Sentry supports [.NET for iOS, macOS, and Mac Catalyst](https://learn.microsoft.
 Add the Sentry dependency to your .NET for iOS, macOS, and/or Mac Catalyst application:
 
 ```shell
-dotnet add package Sentry -v 6.13.0
+dotnet add package Sentry -v 7.0.0
 ```
 
 *Other available variations of the above snippet: Package Manager*

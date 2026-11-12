@@ -90,11 +90,10 @@ On the server, expose a new API endpoint (for example, `myserver.com/mint-onramp
 
 [Create a crypto onramp session](https://docs.stripe.com/api/crypto/onramp_sessions/create.md) by running the following curl command in your terminal:
 
-```bash
-curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "wallet_addresses[ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2"
-  # add as many parameters as you'd like
+```curl
+curl https://api.stripe.com/v1/crypto/onramp_sessions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "wallet_addresses[ethereum]=0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2"
 ```
 
 You receive a response similar to the following:
@@ -191,14 +190,14 @@ You can pre-populate some of the parameters of the onramp session.
 
 For example, a Dapp or wallet can already store a customer’s `wallet_addresses`. You can achieve this during session creation:
 
-```bash
-curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "wallet_addresses[ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
-  -d "source_currency"="usd" \
-  -d "destination_currency"="eth" \
-  -d "destination_network"="ethereum" \
-  -d "destination_amount"="0.1234"
+```curl
+curl https://api.stripe.com/v1/crypto/onramp_sessions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "wallet_addresses[ethereum]=0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
+  -d source_currency=usd \
+  -d destination_currency=eth \
+  -d destination_network=ethereum \
+  -d "destination_amount=0.1234"
 ```
 
 You receive a response such as:
@@ -1026,14 +1025,14 @@ In these cases, consider specifying the following parameters:
 
 The following code example shows the creation of an onramp session using several of these parameters:
 
-```bash
-curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "customer_ip_address"="8.8.8.8" \
-  -d "wallet_addresses[ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
-  -d "wallet_addresses[solana]"="bufoH37MTiMTNAfBS4VEZ94dCEwMsmeSijD2vZRShuV" \
-  -d "destination_networks[]"="ethereum" \
-  -d "destination_networks[]"="solana"
+```curl
+curl https://api.stripe.com/v1/crypto/onramp_sessions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "customer_ip_address=8.8.8.8" \
+  -d "wallet_addresses[ethereum]=0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
+  -d "wallet_addresses[solana]=bufoH37MTiMTNAfBS4VEZ94dCEwMsmeSijD2vZRShuV" \
+  -d "destination_networks[]=ethereum" \
+  -d "destination_networks[]=solana"
 ```
 
 ### Transaction top-ups 
@@ -1051,16 +1050,16 @@ In these cases, consider specifying the following:
 
 The following code example shows the creation of an onramp session using several of these parameters:
 
-```bash
-curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "customer_ip_address"="8.8.8.8" \
-  -d "wallet_addresses[ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
-  -d "destination_networks[]"="ethereum" \
-  -d "destination_currencies[]"="usdc" \
-  -d "destination_network"="ethereum" \
-  -d "destination_currency"="usdc" \
-  -d "destination_amount"="10"
+```curl
+curl https://api.stripe.com/v1/crypto/onramp_sessions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "customer_ip_address=8.8.8.8" \
+  -d "wallet_addresses[ethereum]=0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
+  -d "destination_networks[]=ethereum" \
+  -d "destination_currencies[]=usdc" \
+  -d destination_network=ethereum \
+  -d destination_currency=usdc \
+  -d destination_amount=10
 ```
 
 ## Dapp or NFT checkout 
@@ -1078,16 +1077,16 @@ In these cases, consider specifying the following:
 
 The following code example shows the creation of an onramp session using several of these parameters:
 
-```bash
-curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "customer_ip_address"="8.8.8.8" \
-  -d "wallet_addresses[ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
-  -d "destination_networks[]"="ethereum" \
-  -d "destination_currencies[]"="eth" \
-  -d "destination_network"="ethereum" \
-  -d "destination_currency"="eth" \
-  -d "destination_amount"="0.2343"
+```curl
+curl https://api.stripe.com/v1/crypto/onramp_sessions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "customer_ip_address=8.8.8.8" \
+  -d "wallet_addresses[ethereum]=0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
+  -d "destination_networks[]=ethereum" \
+  -d "destination_currencies[]=eth" \
+  -d destination_network=ethereum \
+  -d destination_currency=eth \
+  -d "destination_amount=0.2343"
 ```
 
 ## DEX 
@@ -1107,14 +1106,14 @@ In these cases, consider specifying the following:
 
 The following code example shows the creation of an onramp session using several of these parameters:
 
-```bash
-curl -X POST https://api.stripe.com/v1/crypto/onramp_sessions \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "customer_ip_address"="8.8.8.8" \
-  -d "wallet_addresses[ethereum]"="0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
-  -d "destination_networks[]"="ethereum" \
-  -d "destination_currencies[]"="eth" \
-  -d "destination_network"="ethereum" \
-  -d "destination_currency"="eth"
+```curl
+curl https://api.stripe.com/v1/crypto/onramp_sessions \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "customer_ip_address=8.8.8.8" \
+  -d "wallet_addresses[ethereum]=0xB00F0759DbeeF5E543Cc3E3B07A6442F5f3928a2" \
+  -d "destination_networks[]=ethereum" \
+  -d "destination_currencies[]=eth" \
+  -d destination_network=ethereum \
+  -d destination_currency=eth
 ```
 

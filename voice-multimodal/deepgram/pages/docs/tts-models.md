@@ -1,5 +1,5 @@
 ---
-title: "Voices and Languages"
+title: "Voices and languages"
 source: https://developers.deepgram.com/docs/tts-models.md
 path: docs/tts-models
 ---
@@ -7,11 +7,11 @@ path: docs/tts-models
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Voices and Languages
+# Voices and languages
 
 `model` *string*
 
-Text to Speech Request  Text to Speech Stream
+Text-to-Speech Request  Text-to-Speech Stream
 
 Deepgram offers a range of voices for its Aura text-to-speech API, each identified by a unique model name following the format `[modelname]-[voicename]-[language]`.
 
@@ -35,9 +35,9 @@ curl "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en" \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Language Support
+## Language support
 
-Deepgram's Aura text-to-speech supports the following languages:
+Our Aura text-to-speech supports the following languages:
 
 * **English (en)** - American, British, Australian, Irish, Filipino accents
 * **Spanish (es)** - Mexican, Peninsular, Colombian, Latin American accents
@@ -68,7 +68,7 @@ These are our featured English voices, selected for their versatility and qualit
 | `aura-2-arcas-en`     | arcas     |        | masculine        | Adult | en-us    | American | Natural, Smooth, Clear, Comfortable        | Customer service, casual chat      |
 | `aura-2-aries-en`     | aries     |        | masculine        | Adult | en-us    | American | Warm, Energetic, Caring                    | Casual chat                        |
 
-### Aura-2: All Available English Voices
+### Aura-2: all available English voices
 
 | Model                 | Name      | Sample | Expressed Gender | Age         | Language | Accent     | Characteristics                                 | Use Cases                                 |
 | :-------------------- | :-------- | :----- | :--------------- | :---------- | :------- | :--------- | :---------------------------------------------- | :---------------------------------------- |
@@ -128,7 +128,7 @@ These are our featured Spanish voices, selected for their versatility and qualit
 | `aura-2-estrella-es` | estrella |        | feminine         | Mature      | es-mx    | Mexican    | Approachable, Natural, Calm, Comfortable, Expressive | Casual Chat, Interview        |
 | `aura-2-nestor-es`   | nestor   |        | masculine        | Adult       | es-es    | Peninsular | Calm, Professional, Approachable, Clear, Confident   | Casual Chat, Customer Service |
 
-### Aura-2: All Available Spanish Voices
+### Aura-2: all available Spanish voices
 
 | Model                | Name     | Sample | Expressed Gender | Age         | Language | Accent         | Characteristics                                             | Use Cases                                |
 | :------------------- | :------- | :----- | :--------------- | :---------- | :------- | :------------- | :---------------------------------------------------------- | :--------------------------------------- |
@@ -168,7 +168,7 @@ These are our featured Dutch voices, selected for their versatility and quality:
 | `aura-2-sander-nl`  | sander  |        | masculine        | Adult | nl-nl    | Dutch  | Calm, Clear, Deep, Professional, Smooth             | Customer Service |
 | `aura-2-beatrix-nl` | beatrix |        | feminine         | Adult | nl-nl    | Dutch  | Cheerful, Enthusiastic, Friendly, Trustworthy, Warm | Customer Service |
 
-### Aura-2: All Available Dutch Voices
+### Aura-2: all available Dutch voices
 
 | Model                | Name     | Sample | Expressed Gender | Age   | Language | Accent | Characteristics                                           | Use Cases                                     |
 | :------------------- | :------- | :----- | :--------------- | :---- | :------- | :----- | :-------------------------------------------------------- | :-------------------------------------------- |
@@ -195,7 +195,7 @@ These are our featured French voices, selected for their versatility and quality
 | `aura-2-agathe-fr` | agathe |        | feminine         | Adult | fr-fr    | French | Charismatic, Cheerful, Enthusiastic, Friendly, Natural | Customer Service |
 | `aura-2-hector-fr` | hector |        | masculine        | Adult | fr-fr    | French | Confident, Empathetic, Expressive, Friendly, Patient   | Customer Service |
 
-### Aura-2: All Available French Voices
+### Aura-2: all available French voices
 
 | Model              | Name   | Sample | Expressed Gender | Age   | Language | Accent | Characteristics                                        | Use Cases        |
 | :----------------- | :----- | :----- | :--------------- | :---- | :------- | :----- | :----------------------------------------------------- | :--------------- |
@@ -215,7 +215,7 @@ These are our featured German voices, selected for their versatility and quality
 | `aura-2-julius-de`   | julius   |        | masculine        | Adult | de-de    | German | Casual, Cheerful, Engaging, Expressive, Friendly    | Customer Service |
 | `aura-2-viktoria-de` | viktoria |        | feminine         | Adult | de-de    | German | Charismatic, Cheerful, Enthusiastic, Friendly, Warm | Customer Service |
 
-### Aura-2: All Available German Voices
+### Aura-2: all available German voices
 
 | Model                | Name     | Sample | Expressed Gender | Age         | Language | Accent | Characteristics                                         | Use Cases                                               |
 | :------------------- | :------- | :----- | :--------------- | :---------- | :------- | :----- | :------------------------------------------------------ | :------------------------------------------------------ |
@@ -240,7 +240,7 @@ These are our featured Italian voices, selected for their versatility and qualit
 | `aura-2-livia-it`    | livia    |        | feminine         | Adult | it-it    | Italian | Approachable, Cheerful, Clear, Engaging, Expressive | Customer Service |
 | `aura-2-dionisio-it` | dionisio |        | masculine        | Adult | it-it    | Italian | Confident, Engaging, Friendly, Melodic, Positive    | Sales            |
 
-### Aura-2: All Available Italian Voices
+### Aura-2: all available Italian voices
 
 | Model                | Name     | Sample | Expressed Gender | Age         | Language | Accent  | Characteristics                                        | Use Cases                                     |
 | :------------------- | :------- | :----- | :--------------- | :---------- | :------- | :------ | :----------------------------------------------------- | :-------------------------------------------- |
@@ -267,7 +267,7 @@ These are our featured Japanese voices, selected for their versatility and quali
 | `aura-2-fujin-ja`   | fujin   |        | masculine        | Adult | ja-jp    | Japanese | Calm, Confident, Knowledgeable, Professional, Smooth     | Interview, Casual Chat, IVR                   |
 | `aura-2-izanami-ja` | izanami |        | feminine         | Adult | ja-jp    | Japanese | Approachable, Clear, Knowledgeable, Polite, Professional | Casual Chat, Customer Service, Interview, IVR |
 
-## Aura-2: All Available Japanese Voices
+## Aura-2: all available Japanese voices
 
 | Model               | Name    | Sample | Expressed Gender | Age         | Language | Accent   | Characteristics                                          | Use Cases                                     |
 | :------------------ | :------ | :----- | :--------------- | :---------- | :------- | :------- | :------------------------------------------------------- | :-------------------------------------------- |
@@ -279,7 +279,7 @@ These are our featured Japanese voices, selected for their versatility and quali
 
 ---
 
-## Aura 1: All Available English Voices
+## Aura 1: all available English voices
 
 | Model             | Name    | Sample | Expressed Gender | Age         | Language | Accent   | Characteristics                             | Use Cases                      |
 | :---------------- | :------ | :----- | :--------------- | :---------- | :------- | :------- | :------------------------------------------ | :----------------------------- |

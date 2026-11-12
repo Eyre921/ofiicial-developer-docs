@@ -1,5 +1,5 @@
 ---
-title: "Redact Usage"
+title: "Redact usage"
 source: https://developers.deepgram.com/docs/self-hosted-redact-usage.md
 path: docs/self-hosted-redact-usage
 ---
@@ -7,13 +7,13 @@ path: docs/self-hosted-redact-usage
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Redact Usage
+# Redact usage
 
 `redact_usage` *boolean*
 
 Deepgram's Redact Usage feature allows you to automatically redact sensitive customer data from usage records and logs in your self-hosted deployment. When enabled, arbitrary string values in redaction-eligible fields are replaced with `[REDACTED]` to enhance privacy and ensure compliance with security requirements.
 
-## Enable Feature
+## Enable feature
 
 To enable Redact Usage, add the `redact_usage` configuration to your self-hosted API container's `api.toml` file:
 
@@ -31,16 +31,16 @@ redact_usage = true
 >
 > Only set `redact_usage=false` in non-production environments and for the minimum time necessary for debugging.
 
-## How It Works
+## How it works
 
-### Client-Side Redaction
+### Client-side redaction
 
 When `redact_usage=true`, your self-hosted API container automatically redacts sensitive values before they're included in usage records and logs:
 
 * Query parameters such as `keyterm` or `mappings` in `replace` will appear as `[REDACTED]`
 * App/agent settings that include customer-provided lists (e.g., keyterms) will appear as `[REDACTED]`
 
-### Server-Side Fallback
+### Server-side fallback
 
 Deepgram also provides a fallback redaction step at the server-side usage reporting endpoint to ensure any redaction-eligible values are redacted before ingestion into usage/billing systems, providing defense-in-depth protection.
 
@@ -57,15 +57,15 @@ If you need support:
 * Provide the request ID from the API response along with sanitized sample requests; or
 * Temporarily set `redact_usage=false` to capture a reproducible example, then revert to `true` after debugging
 
-## Best Practices
+## Best practices
 
 * **Keep `redact_usage=true` in production** for enhanced privacy and compliance
 * **For debugging**, use `redact_usage=false` only as long as necessary, ideally in a staging environment
 * **Upgrade to the latest self-hosted release** (250731 or later) to get client-side redaction by default
 
-## Special Considerations
+## Special considerations
 
-### Privacy and Compliance
+### Privacy and compliance
 
 Redact Usage provides:
 

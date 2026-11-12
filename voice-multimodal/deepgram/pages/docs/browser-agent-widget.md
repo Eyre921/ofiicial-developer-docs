@@ -15,9 +15,9 @@ Add a voice agent to any website. No framework required, no build step needed. T
 
 > **Info**
 >
-> The widget bundles everything internally. No React or build tooling required. For React-native integration, see [React UI Components](/docs/browser-agent-react-ui).
+> The widget bundles everything internally. No React or build tooling required. For React-native integration, see [React UI components](/docs/browser-agent-react-ui).
 
-## Quick Start
+## Quick start
 
 ### Install
 
@@ -25,7 +25,7 @@ Add a voice agent to any website. No framework required, no build step needed. T
 npm install @deepgram/agents-widget
 ```
 
-### ES Module
+### ES module
 
 ```javascript
 import { init } from "@deepgram/agents-widget";
@@ -39,7 +39,7 @@ const teardown = init({
 // Call teardown() to unmount the widget and clean up
 ```
 
-Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent Configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
+Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
 
 ### CDN
 
@@ -181,7 +181,7 @@ placement: "bottom-right" // default
 //          "top-right", "top-left", "top"
 ```
 
-## External Trigger Button
+## External trigger button
 
 To use your own button instead of the built-in FAB, pass its element ID:
 
@@ -219,7 +219,7 @@ init({
 });
 ```
 
-## Text Customization
+## Text customization
 
 Override labels and placeholder text:
 
@@ -238,7 +238,7 @@ init({
 });
 ```
 
-## Agent Overrides
+## Agent overrides
 
 Override the agent's system prompt or greeting for this session without changing the agent configuration in the Deepgram console:
 
@@ -286,7 +286,7 @@ init({
 | `onAgentError`           | Agent-reported error (distinct from SDK errors)             |
 | `onReconnecting`         | Reconnect attempt starts; receives attempt number and delay |
 
-## Color Scheme
+## Color scheme
 
 Control how the widget adapts to light and dark mode:
 
@@ -367,7 +367,7 @@ To override only one color scheme, skip the `theme` option and write CSS directl
 }
 ```
 
-### Embedded Layout Tokens
+### Embedded layout tokens
 
 The `embedded` layout supports additional sizing tokens:
 
@@ -379,7 +379,7 @@ theme: {
 }
 ```
 
-## Full Configuration Reference
+## Full configuration reference
 
 ```javascript
 init({

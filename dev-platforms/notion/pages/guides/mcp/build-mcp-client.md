@@ -15,21 +15,12 @@ connects to [Notion MCP](/guides/mcp/overview) using OAuth 2.0 with
 
 Notion provides a hosted
 [MCP (Model Context Protocol)](https://modelcontextprotocol.io/introduction)
-server that lets MCP clients work with Notion workspaces. The server is
-available at:
-
-| Transport | URL | Notes |
-| - | - | - |
-| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Recommended for new clients |
-| **Server-Sent Events (SSE)** | `https://mcp.notion.com/sse` | For clients that don't support Streamable HTTP |
-
-Both endpoints support the same MCP protocol and OAuth authentication. Your
-client should try Streamable HTTP first and fall back to SSE if needed.
+server that lets MCP clients work with Notion workspaces. Use Streamable HTTP at `https://mcp.notion.com/mcp`. If your client uses the deprecated `/sse` endpoint, [migrate to Streamable HTTP](/guides/mcp/get-started-with-mcp#migrate-from-the-legacy-sse-endpoint).
 
 Your client must support:
 
 * OAuth 2.0 Authorization Code flow with PKCE
-* Support for Streamable HTTP (`/mcp`) or SSE (`/sse`) transports
+* Streamable HTTP (`/mcp`)
 * Token refresh handling
 * Secure credential storage
 
@@ -44,8 +35,7 @@ Your client must support:
 **Required libraries (TypeScript/JavaScript):**
 
 ```bash npm theme={null}
-npm install @modelcontextprotocol/sdk
-npm install oauth  # or openid-client
+npm install @modelcontextprotocol/client@2
 ```
 
 ```bash TypeScript types theme={null}
@@ -92,134 +82,35 @@ npm install --save-dev @types/node
 
 ### Key references
 
-* [MCP Specification](https://spec.modelcontextprotocol.io) — Model Context Protocol standard
+* [MCP specification, 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28)
   * [Building an MCP client](https://modelcontextprotocol.io/docs/develop/build-client)
 * [RFC 6749](https://datatracker.ietf.org/doc/html/rfc6749) — OAuth 2.0 Authorization Framework
 * [RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636) — PKCE (Proof Key for Code Exchange)
 * [RFC 8414](https://datatracker.ietf.org/doc/html/rfc8414) — OAuth 2.0 Authorization Server Metadata
-* [RFC 9470](https://datatracker.ietf.org/doc/html/rfc9470) — OAuth 2.0 Protected Resource Metadata
+* [RFC 9728](https://datatracker.ietf.org/doc/html/rfc9728) — OAuth 2.0 Protected Resource Metadata
 
 ## Step 1: OAuth discovery
 
-Before connecting to an MCP server, discover its OAuth configuration. Given the
-MCP server URL (e.g., `https://mcp.notion.com/mcp`), use a standard two-step
-discovery process:
+Discover the OAuth issuer and endpoints before redirecting the user. An unauthenticated request to `https://mcp.notion.com/mcp` returns a `401` with a `WWW-Authenticate` header. Its `resource_metadata` URL points to Notion's [protected resource metadata](https://mcp.notion.com/.well-known/oauth-protected-resource/mcp). That document identifies the resource and its authorization server. The [authorization server metadata](https://mcp.notion.com/.well-known/oauth-authorization-server) lists the endpoints and supported authentication methods.
 
-1. **RFC 9470**: Fetch Protected Resource Metadata to find which authorization
-   server(s) protect this resource
-2. **RFC 8414**: Fetch Authorization Server Metadata to get OAuth endpoints
+The TypeScript SDK handles metadata discovery and issuer validation. This example is for Notion's hosted endpoint.
 
-### Understanding the discovery flow
+```typescript theme={null}
+import { discoverOAuthServerInfo, type AuthorizationServerMetadata } from "@modelcontextprotocol/client"
 
-An MCP server (the protected resource) might be hosted at `mcp.example.com` but
-delegate authentication to a separate OAuth server at `auth.example.com`. The
-Protected Resource Metadata tells you where to find the authorization server,
-and the Authorization Server Metadata tells you the specific OAuth endpoints to
-use.
+type OAuthMetadata = AuthorizationServerMetadata
+const mcpUrl = new URL("https://mcp.notion.com/mcp")
 
-### Standard discovery implementation
+const { resourceMetadata, authorizationServerMetadata: metadata } =
+  await discoverOAuthServerInfo(mcpUrl)
 
-Here's a function that implements the complete RFC 9470 → RFC 8414 discovery
-flow:
-
-```typescript TypeScript theme={null}
-type OAuthMetadata = {
-  issuer: string
-  authorization_endpoint: string
-  token_endpoint: string
-  registration_endpoint?: string
-  introspection_endpoint?: string
-  code_challenge_methods_supported?: string[]
-  grant_types_supported?: string[]
-  response_types_supported?: string[]
-  scopes_supported?: string[]
-}
-
-/**
- * Discovers OAuth configuration for an MCP server using RFC 9470 + RFC 8414.
- */
-async function discoverOAuthMetadata(
-  mcpServerUrl: string
-): Promise<OAuthMetadata> {
-  const url = new URL(mcpServerUrl)
-  const protectedResourceUrl = new URL(
-    "/.well-known/oauth-protected-resource",
-    url
-  )
-
-  // Step 1: RFC 9470 - Get Protected Resource Metadata
-  const protectedResourceResponse = await fetch(
-    protectedResourceUrl.toString()
-  )
-  if (!protectedResourceResponse.ok) {
-    throw new Error(
-      `Failed to fetch protected resource metadata: ` +
-      `${protectedResourceResponse.status}`
-    )
-  }
-
-  const protectedResource = await protectedResourceResponse.json()
-  const authServers = protectedResource.authorization_servers
-
-  if (!Array.isArray(authServers) || authServers.length === 0) {
-    throw new Error(
-      "No authorization servers found in protected resource metadata"
-    )
-  }
-
-  // Use the first authorization server
-  const authServerUrl = authServers[0]
-
-  // Step 2: RFC 8414 - Get Authorization Server Metadata
-  const metadataUrl = new URL(
-    "/.well-known/oauth-authorization-server",
-    authServerUrl
-  )
-  const metadataResponse = await fetch(metadataUrl.toString())
-
-  if (!metadataResponse.ok) {
-    throw new Error(
-      `Failed to fetch authorization server metadata: ` +
-      `${metadataResponse.status}`
-    )
-  }
-
-  const metadata = (await metadataResponse.json()) as OAuthMetadata
-
-  // Validate required fields
-  if (!metadata.authorization_endpoint || !metadata.token_endpoint) {
-    throw new Error("Missing required OAuth endpoints in metadata")
-  }
-
-  // Warn if PKCE support isn't advertised
-  if (!metadata.code_challenge_methods_supported?.includes("S256")) {
-    console.warn(
-      "Server does not advertise S256 PKCE support, " +
-      "but we will use it anyway"
-    )
-  }
-
-  return metadata
+if (resourceMetadata?.resource !== mcpUrl.href ||
+    metadata?.issuer !== mcpUrl.origin ||
+    !metadata.authorization_endpoint ||
+    !metadata.code_challenge_methods_supported?.includes("S256")) {
+  throw new Error("Could not verify Notion's OAuth configuration")
 }
 ```
-
-**What this does:**
-
-1. Fetches Protected Resource Metadata from
-   `https://mcp.notion.com/mcp/.well-known/oauth-protected-resource`
-   — Returns: `{ "authorization_servers": ["https://..."], ... }`
-2. Extracts the authorization server URL from the `authorization_servers` array
-3. Fetches Authorization Server Metadata from
-   `{authServerUrl}/.well-known/oauth-authorization-server`
-   — Returns: OAuth endpoints like `authorization_endpoint`, `token_endpoint`,
-   etc.
-4. Validates that all required fields are present and warns if PKCE support
-   isn't advertised
-
-> [!NOTE]
->
-> This approach is universal and works for any MCP server that follows RFC 9470
-> and RFC 8414 standards, not just Notion's MCP server.
 
 ## Step 2: Generate PKCE parameters
 
@@ -264,8 +155,9 @@ const codeChallenge = generateCodeChallenge(codeVerifier)
 
 ## Step 3: Dynamic client registration
 
-Notion MCP server supports dynamic client registration (RFC 7591). Check if
-`registration_endpoint` exists in the metadata:
+Reuse your existing client ID for this issuer. If you distribute a new client, you can publish a Client ID Metadata Document (CIMD) at a public HTTPS URL. Use the document URL as your client ID when the issuer advertises `client_id_metadata_document_supported: true`. Include that exact URL as `client_id` in the document, along with your client name and registered redirect URIs. See [MCP client registration](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization/client-registration).
+
+If you have neither an existing registration nor a metadata document, use the advertised `registration_endpoint` for dynamic client registration. Register once and store the result per issuer. This example registers a public client:
 
 ```typescript TypeScript theme={null}
 type ClientRegistration = {
@@ -318,16 +210,15 @@ async function registerClient(
     )
   }
 
-  const credentials = (await response.json()) as ClientCredentials
-
-  // Store credentials securely
+  const credentials = await response.json()
+  if (typeof credentials.client_id !== "string") throw new Error("Missing client ID")
   return credentials
 }
 ```
 
 ## Step 4: Initiate authorization flow
 
-Redirect the user to the authorization endpoint with PKCE parameters:
+Redirect the user to the authorization endpoint with PKCE parameters. Include the protected resource URL as `resource` in the authorization request and token exchange. This binds the access token to Notion MCP.
 
 ```typescript TypeScript theme={null}
 function buildAuthorizationUrl(
@@ -338,8 +229,11 @@ function buildAuthorizationUrl(
   state: string,
   scopes: string[] = []
 ): string {
+  if (!metadata.authorization_endpoint) throw new Error("Missing authorization endpoint")
+
   const params = new URLSearchParams({
     response_type: "code",
+    resource: mcpUrl.href,
     client_id: clientId,
     redirect_uri: redirectUri,
     scope: scopes.join(" "),
@@ -389,6 +283,7 @@ authorization code:
 interface CallbackParams {
   code?: string
   state?: string
+  iss?: string
   error?: string
   error_description?: string
 }
@@ -399,29 +294,24 @@ function parseCallback(url: string): CallbackParams {
   return {
     code: urlParams.get("code") || undefined,
     state: urlParams.get("state") || undefined,
+    iss: urlParams.get("iss") || undefined,
     error: urlParams.get("error") || undefined,
     error_description: urlParams.get("error_description") || undefined,
   }
 }
 
-async function handleCallback(
-  callbackUrl: string,
-  storedState: string,
-  codeVerifier: string
-): Promise<string> {
+function handleCallback(callbackUrl: string, storedState: string): string {
   const params = parseCallback(callbackUrl)
 
-  if (params.error) {
-    throw new Error(
-      `OAuth error: ${params.error} - ` +
-      `${params.error_description || "Unknown error"}`
-    )
+  if (params.iss !== mcpUrl.origin) {
+    throw new Error("Unexpected authorization server")
   }
 
   if (params.state !== storedState) {
     throw new Error("Invalid state parameter - possible CSRF attack")
   }
 
+  if (params.error) throw new Error(`Authorization failed: ${params.error}`)
   if (!params.code) {
     throw new Error("Missing authorization code")
   }
@@ -432,7 +322,7 @@ async function handleCallback(
 
 ## Step 6: Exchange authorization code for tokens
 
-Exchange the authorization code for access and refresh tokens:
+Exchange the authorization code for access and refresh tokens. The examples use the public client from step 3. A confidential client must authenticate with its registered token endpoint method.
 
 ```typescript TypeScript theme={null}
 type TokenResponse = {
@@ -455,20 +345,16 @@ async function exchangeCodeForTokens(
   codeVerifier: string,
   metadata: OAuthMetadata,
   clientId: string,
-  clientSecret: string | undefined,
   redirectUri: string
 ): Promise<TokenResponse> {
   const params = new URLSearchParams({
     grant_type: "authorization_code",
+    resource: mcpUrl.href,
     code: code,
     client_id: clientId,
     redirect_uri: redirectUri,
     code_verifier: codeVerifier,
   })
-
-  if (clientSecret) {
-    params.append("client_secret", clientSecret)
-  }
 
   const response = await fetch(metadata.token_endpoint, {
     method: "POST",
@@ -534,96 +420,57 @@ later, see [Identify the connected workspace](#identify-the-connected-workspace)
 
 ## Step 7: Connect to MCP server with authentication
 
-Notion's MCP server supports two transport protocols. Your client should try
-Streamable HTTP first and automatically fall back to SSE if needed.
+Use the v2 TypeScript client and select the July 2026 protocol. The SDK's default mode uses the 2025 handshake. With the version pinned, the SDK calls `server/discover` and adds the July metadata and matching HTTP headers to subsequent requests.
 
-```typescript TypeScript theme={null}
-import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-import {
-  StreamableHTTPClientTransport
-} from "@modelcontextprotocol/sdk/client/streamableHttp.js"
-import {
-  SSEClientTransport
-} from "@modelcontextprotocol/sdk/client/sse.js"
+```typescript theme={null}
+import { Client, StreamableHTTPClientTransport } from "@modelcontextprotocol/client"
 
-async function createMcpClient(
-  serverUrl: string,
-  accessToken: string,
-  useSSE: boolean = false
-): Promise<Client> {
+async function createMcpClient(accessToken: string): Promise<Client> {
   const client = new Client(
-    {
-      name: "your-mcp-client",
-      version: "1.0.0",
-    },
-    {
-      capabilities: {
-        roots: {},
-        sampling: {},
-      },
-    }
+    { name: "notion-workspace-client", version: "1.0.0" },
+    { versionNegotiation: { mode: { pin: "2026-07-28" } } }
   )
-
-  let transport
-
-  if (useSSE) {
-    transport = new SSEClientTransport(new URL(`${serverUrl}/sse`), {
-      requestInit: {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "User-Agent": "YourApp-MCP-Client/1.0",
-        },
-      },
-    })
-  } else {
-    transport = new StreamableHTTPClientTransport(
-      new URL(`${serverUrl}/mcp`),
-      {
-        requestInit: {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "User-Agent": "YourApp-MCP-Client/1.0",
-          },
-        },
-      }
-    )
-  }
-
-  await client.connect(transport)
-
+  await client.connect(new StreamableHTTPClientTransport(mcpUrl, {
+    requestInit: { headers: { Authorization: `Bearer ${accessToken}` } },
+  }))
   return client
-}
-
-// Usage with automatic fallback
-async function connectToNotionMcp(accessToken: string): Promise<Client> {
-  const serverUrl = "https://mcp.notion.com"
-
-  try {
-    return await createMcpClient(serverUrl, accessToken, false)
-  } catch (error) {
-    console.warn("Streamable HTTP failed, falling back to SSE:", error)
-    return await createMcpClient(serverUrl, accessToken, true)
-  }
 }
 ```
 
+### Send a request without an SDK
+
+You can start with `tools/list` immediately. To discover server capabilities first, send `server/discover`. Each POST carries its own version, client capabilities, and bearer token. This request lists the tools visible to the connection. Set `NOTION_MCP_ACCESS_TOKEN` to the access token from step 6 in your local shell.
+
+```bash theme={null}
+curl --fail-with-body https://mcp.notion.com/mcp \
+  -H "Authorization: Bearer $NOTION_MCP_ACCESS_TOKEN" \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: tools/list' \
+  --data '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/list",
+    "params": {
+      "_meta": {
+        "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+        "io.modelcontextprotocol/clientCapabilities": {},
+        "io.modelcontextprotocol/clientInfo": {"name": "notion-workspace-client", "version": "1.0.0"}
+      }
+    }
+  }'
+```
+
+Read the response as JSON or as a request-scoped event stream, according to its `Content-Type`. Notion returns HTTP 405 for a standalone `GET /mcp`; send the POST directly. For a completed list, read `result.tools` and use the exact names it returns. Honor `result.ttlMs` when caching. A `private` catalog belongs to the authorized connection, and a TTL of zero means fetch the list again. See [list tools](https://modelcontextprotocol.io/specification/2026-07-28/server/tools#listing-tools).
+
+For `tools/call` and `prompts/get`, also send `Mcp-Name` with the value of `params.name`. For `resources/read`, use `params.uri`. If a tool schema declares `x-mcp-header`, mirror the parameter as the spec directs. Missing or mismatched headers can return HTTP 400. If the server returns `UnsupportedProtocolVersionError`, choose a version both sides support from the error data. See the [Streamable HTTP rules](https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http).
+
 ### Session ids on the Streamable HTTP endpoint
 
-The `/mcp` endpoint may return an `Mcp-Session-Id` header on the response to
-your `initialize` request. Per the
-[Streamable HTTP transport spec](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#session-management),
-a client that receives one must send it back in an `Mcp-Session-Id` header on
-every later request in that session. The official MCP SDKs do this for you. A
-hand-written HTTP client needs to capture the header and echo it.
+July 2026 clients send self-contained requests. Skip `initialize`, `notifications/initialized`, and `Mcp-Session-Id`. Use `server/discover` to check advertised capabilities before using optional features.
 
-Notion's `/mcp` endpoint is stateless, so the id carries no server-side state:
-
-* The id is opaque. Don't parse it or attach meaning to its contents.
-* Notion doesn't validate or expire it. A missing, unknown, or stale session id
-  is never rejected on this endpoint, so there is no `400 Bad Request` or
-  `404 Not Found` session error to recover from and no session to re-establish.
-* Echoing it lets Notion group the requests of one client session together,
-  which helps when you report an issue — include the id in your report.
+Clients using a 2025 protocol revision still connect to the same `/mcp` URL. They initialize first and echo any `Mcp-Session-Id` returned by Notion. The SDK handles this when you select the older protocol. See [version negotiation](https://modelcontextprotocol.io/specification/2026-07-28/basic/lifecycle).
 
 ### Identify the connected workspace
 
@@ -704,8 +551,7 @@ async function introspectToken(
   tokenEndpointAuthMethod: TokenEndpointAuthMethod,
   clientSecret: string | undefined
 ): Promise<TokenIntrospectionResponse> {
-  const endpoint = metadata.introspection_endpoint
-  if (!endpoint) {
+  if (!("introspection_endpoint" in metadata) || typeof metadata.introspection_endpoint !== "string") {
     throw new Error("Authorization server does not support token introspection")
   }
 
@@ -731,7 +577,7 @@ async function introspectToken(
     body.set("client_id", clientId)
   }
 
-  const response = await fetch(endpoint, {
+  const response = await fetch(metadata.introspection_endpoint, {
     method: "POST",
     headers,
     body,
@@ -846,18 +692,14 @@ Access tokens expire. Implement automatic refresh with proper error handling:
 async function refreshAccessToken(
   refreshToken: string,
   metadata: OAuthMetadata,
-  clientId: string,
-  clientSecret: string | undefined
+  clientId: string
 ): Promise<TokenResponse> {
   const params = new URLSearchParams({
     grant_type: "refresh_token",
+    resource: mcpUrl.href,
     refresh_token: refreshToken,
     client_id: clientId,
   })
-
-  if (clientSecret) {
-    params.append("client_secret", clientSecret)
-  }
 
   const response = await fetch(metadata.token_endpoint, {
     method: "POST",
@@ -869,23 +711,12 @@ async function refreshAccessToken(
   })
 
   if (!response.ok) {
-    const errorBody = await response.text()
-
-    try {
-      const error = JSON.parse(errorBody)
-      if (error.error === "invalid_grant") {
-        throw new Error("REAUTH_REQUIRED")
-      }
-      if (error.error === "invalid_client") {
-        throw new Error("INVALID_CLIENT")
-      }
-    } catch (parseError) {
-      // Not JSON error response
+    if (response.headers.get("content-type")?.includes("application/json")) {
+      const error = await response.json()
+      if (error.error === "invalid_grant") throw new Error("REAUTH_REQUIRED")
+      if (error.error === "invalid_client") throw new Error("INVALID_CLIENT")
     }
-
-    throw new Error(
-      `Token refresh failed: ${response.status} - ${errorBody}`
-    )
+    throw new Error(`Token refresh failed: HTTP ${response.status}`)
   }
 
   const tokens = await response.json()
@@ -901,145 +732,21 @@ async function refreshAccessToken(
 
 ## Complete example
 
-Here's a complete class that ties all the steps together:
+With the access token from step 6 and the client from step 7, list the tools available to the user. Follow each page's cursor until the server omits it.
 
-```typescript TypeScript expandable theme={null}
-import { Client } from "@modelcontextprotocol/sdk/client/index.js"
-import {
-  StreamableHTTPClientTransport
-} from "@modelcontextprotocol/sdk/client/streamableHttp.js"
-import {
-  SSEClientTransport
-} from "@modelcontextprotocol/sdk/client/sse.js"
-import { randomBytes, createHash } from "crypto"
-
-class NotionMcpClient {
-  private serverUrl = "https://mcp.notion.com"
-  private metadata!: OAuthMetadata
-  private clientId!: string
-  private clientSecret?: string
-  private accessToken?: string
-  private refreshToken?: string
-  private client?: Client
-
-  async initialize(redirectUri: string): Promise<void> {
-    this.metadata = await discoverOAuthMetadata(this.serverUrl)
-    const credentials = await registerClient(this.metadata, redirectUri)
-    this.clientId = credentials.client_id
-    this.clientSecret = credentials.client_secret
-  }
-
-  async startAuthFlow(redirectUri: string): Promise<string> {
-    const codeVerifier = generateCodeVerifier()
-    const codeChallenge = generateCodeChallenge(codeVerifier)
-    const state = generateState()
-
-    // Store these securely
-    this.storeSecurely("codeVerifier", codeVerifier)
-    this.storeSecurely("state", state)
-
-    return buildAuthorizationUrl(
-      this.metadata,
-      this.clientId,
-      redirectUri,
-      codeChallenge,
-      state
-    )
-  }
-
-  async handleCallback(
-    callbackUrl: string,
-    redirectUri: string
-  ): Promise<void> {
-    const storedState = this.retrieveSecurely("state")
-    const codeVerifier = this.retrieveSecurely("codeVerifier")
-
-    const code = await handleCallback(
-      callbackUrl,
-      storedState,
-      codeVerifier
-    )
-
-    const tokens = await exchangeCodeForTokens(
-      code,
-      codeVerifier,
-      this.metadata,
-      this.clientId,
-      this.clientSecret,
-      redirectUri
-    )
-
-    this.accessToken = tokens.access_token
-    this.refreshToken = tokens.refresh_token
-
-    // Clean up stored values
-    this.deleteSecurely("state")
-    this.deleteSecurely("codeVerifier")
-  }
-
-  async connect(): Promise<Client> {
-    if (!this.accessToken) {
-      throw new Error("Not authenticated")
-    }
-
-    try {
-      this.client = await createMcpClient(
-        this.serverUrl,
-        this.accessToken,
-        false
-      )
-    } catch (error) {
-      console.warn("Streamable HTTP failed, falling back to SSE")
-      this.client = await createMcpClient(
-        this.serverUrl,
-        this.accessToken,
-        true
-      )
-    }
-
-    return this.client
-  }
-
-  async ensureValidToken(): Promise<void> {
-    if (!this.refreshToken) {
-      throw new Error("No refresh token available")
-    }
-
-    try {
-      const tokens = await refreshAccessToken(
-        this.refreshToken,
-        this.metadata,
-        this.clientId,
-        this.clientSecret
-      )
-
-      this.accessToken = tokens.access_token
-      if (tokens.refresh_token) {
-        this.refreshToken = tokens.refresh_token
-      }
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === "REAUTH_REQUIRED"
-      ) {
-        throw new Error("Re-authentication required")
-      }
-      throw error
-    }
-  }
-
-  private storeSecurely(key: string, value: string): void {
-    // Implement secure storage
-  }
-
-  private retrieveSecurely(key: string): string {
-    // Implement secure retrieval
-    return ""
-  }
-
-  private deleteSecurely(key: string): void {
-    // Implement secure deletion
-  }
+```typescript theme={null}
+const accessToken = process.env.NOTION_MCP_ACCESS_TOKEN
+if (!accessToken) throw new Error("Set NOTION_MCP_ACCESS_TOKEN first")
+const client = await createMcpClient(accessToken)
+try {
+  let cursor: string | undefined
+  do {
+    const page = await client.listTools({ cursor })
+    for (const tool of page.tools) console.log(tool.name)
+    cursor = page.nextCursor
+  } while (cursor)
+} finally {
+  await client.close()
 }
 ```
 
@@ -1050,8 +757,7 @@ class NotionMcpClient {
    callback
 3. **Secure token storage** — Encrypt tokens at rest, never expose to
    client-side code
-4. **PKCE is mandatory** — Always use PKCE even if server doesn't advertise
-   support
+4. **PKCE is mandatory** — Require advertised S256 support before starting authorization
 5. **Token expiry handling** — Check token expiry before each request, refresh
    proactively
 6. **Error handling** — Handle `invalid_grant` errors gracefully
@@ -1076,12 +782,12 @@ class NotionMcpClient {
 
 > [accordion] Discovery fails
 >
-> * Use RFC 9470 (protected resource) then RFC 8414 (authorization server)
+> * Use RFC 9728 (protected resource) then RFC 8414 (authorization server)
 > * Confirm server supports OAuth and your URL is correct
 
 > [accordion] Connection timeout
 >
-> * Prefer Streamable HTTP; fall back to SSE
+> * Check that the client uses Streamable HTTP and the URL `https://mcp.notion.com/mcp`
 > * Check proxy or firewall rules
 
 > [accordion] CORS errors in browser
@@ -1099,7 +805,7 @@ class NotionMcpClient {
 > 1. **Rotation on use** — Providers rotate refresh tokens and revoke the old
 >    one. **Fix:** Persist the new `refresh_token` atomically with the access
 >    token.
-> 2. **Expired refresh token** — Often 30–90 days. **Fix:** Re-authenticate;
+> 2. **Expired refresh token** — The grant reached its lifetime. **Fix:** Re-authenticate;
 >    monitor early expirations.
 > 3. **Client credential mismatch** — `client_id` or `client_secret` differs
 >    from initial auth. **Fix:** Keep credentials consistent for the token's
@@ -1134,14 +840,7 @@ case.
 * **Access tokens** currently last about **eight hours**, but this duration is
   subject to change. Always use the token response's `expires_in` value and
   refresh proactively rather than hard-coding a lifetime.
-* **Refresh tokens** expire under either of two conditions, whichever comes
-  first: an absolute maximum lifetime of **180 days** measured from when the user
-  first authorized the connection (this cap does not slide — refreshing does not
-  extend it), or **30 consecutive days of inactivity** (no successful refresh).
-  An actively used connection keeps working until the 180-day mark; an idle one
-  lapses after 30 days. In either case the next refresh returns `invalid_grant`
-  and the user must re-authorize. Treat periodic reconnection as expected, not
-  exceptional, and make sure your reconnect flow is easy to reach.
+* Refresh tokens have a maximum lifetime of 180 days from authorization. A grant can end sooner. If a refresh returns `invalid_grant`, prompt the user to authorize again.
 
 For reliable long-lived connections:
 
@@ -1187,7 +886,7 @@ Every refresh rotates the refresh token: the token response returns a new
 #### Handling `invalid_grant`
 
 `invalid_grant` from the token endpoint always means the connection is dead and
-the user must reconnect, whether the cause is refresh-token reuse, the 30-day
+the user must reconnect, whether the cause is refresh-token reuse, the grant
 lifetime, an explicit revocation, or a credential mismatch. Stop refreshing that
 connection, clear its tokens, and prompt re-authorization. See
 [Troubleshooting](#troubleshooting) above for the full list of causes and fixes.
@@ -1232,32 +931,7 @@ The file contains:
 
 ### How to use this in your client
 
-When a user pastes a URL (e.g., `https://www.notion.com/some-page`), your client
-can check for `/.well-known/mcp.json` on that domain. If the file exists, your
-client can:
-
-1. **Show a prompt** suggesting the user connect to the MCP server for richer
-   interaction
-2. **Auto-connect** if the user has previously authorized the server
-3. **Use the MCP server** to fetch structured data instead of scraping the web
-   page
-
-```typescript theme={null}
-async function discoverMcpServer(
-  url: string
-): Promise<{ name: string; endpoint: string } | null> {
-  try {
-    const origin = new URL(url).origin
-    const response = await fetch(
-      `${origin}/.well-known/mcp.json`
-    )
-    if (!response.ok) return null
-    return await response.json()
-  } catch {
-    return null
-  }
-}
-```
+For a Notion link, you can offer the user a connection to the endpoint in [Notion's discovery file](https://www.notion.com/.well-known/mcp.json). Verify the endpoint against the Notion server you trust before sending a token. After the user connects, use `server/discover` to read its protocol capabilities.
 
 ### Publishing your own `mcp.json`
 
@@ -1268,5 +942,5 @@ server automatically.
 ## Additional resources
 
 * [Notion MCP Server GitHub](https://github.com/makenotion/notion-mcp-server)
-* [MCP SDK Documentation](https://github.com/modelcontextprotocol/sdk)
-* [MCP Registry](https://github.com/modelcontextprotocol/registry/tree/main/docs) — Anthropic's MCP server registry
+* [MCP SDK Documentation](https://ts.sdk.modelcontextprotocol.io/v2/clients/connect)
+* [MCP Registry](https://github.com/modelcontextprotocol/registry/tree/main/docs) — the official MCP server registry

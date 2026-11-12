@@ -9,14 +9,14 @@ path: docs/livekit-integration
 
 # LiveKit and Deepgram
 
-This guide walks you through building a voice AI agent that uses [LiveKit Agents](https://docs.livekit.io/agents/) for real-time audio transport and Deepgram for speech-to-text (STT) and text-to-speech (TTS). By the end, you will have a working voice agent that listens to a user, generates a response with an LLM, and speaks back in real time.
+This guide walks you through building a voice AI agent that uses [LiveKit Agents](https://docs.livekit.io/agents/) for real-time audio transport and Deepgram for speech-to-text (STT) and text-to-speech (TTS). By the end, you'll have a working voice agent that listens to a user, generates a response with an LLM, and speaks back in real time.
 
 Deepgram is available in LiveKit Agents through two paths:
 
-| Path              | Description                                                                                                                                                                                 |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LiveKit Inference | Deepgram models hosted and billed through LiveKit Cloud. Supports Nova-3, Nova-2 variants (`nova-2`, `nova-2-medical`, `nova-2-phonecall`), Flux, and Aura-2. No Deepgram API key required. |
-| Deepgram Plugin   | Connects directly to Deepgram's API with your own API key. Includes diarization, keyterm prompting, and advanced parameters.                                                                |
+| Path              | Description                                                                                                                                                                                               |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LiveKit Inference | Deepgram models hosted and billed through LiveKit Cloud. Supports Nova-3, Nova-2 variants (`nova-2`, `nova-2-medical`, `nova-2-phonecall`), Flux STT, Flux TTS, and Aura-2. No Deepgram API key required. |
+| Deepgram Plugin   | Connects directly to Deepgram's API with your own API key. Includes diarization, keyterm prompting, and advanced parameters.                                                                              |
 
 This guide starts with LiveKit Inference for the fastest setup, then shows how to switch to the Deepgram Plugin for direct API access and advanced features.
 
@@ -32,7 +32,7 @@ You need:
 * An LLM. The starter uses LiveKit Inference (`inference.LLM(model="openai/chat-latest")`), which runs through LiveKit Cloud and requires no separate provider key. A dedicated LLM API key is only needed if you bring your own provider, such as [OpenAI](https://platform.openai.com/api-keys); LiveKit Agents supports [other providers](https://docs.livekit.io/agents/models/) too.
 * Python 3.10+ or Node.js 20+
 
-## Step 1: Create the project
+## Step 1: create the project
 
 The fastest way to scaffold a new agent project is with the [LiveKit CLI](https://docs.livekit.io/intro/basics/cli/) (`lk`). Alternatively, clone a starter template from GitHub ([Python](https://github.com/livekit-examples/agent-starter-python), [Node.js](https://github.com/livekit-examples/agent-starter-node)).
 
@@ -54,7 +54,7 @@ pnpm install
 
 When the CLI finishes, your agent is registered with LiveKit Cloud. You'll test it later from the [Agent Console](https://cloud.livekit.io).
 
-## Step 2: Configure your environment
+## Step 2: configure your environment
 
 The CLI creates a `.env.local` file during setup. Open it and confirm your API keys are set:
 
@@ -68,7 +68,7 @@ OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 
 If you used the CLI's guided setup, these values are already populated. If not, add them from your [LiveKit Cloud dashboard](https://cloud.livekit.io). The `OPENAI_API_KEY` is optional — the starter uses LiveKit Inference by default, so you only need it if you bring your own OpenAI key from the [OpenAI dashboard](https://platform.openai.com/api-keys).
 
-## Step 3: Use Deepgram for TTS
+## Step 3: use Deepgram for TTS
 
 At the time of writing, the starter template uses Deepgram for STT but Cartesia for TTS. These defaults change frequently and aren't guaranteed, so check the generated code. To use Deepgram for both, find the `tts` argument in the `AgentSession` constructor in `src/agent.py` (Python) or `src/main.ts` (Node.js) and replace it:
 
@@ -91,7 +91,7 @@ The agent now uses Deepgram for both STT and TTS. No additional dependencies or 
 
 Browse available voices in the [Deepgram voice library](/docs/tts-models).
 
-## Step 4: Run the agent
+## Step 4: run the agent
 
 Start the agent in development mode. The required model files ([VAD](/docs/understanding-end-of-speech-detection), turn detection) are now downloaded automatically:
 
@@ -109,7 +109,7 @@ pnpm run dev
 
 The `dev` command connects your agent to LiveKit Cloud. Open the [Agent Console](https://cloud.livekit.io) in your browser to talk to your agent.
 
-## Step 5: Test the conversation
+## Step 5: test the conversation
 
 Once the agent is running, you should hear a greeting. Try these interactions to verify everything works:
 
@@ -183,11 +183,11 @@ Your agent now connects directly to Deepgram's API with your own API key, instea
 
 To verify the change, restart the agent as in [Step 4](#step-4-run-the-agent) (`uv run src/agent.py dev` for Python, or `pnpm run dev` for Node.js) and run through the checks in [Step 5](#step-5-test-the-conversation). The conversation should behave as before, now powered by the Deepgram plugin. If the agent fails to start, confirm `DEEPGRAM_API_KEY` is set in `.env.local`.
 
-### Use Flux for turn detection
+### Use Flux STT for turn detection
 
-[Flux](/docs/flux) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations with fewer awkward pauses.
+[Flux STT](/docs/flux) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations with fewer awkward pauses.
 
-To use Flux, replace the `stt` configuration with `STTv2` and set turn detection to `"stt"`:
+To use Flux STT, replace the `stt` configuration with `STTv2` and set turn detection to `"stt"`:
 
 ```python
 # Replace the stt line and add turn_handling:
@@ -204,13 +204,13 @@ turnHandling: { turnDetection: "stt" },
 
 > **Warning**
 >
-> Even when using Flux for turn detection, a [VAD (Voice Activity Detection)](/docs/understanding-end-of-speech-detection) is required for interruption handling — without it, the agent cannot detect when a user speaks over the agent's response. If you don't specify a VAD, LiveKit auto-provisions one for you. Note that this is not the Silero plugin itself, but a bundled inference VAD that is still based on Silero. You can also add the Silero plugin explicitly if you prefer to manage it yourself.
+> Even when using Flux STT for turn detection, a [VAD (Voice Activity Detection)](/docs/understanding-end-of-speech-detection) is required for interruption handling — without it, the agent cannot detect when a user speaks over the agent's response. If you don't specify a VAD, LiveKit auto-provisions one for you. Note that this is not the Silero plugin itself, but a bundled inference VAD that is still based on Silero. You can also add the Silero plugin explicitly if you prefer to manage it yourself.
 
 ### Choose a different voice
 
-#### Flux
+#### Flux TTS
 
-Flux is the latest conversation-native TTS model, built for real-time voice agents. It's expressive by default, consistent across turns, and responds in under 200ms with native interruption handling, real-time controls, and strong entity accuracy.
+Flux TTS is the latest conversation-native TTS model, built for real-time voice agents. It's expressive by default, consistent across turns, and responds in under 200ms with native interruption handling, real-time controls, and strong entity accuracy.
 
 ```python
 # Python

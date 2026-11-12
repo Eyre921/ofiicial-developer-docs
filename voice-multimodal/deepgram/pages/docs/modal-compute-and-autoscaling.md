@@ -58,7 +58,7 @@ See their [Scaling Out guide](https://modal.com/docs/guide/scale) and [Input Con
 
 ## Configure regions
 
-To optimize network latency, you will likely want to set the `PROXY_REGION` AND `SERVER_REGION` and route traffic from clients in those regions to that deployment.
+To optimize network latency, you'll likely want to set the `PROXY_REGION` AND `SERVER_REGION` and route traffic from clients in those regions to that deployment.
 
 * `PROXY_REGION` specifies the location of the Modal proxy that routes requests to containers. It can take one of four values: `us-east`, `us-west`, `eu-west`, `ap-south`.
 * `SERVER_REGION` specifies which region(s) the server containers can reside in. See the Modal [Region Selection doc](https://modal.com/docs/guide/region-selection) for more information.

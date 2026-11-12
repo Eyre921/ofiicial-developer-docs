@@ -15,7 +15,7 @@ path: docs/browser-agent-overview
 >
 > The demo above requires a Deepgram account. [Sign up free](https://console.deepgram.com/signup) to try it, or keep reading to understand the architecture first.
 
-## Choose Your Approach
+## Choose your approach
 
 Start from how much control you need, not which package to install.
 
@@ -37,7 +37,7 @@ init({
 ```
 
 **"I'm building a React app and want pre-built components."**
-Use [React UI Components](/docs/browser-agent-react-ui). Conversation view, animated orb, mic/speaker buttons, text input, and a waveform visualizer — all styled through CSS custom properties that work alongside your existing design system.
+Use [React UI components](/docs/browser-agent-react-ui). Conversation view, animated orb, mic/speaker buttons, text input, and a waveform visualizer — all styled through CSS custom properties that work alongside your existing design system.
 
 **"I'm building a React app but want full control over the UI."**
 Use [React Hooks](/docs/browser-agent-react). Provider context and focused hooks for state, conversation history, microphone control, audio playback, and client-side function calling. You build every pixel; the hooks manage every connection.
@@ -65,7 +65,7 @@ Every layer shares the same connection logic, audio pipeline, and event model. T
 >
 > Each layer pulls in the layer below as a dependency, and re-exports the parts you need from above. Installing `@deepgram/ui` brings in `@deepgram/react` and `@deepgram/agents` automatically and re-exports the hooks, provider, and SDK types — you import everything you need from `@deepgram/ui` alone. The same pattern applies one layer down: `@deepgram/react` brings in `@deepgram/agents` and re-exports its types.
 
-### What You Get at Every Layer
+### What you get at every layer
 
 * **Reconnection with exponential backoff and jitter.** Configurable max attempts, base delay, and ceiling. Connections recover without user intervention.
 * **Playback-aware mode tracking.** The SDK knows when audio has actually finished playing in the browser — not just when the server finished sending it. Mode transitions from "speaking" to "listening" wait for the audio queue to drain.
@@ -74,19 +74,19 @@ Every layer shares the same connection logic, audio pipeline, and event model. T
 * **Typed event emitter.** Every server message — `Welcome`, `ConversationText`, `AgentAudioDone`, `FunctionCallRequest`, and more — has a typed event. Subscribe to exactly what you need.
 * **Custom WebSocket URL support.** Connect to proxied or self-hosted endpoints by overriding the default Deepgram URL.
 
-### What the React Layer Adds
+### What the React layer adds
 
 * **Client-side function calling** scoped to React component lifecycle. Register tool handlers with `useAgentClientTool` — they mount and unmount with the component. Dynamic tools are checked first, then the provider falls back to `onFunctionCall`.
 * **Conversation state management.** The `useAgentConversation` hook accumulates transcript events into a structured message array with roles, content, and IDs.
 * **Mode awareness.** The `useAgentMode` hook tracks whether the agent is idle, listening, thinking, or speaking — with the playback-aware delay described above.
 
-### What the UI Layer Adds
+### What the UI layer adds
 
 * **26 CSS custom properties** with `light-dark()` adaptive defaults. Works with Tailwind, CSS Modules, plain CSS — anything that can set a custom property.
-* **Canvas 2D visualizations.** The orb and waveform components use Canvas 2D, not WebGL. They render well on low-power devices and do not require GPU acceleration.
-* **`data-dg-*` attribute selectors** instead of class names. Your existing CSS framework cannot collide with component styles.
+* **Canvas 2D visualizations.** The orb and waveform components use Canvas 2D, not WebGL. They render well on low-power devices and don't require GPU acceleration.
+* **`data-dg-*` attribute selectors** instead of class names. Your existing CSS framework can't collide with component styles.
 
-### What the Widget Adds
+### What the widget adds
 
 * **Six layouts:** `sidebar`, `floating`, `inline`, `button`, `embedded`, `orb`. Each adapts to its container and responds to the host page's color scheme.
 * **Preact runtime bundled internally.** The UMD build is self-contained — no React dependency, no build tooling, no framework assumptions. The ESM build is also available for projects with a bundler.
@@ -140,7 +140,7 @@ The token factory is called before every connection and reconnection attempt. To
 >
 > The `apiKey` option exists for local development only. Never ship it in client-side code.
 
-## Agent Configuration
+## Agent configuration
 
 Configure the agent by referencing one you created in the [Deepgram Console](https://console.deepgram.com), or define the full configuration inline:
 
@@ -175,11 +175,11 @@ Agent IDs let you change behavior from the console without redeploying your appl
 
 You can combine both approaches — reference an agent ID for base configuration and override specific settings inline. See the individual package guides for details.
 
-## Next Steps
+## Next steps
 
 | Guide                                               | What you will learn                                                                            |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | [JavaScript SDK](/docs/browser-agent-javascript)    | `AgentSession`, `AgentMicrophone`, and `AgentPlayer` — the core primitives for any framework.  |
 | [React Hooks](/docs/browser-agent-react)            | `AgentProvider`, state hooks, conversation hooks, and client-side function calling.            |
-| [React UI Components](/docs/browser-agent-react-ui) | Pre-built conversation view, orb visualizer, mic/speaker buttons, and CSS theming.             |
+| [React UI components](/docs/browser-agent-react-ui) | Pre-built conversation view, orb visualizer, mic/speaker buttons, and CSS theming.             |
 | [Widget](/docs/browser-agent-widget)                | Embed a complete voice agent with one function call. Six layouts, full theming, no build step. |

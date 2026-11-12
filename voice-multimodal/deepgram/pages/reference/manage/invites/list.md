@@ -1,5 +1,5 @@
 ---
-title: "List Project Invites"
+title: "List project invites"
 source: https://developers.deepgram.com/reference/manage/invites/list.md
 path: reference/manage/invites/list
 ---
@@ -7,7 +7,7 @@ path: reference/manage/invites/list
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Project Invites
+# List project invites
 
 GET https://api.deepgram.com/v1/projects/{project_id}/invites
 

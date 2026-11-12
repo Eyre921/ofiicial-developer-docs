@@ -1,5 +1,5 @@
 ---
-title: "React UI Components"
+title: "React UI components"
 source: https://developers.deepgram.com/docs/browser-agent-react-ui.md
 path: docs/browser-agent-react-ui
 ---
@@ -7,7 +7,7 @@ path: docs/browser-agent-react-ui
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# React UI Components
+# React UI components
 
 > API reference for @deepgram/ui — composable components for building voice agent UIs with Deepgram. Includes orb visualizer, waveforms, frequency bars, conversation display, and CSS custom property theming.
 
@@ -31,7 +31,7 @@ import "@deepgram/ui/styles.css";
 >
 > `@deepgram/ui` re-exports all hooks from `@deepgram/react` and all types from `@deepgram/agents`. You can import everything from a single package.
 
-## Live Preview
+## Live preview
 
 The embedded widget below uses the components documented on this page — conversation panel, start button, microphone toggle, speaker toggle, text input, and the orb visualizer.
 
@@ -74,11 +74,11 @@ function App() {
 }
 ```
 
-Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent Configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
+Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
 
 Every component is optional. Use one or all, and mix them with your own components inside the provider.
 
-## Display Components
+## Display components
 
 ### AgentStatus
 
@@ -169,7 +169,7 @@ Voice agents combine **speech-to-text**, an LLM, and *text-to-speech* in a singl
 
 **Data attributes:** `data-agent-response`.
 
-## Input Components
+## Input components
 
 ### AgentTextInput
 
@@ -195,7 +195,7 @@ Send
 
 **Data attributes:** `data-agent-text-input`.
 
-## Control Components
+## Control components
 
 ### AgentStartButton
 
@@ -291,7 +291,7 @@ Style each state with the `data-voice-state` attribute:
 
 **Data attributes:** `data-agent-voice-button`, `data-voice-state` (`"idle"`, `"connecting"`, `"listening"`, `"speaking"`, `"error"`).
 
-## Visualization Components
+## Visualization components
 
 ### Orb
 
@@ -394,7 +394,7 @@ function MyWaveform() {
 
 **Data attributes:** `data-agent-live-waveform`.
 
-## Utility Components
+## Utility components
 
 ### MicSelector
 
@@ -495,7 +495,7 @@ Light/dark switching is driven by the `data-dg-scheme` attribute on the same ele
 | Force light             | `[data-dg-agent][data-dg-scheme="light"]`                |
 | Follow system (default) | no attribute, `prefers-color-scheme: dark` triggers dark |
 
-If your app uses Tailwind's `dark:` variant or `next-themes`, write a small effect that mirrors that state onto `data-dg-scheme`. The package does not infer it from a `.dark` ancestor class.
+If your app uses Tailwind's `dark:` variant or `next-themes`, write a small effect that mirrors that state onto `data-dg-scheme`. The package doesn't infer it from a `.dark` ancestor class.
 
 ### Custom theme example
 
@@ -537,7 +537,7 @@ A teal-on-midnight palette called **Aurora**, applied entirely through CSS custo
 
 Apply the class to your `[data-dg-agent]` container (or extend the override to the element itself) and every component inside picks up the new palette. The same pattern works for any palette — swap the values, keep the keys.
 
-### Styling with Data Attributes
+### Styling with data attributes
 
 Components use `data-agent-*` attribute selectors instead of class names. This prevents collisions with your application's CSS framework — no specificity battles with Tailwind utilities or CSS Modules hashes.
 
@@ -568,7 +568,7 @@ Components use `data-agent-*` attribute selectors instead of class names. This p
 }
 ```
 
-### Data Attribute Reference
+### Data attribute reference
 
 | Component             | Attribute                                     | Values                                                                      |
 | --------------------- | --------------------------------------------- | --------------------------------------------------------------------------- |

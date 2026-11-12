@@ -1,5 +1,5 @@
 ---
-title: "Deploy Text-to-Speech (TTS) Services"
+title: "Deploy text-to-speech (TTS) services"
 source: https://developers.deepgram.com/docs/deploy-tts-services.md
 path: docs/deploy-tts-services
 ---
@@ -7,40 +7,40 @@ path: docs/deploy-tts-services
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Deploy Text-to-Speech (TTS) Services
+# Deploy text-to-speech (TTS) services
 
 > Deploy Deepgram's TTS services including Aura-2 for conversational AI voice synthesis
 
-This guide covers deploying Deepgram's Text-to-Speech (TTS) services for conversational AI voice synthesis with ultra-low latency and high-quality natural speech generation.
+This guide covers deploying Deepgram's text-to-speech (TTS) services for conversational AI voice synthesis with ultra-low latency and high-quality natural speech generation.
 
 > **Info**
 >
-> Looking to deploy Speech-to-Text (STT) services instead? See the [Deploy STT Services](/docs/deploy-stt-services) guide.
+> Looking to deploy speech-to-text (STT) services instead? See the [Deploy STT Services](/docs/deploy-stt-services) guide.
 
 > **Warning**
 >
 > **Deploying Flux TTS?** Flux TTS has unique deployment requirements and must be hosted on a separate Engine from Aura models. See the [Deploying Flux TTS](/docs/deploy-flux-tts) guide for Flux TTS-specific instructions.
 
-As with other Deepgram self-hosted services, Deepgram TTS services use the same container images (`quay.io/deepgram/self-hosted-api` and `quay.io/deepgram/self-hosted-engine`) as STT deployments. However, **Deepgram strongly recommends configuring each node for a specific service type—either STT or TTS—for optimal performance and resource utilization**.
+As with other Deepgram Self-Hosted services, Deepgram TTS services use the same container images (`quay.io/deepgram/self-hosted-api` and `quay.io/deepgram/self-hosted-engine`) as STT deployments. However, **we strongly recommend configuring each node for a specific service type—either STT or TTS—for optimal performance and resource utilization**.
 
 You need to download and deploy these images from a container image repository, along with TTS-specific configuration files and environment variables that will be provided by Deepgram.
 
-## TTS Performance Considerations
+## TTS performance considerations
 
-### Latency and Throughput
+### Latency and throughput
 
 **Latency** is the time delay between when a TTS API request is submitted and when you receive the first byte of audio data that can be played back to the end user.
 
 **Throughput** refers to the number of TTS requests that can be processed successfully within a given time period.
 
-There is a technical tradeoff between these metrics:
+There's a technical tradeoff between these metrics:
 
 * **Lower request volume** = Lower latency per request, but lower overall throughput
 * **Higher request volume** = Higher latency per request, but higher overall throughput
 
 Finding the correct balance is essential for your application's success and to limit hardware costs. Your Deepgram Account Representative will assist with optimization.
 
-### Dedicated Hardware Recommendation
+### Dedicated hardware recommendation
 
 **For optimal TTS performance, dedicate separate GPUs specifically for TTS traffic.** If you're already running STT services, route TTS requests to dedicated TTS-optimized hardware rather than sharing GPUs between STT and TTS workloads.
 
@@ -51,11 +51,11 @@ This dedicated approach is critical for:
 
 ## Prerequisites
 
-Before you begin, you will need to complete the [Deployment Environments](/docs/self-hosted-deployment-environments) guide, as well as all sub-guides to complete your environment configuration.
+Before you begin, you'll need to complete the [Deployment environments](/docs/self-hosted-deployment-environments) guide, as well as all sub-guides to complete your environment configuration.
 
-You will also need to complete the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide to authenticate your products with Deepgram's licensing servers and pull Deepgram container images from [Quay](https://quay.io).
+You will also need to complete the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide to authenticate your products with Deepgram's licensing servers and pull Deepgram container images from [Quay](https://quay.io).
 
-### Hardware Requirements
+### Hardware requirements
 
 TTS self-hosted deployments have specific resource requirements:
 
@@ -70,11 +70,11 @@ TTS self-hosted deployments have specific resource requirements:
 >
 > TTS hardware requirements are higher than standard STT deployments due to the computational complexity of high-quality speech synthesis. Consult your Deepgram Account Representative for hardware recommendations optimized for TTS latency vs. throughput based on your specific use case.
 
-## TTS Models and Language Support
+## TTS models and language support
 
 ### Aura and Aura-2
 
-This guide covers the Aura family of TTS models. Aura-2 supports both English and Spanish languages with superior quality and performance. You can choose to deploy:
+This guide covers the Aura family of TTS models. Deepgram Aura-2 supports both English and Spanish languages with superior quality and performance. You can choose to deploy:
 
 * **Single language, single instance** - One API and Engine service pair
 * **Single language, multiple instances** - Multiple API and Engine pairs for the same language (load balancing/redundancy)
@@ -87,17 +87,17 @@ For multiple service deployments (same language or different languages), you'll 
 * Pin each instance to specific GPUs using CUDA device assignments
 * Use appropriate UUIDs in Engine configurations for each language
 
-### Legacy Aura Models
+### Legacy Aura models
 
 Previous generation Aura models may have different configuration requirements. Contact your Deepgram Account Representative for guidance on legacy model deployment.
 
 ### Flux TTS
 
-Flux TTS is documented separately. See [Deploying Flux TTS](/docs/deploy-flux-tts).
+Deepgram Flux TTS is documented separately. See [Deploying Flux TTS](/docs/deploy-flux-tts).
 
-## Get Deepgram Products
+## Get Deepgram products
 
-### Cache Container Image Repository Credentials
+### Cache container image repository credentials
 
 Use the image repository credentials you generated in the [self-service licensing and credentials](/docs/self-hosted-self-service-tutorial#create-container-image-distribution-credentials) guide to login to Quay on your deployment environment. Once your credentials are cached locally, you should not have to log in again (until after you manually log out).
 
@@ -108,7 +108,7 @@ Use the image repository credentials you generated in the [self-service licensin
 docker login quay.io
 ```
 
-## Deployment Methods
+## Deployment methods
 
 TTS services can be deployed using multiple container orchestration platforms:
 
@@ -124,7 +124,7 @@ Alternative to Docker with similar functionality and compose file compatibility.
 
 Recommended for production deployments requiring scaling, high availability, and advanced orchestration.
 
-## Get Configuration Files
+## Get configuration files
 
 Configuration files are available in the [self-hosted-resources repository](https://github.com/deepgram/self-hosted-resources).
 
@@ -159,30 +159,30 @@ Configuration files are available in the [self-hosted-resources repository](http
 
    The reference compose files show both languages deployed side-by-side. You can modify these to deploy only the services you need.
 
-## Customize Your Configuration
+## Customize your configuration
 
-Once you have downloaded all provided files to your deployment machine, you need to update your configuration for your specific deployment environment.
+Once you've downloaded all provided files to your deployment machine, you need to update your configuration for your specific deployment environment.
 
 ### Credentials
 
-You will need to have an environment variable `DEEPGRAM_API_KEY` exported with your self-hosted API key secret. See our [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial#create-a-self-hosted-api-key) guide for instructions on generating a self-hosted API key for use in this section.
+You will need to have an environment variable `DEEPGRAM_API_KEY` exported with your self-hosted API key secret. See our [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial#create-a-self-hosted-api-key) guide for instructions on generating a self-hosted API key for use in this section.
 
 > **Warning**
 >
 > Per the link above, you will create you self-hosted API key in the `API Key` tab of Deepgram Console. These are *not* created in the "Self-Hosted" tab, which is reserved for creating distribution credentials.
 
-### Configuration Files
+### Configuration files
 
 #### Compose File
 
-The Docker Compose configuration files use the standard Deepgram self-hosted container images:
+The Docker Compose configuration files use the standard Deepgram Self-Hosted container images:
 
 * `quay.io/deepgram/self-hosted-api:release-250814`
 * `quay.io/deepgram/self-hosted-engine:release-250814`
 
 > **Warning**
 >
-> While these are the same container images used for STT deployments, **Deepgram strongly recommends dedicating each node to either STT or TTS workloads**. Running mixed workloads on the same node can lead to suboptimal performance, resource contention, and unpredictable latency.
+> While these are the same container images used for STT deployments, **we strongly recommend dedicating each node to either STT or TTS workloads**. Running mixed workloads on the same node can lead to suboptimal performance, resource contention, and unpredictable latency.
 
 TTS functionality is enabled through specific configuration files, environment variables, and GPU assignments detailed below.
 
@@ -194,7 +194,7 @@ Make sure to export your self-hosted API key secret in your deployment environme
 export DEEPGRAM_API_KEY=API_KEY_SECRET
 ```
 
-#### TTS Configuration Files
+#### TTS configuration files
 
 TTS deployments use service-specific configuration files and environment variables:
 
@@ -245,11 +245,11 @@ CUDA_VISIBLE_DEVICES=2,3  # Adjust GPU assignment as needed
 >
 > For legacy Aura models or other TTS configurations, consult your Deepgram Account Representative for the appropriate configuration files and environment variables.
 
-## Testing Your Containers
+## Testing your containers
 
-To make sure your Deepgram self-hosted TTS deployment is properly configured and running, you will want to run the containers and make a sample request.
+To make sure your Deepgram Self-Hosted TTS deployment is properly configured and running, you'll want to run the containers and make a sample request.
 
-### Start the Deepgram Containers
+### Start the Deepgram containers
 
 Now that you have your configuration files setup up and in the correct location to be used by the container, use Docker Compose to run the container:
 
@@ -286,7 +286,7 @@ docker logs CONTAINER_ID
 >
 > Replace the placeholder `CONTAINER_ID` with the Container ID of each container whose logs you would like to inspect more completely.
 
-### Networking Considerations
+### Networking considerations
 
 **Port Assignments:**
 The reference configurations use these port mappings:
@@ -309,7 +309,7 @@ Unless you have HTTPS/TLS configured, use `http://` and `ws://` protocols:
 * Spanish: `http://localhost:8081/v1/speak`
 * Multiple English instances: `http://localhost:8080`, `http://localhost:8081`, etc.
 
-### Test Your TTS Setup with Sample Requests
+### Test your TTS setup with sample requests
 
 Test your environment and container setup with sample TTS requests.
 
@@ -363,7 +363,7 @@ Test your environment and container setup with sample TTS requests.
 >
 > If you do not specify a `model`, the default voice model `aura-asteria-en` will be used. You can find all of our available voices [here](/docs/tts-models).
 
-You should receive a response with the audio output. You can copy this file locally to manually evaluate the synthesized speech. Congratulations - your self-hosted TTS setup is working!
+You should receive a response with the audio output. You can copy this file locally to manually evaluate the synthesized speech. Congratulations - your self-hosted TTS setup is working.
 
 ---
 
@@ -371,5 +371,5 @@ What's Next
 
 Now that you have a basic TTS setup working, take some time to learn about building up to a production-level environment, as well as helpful Deepgram add-on services.
 
-* [Scaling and Deployment Strategies](/docs/scaling-and-deployment-strategies)
+* [Scaling and deployment strategies](/docs/scaling-and-deployment-strategies)
 * [Self-Hosted Add Ons](/docs/self-hosted-add-ons)

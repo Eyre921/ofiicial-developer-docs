@@ -1,5 +1,5 @@
 ---
-title: "Migrating from Nova-3 to Flux"
+title: "Migrating from Nova-3 to Flux STT"
 source: https://developers.deepgram.com/docs/flux/nova-3-migration.md
 path: docs/flux/nova-3-migration
 ---
@@ -7,26 +7,26 @@ path: docs/flux/nova-3-migration
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Migrating from Nova-3 to Flux
+# Migrating from Nova-3 to Flux STT
 
-## Key Benefits of Flux
+## Key benefits of Flux STT
 
 * **Model-integrated turn detection** (`StartOfTurn`, `EagerEndOfTurn`, `TurnResumed`, `EndOfTurn`)
 * **Ultra-low latency** \~260ms end-of-turn detection (p50 at defaults)
 * **EagerEndOfTurn events** let you **start LLM responses early**
 * **Turn-based transcripts** for clean agent logic
-* **Same Nova 3 transcription quality**
+* **Same Deepgram Nova 3 transcription quality**
 * **Simplified development** one API replaces complex STT+VAD+endpointing pipelines, and conversation-native events.
 * **High configurability** - Configurable end-of-turn detection sensitivity, eager response thresholds, and turn-taking dynamics for optimized conversational flow
 
-## Audio Requirements
+## Audio requirements
 
 * **Encoding:** See [Audio Format Requirements](#audio-format-requirements) table below
 * **Sample rates:** See [Audio Format Requirements](#audio-format-requirements) table below
 * **Channels:** Mono only
 * **Chunk size:** **80ms strongly recommended** for optimal model performance and latency.
 
-### Audio Format Requirements
+### Audio format requirements
 
 | Audio Type    | Encoding                                                    | Container | `encoding` param | `sample_rate` param | Supported Sample Rates                     |
 | ------------- | ----------------------------------------------------------- | --------- | ---------------- | ------------------- | ------------------------------------------ |
@@ -35,13 +35,13 @@ path: docs/flux/nova-3-migration
 | Containerized | `opus`                                                      | Ogg       | **Omit**         | **Omit**            | Auto-detected from container               |
 | Containerized | `opus`                                                      | WebM      | **Omit**         | **Omit**            | Auto-detected from container               |
 
-## Migrating from Nova 3 to Flux
+## Migrating from Nova 3 to Flux STT
 
-This guide will help you migrate from Nova 3 to Flux by highlighting key differences, setup changes, and implementation patterns.
+This guide will help you migrate from Nova 3 to Deepgram Flux STT by highlighting key differences, setup changes, and implementation patterns.
 
 ### Differences
 
-| Nova 3                                             | Flux                                        |
+| Nova 3                                             | Flux STT                                    |
 | -------------------------------------------------- | ------------------------------------------- |
 | Streams transcripts continuously                   | Emits structured turn events                |
 | Requires custom logic for barge-in and turn-taking | Has built-in turn state machine             |
@@ -49,7 +49,7 @@ This guide will help you migrate from Nova 3 to Flux by highlighting key differe
 | Designed for general real-time transcription       | Designed for conversational voice agents    |
 | Focuses on accuracy and speed                      | Focuses on accuracy and turn awareness      |
 
-#### Endpoint Usage
+#### Endpoint usage
 
 **Nova 3:**
 
@@ -59,7 +59,7 @@ Uses the listen v1 endpoint with the `nova-3` model option.
 wss://api.deepgram.com/v1/listen?model=nova-3
 ```
 
-**Flux:**
+**Flux STT:**
 
 Uses the listen v2 endpoint with the `flux-general-en` model option.
 
@@ -67,7 +67,7 @@ Uses the listen v2 endpoint with the `flux-general-en` model option.
 wss://api.deepgram.com/v2/listen?model=flux-general-en
 ```
 
-### Response Message Structure
+### Response message structure
 
 #### Nova 3
 
@@ -79,7 +79,7 @@ wss://api.deepgram.com/v2/listen?model=flux-general-en
 }
 ```
 
-#### Flux
+#### Flux STT
 
 ```json
 {
@@ -105,9 +105,9 @@ In addition to the transcript, flux responses include the:
 * `sequence_id` to track the sequence id of the messages.
 * `words` array with word-level `start` and `end` timestamps (type `double`) on each word object, along with `word` and `confidence`.
 
-### Implementation Pattern Changes
+### Implementation pattern changes
 
-#### Nova 3 Approach
+#### Nova 3 approach
 
 > Requires custom logic for barge-in and turn-taking.
 
@@ -115,7 +115,7 @@ In addition to the transcript, flux responses include the:
 * Receive streaming partial transcripts
 * Decide when to interrupt your agent manually
 
-#### Flux Approach
+#### Flux STT approach
 
 > Listens for structured events and removes the need for custom VAD or barge-in logic.
 
@@ -124,13 +124,13 @@ In addition to the transcript, flux responses include the:
 * `TurnResumed`: User kept talking → cancel reply
 * `EndOfTurn`: High-confidence end → send transcript to LLM
 
-By default, Flux only emits `Update`, `StartOfTurn`, and `EndOfTurn`.
+By default, Flux STT only emits `Update`, `StartOfTurn`, and `EndOfTurn`.
 
-### Simple Approach: Enabling End of Turn
+### Simple approach: enabling end of turn
 
 > **Info**
 >
-> For more information on using Flux with EndOfTurn only see the [Flux Getting Started Guide](/docs/flux/quickstart)
+> For more information on using Flux STT with EndOfTurn only see the [Flux STT Getting Started Guide](/docs/flux/quickstart)
 
 This is a simple approach using only `EndOfTurn` (lower latency, less complex, less LLM calls).
 
@@ -142,7 +142,7 @@ To enable end of turn use the `eot_threshold` parameter which allows for a confi
 wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encoding=linear16&eot_threshold=0.8
 ```
 
-### Optimized Approach: Enabling EagerEndOfTurn + EndOfTurn
+### Optimized approach: enabling EagerEndOfTurn + EndOfTurn
 
 This is an optimized approach using both EagerEndOfTurn and EndOfTurn (lower latency, slightly more complex, more LLM calls)
 
@@ -154,9 +154,9 @@ To enable eager end of turn use the `eager_eot_threshold` parameter which allows
 wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encoding=linear16&eager_eot_threshold=0.6&eot_threshold=0.8&eot_timeout_ms=7000
 ```
 
-### Keeping Your Own Turn Detection
+### Keeping your own turn detection
 
-If you already have a turn detection stack you want to keep (VAD, endpointing, or push-to-talk), you don't have to adopt Flux's native detection. Set `eot_threshold=1.0` to suppress natural end-of-turn, then send a [`ForceEndTurn`](/docs/flux/force-end-turn) message when your own detector fires. See [Bring Your Own Turn Detection](/docs/flux/own-turn-detection) for the full recipe.
+If you already have a turn detection stack you want to keep (VAD, endpointing, or push-to-talk), you don't have to adopt Flux STT's native detection. Set `eot_threshold=1.0` to suppress natural end-of-turn, then send a [`ForceEndTurn`](/docs/flux/force-end-turn) message when your own detector fires. See [Bring your own turn detection](/docs/flux/own-turn-detection) for the full recipe.
 
 #### Example
 
@@ -164,11 +164,11 @@ If you already have a turn detection stack you want to keep (VAD, endpointing, o
 wss://api.deepgram.com/v2/listen?model=flux-general-en&sample_rate=16000&encoding=linear16&eot_threshold=1.0
 ```
 
-### Nova 3 Migration Checklist
+### Nova 3 migration checklist
 
 * [ ] Update WebSocket endpoint to `/v2/listen`
 * [ ] Set `model=flux-general-en` and `encoding=linear16`
 * [ ] Adjust client to parse `TurnInfo` messages
 * [ ] Implement turn event handling (start, eager end of turn, turn resumed, end)
 * [ ] Tune `eager_eot_threshold` and `eot_threshold` for your use case
-* [ ] Remove custom VAD/barge-in logic (Flux handles this natively) — or keep it and drive turns with [`ForceEndTurn`](/docs/flux/force-end-turn); see [Bring Your Own Turn Detection](/docs/flux/own-turn-detection)
+* [ ] Remove custom VAD/barge-in logic (Flux STT handles this natively) — or keep it and drive turns with [`ForceEndTurn`](/docs/flux/force-end-turn); see [Bring your own turn detection](/docs/flux/own-turn-detection)

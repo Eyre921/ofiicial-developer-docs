@@ -1,5 +1,5 @@
 ---
-title: "Generating and Saving Transcripts From the Terminal"
+title: "Generating and saving transcripts from the terminal"
 source: https://developers.deepgram.com/docs/generating-and-saving-transcripts-from-the-terminal.md
 path: docs/generating-and-saving-transcripts-from-the-terminal
 ---
@@ -7,27 +7,27 @@ path: docs/generating-and-saving-transcripts-from-the-terminal
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Generating and Saving Transcripts From the Terminal
+# Generating and saving transcripts from the terminal
 
-## Before You Start
+## Before you start
 
 Before you run the code, you'll need to do a few things.
 
-### Create a Deepgram Account
+### Create a Deepgram account
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
-### Create a Deepgram API Key
+### Create a Deepgram API key
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ### Install JQ
 
-In this guide, we use `jq`, which is an excellent command-line utility that allows you to display and manipulate JSON data, so you will also need to install [jq](https://stedolan.github.io/jq/).
+In this guide, we use `jq`, which is an excellent command-line utility that allows you to display and manipulate JSON data, so you'll also need to install [jq](https://stedolan.github.io/jq/).
 
 ## Making a curl Request
 
@@ -57,7 +57,7 @@ Let’s look more closely at this request:
 * `--url 'https://api.deepgram.com/v1/listen?punctuate=true'`: URL to which the request should be made (Deepgram's endpoint). `punctuate=true` enables the [punctuation](/docs/punctuation/) feature.
 * `\`: Allows you to break one command over several lines for readability.
 
-When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
+When you run this command and it's finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
 ![](/_fern-files/_img/317326d600ee839975a185fad761e37495c8d6269e411de69cffffeb96f731bd.webp)
 
@@ -83,7 +83,7 @@ In this example, notice:
 * `--header` is shortened to `-H`
 * `--data` is shortened to `-d`.
 
-## Formatting Your JSON Response
+## Formatting your JSON response
 
 To make the JSON response more readable, you can use `jq`, which is an excellent command-line utility that allows you to display and manipulate JSON data.
 
@@ -109,11 +109,11 @@ curl https://api.deepgram.com/v1/listen?punctuate=true \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-When you run this command and it is finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
+When you run this command and it's finished processing (often after only a few seconds), you’ll receive a JSON response that looks similar to the following:
 
 ![](/_fern-files/_img/4e327ad3b8562595dbc6590b7b8d56e215974c91d53bfce7cdfd692e94c08b2b.webp)
 
-## Saving Output to a File
+## Saving output to a file
 
 Once you have the transcript extracted and formatted using `jq`, you can redirect the output to a new file by appending `> output.txt` to any command that prints to the terminal. For example:
 
@@ -128,7 +128,7 @@ curl https://api.deepgram.com/v1/listen?punctuate=true \
   > output.txt
 ```
 
-## Processing Multiple Files
+## Processing multiple files
 
 To process multiple files, you can create `.sh` files containing multiple lines of `bash` script to execute from your terminal.
 
@@ -194,7 +194,7 @@ Run the file in your terminal:
 echo $RESPONSE | jq -r '.results.utterances[] | "[Speaker:\(.speaker)] \(.transcript)"' > $filename.txt
 ```
 
-When you run a previous curl command with this `jq` appended and it is finished processing, you’ll receive a JSON response formatted in the following way:
+When you run a previous curl command with this `jq` appended and it's finished processing, you’ll receive a JSON response formatted in the following way:
 
 **`JSON`**
 

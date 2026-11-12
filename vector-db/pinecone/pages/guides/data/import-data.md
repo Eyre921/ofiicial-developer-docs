@@ -169,7 +169,6 @@ await index.startImport(storageURI, errorMode, integrationID);
 import io.pinecone.clients.Pinecone;
 import io.pinecone.clients.AsyncIndex;
 import org.openapitools.db_data.client.ApiException;
-import org.openapitools.db_data.client.model.ImportErrorMode;
 import org.openapitools.db_data.client.model.StartImportResponse;
 
 public class StartImport {
@@ -187,7 +186,7 @@ public class StartImport {
         String integrationId = "a12b3d4c-47d2-492c-a97a-dd98c8dbefde";
 
         // Start an import
-        StartImportResponse response = asyncIndex.startImport(uri, integrationId, ImportErrorMode.OnErrorEnum.CONTINUE);
+        StartImportResponse response = asyncIndex.startImport(uri, integrationId, "continue");
     }
 }
 ```

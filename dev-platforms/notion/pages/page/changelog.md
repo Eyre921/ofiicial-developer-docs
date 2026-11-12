@@ -10,6 +10,10 @@ path: page/changelog
 
 [`page.created`](/reference/webhooks/page-created) webhook events now arrive right away, usually within a few seconds. Before, they waited about a minute so later changes could be combined into them. The first [`page.properties_updated`](/reference/webhooks/page-properties-updated) event for a page also arrives right away, and later property edits in the next minute are combined into one event. See [Event aggregation](/reference/webhooks-events-delivery#event-aggregation) for details. If you apply templates when creating pages, check the updated steps in [Creating pages from templates](/guides/data-apis/creating-pages-from-templates#how-aggregated-events-work).
 
+### Notion MCP is retiring its legacy SSE endpoint
+
+If your client connects to `https://mcp.notion.com/sse`, switch its transport to Streamable HTTP and its URL to `https://mcp.notion.com/mcp`. The legacy endpoint shuts down on **February 23, 2027**. See [Migrate from the legacy SSE endpoint](/guides/mcp/get-started-with-mcp#migrate-from-the-legacy-sse-endpoint).
+
 **November 10, 2026**
 
 ### Mention or assign a Custom Agent by ID

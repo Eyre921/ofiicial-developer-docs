@@ -11,15 +11,15 @@ path: docs/networking
 
 When scaling a self-hosted Deepgram deployment for real-time streaming, the ingress and network layer in front of your API pods is a key part of your scaling strategy. In many deployments, the network layer — instead of Engine or GPU capacity — limits total concurrent connections. Plan and configure it deliberately alongside your pod scaling.
 
-## Why Networking Matters When Scaling Streaming
+## Why networking matters when scaling streaming
 
 Streaming uses long-lived WebSocket connections, so the load balancer and network path must sustain a high number of concurrent, long-lived connections.
 
-Adding Engine pods increases inference capacity, but concurrent-stream capacity will not scale with it if the network layer throttles connections first. In that case you may see WebSocket handshake timeouts or dropped connections while Engine and GPU utilization still look healthy.
+Adding Engine pods increases inference capacity, but concurrent-stream capacity won't scale with it if the network layer throttles connections first. In that case you may see WebSocket handshake timeouts or dropped connections while Engine and GPU utilization still look healthy.
 
 Plan network capacity — load balancer settings, connection limits, and client-side network configuration — as part of scaling, not just pod count.
 
-## Reviewing Your Network Configuration
+## Reviewing your network configuration
 
 When validating that your network layer can scale with your deployment, review:
 

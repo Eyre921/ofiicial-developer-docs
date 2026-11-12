@@ -14,4 +14,5 @@ This article has multiple variants. Fetch one of the following URLs to view spec
 
 - [Full page](https://docs.stripe.com/payments/checkout/taxes.md?ui=full-page)
 - [Embedded form](https://docs.stripe.com/payments/checkout/taxes.md?ui=checkout-form)
+- [Elements](https://docs.stripe.com/payments/checkout/taxes.md?ui=elements)
 

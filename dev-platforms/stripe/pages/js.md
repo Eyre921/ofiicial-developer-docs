@@ -3432,7 +3432,7 @@ This method initializes Checkout for [Checkout elements](https://docs.stripe.com
     - `elementsOptions`
       A set of options to configure Elements created with Checkout.
       - `appearance`
-        Match the design of your site with the [appearance option](https://docs.stripe.com/elements/appearance-api.md).
+        Match the design of your site with the [appearance option](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements).
 The layout of each Element stays consistent, but you can modify colors, fonts, borders, padding, and more.
       - `loader`
         Display skeleton loader UI while waiting for Elements to fully load after they're mounted.
@@ -3518,7 +3518,7 @@ This method initializes Checkout for [embedded form](https://docs.stripe.com/ele
     - `clientSecret`
       The Checkout Session [client secret](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-client_secret) or a promise that resolves to the client secret.
     - `appearance`
-      Match the design of your site with the [appearance option](https://docs.stripe.com/elements/appearance-api.md).
+      Match the design of your site with the [appearance option](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=checkout-form).
 The layout stays consistent, but you can modify colors, fonts, borders, padding, and more.
 Note: `rules` are not supported in the embedded form.
     - `loader`
@@ -5118,10 +5118,10 @@ Get the Tax ID Element
 `checkout.changeAppearance(appearance: object)`
 
 Change the visual customization of Elements created with Custom
-Checkout using the [Appearance API](https://docs.stripe.com/elements/appearance-api.md)
+Checkout using the [Appearance API](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements)
 
 - `appearance`
-  Match the design of your site with the [appearance option](https://docs.stripe.com/elements/appearance-api.md).
+  Match the design of your site with the [appearance option](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements).
 The layout of each Element stays consistent, but you can modify colors, fonts, borders, padding, and more.
 
 ### Example
@@ -5533,7 +5533,7 @@ To use `CheckoutElementsProvider`, call `loadStripe` from `@stripe/stripe-js` wi
     - `elementsOptions`
       A set of options to configure Elements created with [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md).
       - `appearance`
-        Match the design of your site with the [appearance option](https://docs.stripe.com/elements/appearance-api.md).
+        Match the design of your site with the [appearance option](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements).
 The layout of each Element stays consistent, but you can modify colors, fonts, borders, padding, and more.
       - `loader`
         Display skeleton loader UI while waiting for Elements to fully load after they're mounted.
@@ -7762,7 +7762,7 @@ To use `CheckoutFormProvider`, call `loadStripe` from `@stripe/stripe-js` with y
     - `clientSecret`
       The Checkout Session [client secret](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-client_secret) or a promise that resolves to the client secret.
     - `appearance`
-      Match the design of your site with the [appearance option](https://docs.stripe.com/elements/appearance-api.md).
+      Match the design of your site with the [appearance option](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=checkout-form).
 The layout stays consistent, but you can modify colors, fonts, borders, padding, and more.
 Note: the embedded form doesn't support `rules`.
     - `loader`
@@ -11247,7 +11247,7 @@ If present, the payment method used with this PaymentIntent can be [attached to 
 
 Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
 Use `off_session` if your customer may or may not be in your checkout flow.
-See [saving card details during payment](https://docs.stripe.com/payments/save-during-payment.md) to learn more.
+See [saving card details during payment](https://docs.stripe.com/payments/advanced/save-during-payment.md) to learn more.
 
 Stripe uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules.
 For example, if your customer is impacted by [SCA](https://docs.stripe.com/strong-customer-authentication.md), using `off_session` will ensure that they are authenticated while processing this PaymentIntent.

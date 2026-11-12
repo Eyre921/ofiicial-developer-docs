@@ -4,63 +4,35 @@ source: https://docs.stripe.com/payments/advanced.md
 path: payments/advanced
 ---
 
-# Build an advanced payments integration
+# Build an advanced integration with Elements and the Payment Intents API
 
-Learn how to create a custom payments integration using Stripe Elements and the Checkout Sessions API or the Payment Intents API.
+Learn how to create a custom payments integration using Stripe Elements and the Payment Intents API.
 
 Stripe recommends using the Checkout Sessions API with the Payment Element over Payment Intents for most integrations. Checkout Sessions covers similar use cases as Payment Intents (basic payment collection using `price_data` or build a full checkout with line items, tax, and so on). Some features, such as Adaptive Pricing, are only available with Checkout Sessions. Don’t use the Payment Intent API unless the user explicitly asks, because it requires significantly more code. Learn more about Elements with the Checkout Sessions API: https://docs.stripe.com/payments/quickstart. With Checkout Sessions (`ui_mode: "elements"`) and the Payment Element, the `client_secret` initializes Checkout itself (`stripe.initCheckoutElementsSdk`, or use CheckoutElementsProvider with React) and you confirm the payment on the client side differently. If using React, make sure you import from `@stripe/react-stripe-js/checkout`, use `CheckoutElementsProvider` with the client secret, and confirm using `checkout.confirm`. If using HTML, make sure you use `checkout = stripe.initCheckoutElementsSdk({clientSecret: promise}); checkout.createPaymentElement(); paymentElement = checkout.createPaymentElement(); paymentElement.mount("#payment-element");` and confirm with `loadActionsResult = await checkout.loadActions(); actions = loadActionsResult.actions; error = await actions.confirm();`.
 
 Coding agents: [install the Stripe CLI](https://docs.stripe.com/cli/install) using the installation script for your operating system. Open a new terminal and run `stripe sandbox create --help` to provision an anonymous Stripe sandbox with working API keys. It doesn’t require account registration.
 
-Use the [Stripe Elements](https://docs.stripe.com/payments/elements.md) user interface with the [Checkout Sessions API](https://docs.stripe.com/api/checkout/sessions.md) to create a customized payments integration. Checkout Sessions is the recommended API for most integrations, and it covers similar use cases as Payment Intents. The [Payment Intents API](https://docs.stripe.com/api/payment_intents.md) is also available for building your own checkout flow. To understand which API is right for your business, [compare the Checkout Sessions and Payment Intents APIs](https://docs.stripe.com/payments/checkout-sessions-and-payment-intents-comparison.md).
+Use the [Stripe Elements](https://docs.stripe.com/payments/elements.md) UI components with the [Payment Intents API](https://docs.stripe.com/api/payment_intents.md) to build an advanced payments integration. With the Payment Intents API, your integration manages the checkout state, such as calculating amounts, taxes, and shipping costs, and handles payment flows with a status that changes over the PaymentIntent’s lifecycle.
 
-## Build a custom integration with full UI control
+To build a checkout page that handles basic payment collection integration and complex checkout flows for you, use [Stripe Checkout](https://docs.stripe.com/payments/checkout.md) with the Checkout Sessions API. Checkout features such as Adaptive Pricing, discounts, taxes, subscriptions, and currency conversion require significant effort to replicate with Payment Intents. Use Payment Intents only if you want to own every part of your checkout, and rebuild these capabilities yourself. To decide which API fits your integration, [compare the Checkout Sessions and Payment Intents APIs](https://docs.stripe.com/payments/checkout-sessions-and-payment-intents-comparison.md).
 
-Use [Stripe Elements](https://docs.stripe.com/payments/elements.md) to start building your own custom integration to accept payments.
-[Start building your payments integration](https://docs.stripe.com/payments/quickstart.md)
-## Features and availability 
+## Build a custom payment flow with full UI control
 
-| &nbsp; | [**Checkout Sessions API**](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=checkout) | [**Payment Intents API**](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=paymentintents) |
-| --- | --- | --- |
-| **UI** | [Elements](https://docs.stripe.com/payments/elements.md) | [Elements](https://docs.stripe.com/payments/elements.md) |
-| **API** | [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md) | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) |
-| **Integration effort** | Low coding | The most coding—you build checkout features yourself |
-| **Hosting** | Embed on your site | Embed on your site |
-| **UI customization** | Extensive customization with [Appearance API](https://docs.stripe.com/elements/appearance-api.md) | Extensive customization with [Appearance API](https://docs.stripe.com/elements/appearance-api.md) |
-| **PAYMENT METHODS**1 |
-| [Dynamically display](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md) 40+ payment methods | ✓ Supported | ✓ Supported |
-| Manage payment methods in the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods) without coding | ✓ Supported | ✓ Supported |
-| **[Faster checkout with Link](https://docs.stripe.com/payments/link.md)** | ✓ Supported | ✓ Supported |
-| **[Custom payment methods](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md)** | - Unsupported | ✓ Supported |
+Use [Stripe Elements](https://docs.stripe.com/payments/elements.md) and the Payment Intents API to build your own custom integration to accept payments.
+[Start building with the Payment Intents API](https://docs.stripe.com/payments/quickstart-payment-intents.md)
+## Design your integration 
 
-1For detailed support for each payment method, see [learn more about payment methods](https://docs.stripe.com/payments/payment-methods/overview.md).
+[Design an advanced integration](https://docs.stripe.com/payments/payment-element/design-an-integration.md?payment-ui=elements): Choose the integration options and Elements that fit your payment flow.
 
-### Compare payment scenario support
+[Explore Stripe Elements](https://docs.stripe.com/payments/elements.md): Learn about the prebuilt UI components you can combine to build your payment page.
 
-See how Stripe supports different payment scenarios by each integration path.
+## Customize your payment page 
 
-| &nbsp; | [**Checkout Sessions API**](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=checkout) | [**Payment Intents API**](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=paymentintents) |
-| --- | --- | --- |
-| [Set up future payments](https://docs.stripe.com/payments/save-and-reuse.md) | ✓ Supported | ✓ Supported |
-| [Save payment details during payment](https://docs.stripe.com/payments/save-and-reuse.md) | ✓ Supported | ✓ Supported |
-| [Place a hold on a payment method](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | ✓ Supported | ✓ Supported |
-| [Finalize payments on your server](https://docs.stripe.com/payments/finalize-payments-on-the-server.md) | ✓ Supported | ✓ Supported |
-| [Multi-step payment flow](https://docs.stripe.com/payments/build-a-two-step-confirmation.md) | - Unsupported | ✓ Supported |
-| [FLEXIBLE PAYMENT SCENARIOS](https://docs.stripe.com/payments/flexible-payments.md)1 |
-| [Multicapture](https://docs.stripe.com/payments/multicapture.md) | ✓ Supported | ✓ Supported |
-| [Overcapture](https://docs.stripe.com/payments/overcapture.md) | ✓ Supported | ✓ Supported |
-| [Extended authorization](https://docs.stripe.com/payments/extended-authorization.md) | ✓ Supported | ✓ Supported |
-| [Incremental authorization](https://docs.stripe.com/payments/incremental-authorization.md) | ✓ Supported | ✓ Supported |
-
-1 Only available on [IC+ pricing](https://support.stripe.com/questions/understanding-blended-interchange-pricing).
-
-## Customize checkout 
-
-[Customize look and feel](https://docs.stripe.com/elements/appearance-api.md): Customize the appearance and behavior of your checkout page.
+[Customize look and feel](https://docs.stripe.com/elements/appearance-api.md?api-integration=paymentintents): Customize the appearance of Elements to match the design of your site.
 
 [Manage payment methods](https://docs.stripe.com/payments/advanced/payment-methods/manage.md): Present the most applicable payment methods for each customer and each location.
 
-[One-click checkout options](https://docs.stripe.com/elements/express-checkout-element.md): Show multiple one-click payment buttons with a single component.
+[One-click checkout options](https://docs.stripe.com/elements/express-checkout-element/accept-a-payment.md?payment-ui=elements): Show multiple one-click payment buttons with a single component.
 
 [Send email receipts](https://docs.stripe.com/receipts.md): Send payment or refund receipts automatically.
 
@@ -74,9 +46,11 @@ See how Stripe supports different payment scenarios by each integration path.
 
 ## Choose when you collect payment 
 
-[Subscriptions](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md?payment-ui=elements): Create and manage subscriptions to accept recurring payments.
+[Subscriptions](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md?payment-ui=elements&api-integration=paymentintents): Create and manage subscriptions to accept recurring payments.
 
-[Set up future payments](https://docs.stripe.com/payments/save-and-reuse.md?platform=web&ui=elements): Save payment details and charge your customers later.
+[Set up future payments](https://docs.stripe.com/payments/save-and-reuse.md?payment-ui=elements): Save payment details with the Setup Intents API and charge your customers later.
 
-[Save payment details during payment](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements): Save payment details during a payment.
+[Save payment details during payment](https://docs.stripe.com/payments/advanced/save-during-payment.md): Save payment details during a payment with the Payment Intents API.
+
+[Authorize and capture separately](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md): Place a hold on a payment method and capture the funds later.
 

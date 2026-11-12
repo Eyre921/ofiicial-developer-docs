@@ -1,5 +1,5 @@
 ---
-title: "Determining Your Audio Format for Live Streaming Audio"
+title: "Determining your audio format for live streaming audio"
 source: https://developers.deepgram.com/docs/determining-your-audio-format-for-live-streaming-audio.md
 path: docs/determining-your-audio-format-for-live-streaming-audio
 ---
@@ -7,7 +7,7 @@ path: docs/determining-your-audio-format-for-live-streaming-audio
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Determining Your Audio Format for Live Streaming Audio
+# Determining your audio format for live streaming audio
 
 Before you start streaming audio to Deepgram, it’s important that you understand whether your audio is containerized or raw, so you can correctly form your API request.
 
@@ -16,7 +16,7 @@ The difference between containerized and raw audio relates to how much informati
 * **Containerized audio stream:** A series of bits is passed along with a header that specifies information about the audio. Containerized audio generally includes enough additional information to allow Deepgram to decode it automatically.
 * **Raw audio stream:** The series of bits is passed with no further information. Deepgram needs you to manually provide information about the characteristics of raw audio.
 
-## Streaming Raw Audio
+## Streaming raw audio
 
 If you’re streaming raw audio to Deepgram, you must provide the [encoding](/docs/encoding/) and [sample rate](/docs/sample-rate/) of your audio stream in your request. Otherwise, Deepgram will be unable to decode the audio and will fail to return a transcript.
 
@@ -28,9 +28,9 @@ wss://api.deepgram.com/v1/listen?encoding=ENCODING_VALUE&sample_rate=SAMPLE_RATE
 
 > **Info**
 >
-> To see a list of raw audio encodings that Deepgram supports, [check out our Encoding documentation](/docs/encoding/).
+> To see a list of raw audio encodings that we support, [check out our Encoding documentation](/docs/encoding/).
 
-## Streaming Containerized Audio
+## Streaming containerized audio
 
 If you’re streaming containerized audio to Deepgram, you should not set the encoding and sample rate of your audio stream. Instead, Deepgram will read the container’s header and get the correct information for your stream automatically.
 
@@ -42,19 +42,19 @@ wss://api.deepgram.com/v1/listen
 
 > **Info**
 >
-> Deepgram supports over 100 different audio formats and encodings. You can see some of the most popular ones at [Supported Audio Format](/docs/supported-audio-formats).
+> We support over 100 different audio formats and encodings. You can see some of the most popular ones at [Supported Audio Format](/docs/supported-audio-formats).
 
-## Determining Your Audio Format
+## Determining your audio format
 
 If you’re not sure whether your audio is raw or containerized, you can identify audio format in a few different ways.
 
-### Check Documentation
+### Check documentation
 
 Start by checking any available documentation for your audio source. Often, it will provide details related to audio format. Specifically, check for any mentions of encodings like Opus, Vorbis, PCM, mu-law, A-law, s16, or linear16.
 
 If your audio source is a web API stream, in many cases it will already be containerized. For example, the audio may be raw Opus audio wrapped in an Ogg container or raw PCM audio wrapped in a WAV container.
 
-### Automatically Detect Audio Format
+### Automatically detect audio format
 
 If you’re still not sure whether or not your audio is containerized, you can write an audio stream to disk and try listening to it with a program like VLC. If your audio is containerized, VLC will be able to play it back without any additional configuration.
 
@@ -70,7 +70,7 @@ ffprobe PATH_TO_FILE
 
 The last line of the output from this command will include any data `ffprobe` is able to determine about the file’s audio format.
 
-## Using Raw Audio with Encoding & Sample Rate
+## Using raw audio with encoding & sample rate
 
 When using raw audio, make sure to set the [encoding](/docs/encoding/) and the [sample rate](/docs/sample-rate/). Both parameters are required for Deepgram to be able to decode your stream.
 

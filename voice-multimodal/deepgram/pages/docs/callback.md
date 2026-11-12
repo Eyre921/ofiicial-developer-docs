@@ -1,5 +1,5 @@
 ---
-title: "STT Callback"
+title: "STT callback"
 source: https://developers.deepgram.com/docs/callback.md
 path: docs/callback
 ---
@@ -7,7 +7,7 @@ path: docs/callback
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# STT Callback
+# STT callback
 
 `callback` *string*
 
@@ -15,7 +15,7 @@ Pre-recorded  Streaming:Nova  All available languages
 
 Deepgram’s Callback feature allows you to supply a callback URL to which transcriptions can be returned. When passed, Deepgram will immediately respond with a `request_id` before processing your audio asynchronously.
 
-## Enable Feature
+## Enable feature
 
 To enable Callback, when you call Deepgram’s API, add a `callback` parameter in the query string and set it to the URL to which you would like transcriptions sent:
 
@@ -34,7 +34,7 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?callback=URL'
 ```
 
-## URL Structure
+## URL structure
 
 An example URL is `https://example.com/callback`.
 
@@ -43,7 +43,7 @@ Your callback URLs may reference the following protocols:
 * For pre-recorded audio: `http` or `https`
 * For streaming audio, `http`, `https`, `ws`, or `wss:`
 
-## Authenticating Callback Requests
+## Authenticating callback requests
 
 Authenticate callback requests to confirm that they come from Deepgram. Use Basic Auth where possible. As an alternative, verify a shared secret passed with [Extra Metadata](/docs/extra-metadata).
 
@@ -96,7 +96,7 @@ This method keeps the secret private. Requests to Deepgram's public endpoints us
 
 Depending on the type of submitted audio, the response will vary.
 
-### Pre-recorded Audio
+### Pre-recorded audio
 
 When Deepgram has finished analyzing the audio, it will send a `POST` request to the provided callback URL with an appropriate HTTP status code.
 
@@ -117,7 +117,7 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?callback=URL&callback_method=put'
 ```
 
-### Streaming Audio
+### Streaming audio
 
 As Deepgram analyzes the audio, the way in which it sends requests back to the provided callback URL varies:
 

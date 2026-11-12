@@ -23,9 +23,9 @@ You can customize the length of time used to detect whether a speaker has finish
 
 > **Info**
 >
-> Endpointing can be used with Deepgram's [Interim Results](/docs/interim-results/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results/).
+> Endpointing can be used with our [Interim results](/docs/interim-results/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results/).
 
-## Enable Feature
+## Enable feature
 
 Endpointing is enabled by default and set to 10 milliseconds. and will return transcripts after detecting 10 milliseconds of silence.
 

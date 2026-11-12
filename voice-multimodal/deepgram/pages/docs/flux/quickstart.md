@@ -1,5 +1,5 @@
 ---
-title: "Getting Started with Flux"
+title: "Getting started with Flux STT"
 source: https://developers.deepgram.com/docs/flux/quickstart.md
 path: docs/flux/quickstart
 ---
@@ -7,19 +7,19 @@ path: docs/flux/quickstart
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started with Flux
+# Getting started with Flux STT
 
 Deepgram API Playground
 
 Try this feature out in our API Playground.
 
-Flux tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.
+Deepgram Flux STT tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.
 
-**Flux is Perfect for:** turn-based voice agents, customer service bots, phone assistants, and real-time conversation tools.
+**Flux STT is Perfect for:** turn-based voice agents, customer service bots, phone assistants, and real-time conversation tools.
 
 > **Info**
 >
-> **Multilingual support:** Flux Multilingual (`flux-general-multi`) extends Flux to 10 languages with optional `language_hint` biasing. See the [Language Prompting guide](/docs/flux/language-prompting) for details.
+> **Multilingual support:** Flux STT Multilingual (`flux-general-multi`) extends Flux STT to 10 languages with optional `language_hint` biasing. See the [Language Prompting guide](/docs/flux/language-prompting) for details.
 
 **Key Benefits:**
 
@@ -33,22 +33,22 @@ Flux tackles the most critical challenges for voice agents today: knowing when t
 
 > **Info**
 >
-> For more information on how Flux manages turns, see the [Flux State Machine Guide](/docs/flux/state) guide.
+> For more information on how Flux STT manages turns, see the [Flux STT State Machine Guide](/docs/flux/state) guide.
 
-## Important: Flux Connection Requirements
+## Important: Flux STT connection requirements
 
 > **Warning**
 >
-> **Flux requires the `/v2/listen` endpoint** — Using `/v1/listen` will not work with Flux.
+> **Flux STT requires the `/v2/listen` endpoint** — Using `/v1/listen` will not work with Flux STT.
 
-When connecting to Flux, you must use:
+When connecting to Flux STT, you must use:
 
 * **Endpoint:** `/v2/listen` (not `/v1/listen`)
 * **Model:** `flux-general-en` for English or `flux-general-multi` for multilingual workloads
 * **Audio Format:** See [Audio Format Requirements](#audio-format-requirements) table below
 * **Chunk Size:** **80ms audio chunks strongly recommended** for optimal model performance and latency
 
-### Audio Format Requirements
+### Audio format requirements
 
 | Audio Type    | Encoding                                                    | Container | `encoding` param | `sample_rate` param                | Supported Sample Rates                     |
 | ------------- | ----------------------------------------------------------- | --------- | ---------------- | ---------------------------------- | ------------------------------------------ |
@@ -67,11 +67,11 @@ wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&langu
 
 When using the Deepgram SDK, use `client.listen.v2.connect()` to access the v2 endpoint. For direct WebSocket connections, ensure you're using `/v2/listen` in your URL.
 
-## Configurable Parameters
+## Configurable parameters
 
-Flux provides three key parameters to control end-of-turn detection behavior and optimize your voice agent's conversational flow:
+Flux STT provides three key parameters to control end-of-turn detection behavior and optimize your voice agent's conversational flow:
 
-### End-of-Turn Detection Parameters
+### End-of-turn detection parameters
 
 | Parameter             | Range           | Default | Description                                                                                                                                                                                                                                      |
 | --------------------- | --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -102,7 +102,7 @@ For comprehensive parameter documentation and tuning guidance, see the [End-of-T
 >
 > **Dynamic Configuration**: You can update these parameters mid-stream using the [Configure control message](/docs/flux/configure) without disconnecting and reconnecting. This is useful for adapting to changing conversation context or user behavior.
 
-## Using Flux: SDK vs Direct WebSocket
+## Using Flux STT: SDK vs direct WebSocket
 
 **`SDK (Recommended)`**
 
@@ -204,16 +204,16 @@ wsClient.sendConfigure(
 * ❌ Sending `language_hint` to `flux-general-en` (only `flux-general-multi` supports it)
 * ❌ Specifying `encoding` or `sample_rate` when sending containerized audio (omit these for containerized formats)
 
-## Let's Build!
+## Let's build
 
-This guide walks you through building a basic streaming transcription application powered by Deepgram Flux and the Deepgram SDK.
+This guide walks you through building a basic streaming transcription application powered by Deepgram Flux STT and the Deepgram SDK.
 
 By the end of this guide, you’ll have:
 
 * A real-time streaming transcription application with sub-second response times using the [BBC Real Time Live Stream](http://stream.live.vc.bbcmedia.co.uk/bbc_world_service) as your audio.
-* Natural conversation flow with Flux’s advanced turn detection model
+* Natural conversation flow with Flux STT’s advanced turn detection model
 * Voice Activity Detection based interruption handling for responsive interactions
-* A working demo you can build on!
+* A working demo you can build on.
 
 **Audio Stream**
 
@@ -270,7 +270,7 @@ COMING SOON!
 // https://github.com/deepgram/deepgram-java-sdk
 ```
 
-### 2. Add Dependencies
+### 2. Add dependencies
 
 Install the additional dependencies:
 
@@ -307,7 +307,7 @@ COMING SOON!
 
 ### 3. Install `FFMPEG` on your machine
 
-You will need the actual FFmpeg binary installed to run this demo:
+You'll need the actual FFmpeg binary installed to run this demo:
 
 * macOS: `brew install ffmpeg`
 * Ubuntu/Debian: `sudo apt install ffmpeg`
@@ -339,7 +339,7 @@ DEEPGRAM_API_KEY="your_deepgram_api_key"
 
 **Deepgram SDK**:
 
-* `AsyncDeepgramClient` - Main client for Flux API connection
+* `AsyncDeepgramClient` - Main client for Flux STT API connection
 * `EventType` - WebSocket event constants (OPEN, MESSAGE, CLOSE, ERROR)
 * `ListenV2TurnInfo` - Type hints for incoming transcription messages
 
@@ -479,18 +479,18 @@ static String getConfidenceColor(double confidence) {
 }
 ```
 
-### 5. Connect to Flux and Process Audio
+### 5. Connect to Flux STT and process audio
 
 The main function orchestrates real-time transcription of streaming audio URLs:
 
-* **Initialize:** Creates `AsyncDeepgramClient` and connects to Flux with required linear16 format
+* **Initialize:** Creates `AsyncDeepgramClient` and connects to Flux STT with required linear16 format
 * **Event Handling:** Sets up message handler that displays transcriptions with color-coded confidence scores
 * **Audio Pipeline:** Launches FFmpeg subprocess to convert compressed stream URL to `linear16` PCM format
-* **Streaming Loop:** Reads converted audio chunks and pipes them to Deepgram Flux connection
+* **Streaming Loop:** Reads converted audio chunks and pipes them to Deepgram Flux STT connection
 * **Concurrent Tasks:** Runs Deepgram listener and audio conversion simultaneously using asyncio
 * **Error Handling:** Manages FFmpeg errors and connection timeouts (60s default)
 
-The function handles both the audio conversion requirement (Flux only accepts `linear16`) and real-time streaming coordination between multiple async processes.
+The function handles both the audio conversion requirement (Flux STT only accepts `linear16`) and real-time streaming coordination between multiple async processes.
 
 **`Python`**
 
@@ -775,7 +775,7 @@ public static void main(String[] args) throws Exception {
 }
 ```
 
-### 6. Complete Code Example
+### 6. Complete code example
 
 Here's the complete working example that combines all the steps. You can also find this code on [GitHub](https://github.com/deepgram-devs/deepgram-demos-flux-streaming-transcription).
 
@@ -988,15 +988,15 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## Additional Flux Demos
+## Additional Flux STT demos
 
-For additional demos showcasing Flux, check out the following repositories:
+For additional demos showcasing Flux STT, check out the following repositories:
 
-| Demo Link                                                 | Repository                                                                   | Tech Stack          | Use Case                     |
-| --------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------- | ---------------------------- |
-| [Demo Link](https://demos.dx.deepgram.com/flux-streaming) | [Repository](https://github.com/deepgram-devs/deepgram-demos-flux-streaming) | Node, JS, HTML, CSS | Flux Streaming Transcription |
-| N/A                                                       | [Repository](https://github.com/deepgram-devs/deepgram-demos-rust)           | Rust                | Flux Streaming Transcription |
+| Demo Link                                                 | Repository                                                                   | Tech Stack          | Use Case                         |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------- | -------------------------------- |
+| [Demo Link](https://demos.dx.deepgram.com/flux-streaming) | [Repository](https://github.com/deepgram-devs/deepgram-demos-flux-streaming) | Node, JS, HTML, CSS | Flux STT Streaming Transcription |
+| N/A                                                       | [Repository](https://github.com/deepgram-devs/deepgram-demos-rust)           | Rust                | Flux STT Streaming Transcription |
 
-## Building a Voice Agent with Flux
+## Building a voice agent with Flux STT
 
-Are you ready to build a voice agent with Flux? See our [Build a Flux-enabled Voice Agent](/docs/flux/agent) Guide to get started.
+Are you ready to build a voice agent with Flux STT? See our [Build a Flux STT-enabled voice agent](/docs/flux/agent) guide to get started.

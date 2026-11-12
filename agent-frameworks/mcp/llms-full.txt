@@ -24694,11 +24694,45 @@ Successfully authenticated!
 ✓ Successfully logged in
 ```
 
+### Personal vs. organization namespaces
+
+GitHub authentication always grants your personal namespace, `io.github.<your-username>/*`.
+
+To publish under an **organization** namespace (`io.github.<orgname>/*`), you must be an **Owner** of that organization. Ordinary org membership is no longer sufficient: the registry checks your membership role and only grants the org namespace to admins. This prevents anyone who merely belongs to an org from publishing — or overwriting — servers under the org's name.
+
+> [!WARNING]
+>
+> **`mcp-publisher login github` cannot currently publish to an organization namespace.**
+>
+> The interactive device flow authenticates against a GitHub App, and GitHub App user tokens cannot read organization memberships — GitHub returns an empty list, so the registry sees no organizations you own and grants only your personal namespace. This affects everyone, regardless of your role in the organization or whether your membership is public. Tracking issue: [#1468](https://github.com/modelcontextprotocol/registry/issues/1468).
+>
+> To publish an organization server today, use one of the two paths that can prove your organization role:
+>
+> * **[GitHub Actions](./github-actions)** — publishes via OIDC, which is unaffected.
+> * **A Personal Access Token** — `mcp-publisher login github --token <YOUR_TOKEN>`, meeting the requirements below.
+
+If you authenticate with a Personal Access Token (in CI, or to work around the limitation above), the token must let the registry read your organization role. A token that can't will still publish to your personal namespace, but org publishing will be silently unavailable. The exact requirement depends on the token type:
+
+* **Classic PAT**: grant the `read:org` scope.
+* **Fine-grained PAT**: grant the **Organization permissions → Members → Read-only** permission (the fine-grained equivalent of `read:org`). Without it, GitHub returns no organization membership for the token and you'll get your personal namespace only. Note that a fine-grained PAT is bound to a single resource owner, so it can only see the organization it was created for.
+
+Either way the token needs **no** repository scopes — the registry never reads or writes your code.
+
 ## DNS Authentication
 
 DNS authentication is a domain-based authentication method that relies on a DNS TXT record.
 
+> [!WARNING]
+>
+> The TXT record must be placed on the **apex** of your domain (e.g. `example.com`), **not** under a selector like `_mcp-auth.example.com` or `_mcp-registry.example.com`. MCP DNS auth follows SPF-style placement (apex), not DKIM-style (selector). If you put the record under a selector, the registry will not see it and authentication will fail with a generic signature error.
+>
+> If you rotate keys, also remember to remove the previous TXT record from the apex — a stale record left behind will be tried first and cause verification to fail.
+
 To perform DNS authentication using the `mcp-publisher` CLI tool, run the following commands in your server project directory to generate a TXT record based on a public/private key pair:
+
+> [!NOTE]
+>
+> The Ed25519 codepath requires **OpenSSL 3.0 or later**. macOS ships with LibreSSL by default (the system `openssl` binary), which does not implement Ed25519 in `genpkey` and fails with `Algorithm Ed25519 not found`. On macOS, install OpenSSL 3 (`brew install openssl@3`) and invoke it explicitly — for example, replace `openssl` with `/opt/homebrew/opt/openssl@3/bin/openssl` (Apple Silicon) or `/usr/local/opt/openssl@3/bin/openssl` (Intel) in the commands below. The ECDSA P-384 codepath works on LibreSSL.
 
 ```bash Ed25519 theme={null}
 MY_DOMAIN="example.com"
@@ -24792,7 +24826,7 @@ mcp-publisher login dns --domain "${MY_DOMAIN}" --private-key "${PRIVATE_KEY}"
 MY_DOMAIN="example.com"
 
 PRIVATE_KEY="$(openssl ec -in key.pem -noout -text | grep -A4 "priv:" | tail -n +2 | tr -d ' :\n')"
-mcp-publisher login dns --domain "${MY_DOMAIN}" --private-key "${PRIVATE_KEY}"
+mcp-publisher login dns --algorithm ecdsap384 --domain "${MY_DOMAIN}" --private-key "${PRIVATE_KEY}"
 ```
 
 ```bash Google KMS theme={null}
@@ -24817,6 +24851,10 @@ mcp-publisher login dns azure-key-vault --domain="${MY_DOMAIN}" --vault "${MY_KE
 HTTP authentication is a domain-based authentication method that relies on a `/.well-known/mcp-registry-auth` file hosted on your domain. For example, `https://example.com/.well-known/mcp-registry-auth`.
 
 To perform HTTP authentication using the `mcp-publisher` CLI tool, run the following commands in your server project directory to generate an `mcp-registry-auth` file based on a public/private key pair:
+
+> [!NOTE]
+>
+> As with DNS authentication, the Ed25519 codepath requires **OpenSSL 3.0 or later**. macOS's system LibreSSL does not support Ed25519 in `genpkey`. See the note in the [DNS Authentication](#dns-authentication) section for the macOS workaround.
 
 ```bash Ed25519 theme={null}
 # Generate public/private key pair using Ed25519
@@ -24904,7 +24942,7 @@ mcp-publisher login http --domain "${MY_DOMAIN}" --private-key "${PRIVATE_KEY}"
 ```bash ECDSA P-384 theme={null}
 MY_DOMAIN="example.com"
 PRIVATE_KEY="$(openssl ec -in key.pem -noout -text | grep -A4 "priv:" | tail -n +2 | tr -d ' :\n')"
-mcp-publisher login http --domain "${MY_DOMAIN}" --private-key "${PRIVATE_KEY}"
+mcp-publisher login http --algorithm ecdsap384 --domain "${MY_DOMAIN}" --private-key "${PRIVATE_KEY}"
 ```
 
 ```bash Google KMS theme={null}
@@ -24923,6 +24961,86 @@ MY_KEY_NAME="MyKey"
 
 mcp-publisher login http azure-key-vault --domain="${MY_DOMAIN}" --vault "${MY_KEY_VAULT}" --key "${MY_KEY_NAME}"
 ```
+
+### Troubleshooting failed HTTP verification
+
+The Registry fetches your verification file from its own infrastructure when you run `mcp-publisher login http`, so a `curl` that succeeds on your machine does not prove that login will work. The Registry itself must be able to reach the endpoint.
+
+> [!WARNING]
+>
+> If the Registry cannot use the endpoint, login fails with `token exchange failed with status 401` even though the file is served correctly to every other client.
+
+The fetch is a plain HTTPS request with these properties:
+
+| Property | Requirement |
+| - | - |
+| Request | `GET https://<domain>/.well-known/mcp-registry-auth`, sent with `Accept: text/plain` and `User-Agent: mcp-registry/1.0` |
+| Status | `200 OK`. Redirects are not followed, so a `3xx` fails verification |
+| Body | the proof record, at most 4096 bytes. Surrounding whitespace is ignored |
+| Timeout | 10 seconds for the whole request |
+| Origin | the hosted Registry runs on Google Cloud, so the request arrives from Google Cloud addresses rather than a fixed address you can allowlist per request |
+
+Because the request originates from cloud infrastructure rather than a browser on a residential network, the usual causes of failure are edge rules that block it:
+
+* a WAF, bot-management, or "under attack" rule that challenges or blocks non-browser clients
+* a geo-block or IP allowlist that excludes Google Cloud address ranges
+* an `AAAA` (IPv6) record pointing at an address that is not reachable. Verification fails if none of the domain's public addresses can be reached, even when IPv4 works in a browser
+* a `301`/`302` redirect to another host or path, which the Registry does not follow
+* `/.well-known/mcp-registry-auth` answering `200 OK` with an HTML error page instead of the proof record
+
+To see what the Registry sees, request the file the same way it does, ideally from a network other than your own:
+
+```bash theme={null}
+curl -sS -o - -w '\n%{http_code}\n' \
+  -H 'Accept: text/plain' \
+  -A 'mcp-registry/1.0' \
+  https://example.com/.well-known/mcp-registry-auth
+```
+
+The response body must be the proof record printed by the login command (`v=MCPv1; k=...; p=...`). When the Registry cannot use the endpoint, the login error carries the Registry's own fetch failure, such as `dial tcp <ip>:443: i/o timeout`, `HTTP 403: failed to fetch key from ...`, or `HTTP 301: failed to fetch key from ...`. Allow plain HTTPS clients through for `/.well-known/mcp-registry-auth`, serve the path without redirects, then retry.
+
+Addresses that resolve to loopback, private, link-local, or carrier-grade NAT ranges are refused by design, so the endpoint must be reachable at a public address.
+
+## Troubleshooting DNS and HTTP authentication
+
+If `mcp-publisher login dns` or `login http` fails, check the published proof record before changing keys or retrying. A fetch failure and a signature mismatch have different causes; read the detailed error returned by the Registry.
+
+### Compare the "Expected proof record" against what is actually published
+
+Each login invocation prints an `Expected proof record:` line, for example:
+
+```text Output theme={null}
+Expected proof record:
+v=MCPv1; k=ed25519; p=CmELkdW27Q+pySZRD1ezkXAG/SbeDhGWAjtuKKMKixg=
+```
+
+Check that the algorithm (`k=`) and public key (`p=`) in the published MCPv1 record match the current login command's output. Rerun the login command after rotating a key so you compare against the freshly derived public key. For HTTP verification, surrounding whitespace and trailing newlines are trimmed; their presence alone does not cause a signature mismatch. Avoid editing or wrapping the public-key data itself.
+
+When a signature does not match, the Registry's error includes fingerprints of the published keys it tried. Compare these with the key you intended to publish to help identify a stale record or a mismatch between the private key and published public key.
+
+### DNS: verify the TXT record before logging in
+
+Confirm an MCPv1 TXT record is published at the exact domain passed to `--domain`, rather than at a selector such as `_mcp-auth.<domain>`:
+
+```bash theme={null}
+dig TXT example.com +short
+# Expect a record like:
+# "v=MCPv1; k=ed25519; p=CmELkdW27Q+pySZRD1ezkXAG/SbeDhGWAjtuKKMKixg="
+```
+
+If no MCPv1 record appears, check the DNS provider's record name and value, then allow for DNS propagation and cached responses after correcting it. If `dig TXT _mcp-auth.example.com +short` returns the proof record but `dig TXT example.com +short` does not, it is published at the wrong name (see the apex warning above).
+
+When the Registry finds a well-formed MCPv1 record at a known wrong selector (`_mcp-auth.<domain>` or `_mcp-registry.<domain>`) but none at the requested domain, it returns a specific error identifying the misplaced record.
+
+The Registry tries all valid published MCP keys; a different key in another TXT record does not take precedence over the correct one. Ensure at least one record contains the public key for the private key used by the login command. Remove retired MCP authentication records when they are no longer needed, while preserving keys still in use and TXT records for other services.
+
+### HTTP: verify the well-known endpoint before logging in
+
+Follow [Troubleshooting failed HTTP verification](#troubleshooting-failed-http-verification) for the exact request, timeout, response-size limit, redirect policy, and network requirements. A successful request from your own machine does not establish that the Registry can reach the endpoint.
+
+### Confirm the algorithm matches the key
+
+The `--algorithm` flag (default `ed25519`) must match the algorithm declared in the published proof record's `k=` field. Signing an Ed25519 timestamp against an `ecdsap384` proof record (or vice versa) fails verification. If you regenerated the keypair with a different algorithm than what is published, update the TXT record or the `mcp-registry-auth` file before retrying.
 
 
 # Frequently Asked Questions
@@ -24943,7 +25061,21 @@ Source: https://modelcontextprotocol.io/registry/faq
 
 ### Can I delete/unpublish my server?
 
-Currently, no. At the time of writing, there is [open discussion](https://github.com/modelcontextprotocol/registry/issues/104).
+Yes, you can change your server's status to `deleted` using the `mcp-publisher status` command:
+
+```bash theme={null}
+# Delete a specific version
+mcp-publisher status --status deleted --message "No longer maintained" \
+  io.github.my-username/my-server 1.0.0
+
+# Delete all versions
+mcp-publisher status --status deleted --all-versions --message "Project archived" \
+  io.github.my-username/my-server
+```
+
+Deleted servers are hidden from default API listings but can still be retrieved with `include_deleted=true`. You can restore a deleted server by setting its status back to `active`.
+
+**Note**: Server metadata is never permanently removed from the registry. The `deleted` status hides the server from discovery but preserves the historical record.
 
 ### How do I update my server metadata?
 
@@ -24980,6 +25112,11 @@ Source: https://modelcontextprotocol.io/registry/github-actions
 
 In your server project directory, create a `.github/workflows/publish-mcp.yml` file. Here is an example for npm-based local server, but the MCP Registry publishing steps are the same for all package types:
 
+The examples pin `mcp-publisher` to a specific release and verify its Sigstore
+bundle before extracting it. When upgrading, update `MCP_PUBLISHER_VERSION` to
+the intended release tag deliberately; do not switch back to the mutable
+`releases/latest` URL.
+
 ```yaml OIDC authentication (recommended) theme={null}
 name: Publish to MCP Registry
 
@@ -24993,6 +25130,8 @@ jobs:
     permissions:
       id-token: write # Required for OIDC authentication
       contents: read
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.1
 
     steps:
       - name: Checkout code
@@ -25021,9 +25160,26 @@ jobs:
 
       ### Publish MCP server:
 
-      - name: Install mcp-publisher
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+      - name: Download and verify mcp-publisher
         run: |
-          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+          set -euo pipefail
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
 
       - name: Authenticate to MCP Registry
         run: ./mcp-publisher login github-oidc
@@ -25048,8 +25204,14 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Source MCP_GITHUB_TOKEN from a protected Environment, not a plain repo
+    # secret, and restrict that environment to your default branch / release
+    # tags. See "Securing your registry token in CI" below for why this matters.
+    environment: mcp-registry-publish
     permissions:
       contents: read
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.1
 
     steps:
       - name: Checkout code
@@ -25078,9 +25240,26 @@ jobs:
 
       ### Publish MCP server:
 
-      - name: Install mcp-publisher
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+      - name: Download and verify mcp-publisher
         run: |
-          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+          set -euo pipefail
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
 
       - name: Authenticate to MCP Registry
         run: ./mcp-publisher login github --token ${{ secrets.MCP_GITHUB_TOKEN }}
@@ -25107,6 +25286,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      MCP_PUBLISHER_VERSION: v1.8.1
 
     steps:
       - name: Checkout code
@@ -25135,9 +25316,26 @@ jobs:
 
       ### Publish MCP server:
 
-      - name: Install mcp-publisher
+      - name: Install cosign
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+      - name: Download and verify mcp-publisher
         run: |
-          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher
+          set -euo pipefail
+          os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+          arch="$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/')"
+          archive="mcp-publisher_${os}_${arch}.tar.gz"
+          base_url="https://github.com/modelcontextprotocol/registry/releases/download/${MCP_PUBLISHER_VERSION}"
+
+          curl --fail --location --silent --show-error --output "$archive" "$base_url/$archive"
+          curl --fail --location --silent --show-error --output "$archive.sigstore.json" "$base_url/$archive.sigstore.json"
+          cosign verify-blob \
+            --bundle "$archive.sigstore.json" \
+            --certificate-identity "https://github.com/modelcontextprotocol/registry/.github/workflows/release.yml@refs/tags/${MCP_PUBLISHER_VERSION}" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            "$archive"
+          tar xzf "$archive" mcp-publisher
+          rm -f "$archive" "$archive.sigstore.json"
 
       # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       # TODO: Replace `example.com` with your domain name
@@ -25157,15 +25355,37 @@ jobs:
 
 ## Step 2: Add Secrets
 
-You may need to add a secret to the repository depending on which authentication method you choose:
+You may need to add a secret depending on which authentication method you choose:
 
 * **GitHub OIDC Authentication**: No dedicated secret necessary.
-* **GitHub PAT Authentication**: Add a `MCP_GITHUB_TOKEN` secret with a GitHub Personal Access Token (PAT) that has `read:org` and `read:user` scopes.
+* **GitHub PAT Authentication**: Add a `MCP_GITHUB_TOKEN` secret with a GitHub Personal Access Token. The registry only needs to read your organization role to confirm you are an **Owner** before granting its namespace, so grant the minimum for that and **no** repository scopes (the registry never reads or writes your code):
+
+  * **Classic PAT**: the `read:org` scope (`read:user` is *not* needed; a bare token still authenticates and publishes to your personal namespace).
+  * **Fine-grained PAT**: the **Organization permissions → Members → Read-only** permission (the equivalent of `read:org`). Without it you'll get your personal namespace only. A fine-grained PAT is scoped to one resource owner, so create it for the organization you're publishing to.
+
+  For an **organization** token, store it as an **Environment secret** on the `mcp-registry-publish` environment rather than a plain repository secret — see "Securing your registry token in CI" below for why this matters and how to configure the environment.
 * **DNS Authentication**: Add a `MCP_PRIVATE_KEY` secret with your Ed25519 private key.
 
 You may also need to add secrets for your package registry. For example, the workflow above needs an `NPM_TOKEN` secret with your npm token.
 
 For information about how to add secrets to a repository, see [Using secrets in GitHub Actions](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets).
+
+### Securing your registry token in CI
+
+Whichever token you use to authenticate, treat it as a high-value credential. When you authenticate to an **organization** namespace, the resulting registry token can publish — and overwrite — **any** server under `io.github.<org>/*`, not just the one in this repository. The relevant question for your threat model is therefore: *who can cause code to run in a job where this secret is exposed?* By default that is **every repository writer** (via branch or tag pushes), not only org Owners — so a plain repo secret quietly widens publish access to everyone with write access.
+
+GitHub gives you the tools to close that gap. We recommend, in increasing order of strength:
+
+1. **Store the token as an [Environment secret](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments), not a repository or organization secret.** A job can only read an environment secret when it declares `environment:` (as the PAT example above does). Note that the `environment:` key alone protects nothing: if the environment does not exist yet, GitHub **auto-creates it with no protection rules** on first run, and a job that declares `environment:` still also receives ordinary repository and organization secrets. The protection comes from storing the token *as a secret on that environment* and configuring the environment (steps 2–3 below) — not from the `environment:` key by itself.
+2. **Restrict that environment to your default branch and/or release tags** with a [deployment branch rule](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments#deployment-branches-and-tags), and protect that branch with [required pull request reviews](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches). Now only reviewed, maintainer-approved code can ever reach the token.
+3. **(Strongest) Add a [required reviewer](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments#required-reviewers) to the environment** so each publish pauses for an explicit human approval.
+
+Two pitfalls to avoid regardless of the above:
+
+* **Never publish from a `pull_request_target` workflow that checks out PR-head code.** That trigger runs with your secrets in the base-repo context, so an untrusted fork PR could exfiltrate the token. Environment branch rules do **not** protect you here (the ref is still your base branch) — only required reviewers do.
+* **Avoid self-hosted runners for the publish job on public repositories**, where fork PRs may be able to schedule jobs onto them.
+
+By default, pull requests **from forks** receive no secrets and cannot push branches, so external contributors cannot reach the token without one of the misconfigurations above.
 
 ## Step 3: Tag and Release
 
@@ -25183,6 +25403,7 @@ The workflow will run tests, build the package, publish the package to npm, and 
 | Error Message | Action |
 | - | - |
 | "Authentication failed" | Ensure `id-token: write` permission is set for OIDC, or check secrets. |
+| "invalid audience" | Your `mcp-publisher` binary is too old for this registry deployment. Update `MCP_PUBLISHER_VERSION` to a compatible release and rerun the workflow. |
 | "Package validation failed" | Verify your package successfully published to the package registry (e.g., npm, PyPI), and that your package has the [necessary verification information](./package-types). |
 
 
@@ -25335,6 +25556,8 @@ This MCP server executes SQL queries and manages database connections.
 <!-- mcp-name: io.github.username/database-query-mcp -->
 ```
 
+The `mcp-name:` token must be followed by a boundary — a newline, whitespace, an HTML tag, or the comment close `-->`. Keep it on its own line or inside `<!-- … -->`; do not glue it directly to trailing characters such as a sentence-ending period (`…/database-query-mcp.`), which prevents the match.
+
 ## NuGet Packages
 
 For NuGet packages, the MCP Registry currently supports the official NuGet registry (`https://api.nuget.org/v3/index.json`) only.
@@ -25372,6 +25595,8 @@ This MCP server manages Azure DevOps work items and pipelines.
 
 <!-- mcp-name: io.github.username/azure-devops-mcp -->
 ```
+
+The `mcp-name:` token must be followed by a boundary — a newline, whitespace, an HTML tag, or the comment close `-->`. Keep it on its own line or inside `<!-- … -->`; do not glue it directly to trailing characters such as a sentence-ending period (`…/azure-devops-mcp.`), which prevents the match.
 
 ## Cargo (Rust) Packages
 
@@ -25430,6 +25655,7 @@ For Docker/OCI images, the MCP Registry currently supports:
 
 * Docker Hub (`docker.io`)
 * GitHub Container Registry (`ghcr.io`)
+* Quay.io (`quay.io`)
 * Google Artifact Registry (any `*.pkg.dev` domain)
 * Azure Container Registry (`*.azurecr.io`)
 * Microsoft Container Registry (`mcr.microsoft.com`)
@@ -25455,7 +25681,7 @@ Docker/OCI images use `"registryType": "oci"` in `server.json`. For example:
 }
 ```
 
-The format of `identifier` is `registry/namespace/repository:tag`. For example, `docker.io/user/app:1.0.0` or `ghcr.io/user/app:1.0.0`. The tag can also be specified as a digest.
+The format of `identifier` is `registry/namespace/repository:tag`. For example, `docker.io/user/app:1.0.0`, `ghcr.io/user/app:1.0.0`, or `quay.io/myorg/my-mcp-server:1.0.0`. The tag can also be specified as a digest.
 
 ### Ownership Verification
 
@@ -25513,16 +25739,48 @@ Source: https://modelcontextprotocol.io/registry/quickstart
 
 This tutorial will show you how to publish an MCP server written in TypeScript to the MCP Registry using the official `mcp-publisher` CLI tool.
 
+> [!NOTE]
+>
+> If you are publishing a non-npm package (PyPI, NuGet, OCI, MCPB), the overall flow is identical, but the ownership-verification step in [Step 1](#step-1-add-verification-information-to-the-package) is different per package type. See [Package Types](./package-types) for the verification mechanism that applies to your package, then return here and follow the remaining steps.
+
+## Remote-only servers
+
+If your MCP server is available only at a public remote endpoint, you can publish its metadata without a package. Skip the Node.js and npm prerequisites and Steps 1–2, then continue with [Step 3](#step-3-install-mcp-publisher). Your `server.json` must include a `remotes` entry and can omit `packages`:
+
+```json server.json theme={null}
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.my-username/weather",
+  "title": "Weather",
+  "description": "A remote MCP server for weather information.",
+  "repository": {
+    "url": "https://github.com/my-username/mcp-weather-server",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://weather.example.com/mcp"
+    }
+  ]
+}
+```
+
+The remote URL must be publicly accessible. See [Publishing Remote Servers](./remote-servers) for transport, URL variable, and header options.
+
+With any authentication method, the Registry verifies that you control the namespace in `name`; it does not verify that you control the remote URL. See [Ownership Verification](./remote-servers#ownership-verification) for details.
+
 ## Prerequisites
 
 * **Node.js** — This tutorial assumes the MCP server is written in TypeScript.
-* **npm account** — The MCP Registry only hosts metadata, not artifacts. Before publishing to the MCP Registry, we will publish the MCP server's package to npm, so you will need an [npm](https://www.npmjs.com) account.
+* **npm account (package-based servers only)** — The MCP Registry only hosts metadata, not artifacts. Before publishing a package-based MCP server to the MCP Registry, we will publish the package to npm, so you will need an [npm](https://www.npmjs.com) account.
 * **GitHub account** — The MCP Registry supports [multiple authentication methods](./authentication). For simplicity, this tutorial will use GitHub-based authentication, so you will need a [GitHub](https://github.com/) account.
 
 If you do not have an MCP server written in TypeScript, you can copy the `weather-server-typescript` server from the [`modelcontextprotocol/quickstart-resources` repository](https://github.com/modelcontextprotocol/quickstart-resources) to follow along with this tutorial:
 
 ```bash theme={null}
-git clone --depth 1 git@github.com:modelcontextprotocol/quickstart-resources.git
+git clone --depth 1 https://github.com/modelcontextprotocol/quickstart-resources.git
 cp -r quickstart-resources/weather-server-typescript .
 rm -rf quickstart-resources
 cd weather-server-typescript
@@ -25573,9 +25831,6 @@ The MCP Registry only hosts metadata, not artifacts, so we must publish the pack
 Ensure the distribution files are built:
 
 ```bash theme={null}
-# Navigate to project directory
-cd weather-server-typescript
-
 # Install dependencies
 npm install
 
@@ -25608,7 +25863,7 @@ $arch = if ([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitec
 # Move mcp-publisher.exe to a directory in your PATH
 ```
 
-```bash theme={null}
+```bash Homebrew theme={null}
 brew install mcp-publisher
 ```
 
@@ -25631,11 +25886,17 @@ Commands:
   login         Authenticate with the registry
   logout        Clear saved authentication
   publish       Publish server.json to the registry
+  status        Update the status of a server version
+  validate      Validate server.json without publishing
+
+Use 'mcp-publisher <command> --help' for more information about a command.
 ```
 
 ## Step 4: Create `server.json`
 
 The `mcp-publisher init` command can generate a `server.json` template file with some information derived from your project.
+
+The Registry limits the `description` field to 100 characters. Keep the description focused on what the server does; longer descriptions fail validation.
 
 In your server project directory, run `mcp-publisher init`:
 
@@ -25654,12 +25915,12 @@ Open the generated `server.json` file, and you should see contents like:
     "url": "https://github.com/my-username/mcp-weather-server",
     "source": "github"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@my-username/mcp-weather-server",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "transport": {
         "type": "stdio"
       },
@@ -25688,14 +25949,12 @@ Edit the contents as necessary:
      "url": "https://github.com/my-username/mcp-weather-server",
      "source": "github"
    },
--  "version": "1.0.0",
-+  "version": "1.0.1",
+   "version": "1.0.1",
    "packages": [
      {
        "registryType": "npm",
        "identifier": "@my-username/mcp-weather-server",
--      "version": "1.0.0",
-+      "version": "1.0.1",
+       "version": "1.0.1",
        "transport": {
          "type": "stdio"
 -      },
@@ -25715,6 +25974,10 @@ Edit the contents as necessary:
 ```
 
 The `name` property in `server.json` **must** match the `mcpName` property in `package.json`.
+
+> [!NOTE]
+>
+> For a [remote-only server](#remote-only-servers), `mcp-publisher init` still generates a `packages` entry. Replace the `packages` array with a `remotes` array, as shown in the remote-only example above.
 
 ## Step 5: Authenticate with the MCP Registry
 
@@ -25777,7 +26040,7 @@ You should see your server's metadata in the search results JSON:
 
 | Error Message | Action |
 | - | - |
-| "Registry validation failed for package" | Ensure your package includes the required validation information (e.g, `mcpName` property in `package.json`). |
+| "Registry validation failed for package" | Ensure your package includes the required ownership-verification marker for its package type. For npm this is `mcpName` in `package.json`; for PyPI and NuGet it is an `mcp-name: <server-name>` line (or HTML comment) in the package README; for other types see [Package Types](./package-types). |
 | "Invalid or expired Registry JWT token" | Re-authenticate by running `mcp-publisher login github`. |
 | "You do not have permission to publish this server" | Your authentication method doesn't match your server's namespace format. With GitHub auth, your server name must start with `io.github.your-username/`. |
 
@@ -25852,6 +26115,12 @@ For example, servers that have been updated since 2025-10-23 can be fetched usin
 curl "https://registry.modelcontextprotocol.io/v0.1/servers?updated_since=2025-10-23T00:00:00.000Z"
 ```
 
+### Efficient synchronization
+
+After the initial paginated download, use `updated_since` for subsequent syncs instead of downloading the entire registry again. Keep the same timestamp while following every `nextCursor`, and save a new checkpoint only after all pages have been applied successfully. Keep a small overlap between sync windows and deduplicate by server name and version so retries and timestamp boundaries do not lose updates. Incremental results include deleted servers; apply those status changes to your local copy too.
+
+Use a client that negotiates and decodes HTTP compression, for example `curl --compressed`. Persist results locally and avoid repeating a full crawl for each user request. If a request fails or is rate limited, retry with backoff rather than restarting concurrent full downloads.
+
 ## Server Status
 
 Server metadata is generally immutable, except for the `status` field which may be updated to, e.g., `"deprecated"` or `"deleted"`. We recommend that aggregators keep their copy of each server's `status` up to date.
@@ -25923,6 +26192,21 @@ The MCP Registry supports remote MCP servers via the `remotes` property in `serv
 ```
 
 A remote server **MUST** be publicly accessible at its specified URL.
+
+A server with only `remotes` does not need a `packages` entry, so the package ownership verification described in [Package Types](./package-types) does not apply.
+
+## Ownership Verification
+
+When you publish, the Registry verifies that you control the namespace in the server `name` using your [authentication method](./authentication). It does **not** verify that you control the remote URL, regardless of authentication method:
+
+* With [GitHub authentication](./authentication#github-authentication), a server named `io.github.my-username/weather` proves control of the `my-username` GitHub account, not of the domain serving the remote URL.
+* With [DNS authentication](./authentication#dns-authentication) or [HTTP authentication](./authentication#http-authentication), a server named `com.example/weather` proves control of `example.com`, but the Registry does not check that the remote URL is on `example.com`.
+
+If your remote URL is on a domain you control, consider using DNS or HTTP authentication so the server name reflects that domain. This lets users see that the server name and remote URL belong to the same publisher.
+
+Multiple server names can reference the same remote URL. An existing listing does not reserve that URL or prevent another publisher from listing it under a namespace they control. Sharing a URL does not grant permission to publish, edit, or change the status of another publisher's listing.
+
+Consumers should identify registry records by server name and version, not by remote URL. A URL lookup may match multiple server names, each with its own metadata, headers, and template variables. Do not merge configurations or infer publisher ownership or endorsement from a shared URL.
 
 ## Transport Type
 
@@ -28947,7 +29231,7 @@ You'll find the specification, these docs and Specification Enhancement Proposal
 
 To build with MCP, start with the [server](/docs/develop/build-server) and [client](/docs/develop/build-client) guides, the [SDK list](/docs/sdk) or the [MCP Registry](/registry/about).
 
-If you want to invest some time in our discussions, the protocol work is organized in [working groups and interest groups](/community/working-interest-groups). Their meetings are open to anyone and are listed on [meet.modelcontextprotocol.io](https://meet.modelcontextprotocol.io/). [Meetings and channels](/community/working-interest-groups#meetings-and-channels) sets out how a meeting is announced and minuted. No invitation or role is needed to attend or speak at a meeting, to comment on a pull request, or to open an issue or a discussion.
+If you want to invest some time in our discussions, the protocol work is organized in [working groups and interest groups](/community/working-interest-groups). Their meetings are open to anyone and are listed on [meet.modelcontextprotocol.io](https://meet.modelcontextprotocol.io/). [Meetings and channels](/community/working-interest-groups#meetings-and-channels) sets out how a meeting is announced and minuted. No invitation or role is needed to attend or speak at a meeting, to comment on a pull request, or to open an issue.
 
 These same working groups and interest groups are represented in the Discord space.
 
@@ -29021,21 +29305,23 @@ The [SDK list](/docs/sdk) shows each SDK's [tier](/community/sdk-tiers), which s
 
 Protocol changes go through a [SEP](/community/sep-guidelines). Bug fixes and clarifications [do not need one](/community/sep-guidelines#when-you-need-a-sep).
 
-**1. Discuss the idea**
+A SEP needs a [sponsor](/community/sep-guidelines#sponsors): a working group or the Core Maintainers.
 
-Raise it in your group's channel. The SEP pull request [must link to that discussion](/community/sep-guidelines#before-you-write).
+**1. Check the roadmap**
 
-**2. Build a prototype**
+See whether the idea fits the current focus on the [roadmap](/development/roadmap). SEPs within its priority areas get [expedited review](/development/roadmap#sep-prioritization).
 
-See [Prototype Requirements](/community/sep-guidelines#prototype-requirements). Consider shipping the idea as an [extension](/extensions/overview) where its shape allows.
+**2. Bring it to a working group**
 
-**3. Find a sponsor**
+Raise the idea with the [working group](/community/working-interest-groups#current-groups) that covers the area, in its channel or at a meeting. If the area belongs to an interest group, that interest group can start a working group through the [forming a group](/community/working-interest-groups#forming-a-group) process, and that working group sponsors the SEP. The SEP pull request [must link to that discussion](/community/sep-guidelines#workflow).
 
-See [Sponsors](/community/sep-guidelines#sponsors).
+**3. Draft a SEP the group sponsors**
 
-**4. Write the SEP**
+Once the group reaches consensus, write a SEP that it wants to [sponsor](/community/sep-guidelines#sponsors). Until a group agrees to sponsor it, work in progress lives in a draft pull request. Include a prototype that meets the [Prototype Requirements](/community/sep-guidelines#prototype-requirements), and consider shipping the idea as an [extension](/extensions/overview) where its shape allows.
 
-Follow the [workflow](/community/sep-guidelines#workflow). Without write access, ask your sponsor to open the pull request.
+**4. Bring it to the Core Maintainers**
+
+Follow the [workflow](/community/sep-guidelines#workflow). By this point you should be a member of the working group and have access to open pull requests on the specification repository (see [Member](/community/contributor-ladder#member)). If you do not have that access yet, the working group's leads open the pull request. The SEP's sponsor brings it to the Core Maintainers for review.
 
 ## Other ways to help
 
@@ -30474,7 +30760,7 @@ Source: https://modelcontextprotocol.io/community/sep-guidelines
 
 When a Specification Enhancement Proposal is required and the procedure a proposal follows from pull request to Final.
 
-This page describes when a Specification Enhancement Proposal (SEP) is required and the procedure from pull request to Final. A SEP is a design document that gives a concise technical specification of a feature or process and its rationale. Its author is responsible for building consensus and recording dissenting opinions. [SEP-1850](/seps/1850) adopted the process and [SEP-2484](/seps/2484) the conformance gate. Changing either requires a Process SEP.
+This page describes when a Specification Enhancement Proposal (SEP) is required and the procedure from pull request to Final. A SEP is a design document that gives a concise technical specification of a feature or process and its rationale. Its author is responsible for building consensus and recording dissenting opinions. [SEP-1850](/seps/1850) adopted the process and [SEP-2484](/seps/2484) the conformance gate. Changing either requires a Process SEP. The sponsorship rules on this page follow [SEP-3398](/seps/3398).
 
 ## When you need a SEP
 
@@ -30498,17 +30784,24 @@ Bug fixes, clarifications, editorial changes, new examples for existing features
 
 ## Before you write
 
-Bring the idea to the working or interest group that covers the area first (see [Joining a group](/community/working-interest-groups#joining-a-group)). If no group fits, start a thread in [GitHub Discussions](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions) or in `#general` on Discord, and if interest is sustained consider [forming a group](/community/working-interest-groups#forming-a-group). Check which [roadmap](/development/roadmap) priority area the idea serves, read the [design principles](/community/design-principles), and try the idea as an [extension](/extensions/overview) first where its shape allows. Build a prototype that meets the [Prototype Requirements](#prototype-requirements), then write the SEP.
+A SEP needs a working group to sponsor it before formal review (see [Sponsors](#sponsors)).
 
-Prior discussion is required, and the pull request description must link to it: a Discord thread, meeting notes or a GitHub Discussion. A SEP without a linked prior discussion is not accepted. Specification changes are slow by design (see [Stability over velocity](/community/design-principles#stability-over-velocity)).
+To get a working group's sponsorship:
+
+1. Check whether the idea fits the current focus on the [roadmap](/development/roadmap). SEPs outside its priority areas face a longer queue and a higher bar (see [SEP Prioritization](/development/roadmap#sep-prioritization)).
+2. Bring the idea to the working group that covers the area, in its Discord channel or at a meeting (see [Joining a group](/community/working-interest-groups#joining-a-group)). An interest group can help frame the problem first, and a working group sponsors the SEP.
+3. Reach [consensus](/community/working-interest-groups#making-decisions) in the working group, then draft a SEP that the group wants to [sponsor](#sponsors). Read the [design principles](/community/design-principles), try the idea as an [extension](/extensions/overview) first where its shape allows, and build a prototype that meets the [Prototype Requirements](#prototype-requirements).
+4. The working group brings the SEP to the Core Maintainers for review through the [Workflow](#workflow).
+
+If an interest group covers the area and no working group does, the interest group can start a working group for the idea through the [forming a group](/community/working-interest-groups#forming-a-group) process, and that working group sponsors the SEP. This is the normal path for areas an interest group owns. If no working or interest group covers the area, propose a new working group through the [forming a group](/community/working-interest-groups#forming-a-group) process. A thread in `#general` on Discord can help find people to join a new working group.
 
 ## Workflow
 
 ```mermaid theme={null}
 flowchart TD
     Idea["Idea"]
-    Awaiting{"Awaiting sponsor<br/>(PR label: proposal)"}
-    Draft["draft"]
+    DraftPR["Draft pull request<br/>(not yet in the SEP process)"]
+    Draft["draft status<br/>(pull request ready for review)"]
     Dormant["dormant"]
     Withdrawn["withdrawn"]
     InReview["in-review"]
@@ -30518,11 +30811,11 @@ flowchart TD
     Final["final"]
     Superseded["superseded"]
 
-    Idea -->|"Open PR adding the SEP file"| Awaiting
-    Awaiting -->|"Sponsor self-assigns"| Draft
-    Awaiting -->|"180 days without a sponsor"| Dormant
+    Idea -->|"Developed in the open,<br/>no sponsor yet"| DraftPR
+    Idea -->|"Working group<br/>agrees to sponsor"| Draft
+    DraftPR -->|"Working group<br/>agrees to sponsor"| Draft
+    DraftPR -->|"180 days without a sponsor"| Dormant
     Dormant -->|"Sponsor found, PR reopened"| Draft
-    Awaiting --> Withdrawn
     Draft --> Withdrawn
     Draft -->|"Sponsor sets in-review"| InReview
     InReview --> Decision
@@ -30534,10 +30827,10 @@ flowchart TD
 ```
 
 1. Copy [`seps/TEMPLATE.md`](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/seps/TEMPLATE.md) to `seps/0000-<slug>.md` and fill it in.
-2. Open a pull request against the [specification repository](https://github.com/modelcontextprotocol/modelcontextprotocol), titled `sep: <description>` as in `sep: propose task cancellation`, following the [pull request title guidelines](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CONTRIBUTING.md#pull-request-titles). The repository accepts pull requests from collaborators only; if you are not one, find a [sponsor](#sponsors) first and ask them to open it and name you as the author.
+2. Open a pull request against the [specification repository](https://github.com/modelcontextprotocol/modelcontextprotocol), titled `sep: <description>` as in `sep: propose task cancellation`, following the [pull request title guidelines](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CONTRIBUTING.md#pull-request-titles). Authors who are not members of the `modelcontextprotocol` GitHub organization ask the working group's leads or the [sponsor](#sponsors) to open the pull request and name them as the author.
 3. The SEP number is the PR number. Rename the file (PR #1850 becomes `seps/1850-<slug>.md`), update the header, and run `npm run generate:seps`, or the `check:seps` CI job fails. Rename the pull request to `sep(SEP-1850): <description>`; a follow-up commit is enough, with no amend or force-push. Later pull requests about this SEP keep `SEP-1850` as their scope and link to it in the description.
-4. The PR is labeled `proposal`, meaning awaiting sponsor. `proposal` is a PR label only; the `Status` header in the SEP stays unset.
-5. A [sponsor](#sponsors) assigns themselves to the PR and sets `draft`. Review takes place in PR comments.
+4. Until a working group has agreed to sponsor the SEP, it stays a draft pull request. A draft pull request is for developing a proposal in the open. It is not yet in the SEP process, the `Status` header in the SEP stays unset, and the `wg-support-needed` label marks it.
+5. Once a working group has agreed to [sponsor](#sponsors) the SEP, the pull request is marked ready for review. The `Sponsor` header names the person who acts on the sponsoring group's behalf, and that person sets `draft`. Review takes place in PR comments.
 6. When the SEP is ready, the sponsor confirms that the prior discussion happened and is linked in the pull request description, sets `in-review`, and puts it on the Core Maintainer meeting agenda. The author and sponsor may present it.
 7. Core Maintainers decide under [Review and acceptance](#review-and-acceptance). The sponsor records the outcome, `accepted` or `rejected`, on the PR and in the SEP header.
 8. For an accepted SEP, the author adds to the same PR: the specification prose, the `schema.ts` changes with regenerated output (see [CONTRIBUTING.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/CONTRIBUTING.md#schema-changes)), a changelog entry, and any required documentation edits (for a deprecation, the four edits under [Deprecating a Feature](/community/feature-lifecycle#deprecating-a-feature)). The reference implementation is completed where it lives: an SDK branch, a fork or a standalone repository (see [Prototype Requirements](#prototype-requirements)). For a Standards Track SEP with observable protocol behavior, the conformance scenario and `sep-NNNN.yaml` are merged (see [Conformance Test Requirement](#conformance-test-requirement)). SDK implementations are not required for Final.
@@ -30547,7 +30840,7 @@ The eight `Status` values, also defined on the [SEP index](/seps):
 
 | Status | Meaning | Set by |
 | - | - | - |
-| `draft` | Has a sponsor, under informal review in PR comments | Sponsor |
+| `draft` | Has a sponsor, pull request ready for review, under informal review in PR comments | Sponsor |
 | `in-review` | On the Core Maintainer agenda for formal review | Sponsor |
 | `accepted` | Approved, awaiting specification text, reference implementation and conformance | Sponsor, after the Core Maintainer decision |
 | `rejected` | Declined by Core Maintainers | Sponsor, after the Core Maintainer decision |
@@ -30560,13 +30853,16 @@ A SEP that has no sponsor after 180 days is marked `dormant` and its PR is close
 
 ## Sponsors
 
-A sponsor is a Core Maintainer, a Maintainer, or a WG Lead for a SEP within that working group's scope.
+A working group sponsors a SEP. The Core Maintainers can also sponsor one. Both paths lead to the same review and the same acceptance requirements.
 
-To find one, look up the Maintainers for your area in [MAINTAINERS.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/MAINTAINERS.md), then ask in the group's Discord channel.
+* Working group sponsorship: the working group whose scope the SEP falls in approves it through its [decision-making process](/community/working-interest-groups#making-decisions). [Before you write](#before-you-write) covers how a working group comes to sponsor a SEP.
+* Core Maintainer sponsorship: the Core Maintainers agree to sponsor the SEP and designate a Core Maintainer to represent them. No separate working group approval is required, and the designated Core Maintainer consults the relevant working groups. Note that this path is the exception. In general Core Maintainers will not sponsor SEPs. The usual case is a proposal that comes from the Core Maintainers directly.
 
-If you can open pull requests on the repository, post the pull request with its prototype in that channel and tag at most two Maintainers on it. If you cannot, post the draft SEP and its prototype instead, and ask a Maintainer to sponsor it and open the pull request naming you as the author; the SEP is numbered from that pull request as usual. Either way, after two weeks with no response, ask in `#general`.
+The `Sponsor` header names the Maintainer or Core Maintainer who acts on the sponsoring group's behalf, as in `Name (@handle), on behalf of the Transports Working Group` or `Name (@handle), on behalf of the Core Maintainers`. A qualified WG Lead may fill this role for a working group. For the Core Maintainers, the designated Core Maintainer does. The rest of this page calls this person the sponsor.
 
-The sponsor reviews the proposal and requests changes, presents it with the author, verifies the Final artifacts, and makes every status change in the [Workflow](#workflow). That covers the `Status` field in the SEP file, which is canonical, and the matching PR label, which is for filtering. A sponsor without write access to the branch sets the field through the author. Authors do not edit `Status` or labels themselves; they ask their sponsor.
+The sponsor is responsible for the SEP's status and labels and for tracking its implementation. The sponsor reviews the proposal and requests changes, presents it with the author, brings it to the Core Maintainers for review, verifies the Final artifacts, and makes every status change in the [Workflow](#workflow). That covers the `Status` field in the SEP file, which is canonical, and the matching PR label, which is for filtering. A sponsor without write access to the branch sets the field through the author. Authors do not edit `Status` or labels themselves. They ask their sponsor.
+
+The sponsoring group, the sponsor and the author are responsible for moving the SEP forward. When the author cannot open pull requests on the repository, one of the working group's leads or the sponsor opens the pull request and names the author. The SEP is numbered from that pull request as usual.
 
 A WG Lead may also triage and close in-scope SEPs under [Leadership](/community/working-interest-groups#leadership), subject to appeal to Core Maintainers.
 
@@ -31508,6 +31804,7 @@ Working groups deliver concrete outcomes such as SEPs, extensions, and code. Eac
 | Working group | Leads | Discord | Focus |
 | - | - | - | - |
 | [Apps](/community/working-groups/apps) | [Ido Salomon](https://github.com/idosal), [Liad Yosef](https://github.com/liady), [Olivier Chafik](https://github.com/ochafik) | `#mcp-apps-wg` | Official extension for interactive user interfaces over MCP |
+| [Core Primitives](https://github.com/modelcontextprotocol/core-primitives-wg) | [Kurtis Van Gent](https://github.com/kurtisvg), [David Soria Parra](https://github.com/dsp-ant) | `#core-primitives-wg` | Tool result shape, stability, and audience under the roadmap's Improved Primitives area |
 | [File Uploads](/community/working-groups/file-uploads) | [Den Delimarsky](https://github.com/localden) | `#file-uploads-wg` | Declaring file inputs for tools and elicitation so hosts can offer native file pickers |
 | [Filesystems](/community/working-groups/filesystems) | [Sambhav Kothari](https://github.com/sambhav), [Ola Hungerford](https://github.com/olaservo), [Daniel Temesgen](https://github.com/DanielTemesgen) | `#filesystems-wg` | Aligning MCP Resources with general filesystem semantics |
 | [Governance](/community/working-groups/governance) | [Sarah Novotny](https://github.com/sarahnovotny) | `#governance-wg` | Refining, documenting, and stewarding MCP governance processes and community values |
@@ -32384,7 +32681,7 @@ Source: https://modelcontextprotocol.io/community/working-interest-groups
 
 The MCP project's working groups and interest groups, how to join or start one, and the operating rules every group follows.
 
-This page lists the project's working groups and interest groups, explains how to join or start one, and sets the operating rules every group follows. The rules were adopted by [SEP-2149](/seps/2149), a Specification Enhancement Proposal (SEP). A group's charter cannot override them, and changing them requires a Process SEP. Group membership is not required to take part in a group's work, though a [SEP](/community/sep-guidelines) needs [prior discussion](/community/sep-guidelines#before-you-write) with the relevant working group and its approval before the pull request is opened. You may take part in as many groups as your time allows.
+This page lists the project's working groups and interest groups, explains how to join or start one, and sets the operating rules every group follows. The rules were adopted by [SEP-2149](/seps/2149), a Specification Enhancement Proposal (SEP). A group's charter cannot override them, and changing them requires a Process SEP. Group membership is not required to take part in a group's work, though a [SEP](/community/sep-guidelines) needs [prior discussion](/community/sep-guidelines#before-you-write) with the relevant working group and its agreement to sponsor before the pull request is [marked ready for review](/community/sep-guidelines#workflow). You may take part in as many groups as your time allows.
 
 ## Working groups and interest groups
 
@@ -32397,7 +32694,7 @@ This page lists the project's working groups and interest groups, explains how t
 | Duration | Until its deliverables are complete | Ongoing while the topic is relevant |
 | Example | [Transports](/community/working-groups/transports) | [Security](/community/interest-groups/security) |
 
-In the usual path an interest group frames a problem, and a new working group, an existing group, or a SEP submitted directly solves it.
+In the usual path an interest group frames a problem, and a working group solves it. That can be an existing working group or a new one the interest group starts through the [forming a group](#forming-a-group) process, and the working group sponsors any resulting SEP.
 
 ## Current groups
 
@@ -33120,7 +33417,7 @@ Please note some related work:
   * Deprecate `includeContext` (doc explains why its semantics are ambiguous)
   * (goes further to suggest explicit context sharing, which is out of scope from this proposal)
 * [Allow Prompt/Sampling Messages to contain multiple content blocks. #198](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/198)
-  * In this PR we've made `{CreateMessageResult,SamplingMessage}.content` to accept a single content or an array of contents. The `result.content` change is backwards incompatible but is required to support parallel tool calls. The `SamplingMessage.content` change then makes it much more natural to write a tool loop (see example in reference implementation: [toolLoopSampling.ts](https://github.com/modelcontextprotocol/typescript-sdk/blob/ochafik/sep1577/src/examples/server/toolLoopSampling.ts))
+  * In this PR we've made `{CreateMessageResult,SamplingMessage}.content` to accept a single content or an array of contents. The `result.content` change is backwards incompatible but is required to support parallel tool calls. The `SamplingMessage.content` change then makes it much more natural to write a tool loop (see example in reference implementation: [toolLoopSampling.ts](https://github.com/modelcontextprotocol/typescript-sdk/blob/d372eff7a764c72619b15a9f31c2756fa402fa14/src/examples/server/toolLoopSampling.ts))
 
 In the "Possible Follow ups" Section below, we give examples of features that were kept out of scope from this SEP but which we took care to make this SEP reasonably compatible with.
 
@@ -36267,7 +36564,7 @@ MCP currently lacks any form of guidance on how extensions are to be proposed or
 
 An MCP extension is an optional addition to the specification that defines capabilities beyond the core protocol. Extensions enable functionality that may be modular (e.g., distinct features like authentication), specialized (e.g., industry-specific logic), or experimental (e.g., features being incubated for potential core inclusion).
 
-Extensions are identified using a unique *extension identifier* with the format: `{vendor-prefix}/{extension-name}`, e.g. `io.modelcontextprotocol/oauth-client-credentials` or `com.example/websocket-transport`. The names follow the same rules as the [\_meta keys](https://modelcontextprotocol.io/specification/draft/basic/index#meta), except that the prefix is mandatory.
+Extensions are identified using a unique *extension identifier* with the format: `{vendor-prefix}/{extension-name}`, e.g. `io.modelcontextprotocol/oauth-client-credentials` or `com.example/websocket-transport`. The names follow the same rules as the [\_meta keys](https://modelcontextprotocol.io/specification/draft/basic/index#_meta), except that the prefix is mandatory.
 
 To prevent identifier collisions, the vendor prefix SHOULD be a reversed domain name that the extension author owns or controls (similar to Java package naming conventions). For example, a company owning `example.com` would use `com.example/` as their prefix.
 
@@ -41972,7 +42269,7 @@ authoritative, up-to-date requirements.
 
 [SEP-2567]: https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2567
 
-[sessions-decision]: https://github.com/modelcontextprotocol/transports-wg/blob/main/docs/sessions-vs-sessionless-decision.md
+[sessions-decision]: https://github.com/modelcontextprotocol/transports-wg/blob/main/proposals/stateless/session-removal-decision.md
 
 
 # SEP-2577: Deprecate Roots, Sampling, and Logging
@@ -42805,9 +43102,9 @@ Further constraints:
 
 Per RFC 3986, the first segment of `<skill-path>` occupies the authority component. This carries no special semantics under this convention and clients MUST NOT attempt DNS or network resolution of it.
 
-A server MAY serve skills under another scheme native to its domain (e.g., `github://owner/repo/skills/refunds/SKILL.md`). No scheme is privileged: the structural constraints above (`<skill-path>` ending in the skill name, `SKILL.md` explicit in the URI) apply regardless of scheme, and [`skills/list`](#enumeration-via-skillslist) enumerates a server's skills whatever scheme they use.
+A server MAY serve skills under another scheme native to its domain (e.g., `github://owner/repo/skills/refunds/SKILL.md`). No scheme is privileged: the structural constraints above (`<skill-path>` ending in the skill name, `SKILL.md` explicit in the URI) apply regardless of scheme, and [`skills/list`](#enumeration-via-skills%2Flist) enumerates a server's skills whatever scheme they use.
 
-Skill identity does not depend on the scheme. A host learns that a resource is a skill in one of two ways: from a [`skills/list`](#enumeration-via-skillslist) entry, the authoritative record of the skills a server publishes; or from an explicit reference (the server's `instructions` field, another skill, or the user), which [`skills/get`](#retrieval-via-skillsget) confirms, the server answering for a skill it serves and erroring otherwise. This holds for every scheme, `skill://` included. A host MUST NOT conclude that a resource is a skill merely because its URI carries a particular scheme.
+Skill identity does not depend on the scheme. A host learns that a resource is a skill in one of two ways: from a [`skills/list`](#enumeration-via-skills%2Flist) entry, the authoritative record of the skills a server publishes; or from an explicit reference (the server's `instructions` field, another skill, or the user), which [`skills/get`](#retrieval-via-skills%2Fget) confirms, the server answering for a skill it serves and erroring otherwise. This holds for every scheme, `skill://` included. A host MUST NOT conclude that a resource is a skill merely because its URI carries a particular scheme.
 
 #### Examples
 
@@ -42835,7 +43132,7 @@ A skill directory MAY contain further skills in descendant directories. A nested
 
 * **Nested content is supporting content.** From the enclosing skill's perspective, a nested skill's directory and files are ordinary supporting files, and reading them is ordinary reading. A nested `SKILL.md` read this way is ordinary markdown: hosts MUST NOT act on its frontmatter.
 * **Activation requires fresh consent.** Approval is per skill: approving a skill approves that skill alone and says nothing about skills nested within it. Activating a nested skill (loading it as a skill in its own right, whether through the host's skill-loading machinery or by giving effect to its frontmatter) requires fresh, explicit user consent; approval of the enclosing skill does not substitute for it. Once activated, a nested skill is an ordinary skill: its frontmatter takes effect under the same rules as any other MCP-served skill, including the approval gate on `allowed-tools`.
-* **Publication is flat.** A nested skill is published like any other: through its own [`skills/list`](#enumeration-via-skillslist) entry, or by explicit reference. The listing remains flat: an entry for a nested skill is an ordinary entry whose `uri` happens to share a path prefix with the enclosing skill's, and nothing in the listing marks nesting.
+* **Publication is flat.** A nested skill is published like any other: through its own [`skills/list`](#enumeration-via-skills%2Flist) entry, or by explicit reference. The listing remains flat: an entry for a nested skill is an ordinary entry whose `uri` happens to share a path prefix with the enclosing skill's, and nothing in the listing marks nesting.
 
 ### Discovery
 
@@ -42998,7 +43295,7 @@ A skill URI is scoped to the server that serves it. Nothing prevents two connect
 
 Digests are SHA-256 hashes of an artifact's raw bytes, formatted as `sha256:{hex}` where `{hex}` is 64 lowercase hexadecimal characters. Each entry in a skill's `resources` carries the digest of the file at its `uri`.
 
-When a host retrieves a file listed in a skill's `resources`, it MUST verify the content against that entry's digest. A mismatch means the content is not what the listing promised. It may be corrupted, tampered with, or simply stale because the skill was updated after the listing was fetched. Whatever the cause, hosts MUST NOT use the unverified content; to recover from staleness, call [`skills/get`](#retrieval-via-skillsget) for that skill (or `skills/list` to refresh the catalog) and proceed from the current `resources` set, which, being different, revokes any content-bound approval ([Security Implications](#security-implications)). A host is *acting on* a skill from the moment it loads the skill's `SKILL.md` into the model's context until, at the earliest, that `SKILL.md` leaves context; hosts MAY hold the window open longer, never shorter. For the whole of that window the host holds the entry from which it loaded the skill. Because `resources` is complete, an unlisted file is a change to the skill: while acting on a skill, a host MUST resolve reads of the skill's files only to URIs listed in that entry's `resources`, and MUST treat a read of an unlisted file within the skill as a verification failure equivalent to a digest mismatch. Hosts MUST NOT retrieve a skill's files ahead of need, whether on connection, on listing, or at approval. A `SKILL.md` is fetched when the skill is loaded, and a supporting file when it is read. A server may publish many skills with many files each, and every host that connects retrieving all of them would impose load proportional to the catalog rather than to use. Hosts SHOULD instead cache what they do retrieve, and digests make that cache cheap to validate: a cached file whose digest matches the current entry can be served without fetching it again, and one whose digest does not match must be fetched again. A cached copy is only as trustworthy as the host's certainty that its bytes have not changed since they were verified; the requirements on a disk cache are in [Security Implications](#security-implications). Lazy retrieval is compatible with content-bound approval, which binds to the entry's `resources` set rather than to retrieved bytes; a file fetched long after approval is verified against that set when it is read.
+When a host retrieves a file listed in a skill's `resources`, it MUST verify the content against that entry's digest. A mismatch means the content is not what the listing promised. It may be corrupted, tampered with, or simply stale because the skill was updated after the listing was fetched. Whatever the cause, hosts MUST NOT use the unverified content; to recover from staleness, call [`skills/get`](#retrieval-via-skills%2Fget) for that skill (or `skills/list` to refresh the catalog) and proceed from the current `resources` set, which, being different, revokes any content-bound approval ([Security Implications](#security-implications)). A host is *acting on* a skill from the moment it loads the skill's `SKILL.md` into the model's context until, at the earliest, that `SKILL.md` leaves context; hosts MAY hold the window open longer, never shorter. For the whole of that window the host holds the entry from which it loaded the skill. Because `resources` is complete, an unlisted file is a change to the skill: while acting on a skill, a host MUST resolve reads of the skill's files only to URIs listed in that entry's `resources`, and MUST treat a read of an unlisted file within the skill as a verification failure equivalent to a digest mismatch. Hosts MUST NOT retrieve a skill's files ahead of need, whether on connection, on listing, or at approval. A `SKILL.md` is fetched when the skill is loaded, and a supporting file when it is read. A server may publish many skills with many files each, and every host that connects retrieving all of them would impose load proportional to the catalog rather than to use. Hosts SHOULD instead cache what they do retrieve, and digests make that cache cheap to validate: a cached file whose digest matches the current entry can be served without fetching it again, and one whose digest does not match must be fetched again. A cached copy is only as trustworthy as the host's certainty that its bytes have not changed since they were verified; the requirements on a disk cache are in [Security Implications](#security-implications). Lazy retrieval is compatible with content-bound approval, which binds to the entry's `resources` set rather than to retrieved bytes; a file fetched long after approval is verified against that set when it is read.
 
 Digests are unsigned and supplied by the same server that supplies the content. A match proves the two are consistent, not that either is trustworthy. Any intermediary on the path, such as a gateway, can rewrite both the listing and the content together. Hosts MUST NOT treat a digest match as a security boundary.
 
@@ -43122,7 +43419,7 @@ One extension-specific setting is defined:
 | - | - | - | - |
 | `directoryRead` | boolean | `false` | The server implements [`resources/directory/read`](#directory-listing). |
 
-An empty object indicates support for the extension with no optional features. Declaring the extension itself commits the server to [`skills/list`](#enumeration-via-skillslist) and [`skills/get`](#retrieval-via-skillsget); clients MUST NOT call `resources/directory/read` against a server that has not declared `directoryRead: true`. A server declaring this extension MUST also declare the `resources` capability.
+An empty object indicates support for the extension with no optional features. Declaring the extension itself commits the server to [`skills/list`](#enumeration-via-skills%2Flist) and [`skills/get`](#retrieval-via-skills%2Fget); clients MUST NOT call `resources/directory/read` against a server that has not declared `directoryRead: true`. A server declaring this extension MUST also declare the `resources` capability.
 
 ### Reading
 
@@ -43197,7 +43494,7 @@ A server that declares `directoryRead` MUST support the method for every directo
 
 For a skill whose entry carries `resources`, the host already holds a complete manifest of the skill's files ([Resources](#resources)); a directory read tells it nothing about that skill's contents that the entry did not. Directory reading earns its place elsewhere: for dynamically generated skills, whose `resources` is `"dynamic"`; for resource trees that are not skills at all; and for obtaining the server's current view of a directory without first refreshing the entry. When a host acting on a skill with a manifest wants to know what `templates/` contains, it MAY answer from the entry alone.
 
-The two views can disagree. If the server adds a file to a skill after the host obtained its entry, a directory read may list that file while the held manifest does not. This is the stale-snapshot case that [Integrity and verification](#integrity-and-verification) already governs, and the recovery path is the one specified there: while acting on the skill under the held entry, the host MUST NOT read the newly listed child (an unlisted file is a verification failure, exactly as a digest mismatch is) and MUST NOT surface it to the model as a file of the skill. To reach it, the host refreshes the entry with [`skills/get`](#retrieval-via-skillsget), at which point the `resources` set has changed and any persisted content-bound approval is revoked and must be obtained again ([Security Implications](#security-implications)). Only under the refreshed entry is the new file readable. Hosts SHOULD expect this sequence and present it as a skill that has changed and needs re-approval, rather than as a read error. Conversely, a child present in the manifest but absent from a directory read is a file the server no longer serves; a read of it will fail, and the same refresh applies.
+The two views can disagree. If the server adds a file to a skill after the host obtained its entry, a directory read may list that file while the held manifest does not. This is the stale-snapshot case that [Integrity and verification](#integrity-and-verification) already governs, and the recovery path is the one specified there: while acting on the skill under the held entry, the host MUST NOT read the newly listed child (an unlisted file is a verification failure, exactly as a digest mismatch is) and MUST NOT surface it to the model as a file of the skill. To reach it, the host refreshes the entry with [`skills/get`](#retrieval-via-skills%2Fget), at which point the `resources` set has changed and any persisted content-bound approval is revoked and must be obtained again ([Security Implications](#security-implications)). Only under the refreshed entry is the new file readable. Hosts SHOULD expect this sequence and present it as a skill that has changed and needs re-approval, rather than as a read error. Conversely, a child present in the manifest but absent from a directory read is a file the server no longer serves; a read of it will fail, and the same refresh applies.
 
 This extension defines no shared version or cache token that would let a host determine whether a directory result and an entry describe the same snapshot of the server. The manifest is authoritative for what the host may read under its current approval; a directory read is a live observation that may run ahead of or behind it. Hosts MUST NOT treat the directory result as extending the manifest.
 
@@ -44456,7 +44753,7 @@ An extension MUST NOT skip Beta, unless the Core Maintainers waive the requireme
 An **Extension Maintainer** is a maintainer of the extension's repository who is listed in that repository's `MAINTAINERS.md`, as `ext-tasks` already does. As SEP-2133 provides for repository maintainers, the Core Maintainers appoint Extension Maintainers, who are normally the
 leads of the associated Working Group, or the facilitators of the associated Interest Group. Every extension MUST have at least one Extension Maintainer.
 
-"Extension Maintainer approval" means a pull request approved by at least one Extension Maintainer who is not its author. Extension Maintainers SHOULD coordinate changes through the associated Working Group or Interest Group, following its [decision-making process](https://modelcontextprotocol.io/community/working-interest-groups#decision-making-process).
+"Extension Maintainer approval" means a pull request approved by at least one Extension Maintainer who is not its author. Extension Maintainers SHOULD coordinate changes through the associated Working Group or Interest Group, following its [decision-making process](https://modelcontextprotocol.io/community/working-interest-groups#making-decisions).
 
 The Core Maintainers keep the authority SEP-2133 gives them over every extension, including the ability to modify, deprecate, archive or remove it. Lead Maintainers retain veto authority over each Core Maintainer decision in this SEP, per the
 [governance roles](https://modelcontextprotocol.io/community/governance#roles).
@@ -44792,7 +45089,7 @@ Process and Informational SEPs can take effect after acceptance and completion o
 
 SEPs require sponsorship from a Working Group or the Core Maintainer group before formal review. A named representative acts on the sponsoring group's behalf. Sponsorship supports bringing the proposal to review; formal acceptance requires a separate decision.
 
-* **WG sponsorship:** Develop the proposal in a publicly readable WG-designated repository or fork and obtain approval through the existing [WG decision-making process](https://modelcontextprotocol.io/community/working-interest-groups#decision-making-process). The WG lead records the decision and unresolved concerns, then submits the ready SEP to the [SEP review queue](https://voting.modelcontextprotocol.io/p/seps).
+* **WG sponsorship:** Develop the proposal in a publicly readable WG-designated repository or fork and obtain approval through the existing [WG decision-making process](https://modelcontextprotocol.io/community/working-interest-groups#making-decisions). The WG lead records the decision and unresolved concerns, then submits the ready SEP to the [SEP review queue](https://voting.modelcontextprotocol.io/p/seps).
 * **Core Maintainer group sponsorship:** The Core Maintainers agree to sponsor the proposal and designate a CM to represent the group. That representative records the sponsorship decision, consults relevant WGs, and submits the ready SEP to the same queue. No separate WG approval is required.
 
 Before queue submission for formal review, both paths require a canonical SEP PR in the main MCP repository. Use a placeholder number until that PR supplies the SEP number, following [SEP-1850](https://modelcontextprotocol.io/seps/1850-pr-based-sep-workflow). WG-sponsored PRs link to the WG review and approval; proposals sponsored by the Core Maintainer group may start directly in the main repository. Record the sponsoring group's decision and consultation with affected WGs in the PR.
@@ -44824,7 +45121,7 @@ After presentation, the named maintainer sponsor opens a recorded seven-calendar
 
 Acceptance requires affirmative votes from more than half of all eligible voters. Abstentions and absences do not count as approval, and a majority of those attending a meeting alone is insufficient. A majority voting to reject produces a rejection; otherwise a proposal that does not reach the acceptance threshold returns for revision or later review. The sponsor records the tally, decision, rationale, and follow-up on the SEP PR and updates its status under the existing guidelines.
 
-The voting period remains open for all seven days, except for shortened emergency votes under [Hard Freeze](#hard-freeze--1-month-before-release). A material change to the proposal during that period returns it for review rather than being accepted under votes cast on the earlier revision. A vote that cannot conclude before the review window closes is deferred to the next window without a partial result counting as acceptance.
+The voting period remains open for all seven days, except for shortened emergency votes under [Hard Freeze](#hard-freeze-%E2%80%94-1-month-before-release). A material change to the proposal during that period returns it for review rather than being accepted under votes cast on the earlier revision. A vote that cannot conclude before the review window closes is deferred to the next window without a partial result counting as acceptance.
 
 The rules in effect when a vote concludes apply, even if voting began before a freeze. After soft freeze, only corrections within the frozen scope can proceed; after hard freeze, changes must meet the emergency criteria and full CM voting requirements. Approval does not exempt a change from the freeze rules in effect when it is merged.
 

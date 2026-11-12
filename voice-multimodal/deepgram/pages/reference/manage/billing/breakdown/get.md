@@ -1,5 +1,5 @@
 ---
-title: "Get Project Billing Breakdown"
+title: "Get project billing breakdown"
 source: https://developers.deepgram.com/reference/manage/billing/breakdown/get.md
 path: reference/manage/billing/breakdown/get
 ---
@@ -7,7 +7,7 @@ path: reference/manage/billing/breakdown/get
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Get Project Billing Breakdown
+# Get project billing breakdown
 
 GET https://api.deepgram.com/v1/projects/{project_id}/billing/breakdown
 

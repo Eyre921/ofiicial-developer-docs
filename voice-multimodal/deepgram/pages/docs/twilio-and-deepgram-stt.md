@@ -63,7 +63,7 @@ brew install ngrok
 ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
 ```
 
-## Step 1: Set up the project
+## Step 1: set up the project
 
 Clone the companion repository, which holds the complete `app.py`, `requirements.txt`, and `.env.example` referenced throughout this guide.
 
@@ -92,7 +92,7 @@ This app needs no LLM key and no text-to-speech key — it only listens and tran
 >
 > **Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
 
-## Step 2: Serve TwiML with `<Start><Stream>`
+## Step 2: serve TwiML with `<Start><Stream>`
 
 When a call connects, Twilio asks your webhook what to do. You answer with TwiML, Twilio's XML instruction set. The key instruction here is `<Start><Stream>`, which opens a **one-way** WebSocket: Twilio forks a copy of the caller's audio to your server and then keeps executing the rest of the TwiML. You receive audio; you never send any back.
 
@@ -116,7 +116,7 @@ That one design choice separates transcription from a voice agent. `<Start><Stre
 >
 > **Verify:** `curl -X POST https://YOUR_HOST/twiml` returns the XML above with your `wss://` URL and a `<Start>` (not `<Connect>`) element.
 
-## Step 3: Bridge the Twilio media stream to Deepgram
+## Step 3: bridge the Twilio media stream to Deepgram
 
 The `/media` WebSocket carries the call's audio. Accept the socket, open a Deepgram STT connection for the call, then forward every audio frame Twilio sends into Deepgram.
 
@@ -141,7 +141,7 @@ async def media(twilio_ws: WebSocket) -> None:
 
 Twilio sends `start`, `media`, and `stop` events. On each `media` event, decode the base64 payload and forward the raw mulaw bytes straight into Deepgram with `send_media`. Nothing relays in the other direction — that missing half is the whole simplification.
 
-## Step 4: Open the Deepgram STT connection
+## Step 4: open the Deepgram STT connection
 
 Open one streaming connection for the life of the call. Requesting mulaw at 8 kHz mono matches Twilio's Media Streams format exactly, so the caller's bytes flow to Deepgram with no resampling.
 
@@ -159,9 +159,9 @@ async with dg_client.listen.v1.connect(
     ...
 ```
 
-`interim_results` gives you low-latency partial transcripts that refine as the caller keeps talking; `endpointing` sets how much silence marks the end of an utterance. This guide uses `nova-3` on `listen.v1`, Deepgram's general-purpose streaming model. For turn-taking-heavy conversational apps, Deepgram also offers [Flux](/docs/flux/quickstart) on `v2/listen`, with a different, turn-based message schema.
+`interim_results` gives you low-latency partial transcripts that refine as the caller keeps talking; `endpointing` sets how much silence marks the end of an utterance. This guide uses `nova-3` on `listen.v1`, Deepgram's general-purpose streaming model. For turn-taking-heavy conversational apps, Deepgram also offers [Flux STT](/docs/flux/quickstart) on `v2/listen`, with a different, turn-based message schema.
 
-## Step 5: Handle transcripts
+## Step 5: handle transcripts
 
 Register a callback for `EventType.MESSAGE` and inspect each message. Transcript messages arrive as `ListenV1Results` objects; read the top alternative's text.
 
@@ -188,7 +188,7 @@ Two SDK details matter here:
 
 With TwiML answering the call, audio forwarding into Deepgram, and transcripts printing as they arrive, the transcriber is complete — all that's left is to point a real phone call at it.
 
-## Step 6: Run and test
+## Step 6: run and test
 
 Start the application and open a tunnel so Twilio can reach it.
 
@@ -226,14 +226,14 @@ Once the core transcriber runs, several enhancements build on the same streaming
 * **Transcribe both sides of the call.** Set `track="both_tracks"` on the `<Stream>` to capture the caller *and* whoever they're connected to via `<Dial>`. Twilio then sends two independent streams of **mono** media events — each frame tagged `"track": "inbound"` or `"outbound"` — never interleaved stereo. So keep `channels=1`, read `msg["media"]["track"]`, and open one Deepgram connection per track. Setting `channels=2` instead tells Deepgram the bytes are interleaved stereo: the connection is accepted and the transcripts come back garbled, with no error to point at the cause.
 * **Turn on richer formatting.** Add `diarize=True` to label speakers, set `language=...` for other languages, or tune `numerals`/`smart_format` for how numbers and dates render.
 * **Persist the transcript.** Instead of printing, write finals to a database, POST them to a webhook, or push them over a WebSocket to a live-captions UI.
-* **Use Flux for conversational turn-taking.** Deepgram's [Flux](/docs/flux/quickstart) model (`v2/listen`) adds built-in end-of-turn detection with a turn-based message schema — a good fit if you're heading toward an interactive assistant.
+* **Use Flux STT for conversational turn-taking.** Deepgram's [Flux STT](/docs/flux/quickstart) model (`v2/listen`) adds built-in end-of-turn detection with a turn-based message schema — a good fit if you're heading toward an interactive assistant.
 * **Layer in audio intelligence.** Add summaries, topics, sentiment, or intents over the same stream.
 
 ## Resources
 
-* [Deepgram Speech-to-Text getting started](/docs/stt/getting-started)
+* [Getting started with speech-to-text](/docs/stt/getting-started)
 * [Deepgram streaming STT API reference](/reference/deepgram-api-overview)
-* [Deepgram Flux (conversational STT)](/docs/flux/quickstart)
+* [Deepgram Flux STT (conversational)](/docs/flux/quickstart)
 * [Twilio Media Streams](https://www.twilio.com/docs/voice/media-streams)
 * [Twilio `<Start><Stream>` TwiML](https://www.twilio.com/docs/voice/twiml/stream)
 * [Twilio and Deepgram Voice Agent](/docs/twilio-and-deepgram-voice-agent) — the full conversational pipeline

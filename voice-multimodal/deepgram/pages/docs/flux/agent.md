@@ -1,5 +1,5 @@
 ---
-title: "Build a Flux-enabled Voice Agent"
+title: "Build a Flux STT-enabled voice agent"
 source: https://developers.deepgram.com/docs/flux/agent.md
 path: docs/flux/agent
 ---
@@ -7,44 +7,44 @@ path: docs/flux/agent
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Build a Flux-enabled Voice Agent
+# Build a Flux STT-enabled voice agent
 
-Flux tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.
+Deepgram Flux STT tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.
 
 > **Info**
 >
 > If you'd prefer to skip building, managing, and scaling a voice agent yourself -- explore our [Voice Agent API](/docs/voice-agent).
 
-## Let's Build!
+## Let's build
 
-This guide walks you through building a basic voice agent powered by Deepgram Flux, OpenAI, and Deepgram TTS—streaming speech-to-text with advanced turn detection—to create natural, real-time conversations with users.
+This guide walks you through building a basic voice agent powered by Deepgram Flux STT, OpenAI, and Deepgram TTS—streaming speech-to-text with advanced turn detection—to create natural, real-time conversations with users.
 
 > **Info**
 >
 > This walkthrough uses `flux-general-en` and an English Aura voice to keep the example focused. To make the
 > agent multilingual, switch the STT model to `flux-general-multi` and apply `language_hint` values as shown in
-> [Flux Multilingual & Language Prompting](/docs/flux/language-prompting). The rest of the pipeline stays the
+> [Flux STT Multilingual & language prompting](/docs/flux/language-prompting). The rest of the pipeline stays the
 > same.
 
 By the end of this guide, you’ll have:
 
 * A real-time voice agent with sub-second response times
 * A voice agent that uses a static audio file for mocking out a conversation
-* Natural conversation flow with Flux’s advanced turn detection model
+* Natural conversation flow with Flux STT’s advanced turn detection model
 * Voice Activity Detection based interruption handling for responsive interactions
 * A complete setup ready for a demo deployment
 
 ## Choosing an LLM
 
-Flux supports the use of any LLM you wish to use. So you can use the best LLM for your use case. For this demo we'll be using OpenAI.
+Flux STT supports the use of any LLM you wish to use. So you can use the best LLM for your use case. For this demo we'll be using OpenAI.
 
-## Voice Agent Patterns
+## Voice agent patterns
 
 > **Info**
 >
 > For this demo will opt to use `EndOfTurn` only for simplicity.
 
-Flux enables two voice agent patterns. You can decide which one to use based on your latency vs complexity/cost tradeoffs.
+Flux STT enables two voice agent patterns. You can decide which one to use based on your latency vs complexity/cost tradeoffs.
 
 ### `EndOfTurn` Only
 
@@ -64,13 +64,13 @@ We recommend starting with a purely `EndOfTurn` driven implementation to get up 
 
 > **Info**
 >
-> If you're experiencing echo (the agent responding to itself) or false barge-ins from background noise, see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in) for recommendations on echo cancellation, noise suppression, and using Flux's `StartOfTurn` for reliable barge-in detection.
+> If you're experiencing echo (the agent responding to itself) or false barge-ins from background noise, see [Audio preprocessing & barge-in](/guides/deep-dives/audio-preprocessing-barge-in) for recommendations on echo cancellation, noise suppression, and using Flux STT's `StartOfTurn` for reliable barge-in detection.
 
 ### EagerEndOfTurn + EndOfTurn
 
 > **Info**
 >
-> For more information `EagerEndOfTurn` see our guide [Optimize Voice Agent Latency with Eager End of Turn](/docs/flux/voice-agent-eager-eot)
+> For more information `EagerEndOfTurn` see our guide [Optimize voice agent latency with Eager End of Turn](/docs/flux/voice-agent-eager-eot)
 
 **Considerations:**
 
@@ -94,13 +94,13 @@ Once comfortable with End of Turn, you can decide if you need to optimize latenc
 
 > **Info**
 >
-> **Dynamic Tuning**: In production voice agents powered by Flux STT, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, keyterms, or numerals mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element. See [Keyterm Prompting](/docs/keyterm) for the full syntax rules.
+> **Dynamic Tuning**: In production voice agents powered by Flux STT, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, keyterms, or numerals mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element. See [Keyterm prompting](/docs/keyterm) for the full syntax rules.
 
 > **Info**
 >
-> **External turn signals**: If you have your own turn-end signal — a push-to-talk release, a DTMF tone, or an existing VAD — you can end the current turn explicitly with the [`ForceEndTurn`](/docs/flux/force-end-turn) control message instead of relying on Flux's detection. Every `EndOfTurn` carries a `trigger` field (`model`, `manual`, or `timeout`) that tells you what ended the turn. To fully own turn detection, see [Bring Your Own Turn Detection](/docs/flux/own-turn-detection).
+> **External turn signals**: If you have your own turn-end signal — a push-to-talk release, a DTMF tone, or an existing VAD — you can end the current turn explicitly with the [`ForceEndTurn`](/docs/flux/force-end-turn) control message instead of relying on Flux STT's detection. Every `EndOfTurn` carries a `trigger` field (`model`, `manual`, or `timeout`) that tells you what ended the turn. To fully own turn detection, see [Bring your own turn detection](/docs/flux/own-turn-detection).
 
-### Voice Agent vs Flux Agent Pipeline
+### Voice Agent vs Flux STT agent pipeline
 
 Using the [Voice Agent API](/reference/auth/tokens/grant), your pipeline will look like this:
 
@@ -112,9 +112,9 @@ flowchart LR
 
 > **Info**
 >
-> If you want to use Flux with the Voice Agent API set your `listen.provider.model` to `flux-general-en`, or `flux-general-multi` for multilingual agents (with optional `language_hint` values). See [Multilingual Voice Agents](/docs/multilingual-voice-agent) for setup details.
+> If you want to use Flux STT with the Voice Agent API set your `listen.provider.model` to `flux-general-en`, or `flux-general-multi` for multilingual agents (with optional `language_hint` values). See [Multilingual Voice Agents](/docs/multilingual-voice-agent) for setup details.
 
-If you opt to build your own voice agent from scratch, you can use Flux to handle the speech to text and rely on its turn-taking cues to coordinate the rest of your pipeline.
+If you opt to build your own voice agent from scratch, you can use Flux STT to handle transcription and rely on its turn-taking cues to coordinate the rest of your pipeline.
 
 ```mermaid
 flowchart LR
@@ -131,9 +131,9 @@ You’ll now be responsible for:
 * Cancelling LLM responses if user resumes talking
 * Converting LLM output to speech via your chosen TTS provider
 
-## `EndOfTurn` Only Voice Agent Example
+## `EndOfTurn` Only voice agent example
 
-Here's a sample voice agent implementation using Flux with the `EndOfTurn` only pattern:
+Here's a sample voice agent implementation using Flux STT with the `EndOfTurn` only pattern:
 
 ### 1. Install the Deepgram SDK
 
@@ -164,7 +164,7 @@ COMING SOON!
 // $ go get github.com/deepgram/deepgram-go-sdk
 ```
 
-### 2. Add Dependencies
+### 2. Add dependencies
 
 Install the additional dependencies:
 
@@ -209,7 +209,7 @@ OPENAI_API_KEY="your_open_ai_api_key"
 > Replace `your_deepgram_api_key` with your actual Deepgram API key.
 > Replace `your_open_ai_api_key` with your actual Open API key.
 
-### 4. Set Imports & Audio File
+### 4. Set imports & audio file
 
 ```python
 import asyncio
@@ -260,7 +260,7 @@ const string AudioFile = "audio/spacewalk_linear16.wav";
 COMING SOON!
 ```
 
-### 5. Transcribe with Flux
+### 5. Transcribe with Flux STT
 
 ```python
 # Transcribe with Flux
@@ -527,7 +527,7 @@ catch (Exception ex)
 COMING SOON!
 ```
 
-### 7. Generate TTS Response
+### 7. Generate TTS response
 
 ```python
 # Generate TTS Response
@@ -621,7 +621,7 @@ await speakClient.Stop();
 COMING SOON!
 ```
 
-### 8. Save TTS Audio
+### 8. Save TTS audio
 
 ```python
 if tts_audio:
@@ -741,7 +741,7 @@ static byte[] BuildWavHeader(int dataLength, int sampleRate)
 COMING SOON!
 ```
 
-### 8. Complete Code Example
+### 8. Complete code example
 
 Here's the complete working example that combines all the steps. You can also find this code on [GitHub](https://github.com/deepgram-devs/deepgram-demos-composite-flux-agent).
 
@@ -1260,11 +1260,11 @@ static byte[] BuildWavHeader(int dataLength, int sampleRate)
 COMING SOON!
 ```
 
-### Additional Flux Demos
+### Additional Flux STT demos
 
-For additional demos showcasing Flux, check out the following repositories:
+For additional demos showcasing Flux STT, check out the following repositories:
 
-| Demo Link                                              | Repository                                                               | Tech Stack            | Use Case                         |
-| ------------------------------------------------------ | ------------------------------------------------------------------------ | --------------------- | -------------------------------- |
-| [Demo Link](https://demos.dx.deepgram.com/flux-agent/) | [Repository](https://github.com/deepgram-devs/deepgram-demos-flux-agent) | Python, JS, HTML, CSS | Build a Flux-enabled Voice Agent |
-| N/A                                                    | [Repository](https://github.com/deepgram-devs/deepgram-demos-rust)       | Rust                  | Build a Flux-enabled Voice Agent |
+| Demo Link                                              | Repository                                                               | Tech Stack            | Use Case                             |
+| ------------------------------------------------------ | ------------------------------------------------------------------------ | --------------------- | ------------------------------------ |
+| [Demo Link](https://demos.dx.deepgram.com/flux-agent/) | [Repository](https://github.com/deepgram-devs/deepgram-demos-flux-agent) | Python, JS, HTML, CSS | Build a Flux STT-enabled voice agent |
+| N/A                                                    | [Repository](https://github.com/deepgram-devs/deepgram-demos-rust)       | Rust                  | Build a Flux STT-enabled voice agent |

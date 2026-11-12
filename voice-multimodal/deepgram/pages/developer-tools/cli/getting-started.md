@@ -1,5 +1,5 @@
 ---
-title: "Deepgram CLI — Getting Started"
+title: "Deepgram CLI — Getting started"
 source: https://developers.deepgram.com/developer-tools/cli/getting-started.md
 path: developer-tools/cli/getting-started
 ---
@@ -7,7 +7,7 @@ path: developer-tools/cli/getting-started
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Deepgram CLI — Getting Started
+# Deepgram CLI — Getting started
 
 The `dg` CLI lets you transcribe files, stream live audio, synthesize speech, analyze text, and manage your Deepgram account from the terminal.
 
@@ -16,7 +16,7 @@ The `dg` CLI lets you transcribe files, stream live audio, synthesize speech, an
 * Python 3.10 or later
 * A Deepgram API key ([get one free](https://console.deepgram.com/signup))
 
-## Quick Start
+## Quick start
 
 ```shell
 # Install
@@ -32,7 +32,7 @@ dg listen recording.wav
 dg speak "Hello from Deepgram" -o hello.wav
 ```
 
-## Core Workflows
+## Core workflows
 
 ### Transcribe audio
 
@@ -85,7 +85,7 @@ dg usage
 
 Account commands are flag-based. Run `dg keys --help` or `dg projects --help` for the full set.
 
-## Output Formats
+## Output formats
 
 The CLI defaults to human-readable output in the terminal. Use `-o` or `--output` to switch formats:
 
@@ -98,7 +98,7 @@ dg -o csv listen audio.mp3    # CSV
 
 `-o` belongs to `dg` itself, so it goes before the subcommand name. After the subcommand it fails to parse and exits `1`. On `dg speak` the collision is quieter: there, a bare `-o` is the output file path, not a format.
 
-[Agent-friendly mode](#agent-friendly-mode) selects JSON on its own, without `-o`. A piped stdout alone does not trigger it.
+[Agent-friendly mode](#agent-friendly-mode) selects JSON on its own, without `-o`. A piped stdout alone doesn't trigger it.
 
 For `dg -o json listen`, parse errors and progress output go to stderr, so redirecting stderr leaves stdout carrying the payload:
 
@@ -108,7 +108,7 @@ dg -o json listen audio.mp3 2>/dev/null > transcript.json
 
 Some command-level errors still print to stdout — an authentication failure is the common one — so check the exit code rather than assuming stdout parses.
 
-## Exit Codes
+## Exit codes
 
 Most command and usage outcomes use these exit codes, so scripts and CI steps can branch on them:
 
@@ -150,7 +150,7 @@ dg listen audio.mp3 --non-interactive
 dg listen --agent-friendly
 ```
 
-## Other Commands
+## Other commands
 
 The CLI also includes commands for models, requests, profiles, updates, debugging, starter scaffolding, audio probing, and coding-assistant skills:
 
@@ -165,7 +165,7 @@ dg ffprobe --help
 dg skills --help
 ```
 
-## Next Steps
+## Next steps
 
 * [Install the CLI](/developer-tools/cli/installation) — More installation methods including pip, pipx, and Homebrew
 * [Authenticate](/developer-tools/cli/authentication) — Learn about authentication options

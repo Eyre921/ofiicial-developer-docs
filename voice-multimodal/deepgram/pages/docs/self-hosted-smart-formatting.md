@@ -20,11 +20,11 @@ path: docs/self-hosted-smart-formatting
 | Nova-2      | English      | Yes                        | Yes (optional)                      | Formatted model alone, or non-formatted model + NER formatting                                    |
 | Nova-3      | Non-English  | No                         | No                                  | Punctuation and paragraphs only                                                                   |
 | Nova-2      | Non-English  | No                         | No                                  | Punctuation and paragraphs only                                                                   |
-| Flux        | Any          | No                         | No                                  | Non-formatted transcripts only                                                                    |
+| Flux STT    | Any          | No                         | No                                  | Non-formatted transcripts only                                                                    |
 
 ## Nova-3 English
 
-Nova-3 is only comprised of non-formatted models. To produce smart-formatted transcripts, you must deploy the **entity-detector** model alongside your Nova-3 model. The entity-detector model provides NER (named entity recognition) formatting, which detects and formats entities such as dates, times, currency amounts, phone numbers, emails, and URLs.
+Deepgram Nova-3 is only comprised of non-formatted models. To produce smart-formatted transcripts, you must deploy the **entity-detector** model alongside your Nova-3 model. The entity-detector model provides NER (named entity recognition) formatting, which detects and formats entities such as dates, times, currency amounts, phone numbers, emails, and URLs.
 
 ## Nova-3 multilingual
 
@@ -37,7 +37,7 @@ This means a single multilingual stream can produce both NER-formatted English s
 
 ## Nova-2 English
 
-Nova-2 provides both formatted and non-formatted English models. You can achieve smart formatting in either of two ways:
+Deepgram Nova-2 provides both formatted and non-formatted English models. You can achieve smart formatting in either of two ways:
 
 * **Formatted model**: Deploy a Nova-2 formatted model. The model produces smart-formatted output directly without any additional components.
 * **Non-formatted model + NER formatting**: Deploy a Nova-2 non-formatted model alongside the entity-detector model. NER formatting applies entity detection on top of the base transcript.
@@ -48,11 +48,11 @@ NER formatting is optional for Nova-2 English because the formatted model alread
 
 For non-English languages, Deepgram applies punctuation and paragraphs when smart formatting is enabled. Neither formatted models nor NER formatting applies to non-English transcription. This is the same behavior for both Nova-3 and Nova-2.
 
-## Flux
+## Flux STT
 
-Flux does not support smart formatting. Flux transcripts are always returned without formatting, regardless of whether `smart_format=true` is set in the request. The entity-detector model is not compatible with Flux.
+Deepgram Flux STT doesn't support smart formatting. Flux STT transcripts are always returned without formatting, regardless of whether `smart_format=true` is set in the request. The entity-detector model isn't compatible with Flux STT.
 
-See [Deploy Flux Model (STT)](/docs/flux-self-hosted) for Flux deployment details.
+See [Deploy Flux STT model](/docs/flux-self-hosted) for Flux STT deployment details.
 
 ## Configure NER formatting in a self-hosted deployment
 
@@ -85,7 +85,7 @@ For **pre-recorded (batch)** STT, add the following to `api.toml`:
 format_entity_tags = true
 ```
 
-You can enable both flags if your deployments handle both streaming and batch requests. There is no downside to enabling NER on both batch and streaming when a deployment only handles one or the other. It is expected that each deployment serves one mode of STT, not both.
+You can enable both flags if your deployments handle both streaming and batch requests. There's no downside to enabling NER on both batch and streaming when a deployment only handles one or the other. It's expected that each deployment serves one mode of STT, not both.
 
 ### 3. Restart your containers
 
@@ -123,4 +123,4 @@ When NER formatting is enabled (`streaming_ner = true` and/or `format_entity_tag
 * [Smart Format (Deepgram API docs)](https://developers.deepgram.com/docs/smart-format) — full reference for the smart formatting feature, including supported formatters and API usage.
 * [How can I enable NER formatting in my self-hosted deployment?](https://deepgram.gitbook.io/help-center/self-hosted/how-can-i-enable-ner-formatting-in-my-self-hosted-deployment) — step-by-step NER enablement guide.
 * [Deploy STT Services](/docs/deploy-stt-services) — guide for deploying speech-to-text services in a self-hosted environment.
-* [System Maintenance](/docs/maintaining) — model selection and maintenance for self-hosted deployments.
+* [System maintenance](/docs/maintaining) — model selection and maintenance for self-hosted deployments.

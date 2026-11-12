@@ -339,10 +339,13 @@ Save the configuration. Antigravity will prompt you to complete the OAuth flow t
 
 ### Other MCP clients
 
-If your MCP client isn't listed above, add Notion as a remote MCP server:
+Add Notion as a remote MCP server with the Streamable HTTP transport and the URL `https://mcp.notion.com/mcp`.
 
-* **Streamable HTTP (recommended):** `https://mcp.notion.com/mcp`
-* **SSE fallback:** `https://mcp.notion.com/sse` — use this only if the client doesn't support Streamable HTTP.
+#### Migrate from the legacy SSE endpoint
+
+Notion will retire the legacy HTTP with Server-Sent Events (SSE) endpoint, `https://mcp.notion.com/sse`, on **February 23, 2027**. Update your client before that date.
+
+In your client's Notion server settings, change the transport from SSE to Streamable HTTP and replace the URL with `https://mcp.notion.com/mcp`. Save the settings, sign in again if prompted, and check that the client lists Notion tools. If your client only offers SSE, update it to a version that supports Streamable HTTP.
 
 #### JSON configuration
 
@@ -353,17 +356,6 @@ If your client accepts a JSON configuration, start with Streamable HTTP:
   "mcpServers": {
     "notion": {
       "url": "https://mcp.notion.com/mcp"
-    }
-  }
-}
-```
-
-```json SSE theme={null}
-{
-  "mcpServers": {
-    "notion": {
-      "type": "sse",
-      "url": "https://mcp.notion.com/sse"
     }
   }
 }

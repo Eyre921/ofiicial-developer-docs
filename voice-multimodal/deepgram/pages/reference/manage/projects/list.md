@@ -1,5 +1,5 @@
 ---
-title: "List Projects"
+title: "List projects"
 source: https://developers.deepgram.com/reference/manage/projects/list.md
 path: reference/manage/projects/list
 ---
@@ -7,7 +7,7 @@ path: reference/manage/projects/list
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Projects
+# List projects
 
 GET https://api.deepgram.com/v1/projects
 

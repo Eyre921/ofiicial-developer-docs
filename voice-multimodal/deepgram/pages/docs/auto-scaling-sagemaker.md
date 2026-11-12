@@ -13,7 +13,7 @@ Deepgram models deployed on Amazon SageMaker can automatically scale the number 
 
 This page explains the two endpoint types and helps you choose between them. For step-by-step setup, follow the guide that matches your deployment:
 
-* **[Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming)** — for streaming requests and synchronous pre-recorded requests that return an immediate response.
+* **[Auto-scaling real-time endpoints](/docs/auto-scaling-sagemaker-streaming)** — for streaming requests and synchronous pre-recorded requests that return an immediate response.
 * **[Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)** — for pre-recorded files processed from a queue, with scale-to-zero support (temporarily unavailable, see below).
 
 ## Real-time vs. asynchronous endpoints
@@ -31,7 +31,7 @@ A **real-time endpoint** serves two kinds of requests:
 
 An **asynchronous endpoint** serves one kind of request:
 
-* **Pre-recorded files only** — a file up to 1 GB, submitted to a queue with `InvokeEndpointAsync` via an S3 pointer and processed asynchronously with near real-time latency. The result is written back to S3; there is no synchronous response and no streaming.
+* **Pre-recorded files only** — a file up to 1 GB, submitted to a queue with `InvokeEndpointAsync` via an S3 pointer and processed asynchronously with near real-time latency. The result is written back to S3; there's no synchronous response and no streaming.
 
 |                    | **Real-time endpoint**                                                                | **Asynchronous endpoint**                                                 |
 | ------------------ | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -42,12 +42,12 @@ An **asynchronous endpoint** serves one kind of request:
 | Response           | Immediate / synchronous (or streamed)                                                 | Asynchronous — written to S3 (near real-time)                             |
 | Scales to zero     | No — minimum 1 instance                                                               | **Yes** — `MinCapacity=0`                                                 |
 | Scaling metric     | `ConcurrentRequestsPerModel`                                                          | `ApproximateBacklogSizePerInstance`                                       |
-| Setup guide        | [Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming)            | [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async) |
+| Setup guide        | [Auto-scaling real-time endpoints](/docs/auto-scaling-sagemaker-streaming)            | [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async) |
 
 ### Which should I use?
 
 * **Choose a real-time endpoint** when you need live streaming transcription, or when you transcribe pre-recorded files of 25 MB or less and want an immediate synchronous response. These endpoints keep a minimum of one instance running at all times.
-* **Choose an asynchronous endpoint** when you transcribe pre-recorded files — especially large ones (up to 1 GB) — or have spiky or sporadic traffic where paying for idle instances is wasteful. Asynchronous endpoints can autoscale to zero when the queue is empty, so you only pay while requests are processing. They do not support live streaming.
+* **Choose an asynchronous endpoint** when you transcribe pre-recorded files — especially large ones (up to 1 GB) — or have spiky or sporadic traffic where paying for idle instances is wasteful. Asynchronous endpoints can autoscale to zero when the queue is empty, so you only pay while requests are processing. They don't support live streaming.
 
 ## How autoscaling works
 
@@ -145,11 +145,11 @@ sagemaker.create_endpoint_config(
 )
 ```
 
-When you use multiple instance types, give additional consideration to your scaling policy. The predefined scaling metrics (`ConcurrentRequestsPerModel` for real-time endpoints, `ApproximateBacklogSizePerInstance` for async endpoints) do not account for capacity differences between pools, so a target tracking policy that uses them directly may scale unevenly across instance types. For mixed fleets, AWS recommends driving the scaling policy from a weighted custom metric instead. See the [AWS heterogeneous endpoints documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html) for details on configuring weighted custom metrics for heterogeneous endpoints.
+When you use multiple instance types, give additional consideration to your scaling policy. The predefined scaling metrics (`ConcurrentRequestsPerModel` for real-time endpoints, `ApproximateBacklogSizePerInstance` for async endpoints) don't account for capacity differences between pools, so a target tracking policy that uses them directly may scale unevenly across instance types. For mixed fleets, AWS recommends driving the scaling policy from a weighted custom metric instead. See the [AWS heterogeneous endpoints documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html) for details on configuring weighted custom metrics for heterogeneous endpoints.
 
 ## Related resources
 
-* [Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming)
+* [Auto-scaling real-time endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Amazon SageMaker Asynchronous Inference (AWS)](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html)

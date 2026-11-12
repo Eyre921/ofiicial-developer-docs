@@ -1,5 +1,5 @@
 ---
-title: "Supported Audio Formats"
+title: "Supported audio formats"
 source: https://developers.deepgram.com/docs/supported-audio-formats.md
 path: docs/supported-audio-formats
 ---
@@ -7,7 +7,7 @@ path: docs/supported-audio-formats
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Supported Audio Formats
+# Supported audio formats
 
 # Common audio formats
 

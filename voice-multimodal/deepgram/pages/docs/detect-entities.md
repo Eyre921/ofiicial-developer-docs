@@ -1,5 +1,5 @@
 ---
-title: "Entity Detection"
+title: "Entity detection"
 source: https://developers.deepgram.com/docs/detect-entities.md
 path: docs/detect-entities
 ---
@@ -7,27 +7,27 @@ path: docs/detect-entities
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Entity Detection
+# Entity detection
 
 `detect_entities` *boolean*. Default: `false`
 
 Pre-recorded  Streaming:Nova  English (all available regions)
 
-# Entity Detection
+# Entity detection
 
 When Entity Detection is enabled, the [Punctuation](/docs/punctuation) feature will be enabled by default.
 
-## Model Support
+## Model support
 
 Entity Detection is available for both pre-recorded and streaming speech-to-text.
 
 > **Info**
 >
-> **Streaming:** Entity Detection for streaming is supported on **Nova**, **Nova-2**, **Nova-3**, and **Enhanced** models. It is not available for Base models or Flux.
+> **Streaming:** Entity Detection for streaming is supported on **Nova**, **Nova-2**, **Nova-3**, and **Enhanced** models. It is not available for Base models or Flux STT.
 >
 > **Pre-recorded:** Entity Detection for pre-recorded audio is available on all models.
 
-## Enable Feature
+## Enable feature
 
 To enable Entity Detection, when you call Deepgram's API, add a `detect_entities` parameter set to `true` in the query string:
 
@@ -37,7 +37,7 @@ To enable Entity Detection, when you call Deepgram's API, add a `detect_entities
 >
 > When Entity Detection is enabled, [Punctuation](/docs/punctuation) will also be enabled by default.
 
-### Pre-recorded Audio
+### Pre-recorded audio
 
 To transcribe audio from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
@@ -56,9 +56,9 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Streaming Audio
+### Streaming audio
 
-To enable Entity Detection for streaming audio, establish a WebSocket connection with the `detect_entities=true` parameter. Remember that streaming Entity Detection is supported on Nova, Nova-2, Nova-3, and Enhanced models.
+To enable Entity Detection for streaming audio, establish a WebSocket connection with the `detect_entities=true` parameter. Remember that streaming Entity Detection is supported on Deepgram Nova, Nova-2, Nova-3, and Enhanced models.
 
 **`JavaScript`**
 
@@ -238,11 +238,11 @@ if __name__ == "__main__":
     main()
 ```
 
-## Analyze Response
+## Analyze response
 
 The response structure differs between pre-recorded and streaming transcription.
 
-### Pre-recorded Response
+### Pre-recorded response
 
 When the file is finished processing (often after only a few seconds), you'll receive a JSON response that has the following basic structure:
 
@@ -309,9 +309,9 @@ Let's look more closely at the `alternatives` object:
 ]
 ```
 
-### Streaming Response
+### Streaming response
 
-For streaming transcription, entities are included in **final results only** (when `is_final: true`). Interim results do not contain the `entities` array.
+For streaming transcription, entities are included in **final results only** (when `is_final: true`). Interim results don't contain the `entities` array.
 
 Here's an example of a streaming response with Entity Detection enabled:
 
@@ -371,7 +371,7 @@ Here's an example of a streaming response with Entity Detection enabled:
 > * If `detect_entities` is enabled but no entities are detected, an empty array is returned: `"entities": []`.
 > * To ensure complete entities are detected, the system may wait for entity completion before finalizing. See [Streaming Finalization Behavior](#streaming-finalization-behavior) below.
 
-### Streaming Finalization Behavior
+### Streaming finalization behavior
 
 When using Entity Detection with streaming audio, Deepgram will attempt to detect and format entities as they are spoken. For entities that seem like they may be incomplete, our system will:
 
@@ -382,7 +382,7 @@ When using Entity Detection with streaming audio, Deepgram will attempt to detec
 
 This approach ensures transcripts are returned promptly while maintaining entity detection precision.
 
-#### Using No Delay
+#### Using no delay
 
 Setting `no_delay=true` forces immediate finalization of streaming transcripts without waiting for entity completion.
 
@@ -414,13 +414,13 @@ with deepgram.listen.v1.connect(
 ) as connection:
 ```
 
-### Understanding Entity Fields
+### Understanding entity fields
 
 Each entity object in the `entities` array contains the following fields:
 
 * `label`: Type of entity identified (e.g., NAME, PHONE_NUMBER, EMAIL, ADDRESS).
-* `value`: The formatted text of the entity. When [Smart Formatting](/docs/smart-format) is enabled, this field reflects the formatted output.
-* `raw_value`: *(When formatting is enabled)* The original, non-formatted text as spoken. This field is included in both pre-recorded and streaming responses when formatting features (such as [Smart Formatting](/docs/smart-format)) are enabled.
+* `value`: The formatted text of the entity. When [Smart formatting](/docs/smart-format) is enabled, this field reflects the formatted output.
+* `raw_value`: *(When formatting is enabled)* The original, non-formatted text as spoken. This field is included in both pre-recorded and streaming responses when formatting features (such as [Smart formatting](/docs/smart-format)) are enabled.
 * `confidence`: Floating point value between 0 and 1 that indicates overall transcript reliability. Larger values indicate higher confidence.
 * `start_word`: Index of the first word, inclusive, of the entity in the transcript.
 * `end_word`: Index of the last word, exclusive, of the entity in the transcript.
@@ -463,9 +463,9 @@ With the agent's question available, "O nine twenty eight" is correctly labeled 
 Cross-channel context applies to every feature built on entity recognition, so it also affects:
 
 * **[Redaction](/docs/redaction):** entity-based redaction (`pci`, `pii`, `phi`, and specific entity types) uses the same labels. In the example above, `redact=credit_card_expiration` replaces the expiration date with `[CREDIT_CARD_EXPIRATION_1]` in the multichannel request, but leaves it unredacted when channel 1 is sent by itself.
-* **[Smart Formatting](/docs/smart-format):** entity-aware formatting uses the same labels. In the example above, the expiration date formats as `09/28` in the multichannel request and as `0928` when channel 1 is sent by itself.
+* **[Smart formatting](/docs/smart-format):** entity-aware formatting uses the same labels. In the example above, the expiration date formats as `09/28` in the multichannel request and as `0928` when channel 1 is sent by itself.
 
-Only English channels supply context, because entity recognition is English-only. If you use [language detection](/docs/language-detection) and a channel is detected as another language, that channel's speech is not used to label entities on the other channels.
+Only English channels supply context, because entity recognition is English-only. If you use [language detection](/docs/language-detection) and a channel is detected as another language, that channel's speech isn't used to label entities on the other channels.
 
 As a result, the same audio can return different entities depending on whether a channel is sent alone or together with the other channels.
 
@@ -475,9 +475,9 @@ For streaming audio, entities on each channel are recognized using only that cha
 
 ## Identifiable Entities
 
-View all options here: [Supported Entity Types](/docs/supported-entity-types)
+View all options here: [Supported entity types](/docs/supported-entity-types)
 
-## Use Cases
+## Use cases
 
 Some examples of uses for Entity Detection include:
 

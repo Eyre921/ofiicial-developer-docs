@@ -10,6 +10,12 @@ Enable Stripe Tax to automatically calculate and collect tax.
 
 You can set up Stripe Tax in the Dashboard by [configuring your tax settings](https://dashboard.stripe.com/settings/tax). After you set up Stripe Tax, [enable automatic tax](https://docs.stripe.com/tax/set-up.md#integrate) in the Dashboard or in your API integration, depending on which Stripe products you use. To set up Stripe Tax programmatically, use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md). If you’re a platform or marketplace that wants to set up Stripe Tax, see [Use Stripe Tax with Connect](https://docs.stripe.com/tax/connect.md).
 
+You can ask your AI agent to read and update your [tax settings](https://docs.stripe.com/api/tax/settings.md) and [registrations](https://docs.stripe.com/api/tax/registrations.md) with [Stripe MCP](https://docs.stripe.com/mcp.md), and to search for [product tax codes](https://docs.stripe.com/tax/tax-codes.md). Your AI agent can also review where you might have to register with [threshold monitoring](https://docs.stripe.com/tax/monitoring.md).
+
+Review every write request before your client runs it, and [test the result in a sandbox](https://docs.stripe.com/tax/testing.md) before you process live payments.
+
+To check your setup with the [Stripe CLI](https://docs.stripe.com/stripe-cli.md), run `stripe tax settings retrieve` and `stripe tax registrations list`. To find tax code search commands, use the `stripe tools` plugin and run `stripe tools search tax`. You can also ask your AI agent to search for `tax codes` with Stripe MCP.
+
 ## Before you begin
 
 Confirm you have:
@@ -34,7 +40,7 @@ By default, Stripe uses your Stripe business address as your head office address
 
 ## Select your preset tax code
 
-A tax code is a classification of your product or service for Stripe Tax. Stripe uses the tax code to apply the correct tax rate to your transactions.
+A product tax code classifies what you sell so Stripe Tax can apply the appropriate tax treatment in each jurisdiction. The same product or service can be taxable in one location and exempt in another.
 
 The preset product tax code applies to your [products](https://docs.stripe.com/api/products/object.md) when you don’t specify a [tax_code](https://docs.stripe.com/api/products/object.md#product_object-tax_code). To learn how tax codes affect tax behavior, see [Specify product tax codes and tax behavior](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md).
 

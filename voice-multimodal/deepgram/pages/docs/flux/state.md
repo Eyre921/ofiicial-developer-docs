@@ -1,5 +1,5 @@
 ---
-title: "Understanding the Flux State Machine"
+title: "Understanding the Flux STT state machine"
 source: https://developers.deepgram.com/docs/flux/state.md
 path: docs/flux/state
 ---
@@ -7,7 +7,7 @@ path: docs/flux/state
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Understanding the Flux State Machine
+# Understanding the Flux STT state machine
 
 Emitted events adhere to the below state machine for managing turns:
 
@@ -43,7 +43,7 @@ stateDiagram-v2
 5. The `turn_index` increments immediately following an `EndOfTurn` message.
 6. When using `flux-general-multi`, all `TurnInfo` events include `languages` (detected languages sorted by word count) and `languages_hinted` (active language hints). See [Language Prompting](/docs/flux/language-prompting).
 7. Every `EndOfTurn` event includes a `trigger` field — `model` (native detection), `manual` ([`ForceEndTurn`](/docs/flux/force-end-turn)), or `timeout` (`eot_timeout_ms`) — indicating what ended the turn.
-8. You can end the current turn at any time by sending a [`ForceEndTurn`](/docs/flux/force-end-turn) message. Flux emits an `EndOfTurn` with `trigger: "manual"` from any in-turn state.
+8. You can end the current turn at any time by sending a [`ForceEndTurn`](/docs/flux/force-end-turn) message. Deepgram Flux STT emits an `EndOfTurn` with `trigger: "manual"` from any in-turn state.
 
 > **Info**
 >
@@ -51,11 +51,11 @@ stateDiagram-v2
 
 > **Info**
 >
-> **Barge-in and audio quality**: Flux's `StartOfTurn` event is the recommended way to trigger barge-in — it's more reliable than an external VAD because every `StartOfTurn` is guaranteed to contain a non-empty transcript. For guidance on echo cancellation, noise suppression, and other audio preprocessing that affects turn detection, see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in).
+> **Barge-in and audio quality**: Flux STT's `StartOfTurn` event is the recommended way to trigger barge-in — it's more reliable than an external VAD because every `StartOfTurn` is guaranteed to contain a non-empty transcript. For guidance on echo cancellation, noise suppression, and other audio preprocessing that affects turn detection, see [Audio preprocessing & barge-in](/guides/deep-dives/audio-preprocessing-barge-in).
 
-## Turn Lifecycle Example
+## Turn lifecycle example
 
-Here's how Flux processes a customer calling support saying "Hi I need to cancel my subscription please."
+Here's how Flux STT processes a customer calling support saying "Hi I need to cancel my subscription please."
 
 Notice how confidence builds up and how the `EagerEndOfTurn` event fires before the final `EndOfTurn`. With `EagerEndOfTurn`, your voice agent can begin preparing a response before the user has fully finished speaking. This allows you to send a synchronous request with early context, creating the effect of a faster, more natural reply.
 

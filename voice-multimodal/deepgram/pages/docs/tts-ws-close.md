@@ -9,7 +9,7 @@ path: docs/tts-ws-close
 
 # Close
 
-Text to Speech Stream
+Text-to-Speech Stream
 
 To close the websocket connection, you can either send an websocket `Close` frame, or send the optional `close` message.
 
@@ -40,6 +40,6 @@ Connection was closed successfully.
 
 # Conclusion
 
-In real-time text-to-speech processing, situations may arise where you need to immediately stop the server's operations. To manage this, Deepgram provides a `Close` message, which ensures the server halts processing and closes the connection promptly, maintaining control and responsiveness in critical scenarios.
+In real-time text-to-speech processing, situations may arise where you need to immediately stop the server's operations. To manage this, we provide a `Close` message, which ensures the server halts processing and closes the connection promptly, maintaining control and responsiveness in critical scenarios.
 
 ---

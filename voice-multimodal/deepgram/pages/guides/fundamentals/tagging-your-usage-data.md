@@ -1,5 +1,5 @@
 ---
-title: "Tagging Your Usage Data"
+title: "Tagging your usage data"
 source: https://developers.deepgram.com/guides/fundamentals/tagging-your-usage-data.md
 path: guides/fundamentals/tagging-your-usage-data
 ---
@@ -7,7 +7,7 @@ path: guides/fundamentals/tagging-your-usage-data
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Tagging Your Usage Data
+# Tagging your usage data
 
 Tags are custom labels you can add to API requests to organize your Deepgram usage data. Use them to track usage by environment, application version, use case—any dimension that matters to your project.
 
@@ -63,4 +63,4 @@ Effectively, tagging a request limits Deepgram's ability to aggregate. This is r
 2. You can provide up to 500 unique tag values in a 24-hour period
 3. In charts, grouping by tags set will be disabled if 500+ tags are present in the given time period. This limit doesn't apply to direct API usage.
 
-One common (and totally valid!) "high cardinality" case where you might at first consider tags is tracing: you want to correlate your own logs with individual Deepgram requests. Whenever possible, we recommend taking the Deepgram request ID from your responses and using that internally for correlation, but when that isn't possible, the [extra metadata](/docs/extra-metadata) feature gives you an escape hatch to label Deepgram logs without breaking your graphs.
+One common (and totally valid) "high cardinality" case where you might at first consider tags is tracing: you want to correlate your own logs with individual Deepgram requests. Whenever possible, we recommend taking the Deepgram request ID from your responses and using that internally for correlation, but when that isn't possible, the [extra metadata](/docs/extra-metadata) feature gives you an escape hatch to label Deepgram logs without breaking your graphs.

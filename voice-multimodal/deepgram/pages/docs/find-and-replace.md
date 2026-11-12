@@ -1,5 +1,5 @@
 ---
-title: "Find and Replace"
+title: "Find and replace"
 source: https://developers.deepgram.com/docs/find-and-replace.md
 path: docs/find-and-replace
 ---
@@ -7,15 +7,15 @@ path: docs/find-and-replace
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Find and Replace
+# Find and replace
 
 * [Try Find and Replace in Deepgram Playground](https://playground.deepgram.com/?endpoint=listen\&replace=test%3Atest\&language=en\&model=nova-3)
 
 `replace` *string*
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
-## Enable Feature
+## Enable feature
 
 To enable Find and Replace, use the following parameter in the querystring:
 
@@ -44,7 +44,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Replace a Single Term
+### Replace a single term
 
 To replace a single term, send one instance of the `replace` parameter in the query string when calling the API:
 
@@ -52,7 +52,7 @@ To replace a single term, send one instance of the `replace` parameter in the qu
 
 `replace=monika:Monica`
 
-### Replace Multiple Terms
+### Replace multiple terms
 
 You can replace multiple terms individually:
 
@@ -60,7 +60,7 @@ You can replace multiple terms individually:
 
 `replace=monika:monica&replace=Hailee:Hailey`
 
-### Replace a Phrase
+### Replace a phrase
 
 You can replace a phrase. URL-encode the phrase when submitting it.
 
@@ -68,7 +68,7 @@ You can replace a phrase. URL-encode the phrase when submitting it.
 
 `replace=monika%20jon:Monica%20John`
 
-### Remove a Term or Phrase
+### Remove a term or phrase
 
 You can remove a term or phrase by not submitting a replacement.
 
@@ -82,13 +82,13 @@ This is particularly useful for proper nouns and named entities. Deepgram's tran
 
 `replace=ZenDesk:Zendesk`
 
-### Backwards Compatibility
+### Backwards compatibility
 
 Prior to support for capitalization, `replace=zendesk=Zendesk` would replace all instances of the letters `zendesk` (ignoring capitalization) with `Zendesk`. To maintain backwards compatibility, the behavior is the same when the word-to-be-replaced is composed of entirely lowercase letters.
 
 When submitting replacements for the same word with different capitalization, the capitalized version of the word takes precedence. For example, if you submit `replace=It:The%20monster&replace=it:the%20monster`, `It` will be replaced with `The monster` and `it` will be replaced with `the monster` because the replacement for `It` takes precedence over `it`. However, if you submit only `replace=it:the%20monster`, both `it` and `It` will be replaced with `the monster` to maintain backwards compatibility.
 
-## Analyze Response
+## Analyze response
 
 We want to replace the term "kpis" in this audio file with the full term "Key Performance Indicators".
 

@@ -1,5 +1,5 @@
 ---
-title: "Bit Rate"
+title: "Bit rate"
 source: https://developers.deepgram.com/docs/tts-bit-rate.md
 path: docs/tts-bit-rate
 ---
@@ -7,11 +7,11 @@ path: docs/tts-bit-rate
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Bit Rate
+# Bit rate
 
 `bit_rate` *string*
 
-Text to Speech Request  Text to Speech Stream
+Text-to-Speech Request  Text-to-Speech Stream
 
 The Bit Rate feature gives users the ability to specify the desired bitrate of the resulting text-to-speech audio output.
 
@@ -21,7 +21,7 @@ When generating audio from text, having control over the bitrate can significant
 >
 > The bitrate value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Choose a value based on the `encoding` type and your use case. When applicable `48000` will be used as the default.
 
-## Enable Feature
+## Enable feature
 
 To enable the Bit Rate feature, include the `bit_rate` parameter in the query string with the desired bitrate value.
 
@@ -33,7 +33,7 @@ To enable the Bit Rate feature, include the `bit_rate` parameter in the query st
 https://api.deepgram.com/v1/speak?encoding=mp3&bit_rate=32000
 ```
 
-### CURL Example
+### CURL example
 
 You can use the following cURL command in a terminal or your favorite API client to synthesize text into speech with a specific bitrate.
 
@@ -57,21 +57,21 @@ curl --request POST \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Query Parameters
+### Query parameters
 
 | Parameter  | Value                                                                                                                                                | Type     | Description                               |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------- |
 | `bit_rate` | See list of supported audio format combinations in the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). | `string` | The desired bitrate for the output audio. |
 
-## Analyze Response
+## Analyze response
 
-Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
+Upon successful processing of the request, you'll receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
 > **Info**
 >
 > The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
-### Response Headers Example
+### Response headers example
 
 **`http`**
 

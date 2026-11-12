@@ -1,5 +1,5 @@
 ---
-title: "Regional Endpoints"
+title: "Regional endpoints"
 source: https://developers.deepgram.com/reference/regional-endpoints.md
 path: reference/regional-endpoints
 ---
@@ -7,7 +7,7 @@ path: reference/regional-endpoints
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Regional Endpoints
+# Regional endpoints
 
 Deepgram offers regional endpoints so you can process audio, text, and voice agent traffic within a specific geography. Regional endpoints use the same API keys and SDKs as the default global endpoint — you only need to change the base URL.
 
@@ -15,7 +15,7 @@ Deepgram offers regional endpoints so you can process audio, text, and voice age
 >
 > This page covers how to configure regional endpoints. For what Deepgram guarantees about where your data is processed, what we store, and how long we keep it, see [Your Data at Deepgram](/trust-security/your-data).
 
-## EU Endpoint
+## EU endpoint
 
 For customers requiring data processing within the EU, Deepgram provides an EU-specific endpoint at `api.eu.deepgram.com`. While Deepgram guarantees the service will be hosted within the EU, the specific country location may change over time. Requests to the EU endpoint are never routed outside the EU: if the region is unavailable, requests fail rather than fall back to another region. If you require hosting in a specific EU country, consider [Deepgram Dedicated](https://deepgram.com/dedicated) (see also our [technical documentation](/reference/custom-endpoints#deepgram-dedicated-endpoints)).
 
@@ -26,7 +26,7 @@ For customers requiring data processing within the EU, Deepgram provides an EU-s
 1. **Replace the base URL**: In any SDK or API request, replace `api.deepgram.com` with `api.eu.deepgram.com`.
 2. **Use your existing credentials**: Your existing API keys and tokens work on the EU endpoint.
 
-### Feature Compatibility
+### Feature compatibility
 
 The EU endpoint supports the following Deepgram APIs:
 
@@ -41,19 +41,19 @@ See our [API Documentation](/reference/deepgram-api-overview) for more informati
 
 * **Whisper models are not supported in the EU region.** Use Flux STT or Nova models instead.
 
-### WebSocket Connections
+### WebSocket connections
 
 For streaming features on the EU endpoint, use the following URLs:
 
-| API                   | URL                                           |
-| --------------------- | --------------------------------------------- |
-| Speech-to-Text        | `wss://api.eu.deepgram.com/v1/listen`         |
-| Speech-to-Text (Flux) | `wss://api.eu.deepgram.com/v2/listen`         |
-| Text-to-Speech        | `wss://api.eu.deepgram.com/v1/speak`          |
-| Text-to-Speech (Flux) | `wss://api.eu.deepgram.com/v2/speak`          |
-| Voice Agent           | `wss://api.eu.deepgram.com/v1/agent/converse` |
+| API                       | URL                                           |
+| ------------------------- | --------------------------------------------- |
+| Speech-to-Text            | `wss://api.eu.deepgram.com/v1/listen`         |
+| Speech-to-Text (Flux STT) | `wss://api.eu.deepgram.com/v2/listen`         |
+| Text-to-Speech            | `wss://api.eu.deepgram.com/v1/speak`          |
+| Text-to-Speech (Flux TTS) | `wss://api.eu.deepgram.com/v2/speak`          |
+| Voice Agent               | `wss://api.eu.deepgram.com/v1/agent/converse` |
 
-### SDK Configuration Examples
+### SDK configuration examples
 
 #### Python
 
@@ -127,7 +127,7 @@ curl -X POST "https://api.eu.deepgram.com/v1/listen" \
   --data-binary @audio.wav
 ```
 
-## AU Endpoint
+## AU endpoint
 
 For customers requiring data processing within Australia, Deepgram provides an AU-specific endpoint at `api.au.deepgram.com`. Deepgram guarantees the service will be hosted within Australia. Requests to the AU endpoint are never routed outside Australia: if the region is unavailable, requests fail rather than fall back to another region.
 
@@ -138,7 +138,7 @@ For customers requiring data processing within Australia, Deepgram provides an A
 1. **Replace the base URL**: In any SDK or API request, replace `api.deepgram.com` with `api.au.deepgram.com`.
 2. **Use your existing credentials**: Your existing API keys and tokens work on the AU endpoint.
 
-### Feature Compatibility
+### Feature compatibility
 
 The AU endpoint supports the following Deepgram APIs:
 
@@ -153,19 +153,19 @@ See our [API Documentation](/reference/deepgram-api-overview) for more informati
 
 * **Whisper models are not supported in the AU region.** Use Flux STT or Nova models instead.
 
-### WebSocket Connections
+### WebSocket connections
 
 For streaming features on the AU endpoint, use the following URLs:
 
-| API                   | URL                                           |
-| --------------------- | --------------------------------------------- |
-| Speech-to-Text        | `wss://api.au.deepgram.com/v1/listen`         |
-| Speech-to-Text (Flux) | `wss://api.au.deepgram.com/v2/listen`         |
-| Text-to-Speech        | `wss://api.au.deepgram.com/v1/speak`          |
-| Text-to-Speech (Flux) | `wss://api.au.deepgram.com/v2/speak`          |
-| Voice Agent           | `wss://api.au.deepgram.com/v1/agent/converse` |
+| API                       | URL                                           |
+| ------------------------- | --------------------------------------------- |
+| Speech-to-Text            | `wss://api.au.deepgram.com/v1/listen`         |
+| Speech-to-Text (Flux STT) | `wss://api.au.deepgram.com/v2/listen`         |
+| Text-to-Speech            | `wss://api.au.deepgram.com/v1/speak`          |
+| Text-to-Speech (Flux TTS) | `wss://api.au.deepgram.com/v2/speak`          |
+| Voice Agent               | `wss://api.au.deepgram.com/v1/agent/converse` |
 
-### SDK Configuration Examples
+### SDK configuration examples
 
 #### Python
 
@@ -239,7 +239,7 @@ curl -X POST "https://api.au.deepgram.com/v1/listen" \
   --data-binary @audio.wav
 ```
 
-## India Endpoint
+## India endpoint
 
 For customers requiring data processing within India, Deepgram provides an India-specific endpoint at `api.in.deepgram.com`. Deepgram guarantees the service will be hosted within India. Requests to the India endpoint are never routed outside India: if the region is unavailable, requests fail rather than fall back to another region.
 
@@ -250,7 +250,7 @@ For customers requiring data processing within India, Deepgram provides an India
 1. **Replace the base URL**: In any SDK or API request, replace `api.deepgram.com` with `api.in.deepgram.com`.
 2. **Use your existing credentials**: Your existing API keys and tokens work on the India endpoint.
 
-### Feature Compatibility
+### Feature compatibility
 
 The India endpoint supports the following Deepgram APIs:
 
@@ -265,19 +265,19 @@ See our [API Documentation](/reference/deepgram-api-overview) for more informati
 
 * **Whisper models are not supported in the India region.** Use Flux STT or Nova models instead.
 
-### WebSocket Connections
+### WebSocket connections
 
 For streaming features on the India endpoint, use the following URLs:
 
-| API                   | URL                                           |
-| --------------------- | --------------------------------------------- |
-| Speech-to-Text        | `wss://api.in.deepgram.com/v1/listen`         |
-| Speech-to-Text (Flux) | `wss://api.in.deepgram.com/v2/listen`         |
-| Text-to-Speech        | `wss://api.in.deepgram.com/v1/speak`          |
-| Text-to-Speech (Flux) | `wss://api.in.deepgram.com/v2/speak`          |
-| Voice Agent           | `wss://api.in.deepgram.com/v1/agent/converse` |
+| API                       | URL                                           |
+| ------------------------- | --------------------------------------------- |
+| Speech-to-Text            | `wss://api.in.deepgram.com/v1/listen`         |
+| Speech-to-Text (Flux STT) | `wss://api.in.deepgram.com/v2/listen`         |
+| Text-to-Speech            | `wss://api.in.deepgram.com/v1/speak`          |
+| Text-to-Speech (Flux TTS) | `wss://api.in.deepgram.com/v2/speak`          |
+| Voice Agent               | `wss://api.in.deepgram.com/v1/agent/converse` |
 
-### SDK Configuration Examples
+### SDK configuration examples
 
 #### Python
 
@@ -351,11 +351,11 @@ curl -X POST "https://api.in.deepgram.com/v1/listen" \
   --data-binary @audio.wav
 ```
 
-## Voice Agent Managed LLM and TTS Providers
+## Voice Agent managed LLM and TTS providers
 
 When you use Deepgram's [managed LLM](/docs/voice-agent-llm-models) or [managed TTS](/docs/voice-agent-tts-models) providers with the Voice Agent API, Deepgram routes requests to those providers on your behalf. Where possible, Deepgram leverages regional endpoints for these managed providers to keep traffic within the same region as your Deepgram endpoint.
 
-### EU Regional Support
+### EU regional support
 
 Today, Deepgram routes managed provider traffic through EU endpoints for **OpenAI** and **Google**. When you connect to `api.eu.deepgram.com` and use a managed OpenAI LLM or TTS model, the underlying requests to OpenAI are routed through OpenAI's EU infrastructure. Managed Google LLMs default to the EU Gemini Enterprise Agent (GEA) endpoint — see [Google LLM APIs](#google-llm-apis) below.
 
@@ -401,7 +401,7 @@ When you omit `version`, the default depends on the Deepgram endpoint:
 
 Fewer Gemini models are available on the EU GEA endpoint than on global AI Studio. For current model availability by region, see [Google's documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/locations#multi-region).
 
-### AU Regional Support
+### AU regional support
 
 When you connect to `api.au.deepgram.com` and use Deepgram managed models for speech-to-text (`listen`) and text-to-speech (`speak`) — for example, `nova-3` and `aura-2` — Deepgram processes that audio within Australia.
 
@@ -411,7 +411,7 @@ When you connect to `api.au.deepgram.com` and use Deepgram managed models for sp
 
 The voice agent LLM (`think`) runs on a third-party provider, where data residency and processing location are distinct. OpenAI, for example, offers Australian data residency — your content is stored at rest in Australia — but performs inference outside Australia. No managed in-region LLM is available today, so the `think` step is processed outside Australia even when residency applies. See [OpenAI's data residency guide](https://developers.openai.com/api/docs/guides/your-data#which-models-and-features-are-eligible-for-data-residency) for provider specifics.
 
-### India Regional Support
+### India regional support
 
 When you connect to `api.in.deepgram.com` and use Deepgram managed models for speech-to-text (`listen`) and text-to-speech (`speak`) — for example, `nova-3` and `aura-2` — Deepgram processes that audio within India.
 
@@ -421,7 +421,7 @@ When you connect to `api.in.deepgram.com` and use Deepgram managed models for sp
 
 The voice agent LLM (`think`) runs on a third-party provider, where data residency and processing location are distinct. OpenAI, for example, offers India data residency — your content is stored at rest in India — but performs inference outside India. No managed in-region LLM is available today, so the `think` step is processed outside India even when residency applies. See [OpenAI's data residency guide](https://developers.openai.com/api/docs/guides/your-data#which-models-and-features-are-eligible-for-data-residency) for provider specifics.
 
-### How to Use
+### How to use
 
 No additional configuration is needed. Connect to your regional endpoint and select a managed provider as you normally would:
 

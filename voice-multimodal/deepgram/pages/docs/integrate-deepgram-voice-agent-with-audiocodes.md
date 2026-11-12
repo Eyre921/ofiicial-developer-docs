@@ -15,17 +15,17 @@ It offers a simple user interface for standing up connections and developer-frie
 
 Note, AudioCodes offers [two versions of this platform](https://techdocs.audiocodes.com/voice-ai-connect/#VAIG_Combined/editions_and_deployment.htm?TocPath=VoiceAI%2520Connect%257C_____1) - LiveHub, which is the self serve version, as well as VoiceAI Connect Enterprise, which is the managed services version.
 
-This guide will focus on LiveHub, as it is accessible to all users. However, if you are using VoiceAI Connect Enterprise, the steps and instructions laid out here will be very similar. In addition, you will have the help of the AudioCodes Professional Services team to help you with the configuration. Refer to this doc for guidance, but note that the exact steps may vary slightly depending on how your specific version of VoiceAI Connect Enterprise is built.
+This guide will focus on LiveHub, as it's accessible to all users. However, if you're using VoiceAI Connect Enterprise, the steps and instructions laid out here will be very similar. In addition, you'll have the help of the AudioCodes Professional Services team to help you with the configuration. Refer to this doc for guidance, but note that the exact steps may vary slightly depending on how your specific version of VoiceAI Connect Enterprise is built.
 
-## Before you Begin
-
-> **Info**
->
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key.
+## Before you begin
 
 > **Info**
 >
-> You will need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key.
+
+> **Info**
+>
+> You'll need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
 
 ## The Problem This SDK Solves
 
@@ -33,7 +33,7 @@ Most enterprise call centers ultimately rely on SIP for call signaling and RTP f
 
 AudioCodes VoiceAI Connect already bridges that gap for thousands of enterprises — it accepts calls from any number of call center platforms or telephony systems and exposes them as WebSocket connections that AI systems can connect to.
 
-But there is still a missing piece. Someone has to take that WebSocket audio stream, forward it to Deepgram's Voice Agent API in real time, route the agent's synthesized speech back to the caller, and handle everything that can go wrong in between. Rather than have every customer write that plumbing from scratch, Deepgram maintains an open-source SDK — [`deepgram-audiocodes-bridge`](https://github.com/deepgram/deepgram-audiocodes-bridge) — that solves it once.
+But there's still a missing piece. Someone has to take that WebSocket audio stream, forward it to Deepgram's Voice Agent API in real time, route the agent's synthesized speech back to the caller, and handle everything that can go wrong in between. Rather than have every customer write that plumbing from scratch, Deepgram maintains an open-source SDK — [`deepgram-audiocodes-bridge`](https://github.com/deepgram/deepgram-audiocodes-bridge) — that solves it once.
 
 ```text
 AudioCodes VoiceAI Connect 
@@ -44,7 +44,7 @@ deepgram-audiocodes-bridge
 Deepgram Voice Agent API
 ```
 
-## What the SDK Does
+## What the SDK does
 
 The bridge runs a WebSocket server that speaks the AudioCodes Bot API, manages a Deepgram Voice Agent connection per call, routes audio bidirectionally in real time, and emits typed events your application code hooks into. Audio frame parsing, protocol handshaking, barge-in handling, TTS streaming, and session teardown all live inside the SDK — your code stays focused on business logic.
 

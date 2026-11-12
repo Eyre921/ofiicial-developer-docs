@@ -29,13 +29,13 @@ sequenceDiagram
     Deepgram-->>Client: { ... }
 ```
 
-## Use Cases
+## Use cases
 
 Temporary tokens are ideal for client-side/untrusted applications because they allow clients to directly access the Deepgram API. Normal API keys, to be secure, require proxying traffic through your own servers where the API key is stored.
 
 Direct access to the Deepgram API is particularly useful for client-side/untrusted applications that are more latency-sensitive, like realtime connections.
 
-## Implementation Considerations
+## Implementation considerations
 
 1. Create a backend service to generate temporary tokens
 2. Generate tokens only when needed (e.g., at connection start)
@@ -103,16 +103,16 @@ In this case, pass `ttl_seconds : your_ttl` in the request body.  The max TTL su
 
 ### Can my websocket connection last longer than the token's TTL?
 
-Yes! You only need the temporary token to be valid during the initial websocket connection to Deepgram's APIs. The websocket connection will then stay open as it would in any other case until you close it.
+Yes. You only need the temporary token to be valid during the initial websocket connection to Deepgram's APIs. The websocket connection will then stay open as it would in any other case until you close it.
 
 ### Which Deepgram APIs can I use with a temporary token?
 
 Temporary tokens have usage::write permission for these Deepgram APIs:
 
-* [`/listen` REST API](/reference/speech-to-text/listen-pre-recorded) - Speech to Text
-* [`/listen` WebSocket API](/reference/speech-to-text/listen-streaming) - Speech to Text
-* [`/speak` REST API](/reference/text-to-speech/speak-request) - Text to Speech
-* [`/speak` WebSocket API](/reference/text-to-speech/speak-streaming) - Text to Speech
+* [`/listen` REST API](/reference/speech-to-text/listen-pre-recorded) - Speech-to-Text
+* [`/listen` WebSocket API](/reference/speech-to-text/listen-streaming) - Speech-to-Text
+* [`/speak` REST API](/reference/text-to-speech/speak-request) - Text-to-Speech
+* [`/speak` WebSocket API](/reference/text-to-speech/speak-streaming) - Text-to-Speech
 * [`/read` REST API](/reference/text-intelligence/analyze-text) - Text Intelligence
 * [`/agent` WebSocket API](/reference/voice-agent/voice-agent) - Voice Agent
 
@@ -122,7 +122,7 @@ These APIs will not work with temporary tokens:
 
 ### Can I use this token for speech-to-text pre-recorded requests?
 
-Yes! You can use this token with speech-to-text pre-recorded requests. Just note that due to the short TTL you may need to request a new token before subsequent pre-recorded requests. Unless you have latency constraints, you're likely better off just making the request from inside the proxy.
+Yes. You can use this token with speech-to-text pre-recorded requests. Just note that due to the short TTL you may need to request a new token before subsequent pre-recorded requests. Unless you have latency constraints, you're likely better off just making the request from inside the proxy.
 
 ### Are temporary tokens supported in the Deepgram SDKs?
 
@@ -137,7 +137,7 @@ Yes. The Deepgram SDKs support token-based authentication. Please refer to the [
 
 ### Can I track the usage from temporary tokens?
 
-Yes! The temporary tokens generated have the same accessor as the API key used to generate them.
+Yes. The temporary tokens generated have the same accessor as the API key used to generate them.
 
 ---
 

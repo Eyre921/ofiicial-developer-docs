@@ -11,27 +11,27 @@ path: docs/migrating-from-assembly-ai-speech-to-text-to-deepgram
 
 This guide provides a detailed step-by-step process for developers transitioning from AssemblyAI speech-to-text (STT) services to Deepgram's STT services using the Deepgram SDKs. The goal is to ensure a smooth migration by highlighting differences and demonstrating equivalent functionalities between the two platforms.
 
-## Getting Started
+## Getting started
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ## Prerequisites
 
 Before proceeding with the migration, ensure you meet the following prerequisites:
 
-### Required Tools
+### Required tools
 
 * A code editor (e.g., Visual Studio Code)
 * Terminal or command prompt access
 * Node / Python installed
 
-### API Keys
+### API keys
 
 * **AssemblyAI API Key**: Obtain from your AssemblyAI dashboard.
 * **Deepgram API Key**: Sign up on Deepgram's platform and get your API key in the [Deepgram Console](https://console.deepgram.com/signup?jump=keys).
@@ -40,15 +40,15 @@ Before proceeding with the migration, ensure you meet the following prerequisite
 
 Both AssemblyAI and Deepgram provide robust speech-to-text APIs, but they have different endpoints, request parameters, and response structures. This guide will map AssemblyAI functionalities to their Deepgram equivalents.
 
-## Step-by-Step Migration Instructions
+## Step-by-step migration instructions
 
-### 1. Setting Up the Environment
+### 1. Setting up the environment
 
 **Node:** Ensure you have Node.js installed. If not, download and install it from the [Node.js website](https://nodejs.org/).
 
 **Python:** Ensure you have Python installed. If not, download and install it from the [Python website](https://www.python.org/downloads/).
 
-### 2. Configuring API Keys
+### 2. Configuring API keys
 
 #### How to configure AssemblyAI API key
 
@@ -70,7 +70,7 @@ Similarly, add your Deepgram API key to the `.env` file:
 DEEPGRAM_API_KEY=your_deepgram_api_key_here
 ```
 
-### 3. Installing the SDK and Dependencies
+### 3. Installing the SDK and dependencies
 
 For AssemblyAI:
 
@@ -100,7 +100,7 @@ npm install @deepgram/sdk dotenv
 pip install deepgram-sdk python-dotenv
 ```
 
-### 4. Making API Requests
+### 4. Making API requests
 
 #### Initialization
 
@@ -162,7 +162,7 @@ API_KEY = os.getenv("DEEPGRAM_API_KEY")
 deepgram = DeepgramClient(api_key=API_KEY)
 ```
 
-#### Add Request Parameters
+#### Add request parameters
 
 **AssemblyAI**:
 
@@ -199,9 +199,9 @@ const options = {
 ```python Python
 ```
 
-### Example: Transcribe Audio Using a Remote URL
+### Example: transcribe audio using a remote URL
 
-Here is the entire code sample that shows how to transcribe audio using a remote URL.
+Here's the entire code sample that shows how to transcribe audio using a remote URL.
 
 **AssemblyAI**:
 
@@ -322,9 +322,9 @@ if __name__ == "__main__":
     main()
 ```
 
-### Example: Transcribe Audio Using a Local File
+### Example: transcribe audio using a local file
 
-Here is the entire code sample that shows how to transcribe audio using a local file.
+Here's the entire code sample that shows how to transcribe audio using a local file.
 
 **AssemblyAI**:
 
@@ -449,7 +449,7 @@ if __name__ == "__main__":
     main()
 ```
 
-### 7. Handling Responses
+### 7. Handling responses
 
 #### Compare the JSON responses:
 
@@ -514,13 +514,13 @@ if __name__ == "__main__":
 }
 ```
 
-### 8. Code Migration
+### 8. Code migration
 
 Adapting code to handle Deepgram's response structure involves accessing nested fields within the JSON response. For instance, `response.results.channels[0].alternatives[0].transcript` will give you the transcript text.
 
 Be sure to update your data parsing logic to correctly navigate the nested response format, and thoroughly test the new code to ensure it handles various edge cases and accurately extracts the needed information.
 
-### 9. Testing and Validation
+### 9. Testing and validation
 
 #### Steps to test the integration
 

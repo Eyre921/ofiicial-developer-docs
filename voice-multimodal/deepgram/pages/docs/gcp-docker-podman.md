@@ -9,11 +9,11 @@ path: docs/gcp-docker-podman
 
 # Google Cloud Platform
 
-Deploying Deepgram on Google Cloud Platform (GCP) requires some preparation. In this section, you will learn how to provision a Virtual Machine where you will deploy Deepgram products. You will need to perform some of these steps in the GCP Cloud Console and some in your local terminal.
+Deploying Deepgram on Google Cloud Platform (GCP) requires some preparation. In this section, you'll learn how to provision a Virtual Machine where you'll deploy Deepgram products. You'll need to perform some of these steps in the GCP Cloud Console and some in your local terminal.
 
 ## Prerequisites
 
-Make sure you have completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
+Make sure you've completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
 
 GPU availability has been extremely limited across cloud providers, including GCP. You may need to contact Google directly for access if you are not able to obtain a spot GPU instance.
 
@@ -27,7 +27,7 @@ GPU availability has been extremely limited across cloud providers, including GC
 
 2. In the Google Cloud Console, open the Navigation Menu and select **Compute Engine** -> **VM Instances**.
 
-   1. If you have not used the Compute Engine API on this project, you may need to click **Enable** to enable Compute Engine on the project.
+   1. If you haven't used the Compute Engine API on this project, you may need to click **Enable** to enable Compute Engine on the project.
 
 3. Click **Create Instance** to pull up the VM creation wizard.
 
@@ -43,11 +43,11 @@ GPU availability has been extremely limited across cloud providers, including GC
    4. For "Machine type", customize the number of cores and memory available to meet Deepgram's hardware specifications, linked above.
    5. Customize the "Advanced Configurations" if desired.
    6. For "Availability policies", choose a policy that makes sense for your use case.
-   7. For "Display device", it is not necessary to enable a display device for Deepgram services to run.
+   7. For "Display device", it isn't necessary to enable a display device for Deepgram services to run.
 
 7. For the **Confidential VM service** wizard step, make a choice that makes sense for your use case.
 
-8. For the **Container** wizard step, we will not select "Deploy container", as we will deploy multiple containers to a single VM as a POC. In a production environment, you may want to deploy a single container to the VM, in which case you may choose to utilize this option.
+8. For the **Container** wizard step, we won't select "Deploy container", as we'll deploy multiple containers to a single VM as a POC. In a production environment, you may want to deploy a single container to the VM, in which case you may choose to utilize this option.
 
 9. For the **Boot Disk** wizard step, select "Change".
 
@@ -57,7 +57,7 @@ GPU availability has been extremely limited across cloud providers, including GC
 
 10. For the **Identity and API access** wizard step, select a Service Account with the proper permissions and scopes according to your use case. If you aren't sure which to use, you may use the default service account for a POC.
 
-11. For the **Firewall** wizard step, if you want to be able to receive requests from the public internet, make sure to also check the box `Allow HTTPS traffic`. If you are colocating your Deepgram self-hosted deployment with other services and do not need to expose your server to the public internet, you may not need to check any of the available options.
+11. For the **Firewall** wizard step, if you want to be able to receive requests from the public internet, make sure to also check the box `Allow HTTPS traffic`. If you're colocating your Deepgram Self-Hosted deployment with other services and do not need to expose your server to the public internet, you may not need to check any of the available options.
 
 12. For the **Observability** wizard step, you may install the Ops Agent if you wish for your own monitoring and logging. The Ops Agent will provide a native solution to ingest Deepgram container logs, as well as OpenTelemetry metrics from Deepgram Engine.
 
@@ -77,6 +77,6 @@ To complete the rest of the installation, including configuring your environment
 
 What’s Next
 
-Now that we have provisioned a deployment environment, we need to start configuring it for inference.
+Now that we've provisioned a deployment environment, we need to start configuring it for inference.
 
 * [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms)

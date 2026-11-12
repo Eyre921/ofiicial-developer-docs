@@ -150,7 +150,7 @@ curl https://api.stripe.com/v1/payment_intents/pi_123/capture \
   -d amount_to_capture=750
 ```
 
-Although some card payments are eligible for [multicapture](https://docs.stripe.com/payments/multicapture.md), you can only perform one capture on an authorized payment for most payments. If you partially capture a payment, you can’t perform another capture for the difference. (Instead, consider [saving the customer’s payment method details for later](https://docs.stripe.com/payments/save-during-payment.md?payment-ui=elements#save-payment-details-for-future-use) and creating future payments as needed.)
+Although some card payments are eligible for [multicapture](https://docs.stripe.com/payments/multicapture.md), you can only perform one capture on an authorized payment for most payments. If you partially capture a payment, you can’t perform another capture for the difference. (Instead, consider [saving the customer’s payment method details for later](https://docs.stripe.com/payments/advanced/save-during-payment.md#save-payment-details-for-future-use) and creating future payments as needed.)
 
 Card statements from some issuers and interfaces from payment methods don’t always distinguish between authorizations and captured (settled) payments, which can sometimes confuse customers.
 

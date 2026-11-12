@@ -134,7 +134,7 @@ await pc.describeCollection('example-collection');
 
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
-import org.openapitools.client.model.CollectionModel;
+import org.openapitools.db_control.client.model.CollectionModel;
 
 public class DescribeCollectionExample {
     public static void main(String[] args) {
@@ -210,7 +210,9 @@ await pc.listCollections();
 
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
-import org.openapitools.client.model.CollectionModel;
+import org.openapitools.db_control.client.model.CollectionModel;
+
+import java.util.List;
 
 public class ListCollectionsExample {
     public static void main(String[] args) {

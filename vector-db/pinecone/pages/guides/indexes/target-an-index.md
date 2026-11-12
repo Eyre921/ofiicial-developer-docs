@@ -308,7 +308,7 @@ import io.pinecone.clients.Index;
 import io.pinecone.clients.Pinecone;
 
 public class GenerateEmbeddings {
-    public static void main(String[] args) throws ApiException {
+    public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
         Index index = pc.getIndexConnection("docs-example");
     }

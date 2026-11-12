@@ -1,5 +1,5 @@
 ---
-title: "Speed, Pause, Pronunciation"
+title: "Speed, pause, pronunciation"
 source: https://developers.deepgram.com/docs/tts-voice-controls.md
 path: docs/tts-voice-controls
 ---
@@ -7,15 +7,15 @@ path: docs/tts-voice-controls
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Speed, Pause, Pronunciation
+# Speed, pause, pronunciation
 
 > **Info**
 >
 > Pronunciation control on Flux TTS is in **Early Access**; see [Pronunciation control](#pronunciation-control). Some control combinations are invalid on Flux TTS: pronunciation cannot be combined with speed or pause. See [Combining controls](#combining-controls).
 
-Flux TTS (`/v2/speak`) voice controls let you adjust speech output: change the speaking rate, insert silence, and override the pronunciation of specific words. They are designed for use cases that need precise delivery of industry terminology, brand names, and complex content.
+Flux TTS (`/v2/speak`) voice controls let you adjust speech output: change the speaking rate, insert silence, and override the pronunciation of specific words. They're designed for use cases that need precise delivery of industry terminology, brand names, and complex content.
 
-Aura-2 (`/v1/speak`) supports speed and pronunciation with the same syntax. Each section calls out where Aura-2 differs.
+Deepgram Aura-2 (`/v1/speak`) supports speed and pronunciation with the same syntax. Each section calls out where Aura-2 differs.
 
 ## Availability
 
@@ -201,7 +201,7 @@ A few rules of thumb for producing IPA for your own vocabulary:
 | Pause + pronunciation | Rejected with `CONTROL_COMBINATION_INVALID`                                                                                   |
 | All three             | Rejected with `CONTROL_COMBINATION_INVALID`                                                                                   |
 
-A `speed` of exactly `1.0` does not count as a speed control, so it never triggers these rules. On a streaming session, a pronunciation control sent on a connection opened with a `speed` other than `1.0`, or after a `Configure` that set one, fails the connection with `DATA-0002`. A mid-stream `Configure` that sets `speed` while a queued turn still carries a pronunciation control is refused with a `ConfigureFailure` (`CONTROL_COMBINATION_INVALID`), and the previous speed stays in force. Pronunciations in the turn that is already playing do not block it. See [ConfigureFailure codes](/docs/flux-tts/server-messages#configurefailure-codes).
+A `speed` of exactly `1.0` doesn't count as a speed control, so it never triggers these rules. On a streaming session, a pronunciation control sent on a connection opened with a `speed` other than `1.0`, or after a `Configure` that set one, fails the connection with `DATA-0002`. A mid-stream `Configure` that sets `speed` while a queued turn still carries a pronunciation control is refused with a `ConfigureFailure` (`CONTROL_COMBINATION_INVALID`), and the previous speed stays in force. Pronunciations in the turn that's already playing don't block it. See [ConfigureFailure codes](/docs/flux-tts/server-messages#configurefailure-codes).
 
 > **Note**
 >
@@ -401,10 +401,10 @@ dg-breaks-applied: 0
 | Header                      | Description                                                                                                                                                                                        |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `dg-pronunciations-applied` | Number of pronunciation overrides applied                                                                                                                                                          |
-| `dg-breaks-applied`         | Number of pause markers applied. Always `0` on Aura-2, which does not support pause.                                                                                                               |
+| `dg-breaks-applied`         | Number of pause markers applied. Always `0` on Aura-2, which doesn't support pause.                                                                                                                |
 | `dg-warnings`               | Comma-separated `PRON-NNN` codes for pronunciation overrides that triggered an IPA warning. Present only when there are warnings. See [Pronunciation warning codes](#pronunciation-warning-codes). |
 
-The response does not echo the `speed` value; it is the value you sent in the request.
+The response doesn't echo the `speed` value; it's the value you sent in the request.
 
 ### Streaming
 

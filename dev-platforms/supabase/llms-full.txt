@@ -15727,7 +15727,7 @@ If your application uses the Supabase Database, Storage or Edge Functions, Row L
 
 ## Frequently asked questions
 
-**How do I check when a user went through MFA?**
+How do I check when a user went through MFA?
 
 Access tokens issued by Supabase Auth contain an `amr` (Authentication Methods Reference) claim. It is an array of objects that indicate what authentication methods the user has used so far.
 
@@ -25246,7 +25246,7 @@ The Proxy is responsible for:
 2. Passing the refreshed Auth token to Server Components, so they don't attempt to refresh the same token themselves. It is what keeps users signed in. This is accomplished with `request.cookies.set`.
 3. Passing the refreshed Auth token to the browser, so it replaces the old token. This is accomplished with `response.cookies.set`.
 
-**What does the `cookies` object do?**
+What does the `cookies` object do?
 
 The cookies object lets the Supabase client know how to access the cookies, so it can read and write the user session data. To make `@supabase/ssr` framework-agnostic, the cookies methods aren't hard-coded. These utility functions adapt `@supabase/ssr`'s cookie handling for Next.js.
 
@@ -25254,14 +25254,14 @@ The cookies object lets the Supabase client know how to access the cookies, so i
 
 The cookie is named `sb-<project_ref>-auth-token` by default.
 
-**Do I need to create a new client for every route?**
+Do I need to create a new client for every route?
 
 Yes! Creating a Supabase client is lightweight.
 
 - On the server, it basically configures a `fetch` call. You need to reconfigure the fetch call anew for every request to your server, because you need the cookies from the request.
 - On the client, `createBrowserClient` already uses a singleton pattern, so you only ever create one instance, no matter how many times you call your `createClient` function.
 
-**Why does refreshing in two places sign users out?**
+Why does refreshing in two places sign users out?
 
 A refresh token can generally be used only once, with two exceptions. Supabase allows a short window in which the same token can be presented again, which covers the normal SSR round trip. It also returns the active token when the parent of the active token is presented, which covers a client that never received the previous response. A reuse attempt that matches neither exception revokes the whole session.
 
@@ -25754,8 +25754,8 @@ exports.createClient = (context) => {
         return parseCookieHeader(context.req.headers.cookie ?? '')
       },
       setAll(cookiesToSet, headers) {
-        cookiesToSet.forEach(({ name, value }) =>
-          context.res.appendHeader('Set-Cookie', serializeCookieHeader(name, value))
+        cookiesToSet.forEach(({ name, value, options }) =>
+          context.res.appendHeader('Set-Cookie', serializeCookieHeader(name, value, options))
         )
         Object.entries(headers).forEach(([key, value]) => context.res.setHeader(key, value))
       },
@@ -37752,7 +37752,7 @@ Attempting to create a second Job with the same name (and case) will overwrite t
 select cron.schedule('permanent-cron-job-name', '30 seconds', 'CALL do_something()');
 ```
 
-**Cron syntax**
+Cron syntax
 
 ```
 ┌───────────── min (0 - 59)
@@ -42852,7 +42852,7 @@ SELECT * FROM test_array WHERE i && '{1}' ORDER BY i `<=>` '{1}' ASC;
 
 `rum_anyarray_addon_ops`
 
-The does the same with `anyarray` index as `rum_tsvector_addon_ops` i.e. allows to order select results using distance
+This does the same with `anyarray` index as `rum_tsvector_addon_ops` to allow ordering select results using distance.
 operator by attached column.
 
 ## Limitations
@@ -63962,7 +63962,7 @@ There are two potential ways to change log settings:
 - [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started)
 - **SQL commands**
 
-**Configure with the CLI**
+Configure with the CLI
 
 Install the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) then update the relevant setting:
 
@@ -63980,7 +63980,7 @@ postgres-config delete --config log_lock_waits,log_disconnections,... \
 --remote=<project-ref>
 ```
 
-**Configure with SQL**
+Configure with SQL
 
 Caution: Log settings configured directly with SQL take precedence over values set by the Management API and CLI.
 
@@ -64029,7 +64029,7 @@ automatic vacuum of table "postgres.public.vac_test": index scans: 0
 automatic analyze of table "postgres.public.vac_test"
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64065,7 +64065,7 @@ recovery restart point at 0/B837D6F0
 restartpoint complete: wrote 266 buffers (0.4%); 0 WAL file(s) added, 1 removed, 0 recycled; write=25.760 s, sync=0.004 s, total=25.773 s; sync files=20, longest=0.003 s, average=0.001 s; distance=19779 kB, estimate=565114 kB; lsn=0/B837D748, redo lsn=0/B837D6F0
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64095,7 +64095,7 @@ process 1017208 still waiting for "lock_type" on relation 75874 of database 5 af
 process 1007982 acquired "lock_type" on transaction 445264 after 2000.880 ms
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64122,7 +64122,7 @@ If a read-replica is acting on data that is being modified/discarded by the prim
 recovery still waiting after 1000.156 ms: recovery conflict on lock
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64144,7 +64144,7 @@ When a server is recovering from a crash, it has to go through several checks be
 syncing data directory (pre-fsync), elapsed time: 0.00 s, current path: ./base/4/13456
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64170,7 +64170,7 @@ When temp files larger than the `log_temp_files` limit are created, Postgres log
 temporary file: path "base/pgsql_tmp/pgsql_tmp306918.0", size 8331264
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64209,7 +64209,7 @@ connection authenticated: identity="pgbouncer" method=scram-sha-256
 
 Note: The logged IP address is from the device directly communicating with Postgres. If you connect through the [shared pooler](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#shared-pooler), the [dedicated pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#dedicated-pooler), or the [Data API](https://supabase.com/docs/guides/database/connecting-to-postgres#data-apis-and-client-libraries), those service IPs will appear instead of the original client.
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64233,7 +64233,7 @@ disconnection: session time: 0:00:01.492 user=postgres database=postgres host=12
 
 Note: The logged IP address is from the device directly communicating with Postgres. If you connect through the [shared pooler](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits#shared-pooler), the [dedicated pooler](https://supabase.com/docs/guides/database/connecting-to-postgres#dedicated-pooler), or the [Data API](https://supabase.com/docs/guides/database/connecting-to-postgres#data-apis-and-client-libraries), those service IPs will appear instead of the original client.
 
-**Configuration examples**
+Configuration examples
 
 ```sh name=CLI
 supabase --experimental \
@@ -64263,7 +64263,7 @@ cron job 1 starting: select 1
 
 Note: Beyond logs, [pg\_cron](https://supabase.com/docs/guides/cron/install) also records all cron executions in the [`cron.job_run_details`](https://github.com/citusdata/pg_cron#monitoring-jobs) table. Consider disabling `cron.log_statement` to instead monitor cron activity only in `cron.job_run_details` instead.
 
-**Configuration examples**
+Configuration examples
 
 Caution: `cron.log_statement` requires a server restart to take effect, which results in a few seconds of downtime.
 
@@ -64300,7 +64300,7 @@ Note, even though the query will not be logged, the primary command associated w
 command_tag: "SELECT"
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sql name=SQL
 alter role "postgres" set "log_duration" to true;
@@ -64337,7 +64337,7 @@ Note: Note: `log` is considered more severe than `warning` and `error`.
 
 - Controlling what *query generated logs* are recorded overall
 
-**Configuration examples**
+Configuration examples
 
 ```sql name=SQL
 alter role "postgres" set "log_min_messages" to 'log';
@@ -64365,7 +64365,7 @@ Logs queries that match the configured action type:
 statement: select * from testing WHERE id = 5 limit 100;
 ```
 
-**Configuration examples**
+Configuration examples
 
 ```sql name=SQL
 alter role "postgres" set "log_statement" to 'ddl';
@@ -78494,19 +78494,73 @@ Logs are provided for each function invocation, locally and in hosted environmen
 
 ### Production
 
-Access logs from the Functions section of your Dashboard:
+Open the logs for a function in the Dashboard:
 
-1. Navigate to the [Functions section](https://supabase.com/dashboard/project/_/functions) of the Dashboard
-2. Select your function from the list
-3. Choose your log view:
-   - **Invocations:** Request/Response data including headers, body, status codes, and execution duration. Filter by date, time, or status code.
-   - **Logs:** Platform events, uncaught exceptions, and custom log messages. Filter by timestamp, level, or message content.
+1. Go to the [Edge Functions section](https://supabase.com/dashboard/project/_/functions) of the Dashboard.
+2. Select your function from the list.
+3. Select the **Logs** tab.
 
-![Function invocations.](/docs/img/guides/functions/function-logs.png)
+The **Logs** tab shows one list with both kinds of events for the function:
+
+- **Invocations:** one row for each HTTP request the function handled, with the status code and execution time.
+- **Console logs and events:** output from `console.log`, `console.warn`, and `console.error`, uncaught exceptions, and boot and shutdown events.
 
 ### Development
 
 When [developing locally](https://supabase.com/docs/guides/functions/quickstart) you will see error messages and console log statements printed to your local terminal window.
+
+***
+
+## Explore logs in the Dashboard
+
+### Filter the list
+
+Use the filter bar above the list to narrow the events:
+
+| Filter        | Behavior                                                                                            |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| Time range    | Show events from a fixed period.                                                                    |
+| Log Type      | Show **Edge Function** (invocations), **Edge Function runtime** (console logs and events), or both. |
+| Level         | Show **Success**, **Warning**, or **Error** events.                                                 |
+| Event message | Match text in the event message.                                                                    |
+
+For an invocation, the level follows the HTTP status code: 2xx is success, 4xx is warning, and 5xx is error. For a console log or event, `error` and `fatal` map to error, `warn` and `warning` map to warning, and other levels map to success.
+
+Select **Live** to fetch new events automatically. Select it again to pause. Choosing a time range or sorting the list also stops live mode.
+
+### Inspect an event
+
+Select a row to open the detail panel. The panel has these tabs:
+
+| Tab          | Shows                                                                    |
+| ------------ | ------------------------------------------------------------------------ |
+| **Overview** | The event grouped into sections, described below.                        |
+| **Raw JSON** | The full event data as JSON.                                             |
+| **Timeline** | Other logs that share the same request, trace, or function execution ID. |
+| **User**     | The user behind the request, when the event can be linked to one.        |
+
+For an invocation, **Overview** has these sections:
+
+- **Network:** host, method, path, and client, when available.
+- **Edge Function:** status, function path, execution time, and execution ID. It includes a **Function Details** section with the function ID, execution region, number of function logs, method, and user agent.
+- **Attributes:** the remaining fields of the event, grouped into **Details**, **Request**, **Response**, request and response headers, and other sections. A section appears only when the event has fields for it.
+
+Note: If you turn off **Updated Logs interface** in the Dashboard feature previews, the **Logs** page is replaced by separate **Invocations** and **Logs** tabs. Request and response bodies are not logged in either view.
+
+***
+
+## What invocation logs contain
+
+Invocation logs record the request method, path, and host, the response status code, the execution time, and a limited set of headers.
+
+Request and response bodies are not logged or retained. Logs do not contain the payload a client sent or the data your function returned, and you can't view them in the Dashboard. To see a body while debugging, log the part you need from your function code with `console.log`, taking care not to log sensitive data.
+
+Only a subset of request and response headers is kept. The `function_edge_logs` source records these headers:
+
+- Request headers: `accept`, `content-length`, `host`, and `user-agent`.
+- Response headers: `content-length`, `content-type`, `date`, `server`, and `vary`.
+
+Other headers, including `authorization` and custom headers, reach your function but are not part of the invocation log. To inspect them, log them from your function as shown in [Logging request headers](#logging-request-headers). For the full list of fields, see the [Log field reference](https://supabase.com/docs/guides/observability/log-field-reference).
 
 ***
 
@@ -104101,6 +104155,93 @@ limit 50;
 
 SQLSTATE codes starting with `25` or `53` usually indicate platform-level resource events rather than application bugs. See the [PostgREST error codes reference](https://supabase.com/docs/guides/api/rest/postgrest-error-codes#database-level-errors) and [Database size guide](https://supabase.com/docs/guides/platform/database-size#read-only-mode) for context.
 
+## Correlate requests
+
+Use a request ID or trace ID to join events across sources. These fields are potentially present on any source but are not guaranteed to be populated.
+
+### Correlating by request ID
+
+Every API Gateway response includes an `sb-request-id` header. The gateway unpacks that value into `log_attributes['request_id']` — there is no `log_attributes['request.headers.sb-request-id']` key. To find the edge log for a known request ID:
+
+```sql
+-- find the edge log for a given sb-request-id
+select timestamp, log_attributes
+from logs
+where source = 'edge_logs'
+  and log_attributes['request_id'] = '<sb-request-id>'
+limit 1;
+```
+
+If the response header `log_attributes['response.headers.cf_cache_status']` is `HIT`, the request was served from Cloudflare and never reached PostgREST, Auth, or Storage — no downstream logs exist for that `request_id`.
+
+### Correlate logs by trace ID
+
+If the client sends a `traceparent` header (W3C Trace Context), the gateway records it in `log_attributes['request.headers.traceparent']` and extracts the trace and span IDs into `log_attributes['trace_id']` and `log_attributes['span_id']`. Use the `trace_id` to correlate across all sources:
+
+```sql
+-- correlate across all sources by trace_id
+select source, timestamp, log_attributes
+from logs
+where log_attributes['trace_id'] = '<trace_id>'
+order by timestamp;
+```
+
+See [Client-side tracing](https://supabase.com/docs/guides/observability/client-side-tracing) for how to attach trace context from Supabase client SDKs.
+
+## Follow a user's activity
+
+### Track a user across services
+
+To trace what a specific user did, find their recent auth events by user ID, then use the `request_id` from those events to find the other service logs that belong to the same request.
+
+```sql
+-- step 1: find the user's recent auth events
+select timestamp,
+  log_attributes['user_id'] as user_id,
+  log_attributes['request_id'] as request_id,
+  event_message
+from logs
+where source = 'auth_logs'
+  and log_attributes['user_id'] = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+order by timestamp desc
+limit 20;
+```
+
+```sql
+-- step 2: use a request_id from step 1 to find all related logs
+select timestamp, source, event_message
+from logs
+where log_attributes['request_id'] = '<request_id from step 1>'
+order by timestamp;
+```
+
+The user ID appears in [Auth](https://supabase.com/dashboard/project/_/auth/users) and in your application's user table.
+
+### Investigate an Edge Function invocation
+
+`function_edge_logs` records the HTTP request and response for each invocation. `function_logs` records the console output from inside the function. Both share an `execution_id` that lets you view them together.
+
+```sql
+-- find a failing invocation
+select timestamp,
+  log_attributes['execution_id'] as execution_id,
+  log_attributes['response.status_code'] as status,
+  log_attributes['request.path'] as path
+from logs
+where source = 'function_edge_logs'
+  and toInt32OrZero(log_attributes['response.status_code']) >= 500
+order by timestamp desc
+limit 20;
+```
+
+```sql
+-- fetch the HTTP layer and console output for one invocation
+select timestamp, source, event_message
+from logs
+where log_attributes['execution_id'] = '<execution_id from above>'
+order by timestamp;
+```
+
 ## Query limits
 
 Use an explicit `limit` and narrow time range. The logs query surface rejects `select *` and `count(*)`; list columns and use `count()`. A result limit bounds returned rows, not the time range scanned.
@@ -107754,7 +107895,7 @@ Logs are delivered as a JSON array via HTTP POST. Both HTTP/1 and HTTP/2 are sup
 
 Note: Requests to custom endpoints are currently unsigned. Signed requests are coming in a future release.
 
-**Edge Function walkthrough (uncompressed)**
+Edge Function walkthrough (uncompressed)
 
 1. Create and deploy an Edge Function to receive the drain:
 
@@ -107790,7 +107931,7 @@ Caution: Deploying an Edge Function as a log drain target will create a feedback
 - Set the URL to `https://[PROJECT REF].supabase.co/functions/v1/log-receiver`.
 - Add the header `Authorization: Bearer [PUBLISHABLE KEY]`.
 
-**Edge Function walkthrough (Gzip)**
+Edge Function walkthrough (Gzip)
 
 Gzip payloads can be decompressed using Node-compatible built-in APIs. See the Edge Function [compression guide](https://supabase.com/docs/guides/functions/compression) for more details.
 
@@ -107832,7 +107973,7 @@ Note: Your OTLP endpoint must accept logs at the `/v1/logs` path with `applicati
 
 Compatible platforms include OpenTelemetry Collector, Grafana Cloud, New Relic, Honeycomb, Datadog (OTLP ingestion), Elastic, and any other OTLP-compatible observability tool.
 
-**OpenTelemetry Collector example**
+OpenTelemetry Collector example
 
 Configure an OTLP HTTP receiver in your Collector config:
 
@@ -107860,7 +108001,7 @@ service:
 
 Then create a log drain in [Project Settings > Log Drains](https://supabase.com/dashboard/project/_/settings/log-drains) with the endpoint set to `https://your-collector:4318/v1/logs`.
 
-**Authentication examples**
+Authentication examples
 
 Different OTLP platforms use different authentication methods. Add the appropriate header to your drain configuration:
 
@@ -107897,7 +108038,7 @@ Logs are batched and sent to Datadog with Gzip compression. Each event's log sou
 2. Create the drain in [Project Settings > Log Drains](https://supabase.com/dashboard/project/_/settings/log-drains).
 3. Watch incoming events on the [Datadog Logs page](https://app.datadoghq.com/logs).
 
-**Parsing and pipeline configuration**
+Parsing and pipeline configuration
 
 [Grok parser](https://docs.datadoghq.com/service_management/events/pipelines_and_processors/grok_parser?tab=matchers) — extract the timestamp into a `date` field:
 
@@ -108069,6 +108210,7 @@ Request headers:
 - `x-forwarded-user-agent`
 - `range`
 - `prefer`
+- `traceparent`
 
 Response headers:
 
@@ -108087,6 +108229,7 @@ Response headers:
 
 ## Capture limits
 
+- `log_attributes['request_id']`, `log_attributes['trace_id']`, and `log_attributes['span_id']` are potentially present on any source but are not guaranteed to be populated. The API gateway unpacks the `sb-request-id` request header into `log_attributes['request_id']` — there is no `log_attributes['request.headers.sb-request-id']` key.
 - Hosted Postgres events longer than 100,000 characters and Edge Function log messages longer than 10,000 characters are truncated.
 - Internal Supabase service connection events are not recorded in hosted Postgres logs.
 - An Edge Function invocation uses `function_edge_logs`; its console output uses `function_logs`.
@@ -108104,6 +108247,7 @@ Source: `edge_logs`
 | `id` | `id` | `string` | `String` |
 | `identifier` | `log_attributes['identifier']` | `string` | `String` |
 | `metadata.load_balancer_redirect_identifier` | `log_attributes['load_balancer_redirect_identifier']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
 | `metadata.request.cf.asn` | `log_attributes['request.cf.asn']` | `number` | `String` |
 | `metadata.request.cf.asOrganization` | `log_attributes['request.cf.asOrganization']` | `string` | `String` |
 | `metadata.request.cf.botManagement.corporateProxy` | `log_attributes['request.cf.botManagement.corporateProxy']` | `boolean` | `String` |
@@ -108140,6 +108284,7 @@ Source: `edge_logs`
 | `metadata.request.headers.cf_ray` | `log_attributes['request.headers.cf_ray']` | `string` | `String` |
 | `metadata.request.headers.host` | `log_attributes['request.headers.host']` | `string` | `String` |
 | `metadata.request.headers.referer` | `log_attributes['request.headers.referer']` | `string` | `String` |
+| `metadata.request.headers.traceparent` | `log_attributes['request.headers.traceparent']` | `string` | `String` |
 | `metadata.request.headers.x_client_info` | `log_attributes['request.headers.x_client_info']` | `string` | `String` |
 | `metadata.request.headers.x_forwarded_proto` | `log_attributes['request.headers.x_forwarded_proto']` | `string` | `String` |
 | `metadata.request.headers.x_real_ip` | `log_attributes['request.headers.x_real_ip']` | `string` | `String` |
@@ -108160,6 +108305,8 @@ Source: `edge_logs`
 | `metadata.response.headers.x_kong_proxy_latency` | `log_attributes['response.headers.x_kong_proxy_latency']` | `string` | `String` |
 | `metadata.response.origin_time` | `log_attributes['response.origin_time']` | `number` | `String` |
 | `metadata.response.status_code` | `log_attributes['response.status_code']` | `number` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108190,8 +108337,12 @@ Source: `auth_logs`
 | `metadata.path` | `log_attributes['path']` | `string` | `String` |
 | `metadata.referer` | `log_attributes['referer']` | `string` | `String` |
 | `metadata.remote_addr` | `log_attributes['remote_addr']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.request.headers.traceparent` | `log_attributes['request.headers.traceparent']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
 | `metadata.status` | `log_attributes['status']` | `number` | `String` |
 | `metadata.timestamp` | `log_attributes['timestamp']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108218,6 +108369,10 @@ Source: `auth_audit_logs`
 | `metadata.host` | `log_attributes['host']` | `string` | `String` |
 | `metadata.level` | `log_attributes['level']` | `string` | `String` |
 | `metadata.msg` | `log_attributes['msg']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.request.headers.traceparent` | `log_attributes['request.headers.traceparent']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108251,11 +108406,15 @@ Source: `storage_logs`
 | `metadata.req.remotePort` | `log_attributes['req.remotePort']` | `number` | `String` |
 | `metadata.req.url` | `log_attributes['req.url']` | `string` | `String` |
 | `metadata.reqId` | `log_attributes['reqId']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.request.headers.traceparent` | `log_attributes['request.headers.traceparent']` | `string` | `String` |
 | `metadata.res.headers.content_length` | `log_attributes['res.headers.content_length']` | `number` | `String` |
 | `metadata.res.headers.content_type` | `log_attributes['res.headers.content_type']` | `string` | `String` |
 | `metadata.res.statusCode` | `log_attributes['res.statusCode']` | `number` | `String` |
 | `metadata.responseTime` | `log_attributes['responseTime']` | `number` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
 | `metadata.tenantId` | `log_attributes['tenantId']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108272,9 +108431,11 @@ Source: `function_edge_logs`
 | `metadata.execution_time_ms` | `log_attributes['execution_time_ms']` | `number` | `String` |
 | `metadata.function_id` | `log_attributes['function_id']` | `string` | `String` |
 | `metadata.project_ref` | `log_attributes['project_ref']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
 | `metadata.request.headers.accept` | `log_attributes['request.headers.accept']` | `string` | `String` |
 | `metadata.request.headers.content_length` | `log_attributes['request.headers.content_length']` | `string` | `String` |
 | `metadata.request.headers.host` | `log_attributes['request.headers.host']` | `string` | `String` |
+| `metadata.request.headers.traceparent` | `log_attributes['request.headers.traceparent']` | `string` | `String` |
 | `metadata.request.headers.user_agent` | `log_attributes['request.headers.user_agent']` | `string` | `String` |
 | `metadata.request.host` | `log_attributes['request.host']` | `string` | `String` |
 | `metadata.request.method` | `log_attributes['request.method']` | `string` | `String` |
@@ -108287,6 +108448,8 @@ Source: `function_edge_logs`
 | `metadata.response.headers.server` | `log_attributes['response.headers.server']` | `string` | `String` |
 | `metadata.response.headers.vary` | `log_attributes['response.headers.vary']` | `string` | `String` |
 | `metadata.response.status_code` | `log_attributes['response.status_code']` | `number` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `metadata.version` | `log_attributes['version']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
@@ -108307,7 +108470,10 @@ Source: `function_logs`
 | `metadata.level` | `log_attributes['level']` | `string` | `String` |
 | `metadata.project_ref` | `log_attributes['project_ref']` | `string` | `String` |
 | `metadata.region` | `log_attributes['region']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
 | `metadata.timestamp` | `log_attributes['timestamp']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `metadata.version` | `log_attributes['version']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
@@ -108338,6 +108504,9 @@ Source: `postgres_logs`
 | `metadata.parsed.transaction_id` | `log_attributes['parsed.transaction_id']` | `number` | `String` |
 | `metadata.parsed.user_name` | `log_attributes['parsed.user_name']` | `string` | `String` |
 | `metadata.parsed.virtual_transaction_id` | `log_attributes['parsed.virtual_transaction_id']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108356,6 +108525,9 @@ Source: `realtime_logs`
 | `metadata.measurements.connected_cluster` | `log_attributes['measurements.connected_cluster']` | `number` | `String` |
 | `metadata.measurements.limit` | `log_attributes['measurements.limit']` | `number` | `String` |
 | `metadata.measurements.sum` | `log_attributes['measurements.sum']` | `number` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108370,6 +108542,10 @@ Source: `postgrest_logs`
 | `id` | `id` | `string` | `String` |
 | `identifier` | `log_attributes['identifier']` | `string` | `String` |
 | `metadata.host` | `log_attributes['host']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.request.headers.traceparent` | `log_attributes['request.headers.traceparent']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108398,6 +108574,9 @@ Source: `supavisor_logs`
 | `metadata.level` | `log_attributes['level']` | `string` | `String` |
 | `metadata.project` | `log_attributes['project']` | `string` | `String` |
 | `metadata.region` | `log_attributes['region']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `metadata.type` | `log_attributes['type']` | `string` | `String` |
 | `metadata.user` | `log_attributes['user']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
@@ -108414,6 +108593,9 @@ Source: `pgbouncer_logs`
 | `file` | `log_attributes['file']` | `string` | `String` |
 | `id` | `id` | `string` | `String` |
 | `metadata.host` | `log_attributes['host']` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `project` | `log_attributes['project']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
@@ -108427,6 +108609,9 @@ Source: `pg_upgrade_logs`
 | --- | --- | --- | --- |
 | `event_message` | `event_message` | `string` | `String` |
 | `id` | `id` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `severity_text` | `severity_text` | `String` | `String` |
 | `source` | `source` | `String` | `String` |
 | `timestamp` | `timestamp` | `datetime` | `DateTime64` |
@@ -108441,6 +108626,9 @@ Source: `multigres_logs`
 | `component` | `log_attributes['component']` | `string` | `String` |
 | `event_message` | `event_message` | `string` | `String` |
 | `id` | `id` | `string` | `String` |
+| `metadata.request_id` | `log_attributes['request_id']` | `string` | `String` |
+| `metadata.span_id` | `log_attributes['span_id']` | `string` | `String` |
+| `metadata.trace_id` | `log_attributes['trace_id']` | `string` | `String` |
 | `namespace` | `log_attributes['namespace']` | `string` | `String` |
 | `node_name` | `log_attributes['node_name']` | `string` | `String` |
 | `pod_name` | `log_attributes['pod_name']` | `string` | `String` |
@@ -108658,7 +108846,7 @@ Note: The Metrics API is currently in beta. Metric names and labels might evolve
 - Reuse our [supabase-grafana dashboard JSON](https://github.com/supabase/supabase-grafana) to bootstrap over 200 ready-made charts.
 - Build your own alerting policies (right-sizing, saturation detection, index regression, and more).
 
-**What you can do with the Metrics API**
+What you can do with the Metrics API
 
 Every Supabase project exposes a metrics feed at `https://<project-ref>.supabase.co/customer/v1/privileged/metrics`. Replace `<project-ref>` with the identifier from your project URL or from the dashboard sidebar.
 
@@ -108682,7 +108870,7 @@ curl <project-url>/customer/v1/privileged/metrics \
 You can provision long-lived automation tokens in two ways:
 
 - Create an account access token once at [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) and reuse it wherever you configure observability tooling.
-- **Optional**: programmatically exchange an access token for project API keys via the [Management API](https://supabase.com/docs/reference/api/management-projects-api-keys-retrieve).
+- **Optional**: programmatically exchange an access token for project API keys via the [Management API](https://supabase.com/docs/reference/api/v1-get-project-api-keys).
 
 ```bash
 # (Optional) Exchange an account access token for project API keys
@@ -108870,7 +109058,7 @@ Connect Supabase metrics to any Prometheus-compatible platform
 
 The Supabase Metrics API is intentionally vendor-agnostic. Any collector that can scrape a Prometheus text endpoint over HTTPS can ingest the data. This guide explains the moving pieces so you can adapt them to AWS Managed Prometheus, Grafana Mimir, VictoriaMetrics, Thanos, or any other system.
 
-**What you can do with the Metrics API**
+What you can do with the Metrics API
 
 Every Supabase project exposes a metrics feed at `https://<project-ref>.supabase.co/customer/v1/privileged/metrics`. Replace `<project-ref>` with the identifier from your project URL or from the dashboard sidebar.
 
@@ -108894,7 +109082,7 @@ curl <project-url>/customer/v1/privileged/metrics \
 You can provision long-lived automation tokens in two ways:
 
 - Create an account access token once at [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) and reuse it wherever you configure observability tooling.
-- **Optional**: programmatically exchange an access token for project API keys via the [Management API](https://supabase.com/docs/reference/api/management-projects-api-keys-retrieve).
+- **Optional**: programmatically exchange an access token for project API keys via the [Management API](https://supabase.com/docs/reference/api/v1-get-project-api-keys).
 
 ```bash
 # (Optional) Exchange an account access token for project API keys
@@ -110111,7 +110299,7 @@ Note: Pro, Team and Enterprise Plan projects can enable PITR as an add-on.
 
 PITR is available on all compute sizes.
 
-**How PITR works**
+How PITR works
 
 As [covered in this blog post](https://supabase.com/blog/postgresql-physical-logical-backups), a combination of physical backups and [Write Ahead Log (WAL)](https://www.postgresql.org/docs/current/wal-intro.html) file archiving makes PITR possible. Physical backups provide a snapshot of the underlying directory of the database, while WAL files contain records of every change the database processes.
 
@@ -114314,7 +114502,7 @@ supabase db dump --remote=[CONNECTION_STRING] -f data.sql --use-copy --data-only
 
 ### Before you begin
 
-**Install Postgres and psql**
+Install Postgres and psql
 
 **Windows**
 
@@ -115040,7 +115228,7 @@ Learn how to restore your dashboard backup to a new Supabase project
 
 Note: Dashboard backups are only available for older projects that still use logical backups. Projects that use physical backups should follow steps in [Backup and Restore using the CLI](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore).
 
-**Install Postgres and psql**
+Install Postgres and psql
 
 **Windows**
 
@@ -115110,7 +115298,7 @@ echo 'export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"' >> ~/.zshrc
 
 Run the command mentioned and restart the terminal.
 
-**Create and configure a new project**
+Create and configure a new project
 
 1. **Create New project**
 
@@ -116152,7 +116340,7 @@ You can only read data from a Read Replica. This is in contrast to a Primary dat
 | Primary      | ✅      | ✅      | ✅      | ✅      |
 | Read Replica | ✅      | -      | -      | -      |
 
-**Do you need Read Replicas?**
+Do you need Read Replicas?
 
 When your database starts slowing down, you face a choice: make your existing database bigger (scale vertically), or spread the load across multiple databases (scale horizontally). Both approaches work. Neither is universally correct. The right answer depends on your workload, your budget, and where the bottleneck is.
 
@@ -137282,6 +137470,31 @@ This affects how you should think about serving private assets:
 Token expiry (`expiresIn`) and the object's response cache TTL (`cacheControl`) are independent. Once a response is cached at the edge, that cached response can continue to be served for the same signed URL until the CDN cache duration expires, even if the token in that URL has already expired. If you need to cut off access to an asset, delete the object from the bucket rather than relying on token expiry alone.
 
 For more information about revoking signed URLs, see [URL Signing Keys](https://supabase.com/docs/guides/storage/security/signing-keys).
+
+## Authenticated URLs and CDN caching
+
+When you request a private asset through the authenticated endpoint (`/storage/v1/object/authenticated/[bucket]/[asset-name]`), access is allowed until the user's access token (JWT) expires. The CDN caches the response based on the user's access at the time of the request, and keeps serving it until the JWT expires.
+
+For the authenticated endpoint:
+
+- If you change a user's access, for example, by updating a Row Level Security (RLS) policy, [purge the CDN cache](https://supabase.com/docs/guides/storage/cdn/purge-cdn-cache) so the next request that reaches the server is re-evaluated against your current access rules.
+  - The purge can take up to 60 seconds to propagate.
+  - A CDN purge doesn't update permissions stored in JWT claims. An unexpired JWT can still grant access after you change those permissions.
+  - A CDN purge doesn't clear browser caches. A browser can reuse a cached asset without sending a request to Storage until its `cacheControl` TTL expires.
+- If a user signs out and a request reuses their old JWT, the user can still access files.
+  - Signing out ends the Auth session but doesn't invalidate access tokens that were already issued.
+  - To shorten this window, lower the access token expiry in your project's [Sessions settings](https://supabase.com/dashboard/project/_/auth/sessions). Changes only affect newly issued JWTs. Existing tokens keep their original expiry. See the [recommended values](https://supabase.com/docs/guides/auth/sessions#what-are-recommended-values-for-access-token-jwt-expiration) before choosing a duration.
+
+To revoke access immediately, check the user's session and permissions in your own server code, for example, in an [Edge Function](https://supabase.com/docs/guides/functions). Your code then handles authorization, so it can call the Storage API with a secret API key and still benefit from CDN caching between Storage and your server. Projects that use legacy API keys can use the `service_role` key.
+
+To check for sign-out in that code:
+
+1. Verify the JWT's signature and expiry with [`getClaims()`](https://supabase.com/docs/reference/javascript/auth-getclaims). Reject the request if verification fails.
+2. Check that the `session_id` claim matches a row in `auth.sessions`. If no row exists, the user has signed out.
+
+For more detail, see [how to ensure an access token can't be used after sign-out](https://supabase.com/docs/guides/auth/sessions#how-to-ensure-an-access-token-jwt-cannot-be-used-after-a-user-signs-out).
+
+[Serving assets through the S3 API](https://supabase.com/docs/guides/storage/s3/authentication) doesn't cache responses, but requests that use a session token still succeed after sign-out until the JWT expires.
 
 
 ---
@@ -159681,7 +159894,7 @@ This reference documents every object and method available in Supabase's Python 
 
 ## Installing
 
-### Install with PyPi
+### Install with PyPI
 
 You can install supabase-py via the terminal. (for Python > 3.8)
 

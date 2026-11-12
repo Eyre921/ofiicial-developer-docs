@@ -1,10 +1,10 @@
 ---
-title: "Agent Server API reference for LangSmith Deployment"
+title: "Agent Server API reference"
 source: https://docs.langchain.com/langsmith/server-api-ref
 path: langsmith/server-api-ref
 ---
 
-Browse the Agent Server API reference for LangSmith Deployment, available within each deployment at the /docs endpoint.
+Browse the Agent Server API reference, available within each Agent Server at the /docs endpoint.
 
 The Agent Server API reference is available within each [deployment](/langsmith/deployment) at the `/docs` endpoint (e.g. `http://localhost:8124/docs`).
 

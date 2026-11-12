@@ -430,7 +430,7 @@ Checkout doesn’t support bank transfers in subscription or setup mode. Invoice
 
 ### API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Bank transfers | `customer_balance` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | No |
 

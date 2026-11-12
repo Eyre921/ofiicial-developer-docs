@@ -1,5 +1,5 @@
 ---
-title: "API Rate Limits"
+title: "API rate limits"
 source: https://developers.deepgram.com/reference/api-rate-limits.md
 path: reference/api-rate-limits
 ---
@@ -7,7 +7,7 @@ path: reference/api-rate-limits
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# API Rate Limits
+# API rate limits
 
 > **Info**
 >
@@ -34,13 +34,13 @@ Limits to consider if you use the Pay as You Go plan with Deepgram.
 | :---------------------------------------------------- | :--------------------------------- | :------------------------------ | :-------------------------------- | :------------------------------ |
 | [Voice Agent API](/reference/voice-agent/voice-agent) | Up to 45 concurrent connections    | Up to 45 concurrent connections | Up to 45 concurrent connections   | Up to 45 concurrent connections |
 
-### Speech to Text
+### Speech-to-text
 
-If multiple services are used in one API call (e.g Speech to Text + Sentiment Analysis), the lower of the rate limits is applied.
+If multiple services are used in one API call (e.g speech-to-text + sentiment analysis), the lower of the rate limits is applied.
 
 | Model                                                                   | North America (`api.deepgram.com`)                                                    | Europe (`api.eu.deepgram.com`)                                                        | Australia (`api.au.deepgram.com`)                                                     | India (`api.in.deepgram.com`)                                                         |
 | :---------------------------------------------------------------------- | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ |
-| [Flux STT](/docs/models-languages-overview#flux)                        | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             |
+| [Flux STT](/docs/models-languages-overview#flux-stt)                    | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             |
 | [Nova-3](/docs/models-languages-overview#nova-3)                        | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests |
 | [Nova-2](/docs/models-languages-overview#nova-2)                        | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests |
 | [Nova](/docs/models-languages-overview#nova)                            | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests |
@@ -54,7 +54,7 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 | :--------------------------------------- | :----------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- |
 | [Speaker Diarization](/docs/diarization) | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 50 concurrent requests | `Pre-Recorded` Up to 25 concurrent requests `Streaming` Up to 25 concurrent requests | `Pre-Recorded` Up to 25 concurrent requests `Streaming` Up to 25 concurrent requests | `Pre-Recorded` Up to 25 concurrent requests `Streaming` Up to 25 concurrent requests |
 
-### Text to Speech REST
+### Text-to-speech REST
 
 | Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
@@ -62,7 +62,7 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 | [Aura-2](/docs/text-to-speech)              | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      | Up to 15 concurrent requests  |
 | [Flux TTS](/docs/flux-tts/feature-overview) | Up to 15 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
 
-### Text to Speech Streaming
+### Text-to-speech streaming
 
 | Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
@@ -72,24 +72,24 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 
 ### Audio Intelligence
 
-If you include Audio Intelligence features in requests to `/listen`, you will be subject to the service limits noted in the table below.
+If you include Deepgram Audio Intelligence features in requests to `/listen`, you will be subject to the service limits noted in the table below.
 
 | Model                                          | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :--------------------------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
-| [Intent Recognition](/docs/intent-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
-| [Entity Detection](/docs/detect-entities)      | Up to 5 concurrent requests        | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
-| [Sentiment Analysis](/docs/sentiment-analysis) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Intent recognition](/docs/intent-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Entity detection](/docs/detect-entities)      | Up to 5 concurrent requests        | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Sentiment analysis](/docs/sentiment-analysis) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
 | [Summarization](/docs/summarization)           | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
-| [Topic Detection](/docs/topic-detection)       | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
+| [Topic detection](/docs/topic-detection)       | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
 
 ### Text Intelligence
 
 | Model                                                  | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :----------------------------------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
-| [Intent Recognition](/docs/text-intention-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
-| [Sentiment Analysis](/docs/text-sentiment-analysis)    | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Intent recognition](/docs/text-intention-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Sentiment analysis](/docs/text-sentiment-analysis)    | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
 | [Summarization](/docs/text-summarization)              | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
-| [Topic Detection](/docs/text-topic-detection)          | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
+| [Topic detection](/docs/text-topic-detection)          | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
 
 ## Growth
 
@@ -101,13 +101,13 @@ Limits to consider if you use the Growth plan with Deepgram.
 | :---------------------------------------------------- | :--------------------------------- | :------------------------------ | :-------------------------------- | :------------------------------ |
 | [Voice Agent API](/reference/voice-agent/voice-agent) | Up to 60 concurrent connections    | Up to 45 concurrent connections | Up to 45 concurrent connections   | Up to 45 concurrent connections |
 
-### Speech to Text
+### Speech-to-text
 
-If multiple services are used in one API call (e.g Speech to Text + Sentiment Analysis), the lower of the rate limits is applied.
+If multiple services are used in one API call (e.g speech-to-text + sentiment analysis), the lower of the rate limits is applied.
 
 | Model                                                                   | North America (`api.deepgram.com`)                                                    | Europe (`api.eu.deepgram.com`)                                                        | Australia (`api.au.deepgram.com`)                                                     | India (`api.in.deepgram.com`)                                                         |
 | :---------------------------------------------------------------------- | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ |
-| [Flux STT](/docs/models-languages-overview#flux)                        | `Streaming` Up to 225 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             |
+| [Flux STT](/docs/models-languages-overview#flux-stt)                    | `Streaming` Up to 225 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             | `Streaming` Up to 150 concurrent requests                                             |
 | [Nova-3](/docs/models-languages-overview#nova-3)                        | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 225 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests |
 | [Nova-2](/docs/models-languages-overview#nova-2)                        | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 225 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests |
 | [Nova](/docs/models-languages-overview#nova)                            | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 225 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 150 concurrent requests |
@@ -121,7 +121,7 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 | :--------------------------------------- | :----------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- |
 | [Speaker Diarization](/docs/diarization) | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 50 concurrent requests | `Pre-Recorded` Up to 25 concurrent requests `Streaming` Up to 25 concurrent requests | `Pre-Recorded` Up to 25 concurrent requests `Streaming` Up to 25 concurrent requests | `Pre-Recorded` Up to 25 concurrent requests `Streaming` Up to 25 concurrent requests |
 
-### Text to Speech REST
+### Text-to-speech REST
 
 | Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
@@ -129,7 +129,7 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 | [Aura-2](/docs/text-to-speech)              | Up to 15 concurrent requests       | Up to 15 concurrent requests   | Up to 15 concurrent requests      | Up to 15 concurrent requests  |
 | [Flux TTS](/docs/flux-tts/feature-overview) | Up to 15 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
 
-### Text to Speech Streaming
+### Text-to-speech streaming
 
 | Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :------------------------------------------ | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
@@ -143,20 +143,20 @@ If you include Audio Intelligence features in requests to `/listen`, you will be
 
 | Model                                          | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :--------------------------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
-| [Intent Recognition](/docs/intent-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
-| [Entity Detection](/docs/detect-entities)      | Up to 5 concurrent requests        | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
-| [Sentiment Analysis](/docs/sentiment-analysis) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Intent recognition](/docs/intent-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Entity detection](/docs/detect-entities)      | Up to 5 concurrent requests        | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Sentiment analysis](/docs/sentiment-analysis) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
 | [Summarization](/docs/summarization)           | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
-| [Topic Detection](/docs/topic-detection)       | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
+| [Topic detection](/docs/topic-detection)       | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
 
 ### Text Intelligence
 
 | Model                                                  | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`) | Australia (`api.au.deepgram.com`) | India (`api.in.deepgram.com`) |
 | :----------------------------------------------------- | :--------------------------------- | :----------------------------- | :-------------------------------- | :---------------------------- |
-| [Intent Recognition](/docs/text-intention-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
-| [Sentiment Analysis](/docs/text-sentiment-analysis)    | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Intent recognition](/docs/text-intention-recognition) | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
+| [Sentiment analysis](/docs/text-sentiment-analysis)    | Up to 10 concurrent requests       | Up to 5 concurrent requests    | Up to 5 concurrent requests       | Up to 5 concurrent requests   |
 | [Summarization](/docs/text-summarization)              | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
-| [Topic Detection](/docs/text-topic-detection)          | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
+| [Topic detection](/docs/text-topic-detection)          | Up to 10 concurrent requests       | Up to 10 concurrent requests   | Up to 10 concurrent requests      | Up to 10 concurrent requests  |
 
 ## Enterprise
 
@@ -172,13 +172,13 @@ Starting limits to consider if you have an Enterprise Contract with Deepgram. En
 | :---------------------------------------------------- | :------------------------------------- | :------------------------------------- | :------------------------------------- | :------------------------------------- |
 | [Voice Agent API](/reference/voice-agent/voice-agent) | Starting at 100 concurrent connections | Starting at 100 concurrent connections | Starting at 100 concurrent connections | Starting at 100 concurrent connections |
 
-### Speech to Text
+### Speech-to-text
 
-If multiple services are used in one API call (e.g Speech to Text + Sentiment Analysis), the lower of the rate limits is applied.
+If multiple services are used in one API call (e.g speech-to-text + sentiment analysis), the lower of the rate limits is applied.
 
 | Model                                                                   | North America (`api.deepgram.com`)                                                                 | Europe (`api.eu.deepgram.com`)                                                                     | Australia (`api.au.deepgram.com`)                                                                  | India (`api.in.deepgram.com`)                                                                      |
 | :---------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| [Flux STT](/docs/models-languages-overview#flux)                        | `Streaming` Up to 300 concurrent requests                                                          | `Streaming` Up to 300 concurrent requests                                                          | `Streaming` Up to 300 concurrent requests                                                          | `Streaming` Up to 300 concurrent requests                                                          |
+| [Flux STT](/docs/models-languages-overview#flux-stt)                    | `Streaming` Up to 300 concurrent requests                                                          | `Streaming` Up to 300 concurrent requests                                                          | `Streaming` Up to 300 concurrent requests                                                          | `Streaming` Up to 300 concurrent requests                                                          |
 | [Nova-3](/docs/models-languages-overview#nova-3)                        | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests |
 | [Nova-2](/docs/models-languages-overview#nova-2)                        | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests |
 | [Nova](/docs/models-languages-overview#nova)                            | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests | `Pre-Recorded` Starting at 200 concurrent requests `Streaming` Starting at 300 concurrent requests |
@@ -192,7 +192,7 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 | :--------------------------------------- | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------ |
 | [Speaker Diarization](/docs/diarization) | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 100 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 100 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 100 concurrent requests | `Pre-Recorded` Up to 50 concurrent requests `Streaming` Up to 100 concurrent requests |
 
-### Text to Speech REST
+### Text-to-speech REST
 
 | Model                                       | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`)     | Australia (`api.au.deepgram.com`)  | India (`api.in.deepgram.com`)      |
 | :------------------------------------------ | :--------------------------------- | :--------------------------------- | :--------------------------------- | :--------------------------------- |
@@ -200,7 +200,7 @@ If you include Speaker Diarization features in requests to `/listen`, you will b
 | [Aura-2](/docs/text-to-speech)              | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests |
 | [Flux TTS](/docs/flux-tts/feature-overview) | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests | Starting at 25 concurrent requests |
 
-### Text to Speech Streaming
+### Text-to-speech streaming
 
 | Model                                       | North America (`api.deepgram.com`)  | Europe (`api.eu.deepgram.com`)      | Australia (`api.au.deepgram.com`)   | India (`api.in.deepgram.com`)       |
 | :------------------------------------------ | :---------------------------------- | :---------------------------------- | :---------------------------------- | :---------------------------------- |
@@ -214,20 +214,20 @@ If you include Audio Intelligence features in requests to `/listen`, you will be
 
 | Model                                          | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`)     | Australia (`api.au.deepgram.com`)  | India (`api.in.deepgram.com`)      |
 | :--------------------------------------------- | :--------------------------------- | :--------------------------------- | :--------------------------------- | :--------------------------------- |
-| [Intent Recognition](/docs/intent-recognition) | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
-| [Entity Detection](/docs/detect-entities)      | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
-| [Sentiment Analysis](/docs/sentiment-analysis) | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
+| [Intent recognition](/docs/intent-recognition) | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
+| [Entity detection](/docs/detect-entities)      | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
+| [Sentiment analysis](/docs/sentiment-analysis) | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
 | [Summarization](/docs/summarization)           | Starting at 20 concurrent requests | Starting at 20 concurrent requests | Starting at 20 concurrent requests | Starting at 20 concurrent requests |
-| [Topic Detection](/docs/topic-detection)       | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
+| [Topic detection](/docs/topic-detection)       | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
 
 ### Text Intelligence
 
 | Model                                                  | North America (`api.deepgram.com`) | Europe (`api.eu.deepgram.com`)     | Australia (`api.au.deepgram.com`)  | India (`api.in.deepgram.com`)      |
 | :----------------------------------------------------- | :--------------------------------- | :--------------------------------- | :--------------------------------- | :--------------------------------- |
-| [Intent Recognition](/docs/text-intention-recognition) | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
-| [Sentiment Analysis](/docs/text-sentiment-analysis)    | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
+| [Intent recognition](/docs/text-intention-recognition) | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
+| [Sentiment analysis](/docs/text-sentiment-analysis)    | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
 | [Summarization](/docs/text-summarization)              | Starting at 20 concurrent requests | Starting at 20 concurrent requests | Starting at 20 concurrent requests | Starting at 20 concurrent requests |
-| [Topic Detection](/docs/text-topic-detection)          | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
+| [Topic detection](/docs/text-topic-detection)          | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests | Starting at 10 concurrent requests |
 
 ## Scaling beyond default limits
 
@@ -243,4 +243,4 @@ Do not create additional projects, additional accounts, or otherwise distribute 
 
 ### REST API rate limits
 
-The concurrency limits on this page apply to inference endpoints (Speech-to-Text, Text-to-Speech, Voice Agent, Intelligence). REST endpoints for project and API key management have their own separate rate limits. See [Temporary API Key Limits](/docs/create-additional-api-keys#temporary-api-key-limits) for details.
+The concurrency limits on this page apply to inference endpoints (speech-to-text, text-to-speech, Voice Agent, Intelligence). REST endpoints for project and API key management have their own separate rate limits. See [Temporary API key limits](/docs/create-additional-api-keys#temporary-api-key-limits) for details.

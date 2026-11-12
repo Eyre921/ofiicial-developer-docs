@@ -1,5 +1,5 @@
 ---
-title: "Create Agent Variable"
+title: "Create agent variable"
 source: https://developers.deepgram.com/reference/voice-agent/agent-variables/create-agent-variable.md
 path: reference/voice-agent/agent-variables/create-agent-variable
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-variables/create-agent-variable
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Create Agent Variable
+# Create agent variable
 
 POST https://api.deepgram.com/v1/projects/{project_id}/agent-variables
 Content-Type: application/json

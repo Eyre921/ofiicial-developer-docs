@@ -22,6 +22,7 @@ The mappings between API versions and Java SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2025-10` | v6.x |
 | `2025-04` | v5.x |
 | `2025-01` | v4.x |
 | `2024-10` | v3.x |
@@ -39,20 +40,20 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-4.0.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/4.0.0/pinecone-client-4.0.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
 > [!WARNING]
 >
-> Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
+> Before upgrading from `v5.x` to `v6.x`, update code that passes enum values. Deletion protection, cloud, and import error mode now take strings, such as `"enabled"`, `"aws"`, and `"continue"`. For the full list of breaking changes, see the [`v6.0.0` release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0).
 
 If you are already using the Java SDK, upgrade the dependency in the current module to the latest version:
 
@@ -61,11 +62,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
 ## Initialize

@@ -13,11 +13,11 @@ path: docs/utterances
 
 `utterances` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
 Deepgram’s Utterances feature allows the chosen model to interact more naturally and effectively with speakers' spontaneous speech patterns. For example, when humans speak to each other conversationally, they often pause mid-sentence to reformulate their thoughts, or stop and restart a badly-worded sentence.
 
-## Enable Feature
+## Enable feature
 
 To enable utterances, use the following parameter in the query string when you call Deepgram’s `/listen` endpoint :
 
@@ -40,7 +40,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response. Let’s look more closely at the `utterances` object:
 
@@ -76,7 +76,7 @@ In this response, we see that each utterance contains:
 * `transcript`: Transcript for the audio segment being processed.
 * `words`: Object containing each word in the transcript, along with its start time and end time (in seconds) from the beginning of the audio stream, and a confidence value.
 
-## Advanced Processing
+## Advanced processing
 
 You may also want to enable speaker diarization, which will detect and identify speakers for utterances, and punctuation.
 

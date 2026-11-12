@@ -1,5 +1,5 @@
 ---
-title: "List Project Models"
+title: "List project models"
 source: https://developers.deepgram.com/reference/manage/projects/models/list.md
 path: reference/manage/projects/models/list
 ---
@@ -7,7 +7,7 @@ path: reference/manage/projects/models/list
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Project Models
+# List project models
 
 GET https://api.deepgram.com/v1/projects/{project_id}/models
 

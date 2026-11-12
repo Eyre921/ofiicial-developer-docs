@@ -1,5 +1,5 @@
 ---
-title: "Function Calling"
+title: "Function calling"
 source: https://developers.deepgram.com/docs/voice-agents-function-calling.md
 path: docs/voice-agents-function-calling
 ---
@@ -7,15 +7,15 @@ path: docs/voice-agents-function-calling
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Function Calling
+# Function calling
 
 Voice Agent
 
-Function calling gives Large Language Models (LLMs) the power to interact with the real world. While LLMs excel at generating text and maintaining conversation, they cannot natively check your database, book a flight, or fetch live weather data. Function calling bridges this gap by allowing the model to describe an action and its required parameters, which your application then executes.
+Function calling gives Large Language Models (LLMs) the power to interact with the real world. While LLMs excel at generating text and maintaining conversation, they can't natively check your database, book a flight, or fetch live weather data. Function calling bridges this gap by allowing the model to describe an action and its required parameters, which your application then executes.
 
 In the context of Deepgram Voice Agents, function calling enables your agent to perform tasks during a live conversation. The agent identifies when a user request requires external data or an action, pauses its response to trigger a function, and then uses the result to continue the dialogue naturally.
 
-## Why Use Function Calling?
+## Why use function calling?
 
 Function calling transforms a simple chatbot into a functional assistant. Use it to:
 
@@ -24,7 +24,7 @@ Function calling transforms a simple chatbot into a functional assistant. Use it
 * **Connect to Internal Systems**: Integrate your agent with your existing CRM, ERP, or proprietary APIs.
 * **Structure Unstructured Input**: Extract specific details from a user's speech into a structured JSON format for processing.
 
-## The Request and Response Loop
+## The request and response loop
 
 Function calling follows a specific sequence of events between the user, the Voice Agent server, and your client application.
 
@@ -35,7 +35,7 @@ Function calling follows a specific sequence of events between the user, the Voi
 5. **Result Processing**: The function returns data via a `FunctionCallResponse`.
 6. **Natural Response**: The agent incorporates the data into its spoken response to the user.
 
-### Execution Flow
+### Execution flow
 
 The following diagram illustrates the interaction between the components during a function call.
 
@@ -56,15 +56,15 @@ sequenceDiagram
     Agent->>User: Provides weather information
 ```
 
-## Client-Side vs. Server-Side
+## Client-side vs. server-side
 
-Deepgram supports two modes of execution for function calls:
+We support two modes of execution for function calls:
 
-### Client-Side Execution
+### Client-side execution
 
 Your application handles the function logic. This is ideal for actions that happen in the user's environment, such as navigating a UI, accessing local device data, or calling APIs that require client-side authentication. You define the function in your settings without an endpoint URL.
 
-### Server-Side Execution
+### Server-side execution
 
 Deepgram calls a web endpoint that you provide. This is best for secure operations, database lookups, or interacting with third-party services where you want to keep logic and credentials on your server.
 
@@ -85,17 +85,17 @@ Set [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_unt
 }
 ```
 
-Deferring one function does not slow the rest. Read-only functions in the same turn still dispatch immediately.
+Deferring one function doesn't slow the rest. Read-only functions in the same turn still dispatch immediately.
 
-Read [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies) before you ship a function that spends money, sends a message, or ends a call.
+Read [Speculative replies & turn confirmation](/docs/voice-agent-speculative-replies) before you ship a function that spends money, sends a message, or ends a call.
 
-## Next Steps
+## Next steps
 
 To start implementing function calling, explore these detailed guides:
 
-* [Build a Function Call](./build-a-function-call): Follow a tutorial to create your first function.
+* [Build a function call](./build-a-function-call): Follow a tutorial to create your first function.
 * [Function Call Request](./voice-agent-function-call-request): Learn about the message structure for initiating calls.
 * [Function Call Response](./voice-agent-function-call-response): Understand how to return results to the agent.
-* [Function Call Context](./voice-agent-function-call-context): See how to provide history for resumed sessions.
+* [Function call context](./voice-agent-function-call-context): See how to provide history for resumed sessions.
 * [Function Call Cancelled](/docs/voice-agent-function-call-cancelled): Handle a call cancelled because the user started speaking again.
-* [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies): Understand what the agent does before a turn is confirmed.
+* [Speculative replies & turn confirmation](/docs/voice-agent-speculative-replies): Understand what the agent does before a turn is confirmed.

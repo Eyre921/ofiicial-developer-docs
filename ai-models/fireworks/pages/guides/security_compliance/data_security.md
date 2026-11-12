@@ -12,7 +12,7 @@ This page provides an overview of our key security measures. For documentation a
 
 ## Zero Data Retention
 
-Fireworks does not log or store prompt or generation data for open models, without explicit user opt-in. See our [Zero Data Retention Policy](https://docs.fireworks.ai/guides/security_compliance/data_handling).
+Fireworks does not log or store prompt or generation data for open models, without explicit user opt-in. Zero Data Retention does not apply to certain services that require data storage, including Batch API and Responses API. See our [Zero Data Retention Policy](https://docs.fireworks.ai/guides/security_compliance/data_handling).
 
 For US-only inference residency, see [US-only Serverless](/serverless/us-only-serverless).
 

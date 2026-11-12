@@ -32,7 +32,7 @@ When you call `UpdateEndpoint` against a Deepgram Endpoint, SageMaker:
 2. Once the green fleet is healthy, shifts **all** traffic from the blue fleet to the green fleet in a single step.
 3. Terminates the blue fleet.
 
-Because the update is all-at-once, there is no incremental traffic shift, no baking period to evaluate the new fleet on a fraction of traffic before commitment, and no automatic rollback based on CloudWatch alarms. The Endpoint stays in service for the entire procedure — clients continue to be served by the blue fleet until SageMaker performs the cutover.
+Because the update is all-at-once, there's no incremental traffic shift, no baking period to evaluate the new fleet on a fraction of traffic before commitment, and no automatic rollback based on CloudWatch alarms. The Endpoint stays in service for the entire procedure — clients continue to be served by the blue fleet until SageMaker performs the cutover.
 
 ## Update an endpoint
 
@@ -68,7 +68,7 @@ After you initiate the update, monitor progress in the [SageMaker AI console](ht
 ## Considerations for Deepgram workloads
 
 * **Variant name must match.** When you create the new Endpoint Configuration, use the same variant name (typically `AllTraffic`) as the existing configuration. SageMaker requires this for in-place updates.
-* **Streaming connections are long-lived.** Deepgram streaming Speech-to-Text Endpoints hold bidirectional WebSocket connections for [up to 30 minutes](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html). Existing connections are not migrated to the green fleet — they continue on the original instances until they close. Plan updates to coincide with periods of lower streaming traffic if you want to minimize disruption.
+* **Streaming connections are long-lived.** Deepgram streaming speech-to-text endpoints hold bidirectional WebSocket connections for [up to 30 minutes](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html). Existing connections are not migrated to the green fleet — they continue on the original instances until they close. Plan updates to coincide with periods of lower streaming traffic if you want to minimize disruption.
 * **GPU capacity.** During the cutover, SageMaker briefly runs both the blue and green fleets in parallel. Confirm that your AWS account has sufficient GPU instance quota in the target region to accommodate the full additional fleet before starting the update.
 * **Monitor the rollout.** Because the Marketplace update path does not include automated alarm-based rollback, watch your application's error tracking and the [Amazon CloudWatch metrics](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch.html) for the Endpoint after the cutover (for example, `ModelLatency` and any application-level error metrics you emit). If you observe regressions, roll back manually by calling `UpdateEndpoint` again with the previous Endpoint Configuration.
 
@@ -82,5 +82,5 @@ What's Next
 
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)
-* [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker-streaming)
+* [Auto-scaling SageMaker endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Observability for Amazon SageMaker](/docs/observability-sagemaker)

@@ -1,5 +1,5 @@
 ---
-title: "Delete a Project"
+title: "Delete a project"
 source: https://developers.deepgram.com/reference/manage/projects/delete.md
 path: reference/manage/projects/delete
 ---
@@ -7,7 +7,7 @@ path: reference/manage/projects/delete
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Delete a Project
+# Delete a project
 
 DELETE https://api.deepgram.com/v1/projects/{project_id}
 

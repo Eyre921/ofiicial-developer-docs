@@ -47,10 +47,10 @@ Deploy on an ordered **instance pool** rather than a single instance type. A sin
 
 Order the pool as follows:
 
-1. **The listing's recommended type first** (for example `ml.g6.2xlarge` for Speech-to-Text). It is the type Deepgram validated the model on and the best price/performance.
-2. **Same-or-newer generation with similar per-instance capacity next** (`g6` → `g6e` → `g7`). Keeping capacity similar matters if you auto-scale, because the predefined scaling metrics are per instance and do not account for a mixed fleet.
+1. **The listing's recommended type first** (for example `ml.g6.2xlarge` for speech-to-text). It's the type Deepgram validated the model on and the best price/performance.
+2. **Same-or-newer generation with similar per-instance capacity next** (`g6` → `g6e` → `g7`). Keeping capacity similar matters if you auto-scale, because the predefined scaling metrics are per instance and don't account for a mixed fleet.
 3. **Older generations last, as insurance** (`g5`, and `g4dn` where supported).
-4. **Never include a type the product does not support.** See [Instance types](/docs/supported-products-sagemaker#instance-types).
+4. **Never include a type the product doesn't support.** See [Instance types](/docs/supported-products-sagemaker#instance-types).
 5. **Up to 5 types.** Three is the sweet spot.
 
 `VariantInstanceProvisionTimeoutInSeconds` is the per-type wait: SageMaker tries each type for that long before moving to the next. `300` is recommended (AWS allows `60`–`3600`), so a three-type pool can stay in `Creating` for up to about 15 minutes before it fails.
@@ -113,9 +113,9 @@ execution_role_arn = role["Role"]["Arn"]
 
 Choose names for the three SageMaker resources, and set the Model Package ARN and execution role ARN.
 
-* **`MODEL_PACKAGE_ARN`** identifies the Deepgram product version and AWS Region you subscribed to. It is region-specific, so copy the ARN for the Region you deploy in. To find it, open the AWS Marketplace **Manage subscriptions** console, click **Configure** on your Deepgram subscription, choose **AWS command line interface (CLI)** under **Service**, select the product version, and copy the ARN for your Region from the **Model ARNs** list. See [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn) for the full steps.
+* **`MODEL_PACKAGE_ARN`** identifies the Deepgram product version and AWS Region you subscribed to. It's region-specific, so copy the ARN for the Region you deploy in. To find it, open the AWS Marketplace **Manage subscriptions** console, click **Configure** on your Deepgram subscription, choose **AWS command line interface (CLI)** under **Service**, select the product version, and copy the ARN for your Region from the **Model ARNs** list. See [Find the Model Package ARN](/docs/subscribe-aws-marketplace#find-the-model-package-arn) for the full steps.
 * **`EXECUTION_ROLE_ARN`** is the role you created in [Create an IAM execution role](#create-an-iam-execution-role).
-* The instance pool is set in the Endpoint Configuration step. `ml.g6.2xlarge` is the recommended first type for Speech-to-Text; see [Choose instance types](#choose-instance-types) and [Instance types](/docs/supported-products-sagemaker#instance-types) for Text-to-Speech and the other supported families.
+* The instance pool is set in the Endpoint Configuration step. `ml.g6.2xlarge` is the recommended first type for speech-to-text; see [Choose instance types](#choose-instance-types) and [Instance types](/docs/supported-products-sagemaker#instance-types) for text-to-speech and the other supported families.
 
 #### AWS CLI
 
@@ -143,7 +143,7 @@ EXECUTION_ROLE_ARN = "arn:aws:iam::123456789012:role/deepgram-sagemaker-executio
 sagemaker = boto3.client("sagemaker", region_name=AWS_REGION)
 ```
 
-#### Create the Model
+#### Create the model
 
 The SageMaker Model wraps the Marketplace Model Package and the execution role.
 
@@ -257,11 +257,11 @@ sagemaker.create_endpoint_config(
 
 Keep `VariantName=AllTraffic`: the [Update an Amazon SageMaker Endpoint](/docs/update-amazon-sagemaker-endpoint) procedure and the [Terraform](/docs/terraform-deploy-sagemaker) configuration use the same variant name.
 
-`ModelDataDownloadTimeoutInSeconds` and `ContainerStartupHealthCheckTimeoutInSeconds` are ceilings, not fixed waits: they set how long SageMaker allows the model package to download and the container to load models before it marks the endpoint failed. `600` and `300` suit most products. Large multilingual Nova-3 bundles may need `ModelDataDownloadTimeoutInSeconds` of `1800`.
+`ModelDataDownloadTimeoutInSeconds` and `ContainerStartupHealthCheckTimeoutInSeconds` are ceilings, not fixed waits: they set how long SageMaker allows the model package to download and the container to load models before it marks the endpoint failed. `600` and `300` suit most products. Large multilingual Deepgram Nova-3 bundles may need `ModelDataDownloadTimeoutInSeconds` of `1800`.
 
 `RoutingConfig` sets the routing strategy to least outstanding requests (LOR), so SageMaker sends each new request to the instance with the fewest in-flight requests instead of a randomly chosen instance. We recommend LOR for Deepgram real-time endpoints because streaming connections and pre-recorded requests vary widely in how long they occupy an instance. See [Use least outstanding requests routing](/docs/auto-scaling-sagemaker#use-least-outstanding-requests-routing).
 
-#### Create the Endpoint
+#### Create the endpoint
 
 #### AWS CLI
 
@@ -313,7 +313,7 @@ If the endpoint moves to `Failed` or stays in `Creating`, see [Troubleshooting](
 
 Send a first request to confirm the endpoint transcribes audio — see [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint). For the streaming and synchronous invocation APIs and the Deepgram SDK SageMaker transport, see [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint).
 
-## Inference AMI Versions
+## Inference AMI versions
 
 A SageMaker Endpoint Configuration can pin an **inference AMI version** — the SageMaker-managed host image supplying the NVIDIA driver and container runtime your instances boot with. It is independent of the Deepgram container: it determines which driver the container runs against. If you do not set it, SageMaker selects a default for your instance type, which on older GPU families is an older driver.
 
@@ -334,7 +334,7 @@ A SageMaker Endpoint Configuration can pin an **inference AMI version** — the 
 
 For the full list of AMI versions and their driver and CUDA versions, see [`InferenceAmiVersion`](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html#sagemaker-Type-ProductionVariant-InferenceAmiVersion) in the SageMaker API reference. For the driver each instance family runs by default, see the [SageMaker GPU driver table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
 
-The [CLI and Boto3 steps above](#deploy-with-the-aws-cli-or-boto3) already pin `InferenceAmiVersion` to `al2023-ami-sagemaker-inference-gpu-4-1` on the production variant. Terraform users set the same value through the `inference_ami_version` variable — see [Deploy with Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions). The SageMaker AI console does not expose this setting, which is why the console path below is not recommended.
+The [CLI and Boto3 steps above](#deploy-with-the-aws-cli-or-boto3) already pin `InferenceAmiVersion` to `al2023-ami-sagemaker-inference-gpu-4-1` on the production variant. Terraform users set the same value through the `inference_ami_version` variable — see [Deploy with Terraform](/docs/terraform-deploy-sagemaker#inference-ami-versions). The SageMaker AI console doesn't expose this setting, which is why the console path below is not recommended.
 
 ## Deploy with the SageMaker AI console (not recommended)
 
@@ -379,7 +379,7 @@ Click the **Create Endpoint Configuration** button
 Click the **Submit** button, to create the SageMaker AI Endpoint
 
 After following these steps, you should see a new Endpoint in your AWS account.
-If you don't see the Endpoint, ensure that you have selected the correct AWS region in the [AWS Management Console](https://console.aws.amazon.com/sagemaker/home?#/endpoints).
+If you don't see the Endpoint, ensure that you've selected the correct AWS region in the [AWS Management Console](https://console.aws.amazon.com/sagemaker/home?#/endpoints).
 It may take several minutes for the Endpoint to change to status `InService`.
 Once the Endpoint status has changed to `InService`, you can monitor the Amazon CloudWatch Logs for the Endpoint to ensure normal operation of the Deepgram services.
 
@@ -405,7 +405,7 @@ sagemaker.delete_model(ModelName=MODEL_NAME)
 
 ## Related resources
 
-* [Supported Products](/docs/supported-products-sagemaker)
+* [Supported products](/docs/supported-products-sagemaker)
 * [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace)
 * [Deploy with Terraform](/docs/terraform-deploy-sagemaker)
 * [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)

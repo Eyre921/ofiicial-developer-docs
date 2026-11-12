@@ -1,5 +1,5 @@
 ---
-title: "Using Multiple Projects"
+title: "Using multiple projects"
 source: https://developers.deepgram.com/guides/deep-dives/using-multiple-projects.md
 path: guides/deep-dives/using-multiple-projects
 ---
@@ -7,23 +7,23 @@ path: guides/deep-dives/using-multiple-projects
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Using Multiple Projects
+# Using multiple projects
 
 ## Overview
 
 In Deepgram, projects are completely distinct environments with no connection to one another. Projects have unique access to Deepgram models, features, and services.
 
-You can manage your Projects using either the [Deepgram Console](https://console.deepgram.com) or the [Deepgram API](/reference/manage/projects/list). To learn more about Projects, see [Managing Projects](/guides/deep-dives/managing-projects).
+You can manage your Projects using either the [Deepgram Console](https://console.deepgram.com) or the [Deepgram API](/reference/manage/projects/list). To learn more about Projects, see [Managing projects](/guides/deep-dives/managing-projects).
 
 In many cases, our users find that a single project is enough, but in certain scenarios, you may want to set up multiple projects.
 
-## Your First Project
+## Your first project
 
 When you sign up, we automatically create a Project for you.
 
 Any promotional credit you have earned is attached to this first project. If you would like to transfer your promotional balance to a new project, [contact Support](/support/).
 
-## When to Create New Projects
+## When to create new projects
 
 In many cases, the first project that comes with your Deepgram account will be sufficient for your needs. However, depending on the different users you support, you may prefer to set up additional projects. Some examples include:
 
@@ -33,7 +33,7 @@ In many cases, the first project that comes with your Deepgram account will be s
 
 * You operate a business-to-business (B2B) model that focuses on selling products and services to other companies and have separate teams that handle individual customers. You may also want to create a separate project to track your customers' usage data separately for billing purposes, although this can also be accomplished using a single project.
 
-## Serving Multiple Customers With a Single Project
+## Serving multiple customers with a single project
 
 Many Deepgram users are businesses serving other businesses. In this scenario, you may want to create separate projects for each of your customers to see their usage, but you don't have to--you can use a single Deepgram project to serve all of your customers and still separate out customer usage.
 

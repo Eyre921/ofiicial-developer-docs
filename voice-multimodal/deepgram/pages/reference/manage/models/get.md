@@ -1,5 +1,5 @@
 ---
-title: "Get an Available Model"
+title: "Get an available model"
 source: https://developers.deepgram.com/reference/manage/models/get.md
 path: reference/manage/models/get
 ---
@@ -7,7 +7,7 @@ path: reference/manage/models/get
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Get an Available Model
+# Get an available model
 
 GET https://api.deepgram.com/v1/models/{model_id}
 

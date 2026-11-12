@@ -1,5 +1,5 @@
 ---
-title: "Log Formats"
+title: "Log formats"
 source: https://developers.deepgram.com/docs/log-formats.md
 path: docs/log-formats
 ---
@@ -7,13 +7,13 @@ path: docs/log-formats
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Log Formats
+# Log formats
 
-Deepgram self-hosted containers support four log output formats. Use the `--log-format` CLI flag to select the format that best fits your logging infrastructure.
+Deepgram Self-Hosted containers support four log output formats. Use the `--log-format` CLI flag to select the format that best fits your logging infrastructure.
 
 This flag applies to all self-hosted container images: API, Engine, License Proxy, and Billing.
 
-## Available Formats
+## Available formats
 
 | Format  | Flag                   | Description                                                                                                |
 | ------- | ---------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -24,7 +24,7 @@ This flag applies to all self-hosted container images: API, Engine, License Prox
 
 ## Configuration
 
-The log format is set as a CLI flag in the container's `command`. It is not configured via TOML. `--log-format` is a top-level option, so it must appear before the `serve` subcommand — appending it after `serve` causes the container to exit with `error: unexpected argument '--log-format' found`.
+The log format is set as a CLI flag in the container's `command`. It isn't configured via TOML. `--log-format` is a top-level option, so it must appear before the `serve` subcommand — appending it after `serve` causes the container to exit with `error: unexpected argument '--log-format' found`.
 
 ### Docker Compose
 
@@ -70,7 +70,7 @@ billing:
 >
 > The API container also accepts a legacy `--json` flag and `JSON` environment variable that force JSON output. Do not combine either with `--log-format` set to a format other than `json` — the container exits with an error at startup. The Helm chart rejects this combination at template time.
 
-## Example Output
+## Example output
 
 ### Full (default)
 
@@ -113,7 +113,7 @@ The `--log-format` flag is available in release `260319` and later on all self-h
 
 ---
 
-## What's Next
+## What's next
 
 * [Metrics Guide](/docs/metrics-guide) - Monitor your deployment with Prometheus metrics
-* [Status Endpoint](/docs/self-hosted-status-endpoint) - Check node health and readiness
+* [Status endpoint](/docs/self-hosted-status-endpoint) - Check node health and readiness

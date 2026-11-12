@@ -15,7 +15,7 @@ The Models endpoint allows users to efficiently query all available public model
 >
 > For additional details on these API endpoints refer to our [API Reference](/reference/deepgram-api-overview)
 
-## Enable Feature
+## Enable feature
 
 ### GET /models
 
@@ -154,7 +154,7 @@ curl --location 'https://api.deepgram.com/v1/projects/YOUR_PROJECT_ID/models' \
 
 ### GET /models/\{modelId}
 
-Returns the metadata for a specific model. If the model is not found a `404` error is returned. This endpoint works for public models only.
+Returns the metadata for a specific model. If the model isn't found a `404` error is returned. This endpoint works for public models only.
 
 #### Request
 
@@ -192,7 +192,7 @@ curl --location 'https://api.deepgram.com/v1/models/MODEL_UUID' \
 
 ### GET /projects/\{project}/models/\{modelId}
 
-Returns the metadata for a specific model that a particular project has access to. If the model is not found a `404` error is returned. This endpoint works for both public models and models accessible by the specified project.
+Returns the metadata for a specific model that a particular project has access to. If the model isn't found a `404` error is returned. This endpoint works for both public models and models accessible by the specified project.
 
 #### Request
 

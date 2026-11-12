@@ -1,5 +1,5 @@
 ---
-title: "Live Audio"
+title: "Live audio"
 source: https://developers.deepgram.com/reference/speech-to-text/listen-streaming.md
 path: reference/speech-to-text/listen-streaming
 ---
@@ -7,7 +7,7 @@ path: reference/speech-to-text/listen-streaming
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Live Audio
+# Live audio
 
 GET /v1/listen
 

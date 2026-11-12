@@ -1,5 +1,5 @@
 ---
-title: "Flux Multilingual & Language Prompting"
+title: "Flux STT Multilingual & language prompting"
 source: https://developers.deepgram.com/docs/flux/language-prompting.md
 path: docs/flux/language-prompting
 ---
@@ -7,11 +7,11 @@ path: docs/flux/language-prompting
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Flux Multilingual & Language Prompting
+# Flux STT Multilingual & language prompting
 
-Flux Multilingual (`flux-general-multi`) is a single model supporting 10 languages with the same turn-aware, interruption-aware conversational intelligence as `flux-general-en`. The optional `language_hint` parameter biases the model toward specific languages, delivering accuracy on par with dedicated monolingual models. Without hints, the model auto-detects the spoken language.
+Deepgram Flux STT Multilingual (`flux-general-multi`) is a single model supporting 10 languages with the same turn-aware, interruption-aware conversational intelligence as `flux-general-en`. The optional `language_hint` parameter biases the model toward specific languages, delivering accuracy on par with dedicated monolingual models. Without hints, the model auto-detects the spoken language.
 
-Flux Multilingual uses the same production endpoint and API key you already use for Flux. Just set `model=flux-general-multi` — no new credentials or endpoints required.
+Flux STT Multilingual uses the same production endpoint and API key you already use for Flux STT. Just set `model=flux-general-multi` — no new credentials or endpoints required.
 
 > **Info**
 >
@@ -19,7 +19,7 @@ Flux Multilingual uses the same production endpoint and API key you already use 
 
 > **Info**
 >
-> Flux Multilingual is available on the hosted API, on self-hosted deployments, and in the latest Deepgram SDKs:
+> Flux STT Multilingual is available on the hosted API, on self-hosted deployments, and in the latest Deepgram SDKs:
 >
 > * Python `deepgram-sdk` `v7.0.0+`
 > * JavaScript `@deepgram/sdk` `v5.1.0+`
@@ -33,7 +33,7 @@ Flux Multilingual uses the same production endpoint and API key you already use 
 > Use `language_hint` values when you connect, and use `language_hints` in `Configure` messages to update them
 > mid-stream. See the representative SDK examples below.
 
-## Supported Languages
+## Supported languages
 
 | Language   | Code |
 | ---------- | ---- |
@@ -50,9 +50,9 @@ Flux Multilingual uses the same production endpoint and API key you already use 
 
 > **Info**
 >
-> Locale-level subtags (e.g., `en-GB`, `pt-BR`) are accepted. If no exact match exists, Flux treats them as the base language code.
+> Locale-level subtags (e.g., `en-GB`, `pt-BR`) are accepted. If no exact match exists, Flux STT treats them as the base language code.
 
-## The `language_hint` Parameter
+## The `language_hint` parameter
 
 `language_hint` *string* (optional, repeatable)
 
@@ -70,11 +70,11 @@ Pass one or more `language_hint` values to bias the model toward specific langua
 
 > **Info**
 >
-> Existing Flux concurrency limits now apply across both `flux-general-en` and `flux-general-multi` (shared pool). See [API Rate Limits](/reference/api-rate-limits) for details.
+> Existing Flux STT concurrency limits now apply across both `flux-general-en` and `flux-general-multi` (shared pool). See [API Rate Limits](/reference/api-rate-limits) for details.
 
-## Usage Scenarios
+## Usage scenarios
 
-### 1. Known Single Language
+### 1. Known single language
 
 When you know the caller's language ahead of time (e.g., a Spanish-language call center), set a single `language_hint` for best accuracy.
 
@@ -82,7 +82,7 @@ When you know the caller's language ahead of time (e.g., a Spanish-language call
 wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=es&encoding=linear16&sample_rate=16000
 ```
 
-### 2. Known Subset of Languages
+### 2. Known subset of languages
 
 When callers may speak one of several languages (e.g., a bilingual English/Spanish support line), pass multiple hints. The model biases toward the specified set while still producing accurate transcripts regardless of which language is spoken.
 
@@ -90,7 +90,7 @@ When callers may speak one of several languages (e.g., a bilingual English/Spani
 wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&language_hint=es&encoding=linear16&sample_rate=16000
 ```
 
-### 3. Unknown Language
+### 3. Unknown language
 
 When you have no knowledge of what language the caller will speak, omit `language_hint` entirely. The model auto-detects the language from the audio.
 
@@ -98,15 +98,15 @@ When you have no knowledge of what language the caller will speak, omit `languag
 wss://api.deepgram.com/v2/listen?model=flux-general-multi&encoding=linear16&sample_rate=16000
 ```
 
-### 4. Code-Switching
+### 4. Code-switching
 
-When speakers switch between languages mid-conversation (e.g., a bilingual speaker mixing English and Spanish), set hints for the expected languages. Flux handles mid-sentence language switches natively.
+When speakers switch between languages mid-conversation (e.g., a bilingual speaker mixing English and Spanish), set hints for the expected languages. Flux STT handles mid-sentence language switches natively.
 
 ```
 wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&language_hint=es&language_hint=fr&encoding=linear16&sample_rate=16000
 ```
 
-## SDK Usage
+## SDK usage
 
 **`Python`**
 
@@ -251,7 +251,7 @@ You can update language hints during a stream using the [Configure control messa
 | **Clear hints**    | `"language_hints": []`                 | Removes all hints; model reverts to auto-detect |
 | **Keep unchanged** | Omit `language_hints` or set to `null` | Current hints remain active                     |
 
-### Pattern: Detect-then-Lock
+### Pattern: detect-then-lock
 
 A common voice agent pattern is to start a call with broad language detection, then lock in the detected language for the rest of the conversation. This gives you the best of both worlds: flexible auto-detection at the start and high-accuracy single-language transcription once the caller's language is known.
 
@@ -341,7 +341,7 @@ If a later turn returns a different primary language, update the hint:
 >
 > Locking in a single language after detection delivers the best accuracy — comparable to using a dedicated monolingual model. For calls where code-switching is expected throughout, keep multiple hints active instead of locking to one language.
 
-## Error Handling
+## Error handling
 
 | Error               | Cause                                                           | HTTP Code |
 | ------------------- | --------------------------------------------------------------- | --------- |
@@ -357,14 +357,14 @@ Example error response:
 }
 ```
 
-## Flux Multilingual vs. `flux-general-en`
+## Flux STT Multilingual vs. `flux-general-en`
 
 `flux-general-en` remains available and recommended for English-only workloads. Use `flux-general-multi` when you need multilingual support or expect non-English audio. Both models share the same turn detection architecture, end-of-turn configuration, and control message interface.
 
-## Related Resources
+## Related resources
 
-* [Getting Started with Flux](/docs/flux/quickstart) — Quickstart guide
+* [Getting started with Flux STT](/docs/flux/quickstart) — Quickstart guide
 * [End-of-Turn Configuration](/docs/flux/configuration) — Tune turn detection behavior
 * [Configure Control Message](/docs/flux/configure) — Update settings mid-stream
 * [Multilingual Codeswitching](/docs/multilingual-code-switching) — Codeswitching on Nova-2/Nova-3
-* [Models & Languages Overview](/docs/models-languages-overview) — All models and supported languages
+* [Models & languages overview](/docs/models-languages-overview) — All models and supported languages

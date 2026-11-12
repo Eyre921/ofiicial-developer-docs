@@ -1,5 +1,5 @@
 ---
-title: "Models & Languages Overview"
+title: "Models & languages overview"
 source: https://developers.deepgram.com/docs/tts-models-languages-overview.md
 path: docs/tts-models-languages-overview
 ---
@@ -7,7 +7,7 @@ path: docs/tts-models-languages-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Models & Languages Overview
+# Models & languages overview
 
 ## Models
 
@@ -17,7 +17,7 @@ path: docs/tts-models-languages-overview
 | [Aura-2](/docs/tts-models-languages-overview#aura-2)     | Our previous-generation model, with voices across seven languages. Served on `/v1/speak`.                                                                                                                                                       |
 | [Aura](/docs/tts-models-languages-overview#aura)         | Our first-generation text-to-speech model. English voices only. Served on `/v1/speak`.                                                                                                                                                          |
 
-**Start with Flux TTS.** It's our best-sounding, most accurate model and the default recommendation for every use case it serves.
+**Start with Deepgram Flux TTS.** It's our best-sounding, most accurate model and the default recommendation for every use case it serves.
 
 > **Info**
 >
@@ -25,7 +25,7 @@ path: docs/tts-models-languages-overview
 
 ### Example
 
-To request a voice, set the `model` to the voice you want. Aura-2 and Aura use `/v1/speak`:
+To request a voice, set the `model` to the voice you want. Deepgram Aura-2 and Aura use `/v1/speak`:
 
 **`cURL (Aura-2, /v1/speak)`**
 
@@ -37,7 +37,7 @@ curl "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en" \
   --output audio.mp3
 ```
 
-Flux TTS uses `/v2/speak` (streaming WebSocket and batch REST). See [Getting Started with Flux TTS](/docs/flux-tts/quickstart).
+Flux TTS uses `/v2/speak` (streaming WebSocket and batch REST). See [Getting started with Flux TTS](/docs/flux-tts/quickstart).
 
 > **Warning**
 >
@@ -45,7 +45,7 @@ Flux TTS uses `/v2/speak` (streaming WebSocket and batch REST). See [Getting Sta
 
 ## Flux TTS
 
-Flux TTS is Deepgram's best text-to-speech model and the recommended choice for every use case — real-time voice agents, customer service, IVR, and pre-rendered audio alike. It's conversation-native: streaming-first, turn-based, expressive by default, and consistent across turns, with native interruption handling and strong accuracy on the strings that trip up agents in production (alphanumerics, drug names, and other hard-to-say entities). Model strings follow the format `flux-{voice}-{language}` (e.g. `flux-alexis-en`), and `model` is required on every `/v2/speak` connection.
+Flux TTS is our best text-to-speech model and the recommended choice for every use case — real-time voice agents, customer service, IVR, and pre-rendered audio alike. It's conversation-native: streaming-first, turn-based, expressive by default, and consistent across turns, with native interruption handling and strong accuracy on the strings that trip up agents in production (alphanumerics, drug names, and other hard-to-say entities). Model strings follow the format `flux-{voice}-{language}` (e.g. `flux-alexis-en`), and `model` is required on every `/v2/speak` connection.
 
 | Model Option      | Language                                                                            |
 | ----------------- | ----------------------------------------------------------------------------------- |
@@ -92,13 +92,13 @@ Flux TTS is Deepgram's best text-to-speech model and the recommended choice for 
 | `flux-{voice}-ur` | Urdu: `ur`                                                                          |
 | `flux-{voice}-vi` | Vietnamese: `vi`                                                                    |
 
-Text normalization (numbers, dates and abbreviations read out) is available for English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and Spanish; the other 32 languages are in Early Access without it — write numbers and dates out in words.
+Text normalization (numbers, dates, and abbreviations read out) is available for English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian, and Spanish; the other 32 languages are in Early Access without it — write numbers and dates out in words.
 
 See the full [Flux TTS Voices & Languages](/docs/flux-tts/voices) catalog for every voice and its characteristics.
 
 ## Aura-2
 
-Aura-2 is Deepgram's previous-generation text-to-speech model, with voices across seven languages. For new work, build on [Flux TTS](#flux-tts). Model strings follow the format `aura-2-{voice}-{language}` (e.g. `aura-2-thalia-en`).
+Aura-2 is our previous-generation text-to-speech model, with voices across seven languages. For new work, build on [Flux TTS](#flux-tts). Model strings follow the format `aura-2-{voice}-{language}` (e.g. `aura-2-thalia-en`).
 
 | Model Option        | Language                                                                  |
 | ------------------- | ------------------------------------------------------------------------- |
@@ -114,7 +114,7 @@ See the full [Aura Voices & Languages](/docs/tts-models) catalog for every voice
 
 ## Aura
 
-Aura is Deepgram's first-generation text-to-speech model. English voices only, served on `/v1/speak`.
+Aura is our first-generation text-to-speech model. English voices only, served on `/v1/speak`.
 
 | Model Option      | Language                                 |
 | ----------------- | ---------------------------------------- |

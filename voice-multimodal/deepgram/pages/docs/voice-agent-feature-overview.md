@@ -1,5 +1,5 @@
 ---
-title: "Feature Overview"
+title: "Feature overview"
 source: https://developers.deepgram.com/docs/voice-agent-feature-overview.md
 path: docs/voice-agent-feature-overview
 ---
@@ -7,7 +7,7 @@ path: docs/voice-agent-feature-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Feature Overview
+# Feature overview
 
 ## Voice Selection
 
@@ -16,19 +16,19 @@ path: docs/voice-agent-feature-overview
 | [Deepgram TTS Voice Models](/docs/tts-models)                |
 | [Third Party TTS Voice Models](/docs/voice-agent-tts-models) |
 
-## Supported LLM Models
+## Supported LLM models
 
 | Models                                     |
 | ------------------------------------------ |
-| [LLM Models](/docs/voice-agent-llm-models) |
+| [LLM models](/docs/voice-agent-llm-models) |
 
-## Conversation Context
+## Conversation context
 
 | Feature                                                   |
 | --------------------------------------------------------- |
 | [Agent Context](/docs/configure-voice-agent#agentcontext) |
 
-## Inputs: Client Messages
+## Inputs: client messages
 
 | Feature                                                        |
 | -------------------------------------------------------------- |
@@ -41,7 +41,7 @@ path: docs/voice-agent-feature-overview
 | [Force End Turn](/docs/voice-agent-force-end-turn)             |
 | [Agent Keep Alive](/docs/agent-keep-alive)                     |
 
-## Outputs: Server Events
+## Outputs: server events
 
 | Feature                                                                                                  |
 | -------------------------------------------------------------------------------------------------------- |
@@ -54,18 +54,18 @@ path: docs/voice-agent-feature-overview
 | [Agent Audio Done](/docs/voice-agent-agent-audio-done)                                                   |
 | [Errors & Warnings](/docs/voice-agent-errors-warnings)                                                   |
 
-## Input / Output Events
+## Input / output events
 
 | Feature                                                            |
 | ------------------------------------------------------------------ |
 | [Function Call Request](/docs/voice-agent-function-call-request)   |
 | [Function Call Response](/docs/voice-agent-function-call-response) |
 
-## Session Length
+## Session length
 
 Sessions close automatically after 2 hours. The server warns you 5 minutes ahead with `MAXIMUM_SESSION_LENGTH_APPROACHING` and closes the session with a `MAXIMUM_SESSION_LENGTH_REACHED` error. To keep a conversation going, start a new session and replay the prior turns in `agent.context`. See [Maximum session length](/docs/voice-agent-errors-warnings#maximum-session-length).
 
-## Rate Limits
+## Rate limits
 
 > **Info**
 >

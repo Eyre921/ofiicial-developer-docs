@@ -9,11 +9,11 @@ path: docs/tts-ws-flush
 
 # Flush
 
-Text to Speech Stream
+Text-to-Speech Stream
 
-When you are sending text to our TTS websocket from an LLM, you will need to send a Flush message whenever the LLM finishes a response to indicate the end of the conversation. This allows Deepgram to generate the audio from its existing text buffer without waiting for additional text.
+When you're sending text to our TTS websocket from an LLM, you'll need to send a Flush message whenever the LLM finishes a response to indicate the end of the conversation. This allows Deepgram to generate the audio from its existing text buffer without waiting for additional text.
 
-In other cases in real-time text-to-speech processing, there are scenarios where you may need to force the server to process all (or flush) unprocessed speech-to-text data immediately. Deepgram supports a `Flush` message to handle such situations.
+In other cases in real-time text-to-speech processing, there are scenarios where you may need to force the server to process all (or flush) unprocessed speech-to-text data immediately. We support a `Flush` message to handle such situations.
 
 > **Warning**
 >
@@ -35,7 +35,7 @@ To send the `Flush` message, you need to send the following JSON message to the 
 
 Upon receiving the `Flush` message, the server will process all remaining text data and return the final audio results.
 
-### Example Response
+### Example response
 
 **`JSON`**
 
@@ -49,7 +49,7 @@ Upon receiving the `Flush` message, the server will process all remaining text d
 
 ## Limits
 
-The maximum number of times you can send the `Flush` message is 20 times every 60 seconds. After that, you will receive a warning message stating that we cannot process any more flush messages until the 60-second time window has passed.
+The maximum number of times you can send the `Flush` message is 20 times every 60 seconds. After that, you'll receive a warning message stating that we cannot process any more flush messages until the 60-second time window has passed.
 
 # Conclusion
 

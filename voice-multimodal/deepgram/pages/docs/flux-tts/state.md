@@ -1,5 +1,5 @@
 ---
-title: "The Speech Lifecycle and State Machine"
+title: "The speech lifecycle and state machine"
 source: https://developers.deepgram.com/docs/flux-tts/state.md
 path: docs/flux-tts/state
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/state
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# The Speech Lifecycle and State Machine
+# The speech lifecycle and state machine
 
-Flux TTS reframes synthesis from a text-to-audio pipe into a **turn-based conversation**. You own turn boundaries (`Flush`) and content; the server handles streaming and lifecycle reporting. This page explains the state machine that connects your [Client Messages](/docs/flux-tts/client-messages) to the [Server Messages](/docs/flux-tts/server-messages) you receive.
+Deepgram Flux TTS reframes synthesis from a text-to-audio pipe into a **turn-based conversation**. You own turn boundaries (`Flush`) and content; the server handles streaming and lifecycle reporting. This page explains the state machine that connects your [Client messages](/docs/flux-tts/client-messages) to the [Server messages](/docs/flux-tts/server-messages) you receive.
 
 ## Vocabulary
 
@@ -56,7 +56,7 @@ stateDiagram-v2
 
 > **Info**
 >
-> **Voice consistency carries across turns.** The model keeps conversational state across the turns it generates, so prosody stays consistent from turn to turn — with no API surface to manage. See [Cross-Turn Context](/docs/flux-tts/context).
+> **Voice consistency carries across turns.** The model keeps conversational state across the turns it generates, so prosody stays consistent from turn to turn — with no API surface to manage. See [Cross-turn context](/docs/flux-tts/context).
 
 ## Key rules
 
@@ -130,9 +130,9 @@ The next `Speak` begins a new turn with a new `speech_id`.
 
 ## Related resources
 
-* [Client Messages](/docs/flux-tts/client-messages) — the messages that drive these transitions
-* [Server Messages](/docs/flux-tts/server-messages) — full reference for each event above
+* [Client messages](/docs/flux-tts/client-messages) — the messages that drive these transitions
+* [Server messages](/docs/flux-tts/server-messages) — full reference for each event above
 * [Build a Flux TTS Voice Agent](/docs/flux-tts/voice-agent) — the state machine in a real agent loop
-* [Cross-Turn Context](/docs/flux-tts/context) — what persists across turns
+* [Cross-turn context](/docs/flux-tts/context) — what persists across turns
 
 ---

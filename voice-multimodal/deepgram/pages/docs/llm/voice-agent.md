@@ -54,7 +54,7 @@ With `think-fast`, Deepgram places instructions on spoken response style ahead o
 
 `The think model think-fast is tuned for voice, so Deepgram places instructions on spoken response style ahead of your prompt. Set agent.think.provider.voice_prompt_opt_out to true to send your prompt unchanged.`
 
-Set `agent.think.provider.voice_prompt_opt_out` to `true` to send your prompt unchanged. phoneLLM mini sessions do not get these instructions.
+Set `agent.think.provider.voice_prompt_opt_out` to `true` to send your prompt unchanged. phoneLLM mini sessions don't get these instructions.
 
 ## SDK support
 
@@ -138,10 +138,10 @@ AgentV1SettingsAgentContext agent = AgentV1SettingsAgentContext.builder()
 
 Function calls and context work the same way as with the other Voice Agent LLM providers:
 
-* [LLM Models](/docs/voice-agent-llm-models)
-* [Function Calling](/docs/voice-agents-function-calling)
+* [LLM models](/docs/voice-agent-llm-models)
+* [Function calling](/docs/voice-agents-function-calling)
 * [Prompting Voice Agents](/docs/prompting-voice-agents)
-* [Maintaining Context](/docs/voice-agent-conversation-context)
+* [Maintaining context](/docs/voice-agent-conversation-context)
 
 ## When to call /v1/think directly instead
 

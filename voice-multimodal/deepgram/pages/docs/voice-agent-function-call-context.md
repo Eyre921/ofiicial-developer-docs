@@ -1,5 +1,5 @@
 ---
-title: "Function Call Context"
+title: "Function call context"
 source: https://developers.deepgram.com/docs/voice-agent-function-call-context.md
 path: docs/voice-agent-function-call-context
 ---
@@ -7,7 +7,7 @@ path: docs/voice-agent-function-call-context
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Function Call Context
+# Function call context
 
 Voice Agent
 
@@ -22,7 +22,7 @@ Function call context is particularly useful when:
 * Maintaining continuity in multi-session interactions
 * Allowing the agent to reference previous function results
 
-## Message Schema
+## Message schema
 
 Function call context is included in the conversation history using the `History` message type with a `function_calls` array. Each function call entry contains complete information about the execution, including arguments and results.
 
@@ -93,7 +93,7 @@ Function call context is included in the conversation history using the `History
 }
 ```
 
-## Multiple Message Types
+## Multiple message types
 
 Function call history works seamlessly with [Conversation Context](/docs/voice-agent-history) to provide complete context. You can mix conversation messages and function call messages in the same context array.
 
@@ -121,21 +121,21 @@ The agent understands what functions were previously called and their results, e
 
 The agent can reference previous function results instead of making redundant calls for the same information.
 
-### Context Awareness
+### Context awareness
 
 The agent can make informed decisions based on the complete interaction history, including both conversations and actions taken.
 
-### Natural Interactions
+### Natural interactions
 
 Users can refer to previous actions ("like we did before") and the agent will understand the context.
 
-## Best Practices
+## Best practices
 
 ### Unique IDs
 
-In most cases the LLM will assign ids. If the LLM does not assign ids, Deepgram will assign ids to the function calls.
+In most cases the LLM will assign ids. If the LLM doesn't assign ids, Deepgram will assign ids to the function calls.
 
-### Complete Information
+### Complete information
 
 Include both the arguments passed to the function and the complete response received.
 
@@ -143,6 +143,6 @@ Include both the arguments passed to the function and the complete response rece
 
 Maintain the chronological order of function calls and conversations in your history.
 
-### Relevant Context Only
+### Relevant context only
 
 Include only the function call history that's relevant to the current conversation to avoid overwhelming the context.

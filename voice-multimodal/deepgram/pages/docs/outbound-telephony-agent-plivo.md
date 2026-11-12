@@ -1,5 +1,5 @@
 ---
-title: "Build an Outbound Telephony Agent with Plivo"
+title: "Build an outbound telephony agent with Plivo"
 source: https://developers.deepgram.com/docs/outbound-telephony-agent-plivo.md
 path: docs/outbound-telephony-agent-plivo
 ---
@@ -7,13 +7,13 @@ path: docs/outbound-telephony-agent-plivo
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Build an Outbound Telephony Agent with Plivo
+# Build an outbound telephony agent with Plivo
 
 > **Info**
 >
 > For more information and to use the reference implementation, visit the [Deepgram Voice Agent example in the Plivo agent examples repo](https://github.com/plivo/python-agents-examples/tree/main/deepgram-voiceagent).
 
-A reference implementation for building an outbound telephony voice agent using [Deepgram's Voice Agent API](/docs/voice-agent) and [Plivo](https://www.plivo.com/). Uses [Deepgram Flux](/docs/flux/feature-overview) for speech-to-text with native turn-taking optimized for real-time voice agent conversations.
+A reference implementation for building an outbound telephony voice agent using [Deepgram's Voice Agent API](/docs/voice-agent) and [Plivo](https://www.plivo.com/). Uses [Deepgram Flux STT](/docs/flux/feature-overview) with native turn-taking optimized for real-time voice agent conversations.
 
 You place each call with Plivo's [Create a Call API](https://www.plivo.com/docs/voice/api/calls#create-a-call). When the callee answers, they talk to Alex, an AI agent for a sample software company called TechFlow. Alex follows up on a free trial signup or demo request. Alex opens with a greeting you set per call, qualifies the lead (team size, use case, timeline, decision process), and offers a meeting with a sales specialist. Alex can also look up an order, send a text message, schedule a callback, and transfer the call. `end_call` hangs up the call. The other functions return sample data. To fit the agent to your use case, see [Customize the agent](#customize-the-agent).
 
@@ -213,7 +213,7 @@ Press Ctrl+C to stop the server and the tunnel.
 
 * **Outbound call initiation**: You pass the Answer URL with each call instead of linking it to a number. The server has no dial endpoint. It still needs a public URL, because Plivo requests the Answer URL and opens a WebSocket to the server.
 
-* **Per-call greeting**: The `greeting` query parameter on the Answer URL is the only per-call input. The server passes it unchanged as `agent.greeting`, and Deepgram speaks it exactly as written. It is not an instruction to the model. Without it, the agent says `DEFAULT_OUTBOUND_GREETING` from `outbound/agent.py`.
+* **Per-call greeting**: The `greeting` query parameter on the Answer URL is the only per-call input. The server passes it unchanged as `agent.greeting`, and Deepgram speaks it exactly as written. It isn't an instruction to the model. Without it, the agent says `DEFAULT_OUTBOUND_GREETING` from `outbound/agent.py`.
 
 * **Single WebSocket bridge**: `DeepgramVoiceAgent` in `outbound/agent.py` runs once per call. It connects two WebSockets: Plivo's audio stream on `/ws`, and one to the Voice Agent API at `wss://agent.deepgram.com/v1/agent/converse`. It uses the `websockets` library directly. The `<Stream>` XML and the `Settings` message both set μ-law audio at 8 kHz, so the server only converts between base64 and raw bytes.
 
@@ -280,15 +280,15 @@ DEEPGRAM_THINK_TEMPERATURE=0.7
 DEEPGRAM_SPEAK_MODEL=aura-2-thalia-en
 ```
 
-If you set `DEEPGRAM_OUTBOUND_AGENT_ID` to a [reusable agent configuration](/docs/reusable-agent-configurations) UUID, the server sends only that UUID in `Settings`. Then these values, the prompt file, and `FUNCTION_DEFINITIONS` are not used. The per-call greeting still applies. The server sends it as `InjectAgentMessage`.
+If you set `DEEPGRAM_OUTBOUND_AGENT_ID` to a [reusable agent configuration](/docs/reusable-agent-configurations) UUID, the server sends only that UUID in `Settings`. Then these values, the prompt file, and `FUNCTION_DEFINITIONS` aren't used. The per-call greeting still applies. The server sends it as `InjectAgentMessage`.
 
 ### Add functions
 
-Each function is a JSON schema in `FUNCTION_DEFINITIONS` and a branch in `_handle_function_call()`. To connect your systems, replace the bodies of `check_order_status()`, `send_sms()`, `schedule_callback()`, and `transfer_call()`. Keep `end_call`, because the agent uses it to hang up. See [Function Calling](/docs/voice-agents-function-calling).
+Each function is a JSON schema in `FUNCTION_DEFINITIONS` and a branch in `_handle_function_call()`. To connect your systems, replace the bodies of `check_order_status()`, `send_sms()`, `schedule_callback()`, and `transfer_call()`. Keep `end_call`, because the agent uses it to hang up. See [Function calling](/docs/voice-agents-function-calling).
 
 ### Multilingual support
 
-For languages other than English, set `DEEPGRAM_LISTEN_MODEL=flux-general-multi`, choose a `DEEPGRAM_SPEAK_MODEL` voice for the language, and write the prompt and each call's greeting in that language. To tell Flux which languages to expect, add `language_hints` in `_build_listen_provider()` in `outbound/agent.py`. See the [Deepgram multilingual voice agent guide](/docs/multilingual-voice-agent).
+For languages other than English, set `DEEPGRAM_LISTEN_MODEL=flux-general-multi`, choose a `DEEPGRAM_SPEAK_MODEL` voice for the language, and write the prompt and each call's greeting in that language. To tell Flux STT which languages to expect, add `language_hints` in `_build_listen_provider()` in `outbound/agent.py`. See the [Deepgram multilingual voice agent guide](/docs/multilingual-voice-agent).
 
 ### Extend the example
 
@@ -324,9 +324,9 @@ This example shows the technical setup, not how to comply with calling laws. Out
 ## Additional resources
 
 * [Plivo and Deepgram Voice Agent](/docs/plivo-and-deepgram-voice-agent) — How the bridge works, with code
-* [Build an Inbound Telephony Agent with Plivo](/docs/inbound-telephony-agent-plivo)
+* [Build an inbound telephony agent with Plivo](/docs/inbound-telephony-agent-plivo)
 * [Deepgram Voice Agent API Docs](/docs/voice-agent)
-* [Function Calling](/docs/voice-agents-function-calling)
+* [Function calling](/docs/voice-agents-function-calling)
 * [Plivo Create a Call API](https://www.plivo.com/docs/voice/api/calls#create-a-call)
 * [Plivo Audio Streaming reference](https://www.plivo.com/docs/voice-agents/audio-streaming/concepts/audio-streaming-reference)
 * [Plivo signature validation](https://www.plivo.com/docs/voice/concepts/signature-validation)

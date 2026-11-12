@@ -17,7 +17,7 @@ The `InjectUserMessage` is a JSON message you can send to the agent to interact 
 
 The `InjectUserMessage` message provides a way to have the agent "hear" something without the user actually speaking it. The agent will respond as if the user had spoken the message.
 
-## Example Payloads
+## Example payloads
 
 To send the `InjectUserMessage` message, you need to send the following JSON message to the server:
 
@@ -30,7 +30,7 @@ To send the `InjectUserMessage` message, you need to send the following JSON mes
 }
 ```
 
-## Use Cases
+## Use cases
 
 Some common ways to use the `InjectUserMessage` are:
 

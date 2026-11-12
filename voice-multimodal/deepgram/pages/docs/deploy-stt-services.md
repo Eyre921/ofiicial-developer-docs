@@ -1,5 +1,5 @@
 ---
-title: "Deploy Speech-to-Text (STT) Services"
+title: "Deploy speech-to-text (STT) services"
 source: https://developers.deepgram.com/docs/deploy-stt-services.md
 path: docs/deploy-stt-services
 ---
@@ -7,31 +7,31 @@ path: docs/deploy-stt-services
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Deploy Speech-to-Text (STT) Services
+# Deploy speech-to-text (STT) services
 
-This guide covers deploying Deepgram's Speech-to-Text (STT) services for transcription and real-time speech recognition capabilities.
+This guide covers deploying Deepgram's speech-to-text (STT) services for transcription and real-time speech recognition capabilities.
 
 > **Info**
 >
-> Looking to deploy Text-to-Speech (TTS) services? See the [Deploy TTS Services](/docs/deploy-tts-services) guide instead.
+> Looking to deploy text-to-speech (TTS) services? See the [Deploy TTS Services](/docs/deploy-tts-services) guide instead.
 
 > **Warning**
 >
-> **Deploying the Flux Model?** The Flux conversational speech-to-text model has unique deployment requirements and must be hosted on a separate instance from other STT/TTS models. See the [Deploy Flux Model (STT)](/docs/flux-self-hosted) guide for Flux-specific instructions.
+> **Deploying the Flux STT model?** The conversational Flux STT model has unique deployment requirements and must be hosted on a separate instance from other STT/TTS models. See the [Deploy Flux STT model](/docs/flux-self-hosted) guide for Flux STT-specific instructions.
 
-Deepgram STT services use the same container images (`quay.io/deepgram/self-hosted-api` and `quay.io/deepgram/self-hosted-engine`) as TTS deployments, as described in the [Deployment Environments](/docs/self-hosted-deployment-environments#container-orchestration) overview. However, **Deepgram strongly recommends configuring each node for a specific use case—either STT or TTS—for optimal performance and resource utilization**.
+Deepgram STT services use the same container images (`quay.io/deepgram/self-hosted-api` and `quay.io/deepgram/self-hosted-engine`) as TTS deployments, as described in the [Deployment environments](/docs/self-hosted-deployment-environments#container-orchestration) overview. However, **Deepgram strongly recommends configuring each node for a specific use case—either STT or TTS—for optimal performance and resource utilization**.
 
 We need to download and deploy these images from a container image repository, along with STT-specific configuration files and AI models that will be provided by Deepgram.
 
 ## Prerequisites
 
-Before you begin, you will need to complete the [Deployment Environments](/docs/self-hosted-deployment-environments) guide, as well as all sub-guides to complete your environment configuration.
+Before you begin, you'll need to complete the [Deployment environments](/docs/self-hosted-deployment-environments) guide, as well as all sub-guides to complete your environment configuration.
 
-You will also need to complete the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide to authenticate your products with Deepgram's licensing servers and pull Deepgram container images from [Quay](https://quay.io).
+You will also need to complete the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide to authenticate your products with Deepgram's licensing servers and pull Deepgram container images from [Quay](https://quay.io).
 
-## Get Deepgram Products
+## Get Deepgram products
 
-### Cache Container Image Repository Credentials
+### Cache container image repository credentials
 
 Use the image repository credentials you generated in the [self-service licensing and credentials](/docs/self-hosted-self-service-tutorial#create-a-set-of-container-image-distribution-credentials) guide to login to Quay on your deployment environment. Once your credentials are cached locally, you should not have to log in again (until after you manually log out).
 
@@ -42,7 +42,7 @@ Use the image repository credentials you generated in the [self-service licensin
 docker login quay.io
 ```
 
-## Choosing A Deployment Type
+## Choosing a deployment type
 
 For customers deploying Deepgram's self-hosted solution in highly available production environments, Deepgram recommends the License Proxy, which is a caching proxy that communicates with the Deepgram-hosted license server to ensure uptime and simplify network security. If you aren't certain which products your contract includes or if you are interested in adding the License Proxy to your self-hosted deployment, please consult your Deepgram Account Representative.
 
@@ -50,11 +50,11 @@ If your project is authorized to use the License Proxy, in the following section
 
 See the [License Proxy](/docs/license-proxy) guide for more details on the benefits and setup.
 
-## Import Your Docker Compose, Container Configuration, and Model Files
+## Import your Docker Compose, container configuration, and model files
 
-Before you can run your self-hosted deployment, you must configure the required components. To do this, you will need to customize your configuration files and create a directory to house models that have been encrypted for use in your requests.
+Before you can run your self-hosted deployment, you must configure the required components. To do this, you'll need to customize your configuration files and create a directory to house models that have been encrypted for use in your requests.
 
-1. In your home directory, create the following directories. This is where you will save your Docker Compose files, Deepgram configuration files, and Deepgram model files.
+1. In your home directory, create the following directories. This is where you'll save your Docker Compose files, Deepgram configuration files, and Deepgram model files.
 
    **`Shell`**
 
@@ -134,19 +134,19 @@ Before you can run your self-hosted deployment, you must configure the required 
 
 See the [Model Maintenance](/docs/maintaining#model-selection) guide for more details on how Deepgram models power voice AI inference in your self-hosted deployment.
 
-## Customize Your Configuration
+## Customize your configuration
 
-Once you have downloaded all provided files to your deployment machine, you need to update your configuration for your specific deployment environment.
+Once you've downloaded all provided files to your deployment machine, you need to update your configuration for your specific deployment environment.
 
 ### Credentials
 
-You will need to have an environment variable `DEEPGRAM_API_KEY` exported with your self-hosted API key secret. See our [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial#create-an-on-prem-api-key) guide for instructions on generating a self-hosted API key for use in this section.
+You will need to have an environment variable `DEEPGRAM_API_KEY` exported with your self-hosted API key secret. See our [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial#create-an-on-prem-api-key) guide for instructions on generating a self-hosted API key for use in this section.
 
 > **Warning**
 >
 > Per the link above, you will create you self-hosted API key in the `API Key` tab of Deepgram Console. These are *not* created in the "Self-Hosted" tab, which is reserved for creating distribution credentials.
 
-### Configuration Files
+### Configuration files
 
 #### Compose File
 
@@ -166,11 +166,11 @@ The API and Engine containers, and the optional License Proxy container, are con
 
 There are header comments describing each config value available in both of these files. If you have any questions about modifying these files, refer to those comments or reach out to your Deepgram Account Representative.
 
-## Testing Your Containers
+## Testing your containers
 
-To make sure your Deepgram self-hosted deployment is properly configured and running, you will want to run the containers and make a sample request.
+To make sure your Deepgram Self-Hosted deployment is properly configured and running, you'll want to run the containers and make a sample request.
 
-### Start the Deepgram Containers
+### Start the Deepgram containers
 
 Now that you have your configuration files and AI models set up and in the correct location to be used by the container, use Docker Compose to run the container:
 
@@ -210,13 +210,13 @@ docker logs CONTAINER_ID
 >
 > Replace the placeholder `CONTAINER_ID` with the Container ID of each container whose logs you would like to inspect more completely.
 
-### Networking Considerations
+### Networking considerations
 
 If you are running your API and Engine nodes on separate instances, you may need to add an inbound rule for port 8080 to the API instances' security group, so that port 8080 is reachable from where you are initiating your requests.
 
 Unless you have HTTPS or TLS running on your API instance, construct your Deepgram API endpoint with `http://`, not `https://`, and `ws://`, not `wss://` (for instance, `http://localhost:8080/v1/listen`).
 
-### Test Your Deepgram Setup with a Sample Request
+### Test your Deepgram setup with a sample request
 
 Test your environment and container setup with a local file.
 
@@ -240,7 +240,7 @@ Test your environment and container setup with a local file.
 >
 > If you're using your own file, make sure to replace `bueller.wav` with the name of your audio file.
 
-You should receive a JSON response with the transcription and associated metadata. Congratulations - your self-hosted setup is working!
+You should receive a JSON response with the transcription and associated metadata. Congratulations - your self-hosted setup is working.
 
 ---
 
@@ -248,5 +248,5 @@ What's Next
 
 Now that you have a basic Deepgram setup working, take some time to learn about building up to a production-level environment, as well as helpful Deepgram add-on services.
 
-* [Scaling and Deployment Strategies](/docs/scaling-and-deployment-strategies)
+* [Scaling and deployment strategies](/docs/scaling-and-deployment-strategies)
 * [Self-Hosted Add Ons](/docs/self-hosted-add-ons)

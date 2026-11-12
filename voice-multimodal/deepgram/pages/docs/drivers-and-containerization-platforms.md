@@ -9,33 +9,33 @@ path: docs/drivers-and-containerization-platforms
 
 # Drivers and Container Orchestration Tools
 
-Once you have provisioned a deployment environment with a Linux operating system installed, we need to configure it.
+Once you've provisioned a deployment environment with a Linux operating system installed, we need to configure it.
 
-While some cloud providers will automatically install NVIDIA drivers for use with NVIDIA GPUs, many do not, so we will walk through how to install NVIDIA drivers for the GPUs and expose them for our use.
+While some cloud providers will automatically install NVIDIA drivers for use with NVIDIA GPUs, many don't, so we'll walk through how to install NVIDIA drivers for the GPUs and expose them for our use.
 
-We will also step through installing a containerization platform. We highly recommend Docker, but you may also use Podman if you are using Red Hat Enterprise Linux (RHEL) version 8 or higher, or another similar distribution that does not ship or support Docker.
+We'll also step through installing a containerization platform. We highly recommend Docker, but you may also use Podman if you're using Red Hat Enterprise Linux (RHEL) version 8 or higher, or another similar distribution that doesn't ship or support Docker.
 
 > **Info**
 >
-> Other pages in Deepgram's documentation may exclusively list example commands using `docker`. If you are using a different containerization platform, such as `podman`, you may need to adjust the commands accordingly.
+> Other pages in Deepgram's documentation may exclusively list example commands using `docker`. If you're using a different containerization platform, such as `podman`, you may need to adjust the commands accordingly.
 
 ## Prerequisites
 
-Make sure you have completed the steps in one of the following platform guides:
+Make sure you've completed the steps in one of the following platform guides:
 
 * [Amazon Web Services](/docs/aws-docker-podman)
 * [Google Cloud Platform](/docs/gcp-docker-podman)
 * [Oracle Cloud Infrastructure](/docs/oci-docker-podman)
 * [Microsoft Azure](/docs/azure-docker-podman)
-* [Bare-Metal Servers](/docs/bare-metal)
+* [Bare-metal servers](/docs/bare-metal)
 
-## Note on Different Linux Distributions
+## Note on different Linux distributions
 
 Various Linux distributions have a default or preferred package manager for the installation and management of system packages. For example, `apt` is associated with Ubuntu and `dnf` is associated with RHEL and Oracle Linux.
 
-This guide will contain instructions that should be adaptable for many Linux distributions, but are specific to one of our [recommended distributions](/docs/self-hosted-deployment-environments#operating-system). You will see comments above the commands and sections when there is a distribution-specific action. If there are no comments or headers above a set of instructions, it should work cross-platform.
+This guide will contain instructions that should be adaptable for many Linux distributions, but are specific to one of our [recommended distributions](/docs/self-hosted-deployment-environments#operating-system). You'll see comments above the commands and sections when there's a distribution-specific action. If there are no comments or headers above a set of instructions, it should work cross-platform.
 
-## Update System Package Manager
+## Update system package manager
 
 Update your server’s operating system package manager to get information on updated versions of packages and their dependencies, and upgrade these packages as needed.
 
@@ -66,7 +66,7 @@ sudo dnf install -y gcc make wget
 
 ### Remove Nouveau Drivers
 
-The Nouveau kernel driver is incompatible with NVIDIA drivers, so you will need to disable it before installing any NVIDIA drivers.
+The Nouveau kernel driver is incompatible with NVIDIA drivers, so you'll need to disable it before installing any NVIDIA drivers.
 
 1. In your terminal, create a new configuration file at `/etc/modprobe.d/blacklist-nouveau.conf` to blacklist the Nouveau drivers.
 
@@ -105,7 +105,7 @@ The Nouveau kernel driver is incompatible with NVIDIA drivers, so you will need 
 
    If you see no output, Nouveau was successfully removed.
 
-### Install Kernel Development Tools
+### Install kernel development tools
 
 Many Linux distributions require Linux kernel development tools to be installed to support installing the NVIDIA drivers.
 
@@ -128,9 +128,9 @@ sudo dnf -y install kernel-devel kernel-headers
 >
 > If you are using Google Cloud Platform and your VM instance has Secure Boot enabled, see the [GCP documentation](https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#secure-boot) for details on how to sign the NVIDIA kernel modules.
 >
-> If you are using Azure and your Ubuntu VM instance has [Trusted Launch](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch) enabled, which also enables Secure Boot, see the [Azure documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/n-series-driver-setup#ubuntu) for how to add a Machine Owner Key that will sign a key for the driver installation. Otherwise, during VM creation, you may opt for Standard security instead of Trusted Launch, in order to install the drivers through our standard method as documented on this page.
+> If you're using Azure and your Ubuntu VM instance has [Trusted Launch](https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch) enabled, which also enables Secure Boot, see the [Azure documentation](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/n-series-driver-setup#ubuntu) for how to add a Machine Owner Key that will sign a key for the driver installation. Otherwise, during VM creation, you may opt for Standard security instead of Trusted Launch, in order to install the drivers through our standard method as documented on this page.
 >
-> If you are using Oracle Cloud Infrastructure and you are using a [Shielded instance](https://docs.oracle.com/en-us/iaas/Content/Compute/References/shielded-instances.htm), see the [Oracle documentation](https://docs.oracle.com/en/operating-systems/oracle-linux/9/secure-boot/sboot-SigningKernelModulesforUseWithSecureBoot.html) for details on how to sign the NVIDIA kernel modules.
+> If you're using Oracle Cloud Infrastructure and you're using a [Shielded instance](https://docs.oracle.com/en-us/iaas/Content/Compute/References/shielded-instances.htm), see the [Oracle documentation](https://docs.oracle.com/en/operating-systems/oracle-linux/9/secure-boot/sboot-SigningKernelModulesforUseWithSecureBoot.html) for details on how to sign the NVIDIA kernel modules.
 
 > **Deepgram requires the open kernel modules from the >=580 driver branch**
 >
@@ -159,17 +159,17 @@ sudo dnf -y install kernel-devel kernel-headers
 >
 > Look for a message similar to `NVRM: The NVIDIA GPU <address> (PCI ID: <id>) installed in this system requires use of the NVIDIA open kernel modules.` Reinstall with `-M=open` to recover.
 >
-> GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations all support the open kernel modules. Maxwell, Pascal, and Volta GPUs are incompatible with the open modules — and because they also cannot meet the CUDA 13 driver requirement, they are not supported for Deepgram self-hosted deployments.
+> GPUs from the Turing, Ampere, Ada Lovelace, Hopper, and Blackwell generations all support the open kernel modules. Maxwell, Pascal, and Volta GPUs are incompatible with the open modules — and because they also cannot meet the CUDA 13 driver requirement, they are not supported for Deepgram Self-Hosted deployments.
 
-1. We are going to identify the latest compatible driver for the GPU you are using and retrieve its download URL by going to the [NVIDIA Official Drivers](https://www.nvidia.com/download/index.aspx).
+1. We're going to identify the latest compatible driver for the GPU you're using and retrieve its download URL by going to the [NVIDIA Official Drivers](https://www.nvidia.com/download/index.aspx).
 
 2. Select the product category. For cloud instances, this will often be `Data Center/Tesla`.
 
-3. Select the product series and product. You should know the exact GPU you are using if you provisioned it yourself in your own data-center. If you are using a cloud instance, you can lookup the VM instance type on your cloud console, and use your cloud provider's documentation to find the corresponding GPU for that instance type.
+3. Select the product series and product. You should know the exact GPU you're using if you provisioned it yourself in your own data-center. If you're using a cloud instance, you can lookup the VM instance type on your cloud console, and use your cloud provider's documentation to find the corresponding GPU for that instance type.
 
    1. The product series will the first letter of the GPU name. For example, the T4 is part of the T-series, and the A10 is part of the A-series.
 
-4. Select your operating system. For most users, like those on Ubuntu, this will be `Linux 64-bit`. If you are on RHEL or a compatible distribution like Oracle Linux, select the appropriate RHEL version instead.
+4. Select your operating system. For most users, like those on Ubuntu, this will be `Linux 64-bit`. If you're on RHEL or a compatible distribution like Oracle Linux, select the appropriate RHEL version instead.
 
    > **Warning**
    >
@@ -191,7 +191,7 @@ sudo dnf -y install kernel-devel kernel-headers
 
    > **Info**
    >
-   > Be sure to replace the `LINK_TO_LATEST_NVIDIA_GPU_DRIVER` placeholder value with the URL to the latest driver for the GPU you are using.
+   > Be sure to replace the `LINK_TO_LATEST_NVIDIA_GPU_DRIVER` placeholder value with the URL to the latest driver for the GPU you're using.
 
 9. Install the drivers:
 
@@ -218,7 +218,7 @@ sudo dnf -y install kernel-devel kernel-headers
 
    > **Info**
    >
-   > With the `--silent` install on Ubuntu and other non-RHEL distros, you will see warnings that are similar to the following (they can be ignored):
+   > With the `--silent` install on Ubuntu and other non-RHEL distros, you'll see warnings that are similar to the following (they can be ignored):
    >
    > WARNING: Ignoring CC version mismatch:
    >
@@ -232,13 +232,13 @@ sudo dnf -y install kernel-devel kernel-headers
     nvidia-smi
     ```
 
-## Install Container Runtime
+## Install container runtime
 
-For ease of use, Deepgram provides its products in container images, so you must make sure that you have installed the latest version of Docker (or an alternative such as Podman) on all hosts.
+For ease of use, Deepgram provides its products in container images, so you must make sure that you've installed the latest version of Docker (or an alternative such as Podman) on all hosts.
 
 > **Info**
 >
-> RHEL and Oracle Linux do not distribute Docker, so you will need to use Podman for your container runtime.
+> RHEL and Oracle Linux do not distribute Docker, so you'll need to use Podman for your container runtime.
 
 1. Install the container runtime.
 
@@ -253,7 +253,7 @@ For ease of use, Deepgram provides its products in container images, so you must
       sudo dnf install podman
       ```
 
-      1. If you are using Podman, other guides in the self-hosted documentation will contain commands using `docker`. Change all of these to use `podman`.
+      1. If you're using Podman, other guides in the self-hosted documentation will contain commands using `docker`. Change all of these to use `podman`.
 
 2. It's possible to grant your user (e.g. `ubuntu`, `ec2-user`, `ocp`) sufficient permissions to run container runtime commands without elevated privileges (without `sudo`).
 
@@ -340,9 +340,9 @@ After you've setup the NVIDIA container toolkit with CDI, you can test it with t
 
 ## Summary
 
-This guide walked you through installing the NVIDIA drivers to interact with our GPU that will run inference, as well as the containerization platform that we will use to run Deepgram services.
+This guide walked you through installing the NVIDIA drivers to interact with our GPU that will run inference, as well as the containerization platform that we'll use to run Deepgram services.
 
-As a reminder, many of our guides assume use of Docker. If you are on Red Hat Enterprise Linux or have another reason to use Podman instead of Docker, keep in mind the commands and configuration may be slightly different.
+As a reminder, many of our guides assume use of Docker. If you're on Red Hat Enterprise Linux or have another reason to use Podman instead of Docker, keep in mind the commands and configuration may be slightly different.
 
 ---
 
@@ -350,4 +350,4 @@ What’s Next
 
 Now we head to Deepgram Console to generate needed credentials for our deployment.
 
-* [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial)
+* [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial)

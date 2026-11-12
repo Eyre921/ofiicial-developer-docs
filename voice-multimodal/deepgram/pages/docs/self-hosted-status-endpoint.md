@@ -1,5 +1,5 @@
 ---
-title: "Status Endpoint"
+title: "Status endpoint"
 source: https://developers.deepgram.com/docs/self-hosted-status-endpoint.md
 path: docs/self-hosted-status-endpoint
 ---
@@ -7,15 +7,15 @@ path: docs/self-hosted-status-endpoint
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Status Endpoint
+# Status endpoint
 
-The `/v1/status` endpoint provides real-time health and readiness information for your Deepgram self-hosted nodes. This endpoint is essential for monitoring your deployment and integrating with load balancers, orchestration platforms, and health check systems.
+The `/v1/status` endpoint provides real-time health and readiness information for your Deepgram Self-Hosted nodes. This endpoint is essential for monitoring your deployment and integrating with load balancers, orchestration platforms, and health check systems.
 
 ## Overview
 
 The status endpoint reports the current operational state of a Deepgram node, tracking it through various states as it starts up, serves requests, and responds to runtime conditions. The endpoint helps prevent false critical alerts and provides accurate information about whether a node is ready to handle requests.
 
-## Response Format
+## Response format
 
 The status endpoint returns a JSON object with the following fields:
 
@@ -31,9 +31,9 @@ The status endpoint returns a JSON object with the following fields:
 * **`system_health`**: The current state of the node (`Initializing`, `Ready`, `Healthy`, `Degraded`, or `Critical`)
 * **`active_batch_requests`**: Number of pre-recorded transcription requests currently being processed
 * **`active_stream_requests`**: Number of real-time streaming requests currently active
-* **`active_listen_v2_stream_requests`**: Number of active Flux (`/v2/listen`) streaming requests. Available in release `260319` and later.
+* **`active_listen_v2_stream_requests`**: Number of active Flux STT (`/v2/listen`) streaming requests. Available in release `260319` and later.
 
-## Status States
+## Status states
 
 The `system_health` field reports one of five possible states:
 
@@ -56,7 +56,7 @@ The node automatically transitions to `Ready` once initialization completes succ
 
 ### Ready
 
-**A backend Engine is available.** Once initialization is complete, the node transitions to `Ready` status. No inference requests have been processed yet, so the node cannot confirm whether requests will succeed.
+**A backend Engine is available.** Once initialization is complete, the node transitions to `Ready` status. No inference requests have been processed yet, so the node can't confirm whether requests will succeed.
 
 From the `Ready` state, the node will:
 
@@ -79,7 +79,7 @@ From the `Ready` state, the node will:
 
 **Sustained successful operation.** A backend Engine is available and more than 90% of inference requests have been processed successfully. This indicates stable, production-ready operation.
 
-A `Healthy` node can transition to `Degraded` or `Critical` if the success rate drops, including from repeated Flux (`/v2/listen`) request failures.
+A `Healthy` node can transition to `Degraded` or `Critical` if the success rate drops, including from repeated Flux STT (`/v2/listen`) request failures.
 
 **Example Response:**
 
@@ -132,7 +132,7 @@ A node in `Critical` status can recover to `Degraded` or `Healthy` once the succ
 }
 ```
 
-## State Transitions
+## State transitions
 
 The following diagram illustrates how nodes transition between states:
 
@@ -167,9 +167,9 @@ The system determines health based on the success rate of recent inference reque
 | **Critical → Degraded**  | Success rate recovers to 40%–90%             |
 | **Critical → Healthy**   | Success rate recovers above 90%              |
 
-## Using the Status Endpoint
+## Using the status endpoint
 
-### Making a Request
+### Making a request
 
 Query the status endpoint with a simple GET request:
 
@@ -221,7 +221,7 @@ HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.o
 System.out.println(response.body());
 ```
 
-### Integration with Load Balancers
+### Integration with load balancers
 
 Configure your load balancer to use the status endpoint for health checks. Different states may require different handling:
 
@@ -273,7 +273,7 @@ spec:
       failureThreshold: 3
 ```
 
-### Monitoring and Alerting
+### Monitoring and alerting
 
 The status endpoint is valuable for monitoring dashboards and alerting systems:
 
@@ -315,9 +315,9 @@ while True:
     time.sleep(30)
 ```
 
-## Best Practices
+## Best practices
 
-### Startup Handling
+### Startup handling
 
 During node deployment or restart:
 
@@ -325,7 +325,7 @@ During node deployment or restart:
 2. Allow adequate time for initialization (typically 30-60 seconds)
 3. Configure health checks with appropriate initial delays
 
-### Error Recovery
+### Error recovery
 
 When a node enters `Degraded` or `Critical` state:
 
@@ -334,7 +334,7 @@ When a node enters `Degraded` or `Critical` state:
 3. Monitor for automatic recovery — the node can transition to a healthier state as the success rate improves
 4. Consider restarting the node if it remains in `Critical` state
 
-### High Availability
+### High availability
 
 For production deployments:
 
@@ -343,7 +343,7 @@ For production deployments:
 3. Set up automated alerts for `Degraded` and `Critical` state transitions
 4. Monitor the proportion of nodes in each state across your deployment
 
-### Monitoring Active Requests
+### Monitoring active requests
 
 Use the `active_batch_requests`, `active_stream_requests`, and `active_listen_v2_stream_requests` fields to:
 
@@ -372,7 +372,7 @@ If nodes frequently transition to `Degraded` or `Critical`:
 * Verify license validity and connectivity to license servers
 * Monitor for request patterns that may cause failures
 
-### Status Endpoint Not Responding
+### Status endpoint not responding
 
 If the status endpoint is unreachable:
 
@@ -383,10 +383,10 @@ If the status endpoint is unreachable:
 
 ---
 
-## What's Next
+## What's next
 
 Now that you understand how to monitor node health with the status endpoint, explore related topics:
 
 * [Metrics Guide](/docs/metrics-guide) - Detailed metrics and monitoring
-* [System Maintenance](/docs/maintaining) - Keeping your deployment healthy
+* [System maintenance](/docs/maintaining) - Keeping your deployment healthy
 * [Prometheus Integration](/docs/prometheus-integration) - Advanced monitoring setup

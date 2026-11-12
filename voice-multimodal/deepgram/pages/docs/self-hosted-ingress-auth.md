@@ -1,5 +1,5 @@
 ---
-title: "Ingress Authentication"
+title: "Ingress authentication"
 source: https://developers.deepgram.com/docs/self-hosted-ingress-auth.md
 path: docs/self-hosted-ingress-auth
 ---
@@ -7,13 +7,13 @@ path: docs/self-hosted-ingress-auth
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Ingress Authentication
+# Ingress authentication
 
 However, you may have a use case where you wish to expose your Deepgram services directly to the public internet. In this case, you will need to implement additional authentication measures to secure ingress traffic to your environment.
 
 While Deepgram's self-hosted containers do not include built-in authentication, you can implement your own authentication system, such as using API keys. This guide describes on how to set up API key authentication for your self-hosted Deepgram instance. We will focus on AWS deployments, but the general principles can be applied to other cloud providers, as well as on-premises setups.
 
-## Why Use API Keys?
+## Why use API keys?
 
 API keys provide a simple and effective way to control access to your API. They allow you to:
 
@@ -21,7 +21,7 @@ API keys provide a simple and effective way to control access to your API. They 
 2. Track and monitor API usage
 3. Revoke access when necessary
 
-## Implementing API Key Authentication
+## Implementing API key authentication
 
 There are several ways to implement API key authentication for your self-hosted Deepgram instance. This API key setup will be entirely separate from the Deepgram API keys [you generate in the Deepgram Console](/docs/create-additional-api-keys).
 
@@ -29,7 +29,7 @@ There are several ways to implement API key authentication for your self-hosted 
 >
 > You should not expose your Deepgram API keys to a third-party. Your Deepgram API keys are a critical security component of your product's integration with Deepgram, and no other parties should have access to your Deepgram API keys.
 >
-> Always use a separate set of API keys for authenticating ingress requests versus the Deepgram self-hosted API keys you use to license your Deepgram containers.
+> Always use a separate set of API keys for authenticating ingress requests versus the Deepgram Self-Hosted API keys you use to license your Deepgram containers.
 
 One straightforward method to implement API key authentication for your server is to use [AWS API Gateway](https://aws.amazon.com/api-gateway/).
 
@@ -55,7 +55,7 @@ One straightforward method to implement API key authentication for your server i
 
 If you're not using AWS, see your cloud provider's documentation for their equivalent authentication offering.
 
-### Alternative Implementation Methods
+### Alternative implementation methods
 
 If you prefer a different approach, you can implement API key authentication directly on your server.
 
@@ -68,14 +68,14 @@ If you prefer a different approach, you can implement API key authentication dir
 2. Store valid API keys securely, and distribute as needed
 3. Verify the API key before processing the request
 
-## Best Practices
+## Best practices
 
 * Regularly rotate API keys
 * Use HTTPS to encrypt all API traffic
 * Implement rate limiting to prevent abuse
 * Monitor API usage for suspicious activity
 
-Remember, implementing authentication is crucial for securing your self-hosted Deepgram instance. Choose a method that best fits your infrastructure and security requirements. In many cases, your security posture will be improved by designing your architecture to only access your Deepgram self-hosted services from within your private network, instead of from the public internet.
+Remember, implementing authentication is crucial for securing your self-hosted Deepgram instance. Choose a method that best fits your infrastructure and security requirements. In many cases, your security posture will be improved by designing your architecture to only access your Deepgram Self-Hosted services from within your private network, instead of from the public internet.
 
 For more detailed information on AWS API Gateway and API key implementation, refer to the [AWS documentation](https://aws.amazon.com/api-gateway/).
 

@@ -1,5 +1,5 @@
 ---
-title: "Feature Overview"
+title: "Feature overview"
 source: https://developers.deepgram.com/docs/tts-streaming-feature-overview.md
 path: docs/tts-streaming-feature-overview
 ---
@@ -7,7 +7,7 @@ path: docs/tts-streaming-feature-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Feature Overview
+# Feature overview
 
 ## Voice Selection
 
@@ -20,9 +20,9 @@ path: docs/tts-streaming-feature-overview
 | Feature                              |
 | ------------------------------------ |
 | [Encoding](/docs/tts-encoding)       |
-| [Sample Rate](/docs/tts-sample-rate) |
+| [Sample rate](/docs/tts-sample-rate) |
 
-## Control Messages
+## Control messages
 
 | Feature                     |
 | --------------------------- |
@@ -30,7 +30,7 @@ path: docs/tts-streaming-feature-overview
 | [Clear](/docs/tts-ws-clear) |
 | [Close](/docs/tts-ws-close) |
 
-## Rate Limits
+## Rate limits
 
 > **Info**
 >

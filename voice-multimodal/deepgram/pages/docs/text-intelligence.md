@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Getting started"
 source: https://developers.deepgram.com/docs/text-intelligence.md
 path: docs/text-intelligence
 ---
@@ -7,7 +7,7 @@ path: docs/text-intelligence
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started
+# Getting started
 
 Deepgram API Playground
 
@@ -20,21 +20,21 @@ In this guide, you'll learn how to analyze text using Deepgram's text intelligen
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ## Purpose
 
-Text Intelligence analyzes text content using four types of analysis: [Summarization](/docs/text-summarization), [Topic Detection](/docs/text-topic-detection), [Intent Recognition](/docs/text-intention-recognition), and [Sentiment Analysis](/docs/text-sentiment-analysis). You can send text as a string, local file, or hosted URL to receive structured analysis results.
+Deepgram Text Intelligence analyzes text content using four types of analysis: [Summarization](/docs/text-summarization), [Topic detection](/docs/text-topic-detection), [Intent recognition](/docs/text-intention-recognition), and [Sentiment analysis](/docs/text-sentiment-analysis). You can send text as a string, local file, or hosted URL to receive structured analysis results.
 
-## Make the Request
+## Make the request
 
 A request made using one of the text intelligence features will follow the same form for each of the features; therefore, this guide will walk you through how to make one request, and you can use the feature(s) of your choice depending on which feature you want to use (Summarization, Topic Detection, Intent Recognition, or Sentiment Analysis).
 
-### Choose a Text
+### Choose a text
 
 A text source can be sent to Deepgram as text (a text string or local text file) or as a url (hosted text file). These are referred to as a **basic text request** (string of text such as `"This is a string of text."`) or a **basic url request** (a hosted url such as `https://YOUR_FILE_URL.txt`).
 
-### Basic Text Request
+### Basic text request
 
 This example shows how to analyze a **local text file** as your text source.
 
@@ -222,7 +222,7 @@ public class Main {
 }
 ```
 
-### Basic URL Request
+### Basic URL request
 
 This example shows how to analyze a **hosted url file** as your text source.
 
@@ -399,7 +399,7 @@ public class Main {
 }
 ```
 
-### Start the Application
+### Start the application
 
 Run your application from the terminal.
 
@@ -434,11 +434,11 @@ go run YOUR_PROJECT_NAME.go
 mvn compile exec:java -Dexec.mainClass="Main"
 ```
 
-### See Results
+### See results
 
 Your results will appear in your shell.
 
-## Analyze the Response
+## Analyze the response
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response:
 
@@ -611,7 +611,7 @@ In the `results` object, we see:
 
 * `summary`: the `text` property in this object gives you the summary of the text you requested to be analyzed.
 
-### Topic Detection
+### Topic detection
 
 In the `metadata` object, we see:
 
@@ -628,7 +628,7 @@ In the `results` object, we see:
   * `topic`: Deepgram analyzes the segmented text to identify the main topic of each.
   * `confidence_score`: a floating point value between 0 and 1 indicating the overall reliability of the analysis.
 
-### Intent Recognition
+### Intent recognition
 
 In the `metadata` object, we see:
 
@@ -645,7 +645,7 @@ In the `results` object, we see:
   * `intent`: Deepgram analyzes the segmented text to identify the intent of each.
   * `confidence_score`: a floating point value between 0 and 1 indicating the overall reliability of the analysis.
 
-### Sentiment Analysis
+### Sentiment analysis
 
 In the `metadata` object, we see:
 
@@ -677,7 +677,7 @@ response = client.read.v1.text.analyze(
 )
 ```
 
-### Token Limit
+### Token limit
 
 The input token limit is 150K tokens. When that limit is exceeded, a `400` error will be thrown.
 

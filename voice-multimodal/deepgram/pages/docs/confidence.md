@@ -1,5 +1,5 @@
 ---
-title: "Understanding Word Confidence Scores"
+title: "Understanding word confidence scores"
 source: https://developers.deepgram.com/docs/confidence.md
 path: docs/confidence
 ---
@@ -7,11 +7,11 @@ path: docs/confidence
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Understanding Word Confidence Scores
+# Understanding word confidence scores
 
 Every word in Deepgram's transcription response includes a `confidence` value — a floating point between 0 and 1 representing the model's estimated probability that the word was transcribed correctly. This per-word score appears in the `words` array within each `alternatives` object and is distinct from the transcript-level `confidence` field, which represents overall transcript reliability.
 
-## What Confidence Means
+## What confidence means
 
 Deepgram's word confidence is a **calibrated probability**. A confidence of 0.93 means the model estimates a 93% chance the word is correct.
 
@@ -21,13 +21,13 @@ Deepgram's word confidence is a **calibrated probability**. A confidence of 0.93
 >
 > Confidence score definitions and calibration vary across STT providers. You cannot directly compare raw confidence distributions between providers. A provider whose scores are spread evenly across 0–1 is not necessarily providing "more informative" scores — they may simply be poorly calibrated, meaning their stated confidence does not match actual accuracy.
 
-## Why Most Scores Are High
+## Why most scores are high
 
 On typical audio, most words will have confidence scores above 0.90. This is expected and correct behavior — it reflects the model accurately predicting that it got most words right.
 
 For example, if Deepgram achieves 95% word accuracy on your audio, you should expect the average confidence to be around 0.95, with most words clustering near 1.0. The roughly 5% of words the model is less sure about will have lower scores.
 
-A flat or uniform distribution of confidence scores across 0–1 would actually indicate **poor calibration** — it would mean the model is equally uncertain about every word, which does not reflect reality for a high-accuracy model.
+A flat or uniform distribution of confidence scores across 0–1 would actually indicate **poor calibration** — it would mean the model is equally uncertain about every word, which doesn't reflect reality for a high-accuracy model.
 
 > **Info**
 >
@@ -35,7 +35,7 @@ A flat or uniform distribution of confidence scores across 0–1 would actually 
 
 ## Using Confidence for Error Detection
 
-### Fixed Threshold
+### Fixed threshold
 
 The simplest approach: choose a confidence cutoff and flag all words below it as potential errors.
 
@@ -75,7 +75,7 @@ for (Word word : words) {
 }
 ```
 
-### Dynamic Threshold
+### Dynamic threshold
 
 Adapt the threshold automatically based on audio difficulty:
 
@@ -135,25 +135,25 @@ for (Word word : flagged) {
 }
 ```
 
-## Common Use Cases
+## Common use cases
 
-### QA and Compliance Review
+### QA and compliance review
 
 Flag utterances where any word drops below a threshold for human review. Useful for call centers, legal transcription, and medical documentation where accuracy is critical.
 
-### Entity Validation
+### Entity validation
 
 Cross-check confidence on detected entities (names, numbers, addresses). Low confidence on an entity word is a stronger signal to escalate than low confidence on a filler word like "um" or "the."
 
-### Transcript Quality Scoring
+### Transcript quality scoring
 
 Use mean word confidence across a full transcript as a quality proxy. Automatically escalate low-quality transcripts to human review and accept high-quality ones without intervention.
 
-### Streaming Confidence Monitoring
+### Streaming confidence monitoring
 
 In real-time applications, track confidence trends across a stream. A sustained drop in confidence may indicate audio quality degradation (background noise, connection issues) that warrants alerting.
 
-## Confidence in Streaming vs. Pre-recorded
+## Confidence in streaming vs. pre-recorded
 
 In streaming mode with `interim_results=true`, interim transcripts may show lower confidence on words near the audio boundary (the "tip" of the stream). The model has less surrounding context for these words, so its predictions are less certain.
 
@@ -161,12 +161,12 @@ As more audio arrives, interim confidence values typically improve. Final transc
 
 > **Info**
 >
-> Use confidence values from final transcripts for any downstream decision-making. Use interim confidence only for low-latency display purposes where you expect corrections. See [Interim Results](/docs/interim-results) for details on how interim and final transcripts work.
+> Use confidence values from final transcripts for any downstream decision-making. Use interim confidence only for low-latency display purposes where you expect corrections. See [Interim results](/docs/interim-results) for details on how interim and final transcripts work.
 
 ## Limitations
 
-* **No alternatives**: Confidence tells you how sure the model is about its top prediction, but does not surface the model's second-best guess. You cannot use it to get suggested corrections.
-* **Not a WER guarantee**: High average confidence does not guarantee low word error rate on any specific transcript. It is a statistical property across many predictions.
+* **No alternatives**: Confidence tells you how sure the model is about its top prediction, but doesn't surface the model's second-best guess. You can't use it to get suggested corrections.
+* **Not a WER guarantee**: High average confidence doesn't guarantee low word error rate on any specific transcript. It's a statistical property across many predictions.
 * **Model mismatch**: If you use the wrong language model or the audio contains heavy accents not well-represented in training data, the model can be confidently wrong. Confidence reflects the model's internal estimate, which is only as good as the model's fit to the audio domain.
 * **Cross-provider comparison**: Do not compare raw confidence score distributions between STT providers. Different providers may use different calibration methods, temperature scaling, or definitions of "confidence." A meaningful comparison requires evaluating precision and recall of error detection at various thresholds on the same evaluation dataset.
 
@@ -234,9 +234,9 @@ There are two distinct confidence fields in the response:
 >
 > If you threshold on transcript-level confidence for routing decisions (for example, escalating to human review), be aware that a transcript with one very low-confidence entity word might still pass a high transcript-level threshold because the median is unaffected by a single outlier. Supplement with word-level checks on critical entities.
 
-## Related Resources
+## Related resources
 
-* [Interim Results](/docs/interim-results) — How interim and final transcripts work in streaming.
+* [Interim results](/docs/interim-results) — How interim and final transcripts work in streaming.
 * [Utterances](/docs/utterances) — Segment speech into meaningful semantic units.
 * [Pre-recorded Audio Getting Started](/docs/pre-recorded-audio) — Transcribe audio files with Deepgram.
 * [Streaming Audio Getting Started](/docs/live-streaming-audio) — Real-time transcription with WebSockets.

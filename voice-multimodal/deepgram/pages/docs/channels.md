@@ -11,13 +11,13 @@ path: docs/channels
 
 `channels` *int32* Default: `1`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
 The default value is `1`.
 
-The Channels feature is used when the [Encoding](/docs/encoding/) feature is also being used to submit streaming raw audio. It is not read at any other time.
+The Channels feature is used when the [Encoding](/docs/encoding/) feature is also being used to submit streaming raw audio. It isn't read at any other time.
 
-## Enable Feature
+## Enable feature
 
 To enable Channels, when you call Deepgram’s API, add a `channels` parameter in the query string and set it to the number of channels in your submitted audio.
 

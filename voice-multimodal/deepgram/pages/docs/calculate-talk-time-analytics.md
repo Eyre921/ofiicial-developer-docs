@@ -1,5 +1,5 @@
 ---
-title: "Calculate Talk Time Analytics"
+title: "Calculate talk time analytics"
 source: https://developers.deepgram.com/docs/calculate-talk-time-analytics.md
 path: docs/calculate-talk-time-analytics
 ---
@@ -7,15 +7,15 @@ path: docs/calculate-talk-time-analytics
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Calculate Talk Time Analytics
+# Calculate talk time analytics
 
-Analyzing the talk time of participants in a classroom, meeting, or phone call can help you improve participant engagement, sales presentations and support response. Using Deepgram's speech-to-text API with diarization, you can gather the data you need to make informed decisions about your organization's interactions.
+Analyzing the talk time of participants in a classroom, meeting, or phone call can help you improve participant engagement, sales presentations, and support response. Using Deepgram's speech-to-text API with diarization, you can gather the data you need to make informed decisions about your organization's interactions.
 
 > **Info**
 >
 > The demo code in this guide uses an older version of our Node SDK. A new version of our SDK is now available. .
 
-## Before You Begin
+## Before you begin
 
 The example provided is written in Node.js, and you can [find the code on GitHub](https://github.com/deepgram-devs/talk-time-analytics).
 
@@ -23,13 +23,13 @@ Before you run the code, you'll need to do a few things:
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
-### Create a Deepgram API Key
+### Create a Deepgram API key
 
-To access Deepgram's API, you'll need to [create a Deepgram API Key](/guides/fundamentals/authenticating#create-an-api-key). Make note of your API Key; you will need it later.
+To access Deepgram's API, you'll need to [create a Deepgram API Key](/guides/fundamentals/authenticating#create-an-api-key). Make note of your API Key; you'll need it later.
 
-## Getting Started
+## Getting started
 
 You can run this application by running it on your local computer.
 
@@ -44,9 +44,9 @@ Once these variables are set, the application should run automatically.
 
 ### Run on localhost
 
-To run this project on your local computer you will need to clone the repository, configure the settings, install the dependencies, and start the server.
+To run this project on your local computer you'll need to clone the repository, configure the settings, install the dependencies, and start the server.
 
-#### Clone the Repository
+#### Clone the repository
 
 Either clone or download the[GitHub repository](https://github.com/deepgram-devs/talk-time-analytics) to your local machine in a new directory:
 
@@ -67,7 +67,7 @@ Your application will need to know more about you before it can run. Copy the `.
 * `PORT`: The port on which you want to run the application. You can leave this as port 3000.
 * `DG_KEY`: The API Key you created earlier in this tutorial.
 
-#### Install the Dependencies
+#### Install the dependencies
 
 In the directory where you downloaded the code, run the following command to bring in the dependencies needed for this project:
 
@@ -77,9 +77,9 @@ In the directory where you downloaded the code, run the following command to bri
 npm install
 ```
 
-#### Start the Server
+#### Start the server
 
-Now that you have configured your application and put the dependencies in place, your application is ready to go! Run it with:
+Now that you've configured your application and put the dependencies in place, your application is ready to go. Run it with:
 
 **`Bash`**
 
@@ -89,11 +89,11 @@ npm start
 
 By default, the application runs on port 3000, which means you can access it at `<http://localhost:3000>`.
 
-## Code Walk-through
+## Code walk-through
 
 The application is an Express app that uses Chart.js to create a pie chart that displays calculated talk time. The key logic that calculates talk time lives in the `server.js` file.
 
-### Sending Data to the Deepgram API
+### Sending data to the Deepgram API
 
 When a user uploads a file, we call the `requestDeepgramAPI` function. This function calls the Deepgram API via an `https` request. The key parameter on this request is `diarize=true`. This parameter tells the Deepgram API to recognize speaker changes. When activated, the Deepgram API will assign a zero-based speaker index to each word in the transcript.
 
@@ -129,7 +129,7 @@ function requestDeepgramAPI({ res, filename, fileUrl, contentType, payload }) {
 }
 ```
 
-### Calculating Talk Time
+### Calculating talk time
 
 Once the response is returned from the Deepgram API, we pass the transcript data to the `computeSpeakingTime` function. In that function, we create a new `Map<number, number>` named `timePerSpeaker`.
 

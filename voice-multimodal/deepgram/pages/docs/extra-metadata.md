@@ -11,13 +11,13 @@ path: docs/extra-metadata
 
 `extra` *string*
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
 Deepgram’s Extra Metadata feature allows you to attach arbitrary key-value pairs to your API requests that are attached to the API response for usage in downstream processing.
 
 Extra metadata is limited to 2048 characters per key-value pair.
 
-## Enable Feature
+## Enable feature
 
 To enable Extra Metadata, when you call Deepgram’s API, add an `extra` parameter in the query string and pass a key-value pair you would like to include in the response.
 
@@ -57,7 +57,7 @@ If you included `extra=myKey:someValue` in your request, the key-value pair woul
 }
 ```
 
-## Special Considerations
+## Special considerations
 
 ### White Space or Special Characters
 
@@ -65,7 +65,7 @@ If your extra metadata includes spaces or special characters, be sure to URL enc
 
 `extra=dataflow:marketing%20team` or `extra=dataflow:marketing+team`
 
-### Apply Multiple Instances
+### Apply multiple instances
 
 To apply multiple extra key-value pairs, submit the query parameter multiple times in your API request:
 
@@ -77,7 +77,7 @@ To apply multiple extra key-value pairs, submit the query parameter multiple tim
 >
 > For example, `extra=team:marketing&extra=team:gtm` will return `"extra": { "team": "gtm" }` in the response.
 
-## Comparison to Tagging
+## Comparison to tagging
 
 [Tagging](/docs/stt-tagging) is a similar feature to Extra Metadata. Where Extra Metadata is primarily intended for passing data to downstream processing steps, Tagging is useful for tracking and filtering usage.
 

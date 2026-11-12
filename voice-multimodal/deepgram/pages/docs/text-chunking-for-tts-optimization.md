@@ -11,19 +11,19 @@ path: docs/text-chunking-for-tts-optimization
 
 When dealing with lengthy text inputs, latency can become an issue as the processing time increases with the length of the text. To address this challenge, one effective strategy is text chunking. Text chunking is the process of breaking down text inputs into smaller, manageable chunks before processing.
 
-## Code Examples
+## Code examples
 
-The following three code examples build upon each previous example in complexity to present strategies for using text chunking to optimize your Text-to-Speech applications.
+The following three code examples build upon each previous example in complexity to present strategies for using text chunking to optimize your text-to-speech applications.
 
 > **Info**
 >
-> These examples rely on Deepgram's Python SDK. Learn how to get started with Aura and Deepgram's SDKs by reading the [Aura Text-to-Speech](/docs/text-to-speech) guide.
+> These examples rely on Deepgram's Python SDK. Learn how to get started with Aura and Deepgram's SDKs by reading the [Aura text-to-speech](/docs/text-to-speech) guide.
 
-### Chunk By Maximum Number of Characters
+### Chunk by maximum number of characters
 
 This example breaks down lengthy text inputs into chunks determined by a maximum number of characters.
 
-This is a straightforward example which does not take into consideration characteristics of the text structure, such as clause and sentence boundaries. For some types of text, this is acceptable and will not have a negative effect on the quality of speech.
+This is a straightforward example which doesn't take into consideration characteristics of the text structure, such as clause and sentence boundaries. For some types of text, this is acceptable and won't have a negative effect on the quality of speech.
 
 **`SDK - Python`**
 
@@ -143,7 +143,7 @@ public class ChunkByMaxCharacters {
 }
 ```
 
-### Chunk By Clauses and Sentence Boundaries
+### Chunk by clauses and sentence boundaries
 
 In this example, the aim is to preserve naturalness of speech by chunking the text based on clause and sentence boundaries. When people speak, they tend to pause at the end of a clause or a sentence, so this strategy is helpful when working with texts that contain complex sentences in a narrative style.
 
@@ -276,11 +276,11 @@ public class ChunkByClauseBoundaries {
 }
 ```
 
-### Dynamic Chunking
+### Dynamic chunking
 
 The goal of dynamic chunking is to adjust the chunk sizes dynamically based on various factors, which may include adaptive rules or algorithms to determine how to split the text into chunks.
 
-This next example implements a more flexible chunking strategy that adjusts chunk sizes dynamically based on the length and structure of the input text. It retains the rule from the previous example - to chunk based on clause/sentence boundaries - but it then looks at each chunk and determines the character count of the chunk. If the count exceeds a maximum character length, it chunks further into subchunks, where subchunks are defined by a comma but cannot be less than three characters.
+This next example implements a more flexible chunking strategy that adjusts chunk sizes dynamically based on the length and structure of the input text. It retains the rule from the previous example - to chunk based on clause/sentence boundaries - but it then looks at each chunk and determines the character count of the chunk. If the count exceeds a maximum character length, it chunks further into subchunks, where subchunks are defined by a comma but can't be less than three characters.
 
 **`SDK - Python`**
 
@@ -456,7 +456,7 @@ public class DynamicChunking {
 
 Instead of saving each chunk as an audio file, you can play each chunk in sequence. This example collects each complete MP3 response before decoding and playing it.
 
-The text is chunked by sentence boundaries, then each chunk is sent to Deepgram and played in order. To begin playback when the first byte arrives, use [Real-Time TTS with WebSockets](/docs/tts-websocket-streaming).
+The text is chunked by sentence boundaries, then each chunk is sent to Deepgram and played in order. To begin playback when the first byte arrives, use [Real-time TTS with WebSockets](/docs/tts-websocket-streaming).
 
 **`Python - SDK`**
 

@@ -11,11 +11,11 @@ path: docs/utterance-split
 
 `utt_split` *float* Default: `0.8`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
 Deepgram’s Utterance Split feature monitors incoming audio and detects when a sufficiently long pause is detected between words. By default, the length of time Deepgram uses for Utterance Split is 0.8 seconds, but you can configure this value using the `utt_split` parameter.
 
-## Enable Feature
+## Enable feature
 
 To enable Utterance Split, when you call Deepgram’s API, add an `utt_split` parameter in the query string and set it to the length of time (in seconds) of silence between words after which Deepgram will decide that a new utterance should begin. The default values is 0.8 s.
 

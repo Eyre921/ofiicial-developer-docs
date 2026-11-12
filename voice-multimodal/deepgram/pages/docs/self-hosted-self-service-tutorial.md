@@ -1,5 +1,5 @@
 ---
-title: "Self Service Licensing & Credentials"
+title: "Self service licensing & credentials"
 source: https://developers.deepgram.com/docs/self-hosted-self-service-tutorial.md
 path: docs/self-hosted-self-service-tutorial
 ---
@@ -7,9 +7,9 @@ path: docs/self-hosted-self-service-tutorial
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Self Service Licensing & Credentials
+# Self service licensing & credentials
 
-Deepgram gives you the ability to self-manage your self-hosted API keys and container image distribution credentials. This offers you flexibility and control over your Deepgram self-hosted deployments using [Deepgram Console](https://console.deepgram.com) and [Quay](https://quay.io/). For example, you can rotate and expire your keys and credentials according to your access control policies.
+Deepgram gives you the ability to self-manage your self-hosted API keys and container image distribution credentials. This offers you flexibility and control over your Deepgram Self-Hosted deployments using [Deepgram Console](https://console.deepgram.com) and [Quay](https://quay.io/). For example, you can rotate and expire your keys and credentials according to your access control policies.
 
 This guide focuses on using Deepgram Console. If you would like to use the Deepgram API, see our API documentation on [creating API keys](/reference/authentication) and creating [distribution credentials](/reference/self-hosted/distribution-credentials/create).
 
@@ -22,15 +22,15 @@ This guide only applies to Console projects which have been granted access to se
 If you do not have this tab in Console, your project has either:
 
 1. Never received access to self-hosted products
-   1. To take advantage of our self-hosted product offering, you will need to enroll in a [Deepgram Enterprise Plan](https://deepgram.com/pricing). If you're interested, please [contact us](https://deepgram.com/contact-us/)!
+   1. To take advantage of our self-hosted product offering, you will need to enroll in a [Deepgram Enterprise Plan](https://deepgram.com/pricing). If you're interested, please [contact us](https://deepgram.com/contact-us/).
 2. Received access to managed self-hosted products, but has not yet been granted access to self-service for these products.
    1. Please contact your Deepgram Account Representative to enable access.
 
-With that out of the way, we can begin!
+With that out of the way, we can begin.
 
 ## Create a Self-Hosted API Key
 
-You can use the [Deepgram Console](https://console.deepgram.com/login) or the Deepgram API to create a self-hosted API key for licensing Deepgram products. Follow the [Creating API Keys](/docs/create-additional-api-keys) guide to create a key, and record it securely.
+You can use the [Deepgram Console](https://console.deepgram.com/login) or the Deepgram API to create a self-hosted API key for licensing Deepgram products. Follow the [Creating API keys](/docs/create-additional-api-keys) guide to create a key, and record it securely.
 
 After receiving your key, you can dismiss the pop-up and return to the `API Keys` page. You should see your new self-hosted API key, and if you expand the details, you can view the self-hosted products which can be licensed by that key.
 
@@ -38,7 +38,7 @@ After receiving your key, you can dismiss the pop-up and return to the `API Keys
 
 Depending on your self-hosted agreement with Deepgram, you may have access to different products. All self-hosted customers have access to API and Engine. For access to the [License Proxy](/docs/license-proxy), please contact [Support](https://deepgram.com/contact-us/).
 
-## Create Container Image Distribution Credentials
+## Create container image distribution credentials
 
 Distribution credentials are used to authenticate with a container image repository when pulling Deepgram container images into your deployment environment.
 
@@ -66,15 +66,15 @@ Distribution credentials are used to authenticate with a container image reposit
 
 ![Distribution credentials limited secret access](/_fern-files/_img/09e31055925f38aba5e810a562badba0f089f3e07b7751aa478d42142a85db7b.webp)
 
-5. The pop-up will be dismissed and you will be back on the "Self-Hosted" page. You should see your new distribution credentials and the container images which can be accessed with those credentials.
+5. The pop-up will be dismissed and you'll be back on the "Self-Hosted" page. You should see your new distribution credentials and the container images which can be accessed with those credentials.
 
    ![](/_fern-files/_img/51816f5ea9c7acf2f707d3c586fb3e27e3913b81333757c4783a302520f8c59d.webp)
 
-## Migration for Legacy Licensing and Container Distribution
+## Migration for legacy licensing and container distribution
 
 > **Check**
 >
-> If you are deploying Deepgram to your environment for the first time, you may skip this section and proceed to the next guide, linked at the bottom of the page.
+> If you're deploying Deepgram to your environment for the first time, you may skip this section and proceed to the next guide, linked at the bottom of the page.
 
 If your self-hosted Deepgram environment uses a static legacy license key, or you previously used DockerHub to access container images, you will need to modify your environment to use your newly generated credentials.
 
@@ -82,15 +82,15 @@ If your self-hosted Deepgram environment uses a static legacy license key, or yo
 >
 > ## Checking if you need to migrate from DockerHub
 >
-> To check if you are currently pulling images from DockerHub and need to migrate to Quay, check your deployment files. Depending on your container orchestrator, this may be a Docker Compose file, a Podman Compose file, Kubernetes manifest files, or a Helm chart.
+> To check if you're currently pulling images from DockerHub and need to migrate to Quay, check your deployment files. Depending on your container orchestrator, this may be a Docker Compose file, a Podman Compose file, Kubernetes manifest files, or a Helm chart.
 >
-> A container image path and tag will be listed within those files. If it looks like any of the following, you are pulling from DockerHub and must migrate to Quay.
+> A container image path and tag will be listed within those files. If it looks like any of the following, you're pulling from DockerHub and must migrate to Quay.
 >
 > * `deepgram/onprem-api:xxxx`
 > * `deepgram/onprem-engine:xxxx`
 > * `deepgram/onprem-license-proxy:xxxx`
 >
-> If your image tags have the prefix `quay.io`, such as some of the examples below, you are already using Quay and do not need to migrate.
+> If your image tags have the prefix `quay.io`, such as some of the examples below, you're already using Quay and do not need to migrate.
 >
 > * `quay.io/deepgram/self-hosted-api:xxxx`
 > * `quay.io/deepgram/self-hosted-engine:xxxx`
@@ -113,9 +113,9 @@ What's Next
 
 Now that you have your credentials set up, you need to choose your deployment path based on the Deepgram services you want to deploy:
 
-## Choose Your Deployment Path
+## Choose your deployment path
 
-### Speech-to-Text (STT) Deployment
+### Speech-to-text (STT) deployment
 
 Deploy Deepgram's industry-leading speech recognition capabilities for transcription and real-time streaming applications.
 
@@ -124,7 +124,7 @@ Deploy Deepgram's industry-leading speech recognition capabilities for transcrip
 * [Deploy STT Services with Docker/Podman](/docs/deploy-stt-services)
 * [Deploy STT Services with Kubernetes](/docs/kubernetes)
 
-### Text-to-Speech (TTS)
+### Text-to-speech (TTS)
 
 Deploy Deepgram's conversational AI voice synthesis with ultra-low latency and high-quality natural speech generation.
 

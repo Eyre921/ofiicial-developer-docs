@@ -19,7 +19,7 @@ Sentry provides an integration with ASP.NET through the [Sentry.AspNet NuGet pac
 Add the Sentry dependency:
 
 ```powershell
-Install-Package Sentry.AspNet -Version 6.13.0
+Install-Package Sentry.AspNet -Version 7.0.0
 ```
 
 *Other available variations of the above snippet: .NET Core CLI*

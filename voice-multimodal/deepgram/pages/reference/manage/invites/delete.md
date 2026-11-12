@@ -1,5 +1,5 @@
 ---
-title: "Delete a Project Invite"
+title: "Delete a project invite"
 source: https://developers.deepgram.com/reference/manage/invites/delete.md
 path: reference/manage/invites/delete
 ---
@@ -7,7 +7,7 @@ path: reference/manage/invites/delete
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Delete a Project Invite
+# Delete a project invite
 
 DELETE https://api.deepgram.com/v1/projects/{project_id}/invites/{email}
 

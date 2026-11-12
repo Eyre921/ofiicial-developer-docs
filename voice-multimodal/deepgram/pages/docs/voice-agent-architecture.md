@@ -1,5 +1,5 @@
 ---
-title: "Architecture Overview"
+title: "Architecture overview"
 source: https://developers.deepgram.com/docs/voice-agent-architecture.md
 path: docs/voice-agent-architecture
 ---
@@ -7,13 +7,13 @@ path: docs/voice-agent-architecture
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Architecture Overview
+# Architecture overview
 
 Building a voice agent usually means stitching together a speech-to-text service, an LLM, a text-to-speech service, and a pile of glue code to manage turn-taking, interruptions, and audio streaming between them. Each hop adds latency, failure modes, and conversational state you have to track yourself.
 
 Deepgram's Voice Agent API collapses that stack into a **single, unified API**. You open one WebSocket connection, send audio in, and receive audio out. Deepgram runs the full speech loop — speech-to-text, LLM orchestration, and text-to-speech — and handles the hard real-time problems (end-of-turn detection, interruption handling, function calling) natively. You spend your engineering time on what your agent *does*, not on how it hears or talks.
 
-![Unified speech-to-speech Voice Agent API architecture. A customer's audio, including telephony, streams to and from the Voice Agent API. Inside the API, speech-to-text (Deepgram Flux or Nova-3) leads to an LLM (managed, BYO, or custom), which leads to text-to-speech (Deepgram Aura-2, managed, or BYO). End-of-thought detection, interruption handling, and function calling are built in. The API connects to external systems including databases, an embedding model, and a retrieval API.](/_fern-files/_img/312bf9bf3b58bca3cec4d9380f4182ac1836edef65788a972246bdd1890d57bd.webp)
+![Unified speech-to-speech Voice Agent API architecture. A customer's audio, including telephony, streams to and from the Voice Agent API. Inside the API, speech-to-text (Deepgram Flux STT or Nova-3) leads to an LLM (managed, BYO, or custom), which leads to text-to-speech (Deepgram Aura-2, managed, or BYO). End-of-thought detection, interruption handling, and function calling are built in. The API connects to external systems including databases, an embedding model, and a retrieval API.](/_fern-files/_img/312bf9bf3b58bca3cec4d9380f4182ac1836edef65788a972246bdd1890d57bd.webp)
 
 ## One connection, the whole loop
 
@@ -25,15 +25,15 @@ Audio streams in from any source — a browser, a mobile app, or a phone call ov
 
 Each stage of the loop is a component you configure, not infrastructure you build.
 
-* [**Speech-to-Text**](/docs/voice-agent-stt-models): Real-time transcription with Deepgram Flux or Nova-3. Flux is purpose-built for conversation, with a turn-aware model that signals start-of-turn and end-of-turn directly from the audio.
+* [**Speech-to-Text**](/docs/voice-agent-stt-models): Real-time transcription with Deepgram Flux STT or Nova-3. Flux STT is purpose-built for conversation, with a turn-aware model that signals start-of-turn and end-of-turn directly from the audio.
 * [**LLM**](/docs/voice-agent-llm-models): Use a Deepgram-managed model, bring your own provider, or point at a custom endpoint. The model can call functions and reach your external systems mid-conversation.
 * [**Text-to-Speech**](/docs/voice-agent-tts-models): Natural, low-latency voices with Deepgram Aura-2, or bring your own TTS provider.
 
 Beyond the three stages, the conversational hard parts are built in:
 
-* **End-of-turn detection** — the agent knows when the user has actually finished a thought, not just paused, so it can respond promptly without talking over them. This comes from Flux's turn model rather than a bolted-on voice-activity detector. See [Understanding the Flux State Machine](/docs/flux/state).
+* **End-of-turn detection** — the agent knows when the user has actually finished a thought, not just paused, so it can respond promptly without talking over them. This comes from Flux STT's turn model rather than a bolted-on voice-activity detector. See [Understanding the Flux STT state machine](/docs/flux/state).
 * **Interruption handling (barge-in)** — when the user starts speaking while the agent is talking, the agent stops and listens, the way a person would.
-* **Function calling** — the LLM can call external tools and APIs in the middle of a conversation to fetch data or take action. See [Function Calling](/docs/voice-agents-function-calling).
+* **Function calling** — the LLM can call external tools and APIs in the middle of a conversation to fetch data or take action. See [Function calling](/docs/voice-agents-function-calling).
 
 ## How a single turn flows
 
@@ -53,7 +53,7 @@ The transcript goes to the LLM, which decides what to say next — calling funct
 
 Text-to-speech converts the reply to audio and streams it back to the customer. If the customer interrupts, the agent yields and the loop restarts.
 
-Each of these stages maps to a concrete WebSocket message: `Settings` configures the pipeline, transcript events flow from STT, `AgentThinking` and `FunctionCallRequest` capture LLM decisions, and audio responses stream back as binary frames. To see the exact message sequence — from opening the connection through a full conversation loop — read the [Voice Agent Message Flow](/docs/voice-agent-message-flow).
+Each of these stages maps to a concrete WebSocket message: `Settings` configures the pipeline, transcript events flow from STT, `AgentThinking` and `FunctionCallRequest` capture LLM decisions, and audio responses stream back as binary frames. To see the exact message sequence — from opening the connection through a full conversation loop — read the [Voice Agent message flow](/docs/voice-agent-message-flow).
 
 ## Connecting to the outside world
 
@@ -67,5 +67,5 @@ The API is the conversational core, and it extends in three directions:
 
 * [Build a Voice Agent](/docs/build-a-voice-agent) — A step-by-step guide to your first agent in Python, JavaScript, C#, or Go.
 * [Configure Your Agent](/docs/configure-voice-agent) — Choose STT, LLM, and TTS models and set up audio formats and endpointing.
-* [Feature Overview](/docs/voice-agent-feature-overview) — The full list of Voice Agent API capabilities.
+* [Feature overview](/docs/voice-agent-feature-overview) — The full list of Voice Agent API capabilities.
 * [API Reference](/reference/voice-agent/voice-agent) — The complete WebSocket protocol for the Agent API.

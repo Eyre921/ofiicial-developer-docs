@@ -1,5 +1,5 @@
 ---
-title: "LLM Models"
+title: "LLM models"
 source: https://developers.deepgram.com/docs/voice-agent-llm-models.md
 path: docs/voice-agent-llm-models
 ---
@@ -7,7 +7,7 @@ path: docs/voice-agent-llm-models
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# LLM Models
+# LLM models
 
 Defines the LLM (*Large Language Model*) to be used with your Agent. The `provider.type` field specifies the format or protocol of the API.
 
@@ -231,7 +231,7 @@ For defaults, regional availability, and configuration details, see [Regional En
 
 #### Example using a custom Google endpoint (BYO)
 
-When using a custom endpoint, the `model` property is not supported.
+When using a custom endpoint, the `model` property isn't supported.
 The desired model is specified as part of the endpoint URL instead.
 
 > **Info**
@@ -357,7 +357,7 @@ Use STS credentials when your application assumes a role and rotates tokens. Add
 
 If you need an OpenAI-compatible proxy in front of Bedrock (for logging, header rewriting, or use of the Bedrock Agents service), see [Passing a custom (BYO) LLM through a Cloud Provider](#passing-a-custom-byo-llm-through-a-cloud-provider) below.
 
-## Example Payload
+## Example payload
 
 **`JSON`**
 

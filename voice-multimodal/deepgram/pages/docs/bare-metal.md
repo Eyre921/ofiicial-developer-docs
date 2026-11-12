@@ -1,5 +1,5 @@
 ---
-title: "Bare-Metal Servers"
+title: "Bare-metal servers"
 source: https://developers.deepgram.com/docs/bare-metal.md
 path: docs/bare-metal
 ---
@@ -7,13 +7,13 @@ path: docs/bare-metal
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Bare-Metal Servers
+# Bare-metal servers
 
 Bare-metal servers are physical servers dedicated to a single tenant. Unlike shared hosting or virtualized servers, bare-metal servers provide exclusive access and control to the user, allowing full utilization of the server's processing power, memory, and storage.
 
 Bare-metal servers are often used for high-performance computing, machine learning, and big data analytics workloads that require a lot of resources and consistent performance. They are common in industries with strict compliance requirements as the exclusive access reduces potential security risks.
 
-They eliminate the "noisy neighbor" issue prevalent in shared servers where other users' activities can impact performance. Also, they offer consistent performance as there is no hypervisor layer, which in other server types manages the creation, running, and management of virtual machines.
+They eliminate the "noisy neighbor" issue prevalent in shared servers where other users' activities can impact performance. Also, they offer consistent performance as there's no hypervisor layer, which in other server types manages the creation, running, and management of virtual machines.
 
 For optimal performance, see our [minimum recommended hardware specifications](/docs/self-hosted-deployment-environments#hardware-specifications).
 

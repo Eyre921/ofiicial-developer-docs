@@ -1,5 +1,5 @@
 ---
-title: "Build A Function Call"
+title: "Build a function call"
 source: https://developers.deepgram.com/docs/build-a-function-call.md
 path: docs/build-a-function-call
 ---
@@ -7,11 +7,11 @@ path: docs/build-a-function-call
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Build A Function Call
+# Build a function call
 
 This guide walks you through building function calls for your Voice Agent. We start with a basic weather lookup example and then move to a more complex customer management system.
 
-## Basic Example: Weather Lookup
+## Basic example: weather lookup
 
 This example demonstrates a simple client-side function call. When a user asks about the weather, the agent extracts the location and requests that your client fetch the data.
 
@@ -19,7 +19,7 @@ This example demonstrates a simple client-side function call. When a user asks a
 
 Include the function definition in your `Settings` message under the `agent.think` object.
 
-`get_weather` only reads data, so it is safe to dispatch as soon as the model asks for it. A function that changes something should set `defer_until_eot: true` instead, as [`end_call`](#end-call) does later in this guide. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot).
+`get_weather` only reads data, so it's safe to dispatch as soon as the model asks for it. A function that changes something should set `defer_until_eot: true` instead, as [`end_call`](#end-call) does later in this guide. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot).
 
 **`JSON`**
 
@@ -54,7 +54,7 @@ Include the function definition in your `Settings` message under the `agent.thin
 }
 ```
 
-### 2. Implement the Function Logic
+### 2. Implement the function logic
 
 Your client application must implement the logic to handle the `get_weather` request.
 
@@ -216,11 +216,11 @@ func getWeather(location string) (string, error) {
 
 ---
 
-## Advanced Example: Customer Management System
+## Advanced example: customer management system
 
 This section walks you through building a more complex function call system for a demo Voice Agent application. For the complete code, see the [code repository](https://github.com/deepgram-devs/flask-agent-function-calling-demo).
 
-### Getting Started
+### Getting started
 
 You'll create two files:
 
@@ -272,7 +272,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.example.BusinessLogic;
 ```
 
-### Implement the Functions
+### Implement the functions
 
 We'll implement the following functions in `agent_functions.py` to handle customer and appointment management:
 
@@ -286,7 +286,7 @@ We'll implement the following functions in `agent_functions.py` to handle custom
 | `agent_filler`       | Provide conversational filler (requires websocket param)   |
 | `end_call`           | End the conversation gracefully (requires websocket param) |
 
-### Find Customer
+### Find customer
 
 **`Python`**
 
@@ -313,7 +313,7 @@ public Map<String, Object> findCustomer(Map<String, Object> params) {
 }
 ```
 
-### Get Appointments
+### Get appointments
 
 **`Python`**
 
@@ -341,7 +341,7 @@ public Map<String, Object> getAppointments(Map<String, Object> params) {
 }
 ```
 
-### Get Orders
+### Get orders
 
 **`Python`**
 
@@ -369,7 +369,7 @@ public Map<String, Object> getOrders(Map<String, Object> params) {
 }
 ```
 
-### Create Appointment
+### Create appointment
 
 **`Python`**
 
@@ -403,7 +403,7 @@ public Map<String, Object> createAppointment(Map<String, Object> params) {
 }
 ```
 
-### Check Availability
+### Check availability
 
 **`Python`**
 
@@ -439,7 +439,7 @@ public Map<String, Object> checkAvailability(Map<String, Object> params) {
 }
 ```
 
-### Agent Filler
+### Agent filler
 
 **`Python`**
 
@@ -462,7 +462,7 @@ public Map<String, Object> agentFiller(
 }
 ```
 
-### End Call
+### End call
 
 Ending a call cannot be undone, so this function sets `defer_until_eot: true` in its definition below. The agent holds the call until the user's turn is confirmed, and discards it if the user keeps speaking. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot).
 
@@ -489,7 +489,7 @@ public Map<String, Object> endCall(
 }
 ```
 
-### Create Function Definitions
+### Create function definitions
 
 Next in `agent_functions.py` we'll setup `FUNCTION_DEFINITIONS` which is an array that defines the API contract for the Voice Agent system. It specifies all available operations, their parameters, and usage guidelines.
 
@@ -813,7 +813,7 @@ List<AgentV1Function> functionDefinitions = List.of(
 );
 ```
 
-### Create a Function Map
+### Create a function map
 
 Finally in `agent_functions.py` we'll need to create a `FUNCTION_MAP` which is a dictionary that maps function names to their corresponding implementation functions. It serves as a routing mechanism to connect the function definitions with their actual implementations.
 

@@ -17,7 +17,7 @@ The welcome message confirms there has been a successful connection to the webso
 
 The `Welcome` message serves as the initial handshake between a voice agent and the server, signaling that the websocket connection is successfully established. By including a unique `request_id`, it ensures that each interaction is traceable and distinct. This message is critical for synchronizing the client and server, enabling a voice agent to proceed with further actions.
 
-## Example Payload
+## Example payload
 
 The server will immediately send a `Welcome` message as soon as the websocket opens.
 

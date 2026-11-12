@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Getting started"
 source: https://developers.deepgram.com/docs/streaming-text-to-speech.md
 path: docs/streaming-text-to-speech
 ---
@@ -7,19 +7,19 @@ path: docs/streaming-text-to-speech
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started
+# Getting started
 
 This guide will walk you through how to turn streaming text into speech with Deepgram's text-to-speech Websocket API.
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
-## Text-to-Speech Implementations
+## Text-to-speech implementations
 
-Deepgram has several SDKs that can make the API easier to use. Follow these steps to use the SDK of your choice to make a Deepgram TTS request.
+We have several SDKs that can make the API easier to use. Follow these steps to use the SDK of your choice to make a Deepgram TTS request.
 
-### Add Dependencies
+### Add dependencies
 
 **`JavaScript`**
 
@@ -76,7 +76,7 @@ dotnet add package Deepgram
 # implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
 ```
 
-### Make the Request with the SDK
+### Make the request with the SDK
 
 **`JavaScript`**
 
@@ -584,17 +584,17 @@ namespace SampleApp
 
 > **Info**
 >
-> To learn more, check out our audio format tips for websockets in the [TTS Chunking for Optimization Guide](/docs/text-chunking-for-tts-optimization) and our [Audio Format Combinations](/docs/tts-media-output-settings#audio-format-combinations) that we offer.
+> To learn more, check out our audio format tips for websockets in the [TTS Chunking for Optimization Guide](/docs/text-chunking-for-tts-optimization) and our [Audio format combinations](/docs/tts-media-output-settings#audio-format-combinations) that we offer.
 
-## Text-to-Speech Workflow
+## Text-to-speech workflow
 
 Below is a high-level workflow for obtaining an audio stream from user-provided text.
 
-### Establish a WebSocket Connection
+### Establish a WebSocket connection
 
 To establish a connection, you must provide a few parameters on the URL to describe the type of audio you want. You can check out the [API Reference](/reference/text-to-speech/speak-streaming) to set the audio model, which controls the voice, the encoding, and the sample rate of the audio.
 
-### Sending Text and Retrieving Audio
+### Sending text and retrieving audio
 
 Send the desired text to transform to audio using the WebSocket message below:
 
@@ -607,7 +607,7 @@ Send the desired text to transform to audio using the WebSocket message below:
 }
 ```
 
-When you have queued enough text, you can obtain the corresponding audio by sending a `Flush` command.
+When you've queued enough text, you can obtain the corresponding audio by sending a `Flush` command.
 
 **`JSON`**
 
@@ -617,11 +617,11 @@ When you have queued enough text, you can obtain the corresponding audio by send
 }
 ```
 
-Upon successfully sending the `Flush`, you will receive an audio byte stream from the websocket connection containing the synthesized text-to-speech. The format will be based on the encoding values provided upon establishing the connection.
+Upon successfully sending the `Flush`, you'll receive an audio byte stream from the websocket connection containing the synthesized text-to-speech. The format will be based on the encoding values provided upon establishing the connection.
 
-### Closing the Connection
+### Closing the connection
 
-When you are finished with the WebSocket, you can close the connection by sending the following `Close` command.
+When you're finished with the WebSocket, you can close the connection by sending the following `Close` command.
 
 **`JSON`**
 
@@ -635,13 +635,13 @@ When you are finished with the WebSocket, you can close the connection by sendin
 
 Keep these limits in mind when making a Deepgram text-to-speech request.
 
-### Use One WebSocket per Conversation
+### Use one WebSocket per conversation
 
-If you are building for conversational AI use cases where a human is talking to a TTS agent, a single websocket per conversation is required. After you establish a connection, you will not be able to change the voice or media output settings.
+If you're building for conversational AI use cases where a human is talking to a TTS agent, a single websocket per conversation is required. After you establish a connection, you won't be able to change the voice or media output settings.
 
-### Input Text Limit
+### Input text limit
 
-Sending a request with a text payload longer than the maximum number of characters can result in a [**413: Input Text Exceeds Character Limits**](/docs/errors#413-input-text-exceeded-character-limit) error, and the audio file will not be created.
+Sending a request with a text payload longer than the maximum number of characters can result in a [**413: Input Text Exceeds Character Limits**](/docs/errors#413-input-text-exceeded-character-limit) error, and the audio file won't be created.
 
 | Model          | Max Characters |
 | -------------- | -------------- |
@@ -651,25 +651,25 @@ Sending a request with a text payload longer than the maximum number of characte
 
 A [**422: Unprocessable Content**](/docs/errors#422-unprocessable-content) error can be returned if the client fails to send the request successfully.
 
-### Character Throughput Limits
+### Character throughput limits
 
 The throughput limit is 2400 characters per minute and is measured by the number of characters sent to the websocket.
 
-### Timeout Limits
+### Timeout limits
 
 An active websocket has a 60-minute timeout period from the initial connection. This timeout exists for connections that are actively being used. If you desire a connection for longer than 60 minutes, create a new websocket connection to Deepgram.
 
-### Flush Message Limits
+### Flush message limits
 
-The maximum number of times you can send the [Flush message](/docs/tts-ws-flush) is 20 times every 60 seconds. After that, you will receive a warning message stating that we cannot process any more flush messages until the 60-second time window has passed.
+The maximum number of times you can send the [Flush message](/docs/tts-ws-flush) is 20 times every 60 seconds. After that, you'll receive a warning message stating that we cannot process any more flush messages until the 60-second time window has passed.
 
-### Rate Limits
+### Rate limits
 
 > **Info**
 >
 > For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
-#### Handling Rate Limits
+#### Handling rate limits
 
 If the number of in-progress requests for a project meets or exceeds the rate limit, new requests will receive a **429: Too Many Requests** error.
 
@@ -677,13 +677,13 @@ If the number of in-progress requests for a project meets or exceeds the rate li
 >
 > For suggestions on handling Concurrency Rate Limits, refer to our [Working with Concurrency Rate Limits Documentation](/docs/working-with-concurrency-rate-limits) guide.
 
-## What's Next?
+## What's next?
 
 Now that you've transformed text into speech with Deepgram's API, enhance your knowledge by exploring the following areas.
 
-### Read the Feature Guides
+### Read the feature guides
 
-Deepgram's features help you customize your request to produce the best output for your use case. Here are a few guides that can help:
+Our features help you customize your request to produce the best output for your use case. Here are a few guides that can help:
 
 * [Websocket API Reference](/reference/text-to-speech/speak-streaming)
 * [Text Chunking for TTS Optimization](/docs/text-chunking-for-tts-optimization)

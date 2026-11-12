@@ -66,14 +66,13 @@ await pc.createIndex({
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
 import org.openapitools.db_control.client.model.IndexModel;
-import org.openapitools.db_control.client.model.DeletionProtection;
 
 public class CreateServerlessIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
 
         // Creates an index using the API key stored in the client 'pc'.
-        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1");
+        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1", "disabled", null);
     }
 }
 ```

@@ -1,5 +1,5 @@
 ---
-title: "Get a Project Balance"
+title: "Get a project balance"
 source: https://developers.deepgram.com/reference/manage/billing/get.md
 path: reference/manage/billing/get
 ---
@@ -7,7 +7,7 @@ path: reference/manage/billing/get
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Get a Project Balance
+# Get a project balance
 
 GET https://api.deepgram.com/v1/projects/{project_id}/balances/{balance_id}
 

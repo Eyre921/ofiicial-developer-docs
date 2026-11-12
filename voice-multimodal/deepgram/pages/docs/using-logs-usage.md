@@ -1,5 +1,5 @@
 ---
-title: "Logs & Usage Data"
+title: "Logs & usage data"
 source: https://developers.deepgram.com/docs/using-logs-usage.md
 path: docs/using-logs-usage
 ---
@@ -7,7 +7,7 @@ path: docs/using-logs-usage
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Logs & Usage Data
+# Logs & usage data
 
 > **Info**
 >
@@ -35,7 +35,7 @@ Within the [Deepgram Console](https://console.deepgram.com) you can view your AP
 3. On the Logs Tab, select your filter options.
 4. View the results.
 
-# Obtaining Usage via the API
+# Obtaining usage via the API
 
 You can use the Deepgram API to programmatically fetch usage data. Please refer to our [API documentation](/reference/manage/requests/list) for more details.
 
@@ -45,7 +45,7 @@ This also enables exporting and reporting on your usage, which can be imported i
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Get All Requests
+### Get all requests
 
 Replace `YOUR_PROJECT_ID`with your Deepgram project id.
 
@@ -79,7 +79,7 @@ A response will be returned as such:
 }
 ```
 
-### Summarize Usage
+### Summarize usage
 
 > **Info**
 >
@@ -161,16 +161,16 @@ Within the [Deepgram Console](https://console.deepgram.com) you can view usage r
 
 ---
 
-## Retrieve Per-Request Pricing
+## Retrieve per-request pricing
 
 You can retrieve the cost per-request in USD using the `Get a Project Request` [Deepgram Management API](/reference/manage/usage/get).
 To do so, specify your Deepgram Project ID and Request ID in your API request. The response will include detailed information, including the cost.
 
-## Example Payload
+## Example payload
 
 Refer to the `response.details.usd` field in the response.
 
-Here is an example JSON response you would receive from this API.
+Here's an example JSON response you would receive from this API.
 
 ```json
 {

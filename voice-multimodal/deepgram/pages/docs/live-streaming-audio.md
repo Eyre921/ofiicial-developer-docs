@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Getting started"
 source: https://developers.deepgram.com/docs/live-streaming-audio.md
 path: docs/live-streaming-audio
 ---
@@ -7,15 +7,15 @@ path: docs/live-streaming-audio
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started
+# Getting started
 
 * [Deepgram API Playground — try live streaming transcription](https://playground.deepgram.com/?endpoint=listen-streaming\&language=en\&model=nova-3)
 
-In this guide, you'll learn how to automatically transcribe live streaming audio in real time using Deepgram's SDKs, which are supported for use with the [Deepgram API](/reference/deepgram-api-overview). (If you prefer not to use a Deepgram SDK, jump to the section [Non-SDK Code Examples](/docs/live-streaming-audio#non-sdk-code-examples).)
+In this guide, you'll learn how to automatically transcribe live streaming audio in real time using Deepgram's SDKs, which are supported for use with the [Deepgram API](/reference/deepgram-api-overview). (If you prefer not to use a Deepgram SDK, jump to the section [Non-SDK code examples](/docs/live-streaming-audio#non-sdk-code-examples).)
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ## SDKs
 
@@ -72,7 +72,7 @@ Open your terminal, navigate to the location on your drive where you want to cre
 // implementation 'com.deepgram:deepgram-java-sdk:0.7.0'
 ```
 
-### Add Dependencies
+### Add dependencies
 
 ```JavaScript
 // Install cross-fetch: Platform-agnostic Fetch API with typescript support, a simple interface, and optional polyfill.
@@ -101,7 +101,7 @@ Open your terminal, navigate to the location on your drive where you want to cre
 // Importing the Deepgram Go SDK should pull in all dependencies required
 ```
 
-### Transcribe Audio from a Remote Stream
+### Transcribe audio from a remote stream
 
 The following code shows how to transcribe audio from a remote audio stream.
 
@@ -488,9 +488,9 @@ public class Main {
 >
 > The above example includes the parameter `model=nova-3`, which tells the API to use Deepgram's latest model. Removing this parameter will result in the API using the default model, which is currently `model=base`.
 >
-> It also includes Deepgram's [Smart Formatting](/docs/smart-format) feature, `smart_format=true`. This will format currency amounts, phone numbers, email addresses, and more for enhanced transcript readability.
+> It also includes Deepgram's [Smart formatting](/docs/smart-format) feature, `smart_format=true`. This will format currency amounts, phone numbers, email addresses, and more for enhanced transcript readability.
 
-## Non-SDK Code Examples
+## Non-SDK code examples
 
 If you would like to try out making a Deepgram speech-to-text request in a specific language (but not using Deepgram's SDKs), we offer a library of code-samples in this [Github repo](https://github.com/deepgram-devs/code-samples). However, we recommend first trying out our SDKs.
 
@@ -544,7 +544,7 @@ mvn compile exec:java -Dexec.mainClass="Main"
 >
 > Deepgram does not store transcripts, so the Deepgram API response is the only opportunity to retrieve the transcript. Make sure to save output or [return transcriptions to a callback URL for custom processing](/docs/callback/).
 
-### Analyze the Response
+### Analyze the response
 
 The responses that are returned will look similar to this:
 
@@ -626,24 +626,24 @@ In this default response, we see:
 * `words`: an object containing each `word` in the transcript, along with its `start` time and `end` time (in seconds) from the beginning of the audio stream, and a `confidence` value.
   * Because we passed the `smart_format: true` option to the `transcription.prerecorded` method, each word object also includes its `punctuated_word` value, which contains the transformed word after punctuation and capitalization are applied.
 * `speech_final`: tells us this segment of speech naturally ended at this point. By default, Deepgram live streaming looks for any deviation in the natural flow of speech and returns a finalized response at these places. To learn more about this feature, see [Endpointing](/docs/endpointing/).
-* `is_final`: If this says `false`, it is indicating that Deepgram will continue waiting to see if more data will improve its predictions. Deepgram live streaming can return a series of interim transcripts followed by a final transcript. To learn more, see [Interim Results](/docs/interim-results/).
+* `is_final`: If this says `false`, it's indicating that Deepgram will continue waiting to see if more data will improve its predictions. Deepgram live streaming can return a series of interim transcripts followed by a final transcript. To learn more, see [Interim results](/docs/interim-results/).
 
 > **Info**
 >
-> Endpointing can be used with Deepgram's [Interim Results](/docs/interim-results/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results/).
+> Endpointing can be used with Deepgram's [Interim results](/docs/interim-results/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results/).
 
-If your scenario requires you to keep the connection alive even while data is not being sent to Deepgram, you can send periodic KeepAlive messages to essentially "pause" the connection without closing it. To learn more, see [KeepAlive](/docs/audio-keep-alive).
+If your scenario requires you to keep the connection alive even while data isn't being sent to Deepgram, you can send periodic KeepAlive messages to essentially "pause" the connection without closing it. To learn more, see [KeepAlive](/docs/audio-keep-alive).
 
-## What's Next?
+## What's next?
 
 Now that you've gotten transcripts for streaming audio, enhance your knowledge by exploring the following areas. You can also check out our [Live Streaming API Reference](/reference/speech-to-text/listen-streaming) for a list of all possible parameters.
 
-### Read the Feature Guides
+### Read the feature guides
 
 Deepgram's features help you to customize your transcripts.
 
 * [Language](/docs/language): Learn how to transcribe audio in other languages.
-* [Feature Overview](/docs/stt-streaming-feature-overview): Review the list of features available for streaming speech-to-text. Then, dive into individual guides for more details.
+* [Feature overview](/docs/stt-streaming-feature-overview): Review the list of features available for streaming speech-to-text. Then, dive into individual guides for more details.
 
 ### Tips and tricks
 
@@ -651,16 +651,16 @@ Deepgram's features help you to customize your transcripts.
 * [Using interim results](/docs/using-interim-results) - Learn how to use preliminary results provided during the streaming process which can help with speech detection.
 * [Measuring streaming latency](/docs/measuring-streaming-latency) - Learn how to measure latency in real-time streaming of audio.
 
-### Add Your Audio
+### Add your audio
 
 * Ready to connect Deepgram to your own audio source? Start by reviewing [how to determine your audio format](/docs/determining-your-audio-format-for-live-streaming-audio/) and format your API request accordingly.
 * Then, check out our [Live Streaming Starter Kit](/docs/getting-started-with-the-streaming-test-suite). It's the perfect "102" introduction to integrating your own audio.
 
-### Explore Use Cases
+### Explore use cases
 
 * Learn about the different ways you can use Deepgram products to help you meet your business objectives. [Explore Deepgram's use cases](/docs/twilio-and-deepgram-stt).
 
-### Transcribe Pre-recorded Audio
+### Transcribe pre-recorded audio
 
 * Now that you know how to transcribe streaming audio, check out how you can use Deepgram to transcribe pre-recorded audio. To learn more, see [Getting Started with Pre-recorded Audio](/docs/pre-recorded-audio).
 

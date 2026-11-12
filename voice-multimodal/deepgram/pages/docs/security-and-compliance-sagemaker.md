@@ -1,5 +1,5 @@
 ---
-title: "Security and Compliance"
+title: "Security and compliance"
 source: https://developers.deepgram.com/docs/security-and-compliance-sagemaker.md
 path: docs/security-and-compliance-sagemaker
 ---
@@ -7,7 +7,7 @@ path: docs/security-and-compliance-sagemaker
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Security and Compliance
+# Security and compliance
 
 > Security and compliance for Deepgram on Amazon SageMaker: TLS requirements for API access, FIPS 140-3 endpoints for the control plane and inference traffic, FedRAMP coverage, network isolation for AWS Marketplace containers, container vulnerability scanning with no Critical or High CVEs, and VPC endpoint options for restricting access to your endpoint.
 
@@ -37,7 +37,7 @@ Every Deepgram model and transport, including streaming, works over these endpoi
 
 SageMaker FIPS endpoints are available in US East (N. Virginia and Ohio), US West (N. California and Oregon), Canada, and AWS GovCloud (US). For the authoritative list, see [FIPS endpoints by service](https://aws.amazon.com/compliance/fips/#FIPS_Endpoints_by_Service). If a region has no FIPS endpoint, deploy in one that does. Deepgram is not available on AWS Marketplace in GovCloud — see [FedRAMP](#fedramp) below.
 
-To configure your clients, see [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker).
+To configure your clients, see [Use FIPS endpoints](/docs/fips-endpoints-sagemaker).
 
 ### What a FIPS endpoint covers
 
@@ -97,7 +97,7 @@ FedRAMP requires FIPS-validated cryptography for data in transit, so pair a FedR
 
 ## Related resources
 
-* [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker)
+* [Use FIPS endpoints](/docs/fips-endpoints-sagemaker)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)
 * [Observability for Amazon SageMaker](/docs/observability-sagemaker)

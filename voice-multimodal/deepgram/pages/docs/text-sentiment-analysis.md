@@ -1,5 +1,5 @@
 ---
-title: "Sentiment Analysis"
+title: "Sentiment analysis"
 source: https://developers.deepgram.com/docs/text-sentiment-analysis.md
 path: docs/text-sentiment-analysis
 ---
@@ -7,7 +7,7 @@ path: docs/text-sentiment-analysis
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Sentiment Analysis
+# Sentiment analysis
 
 Deepgram API Playground
 
@@ -55,13 +55,13 @@ A `sentiment` of `positive`, `negative`, or `neutral` along with a `sentiment_sc
 >
 > The break point for a `sentiment_score` becoming positive or negative is `+-0.333333333...`.
 
-## Enable Feature
+## Enable feature
 
 To enable Sentiment, use the following parameter in the query string when you call Deepgram’s `/read` endpoint:
 
 `sentiment=true`
 
-### Basic Text Request
+### Basic text request
 
 To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
@@ -79,7 +79,7 @@ curl -vX POST \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Basic URL Request
+### Basic URL request
 
 To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt).)
 
@@ -97,14 +97,14 @@ curl -vX POST \
 >
 > Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
 
-### Query Parameters
+### Query parameters
 
 | Parameter   | Values | Type    | Description                                                               |
 | ----------- | ------ | ------- | ------------------------------------------------------------------------- |
 | `sentiment` | `true` | boolean | Enables Sentiment Analysis                                                |
 | `language`  | `en`   | string  | The language of your input text (Only English is supported at this time.) |
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -156,7 +156,7 @@ The `sentiment` values added to objects are:
 
 ---
 
-### Response Properties
+### Response properties
 
 | Property                                 | Description                                                                                                                                                                            |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -167,11 +167,11 @@ The `sentiment` values added to objects are:
 
 ## API Error Responses
 
-### Unsupported Language
+### Unsupported language
 
 **Status** 400
 
-If you request Sentiment Analysis with an unsupported language by specifying a language code such as `sentiment=true&language=es` or `sentiment=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
+If you request Sentiment Analysis with an unsupported language by specifying a language code such as `sentiment=true&language=es` or `sentiment=true&detect_language=true` where the detected language is unsupported, you'll get the error message below.
 
 **`JSON`**
 
@@ -183,11 +183,11 @@ If you request Sentiment Analysis with an unsupported language by specifying a l
 }
 ```
 
-### Token Limit Exceeded
+### Token limit exceeded
 
 **Status** 400
 
-If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
+If the request's input length exceeded the 150k token rate limit per request, you'll get the error message below.
 
 **`JSON`**
 
@@ -199,11 +199,11 @@ If the request's input length exceeded the 150k token rate limit per request, yo
 }
 ```
 
-### Missing Query Parameter
+### Missing query parameter
 
 **Status** 400
 
-If the request sent contained only the feature parameter (`sentiment`) but not the `language` parameter, you will receive this error.
+If the request sent contained only the feature parameter (`sentiment`) but not the `language` parameter, you'll receive this error.
 
 **`JSON`**
 

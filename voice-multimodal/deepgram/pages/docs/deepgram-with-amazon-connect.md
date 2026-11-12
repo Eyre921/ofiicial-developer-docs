@@ -52,7 +52,7 @@ Before starting:
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
 ## Get Your Deepgram API Key and Add as AWS Secret
 
@@ -83,5 +83,5 @@ Similarly, follow the AWS guide to configure Deepgram as the TTS provider in you
 
 1. In the Set voice block in your Connect flow, select Deepgram in the Voice provider dropdown
 2. Under Model, choose Set manually and enter the Deepgram TTS model you want to use, e.g. `aura-2`.
-3. Under Voice, choose Set manually and enter the voice, e.g. `thalia`. Under Language, choose Set manually and use a language that is supported by the voice, e.g. English. Please see the full list of supported [languages and voices](/docs/tts-models). The model and language/voice combination in Connect setting will map to Deepgram's model name such as aura-2-thalia-en.
+3. Under Voice, choose Set manually and enter the voice, e.g. `thalia`. Under Language, choose Set manually and use a language that's supported by the voice, e.g. English. Please see the full list of supported [languages and voices](/docs/tts-models). The model and language/voice combination in Connect setting will map to Deepgram's model name such as aura-2-thalia-en.
 4. Under Secrets Manager ARN, use the ARN for you Deepgram API key

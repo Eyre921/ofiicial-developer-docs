@@ -1,5 +1,5 @@
 ---
-title: "Supported Products"
+title: "Supported products"
 source: https://developers.deepgram.com/docs/supported-products-sagemaker.md
 path: docs/supported-products-sagemaker
 ---
@@ -7,31 +7,31 @@ path: docs/supported-products-sagemaker
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Supported Products
+# Supported products
 
 Follow [this AWS Marketplace](https://aws.amazon.com/marketplace/search/results?searchTerms=deepgram\&CREATOR=6efa21f9-9a33-4cae-ba44-756436fa71dd\&FULFILLMENT_OPTION_TYPE=SAGEMAKER_MODEL\&filters=CREATOR%2CFULFILLMENT_OPTION_TYPE) link to see the Deepgram products that are supported on the SageMaker AI platform. No login to your AWS account is required to view this public AWS Marketplace website.
 
 ## Product listings
 
-For Speech-to-Text (STT), Deepgram publishes a separate product listing for each combination of:
+For speech-to-text (STT), Deepgram publishes a separate product listing for each combination of:
 
-* **Model family** — such as Nova-3 or Flux
+* **Model family** — such as Deepgram Nova-3 or Flux STT
 * **Language coverage** — monolingual or multilingual
 * **Processing mode** — streaming or batch
 
 For example, *Deepgram Voice AI- Nova-3 Monolingual Speech-to-Text (STT) Streaming* is one listing.
 
-For Text-to-Speech (TTS), Deepgram publishes a single product listing per model family (such as Aura-2), with no separate listings for language coverage or processing mode. Subscribe to and deploy a SageMaker Endpoint for each product you wish to utilize. Your application code will need to route requests to the SageMaker Endpoint for the product you wish to run inference against.
+For text-to-speech (TTS), Deepgram publishes a single product listing per model family (such as Aura-2), with no separate listings for language coverage or processing mode. Subscribe to and deploy a SageMaker Endpoint for each product you wish to utilize. Your application code will need to route requests to the SageMaker Endpoint for the product you wish to run inference against.
 
 Within a listing, individual languages are delivered as **versions** of the model package. A monolingual listing may offer one version covering English and French, and another covering Vietnamese and Thai. Read the version name and its release notes to understand the set of languages each version provides, and select the version that matches the languages you need when deploying.
 
-Flux TTS is one listing with two versions: English, and German, Spanish, French, Hindi, Italian, Japanese, Dutch, Portuguese and Russian. Each endpoint serves only the voices of the version it was deployed from, so a voice from the other version (for example `flux-alexis-en` on the non-English version) returns `400`. The two versions also need different instance types; see the table below.
+Deepgram Flux TTS is one listing with two versions: English, and German, Spanish, French, Hindi, Italian, Japanese, Dutch, Portuguese, and Russian. Each endpoint serves only the voices of the version it was deployed from, so a voice from the other version (for example `flux-alexis-en` on the non-English version) returns `400`. The two versions also need different instance types; see the table below.
 
-*Language Requests*: If there is a transcription language that is not currently available on the AWS Marketplace, please work with your account manager to request additional language models to be added. For a full list of the Deepgram supported transcription languages, [check out this document](/docs/models-languages-overview). You can also view the [Changelog](https://developers.deepgram.com/changelog) to see recent product announcements.
+*Language Requests*: If there's a transcription language that isn't currently available on the AWS Marketplace, please work with your account manager to request additional language models to be added. For a full list of the Deepgram supported transcription languages, [check out this document](/docs/models-languages-overview). You can also view the [Changelog](https://developers.deepgram.com/changelog) to see recent product announcements.
 
 ## Instance types
 
-Every Deepgram SageMaker product requires a GPU-accelerated instance. Choose an instance type from the table for the product you are deploying, and request [SageMaker quota](/docs/request-sagemaker-quota) for it before you create an endpoint.
+Every Deepgram SageMaker product requires a GPU-accelerated instance. Choose an instance type from the table for the product you're deploying, and request [SageMaker quota](/docs/request-sagemaker-quota) for it before you create an endpoint.
 
 | Product                       | Recommended      | Also supported                                                                               | Not supported                                  |
 | ----------------------------- | ---------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------- |
@@ -45,7 +45,7 @@ Every Deepgram SageMaker product requires a GPU-accelerated instance. Choose an 
 >
 > SageMaker rejects an endpoint configuration whose instance type is not listed in the model package's `SupportedRealtimeInferenceInstanceTypes`. The `ml.g7.*` and `ml.g7e.*` families are available in model package versions published after the g7 rollout; if you deploy an older version, choose one of the other supported types. To check what a specific version supports, run `aws sagemaker describe-model-package --model-package-name <model-package-arn>`.
 
-The host driver your instances boot with is set separately from the instance type. Current Deepgram model packages require a recent inference AMI version — see [Inference AMI Versions](/docs/deploy-amazon-sagemaker#inference-ami-versions).
+The host driver your instances boot with is set separately from the instance type. Current Deepgram model packages require a recent inference AMI version — see [Inference AMI versions](/docs/deploy-amazon-sagemaker#inference-ami-versions).
 
 ## Related resources
 
@@ -53,4 +53,4 @@ The host driver your instances boot with is set separately from the instance typ
 * [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Requesting SageMaker Quota](/docs/request-sagemaker-quota)
-* [Deployment Environments](/docs/self-hosted-deployment-environments)
+* [Deployment environments](/docs/self-hosted-deployment-environments)

@@ -1,5 +1,5 @@
 ---
-title: "List Project Usage Fields"
+title: "List project usage fields"
 source: https://developers.deepgram.com/reference/manage/usage/list.md
 path: reference/manage/usage/list
 ---
@@ -7,7 +7,7 @@ path: reference/manage/usage/list
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Project Usage Fields
+# List project usage fields
 
 GET https://api.deepgram.com/v1/projects/{project_id}/usage/fields
 

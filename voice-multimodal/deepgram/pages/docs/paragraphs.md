@@ -13,13 +13,13 @@ path: docs/paragraphs
 
 `paragraphs` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  Space-delimited words
+Pre-recorded  Streaming:Nova Streaming: Flux STT  Space-delimited words
 
 * When Paragraphs is enabled, [Punctuation](/docs/punctuation/) feature is enabled by default, and paragraphs are identified based on the transcript's punctuation.
 * When the Diarization feature is enabled and multiple speakers are present, paragraphs breaks are influenced by speaker changes.
 * When the Multichannel feature is enabled, paragraphs breaks are influenced by channel changes.
 
-## Enable Feature
+## Enable feature
 
 To enable Paragraphs, when you call Deepgram’s API, add a `paragraphs` parameter in the query string and set it to `true`:
 
@@ -42,7 +42,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Analyze Response
+## Analyze response
 
 In our terminal, we run the following cURL command:
 

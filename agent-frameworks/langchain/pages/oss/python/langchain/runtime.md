@@ -14,7 +14,7 @@ LangGraph exposes a [`Runtime`](https://reference.langchain.com/python/langgraph
 2. **Store**: a [BaseStore](https://reference.langchain.com/python/langchain-core/stores/BaseStore) instance used for [long-term memory](/oss/python/langchain/long-term-memory)
 3. **Stream writer**: an object used for streaming information via the `"custom"` stream mode
 4. **Execution info**: identity and retry information for the current execution (thread ID, run ID, attempt number)
-5. **Server info**: server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user)
+5. **Server info**: server-specific metadata when running on LangSmith Agent Server (assistant ID, graph ID, authenticated user)
 
 > [!TIP]
 >
@@ -83,7 +83,7 @@ def fetch_user_email_preferences(runtime: ToolRuntime[Context]) -> str:  # [!cod
 
 ### Execution info and server info inside tools
 
-Access execution identity (thread ID, run ID) via `runtime.execution_info`, and server-specific metadata (assistant ID, authenticated user) via `runtime.server_info` when running on LangGraph Server:
+Access execution identity (thread ID, run ID) via `runtime.execution_info`, and server-specific metadata (assistant ID, authenticated user) via `runtime.server_info` when running on Agent Server:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool, ToolRuntime
@@ -95,7 +95,7 @@ def context_aware_tool(runtime: ToolRuntime) -> str:
     info = runtime.execution_info
     print(f"Thread: {info.thread_id}, Run: {info.run_id}")  # [!code highlight]
 
-    # Access server info (only available on LangGraph Server)
+    # Access server info (only available on Agent Server)
     server = runtime.server_info
     if server is not None:
         print(f"Assistant: {server.assistant_id}")  # [!code highlight]
@@ -105,7 +105,7 @@ def context_aware_tool(runtime: ToolRuntime) -> str:
     return "done"
 ```
 
-`server_info` is `None` when not running on LangGraph Server (e.g., during local development).
+`server_info` is `None` when not running on Agent Server (e.g., during local development).
 
 > [!NOTE]
 >
@@ -174,7 +174,7 @@ from langgraph.runtime import Runtime
 
 @before_model
 def auth_gate(state: AgentState, runtime: Runtime) -> dict | None:
-    """Block unauthenticated users when running on LangGraph Server."""
+    """Block unauthenticated users when running on Agent Server."""
     server = runtime.server_info
     if server is not None and server.user is None:  # [!code highlight]
         raise ValueError("Authentication required")

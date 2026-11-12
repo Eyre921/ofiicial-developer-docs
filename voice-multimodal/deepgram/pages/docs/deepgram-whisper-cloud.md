@@ -23,23 +23,23 @@ Deepgram hosts and maintains these Whisper models; they aren’t hosted or run b
 >
 > Live streaming is not available with Deepgram Whisper Cloud. If you would like to transcribe live streamed audio, we recommend using our Nova-3 model. [This guide](/docs/live-streaming-audio) can help you get started.
 
-## Getting Started
+## Getting started
 
 In this guide, you’ll learn how to transcribe pre-recorded audio using Deepgram’s hosted Whisper API.
 
-### Create a Deepgram Account
+### Create a Deepgram account
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
-### Create a Deepgram API Key
+### Create a Deepgram API key
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
-### Transcribe a Remote File
+### Transcribe a remote file
 
 Transcribe a remote file using Deepgram's Whisper API with the following request.
 
@@ -60,7 +60,7 @@ If you would like to use a Deepgram SDK to make the request, follow the steps in
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Analyze Response
+### Analyze response
 
 **`JSON`**
 
@@ -151,9 +151,9 @@ These are the Deepgram Whisper Cloud models available:
 * `model=whisper-medium`
 * `model=whisper-large` (defaults to large-v2)
 
-## Other Features
+## Other features
 
-### Language Detection
+### Language detection
 
 Deepgram Whisper Cloud supports language detection, which means just by setting `detect_language=true`, your audio will be transcribed in the detected language.
 
@@ -196,7 +196,7 @@ This is a list of Deepgram Features and their current status for use with Deepgr
 ## Caveats
 
 * It's important to understand that Whisper models are less scalable than all other Deepgram models due to their inherent model architecture. Deepgram's non-Whisper models will return results faster and scale to a higher load, so we recommend using a Deepgram model such as Nova if it can meet your needs.
-* There is a 10 minute time out for all Deepgram models. Transcription requests that run longer than 10 minutes will return a 504 error.
+* There's a 10 minute time out for all Deepgram models. Transcription requests that run longer than 10 minutes will return a 504 error.
 * Whisper models are not available on the [EU endpoint](/reference/custom-endpoints#eu-endpoint). If you require EU data residency, use a Deepgram model such as Nova-3.
 
 ---

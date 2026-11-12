@@ -11,7 +11,7 @@ path: docs/plivo-and-deepgram-voice-agent
 
 This guide builds a real-time phone agent. A caller dials a Plivo number, talks naturally, and has a conversation with an AI. The caller can interrupt the agent mid-sentence. The example also places outbound calls, and the agent hangs up when the conversation ends.
 
-The setup is small. Plivo streams the call audio to your server. Your server passes that audio to the **Deepgram Voice Agent API**, a single WebSocket at `wss://agent.deepgram.com/v1/agent/converse`. It runs the whole conversation: speech-to-text, the language model, text-to-speech, and turn-taking. Flux, Deepgram's conversational speech-to-text, detects the end of each turn from the audio itself, so the bridge has no turn-taking logic of its own. By the end you have an agent that answers calls and places them.
+The setup is small. Plivo streams the call audio to your server. Your server passes that audio to the **Deepgram Voice Agent API**, a single WebSocket at `wss://agent.deepgram.com/v1/agent/converse`. It runs the whole conversation: speech-to-text, the language model, text-to-speech, and turn-taking. Flux STT, Deepgram's conversational speech-to-text, detects the end of each turn from the audio itself, so the bridge has no turn-taking logic of its own. By the end you have an agent that answers calls and places them.
 
 ## How the agent works
 
@@ -154,7 +154,7 @@ Each step uses one or two Plivo terms. The table lists them. The [Audio Streamin
 | `checkpoint`      | Event to Plivo   | A marker you place in the audio queue. Used in Step 6.                                                                 |
 | `playedStream`    | Event from Plivo | Plivo's acknowledgement when playback reaches a checkpoint. Used in Step 6.                                            |
 
-### Step 1: Answer the call with `<Stream>` XML
+### Step 1: answer the call with `<Stream>` XML
 
 When a call connects, Plivo requests the application's Answer URL to ask your server what to do. You answer with XML. The key element is `<Stream>`. It opens a WebSocket from Plivo to your server and carries the call audio.
 
@@ -247,7 +247,7 @@ plivo voice calls diagnose <call_uuid>
 
 Open [**Voice → Logs**](https://cx.plivo.com/logs?tab=voice), select the date range, and click **Search**. Find the call by the `CallUUID` from the server log and open it. The call's **Debug** tab shows the request to your Answer URL and the XML your server returned.
 
-### Step 2: Bridge Plivo's stream to the Voice Agent
+### Step 2: bridge Plivo's stream to the Voice Agent
 
 The `/ws` WebSocket carries the whole call. Plivo's first message is a `start` event. It has the `streamId` and `callId` you need for every control message you send. The route checks Plivo's signature (Step 7). Then the bridge reads the `start` event and hands the socket to the agent.
 
@@ -305,7 +305,7 @@ if event == "media":
 > [<call_uuid>] [   0.19s] [deepgram] SettingsApplied in 42ms (flushed 4160B audio, 0 texts)
 > ```
 
-### Step 3: Configure the agent
+### Step 3: configure the agent
 
 One `Settings` message tells the Voice Agent everything: the audio format, the models for listening and speaking, the language model and its instructions, the functions it may call, and a greeting. The message asks for μ-law at 8 kHz for both input and output. That matches Plivo's audio exactly, so nothing is resampled.
 
@@ -332,13 +332,13 @@ One `Settings` message tells the Voice Agent everything: the audio format, the m
 }
 ```
 
-The **listen** provider is Flux, the speech-to-text model built for conversational audio. Flux models require `"version": "v2"` in the provider block. Flux detects the end of the caller's turn from the audio itself, so the bridge runs no voice-activity detection. `eot_threshold` sets how confident Flux must be before it ends a turn. `eot_timeout_ms` ends the turn after that much silence, whatever the confidence.
+The **listen** provider is Flux STT, the speech-to-text model built for conversational audio. Flux STT models require `"version": "v2"` in the provider block. Flux STT detects the end of the caller's turn from the audio itself, so the bridge runs no voice-activity detection. `eot_threshold` sets how confident Flux STT must be before it ends a turn. `eot_timeout_ms` ends the turn after that much silence, whatever the confidence.
 
 The **think** provider is OpenAI's `gpt-4.1-mini`, with a prompt loaded from `inbound/system_prompt.md`. The bridge adds the caller's number, the call ID, and the current time to the prompt. That lets the agent offer a callback or a text message without asking for the number. The think block has no API key, because Deepgram manages the LLM connection for you.
 
 The **speak** provider is Deepgram's Aura-2 voice `aura-2-thalia-en`.
 
-The **greeting** is spoken exactly as written, as soon as `SettingsApplied` arrives. It is not an instruction to the model, so keep instructions in the prompt.
+The **greeting** is spoken exactly as written, as soon as `SettingsApplied` arrives. It isn't an instruction to the model, so keep instructions in the prompt.
 
 See [Voice Agent media inputs and outputs](/docs/voice-agent-media-inputs-outputs) for every encoding, sample rate, and container the agent accepts. See [Settings](/docs/voice-agent-settings) for every field you can configure.
 
@@ -348,7 +348,7 @@ Every value in this message comes from `.env` or from a file in the repo. [Custo
 >
 > Verify: on a connected call, the agent speaks the greeting, and the console logs each turn's transcript, as in the quick start.
 
-### Step 4: Relay the agent's audio to Plivo
+### Step 4: relay the agent's audio to Plivo
 
 The Voice Agent sends two kinds of messages on one connection. Audio arrives as raw bytes. Everything else (transcripts, status, interruption signals) arrives as JSON events. One receive loop handles both.
 
@@ -389,7 +389,7 @@ await self.websocket.send_text(json.dumps(message))
 > [<call_uuid>] [   0.30s] [plivo_tx] first audio chunk sent to Plivo
 > ```
 
-### Step 5: Handle barge-in
+### Step 5: handle barge-in
 
 When the caller talks over the agent, Deepgram stops generating the reply and sends `UserStartedSpeaking`. Part of the reply is usually still on its way: some in the bridge's send queue, some already queued at Plivo. The bridge clears both.
 
@@ -416,9 +416,9 @@ async def _on_user_started_speaking(self) -> None:
 > [<call_uuid>] [  46.41s] [barge_in] barge-in: cleared=0
 > ```
 
-### Step 6: End the call
+### Step 6: end the call
 
-The example gives the agent five client-side functions: an order lookup, an SMS, a callback, a transfer, and `end_call`. `end_call` is declared with `defer_until_eot`, so Deepgram waits until the caller's turn is confirmed before it dispatches the function. See [Function Calling](/docs/voice-agents-function-calling) for why that matters for actions you can't undo.
+The example gives the agent five client-side functions: an order lookup, an SMS, a callback, a transfer, and `end_call`. `end_call` is declared with `defer_until_eot`, so Deepgram waits until the caller's turn is confirmed before it dispatches the function. See [Function calling](/docs/voice-agents-function-calling) for why that matters for actions you can't undo.
 
 ```python
 {
@@ -464,7 +464,7 @@ The Plivo credentials stay in `server.py`. The agent gets the hangup as a callba
 > Call ended: CallUUID=<call_uuid>, Duration=83s, HangupCause=NORMAL_CLEARING
 > ```
 
-### Step 7: Secure the webhooks and the stream
+### Step 7: secure the webhooks and the stream
 
 Both servers are reachable from the internet, so they accept only requests and streams that come from Plivo. Every webhook route and the stream route carry a FastAPI dependency that checks Plivo's V3 signature. The signature is an HMAC-SHA256 over the requested URL and parameters, keyed with your Auth Token. Plivo sends it in the `X-Plivo-Signature-V3` and `X-Plivo-Signature-V3-Nonce` headers. A request or stream that fails the check gets a 403 and a log line that says why.
 
@@ -491,7 +491,7 @@ The example has a second server for outbound calls. It listens on port 8001, so 
 uv run python -m outbound.server --tunnel
 ```
 
-When it is ready, it logs a cURL command for Plivo's [Create a Call](https://www.plivo.com/docs/voice/api/calls#create-a-call) API with its own Answer URL filled in. The server has no dial endpoint. You place the call with Plivo, and Plivo requests `/outbound/answer` when the callee picks up. The response is the same `<Stream>` XML as in Step 1.
+When it's ready, it logs a cURL command for Plivo's [Create a Call](https://www.plivo.com/docs/voice/api/calls#create-a-call) API with its own Answer URL filled in. The server has no dial endpoint. You place the call with Plivo, and Plivo requests `/outbound/answer` when the callee picks up. The response is the same `<Stream>` XML as in Step 1.
 
 ```bash
 curl -X POST "https://api.plivo.com/v1/Account/$PLIVO_AUTH_ID/Call/" \
@@ -538,13 +538,13 @@ DEEPGRAM_SPEAK_MODEL=aura-2-thalia-en
 | Anthropic        | `anthropic`               | `claude-haiku-4-5`             |
 | Google           | `google`                  | `gemini-2.5-flash`             |
 
-**Voice.** Set `DEEPGRAM_SPEAK_MODEL` to another [Aura-2 voice](/docs/voice-agent-tts-models), or to a [Flux TTS voice](/docs/flux-tts/voices) named `flux-{voice}-en`. Flux voices work only on the v2 endpoint, so the bridge adds `"version": "v2"` for them.
+**Voice.** Set `DEEPGRAM_SPEAK_MODEL` to another [Aura-2 voice](/docs/voice-agent-tts-models), or to a [Flux TTS voice](/docs/flux-tts/voices) named `flux-{voice}-en`. Flux TTS voices work only on the v2 endpoint, so the bridge adds `"version": "v2"` for them.
 
 **Speech-to-text.** Set `DEEPGRAM_LISTEN_MODEL` to `flux-general-multi` for multilingual calls. See [Voice Agent STT models](/docs/voice-agent-stt-models).
 
 ### Add functions
 
-Each function is a JSON schema in `FUNCTION_DEFINITIONS` and a branch in `_handle_function_call()`, in both `inbound/agent.py` and `outbound/agent.py`. Replace the sample data with calls to your systems, and keep `end_call`. See [Build a Function Call](/docs/build-a-function-call).
+Each function is a JSON schema in `FUNCTION_DEFINITIONS` and a branch in `_handle_function_call()`, in both `inbound/agent.py` and `outbound/agent.py`. Replace the sample data with calls to your systems, and keep `end_call`. See [Build a function call](/docs/build-a-function-call).
 
 ### Store the agent in Deepgram
 
@@ -556,7 +556,7 @@ Ideas for what to add next:
 
 * **React to key presses.** Plivo sends each key press as a `dtmf` event with the digit. Forward it to the agent as an [`InjectUserMessage`](/docs/voice-agent-inject-user-message), and the model can respond to it like speech.
 * **Keep quiet sessions open.** Plivo streams audio continuously. If it ever stops, the bridge sends [`KeepAlive`](/docs/agent-keep-alive) to Deepgram after 5 seconds of silence, so the session stays up.
-* **Watch latency per turn.** The bridge copies the timings from each `LatencyReport` message into its `turn_complete` event, one per stage. The `observability` extra exports OpenTelemetry spans for each call. See [Session Observability](/docs/voice-agent-observability).
+* **Watch latency per turn.** The bridge copies the timings from each `LatencyReport` message into its `turn_complete` event, one per stage. The `observability` extra exports OpenTelemetry spans for each call. See [Session observability](/docs/voice-agent-observability).
 * **Deploy.** The example includes a Dockerfile. Build the image and run it on a host that keeps a WebSocket open for the whole call, such as Fly.io, Render, Railway, a VM, or Kubernetes. Set `PUBLIC_URL` to the host's HTTPS URL. The server links your number on startup. Serverless functions can't hold the socket. See the [Plivo guide](https://www.plivo.com/docs/voice-agents/audio-streaming/integration-guides/voice-agent-pipelines/deepgram-voice-agent#go-live) for deployment notes.
 
   ```bash
@@ -568,9 +568,9 @@ Ideas for what to add next:
 
 * [Deepgram Voice Agent API](/docs/voice-agent)
 * [Voice Agent API reference](/reference/voice-agent/voice-agent)
-* [Deepgram Flux (conversational STT)](/docs/flux/feature-overview)
+* [Deepgram Flux STT (conversational)](/docs/flux/feature-overview)
 * [Voice Agent LLM models](/docs/voice-agent-llm-models)
-* [Function Calling](/docs/voice-agents-function-calling)
+* [Function calling](/docs/voice-agents-function-calling)
 * [Plivo Audio Streaming reference](https://www.plivo.com/docs/voice-agents/audio-streaming/concepts/audio-streaming-reference) — every message on the Plivo WebSocket
 * [Plivo `<Stream>` XML](https://www.plivo.com/docs/voice-agents/audio-streaming/xml/stream)
 * [Plivo Create a Call API](https://www.plivo.com/docs/voice/api/calls#create-a-call)

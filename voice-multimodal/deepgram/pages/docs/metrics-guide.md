@@ -19,13 +19,13 @@ For self-hosted deployments, the Deepgram API container images expose an endpoin
 2. The response body gives a backward-looking indication of `system_health`
 3. The response body indicates how many requests this API instance is processing
 
-### Liveness Probe
+### Liveness probe
 
 Use a TCP check on the open port (port 8080 by default).
 
-### Readiness Probe
+### Readiness probe
 
-Query the status of the `/v1/status/engine`endpoint and check whether it is in a `"Connected"` state with at least one Engine container.
+Query the status of the `/v1/status/engine`endpoint and check whether it's in a `"Connected"` state with at least one Engine container.
 
 **`cURL`**
 
@@ -53,7 +53,7 @@ The Deepgram Engine container image publishes an extensive set of system metrics
 
 ### Docker/Podman
 
-Choose a host port `HOST_PORT` where external queries can be made, and choose a container port `CONTAINER_PORT` where Engine can internally publish its metrics. These can be the same port number, since they are binding to different networks (the host network versus the container network)
+Choose a host port `HOST_PORT` where external queries can be made, and choose a container port `CONTAINER_PORT` where Engine can internally publish its metrics. These can be the same port number, since they're binding to different networks (the host network versus the container network)
 
 > **Warning**
 >
@@ -100,11 +100,11 @@ The Engine metrics endpoint is exposed by default by the `deepgram-self-hosted` 
 
 When `scaling.auto.enabled` is set to `true`, the Engine metrics endpoint will be automatically scraped by Prometheus and used for auto-scaling.
 
-### Available Metrics
+### Available metrics
 
 Upon startup of the containers, a limited set of metrics will be available until the first request is made. After the first request, the complete set becomes available.
 
-#### Initial Metrics
+#### Initial metrics
 
 `engine_estimated_stream_capacity` is the Engine's running estimate of how many streams it can serve with acceptable latency. It's recalculated on each scrape over a 30-second window, so scrape the Engine every 15 seconds or more often. Treat it as a load-balancing signal; size deployments from your own load tests and enforce limits with `max_active_requests`.
 
@@ -122,7 +122,7 @@ engine_active_requests{kind="tts"} <integer>
 engine_max_active_requests <integer>
 ```
 
-#### Complete Metrics
+#### Complete metrics
 
 After the first request, additional metrics become available. The following subsections organize metrics by category.
 
@@ -470,11 +470,11 @@ histogram_quantile(0.95, sum by (le) (rate(engine_tts_first_transcoded_byte_late
 histogram_quantile(0.99, sum by (le) (rate(engine_tts_first_transcoded_byte_latency_bucket{tier="aura-2"}[5m]))) or vector(0)
 ```
 
-### Liveness Probe
+### Liveness probe
 
 Use a TCP check on the open port (port 8080 by default).
 
-### Readiness Probe
+### Readiness probe
 
 Use a TCP check on the open port (port 8080 by default).
 
@@ -482,11 +482,11 @@ Use a TCP check on the open port (port 8080 by default).
 
 For self-hosted deployments, the Deepgram License Proxy container images expose an endpoint `/v1/status`, on port 8080 by default. Querying this endpoint will indicate if the license proxy is able to communicate with the Deepgram license server.
 
-### Liveness Probe
+### Liveness probe
 
 Use a TCP check on the open status port (port 8080 by default).
 
-### Readiness Probe
+### Readiness probe
 
 Query the status of the `/v1/status`endpoint and check the connection state.
 

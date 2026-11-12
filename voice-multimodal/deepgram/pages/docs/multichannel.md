@@ -11,11 +11,11 @@ path: docs/multichannel
 
 `multichannel` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
-When set to `true`, you will receive separate transcripts for each channel.
+When set to `true`, you'll receive separate transcripts for each channel.
 
-## Enable Feature
+## Enable feature
 
 To enable Multichannel, when you call Deepgram’s API, add a `multichannel` parameter set to `true` in the query string:
 
@@ -40,7 +40,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Analyze Response
+## Analyze response
 
 > **Info**
 >
@@ -50,7 +50,7 @@ When the file is finished processing (often after only a few seconds), you’ll 
 
 Note that the response structure differs depending on whether audio is submitted to our pre-recorded endpoint or our streaming endpoint.
 
-### Pre-Recorded Response
+### Pre-recorded response
 
 **`JSON`**
 
@@ -117,7 +117,7 @@ In the first channel object, notice that the word `history` has an `end` time of
 
 This makes sense because our sample audio file is a split stereo file with speakers separated on different channels. We can see that one speaker greets another in the first audio channel, waits for a response from the speaker recorded in the second audio channel, and then responds in the first audio channel.
 
-### Streaming Response
+### Streaming response
 
 **`JSON`**
 
@@ -136,7 +136,7 @@ This makes sense because our sample audio file is a split stereo file with speak
   }
 ```
 
-For this response, the `channel_index` property will be set to `[0, 2]` . The second number in the array is the number of channels (in this case, 2). The first number is the channel that the transcript in the message belongs to. In our example, you will see messages with `[0, 2]` representing transcription of the first channel, and `[1, 2]` for transcription of the second channel.
+For this response, the `channel_index` property will be set to `[0, 2]` . The second number in the array is the number of channels (in this case, 2). The first number is the channel that the transcript in the message belongs to. In our example, you'll see messages with `[0, 2]` representing transcription of the first channel, and `[1, 2]` for transcription of the second channel.
 
 Let's look more closely at the results of the stream. Deepgram will send back separate messages for each channel, like so:
 
@@ -356,6 +356,6 @@ This first message represents the transcription of the first channel. It will be
 
 ## Entity Features and Multichannel
 
-For pre-recorded audio, [Entity Detection](/docs/detect-entities), entity-based [Redaction](/docs/redaction), and [Smart Formatting](/docs/smart-format) use context from all channels. For example, if an agent on one channel asks for a card's expiration date, the customer's answer on another channel can be recognized and redacted as a credit card expiration date. Streaming requests don't share context across channels. See [Entity Detection: Multichannel Audio](/docs/detect-entities#multichannel-audio) for details.
+For pre-recorded audio, [Entity detection](/docs/detect-entities), entity-based [Redaction](/docs/redaction), and [Smart formatting](/docs/smart-format) use context from all channels. For example, if an agent on one channel asks for a card's expiration date, the customer's answer on another channel can be recognized and redacted as a credit card expiration date. Streaming requests don't share context across channels. See [Entity Detection: Multichannel Audio](/docs/detect-entities#multichannel-audio) for details.
 
 ---

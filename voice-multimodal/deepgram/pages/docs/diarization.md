@@ -14,9 +14,9 @@ Deepgram API Playground
 Try this feature out in our API Playground.
 
 \
-&#x20;Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+&#x20;Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
-## Diarization Models
+## Diarization models
 
 Deepgram offers versioned diarization models. Use the `diarize_model` parameter to select a specific version:
 
@@ -30,13 +30,13 @@ Deepgram offers versioned diarization models. Use the `diarize_model` parameter 
 >
 > Specifying `diarize_model` both enables diarization **and** selects the model version. You do not need to also set `diarize=true`.
 
-### Choosing a Model
+### Choosing a model
 
 * **New integrations**: Use `diarize_model=latest` to always get the newest available diarizer.
 * **Pin a specific version**: Use `diarize_model=v1` or `diarize_model=v2` (batch only).
-* **Streaming**: Use `diarize_model=latest` or `diarize_model=v1`. The v2 diarizer is not available for streaming and returns a validation error.
+* **Streaming**: Use `diarize_model=latest` or `diarize_model=v1`. The v2 diarizer isn't available for streaming and returns a validation error.
 
-## Enable Feature
+## Enable feature
 
 ### Using `diarize_model` (recommended)
 
@@ -82,13 +82,13 @@ curl \
 >
 > **Self-hosted deployments:** `diarize=true` is pinned to the v1 batch diarizer. New self-hosted deployments provisioned at the May 2026 release (`release-260514`) or later receive only the v2 batch diarizer model by default — `diarize=true` on those deployments returns a successful response without `speaker` labels, consistent with Deepgram's longstanding behavior when a requested diarizer model is not present. To produce diarized output on a fresh deployment, specify `diarize_model=v2` or `diarize_model=latest`. See the [Self-Hosted May 2026 release notes](/changelog/self-hosted-changelog#deepgram-self-hosted-may-2026-release-260514) for details.
 
-## Versioning Behavior
+## Versioning behavior
 
 Switch your `diarize=true` requests to `diarize_model` (use `latest` for most cases). Don't set both `diarize` and `diarize_model` — requests that set both are rejected.
 
-### Model Compatibility
+### Model compatibility
 
-Diarization is compatible with all Nova batch models (Nova-1, Nova-2, Nova-3) as well as enhanced and base. Whisper is not supported.
+Diarization is compatible with all Deepgram Nova batch models (Nova-1, Nova-2, Nova-3) as well as enhanced and base. Whisper isn't supported.
 
 ### Streaming
 
@@ -100,7 +100,7 @@ Diarization is compatible with all Nova batch models (Nova-1, Nova-2, Nova-3) as
 
 The deprecated `diarize=true` parameter also continues to work for streaming and routes to the v1 diarizer.
 
-## Analyze Response
+## Analyze response
 
 > **Info**
 >
@@ -108,7 +108,7 @@ The deprecated `diarize=true` parameter also continues to work for streaming and
 
 When the file is finished processing, you'll receive a JSON response. Let's look more closely at the `words` object within the `alternatives` object within this response.
 
-### Pre-Recorded
+### Pre-recorded
 
 When using diarization for pre-recorded audio, both `speaker` and `speaker_confidence` values will be returned:
 
@@ -134,7 +134,7 @@ When using diarization for pre-recorded audio, both `speaker` and `speaker_confi
 ]
 ```
 
-### Live Streaming
+### Live streaming
 
 When using diarization for live streaming audio, only the `speaker` value will be returned:
 
@@ -196,9 +196,9 @@ When a diarizer runs, the response `metadata` includes a `diarize_info` object t
 
 > **Info**
 >
-> `diarize_info` is either present with both fields or absent entirely — it is never `null` or `{}`. An absent block on a request that asked for diarization means the diarizer did not run, which is how you distinguish a missing diarizer from single-speaker audio.
+> `diarize_info` is either present with both fields or absent entirely — it's never `null` or `{}`. An absent block on a request that asked for diarization means the diarizer did not run, which is how you distinguish a missing diarizer from single-speaker audio.
 
-## Format Response
+## Format response
 
 To improve readability, you can use a JSON processor to parse the JSON. In this example, we use [JQ](https://stedolan.github.io/jq/) and further improve readability by turning on Deepgram's [punctuation](/docs/punctuation/) and [utterances](/docs/utterances/) features:
 

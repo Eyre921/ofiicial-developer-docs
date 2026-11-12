@@ -9,7 +9,7 @@ path: docs/build-a-voice-agent-javascript
 
 # Build a Voice Agent with JavaScript
 
-This tutorial walks you through building a basic voice agent using JavaScript and the Deepgram SDK. You will learn how to connect to the Agent API, configure its behavior, and stream audio for processing.
+This tutorial walks you through building a basic voice agent using JavaScript and the Deepgram SDK. You'll learn how to connect to the Agent API, configure its behavior, and stream audio for processing.
 
 ## Prerequisites
 
@@ -172,7 +172,7 @@ The agent will process the audio and generate responses. You can find the conver
 
 ## Next steps
 
-Now that you have built a basic agent, you can customize its behavior:
+Now that you've built a basic agent, you can customize its behavior:
 
 * [Configure the Voice Agent](/docs/configure-voice-agent): Explore all available settings for models and voices.
 * [Build a Voice Agent](/docs/build-a-voice-agent): Return to the overview to see other language options.

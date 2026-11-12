@@ -15,23 +15,23 @@ It offers a simple user interface for standing up connections and developer-frie
 
 Note, AudioCodes offers [two versions of this platform](https://techdocs.audiocodes.com/voice-ai-connect/#VAIG_Combined/editions_and_deployment.htm?TocPath=VoiceAI%2520Connect%257C_____1) - LiveHub, which is the self serve version, as well as VoiceAI Connect Enterprise, which is the managed services version.
 
-This guide will focus on LiveHub, as it is accessible to all users. However, if you are using VoiceAI Connect Enterprise, the steps and instructions laid out here will be very similar. In addition, you will have the help of the AudioCodes Professional Services team to help you with the configuration. Refer to this doc for guidance, but note that the steps may vary slightly depending on how your specific version of VoiceAI Connect Enterprise is built.
+This guide will focus on LiveHub, as it's accessible to all users. However, if you're using VoiceAI Connect Enterprise, the steps and instructions laid out here will be very similar. In addition, you'll have the help of the AudioCodes Professional Services team to help you with the configuration. Refer to this doc for guidance, but note that the steps may vary slightly depending on how your specific version of VoiceAI Connect Enterprise is built.
 
-## Before you Begin
-
-> **Info**
->
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/docs/make-your-first-api-request) guide to obtain a Deepgram API key.
+## Before you begin
 
 > **Info**
 >
-> You will need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/docs/make-your-first-api-request) guide to obtain a Deepgram API key.
 
-## Add Deepgram as a Speech Service in LiveHub
+> **Info**
+>
+> You'll need an [AudioCodes LiveHub](https://livehub.audiocodes.io/login) account to connect the two services.
+
+## Add Deepgram as a speech service in LiveHub
 
 Follow the steps in the [LiveHub integration guide](https://techdocs.audiocodes.com/livehub/#VAIG_Combined/Creating%20a%20new%20speech%20service.htm?TocPath=Speech%2520service%2520integration%257C_____1) to create a new speech service.
 
-If you want to use Deepgram's Speech-to-Text or Text-to-Speech services, you should choose the [Deepgram specific](https://techdocs.audiocodes.com/livehub/#VAIG_Combined/Creating%20a%20new%20speech%20service.htm#Deepgram) speech provider option.
+If you want to use Deepgram's speech-to-text or text-to-speech services, you should choose the [Deepgram specific](https://techdocs.audiocodes.com/livehub/#VAIG_Combined/Creating%20a%20new%20speech%20service.htm#Deepgram) speech provider option.
 
 You can also use the [Custom Integration](https://techdocs.audiocodes.com/livehub/#VAIG_Combined/Creating%20a%20new%20speech%20service.htm#Generic) option and insert the Deepgram API endpoint (example - `wss://api.deepgram.com/v1/listen`).
 
@@ -58,7 +58,7 @@ Please see the [AudioCodes documentation](https://techdocs.audiocodes.com/voice-
 
 Deepgram officially supports the following AudioCodes configuration parameters:
 
-* [sttLanguage](https://techdocs.audiocodes.com/voice-ai-connect/Content/VAIG_Combined/speech-customization.htm#kanchor126) - use this to set the language code for STT. This is the ONLY way to change the language!
+* [sttLanguage](https://techdocs.audiocodes.com/voice-ai-connect/Content/VAIG_Combined/speech-customization.htm#kanchor126) - use this to set the language code for STT. This is the ONLY way to change the language.
 * [Other / Misc parameters](https://techdocs.audiocodes.com/voice-ai-connect/#VAIG_Combined/speech-customization.htm#Speech-to-text20detection20features20for20Deepgram) - the following parameters are suppoted by Deepgram. You can set any of these to your desired values. NOTE: requires VoiceAI Connect Enterprise (Version 3.22 and later).
 * [sttGenericData](https://techdocs.audiocodes.com/voice-ai-connect/Content/VAIG_Combined/speech-customization.htm#kanchor142) - you can use this object to pass ANY parameter (except language) to Deepgram.
 

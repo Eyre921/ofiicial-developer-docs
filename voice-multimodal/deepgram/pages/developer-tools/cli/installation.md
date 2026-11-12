@@ -1,5 +1,5 @@
 ---
-title: "CLI Installation"
+title: "CLI installation"
 source: https://developers.deepgram.com/developer-tools/cli/installation.md
 path: developer-tools/cli/installation
 ---
@@ -7,7 +7,7 @@ path: developer-tools/cli/installation
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# CLI Installation
+# CLI installation
 
 ## macOS and Linux
 
@@ -27,7 +27,7 @@ In PowerShell:
 iwr https://deepgram.com/install.ps1 -useb | iex
 ```
 
-## Package Managers
+## Package managers
 
 ### Homebrew
 
@@ -38,7 +38,7 @@ brew tap deepgram/tap
 brew install deepgram
 ```
 
-The first command adds Deepgram's official tap (`deepgram/homebrew-tap`); the second installs the CLI from it. After tapping, future installs and upgrades don't need the `deepgram/tap/` prefix — `brew upgrade deepgram` is enough.
+The first command adds our official tap (`deepgram/homebrew-tap`); the second installs the CLI from it. After tapping, future installs and upgrades don't need the `deepgram/tap/` prefix — `brew upgrade deepgram` is enough.
 
 Homebrew brings in `ffmpeg` and `portaudio` automatically, so `dg listen --mic`, `dg debug probe`, and the raw audio piping flows work out of the box without any further setup.
 
@@ -60,7 +60,7 @@ pipx install deepctl
 uv tool install deepctl
 ```
 
-## Verify Installation
+## Verify installation
 
 ```shell
 dg --version

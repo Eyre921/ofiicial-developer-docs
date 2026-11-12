@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Getting started"
 source: https://developers.deepgram.com/docs/audio-intelligence.md
 path: docs/audio-intelligence
 ---
@@ -7,7 +7,7 @@ path: docs/audio-intelligence
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started
+# Getting started
 
 Deepgram API Playground
 
@@ -20,21 +20,21 @@ In this guide, you'll learn how to analyze audio using Deepgram's intelligence f
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ## Purpose
 
-Audio Intelligence transcribes audio files and performs four types of analysis on the transcript content: [Summarization](/docs/summarization), [Topic Detection](/docs/topic-detection), [Intent Recognition](/docs/intent-recognition), and [Sentiment Analysis](/docs/sentiment-analysis). You can send audio as a local file or hosted URL to receive transcription and structured analysis results.
+Deepgram Audio Intelligence transcribes audio files and performs four types of analysis on the transcript content: [Summarization](/docs/summarization), [Topic detection](/docs/topic-detection), [Intent recognition](/docs/intent-recognition), and [Sentiment analysis](/docs/sentiment-analysis). You can send audio as a local file or hosted URL to receive transcription and structured analysis results.
 
-## Make the Request
+## Make the request
 
 A request made using one of the audio intelligence features will follow the same form for each of the features; therefore, this guide will walk you through how to make one request, and you can use the feature(s) of your choice depending on which feature you want to use (Summarization, Topic Detection, Intent Recognition, or Sentiment Analysis).
 
-### Choose Your Audio Source
+### Choose your audio source
 
 An audio source can be sent to Deepgram as an audio file or as a url of a hosted audio file. These are referred to as a **local file request** or a **remote file request** (which is a hosted url such as `https://YOUR_FILE_URL.txt`).
 
-### Local File Request
+### Local file request
 
 This example shows how to analyze a **local audio file** as your audio source.
 
@@ -231,7 +231,7 @@ public class Main {
 }
 ```
 
-### Remote File Request
+### Remote file request
 
 This example shows how to analyze a **remote audio file** (a URL that hosts your audio file).
 
@@ -416,7 +416,7 @@ public class Main {
 }
 ```
 
-### Start the Application
+### Start the application
 
 Run your application from the terminal.
 
@@ -451,11 +451,11 @@ go run YOUR_PROJECT_NAME.go
 mvn compile exec:java -Dexec.mainClass="Main"
 ```
 
-### See Results
+### See results
 
 Your results will appear in your shell.
 
-## Analyze the Response
+## Analyze the response
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response. (Note that some sections are omitted in order to demonstrate relevant properties.)
 
@@ -679,9 +679,9 @@ When the file is finished processing (often after only a few seconds), you’ll 
 
 Following are explanations of each of the example responses. Be sure to click the tabs in the code block above to view the example response for each text analysis feature.
 
-### All Audio Intelligence Features
+### All Audio Intelligence features
 
-Because Deepgram transcribes the audio before conducting the analysis, you will always see properties related to the transcription response, such as the following.
+Because Deepgram transcribes the audio before conducting the analysis, you'll always see properties related to the transcription response, such as the following.
 
 In the `results` object, we see:
 
@@ -696,7 +696,7 @@ In the `metadata` object, we see:
 * `summary_info`: information about the model used and the input/output tokens. Summarization pricing is based on the number of input and output tokens. Read more at [deepgram.com/pricing](https://deepgram.com/pricing).
 * `summary`: the `short` property in this object gives you the summary of the audio you requested to be analyzed.
 
-### Topic Detection
+### Topic detection
 
 In the `metadata` object, we see:
 
@@ -713,7 +713,7 @@ In the `results` object, we see:
   * `topic`: Deepgram analyzes the segmented transcript to identify the main topic of each.
   * `confidence_score`: a floating point value between 0 and 1 indicating the overall reliability of the analysis.
 
-### Intent Recognition
+### Intent recognition
 
 In the `metadata` object, we see:
 
@@ -730,7 +730,7 @@ In the `results` object, we see:
   * `intent`: Deepgram analyzes the segmented transcript to identify the intent of each.
   * `confidence_score`: a floating point value between 0 and 1 indicating the overall reliability of the analysis.
 
-### Sentiment Analysis
+### Sentiment analysis
 
 In the `metadata` object, we see:
 
@@ -750,7 +750,7 @@ In the `results` object, we see:
 
 At this time, audio analysis features only work for English language transcriptions.
 
-### Token Limit
+### Token limit
 
 The input token limit is 150K tokens. When that limit is exceeded, a `400` error will be thrown
 

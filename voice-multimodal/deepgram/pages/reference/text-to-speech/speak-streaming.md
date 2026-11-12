@@ -1,5 +1,5 @@
 ---
-title: "Continuous Text Stream"
+title: "Continuous text stream"
 source: https://developers.deepgram.com/reference/text-to-speech/speak-streaming.md
 path: reference/text-to-speech/speak-streaming
 ---
@@ -7,7 +7,7 @@ path: reference/text-to-speech/speak-streaming
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Continuous Text Stream
+# Continuous text stream
 
 GET /v1/speak
 

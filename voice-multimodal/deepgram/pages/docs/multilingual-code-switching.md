@@ -17,19 +17,19 @@ The Multilingual Codeswitching feature in Deepgram's API allows you to transcrib
 
 > **Info**
 >
-> Multilingual Code Switching is available on Nova-2, Nova-3, Nova-3 Medical (`nova-3-medical`), and Flux Multilingual (`flux-general-multi`). Nova-3 multilingual supports 55 languages. See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
+> Multilingual Code Switching is available on Nova-2, Nova-3, Nova-3 Medical (`nova-3-medical`), and Flux STT Multilingual (`flux-general-multi`). Nova-3 multilingual supports 55 languages. See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
 
-## 1. Enable Feature
+## 1. Enable feature
 
 ### Nova-2 / Nova-3
 
-To enable Multilingual Codeswitching on Nova-2 or Nova-3, use the following language parameter in the query string when you call Deepgram's `/listen` endpoint:
+To enable Multilingual Codeswitching on Deepgram Nova-2 or Nova-3, use the following language parameter in the query string when you call the `/listen` endpoint:
 
 `language=multi`
 
 The same `language=multi` parameter works with `model=nova-3-medical` for multilingual transcription of medical audio.
 
-### Pre-Recorded Audio
+### Pre-recorded audio
 
 To transcribe audio from a file on your computer that contains multiple languages, run the following cURL command in a terminal or your favorite API client.
 
@@ -48,7 +48,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Streaming Audio
+### Streaming audio
 
 To transcribe an audio stream, initiate a websocket connection, including the parameter `language=multi`. For instance:
 
@@ -60,9 +60,9 @@ To transcribe an audio stream, initiate a websocket connection, including the pa
 wss://api.deepgram.com/v1/listen?language=multi&model=nova-3&sample_rate=44100&encoding=linear16&endpointing=100
 ```
 
-### Nova-3 Language Hints
+### Nova-3 language hints
 
-With Nova-3 (`model=nova-3&language=multi`), you can add one or more optional `language_hint` parameters to bias detection toward the languages you expect. Hints bias detection but do not restrict it, and the model still transcribes other supported languages it hears. Repeat the parameter to pass several hints.
+With Nova-3 (`model=nova-3&language=multi`), you can add one or more optional `language_hint` parameters to bias detection toward the languages you expect. Hints bias detection but don't restrict it, and the model still transcribes other supported languages it hears. Repeat the parameter to pass several hints.
 
 Pre-recorded:
 
@@ -83,21 +83,21 @@ Streaming:
 wss://api.deepgram.com/v1/listen?model=nova-3&language=multi&language_hint=en&language_hint=es&encoding=linear16&sample_rate=16000&endpointing=100
 ```
 
-`language_hint` only applies with `language=multi` and is ignored otherwise. Nova-2 does not support `language_hint`. A hint that is not a supported code fails the request with HTTP 400 (`INVALID_QUERY_PARAMETER`). See the [Nova-3 Language Prompting guide](/docs/nova-3-language-prompting) for usage scenarios and response details.
+`language_hint` only applies with `language=multi` and is ignored otherwise. Nova-2 doesn't support `language_hint`. A hint that isn't a supported code fails the request with HTTP 400 (`INVALID_QUERY_PARAMETER`). See the [Nova-3 Language Prompting guide](/docs/nova-3-language-prompting) for usage scenarios and response details.
 
-### Flux Multilingual
+### Flux STT Multilingual
 
-Flux Multilingual handles code-switching natively. Instead of `language=multi`, use `model=flux-general-multi` with optional `language_hint` parameters to bias toward expected languages.
+Deepgram Flux STT Multilingual handles code-switching natively. Instead of `language=multi`, use `model=flux-general-multi` with optional `language_hint` parameters to bias toward expected languages.
 
 ```
 wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&language_hint=es&encoding=linear16&sample_rate=16000
 ```
 
-Flux returns detected languages in every `TurnInfo` event via the `languages` field. See the [Language Prompting guide](/docs/flux/language-prompting) for full details on usage scenarios and response format.
+Flux STT returns detected languages in every `TurnInfo` event via the `languages` field. See the [Language Prompting guide](/docs/flux/language-prompting) for full details on usage scenarios and response format.
 
-## 3. Analyze Response
+## 3. Analyze response
 
-### Pre-Recorded Audio
+### Pre-recorded audio
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -298,7 +298,7 @@ In this response, we see that each channel contains:
   * **languages_hinted**: Array of the `language_hint` values for the request, normalized (`ES` → `es`; a regional code the model has no tag for becomes its base language, `en-GB` → `en`). Present on every Nova-3 multilingual response; an empty array when no hint was sent.
   * **words**: Object containing each word in the transcript, along with its start time and end time (in seconds) from the beginning of the audio, a word-level transcription confidence value, the language of the word, and the punctuated word if Smart Formatting is enabled.
 
-### Streaming Audio
+### Streaming audio
 
 When streaming audio, a Results JSON message has the following structure:
 

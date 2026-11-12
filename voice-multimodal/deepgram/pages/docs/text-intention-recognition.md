@@ -1,5 +1,5 @@
 ---
-title: "Intent Recognition"
+title: "Intent recognition"
 source: https://developers.deepgram.com/docs/text-intention-recognition.md
 path: docs/text-intention-recognition
 ---
@@ -7,7 +7,7 @@ path: docs/text-intention-recognition
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Intent Recognition
+# Intent recognition
 
 Deepgram API Playground
 
@@ -56,15 +56,15 @@ Intent Recognition accepts an input text, divides it into a list of segments com
 
 For example, if the input text comes from a chatbot interface for a banking application, one segment of text may include the statement "I need to check my account balance." Deepgram's intent recognition system would recognize that the user's intent is to inquire about their account balance and then assign a description of "Check balance".
 
-The intents that can be identified are not a fixed list; this TSLM powered feature is able to generate intents based on the context of the language content in the text. You may also choose to use the optional `custom-intent` parameter to provide a custom intent you want detected if present within the provided text.
+The intents that can be identified aren't a fixed list; this TSLM powered feature is able to generate intents based on the context of the language content in the text. You may also choose to use the optional `custom-intent` parameter to provide a custom intent you want detected if present within the provided text.
 
-## Enable Feature
+## Enable feature
 
 To enable Intent Recognition, use the following parameter in the query string when you call Deepgram’s `/read` endpoint:
 
 `intents=true`
 
-### Basic Text Request
+### Basic text request
 
 To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
@@ -82,7 +82,7 @@ curl -vX POST \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Basic URL Request
+### Basic URL request
 
 To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt))
 
@@ -96,7 +96,7 @@ curl -vX POST \
  "https://api.deepgram.com/v1/read?intents=true&language=en"
 ```
 
-### Custom Intent Request
+### Custom intent request
 
 To tell the model to only return intents from your own custom list of intents, add `custom_intent_mode=strict` and `custom_intent=` followed by the list of intents. (Use the URL encoding`%20` to represent a space between each word in the list.)
 
@@ -117,7 +117,7 @@ curl -vX POST \
 >
 > Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
 
-### Query Parameters
+### Query parameters
 
 | Parameter            | Value                       | Type    | Description                                                                                                                                                                                                                                                                                                            |
 | -------------------- | --------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -126,7 +126,7 @@ curl -vX POST \
 | `custom_intent`      | ex: `unsubscribe`           | string  | Optional. A custom intent you want the model to detect within your input text if present. Submit up to 100.                                                                                                                                                                                                            |
 | `custom_intent_mode` | `extended`(default)`strict` | string  | Optional. Sets how the model will interpret strings submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent param`. When `extended`, the model will return its own detected intents in addition those submitted using the `custom_intents` param. |
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -182,11 +182,11 @@ The response object values for `intents` are:
 
 ## API Error Responses
 
-### Unsupported Language
+### Unsupported language
 
 **Status** 400
 
-If you request Intent Recognition with an unsupported language by specifying a language code such as `intents=true&language=es` or `intents=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
+If you request Intent Recognition with an unsupported language by specifying a language code such as `intents=true&language=es` or `intents=true&detect_language=true` where the detected language is unsupported, you'll get the error message below.
 
 **`JSON`**
 
@@ -198,11 +198,11 @@ If you request Intent Recognition with an unsupported language by specifying a l
 }
 ```
 
-### Token Limit Exceeded
+### Token limit exceeded
 
 **Status** 400
 
-If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
+If the request's input length exceeded the 150k token rate limit per request, you'll get the error message below.
 
 **`JSON`**
 
@@ -214,11 +214,11 @@ If the request's input length exceeded the 150k token rate limit per request, yo
 }
 ```
 
-### Missing Query Parameter
+### Missing query parameter
 
 **Status** 400
 
-If the request sent contained only the feature parameter (`intents`) but not the `language` parameter, you will receive this error.
+If the request sent contained only the feature parameter (`intents`) but not the `language` parameter, you'll receive this error.
 
 **`JSON`**
 

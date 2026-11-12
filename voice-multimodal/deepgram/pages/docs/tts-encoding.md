@@ -11,7 +11,7 @@ path: docs/tts-encoding
 
 `encoding` *string*Default: `mp3`
 
-Text to Speech Request  Text to Speech Stream
+Text-to-Speech Request  Text-to-Speech Stream
 
 The Encoding feature gives users the ability to specify the desired format of the resulting text-to-speech audio output.
 
@@ -29,7 +29,7 @@ The Encoding feature gives users the ability to specify the desired format of th
 >
 > The streaming WebSocket emits raw audio only: `linear16` (the streaming default), `mulaw`, or `alaw`. Compressed and containerized encodings (`mp3`, `opus`, `flac`, `aac`) are available on the REST endpoint only, where `mp3` is the default.
 
-## Enable Feature
+## Enable feature
 
 To enable Encoding, include the `encoding` parameter in the query string with the desired encoding option.
 
@@ -41,7 +41,7 @@ To enable Encoding, include the `encoding` parameter in the query string with th
 https://api.deepgram.com/v1/speak?encoding=linear16
 ```
 
-### CURL Examples
+### CURL examples
 
 You can use the following cURL command in a terminal or your favorite API client to synthesize text into speech with a specific encoding.
 
@@ -79,21 +79,21 @@ curl --request POST \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Query Parameters
+### Query parameters
 
 | Parameter  | Value                                                        | Type     | Description                                      |
 | ---------- | ------------------------------------------------------------ | -------- | ------------------------------------------------ |
 | `encoding` | `linear16` `mulaw` `alaw` `mp3`(default) `opus` `flac` `aac` | `string` | The chosen encoding format for the output audio. |
 
-## Analyze Response
+## Analyze response
 
-Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
+Upon successful processing of the request, you'll receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
 > **Info**
 >
 > The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
-### Response Headers Example
+### Response headers example
 
 **`http`**
 

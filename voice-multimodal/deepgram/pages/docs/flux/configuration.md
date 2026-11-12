@@ -1,5 +1,5 @@
 ---
-title: "End-of-Turn Detection Parameters"
+title: "End-of-turn detection parameters"
 source: https://developers.deepgram.com/docs/flux/configuration.md
 path: docs/flux/configuration
 ---
@@ -7,13 +7,13 @@ path: docs/flux/configuration
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# End-of-Turn Detection Parameters
+# End-of-turn detection parameters
 
-Flux provides configurable parameters that control end-of-turn detection and language biasing, allowing you to optimize your voice agent's conversational flow for your specific use case.
+Deepgram Flux STT provides configurable parameters that control end-of-turn detection and language biasing, allowing you to optimize your voice agent's conversational flow for your specific use case.
 
 ## Overview
 
-Flux's behavior is controlled by the following key parameters:
+Flux STT's behavior is controlled by the following key parameters:
 
 | Parameter             | Range                    | Default | Required       | Description                                                                                                                                                            |
 | --------------------- | ------------------------ | ------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -22,7 +22,7 @@ Flux's behavior is controlled by the following key parameters:
 | `eot_timeout_ms`      | `500` - `60000`          | `5000`  | No             | Maximum silence duration (ms) before forcing `EndOfTurn`                                                                                                               |
 | `language_hint`       | Supported language codes | *None*  | No             | Bias `flux-general-multi` toward specific languages. See [Language Prompting](/docs/flux/language-prompting).                                                          |
 
-## Parameter Details
+## Parameter details
 
 ### `eot_threshold`
 
@@ -36,7 +36,7 @@ Confidence threshold required to trigger an `EndOfTurn` event, signaling that th
 
 * **Higher values** (e.g., `0.8` - `0.9`) = Higher certainty required before ending a turn, fewer false positives, slightly increased latency
 * **Lower values** (e.g., `0.5` - `0.7`) = Lower certainty required before ending a turn, faster responses, more false positives
-* **`1.0`** = Fully suppresses natural `EndOfTurn` detection. You take ownership of turn endings with [`ForceEndTurn`](/docs/flux/force-end-turn); the `eot_timeout_ms` backstop still applies. See [Bring Your Own Turn Detection](/docs/flux/own-turn-detection).
+* **`1.0`** = Fully suppresses natural `EndOfTurn` detection. You take ownership of turn endings with [`ForceEndTurn`](/docs/flux/force-end-turn); the `eot_timeout_ms` backstop still applies. See [Bring your own turn detection](/docs/flux/own-turn-detection).
 
 **Example:**
 
@@ -99,17 +99,17 @@ Maximum silence duration before forcing an `EndOfTurn`, regardless of confidence
 wss://api.deepgram.com/v2/listen?model=flux-general-en&encoding=linear16&sample_rate=16000&eot_timeout_ms=7000
 ```
 
-## Parameter Interactions
+## Parameter interactions
 
-### Validation Rules
+### Validation rules
 
 * `eager_eot_threshold` must be **less than or equal to** `eot_threshold` (if both are set)
 * Setting `eager_eot_threshold > eot_threshold` will result in an error
 * All parameters are optional, but their values must be within valid ranges if specified
 
-## Common Configurations
+## Common configurations
 
-### Simple Mode (Default)
+### Simple mode (default)
 
 **`Python`**
 
@@ -140,7 +140,7 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 ---
 
-### Low-Latency Mode
+### Low-latency mode
 
 **`Python`**
 
@@ -171,7 +171,7 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 ---
 
-### High-Reliability Mode
+### High-reliability mode
 
 **`Python`**
 
@@ -200,7 +200,7 @@ wsClient.connect(V2WebSocketOptions.builder()
 
 ---
 
-### Complex Pipeline Mode
+### Complex pipeline mode
 
 **`Python`**
 
@@ -310,11 +310,11 @@ wss://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=en&langu
 
 See the [Language Prompting guide](/docs/flux/language-prompting) for full details on language hint usage.
 
-## Related Resources
+## Related resources
 
-* [Getting Started with Flux](/docs/flux/quickstart) - Quickstart guide with basic configuration
+* [Getting started with Flux STT](/docs/flux/quickstart) - Quickstart guide with basic configuration
 * [Configure Control Message](/docs/flux/configure) - Update configuration mid-stream without reconnecting
-* [Flux State Machine](/docs/flux/state) - Understanding turn events and state transitions
+* [Flux STT State Machine](/docs/flux/state) - Understanding turn events and state transitions
 * [Eager End-of-Turn Optimization](/docs/flux/voice-agent-eager-eot) - Deep dive on eager mode implementation
 * [Build a Voice Agent](/docs/flux/agent) - Complete voice agent implementation guide
 * [Migrating from Nova-3](/docs/flux/nova-3-migration) - Migration guide with configuration examples

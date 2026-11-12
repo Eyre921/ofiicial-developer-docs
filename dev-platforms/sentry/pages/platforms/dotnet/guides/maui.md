@@ -33,7 +33,7 @@ Sentry has an integration for the [.NET Multi-platform App UI (MAUI)](https://do
 Add the Sentry dependency to your .NET MAUI application:
 
 ```shell
-dotnet add package Sentry.Maui -v 6.13.0
+dotnet add package Sentry.Maui -v 7.0.0
 ```
 
 *Other available variations of the above snippet: Package Manager*

@@ -37,9 +37,9 @@ If you don’t see the demo, try viewing this page in a [supported browser](http
 
 ## Start with a guide 
 
-[Add one-click wallets to your checkout page](https://docs.stripe.com/elements/express-checkout-element/accept-a-payment.md): Build an integration with the Express Checkout Element using the Checkout Sessions API.
+[Add one-click wallets to your checkout page](https://docs.stripe.com/payments/checkout/express-checkout-element.md): Build an integration with the Express Checkout Element using the Checkout Sessions API.
 
-[Use one-click wallets in advanced integrations](https://docs.stripe.com/elements/express-checkout-element/accept-a-payment.md?payment-ui=elements): Build an integration with the Express Checkout Element using the Payment Intents API.
+[Use one-click wallets in advanced integrations](https://docs.stripe.com/elements/express-checkout-element/accept-a-payment.md): Build an integration with the Express Checkout Element using the Payment Intents API.
 
 [Migrate to the Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element/migration.md): Migrate from the Payment Request Button Element to the web Express Checkout Element.
 

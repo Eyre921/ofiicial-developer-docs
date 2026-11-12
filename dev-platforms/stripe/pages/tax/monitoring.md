@@ -142,6 +142,10 @@ We group your location statuses into the following categories:
 - (Issue): There’s a problem with your registration application that requires your attention. Review your application details to resolve the issue.
 - (Registration in progress): You’ve submitted a registration application through Stripe and our partners, and it’s currently being processed. You’ll be notified when the registration is complete.
 
+> #### Review with an agent
+> 
+> Your AI agent can retrieve these threshold results through [Stripe MCP](https://docs.stripe.com/mcp.md). To find the operation in the [Stripe CLI](https://docs.stripe.com/stripe-cli.md), use the `stripe tools` plugin and run `stripe tools search tax`, or ask your AI agent to search for `threshold monitoring` using Stripe MCP. The threshold results show where you might have to register.
+
 To learn more about an individual state or country comparison, click the overflow menu (⋯), then **View details**. This page contains information about the threshold itself and your latest sales.
 
 ### Downloading transaction data

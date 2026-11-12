@@ -1,5 +1,5 @@
 ---
-title: "Self-Managed Kubernetes"
+title: "Self-managed Kubernetes"
 source: https://developers.deepgram.com/docs/self-managed-kubernetes.md
 path: docs/self-managed-kubernetes
 ---
@@ -7,15 +7,15 @@ path: docs/self-managed-kubernetes
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Self-Managed Kubernetes
+# Self-managed Kubernetes
 
 ## Prerequisites
 
-Prior to deploying Kubernetes you will need to ensure you have a suitable environment per our [Deployment Environments](/docs/self-hosted-deployment-environments) guide. You will also need access to the [`deepgram-self-hosted` Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted).
+Prior to deploying Kubernetes you'll need to ensure you have a suitable environment per our [Deployment environments](/docs/self-hosted-deployment-environments) guide. You'll also need access to the [`deepgram-self-hosted` Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted).
 
 ## Terminology
 
-​If you are not overly familiar with Kubernetes, you should be aware of three main concepts:
+​If you aren't overly familiar with Kubernetes, you should be aware of three main concepts:
 
 * Node: A physical computer or virtual machine used to host workloads.
 * Pod: A single container running on a node. One node can host many pods.
@@ -29,9 +29,9 @@ Additionally this guide refers frequently to `kubectl`, the [command line tool](
 >
 > ## Managed Kubernetes
 >
-> If you are operating in a VPC, you should use a managed Kubernetes service instead of installing your own. For example, you can use [EKS in AWS](/docs/aws-k8s) as an alternative to the following manual installation.
+> If you're operating in a VPC, you should use a managed Kubernetes service instead of installing your own. For example, you can use [EKS in AWS](/docs/aws-k8s) as an alternative to the following manual installation.
 
-​Kubernetes consists of several components distributed as binaries or container images including an API server for cluster management, proxy server, scheduler, controllers, etc. These components are served from registry.k8s.io, and you will require several helper tools to get up and running including the aforementioned `kubectl`, `kubeadm`, and `kubelet`. ​ Prior to installing Kubernetes you **must** disable Linux swap permanently. While `sudo swapoff -a` will temporarily disable swap, you will need to make the change permenent in `/etc/fstab` or `systemd.swap`. ​
+​Kubernetes consists of several components distributed as binaries or container images including an API server for cluster management, proxy server, scheduler, controllers, etc. These components are served from registry.k8s.io, and you'll require several helper tools to get up and running including the aforementioned `kubectl`, `kubeadm`, and `kubelet`. ​ Prior to installing Kubernetes you **must** disable Linux swap permanently. While `sudo swapoff -a` will temporarily disable swap, you'll need to make the change permenent in `/etc/fstab` or `systemd.swap`. ​
 
 ### Install kubeadm, kubelet and kubctl
 
@@ -80,7 +80,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 >
 > `sudo apt-mark hold kubelet kubeadm kubectl`​
 
-### Initializing a Cluster
+### Initializing a cluster
 
 In order to run nodes and pods you must first create a cluster. This is done using the `kubeadm` command:
 
@@ -92,7 +92,7 @@ kubeadm init --ignore-preflight-errors Swap
 
 Kubeadm will run verification checks and report any errors, then it will download the required containerized components and initialize a control-plane. You can see configuration options for initialization [here](https://kubernetes.io/docs/reference/config-api/kubeadm-config.v1beta3/), including how set node taints.
 
-Once the control-plane is initialized you will receive instructions to store the cluster configuration and deploy a pod network. Examples below (instructions may differ based on your system):
+Once the control-plane is initialized you'll receive instructions to store the cluster configuration and deploy a pod network. Examples below (instructions may differ based on your system):
 
 **`Shell`**
 
@@ -102,7 +102,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
-You will also be presented with a `kubeadm join` command which should be saved for later use joining worker nodes to the master node. ​ Upon completion you should now be able to query your control-plan and see the standard Kubernetes pods running: ​
+You'll also be presented with a `kubeadm join` command which should be saved for later use joining worker nodes to the master node. ​ Upon completion you should now be able to query your control-plan and see the standard Kubernetes pods running: ​
 
 **`Shell`**
 
@@ -110,9 +110,9 @@ You will also be presented with a `kubeadm join` command which should be saved f
 kubectl get pod -n kube-system
 ```
 
-#### Deploying a Containerized Network Interface
+#### Deploying a containerized network interface
 
-By default Kubernetes does not deploy a CNI for pod communication. Before cluster DNS will start and pods be able to communicate you must install an add-on for the CNI you wish to deploy in your cluster as follows: ​
+By default Kubernetes doesn't deploy a CNI for pod communication. Before cluster DNS will start and pods be able to communicate you must install an add-on for the CNI you wish to deploy in your cluster as follows: ​
 
 **`Shell`**
 
@@ -130,9 +130,9 @@ kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/
 
 A comprehensive though not exhaustive list of common network add-ons is available in the official Kuberenetes [Networking and Network Policy](https://kubernetes.io/docs/concepts/cluster-administration/addons/#networking-and-network-policy) documentation. You may utilize only a single CNI per cluster. ​ To verify the network is up and running you can check the CoreDNS pod status. When the CoreDNS pod state shows as `Running` you may then join nodes to the cluster. ​
 
-#### Joining Nodes
+#### Joining nodes
 
-Once the master node is setup you can begin joining worker nodes to the cluster. If you copied the join command output when the cluster was initialized this can be used on each worker node directly. In the event that you did not save the join command you may recover it using `kubeadm` as follows: ​
+Once the master node is setup you can begin joining worker nodes to the cluster. If you copied the join command output when the cluster was initialized this can be used on each worker node directly. In the event that you didn't save the join command you may recover it using `kubeadm` as follows: ​
 
 **`Shell`**
 
@@ -150,7 +150,7 @@ kubectl get nodes
 
 ### Metrics
 
-Kubernets supports metric aggregates from nodes within the cluster, however this is not setup by default upon cluster initialization. If you wish to utilize the Kubernetes [metrics server](https://github.com/kubernetes-sigs/metrics-server) you may deploy the latest version using `kubectl`: ​
+Kubernets supports metric aggregates from nodes within the cluster, however this isn't setup by default upon cluster initialization. If you wish to utilize the Kubernetes [metrics server](https://github.com/kubernetes-sigs/metrics-server) you may deploy the latest version using `kubectl`: ​
 
 **`Shell`**
 
@@ -170,11 +170,11 @@ kubectl top nodes
 
 ## Configure Kubernetes Secrets
 
-Deepgram strongly recommends following [best practices for configuring Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/). Please refer to [Securing Your Cluster](/docs/securing-your-cluster) for more details.
+Deepgram strongly recommends following [best practices for configuring Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/). Please refer to [Securing your cluster](/docs/securing-your-cluster) for more details.
 
 The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set of distribution credentials that allow the cluster to pull images from Deepgram's container image repository. The other is your self-hosted API key that licenses each Deepgram container that is created.
 
-1. Complete the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide to generate distribution credentials and a self-hosted API key.
+1. Complete the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide to generate distribution credentials and a self-hosted API key.
 
 2. If using an external Secret store provider, configure cluster access to these two Secrets, naming them `dg-regcred` (distribution credentials) and `dg-self-hosted-api-key`.
 
@@ -198,9 +198,9 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
 
       > **Info**
       >
-      > Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide.
 
-## Download Models to your K8s Node
+## Download models to your K8s node
 
 ​Your Deepgram Account Representative should provide you with download links to at least one voice AI model. Copy the provided model files into a dedicated directory on the host machine.
 
@@ -265,7 +265,7 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    >
    > Resource limits, taints, and other constraints may limit Pod scheduling. If a Pod is not able to be scheduled, you can see its status and a list of associated events with `kubectl describe pod <pod-name>`.
 
-## Test Your Deepgram Setup with a Sample Request
+## Test your Deepgram setup with a sample request
 
 Test your environment and container setup with a local file.
 
@@ -320,9 +320,9 @@ Test your environment and container setup with a local file.
    > * the service name `deepgram-api-external`
    > * the namespace `dg-self-hosted`
 
-You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working!
+You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working.
 
-## Next Steps
+## Next steps
 
 Your Deepgram services are accessible within your cluster via the `deepgram-api-external` Service that was created by the Helm Chart.
 
@@ -332,5 +332,5 @@ What’s Next
 
 Now that you have a basic Deepgram setup working, take some time to learn about building up to a production-level environment, as well as helpful Deepgram add-on services.
 
-* [Securing Your Cluster](/docs/securing-your-cluster)
+* [Securing your cluster](/docs/securing-your-cluster)
 * [Self-Hosted Add Ons](/docs/self-hosted-add-ons)

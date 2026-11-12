@@ -26,7 +26,8 @@ The Page object contains the [page property values](/reference/page-property-val
         "emoji": "🐞"
     },
     "parent": {
-        "type": "database_id",
+        "type": "data_source_id",
+        "data_source_id": "1a44be12-0953-4631-b498-9e5817518db8",
         "database_id": "a1d8501e-1ac1-43e9-a6bd-ea9fe6c8822b"
     },
     "in_trash": true,
@@ -96,7 +97,7 @@ Page content is available as [blocks](/reference/block). The content can be read
 | `created_by` | [Partial User](/reference/user) | User who created the page. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this page was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `last_edited_by` | [Partial User](/reference/user) | User who last edited the page. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
-| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
+| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. In API versions before `2026-03-11`, this is an alias for `in_trash` and always returns the same value. Version `2026-03-11` removed `archived` from requests and responses. | `false` |
 | `in_trash` | `boolean` | Whether the page has been trashed. Use this field to check trash status and as a body parameter in [Update page](/reference/patch-page) to trash or restore a page. | `false` |
 | `icon` | [Emoji](/reference/emoji-and-icon#emoji), [Icon](/reference/emoji-and-icon#icon), [Custom emoji](/reference/emoji-and-icon#custom-emoji), or [File](/reference/file-object) | Page icon. See [Icon](/reference/emoji-and-icon) for all supported types and read/write variants. | |
 | `cover` | [File object](/reference/file-object) (`type` of `"external"` or `"file_upload"` are supported) | Page cover image. | |

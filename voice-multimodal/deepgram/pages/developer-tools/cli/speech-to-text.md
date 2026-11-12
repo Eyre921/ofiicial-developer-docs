@@ -1,5 +1,5 @@
 ---
-title: "Speech-to-Text Commands"
+title: "Speech-to-text commands"
 source: https://developers.deepgram.com/developer-tools/cli/speech-to-text.md
 path: developer-tools/cli/speech-to-text
 ---
@@ -7,9 +7,9 @@ path: developer-tools/cli/speech-to-text
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Speech-to-Text Commands
+# Speech-to-text commands
 
-## Transcribe a File
+## Transcribe a file
 
 ```shell
 dg listen audio.mp3
@@ -21,7 +21,7 @@ dg listen audio.mp3
 dg listen https://example.com/audio.mp3
 ```
 
-## Live Microphone
+## Live microphone
 
 Stream from your default microphone:
 
@@ -41,7 +41,7 @@ ffmpeg -i video.mp4 -f s16le -ar 16000 -ac 1 - | dg listen --encoding linear16
 
 ## Options
 
-### Output Format
+### Output format
 
 ```shell
 dg -o json listen audio.mp3    # JSON
@@ -85,18 +85,18 @@ dg listen audio.mp3 --language es     # Spanish
 dg listen audio.mp3 --language de     # German
 ```
 
-### Boolean Options
+### Boolean options
 
-Boolean options do not take a value:
+Boolean options don't take a value:
 
 ```shell
 dg listen audio.mp3 --punctuate
 dg listen --mic --interim
 ```
 
-Run `dg listen --help` for the complete set of supported CLI options. The command does not forward arbitrary API parameters.
+Run `dg listen --help` for the complete set of supported CLI options. The command doesn't forward arbitrary API parameters.
 
-## Command Alias
+## Command alias
 
 `dg transcribe` is a deprecated alias for `dg listen`:
 

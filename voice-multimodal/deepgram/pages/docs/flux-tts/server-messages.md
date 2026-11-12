@@ -1,5 +1,5 @@
 ---
-title: "Server Messages"
+title: "Server messages"
 source: https://developers.deepgram.com/docs/flux-tts/server-messages.md
 path: docs/flux-tts/server-messages
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/server-messages
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Server Messages
+# Server messages
 
-The server replies to your [Client Messages](/docs/flux-tts/client-messages) with JSON text frames interleaved with binary audio frames. This page documents every server-to-client message and the error/warning code reference.
+The server replies to your [Client messages](/docs/flux-tts/client-messages) with JSON text frames interleaved with binary audio frames. This page documents every server-to-client message and the error/warning code reference.
 
 **Cadence at a glance:** `SpeechStarted` marks the start of a turn and `SpeechMetadata` marks its end — **every audio frame for a turn arrives between the two.** `Flush` is your signal that all of the turn's text has been sent; once it arrives, `SpeechMetadata` is our signal that all of the turn's audio has been sent.
 
@@ -45,9 +45,9 @@ Emitted at the **start of each new turn**, before audio streaming begins. Carrie
 }
 ```
 
-The `speech_id` is a server-minted identifier of the form `dg_sp_<12 hex digits>`. It is informational — useful for correlating logs.
+The `speech_id` is a server-minted identifier of the form `dg_sp_<12 hex digits>`. It's informational — useful for correlating logs.
 
-**When a turn becomes active.** A `Speak` received while idle (the first `Speak`, or the first after a `SpeechMetadata`) starts a new active turn, and we emit `SpeechStarted`. There is only ever **one active turn**: a `Speak` received *after* you've `Flush`ed the active turn but *before* its `SpeechMetadata` starts a **pending** turn. The active turn stays active until its `SpeechMetadata` — if you haven't received `SpeechMetadata`, the turn is still being synthesized — at which point the next pending turn becomes active and gets its own `SpeechStarted`.
+**When a turn becomes active.** A `Speak` received while idle (the first `Speak`, or the first after a `SpeechMetadata`) starts a new active turn, and we emit `SpeechStarted`. There's only ever **one active turn**: a `Speak` received *after* you've `Flush`ed the active turn but *before* its `SpeechMetadata` starts a **pending** turn. The active turn stays active until its `SpeechMetadata` — if you haven't received `SpeechMetadata`, the turn is still being synthesized — at which point the next pending turn becomes active and gets its own `SpeechStarted`.
 
 ## SpeechMetadata
 
@@ -68,13 +68,13 @@ Emitted once per turn, after we've sent **all** of the turn's audio — our sign
 }
 ```
 
-| Field                      | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `speech_id`                | string  | Server-assigned turn identifier. Informational.                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `audio_duration_ms`        | integer | Total audio duration produced for this turn, in milliseconds.                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `input_character_count`    | integer | Raw input character count for this turn, before text normalization.                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `billable_character_count` | integer | Billable character count for this turn — the input minus stripped inline-control characters; always ≤ `input_character_count`.                                                                                                                                                                                                                                                                                                                                                                     |
-| `controls_applied`         | object  | Counts of the inline controls the server acted on this turn: `pronunciations_applied` (pronunciation overrides that took effect), `breaks_applied` (pauses that took effect), and `pronunciation_warnings` (entries that failed validation). A pronunciation override that triggers an IPA warning is still applied best-effort and counted in `pronunciations_applied`; the warning is reported separately. `breaks_applied` is always `0` on the WebSocket, where inline pause is not supported. |
+| Field                      | Type    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `speech_id`                | string  | Server-assigned turn identifier. Informational.                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `audio_duration_ms`        | integer | Total audio duration produced for this turn, in milliseconds.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `input_character_count`    | integer | Raw input character count for this turn, before text normalization.                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `billable_character_count` | integer | Billable character count for this turn — the input minus stripped inline-control characters; always ≤ `input_character_count`.                                                                                                                                                                                                                                                                                                                                                                    |
+| `controls_applied`         | object  | Counts of the inline controls the server acted on this turn: `pronunciations_applied` (pronunciation overrides that took effect), `breaks_applied` (pauses that took effect), and `pronunciation_warnings` (entries that failed validation). A pronunciation override that triggers an IPA warning is still applied best-effort and counted in `pronunciations_applied`; the warning is reported separately. `breaks_applied` is always `0` on the WebSocket, where inline pause isn't supported. |
 
 > **Info**
 >
@@ -108,7 +108,7 @@ Sent in response to an [`Interrupt`](/docs/flux-tts/client-messages#interrupt). 
 | ----------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `audio_played_ms` | integer           | How much audio the client had played when the interrupt landed, in milliseconds **from the start of the session**. Echoes `Interrupt.playback_offset` when supplied; otherwise the server's own count of audio generated so far. When you interrupt without an offset, use this as the baseline your next `playback_offset` must advance past. |
 | `text_spoken`     | string (optional) | The portion of the turn's text the user heard, aligned against `audio_played_ms`. **Omitted when the `Interrupt` carried no `playback_offset`.**                                                                                                                                                                                               |
-| `text_remaining`  | string (optional) | The portion the user did not hear. Omitted under the same condition.                                                                                                                                                                                                                                                                           |
+| `text_remaining`  | string (optional) | The portion the user didn't hear. Omitted under the same condition.                                                                                                                                                                                                                                                                            |
 | `metadata`        | object            | Per-turn billing/timing for the interrupted turn — the same body as a standalone [`SpeechMetadata`](#speechmetadata).                                                                                                                                                                                                                          |
 
 > **Info**
@@ -172,7 +172,7 @@ Sent when a `Configure` message is rejected. The failing message has no effect �
 }
 ```
 
-`field` and `value` identify the rejected field and the value you sent; they are present only when the failure is tied to a specific field/value. See the [ConfigureFailure codes](#configurefailure-codes) below.
+`field` and `value` identify the rejected field and the value you sent; they're present only when the failure is tied to a specific field/value. See the [ConfigureFailure codes](#configurefailure-codes) below.
 
 ## Warning
 
@@ -186,7 +186,7 @@ Informational message; synthesis continues and the connection is unaffected. Eve
 }
 ```
 
-See the [warning codes](#warning-codes) below. Warnings are not rate-limited — every occurrence is emitted.
+See the [warning codes](#warning-codes) below. Warnings aren't rate-limited — every occurrence is emitted.
 
 ## Error
 
@@ -204,7 +204,7 @@ See the [error codes](#error-codes) below.
 
 ## Warning codes
 
-All warning codes follow Deepgram's `SCREAMING_SNAKE_CASE` convention; the session stays open in every case.
+All warning codes follow our `SCREAMING_SNAKE_CASE` convention; the session stays open in every case.
 
 **Turn-scoped:**
 
@@ -254,7 +254,7 @@ An invalid `expressivity` value rejects the connection with an HTTP `400` before
 
 ## Error codes
 
-Every error is fatal and is followed by a WebSocket close frame. Codes use Deepgram's `DOMAIN-NNNN` convention.
+Every error is fatal and is followed by a WebSocket close frame. Codes use our `DOMAIN-NNNN` convention.
 
 | Code           | Error                      | Trigger                                                                                                                                                                                                                                                                                                                                                                                                |
 | -------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -270,8 +270,8 @@ Every error is fatal and is followed by a WebSocket close frame. Codes use Deepg
 
 ## Related resources
 
-* [Client Messages](/docs/flux-tts/client-messages) — the messages these respond to
-* [The Speech Lifecycle](/docs/flux-tts/state) — how these events sequence across a turn
-* [Cross-Turn Context](/docs/flux-tts/context) — voice consistency across turns
+* [Client messages](/docs/flux-tts/client-messages) — the messages these respond to
+* [The speech lifecycle](/docs/flux-tts/state) — how these events sequence across a turn
+* [Cross-turn context](/docs/flux-tts/context) — voice consistency across turns
 
 ---

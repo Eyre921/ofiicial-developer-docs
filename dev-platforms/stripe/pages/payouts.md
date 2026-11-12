@@ -1291,6 +1291,8 @@ Minimum payout amounts are typically one base unit of the local currency. See th
 
 Each payout reflects your available account balance at the time it was created. In some cases, you might have a negative account balance. For example, if you receive 100 USD in payments but refund 200 USD of prior payments, your account balance would be -100 USD. If you don’t receive further payments to balance out the negative amount, Stripe creates a payout that *debits* your bank account.
 
+A negative payout is a [Payout](https://docs.stripe.com/api/payouts/object.md) object with a negative `amount`. It triggers the same `payout.*` events as other payouts, such as `payout.created`, `payout.paid`, and `payout.failed`. Make sure your integration handles a negative `amount` in these events. The payout’s [balance transaction](https://docs.stripe.com/api/balance_transactions/object.md) has a `type` and `reporting_category` of `payout`, and a positive `amount` because the debit adds funds to your Stripe balance.
+
 Your bank account must support both credit and debit transactions so that Stripe can perform any required payouts.
 
 ## Test payouts

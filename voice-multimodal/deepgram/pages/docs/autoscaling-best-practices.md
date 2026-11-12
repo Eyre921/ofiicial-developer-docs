@@ -1,5 +1,5 @@
 ---
-title: "Auto-Scaling"
+title: "Auto-scaling"
 source: https://developers.deepgram.com/docs/autoscaling-best-practices.md
 path: docs/autoscaling-best-practices
 ---
@@ -7,9 +7,9 @@ path: docs/autoscaling-best-practices
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Auto-Scaling
+# Auto-scaling
 
-Please reach out to your Deepgram Account Representative as needed for recommendations and support in scaling your infrastructure associated with your Deepgram self-hosted deployment.
+Please reach out to your Deepgram Account Representative as needed for recommendations and support in scaling your infrastructure associated with your Deepgram Self-Hosted deployment.
 
 ## Context
 
@@ -23,17 +23,17 @@ With that said, the strategies presented here are transportable to other contain
 * `metrics`- Application performance data provided in Prometheus exposition format (OpenMetrics) used to monitor and make decisions about scaling
 * `metrics server`- Service or tooling used to consume metrics, such as Prometheus, Cloudwatch, etc
 
-## Scaling Metrics
+## Scaling metrics
 
-In order to make auto-scaling decisions you will require some insight into the applications running in your environment. The [Metrics Guide](/docs/metrics-guide) describes available metrics and status endpoints for Deepgram containers.
+In order to make auto-scaling decisions you'll require some insight into the applications running in your environment. The [Metrics Guide](/docs/metrics-guide) describes available metrics and status endpoints for Deepgram containers.
 
-In particular, the Engine metrics should be utilized to monitor and scale your self-hosted deployment. The list of available Engine metrics can be found under the [Available Metrics](/docs/metrics-guide#available-metrics) section of the Metrics Guide.
+In particular, the Engine metrics should be utilized to monitor and scale your self-hosted deployment. The list of available Engine metrics can be found under the [Available metrics](/docs/metrics-guide#available-metrics) section of the Metrics Guide.
 
-Please note some metrics will not be exposed until a request has been submitted of a given type. For example, the `engine_requests_total` counters for batch and streaming speech-to-text or text-to-speech will not appear until you make a request of the corresponding type.
+Please note some metrics won't be exposed until a request has been submitted of a given type. For example, the `engine_requests_total` counters for batch and streaming speech-to-text or text-to-speech won't appear until you make a request of the corresponding type.
 
-### Consuming Metrics
+### Consuming metrics
 
-Out-of-the-box Kubernetes does not provide any metrics for use with auto-scaling. It is incumbent upon the operator or engineer deploying Kubernetes to also deploy something to capture and serve metrics pertinent to their needs. Kubernetes provides an optional metrics server that is compatible with Prometheus-style metrics which may be deployed for this purpose. If deployed it will automatically monitor your clusters for standard metrics such as CPU, memory, and I/O.
+Out-of-the-box Kubernetes doesn't provide any metrics for use with auto-scaling. It's incumbent upon the operator or engineer deploying Kubernetes to also deploy something to capture and serve metrics pertinent to their needs. Kubernetes provides an optional metrics server that's compatible with Prometheus-style metrics which may be deployed for this purpose. If deployed it will automatically monitor your clusters for standard metrics such as CPU, memory, and I/O.
 
 **`Shell`**
 
@@ -48,48 +48,48 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 
 Kubernetes can also be configured with a [Prometheus adapter](https://github.com/kubernetes-sigs/prometheus-adapter/blob/master/docs/walkthrough.md) to make custom metrics or external metrics from an external collector available through the [Kubernetes API](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/). This is useful for utilizing the Deepgram Engine metrics in your auto-scaling decision-making.
 
-For cloud deployed environments, your service provider may include their own metrics server, such as AWS Cloudwatch or Google Stackdriver. Your organization may also already employ its own metrics infrastructure, such as Datadog, or self-managed Prometheus. You will need to ensure the Deepgram metrics are monitored by your specific metrics collectors and also made available to your auto-scaling control plane via a Prometheus adapter.
+For cloud deployed environments, your service provider may include their own metrics server, such as AWS Cloudwatch or Google Stackdriver. Your organization may also already employ its own metrics infrastructure, such as Datadog, or self-managed Prometheus. You'll need to ensure the Deepgram metrics are monitored by your specific metrics collectors and also made available to your auto-scaling control plane via a Prometheus adapter.
 
 ### Benchmarks
 
 Many sections of this guide rely on reliable performance benchmarks for various combinations of hardware, audio or text input, and features used. Deepgram has pre-computed many of the relevant benchmarks, and can assist you in additional benchmarking efforts for your specific use case. Please contact your Deepgram Account Representative for details beyond this guide.
 
-### Using Metrics
+### Using metrics
 
-The Deepgram metrics exposed provide insight into the Engine's performance and are best used in conjunction with performance benchmarks for your specific use case, as detailed above. Because the Engine instances run on GPUs and are designed to optimize their use of GPU resources, traditional metrics such as CPU and Memory are not primary indicators of performance and GPU usage will generally remain consistent.
+The Deepgram metrics exposed provide insight into the Engine's performance and are best used in conjunction with performance benchmarks for your specific use case, as detailed above. Because the Engine instances run on GPUs and are designed to optimize their use of GPU resources, traditional metrics such as CPU and Memory aren't primary indicators of performance and GPU usage will generally remain consistent.
 
-#### Batch Speech-to-Text
+#### Batch speech-to-text
 
 Deepgram is highly efficient at processing pre-recorded batch audio and can generate transcripts for an hour of audio in [under 30 seconds](https://blog.deepgram.com/nova-speech-to-text-whisper-api/#performance:-measuring-nova's-asr-accuracy-speed-and-cost). For extensive backlogs of audio you may still need to scale beyond a single instance of Engine to expedite the process, or to meet increasing customer needs. The primary metric of concern for scale considerations is the active requests: `engine_active_requests{kind="batch"}`.
 
-The Deepgram Engine will attempt to queue all incoming requests. Therefore, it is critical to establish a baseline for acceptable performance (the time to return transcripts) on your hardware via benchmarking. Remember that you may be processing files of varying sizes and whether or not you require an immediate response.
+The Deepgram Engine will attempt to queue all incoming requests. Therefore, it's critical to establish a baseline for acceptable performance (the time to return transcripts) on your hardware via benchmarking. Remember that you may be processing files of varying sizes and whether or not you require an immediate response.
 
 Once the baseline has been established the active requests metric can be utilized to scale before additional requests impact transcription times in your batch environment.
 
-#### Streaming Speech-to-Text
+#### Streaming speech-to-text
 
 Streaming audio is time sensitive for the majority of use cases, and establishing acceptable response latencies is critical to determining appropriate scaling points for your application. The specific combination of model and feature set used will determine how many streams your instances can support with acceptable latencies for your use.
 
-The [Measuring Streaming Latency](/docs/measuring-streaming-latency) guide can help you as you benchmark your system to establish the number of streams you can support at acceptable latencies. You will want to make sure that all simultaneous audio streams are able to maintain an average response time of 400ms or less. The more streams you open up for transcription, the higher the request latency will climb.
+The [Measuring streaming latency](/docs/measuring-streaming-latency) guide can help you as you benchmark your system to establish the number of streams you can support at acceptable latencies. You'll want to make sure that all simultaneous audio streams are able to maintain an average response time of 400ms or less. The more streams you open up for transcription, the higher the request latency will climb.
 
-Performance can be negatively impacted by a variety of other factors, including the features you are using and the size of the chunks of audio you are sending. Consult your Deepgram Account Representative to analyze your use case, expected throughput, and risk tolerance.
+Performance can be negatively impacted by a variety of other factors, including the features you're using and the size of the chunks of audio you're sending. Consult your Deepgram Account Representative to analyze your use case, expected throughput, and risk tolerance.
 
 Once you determine the number of streams you can serve at acceptable latency, you can use this number to monitor capacity using the `engine_active_requests{kind="stream"}` metric for streaming requests.
 
-#### Batch Text-to-Speech
+#### Batch text-to-speech
 
 The [Deploy TTS Services](/docs/deploy-tts-services) guide details the unique latency and availability requirements specific to text-to-speech requests that are worth optimizing for. You can monitor the number of TTS requests with `engine_active_requests{kind="tts"}`.
 
-#### Flux Streaming
+#### Flux STT streaming
 
-Flux is a purpose-built, low-latency streaming model for voice agent use cases that requires special scaling considerations.
+Deepgram Flux STT is a purpose-built, low-latency streaming model for voice agent use cases that requires special scaling considerations.
 
-For Flux deployments, you must configure `flux.max_streams` in your Engine configuration to prevent oversubscription. Note that `max_active_requests` does not apply to Flux streams due to Flux's different resource constraints; you must use `flux.max_streams` instead. The appropriate value depends on your GPU type and should be based on Deepgram's benchmarking recommendations. See the [Flux Self-Hosted Guide](/docs/flux-self-hosted#configuring-max-streams) for detailed configuration instructions and recommended values by GPU type.
+For Flux STT deployments, you must configure `flux.max_streams` in your Engine configuration to prevent oversubscription. Note that `max_active_requests` doesn't apply to Flux STT streams due to Flux STT's different resource constraints; you must use `flux.max_streams` instead. The appropriate value depends on your GPU type and should be based on Deepgram's benchmarking recommendations. See the [Flux STT Self-Hosted Guide](/docs/flux-self-hosted#configuring-max-streams) for detailed configuration instructions and recommended values by GPU type.
 
-For Flux streaming, monitor:
+For Flux STT streaming, monitor:
 
-* `flux_used_streams`: The current number of active Flux streams
-* `flux_max_streams`: The configured maximum number of Flux streams
+* `flux_used_streams`: The current number of active Flux STT streams
+* `flux_max_streams`: The configured maximum number of Flux STT streams
 * `flux_fraction_streams`: The fraction of max streams currently in use
 
 #### Summary
@@ -103,7 +103,7 @@ For streaming speech-to-text, monitor:
 * `engine_active_requests{kind="stream"}`
 * `engine_estimated_stream_capacity` optional
 
-For Flux streaming, monitor:
+For Flux STT streaming, monitor:
 
 * `flux_used_streams`
 * `flux_max_streams`
@@ -119,19 +119,19 @@ Additionally, success & error counts are available under the status buckets:
 engine_requests_total{kind="{batch,stream,tts}",response_status="{1xx,2xx,3xx,4xx,5xx}"}
 ```
 
-## Deployment Considerations
+## Deployment considerations
 
-[Recall](/docs/self-hosted-introduction#components) that self-hosting Deepgram consists of a number of separate components, two of which we are concerned with scaling. These include Engine containers, which handle inference tasks, and API containers, which handle request brokering to the Engine containers, as well as some post-processing coordination.
+[Recall](/docs/self-hosted-introduction#components) that self-hosting Deepgram consists of a number of separate components, two of which we're concerned with scaling. These include Engine containers, which handle inference tasks, and API containers, which handle request brokering to the Engine containers, as well as some post-processing coordination.
 
 Each API container can generally support up to 16 Engine containers, with a more typical ratio of 1:4. However, some customers choose to deploy API instances 1:1 with Engine, as the API container is comparatively lightweight.
 
-### GPU Instances
+### GPU instances
 
 Ideally, all Engine instances should be deployed to NVIDIA GPU-enabled instances, and GPUs cannot be shared amongst or between Engine instances. The remaining components, such as API and License Proxy containers, can generally be deployed to CPU-only nodes and replicated as desired.
 
 While the Deepgram Engine can make use of multiple NVIDIA GPUs, in most cases, deploying a single Engine container per NVIDIA GPU will be the more efficient deployment strategy. An enterprise-scale deployment should be prepared for horizontal scaling, which is the act of adding node (server) replicas to a deployment without adding resources to those nodes.
 
-### CPU-only Instances
+### CPU-only instances
 
 Deepgram Engine has been implemented and is optimized to take advantage of NVIDIA GPUs, but it does support handling inference tasks in CPU-only environments. CPU-only instances should only be provisioned in use-cases and scenarios where NVIDIA GPU-accelerated instances are unavailable.
 
@@ -143,11 +143,11 @@ Deepgram Engine has been implemented and is optimized to take advantage of NVIDI
 
 Each time a pod is deployed, a container image must be pulled from either a local Container Image Cache or a Container Repository to instantiate the workload. When replicating pods on a single node the container runtime on the node will generally handle this for the operator transparently by referencing the local Container Image Cache. When deploying new nodes, on the other hand, there are no local copies of the container images in the Container Image Cache and so the container images must be pulled from a remote Container Registry.
 
-It is important to consider where the container images are pulled from when scaling out your deployment to new nodes, as this will impact the time required to scale. Some environments such as Amazon's ECS & EKS, Azure's AKS, and Google's GKE provide caching mechanisms you can leverage or that are automatic for those environments as well as local Container Registries. Others, such as Amazon's Fargate for instance, have no native caching available.
+It's important to consider where the container images are pulled from when scaling out your deployment to new nodes, as this will impact the time required to scale. Some environments such as Amazon's ECS & EKS, Azure's AKS, and Google's GKE provide caching mechanisms you can leverage or that are automatic for those environments as well as local Container Registries. Others, such as Amazon's Fargate for instance, have no native caching available.
 
-To reduce the node deployment time we recommend you cache images in a local Container Registry that will be used in a horizontal scaling scenario. This can be done by providing a cache service in your data center if you are running on your own hardware. If you are using a cloud provider such as AWS, Azure, or Google Cloud, you can deploy an in-region cache in your cloud environment.
+To reduce the node deployment time we recommend you cache images in a local Container Registry that will be used in a horizontal scaling scenario. This can be done by providing a cache service in your data center if you're running on your own hardware. If you're using a cloud provider such as AWS, Azure, or Google Cloud, you can deploy an in-region cache in your cloud environment.
 
-## Scaling Considerations
+## Scaling considerations
 
 When scaling Deepgram horizontally, we generally recommend:
 
@@ -155,9 +155,9 @@ When scaling Deepgram horizontally, we generally recommend:
 * A customer-provided proxy (for example, NGINX, HAProxy, Apache) to handle TLS and request distribution across API instances
 * A single GPU per machine
 
-If you want to increase your capacity to handle inference requests, you can add more GPU instances to your deployment and add additional Deepgram Engine containers to take advantage of the additional compute. Deciding when to add GPU instances to your environment depends on the type of requests you are receiving. See the [using metrics](#using-metrics) section for details on benchmarking and various available metrics.
+If you want to increase your capacity to handle inference requests, you can add more GPU instances to your deployment and add additional Deepgram Engine containers to take advantage of the additional compute. Deciding when to add GPU instances to your environment depends on the type of requests you're receiving. See the [using metrics](#using-metrics) section for details on benchmarking and various available metrics.
 
-### When to Scale
+### When to scale
 
 When resources become constrained, it's time to scale. There are two basic strategies for scaling.
 
@@ -168,15 +168,15 @@ When resources become constrained, it's time to scale. There are two basic strat
 
 Deepgram generally recommends horizontal scaling for your self-hosted environment.
 
-### Enforcing Limits
+### Enforcing limits
 
 The Deepgram system is designed to accept as much work as possible by default, irrespective of the performance implications of your specific infrastructure. Once the scaling threshold has been established for your particular use case and performance needs, you may wish to prevent existing instances from accepting additional load beyond the pre-calculated capacity.
 
 This can be accomplished by setting a maximum request limit in your Engine configurations (`engine.toml`) with the `max_active_requests` value. In the `deepgram-self-hosted` Helm chart, this value is controlled by the `engine.concurrencyLimit.activeRequests` configuration value. Incoming requests to an Engine instance beyond this limit will return an error instead of slowing down other requests.
 
-When an API instance receives a request and assigns inference work to a downstream Engine instance, that Engine instance may return an error if it is over capacity. The API instance will then attempt to retry the request with other Engine instances, if available. If no Engine instance is available to meet the request, after exhausting all retry attempts, the API instance will ultimately return a `503` HTTP response back to the calling application giving confirmation of the failure.
+When an API instance receives a request and assigns inference work to a downstream Engine instance, that Engine instance may return an error if it's over capacity. The API instance will then attempt to retry the request with other Engine instances, if available. If no Engine instance is available to meet the request, after exhausting all retry attempts, the API instance will ultimately return a `503` HTTP response back to the calling application giving confirmation of the failure.
 
-### Scaling Down
+### Scaling down
 
 Reclaiming unused or underutilized resources is highly appealing for a variety of reasons, including cost savings, resource management, and security footprint concerns. Scaling down can be difficult to do correctly, especially for streaming use cases. It's import to ensure active work is not lost, users are not disconnected, and prevent scaling back up shortly after scaling down ("yo-yo-ing"). Below we present two possible scale-down pathways.
 
@@ -188,26 +188,26 @@ Regardless of when the procedure occurs, the result is to bring the environment 
 
 If the full environment cannot be taken offline as a whole, care must be taken to first divert traffic from the segment being reset to other segments temporarily. Once reset, traffic is then restored and another segment is reset until all environments have been redeployed. This can be handled automatically in Kubernetes with [rolling updates](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/), such as running [`helm upgrade` with the `deepgram-self-hosted` Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted#upgrade-and-rollback-strategies).
 
-#### Full Auto-Scaling
+#### Full auto-scaling
 
-A fully automated environment that scales both up and down on-demand is the most challenging to achieve. Preventing resource yo-yo-ing requires some level of trade-off to keep resources around long enough to ensure they are no longer needed, and must be balanced with the level of aggressiveness used to scale out. These strategies will depend entirely upon your business needs and may require multiple deployments to handle different business outcomes from the same application.
+A fully automated environment that scales both up and down on-demand is the most challenging to achieve. Preventing resource yo-yo-ing requires some level of trade-off to keep resources around long enough to ensure they're no longer needed, and must be balanced with the level of aggressiveness used to scale out. These strategies will depend entirely upon your business needs and may require multiple deployments to handle different business outcomes from the same application.
 
 Streams connected to Deepgram may be held open by an application even when not doing useful work, unlike batch mode requests which are cleared upon transcript completion. Because of this, it can be difficult to determine when an Engine instance is in fact no longer processing useful information. We recommend the following approach:
 
 1. Determine a grace period threshold within which most streaming requests in your environment should finish. This should be long enough to account for the highest reasonable outlier within your normal distribution of audio durations. For example, if your average audio is 5 minutes, and you have outliers at 20, 35, and 50 minutes on a normal day, you'd likely set your threshold to 60 minutes.
-2. Send a `SIGINT` signal to the API/Engine container that you are planning to scale down. This will instruct the container to stop listening on its active port, and therefore stop accepting new connections, but to continue processing existing requests.
+2. Send a `SIGINT` signal to the API/Engine container that you're planning to scale down. This will instruct the container to stop listening on its active port, and therefore stop accepting new connections, but to continue processing existing requests.
 3. Wait for the predetermined threshold for existing requests to complete.
 4. Beyond this threshold, there may be straggling streaming requests. You may choose to forcibly kill the container and any remaining requests at this point.
 
 This behavior is automatically available in Kubernetes by setting the [grace period](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination). This period is configurable via `global.outstandingRequestGracePeriod` in the `deepgram-self-hosted` Helm chart. See the [Helm chart documentation](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted#values) for details.
 
-Lastly, care should be taken to ensure the replicas do not spin back up immediately after scaling down, sometimes called "yo-yo-ing" or "flapping". Kubernetes scaling policies directly support an anti-flapping mechanism to prevent immediate reallocation of replicas via the [`stabilizationWindowSeconds` directive](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/). Hashicorp Nomad refers to this as a [scaling policy cooldown](https://developer.hashicorp.com/nomad/tools/autoscaling/policy#cooldown), and your control plane may use other wording.
+Lastly, care should be taken to ensure the replicas don't spin back up immediately after scaling down, sometimes called "yo-yo-ing" or "flapping". Kubernetes scaling policies directly support an anti-flapping mechanism to prevent immediate reallocation of replicas via the [`stabilizationWindowSeconds` directive](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/). Hashicorp Nomad refers to this as a [scaling policy cooldown](https://developer.hashicorp.com/nomad/tools/autoscaling/policy#cooldown), and your control plane may use other wording.
 
 Scaling behavior, such as the `stabilizationWindowSeconds`, can be configured in the `deepgram-self-hosted` Helm chart with `scaling.auto.{api,engine}.behavior` configuration values. See the [Helm chart documentation](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted#values) for details.
 
 ## Summary
 
-Scaling your Deepgram deployment to handle your production traffic in an efficient and performant manner is a long-term challenge that is highly dependent on your use case and constraints. Deepgram publishes a variety of metrics to aid you in determining when Deepgram services are under heavy load, which can aid in scaling decisions.
+Scaling your Deepgram deployment to handle your production traffic in an efficient and performant manner is a long-term challenge that's highly dependent on your use case and constraints. Deepgram publishes a variety of metrics to aid you in determining when Deepgram services are under heavy load, which can aid in scaling decisions.
 
 If you have further questions about how to effectively benchmark your self-hosted deployment, or scale effectively, please contact your Deepgram Account Representative or [Support](https://deepgram.com/contact-us/).
 

@@ -1,5 +1,5 @@
 ---
-title: "Configuring Custom Endpoints"
+title: "Configuring custom endpoints"
 source: https://developers.deepgram.com/reference/custom-endpoints.md
 path: reference/custom-endpoints
 ---
@@ -7,29 +7,29 @@ path: reference/custom-endpoints
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Configuring Custom Endpoints
+# Configuring custom endpoints
 
 This guide provides instructions for configuring your applications to use Deepgram's regional endpoints, Deepgram Dedicated endpoints, or self-hosted endpoints.
 
-## Regional Endpoints
+## Regional endpoints
 
 Deepgram offers regional endpoints for customers who need data processing within a specific geography. Regional endpoints use the same API keys and SDKs as the default global endpoint — you only need to change the base URL.
 
 **EU Endpoint URL**: `api.eu.deepgram.com`
 
-The EU endpoint supports Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.eu.deepgram.com` in any SDK or API request to route traffic through the EU.
+The EU endpoint supports speech-to-text, text-to-speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.eu.deepgram.com` in any SDK or API request to route traffic through the EU.
 
 **AU Endpoint URL**: `api.au.deepgram.com`
 
-The AU endpoint supports Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.au.deepgram.com` in any SDK or API request to route traffic through Australia.
+The AU endpoint supports speech-to-text, text-to-speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.au.deepgram.com` in any SDK or API request to route traffic through Australia.
 
 **India Endpoint URL**: `api.in.deepgram.com`
 
-The India endpoint supports Speech-to-Text, Text-to-Speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.in.deepgram.com` in any SDK or API request to route traffic through India.
+The India endpoint supports speech-to-text, text-to-speech, Voice Agent, and Text Intelligence APIs. Replace `api.deepgram.com` with `api.in.deepgram.com` in any SDK or API request to route traffic through India.
 
 For full configuration details, SDK examples, WebSocket URLs, known limitations, and information about managed LLM/TTS provider regional routing, see [Regional Endpoints](/reference/regional-endpoints).
 
-## Deepgram Dedicated Endpoints
+## Deepgram Dedicated endpoints
 
 [Deepgram Dedicated](https://deepgram.com/dedicated) allows you to run speech-to-text, text-to-speech, and voice agent workloads with performance, compliance, and regional control, without the complexity of managing infrastructure.
 
@@ -42,7 +42,7 @@ If you have a Deepgram Dedicated (DGD) endpoint, you'll receive endpoint details
 1. **Replace the base URL**: In any SDK or API request, replace `api.deepgram.com` with your dedicated endpoint URL.
 2. **Use your existing credentials**: You can use your existing API keys and tokens.
 
-### Feature Compatibility
+### Feature compatibility
 
 All Deepgram API features are available on self-hosted deployments. See our [API Documentation](/reference/deepgram-api-overview) for more information.
 
@@ -66,22 +66,22 @@ For self-hosted Deepgram deployments, you'll use your own custom domain and infr
 2. **Use your distribution credentials**: Self-hosted deployments require specific credentials provided during setup.
 3. **Configure protocol and port**: Specify HTTP/HTTPS and custom ports as needed for your deployment.
 
-### Feature Compatibility
+### Feature compatibility
 
 All Deepgram API features are available on self-hosted deployments. See our [API Documentation](/reference/deepgram-api-overview) for more information.
 
-## WebSocket Connections
+## WebSocket connections
 
 For streaming features, update WebSocket connection URLs accordingly:
 
-### Speech-to-Text (`/v1/listen`)
+### Speech-to-text (`/v1/listen`)
 
 * **Standard**: `wss://api.deepgram.com/v1/listen`
 * **Dedicated**: `wss://{YOUR_DEDICATED_ENDPOINT}/v1/listen`
 * **Self-hosted (HTTPS)**: `wss://your-deepgram-instance.com/v1/listen`
 * **Self-hosted (HTTP with custom port)**: `ws://your-deepgram-instance.com:8080/v1/listen`
 
-### Text-to-Speech (`/v1/speak`)
+### Text-to-speech (`/v1/speak`)
 
 * **Standard**: `wss://api.deepgram.com/v1/speak`
 * **Dedicated**: `wss://{YOUR_DEDICATED_ENDPOINT}/v1/speak`
@@ -95,13 +95,13 @@ For streaming features, update WebSocket connection URLs accordingly:
 * **Self-hosted (HTTPS)**: `wss://your-deepgram-instance.com/v1/agent/converse`
 * **Self-hosted (HTTP with custom port)**: `ws://your-deepgram-instance.com:8080/v1/agent/converse`
 
-## SDK Configuration Examples
+## SDK configuration examples
 
 ### Python SDK
 
 Override the endpoint with a custom `DeepgramClientEnvironment`. The v7 client
 does **not** accept a `base_url`; `httpx_client` is for transport concerns only
-(proxies, SSL, pooling, timeout) and does not change the endpoint. For more
+(proxies, SSL, pooling, timeout) and doesn't change the endpoint. For more
 detail, see [Using SDKs with Self-Hosted](/docs/using-sdks-with-self-hosted).
 
 ```python
@@ -237,7 +237,7 @@ DeepgramClient client = DeepgramClient.builder()
     .build();
 ```
 
-## Direct API Calls
+## Direct API calls
 
 ### cURL Examples
 

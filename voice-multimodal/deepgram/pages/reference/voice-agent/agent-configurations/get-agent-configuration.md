@@ -1,5 +1,5 @@
 ---
-title: "Get Agent Configuration"
+title: "Get agent configuration"
 source: https://developers.deepgram.com/reference/voice-agent/agent-configurations/get-agent-configuration.md
 path: reference/voice-agent/agent-configurations/get-agent-configuration
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-configurations/get-agent-configuration
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Get Agent Configuration
+# Get agent configuration
 
 GET https://api.deepgram.com/v1/projects/{project_id}/agents/{agent_id}
 

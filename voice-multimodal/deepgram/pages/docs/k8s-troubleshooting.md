@@ -9,27 +9,27 @@ path: docs/k8s-troubleshooting
 
 # Troubleshooting
 
-# Kubernetes Troubleshooting
+# Kubernetes troubleshooting
 
-Use this checklist to validate the health of your Kubernetes cluster running Deepgram self-hosted services.
+Use this checklist to validate the health of your Kubernetes cluster running Deepgram Self-Hosted services.
 
 ## Deepgram Helm Chart
 
 * Check the version of the Helm chart for Deepgram that you're currently running on your Kubernetes cluster with `helm list`.
-  * Ensure that you are running the latest version of the [Helm chart for Deepgram](https://github.com/deepgram/self-hosted-resources)
-* If the Deepgram `engine` Pod is not starting up succesfully, you may need to increase the `startupProbe` values
+  * Ensure that you're running the latest version of the [Helm chart for Deepgram](https://github.com/deepgram/self-hosted-resources)
+* If the Deepgram `engine` Pod isn't starting up succesfully, you may need to increase the `startupProbe` values
   * Modify the `periodSeconds` and `failureThreshold` values based on your tolerances
 
 ## Storage
 
 * Ensure you don't have too many files in your cloud filesystem for Deepgram model file storage (`.dg` files)
-  * ⚠️ Having too many model files can slow down the `engine` pod startup significantly! We recommend testing your self-hosted setup with a handful of model files, and progressively add more if needed, to ensure that the `engine` is able to start up in a timely manner.
-* Check the metrics on your cloud storage volume (eg. Amazon EFS) to see if there is heavy utilization
-  * This is not necessarily an issue in an of itself, but rather a symptom indicating that something else needs attention
+  * ⚠️ Having too many model files can slow down the `engine` pod startup significantly. We recommend testing your self-hosted setup with a handful of model files, and progressively add more if needed, to ensure that the `engine` is able to start up in a timely manner.
+* Check the metrics on your cloud storage volume (eg. Amazon EFS) to see if there's heavy utilization
+  * This isn't necessarily an issue in an of itself, but rather a symptom indicating that something else needs attention
 
 ## Infrastructure
 
-* If the `engine` Pod is not starting up successfully, check the Pod logs for any errors.
+* If the `engine` Pod isn't starting up successfully, check the Pod logs for any errors.
   * Command: `kubectl logs pod <pod-name>`
 * Look at the Pod events and see if Kubernetes (kubelet) is killing the Pod before it has a chance to startup fully
   * Command: `kubectl describe pod <pod-name>`
@@ -38,7 +38,7 @@ Use this checklist to validate the health of your Kubernetes cluster running Dee
 * Run a test API call against the Deepgram API server
   * Command: `kubectl run --namespace=dg-self-hosted --rm --stdin --tty --image=mcr.microsoft.com/dotnet/sdk --command test-client -- pwsh -Command Invoke-RestMethod -Uri 'http://deepgram-api-external.dg-self-hosted.svc.cluster.local:8080/models'`
 
-# AI Troubleshooting
+# AI troubleshooting
 
 To simplify the process of identifying root causes and resolutions, for Deepgram services running on Kubernetes,
 you can use an AI client with [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) support.
@@ -50,7 +50,7 @@ you can use an AI client with [Model Context Protocol (MCP)](https://modelcontex
   * [Cline Extension for VSCode](https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev)
   * [Continue.dev Extension for VSCode](https://continue.dev)
   * [OpenCode](https://github.com/sst/opencode)
-* Login to app, or set up a connection to a Large Language Model (LLM) service that supports tool calling. Deepgram has tested [Claude 3.5 Haiku](https://www.anthropic.com/claude/haiku), a low-cost model.
+* Login to app, or set up a connection to a Large Language Model (LLM) service that supports tool calling. We've tested [Claude 3.5 Haiku](https://www.anthropic.com/claude/haiku), a low-cost model.
   * [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)
   * [OpenAI ChatGPT](https://platform.openai.com/docs/guides/production-best-practices#api-keys)
   * [Anthropic Claude](https://docs.claude.com/en/docs/get-started)
@@ -62,21 +62,21 @@ you can use an AI client with [Model Context Protocol (MCP)](https://modelcontex
   * **Command**: `kubectl config get-contexts; kubectl config use-context <NAME>`
   * **Alternative**: Use [kubectx](https://github.com/ahmetb/kubectx) to list and switch contexts more easily
 
-### General Prompt Guidelines
+### General prompt guidelines
 
 * Keep in mind that each AI client application has its own built-in prompt templates, and may behave differently.
 * We generally advise against enabling auto-approval for MCP tools that apply changes.
 * Enabling auto-approval for MCP tools that perform read-only operations is generally safe.
 * Use safe-guard statements in your prompts, such as "*do not make any changes*" in case your AI application is prone to attempt "fixing" things.
 
-### Example Troubleshooting Prompts
+### Example troubleshooting prompts
 
 Once you've finished setting up your AI MCP client, you can use the following prompts to help identify issues in your Kubernetes cluster.
 Feel free to adapt any these prompts to your specific environment, such as updating the Kubernetes namespace you've deployed to, or provide additional, relevant context.
 
 Check if you're running the latest version of the Deepgram Helm chart:
 
-> Don't make any changes to the kubernetes cluster. Check if I am running the latest version of the Deepgram self-hosted Helm chart. Use the currently selected context.
+> Don't make any changes to the kubernetes cluster. Check if I am running the latest version of the Deepgram Self-Hosted Helm chart. Use the currently selected context.
 
 Make sure all the essential Deepgram pods exist:
 
@@ -84,7 +84,7 @@ Make sure all the essential Deepgram pods exist:
 
 Make sure essential Deepgram pods are running:
 
-> Are there any pods in the dg-self-hosted k8s namespace that are not running properly?
+> Are there any pods in the dg-self-hosted k8s namespace that aren't running properly?
 
 Check to see if the "engine" pod is being killed by the kubelet startup probe.
 
@@ -96,4 +96,4 @@ Read logs from the Deepgram engine pod:
 
 Ensure the Deepgram `engine` pod is scheduled on a system with at least a single NVIDIA GPU:
 
-> Make sure that the Deepgram engine pod on the kubernetes cluster is not scheduled on a node that has a fractional GPU. Do not make any changes to the cluster. Use the currently selected k8s context.
+> Make sure that the Deepgram engine pod on the kubernetes cluster isn't scheduled on a node that has a fractional GPU. Do not make any changes to the cluster. Use the currently selected k8s context.

@@ -1,5 +1,5 @@
 ---
-title: "Template Apps"
+title: "Template apps"
 source: https://developers.deepgram.com/docs/voice-agent-template-apps.md
 path: docs/voice-agent-template-apps
 ---
@@ -7,7 +7,7 @@ path: docs/voice-agent-template-apps
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Template Apps
+# Template apps
 
 * [Node.js](https://github.com/deepgram-starters/node-voice-agent)
 * [Bun](https://github.com/deepgram-starters/bun-voice-agent)

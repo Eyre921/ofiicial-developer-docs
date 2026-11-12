@@ -1,5 +1,5 @@
 ---
-title: "Sample Rate"
+title: "Sample rate"
 source: https://developers.deepgram.com/docs/sample-rate.md
 path: docs/sample-rate
 ---
@@ -7,13 +7,13 @@ path: docs/sample-rate
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Sample Rate
+# Sample rate
 
 `sample_rate` *int32*
 
-Pre-recorded  Streaming:Nova Streaming:Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming:Flux STT  All available languages
 
-## Enable Feature
+## Enable feature
 
 > **Info**
 >

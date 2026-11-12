@@ -1,5 +1,5 @@
 ---
-title: "Sentiment Analysis"
+title: "Sentiment analysis"
 source: https://developers.deepgram.com/docs/sentiment-analysis.md
 path: docs/sentiment-analysis
 ---
@@ -7,7 +7,7 @@ path: docs/sentiment-analysis
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Sentiment Analysis
+# Sentiment analysis
 
 Deepgram API Playground
 
@@ -30,7 +30,7 @@ This sentiment feature produces sentiment analysis at every level of transcripti
 >
 > The break point for a `sentiment_score` becoming positive or negative is `+-0.333333333...`.
 
-## Enable Feature
+## Enable feature
 
 To enable Sentiment, use the following parameter in the query string when you call Deepgram’s `/listen` endpoint:
 
@@ -53,14 +53,14 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Query Parameters
+### Query parameters
 
 | Parameter   | Values | Type    | Description                                                                |
 | ----------- | ------ | ------- | -------------------------------------------------------------------------- |
 | `sentiment` | `true` | boolean | Enables sentiment analysis                                                 |
 | `language`  | `en`   | string  | The language of your input audio (Only English is supported at this time.) |
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -107,7 +107,7 @@ The `sentiment` values added to objects are:
 
 ---
 
-### Response Properties
+### Response properties
 
 | Property                                   | Description                                                                                                                                                                            |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -121,7 +121,7 @@ The `sentiment` values added to objects are:
 
 #### Warning
 
-If you request Sentiment Analysis with an unsupported language by specifying a language code such as `sentiment=true&language=es` or `sentiment=true&detect_language=true` where the detected language is unsupported, you will get the warning message below.
+If you request Sentiment Analysis with an unsupported language by specifying a language code such as `sentiment=true&language=es` or `sentiment=true&detect_language=true` where the detected language is unsupported, you'll get the warning message below.
 
 **`JSON`**
 
@@ -141,7 +141,7 @@ If you request Sentiment Analysis with an unsupported language by specifying a l
 
 **Example Warning**
 
-Here is an example of the JSON structure of a request with warning object.
+Here's an example of the JSON structure of a request with warning object.
 
 **`JSON`**
 

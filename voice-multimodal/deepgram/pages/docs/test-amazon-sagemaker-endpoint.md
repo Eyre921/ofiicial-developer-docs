@@ -11,7 +11,7 @@ path: docs/test-amazon-sagemaker-endpoint
 
 Once your SageMaker endpoint reaches `InService`, run a client script against it to confirm that inference works end to end. Deepgram publishes a ready-made set of test clients in the [dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) repository. Each client wraps the SageMaker bidirectional streaming or batch (HTTP) invocation API with the payload shape that the target Deepgram model expects, so you can focus on verifying the endpoint rather than writing transport code.
 
-The repository is organized by product and by language. Pick the script that matches the model you deployed (Flux, Nova-3, or Aura) and the language you want to work in (Python, Node.js, or Java). The scripts are load-testing clients first and functional smoke tests second — running any of them with a single connection is the fastest way to prove that your endpoint accepts traffic and returns results.
+The repository is organized by product and by language. Pick the script that matches the model you deployed (Deepgram Flux STT, Nova-3, or Aura) and the language you want to work in (Python, Node.js, or Java). The scripts are load-testing clients first and functional smoke tests second — running any of them with a single connection is the fastest way to prove that your endpoint accepts traffic and returns results.
 
 > **Tip**
 >
@@ -63,7 +63,7 @@ Each Deepgram product has a dedicated script because the SageMaker payload shape
 | Product                   | Language | Path in dg-sagemaker                          | Script                                                                                                                                                                                                                 |
 | ------------------------- | -------- | --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Any (one-shot smoke test) | Python   | `skills/deepgram-sagemaker/scripts/`          | `invoke_test.py <endpoint> --region <region> --product <product>` — sends one real request, choosing the streaming or synchronous path and the required parameters for the product, and prints the exact request shape |
-| Flux (conversational STT) | Python   | `python-flux/`                                | `flux_stress.py file \| microphone \| list-endpoints`                                                                                                                                                                  |
+| Flux STT (conversational) | Python   | `python-flux/`                                | `flux_stress.py file \| microphone \| list-endpoints`                                                                                                                                                                  |
 | Nova-3 (streaming STT)    | Python   | `python-stt/`                                 | `stt_microphone_stress.py`, `stt_wav_stress.py stream \| batch`                                                                                                                                                        |
 | Nova-3 (streaming STT)    | Node.js  | `js-stt/`                                     | `stress-stt.ts` (configured via `stt.file.ts`)                                                                                                                                                                         |
 | Nova-3 (streaming STT)    | Java     | `java/stt/aws-sdk/`, `java/stt/deepgram-sdk/` | Gradle projects; see each project's README                                                                                                                                                                             |
@@ -71,7 +71,7 @@ Each Deepgram product has a dedicated script because the SageMaker payload shape
 
 > **Note**
 >
-> Invocation flags, defaults, and required inputs vary per script. Consult the `README.md` in each subdirectory for the full command reference. For example, the Flux client uses the `/v2/listen` endpoint and a turn-based protocol, while the Nova-3 client uses `/v1/listen` with channel-based alternatives.
+> Invocation flags, defaults, and required inputs vary per script. Consult the `README.md` in each subdirectory for the full command reference. For example, the Flux STT client uses the `/v2/listen` endpoint and a turn-based protocol, while the Nova-3 client uses `/v1/listen` with channel-based alternatives.
 
 ## Required tooling
 
@@ -130,7 +130,7 @@ aws sts get-caller-identity
 
 Every script accepts a `--region` flag. Defaults differ by script: `flux_stress.py` and `stt_microphone_stress.py` default to `us-east-1`; `stt_wav_stress.py` and `tts_stress.py` default to `us-east-2`; `invoke_test.py` has no default and requires `--region` (or `AWS_REGION`). **Make sure the region you pass matches the region where your SageMaker endpoint was deployed** — an endpoint name is only resolvable within the region it was created in.
 
-If you are not sure which endpoints exist in a region, use the Flux client's helper subcommand to list them:
+If you aren't sure which endpoints exist in a region, use the Flux STT client's helper subcommand to list them:
 
 ```bash
 cd python-flux
@@ -139,7 +139,7 @@ uv run flux_stress.py list-endpoints --region us-east-1
 
 ## Run the script
 
-Once tooling and credentials are in place, invoke the script for your product. The example below shows the simplest single-connection invocation for the Flux Python client. The Nova-3 and Aura clients follow a similar pattern but with different flags, defaults, and input formats — refer to the [dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) repository and each subdirectory's `README.md` for the full command reference.
+Once tooling and credentials are in place, invoke the script for your product. The example below shows the simplest single-connection invocation for the Flux STT Python client. The Nova-3 and Aura clients follow a similar pattern but with different flags, defaults, and input formats — refer to the [dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) repository and each subdirectory's `README.md` for the full command reference.
 
 ```bash
 cd python-flux
@@ -163,7 +163,7 @@ ffmpeg -i input.mp3 -ar 16000 -ac 1 -sample_fmt s16 audio.wav
 
 A successful test produces:
 
-* **Speech-to-text (Flux, Nova-3):** transcript payloads streamed back to the client. Final transcripts and interim results (or Flux `TurnInfo` events) are logged to the console.
+* **Speech-to-text (Flux STT, Nova-3):** transcript payloads streamed back to the client. Final transcripts and interim results (or Flux STT `TurnInfo` events) are logged to the console.
 * **Text-to-speech (Aura):** audible speech playback from the selected connection and a steady stream of synthesized audio chunks logged to the console.
 
 If the script hangs, errors on connection, or fails to authenticate, see [Troubleshooting](#troubleshooting).

@@ -1,5 +1,5 @@
 ---
-title: "Docs (159 pages)"
+title: "Docs (160 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -148,13 +148,14 @@ path: docs/_llms/docs.txt
 - [Langfuse](https://openrouter.ai/docs/guides/features/broadcast/langfuse.md): Send traces to Langfuse
 - [LangSmith](https://openrouter.ai/docs/guides/features/broadcast/langsmith.md): Send traces to LangSmith
 - [New Relic](https://openrouter.ai/docs/guides/features/broadcast/newrelic.md): Send traces to New Relic
-- [OpenTelemetry Collector](https://openrouter.ai/docs/guides/features/broadcast/otel-collector.md): Send traces to any OpenTelemetry-compatible backend
+- [OpenTelemetry Collector](https://openrouter.ai/docs/guides/features/broadcast/otel-collector.md): Send traces, and optionally metrics, to any OpenTelemetry-compatible backend
 - [PostHog](https://openrouter.ai/docs/guides/features/broadcast/posthog.md): Send traces to PostHog
 - [Raindrop](https://openrouter.ai/docs/guides/features/broadcast/raindrop.md): Send traces to Raindrop
 - [Ramp](https://openrouter.ai/docs/guides/features/broadcast/ramp.md): Send traces to Ramp
 - [S3 / S3-Compatible](https://openrouter.ai/docs/guides/features/broadcast/s3.md): Send traces to Amazon S3 or S3-compatible storage
 - [Sentry](https://openrouter.ai/docs/guides/features/broadcast/sentry.md): Send traces to Sentry
 - [Snowflake](https://openrouter.ai/docs/guides/features/broadcast/snowflake.md): Send traces to Snowflake
+- [Vantage](https://openrouter.ai/docs/guides/features/broadcast/vantage.md): Send per-token-kind usage and cost to Vantage
 - [W&B Weave](https://openrouter.ai/docs/guides/features/broadcast/weave.md): Send traces to W&B Weave
 - [Webhook](https://openrouter.ai/docs/guides/features/broadcast/webhook.md): Send traces to any HTTP endpoint
 

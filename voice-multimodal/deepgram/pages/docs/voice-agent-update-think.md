@@ -19,7 +19,7 @@ The `UpdateThink` message is a JSON message that allows you to replace the entir
 
 Unlike [`UpdatePrompt`](/docs/voice-agent-update-prompt), which adds to the existing prompt, `UpdateThink` replaces the entire Think provider configuration. This means you can switch to a different LLM provider, change the model, set a completely new prompt, and reconfigure functions all in a single message.
 
-## Example Payloads
+## Example payloads
 
 To send the `UpdateThink` message, you need to send the following JSON message to the server:
 

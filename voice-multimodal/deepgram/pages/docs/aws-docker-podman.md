@@ -9,11 +9,11 @@ path: docs/aws-docker-podman
 
 # Amazon Web Services
 
-Deploying Deepgram on Amazon Web Services (AWS) requires some preparation. In this section, you will learn how to provision a Virtual Machine where you will deploy Deepgram products. You will need to perform some of these steps in the AWS Management Console and some in your local terminal.
+Deploying Deepgram on Amazon Web Services (AWS) requires some preparation. In this section, you'll learn how to provision a Virtual Machine where you'll deploy Deepgram products. You'll need to perform some of these steps in the AWS Management Console and some in your local terminal.
 
 ## Prerequisites
 
-Make sure you have completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
+Make sure you've completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
 
 ## Accessing Your Cloud Environment
 
@@ -21,11 +21,11 @@ AWS uses public-key cryptography to secure login information for your instance. 
 
 ### Create an Amazon EC2 Key Pair
 
-If you don’t already have an Amazon EC2 key pair, you will need to create one in order to access the AWS EC2 Virtual Machine. To learn how, read [Create a key pair using Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair) in Amazon’s documentation.
+If you don’t already have an Amazon EC2 key pair, you'll need to create one in order to access the AWS EC2 Virtual Machine. To learn how, read [Create a key pair using Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair) in Amazon’s documentation.
 
 > **Info**
 >
-> Key pairs must be created in each AWS region in which you will deploy Deepgram self-hosted products.
+> Key pairs must be created in each AWS region in which you'll deploy Deepgram Self-Hosted products.
 
 At the end of this process, your browser should download a `private-key.pem` file for your key pair. Move this file to a secure and memorable location.
 
@@ -35,7 +35,7 @@ At the end of this process, your browser should download a `private-key.pem` fil
 
 > **Info**
 >
-> The steps in this section utilize the new AWS launch experience. You may need to adjust the ordering if you are using the old AWS launch experience.
+> The steps in this section utilize the new AWS launch experience. You may need to adjust the ordering if you're using the old AWS launch experience.
 
 1. Navigate to the EC2 Dashboard and confirm that the proper AWS Region is configured, then choose **Launch Instance** to open the wizard.
 
@@ -56,11 +56,11 @@ At the end of this process, your browser should download a `private-key.pem` fil
 
 > **Info**
 >
-> If you want to be able to receive requests from the public internet, make sure to also check the box `Allow HTTPS traffic from the internet`. If you are colocating your Deepgram self-hosted deployment with other services and do not need to expose your server to the public internet, you can find configuration options on the [Amazon networking documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-networking.html).
+> If you want to be able to receive requests from the public internet, make sure to also check the box `Allow HTTPS traffic from the internet`. If you're colocating your Deepgram Self-Hosted deployment with other services and do not need to expose your server to the public internet, you can find configuration options on the [Amazon networking documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-networking.html).
 
 7. For the **Configure storage** wizard step, change the root volume size to meet our [minimum required hardware specifications](/docs/self-hosted-deployment-environments#hardware-specifications).
 8. Verify that the summary box contains all the right details for your instance, and click `Launch Instance`.
-9. Once the instance successfully launches, you need to find its Public IPv4 DNS entry. Either select the link to the instance and find the `Public IPv4 DNS` column, or click on `Connect to instance` and follow the instructions under the `SSH client` tab. This will be the `AWS_HOSTNAME` value that is referenced later.
+9. Once the instance successfully launches, you need to find its Public IPv4 DNS entry. Either select the link to the instance and find the `Public IPv4 DNS` column, or click on `Connect to instance` and follow the instructions under the `SSH client` tab. This will be the `AWS_HOSTNAME` value that's referenced later.
 
 ### Log in to the AWS EC2 instance
 
@@ -80,18 +80,18 @@ To complete the rest of the installation, including configuring your environment
 >
 > Be sure to replace the `AWS_HOSTNAME` placeholder value with the hostname for your instance. Also check that the path to your `private-key.pem` file is correct.
 >
-> For AWS Ubuntu instances, the default username is `ubuntu`, not `user` as their documentation would suggest. If you are using a different AMI, the default username will be different - see the `Connect` page on the instance for more details.
+> For AWS Ubuntu instances, the default username is `ubuntu`, not `user` as their documentation would suggest. If you're using a different AMI, the default username will be different - see the `Connect` page on the instance for more details.
 
 > **Info**
 >
-> If you are on a Windows machine, alternatives to `ssh` include PuTTY and the AWS EC2 Instance Connect service.
+> If you're on a Windows machine, alternatives to `ssh` include PuTTY and the AWS EC2 Instance Connect service.
 
-3. If you receive a message that indicates that the authenticity of the host can’t be established, type `yes`, then press the Enter key on your keyboard. This message should only appear the first time you are connected to the instance.
+3. If you receive a message that indicates that the authenticity of the host can’t be established, type `yes`, then press the Enter key on your keyboard. This message should only appear the first time you're connected to the instance.
 
 ---
 
 What’s Next
 
-Now that we have provisioned a deployment environment, we need to start configuring it for inference.
+Now that we've provisioned a deployment environment, we need to start configuring it for inference.
 
 * [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms)

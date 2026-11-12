@@ -1,5 +1,5 @@
 ---
-title: "Topic Detection"
+title: "Topic detection"
 source: https://developers.deepgram.com/docs/topic-detection.md
 path: docs/topic-detection
 ---
@@ -7,7 +7,7 @@ path: docs/topic-detection
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Topic Detection
+# Topic detection
 
 Deepgram API Playground
 
@@ -22,9 +22,9 @@ Pre-recorded  Streaming:Nova  English (all available regions)
 
 Deepgram’s Topic Detection feature identifies key topics within the transcript, returning a list of text segments and the topics found within each segment.
 
-The list of topics that can be identified is not a fixed list; this TSLM powered feature is able to generate topics based on the context of the language content in the transcript. You may also choose to use the optional `custom-topic` parameter to provide a custom topic you want detected if present within your audio.
+The list of topics that can be identified isn't a fixed list; this TSLM powered feature is able to generate topics based on the context of the language content in the transcript. You may also choose to use the optional `custom-topic` parameter to provide a custom topic you want detected if present within your audio.
 
-## Enable Feature
+## Enable feature
 
 To enable Topic Detection, use the following parameter in the query string when you call Deepgram’s `/listen` endpoint:
 
@@ -47,7 +47,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Query Parameters
+### Query parameters
 
 | Parameter           | Value                | Type    | Description                                                                                                                                                                                                                                                                                                         |
 | ------------------- | -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -56,7 +56,7 @@ curl \
 | `custom_topic`      | ex: `animals`        | string  | Optional. A custom topic you want the model to detect within your input audio if present. Submit up to 100.                                                                                                                                                                                                         |
 | `custom_topic_mode` | `extended`, `strict` | string  | Optional. Sets how the model will interpret strings submitted to the `custom_topic param`. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param. |
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -99,7 +99,7 @@ The response object values for `topics` are:
 
 #### Warning
 
-If you request Topic Detection with an unsupported language by specifying a language code such as `topics=true&language=es` or `topics=true&detect_language=true` where the detected language is unsupported, you will get the warning message below.
+If you request Topic Detection with an unsupported language by specifying a language code such as `topics=true&language=es` or `topics=true&detect_language=true` where the detected language is unsupported, you'll get the warning message below.
 
 **`JSON`**
 
@@ -119,7 +119,7 @@ If you request Topic Detection with an unsupported language by specifying a lang
 
 **Example Warning**
 
-Here is an example of the JSON structure of a request with warning object.
+Here's an example of the JSON structure of a request with warning object.
 
 **`JSON`**
 
@@ -147,7 +147,7 @@ Here is an example of the JSON structure of a request with warning object.
 }
 ```
 
-## Use Cases
+## Use cases
 
 Some examples of uses for Topic Detection include:
 

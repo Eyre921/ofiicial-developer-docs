@@ -9,9 +9,9 @@ path: docs/llm
 
 # Deepgram LLMs overview
 
-Deepgram LLMs are language models that Deepgram hosts for voice workloads. You send a conversation to `POST https://agent.deepgram.com/v1/think` and get the next assistant message back, either as a single JSON response or as a stream of server-sent events. They are in Early Access; read the terms below before you build.
+Deepgram LLMs are language models that Deepgram hosts for voice workloads. You send a conversation to `POST https://agent.deepgram.com/v1/think` and get the next assistant message back, either as a single JSON response or as a stream of server-sent events. They're in Early Access; read the terms below before you build.
 
-Think-Fast is also available inside the Voice Agent API: select it with the `deepgram` think provider, or call it directly to use it in your own pipeline.
+Think-Fast is also available inside the Deepgram Voice Agent API: select it with the `deepgram` think provider, or call it directly to use it in your own pipeline.
 
 ## Models
 

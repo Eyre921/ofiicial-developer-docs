@@ -13,7 +13,7 @@ path: docs/llm/prompting
 >
 > **Early Access.** Deepgram LLMs are available only to current Deepgram contract customers enrolled in the Early Access program ([talk to sales](https://deepgram.com/contact-us) for access). Usage is free during Early Access, requests run on the global endpoint only, SDKs do not support the endpoint yet, and the API can change before general availability. Do not run production traffic on it.
 
-For the fundamentals of writing for voice (no formatting, short turns, data written for the ear), start with [Prompting Voice Agents](/docs/prompting-voice-agents). Those rules apply to Deepgram LLMs too. This page covers what is specific to Think-Fast and phoneLLM mini.
+For the fundamentals of writing for voice (no formatting, short turns, data written for the ear), start with [Prompting Voice Agents](/docs/prompting-voice-agents). Those rules apply to Deepgram LLMs too. This page covers what's specific to Think-Fast and phoneLLM mini.
 
 ## Spell out the steps
 
@@ -29,11 +29,11 @@ When a caller asks about an order:
 
 ## Put instructions in the system message
 
-Send the prompt as a `system` message with plain-string `content`. The endpoint does not accept the array-of-content-parts form.
+Send the prompt as a `system` message with plain-string `content`. The endpoint doesn't accept the array-of-content-parts form.
 
 ## Write tool descriptions for the model
 
-`function.description` is required on every tool, and it is the main signal the model uses to decide when to call one. Say what the function does, when to call it, and when not to.
+`function.description` is required on every tool, and it's the main signal the model uses to decide when to call one. Say what the function does, when to call it, and when not to.
 
 ```json
 {

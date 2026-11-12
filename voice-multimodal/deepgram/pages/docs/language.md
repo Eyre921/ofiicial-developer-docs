@@ -1,5 +1,5 @@
 ---
-title: "Languages Support"
+title: "Languages support"
 source: https://developers.deepgram.com/docs/language.md
 path: docs/language
 ---
@@ -7,13 +7,13 @@ path: docs/language
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Languages Support
+# Languages support
 
 `language` *string* Default: `en`
 
 Pre-recorded  Streaming:Nova
 
-## Enable Feature
+## Enable feature
 
 To enable Language in your API request you can add the `language` parameter in the query string and set it to the language you would like to recognize:
 
@@ -42,7 +42,7 @@ curl \
 
 ## Language Restriction Behavior
 
-When a specific language is set using the `language` parameter (e.g., `language=en`), Deepgram will only attempt to transcribe speech in that specified language. Speech in other, non-specified languages will not be transcribed. If you expect your audio to contain multiple languages and want Deepgram to transcribe across them, consider using `language=multi` with one of our [multilingual models](/docs/multilingual-code-switching).
+When a specific language is set using the `language` parameter (e.g., `language=en`), Deepgram will only attempt to transcribe speech in that specified language. Speech in other, non-specified languages won't be transcribed. If you expect your audio to contain multiple languages and want Deepgram to transcribe across them, consider using `language=multi` with one of our [multilingual models](/docs/multilingual-code-switching).
 
 ## Results
 

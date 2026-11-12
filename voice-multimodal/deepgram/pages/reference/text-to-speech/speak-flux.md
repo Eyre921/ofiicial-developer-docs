@@ -1,5 +1,5 @@
 ---
-title: "Turn-based Speech (Flux)"
+title: "Turn-based speech (Flux TTS)"
 source: https://developers.deepgram.com/reference/text-to-speech/speak-flux.md
 path: reference/text-to-speech/speak-flux
 ---
@@ -7,7 +7,7 @@ path: reference/text-to-speech/speak-flux
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Turn-based Speech (Flux)
+# Turn-based speech (Flux TTS)
 
 GET /v2/speak
 

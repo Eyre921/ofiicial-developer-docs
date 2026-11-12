@@ -17,7 +17,7 @@ The `userStartedSpeaking` message confirms when a user begins to speak.
 
 The `UserStartedSpeaking` message is sent by the server to notify the client that the user has begun speaking, prompting the client to stop any ongoing agent audio playback and discard any buffered audio, ensuring that the user's input is prioritized and processed immediately.
 
-## Example Payload
+## Example payload
 
 The server will send a `UserStartedSpeaking` message every time the user begins a new utterance. If the client is playing agent audio when this message is received, it should stop playback immediately and discard all of its buffered agent audio.
 

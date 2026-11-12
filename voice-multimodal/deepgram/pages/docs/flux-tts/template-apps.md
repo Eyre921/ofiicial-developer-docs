@@ -1,5 +1,5 @@
 ---
-title: "Template Apps"
+title: "Template apps"
 source: https://developers.deepgram.com/docs/flux-tts/template-apps.md
 path: docs/flux-tts/template-apps
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/template-apps
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Template Apps
+# Template apps
 
-Each template is a runnable demo that streams text to Deepgram Flux TTS over `/v2/speak` and plays the audio back. Unlike the Flux **transcription** starters, these use the official SDK's `speak.v2` client on the backend, so the SDK manages the Deepgram WebSocket, authentication, and binary-audio framing for you.
+Each template is a runnable demo that streams text to Deepgram Flux TTS over `/v2/speak` and plays the audio back. Unlike the Flux STT **transcription** starters, these use the official SDK's `speak.v2` client on the backend, so the SDK manages the Deepgram WebSocket, authentication, and binary-audio framing for you.
 
 ## SDKs
 
@@ -23,8 +23,8 @@ See [Getting Started](/docs/flux-tts/quickstart) for the `speak.v2` code shape. 
 
 ## Starter apps
 
-* [Node.js](https://github.com/deepgram-starters/node-flux-tts) — Flux streaming TTS demo app using Node.js (`@deepgram/sdk`)
-* [Flask](https://github.com/deepgram-starters/flask-flux-tts) — Flux streaming TTS demo app using Flask (`deepgram-sdk`)
-* [FastAPI](https://github.com/deepgram-starters/fastapi-flux-tts) — Flux streaming TTS demo app using FastAPI (`deepgram-sdk`)
-* [Django](https://github.com/deepgram-starters/django-flux-tts) — Flux streaming TTS demo app using Django (`deepgram-sdk`)
-* [Java](https://github.com/deepgram-starters/java-flux-tts) — Flux streaming TTS demo app using Java (`deepgram-java-sdk`)
+* [Node.js](https://github.com/deepgram-starters/node-flux-tts) — Flux TTS streaming demo app using Node.js (`@deepgram/sdk`)
+* [Flask](https://github.com/deepgram-starters/flask-flux-tts) — Flux TTS streaming demo app using Flask (`deepgram-sdk`)
+* [FastAPI](https://github.com/deepgram-starters/fastapi-flux-tts) — Flux TTS streaming demo app using FastAPI (`deepgram-sdk`)
+* [Django](https://github.com/deepgram-starters/django-flux-tts) — Flux TTS streaming demo app using Django (`deepgram-sdk`)
+* [Java](https://github.com/deepgram-starters/java-flux-tts) — Flux TTS streaming demo app using Java (`deepgram-java-sdk`)

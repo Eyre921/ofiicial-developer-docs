@@ -15,7 +15,7 @@ Text Intelligence
 
 Deepgram's Tagging feature allows you to label your Text Intelligence API requests for the purpose of identification during usage reporting. You can also apply tags to API Keys; if you do, any tags applied to the API Key running the API request will also be applied to the request itself.
 
-## Enable Feature
+## Enable feature
 
 To enable Tagging, when you call Deepgram's Text Intelligence API, add a `tag` parameter in the query string and set it to the tag you would like to recognize:
 
@@ -36,7 +36,7 @@ curl -X POST "https://api.deepgram.com/v1/read?tag=test&language=en" \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Filter Requests by Tag
+## Filter requests by tag
 
 Once applied, you can identify tags associated with API requests returned by the [Get All Requests](/reference/manage/requests/list), [Get Request](/reference/manage/requests/get), and [Get Fields](/reference/manage/billing/fields/get) endpoints.
 
@@ -56,11 +56,11 @@ curl \
 >
 > Replace the placeholder `PROJECT_ID` with your Deepgram Console Project ID, `VALUE` with your tag, and `YOUR_DEEPGRAM_API_KEY` with your Deepgram API Key.
 
-## Tag Limits
+## Tag limits
 
 Tags are limited to 128 characters per tag and 500 unique tags per day.
 
-## Special Considerations
+## Special considerations
 
 ### White Space or Special Characters
 
@@ -68,7 +68,7 @@ If your tag or extra metadata includes spaces or special characters, be sure to 
 
 `tag=marketing%20team` or `tag=marketing+team`
 
-### Apply Multiple Instances
+### Apply multiple instances
 
 To apply multiple tags or multiple extra key-value pairs, submit the query parameter multiple times in your API request:
 

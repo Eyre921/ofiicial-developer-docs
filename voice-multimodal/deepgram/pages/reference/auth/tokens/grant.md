@@ -1,5 +1,5 @@
 ---
-title: "Token-Based Authentication"
+title: "Token-based authentication"
 source: https://developers.deepgram.com/reference/auth/tokens/grant.md
 path: reference/auth/tokens/grant
 ---
@@ -7,7 +7,7 @@ path: reference/auth/tokens/grant
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Token-Based Authentication
+# Token-based authentication
 
 POST https://api.deepgram.com/v1/auth/grant
 Content-Type: application/json

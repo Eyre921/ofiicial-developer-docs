@@ -11,7 +11,7 @@ path: docs/subscribe-aws-marketplace
 
 Before you can deploy Deepgram on Amazon SageMaker AI, you must subscribe to the product in the AWS Marketplace. Subscribing creates a billing agreement but does not start any charges — you are not billed for the product until you deploy an [Amazon SageMaker AI Endpoint resource](https://docs.aws.amazon.com/sagemaker/latest/dg/manage-endpoints-console.html).
 
-Subscribe through the console or the Marketplace API, then note the **Model Package ARN** you will pass to [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) or [Deploy with Terraform](/docs/terraform-deploy-sagemaker).
+Subscribe through the console or the Marketplace API, then note the **Model Package ARN** you'll pass to [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) or [Deploy with Terraform](/docs/terraform-deploy-sagemaker).
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ Subscribe through the console or the Marketplace API, then note the **Model Pack
 * AWS IAM permissions to SageMaker and Marketplace
   * [**IAM Policy**](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceManageSubscriptions.html): AWSMarketplaceManageSubscriptions
   * [**IAM Policy**](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonSageMakerFullAccess.html): AmazonSageMakerFullAccess
-* The Deepgram product you want to deploy. See [Supported Products](/docs/supported-products-sagemaker).
+* The Deepgram product you want to deploy. See [Supported products](/docs/supported-products-sagemaker).
 
 ## Subscribe through the AWS Marketplace console
 

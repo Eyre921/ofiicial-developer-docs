@@ -19,9 +19,9 @@ Your API keys grant many privileges, so be sure to keep them secure. Do not shar
 
 For best results, use different API keys for testing and production. To help filter usage, you can also use different API keys for different consumers or teams at your organization.
 
-If you still need an API key, you can [sign up to Deepgram today for free](https://console.deepgram.com/signup)!
+If you still need an API key, you can [sign up to Deepgram today for free](https://console.deepgram.com/signup).
 
-## Authenticating with the API Key
+## Authenticating with the API key
 
 Once you have created an API key, you can use it as credentials to call Deepgram's API.
 
@@ -35,7 +35,7 @@ Authorization: Token YOUR_DEEPGRAM_API_KEY
 
 All API requests must be made over HTTPS. Calls made over plain HTTP will fail. API requests made without authentication will also fail.
 
-## Test Request
+## Test request
 
 A quick test to see if your key is validating correctly, is to make a request to the `/auth/token` endpoint on our API. This will return an `invalid credentials` error if your key is invalid, and a `JSON` response with details about your key if it's valid.
 
@@ -46,7 +46,7 @@ curl https://api.deepgram.com/v1/auth/token \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY"
 ```
 
-## Additional Keys
+## Additional keys
 
 To create additional API keys, be sure that the API key you are using to authenticate your request has been assigned either the `administrator` role or the following permissions: `keys:read`, `keys:write`.
 

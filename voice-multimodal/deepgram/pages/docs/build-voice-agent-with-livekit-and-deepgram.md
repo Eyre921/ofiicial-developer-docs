@@ -15,9 +15,9 @@ If you already use [LiveKit](https://livekit.io/) for WebRTC audio transport, yo
 
 For a standalone voice agent without LiveKit or an external LLM, see the [Deepgram Voice Agent API](/docs/voice-agent), which bundles STT, LLM routing, and TTS in a single WebSocket connection.
 
-## Before You Begin
+## Before you begin
 
-This guide assumes you are familiar with Python or Node.js and have a basic understanding of how voice agents work.
+This guide assumes you're familiar with Python or Node.js and have a basic understanding of how voice agents work.
 
 > **Info**
 >
@@ -35,7 +35,7 @@ You'll need a [LiveKit Cloud account](https://cloud.livekit.io) with your LiveKi
 
 * Python 3.10+ or Node.js 18+
 
-## Set Up Your Project
+## Set up your project
 
 This implementation is a starting reference for building your own voice agent with LiveKit and Deepgram. It is not designed for production deployments.
 
@@ -62,7 +62,7 @@ npm install @livekit/agents @livekit/agents-plugin-deepgram @livekit/agents-plug
 npm install -D typescript @types/node
 ```
 
-## Set Environment Variables
+## Set environment variables
 
 Create a `.env` file in your project root with the credentials you collected earlier. The agent reads these at startup to authenticate with each service:
 
@@ -76,7 +76,7 @@ LIVEKIT_API_SECRET=your_livekit_api_secret
 
 `LIVEKIT_URL` is the WebSocket endpoint for your LiveKit Cloud project. You can find it along with your API key and secret in the [LiveKit dashboard](https://cloud.livekit.io).
 
-## Build the Agent
+## Build the agent
 
 The agent connects to a LiveKit room, creates a session with Deepgram for audio processing and OpenAI for language understanding, and starts listening for speech.
 
@@ -209,7 +209,7 @@ export default defineAgent({
 cli.runApp(new ServerOptions({ agent: fileURLToPath(import.meta.url) }));
 ```
 
-## Run the Agent
+## Run the agent
 
 Start the agent in development mode. The `dev` flag connects the agent to your LiveKit Cloud project and automatically registers it to handle incoming sessions:
 
@@ -225,7 +225,7 @@ python agent.py dev
 npx tsx agent.ts dev
 ```
 
-## Test the Agent
+## Test the agent
 
 LiveKit provides the [Agents Playground](https://agents-playground.livekit.io/) — a browser-based tool for testing agents. It includes video, chat, and other features, but for this tutorial you only need the microphone.
 
@@ -238,7 +238,7 @@ You can generate a participant token from the [LiveKit dashboard](https://cloud.
 
 The agent greets you automatically on connect. Silero VAD detects when you stop speaking and triggers the STT-to-LLM-to-TTS pipeline. You can interrupt the agent mid-sentence — VAD handles barge-in automatically.
 
-## Further Reading
+## Further reading
 
 * [Deepgram Voice Agent API](/docs/voice-agent) — build voice agents without an external LLM or transport layer
 * [LiveKit Agents Documentation](https://docs.livekit.io/agents/) — LiveKit's agent framework reference

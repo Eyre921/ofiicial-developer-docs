@@ -1,5 +1,5 @@
 ---
-title: "Getting Started with Speech to Text"
+title: "Getting started with speech-to-text"
 source: https://developers.deepgram.com/docs/stt/getting-started.md
 path: docs/stt/getting-started
 ---
@@ -7,7 +7,7 @@ path: docs/stt/getting-started
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started with Speech to Text
+# Getting started with speech-to-text
 
 With Deepgram’s STT API, you can transcribe both pre-recorded files and real-time streams, choose models optimized for different domains, and integrate transcription directly into your apps for use cases like conversational AI, live captions, and agent assist.
 

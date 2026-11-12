@@ -15,19 +15,19 @@ Pre-recorded  Streaming:Nova
 
 Deepgram’s Version feature allows you to specify the version of the model you want to use to process your submitted audio.
 
-## Enable Feature
+## Enable feature
 
 To enable Version, when you call Deepgram’s API, add a `version` parameter in the query string and set it to the version of the model you want to use to process your submitted audio.
 
 `version=MODEL_VERSION`
 
-## Use the Latest Version
+## Use the latest version
 
 To use the latest version of your selected model, send `latest` in the `version` parameter:
 
 `version=latest`
 
-## Use an Earlier Version of a Standard Model
+## Use an earlier version of a standard model
 
 To use an earlier version of a selected Deepgram standard model, send the version number in the `version` parameter:
 
@@ -37,7 +37,7 @@ To use an earlier version of a selected Deepgram standard model, send the versio
 
 You can locate version numbers of Deepgram standard models in [our changelog](https://deepgram.com/changelog/). Select **Speech Model** to filter the updates.
 
-## Use a Specific Version of a Custom Trained Model
+## Use a specific version of a custom trained model
 
 To use a specific version of a custom model associated with your account, send the custom model's `version_id` in the `version` parameter:
 
@@ -57,6 +57,6 @@ To learn about updated model availability and get relevant version names, [conta
 
 ## When to use Versions
 
-* If you want to make sure you are using the latest version of a Deepgram model.
+* If you want to make sure you're using the latest version of a Deepgram model.
 * If you want to use an earlier version of a Deepgram model.
 * If you want to use a specific version of a custom Deepgram model.

@@ -1,5 +1,5 @@
 ---
-title: "Leave a Project"
+title: "Leave a project"
 source: https://developers.deepgram.com/reference/manage/projects/leave.md
 path: reference/manage/projects/leave
 ---
@@ -7,7 +7,7 @@ path: reference/manage/projects/leave
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Leave a Project
+# Leave a project
 
 DELETE https://api.deepgram.com/v1/projects/{project_id}/leave
 

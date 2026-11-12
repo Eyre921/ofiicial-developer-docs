@@ -19,7 +19,7 @@ The `UpdatePrompt` message is a JSON message that allows you to update the syste
 
 Prompt length is limited to 25,000 characters for managed LLMs and unlimited for BYO LLMs.
 
-## Example Payloads
+## Example payloads
 
 To send the `UpdatePrompt` message, you need to send the following JSON message to the server:
 

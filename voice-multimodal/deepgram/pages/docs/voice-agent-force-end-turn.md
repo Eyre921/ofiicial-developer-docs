@@ -15,7 +15,7 @@ The `ForceEndTurn` message is a JSON message that ends the current turn immediat
 
 > **Warning**
 >
-> `ForceEndTurn` requires a Deepgram V2 (Flux) listen provider — set `agent.listen.provider.version` to `v2` in the [`Settings`](/docs/voice-agent-settings) message. With any other listen provider the server replies with a [`FORCE_END_TURN_UNSUPPORTED`](/docs/voice-agent-errors-warnings#warning-codes) warning and the turn does not end.
+> `ForceEndTurn` requires a Deepgram V2 (Flux STT) listen provider — set `agent.listen.provider.version` to `v2` in the [`Settings`](/docs/voice-agent-settings) message. With any other listen provider the server replies with a [`FORCE_END_TURN_UNSUPPORTED`](/docs/voice-agent-errors-warnings#warning-codes) warning and the turn does not end.
 
 ## Purpose
 
@@ -24,9 +24,9 @@ Some turn endings are unambiguous and don't require the model to infer them. `Fo
 * **Push-to-talk release** — the user holds a button to speak and releases when done.
 * **DTMF tones and IVR events** — a keypad press or menu selection ends the turn.
 * **UI actions** — a "send" button or other application event marks the utterance complete.
-* **Your own turn detection** — you run a VAD or endpointing stack and want to own turn taking entirely. Pair `ForceEndTurn` with `eot_threshold: 1.0` to suppress natural end-of-turn detection. See [Bring Your Own Turn Detection](/docs/flux/own-turn-detection).
+* **Your own turn detection** — you run a VAD or endpointing stack and want to own turn taking entirely. Pair `ForceEndTurn` with `eot_threshold: 1.0` to suppress natural end-of-turn detection. See [Bring your own turn detection](/docs/flux/own-turn-detection).
 
-## Example Payloads
+## Example payloads
 
 To send the `ForceEndTurn` message, send the following JSON message to the server. The message has no additional fields — it applies to the turn currently in progress.
 
@@ -43,12 +43,12 @@ The agent ends the turn as if end-of-turn had been detected naturally: the [`Con
 ## Behavior
 
 * No turn in progress — the message is ignored. No turn ends and no warning is sent.
-* Listen provider is not Deepgram V2 (Flux) — the server sends a `FORCE_END_TURN_UNSUPPORTED` warning and the turn does not end.
+* Listen provider isn't Deepgram V2 (Flux STT) — the server sends a `FORCE_END_TURN_UNSUPPORTED` warning and the turn doesn't end.
 * Repeated messages — the first ends the turn; later messages arrive with no turn in progress and are ignored.
 
-## Related Resources
+## Related resources
 
-* [Flux Force End Turn](/docs/flux/force-end-turn) - The underlying Flux `ForceEndTurn` control message
-* [Bring Your Own Turn Detection](/docs/flux/own-turn-detection) - Own turn taking with `eot_threshold: 1.0` and `ForceEndTurn`
+* [Flux STT Force End Turn](/docs/flux/force-end-turn) - The underlying Flux STT `ForceEndTurn` control message
+* [Bring your own turn detection](/docs/flux/own-turn-detection) - Own turn taking with `eot_threshold: 1.0` and `ForceEndTurn`
 * [Update Listen](/docs/voice-agent-update-listen) - Adjust end-of-turn thresholds mid-session
 * [Errors & Warnings](/docs/voice-agent-errors-warnings) - `FORCE_END_TURN_UNSUPPORTED` and other warning codes

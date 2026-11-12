@@ -1,5 +1,5 @@
 ---
-title: "Deepgram API Overview"
+title: "Deepgram API overview"
 source: https://developers.deepgram.com/reference/deepgram-api-overview.md
 path: reference/deepgram-api-overview
 ---
@@ -7,7 +7,7 @@ path: reference/deepgram-api-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Deepgram API Overview
+# Deepgram API overview
 
 > Overview of all Deepgram REST and WebSocket APIs — voice agents, speech-to-text, text-to-speech, audio intelligence, text intelligence, and account management.
 
@@ -48,4 +48,4 @@ Deepgram's APIs allows you to interact with Deepgram programmatically.  You can 
 
 > **Info**
 >
-> To create your first API key refer to our Guide [Creating API Keys](/docs/create-additional-api-keys).
+> To create your first API key refer to our Guide [Creating API keys](/docs/create-additional-api-keys).

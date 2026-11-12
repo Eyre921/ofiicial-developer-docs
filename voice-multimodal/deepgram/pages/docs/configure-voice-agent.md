@@ -17,9 +17,9 @@ To configure your Voice Agent, you'll need to send a [Settings](/docs/voice-agen
 
 > **Warning**
 >
-> Provider-specific guidance lives on the model pages, not here. For LLM model selection, fallback behavior, and managed-vs-BYO provider rules, see [LLM Models](/docs/voice-agent-llm-models). For TTS provider parameters and codeswitching voices, see [TTS Models](/docs/voice-agent-tts-models). For audio encoding choices, see [Media Inputs & Outputs](/docs/voice-agent-media-inputs-outputs).
+> Provider-specific guidance lives on the model pages, not here. For LLM model selection, fallback behavior, and managed-vs-BYO provider rules, see [LLM models](/docs/voice-agent-llm-models). For TTS provider parameters and codeswitching voices, see [TTS models](/docs/voice-agent-tts-models). For audio encoding choices, see [Media inputs & outputs](/docs/voice-agent-media-inputs-outputs).
 
-## Settings Overview
+## Settings overview
 
 The `Settings` message is a JSON object that contains the following fields:
 
@@ -70,56 +70,56 @@ The `Settings` message is a JSON object that contains the following fields:
 | ------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `agent.listen.provider.type`                | Object  | The speech-to-text provider type. Currently only Deepgram is supported                                                                                                                                      |
 | `agent.listen.provider.model`               | String  | The [Deepgram speech-to-text model](/docs/models-languages-overview) to be used                                                                                                                             |
-| `agent.listen.provider.version`             | String  | The Deepgram speech-to-text API version. Flux models use `v2` and all other models use `v1`.                                                                                                                |
-| `agent.listen.provider.language`            | String  | Optional [Deepgram speech-to-text language](/docs/language) to be used for transcription. Flux models automatically leverage the language within the model's name, and Nova models default to `en`.         |
+| `agent.listen.provider.version`             | String  | The Deepgram speech-to-text API version. Flux STT models use `v2` and all other models use `v1`.                                                                                                            |
+| `agent.listen.provider.language`            | String  | Optional [Deepgram speech-to-text language](/docs/language) to be used for transcription. Flux STT models automatically leverage the language within the model's name, and Nova models default to `en`.     |
 | `agent.listen.provider.keyterms`            | Array   | The [Keyterms](/docs/keyterm) you want increased recognition for. Each entry is a plain string with no weights or intensifiers; pass a multi-word phrase as a single array element.                         |
-| `agent.listen.provider.eot_threshold`       | Number  | Confidence threshold for [end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.5` - `1.0`. Defaults to `0.7`. Flux models only.                                              |
-| `agent.listen.provider.eager_eot_threshold` | Number  | Confidence threshold for [eager end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.3` - `0.9`. Flux models only.                                                           |
-| `agent.listen.provider.eot_timeout_ms`      | Integer | Time in milliseconds after speech to finish a turn regardless of EOT confidence. Defaults to `5000`. Flux models only.                                                                                      |
+| `agent.listen.provider.eot_threshold`       | Number  | Confidence threshold for [end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.5` - `1.0`. Defaults to `0.7`. Flux STT models only.                                          |
+| `agent.listen.provider.eager_eot_threshold` | Number  | Confidence threshold for [eager end-of-turn detection](/docs/flux/configuration#parameter-details). Valid range: `0.3` - `0.9`. Flux STT models only.                                                       |
+| `agent.listen.provider.eot_timeout_ms`      | Integer | Time in milliseconds after speech to finish a turn regardless of EOT confidence. Defaults to `5000`. Flux STT models only.                                                                                  |
 | `agent.listen.provider.language_hints`      | Array   | Array of one or more BCP-47 language codes to bias toward specific languages. See [supported languages](/docs/flux/language-prompting#supported-languages). Only supported when using `flux-general-multi`. |
 | `agent.listen.provider.smart_format`        | Boolean | Applies smart formatting to improve transcript readability (Deepgram providers only). Defaults to `false`                                                                                                   |
 
 #### `agent.listen.provider.model`
 
-* To use Flux use `flux-general-en`, or `flux-general-multi` for multilingual support.
-* When using `flux-general-multi`, set `agent.listen.provider.language_hints` to an array of BCP-47 language codes to bias toward expected languages. See [Flux Multilingual & Language Prompting](/docs/flux/language-prompting).
-* Refer to the [language availability](/docs/models-languages-overview#flux) for Flux to understand the language options.
+* To use Deepgram Flux STT use `flux-general-en`, or `flux-general-multi` for multilingual support.
+* When using `flux-general-multi`, set `agent.listen.provider.language_hints` to an array of BCP-47 language codes to bias toward expected languages. See [Flux STT Multilingual & language prompting](/docs/flux/language-prompting).
+* Refer to the [language availability](/docs/models-languages-overview#flux-stt) for Flux STT to understand the language options.
 
 #### `agent.listen.provider.language`
 
 * Choose your language parameters based on your use case:
   * If you know your input language, specify it directly in `agent.listen.provider.language` for the best recognition accuracy.
-  * If you expect multiple languages or are unsure, use `multi` in `agent.listen.provider.language` for flexible language support (Nova models), or use `flux-general-multi` with `language_hints` for Flux-based multilingual support.
+  * If you expect multiple languages or are unsure, use `multi` in `agent.listen.provider.language` for flexible language support (Nova models), or use `flux-general-multi` with `language_hints` for Flux STT-based multilingual support.
 
-* Refer to our [supported languages](/docs/models-languages-overview) to ensure you're using the correct model (Flux, Nova-3, or Nova-2) for your selected language.
+* Refer to our [supported languages](/docs/models-languages-overview) to ensure you're using the correct model (Flux STT, Nova-3, or Nova-2) for your selected language.
 
 * For detailed multilingual setup, see [Multilingual Voice Agents](/docs/multilingual-voice-agent).
 
 #### `agent.listen.provider.keyterms`
 
 * Each entry in the `keyterms` array is a plain term or phrase—for example, `"keyterms": ["hello", "customer service"]`.
-* [Keyterm Prompting](/docs/keyterm) does **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; it is not rejected, but the weight is silently ignored and the whole string is treated as a literal keyterm.
+* [Keyterm prompting](/docs/keyterm) does **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; it isn't rejected, but the weight is silently ignored and the whole string is treated as a literal keyterm.
 * Pass a multi-word phrase as a single array element (for example, `["customer service"]`), not as separate words.
 
 #### `agent.listen.provider.eot_threshold`, `agent.listen.provider.eager_eot_threshold`, and `agent.listen.provider.eot_timeout_ms`
 
-These parameters control [Flux end-of-turn detection](/docs/flux/configuration#parameter-details) and are only available when using Flux models with the v2 API (`agent.listen.provider.version` set to `v2`).
+These parameters control [Flux STT end-of-turn detection](/docs/flux/configuration#parameter-details) and are only available when using Flux STT models with the v2 API (`agent.listen.provider.version` set to `v2`).
 
 * `eot_threshold` sets the confidence required to trigger an `EndOfTurn` event. Higher values reduce false positives but increase latency. Defaults to `0.7`. Set it to `1.0` to fully suppress natural end-of-turn detection and own turn taking with [`ForceEndTurn`](/docs/voice-agent-force-end-turn).
 * `eager_eot_threshold` enables eager end-of-turn detection, triggering `EagerEndOfTurn` events before the user fully finishes speaking. This reduces end-to-end latency but increases LLM calls. Must be less than or equal to `eot_threshold`.
 * `eot_timeout_ms` sets a hard timeout in milliseconds — a turn finishes when this much time has passed after speech, regardless of EOT confidence. Defaults to `5000`.
 * All three parameters can be updated during a conversation using the [`UpdateListen`](/docs/voice-agent-update-listen) message.
-* For detailed tuning guidance, see the [Flux end-of-turn configuration](/docs/flux/configuration).
-* These thresholds also set how wide the agent's speculative window is: the agent starts thinking on an eager end-of-turn signal and releases audio on a confirmed one. See [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies).
+* For detailed tuning guidance, see the [Flux STT end-of-turn configuration](/docs/flux/configuration).
+* These thresholds also set how wide the agent's speculative window is: the agent starts thinking on an eager end-of-turn signal and releases audio on a confirmed one. See [Speculative replies & turn confirmation](/docs/voice-agent-speculative-replies).
 
 #### `agent.listen.provider.smart_format`
 
 * The `agent.listen.provider.smart_format` setting is only available for Deepgram providers.
 * When set to `true`, Deepgram applies smart formatting to improve transcript readability.
 * Useful for UI-based apps that display Agent transcripts on screen, as it formats the text for better readability.
-* When set to `false`, Deepgram does not apply smart formatting.
+* When set to `false`, Deepgram doesn't apply smart formatting.
 * The default value is `false`.
-* When using Flux, you cannot use `smart_format`.
+* When using Flux STT, you cannot use `smart_format`.
 
 ### Agent - Think Settings (LLM)
 
@@ -146,11 +146,11 @@ Set `defer_until_eot` to `true` on a function whose side effect cannot be undone
 
 * The call is held through the speculative window and dispatched once the turn is confirmed.
 * If the user keeps speaking and the turn resumes, the call is discarded before it runs.
-* The default is `false`, so agents that do not set it behave exactly as before.
-* Deferring one function does not delay the others. A function that did not opt in still dispatches immediately, even when a deferred call is queued ahead of it in the same turn, so calls within a turn can complete out of order.
-* An unrecognized function name never defers, so a call to a function you did not define still returns its usual error.
-* This applies to every listen provider, not only Flux, and produces no warning on any of them.
-* When `eot_timeout_ms` ends the turn, the turn counts as confirmed and a deferred call dispatches. A deferred call is not dropped for want of a confident end-of-turn signal.
+* The default is `false`, so agents that don't set it behave exactly as before.
+* Deferring one function doesn't delay the others. A function that didn't opt in still dispatches immediately, even when a deferred call is queued ahead of it in the same turn, so calls within a turn can complete out of order.
+* An unrecognized function name never defers, so a call to a function you didn't define still returns its usual error.
+* This applies to every listen provider, not only Flux STT, and produces no warning on any of them.
+* When `eot_timeout_ms` ends the turn, the turn counts as confirmed and a deferred call dispatches. A deferred call isn't dropped for want of a confident end-of-turn signal.
 * With `eot_threshold` set to `1.0`, natural end-of-turn detection is suppressed, so a deferred call waits for [`ForceEndTurn`](/docs/voice-agent-force-end-turn).
 
 ```json
@@ -162,9 +162,9 @@ Set `defer_until_eot` to `true` on a function whose side effect cannot be undone
 }
 ```
 
-`defer_until_eot` is a property of the function definition in `Settings`. It does not appear on the [`FunctionCallRequest`](/docs/voice-agent-function-call-request) message.
+`defer_until_eot` is a property of the function definition in `Settings`. It doesn't appear on the [`FunctionCallRequest`](/docs/voice-agent-function-call-request) message.
 
-For the full picture of what the agent does before a turn is confirmed, see [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies).
+For the full picture of what the agent does before a turn is confirmed, see [Speculative replies & turn confirmation](/docs/voice-agent-speculative-replies).
 
 #### `agent.think.provider.reasoning_mode`
 
@@ -199,20 +199,20 @@ For the full picture of what the agent does before a turn is confirmed, see [Spe
 #### `agent.speak.provider.version`
 
 * Applies to Deepgram TTS providers only. Selects the Deepgram text-to-speech model family.
-* Set `v2` to use [Flux TTS](/docs/flux-tts/overview) with a `flux-{voice}-{language}` model such as `flux-alexis-en`.
+* Set `v2` to use Deepgram [Flux TTS](/docs/flux-tts/overview) with a `flux-{voice}-{language}` model such as `flux-alexis-en`.
 * Set `v1` (the default when omitted) to use [Aura](/docs/tts-models) models such as `aura-2-thalia-en`.
 * Flux TTS voices are served only on `v2` and Aura voices only on `v1`, so change `version` and `model` together.
-* Flux TTS is the default when `agent.speak` is omitted, using the `flux-kit-en` voice. It streams raw audio only — see [TTS Models](/docs/voice-agent-tts-models#audio-output-formats) for the `audio.output` formats it accepts.
+* Flux TTS is the default when `agent.speak` is omitted, using the `flux-kit-en` voice. It streams raw audio only — see [TTS models](/docs/voice-agent-tts-models#audio-output-formats) for the `audio.output` formats it accepts.
 
 #### `agent.speak.provider.language`
 
 * Currently, `multi` is only supported in `agent.speak.provider.language` with [Eleven Labs TTS](/docs/voice-agent-tts-models#eleven-labs), [OpenAI TTS](/docs/voice-agent-tts-models#eleven-labs), or [Cartesia TTS](/docs/voice-agent-tts-models#cartesia).
-* Refer to our [supported languages](/docs/models-languages-overview) to ensure you're using the correct model (Flux, Nova-3, or Nova-2) for your selected language.
+* Deepgram voices carry their language in the model name. Select a language-specific Deepgram TTS voice from [TTS models](/docs/voice-agent-tts-models).
 * For detailed multilingual setup, see [Multilingual Voice Agents](/docs/multilingual-voice-agent).
 
 #### `agent.speak.provider.expressivity`
 
-* Applies to Deepgram Flux TTS only (`provider.version` `v2`), where every Flux voice supports it. It is not available on Aura (`v1`) or third-party providers.
+* Applies to Deepgram Flux TTS only (`provider.version` `v2`), where every Flux TTS voice supports it. It isn't available on Aura (`v1`) or third-party providers.
 * Negative values produce calmer, steadier delivery; positive values produce more animated delivery with a wider pitch range. `0` is the voice's tuned default and the only value validated for production.
 * Set it in the `Settings` message; the value applies for the whole session.
 * `expressivity` is a beta parameter, and non-default values raise the risk of hallucinations and pronunciation errors. Test the value you plan to ship.
@@ -222,15 +222,15 @@ For the full picture of what the agent does before a turn is confirmed, see [Spe
 
 * Use `agent.speak.provider.speed` to control speed for each session
 * Use `agent.speak.provider.expressivity` to control the delivery register of a Flux TTS voice for each session
-* Leverage the prompt (`agent.think.prompt`) for pronunciation, pause, and pacing controls. For detailed recommendations, see [Voice Agent TTS Controls](/docs/voice-agent-tts-controls).
+* Leverage the prompt (`agent.think.prompt`) for pronunciation, pause, and pacing controls. For detailed recommendations, see [Voice Agent TTS controls](/docs/voice-agent-tts-controls).
 
-## Full Example
+## Full example
 
 Below is an in-depth example of a complete `Settings` message. Every field shown is valid together, and the message parses as-is against the live API. Options that require provider-specific or account-specific values live on their own pages:
 
-* Third-party and BYO `speak` providers (Cartesia, Eleven Labs, OpenAI, AWS Polly, custom endpoints): [TTS Models](/docs/voice-agent-tts-models)
-* BYO LLM `think.endpoint`: [LLM Models](/docs/voice-agent-llm-models). `context_length` is documented under `agent.think.context_length` above and is only configurable with a custom `think.endpoint`.
-* Server-side functions add an `endpoint` object to the function (the function below is client-side); see `agent.think.functions.endpoint` in the parameter table above and the snippet after the example. For the call flow, see [Build a Function Call](/docs/build-a-function-call).
+* Third-party and BYO `speak` providers (Cartesia, Eleven Labs, OpenAI, AWS Polly, custom endpoints): [TTS models](/docs/voice-agent-tts-models)
+* BYO LLM `think.endpoint`: [LLM models](/docs/voice-agent-llm-models). `context_length` is documented under `agent.think.context_length` above and is only configurable with a custom `think.endpoint`.
+* Server-side functions add an `endpoint` object to the function (the function below is client-side); see `agent.think.functions.endpoint` in the parameter table above and the snippet after the example. For the call flow, see [Build a function call](/docs/build-a-function-call).
 
   **`JSON`**
 
@@ -357,6 +357,6 @@ The function above runs client-side: your application receives the [Function Cal
 }
 ```
 
-## Next Steps
+## Next steps
 
-* [Voice Agent Message Flow](/docs/voice-agent-message-flow) for the correct message flow when building a Voice Agent client.
+* [Voice Agent message flow](/docs/voice-agent-message-flow) for the correct message flow when building a Voice Agent client.

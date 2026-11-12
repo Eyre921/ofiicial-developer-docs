@@ -1,5 +1,5 @@
 ---
-title: "When Callback Is Not Received"
+title: "When callback is not received"
 source: https://developers.deepgram.com/docs/payload-too-large.md
 path: docs/payload-too-large
 ---
@@ -7,7 +7,7 @@ path: docs/payload-too-large
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# When Callback Is Not Received
+# When callback is not received
 
 More often than not, requests that include a callback URL should receive an asynchronous response, even if the callback receives an error.
 
@@ -61,11 +61,11 @@ Many hosted servers, particularly NGINX based servers, have a maximum payload si
 
 A server will reject a callback due to the transcript size exceeding the payload limit, returning a `413` code and the message `Request entity too large`/`Content too large`/`Payload too large`, depending on which server receives the large payload.
 
-### NGINX Solution
+### NGINX solution
 
 To resolve the "Payload too large" issue for NGINX, follow these steps:
 
-1. Confirm the server's maximum payload size: Determine if the server you are using has a maximum payload size limit. NGINX servers, for example, typically have a maximum payload size of `1 MB` by default.
+1. Confirm the server's maximum payload size: Determine if the server you're using has a maximum payload size limit. NGINX servers, for example, typically have a maximum payload size of `1 MB` by default.
 2. Adjust NGINX server configuration: You can modify the NGINX configuration to increase the maximum payload size. Locate and edit the NGINX configuration file, typically named `nginx.conf,` and find the `client_max_body_size` directive (or add it, if it's missing). Adjust its value to accommodate your transcript size. For example, if your transcript is 5 MB, you may set the value to `5m` or higher.
-3. Restart the server: **After modifying the server configuration, save the changes and restart the server** to apply the new settings. If you are running a Linux server, the command `service nginx reload` will restart the NGINX server.
+3. Restart the server: **After modifying the server configuration, save the changes and restart the server** to apply the new settings. If you're running a Linux server, the command `service nginx reload` will restart the NGINX server.
 4. Retry the transcription request: Once the server is restarted, attempt the transcription again. Ensure the transcript size now falls within the updated maximum payload limit. If successful, the `413: Payload too large` error should no longer occur.

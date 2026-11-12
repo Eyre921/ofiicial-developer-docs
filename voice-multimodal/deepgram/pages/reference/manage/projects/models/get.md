@@ -1,5 +1,5 @@
 ---
-title: "Get a Project Model"
+title: "Get a project model"
 source: https://developers.deepgram.com/reference/manage/projects/models/get.md
 path: reference/manage/projects/models/get
 ---
@@ -7,7 +7,7 @@ path: reference/manage/projects/models/get
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Get a Project Model
+# Get a project model
 
 GET https://api.deepgram.com/v1/projects/{project_id}/models/{model_id}
 

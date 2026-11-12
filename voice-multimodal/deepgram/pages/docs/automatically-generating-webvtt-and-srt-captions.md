@@ -9,43 +9,43 @@ path: docs/automatically-generating-webvtt-and-srt-captions
 
 # Automatically Generating WebVTT & SRT Captions
 
-One use for the Deepgram API includes providing captions for audio and video, which is critical for accessibility. In this guide, you'll learn how to automatically generate WebVTT and SRT captions for an audio file. We will provide two sets of code samples--one without using the Deepgram SDK so you can see the technique, and one using Deepgram's SDKs to make it even easier.
+One use for the Deepgram API includes providing captions for audio and video, which is critical for accessibility. In this guide, you'll learn how to automatically generate WebVTT and SRT captions for an audio file. We'll provide two sets of code samples--one without using the Deepgram SDK so you can see the technique, and one using Deepgram's SDKs to make it even easier.
 
 > **Info**
 >
 > If you'd like to learn more about inclusive design and accessibility, we recommend checking out [Microsoft's Inclusive Toolkit](https://www.microsoft.com/design/inclusive/).
 
-## Before You Begin
+## Before you begin
 
 Before you run the code, you'll need to do a few things.
 
-### Create a Deepgram Account
+### Create a Deepgram account
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
-### Create a Deepgram API Key
-
-> **Info**
->
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
-
-### Configure the Environment
-
-We assume you have already configured a Node.js or Python development environment on your machine. [Download Node.js](https://nodejs.org/en/).
+### Create a Deepgram API key
 
 > **Info**
 >
-> If you get stuck at any point, you can find help in our [Github community discussions](https://github.com/orgs/deepgram/discussions)!
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
-## Getting Familiar with Captioning Formats
+### Configure the environment
 
-In this tutorial, we are going to work with two common and similar caption formats: WebVTT and SRT. Both formats contain only subtitle information, which must be added to video for a final product. When the caption files are loaded into a compatible video platform, captions will be displayed in the foreground of media, as per the information contained in that file.
+We assume you've already configured a Node.js or Python development environment on your machine. [Download Node.js](https://nodejs.org/en/).
+
+> **Info**
+>
+> If you get stuck at any point, you can find help in our [Github community discussions](https://github.com/orgs/deepgram/discussions).
+
+## Getting familiar with captioning formats
+
+In this tutorial, we're going to work with two common and similar caption formats: WebVTT and SRT. Both formats contain only subtitle information, which must be added to video for a final product. When the caption files are loaded into a compatible video platform, captions will be displayed in the foreground of media, as per the information contained in that file.
 
 ### WebVTT Files
 
-Web Video Text Track (WebVTT) files generally consist of a sequence of text segments associated with a time-interval, called a cue. It is mainly used to mark up external text track resources in connection with the HTML `<track>` element. WebVTT files provide captions or subtitles for video content, and also text video descriptions \[MAUR], chapters for content navigation, and more generally any form of metadata that is time-aligned with audio or video content. To learn more, visit W3C's [WebVTT: The Web Video Text Tracks Format](https://www.w3.org/TR/webvtt1/).
+Web Video Text Track (WebVTT) files generally consist of a sequence of text segments associated with a time-interval, called a cue. It's mainly used to mark up external text track resources in connection with the HTML `<track>` element. WebVTT files provide captions or subtitles for video content, and also text video descriptions \[MAUR], chapters for content navigation, and more generally any form of metadata that is time-aligned with audio or video content. To learn more, visit W3C's [WebVTT: The Web Video Text Tracks Format](https://www.w3.org/TR/webvtt1/).
 
 An example WebVTT file:
 
@@ -92,7 +92,7 @@ and didn't get the same opportunities that we
 have today.
 ```
 
-### SRT Files
+### SRT files
 
 SubRip Text (SRT) files also generally consist of a sequence of text segments associated with a time-interval. To learn more, visit the open source [Matroska multimedia container format website](https://www.matroska.org/technical/subtitles.html#srt-subtitles).
 
@@ -138,7 +138,7 @@ same opportunities that we have today.
 >
 > Note that both WebVTT and SRT are similar in their basic forms--the difference is that the millisecond separator is `.` in WebVTT and `,` in SRT.
 
-## Transcribing Captions
+## Transcribing captions
 
 Now that you understand the basics of the WebVTT and SRT captioning formats, you can start transcribing your captions.
 
@@ -146,7 +146,7 @@ Now that you understand the basics of the WebVTT and SRT captioning formats, you
 >
 > This article covers creating subtitle files from files submitted to the Deepgram pre-recorded audio API. For an example of creating subtitle files with the Deepgram live streaming API, check out the [Live Streaming Starter Kit](https://github.com/deepgram/live-streaming-starter-kit).
 
-### Choose an Audio File
+### Choose an audio file
 
 Locate a hosted audio file that you would like to caption and make note of its URL. If you can't find one, you can use `<https://static.deepgram.com/examples/deep-learning-podcast-clip.wav>`.
 
@@ -166,11 +166,11 @@ npm i @deepgram/sdk @deepgram/captions
 pip install deepgram-sdk
 ```
 
-### Write the Code
+### Write the code
 
 In your terminal, create a new `index.js` or `index.py` file in your project's location, open it in your code editor, and populate it with code.
 
-#### Set Up Dependencies
+#### Set up dependencies
 
 Initialize your dependencies:
 
@@ -201,7 +201,7 @@ deepgram: DeepgramClient = DeepgramClient()
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-#### Get the Transcript
+#### Get the transcript
 
 To receive timestamps of phrases to include in your caption files, ask Deepgram to include [utterances](/docs/utterances/) (a chain of words or, more simply, a phrase):
 
@@ -229,9 +229,9 @@ response = deepgram.listen.v1.media.transcribe_url(
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-#### Create a Write Stream
+#### Create a write stream
 
-With JavaScript, open a writable stream, so you will be able to insert text directly into your file. When you open your stream, you should pass in the `a` flag, so that any time you write data to the stream, it will be appended to the end. Add inside the `.then()` block.
+With JavaScript, open a writable stream, so you'll be able to insert text directly into your file. When you open your stream, you should pass in the `a` flag, so that any time you write data to the stream, it will be appended to the end. Add inside the `.then()` block.
 
 **`JavaScript`**
 
@@ -243,7 +243,7 @@ const stream = fs.createWriteStream("output.vtt", { flags: "a" });
 const stream = fs.createWriteStream("output.srt", { flags: "a" });
 ```
 
-#### Write the Captions
+#### Write the captions
 
 The WebVTT and SRT formats are very similar, and each requires a block of text per utterance.
 

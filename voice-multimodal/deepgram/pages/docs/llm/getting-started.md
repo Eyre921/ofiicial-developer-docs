@@ -18,7 +18,7 @@ This guide sends a single request to Think-Fast and prints the reply.
 ## Before you begin
 
 * A current Deepgram contract with a project enrolled in Early Access. If you don't have one, [talk to sales](https://deepgram.com/contact-us).
-* A Deepgram API key from that project. To create one, see [Creating Additional API Keys](/docs/create-additional-api-keys).
+* A Deepgram API key from that project. To create one, see [Creating additional API keys](/docs/create-additional-api-keys).
 * The key exported as an environment variable:
 
 ```bash

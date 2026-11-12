@@ -1,5 +1,5 @@
 ---
-title: "When To Use Keywords and Search"
+title: "When to use keywords and search"
 source: https://developers.deepgram.com/docs/keywords-vs-search.md
 path: docs/keywords-vs-search
 ---
@@ -7,19 +7,19 @@ path: docs/keywords-vs-search
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# When To Use Keywords and Search
+# When to use keywords and search
 
 When using Deepgram's API, you have access to our Keywords and Search features, which are named similarly, but work in very different ways.
 
 > **Info**
 >
-> If you are using one of our [Nova-3 Models](/docs/model#nova-3), you should use [keyterm prompting](/docs/keyterm) instead of keywords.
+> If you're using one of our [Nova-3 Models](/docs/model#nova-3), you should use [keyterm prompting](/docs/keyterm) instead of keywords.
 >
 > The syntax differs: `keyterm` takes plain terms with no intensifier or weight syntax, unlike `keywords`, which uses the `KEYWORD:INTENSIFIER` pattern. When migrating, drop the `:INTENSIFIER` weight. Appending one (for example, `keyterm=term:0.15`) is not rejected—the weight is silently ignored and the entire value is treated as a literal keyterm.
 
-## Comparing Keywords and Search
+## Comparing keywords and search
 
-Keywords are words that you would like Deepgram to pay more attention to, so it can transcribe those words more accurately. If you send a list of keywords with your request to the Deepgram API, Deepgram can better understand the context of what it is transcribing because it can train itself to better identify those words.
+Keywords are words that you would like Deepgram to pay more attention to, so it can transcribe those words more accurately. If you send a list of keywords with your request to the Deepgram API, Deepgram can better understand the context of what it's transcribing because it can train itself to better identify those words.
 
 Search also expects you to add a word or list of words to your request to the Deepgram API. But in this case, Deepgram looks for these words in the transcription, returning a response that includes the start time and end time of any matching words it identifies.
 
@@ -31,7 +31,7 @@ Search also expects you to add a word or list of words to your request to the De
 | Accepts multiple instances in the query string (`keywords=medicine&keywords=prescription`).                                                                                                                                        | Accepts multiple instances in the query string (`search=speech&search=Friday`).                                                                      |
 | Does not return additional data in the response; just improves the transcription.                                                                                                                                                  | Returns an additional data object that contains possible matches for your search terms and identifies an estimated start and end time for each word. |
 
-## Use Cases
+## Use cases
 
 To really understand when to use Keywords and when to use Search, let's explore some possible scenarios.
 
@@ -41,11 +41,11 @@ To really understand when to use Keywords and when to use Search, let's explore 
 
 In this scenario, you can use Search to find phrases that match "This call is being recorded." Deepgram's AI will do its best to find phrases that match and will return a list of possible matches with a confidence rating.
 
-Once you receive your results, you should analyze the data and decide for yourself which confidence rating is more likely to return an accurate match. As you practice and gain experience, you will start to see a pattern forming between confidence numbers and accurate matches.
+Once you receive your results, you should analyze the data and decide for yourself which confidence rating is more likely to return an accurate match. As you practice and gain experience, you'll start to see a pattern forming between confidence numbers and accurate matches.
 
 ### Discovery
 
-**Your company is participating in litigation, and as part of the eDiscovery phase, you are tasked with producing electronic documents (including audio and video) that are relevant to the case.**
+**Your company is participating in litigation, and as part of the eDiscovery phase, you're tasked with producing electronic documents (including audio and video) that are relevant to the case.**
 
 In this situation, instead of searching for a single word or phrase, you would search for language that suggests that conversation in an audio or video file is relevant to your court case. So you would use Search to point you to valuable *sections* of your audio.
 
@@ -53,7 +53,7 @@ Since Deepgram's Search feature returns a confidence level in the response rathe
 
 ### Demos
 
-**You are planning an important demo for the upcoming week, and you want to use Deepgram's speech-to-text API, but you haven't trained a language model yet. The demo is crucial to your business, so you want to give an added boost to Deepgram's transcription technology to improve accuracy for certain words.**
+**You're planning an important demo for the upcoming week, and you want to use Deepgram's speech-to-text API, but you haven't trained a language model yet. The demo is crucial to your business, so you want to give an added boost to Deepgram's transcription technology to improve accuracy for certain words.**
 
 In this scenario, you can use Keywords to get a more accurate transcription without training a custom model, which would be a more powerful option. To improve the transcription, you would include a list of keywords that are more difficult for Automatic Speech Recognition (ASR) to recognize (such as jargon, names, and scientific words) in the query parameters of your request to Deepgram.
 
@@ -61,17 +61,17 @@ Using the Keywords feature requires practice and thoughtful implementation. The 
 
 This is because:
 
-* the better Deepgram's off-the-shelf models get at transcribing on their own, the less powerful the Keywords feature becomes because Deepgram gives an increasing confidence level to the transcription itself. If you are using an extremely powerful off-the-shelf model, using keywords might not have an effect.
-* the Keywords feature works differently depending on whether the provided words are 'in-vocabulary', meaning they already exist in whatever model you are using, or 'out-of-vocabulary', meaning they do not already exist in the model. (To learn more about in-vocabulary and out-of-vocabulary keywords, see [Features: Keywords](/docs/keywords/#in-vocabulary--out-of-vocabulary-keywords).) If the keywords you provide are in-vocabulary (regardless of whether you are using an off-the-shelf model or your own trained model), Deepgram will place even more emphasis on them, telling the AI to boost the confidence that those words were spoken. This can affect the quality of your transcript, so adjust your boost values slowly and carefully.
+* the better Deepgram's off-the-shelf models get at transcribing on their own, the less powerful the Keywords feature becomes because Deepgram gives an increasing confidence level to the transcription itself. If you're using an extremely powerful off-the-shelf model, using keywords might not have an effect.
+* the Keywords feature works differently depending on whether the provided words are 'in-vocabulary', meaning they already exist in whatever model you're using, or 'out-of-vocabulary', meaning they don't already exist in the model. (To learn more about in-vocabulary and out-of-vocabulary keywords, see [Features: Keywords](/docs/keywords/#in-vocabulary--out-of-vocabulary-keywords).) If the keywords you provide are in-vocabulary (regardless of whether you're using an off-the-shelf model or your own trained model), Deepgram will place even more emphasis on them, telling the AI to boost the confidence that those words were spoken. This can affect the quality of your transcript, so adjust your boost values slowly and carefully.
 * boost values for keywords are exponential. If you add really high [intensifiers](/docs/keywords/#intensifiers) to your keywords, you may cause Deepgram's AI to overuse those keywords. You need to find the right balance, which comes with trial and error.
-* the Keywords feature cannot boost phrases, so if you are searching for a combination of words (for example, *first name* + *last name*), each word will be boosted individually, which may result in one showing up correctly while the other does not.
+* the Keywords feature can't boost phrases, so if you're searching for a combination of words (for example, *first name* + *last name*), each word will be boosted individually, which may result in one showing up correctly while the other does not.
 
 Some other behaviors that can affect performance of the Keywords feature:
 
-* Sending a very large number of keywords may affect the speed at which Deepgram is able to create a transcription. You may not be concerned about speed if you are batch-processing audio files, but you should pay special attention to speed if you are performing real-time transcription. We recommend limiting your submission to no more than 100 keywords, understanding that 100 is really pushing the limits.
+* Sending a very large number of keywords may affect the speed at which Deepgram is able to create a transcription. You may not be concerned about speed if you're batch-processing audio files, but you should pay special attention to speed if you're performing real-time transcription. We recommend limiting your submission to no more than 100 keywords, understanding that 100 is really pushing the limits.
 * Providing out-of-vocabulary keywords can cause Deepgram to take longer to return a response.
 
-### Other Common Scenarios
+### Other common scenarios
 
 Some other possible scenarios for the Search feature include:
 

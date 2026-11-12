@@ -280,19 +280,19 @@ Create a [Payment Element](https://docs.stripe.com/js/custom_checkout/create_pay
 
 ### (Optional) Style the Payment Element
 
-Customize the Payment Element UI by creating an [Appearance object](https://docs.stripe.com/elements/appearance-api.md) and passing it as an option to the CheckoutElementsProvider. Use your company’s color scheme and font to make it match with the rest of your checkout page. Use custom fonts (for example, from Google Fonts) by initializing Checkout with a [font set](https://docs.stripe.com/js/react_stripe_js/checkout/checkout_provider#react_checkout_provider-options-elementsOptions-fonts).
+Customize the Payment Element UI by creating an [Appearance object](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements) and passing it as an option to the CheckoutElementsProvider. Use your company’s color scheme and font to make it match with the rest of your checkout page. Use custom fonts (for example, from Google Fonts) by initializing Checkout with a [font set](https://docs.stripe.com/js/react_stripe_js/checkout/checkout_provider#react_checkout_provider-options-elementsOptions-fonts).
 
 Make sure to open the preview on the right to see your changes live.
 
-Parts of this preview demo might not match your actual checkout page. These settings represent only a subset of the [Appearance object’s](https://docs.stripe.com/payments/checkout/customization/appearance.md?payment-ui=embedded-components) variables, and the [Appearance object](https://docs.stripe.com/payments/checkout/customization/appearance.md?payment-ui=embedded-components) only controls certain attributes of Stripe Elements. You’re responsible for styling the rest of your checkout page.
+Parts of this preview demo might not match your actual checkout page. These settings represent only a subset of the [Appearance object’s](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements) variables, and the [Appearance object](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements) only controls certain attributes of Stripe Elements. You’re responsible for styling the rest of your checkout page.
 
 ### (Optional) Style the Payment Element
 
-Customize the Payment Element UI by creating an [Appearance object](https://docs.stripe.com/elements/appearance-api.md) and initializing Checkout with it. Use your company’s color scheme and font to make it match with the rest of your checkout page. Use custom fonts (for example, from Google Fonts) by initializing Checkout with a [font set](https://docs.stripe.com/js/custom_checkout/init#custom_checkout_init-options-elementsOptions-fonts).
+Customize the Payment Element UI by creating an [Appearance object](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements) and initializing Checkout with it. Use your company’s color scheme and font to make it match with the rest of your checkout page. Use custom fonts (for example, from Google Fonts) by initializing Checkout with a [font set](https://docs.stripe.com/js/custom_checkout/init#custom_checkout_init-options-elementsOptions-fonts).
 
 Make sure to open the preview on the right to see your changes live.
 
-Parts of this preview demo might not match your actual checkout page. These settings represent only a subset of the [Appearance object’s](https://docs.stripe.com/payments/checkout/customization/appearance.md?payment-ui=embedded-components) variables, and the [Appearance object](https://docs.stripe.com/payments/checkout/customization/appearance.md?payment-ui=embedded-components) only controls certain attributes of Stripe Elements. You’re responsible for styling the rest of your checkout page.
+Parts of this preview demo might not match your actual checkout page. These settings represent only a subset of the [Appearance object’s](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements) variables, and the [Appearance object](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements) only controls certain attributes of Stripe Elements. You’re responsible for styling the rest of your checkout page.
 
 ### Handle the submit event
 
@@ -418,7 +418,7 @@ To associate a Checkout Session with a customer that already exists, provide the
 
 ### Save a customer’s payment method
 
-Allow a customer to save their payment method during checkout for future purchases. Learn more about [saving payment methods during payment](https://docs.stripe.com/payments/save-during-payment.md).
+Allow a customer to save their payment method during checkout for future purchases. Learn more about [saving payment methods during payment](https://docs.stripe.com/payments/checkout/save-during-payment.md?ui=elements).
 
 ### Add saved payment method parameters
 
@@ -1698,7 +1698,7 @@ $ npm start
 ~~~
 ## Next steps
 
-#### [Dynamically update line items](https://docs.stripe.com/payments/advanced/dynamically-update-line-items.md)
+#### [Dynamically update line items](https://docs.stripe.com/payments/checkout/dynamically-update-line-items.md?ui=elements)
 
 Learn how to dynamically modify line items in your Checkout Session as users add, remove, or change products.
 
@@ -1718,7 +1718,7 @@ Handle requests for refunds by using the Stripe API or Dashboard.
 
 Let your customers self-manage their payment details, invoices, and subscriptions.
 
-#### [One-click payment buttons](https://docs.stripe.com/elements/express-checkout-element/accept-a-payment.md?payment-ui=embedded-components#create-and-mount)
+#### [One-click payment buttons](https://docs.stripe.com/payments/checkout/express-checkout-element.md#create-and-mount)
 
 Use the Express Checkout Element to accept payments through one-click payment method buttons.
 

@@ -21,9 +21,9 @@ The Address Element is an embeddable UI component for accepting complete address
 
 ## Get started
 
-You can use the Address Element with either the Checkout elements integration (Elements with Checkout Sessions API) or the Advanced integration (Elements with Payment Intents API). [Compare the features and availability](https://docs.stripe.com/payments/online-payments.md#compare-features-and-availability) to see which integration suits your use case.
+You can use the Address Element with either the Checkout elements integration (Elements with Checkout Sessions API) or the Advanced integration (Elements with Payment Intents API). [Compare the APIs](https://docs.stripe.com/payments/checkout-sessions-and-payment-intents-comparison.md) to see which integration suits your use case.
 
-[Collect addresses (Elements with Checkout Sessions API)](https://docs.stripe.com/payments/advanced/collect-addresses.md?payment-ui=embedded-components): Use the Checkout elements integration to collect addresses.
+[Collect addresses (Elements with Checkout Sessions API)](https://docs.stripe.com/payments/collect-addresses.md?ui=elements): Use the Checkout elements integration to collect addresses.
 
 [Collect addresses (Advanced integration)](https://docs.stripe.com/payments/advanced/collect-addresses.md?payment-ui=elements): Use the Advanced integration to collect addresses.
 
@@ -206,5 +206,5 @@ const addressElement = elements.create('address', options);
 addressElement.mount('#address-element');
 ```
 
-See the Appearance API documentation for the [Elements with Checkout Sessions API integration](https://docs.stripe.com/payments/checkout/customization/appearance.md?payment-ui=embedded-components) or the [Advanced integration](https://docs.stripe.com/elements/appearance-api.md) for a full list of themes and variables.
+See the Appearance API documentation for the [Elements with Checkout Sessions API integration](https://docs.stripe.com/payments/checkout/customization/appearance.md?ui=elements) or the [Advanced integration](https://docs.stripe.com/elements/appearance-api.md) for a full list of themes and variables.
 

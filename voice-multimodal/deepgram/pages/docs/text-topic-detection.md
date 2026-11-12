@@ -1,5 +1,5 @@
 ---
-title: "Topic Detection"
+title: "Topic detection"
 source: https://developers.deepgram.com/docs/text-topic-detection.md
 path: docs/text-topic-detection
 ---
@@ -7,7 +7,7 @@ path: docs/text-topic-detection
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Topic Detection
+# Topic detection
 
 Deepgram API Playground
 
@@ -52,15 +52,15 @@ Topic Detection accepts an input text, divides it into a list of segments compri
   }
 ```
 
-The list of topics that can be identified are not a fixed list; this TSLM powered feature is able to generate topics based on the context of the language content in the text. You may also choose to use the optional `custom-topic` parameter to provide a custom topic you want detected if present within the provided text.
+The list of topics that can be identified aren't a fixed list; this TSLM powered feature is able to generate topics based on the context of the language content in the text. You may also choose to use the optional `custom-topic` parameter to provide a custom topic you want detected if present within the provided text.
 
-## Enable Feature
+## Enable feature
 
 To enable Topic Detection, use the following parameter in the query string when you call Deepgram’s `/read` endpoint:
 
 `topics=true`
 
-### Basic Text Request
+### Basic text request
 
 To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
@@ -78,11 +78,11 @@ curl -vX POST \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Basic URL Request
+### Basic URL request
 
 To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt))
 
-### Custom Topics Request
+### Custom topics request
 
 To tell the model to only return topics from your own custom list of topics, add `custom_topic_mode=strict` and `custom_topic=` followed by the list of topics. (Use the URL encoding`%20` to represent a space between each word in the list.)
 
@@ -102,7 +102,7 @@ curl -vX POST \
 >
 > Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
 
-### Query Parameters
+### Query parameters
 
 | Parameter           | Value                | Type    | Description                                                                                                                                                                                                                                                                                                         |
 | ------------------- | -------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -111,7 +111,7 @@ curl -vX POST \
 | `custom_topic`      | ex: `animals`        | string  | Optional. A custom topic you want the model to detect within your input text if present. Submit up to 100.                                                                                                                                                                                                          |
 | `custom_topic_mode` | `extended`, `strict` | string  | Optional. Sets how the model will interpret strings submitted to the `custom_topic` param. When `strict`, the model will only return topics submitted using the `custom_topic` param. When `extended`, the model will return its own detected topics in addition to those submitted using the `custom_topic` param. |
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -161,11 +161,11 @@ The response object values for `topics` are:
 
 ## API Error Responses
 
-### Unsupported Language
+### Unsupported language
 
 **Status** 400
 
-If you request Topic Detection with an unsupported language by specifying a language code such as `topics=true&language=es` or `topics=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
+If you request Topic Detection with an unsupported language by specifying a language code such as `topics=true&language=es` or `topics=true&detect_language=true` where the detected language is unsupported, you'll get the error message below.
 
 **`JSON`**
 
@@ -177,11 +177,11 @@ If you request Topic Detection with an unsupported language by specifying a lang
 }
 ```
 
-### Token Limit Exceeded
+### Token limit exceeded
 
 **Status** 400
 
-If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
+If the request's input length exceeded the 150k token rate limit per request, you'll get the error message below.
 
 **`JSON`**
 
@@ -193,11 +193,11 @@ If the request's input length exceeded the 150k token rate limit per request, yo
 }
 ```
 
-### Missing Query Parameter
+### Missing query parameter
 
 **Status** 400
 
-If the request sent contained only the feature parameter (`topics`) but not the `language` parameter, you will receive this error.
+If the request sent contained only the feature parameter (`topics`) but not the `language` parameter, you'll receive this error.
 
 **`JSON`**
 

@@ -15,15 +15,15 @@ In this guide, we'll explain how to configure Deepgram as your transcription eng
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ### Set Up a Genesys Cloud Org
 
-You'll also need a Genesys Cloud org where you have completed the [initial setup tasks](https://help.mypurecloud.com/articles/new-users-home/) so that your call center can receive calls.
+You'll also need a Genesys Cloud org where you've completed the [initial setup tasks](https://help.mypurecloud.com/articles/new-users-home/) so that your call center can receive calls.
 
 ## Install Transcription Connector
 

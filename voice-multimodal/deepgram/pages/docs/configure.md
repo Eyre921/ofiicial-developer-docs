@@ -20,7 +20,7 @@ What a voice application needs from speech recognition changes during a call. A 
 * **Load the vocabulary for the current step.** Add the caller's name to [keyterms](/docs/keyterm) right before you ask for it, or swap in product names when the conversation moves to a product inquiry. You don't have to load every term you might need at the start of the call.
 * **Switch formatting per step.** Turn on [Numerals](/docs/numerals) before you ask for a PIN or phone number, then turn it off for free-form speech.
 
-## Configurable Fields
+## Configurable fields
 
 | Field      | Type             | Description                                                                                                                                                                                                                                               |
 | ---------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -29,7 +29,7 @@ What a voice application needs from speech recognition changes during a call. A 
 
 Both fields are optional, and you can send them in the same message. A field you omit keeps its current value.
 
-## Example Payloads
+## Example payloads
 
 **`Update keyterms`**
 
@@ -63,7 +63,7 @@ Both fields are optional, and you can send them in the same message. A field you
 
 ## Behavior
 
-### Each Keyterms Array Replaces the List
+### Each keyterms array replaces the list
 
 Each `keyterms` array replaces the whole list, including any keyterms you set with the `keyterm` query parameter when you opened the stream. To add a term, send the existing terms plus the new one.
 
@@ -78,11 +78,11 @@ Each `keyterms` array replaces the whole list, including any keyterms you set wi
 
 Deepgram processes `Configure` in order with your audio. The new settings apply to audio it hasn't transcribed yet when it processes the message. That can include audio you sent shortly before the message, but transcripts it has already returned aren't revised. Updates stay in effect until the stream ends or you send another `Configure`.
 
-### Same Behavior as Connection-Time Keyterms
+### Same behavior as connection-time keyterms
 
-Keyterms set with `Configure` behave exactly like keyterms set with the `keyterm` query parameter when you open the stream. This holds on every Nova-3 streaming model, monolingual or multilingual. How much keyterms improve recognition depends on the language and the terms, and that's the same whichever way you set them.
+Keyterms set with `Configure` behave exactly like keyterms set with the `keyterm` query parameter when you open the stream. This holds on every Deepgram Nova-3 streaming model, monolingual or multilingual. How much keyterms improve recognition depends on the language and the terms, and that's the same whichever way you set them.
 
-### Keyterm Syntax and Limits
+### Keyterm syntax and limits
 
 Each array entry is a plain term or phrase. Pass a multi-word phrase as a single entry, for example `["customer service"]`. Like the `keyterm` query parameter, entries don't support the weight syntax from the legacy [Keywords](/docs/keywords) feature, so don't append a weight such as `"term:0.15"`.
 
@@ -128,7 +128,7 @@ Deepgram answers every `Configure` with exactly one `ConfigureSuccess` or `Confi
 | `CONFIGURE_ALREADY_PENDING`        | You sent a `Configure` before the previous one received its response.             |
 | `CONFIGURE_INTERNAL_ERROR`         | Deepgram failed to apply the update.                                              |
 
-### One Update at a Time
+### One update at a time
 
 Deepgram processes one `Configure` at a time. Wait for `ConfigureSuccess` or `ConfigureFailure` before sending the next one; a `Configure` sent while another is pending returns `CONFIGURE_ALREADY_PENDING`.
 
@@ -149,7 +149,7 @@ Sending a field the message doesn't support, for example `keyterm` instead of `k
 }
 ```
 
-## Language-Specific Implementations
+## Language-specific implementations
 
 These examples open a Nova-3 stream, update its keyterms partway through, and handle the response.
 
@@ -241,9 +241,9 @@ ws.on("message", (data) => {
 });
 ```
 
-## Related Resources
+## Related resources
 
-* [Keyterm Prompting](/docs/keyterm): choosing keyterms and setting them when you open a stream
+* [Keyterm prompting](/docs/keyterm): choosing keyterms and setting them when you open a stream
 * [Numerals](/docs/numerals): converting spoken numbers to digits
 * [Flux STT Configure](/docs/flux/configure): the equivalent message for Flux STT (`/v2/listen`)
 * [Finalize](/docs/finalize) and [Close Stream](/docs/close-stream): other streaming control messages

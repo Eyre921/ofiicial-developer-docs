@@ -1,5 +1,5 @@
 ---
-title: "Maintaining Context"
+title: "Maintaining context"
 source: https://developers.deepgram.com/docs/voice-agent-conversation-context.md
 path: docs/voice-agent-conversation-context
 ---
@@ -7,7 +7,7 @@ path: docs/voice-agent-conversation-context
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Maintaining Context
+# Maintaining context
 
 Voice Agent
 
@@ -23,7 +23,7 @@ A voice agent's behavior on any call is the sum of a few moving parts: the promp
 | Inject agent message   | Mid-call        | [`InjectAgentMessage`](/docs/voice-agent-inject-agent-message)       | Makes the agent speak a specific line                          |
 | Inject user message    | Mid-call        | [`InjectUserMessage`](/docs/voice-agent-inject-user-message)         | Adds a synthetic user turn the agent reacts to                 |
 | Function results       | Mid-call        | Function call response payloads                                      | Becomes part of the agent's working memory                     |
-| Reusable configuration | Pre-call        | [Reusable Agent Configurations](/docs/reusable-agent-configurations) | Stores a full `agent` block for reuse                          |
+| Reusable configuration | Pre-call        | [Reusable agent configurations](/docs/reusable-agent-configurations) | Stores a full `agent` block for reuse                          |
 | History flag           | Connect         | `settings.flags.history`                                             | Disables history retention entirely                            |
 
 The rest of this page walks each lever in detail. You can mix all of them in the same session.
@@ -156,7 +156,7 @@ Reference: [Inject User Message](/docs/voice-agent-inject-user-message).
 
 ## Function results as context
 
-Function call responses returned to the agent become part of its working context. The agent can reference them in later turns, decide whether to call again, and use the results to shape what it says next. See [Function Calling](/docs/voice-agents-function-calling) for the full request/response loop and [Function Call Context](/docs/voice-agent-function-call-context) for how function results interact with conversation history.
+Function call responses returned to the agent become part of its working context. The agent can reference them in later turns, decide whether to call again, and use the results to shape what it says next. See [Function calling](/docs/voice-agents-function-calling) for the full request/response loop and [Function call context](/docs/voice-agent-function-call-context) for how function results interact with conversation history.
 
 ## Reusable configurations
 
@@ -180,5 +180,5 @@ The reusable configuration only covers the `agent` block. Per-session context (h
 | Replay function results from a prior session                    | [History with function calls](/docs/voice-agent-history)             |
 | Have the agent speak a specific line right now                  | [`InjectAgentMessage`](/docs/voice-agent-inject-agent-message)       |
 | Tell the agent what just happened in your application           | [`InjectUserMessage`](/docs/voice-agent-inject-user-message)         |
-| Reuse the same agent definition across sessions or environments | [Reusable Agent Configurations](/docs/reusable-agent-configurations) |
+| Reuse the same agent definition across sessions or environments | [Reusable agent configurations](/docs/reusable-agent-configurations) |
 | Disable history entirely                                        | `settings.flags.history: false`                                      |

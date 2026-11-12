@@ -36,13 +36,13 @@ This can coexist alongside a hosted service-endpoint.
 </service-endpoints>
 ```
 
-### Deepgram License Key
+### Deepgram license key
 
 Authorization is performed at the request level for the hosted Deepgram API by including an API key in your request headers. In contrast, authorization for self-hosted Deepgram environments is performed at the container level, and individual requests that are able to hit your private self-hosted environment are assumed to be authorized already (possibly in some previous layer of your networking stack).
 
-For the UniMRCP plugin, the `deepgram.subscription.key` file must exist and match the schema specified in the plugin installation instructions. For the hosted Deepgram API, this means setting the `auth-key` field with a valid Deepgram API key. If you are using both the hosted API and your own self-hosted environment, make sure to set this value.
+For the UniMRCP plugin, the `deepgram.subscription.key` file must exist and match the schema specified in the plugin installation instructions. For the hosted Deepgram API, this means setting the `auth-key` field with a valid Deepgram API key. If you're using both the hosted API and your own self-hosted environment, make sure to set this value.
 
-If you are exclusively using your self-hosted environment, the `auth-key` value can be empty, such as:
+If you're exclusively using your self-hosted environment, the `auth-key` value can be empty, such as:
 
 **`JSON`**
 

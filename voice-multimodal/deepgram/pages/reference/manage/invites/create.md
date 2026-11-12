@@ -1,5 +1,5 @@
 ---
-title: "Create a Project Invite"
+title: "Create a project invite"
 source: https://developers.deepgram.com/reference/manage/invites/create.md
 path: reference/manage/invites/create
 ---
@@ -7,7 +7,7 @@ path: reference/manage/invites/create
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Create a Project Invite
+# Create a project invite
 
 POST https://api.deepgram.com/v1/projects/{project_id}/invites
 Content-Type: application/json

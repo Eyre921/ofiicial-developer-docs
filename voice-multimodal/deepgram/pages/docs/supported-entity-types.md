@@ -1,5 +1,5 @@
 ---
-title: "Supported Entity Types"
+title: "Supported entity types"
 source: https://developers.deepgram.com/docs/supported-entity-types.md
 path: docs/supported-entity-types
 ---
@@ -7,7 +7,7 @@ path: docs/supported-entity-types
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Supported Entity Types
+# Supported entity types
 
 Deepgram's [entity detection](/docs/detect-entities) model recognizes 59 entity types. [Redaction](/docs/redaction) supports 56 of them. The tables below list every entity type that can be redacted, divided into four groups: PII (Personally Identifiable Information), PHI (Protected Health Information), PCI (Payment Card Industry), and Other Entities.
 
@@ -21,7 +21,7 @@ Note that some entities, such as `name` and `location`, also have subtypes. For 
 
 While entity types have English names, international variants are also redacted. For example, `ssn` covers American Social Security Numbers, as well as many equivalent identification numbers used in different regions worldwide, such as the Canadian Social Insurance Number or the German Sozialversicherungsnummer.
 
-## Redacting Certain Entities
+## Redacting certain entities
 
 Deepgram's redaction functionality supports over 50 unique entity types for both pre-recorded (batch) and streaming requests. Individual entity classes can be redacted by specifying `redact=entity_class` one or more times.
 
@@ -35,7 +35,7 @@ The `pii` group includes every entity type marked `pii` in any table below, incl
 >
 > Digit-sequence redaction is independent of entity recognition. Numerals that match an entity type in the `numbers` group are tagged with the specific entity (`[CREDIT_CARD_1]`, `[SSN_1]`, etc.). Sequences caught only by the digit-length rule are replaced with a generic `[REDACTED]` placeholder.
 
-## Supported Entity Types
+## Supported entity types
 
 ### **PII** (Personally Identifiable Information)
 

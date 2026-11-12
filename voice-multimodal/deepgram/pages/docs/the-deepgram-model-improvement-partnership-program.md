@@ -29,7 +29,7 @@ Deepgram stores fractional increments of data for the continued improvement of o
 
 Deepgram's infrastructure, policies, and procedures are designed to meet industry-standard compliance and regulatory frameworks, including SOC-2 Type 2, HIPAA, PCI DSS, GDPR, CCPA, and all applicable local government and legal requirements. MFA, RBAC, and VPNs are used to regulate and secure all employee access to data systems. All data is encrypted in-flight and at-rest with industry-standard encryption, including TLS 1.3 and AES-256.
 
-## Why Participate?
+## Why participate?
 
 Participation in this program is voluntary and includes a number of valuable benefits.
 
@@ -48,15 +48,15 @@ Have additional questions?[ Get in touch](https://deepgram.com/contact-us).
 
 Add `mip_opt_out=true` as a query parameter of all API requests that you want to be excluded from the Model Improvement Program. Data from opted-out requests is retained only for the duration necessary to process the request.
 
-### Speech-to-Text Examples
+### Speech-to-text examples
 
-Here are some examples of opting out for Speech-to-Text requests.
+Here are some examples of opting out for speech-to-text requests.
 
 > **Info**
 >
 > Depending on the SDK, set `mip_opt_out` either as a first-class parameter (Java, JavaScript, Python) or as a custom add-on parameter (Go, .NET). To learn more about custom add-on parameters, see [Using Custom Parameters with SDKs](/guides/fundamentals/using-custom-parameters-sdks).
 
-#### Pre-recorded Audio
+#### Pre-recorded audio
 
 > **Warning**
 >
@@ -295,7 +295,7 @@ public class Main {
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-#### Streaming Audio
+#### Streaming audio
 
 **`JavaScript`**
 
@@ -634,9 +634,9 @@ public class Main {
 }
 ```
 
-### Text-to-Speech Examples
+### Text-to-speech examples
 
-Here are some examples of opting out for Text-to-Speech requests.
+Here are some examples of opting out for text-to-speech requests.
 
 > **Warning**
 >
@@ -1623,9 +1623,9 @@ public class Main {
 }
 ```
 
-### Voice Agent Example
+### Voice Agent example
 
-Here is an example of opting out for Voice Agent requests using the `Settings` message.
+Here's an example of opting out for Voice Agent requests using the `Settings` message.
 
 **`JSON`**
 
@@ -1672,8 +1672,8 @@ Here is an example of opting out for Voice Agent requests using the `Settings` m
 }
 ```
 
-## Viewing Opt Out Requests in Logs
+## Viewing opt out requests in logs
 
-Within the [Deepgram Console](https://console.deepgram.com/), you can view the opted out requests in the Usage > Logs tab. In your logs you will see the feature mip_opt_out as `true`.
+Within the [Deepgram Console](https://console.deepgram.com/), you can view the opted out requests in the Usage > Logs tab. In your logs you'll see the feature mip_opt_out as `true`.
 
 You can also use the [GET a Project Request](/reference/manage/usage/get) endpoint to view the opted out requests.

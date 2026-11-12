@@ -13,7 +13,7 @@ Voice Agent
 
 The server sends two diagnostic event types when something goes wrong:
 
-* **`Error`** signals a fatal issue. The session usually cannot continue and the connection often closes shortly after. Treat every `Error` as a session-ending event and reconnect if your application needs to keep talking.
+* **`Error`** signals a fatal issue. The session usually can't continue and the connection often closes shortly after. Treat every `Error` as a session-ending event and reconnect if your application needs to keep talking.
 * **`Warning`** signals a non-fatal issue. The session continues. Log the warning, fix the underlying cause if you control it, and otherwise carry on.
 
 Both events follow the same payload shape: a `type` discriminator, a `code` you can branch on, and a human-readable `description`.
@@ -43,7 +43,7 @@ The server sends an `Error` message when something prevents the session from con
 | `FAILED_TO_START_LISTENING`            | The server failed to open the `listen` (speech-to-text) connection.                                           | Retry the connection. If the issue persists, verify your account has access to Deepgram's speech-to-text service and contact Deepgram Support.               |
 | `ASR_CONNECTION_CLOSED`                | The speech-to-text connection closed unexpectedly.                                                            | Retry the connection. This is usually transient. If it persists, contact Deepgram Support with your `request_id`.                                            |
 | `ASR_DRIVER_TIMEOUT`                   | No speech-to-text transcript arrived within the expected timeout.                                             | Check that you are sending valid audio data in the correct format. Retry the connection if the issue persists.                                               |
-| `USER_AUDIO_FORMAT`                    | The user audio did not match the format the client declared.                                                  | Match the encoding and sample rate in your `Settings` message to the audio you stream. See [Media Inputs & Outputs](/docs/voice-agent-media-inputs-outputs). |
+| `USER_AUDIO_FORMAT`                    | The user audio did not match the format the client declared.                                                  | Match the encoding and sample rate in your `Settings` message to the audio you stream. See [Media inputs & outputs](/docs/voice-agent-media-inputs-outputs). |
 | `FAILED_TO_SPEAK`                      | The agent could not speak after exhausting all retries and fallbacks.                                         | Review your `speak` provider configuration and error messages. Always specify a fallback `speak` provider to survive individual provider outages.            |
 | `SERVER_GOING_AWAY`                    | The server running this agent session is shutting down.                                                       | Reconnect to start a new session. This usually means routine server maintenance.                                                                             |
 | `NON_EXISTENT_FUNCTION_CALLED`         | A function call referenced a function that does not exist.                                                    | Verify that every function referenced in your agent configuration is defined and registered.                                                                 |
@@ -54,7 +54,7 @@ The server sends an `Error` message when something prevents the session from con
 
 ## `Warning`
 
-The server sends a `Warning` message when something needs your attention but does not stop the session.
+The server sends a `Warning` message when something needs your attention but doesn't stop the session.
 
 ```json
 {
@@ -80,7 +80,7 @@ The server sends a `Warning` message when something needs your attention but doe
 | `FUNCTION_CALL_FAILED`                     | A function call failed.                                                                                                                                                                                                                                                                                            | Review the provider error message. Specify a fallback `think` provider to survive individual provider outages.                                                                                       |
 | `SLOW_THINK_REQUEST`                       | A `think` provider request is taking a long time.                                                                                                                                                                                                                                                                  | Monitor for ongoing slowness and consider a different `think` provider if your use case is latency-sensitive.                                                                                        |
 | `SLOW_SPEAK_REQUEST`                       | A `speak` provider request is taking a long time.                                                                                                                                                                                                                                                                  | Monitor for ongoing slowness and consider a different `speak` provider if your use case is latency-sensitive.                                                                                        |
-| `FORCE_END_TURN_UNSUPPORTED`               | `ForceEndTurn` requires a Deepgram V2 (Flux) listen provider. The current turn was not ended.                                                                                                                                                                                                                      | Switch `agent.listen.provider` to a Flux model with `version: "v2"`. See [Force End Turn](/docs/voice-agent-force-end-turn).                                                                         |
+| `FORCE_END_TURN_UNSUPPORTED`               | `ForceEndTurn` requires a Deepgram V2 (Flux STT) listen provider. The current turn was not ended.                                                                                                                                                                                                                  | Switch `agent.listen.provider` to a Flux STT model with `version: "v2"`. See [Force End Turn](/docs/voice-agent-force-end-turn).                                                                     |
 | `GPT_4O_STREAM_END_ERROR`                  | `gpt-4o` failed to send a final done message.                                                                                                                                                                                                                                                                      | Monitor for ongoing errors and consider a different LLM model or provider.                                                                                                                           |
 | `MAXIMUM_SESSION_LENGTH_APPROACHING`       | The session will automatically close in 5 minutes after reaching the maximum session length of 2 hours.                                                                                                                                                                                                            | End the conversation, or start a new session and pass the prior turns in `agent.context`. See [Maximum session length](#maximum-session-length).                                                     |
 | `THINK_MODEL_MIP_OPT_OUT_UNSUPPORTED`      | [`UpdateThink`](/docs/voice-agent-update-think) was ignored because it requested an LLM model, such as `think-fast`, that does not yet support opting out of the [Model Improvement Program](/docs/the-deepgram-model-improvement-partnership-program) (`mip_opt_out`). The current `think` provider stays active. | Choose a different LLM model, or start a new session without `mip_opt_out` to use this one.                                                                                                          |
@@ -94,9 +94,9 @@ A Voice Agent session runs for a maximum of 2 hours. Two events mark the limit:
 | 1 hour 55 minutes     | `Warning`          | `MAXIMUM_SESSION_LENGTH_APPROACHING` |
 | 2 hours               | `Error` (terminal) | `MAXIMUM_SESSION_LENGTH_REACHED`     |
 
-At 2 hours the server closes the session, so treat the warning as your cue to wrap up. To continue a conversation past the limit, open a new WebSocket connection and pass the prior turns in `agent.context.messages` — the agent resumes with full awareness of what was said. See [Maintaining Context](/docs/voice-agent-conversation-context#history).
+At 2 hours the server closes the session, so treat the warning as your cue to wrap up. To continue a conversation past the limit, open a new WebSocket connection and pass the prior turns in `agent.context.messages` — the agent resumes with full awareness of what was said. See [Maintaining context](/docs/voice-agent-conversation-context#history).
 
-[`KeepAlive`](/docs/agent-keep-alive) holds an idle connection open, but it does not extend the 2-hour limit.
+[`KeepAlive`](/docs/agent-keep-alive) holds an idle connection open, but it doesn't extend the 2-hour limit.
 
 ## Handling errors and warnings
 

@@ -15,7 +15,7 @@ The `LatencyReport` message is the richest latency signal the Agent API emits. T
 
 ## Purpose
 
-`LatencyReport` lets you attribute latency to the right stage — for example, separating LLM time-to-first-token from TTS time, and isolating tool-call and thinking overhead. It is fully supported and sent automatically; no configuration flag is required to receive it.
+`LatencyReport` lets you attribute latency to the right stage — for example, separating LLM time-to-first-token from TTS time, and isolating tool-call and thinking overhead. It's fully supported and sent automatically; no configuration flag is required to receive it.
 
 ## Fields
 
@@ -32,7 +32,7 @@ All fields are floats in seconds, and each is optional (omitted when not applica
 | `tts_latency`          | number | Text-to-speech: first text token to first audio byte.           |
 | `total_latency`        | number | End-to-end: user utterance end to first audio byte.             |
 
-## Example Payload
+## Example payload
 
 **`JSON`**
 
@@ -49,7 +49,7 @@ All fields are floats in seconds, and each is optional (omitted when not applica
 }
 ```
 
-## Use Cases
+## Use cases
 
 Capture `LatencyReport` the same way as every other frame to chart and troubleshoot latency:
 
@@ -57,4 +57,4 @@ Capture `LatencyReport` the same way as every other frame to chart and troublesh
 * Separate LLM time-to-first-token from TTS time.
 * Isolate tool-call and thinking overhead from text generation.
 
-For an end-to-end logging pattern that persists every WebSocket frame, see [Session Observability](/docs/voice-agent-observability).
+For an end-to-end logging pattern that persists every WebSocket frame, see [Session observability](/docs/voice-agent-observability).

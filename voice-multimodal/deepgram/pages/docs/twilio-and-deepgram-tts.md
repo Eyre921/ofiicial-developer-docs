@@ -57,7 +57,7 @@ You need the following accounts, keys, and tools.
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
 Install ngrok and authenticate it once with the token from your ngrok dashboard.
 
@@ -68,7 +68,7 @@ brew install ngrok
 ngrok config add-authtoken YOUR_NGROK_AUTHTOKEN
 ```
 
-## Step 1: Set up the project
+## Step 1: set up the project
 
 Clone the companion repository, which holds the complete `app.py` and `requirements.txt` referenced throughout this guide.
 
@@ -101,7 +101,7 @@ This app needs no LLM key and no speech-to-text — it only generates speech. Te
 
 **Verify:** running `python -c "import app"` with the two environment variables set imports cleanly.
 
-## Step 2: Serve TwiML with `<Connect><Stream>`
+## Step 2: serve TwiML with `<Connect><Stream>`
 
 When a call connects, Twilio asks your webhook what to do. You answer with TwiML, Twilio's XML instruction set. The key instruction here is [`<Connect><Stream>`](https://www.twilio.com/docs/voice/twiml/stream), which opens a **bidirectional** WebSocket — that return path lets you send generated audio back into the call.
 
@@ -119,11 +119,11 @@ async def twiml(request: Request) -> Response:
     return Response(content=xml, media_type="application/xml")
 ```
 
-That one design choice separates playback from transcription. Playing audio *into* a call requires a channel that carries audio back to Twilio, and only `<Connect><Stream>` (bidirectional) does that. Its one-way sibling, `<Start><Stream>`, can fork the caller's audio *to* you but cannot carry any audio back — fine for a transcriber, useless for playback. Unlike the STT guide, no `<Say>` or `<Pause>` follows: with `<Connect>`, the stream *is* the call, and it stays up until you close the socket.
+That one design choice separates playback from transcription. Playing audio *into* a call requires a channel that carries audio back to Twilio, and only `<Connect><Stream>` (bidirectional) does that. Its one-way sibling, `<Start><Stream>`, can fork the caller's audio *to* you but can't carry any audio back — fine for a transcriber, useless for playback. Unlike the STT guide, no `<Say>` or `<Pause>` follows: with `<Connect>`, the stream *is* the call, and it stays up until you close the socket.
 
 **Verify:** `curl -X POST https://YOUR_HOST/twiml` returns the XML above with your `wss://` URL and a `<Connect>` (not `<Start>`) element.
 
-## Step 3: Generate speech with Deepgram Flux TTS
+## Step 3: generate speech with Deepgram Flux TTS
 
 [Flux TTS](/docs/flux-tts/overview) is Deepgram's streaming, turn-based text-to-speech built for voice-agent pipelines. You open a WebSocket, send text as a `Speak` message, and `Flush` to end the turn. The server replies with a `SpeechStarted` marker, a run of binary audio frames, and a `SpeechMetadata` summary once the turn's audio is complete — that last message is your cue to stop reading. Requesting mulaw at 8 kHz matches Twilio's Media Streams format exactly, so the bytes drop straight into media frames with no transcoding.
 
@@ -150,15 +150,15 @@ async def deepgram_tts(text: str):
         await socket.send_close()
 ```
 
-Flux model strings follow the format `flux-{voice}-{language}` (for example, `flux-alexis-en`); swap the voice to change how the message sounds. See [Flux TTS voices](/docs/flux-tts/voices) for the current list.
+Flux TTS model strings follow the format `flux-{voice}-{language}` (for example, `flux-alexis-en`); swap the voice to change how the message sounds. See [Flux TTS voices](/docs/flux-tts/voices) for the current list.
 
 > **Info**
 >
 > `/v2/speak` rejects Aura model strings such as `aura-2-thalia-en`. Those still run on the older [`speak.v1` REST API](/docs/tts-rest).
 
-## Step 4: Stream the audio into the call
+## Step 4: stream the audio into the call
 
-As audio arrives from Flux, forward it to Twilio as `media` frames. Flux emits arbitrarily sized chunks, so buffer them and re-slice into exact 20 ms frames (160 bytes of mulaw). Pace the frames at real time so you don't dump the whole clip into Twilio's buffer at once. After the last frame, send a `mark`; Twilio echoes it back once playback reaches that point, which is your cue that the message finished playing.
+As audio arrives from Flux TTS, forward it to Twilio as `media` frames. Flux TTS emits arbitrarily sized chunks, so buffer them and re-slice into exact 20 ms frames (160 bytes of mulaw). Pace the frames at real time so you don't dump the whole clip into Twilio's buffer at once. After the last frame, send a `mark`; Twilio echoes it back once playback reaches that point, which is your cue that the message finished playing.
 
 **`Python`**
 
@@ -188,7 +188,7 @@ async def speak(twilio_ws, stream_sid, text):
 
 Every message you send back must carry the call's `streamSid`, which you capture from Twilio's `start` event.
 
-## Step 5: Drive the call from the media socket
+## Step 5: drive the call from the media socket
 
 The `/media` WebSocket ties it together. Accept the socket, and on Twilio's `start` event generate and stream the message. Then wait for your `end-of-speech` mark to come back and hang up. The handler skips inbound `media` events (the caller's own audio), because this app never listens.
 
@@ -214,9 +214,9 @@ async def media(twilio_ws: WebSocket) -> None:
 
 Waiting for the mark before closing matters: if you close the socket the instant you *send* the last frame, you cut off the audio Twilio still has buffered. The mark tells you Twilio actually *played* it.
 
-With TwiML answering the call, Flux generating the audio, and the mark timing the hangup, the playback service is complete — time to dial it from a real phone.
+With TwiML answering the call, Flux TTS generating the audio, and the mark timing the hangup, the playback service is complete — time to dial it from a real phone.
 
-## Step 6: Run and test
+## Step 6: run and test
 
 Start the application and open a tunnel so Twilio can reach it.
 
@@ -236,7 +236,7 @@ Next, connect the phone number to your webhook. In the [Twilio Console](https://
 Now place the call and confirm playback end to end.
 
 1. Call the number.
-2. Confirm you hear the generated `MESSAGE` in a natural Flux voice.
+2. Confirm you hear the generated `MESSAGE` in a natural Flux TTS voice.
 3. Confirm the call ends cleanly once the message finishes.
 4. Watch the console for `[call] started stream ...` and then `[call] playback finished`.
 
@@ -258,7 +258,7 @@ Your tunnel exposes both endpoints to the public internet. The companion `app.py
 Once the core playback runs, several enhancements build on the same streaming approach.
 
 * **Speak dynamic text.** Instead of a constant `MESSAGE`, drive the text from a database lookup, an incoming webhook, or query parameters passed through the TwiML — order confirmations, appointment reminders, account balances.
-* **Choose a different voice.** Swap the `speak` model for another [Flux voice](/docs/flux-tts/voices) to change tone, gender, or accent.
+* **Choose a different voice.** Swap the `speak` model for another [Flux TTS voice](/docs/flux-tts/voices) to change tone, gender, or accent.
 * **Play several messages.** Call `speak(...)` more than once (each with its own mark) to chain prompts, or keep the socket open and stream new audio whenever you have something to say.
 * **Add listening for true barge-in.** Barge-in here is manual only — with no transcription, the app can't detect the caller talking over the message. Add Deepgram speech-to-text, or move to the [Voice Agent API](/docs/twilio-and-deepgram-voice-agent), to stop playback the instant the caller speaks.
 

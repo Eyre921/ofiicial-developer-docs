@@ -9,7 +9,7 @@ path: docs/using-sdks-with-self-hosted
 
 # Using SDKs with Self-Hosted
 
-By default, Deepgram's SDKs hit the hosted endpoint `api.deepgram.com`. To use one of our SDKs with your self-hosted deployment, you will need to specify your own self-hosted endpoint instead.
+By default, Deepgram's SDKs hit the hosted endpoint `api.deepgram.com`. To use one of our SDKs with your self-hosted deployment, you'll need to specify your own self-hosted endpoint instead.
 
 ## Determining your host URL
 
@@ -17,9 +17,9 @@ If running your requests locally on your server, your URL may be as simple as `h
 
 If running your requests on other servers, you may be using a static IP, such as `http://172.23.0.1:8080`.
 
-If you use a multi-server or auto-scaled environment, you may configure a URL that is served by a load balancer that routes your requests across several instances.
+If you use a multi-server or auto-scaled environment, you may configure a URL that's served by a load balancer that routes your requests across several instances.
 
-Note that for a host that does not have TLS enabled, you will use `http` rather than `https`, and `ws` rather than `wss`.
+Note that for a host that doesn't have TLS enabled, you'll use `http` rather than `https`, and `ws` rather than `wss`.
 
 ## Python SDK
 
@@ -90,7 +90,7 @@ var options = new DeepgramWsClientOptions(){
 var liveClient = new LiveClient(apiKey, options);
 ```
 
-If you encounter the following error message, note that you are receiving a 400 (bad request) when a 101 (successful stream) is expected.
+If you encounter the following error message, note that you're receiving a 400 (bad request) when a 101 (successful stream) is expected.
 
 **`Text`**
 
@@ -98,7 +98,7 @@ If you encounter the following error message, note that you are receiving a 400 
 Error: "The server returned status code \u0027400\u0027 when status code \u0027101\u0027 was expected."
 ```
 
-Ensure that your request parameters are specifying a model that you have available on your self-hosted instance. For example, when you intend to serve requests through a Nova-3 model, specify the following params:
+Ensure that your request parameters are specifying a model that you have available on your self-hosted instance. For example, when you intend to serve requests through a Deepgram Nova-3 model, specify the following params:
 
 **`C#`**
 
@@ -110,7 +110,7 @@ var liveSchema = new LiveSchema()
 };
 ```
 
-If that model is not present in your `models/` directory, the above error will occur.
+If that model isn't present in your `models/` directory, the above error will occur.
 
 ## Go SDK
 

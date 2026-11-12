@@ -1,5 +1,5 @@
 ---
-title: "Certificate Status"
+title: "Certificate status"
 source: https://developers.deepgram.com/docs/certificates-endpoint.md
 path: docs/certificates-endpoint
 ---
@@ -7,9 +7,9 @@ path: docs/certificates-endpoint
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Certificate Status
+# Certificate status
 
-The certificates endpoint returns certificate lifecycle information for your Deepgram self-hosted deployment. Use it to track certificate creation, end-of-support, and end-of-life dates.
+The certificates endpoint returns certificate lifecycle information for your Deepgram Self-Hosted deployment. Use it to track certificate creation, end-of-support, and end-of-life dates.
 
 This endpoint is available on all self-hosted container images:
 
@@ -20,7 +20,7 @@ This endpoint is available on all self-hosted container images:
 | License Proxy | `/v1/certificates` | 8089                                                |
 | Billing       | `/v1/certificates` | 8080 (requires `certificates_port` in billing.toml) |
 
-## Response Format
+## Response format
 
 ```json
 {
@@ -38,7 +38,7 @@ This endpoint is available on all self-hosted container images:
 | `end_of_life`          | 36 months after `beginning_of_support`. The certificate expires on this date.                                              |
 | `instance_id`          | Unique identifier for this deployment instance.                                                                            |
 
-## Making a Request
+## Making a request
 
 **`cURL (API)`**
 
@@ -76,15 +76,15 @@ console.log(`End of life: ${cert.end_of_life}`);
 console.log(`Instance ID: ${cert.instance_id}`);
 ```
 
-## Certificate Lifecycle
+## Certificate lifecycle
 
-Deepgram self-hosted certificates follow a fixed lifecycle:
+Deepgram Self-Hosted certificates follow a fixed lifecycle:
 
 1. **Active** (0–18 months after creation) — Full support. Software updates and security patches are available.
 2. **End of Support** (18–36 months after creation) — The deployment continues to function, but Deepgram no longer provides support or updates for this certificate version. Plan your renewal.
 3. **End of Life** (36 months after creation) — The certificate expires. The deployment will no longer validate against the Deepgram license server.
 
-## Startup Log Message
+## Startup log message
 
 All self-hosted containers log certificate information on startup. You can inspect this without querying an endpoint:
 
@@ -94,7 +94,7 @@ INFO impeller: Certificates information. beginning_of_support=2025-11-13 15:26:3
 
 This message appears in the logs for API, Engine, License Proxy, and Billing containers. If a certificate has expired, the container will log an error and refuse to start.
 
-## Monitoring Certificate Expiry
+## Monitoring certificate expiry
 
 Check the `eol` field periodically to ensure your deployment renews before certificate expiration. A recommended approach:
 
@@ -118,7 +118,7 @@ else:
     print(f"Certificate valid for {days_remaining} more days")
 ```
 
-## Billing Container Configuration
+## Billing container configuration
 
 The Billing container requires `certificates_port` in `billing.toml` to serve the certificates endpoint. Without this setting, the certificates server binds to an ephemeral port and is not reachable.
 
@@ -138,7 +138,7 @@ The `/v1/certificates` endpoint is available in release `260319` and later on al
 
 ---
 
-## What's Next
+## What's next
 
-* [Status Endpoint](/docs/self-hosted-status-endpoint) - Monitor node health and readiness
-* [System Maintenance](/docs/maintaining) - Keeping your deployment healthy
+* [Status endpoint](/docs/self-hosted-status-endpoint) - Monitor node health and readiness
+* [System maintenance](/docs/maintaining) - Keeping your deployment healthy

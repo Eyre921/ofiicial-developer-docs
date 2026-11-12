@@ -1,5 +1,5 @@
 ---
-title: "Batch vs Streaming: Which Should I Use?"
+title: "Batch vs streaming: which should I use?"
 source: https://developers.deepgram.com/docs/flux-tts/batch-vs-streaming.md
 path: docs/flux-tts/batch-vs-streaming
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/batch-vs-streaming
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Batch vs Streaming: Which Should I Use?
+# Batch vs streaming: which should I use?
 
-Flux TTS is served on `/v2/speak` over two transports against the same voices. They're not tiers — pick by how the audio is consumed.
+Deepgram Flux TTS is served on `/v2/speak` over two transports against the same voices. They're not tiers — pick by how the audio is consumed.
 
 ## The short answer
 

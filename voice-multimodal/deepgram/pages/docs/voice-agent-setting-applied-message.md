@@ -17,7 +17,7 @@ The `SettingsApplied` message is a JSON message that confirms the server has suc
 
 The `SettingsApplied` message confirms that the server has successfully received and applied the `Settings` message. This ensures synchronization between the client and server, providing assurance that the desired settings are now in effect. By sending this message, the server enables the voice agent to proceed with operations based on the updated configuration.
 
-## Example Payload
+## Example payload
 
 The server will send a `SettingsApplied` message as confirmation that the server received the [Settings](/docs/voice-agent-settings) message.
 

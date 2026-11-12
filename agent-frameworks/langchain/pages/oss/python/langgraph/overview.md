@@ -72,7 +72,7 @@ LangGraph works on its own. However, you can also pair it with other LangChain p
 >
 > Integrations and agent abstractions built on LangGraph.
 
-> [card] [LangSmith Deployment](/langsmith/deployment)
+> [card] [LangSmith Agent Server](/langsmith/deployment)
 >
 > Deploy and scale stateful agents, with visual prototyping in Studio.
 
@@ -85,7 +85,7 @@ LangGraph works on its own. However, you can also pair it with other LangChain p
 * [LangGraph quickstart](/oss/python/langgraph/quickstart)
 * [Graph API overview](/oss/python/langgraph/graph-api)
 * [Frameworks, runtimes, and harnesses](/oss/python/concepts/products)
-* [Incorporate existing code and other frameworks](/langsmith/deploy-other-frameworks) (wrap a non-LangGraph agent for LangSmith Deployment)
+* [Incorporate existing code and other frameworks](/langsmith/deploy-other-frameworks) (wrap a non-LangGraph agent for LangSmith Agent Server)
 
 ***
 

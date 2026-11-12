@@ -1,5 +1,5 @@
 ---
-title: "Delete Agent Variable"
+title: "Delete agent variable"
 source: https://developers.deepgram.com/reference/voice-agent/agent-variables/delete-agent-variable.md
 path: reference/voice-agent/agent-variables/delete-agent-variable
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-variables/delete-agent-variable
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Delete Agent Variable
+# Delete agent variable
 
 DELETE https://api.deepgram.com/v1/projects/{project_id}/agent-variables/{variable_id}
 

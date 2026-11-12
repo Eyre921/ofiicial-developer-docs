@@ -1,5 +1,5 @@
 ---
-title: "Plugin System"
+title: "Plugin system"
 source: https://developers.deepgram.com/developer-tools/cli/plugins.md
 path: developer-tools/cli/plugins
 ---
@@ -7,11 +7,11 @@ path: developer-tools/cli/plugins
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Plugin System
+# Plugin system
 
 The `dg` CLI supports plugins that add new commands and capabilities.
 
-## Install a Plugin
+## Install a plugin
 
 ```shell
 dg plugin install <package-name>
@@ -19,25 +19,25 @@ dg plugin install <package-name>
 
 Plugin installation follows the CLI installation method. Homebrew and system installations use an isolated plugin environment; other installations may add plugins to the CLI environment.
 
-## List Installed Plugins
+## List installed plugins
 
 ```shell
 dg plugin list
 ```
 
-## Update Plugins
+## Update plugins
 
 ```shell
 dg plugin update <package-name>
 ```
 
-## Remove a Plugin
+## Remove a plugin
 
 ```shell
 dg plugin remove <package-name>
 ```
 
-## Example Plugins
+## Example plugins
 
 Search for available plugins:
 
@@ -45,7 +45,7 @@ Search for available plugins:
 dg plugin search <keyword>
 ```
 
-## Plugin Development
+## Plugin development
 
 Plugins are Python packages that expose a `BaseCommand` class through the `deepctl.plugins` entry-point group:
 
@@ -70,7 +70,7 @@ class MyCommand(BaseCommand):
         print("Hello from my plugin!")
 ```
 
-## Register a Plugin
+## Register a plugin
 
 Add the command to your package's `pyproject.toml`:
 

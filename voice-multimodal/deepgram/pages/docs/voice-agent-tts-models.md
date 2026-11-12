@@ -1,5 +1,5 @@
 ---
-title: "TTS Models"
+title: "TTS models"
 source: https://developers.deepgram.com/docs/voice-agent-tts-models.md
 path: docs/voice-agent-tts-models
 ---
@@ -7,22 +7,22 @@ path: docs/voice-agent-tts-models
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# TTS Models
+# TTS models
 
-By default [Deepgram Text-to-Speech](/docs/tts-models) will be used with the Voice Agent API. Deepgram supports two text-to-speech model families, and the agent picks the right TTS endpoint based on the `version` field of `agent.speak.provider` — you do not manage endpoint URLs yourself.
+By default [Deepgram text-to-speech](/docs/tts-models) will be used with the Voice Agent API. We support two text-to-speech model families, and the agent picks the right TTS endpoint based on the `version` field of `agent.speak.provider` — you don't manage endpoint URLs yourself.
 
-* **[Flux TTS](/docs/flux-tts/overview)** (`v2`) for streaming-first, voice-agent-first synthesis with turn-based lifecycle and cross-turn voice consistency, in English and [41 other languages](/docs/flux-tts/voices#languages).
+* **Deepgram [Flux TTS](/docs/flux-tts/overview)** (`v2`) for streaming-first, voice-agent-first synthesis with turn-based lifecycle and cross-turn voice consistency, in English and [41 other languages](/docs/flux-tts/voices#languages).
 * **[Aura](/docs/tts-models)** (`v1`) for the broadest Deepgram voice catalog across English and Spanish, and for compressed or containerized output formats.
 
 You can also use Deepgram's native Cartesia support or opt to use another provider's TTS model with your Agent by applying the following settings.
 
 > **Info**
 >
-> You can set your Text-to-Speech model in the [Settings Message](/docs/configure-voice-agent) for your Voice Agent. See the docs for more information.
+> You can set your text-to-speech model in the [Settings Message](/docs/configure-voice-agent) for your Voice Agent. See the docs for more information.
 
 ## Deepgram TTS models
 
-Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak.provider.version` to `v2` for Flux TTS or `v1` for Aura; within a provider you supply, `version` defaults to `v1`. A `Settings` message that omits `agent.speak` altogether gets Flux TTS with the `flux-kit-en` voice.
+We offer two TTS model families for the Voice Agent API. Set `agent.speak.provider.version` to `v2` for Flux TTS or `v1` for Aura; within a provider you supply, `version` defaults to `v1`. A `Settings` message that omits `agent.speak` altogether gets Flux TTS with the `flux-kit-en` voice.
 
 ### Choosing a model family
 
@@ -36,7 +36,7 @@ Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak
 
 ### Flux TTS
 
-[Flux TTS](/docs/flux-tts/overview) is Deepgram's streaming-first, voice-agent-first text-to-speech model family. It brings a turn-based lifecycle and cross-turn voice consistency built for the realities of a voice agent pipeline. For details, see the [Flux TTS Feature Overview](/docs/flux-tts/feature-overview).
+[Flux TTS](/docs/flux-tts/overview) is our streaming-first, voice-agent-first text-to-speech model family. It brings a turn-based lifecycle and cross-turn voice consistency built for the realities of a voice agent pipeline. For details, see the [Flux TTS feature overview](/docs/flux-tts/feature-overview).
 
 | Parameter                           | Type    | Description                                                                                                                                                                                                                                                                                                                |
 | ----------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -44,9 +44,9 @@ Deepgram offers two TTS model families for the Voice Agent API. Set `agent.speak
 | `agent.speak.provider.version`      | String  | Must be `v2`                                                                                                                                                                                                                                                                                                               |
 | `agent.speak.provider.model`        | String  | Flux TTS model id in the format `flux-{voice}-{language}`, for example `flux-alexis-en` or `flux-desislava-bg`. The Voice Agent API supports every voice in the [Flux TTS voice catalog](/docs/flux-tts/voices), in English and 41 other languages. The language code at the end of the model string selects the language. |
 | `agent.speak.provider.speed`        | Float   | Speaking rate multiplier. Accepts `0.5` to `1.5` in `0.05` increments. Defaults to `1.0`.                                                                                                                                                                                                                                  |
-| `agent.speak.provider.expressivity` | Integer | Delivery register on a calm to animated axis, available on every Flux voice. Accepts `-2`, `-1`, `0`, `1`, or `2`. Defaults to `0`, the voice's tuned delivery. Beta — see [Expressivity](/docs/tts-expressivity).                                                                                                         |
+| `agent.speak.provider.expressivity` | Integer | Delivery register on a calm to animated axis, available on every Flux TTS voice. Accepts `-2`, `-1`, `0`, `1`, or `2`. Defaults to `0`, the voice's tuned delivery. Beta — see [Expressivity](/docs/tts-expressivity).                                                                                                     |
 
-Regional availability and text normalization for each language follow the [Flux TTS voice catalog](/docs/flux-tts/voices#languages). Languages marked Early Access do not have text normalization yet, so prompt your LLM to write numbers, dates and abbreviations out in words.
+Regional availability and text normalization for each language follow the [Flux TTS voice catalog](/docs/flux-tts/voices#languages). Languages marked Early Access don't have text normalization yet, so prompt your LLM to write numbers, dates, and abbreviations out in words.
 
 > **Info**
 >
@@ -231,7 +231,7 @@ For ElevenLabs you can refer to [this article](https://help.elevenlabs.io/hc/en-
 
 #### Example (eleven_v3 via HTTPS)
 
-Because `eleven_v3` does not support WebSocket streaming, use the HTTPS REST endpoint:
+Because `eleven_v3` doesn't support WebSocket streaming, use the HTTPS REST endpoint:
 
 **`JSON`**
 
@@ -315,7 +315,7 @@ For Amazon (AWS) Polly you can refer to [this article](https://docs.aws.amazon.c
 | `agent.speak.provider.engine`        | String | The engine to use        |
 | `agent.speak.provider.credentials`   | Object | The credentials to use   |
 
-#### STS Example
+#### STS example
 
 **`JSON`**
 
@@ -344,7 +344,7 @@ For Amazon (AWS) Polly you can refer to [this article](https://docs.aws.amazon.c
 }
 ```
 
-#### IAM Example
+#### IAM example
 
 **`JSON`**
 
@@ -424,9 +424,9 @@ The fallback is per-request — each new agent utterance starts again from the f
 
 ---
 
-## What's Next
+## What's next
 
 * [Configure the Voice Agent](/docs/configure-voice-agent)
-* [Flux TTS Overview](/docs/flux-tts/overview)
+* [Flux TTS overview](/docs/flux-tts/overview)
 * [Build a Flux TTS Voice Agent](/docs/flux-tts/voice-agent)
 * [Aura TTS Voice Selection](/docs/tts-models)

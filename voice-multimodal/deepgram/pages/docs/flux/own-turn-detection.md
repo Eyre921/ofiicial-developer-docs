@@ -1,5 +1,5 @@
 ---
-title: "Bring Your Own Turn Detection"
+title: "Bring your own turn detection"
 source: https://developers.deepgram.com/docs/flux/own-turn-detection.md
 path: docs/flux/own-turn-detection
 ---
@@ -7,20 +7,20 @@ path: docs/flux/own-turn-detection
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Bring Your Own Turn Detection
+# Bring your own turn detection
 
-Streaming:Flux
+Streaming:Flux STT
 
-Flux detects the end of a turn natively, and for most voice agents that is the right default. But if you have already invested in a turn detection stack — a VAD, an endpointing model, push-to-talk, or your own detector — you can keep it and adopt Flux for transcription without ripping out that logic. This guide shows the recipe for taking full ownership of turn endings.
+Deepgram Flux STT detects the end of a turn natively, and for most voice agents that's the right default. But if you've already invested in a turn detection stack — a VAD, an endpointing model, push-to-talk, or your own detector — you can keep it and adopt Flux STT for transcription without ripping out that logic. This guide shows the recipe for taking full ownership of turn endings.
 
 ## The recipe
 
 Two settings put you in control:
 
-1. **Set `eot_threshold` to `1.0`.** This suppresses Flux's natural `EndOfTurn` events — the model will not end a turn on its own confidence.
+1. **Set `eot_threshold` to `1.0`.** This suppresses Flux STT's natural `EndOfTurn` events — the model won't end a turn on its own confidence.
 2. **Leave `eager_eot_threshold` unset.** Eager end-of-turn is off by default; keep it off so no `EagerEndOfTurn` events fire.
 
-Then send a [`ForceEndTurn`](/docs/flux/force-end-turn) message whenever your own detector decides the turn is over. Flux ends the turn and emits an `EndOfTurn` with `"trigger": "manual"`.
+Then send a [`ForceEndTurn`](/docs/flux/force-end-turn) message whenever your own detector decides the turn is over. Flux STT ends the turn and emits an `EndOfTurn` with `"trigger": "manual"`.
 
 **`Python`**
 
@@ -48,17 +48,17 @@ wss://api.deepgram.com/v2/listen?model=flux-general-en&eot_threshold=1.0&eot_tim
 
 ## How it works
 
-1. **Send audio as usual.** Flux transcribes continuously and emits `StartOfTurn` and `Update` events. With `eot_threshold=1.0`, it never emits `EndOfTurn` on its own.
+1. **Send audio as usual.** Flux STT transcribes continuously and emits `StartOfTurn` and `Update` events. With `eot_threshold=1.0`, it never emits `EndOfTurn` on its own.
 2. **Your detector decides the turn is over.** A push-to-talk release, a VAD silence event, a DTMF tone — whatever signal you rely on.
-3. **Send `ForceEndTurn`.** Flux ends the turn and emits `EndOfTurn` with the transcript decoded so far and `"trigger": "manual"`.
-4. **Dispatch the transcript.** Treat the `EndOfTurn` transcript as final and hand it to your agent. `turn_index` increments and Flux is ready for the next turn.
+3. **Send `ForceEndTurn`.** Flux STT ends the turn and emits `EndOfTurn` with the transcript decoded so far and `"trigger": "manual"`.
+4. **Dispatch the transcript.** Treat the `EndOfTurn` transcript as final and hand it to your agent. `turn_index` increments and Flux STT is ready for the next turn.
 
 ## What still ends a turn
 
 With `eot_threshold=1.0`, three things can still end a turn:
 
 * **`ForceEndTurn`** — your explicit signal (`"trigger": "manual"`).
-* **`eot_timeout_ms`** — a safety net. If this much silence passes, Flux force-ends the turn with `"trigger": "timeout"`. Set it high enough that it only fires when your own detection has failed. The maximum is `60000` (60 seconds).
+* **`eot_timeout_ms`** — a safety net. If this much silence passes, Flux STT force-ends the turn with `"trigger": "timeout"`. Set it high enough that it only fires when your own detection has failed. The maximum is `60000` (60 seconds).
 * **`CloseStream`** — closes the connection without finalizing the active turn. No `EndOfTurn` is emitted for it; treat the most recent `Update` as the last transcript for that turn.
 
 > **Warning**
@@ -67,7 +67,7 @@ With `eot_threshold=1.0`, three things can still end a turn:
 
 ## Example
 
-This loop wires an external detector to Flux. When your detector fires, it sends a `ForceEndTurn`; Flux replies with an `EndOfTurn` you treat as final.
+This loop wires an external detector to Flux STT. When your detector fires, it sends a `ForceEndTurn`; Flux STT replies with an `EndOfTurn` you treat as final.
 
 **`JavaScript`**
 
@@ -121,17 +121,17 @@ async for raw in ws:
 
 ## When to use this
 
-* **You already have turn detection you trust** and don't want to migrate off it to adopt Flux.
+* **You already have turn detection you trust** and don't want to migrate off it to adopt Flux STT.
 * **Your turn-end signal is external and definitive** — push-to-talk, DTMF, a UI action.
-* **You are migrating from Nova-3** and want to keep your existing endpointing while gaining Flux transcript quality. See [Migrating from Nova-3 to Flux](/docs/flux/nova-3-migration).
+* **You're migrating from Nova-3** and want to keep your existing endpointing while gaining Flux STT transcript quality. See [Migrating from Nova-3 to Flux STT](/docs/flux/nova-3-migration).
 
-If you don't already have a turn detection stack, prefer Flux's native detection — it is purpose-built for conversational turn-taking. See [End-of-Turn Detection Parameters](/docs/flux/configuration).
+If you don't already have a turn detection stack, prefer Flux STT's native detection — it's purpose-built for conversational turn-taking. See [End-of-turn detection parameters](/docs/flux/configuration).
 
-## Related Resources
+## Related resources
 
 * [Force End Turn](/docs/flux/force-end-turn) - The control message reference
-* [End-of-Turn Detection Parameters](/docs/flux/configuration) - Tune `eot_threshold`, `eager_eot_threshold`, and `eot_timeout_ms`
-* [Understanding the Flux State Machine](/docs/flux/state) - Turn events and state transitions
-* [Migrating from Nova-3 to Flux](/docs/flux/nova-3-migration) - Migration guide
+* [End-of-turn detection parameters](/docs/flux/configuration) - Tune `eot_threshold`, `eager_eot_threshold`, and `eot_timeout_ms`
+* [Understanding the Flux STT state machine](/docs/flux/state) - Turn events and state transitions
+* [Migrating from Nova-3 to Flux STT](/docs/flux/nova-3-migration) - Migration guide
 
 ---

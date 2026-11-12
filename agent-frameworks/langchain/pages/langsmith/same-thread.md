@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/same-thread
 path: langsmith/same-thread
 ---
 
-In LangSmith Deployment, a thread is not explicitly associated with a particular assistant.
+In LangSmith Agent Server, a thread is not explicitly associated with a particular assistant.
 This means that you can run multiple assistants on the same thread, which allows a different assistant to continue from an initial assistant's progress.
 
 In this example, we will create two assistants and then call them both on the same thread.

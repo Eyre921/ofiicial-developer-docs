@@ -9,7 +9,7 @@ path: docs/errors
 
 # Errors
 
-A record of errors and reasons you will receive them when using the Deepgram API.
+A record of errors and reasons you'll receive them when using the Deepgram API.
 
 ## General API errors
 
@@ -55,7 +55,7 @@ If you receive the following error:
 
 Often, this is caused by sending Deepgram a URL to transcribe, but failing to set a `Content-Type: application/json` header. When sending Deepgram a JSON payload containing a URL, the `Content-Type: application/json` must be set in the request.
 
-If you are sending an audio file and not a URL, you may be sending corrupted audio. You can use tools such as `ffprobe` or Audacity to confirm that your audio file is valid.
+If you're sending an audio file and not a URL, you may be sending corrupted audio. You can use tools such as `ffprobe` or Audacity to confirm that your audio file is valid.
 
 ### `401` Incorrect API key
 
@@ -116,7 +116,7 @@ When a project isn't found it will result in `404 Not Found`. It may be because;
 }
 ```
 
-## Speech to Text errors
+## Speech-to-text errors
 
 ### `402` Insufficient credits
 
@@ -158,11 +158,11 @@ When requests are made in excess of Deepgram's [rate limits](https://developers.
 }
 ```
 
-## Text to Speech Errors
+## Text-to-speech errors
 
-### `400` Unknown Model. Query parameters specify a model that does not exist.
+### `400` Unknown model. Query parameters specify a model that does not exist.
 
-The model requested is not one of Deepgram's [voice models](/docs/tts-models).
+The model requested isn't one of our [voice models](/docs/tts-models).
 
 ```json
 {
@@ -172,7 +172,7 @@ The model requested is not one of Deepgram's [voice models](/docs/tts-models).
 }
 ```
 
-### `400` Failure to Parse Query Parameters
+### `400` Failure to parse query parameters
 
 The query parameters were invalid. The `message` can be anything describing a failure to parse an invalid query string.
 
@@ -184,7 +184,7 @@ The query parameters were invalid. The `message` can be anything describing a fa
 }
 ```
 
-### `400` Input Text Contained No Characters
+### `400` Input text contained no characters
 
 The text payload contained no characters, resulting in Deepgram being unable to synthesize text into audio.
 
@@ -196,7 +196,7 @@ The text payload contained no characters, resulting in Deepgram being unable to 
 }
 ```
 
-### `400` Unsupported Output Audio Format Requested in Query Parameters
+### `400` Unsupported output audio format requested in query parameters
 
 The request provides a query string containing any combination of query parameters that describes an unsupported output audio format.
 
@@ -224,9 +224,9 @@ One or more of the following query parameters is unsupported:
 * "`bit_rate` is not applicable when `encoding=[encoding]`"
 * "`bit_rate` must be \[list of valid bit rates] when `encoding=[encoding]`"
 
-### `400` Failure to Parse Request Body as JSON
+### `400` Failure to parse request body as JSON
 
-The request body did not deserialize as JSON successfully. The request body must specify exactly one of `text` or `url` in the body.
+The request body didn't deserialize as JSON successfully. The request body must specify exactly one of `text` or `url` in the body.
 
 ```json
 {
@@ -236,7 +236,7 @@ The request body did not deserialize as JSON successfully. The request body must
 }
 ```
 
-### `400` Failure to Parse Remote Text URL Provide in JSON
+### `400` Failure to parse remote text URL provide in JSON
 
 There was a failure to parse a remote text URL provided within the JSON body.
 
@@ -248,7 +248,7 @@ There was a failure to parse a remote text URL provided within the JSON body.
 }
 ```
 
-### `400` Failure to Fetch Remote Text from URL
+### `400` Failure to fetch remote text from URL
 
 There was a failure to retrieve remote text content from the specified URL.
 
@@ -273,7 +273,7 @@ There was a failure to retrieve remote text content from the specified URL.
 * "The remote server hosting the media failed to return valid data."
 * "The remote server hosting the media returned too many redirects."
 
-### `400` Invalid Callback
+### `400` Invalid callback
 
 The provided callback url was invalid.
 
@@ -285,7 +285,7 @@ The provided callback url was invalid.
 }
 ```
 
-### `413` Request Body Exceeded 2MB
+### `413` Request body exceeded 2MB
 
 The request body exceeded the 2MB limit, indicating that the payload size is too large to be processed.
 
@@ -297,7 +297,7 @@ The request body exceeded the 2MB limit, indicating that the payload size is too
 }
 ```
 
-### `413` Input Text Exceeded Character Limit
+### `413` Input text exceeded character limit
 
 The text payload contained more than the maximum number of characters allowed.
 
@@ -309,9 +309,9 @@ The text payload contained more than the maximum number of characters allowed.
 }
 ```
 
-### `400` Failure to Decode Request Body as UTF-8
+### `400` Failure to decode request body as UTF-8
 
-The payload cannot be decoded because it is not encoded as UTF-8.
+The payload can't be decoded because it isn't encoded as UTF-8.
 
 ```json
 {
@@ -321,9 +321,9 @@ The payload cannot be decoded because it is not encoded as UTF-8.
 }
 ```
 
-### `415` Unsupported Content Type in Request
+### `415` Unsupported content type in request
 
-The `Content-Type` header in the request is not supported, requiring it to be either `text/plain` or `application/json`.
+The `Content-Type` header in the request isn't supported, requiring it to be either `text/plain` or `application/json`.
 
 ```json
 {
@@ -345,7 +345,7 @@ The model failed to process the request.
 }
 ```
 
-### `429` Rate Limit Exceeded
+### `429` Rate limit exceeded
 
 When requests are made in excess of Deepgram's rate limits.
 
@@ -359,7 +359,7 @@ When requests are made in excess of Deepgram's rate limits.
 
 * Learn about strategies for handling 429 errors in our [Help Center.](https://deepgram.gitbook.io/help-center/faq/how-should-i-handle-429-rate-limit-responses)
 
-### `503` Service Unavailable
+### `503` Service unavailable
 
 ```json
 
@@ -386,16 +386,16 @@ Below is a list of HTTP error codes that your production code should handle grac
 * **499 Client Closed Request**: A non-standard status code indicating that the client closed the connection.
 * **500 Internal Server Error**: A generic error message indicating that the server has encountered a situation it doesn't know how to handle.
 * **502 Bad Gateway**: The server, while acting as a gateway or proxy, received an invalid response from the upstream server it accessed in attempting to fulfill the request.
-* **503 Service Unavailable**: The server is not ready to handle the request. Common causes include a server that is down for maintenance or is overloaded.
-* **504 Gateway Timeout**: The server, while acting as a gateway or proxy, did not receive a timely response from the upstream server or some other auxiliary server it needed to access in order to complete the request.
+* **503 Service Unavailable**: The server isn't ready to handle the request. Common causes include a server that is down for maintenance or is overloaded.
+* **504 Gateway Timeout**: The server, while acting as a gateway or proxy, didn't receive a timely response from the upstream server or some other auxiliary server it needed to access in order to complete the request.
 
 ### Development
 
 The following errors are more likely to be encountered in a development environment. You may want to add error handling in your production code to gracefully handle these error codes as well.
 
-* **400 Bad Request**: The server could not understand the request due to invalid syntax.
+* **400 Bad Request**: The server couldn't understand the request due to invalid syntax.
 * **401 Insufficient permissions**: The project does not have permissions to access the requested features or model.
 * **401 Unauthorized**: The API key is invalid or unauthorized.
 * **402 Payment Required**: The project has insufficient funds to complete the request.
 * **403 Forbidden**: The server understood the request but refuses to authorize it.
-* **404 Not Found**: The specified entity ID could not be found.
+* **404 Not Found**: The specified entity ID couldn't be found.

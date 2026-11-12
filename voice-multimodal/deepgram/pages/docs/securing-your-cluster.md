@@ -1,5 +1,5 @@
 ---
-title: "Securing Your Cluster"
+title: "Securing your cluster"
 source: https://developers.deepgram.com/docs/securing-your-cluster.md
 path: docs/securing-your-cluster
 ---
@@ -7,7 +7,7 @@ path: docs/securing-your-cluster
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Securing Your Cluster
+# Securing your cluster
 
 # Secrets
 

@@ -45,7 +45,7 @@ The agent begins building a reply before speech-to-text confirms the user has fi
 
 `defer_until_eot` is a `Settings` property, not a field on this message. Requests carry only the fields listed below.
 
-For the behavior in full, see [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies).
+For the behavior in full, see [Speculative replies & turn confirmation](/docs/voice-agent-speculative-replies).
 
 ## Example payloads
 

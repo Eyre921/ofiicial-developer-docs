@@ -1,5 +1,5 @@
 ---
-title: "Client Messages"
+title: "Client messages"
 source: https://developers.deepgram.com/docs/flux-tts/client-messages.md
 path: docs/flux-tts/client-messages
 ---
@@ -7,11 +7,11 @@ path: docs/flux-tts/client-messages
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Client Messages
+# Client messages
 
-All client-to-server traffic on `/v2/speak` is JSON text frames. You stream synthesis text with `Speak`, end a turn with `Flush` (or `Interrupt` on barge-in), adjust delivery mid-stream with `Configure`, and shut down with `Close`. The server replies on a parallel set of [Server Messages](/docs/flux-tts/server-messages).
+All client-to-server traffic on `/v2/speak` is JSON text frames. You stream synthesis text with `Speak`, end a turn with `Flush` (or `Interrupt` on barge-in), adjust delivery mid-stream with `Configure`, and shut down with `Close`. The server replies on a parallel set of [Server messages](/docs/flux-tts/server-messages).
 
-A **turn** is one complete agent response, bounded by `Flush` or `Interrupt`. The server streams a turn's audio as text arrives; `Flush` completes the turn and `Interrupt` cancels it. For how these messages drive turn state, see [The Speech Lifecycle](/docs/flux-tts/state).
+A **turn** is one complete agent response, bounded by `Flush` or `Interrupt`. The server streams a turn's audio as text arrives; `Flush` completes the turn and `Interrupt` cancels it. For how these messages drive turn state, see [The speech lifecycle](/docs/flux-tts/state).
 
 ## Speak
 
@@ -46,7 +46,7 @@ You may send `Speak` at any time. Text sent while the current turn is still gene
 
 ### Text handling
 
-Send **plain text**. For English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and Spanish, the server applies text normalization (for example, expanding numbers and dates) before synthesis; the other languages are in Early Access without it, so write numbers and dates out in words. The server does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream LLM tokens directly without coordinating chunk boundaries.
+Send **plain text**. For English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian, and Spanish, the server applies text normalization (for example, expanding numbers and dates) before synthesis; the other languages are in Early Access without it, so write numbers and dates out in words. The server doesn't reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream LLM tokens directly without coordinating chunk boundaries.
 
 > **Warning**
 >
@@ -60,7 +60,7 @@ For each `Speak` that contains detected markup, the server strips it, synthesize
 
 > **Info**
 >
-> **Billing and reporting use the cleaned text.** Markup stripping runs before normalization and billing, so `billable_character_count` and an interrupt's `text_spoken` reflect the cleaned text, never the original markup. `Configure` adjusts `speed` only. Inline pronunciation controls (Early Access) are supported in `Speak.text` but cannot be combined with a `speed` other than `1.0`; inline pause is batch-only. See [Speed, Pause, Pronunciation](/docs/tts-voice-controls#combining-controls).
+> **Billing and reporting use the cleaned text.** Markup stripping runs before normalization and billing, so `billable_character_count` and an interrupt's `text_spoken` reflect the cleaned text, never the original markup. `Configure` adjusts `speed` only. Inline pronunciation controls (Early Access) are supported in `Speak.text` but cannot be combined with a `speed` other than `1.0`; inline pause is batch-only. See [Speed, pause, pronunciation](/docs/tts-voice-controls#combining-controls).
 
 ## Flush
 
@@ -92,13 +92,13 @@ The user has barged in. Cancel the active turn and report what was actually spok
 | `type`            | `"Interrupt"` | yes      | Message type identifier.                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `playback_offset` | object        | no       | Playback position in milliseconds, measured from the start of the **session's** audio (not the current turn), as `{"type": "time_ms", "value": <number>}`. Required for the `text_spoken` / `text_remaining` split — when omitted, `SpeechInterrupted` omits both and reports `audio_played_ms` from the server's own totals. Each interrupt's offset must advance past the position the previous interrupt established. |
 
-`Interrupt` always cancels the **active** turn — there is no per-turn targeting, and unknown fields are rejected. The server responds with [`SpeechInterrupted`](/docs/flux-tts/server-messages#speechinterrupted), reporting `audio_played_ms`, the text split (when a `playback_offset` was provided), and a nested `metadata` block. The next `Speak` begins a new turn.
+`Interrupt` always cancels the **active** turn — there's no per-turn targeting, and unknown fields are rejected. The server responds with [`SpeechInterrupted`](/docs/flux-tts/server-messages#speechinterrupted), reporting `audio_played_ms`, the text split (when a `playback_offset` was provided), and a nested `metadata` block. The next `Speak` begins a new turn.
 
 An `Interrupt` the server cannot act on — no audio generated yet, an earlier interrupt still in flight, or a non-advancing offset — is answered with a `Warning` instead of `SpeechInterrupted`. See the [warning codes](/docs/flux-tts/server-messages#warning-codes).
 
 > **Info**
 >
-> **Stop playback locally, then `Interrupt`.** The instant you detect barge-in, stop playback client-side; the round-trip is for context reconciliation, not for stopping audio. Any frames that arrive after you send `Interrupt` but before `SpeechInterrupted` were already in flight — discard them. See [Interruption Handling](/docs/flux-tts/interrupt-handling) for the full pattern.
+> **Stop playback locally, then `Interrupt`.** The instant you detect barge-in, stop playback client-side; the round-trip is for context reconciliation, not for stopping audio. Any frames that arrive after you send `Interrupt` but before `SpeechInterrupted` were already in flight — discard them. See [Interruption handling](/docs/flux-tts/interrupt-handling) for the full pattern.
 
 ## Configure
 
@@ -132,8 +132,8 @@ The server closes an idle session after **60 seconds** with no inbound client me
 
 ## Related resources
 
-* [Server Messages](/docs/flux-tts/server-messages) — the responses to everything on this page
-* [The Speech Lifecycle](/docs/flux-tts/state) — how these messages drive turn state
+* [Server messages](/docs/flux-tts/server-messages) — the responses to everything on this page
+* [The speech lifecycle](/docs/flux-tts/state) — how these messages drive turn state
 * [Build a Flux TTS Voice Agent](/docs/flux-tts/voice-agent) — these messages in a full agent loop
 * [Getting Started](/docs/flux-tts/quickstart) — connect and send your first turn
 

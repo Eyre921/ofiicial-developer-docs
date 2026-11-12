@@ -1,5 +1,5 @@
 ---
-title: "Text Chunking for TTS"
+title: "Text chunking for TTS"
 source: https://developers.deepgram.com/docs/tts-text-chunking.md
 path: docs/tts-text-chunking
 ---
@@ -7,15 +7,15 @@ path: docs/tts-text-chunking
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Text Chunking for TTS
+# Text chunking for TTS
 
-## Why Text Chunking Matters
+## Why text chunking matters
 
 Text chunking significantly reduces perceived latency in TTS applications by allowing audio playback to begin sooner. This is especially important for conversational AI and voice agents where responsiveness is critical.
 
 > **Info**
 >
-> **Using Flux TTS (`/v2/speak`)?** This guidance applies to Aura (`/v1/speak`). On Flux TTS, the server places flush boundaries internally — stream text in as it's produced and don't chunk client-side. See [Getting Started with Flux TTS](/docs/flux-tts/quickstart).
+> **Using Flux TTS (`/v2/speak`)?** This guidance applies to Aura (`/v1/speak`). On Flux TTS, the server places flush boundaries internally — stream text in as it's produced and don't chunk client-side. See [Getting started with Flux TTS](/docs/flux-tts/quickstart).
 
 Instead of waiting for the entire audio to be generated, chunking lets you:
 
@@ -23,7 +23,7 @@ Instead of waiting for the entire audio to be generated, chunking lets you:
 * Create more responsive voice experiences
 * Maintain natural-sounding speech
 
-## Basic Sentence Chunking
+## Basic sentence chunking
 
 The simplest and most effective approach is to split text at sentence boundaries. This preserves natural speech patterns while enabling faster time-to-first-byte:
 
@@ -80,7 +80,7 @@ chunks.forEach((chunk, index) => {
 // Chunk 3: How does it sound?
 ```
 
-## Processing Streaming Text with REST TTS
+## Processing streaming text with REST TTS
 
 When working with streaming text from an LLM, collect tokens until you have complete sentences. This example sends each sentence to REST TTS and saves its completed MP3 response.
 
@@ -268,9 +268,9 @@ async function main() {
 main().catch(console.error);
 ```
 
-For low-latency playback over a persistent connection, see [Real-Time TTS with WebSockets](/docs/tts-websocket-streaming).
+For low-latency playback over a persistent connection, see [Real-time TTS with WebSockets](/docs/tts-websocket-streaming).
 
-## Processing Chunked Text
+## Processing chunked text
 
 After creating chunks, you have two main options for processing them:
 
@@ -306,7 +306,7 @@ async function processChunksSequential(chunks, ttsFunction) {
 }
 ```
 
-### Setting Chunk Size
+### Setting chunk size
 
 For most applications, sentences work well as chunks. If you need finer control:
 
@@ -314,7 +314,7 @@ For most applications, sentences work well as chunks. If you need finer control:
 * **Call center bots**: Use complete sentences (most natural)
 * **Long-form content**: Larger chunks (200-400 characters) preserve intonation
 
-## Other Chunking Strategies
+## Other chunking strategies
 
 If you need more advanced chunking methods, search for these techniques:
 
@@ -326,4 +326,4 @@ If you need more advanced chunking methods, search for these techniques:
 
 > **Info**
 >
-> For WebSocket implementation details to stream the chunked audio, see our guide on [Real-Time TTS with WebSockets](/docs/tts-websocket-streaming).
+> For WebSocket implementation details to stream the chunked audio, see our guide on [Real-time TTS with WebSockets](/docs/tts-websocket-streaming).

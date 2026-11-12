@@ -1,5 +1,5 @@
 ---
-title: "Blue-Green Deployment"
+title: "Blue-green deployment"
 source: https://developers.deepgram.com/docs/blue-green-deployment.md
 path: docs/blue-green-deployment
 ---
@@ -7,13 +7,13 @@ path: docs/blue-green-deployment
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Blue-Green Deployment
+# Blue-green deployment
 
 Blue-green deployments involve maintaining two identical production environments during updates. The Blue deployment represents the current production environment serving live traffic, while the Green deployment represents the new version to be released.
 
-This strategy is particularly effective when backwards compatibility is not maintained between versions or when multiple container dependencies must be updated together. By deploying changes to the inactive environment first, you can test and verify updates in a production-like setting without impacting end-users.
+This strategy is particularly effective when backwards compatibility isn't maintained between versions or when multiple container dependencies must be updated together. By deploying changes to the inactive environment first, you can test and verify updates in a production-like setting without impacting end-users.
 
-## How It Works
+## How it works
 
 1. **Deploy to Green Environment**: Deploy the new version to the currently-unused Green environment, while Blue continues serving production traffic
 2. **Test and Verify**: Thoroughly test the Green environment to ensure it functions correctly without impacting users
@@ -28,13 +28,13 @@ This strategy is particularly effective when backwards compatibility is not main
 * **Safe Testing**: Test the new deployment in a production-identical environment
 * **Risk Reduction**: Minimize operational risk during updates with a clear fallback plan
 
-## When to Use Blue-Green Deployment
+## When to use blue-green deployment
 
 Consider using blue-green deployment when:
 
 * Deploying updates with breaking changes between API, Engine, and/or License Proxy containers
 * Multiple container dependencies must be updated together
-* Backwards compatibility cannot be maintained between versions
+* Backwards compatibility can't be maintained between versions
 * Zero-downtime updates are required for production systems
 
 ## Architecture
@@ -58,10 +58,10 @@ graph LR
 
 ---
 
-## What's Next
+## What's next
 
 Now that you understand blue-green deployment strategies, explore related topics:
 
-* [System Maintenance](/docs/maintaining) - Updating and maintaining your deployment
+* [System maintenance](/docs/maintaining) - Updating and maintaining your deployment
 * [Auto-scaling](/docs/autoscaling-best-practices) - Scaling your deployment based on demand
 * [Metrics Guide](/docs/metrics-guide) - Monitoring your deployment health

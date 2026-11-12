@@ -35,7 +35,7 @@ Deepgram SageMaker deployments use the following instance types. Each maps to a 
 | `ml.g7.12xlarge`   | NVIDIA RTX PRO 4500 Blackwell | `ml.g7.12xlarge for endpoint usage`   |
 | `ml.g7e.12xlarge`  | NVIDIA RTX PRO 6000 Blackwell | `ml.g7e.12xlarge for endpoint usage`  |
 
-The `*.4xlarge` types are needed only for the non-English Flux TTS version. The `*.12xlarge` types are needed only for Aura-2, which requires multiple GPUs per instance.
+The `*.4xlarge` types are needed only for the non-English Deepgram Flux TTS version. The `*.12xlarge` types are needed only for Aura-2, which requires multiple GPUs per instance.
 
 > **Info**
 >
@@ -159,4 +159,4 @@ The quota value determines how many instances of that type you can run simultane
 | ------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `ResourceLimitExceeded` when creating an endpoint | The instance quota for the selected type is `0` or fully consumed | Request a quota increase for that instance type                                                                               |
 | Quota request remains `PENDING` for several days  | AWS is reviewing the request                                      | Open a support case in the [AWS Support Center](https://console.aws.amazon.com/support/home) referencing the quota request ID |
-| Quota increase approved but endpoint still fails  | Quota was increased in a different region                         | Verify the region in the AWS Management Console matches the region where you are creating the endpoint                        |
+| Quota increase approved but endpoint still fails  | Quota was increased in a different region                         | Verify the region in the AWS Management Console matches the region where you're creating the endpoint                         |

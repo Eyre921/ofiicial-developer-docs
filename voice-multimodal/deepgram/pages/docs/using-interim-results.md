@@ -1,5 +1,5 @@
 ---
-title: "Using Interim Results"
+title: "Using interim results"
 source: https://developers.deepgram.com/docs/using-interim-results.md
 path: docs/using-interim-results
 ---
@@ -7,17 +7,17 @@ path: docs/using-interim-results
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Using Interim Results
+# Using interim results
 
 Deepgram’s Interim Results monitors streaming audio and provides interim transcripts, which are preliminary results provided during the real-time streaming process which can help with speech detection.
 
-Below you will learn more about how to use interim results.
+Below you'll learn more about how to use interim results.
 
 > **Info**
 >
 > for information refer to the [Interim Results feature page.](/docs/interim-results)
 
-## Running The Example
+## Running the example
 
 [Download our final Python example script](https://res.cloudinary.com/deepgram/raw/upload/v1682358489/devex/show-final_e9za6a.py) and run the example code:
 
@@ -50,39 +50,39 @@ Channels = 2, Sample Rate = 48000 Hz, Sample width = 2 bytes, Size = 18540124 by
 
 In this response, we see that:
 
-* On lines 1 through 9, the transcripts contain `"is_final": false`, indicating that they are interim transcripts. As more data passes to Deepgram, you see the transcripts is getting longer.
+* On lines 1 through 9, the transcripts contain `"is_final": false`, indicating that they're interim transcripts. As more data passes to Deepgram, you see the transcripts is getting longer.
 * Between lines 3 and 4, Deepgram corrects its prediction of the word "analyst," turning it into "analytics". This is an example of interim results in action.
 * Between lines 5 and 6, Deepgram corrects its prediction of the word "custom", turning it into "customer". Another example of interim results in action.
-* On line 10, `is_final` is set to `true`, indicating that Deepgram will not return any additional transcripts covering that span of time (from `0.000` to `8.490` seconds) because it believes it has reached optimal accuracy for this section of the transcript.
-* On line 9, the transcript covers a span of time from `0.000` to `9.100` seconds, which is longer than the completed transcript issued on line 10. If you listen to this moment in the example audio, you will hear the speaker repeat the word "they". After processing the repeated word, Deepgram decided it had reached optimal accuracy for the first section of the transcript, and split the transcript between the repeated words. Notice one "they" stayed with the first section (line 10), but the other "they" moved into the next section (line 11), which starts at `8.490` seconds.
+* On line 10, `is_final` is set to `true`, indicating that Deepgram won't return any additional transcripts covering that span of time (from `0.000` to `8.490` seconds) because it believes it has reached optimal accuracy for this section of the transcript.
+* On line 9, the transcript covers a span of time from `0.000` to `9.100` seconds, which is longer than the completed transcript issued on line 10. If you listen to this moment in the example audio, you'll hear the speaker repeat the word "they". After processing the repeated word, Deepgram decided it had reached optimal accuracy for the first section of the transcript, and split the transcript between the repeated words. Notice one "they" stayed with the first section (line 10), but the other "they" moved into the next section (line 11), which starts at `8.490` seconds.
 
 ## Tips for working with transcripts
 
 When handling real-time streaming results, the most accurate transcripts are available in the final transcripts, but the final transcripts may split the message.
 
-* If you need the best transcript possible and can tolerate some delay, rely on final transcripts; they are most accurate and aren’t likely to change.
+* If you need the best transcript possible and can tolerate some delay, rely on final transcripts; they're most accurate and aren’t likely to change.
 
-* If you need the fastest transcript possible, ignore final transcripts; instead, track timings and confidences to determine whether to keep waiting before committing to the current interim transcript. This usually works well because most content does not change between consecutive interim transcripts.
+* If you need the fastest transcript possible, ignore final transcripts; instead, track timings and confidences to determine whether to keep waiting before committing to the current interim transcript. This usually works well because most content doesn't change between consecutive interim transcripts.
 
-## Identify Completed Audio Processing
+## Identify completed audio processing
 
 To identify whether the audio stream is completely processed, send an empty binary WebSocket message to the Deepgram server and then continue to process server responses until the server gracefully closes the connection.
 
-## Frequently Asked Questions
+## Frequently asked questions
 
 ### How do I measure latency with interim results?
 
-In general terms, real-time streaming latency is the time delay between when a transfer of data begins and when a system begins processing it. In mathematical terms, it is the difference between the audio cursor (the number of seconds of audio you have currently submitted; we’ll call this X) and the latest transcript cursor (`start` + `duration`; we’ll call this Y). Latency is X-Y.
+In general terms, real-time streaming latency is the time delay between when a transfer of data begins and when a system begins processing it. In mathematical terms, it's the difference between the audio cursor (the number of seconds of audio you've currently submitted; we’ll call this X) and the latest transcript cursor (`start` + `duration`; we’ll call this Y). Latency is X-Y.
 
-However, remember that to give you best accuracy, final transcripts may end early (see lines 9 and 10 in the example above), which means you’ve already received more data than what is reflected in the final transcript.
+However, remember that to give you best accuracy, final transcripts may end early (see lines 9 and 10 in the example above), which means you’ve already received more data than what's reflected in the final transcript.
 
 The final transcripts are meant for situations where you need the highest confidence levels, whereas the latest interim transcript has the lowest latency. It's recommended to always ignore final transcripts when calculating latency.
 
-To learn more, see [Measuring Streaming Latency](/docs/measuring-streaming-latency).
+To learn more, see [Measuring streaming latency](/docs/measuring-streaming-latency).
 
 ### How do I measure word error rates (WER) with interim results?
 
-To calculate [WER](https://blog.deepgram.com/what-is-word-error-rate/), concatenate all final transcripts and compare to your base transcript. Because final transcripts are the most accurate, they should be preferred over interim transcripts, which prioritize speed over accuracy. And because a single final transcript does not guarantee that the audio stream is complete, you will need to be certain you have collected all final transcripts before performing your calculation.
+To calculate [WER](https://blog.deepgram.com/what-is-word-error-rate/), concatenate all final transcripts and compare to your base transcript. Because final transcripts are the most accurate, they should be preferred over interim transcripts, which prioritize speed over accuracy. And because a single final transcript doesn't guarantee that the audio stream is complete, you'll need to be certain you've collected all final transcripts before performing your calculation.
 
 Let’s look at an example. [Download our WER Python example script](https://res.cloudinary.com/deepgram/raw/upload/v1682358520/devex/concat-final_p2jgsp.py), prepare an audio file (or [use our sample WAV file](https://res.cloudinary.com/deepgram/video/upload/v1681921235/devex/interview_speech-analytics_phntpw.wav)), and run the example code:
 

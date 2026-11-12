@@ -9,13 +9,13 @@ path: docs/dictation
 
 # Dictation
 
-Pre-recorded  Streaming:Nova Streaming: Flux  English (all available regions)
+Pre-recorded  Streaming:Nova Streaming: Flux STT  English (all available regions)
 
-Dictation is a feature of Deepgram’s Speech-to-Text API that converts spoken dictation commands into their corresponding punctuation marks.
+Dictation is a feature of Deepgram’s speech-to-text API that converts spoken dictation commands into their corresponding punctuation marks.
 
 This feature enhances the readability of transcriptions by accurately representing verbal commands as punctuation. For example, saying "comma" as a word will be transcribed as the punctuation mark ",".
 
-## Enable Feature
+## Enable feature
 
 To enable Dictation, set the `dictation` parameter to `true` in your API request. Note that the `punctuate` parameter must also be enabled for Dictation to work.
 
@@ -38,20 +38,20 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?dictation=true&punctuate=true'
 ```
 
-### Query Parameters
+### Query parameters
 
 | Parameter   | Value            | Data Type | Description                                                                    |
 | ----------- | ---------------- | --------- | ------------------------------------------------------------------------------ |
 | `dictation` | `true` / `false` | boolean   | Converts spoken dictation commands into their corresponding punctuation marks. |
 | `punctuate` | `true` / `false` | boolean   | Enables punctuation in the transcriptions.                                     |
 
-## Analyze Response
+## Analyze response
 
 Once dictation is enabled, the results will appear in the transcript with the spoken commands converted to punctuation marks. Below is an example of what the transcript will look like when dictation is enabled.
 
-### Response Example
+### Response example
 
-#### Before Dictation
+#### Before dictation
 
 **`Text`**
 
@@ -59,7 +59,7 @@ Once dictation is enabled, the results will appear in the transcript with the sp
 Patient presents with a headache comma nausea comma and vomiting period They report the headache started two days ago period Vital signs are within normal limits period
 ```
 
-#### After Dictation
+#### After dictation
 
 **`Text`**
 
@@ -69,7 +69,7 @@ Patient presents with a headache, nausea, and vomiting. They report the headache
 
 In the response example above, spoken commands such as "comma" and "period" have been converted to their corresponding punctuation marks, making the transcription more readable and easier to understand.
 
-## Commands List
+## Commands list
 
 The following commands will be converted.
 

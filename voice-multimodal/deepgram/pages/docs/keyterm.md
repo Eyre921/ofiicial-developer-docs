@@ -1,5 +1,5 @@
 ---
-title: "Keyterm Prompting"
+title: "Keyterm prompting"
 source: https://developers.deepgram.com/docs/keyterm.md
 path: docs/keyterm
 ---
@@ -7,23 +7,23 @@ path: docs/keyterm
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Keyterm Prompting
+# Keyterm prompting
 
 `keyterm` *string*
 
-Pre-recorded  Streaming:Nova Streaming:Flux
+Pre-recorded  Streaming:Nova Streaming:Flux STT
 
-Instantly increase accuracy and recognition of up to 100 important terminology, product and company names, industry jargon, phrases and more.
+Instantly increase accuracy and recognition of up to 100 important terminology, product and company names, industry jargon, phrases, and more.
 
 > **Info**
 >
-> Keyterm Prompting is available for both monolingual and multilingual transcription using the [Nova-3 Models](/docs/models-languages-overview#nova-3), as well as [Flux](/docs/models-languages-overview#flux). To boost recognition of keywords using another Deepgram model (such as Nova-2), use the [Keywords](/docs/keywords) feature.
+> Keyterm Prompting is available for both monolingual and multilingual transcription using the [Nova-3 Models](/docs/models-languages-overview#nova-3), as well as [Flux STT](/docs/models-languages-overview#flux-stt). To boost recognition of keywords using another Deepgram model (such as Nova-2), use the [Keywords](/docs/keywords) feature.
 
 > **Note**
 >
 > Keyterms appear in your usage records. If they contain names or other sensitive data, add [`redact_usage=true`](/docs/redact-usage) to store them as `[REDACTED]`.
 
-> **Migrating from Keywords? The syntax is different**
+> **Migrating from keywords? The syntax is different**
 >
 > `keyterm` does **not** use the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. `keyterm` accepts plain terms only—it does not support weights or intensifiers. The `keywords=KEYWORD:INTENSIFIER` pattern is valid for `keywords`, not for `keyterm`.
 >
@@ -38,7 +38,7 @@ Instantly increase accuracy and recognition of up to 100 important terminology, 
 >
 > To pass multiple separate keyterms, repeat the `keyterm` parameter. To boost one multi-word phrase, join the words with `%20` or `+`. Do not separate keyterms with commas, semicolons, or line breaks. None of the **Don't** forms return an error—the API accepts the value and treats it as a single literal keyterm, so it silently boosts nothing instead of failing.
 
-## Enable Feature
+## Enable feature
 
 To enable Keyterm Prompting, add a `keyterm` parameter in the query string and set it to your chosen key term:
 
@@ -61,7 +61,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Keyterm Examples & Best Practices
+## Keyterm examples & best practices
 
 The following examples demonstrate how keyterms can significantly improve recognition accuracy and confidence scores for industry-specific terminology. These examples show typical improvements you might see across Drive-Thru, IVR, call center, and medical transcription use cases.
 
@@ -104,7 +104,7 @@ When choosing keyterms, consider the following guidelines to maximize accuracy:
 * **Excessive keyterms**: Stay well under the 500 token limit; focus on the most important 20-50 terms
 * **Inconsistent formatting**: Ensure capitalization matches your desired output
 
-## Case Sensitivity and Formatting
+## Case sensitivity and formatting
 
 Keyterms preserve formatting (including case and punctuation) which can help control how proper nouns, product names, or company names are transcribed. The model will use both the keyterm formatting and the audio context to determine the final transcription format.
 
@@ -117,11 +117,11 @@ When smart formatting is applied to the transcript, words that start sentences m
 
 Note that while the model was trained with formatted keyterms, the final transcription may not always exactly match the keyterm's formatting. The model balances the keyterm information with the audio context when determining capitalization and punctuation in the output.
 
-## Using Multiple Keyterms
+## Using multiple keyterms
 
 A space must be properly URL-encoded to ensure compatibility. Both `%20` and `+` are valid encodings, but their usage depends on context. In URL paths, spaces must be encoded as `%20`, while in query parameters, either `%20` or `+` can be used.
 
-You can pass in multiple keyterms in your query string in several ways. Do not separate keyterms with commas, semicolons, or line breaks, and do not append a weight or intensifier—`keyterm` does not support weights. None of these forms return an error: the API accepts the value and treats it as a single literal keyterm, so a value such as `keyterm=term:0.15` silently boosts nothing rather than failing.
+You can pass in multiple keyterms in your query string in several ways. Do not separate keyterms with commas, semicolons, or line breaks, and do not append a weight or intensifier—`keyterm` doesn't support weights. None of these forms return an error: the API accepts the value and treats it as a single literal keyterm, so a value such as `keyterm=term:0.15` silently boosts nothing rather than failing.
 
 To boost multiple separate keyterms, repeat the `keyterm` parameter so each keyterm is processed individually.
 
@@ -162,7 +162,7 @@ curl \
   --url "https://api.deepgram.com/v1/listen?model=nova-3&keyterm=term1+term2"
 ```
 
-## Key Term Limits
+## Key term limits
 
 Key Terms are limited to 500 tokens per request. A pre-recorded request or a streaming connection whose `keyterm` query parameters go over the limit returns an error like this:
 
@@ -172,9 +172,9 @@ Key Terms are limited to 500 tokens per request. A pre-recorded request or a str
 Keyterm limit exceeded. The maximum number of tokens across all keyterms is 500.
 ```
 
-The same limit applies to each mid-stream keyterm update. An over-limit update sent in a [`Configure`](/docs/configure#configurefailure) message during a Nova-3 stream returns a `ConfigureFailure` with code `CONFIGURE_KEYTERM_LIMIT_EXCEEDED`, and the stream keeps its previous keyterms.
+The same limit applies to each mid-stream keyterm update. An over-limit update sent in a [`Configure`](/docs/configure#configurefailure) message during a Deepgram Nova-3 stream returns a `ConfigureFailure` with code `CONFIGURE_KEYTERM_LIMIT_EXCEEDED`, and the stream keeps its previous keyterms.
 
-## Dynamic Keyterm Updates
+## Dynamic keyterm updates
 
 You can replace a stream's keyterms mid-stream without reconnecting, so the keyterm list can follow the conversation. For example, load product names when the caller moves to a product inquiry, or clear keyterms when they're no longer relevant.
 

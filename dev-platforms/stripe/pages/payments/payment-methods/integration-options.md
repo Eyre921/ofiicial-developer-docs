@@ -91,7 +91,7 @@ The order of `allowed_payment_method_types` doesn’t determine the display orde
 
 ## Choose your integration 
 
-The following table compares several web integration paths, including no-code, low-code, and advanced options. For other options, such as mobile apps and embedded forms, see [Online payments](https://docs.stripe.com/payments/online-payments.md). You can also compare [features](https://docs.stripe.com/payments/online-payments.md#compare-features-and-availability) and [product support](https://docs.stripe.com/payments/online-payments.md#choose-your-api). For payment method fees, see [Stripe pricing](https://stripe.com/pricing).
+The following table compares several web integration paths, including no-code, low-code, and advanced options. For other options, such as mobile apps and embedded forms, see [Online payments](https://docs.stripe.com/payments/online-payments.md). We recommend using [Stripe Checkout](https://docs.stripe.com/payments/checkout.md) for most integrations. For payment method fees, see [Stripe pricing](https://stripe.com/pricing).
 
 You can also use [Invoicing](https://docs.stripe.com/invoicing.md) to automatically charge your customer’s saved payment method or email invoices [without writing any code](https://docs.stripe.com/invoicing/no-code-guide.md). See the [payment methods supported by Invoicing](https://docs.stripe.com/invoicing/payment-methods.md#supported).
 

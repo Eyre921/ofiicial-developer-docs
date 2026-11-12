@@ -1,5 +1,5 @@
 ---
-title: "Text Intelligence Callback"
+title: "Text Intelligence callback"
 source: https://developers.deepgram.com/docs/text-intelligence-callback.md
 path: docs/text-intelligence-callback
 ---
@@ -7,7 +7,7 @@ path: docs/text-intelligence-callback
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Text Intelligence Callback
+# Text Intelligence callback
 
 `callback` *string*
 
@@ -15,7 +15,7 @@ Text Intelligence
 
 Deepgram’s Callback feature allows you to supply a callback URL to which text can be returned. When passed, Deepgram will immediately respond with a `request_id` before processing your text asynchronously.
 
-## Enable Feature
+## Enable feature
 
 To enable Callback, when you call Deepgram’s API, add a `callback` parameter in the query string and set it to the URL to which you would like transcriptions sent:
 
@@ -32,7 +32,7 @@ curl \
   --url 'https://api.deepgram.com/v1/read?callback=URL'
 ```
 
-## URL Structure
+## URL structure
 
 An example URL is `https://example.com/callback`.
 
@@ -40,7 +40,7 @@ Your callback URLs may reference the following protocols:
 
 * `http` or `https`
 
-## Authenticating Callback Requests
+## Authenticating callback requests
 
 Authenticate callback requests to confirm that they come from Deepgram. Use Basic Auth: embed username-password credentials in the callback URL in the format `https://username:password@example.com`. Deepgram includes these credentials when it sends results to your callback server, which can then reject any request without the expected credentials.
 

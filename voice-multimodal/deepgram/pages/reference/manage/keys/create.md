@@ -1,5 +1,5 @@
 ---
-title: "Create a Project Key"
+title: "Create a project key"
 source: https://developers.deepgram.com/reference/manage/keys/create.md
 path: reference/manage/keys/create
 ---
@@ -7,7 +7,7 @@ path: reference/manage/keys/create
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Create a Project Key
+# Create a project key
 
 POST https://api.deepgram.com/v1/projects/{project_id}/keys
 Content-Type: application/json

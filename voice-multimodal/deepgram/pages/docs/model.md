@@ -1,5 +1,5 @@
 ---
-title: "Model Options"
+title: "Model options"
 source: https://developers.deepgram.com/docs/model.md
 path: docs/model
 ---
@@ -7,19 +7,19 @@ path: docs/model
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Model Options
+# Model options
 
 `model` *string* Default: `base-general`
 
-Pre-recorded  Streaming:Nova Streaming:Flux
+Pre-recorded  Streaming:Nova Streaming:Flux STT
 
 Deepgram’s Model feature allows you to supply a model to use when processing submitted audio. To learn more about the pricing for our different models, see [Deepgram Pricing & Plans](https://deepgram.com/pricing/).
 
-## Models & Model Options
+## Models & model options
 
 Below are a list of all model and model options that can be used with the Deepgram API.
 
-### Flux
+### Flux STT
 
 **Examples**
 
@@ -31,9 +31,9 @@ https://api.deepgram.com/v2/listen?model=flux-general-en
 https://api.deepgram.com/v2/listen?model=flux-general-multi&language_hint=es
 ```
 
-Flux is the first conversational speech recognition model built specifically for voice agents. Unlike traditional STT that just transcribes words, Flux understands conversational flow and automatically handles turn-taking. Flux tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.
+Deepgram Flux STT is the first conversational speech recognition model built specifically for voice agents. Unlike traditional STT that just transcribes words, Flux STT understands conversational flow and automatically handles turn-taking. Flux STT tackles the most critical challenges for voice agents today: knowing when to listen, when to think, and when to speak. The model features first-of-its-kind model-integrated end-of-turn detection, configurable turn-taking dynamics, and ultra-low latency optimized for voice agent pipelines, all with Nova-3 level accuracy.
 
-Flux Multilingual (`flux-general-multi`) extends Flux to 10 languages with an optional `language_hint` parameter that biases output toward specified languages. See [Language Prompting](/docs/flux/language-prompting) for details.
+Flux STT Multilingual (`flux-general-multi`) extends Flux STT to 10 languages with an optional `language_hint` parameter that biases output toward specified languages. See [Language Prompting](/docs/flux/language-prompting) for details.
 
 ### Nova-3
 
@@ -69,7 +69,7 @@ https://api.deepgram.com/v1/listen?model=nova-2
 https://api.deepgram.com/v1/listen?model=nova-2-phonecall
 ```
 
-Nova-2 expands on Nova-1's advancements with speech-specific optimizations to the underlying Transformer architecture, advanced data curation techniques, and a multi-stage training methodology. These changes yield reduced word error rate (WER) and enhancements to entity recognition (i.e. proper nouns, alphanumerics, etc.), punctuation, and capitalization.
+Deepgram Nova-2 expands on Nova-1's advancements with speech-specific optimizations to the underlying Transformer architecture, advanced data curation techniques, and a multi-stage training methodology. These changes yield reduced word error rate (WER) and enhancements to entity recognition (i.e. proper nouns, alphanumerics, etc.), punctuation, and capitalization.
 
 > **Info**
 >
@@ -103,13 +103,13 @@ https://api.deepgram.com/v1/listen?model=nova
 https://api.deepgram.com/v1/listen?model=nova-phonecall
 ```
 
-Nova is the predecessor to Nova-2. Training on this model spans over 100 domains and 47 billion tokens, making it the deepest-trained automatic speech recognition (ASR) model to date. Nova doesn't just excel in one specific domain — it is ideal for a wide array of voice applications that require high accuracy in diverse contexts.
+Nova is the predecessor to Nova-2. Training on this model spans over 100 domains and 47 billion tokens, making it the deepest-trained automatic speech recognition (ASR) model to date. Nova doesn't just excel in one specific domain — it's ideal for a wide array of voice applications that require high accuracy in diverse contexts.
 
 > **Info**
 >
 > Nova has the following model options which can be called by using the following syntax: `model=nova-{option}`
 
-* `general`: Optimized for everyday audio processing. Likely to be more accurate than any region-specific Base model for the language for which it is enabled. If you aren't sure which model to select, start here.
+* `general`: Optimized for everyday audio processing. Likely to be more accurate than any region-specific Base model for the language for which it's enabled. If you aren't sure which model to select, start here.
 
 * `phonecall`: Optimized for low-bandwidth audio phone calls.
 
@@ -135,7 +135,7 @@ Enhanced models are still some of our most powerful speech-to-text models; they 
 >
 > Enhanced has the following model options which can be called by using the following syntax: `model=enhanced-{option}`
 
-* `general`: Optimized for everyday audio processing. Likely to be more accurate than any region-specific Base model for the language for which it is enabled. If you aren't sure which model to select, start here.
+* `general`: Optimized for everyday audio processing. Likely to be more accurate than any region-specific Base model for the language for which it's enabled. If you aren't sure which model to select, start here.
 
 * `meeting` *beta*: Optimized for conference room settings, which include multiple speakers with a single microphone.
 

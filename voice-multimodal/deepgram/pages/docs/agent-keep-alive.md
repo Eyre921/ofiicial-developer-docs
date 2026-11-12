@@ -15,11 +15,11 @@ Voice Agent
 
 > **Info**
 >
-> Most agent conversations do not need `KeepAlive`. You will normally stream microphone audio continuously so the user can speak at any moment.
+> Most agent conversations do not need `KeepAlive`. You'll normally stream microphone audio continuously so the user can speak at any moment.
 
 ## When to use it
 
-Send `KeepAlive` only during a period when the client is not sending audio. While idle, send one `KeepAlive` every `8` seconds.
+Send `KeepAlive` only during a period when the client isn't sending audio. While idle, send one `KeepAlive` every `8` seconds.
 
 ## Example payload
 
@@ -31,7 +31,7 @@ Send `KeepAlive` only during a period when the client is not sending audio. Whil
 }
 ```
 
-The server does not respond to `KeepAlive`.
+The server doesn't respond to `KeepAlive`.
 
 > **Warning**
 >

@@ -39,7 +39,7 @@ The Voice Agent API operates over a **bidirectional WebSocket connection**, allo
 
 ---
 
-## Reference Architecture
+## Reference architecture
 
 ```text
 Caller (PSTN)
@@ -83,9 +83,9 @@ Caller
 
 ---
 
-### Before You Begin
+### Before you begin
 
-You will need:
+You'll need:
 
 * An Amazon Connect instance
 * A Deepgram API key
@@ -205,7 +205,7 @@ SettingsApplied
 
 This confirms configuration has been successfully loaded.
 
-### Step 5 – Stream Call Audio
+### Step 5 – Stream call audio
 
 Once the agent is initialized, the gateway begins streaming audio frames.
 
@@ -219,7 +219,7 @@ AgentV1Media (binary audio)
 
 Deepgram processes the audio and emits conversation events as the interaction progresses.
 
-### Step 6 – Handle Voice Agent Events
+### Step 6 – Handle Voice Agent events
 
 During the conversation, the server sends real-time events describing the interaction.
 
@@ -241,7 +241,7 @@ Example event:
 }
 ```
 
-### Step 7 – Function Calling
+### Step 7 – Function calling
 
 The Deepgram Voice Agent can call backend systems using function calling.
 
@@ -266,7 +266,7 @@ Example:
 
 Review our [function calling docs](/docs/voice-agents-function-calling) for more details.
 
-### Step 8 - Audio Playback
+### Step 8 - Audio playback
 
 When the agent generates speech, the Voice Agent API streams synthesized audio back to the client.
 
@@ -278,7 +278,7 @@ Your gateway:
 
 Because the WebSocket connection streams audio continuously, playback can begin immediately, reducing latency.
 
-### Step 9 - Escalate to a Human Agent
+### Step 9 - Escalate to a human agent
 
 If the voice agent cannot resolve a request, it can transfer the caller back to Amazon Connect.
 
@@ -296,7 +296,7 @@ Human agent
 
 Context from the AI conversation can be stored in a CRM or ticketing system before the transfer.
 
-### Additional Resources
+### Additional resources
 
 * [Deepgram Voice Agent documentation](/docs/voice-agent)
 * [Amazon Connect](https://docs.aws.amazon.com/connect/)

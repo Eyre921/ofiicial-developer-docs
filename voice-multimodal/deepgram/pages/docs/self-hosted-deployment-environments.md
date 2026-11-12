@@ -1,5 +1,5 @@
 ---
-title: "Deployment Environments"
+title: "Deployment environments"
 source: https://developers.deepgram.com/docs/self-hosted-deployment-environments.md
 path: docs/self-hosted-deployment-environments
 ---
@@ -7,7 +7,7 @@ path: docs/self-hosted-deployment-environments
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Deployment Environments
+# Deployment environments
 
 Learn more about provisioning a deployment environment with your container management system of choice. The typical architecture for a basic self-hosted deployment includes:
 
@@ -21,9 +21,9 @@ Learn more about provisioning a deployment environment with your container manag
 
 * Models and configuration files delivered by Deepgram as appropriate for your use case
 
-## Model and GPU Compatibility
+## Model and GPU compatibility
 
-Deepgram only supports NVIDIA GPUs at this time. We recommend modern NVIDIA GPUs that are compatible with recent NVIDIA drivers and the NVIDIA Container Toolkit. Deepgram requires dedicated GPUs; Multi-Instance GPU (MIG) or partial (aka. fractional) GPUs are not supported.
+Deepgram only supports NVIDIA GPUs at this time. We recommend modern NVIDIA GPUs that are compatible with recent NVIDIA drivers and the NVIDIA Container Toolkit. Deepgram requires dedicated GPUs; Multi-Instance GPU (MIG) or partial (aka. fractional) GPUs aren't supported.
 
 The table below shows which models are supported on commonly used NVIDIA GPUs.
 
@@ -36,14 +36,14 @@ The table below shows which models are supported on commonly used NVIDIA GPUs.
 
 > **Warning**
 >
-> The Flux models support fewer GPUs than Nova and Aura do:
+> The Flux STT and Flux TTS models support fewer GPUs than Nova and Aura do:
 >
 > * **Flux STT** requires a GPU from the Ampere generation or newer, such as the NVIDIA A10, L4, L40S, A100, H100, or a Blackwell-generation GPU. GPUs like the NVIDIA T4 are incompatible.
 > * **Flux TTS** runs on the NVIDIA L4, L40S, A100, H100, and Blackwell-generation GPUs. The NVIDIA T4 and A10 are not supported. Contact [Support](https://deepgram.com/contact-us/) before provisioning any other GPU for Flux TTS.
 
-Aura and Aura-2 require **exactly two dedicated GPUs per TTS Engine container**, on any of the supported GPUs above. This is a requirement on device count: a single larger GPU does not substitute for two, and one Engine will not schedule work across more than two. See [Hardware Specifications](#hardware-specifications) for the full TTS Engine requirements.
+Deepgram Aura and Aura-2 require **exactly two dedicated GPUs per TTS Engine container**, on any of the supported GPUs above. This is a requirement on device count: a single larger GPU doesn't substitute for two, and one Engine won't schedule work across more than two. See [Hardware Specifications](#hardware-specifications) for the full TTS Engine requirements.
 
-A Flux TTS Engine also allocates up to 60 GB of system RAM while it loads its model, so every host running one needs at least 64 GB. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its memory and Engine requirements.
+A Deepgram Flux TTS Engine also allocates up to 60 GB of system RAM while it loads its model, so every host running one needs at least 64 GB. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its memory and Engine requirements.
 
 > **Deepgram requires the open NVIDIA kernel modules, driver >=580**
 >
@@ -65,7 +65,7 @@ This option is well-suited for teams that want a faster setup with less operatio
 
 Deepgram services are compatible with Linux on `x86-64`/`amd64` only. If you want to run Deepgram services on a different processor/architecture, please contact [Support](https://deepgram.com/contact-us/).
 
-### Hardware Specifications
+### Hardware specifications
 
 Hardware requirements vary significantly depending on which Deepgram services you plan to deploy. Before proceeding with infrastructure planning, you should decide whether you need:
 
@@ -76,7 +76,7 @@ Hardware requirements vary significantly depending on which Deepgram services yo
 >
 > While Deepgram uses the same container images for both STT and TTS deployments, **we strongly recommend dedicating each node to a single service type**. Configure nodes specifically for either STT or TTS workloads to ensure optimal performance, avoid resource contention, and maintain predictable latency.
 
-A system that meets these baseline requirements will provide the maximum speedup possible with Deepgram models, provided you scale according to the number of requests you are servicing.
+A system that meets these baseline requirements will provide the maximum speedup possible with Deepgram models, provided you scale according to the number of requests you're servicing.
 
 Please contact [Support](https://deepgram.com/contact-us/) so we can work with you to create a customized hardware recommendation.
 
@@ -84,7 +84,7 @@ Please contact [Support](https://deepgram.com/contact-us/) so we can work with y
 
 Hardware requirements differ substantially between STT and TTS deployments:
 
-##### Speech-to-Text (STT) Engine
+##### Speech-to-text (STT) Engine
 
 For each machine running an STT Engine container, we recommend a machine with the following minimum specifications:
 
@@ -105,18 +105,18 @@ For each machine running an STT Engine container, we recommend a machine with th
 * 4 CPU cores
 
 * 32 GB system RAM
-  * You may be able to run Deepgram services with only 16 GB of system RAM if you are only using a small number of models. Please contact [Support](https://deepgram.com/contact-us/) to see if this is possible for your use case.
+  * You may be able to run Deepgram services with only 16 GB of system RAM if you're only using a small number of models. Please contact [Support](https://deepgram.com/contact-us/) to see if this is possible for your use case.
 
 * 50 GB storage
   * We recommend more if you intend on deploying multiple STT models.
 
-##### Text-to-Speech (TTS) Engine
+##### Text-to-speech (TTS) Engine
 
 > **Info**
 >
 > These specifications describe Aura and Aura-2. Flux TTS runs on a single GPU rather than two, supports fewer GPU models, and allocates up to 60 GB of system RAM while it loads. See [Deploying Flux TTS](/docs/deploy-flux-tts) for its requirements.
 
-Aura and Aura-2 require exactly two dedicated GPUs per TTS Engine container. This is a requirement on device count, not on total GPU memory or compute: a single larger GPU does not substitute for two, and one Engine will not schedule work across more than two. Additional GPUs on a machine let you run additional Engine instances.
+Aura and Aura-2 require exactly two dedicated GPUs per TTS Engine container. This is a requirement on device count, not on total GPU memory or compute: a single larger GPU doesn't substitute for two, and one Engine won't schedule work across more than two. Additional GPUs on a machine let you run additional Engine instances.
 
 For each machine running a TTS Engine container, we recommend the following specifications:
 
@@ -150,23 +150,23 @@ If you have a more complex setup with multiple API and Engine containers, you ma
 * 4 CPU cores
 * 16 GB system RAM
 
-#### Other Deepgram Services
+#### Other Deepgram services
 
-If you are using the optional License Proxy container in your environment, see the [License Proxy](/docs/license-proxy#System-Requirements) guide for hardware requirements.
+If you're using the optional License Proxy container in your environment, see the [License Proxy](/docs/license-proxy#System-Requirements) guide for hardware requirements.
 
 ### Cloud-Hosted
 
 Cloud-hosted deployments such as a Virtual Private Cloud are the most common type of deployment performed by customers who want to leverage Deepgram within their own infrastructure. Specific configurations vary, but the Cloud Service Providers that are typically used include Amazon Web Services (AWS), Oracle Cloud Infrastructure (OCI), Microsoft Azure, and Google Cloud Platform (GCP).
 
-If you are using a cloud provider not listed above, there may not yet be a custom guide for provisioning infrastructure for self-hosting Deepgram software. The details in this documentation will still be helpful as you apply them to the specific cloud service providers you are using. Please contact [Support](https://deepgram.com/contact-us/) if you need additional assistance with your cloud provider of choice.
+If you're using a cloud provider not listed above, there may not yet be a custom guide for provisioning infrastructure for self-hosting Deepgram software. The details in this documentation will still be helpful as you apply them to the specific cloud service providers you're using. Please contact [Support](https://deepgram.com/contact-us/) if you need additional assistance with your cloud provider of choice.
 
-### Bare Metal
+### Bare metal
 
 Bare-metal servers are physical servers committed to a single user, providing direct access to all of its resources and eliminating any performance interference from shared users. For those with known compute requirements and in-house expertise on managing hardware, bare-metal servers within on-premises data centers can provide significant cost savings compared to comparable cloud offerings.
 
-## Supporting Infrastructure
+## Supporting infrastructure
 
-### Operating System
+### Operating system
 
 Deepgram's self-hosted products run on the Linux operating system. The following distributions are officially supported:
 
@@ -174,9 +174,9 @@ Deepgram's self-hosted products run on the Linux operating system. The following
 * Red Hat Enterprise Linux (RHEL) 8/9
 * Oracle Linux 8/9
 
-We recommend these distributions because we have tested our products most extensively in these systems.
+We recommend these distributions because we've tested our products most extensively in these systems.
 
-### Container Orchestration
+### Container orchestration
 
 Deepgram's software is intended to be run in [containers](https://www.docker.com/resources/what-container/) . Containers are used to isolate, secure, and deploy applications across many different host environments and operating systems. Containers are more lightweight than virtual machines but provide many of the same isolation benefits. The following container orchestration tools are officially supported:
 
@@ -184,17 +184,17 @@ Deepgram's software is intended to be run in [containers](https://www.docker.com
 * [Podman](https://podman.io/)
 * [Kubernetes](https://kubernetes.io/)
 
-Please see the respective documentation for details on hardware and OS support for each tool. For example, Docker Engine is not supported by RHEL or Oracle Linux.
+Please see the respective documentation for details on hardware and OS support for each tool. For example, Docker Engine isn't supported by RHEL or Oracle Linux.
 
 ### Firewall
 
-#### Ingress Traffic
+#### Ingress traffic
 
 No ingress network traffic will ever be initiated by Deepgram's servers into an self-hosted environment. All ingress traffic to Deepgram services can be deny-listed in your self-hosted environment.
 
-To allow your own applications to make requests to your self-hosted Deepgram deployment, please refer to the [Ingress Authentication](/docs/self-hosted-ingress-auth) guide.
+To allow your own applications to make requests to your self-hosted Deepgram deployment, please refer to the [Ingress authentication](/docs/self-hosted-ingress-auth) guide.
 
-#### Egress Traffic
+#### Egress traffic
 
 ##### Quay
 
@@ -220,9 +220,9 @@ Intra-network traffic (sometimes called *east-west traffic* in a cloud environme
 
 The Deepgram API and Engine containers listen on port `8080` by default, and the Deepgram License Proxy listens on port `8443` by default, unless otherwise configured.
 
-## Creating a Deployment Environment
+## Creating a deployment environment
 
-The next step is to learn more about provisioning a deployment environment. Deepgram has official guides for using Docker, Podman, and Kubernetes as container orchestrators. Follow each the links below to get an overview of the pros and cons of each orchestrator and decide which is appropriate for your use case.
+The next step is to learn more about provisioning a deployment environment. We have official guides for using Docker, Podman, and Kubernetes as container orchestrators. Follow each the links below to get an overview of the pros and cons of each orchestrator and decide which is appropriate for your use case.
 
 ---
 
@@ -234,4 +234,4 @@ Continue with the common setup path that applies to both STT and TTS deployments
 * [Docker/Podman](/docs/dockerpodman)
 * [Kubernetes](/docs/kubernetes)
 
-After completing your environment setup and credentials configuration, you'll choose between STT or TTS deployment paths in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+After completing your environment setup and credentials configuration, you'll choose between STT or TTS deployment paths in the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide.

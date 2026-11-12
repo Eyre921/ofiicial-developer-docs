@@ -1,5 +1,5 @@
 ---
-title: "Account Management Commands"
+title: "Account management commands"
 source: https://developers.deepgram.com/developer-tools/cli/account-management.md
 path: developer-tools/cli/account-management
 ---
@@ -7,28 +7,28 @@ path: developer-tools/cli/account-management
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Account Management Commands
+# Account management commands
 
 Account commands are flag-based: the action is a flag, not a subcommand. Run `dg keys --help`, `dg projects --help`, or `dg members --help` for the full set.
 
 ## Projects
 
-### List Projects
+### List projects
 
 ```shell
 dg projects --list
 ```
 
-### Switch Project
+### Switch project
 
 ```shell
 dg projects --set-default <project-id>
 dg projects --current
 ```
 
-## API Keys
+## API keys
 
-### List Keys
+### List keys
 
 ```shell
 dg keys --list
@@ -41,9 +41,9 @@ dg keys --create --comment "ci-runner"
 dg keys --create --comment "production" --scopes member --tags prod
 ```
 
-`--scopes` takes comma-separated scope names and defaults to `member`. See [Working With Roles & API Scopes](/guides/deep-dives/working-with-roles) for what each scope grants.
+`--scopes` takes comma-separated scope names and defaults to `member`. See [Working with roles & API scopes](/guides/deep-dives/working-with-roles) for what each scope grants.
 
-### Delete Key
+### Delete key
 
 ```shell
 dg keys --delete <key-id>
@@ -57,7 +57,7 @@ dg keys --delete <key-id> --dry-run
 
 ## Team Members
 
-### List Members
+### List members
 
 ```shell
 dg members --list
@@ -70,7 +70,7 @@ dg members --invites   # Pending invites
 dg members --invite user@example.com --scope admin
 ```
 
-Available scopes: `owner`, `admin`, `member`. See [Working With Roles & API Scopes](/guides/deep-dives/working-with-roles).
+Available scopes: `owner`, `admin`, `member`. See [Working with roles & API scopes](/guides/deep-dives/working-with-roles).
 
 ### Remove Member
 
@@ -81,7 +81,7 @@ dg members --revoke-invite user@example.com --yes
 
 ## Usage
 
-### View Usage
+### View usage
 
 ```shell
 dg usage
@@ -89,7 +89,7 @@ dg usage --start-date 2024-01-01 --end-date 2024-01-31
 dg usage --current-month
 ```
 
-### Export Usage
+### Export usage
 
 `-o` belongs to `dg` itself, so it goes before the subcommand name:
 
@@ -100,7 +100,7 @@ dg -o csv usage > usage.csv
 
 ## Billing
 
-### View Balance
+### View balance
 
 ```shell
 dg billing

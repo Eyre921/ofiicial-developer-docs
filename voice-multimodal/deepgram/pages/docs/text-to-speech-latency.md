@@ -1,5 +1,5 @@
 ---
-title: "Text to Speech Latency"
+title: "Text-to-speech latency"
 source: https://developers.deepgram.com/docs/text-to-speech-latency.md
 path: docs/text-to-speech-latency
 ---
@@ -7,15 +7,15 @@ path: docs/text-to-speech-latency
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Text to Speech Latency
+# Text-to-speech latency
 
 In the context of text-to-speech (TTS) technology, latency refers to the delay between the input text being received and the audio output being generated and returned.
 
-## How to Measure Latency
+## How to measure latency
 
 To comprehensively assess latency, we recommend to measure the total end-to-end latency and to break it down into several components in order to measure and minimize each latency component separately.
 
-### Total Latency
+### Total latency
 
 Total latency is an aggregation of several separate sources, including time to first byte (TTFB) and audio-synthesis latency. You can think of this as the following equation:
 
@@ -25,7 +25,7 @@ Total latency is an aggregation of several separate sources, including time to f
 total_latency = network + ttfb + audio_synthesis
 ```
 
-Run the following CURL command to measure the total latency it takes to make a complete request to Deepgram’s TTS endpoint. This will run the calculation for you, so you are given a total latency value.
+Run the following CURL command to measure the total latency it takes to make a complete request to Deepgram’s TTS endpoint. This will run the calculation for you, so you're given a total latency value.
 
 **`cURL`**
 
@@ -47,9 +47,9 @@ dns_resolution: 0.118451, tcp_established: 0.244566, ssl_handshake_done: 0.33999
 curl -H "Authorization: token $DEEPGRAM_API_KEY" -o "out.mp3" -w  -X POST -d   0.02s user 0.02s system 5% cpu 0.745 total
 ```
 
-### Network Latency
+### Network latency
 
-Network latency is the amount of time it takes for your request to leave your computer, through the internet, and be received by Deepgram. Depending on where your computer is located, as well as any additional firewalls, proxies, or VPNs, you will incur some network latency in reaching Deepgram.
+Network latency is the amount of time it takes for your request to leave your computer, through the internet, and be received by Deepgram. Depending on where your computer is located, as well as any additional firewalls, proxies, or VPNs, you'll incur some network latency in reaching Deepgram.
 
 You can measure the time it takes to connect to Deepgram’s servers:
 
@@ -62,9 +62,9 @@ curl -sS -w "latency: %{time_connect}\\n" -so /dev/null https://api.deepgram.com
 
 > **Info**
 >
-> Network latency increases with the distance between your application and the Deepgram endpoint you connect to. If your users are in or near the EU, Australia, or India, a regional endpoint can reduce network latency: `api.eu.deepgram.com`, `api.au.deepgram.com`, and `api.in.deepgram.com`. They support Text-to-Speech on `/v1/speak` and `/v2/speak`, use your existing API keys, and only require changing the base URL. See [Regional Endpoints](/reference/regional-endpoints).
+> Network latency increases with the distance between your application and the Deepgram endpoint you connect to. If your users are in or near the EU, Australia, or India, a regional endpoint can reduce network latency: `api.eu.deepgram.com`, `api.au.deepgram.com`, and `api.in.deepgram.com`. They support text-to-speech on `/v1/speak` and `/v2/speak`, use your existing API keys, and only require changing the base URL. See [Regional Endpoints](/reference/regional-endpoints).
 
-### Time to First Byte (TTFB)
+### Time to first byte (TTFB)
 
 Time to first byte (TTFB) is the time it takes from initiating an API request to receiving the first byte of audio from the response.
 
@@ -81,7 +81,7 @@ Another relevant piece of information is the **speed-up factor**, which is the r
 
 After Deepgram receives your TTS API request, the process of synthesizing audio begins. Deepgram streams this output back to you to prevent waiting until the entire audio output is available. Streaming of results begins once the first byte of audio is synthesized.
 
-#### Stream Audio Output
+#### Stream audio output
 
 Leverage the streaming output by playing audio immediately upon receiving the first byte returned from Deepgram, as done in the following Python snippet:
 
@@ -200,15 +200,15 @@ try (FileOutputStream fos = new FileOutputStream("out.mp3")) {
 
 From the Total Latency example, we can take the values for the SSL handshake and the total latency. We subtract the SSL handshake from the total latency, i.e. `745 - 339 = 406` milliseconds. This means that once Deepgram has created a secure connection, it takes 406 milliseconds to generate the TTS audio.
 
-## Minimizing Latency
+## Minimizing latency
 
 Latency in text-to-speech (TTS) technology can be influenced by various factors. Here are some common elements that can affect latency, along with actionable tips to mitigate their impact.
 
-### Use a Regional Endpoint
+### Use a regional endpoint
 
-If your users are in or near the EU, Australia, or India, connect to the regional endpoint closest to them to reduce network latency. Regional endpoints in the EU, Australia, and India support Text-to-Speech, use your existing API keys, and only require changing the base URL. See [Regional Endpoints](/reference/regional-endpoints) for setup details.
+If your users are in or near the EU, Australia, or India, connect to the regional endpoint closest to them to reduce network latency. Regional endpoints in the EU, Australia, and India support text-to-speech, use your existing API keys, and only require changing the base URL. See [Regional Endpoints](/reference/regional-endpoints) for setup details.
 
-### Self-Host
+### Self-host
 
 > **Info**
 >
@@ -216,7 +216,7 @@ If your users are in or near the EU, Australia, or India, connect to the regiona
 
 Running self-hosted text-to-speech systems lowers latency by eliminating network delays and leveraging local processing power, which ensures faster and more consistent performance. Local processing avoids the overhead of data transfer to and from remote servers, further reducing response times.
 
-### Server Setup
+### Server setup
 
 The configuration and location of servers can greatly impact latency. Optimal server placement and hardware specifications can minimize processing delays.
 
@@ -226,9 +226,9 @@ Consider optimizing server deployment by strategically locating them closer to y
 >
 > Maximize server performance and reduce latency by strategically placing servers near your target audience, investing in high-performance hardware, and implementing efficient load balancing techniques.
 
-### Length of Text Input
+### Length of text input
 
-Deepgram TTS accepts up to 2000 characters of text input. There is a baseline level of latency that exists with any request. Beyond that, latency scales approximately linearly with increasing character input. Think `y = mx + b` from algebra class. The y-intercept `b` includes network latency, which is relatively constant at \~600 ms for total latency without streaming. Then the slope `m` is \~40 ms per 100 characters.
+Deepgram TTS accepts up to 2000 characters of text input. There's a baseline level of latency that exists with any request. Beyond that, latency scales approximately linearly with increasing character input. Think `y = mx + b` from algebra class. The y-intercept `b` includes network latency, which is relatively constant at \~600 ms for total latency without streaming. Then the slope `m` is \~40 ms per 100 characters.
 
 **`equation`**
 
@@ -240,7 +240,7 @@ Consider a 300 character input. The latency could be estimated as: `600 + 40 * 3
 
 Then consider tripling that to a 900-character input. The latency estimate is `600 + 40 * 9 = 960 ms`.
 
-Note that while the 900-character request is slower than the 300-character request, it takes 1.33x time to process 3x characters. Keep that in mind for longer-form content: for lowest cumulative latency across multiple requests, include as close to the max of 2000 characters in each request if you are chunking your text to fit Deepgram's input character limit.
+Note that while the 900-character request is slower than the 300-character request, it takes 1.33x time to process 3x characters. Keep that in mind for longer-form content: for lowest cumulative latency across multiple requests, include as close to the max of 2000 characters in each request if you're chunking your text to fit Deepgram's input character limit.
 
 > **Info**
 >
@@ -303,13 +303,13 @@ time curl \
 curl -H "Authorization: token $DEEPGRAM_API_KEY" -o "out.mp3" -H  -X POST -d   0.02s user 0.02s system 5% cpu 0.879 total
 ```
 
-You will notice variation in latency; these numbers are an illustration of general trends and concepts, not a fixed result.
+You'll notice variation in latency; these numbers are an illustration of general trends and concepts, not a fixed result.
 
 > **Info**
 >
 > On long content, provide the maximum number of characters per request.
 
-### Audio Output Formats
+### Audio output formats
 
 Deepgram offers many options for you to customize your output [encoding](/docs/tts-encoding), [bit rate](/docs/tts-bit-rate), and [container](/docs/tts-container), and overall [audio format combinations](/docs/tts-media-output-settings#audio-format-combinations). Select audio formats based on your specific application requirements and use cases.
 
@@ -323,7 +323,7 @@ Choose compressed formats like `mp3` or `opus` when file size and bandwidth effi
 
 ## More Tips to Minimize Latency
 
-### Text Chunking
+### Text chunking
 
 When chunking long outputs as input into TTS, you'll want a balance of low latency and voice naturalness.
 
@@ -335,7 +335,7 @@ Avoid splitting a single sentence into multiple requests, as the output speech w
 >
 > Strategies and code examples for text chunking can be found in the guide [Text Chunking for TTS Optimization](/docs/text-chunking-for-tts-optimization).
 
-### LLM Latency
+### LLM latency
 
 While this guide focuses on TTS latency, in the full context of a voice bot application that joins STT + LLM + TTS, an LLM is typically the primary source of latency. To lower voice bot LLM latency, you may consider the following aspects:
 

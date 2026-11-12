@@ -23,7 +23,7 @@ Additionally, when enabled, log messages are sent to Sentry as [Structured Logs]
 Add the Sentry dependency:
 
 ```powershell
-Install-Package Sentry.Log4Net -Version 6.13.0
+Install-Package Sentry.Log4Net -Version 7.0.0
 ```
 
 *Other available variations of the above snippet: .NET Core CLI*

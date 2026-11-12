@@ -42,9 +42,25 @@ npx sentry@latest
 
 [Learn more about the Sentry CLI](https://cli.sentry.dev/)
 
-##### Using a framework?
+This guide focuses on plain JavaScript. If you're using a framework, select it to open its setup instructions:
 
-This guide focuses on plain JavaScript. If you're working with React, Next.js, or any other framework, choose the fitting SDK from the left-hand dropdown.
+Frameworks with their own setup guide:
+
+* [Angular](https://docs.sentry.io/platforms/javascript/guides/angular.md)
+* [Astro](https://docs.sentry.io/platforms/javascript/guides/astro.md)
+* [Ember](https://docs.sentry.io/platforms/javascript/guides/ember.md)
+* [Gatsby](https://docs.sentry.io/platforms/javascript/guides/gatsby.md)
+* [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs.md)
+* [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt.md)
+* [React](https://docs.sentry.io/platforms/javascript/guides/react.md)
+* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router.md)
+* [Remix](https://docs.sentry.io/platforms/javascript/guides/remix.md)
+* [Solid](https://docs.sentry.io/platforms/javascript/guides/solid.md)
+* [SolidStart](https://docs.sentry.io/platforms/javascript/guides/solidstart.md)
+* [Svelte](https://docs.sentry.io/platforms/javascript/guides/svelte.md)
+* [SvelteKit](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md)
+* [TanStack Start](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md)
+* [Vue](https://docs.sentry.io/platforms/javascript/guides/vue.md)
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript.md#prerequisites)
 

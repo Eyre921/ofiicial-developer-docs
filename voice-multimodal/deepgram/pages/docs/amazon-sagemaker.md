@@ -15,14 +15,14 @@ Amazon SageMaker is a managed cloud platform from Amazon Web Services (AWS) that
 
 The [Deepgram SDKs](/home) can also target a SageMaker Endpoint through the SageMaker transport, so you can keep the same client-side request and response patterns whether you call the Deepgram-hosted API or your own SageMaker deployment.
 
-## Benefits and Tradeoffs
+## Benefits and tradeoffs
 
 Deepgram on SageMaker is the fastest path to running Deepgram inside your own AWS account. Compared to self-hosting Deepgram on Docker or Kubernetes, SageMaker trades some flexibility for a managed endpoint that AWS operates on your behalf.
 
 ### When SageMaker is the right fit
 
 * **Ease of deployment.** A ready-to-use endpoint can be created in minutes from the AWS Console or with infrastructure-as-code. There are no container images to mirror, no GPU drivers to install, and no Helm charts to maintain.
-* **Lower management overhead.** AWS manages the underlying instances, host OS, container runtime, and model package distribution. You do not need a dedicated platform team to keep the service patched and healthy.
+* **Lower management overhead.** AWS manages the underlying instances, host OS, container runtime, and model package distribution. You don't need a dedicated platform team to keep the service patched and healthy.
 * **Compliance for regulated workloads.** Deepgram runs entirely inside your AWS account and VPC. Audio never leaves your environment, and you inherit the compliance posture of SageMaker AI (HIPAA-eligible, SOC, ISO, PCI, FedRAMP, and others). This makes SageMaker a strong fit for regulated industries that need a private deployment without operating their own Kubernetes platform.
 * **Native integration with AWS services.** SageMaker Endpoints integrate out of the box with Amazon CloudWatch (logs and metrics), AWS IAM (authentication and authorization), Amazon VPC (network isolation), AWS PrivateLink, AWS KMS, AWS CloudTrail (audit), and SageMaker auto-scaling. You get production-grade observability and access controls without building them yourself.
 * **AWS Marketplace billing.** Deepgram license charges flow through your existing AWS bill, simplifying procurement for teams that already buy through AWS.
@@ -30,8 +30,8 @@ Deepgram on SageMaker is the fastest path to running Deepgram inside your own AW
 ### When Docker or Kubernetes may be a better fit
 
 * You need to run Deepgram outside AWS or on bare metal.
-* You require features that the SageMaker isolation model does not currently support, such as user-defined [callback URLs](/docs/callback) or JSON payloads that reference audio in cloud storage.
-* You want to run the [Deepgram Voice Agent](/docs/voice-agent). SageMaker Endpoints cannot invoke Large Language Model (LLM) services, which the Voice Agent requires, so the Voice Agent cannot run inside SageMaker.
+* You require features that the SageMaker isolation model doesn't currently support, such as user-defined [callback URLs](/docs/callback) or JSON payloads that reference audio in cloud storage.
+* You want to run the [Deepgram Voice Agent](/docs/voice-agent). SageMaker Endpoints can't invoke Large Language Model (LLM) services, which the Voice Agent requires, so the Voice Agent can't run inside SageMaker.
 * You need streaming connections that stay open for longer than 30 minutes. SageMaker Real-Time Inference supports [up to 30 minutes of connection time](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html#realtime-endpoints-test-endpoints-sdk:~:text=The%20connection%20remains%20open%20until%20you%20explicitly%20close%20the%20input%20stream%20or%20the%20endpoint%20closes%20the%20connection%2C%20supporting%20up%20to%2030%20minutes%20of%20connection%20time) per bidirectional streaming connection.
 * You need to send more than 25 MB of input data per non-streaming invocation. SageMaker enforces a [25 MB maximum payload size](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. Asynchronous endpoints (up to 1 GB per request) are temporarily not available for Marketplace-hosted Deepgram. If your use case needs them, contact your [Deepgram representative](https://deepgram.com/contact-us).
 * You need fine-grained control over the container runtime, networking, or process supervision beyond what SageMaker exposes.
@@ -40,10 +40,10 @@ Deepgram on SageMaker is the fastest path to running Deepgram inside your own AW
 
 When using Deepgram services in Amazon SageMaker, please be aware of the following limitations.
 
-* The SageMaker network isolation model prevents the container from making outbound calls to external LLM providers. As a result, the [Deepgram Voice Agent](/docs/voice-agent) cannot run inside SageMaker.
-* Deepgram cannot invoke user-defined [callback URLs](/docs/callback)
+* The SageMaker network isolation model prevents the container from making outbound calls to external LLM providers. As a result, the [Deepgram Voice Agent](/docs/voice-agent) can't run inside SageMaker.
+* Deepgram can't invoke user-defined [callback URLs](/docs/callback)
 * Passing a JSON payload for transcription (e.g., referencing a file stored in cloud storage via URL) is unsupported, as the SageMaker isolation model prevents the container from reaching out to external cloud storage
-* Deepgram [custom metrics](/docs/metrics-guide) are not currently available through Amazon SageMaker Endpoints
+* Deepgram [custom metrics](/docs/metrics-guide) aren't currently available through Amazon SageMaker Endpoints
 * For streaming invocations, the connection remains open until you explicitly close the input stream or the endpoint closes the connection, supporting [up to 30 minutes of connection time](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-test-endpoints.html#realtime-endpoints-test-endpoints-sdk:~:text=The%20connection%20remains%20open%20until%20you%20explicitly%20close%20the%20input%20stream%20or%20the%20endpoint%20closes%20the%20connection%2C%20supporting%20up%20to%2030%20minutes%20of%20connection%20time).
 * For non-streaming invocations, the [maximum size of the input data is 25 MB](https://docs.aws.amazon.com/marketplace/latest/userguide/ml-service-restrictions-and-limits.html#:~:text=For%20an%20endpoint%2C%20limit%20the%20maximum%20size%20of%20the%20input%20data%20per%20invocation%20to%2025%20MB.%20This%20value%20can%27t%20be%20adjusted) for real-time endpoints. Asynchronous endpoints (up to 1 GB per request) are temporarily not available for Marketplace-hosted Deepgram. If your use case needs them, contact your [Deepgram representative](https://deepgram.com/contact-us).
 
@@ -77,7 +77,7 @@ The skill needs AWS credentials for the target account and [`uv`](https://docs.a
 * Confirms with you before subscribing, creating, or deleting anything.
 * Recommends an ordered [instance pool](/docs/deploy-amazon-sagemaker#choose-instance-types) rather than a single instance type.
 * Refuses to deploy asynchronous endpoints, which are temporarily unsupported.
-* Does not quote per-instance capacity numbers; measure on your own endpoint or ask a Deepgram representative for a planning estimate.
+* Doesn't quote per-instance capacity numbers; measure on your own endpoint or ask a Deepgram representative for a planning estimate.
 
 ## Pricing
 
@@ -90,7 +90,7 @@ Your monthly cost is the AWS charge for the instances that run the endpoint plus
 The interactive calculator on this page adds two charges for one month:
 
 * **AWS infrastructure:** instance price per hour × instance count × hours the endpoint runs. The endpoint bills while running, even when idle. Prices vary by Region and instance type; get them from [Amazon SageMaker AI pricing](https://aws.amazon.com/sagemaker/ai/pricing/) (real-time inference) or the AWS Price List API, and use the [Machine Learning Savings Plans](https://aws.amazon.com/savingsplans/ml-pricing/) rate if you have one. Instance count is not derived from usage; size it from load tests or ask a Deepgram representative.
-* **Deepgram license:** for Speech-to-Text, (product rate + billable feature rates) per audio hour × audio hours × audio channels. For streaming, audio hours = concurrent streams × active hours per day × 30.4 days. For Text-to-Speech, characters ÷ 1,000 × the per-1,000-character rate. Rates are in the Deepgram license rates table below. Each request bills at least 1 unit (\$0.001). Flux STT is mono only.
+* **Deepgram license:** for speech-to-text, (product rate + billable feature rates) per audio hour × audio hours × audio channels. For streaming, audio hours = concurrent streams × active hours per day × 30.4 days. For text-to-speech, characters ÷ 1,000 × the per-1,000-character rate. Rates are in the Deepgram license rates table below. Each request bills at least 1 unit (\$0.001). Flux STT is mono only.
 
 Example (us-east-1, On-Demand \$1.222 per hour for `ml.g6.2xlarge` as of October 2026): one instance running 730 hours costs \$892.06. Nova-3 Monolingual streaming with 10 concurrent streams, 24 hours a day, is 7,300 audio hours × \$0.29 = \$2,117.00. The total is \$3,009.06 per month.
 
@@ -109,7 +109,7 @@ These are the rates that currently apply, and Deepgram may adjust them at any ti
 | Aura-2 TTS                         | \$0.030 per 1,000 characters |
 | Flux TTS                           | \$0.045 per 1,000 characters |
 
-These Speech-to-Text features cost extra. Their rates are added to the product rate, and multichannel audio bills per channel.
+These speech-to-text features cost extra. Their rates are added to the product rate, and multichannel audio bills per channel.
 
 | Feature                                   | Streaming              | Batch                                                    |
 | ----------------------------------------- | ---------------------- | -------------------------------------------------------- |
@@ -131,7 +131,7 @@ A 14-day free trial is available with unlimited product usage and zero Deepgram 
 
 ### AWS field employees
 
-If you are an AWS field employee, you can access Deepgram models through the [AWS Marketplace Field Demonstration Program](https://docs.aws.amazon.com/marketplace/latest/userguide/field-demonstration-program.html). Deepgram is an eligible provider. Refer to your internal AWS documentation for enrollment details, and reach out to a [Deepgram representative](https://deepgram.com/contact-us) if you need assistance activating the program.
+If you're an AWS field employee, you can access Deepgram models through the [AWS Marketplace Field Demonstration Program](https://docs.aws.amazon.com/marketplace/latest/userguide/field-demonstration-program.html). Deepgram is an eligible provider. Refer to your internal AWS documentation for enrollment details, and reach out to a [Deepgram representative](https://deepgram.com/contact-us) if you need assistance activating the program.
 
 ### Infrastructure charges
 

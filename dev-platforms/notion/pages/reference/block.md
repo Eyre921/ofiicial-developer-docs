@@ -73,7 +73,7 @@ Use the [Retrieve block children](/reference/get-block-children) endpoint to lis
 | `created_by` | [Partial User](/reference/user) | User who created the block. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this block was last updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `last_edited_by` | [Partial User](/reference/user) | User who last edited the block. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
-| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
+| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. In API versions before `2026-03-11`, this is an alias for `in_trash` and always returns the same value. Version `2026-03-11` removed `archived` from requests and responses. | `false` |
 | `in_trash` | `boolean` | Whether the block has been trashed. Use this field to check if a block is in the trash, and as a body parameter in [Update a block](/reference/update-a-block) to trash or restore a block. | `false` |
 | `has_children` | `boolean` | Whether or not the block has children blocks nested within it. | `true` |
 | `{type}` | [`block type object`](/reference/block#block-type-objects) | An object containing type-specific block information. | Refer to the [block type object section](/reference/block#block-type-objects) for examples of each block type. |

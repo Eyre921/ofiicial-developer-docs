@@ -9,13 +9,13 @@ path: docs/flux/configure
 
 # Configure
 
-Streaming:Flux
+Streaming:Flux STT
 
 ## Introduction
 
 Real conversations aren't static. A call that starts with casual confirmation ("Can you verify your name?") shifts to strict authentication ("Please say your 6-digit PIN") and then to open-ended troubleshooting. Conversations evolve through discrete sections, intents, and steps—each with different demands on your speech recognition system.
 
-The `Configure` control message enables you to adapt Flux's behavior mid-stream as conversational context evolves, without disconnecting and reconnecting. This is essentially **context injection for speech recognition**: you inject the specific vocabulary, turn detection behavior, and timing parameters needed for each phase of the conversation.
+The `Configure` control message enables you to adapt Deepgram Flux STT's behavior mid-stream as conversational context evolves, without disconnecting and reconnecting. This is essentially **context injection for speech recognition**: you inject the specific vocabulary, turn detection behavior, and timing parameters needed for each phase of the conversation.
 
 ### Why This Matters for Voice Agents
 
@@ -23,7 +23,7 @@ The ASR behavior you want at minute one isn't what you want at minute three. Wit
 
 **Dynamically bias toward task-critical phrases.** Collecting a customer's name? Add it to keyterms right before you ask. Moving from appointment scheduling to pharmacy? Swap in medication names and medical terminology. Handling a product inquiry? Load the specific product names and feature terminology relevant to that conversation. You're no longer stuck with a generic keyterm list that's "good enough" for the whole call or loading hundreds of irrelevant terms upfront.
 
-**Adjust turn detection for critical flows.** When you're collecting a password, OTP, or account number, you don't want Flux cutting off the user mid-utterance. Increase `eot_timeout_ms` and `eot_threshold` values for that segment to allow longer pauses and wait for higher confidence before detecting turn end, then decrease them when you're back to natural conversation.
+**Adjust turn detection for critical flows.** When you're collecting a password, OTP, or account number, you don't want Flux STT cutting off the user mid-utterance. Increase `eot_timeout_ms` and `eot_threshold` values for that segment to allow longer pauses and wait for higher confidence before detecting turn end, then decrease them when you're back to natural conversation.
 
 **Switch number formatting per step.** Turn on `numerals` right before you ask for a PIN, phone number, or order number so the transcript returns digits ("4 8 1 5"), then turn it off when the conversation returns to free-form speech.
 
@@ -31,7 +31,7 @@ The ASR behavior you want at minute one isn't what you want at minute three. Wit
 
 Configuration updates are processed in order with your audio stream and take effect immediately when processed. The stream continues uninterrupted, and you receive confirmation of successful updates via `ConfigureSuccess` messages.
 
-## Configurable Parameters
+## Configurable parameters
 
 You can update the following parameters mid-stream:
 
@@ -49,11 +49,11 @@ All parameters are optional in a Configure message. Omitted parameters retain th
 
 > **keyterms are plain strings—no weights**
 >
-> Each entry in the `keyterms` array is a plain term or phrase. Like the query-string [`keyterm`](/docs/keyterm) parameter, Flux keyterms do **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; pass a multi-word phrase as a single array element, for example `["customer service"]`.
+> Each entry in the `keyterms` array is a plain term or phrase. Like the query-string [`keyterm`](/docs/keyterm) parameter, Flux STT keyterms do **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; pass a multi-word phrase as a single array element, for example `["customer service"]`.
 
-## Message Structure
+## Message structure
 
-### Configure Message
+### Configure message
 
 Thresholds must be nested under a `"thresholds"` object. Individual threshold properties can be sent without including all three.
 
@@ -152,7 +152,7 @@ Thresholds must be nested under a `"thresholds"` object. Individual threshold pr
 }
 ```
 
-### Response Messages
+### Response messages
 
 #### ConfigureSuccess
 
@@ -188,18 +188,18 @@ Returned when configuration update fails validation. The stream continues with t
 }
 ```
 
-## Important Behaviors
+## Important behaviors
 
-### Configuration Update Timing
+### Configuration update timing
 
 Key timing behaviors:
 
 * Updates apply immediately when the Configure message is processed
 * Updates persist until the stream ends or another Configure message is sent
-* Turn boundaries do not affect when updates take effect
+* Turn boundaries don't affect when updates take effect
 * Already-transcribed audio is NOT reprocessed with new configuration
 
-### Keyterm Overwrite Behavior
+### Keyterm overwrite behavior
 
 > **Warning**
 >
@@ -232,7 +232,7 @@ Different behaviors apply when you omit fields versus explicitly clearing them:
 | Omit numerals                 | `{"type": "Configure", "keyterms": [...]}`      | No change to numerals                     |
 | Set numerals to null          | `{"type": "Configure", "numerals": null}`       | No change to numerals                     |
 
-### Validation Rules
+### Validation rules
 
 Configure messages are validated using the same rules as initial connection parameters:
 
@@ -250,12 +250,12 @@ Flux STT applies all fields in a Configure message together or not at all. If on
 >
 > A Configure message that fails schema validation, such as `{"type": "Configure", "numerals": "true"}`, returns a message with `type: Error` and code `UNPARSABLE_CLIENT_MESSAGE`, and Flux STT closes the connection. `ConfigureFailure` can carry the same code, so check `type` to tell the two apart.
 
-## Related Resources
+## Related resources
 
-* [Configuration Parameters](/docs/flux/configuration) - Complete reference for all Flux configuration options
+* [Configuration Parameters](/docs/flux/configuration) - Complete reference for all Flux STT configuration options
 * [Keyterm Boosting](/docs/keyterm) - Detailed guide to using keyterms for custom vocabulary
 * [State Messages](/docs/flux/state) - Understanding turn detection and state transitions
-* [Getting Started with Flux](/docs/flux/quickstart) - Quickstart guide with basic configuration
+* [Getting started with Flux STT](/docs/flux/quickstart) - Quickstart guide with basic configuration
 * [Close Stream](/docs/flux/close-stream) - Close the WebSocket stream
 * [Force End Turn](/docs/flux/force-end-turn) - End the current turn immediately from an external signal
 

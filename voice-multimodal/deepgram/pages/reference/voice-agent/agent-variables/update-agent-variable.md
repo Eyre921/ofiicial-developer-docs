@@ -1,5 +1,5 @@
 ---
-title: "Update Agent Variable"
+title: "Update agent variable"
 source: https://developers.deepgram.com/reference/voice-agent/agent-variables/update-agent-variable.md
 path: reference/voice-agent/agent-variables/update-agent-variable
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-variables/update-agent-variable
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Update Agent Variable
+# Update agent variable
 
 PATCH https://api.deepgram.com/v1/projects/{project_id}/agent-variables/{variable_id}
 Content-Type: application/json

@@ -1,5 +1,5 @@
 ---
-title: "Reusable Agent Configurations"
+title: "Reusable agent configurations"
 source: https://developers.deepgram.com/docs/reusable-agent-configurations.md
 path: docs/reusable-agent-configurations
 ---
@@ -7,7 +7,7 @@ path: docs/reusable-agent-configurations
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Reusable Agent Configurations
+# Reusable agent configurations
 
 Reusable Agent Configurations allow you to define and persist the `agent` block of your [Settings](/docs/voice-agent-settings) message using the Deepgram API. Once created, you receive a UUID that can be passed in place of the full `agent` object—simplifying your client code and enabling consistent agent behavior across sessions.
 
@@ -17,7 +17,7 @@ Reusable Agent Configurations allow you to define and persist the `agent` block 
 
 ## Overview
 
-When using the Voice Agent API, you typically send a full `agent` configuration object inside every `Settings` message. With Reusable Agent Configurations, you can:
+When using the Deepgram Voice Agent API, you typically send a full `agent` configuration object inside every `Settings` message. With Reusable Agent Configurations, you can:
 
 * **Store** a reusable `agent` block using the Console API and receive a unique UUID.
 * **Reference** that UUID in your `Settings` message instead of repeating the full configuration.
@@ -60,7 +60,7 @@ Deepgram will look up the reusable configuration by UUID, interpolate any [templ
 
 ---
 
-## Agent Configuration API
+## Agent configuration API
 
 The base URL for all Agent Configuration endpoints is:
 
@@ -68,7 +68,7 @@ The base URL for all Agent Configuration endpoints is:
 https://api.deepgram.com/v1
 ```
 
-### Create an Agent Configuration
+### Create an agent configuration
 
 ```bash
 POST /projects/{project_id}/agents
@@ -114,7 +114,7 @@ The returned `agent_id` is the UUID you'll pass in place of the `agent` block in
 
 ---
 
-### List Agent Configurations
+### List agent configurations
 
 ```bash
 GET /projects/{project_id}/agents
@@ -131,7 +131,7 @@ curl https://api.deepgram.com/v1/projects/{project_id}/agents \
 
 ---
 
-### Get an Agent Configuration
+### Get an agent configuration
 
 ```bash
 GET /projects/{project_id}/agents/{agent_id}
@@ -178,7 +178,7 @@ curl -X PUT https://api.deepgram.com/v1/projects/{project_id}/agents/{agent_id} 
 
 ---
 
-### Delete an Agent Configuration
+### Delete an agent configuration
 
 ```bash
 DELETE /projects/{project_id}/agents/{agent_id}
@@ -199,7 +199,7 @@ curl -X DELETE https://api.deepgram.com/v1/projects/{project_id}/agents/{agent_i
 
 ---
 
-## Template Variables
+## Template variables
 
 Template variables let you define reusable values that can be referenced across agent configurations. When an agent configuration is used in a `Settings` message, Deepgram automatically interpolates the variable values before applying the configuration.
 
@@ -207,7 +207,7 @@ Template variable values are stored as plain text and are visible to all members
 
 Template variables follow the format `DG_<VARIABLE_NAME>`, where `<VARIABLE_NAME>` must consist of uppercase alphanumeric characters, underscores, or hyphens (e.g., `DG_MY_MODEL`, `DG_DEFAULT_LANGUAGE`).
 
-### Using Template Variables in a Configuration
+### Using template variables in a configuration
 
 Template variables can substitute any JSON value—a string, number, boolean, or even an entire object. For example:
 
@@ -236,15 +236,15 @@ Template variables can substitute any JSON value—a string, number, boolean, or
 
 In this example, `DG_LISTEN_MODEL`, `DG_THINK_MODEL`, and `DG_SPEAK_PROVIDER` are all template variables. `DG_SPEAK_PROVIDER` resolves to an entire provider object, while the others resolve to strings.
 
-### Agent Variable API
+### Agent variable API
 
-#### List Agent Variables
+#### List agent variables
 
 ```bash
 GET /projects/{project_id}/agent-variables
 ```
 
-#### Create an Agent Variable
+#### Create an agent variable
 
 ```bash
 POST /projects/{project_id}/agent-variables
@@ -276,13 +276,13 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agent-variables \
   }'
 ```
 
-#### Get an Agent Variable
+#### Get an agent variable
 
 ```bash
 GET /projects/{project_id}/agent-variables/{variable_id}
 ```
 
-#### Update an Agent Variable
+#### Update an agent variable
 
 ```bash
 PATCH /projects/{project_id}/agent-variables/{variable_id}
@@ -294,7 +294,7 @@ PATCH /projects/{project_id}/agent-variables/{variable_id}
 | --------- | ---- | --------------------------- |
 | `value`   | Any  | The new value to substitute |
 
-#### Delete an Agent Variable
+#### Delete an agent variable
 
 ```bash
 DELETE /projects/{project_id}/agent-variables/{variable_id}
@@ -302,7 +302,7 @@ DELETE /projects/{project_id}/agent-variables/{variable_id}
 
 ---
 
-## Full Example
+## Full example
 
 The following example walks through creating an agent configuration with template variables and using it in a Voice Agent session.
 
@@ -359,8 +359,8 @@ Deepgram resolves the UUID to the reusable configuration, substitutes `DG_SYSTEM
 
 ---
 
-## Next Steps
+## Next steps
 
 * [Configure the Voice Agent](/docs/configure-voice-agent) — see all available `agent` configuration options.
 * [Voice Agent Settings](/docs/voice-agent-settings) — learn about the full `Settings` message format.
-* [Voice Agent Message Flow](/docs/voice-agent-message-flow) — understand the correct message flow for building a Voice Agent client.
+* [Voice Agent message flow](/docs/voice-agent-message-flow) — understand the correct message flow for building a Voice Agent client.

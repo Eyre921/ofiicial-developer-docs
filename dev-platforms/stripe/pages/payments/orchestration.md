@@ -46,7 +46,7 @@ When using Orchestration, your third-party processor continues to act as the pro
 
 You can use Orchestration with:
 
-- [Payments](https://docs.stripe.com/payments/online-payments.md#compare-features-and-availability)
+- [Payments](https://docs.stripe.com/payments/online-payments.md)
 - [Billing](https://docs.stripe.com/billing.md)
 - [Dashboard payments](https://dashboard.stripe.com/payments)
 

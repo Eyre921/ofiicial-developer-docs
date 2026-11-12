@@ -1,5 +1,5 @@
 ---
-title: "Flux TTS Overview"
+title: "Flux TTS overview"
 source: https://developers.deepgram.com/docs/flux-tts/overview.md
 path: docs/flux-tts/overview
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Flux TTS Overview
+# Flux TTS overview
 
-Flux TTS brings the Flux promise to speech synthesis: a model and API built for the realities of a voice agent pipeline, not a one-shot text-to-audio pipe. It is served on the `/v2/speak` endpoint and shares one set of Flux voices across two transports. When a user barges in, `Interrupt` reports exactly what they heard (`text_spoken`) — the hard part of agent state reconciliation, answered by the API instead of reconstructed by hand.
+Deepgram Flux TTS is text-to-speech built for real-time conversations: a model and API designed for the realities of a voice agent pipeline, not a one-shot text-to-audio pipe. It's served on the `/v2/speak` endpoint and shares one set of Flux TTS voices across two transports. When a user barges in, `Interrupt` reports exactly what they heard (`text_spoken`) — the hard part of agent state reconciliation, answered by the API instead of reconstructed by hand.
 
 ## Two transports, one voice family
 
@@ -24,7 +24,7 @@ Not sure which to use? See [Batch vs Streaming](/docs/flux-tts/batch-vs-streamin
 
 * **Streaming-first** — Stream LLM tokens straight into the socket; the server places flush boundaries internally.
 * **Turn-based lifecycle** — Each agent response is a turn with a clean start/finish, reported per turn.
-* **Cross-turn voice consistency** — Conversational state persists across turns, so tone carries forward. See [Cross-Turn Context](/docs/flux-tts/context).
+* **Cross-turn voice consistency** — Conversational state persists across turns, so tone carries forward. See [Cross-turn context](/docs/flux-tts/context).
 
 On barge-in, `Interrupt` reports exactly what the user heard, and mid-stream `Configure` adjusts speed without reconnecting.
 

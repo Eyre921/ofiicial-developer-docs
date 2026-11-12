@@ -1,5 +1,5 @@
 ---
-title: "Shell Completion"
+title: "Shell completion"
 source: https://developers.deepgram.com/developer-tools/cli/shell-completion.md
 path: developer-tools/cli/shell-completion
 ---
@@ -7,9 +7,9 @@ path: developer-tools/cli/shell-completion
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Shell Completion
+# Shell completion
 
-## Install Completion
+## Install completion
 
 ```shell
 dg completion bash --install
@@ -19,7 +19,7 @@ dg completion fish --install
 
 The command appends the appropriate completion setup to your shell profile. Restart your shell or source that profile after installation.
 
-## Current Shell Session
+## Current shell session
 
 To enable Bash completion only for the current session:
 
@@ -29,7 +29,7 @@ eval "$(_DG_COMPLETE=bash_source dg)"
 
 For zsh or fish, use the `--install` command above.
 
-## What Gets Completed
+## What gets completed
 
 * Commands: `dg listen`, `dg speak`, `dg read`, etc.
 * Options: command options such as `--mic` and `--model`, and root options such as `-o`

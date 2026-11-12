@@ -1,5 +1,5 @@
 ---
-title: "Profanity Filtering"
+title: "Profanity filtering"
 source: https://developers.deepgram.com/docs/profanity-filter.md
 path: docs/profanity-filter
 ---
@@ -7,13 +7,13 @@ path: docs/profanity-filter
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Profanity Filtering
+# Profanity filtering
 
 * [Try Profanity Filter in the Playground](https://playground.deepgram.com/?endpoint=listen\&profanity_filter=true\&language=en\&model=base)
 
 `profanity_filter` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming:Flux  Specific languages only
+Pre-recorded  Streaming:Nova Streaming:Flux STT  Specific languages only
 
 Deepgram’s profanity filtering feature masks offensive language in transcripts using asterisks. Profanity filtering is available for the following languages:
 
@@ -76,9 +76,9 @@ Deepgram’s profanity filtering feature masks offensive language in transcripts
 
 > **Info**
 >
-> Profanity filtering is supported for all multilingual models: Nova-2 multi, Nova-3 multi, Nova-3 Medical multi, and Flux multi (`language=multi`).
+> Profanity filtering is supported for all multilingual models: Nova-2 multi, Nova-3 multi, Nova-3 Medical multi, and Flux STT multi (`language=multi`).
 
-## Enable Feature
+## Enable feature
 
 To enable Profanity Filtering, use the following parameter in the query string when you call Deepgram’s `/listen` endpoint :
 

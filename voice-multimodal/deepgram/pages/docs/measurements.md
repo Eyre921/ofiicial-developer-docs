@@ -11,19 +11,19 @@ path: docs/measurements
 
 `measurements` *boolean*Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  English (all available regions)
+Pre-recorded  Streaming:Nova Streaming: Flux STT  English (all available regions)
 
-The Measurements feature in Deepgram's Speech-to-Text API allows for the automatic conversion of spoken measurement units into their respective abbreviations.
+The Measurements feature in Deepgram's speech-to-text API allows for the automatic conversion of spoken measurement units into their respective abbreviations.
 
 By enabling this feature, terms such as "milligram" will be transcribed as "mg".
 
-## Enable Feature
+## Enable feature
 
 To enable the Measurements feature, you need to set the `measurements` parameter to `true` when making an API request.
 
 `measurements=true`
 
-### Curl Example
+### Curl example
 
 To transcribe audio with the Measurements feature enabled, use the following cURL command:
 
@@ -42,17 +42,17 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Query Parameters
+### Query parameters
 
 | Parameter      | Value            | Data Type | Description                                                                                           |
 | -------------- | ---------------- | --------- | ----------------------------------------------------------------------------------------------------- |
 | `measurements` | `true` / `false` | boolean   | Enables the Measurements feature to convert spoken measurements to abbreviations. Default is `false`. |
 
-## Analyze Response
+## Analyze response
 
 When the Measurements feature is enabled, the transcribed text will contain abbreviations for measured units.
 
-### Response Example
+### Response example
 
 **`JSON`**
 
@@ -163,7 +163,7 @@ When the Measurements feature is enabled, the transcribed text will contain abbr
 
 In this example, spoken measurements like "grams" and "milliliters" have been converted to their respective abbreviations "g" and "ml" in the transcript.
 
-## Measurements List
+## Measurements list
 
 The following units will be converted to their abbreviations.
 

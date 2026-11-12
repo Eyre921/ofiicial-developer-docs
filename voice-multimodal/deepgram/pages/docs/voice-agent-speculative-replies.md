@@ -1,5 +1,5 @@
 ---
-title: "Speculative Replies & Turn Confirmation"
+title: "Speculative replies & turn confirmation"
 source: https://developers.deepgram.com/docs/voice-agent-speculative-replies.md
 path: docs/voice-agent-speculative-replies
 ---
@@ -7,13 +7,13 @@ path: docs/voice-agent-speculative-replies
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Speculative Replies & Turn Confirmation
+# Speculative replies & turn confirmation
 
 Voice Agent
 
 Every turn has two moments, not one. The agent begins working at the first, and commits at the second.
 
-1. **The agent starts thinking.** Speech-to-text is moderately confident the user has stopped, so the agent closes the utterance internally and sends the request to the LLM. The turn is not yet confirmed.
+1. **The agent starts thinking.** Speech-to-text is moderately confident the user has stopped, so the agent closes the utterance internally and sends the request to the LLM. The turn isn't yet confirmed.
 2. **The agent is cleared to reply.** Speech-to-text is confident the user has stopped. The turn is confirmed and the reply is released.
 
 The window between those two moments is the **speculative window**. Working inside it is what removes hundreds of milliseconds from response time: by the time the turn is confirmed, the reply is usually already generated.
@@ -51,7 +51,7 @@ Set `defer_until_eot: true` on those functions:
 
 A deferred call is held through the speculative window and dispatched when the turn is confirmed. If the turn resumes instead, the call is discarded before it does anything.
 
-Deferring one function does not slow the others. A call that did not opt in still dispatches immediately, even when a deferred call sits ahead of it in the same turn. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot) for the full ordering rules.
+Deferring one function doesn't slow the others. A call that didn't opt in still dispatches immediately, even when a deferred call sits ahead of it in the same turn. See [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot) for the full ordering rules.
 
 ## When a turn resumes
 
@@ -65,7 +65,7 @@ A server-side function that already reached your endpoint is a different matter.
 
 ## Every listen provider does this
 
-Speculative replies are not specific to Flux. Deepgram STT models inside the Voice Agent support building a reply before the turn is confirmed. Flux uses its built in end of turn detection, and Nova models use independent end-of-turn detection.
+Speculative replies aren't specific to Deepgram Flux STT. Deepgram STT models inside the Voice Agent support building a reply before the turn is confirmed. Flux STT uses its built in end of turn detection, and Nova models use independent end-of-turn detection.
 
 `defer_until_eot` works with all of them, and produces no warning on any of them.
 
@@ -78,4 +78,4 @@ These parameters set how wide the speculative window is. See [Configure the Voic
 * `agent.listen.provider.eot_timeout_ms` confirms the turn after a fixed amount of time regardless of confidence. A turn confirmed this way clears the reply like any other, so deferred function calls dispatch rather than being dropped.
 * Setting `eot_threshold` to `1.0` suppresses natural end-of-turn detection entirely. The turn is then confirmed only by [`ForceEndTurn`](/docs/voice-agent-force-end-turn), and deferred function calls wait for it.
 
-If you are wiring Flux yourself rather than using the managed agent, see [Optimize Voice Agent Latency with Eager End of Turn](/docs/flux/voice-agent-eager-eot).
+If you're wiring Flux STT yourself rather than using the managed agent, see [Optimize voice agent latency with Eager End of Turn](/docs/flux/voice-agent-eager-eot).

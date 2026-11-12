@@ -1,5 +1,5 @@
 ---
-title: "Build an Outbound Telephony Agent"
+title: "Build an outbound telephony agent"
 source: https://developers.deepgram.com/docs/outbound-telephony-agent.md
 path: docs/outbound-telephony-agent
 ---
@@ -7,15 +7,15 @@ path: docs/outbound-telephony-agent
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Build an Outbound Telephony Agent
+# Build an outbound telephony agent
 
 > **Info**
 >
 > For more information and to use our reference implementation, visit the [Deepgram Outbound Telephony Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-outbound-telephony).
 
-# Outbound Telephony Voice Agent
+# Outbound telephony Voice Agent
 
-A reference implementation for building an outbound telephony voice agent using [Deepgram's Voice Agent API](https://developers.deepgram.com/docs/voice-agent) and [Twilio](https://www.twilio.com/). Uses [Deepgram Flux](https://developers.deepgram.com/docs/models-overview) for speech-to-text with native turn-taking optimized for real-time voice agent conversations. Includes endpoint authentication and answering machine detection (AMD) with voicemail delivery.
+A reference implementation for building an outbound telephony voice agent using [Deepgram's Voice Agent API](https://developers.deepgram.com/docs/voice-agent) and [Twilio](https://www.twilio.com/). Uses [Deepgram Flux STT](https://developers.deepgram.com/docs/models-overview) with native turn-taking optimized for real-time voice agent conversations. Includes endpoint authentication and answering machine detection (AMD) with voicemail delivery.
 
 The server initiates outbound calls via a REST API. When the call connects, an AI voice agent follows up on a homeowners insurance quote request: it verifies lead information, gathers additional details, and schedules a consultation with a licensed agent. If voicemail is detected, it delivers a personalized message instead. While this agent is specific to a homeowners insurance use case, it's a great jumping off point for any outbound telephony use case – simply replace the prompt and function calls with your relevant details.
 
@@ -74,7 +74,7 @@ The server initiates outbound calls via a REST API. When the call connects, an A
 3. Twilio dials the recipient's phone and opens a WebSocket back to the server to stream audio
 4. Twilio's async AMD runs in the background and POSTs the result to `/amd-result`
 
-### Audio Flow (Human Path)
+### Audio flow (human path)
 
 1. Recipient speaks into their phone
 2. Twilio captures the audio and streams it as base64-encoded mulaw over WebSocket
@@ -84,14 +84,14 @@ The server initiates outbound calls via a REST API. When the call connects, an A
 6. The application server encodes to base64 and sends as JSON to Twilio
 7. Twilio plays the audio to the recipient
 
-### AMD + Voicemail Flow
+### AMD + voicemail flow
 
 When the call connects, the server doesn't know if it's a human or voicemail. It buffers incoming audio while Twilio's AMD runs (\~2-4 seconds). When the result arrives:
 
 * **Human**: Connect to Deepgram Voice Agent API, flush buffered audio, start conversation
 * **Voicemail**: Deliver a personalized message via Deepgram Aura-2 TTS, then hang up
 
-### Key Technical Concepts
+### Key technical concepts
 
 * **Outbound call initiation**: The server actively places calls via the Twilio REST API with inline TwiML. This is the inverse of inbound, where the server passively receives calls. The server still needs a public URL because Twilio opens a WebSocket back to stream audio.
 
@@ -111,7 +111,7 @@ When the call connects, the server doesn't know if it's a human or voicemail. It
 
 For a deeper look at the call flow, session lifecycle, and component details, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Quick Start
+## Quick start
 
 The fastest path to a working outbound voice agent is the setup wizard, which configures Twilio and deploys to [Fly.io](https://fly.io).
 
@@ -127,7 +127,7 @@ The fastest path to a working outbound voice agent is the setup wizard, which co
 
 Note: Twilio trial accounts play a short disclaimer before connecting callers.
 
-### 1. Clone and Install
+### 1. Clone and install
 
 ```bash
 git clone https://github.com/deepgram-devs/deepgram-voice-agent-outbound-telephony.git
@@ -151,7 +151,7 @@ Edit `.env` and add your Deepgram API key:
 DEEPGRAM_API_KEY=your_key_here
 ```
 
-### 3. Run the Setup Wizard
+### 3. Run the setup wizard
 
 ```bash
 python setup.py
@@ -164,7 +164,7 @@ The wizard will:
 3. Generate an endpoint secret for securing the `/make-call` endpoint
 4. Deploy your voice agent to Fly.io
 
-### 4. Place a Test Call
+### 4. Place a test call
 
 ```bash
 python make_call.py --to "+15551234567"
@@ -180,7 +180,7 @@ python setup.py --teardown          # Clean up deployment
 python setup.py --redeploy          # Redeploy to pick up code changes or .env changes
 ```
 
-### Viewing Logs
+### Viewing logs
 
 After deployment, view your application logs with:
 
@@ -207,11 +207,11 @@ See [Fly.io pricing](https://fly.io/docs/about/pricing/) for details.
 
 Depending on your region, Twilio may require address verification before you can purchase a phone number. The setup wizard will surface any errors from Twilio. Follow the instructions in the [Twilio console](https://www.twilio.com/console) if prompted.
 
-## Alternative: Tunnel + Twilio
+## Alternative: tunnel + Twilio
 
 If you prefer to run the server locally instead of deploying to Fly.io, you can use a tunnel to expose your locally running voice agent server via a public URL.
 
-### 1. Start a Tunnel
+### 1. Start a tunnel
 
 ```bash
 # ngrok
@@ -223,7 +223,7 @@ zrok share public localhost:8080
 
 Copy the public URL (e.g., `https://xxxx.ngrok.io`).
 
-### 2. Update Configuration
+### 2. Update configuration
 
 Add to your `.env`:
 
@@ -234,13 +234,13 @@ TWILIO_AUTH_TOKEN=xxxxx
 TWILIO_PHONE_NUMBER=+1xxxxxxxxxx
 ```
 
-### 3. Start the Server
+### 3. Start the server
 
 ```bash
 python main.py
 ```
 
-### 4. Place a Call
+### 4. Place a call
 
 ```bash
 python make_call.py --to "+15551234567"
@@ -274,7 +274,7 @@ python make_call.py --to "+15551234567" --server "https://my-app.fly.dev"
 
 The script reads `SERVER_EXTERNAL_URL` and `ENDPOINT_SECRET` from `.env` automatically.
 
-## Example Conversation
+## Example conversation
 
 ```
 Agent: "Hello, this is an automated assistant calling on behalf of Prestige
@@ -364,7 +364,7 @@ After the call, the server logs show the structured call outcome:
 ======================================================================
 ```
 
-## Project Structure
+## Project structure
 
 ```
 outbound-telephony-voice-agent/
@@ -401,11 +401,11 @@ outbound-telephony-voice-agent/
 
 ## Customization
 
-### Change the Agent's Personality
+### Change the agent's personality
 
 Edit `_build_system_prompt()` in `voice_agent/agent_config.py`. The prompt is built dynamically with lead context data, so the agent knows who it's calling and why. See [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) for voice-specific prompt best practices.
 
-### Add or Modify Functions
+### Add or modify functions
 
 1. Define the function in `voice_agent/agent_config.py` (in the `FUNCTIONS` list)
 2. Add the handler in `voice_agent/function_handlers.py`
@@ -432,9 +432,9 @@ For available TTS models, see the [Voice Agent TTS docs](https://developers.deep
 
 ### Multilingual Support
 
-This reference implementation is configured for English using Deepgram Flux (`flux-general-en`) for STT, which provides native turn-taking optimized for voice agents. To add multilingual support, switch the STT model to `flux-general-multi` and set `language_hints` to an array of BCP-47 codes to bias toward expected languages. For building voice agents in other languages, see the [Deepgram multilingual voice agent guide](https://developers.deepgram.com/docs/multilingual-voice-agent).
+This reference implementation is configured for English using Deepgram Flux STT (`flux-general-en`), which provides native turn-taking optimized for voice agents. To add multilingual support, switch the STT model to `flux-general-multi` and set `language_hints` to an array of BCP-47 codes to bias toward expected languages. For building voice agents in other languages, see the [Deepgram multilingual voice agent guide](https://developers.deepgram.com/docs/multilingual-voice-agent).
 
-### Replace the Mock Backend
+### Replace the mock backend
 
 The `backend/` directory contains an in-memory mock. To connect to a real CRM or scheduling system:
 
@@ -444,11 +444,11 @@ The `backend/` directory contains an in-memory mock. To connect to a real CRM or
 
 The function dispatch in `voice_agent/function_handlers.py` uses lazy imports, making the boundary between voice agent and backend explicit.
 
-### Customize the Voicemail Message
+### Customize the voicemail message
 
 Edit `_build_voicemail_text()` in `voice_agent/voicemail.py`. The message is personalized with the lead's first name from the lead context.
 
-## Compliance Note
+## Compliance note
 
 This reference implementation is a **technical reference**, not a compliance reference. Outbound voice calling is often subject to regulations (e.g. TCPA or equivalent regulations in other jurisdictions).
 
@@ -462,7 +462,7 @@ These are merely examples, they do not constitute actual compliance guidance.
 
 Developers deploying outbound voice agents should consult appropriate legal and/or regulatory guidance to ensure compliance with applicable regulations.
 
-## Additional Resources
+## Additional resources
 
 * [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) - Detailed architecture, data flow diagrams, and component details
 * [docs/PROMPT_GUIDE.md](docs/PROMPT_GUIDE.md) - Best practices for writing voice agent prompts

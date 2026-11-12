@@ -18,4 +18,4 @@ Audio Media input settings allow you to define the parameters for audio data sub
 | [Channels](/docs/channels)         | [All available](/docs/models-languages-overview) |
 | [Encoding](/docs/encoding)         | [All available](/docs/models-languages-overview) |
 | [Multichannel](/docs/multichannel) | [All available](/docs/models-languages-overview) |
-| [Sample Rate](/docs/sample-rate)   | [All available](/docs/models-languages-overview) |
+| [Sample rate](/docs/sample-rate)   | [All available](/docs/models-languages-overview) |

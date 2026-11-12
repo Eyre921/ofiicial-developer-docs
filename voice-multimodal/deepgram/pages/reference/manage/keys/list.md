@@ -1,5 +1,5 @@
 ---
-title: "List Project Keys"
+title: "List project keys"
 source: https://developers.deepgram.com/reference/manage/keys/list.md
 path: reference/manage/keys/list
 ---
@@ -7,7 +7,7 @@ path: reference/manage/keys/list
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Project Keys
+# List project keys
 
 GET https://api.deepgram.com/v1/projects/{project_id}/keys
 

@@ -53,7 +53,7 @@ Creating a Pipecat + Deepgram integration can be accomplished by using several a
 2. [Use the quickstart CLI command](#use-the-quickstart-cli-command)
 3. [Scaffold a new Pipecat project with the CLI](#scaffold-a-new-pipecat-project-with-the-cli)
 
-## Build with a Coding Agent
+## Build with a coding agent
 
 You can use AI coding tools like Claude Code or Codex to generate your Pipecat agent code. Rather than relying on the tool's training data, you give it live context from the Pipecat documentation.
 
@@ -120,7 +120,7 @@ tts = DeepgramFluxTTSService(
 )
 ```
 
-Remove `CARTESIA_API_KEY` from your `.env` file — it is no longer needed. No other changes are required: the STT service already uses Deepgram, and the rest of the pipeline stays the same.
+Remove `CARTESIA_API_KEY` from your `.env` file — it's no longer needed. No other changes are required: the STT service already uses Deepgram, and the rest of the pipeline stays the same.
 
 Flux TTS voices use the model string format `flux-{voice}-{language}`, such as `flux-alexis-en`. This differs from the `aura-2-{voice}-{language}` format used by Deepgram's Aura-2 voices. Browse the [Flux TTS voice catalog](/docs/flux-tts/voices) to choose a different voice.
 
@@ -128,11 +128,11 @@ Flux TTS speaks English and 41 other languages; the language code at the end of 
 
 Continue building by adding a [Pipecat Client](#next-steps)
 
-### Use Flux for turn detection
+### Use Flux STT for turn detection
 
-[Flux](/docs/flux/quickstart) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations.
+[Flux STT](/docs/flux/quickstart) is Deepgram's conversational STT model with built-in turn detection. It uses acoustic and semantic cues to determine when a speaker has finished their turn, resulting in more natural conversations.
 
-To use Flux, replace `DeepgramSTTService` with `DeepgramFluxSTTService` in your `bot.py`:
+To use Flux STT, replace `DeepgramSTTService` with `DeepgramFluxSTTService` in your `bot.py`:
 
 ```python
 import os
@@ -149,7 +149,7 @@ stt = DeepgramFluxSTTService(
 
 ## Scaffold a new Pipecat project with the CLI
 
-### Step 1: Create the project
+### Step 1: create the project
 
 Scaffold a new project using the Pipecat CLI.
 
@@ -163,7 +163,7 @@ Project created successfully!
    pipecat-deepgram
 ```
 
-### Step 2: Install dependencies
+### Step 2: install dependencies
 
 Navigate to the `server` directory inside your new project, create a virtual environment, and install the dependencies:
 
@@ -172,7 +172,7 @@ cd pipecat-deepgram/server
 uv sync
 ```
 
-### Step 3: Configure your environment
+### Step 3: configure your environment
 
 Copy the example environment file and fill in your API keys:
 
@@ -180,7 +180,7 @@ Copy the example environment file and fill in your API keys:
 cp .env.example .env
 ```
 
-`.env.example` does not include a voice setting, so add one — the scaffolded bot reads `DEEPGRAM_VOICE_ID` and will not synthesize speech without it:
+`.env.example` doesn't include a voice setting, so add one — the scaffolded bot reads `DEEPGRAM_VOICE_ID` and won't synthesize speech without it:
 
 ```bash
 DEEPGRAM_VOICE_ID=flux-alexis-en
@@ -195,7 +195,7 @@ Replace the placeholder values with your API keys:
 
 The remaining values are defaults you can change later.
 
-### Step 4: Run the agent
+### Step 4: run the agent
 
 Start the bot from the `server` directory:
 
@@ -203,7 +203,7 @@ Start the bot from the `server` directory:
 uv run python bot.py --transport daily
 ```
 
-### Step 5: Test the conversation
+### Step 5: test the conversation
 
 Open the local URL printed in your terminal, then:
 
@@ -215,7 +215,7 @@ Open the local URL printed in your terminal, then:
 
 Continue building by adding a [Pipecat Client](#next-steps)
 
-## Next Steps
+## Next steps
 
 Continue building with an agent.
 

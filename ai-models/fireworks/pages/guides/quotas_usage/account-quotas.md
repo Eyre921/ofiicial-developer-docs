@@ -135,6 +135,18 @@ On-demand deployments have GPU quotas instead of rate limits. GPU quota is scope
 >
 > Need more GPUs? [Contact us](https://fireworks.ai/company/contact-us) to request a quota increase.
 
+### Preemptible deployment quotas
+
+[Preemptible deployments](/guides/ondemand-deployments#preemptible-deployments-eval-/-batch) have a separate GPU quota from the on-demand quotas above: one account-wide quota per accelerator type, `preemptible-<accelerator>-count`.
+
+| GPU Type | Default preemptible quota |
+| - | - |
+| Nvidia B300, B200, H200, GB300, GB200 | 256 GPUs each |
+| Nvidia H100, A100 | 64 GPUs each |
+| AMD MI325X / MI350X | 64 GPUs each |
+
+Check it with `firectl quota get preemptible-b200-count`. To raise it, contact Fireworks support or your account team.
+
 On-demand and dedicated deployments are **not limited by adaptive serverless TPM upper bounds**. If you receive HTTP **429** on those endpoints, it typically means **deployment saturation** (GPUs busy) rather than hitting a TPM tier cap. Requests still count toward [account-wide request limits](#account-wide-request-limits). See [understanding 429 errors](/guides/inference-error-codes#understanding-429-errors) for details and resolution steps.
 
 ### Account recovery

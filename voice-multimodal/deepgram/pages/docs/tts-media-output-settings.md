@@ -9,22 +9,22 @@ path: docs/tts-media-output-settings
 
 # Media Output Settings
 
-Upon successful processing of a Deepgram text-to-speech request, you will receive an audio file containing the synthesized text-to-speech output.
+Upon successful processing of a Deepgram text-to-speech request, you'll receive an audio file containing the synthesized text-to-speech output.
 
 ## Media Output Settings
 
 | Feature                              | API / Protocol      |
 | ------------------------------------ | ------------------- |
 | [Encoding](/docs/tts-encoding)       | `REST`, `Streaming` |
-| [Bit Rate](/docs/tts-bit-rate)       | `REST`              |
+| [Bit rate](/docs/tts-bit-rate)       | `REST`              |
 | [Container](/docs/tts-container)     | `REST`              |
-| [Sample Rate](/docs/tts-sample-rate) | `REST`, `Streaming` |
+| [Sample rate](/docs/tts-sample-rate) | `REST`, `Streaming` |
 
-## Supported Audio Formats
+## Supported audio formats
 
 > **Info**
 >
-> If you don't provide any values for encoding, container or sample rate in your request Deepgram will provide the following defaults depending on which API / Protocol you use.
+> If you don't provide any values for encoding, container, or sample rate in your request Deepgram will provide the following defaults depending on which API / Protocol you use.
 >
 > **Streaming Defaults** encoding: `Linear16`container: `n/a` sample_rate: `24000`
 >
@@ -40,9 +40,9 @@ Upon successful processing of a Deepgram text-to-speech request, you will receiv
 | FLAC         | Lossless audio compression format that maintains original audio quality with efficient storage.                                        | - Archival audio storage- High-quality audio applications                                                                | `REST`              |
 | AAC          | Advanced audio coding format providing superior audio quality compared to MP3 at similar bitrates.                                     | - Mobile applications- Streaming platforms- Text-to-speech (TTS) applications                                            | `REST`              |
 
-## Audio Format Combinations
+## Audio format combinations
 
-While Deepgram offers flexibility in choosing encoding options, **there are predefined combinations of audio formats with specific configurations** that you must adhere to. These combinations determine the encoding parameters, container format, sample rate, bitrate, and content-type header attached to the response.
+While we offer flexibility in choosing encoding options, **there are predefined combinations of audio formats with specific configurations** that you must adhere to. These combinations determine the encoding parameters, container format, sample rate, bitrate, and content-type header attached to the response.
 
 > **Info**
 >
@@ -58,9 +58,9 @@ While Deepgram offers flexibility in choosing encoding options, **there are pred
 | `flac`         | Not Applicable          | `8000`,`16000`,`22050`,`32000`,`48000`             | Not Applicable                                    |
 | `aac`          | Not Applicable          | Not Configurable (*set to* `22050`)                | Default:`48000`, Range: >=`4000`and \<= `192000`  |
 
-## Audio Format Outputs
+## Audio format outputs
 
-Depending on which Encoding and Container you choose to use, you will receive the following audio output.
+Depending on which Encoding and Container you choose to use, you'll receive the following audio output.
 
 | Encoding   | Container | Content-Type            |
 | ---------- | --------- | ----------------------- |
@@ -75,9 +75,9 @@ Depending on which Encoding and Container you choose to use, you will receive th
 | `flac`     | `n/a`     | `audio/flac`            |
 | `aac`      | `n/a`     | `audio/aac`             |
 
-## FAQ & Troubleshooting
+## FAQ & troubleshooting
 
-### Why does Streaming Text to Speech only support a limited set of audio formats?
+### Why does Streaming Text-to-Speech only support a limited set of audio formats?
 
 Currently we only support `linear16`, `mulaw` , and `alaw`for our [Streaming TTS Websocket](/reference/text-to-speech/speak-streaming). In the future we may offer additional support for other audio formats.
 
@@ -87,7 +87,7 @@ If you encounter a problem of hearing "clicks" in the audio, we recommend that y
 
 These clicks can occur when integrating with telephony providers, i.e. services that handle real-time communication such as VoIP (Voice over Internet Protocol). When using these services, you probably want to use raw audio without a container. If you don't specify `container=none`, the default container of `wav` will be requested, which will result in header information being misinterpreted by the service, leading to anomalies such as clicks or static sounds.
 
-Be sure to ask Deepgram to provide raw audio by setting `container=none`; otherwise, you will likely hear static or clicking at the beginning of the audio playback as your speaker tries to interpret the accidentally-included container as actual audio.
+Be sure to ask Deepgram to provide raw audio by setting `container=none`; otherwise, you'll likely hear static or clicking at the beginning of the audio playback as your speaker tries to interpret the accidentally-included container as actual audio.
 
 > **Warning**
 >
@@ -95,7 +95,7 @@ Be sure to ask Deepgram to provide raw audio by setting `container=none`; otherw
 
 ### Why do certain audio formats have a default container and some don't?
 
-Many encodings require a certain container format as part of their specification (e.g., `MP3`, `FLAC`, `AAC`), so Deepgram can't provide container options for those.
+Many encodings require a certain container format as part of their specification (e.g., `MP3`, `FLAC`, `AAC`), so we can't provide container options for those.
 
 Other encodings can be container-less (e.g., raw audio). This is why `wav` and `none` are options for those.
 
@@ -103,11 +103,11 @@ With raw audio you no longer have metadata to give you information like the samp
 
 ### Why do certain audio formats have sample rate options and some don't?
 
-Some formats specify their sample rates, so we cannot provide `sample_rate` options for them.
+Some formats specify their sample rates, so we can't provide `sample_rate` options for them.
 
 ### Why do certain audio formats have bit rates options and some don't?
 
-Uncompressed audio formats don't have configurable bit rates, so we cannot provide `bit_rate` options for them.
+Uncompressed audio formats don't have configurable bit rates, so we can't provide `bit_rate` options for them.
 
 ---
 

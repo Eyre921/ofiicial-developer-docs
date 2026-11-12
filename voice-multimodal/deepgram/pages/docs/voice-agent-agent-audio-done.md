@@ -15,7 +15,7 @@ The server sends `AgentAudioDone` immediately after the last audio chunk for an 
 
 ## Client behavior
 
-`AgentAudioDone` does not mean the user has heard the agent finish. Audio you already received may still sit in your local playback buffer. To detect end-of-playback in the user's ears, watch your audio output queue, not this event.
+`AgentAudioDone` doesn't mean the user has heard the agent finish. Audio you already received may still sit in your local playback buffer. To detect end-of-playback in the user's ears, watch your audio output queue, not this event.
 
 ## Example payload
 

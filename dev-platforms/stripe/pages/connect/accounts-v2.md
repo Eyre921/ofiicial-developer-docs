@@ -120,7 +120,9 @@ You must use Accounts v1 in the following cases:
   - deprecated payment methods
   - certain payment methods in public or private preview
 
+New Connect integrations might need to [enable Accounts v1 support](https://docs.stripe.com/connect/accounts-v2/account-creation.md) before they can use the Accounts v1 API.
+
 > #### Cross-border payouts
 > 
-> Use [Global Payouts](https://docs.stripe.com/global-payouts.md) to send cross-border payouts.
+> To transfer funds to connected accounts in other countries, use [Connect cross-border payouts](https://docs.stripe.com/connect/connect-cross-border-payouts.md). To pay recipients that aren’t connected accounts, or that are in countries that don’t support Connect cross-border payouts, use [Global Payouts](https://docs.stripe.com/global-payouts.md). For a comparison, see [Global Payouts and Connect cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts-to-recipients/compare-global-payouts.md).
 

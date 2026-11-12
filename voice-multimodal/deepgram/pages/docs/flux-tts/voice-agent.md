@@ -1,5 +1,5 @@
 ---
-title: "Voice Agent Integration Patterns"
+title: "Voice agent integration patterns"
 source: https://developers.deepgram.com/docs/flux-tts/voice-agent.md
 path: docs/flux-tts/voice-agent
 ---
@@ -7,17 +7,17 @@ path: docs/flux-tts/voice-agent
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Voice Agent Integration Patterns
+# Voice agent integration patterns
 
-Flux TTS is built to sit downstream of an LLM in a voice agent pipeline. This guide shows the common integration patterns, pairing Flux TTS's `/v2/speak` with a streaming STT (such as [Flux STT](/docs/flux/quickstart)) and an LLM. Each pattern is intentionally small — drop it into your pipeline and adapt.
+Deepgram Flux TTS is built to sit downstream of an LLM in a voice agent pipeline. This guide shows the common integration patterns, pairing Flux TTS's `/v2/speak` with a streaming STT (such as Deepgram [Flux STT](/docs/flux/quickstart)) and an LLM. Each pattern is intentionally small — drop it into your pipeline and adapt.
 
-For the messages used here, see [Client Messages](/docs/flux-tts/client-messages) and [Server Messages](/docs/flux-tts/server-messages).
+For the messages used here, see [Client messages](/docs/flux-tts/client-messages) and [Server messages](/docs/flux-tts/server-messages).
 
 > **Info**
 >
 > The snippets below focus on **message flow** rather than a specific SDK. For the concrete `speak.v2` calls, see [Getting Started](/docs/flux-tts/quickstart) and the [template apps](/docs/flux-tts/template-apps) — the Python (`deepgram-sdk`) and JavaScript (`@deepgram/sdk`) SDKs both ship a `speak.v2` client for `/v2/speak`.
 
-## Pattern 1: Basic agent loop
+## Pattern 1: basic agent loop
 
 On each end-of-turn from STT, stream the LLM response into the active turn and flush when the response is complete.
 
@@ -30,7 +30,7 @@ async def agent_loop(stt_conn, speak_conn, llm):
             await speak_conn.send({"type": "Flush"})
 ```
 
-## Pattern 2: Barge-in
+## Pattern 2: barge-in
 
 When the user speaks over the agent, stop local playback immediately, then send `Interrupt`. The server returns `text_spoken` / `text_remaining` so you can reconcile LLM context with exactly what the user heard. The split is computed from an **optional playback position** you include — how much of the turn's audio actually played before the barge-in — so it reflects what the user really heard, not just what the server sent.
 
@@ -46,7 +46,7 @@ async def handle_barge_in(stt_event, speak_conn, playback):
         # On SpeechInterrupted: llm_context.append(assistant=text_spoken)
 ```
 
-See [Interruption Handling](/docs/flux-tts/interrupt-handling) for the full pattern, including in-flight audio and edge cases.
+See [Interruption handling](/docs/flux-tts/interrupt-handling) for the full pattern, including in-flight audio and edge cases.
 
 ## Streaming text correctly
 
@@ -61,9 +61,9 @@ The Flux TTS WebSocket is the **framework-to-Deepgram** leg of your pipeline, no
 
 ## Related resources
 
-* [The Speech Lifecycle](/docs/flux-tts/state) — the state machine behind these loops
-* [Client Messages](/docs/flux-tts/client-messages) / [Server Messages](/docs/flux-tts/server-messages) — full wire reference
-* [Cross-Turn Context](/docs/flux-tts/context) — what persists across turns
-* [Build a Flux-enabled Voice Agent (STT)](/docs/flux/agent) — the STT side of the pipeline
+* [The speech lifecycle](/docs/flux-tts/state) — the state machine behind these loops
+* [Client messages](/docs/flux-tts/client-messages) / [Server messages](/docs/flux-tts/server-messages) — full wire reference
+* [Cross-turn context](/docs/flux-tts/context) — what persists across turns
+* [Build a Flux STT-enabled voice agent](/docs/flux/agent) — the STT side of the pipeline
 
 ---

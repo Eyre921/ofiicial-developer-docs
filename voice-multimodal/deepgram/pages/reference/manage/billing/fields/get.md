@@ -1,5 +1,5 @@
 ---
-title: "List Project Billing Fields"
+title: "List project billing fields"
 source: https://developers.deepgram.com/reference/manage/billing/fields/get.md
 path: reference/manage/billing/fields/get
 ---
@@ -7,7 +7,7 @@ path: reference/manage/billing/fields/get
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Project Billing Fields
+# List project billing fields
 
 GET https://api.deepgram.com/v1/projects/{project_id}/billing/fields
 

@@ -1,5 +1,5 @@
 ---
-title: "Understanding NAT Port Exhaustion"
+title: "Understanding NAT port exhaustion"
 source: https://developers.deepgram.com/docs/understanding-nat-port-exhaustion.md
 path: docs/understanding-nat-port-exhaustion
 ---
@@ -7,7 +7,7 @@ path: docs/understanding-nat-port-exhaustion
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Understanding NAT Port Exhaustion
+# Understanding NAT port exhaustion
 
 When applications connect to Deepgram from a cloud or on-premises environment that sits behind a Network Address Translation (NAT) device, misconfigured or undersized NAT can cause intermittent connection timeouts and WebSocket handshake failures. These problems typically arise before traffic ever reaches Deepgram's infrastructure.
 
@@ -20,7 +20,7 @@ This document explains:
 
 ---
 
-## What is NAT Port Exhaustion?
+## What is NAT port exhaustion?
 
 ### How NAT works
 
@@ -57,7 +57,7 @@ In other words: the symptoms appear as connectivity problems *with* Deepgram, bu
 
 ---
 
-## Why Real-Time Speech Workloads Stress NAT
+## Why real-time speech workloads stress NAT
 
 Real-time speech applications (voice agents, contact centers, streaming STT/TTS) often:
 
@@ -77,7 +77,7 @@ That's the essence of NAT port exhaustion.
 
 ---
 
-## How to Recognize NAT Port Exhaustion
+## How to recognize NAT port exhaustion
 
 ### Common application-level symptoms
 
@@ -91,7 +91,7 @@ If you see some or all of the following, NAT port exhaustion is a strong suspect
   * Are more frequent under higher load or during spikes
   * Sometimes appear to affect only some of the Deepgram IPs/regions
 
-From Deepgram's perspective, typical signs include:
+From our perspective, typical signs include:
 
 * No logged requests for many of the failing attempts (they never reached our edge)
 * Healthy behavior for other customers and traffic during the same time window
@@ -111,7 +111,7 @@ These are exactly the patterns cloud NAT troubleshooting guides call out as red 
 
 ---
 
-## Provider-Specific Considerations
+## Provider-specific considerations
 
 ### Google Cloud Platform (GCP)
 
@@ -124,7 +124,7 @@ When troubleshooting on GCP, it's important to answer:
   * Behind GKE default NAT?
   * On Cloud Run with default/shared NAT, or behind a dedicated Cloud NAT gateway?
 * How many public IPs does the NAT gateway have?
-* What is the configured minimum ports per VM/instance?
+* What's the configured minimum ports per VM/instance?
 
 Environments that rely on shared NAT (e.g., default Cloud Run NAT) and have no visibility into port allocation or TIME_WAIT behavior are much harder to tune.
 
@@ -158,7 +158,7 @@ For Cloud Run:
 
 * The default model uses a shared, provider-managed NAT where:
   * Port allocation and TIME_WAIT behavior are opaque
-  * You cannot easily tune NAT settings
+  * You can't easily tune NAT settings
 * For latency-sensitive, high-throughput workloads, we recommend:
   * Running Cloud Run with VPC egress and
   * Using a dedicated Cloud NAT gateway with:
@@ -222,7 +222,7 @@ Two AWS-native data sources let you self-diagnose this quickly: use CloudWatch N
 
 Pull the following metrics from the `AWS/NATGateway` namespace, filtered to the affected `NatGatewayId` dimension, at 1-minute granularity around the failure timestamps:
 
-* **`ErrorPortAllocation`** — the number of times the NAT Gateway could not allocate a source port. Any non-zero value is a direct signal of port exhaustion at that moment.
+* **`ErrorPortAllocation`** — the number of times the NAT Gateway couldn't allocate a source port. Any non-zero value is a direct signal of port exhaustion at that moment.
 * **`PacketsDropCount`** — the total packets the NAT Gateway dropped. This is a broader drop count that corroborates `ErrorPortAllocation`.
 * **`ActiveConnectionCount`** — the number of concurrent active connections. Each NAT Gateway supports up to 55,000 concurrent connections per unique destination — that is, per unique combination of protocol, destination IP, and destination port — and this quota is shared across every resource routed through that gateway. Many tasks connecting to the same Deepgram endpoint on port 443 draw from the same 55,000-connection budget.
 * **`ConnectionAttemptCount`** vs **`ConnectionEstablishedCount`** — compare these two. A gap, where attempts exceed established connections, indicates attempts that never completed the handshake, which is consistent with port allocation failure.
@@ -234,16 +234,16 @@ VPC Flow Logs record the actual packet flows and let you confirm that failing co
 * **Enable flow logs on the NAT Gateway resource directly**, not only on the subnet or VPC. A flow log attached to the NAT Gateway captures both the pre-translation and post-translation addresses, so you can correlate a task's private source address with the public source port the gateway assigned.
 * **Use the custom flow log format with all fields** — including `tcp-flags`, `flow-direction`, `pkt-srcaddr`, `pkt-dstaddr`, and `log-status` — and set the maximum aggregation interval to 1 minute instead of the 10-minute default. The finer interval and richer fields make short exhaustion spikes visible.
 * **Filter on the affected source IPs and destination port 443** around known failure timestamps. Look for SYN packets with no corresponding response, which is consistent with port allocation failure.
-* **Treat a missing flow log entry at a failure timestamp as corroborating, not contradictory.** A port allocation failure can drop the connection before it is ever logged, so the absence of a record at the exact moment of a reported failure is itself expected and consistent with exhaustion.
+* **Treat a missing flow log entry at a failure timestamp as corroborating, not contradictory.** A port allocation failure can drop the connection before it's ever logged, so the absence of a record at the exact moment of a reported failure is itself expected and consistent with exhaustion.
 
 ---
 
-## Why This Typically Lives in the Customer Network, Not Deepgram
+## Why this typically lives in the customer network, not Deepgram
 
 It's natural to suspect a remote service when you see connection timeouts. However, in NAT-related cases we consistently observe that:
 
 * Failing connections never appear in Deepgram's edge or application logs:
-  * There is no HTTP request, no WebSocket upgrade, and no request ID for the failing attempts.
+  * There's no HTTP request, no WebSocket upgrade, and no request ID for the failing attempts.
   * This means the connection failed before it reached our infrastructure.
 * When we compare:
   * Tests that bypass the NAT/firewall layer (for example, direct from a VM/static IP), and
@@ -317,7 +317,7 @@ We recommend the following for any environment using NAT to reach Deepgram:
 
 ---
 
-## How Deepgram Can Help
+## How Deepgram can help
 
 While NAT configuration is under your control, we're happy to collaborate. In practice, the most effective joint workflow looks like:
 

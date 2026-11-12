@@ -266,11 +266,11 @@ If you are using an older version of the Python, Node.js, Java, or Go SDK, you m
    <dependency>
      <groupId>io.pinecone</groupId>
      <artifactId>pinecone-client</artifactId>
-     <version>5.0.0</version>
+     <version>6.3.0</version>
    </dependency>
 
    # Gradle
-   implementation "io.pinecone:pinecone-client:5.0.0"
+   implementation "io.pinecone:pinecone-client:6.3.0"
    ```
 
    ```go Go theme={null}
@@ -779,6 +779,8 @@ When you're ready to cutover to your new serverless index:
        public static void main(String[] args) {
            Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
            Index index = pc.getIndexConnection("YOUR_SERVERLESS_INDEX_NAME");
+       }
+   }
    ```
 
    ```go Go theme={null}

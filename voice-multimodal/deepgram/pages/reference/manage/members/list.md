@@ -1,5 +1,5 @@
 ---
-title: "List Project Members"
+title: "List project members"
 source: https://developers.deepgram.com/reference/manage/members/list.md
 path: reference/manage/members/list
 ---
@@ -7,7 +7,7 @@ path: reference/manage/members/list
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Project Members
+# List project members
 
 GET https://api.deepgram.com/v1/projects/{project_id}/members
 

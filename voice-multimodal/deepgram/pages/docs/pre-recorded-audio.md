@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Getting started"
 source: https://developers.deepgram.com/docs/pre-recorded-audio.md
 path: docs/pre-recorded-audio
 ---
@@ -7,7 +7,7 @@ path: docs/pre-recorded-audio
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started
+# Getting started
 
 Deepgram API Playground
 
@@ -20,7 +20,7 @@ This guide walks you through transcribing pre-recorded audio with the Deepgram A
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ## cURL
 
@@ -39,7 +39,7 @@ curl \
 
 ### Local file
 
-Replace `@youraudio.wav` with the path to an audio file on your computer. See [Supported Audio Formats](/docs/supported-audio-formats) for accepted formats.
+Replace `@youraudio.wav` with the path to an audio file on your computer. See [Supported audio formats](/docs/supported-audio-formats) for accepted formats.
 
 ```curl
 curl \
@@ -54,7 +54,7 @@ curl \
 >
 > The above examples include `model=nova-3`, which tells the API to use Deepgram's latest model. Removing this parameter defaults to `model=base`.
 >
-> They also include Deepgram's [Smart Formatting](/docs/smart-format) feature (`smart_format=true`), which formats currency amounts, phone numbers, email addresses, and more for enhanced readability.
+> They also include Deepgram's [Smart formatting](/docs/smart-format) feature (`smart_format=true`), which formats currency amounts, phone numbers, email addresses, and more for enhanced readability.
 
 ## SDKs
 
@@ -705,7 +705,7 @@ In this response:
 ## Limits
 
 * **File size**: Maximum 2 GB. For large video files, extract the audio stream first.
-* **Rate limits**: Up to 100 concurrent requests per project for Nova, Base, and Enhanced models. For full details, see [API Rate Limits](/reference/api-rate-limits).
+* **Rate limits**: Up to 100 concurrent requests per project for Deepgram Nova, Base, and Enhanced models. For full details, see [API Rate Limits](/reference/api-rate-limits).
 * **Processing time**: Requests exceeding 10 minutes (Nova/Base/Enhanced) or 20 minutes (Whisper) return a `504: Gateway Timeout` error.
 
 ## What's next?

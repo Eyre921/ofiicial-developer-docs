@@ -18,9 +18,9 @@ path: docs/tts-expressivity
 > * **Changing it can degrade quality** - hallucinations (extra, dropped, or repeated words) and pronunciation errors become more likely at larger magnitudes.
 > * **Audition before shipping.** Test the exact value you plan to ship and check for hallucinations and pronunciation issues. The API covers every voice and every value; see the Usage section below. [talk.deepgram.com](https://talk.deepgram.com) is faster for a first listen: it offers the full `-2` to `2` range, labeled Calm to Animated, on a subset of voices. Expressivity controls in the Playground are coming soon.
 
-The `expressivity` parameter shifts a Flux TTS voice's delivery register along a calm to animated axis. Negative values typically produce calmer, steadier, slightly lower-pitched delivery; positive values typically produce more animated delivery with a wider pitch range.
+The `expressivity` parameter shifts a Deepgram Flux TTS voice's delivery register along a calm to animated axis. Negative values typically produce calmer, steadier, slightly lower-pitched delivery; positive values typically produce more animated delivery with a wider pitch range.
 
-Every Flux voice is tuned by Deepgram to its most natural delivery out of the box, and `0` is that tuned default. Think of `expressivity` as a signed offset from the default rather than a required setting: the voice already sounds good at `0`, and the parameter shifts its register when your use case calls for it.
+We tune every Flux TTS voice to its most natural delivery out of the box, and `0` is that tuned default. Think of `expressivity` as a signed offset from the default rather than a required setting: the voice already sounds good at `0`, and the parameter shifts its register when your use case calls for it.
 
 Expressivity is a register dial, not a quality slider. The calm end is a deliberate production choice for contexts like support and IVR, not a lesser mode; the animated end is a different character, not a better one.
 
@@ -72,7 +72,7 @@ Because the parameter is in beta, re-validate your chosen value when Deepgram sh
 
 ## Usage
 
-Set `expressivity` as a query parameter on either `/v2/speak` transport, or as an `agent.speak.provider` field in the Voice Agent API. On streaming, the value is fixed when you open the connection and applies for its duration; on batch, it applies to that request.
+Set `expressivity` as a query parameter on either `/v2/speak` transport, or as an `agent.speak.provider` field in the Deepgram Voice Agent API. On streaming, the value is fixed when you open the connection and applies for its duration; on batch, it applies to that request.
 
 ### Streaming
 
@@ -114,16 +114,16 @@ See [Configure the Voice Agent](/docs/configure-voice-agent#agent---speak-settin
 ## Behavior notes
 
 * **The register shift is intentional behavior.** Moving away from `0` changes pitch range, pacing variation, overall pitch, and timbre (the voice's tonal color) together, so the voice's character audibly changes toward the ends of the range. This is the parameter working as designed, not a side effect.
-* **It is not a speed or pitch-shift control.** Negative values do not slow the voice down, and positive values do not speed it up. For speaking rate, use `speed` (on Flux TTS, `0.5` to `1.5` in `0.05` increments).
-* **Animated delivery naturally varies more.** At higher values, delivery tends to vary more between generations of the same text; that variation is part of what makes speech sound animated and human. Deepgram's output-consistency characteristics for Flux TTS are measured at the default (`expressivity` omitted or `0`).
+* **It isn't a speed or pitch-shift control.** Negative values don't slow the voice down, and positive values don't speed it up. For speaking rate, use `speed` (on Flux TTS, `0.5` to `1.5` in `0.05` increments).
+* **Animated delivery naturally varies more.** At higher values, delivery tends to vary more between generations of the same text; that variation is part of what makes speech sound animated and human. Our output-consistency characteristics for Flux TTS are measured at the default (`expressivity` omitted or `0`).
 * **Effect and risk grow with magnitude.** The further from `0`, the stronger the shift, and the higher the chance of hallucinations or pronunciation errors. The range is kept narrow during beta for this reason; audition any non-default value before production.
-* **Comparing text-to-speech providers?** Evaluate Flux TTS at the default (`0`) or above. The calm end deliberately narrows delivery for production contexts like support and IVR, so it does not showcase the model's expressive range.
+* **Comparing text-to-speech providers?** Evaluate Flux TTS at the default (`0`) or above. The calm end deliberately narrows delivery for production contexts like support and IVR, so it doesn't showcase the model's expressive range.
 
 ## FAQ
 
 **Does this change which voice I'm using?**
 
-You are always getting the same underlying voice. That said, `expressivity` does more than adjust energy: pitch and timbre shift too, so the voice's character changes noticeably toward the ends of the range, the way a person sounds different reading a bedtime story versus hosting a game show.
+You're always getting the same underlying voice. That said, `expressivity` does more than adjust energy: pitch and timbre shift too, so the voice's character changes noticeably toward the ends of the range, the way a person sounds different reading a bedtime story versus hosting a game show.
 
 **Can I change it mid-conversation?**
 
@@ -131,7 +131,7 @@ No. `expressivity` is set when you open the connection and applies for the whole
 
 **How does it interact with `speed`?**
 
-They are independent controls: `speed` adjusts speaking rate, and `expressivity` adjusts delivery register. They can be combined, but larger values of both together are more likely to sound less natural, so audition combined settings.
+They're independent controls: `speed` adjusts speaking rate, and `expressivity` adjusts delivery register. They can be combined, but larger values of both together are more likely to sound less natural, so audition combined settings.
 
 **Why does the same value sound different on different voices?**
 

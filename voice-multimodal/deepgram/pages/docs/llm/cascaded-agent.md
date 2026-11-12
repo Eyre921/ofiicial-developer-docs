@@ -13,7 +13,7 @@ path: docs/llm/cascaded-agent
 >
 > **Early Access.** Deepgram LLMs are available only to current Deepgram contract customers enrolled in the Early Access program ([talk to sales](https://deepgram.com/contact-us) for access). Usage is free during Early Access, requests run on the global endpoint only, SDKs do not support the endpoint yet, and the API can change before general availability. Do not run production traffic on it.
 
-A cascaded agent runs three stages in sequence: speech-to-text, an LLM, and text-to-speech. This guide uses [Flux STT](/docs/flux/agent) to detect end of turn, Think-Fast to generate the reply, and [Flux TTS](/docs/flux-tts/voice-agent) to speak it. Each pattern is small, so you can drop it into your own pipeline.
+A cascaded agent runs three stages in sequence: speech-to-text, an LLM, and text-to-speech. This guide uses Deepgram [Flux STT](/docs/flux/agent) to detect end of turn, Think-Fast to generate the reply, and [Flux TTS](/docs/flux-tts/voice-agent) to speak it. Each pattern is small, so you can drop it into your own pipeline.
 
 > **Info**
 >
@@ -150,7 +150,7 @@ Without step 4, the next request tells the model it said things the caller never
 
 `on_start_of_turn` and `on_speech_interrupted` in the `Agent` class above implement these steps.
 
-See [Interruption Handling](/docs/flux-tts/interrupt-handling) for how to track the playback offset and discard in-flight audio.
+See [Interruption handling](/docs/flux-tts/interrupt-handling) for how to track the playback offset and discard in-flight audio.
 
 ## Add function calling
 
@@ -159,6 +159,6 @@ To let the agent take actions, pass `tools` in the request and handle `tool_call
 ## Related resources
 
 * [Request and response format](/docs/llm/request-response-format): every field `/v1/think` accepts
-* [Build a Flux-enabled Voice Agent](/docs/flux/agent): the STT side of the pipeline
-* [Voice Agent Integration Patterns](/docs/flux-tts/voice-agent): the TTS side of the pipeline
+* [Build a Flux STT-enabled voice agent](/docs/flux/agent): the STT side of the pipeline
+* [Voice agent integration patterns](/docs/flux-tts/voice-agent): the TTS side of the pipeline
 * [Prompting Deepgram LLMs](/docs/llm/prompting): system prompts for Think-Fast

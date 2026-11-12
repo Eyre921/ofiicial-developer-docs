@@ -17,7 +17,7 @@ Use the `KeepAlive` message to keep your WebSocket connection open during period
 
 Send a `KeepAlive` message every 3-5 seconds to prevent the 10-second timeout that triggers a `NET-0001` error and closes the connection. Ensure the message is sent as a text WebSocket frame—sending it as binary may result in incorrect handling and potential connection issues.
 
-## Example Payloads
+## Example payloads
 
 To send the `KeepAlive` message, send the following JSON message to the server:
 
@@ -29,9 +29,9 @@ To send the `KeepAlive` message, send the following JSON message to the server:
 }
 ```
 
-The server will not send a response back when you send a `KeepAlive` message. If no audio data or `KeepAlive` messages are sent within a 10-second window, the connection will close with a `NET-0001` error.
+The server won't send a response back when you send a `KeepAlive` message. If no audio data or `KeepAlive` messages are sent within a 10-second window, the connection will close with a `NET-0001` error.
 
-## Language Specific Implementations
+## Language specific implementations
 
 Below are code examples to help you get started using `KeepAlive`.
 
@@ -163,7 +163,7 @@ WebSocket ws = client.newWebSocketBuilder()
 ws.sendText("{\"type\": \"KeepAlive\"}", true);
 ```
 
-### Streaming Examples
+### Streaming examples
 
 Make a streaming request and use `KeepAlive` to keep the connection open.
 
@@ -280,7 +280,7 @@ ws.run_forever()
 
 ## Using Deepgram SDKs
 
-Deepgram's SDKs make it easier to build with Deepgram in your preferred language.
+Our SDKs make it easier to build with Deepgram in your preferred language.
 For more information on using Deepgram SDKs, refer to the SDKs documentation in the GitHub Repository.
 
 * [JS SDK](https://github.com/deepgram/deepgram-js-sdk)
@@ -490,11 +490,11 @@ scheduler.scheduleAtFixedRate(() -> {
 }, 3, 3, TimeUnit.SECONDS);
 ```
 
-## Word Timings
+## Word timings
 
 Word timings in streaming transcription results are based on the audio stream itself, not the lifetime of the WebSocket connection. If you send KeepAlive messages without any audio payloads for a period of time, then resume sending audio, the timestamps will continue from where the audio left off—not from when the KeepAlive messages were sent.
 
-Here is an example timeline demonstrating the behavior.
+Here's an example timeline demonstrating the behavior.
 
 | Event                                                            | Wall Time  | Word Timing Range on Results Response |
 | ---------------------------------------------------------------- | ---------- | ------------------------------------- |

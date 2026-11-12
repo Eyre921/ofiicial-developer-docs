@@ -29,22 +29,22 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 ### `behavior` values
 
 * **`default`**: the agent speaks only if neither the user nor the agent is mid-turn. If a turn is in progress, the server rejects the request and replies with [`InjectionRefused`](#injectionrefused). This matches the original `InjectAgentMessage` behavior.
-* **`queue`**: the server appends the message after any `ConversationText` that is already queued, without interrupting the current agent turn or the in-flight think response. If nothing is queued, the agent speaks the message immediately.
+* **`queue`**: the server appends the message after any `ConversationText` that's already queued, without interrupting the current agent turn or the in-flight think response. If nothing is queued, the agent speaks the message immediately.
 * **`interrupt`**: the agent immediately speaks.
   * If the agent was already speaking, it interrupts any current speech and replaces it with the new message.
   * If the user is speaking, the agent interrupts with the new message. However, the user's continued speech triggers [`UserStartedSpeaking`](/docs/voice-agent-user-started-speaking), which quickly interrupts the agent, ensuring the conversation continues forward.
 
 ### Dynamic filler
 
-Setting `is_dynamic` to `true` asks Deepgram's Think Live model to word the line itself, so you cover a wait without choosing the wording in advance. Send it without `message`; sending both is an error.
+Setting `is_dynamic` to `true` asks our Think Live model to word the line itself, so you cover a wait without choosing the wording in advance. Send it without `message`; sending both is an error.
 
 Dynamic filler requires [Think Live](/docs/voice-agent-think-live). Configure `agent.think_live` in your `Settings` message before you send it.
 
-Each request produces one filler line. A second request during the same wait escalates the wording rather than repeating it. When the Think Live model cannot produce a line, the agent says nothing and the server sends a `DYNAMIC_FILLER_UNAVAILABLE` warning.
+Each request produces one filler line. A second request during the same wait escalates the wording rather than repeating it. When the Think Live model can't produce a line, the agent says nothing and the server sends a `DYNAMIC_FILLER_UNAVAILABLE` warning.
 
 The spoken line arrives in [`ConversationText`](/docs/voice-agent-conversation-text) with `conversational_behavior` set to `"filler"`.
 
-## Example Payloads
+## Example payloads
 
 ### `default`: wait for silence
 
@@ -118,7 +118,7 @@ When `behavior` is `default` or `queue` and the request arrives while the *user*
 }
 ```
 
-## Use Cases
+## Use cases
 
 Pick the `behavior` value that matches what you want to happen to the current turn.
 
@@ -131,7 +131,7 @@ Use `default` when the injection is only appropriate during silence and you woul
 
 ### When to use `queue`
 
-Use `queue` when you want the agent to say something *after* whatever it is currently saying, without stepping on it. This is the right choice for filler during function calls, where the model has already emitted pre-function narration and you want to extend it rather than replace it.
+Use `queue` when you want the agent to say something *after* whatever it's currently saying, without stepping on it. This is the right choice for filler during function calls, where the model has already emitted pre-function narration and you want to extend it rather than replace it.
 
 * Filling silence during a long-running function call ("One moment while I pull that up") without cutting off the model's current response.
 * Chaining a follow-up sentence after the agent finishes its current turn ("...and I've also emailed you a copy.").
@@ -141,6 +141,6 @@ Use `queue` when you want the agent to say something *after* whatever it is curr
 
 Use `interrupt` when the new message must take over immediately, even if it means cutting off the agent's current speech. Because the agent speaks regardless of whether the user is talking, reserve this for time-sensitive corrections and overrides.
 
-* Correcting the agent mid-sentence when it is saying something wrong or outdated.
+* Correcting the agent mid-sentence when it's saying something wrong or outdated.
 * Delivering an urgent update that should replace whatever the agent is currently saying.
 * Overriding the current turn from a supervisor or backend system that has higher-priority information.

@@ -13,16 +13,16 @@ A multilingual voice agent has two model decisions: which STT model transcribes 
 
 ## Pick your STT model
 
-| Your situation                                                                                                                       | Use this                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| Conversational agent in one of the 10 [Flux Multilingual](/docs/flux/language-prompting) languages, with turn awareness and barge-in | **Flux Multilingual** (`flux-general-multi`)                                                      |
-| Single known language, all calls                                                                                                     | Flux Multilingual with a single-entry `language_hints` array, or the language-specific Nova model |
-| Multilingual support center, calls arrive in different languages                                                                     | Flux Multilingual with multiple entries in the `language_hints` array                             |
-| Code-switching mid-conversation, no need for turn awareness                                                                          | Nova-3 with `language: "multi"`                                                                   |
+| Your situation                                                                                                                           | Use this                                                                                              |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Conversational agent in one of the 10 [Flux STT Multilingual](/docs/flux/language-prompting) languages, with turn awareness and barge-in | **Flux STT Multilingual** (`flux-general-multi`)                                                      |
+| Single known language, all calls                                                                                                         | Flux STT Multilingual with a single-entry `language_hints` array, or the language-specific Nova model |
+| Multilingual support center, calls arrive in different languages                                                                         | Flux STT Multilingual with multiple entries in the `language_hints` array                             |
+| Code-switching mid-conversation, no need for turn awareness                                                                              | Nova-3 with `language: "multi"`                                                                       |
 
-Flux Multilingual is the default recommendation. It handles turn awareness and interruption with the same low latency as `flux-general-en`. Use Nova-3 only when you need code-switching but not the conversational features.
+Deepgram Flux STT Multilingual is the default recommendation. It handles turn awareness and interruption with the same low latency as `flux-general-en`. Use Deepgram Nova-3 only when you need code-switching but not the conversational features.
 
-### Flux Multilingual configuration
+### Flux STT Multilingual configuration
 
 * `agent.listen.provider.type`: `deepgram`
 * `agent.listen.provider.version`: `v2`
@@ -44,7 +44,7 @@ Flux Multilingual is the default recommendation. It handles turn awareness and i
 }
 ```
 
-The `language_hints` parameter biases the model toward specific languages and improves accuracy. With no hints, the model auto-detects the spoken language. Pass one hint for known-language calls and multiple hints for multilingual support centers. See [Flux Multilingual & Language Prompting](/docs/flux/language-prompting) for the full hint reference and supported languages.
+The `language_hints` parameter biases the model toward specific languages and improves accuracy. With no hints, the model auto-detects the spoken language. Pass one hint for known-language calls and multiple hints for multilingual support centers. See [Flux STT Multilingual & language prompting](/docs/flux/language-prompting) for the full hint reference and supported languages.
 
 When you use `flux-general-multi`, user `ConversationText` events include `languages_hinted` and `languages` fields. See [Conversation Text](/docs/voice-agent-conversation-text).
 
@@ -63,17 +63,17 @@ When you use `flux-general-multi`, user `ConversationText` events include `langu
 
 ### Deepgram Flux TTS
 
-Every voice in the [Flux TTS voice catalog](/docs/flux-tts/voices) works in the Voice Agent API, in English and 41 other languages. The language code at the end of the model string selects the language.
+Every voice in the [Flux TTS voice catalog](/docs/flux-tts/voices) works in the Deepgram Voice Agent API, in English and 41 other languages. The language code at the end of the model string selects the language.
 
 * `agent.speak.provider.type`: `deepgram`
 * `agent.speak.provider.version`: `v2`
 * `agent.speak.provider.model`: `flux-{voice}-{language}` (for example `flux-desislava-bg` for Bulgarian)
 
-Pick a voice whose language matches your prompt and greeting. See [TTS Models](/docs/voice-agent-tts-models#flux-tts) for the full parameter reference.
+Pick a voice whose language matches your prompt and greeting. See [TTS models](/docs/voice-agent-tts-models#flux-tts) for the full parameter reference.
 
 ### Deepgram Aura codeswitching (English/Spanish)
 
-Aura ships five voices that switch between English and Spanish naturally inside one response: Aquila, Carina, Diana, Javier, and Selena.
+Deepgram Aura ships five voices that switch between English and Spanish naturally inside one response: Aquila, Carina, Diana, Javier, and Selena.
 
 * `agent.speak.provider.type`: `deepgram`
 * `agent.speak.provider.model`: `aura-2-aquila-es` (or `aura-2-carina-es`, `aura-2-diana-es`, `aura-2-javier-es`, `aura-2-selena-es`)

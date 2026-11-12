@@ -13,15 +13,15 @@ path: docs/deploy-flux-tts
 
 Please familiarize yourself with these general requirements before attempting to deploy Flux TTS to your self-hosted Deepgram instances.
 
-* Flux TTS runs on the NVIDIA L4, L40S, A100, H100, and Blackwell-generation GPUs. The NVIDIA T4 and A10 are not supported. All of them require NVIDIA driver `>=580` with the **open** kernel modules; see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms). See [Model and GPU Compatibility](/docs/self-hosted-deployment-environments#model-and-gpu-compatibility) for how this compares to Deepgram's other models.
-* Each host running a Flux TTS Engine needs at least 64 GB of system RAM. See [Memory Requirements](#memory-requirements) below.
-* Flux TTS requires Deepgram container images from `release-261001` or later. It runs on both the standard and the FIPS-compliant images. On FIPS images, MP3 and FLAC output are a known issue: set `encoding` explicitly on batch `/v2/speak` requests, which return MP3 by default. Streaming output is unaffected. See [MP3 and FLAC Output](/docs/fips-compliant-deployment#mp3-and-flac-output).
-* Flux TTS must be enabled explicitly in your Engine configuration file. It is off by default.
+* Flux TTS runs on the NVIDIA L4, L40S, A100, H100, and Blackwell-generation GPUs. The NVIDIA T4 and A10 aren't supported. All of them require NVIDIA driver `>=580` with the **open** kernel modules; see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms). See [Model and GPU compatibility](/docs/self-hosted-deployment-environments#model-and-gpu-compatibility) for how this compares to Deepgram's other models.
+* Each host running a Flux TTS Engine needs at least 64 GB of system RAM. See [Memory requirements](#memory-requirements) below.
+* Flux TTS requires Deepgram container images from `release-261001` or later. It runs on both the standard and the FIPS-compliant images. On FIPS images, MP3 and FLAC output are a known issue: set `encoding` explicitly on batch `/v2/speak` requests, which return MP3 by default. Streaming output is unaffected. See [MP3 and FLAC output](/docs/fips-compliant-deployment#mp3-and-flac-output).
+* Flux TTS must be enabled explicitly in your Engine configuration file. It's off by default.
 * Flux TTS requires a dedicated Engine. It cannot share an Engine with Aura models.
 * Two model files must be present in your Engine `models` directory: the Flux TTS model (`flux-tts.<uuid>.dgv2`) and the watermarker model (`watermarker.<uuid>.dgv2`). Deepgram provisions both together. Request them from your Deepgram account representative. See [Watermarking](#watermarking) below.
 * Your API configuration must enable the `/v2/speak` endpoint.
 
-## Memory Requirements
+## Memory requirements
 
 A Flux TTS Engine needs considerably more system RAM than an Aura Engine. While it loads the Flux TTS model at startup, the Engine container allocates up to 60 GB of system RAM. Once the model is loaded, steady-state usage is much lower.
 
@@ -33,7 +33,7 @@ Provision at least 64 GB of system RAM on every host running a Flux TTS Engine. 
 
 This requirement applies to system RAM, not GPU memory.
 
-## Enable Flux TTS in Deepgram Self-Hosted Deployment
+## Enable Flux TTS in Deepgram Self-Hosted deployment
 
 Flux TTS requires a couple of configuration changes in your self-hosted Deepgram deployment.
 
@@ -63,7 +63,7 @@ All Flux TTS audio is watermarked. The watermarker ships as its own model file, 
 >
 > Engine will not start with Flux TTS enabled if the watermarker model is missing.
 
-Container images earlier than `release-261001` do not use the watermarker. If the watermarker file is present on one of those releases, Engine ignores it and logs a `NoManifestFound` warning for it every 60 seconds. Upgrade to `release-261001` or later to enable watermarking.
+Container images earlier than `release-261001` don't use the watermarker. If the watermarker file is present on one of those releases, Engine ignores it and logs a `NoManifestFound` warning for it every 60 seconds. Upgrade to `release-261001` or later to enable watermarking.
 
 ### API
 
@@ -81,9 +81,9 @@ speak_v2_streaming = true
 
 ### Helm
 
-The Helm chart exposes `fluxTts.enabled`, `fluxTts.uuid`, `fluxTts.watermarkerUuid`, and `fluxTts.maxBatchSize` for the Engine side, and `api.features.speakV2` and `api.features.speakV2Streaming` for the API side. Helm users do not edit the Engine configuration file directly; the chart renders it for them. See `charts/deepgram-self-hosted/samples/08-flux-tts-setup.values.yaml` in the [self-hosted-resources repository](https://github.com/deepgram/self-hosted-resources) for a complete example.
+The Helm chart exposes `fluxTts.enabled`, `fluxTts.uuid`, `fluxTts.watermarkerUuid`, and `fluxTts.maxBatchSize` for the Engine side, and `api.features.speakV2` and `api.features.speakV2Streaming` for the API side. Helm users don't edit the Engine configuration file directly; the chart renders it for them. See `charts/deepgram-self-hosted/samples/08-flux-tts-setup.values.yaml` in the [self-hosted-resources repository](https://github.com/deepgram/self-hosted-resources) for a complete example.
 
-## Deployment Constraints
+## Deployment constraints
 
 Flux TTS requires a dedicated Engine. Deploy it separately from Aura, and from your speech-to-text models, which contend for the same GPU memory.
 
@@ -91,9 +91,9 @@ Flux TTS requires a dedicated Engine. Deploy it separately from Aura, and from y
 >
 > Flux TTS and Aura cannot run on the same Engine. Engine refuses to start if both are configured, exiting before it loads any model. To serve both, run separate Engine instances.
 
-Flux TTS synthesis workers bind to a single GPU. Exposing additional GPUs to a Flux TTS Engine does not increase its capacity. To use more GPUs, run one Engine per GPU.
+Flux TTS synthesis workers bind to a single GPU. Exposing additional GPUs to a Flux TTS Engine doesn't increase its capacity. To use more GPUs, run one Engine per GPU.
 
-## Making a Test Request
+## Making a test request
 
 Once your containers are running, make a sample request to verify that Flux TTS is loaded and serving. Flux TTS model strings use the format `flux-{voice}-{language}`, for example `flux-haley-en`. See [Flux TTS Voices & Languages](/docs/flux-tts/voices) for the full catalog.
 
@@ -126,14 +126,14 @@ wscat -c "ws://localhost:8080/v2/speak?model=flux-haley-en"
 # {"type": "Flush"}
 ```
 
-Each turn follows a clean lifecycle: `SpeechStarted` → audio → `SpeechMetadata`. Congratulations - your self-hosted Flux TTS setup is working!
+Each turn follows a clean lifecycle: `SpeechStarted` → audio → `SpeechMetadata`. Congratulations - your self-hosted Flux TTS setup is working.
 
-## What's Next
+## What's next
 
 Flux TTS behaves the same way in a self-hosted deployment as it does on Deepgram's hosted platform. To learn about the API surface, voices, and transports, see:
 
-* [Flux TTS Overview](/docs/flux-tts/overview)
-* [Client Messages](/docs/flux-tts/client-messages)
-* [Server Messages](/docs/flux-tts/server-messages)
+* [Flux TTS overview](/docs/flux-tts/overview)
+* [Client messages](/docs/flux-tts/client-messages)
+* [Server messages](/docs/flux-tts/server-messages)
 * [Voices & Languages](/docs/flux-tts/voices)
 * [Batch vs Streaming](/docs/flux-tts/batch-vs-streaming)

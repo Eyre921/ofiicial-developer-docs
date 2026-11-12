@@ -1,5 +1,5 @@
 ---
-title: "Delete a Project Key"
+title: "Delete a project key"
 source: https://developers.deepgram.com/reference/manage/keys/delete.md
 path: reference/manage/keys/delete
 ---
@@ -7,7 +7,7 @@ path: reference/manage/keys/delete
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Delete a Project Key
+# Delete a project key
 
 DELETE https://api.deepgram.com/v1/projects/{project_id}/keys/{key_id}
 

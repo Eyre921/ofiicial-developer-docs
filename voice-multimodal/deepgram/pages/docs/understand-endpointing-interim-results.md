@@ -1,5 +1,5 @@
 ---
-title: "Configure Endpointing and Interim Results"
+title: "Configure endpointing and interim results"
 source: https://developers.deepgram.com/docs/understand-endpointing-interim-results.md
 path: docs/understand-endpointing-interim-results
 ---
@@ -7,7 +7,7 @@ path: docs/understand-endpointing-interim-results
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Configure Endpointing and Interim Results
+# Configure endpointing and interim results
 
 This guide shows you how to configure [endpointing](/docs/endpointing/) and [interim results](/docs/interim-results/) to control transcript delivery timing in your streaming application.
 

@@ -1,5 +1,5 @@
 ---
-title: "Single Text Request"
+title: "Single text request"
 source: https://developers.deepgram.com/reference/text-to-speech/speak-request.md
 path: reference/text-to-speech/speak-request
 ---
@@ -7,7 +7,7 @@ path: reference/text-to-speech/speak-request
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Single Text Request
+# Single text request
 
 POST https://api.deepgram.com/v1/speak
 Content-Type: application/json

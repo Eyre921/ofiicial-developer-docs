@@ -13,23 +13,23 @@ path: docs/keywords
 
 `keywords` *string*
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
 When using Deepgram’s API to transcribe audio with specialized terminology or uncommon proper nouns, you can provide those words to the model for it to incorporate as possible predictions. This is known as keyword boosting.
 
-Keywords will not increase the likelihood that common words or proper nouns are predicted. Keywords are designed as a quick way to provide our models with new vocabulary they have not previously encountered.
+Keywords won't increase the likelihood that common words or proper nouns are predicted. Keywords are designed as a quick way to provide our models with new vocabulary they haven't previously encountered.
 
 > **Info**
 >
-> Keywords is only available for use with Nova-2, Nova-1, Enhanced, and Base speech to text models. For Nova-3, use [Keyterm Prompting](/docs/keyterm).
+> Keywords is only available for use with Nova-2, Nova-1, Enhanced, and Base speech-to-text models. For Nova-3, use [Keyterm prompting](/docs/keyterm).
 >
 > Training a custom model is always the most effective and accurate way to recognize keywords and context in your transcripts. If you require more than 100 keywords, please [contact us](https://deepgram.com/contact-us) to discuss custom model training which is available on our [Enterprise Plan](https://deepgram.com/pricing).
 
-> **Moving to Keyterm Prompting?**
+> **Moving to keyterm prompting?**
 >
-> The `keywords=KEYWORD:INTENSIFIER` syntax on this page is specific to the `keywords` feature. When you migrate to [Keyterm Prompting](/docs/keyterm) for Nova-3, drop the `:INTENSIFIER` weight—`keyterm` does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected; the weight is silently ignored and the entire value is treated as a literal keyterm. Pass plain terms instead, repeating the `keyterm` parameter for multiple terms (`keyterm=term1&keyterm=term2`).
+> The `keywords=KEYWORD:INTENSIFIER` syntax on this page is specific to the `keywords` feature. When you migrate to [Keyterm prompting](/docs/keyterm) for Nova-3, drop the `:INTENSIFIER` weight—`keyterm` does not support weights or intensifiers. Appending one (for example, `keyterm=term:0.15`) is not rejected; the weight is silently ignored and the entire value is treated as a literal keyterm. Pass plain terms instead, repeating the `keyterm` parameter for multiple terms (`keyterm=term1&keyterm=term2`).
 
-## Enable Feature
+## Enable feature
 
 To enable Keywords, when you call Deepgram’s API, add a `keywords` parameter in the query string and set it to your chosen keyword and intensifier:
 
@@ -52,7 +52,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Keyword Limits
+## Keyword limits
 
 Keywords are limited to 100 keywords per request.
 
@@ -60,9 +60,9 @@ Keywords are limited to 100 keywords per request.
 
 Intensifiers are exponential factors by which the attached keyword can be boosted or suppressed. The default intensifier is one (1). An intensifier of two (2) equates to two boosts multiplied in a row, whereas zero (0) is equivalent to not specifying a `keywords` parameter at all. The intensifier value can be a decimal.
 
-There is no upper limit on intensifiers. However, the higher the intensifier is set, the more likely it is that the model will inaccurately predict the keyword when it has not been said. Intensifiers should be set at the lowest possible value. Higher values may occasionally need to be set to get Deepgram to successfully predict keywords.
+There's no upper limit on intensifiers. However, the higher the intensifier is set, the more likely it is that the model will inaccurately predict the keyword when it hasn't been said. Intensifiers should be set at the lowest possible value. Higher values may occasionally need to be set to get Deepgram to successfully predict keywords.
 
-## Boost a Keyword
+## Boost a keyword
 
 To use keyword boosting, send one or more instances of the `keywords` parameter in the query string when calling the API and append a positive intensifier, which will boost the recognition of the specified word:
 
@@ -72,7 +72,7 @@ To use keyword boosting, send one or more instances of the `keywords` parameter 
 | --------------------------------------------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | and then big bird said to *snuffleupagus* why aren’t you eating that banana | and then big bird said to *sniff* why aren’t you eating that banana | and then big bird said to *snuffleupagus* why aren’t you eating that banana |
 
-## Boost Multiple Keywords
+## Boost multiple keywords
 
 You can boost multiple keywords individually:
 
@@ -82,7 +82,7 @@ You can boost multiple keywords individually:
 | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | instagram is a photo and video sharing social networking service founded by kevin systrom and mike krieger | instagram is a photo and video sharing social networking service founded by kevin system and mike k | instagram is a photo and video sharing social networking service founded by kevin systrom and mike krieger |
 
-## Suppress a Keyword
+## Suppress a keyword
 
 > **Info**
 >
@@ -96,9 +96,9 @@ To use keyword suppression, send one or more instances of the `keywords` paramet
 | --------------------------------------------------- | --------------------------------------------------- | -------------------------------------------- |
 | i was born in nineteen twenty one in wichita kansas | i was born in nineteen twenty one in wichita kansas | i was born in nineteen twenty one in wichita |
 
-## Best Practices
+## Best practices
 
-Deepgram's keyword boosting works when you have an uncommon word in your audio that is not able to be detected by Deepgram's models out of the box, and don’t have a custom model that has been trained to include that word.
+Deepgram's keyword boosting works when you have an uncommon word in your audio that isn't able to be detected by our models out of the box, and don’t have a custom model that has been trained to include that word.
 
 While training a custom model is always the most effective way to achieve accuracy in your transcripts, keyword boosting can help your model recognize words it has yet to be trained on. Proper nouns, product names, and industry-specific terminology are great candidates for keyword boosting.
 
@@ -106,14 +106,14 @@ While training a custom model is always the most effective way to achieve accura
 
 For keyword boosting to work best:
 
-* Send uncommon keywords that the model has not been able to successfully transcribe. Do not send common words, or words the model has been able to successfully transcribe.
+* Send uncommon keywords that the model hasn't been able to successfully transcribe. Do not send common words, or words the model has been able to successfully transcribe.
 * Send keywords once. Avoid sending the same word multiple times.
 * Send individual keywords rather than phrases. Send only the principal uncommon words within phrases of interest.
 * Send actual words. Avoid sending strings of numbers or alphanumerics.
 
 ### Be moderate when choosing intensifiers
 
-Remember that intensifiers are exponential factors and that intensifier values can include decimals. Although there is no maximum or minimum value, start with small increments and adjust as necessary. High intensifiers can cause false positives to appear in your transcript.
+Remember that intensifiers are exponential factors and that intensifier values can include decimals. Although there's no maximum or minimum value, start with small increments and adjust as necessary. High intensifiers can cause false positives to appear in your transcript.
 
 ### Spell proper nouns as you’d like them to appear in your transcript
 

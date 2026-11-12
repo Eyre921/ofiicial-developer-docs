@@ -1,5 +1,5 @@
 ---
-title: "Getting Started with Flux TTS Batch (REST)"
+title: "Getting started with Flux TTS batch (REST)"
 source: https://developers.deepgram.com/docs/flux-tts/batch.md
 path: docs/flux-tts/batch
 ---
@@ -7,11 +7,11 @@ path: docs/flux-tts/batch
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started with Flux TTS Batch (REST)
+# Getting started with Flux TTS batch (REST)
 
 The batch (REST) transport synthesizes a complete block of text and returns the full audio in one response. Use it to pre-generate fixed audio — IVR prompts, notifications, audiobook lines — where the whole text is known up front and you don't need incremental playback or interruption. For live, interruptible conversations, use the [real-time WebSocket](/docs/flux-tts/quickstart) instead (see [Batch vs Streaming](/docs/flux-tts/batch-vs-streaming)).
 
-Batch is stateless request/response: simple retries, high fan-out, no connection lifecycle to manage. It serves the same Flux voices as the streaming transport.
+Batch is stateless request/response: simple retries, high fan-out, no connection lifecycle to manage. It serves the same Deepgram Flux TTS voices as the streaming transport.
 
 ## Make a request
 
@@ -23,7 +23,7 @@ curl "https://api.deepgram.com/v2/speak?model=flux-haley-en" \
   --output audio.mp3
 ```
 
-The response body is the synthesized audio in the requested encoding. Per-request telemetry is returned as response headers, mirroring Aura's REST conventions — character counts and the generic `dg-warnings` header.
+The response body is the synthesized audio in the requested encoding. Per-request telemetry is returned as response headers, mirroring Deepgram Aura's REST conventions — character counts and the generic `dg-warnings` header.
 
 ## Query parameters
 
@@ -44,11 +44,11 @@ The response body is the synthesized audio in the requested encoding. Per-reques
 
 > **Info**
 >
-> Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch. `model`, `speed`, `expressivity`, and the media-output settings behave the same as on the [streaming surface](/docs/flux-tts/quickstart), so the contract doesn't fragment across transports. The one difference is inline pause: it is supported on batch only. See [Speed, Pause, Pronunciation](/docs/tts-voice-controls#combining-controls).
+> Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch. `model`, `speed`, `expressivity`, and the media-output settings behave the same as on the [streaming surface](/docs/flux-tts/quickstart), so the contract doesn't fragment across transports. The one difference is inline pause: it's supported on batch only. See [Speed, pause, pronunciation](/docs/tts-voice-controls#combining-controls).
 
 ## When to use batch vs streaming
 
-See [Batch vs Streaming: Which Should I Use?](/docs/flux-tts/batch-vs-streaming) for the decision guide.
+See [Batch vs streaming: which should I use?](/docs/flux-tts/batch-vs-streaming) for the decision guide.
 
 ## Related resources
 

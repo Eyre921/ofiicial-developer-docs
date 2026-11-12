@@ -1,5 +1,5 @@
 ---
-title: "Template Apps"
+title: "Template apps"
 source: https://developers.deepgram.com/docs/stt-streaming-template-apps.md
 path: docs/stt-streaming-template-apps
 ---
@@ -7,7 +7,7 @@ path: docs/stt-streaming-template-apps
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Template Apps
+# Template apps
 
 * [Node.js](https://github.com/deepgram-starters/node-live-transcription) — Live transcription demo app using Node.js
 * [Bun](https://github.com/deepgram-starters/bun-live-transcription) — Live transcription demo app using Bun

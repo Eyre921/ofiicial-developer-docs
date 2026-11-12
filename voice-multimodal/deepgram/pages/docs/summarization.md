@@ -22,7 +22,7 @@ Pre-recorded  Streaming:Nova  English (all available regions)
 
 Deepgram’s Summarization feature summarizes the content of the submitted audio and returns a brief summary in the JSON response.
 
-## Enable Feature
+## Enable feature
 
 To enable Summarization, use the following parameter in the query string when you call Deepgram's `/listen` endpoint:
 
@@ -47,7 +47,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Query Parameters
+### Query parameters
 
 | Parameter   | Value   | Type    | Description                                                                                                                                                                    |
 | ----------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -59,7 +59,7 @@ curl \
 >
 > Summarization requires a minimum of greater than 50 words for summarization. For shorter inputs (less than 50 words), the original input will be returned. In this case, no tokens in or out are billed as summarization usage.
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -93,7 +93,7 @@ This summarization feature produces one summary across all channels so that the 
 
 #### Error
 
-If you request Summarization with an unsupported language by specifying a language code such as `summarize=v2&language=es`, you will get an error message like the one below.
+If you request Summarization with an unsupported language by specifying a language code such as `summarize=v2&language=es`, you'll get an error message like the one below.
 
 **`JSON`**
 
@@ -107,7 +107,7 @@ If you request Summarization with an unsupported language by specifying a langua
 
 #### Warning
 
-If you request Summarization with automatic language detection such as `summarize=v2&detect_language=true`, where the detected language is unsupported (Spanish, for example), you will get the response, including a transcript and a warning object.
+If you request Summarization with automatic language detection such as `summarize=v2&detect_language=true`, where the detected language is unsupported (Spanish, for example), you'll get the response, including a transcript and a warning object.
 
 **`JSON`**
 
@@ -127,7 +127,7 @@ If you request Summarization with automatic language detection such as `summariz
 
 **Example Warning**
 
-Here is an example of the JSON structure of a request with warning object:
+Here's an example of the JSON structure of a request with warning object:
 
 **`JSON`**
 

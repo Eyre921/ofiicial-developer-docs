@@ -1,5 +1,5 @@
 ---
-title: "Interruption Handling"
+title: "Interruption handling"
 source: https://developers.deepgram.com/docs/flux-tts/interrupt-handling.md
 path: docs/flux-tts/interrupt-handling
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/interrupt-handling
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Interruption Handling
+# Interruption handling
 
-When a user speaks over the agent (a *barge-in*), you need to do two things: stop the audio immediately, and tell your LLM what the user actually heard so the conversation stays coherent. Flux TTS handles the second part for you — `Interrupt` returns the exact text that was spoken before the cut. This page covers the full pattern.
+When a user speaks over the agent (a *barge-in*), you need to do two things: stop the audio immediately, and tell your LLM what the user actually heard so the conversation stays coherent. Deepgram Flux TTS handles the second part for you — `Interrupt` returns the exact text that was spoken before the cut. This page covers the full pattern.
 
 For the message references, see [`Interrupt`](/docs/flux-tts/client-messages#interrupt) and [`SpeechInterrupted`](/docs/flux-tts/server-messages#speechinterrupted).
 
@@ -28,7 +28,7 @@ sequenceDiagram
   C->>C: append text_spoken to LLM context
 ```
 
-1. **Detect barge-in** — typically from your STT (e.g. Flux STT's `StartOfTurn`) or a VAD.
+1. **Detect barge-in** — typically from your STT (e.g. Deepgram Flux STT's `StartOfTurn`) or a VAD.
 2. **Stop playback locally, now.** Don't wait for the server. The `Interrupt` round-trip is for *context reconciliation*, not for stopping audio.
 3. **Send `Interrupt`** with how far playback got, so the server can compute what was heard precisely.
 4. **Discard in-flight audio** — frames that arrive after you send `Interrupt` but before `SpeechInterrupted` were already on the wire. Drop them.
@@ -45,7 +45,7 @@ Include `playback_offset` whenever you can — it's how the server aligns `text_
 }
 ```
 
-`playback_offset` is measured from the start of the **session's** audio, not the current turn, and each interrupt's offset must advance past the position the previous interrupt established. An offset that doesn't advance is rejected with an `INVALID_INTERRUPT_OFFSET` warning and the interrupt is ignored — track one session-wide playback counter rather than resetting per turn. `Interrupt` always cancels the currently-active turn — there is no per-turn targeting.
+`playback_offset` is measured from the start of the **session's** audio, not the current turn, and each interrupt's offset must advance past the position the previous interrupt established. An offset that doesn't advance is rejected with an `INVALID_INTERRUPT_OFFSET` warning and the interrupt is ignored — track one session-wide playback counter rather than resetting per turn. `Interrupt` always cancels the currently-active turn — there's no per-turn targeting.
 
 ## The response
 
@@ -65,7 +65,7 @@ Include `playback_offset` whenever you can — it's how the server aligns `text_
 
 ## Interrupt does not reset the voice
 
-`Interrupt` stops synthesis and clears the buffer, but it does **not** reset the model's conversational state — so the agent's voice stays consistent into the next turn. See [Cross-Turn Context](/docs/flux-tts/context).
+`Interrupt` stops synthesis and clears the buffer, but it does **not** reset the model's conversational state — so the agent's voice stays consistent into the next turn. See [Cross-turn context](/docs/flux-tts/context).
 
 ## Edge cases
 
@@ -97,7 +97,7 @@ async def handle_barge_in(stt_event, speak_conn, playback):
 
 * [Interrupt (client message)](/docs/flux-tts/client-messages#interrupt)
 * [SpeechInterrupted (server message)](/docs/flux-tts/server-messages#speechinterrupted)
-* [The Speech Lifecycle](/docs/flux-tts/state) — where interrupts sit in the state machine
+* [The speech lifecycle](/docs/flux-tts/state) — where interrupts sit in the state machine
 * [Build a Flux TTS Voice Agent](/docs/flux-tts/voice-agent) — barge-in inside the full loop
 
 ---

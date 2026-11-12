@@ -1,5 +1,5 @@
 ---
-title: "Outputs: Server Events"
+title: "Outputs: server events"
 source: https://developers.deepgram.com/docs/voice-agent-outputs.md
 path: docs/voice-agent-outputs
 ---
@@ -7,11 +7,11 @@ path: docs/voice-agent-outputs
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Outputs: Server Events
+# Outputs: server events
 
 Server Events are messages sent from the Deepgram server to the client over the WebSocket connection during a voice agent interaction. These events provide real-time updates about the conversation's status, including user and agent actions, as well as any processing that's occurring.
 
-## List of Server Events
+## List of server events
 
 * [`Welcome`](/docs/voice-agent-welcome-message): Confirms that the WebSocket has opened successfully.
 * [`Settings Applied`](/docs/voice-agent-setting-applied-message): Confirms that the configuration settings have been applied.

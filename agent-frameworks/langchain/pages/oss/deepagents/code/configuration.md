@@ -734,7 +734,7 @@ Maximum number of recent threads to load and display in thread lists and selecto
 
 **DEEPAGENTS\_CODE\_RECURSION\_LIMIT** `integer`
 
-LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Invalid values log a warning and resolution continues to the next source. When unset, Deep Agents Code inherits `LANGGRAPH_DEFAULT_RECURSION_LIMIT` or leaves the limit to the LangGraph server. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
+LangGraph graph step budget, which is the maximum number of node invocations the `dcode` agent graph may execute per turn. Invalid values log a warning and resolution continues to the next source. When unset, Deep Agents Code inherits `LANGGRAPH_DEFAULT_RECURSION_LIMIT` or leaves the limit to LangSmith Agent Server. See [Agent runtime limits](/oss/deepagents/code/config-file#agent-runtime-limits).
 
 **LANGGRAPH\_DEFAULT\_RECURSION\_LIMIT** `integer`
 

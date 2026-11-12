@@ -1,5 +1,5 @@
 ---
-title: "Real-Time TTS with WebSockets"
+title: "Real-time TTS with WebSockets"
 source: https://developers.deepgram.com/docs/tts-websocket-streaming.md
 path: docs/tts-websocket-streaming
 ---
@@ -7,15 +7,15 @@ path: docs/tts-websocket-streaming
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Real-Time TTS with WebSockets
+# Real-time TTS with WebSockets
 
-## Why Use WebSockets for TTS?
+## Why use WebSockets for TTS?
 
 WebSockets provide a continuous audio stream flowing directly to the playback device without saving files to disk. This approach is essential for voice agents and conversational AI that require minimal latency and natural-sounding speech.
 
 Key benefits include low latency, which allows audio playback to begin as soon as the first data chunk arrives, continuous streaming that maintains a persistent connection for rapid audio delivery, and efficient processing by streaming audio directly to playback devices.
 
-## WebSocket Implementation Examples
+## WebSocket implementation examples
 
 The following examples demonstrate how to implement real-time TTS using Deepgram's WebSocket API:
 
@@ -159,4 +159,4 @@ main();
 
 > **Info**
 >
-> For optimal text handling, see our guide on [Text Chunking for TTS](/docs/tts-text-chunking).
+> For optimal text handling, see our guide on [Text chunking for TTS](/docs/tts-text-chunking).

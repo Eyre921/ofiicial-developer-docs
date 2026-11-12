@@ -6,10 +6,7 @@ path: guides/mcp/mcp-security-best-practices
 
 Protect your Notion workspace when connecting AI assistants, manage client access, and reduce the risks of prompt injection.
 
-Use Notion's official MCP endpoints:
-
-1. [https://mcp.notion.com/mcp](https://mcp.notion.com/mcp) for Streamable HTTP (recommended).
-2. [https://mcp.notion.com/sse](https://mcp.notion.com/sse) for Server-Sent Events (SSE).
+Use Notion's official Streamable HTTP endpoint, `https://mcp.notion.com/mcp`. If your client uses the deprecated `/sse` endpoint, [update its connection settings](/guides/mcp/get-started-with-mcp#migrate-from-the-legacy-sse-endpoint).
 
 Review the [MCP connection guide](/guides/mcp/get-started-with-mcp), and only connect clients you trust. A connected client can use Notion MCP to access content that you can access. Before installing a client from a third-party marketplace, verify the marketplace and the MCP server URL.
 

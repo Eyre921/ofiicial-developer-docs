@@ -189,7 +189,7 @@ For the complete examples — file and microphone capture, payload wrapping, kee
 
 ## Synchronous (real-time)
 
-Use synchronous invocation to transcribe a single pre-recorded file and receive the full transcript in one immediate response. This is Deepgram's "batch" transcription on a real-time endpoint — there is no streaming connection and no queue. The request body is capped at 25 MB; use streaming for larger audio.
+Use synchronous invocation to transcribe a single pre-recorded file and receive the full transcript in one immediate response. This is Deepgram's "batch" transcription on a real-time endpoint — there's no streaming connection and no queue. The request body is capped at 25 MB; use streaming for larger audio.
 
 You send the audio as the request body to `InvokeEndpoint`, pass the Deepgram parameters via `CustomAttributes`, and parse the transcript from the JSON response.
 
@@ -278,7 +278,7 @@ To list the DNS names AWS assigned to your interface endpoint, run `aws ec2 desc
 SageMaker Runtime publishes its FIPS endpoint as a separate PrivateLink service, `com.amazonaws.<region>.sagemaker.runtime-fips`. An interface endpoint for `sagemaker.runtime` serves only the standard hostname, so a client configured for FIPS still resolves `runtime-fips.sagemaker.<region>.amazonaws.com` to a public address. To keep FIPS traffic private:
 
 * Create the interface endpoint with `--service-name com.amazonaws.<region>.sagemaker.runtime-fips` and private DNS enabled, in a [Region that offers FIPS endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#FIPS-endpoints).
-* Keep the per-client FIPS configuration from [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker). With private DNS, `runtime-fips.sagemaker.<region>.amazonaws.com` resolves to the interface endpoint's private IP addresses, and streaming clients keep port `8443` on that hostname.
+* Keep the per-client FIPS configuration from [Use FIPS endpoints](/docs/fips-endpoints-sagemaker). With private DNS, `runtime-fips.sagemaker.<region>.amazonaws.com` resolves to the interface endpoint's private IP addresses, and streaming clients keep port `8443` on that hostname.
 * If you also call the control plane (`api-fips.sagemaker.<region>.amazonaws.com`) from the VPC, create a separate interface endpoint for `com.amazonaws.<region>.sagemaker.api-fips`.
 
 > **Warning**

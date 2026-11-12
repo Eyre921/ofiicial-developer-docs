@@ -1,5 +1,5 @@
 ---
-title: "Interim Results"
+title: "Interim results"
 source: https://developers.deepgram.com/docs/interim-results.md
 path: docs/interim-results
 ---
@@ -7,7 +7,7 @@ path: docs/interim-results
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Interim Results
+# Interim results
 
 `interim_results` *boolean*. Default: `false`
 
@@ -25,7 +25,7 @@ When Interim Results is enabled Deepgram guesses about the words being spoken an
 >
 > Interim Results can be used with Deepgram's [Endpointing](/docs/endpointing/) feature. To compare and contrast these features, and to explore best practices for using them together, see [Using Endpointing and Interim Results with Live Streaming Audio](/docs/understand-endpointing-interim-results).
 
-## Enable Feature
+## Enable feature
 
 To enable Interim Results, when you call Deepgram’s API, add an `interim_results` parameter set to `true` in the query string:
 
@@ -83,7 +83,7 @@ V1ConnectOptions options = V1ConnectOptions.builder()
 wsClient.connect(options).get(10, TimeUnit.SECONDS);
 ```
 
-## Analyze Interim Transcripts
+## Analyze interim transcripts
 
 Let’s look at some interim transcripts and analyze their content.
 
@@ -181,7 +181,7 @@ In this response, we see that:
 * `start` (the number of seconds into the audio stream) is 0, indicating that this is the very beginning of the real-time stream.
 * `start` + `duration` (the entire length of this response) is `2.039875` seconds, and the word "problem" ends at `2.039875` seconds (which matches the `duration` value), indicating that the stream cuts off the word.
 * `confidence` for the word "big" has improved to almost 98%.
-* the `end` timestamp for "big" now indicates that the word has not been cut off.
+* the `end` timestamp for "big" now indicates that the word hasn't been cut off.
 * `confidence` for the word "problem" is almost 100%, so can likely be trusted.
 * `is_final` is `false`, indicating that Deepgram will continue waiting to see if more data will improve its predictions.
 

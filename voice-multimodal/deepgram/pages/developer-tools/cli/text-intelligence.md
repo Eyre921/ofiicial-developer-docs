@@ -1,5 +1,5 @@
 ---
-title: "Text Intelligence Commands"
+title: "Text Intelligence commands"
 source: https://developers.deepgram.com/developer-tools/cli/text-intelligence.md
 path: developer-tools/cli/text-intelligence
 ---
@@ -7,30 +7,30 @@ path: developer-tools/cli/text-intelligence
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Text Intelligence Commands
+# Text Intelligence commands
 
-## Basic Analysis
+## Basic analysis
 
 ```shell
 dg read "Customer called about a billing issue."
 ```
 
-## Analyze a File
+## Analyze a file
 
 ```shell
 dg read --file document.txt
 ```
 
-## Piped Input
+## Piped input
 
 ```shell
 cat transcript.txt | dg read
 echo "Your text here" | dg read
 ```
 
-## Available Features
+## Available features
 
-### Sentiment Analysis
+### Sentiment analysis
 
 ```shell
 dg read --file document.txt --sentiment
@@ -38,7 +38,7 @@ dg read --file document.txt --sentiment
 
 Output includes overall document sentiment and its score.
 
-### Topic Detection
+### Topic detection
 
 ```shell
 dg read --file document.txt --topics
@@ -54,7 +54,7 @@ dg read --file document.txt --summarize
 
 Generates a brief summary of the content.
 
-### Intent Recognition
+### Intent recognition
 
 ```shell
 dg read --file document.txt --intents
@@ -62,13 +62,13 @@ dg read --file document.txt --intents
 
 Detects user intents within the text.
 
-### Full Analysis
+### Full analysis
 
 ```shell
 dg read --file document.txt --sentiment --topics --summarize --intents
 ```
 
-## Output Format
+## Output format
 
 ```shell
 dg -o json read --file document.txt    # JSON
@@ -79,15 +79,15 @@ dg -o csv read --file document.txt     # CSV
 
 `-o` belongs to `dg` itself, so it goes before the subcommand name. Without it, `dg read` prints human-readable output.
 
-## Use Cases
+## Use cases
 
-### Summarize Transcripts
+### Summarize transcripts
 
 ```shell
 dg listen meeting.mp3 | dg read --summarize
 ```
 
-### Analyze Customer Feedback
+### Analyze customer feedback
 
 ```shell
 dg read --file feedback.txt --sentiment --topics

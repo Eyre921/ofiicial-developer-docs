@@ -13,7 +13,7 @@ path: docs/browser-agent-javascript
 
 > **Info**
 >
-> This page covers the core JavaScript SDK, which works with vanilla JS, Vue, Svelte, Angular, and any other framework. If you are using React, see [React Hooks and Provider](/docs/browser-agent-react). For a drop-in embeddable solution, see [Widget](/docs/browser-agent-widget).
+> This page covers the core JavaScript SDK, which works with vanilla JS, Vue, Svelte, Angular, and any other framework. If you're using React, see [React Hooks and Provider](/docs/browser-agent-react). For a drop-in embeddable solution, see [Widget](/docs/browser-agent-widget).
 
 ## Installation
 
@@ -53,11 +53,11 @@ await session.connect();
 await mic.start();
 ```
 
-Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent Configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
+Replace `YOUR_AGENT_ID` with a [Reusable Agent Configuration](/docs/reusable-agent-configurations) UUID, or pass an inline agent config object instead. See [Agent configuration](/docs/browser-agent-overview#agent-configuration) for both patterns.
 
 ## AgentSession
 
-The core class that manages the WebSocket connection to the Voice Agent API. It handles authentication, automatic reconnection with exponential backoff, keep-alive pings, and audio buffering before the server acknowledges settings.
+The core class that manages the WebSocket connection to the Deepgram Voice Agent API. It handles authentication, automatic reconnection with exponential backoff, keep-alive pings, and audio buffering before the server acknowledges settings.
 
 ```javascript
 import { AgentSession } from "@deepgram/agents";
@@ -130,7 +130,7 @@ The `agent` field accepts either a string agent ID from the Deepgram Console or 
 | `maxDelay`    | `30000` | Maximum delay in ms between retries. Delays grow via exponential backoff.     |
 | `jitter`      | `true`  | Add randomization (plus or minus 20%) to each delay to avoid thundering herd. |
 
-### Connection States
+### Connection states
 
 The `state` property reflects the current connection lifecycle:
 
@@ -138,7 +138,7 @@ The `state` property reflects the current connection lifecycle:
 session.state; // "idle" | "connecting" | "connected" | "reconnecting" | "disconnected"
 ```
 
-* **`idle`** — session created but `connect()` has not been called.
+* **`idle`** — session created but `connect()` hasn't been called.
 * **`connecting`** — WebSocket connection attempt in progress.
 * **`connected`** — WebSocket is open and the session is active.
 * **`reconnecting`** — connection lost; attempting to reconnect with backoff.
@@ -288,7 +288,7 @@ The first argument is a callback invoked with each captured audio frame as an `A
 
 > **Info**
 >
-> The microphone streams continuously while it is unmuted. There is no client-side voice activity detection option. Turn-taking and barge-in are handled server-side: the Voice Agent API emits `user-started-speaking`, which you pair with `player.interrupt()` to stop playback. `@deepgram/react` wires this up for you.
+> The microphone streams continuously while it's unmuted. There's no client-side voice activity detection option. Turn-taking and barge-in are handled server-side: the Voice Agent API emits `user-started-speaking`, which you pair with `player.interrupt()` to stop playback. `@deepgram/react` wires this up for you.
 
 ### Methods
 
@@ -304,7 +304,7 @@ await mic.start();
 mic.stop();
 ```
 
-**`mute(): void`** — pause audio transmission without releasing the microphone. The device remains active but frames are not forwarded.
+**`mute(): void`** — pause audio transmission without releasing the microphone. The device remains active but frames aren't forwarded.
 
 ```javascript
 mic.mute();
@@ -386,7 +386,7 @@ player.setVolume(0.5);
 
 **`dispose(): void`** — close the underlying `AudioContext` and free resources. Call when the session is no longer needed.
 
-## Function Calls
+## Function calls
 
 The agent can request client-side function calls during a conversation. Listen for the `function-call-request` event, execute the requested function, and respond with the result using `sendFunctionCallResponse`.
 
@@ -421,7 +421,7 @@ Each item in the `functions` array contains:
 
 The agent pauses until it receives a response for each requested function call.
 
-## Token Caching
+## Token caching
 
 The SDK caches authentication tokens internally. When you provide a `tokenFactory` in the auth configuration, the `AgentSession` wraps it in a caching layer that avoids requesting a new token on every reconnect. Tokens are cached for 4 minutes by default, which is safe for Deepgram's 5-minute short-lived keys. The cache is automatically invalidated before each reconnection attempt to ensure a fresh token is available.
 

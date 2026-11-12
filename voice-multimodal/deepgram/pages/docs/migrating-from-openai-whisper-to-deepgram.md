@@ -11,19 +11,19 @@ path: docs/migrating-from-openai-whisper-to-deepgram
 
 Changing audio transcription services can be a challenging task, even for experienced teams. This guide will give you an overview of the process of migrating your transcription services from OpenAI to Deepgram to help you make the transition as quickly and efficiently as possible.
 
-## Getting Started
+## Getting started
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
-## Migration Process
+## Migration process
 
-During the migration process, you will need to perform the following tasks:
+During the migration process, you'll need to perform the following tasks:
 
 | Before Migration                                                                                                                                                                                                                                                                       | During Migration                                                                                                               | After Migration                                          |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------- |
@@ -35,7 +35,7 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 
 | Features & Capabilities      | Deepgram                                                                                                                                                          | OpenAI                                                                     |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Audio Files Types            | Deepgram supports over 100 different audio formats and encodings some of the most common are: mp3, mp4, mp2, AAC, wav, FLAC, PCM, m4a, Ogg, Opus, WebM, and more! | Limited audio formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. |
+| Audio Files Types            | Deepgram supports over 100 different audio formats and encodings some of the most common are: mp3, mp4, mp2, AAC, wav, FLAC, PCM, m4a, Ogg, Opus, WebM, and more. | Limited audio formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm. |
 | Word Timings                 | Yes                                                                                                                                                               | V3 - Stand alone model only                                                |
 | Confidence Scoring           | Yes                                                                                                                                                               | No                                                                         |
 | Streaming                    | Yes                                                                                                                                                               | No                                                                         |
@@ -47,7 +47,7 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 | Transcription Format Options | `json`, `srt`, `vtt` `text`                                                                                                                                       | `json`, `text`, `srt`, `verbose_json`, `vtt`                               |
 | Temperature                  | No                                                                                                                                                                | Yes                                                                        |
 
-### Detailed Description of Differences
+### Detailed description of differences
 
 #### Open AI
 
@@ -81,9 +81,9 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 }
 ```
 
-#### Deepgram Default JSON Response
+#### Deepgram default JSON response
 
-##### Interim Response
+##### Interim response
 
 **`JSON`**
 
@@ -141,7 +141,7 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 }
 ```
 
-##### Final Result
+##### Final result
 
 **`JSON`**
 
@@ -566,7 +566,7 @@ Once you’ve selected your [model](/docs/model/) Deepgram provides many feature
 }
 ```
 
-##### What to Expect in the JSON Response
+##### What to expect in the JSON response
 
 The Deepgram response will contain the following fields:
 
@@ -580,9 +580,9 @@ The OpenAI response will contain the following fields:
 
 * `text`(string)
 
-#### Use Case or Domain-specific Models
+#### Use case or domain-specific models
 
-Deepgram and OpenAI provide speech recognition models that are pre-trained or tuned to identify the words and phrases unique to a specific use case or domain. Deepgram creates our speech recognition models through transfer learning from our highly-performant general models. It is important to test multiple models to see which one meets the accuracy, performance, and scalability needs for your use case.
+Deepgram and OpenAI provide speech recognition models that are pre-trained or tuned to identify the words and phrases unique to a specific use case or domain. Deepgram creates our speech recognition models through transfer learning from our highly-performant general models. It's important to test multiple models to see which one meets the accuracy, performance, and scalability needs for your use case.
 
 > **Info**
 >

@@ -1,5 +1,5 @@
 ---
-title: "Feature Overview"
+title: "Feature overview"
 source: https://developers.deepgram.com/docs/stt-pre-recorded-feature-overview.md
 path: docs/stt-pre-recorded-feature-overview
 ---
@@ -7,7 +7,7 @@ path: docs/stt-pre-recorded-feature-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Feature Overview
+# Feature overview
 
 ## Model selection
 
@@ -15,7 +15,7 @@ path: docs/stt-pre-recorded-feature-overview
 | --------------------------------------------------------------- | ----------------------------------------------------------------- |
 | [Model](/docs/model)                                            | [All available](/docs/models-languages-overview)                  |
 | [Language](/docs/language)                                      | [All available](/docs/models-languages-overview)                  |
-| [Language Detection](/docs/language-detection)                  | [All not in beta](/docs/models-languages-overview)                |
+| [Language detection](/docs/language-detection)                  | [All not in beta](/docs/models-languages-overview)                |
 | [Multilingual Codeswitching](/docs/multilingual-code-switching) | [Specific languages only](/docs/models-languages-overview#nova-3) |
 | [Version](/docs/version)                                        | [All available](/docs/models-languages-overview)                  |
 
@@ -23,7 +23,7 @@ path: docs/stt-pre-recorded-feature-overview
 
 | Feature                                    | Language(s)                                                                   |
 | ------------------------------------------ | ----------------------------------------------------------------------------- |
-| [Smart Formatting](/docs/smart-format)     | [All available](/docs/models-languages-overview)                              |
+| [Smart formatting](/docs/smart-format)     | [All available](/docs/models-languages-overview)                              |
 | [Speaker Diarization](/docs/diarization)   | [All available](/docs/models-languages-overview)                              |
 | [Filler words](/docs/filler-words)         | [English (all available regions)](/docs/models-languages-overview)            |
 | [Numerals](/docs/numerals)                 | [Specific languages only](/docs/models-languages-overview)                    |
@@ -38,8 +38,8 @@ path: docs/stt-pre-recorded-feature-overview
 
 | Feature                                                                         | Language(s)                                      |
 | ------------------------------------------------------------------------------- | ------------------------------------------------ |
-| [Find and Replace](/docs/find-and-replace)                                      | [All available](/docs/models-languages-overview) |
-| [Keyterm Prompting](/docs/keyterm) (Also see [Legacy Keywords](/docs/keywords)) | [All available](/docs/models-languages-overview) |
+| [Find and replace](/docs/find-and-replace)                                      | [All available](/docs/models-languages-overview) |
+| [Keyterm prompting](/docs/keyterm) (Also see [Legacy Keywords](/docs/keywords)) | [All available](/docs/models-languages-overview) |
 | [Search](/docs/search)                                                          | [All available](/docs/models-languages-overview) |
 
 ## Media input settings
@@ -49,7 +49,7 @@ path: docs/stt-pre-recorded-feature-overview
 | [Channels](/docs/channels)         | [All available](/docs/models-languages-overview) |
 | [Encoding](/docs/encoding)         | [All available](/docs/models-languages-overview) |
 | [Multichannel](/docs/multichannel) | [All available](/docs/models-languages-overview) |
-| [Sample Rate](/docs/sample-rate)   | [All available](/docs/models-languages-overview) |
+| [Sample rate](/docs/sample-rate)   | [All available](/docs/models-languages-overview) |
 
 ## Result processing
 
@@ -64,13 +64,13 @@ path: docs/stt-pre-recorded-feature-overview
 
 | Feature                                        | Language(s)                                                        |
 | ---------------------------------------------- | ------------------------------------------------------------------ |
-| [Sentiment Analysis](/docs/sentiment-analysis) | [English (all available regions)](/docs/models-languages-overview) |
-| [Intent Recognition](/docs/intent-recognition) | [English (all available regions)](/docs/models-languages-overview) |
-| [Topic Detection](/docs/topic-detection)       | [English (all available regions)](/docs/models-languages-overview) |
+| [Sentiment analysis](/docs/sentiment-analysis) | [English (all available regions)](/docs/models-languages-overview) |
+| [Intent recognition](/docs/intent-recognition) | [English (all available regions)](/docs/models-languages-overview) |
+| [Topic detection](/docs/topic-detection)       | [English (all available regions)](/docs/models-languages-overview) |
 | [Summarization](/docs/summarization)           | [English (all available regions)](/docs/models-languages-overview) |
-| [Entity Detection](/docs/detect-entities)      | [English (all available regions)](/docs/models-languages-overview) |
+| [Entity detection](/docs/detect-entities)      | [English (all available regions)](/docs/models-languages-overview) |
 
-## Rate Limits
+## Rate limits
 
 > **Info**
 >

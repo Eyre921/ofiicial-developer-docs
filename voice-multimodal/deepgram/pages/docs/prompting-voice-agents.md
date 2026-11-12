@@ -121,11 +121,11 @@ The most voice-specific section and the one that pays back the most on productio
 Some additional best practices:
 
 * For normal responses, don't use stalling phrases like "one moment" or "let me check." The agent should write *as if the information is already in front of it* — latency is the stall. Function calls are the exception — see section 8.
-* Don't try to control pausing with `[pause]` in the prompt — TTS reads brackets literally. See [TTS Models](/docs/voice-agent-tts-models) for what TTS can and can't do on its own.
+* Don't try to control pausing with `[pause]` in the prompt — TTS reads brackets literally. See [TTS models](/docs/voice-agent-tts-models) for what TTS can and can't do on its own.
 
 ### 8. Function calling
 
-If your agent uses functions, the prompt needs to tell the model *when* to call them and *what to do with the results*. The function schemas themselves live in `agent.think.functions` (see [Function Calling](/docs/voice-agents-function-calling)), not in the prompt.
+If your agent uses functions, the prompt needs to tell the model *when* to call them and *what to do with the results*. The function schemas themselves live in `agent.think.functions` (see [Function calling](/docs/voice-agents-function-calling)), not in the prompt.
 
 **Function descriptions matter enormously.** A description like "respond naturally to the query field" can cause the model to skip the function and generate a text answer. Change it to "call this to retrieve all relevant records for the query, then respond with the combined results" and the behavior changes immediately. Use action-oriented verbs: "call this to…," "retrieve…," "look up…" — not "returns…" or "provides…"
 
@@ -137,7 +137,7 @@ If your agent uses functions, the prompt needs to tell the model *when* to call 
 
 **Multi-function chaining is unreliable on smaller models.** A prompt that says "call ALL FOUR functions" may result in a smaller model calling one and stopping. This isn't a prompt problem — it's a model capability limitation. Test with the specific model you plan to deploy.
 
-**Model strings on Deepgram may differ from provider docs.** For example, `claude-4-5-haiku-latest` may return `INVALID_SETTINGS - model not available` while `claude-haiku-4-5` works. Always test your exact model string before building around it. See [LLM Models](/docs/voice-agent-llm-models) for available models.
+**Model strings on Deepgram may differ from provider docs.** For example, `claude-4-5-haiku-latest` may return `INVALID_SETTINGS - model not available` while `claude-haiku-4-5` works. Always test your exact model string before building around it. See [LLM models](/docs/voice-agent-llm-models) for available models.
 
 | Common Mistake                                                | What Went Wrong                                                                                                                                           | Better Version                                                                                                                                                                                                                                                                                                                                           |
 | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -153,7 +153,7 @@ Two parts doing different jobs. **Guardrails** are hard don'ts: topics to refuse
 
 ### 10. Terminology and pronunciation
 
-Two sub-parts. The **pronunciation guide** tells TTS how to say tricky words (provider names, drugs, acronyms) with phonetic hints. See [TTS Models](/docs/voice-agent-tts-models) for available providers and voices. The **glossary** tells the LLM how to *understand* domain terms callers use — synonyms, jargon, abbreviations. If callers say "the new patient form" when they mean "intake paperwork," the model should know they're the same thing.
+Two sub-parts. The **pronunciation guide** tells TTS how to say tricky words (provider names, drugs, acronyms) with phonetic hints. See [TTS models](/docs/voice-agent-tts-models) for available providers and voices. The **glossary** tells the LLM how to *understand* domain terms callers use — synonyms, jargon, abbreviations. If callers say "the new patient form" when they mean "intake paperwork," the model should know they're the same thing.
 
 | Common Mistake                                                     | What Went Wrong                                                                                                                                                  | Better Version                                                                                                                                                                                                                            |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -161,7 +161,7 @@ Two sub-parts. The **pronunciation guide** tells TTS how to say tricky words (pr
 
 ## Two complete examples
 
-### Example 1: Appointment scheduling (no function calling)
+### Example 1: appointment scheduling (no function calling)
 
 A full prompt for a healthcare scheduling agent, based on the [public demo agent](https://lumtech-dg-wizard.fly.dev/?industry=healthcare-medical\&use-case=scheduling-appointments) with an explicit goal, Environment block, escalation path, and pronunciation section added.
 
@@ -232,7 +232,7 @@ Speak dates in natural form ("Tuesday, March fifteenth") rather than numerical (
 
 The "CRITICAL" block at the top is the **speaking style** section (section 7). It's first because TTS-breaking output is the biggest quality risk. The remaining sections map directly to the ten-section framework. This agent doesn't use function calling, so section 8 is skipped. Note what's **not** in the prompt: the greeting (`agent.greeting`), the LLM choice (`agent.think.provider`), and the voice (`agent.speak.provider`).
 
-### Example 2: Weather alert agent (with function calling)
+### Example 2: weather alert agent (with function calling)
 
 A weather information agent that uses function calling. The prompt references *when* to call functions and what to do with results; the function schemas live in `agent.think.functions`.
 
@@ -336,9 +336,9 @@ The most common prompt bug is trying to control things that should be controlled
 
 * **Greeting** → `agent.greeting` (spoken by TTS directly, not LLM-generated). See [Settings](/docs/voice-agent-settings).
 * **Conversation history** → `agent.context`. Don't reconstruct prior turns in the system prompt.
-* **Function schemas** → `agent.think.functions`. The prompt says *when* to call; the schema defines *how*. See [Function Calling](/docs/voice-agents-function-calling).
-* **LLM selection** → `agent.think.provider`. See [LLM Models](/docs/voice-agent-llm-models).
-* **TTS voice and rate** → `agent.speak.provider`. See [TTS Models](/docs/voice-agent-tts-models).
+* **Function schemas** → `agent.think.functions`. The prompt says *when* to call; the schema defines *how*. See [Function calling](/docs/voice-agents-function-calling).
+* **LLM selection** → `agent.think.provider`. See [LLM models](/docs/voice-agent-llm-models).
+* **TTS voice and rate** → `agent.speak.provider`. See [TTS models](/docs/voice-agent-tts-models).
 * **Language and multilingual** → config, not prompt. See [Multilingual Voice Agent](/docs/multilingual-voice-agent).
 
 ## Common pitfalls
@@ -353,4 +353,4 @@ The most common prompt bug is trying to control things that should be controlled
 
 ## Next steps
 
-[Voice Agent quickstart](/docs/voice-agent) · [Configure Voice Agent](/docs/configure-voice-agent) · [Update Prompt](/docs/voice-agent-update-prompt) · [Function Calling](/docs/voice-agents-function-calling)
+[Voice Agent quickstart](/docs/voice-agent) · [Configure Voice Agent](/docs/configure-voice-agent) · [Update Prompt](/docs/voice-agent-update-prompt) · [Function calling](/docs/voice-agents-function-calling)

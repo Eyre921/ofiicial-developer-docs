@@ -1,5 +1,5 @@
 ---
-title: "Using Custom Add On Parameters with SDKs"
+title: "Using custom add on parameters with SDKs"
 source: https://developers.deepgram.com/guides/fundamentals/using-custom-parameters-sdks.md
 path: guides/fundamentals/using-custom-parameters-sdks
 ---
@@ -7,7 +7,7 @@ path: guides/fundamentals/using-custom-parameters-sdks
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Using Custom Add On Parameters with SDKs
+# Using custom add on parameters with SDKs
 
 # JS SDK
 
@@ -288,7 +288,7 @@ var response = client.listen().v1().media().transcribeUrl(
 System.out.println(response);
 ```
 
-## Flux Multilingual Note
+## Flux STT Multilingual note
 
 `flux-general-multi` uses the `language_hint` query parameter on the `/v2/listen` WebSocket endpoint.
 

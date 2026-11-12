@@ -1,5 +1,5 @@
 ---
-title: "Smart Formatting"
+title: "Smart formatting"
 source: https://developers.deepgram.com/docs/smart-format.md
 path: docs/smart-format
 ---
@@ -7,17 +7,17 @@ path: docs/smart-format
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Smart Formatting
+# Smart formatting
 
 * [Try Smart Format in the Playground](https://playground.deepgram.com/?endpoint=listen\&smart_format=true\&language=en\&model=nova-3)
 
 `smart_format` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
 Deepgram's Smart Format feature applies additional formatting to transcripts to optimize them for human readability.
 
-Smart Format capabilities vary between models. When Smart Format is turned on, Deepgram will always apply the best-available formatting for your chosen combination of model, model option and language.
+Smart Format capabilities vary between models. When Smart Format is turned on, Deepgram will always apply the best-available formatting for your chosen combination of model, model option, and language.
 
 At minimum, Smart Format applies:
 
@@ -32,7 +32,7 @@ Smart Format has the broadest support for English-language models. In English, S
 
 On non-English models, Smart Format will apply all available formatters for that language. This will always include [punctuation](/docs/punctuation/) and [paragraphs](/docs/paragraphs/), with [numerals](/docs/numerals) support also available for select languages.
 
-## Enable Feature
+## Enable feature
 
 To enable Smart Formatting, when you call Deepgram's API, add a `smart_format` parameter in the query string and set it to `true`:
 
@@ -40,7 +40,7 @@ To enable Smart Formatting, when you call Deepgram's API, add a `smart_format` p
 
 > **Info**
 >
-> Smart Format enables Deepgram's Punctuation feature. If you've set `smart_format=true`, no need to also set `punctuate=true`.
+> Smart Format enables our Punctuation feature. If you've set `smart_format=true`, no need to also set `punctuate=true`.
 
 To transcribe audio from a file on your computer, run the following cURL command in a terminal or your favorite API client.
 
@@ -67,9 +67,9 @@ Once applied, results will appear in the transcript.
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | i'm recording this at eight thirty seven pm on wednesday it's november second twenty twenty two i just ate thirty three grams of pasta and then drank fifty five milliliters of water at three hundred main street then i walked down to one two three southeast main street to get my package with tracking number one z five seven a two b | i'm recording this at eight thirty seven pm on wednesday it's november second twenty twenty two i just ate thirty three grams of pasta and then drank fifty five milliliters of water at three hundred main street then i walked down to one two three southeast main street to get my package with tracking number one z five seven a two b | I'm recording this at 8:37 PM on Wednesday, it's November 2 2022. I just ate 33 grams of pasta, and then drank 55 milliliters of water at 300 Main Street. Then I walked down to 123 Southeast Main Street to get my package with tracking number 1Z57A2B. |
 
-## Streaming Finalization Behavior
+## Streaming finalization behavior
 
-When using Smart Format with streaming audio, Deepgram will attempt to format entities as they are spoken. For entities that seem like they may be incomplete, our system will:
+When using Smart Format with streaming audio, Deepgram will attempt to format entities as they're spoken. For entities that seem like they may be incomplete, our system will:
 
 * Wait until the speaker continues to non-entity speech, OR
 * Finalize the transcript after **3 seconds of silence**
@@ -82,7 +82,7 @@ For more control over finalization timing:
 * Send a `Finalize` message to end transcription earlier than the 3-second threshold
 * Use the `no_delay` parameter (see below)
 
-## Using No Delay
+## Using no delay
 
 > **Info**
 >
@@ -105,9 +105,9 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-## Additional Formatters
+## Additional formatters
 
-These formatters are not included in Smart Formatting but may be enabled individually.
+These formatters aren't included in Smart Formatting but may be enabled individually.
 
 ### Measurements
 

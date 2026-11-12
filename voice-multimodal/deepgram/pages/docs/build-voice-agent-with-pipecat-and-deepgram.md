@@ -17,9 +17,9 @@ For a standalone voice agent without Pipecat or an external LLM, see the [Deepgr
 
 For a CLI-scaffolded approach using `pipecat init`, see the [Pipecat and Deepgram integration guide](/docs/pipecat-integration).
 
-## Before You Begin
+## Before you begin
 
-This guide assumes you are familiar with Python and have a basic understanding of how voice agents work.
+This guide assumes you're familiar with Python and have a basic understanding of how voice agents work.
 
 > **Info**
 >
@@ -33,7 +33,7 @@ This tutorial uses OpenAI for its LLM. You'll need to [sign up for an OpenAI acc
 
 * Python 3.11+
 
-## Set Up Your Project
+## Set up your project
 
 This implementation is a starting reference for building your own voice agent with Pipecat and Deepgram. It is not designed for production deployments.
 
@@ -49,7 +49,7 @@ pip install "pipecat-ai[deepgram,openai,silero,webrtc]" python-dotenv
 
 The `runner` extra includes a built-in WebRTC transport with a browser-based test client — no external account needed.
 
-## Set Environment Variables
+## Set environment variables
 
 Create a `.env` file in your project root with the credentials you collected earlier. The agent reads these at startup to authenticate with each service:
 
@@ -58,7 +58,7 @@ DEEPGRAM_API_KEY=your_deepgram_api_key
 OPENAI_API_KEY=your_openai_api_key
 ```
 
-## Build the Agent
+## Build the agent
 
 The agent creates a pipeline that connects audio input to Deepgram for transcription, OpenAI for a response, and Deepgram again for speech synthesis. Pipecat handles the audio transport, turn-taking, and interruption detection.
 
@@ -203,7 +203,7 @@ Audio flows through the pipeline from left to right:
 
 When a user speaks over the agent, Silero VAD detects the interruption and cancels the current TTS output so the agent stops and listens.
 
-## Run the Agent
+## Run the agent
 
 Start the agent with the WebRTC transport. The `-t webrtc` flag launches a built-in browser client for testing:
 
@@ -215,7 +215,7 @@ python bot.py -t webrtc
 >
 > The first run takes about 20 seconds to download the Silero VAD model. Subsequent starts are faster.
 
-## Test the Agent
+## Test the agent
 
 Once the agent is running, open [http://localhost:7860/client](http://localhost:7860/client) in your browser.
 
@@ -225,7 +225,7 @@ Once the agent is running, open [http://localhost:7860/client](http://localhost:
 
 Try interrupting the agent mid-sentence. Silero VAD detects your speech and cancels the current response so the agent listens to you instead.
 
-## Further Reading
+## Further reading
 
 * [Deepgram Voice Agent API](/docs/voice-agent) — build voice agents without an external LLM or transport layer
 * [Pipecat and Deepgram Integration Guide](/docs/pipecat-integration) — scaffold a project with the Pipecat CLI

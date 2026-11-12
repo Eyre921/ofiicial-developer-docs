@@ -1,5 +1,5 @@
 ---
-title: "Build a Multi-Agent Architecture"
+title: "Build a multi-agent architecture"
 source: https://developers.deepgram.com/docs/multi-agent-architecture.md
 path: docs/multi-agent-architecture
 ---
@@ -7,13 +7,13 @@ path: docs/multi-agent-architecture
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Build a Multi-Agent Architecture
+# Build a multi-agent architecture
 
 > **Info**
 >
 > For more information and to use our reference implementation, visit the [Deepgram Multi-Agent repo](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent).
 
-## Why Multi-Agent Architecture?
+## Why multi-agent architecture?
 
 Traditional single-agent voice systems face fundamental limitations as complexity grows. This implementation demonstrates how to overcome these challenges by treating the conversation as a sequence of specialized phases/states, where each phase has its own:
 
@@ -28,7 +28,7 @@ This approach solves critical problems:
 * **Better Reliability**: Fewer functions per agent means clearer decision-making for the LLM
 * **Easier Debugging**: Issues are isolated to specific agents and transitions
 
-## Architecture Overview
+## Architecture overview
 
 ```
 ┌─────────────────────────────────────────┐
@@ -65,9 +65,9 @@ This approach solves critical problems:
 * **Orchestration**: CallOrchestrator manages all transitions and state
 * **Context Transfer**: A small and fast LLM (via Groq API) summarizes conversation between agents
 
-## Key Technical Concepts
+## Key technical concepts
 
-### Session-Based Agent Switching
+### Session-based agent switching
 
 This implementation creates separate Voice Agent sessions for each specialized agent. The `CallOrchestrator` (orchestrator/call_orchestrator.py) manages these transitions while maintaining the Twilio connection.
 
@@ -92,7 +92,7 @@ if (audioTask == null || audioTask.isDone()) {
 }
 ```
 
-### Context Manager Lifecycle
+### Context manager lifecycle
 
 Voice Agent connections are async context managers that require manual lifecycle management:
 
@@ -119,7 +119,7 @@ wsClient.connect().get(10, TimeUnit.SECONDS);
 closeCurrentAgent(/* keepAudioTask */ true);
 ```
 
-### Function Call Response Pattern
+### Function call response pattern
 
 Functions must be called with proper timing to maintain conversation flow:
 
@@ -154,31 +154,31 @@ Thread.sleep(500);
 transitionToAgent(nextAgent);
 ```
 
-## The Three Agents
+## The three agents
 
 Each agent represents a distinct conversation phase with focused responsibilities:
 
-### 1. Qualifier Agent (`agents/qualifier/config.py`)
+### 1. Qualifier agent (`agents/qualifier/config.py`)
 
 * **Purpose**: Initial contact and lead qualification
 * **Functions**: `handoff_to_next_agent`, `end_conversation`
 * **Collects**: Name, location, specific needs
 
-### 2. Advisor Agent (`agents/advisor/config.py`)
+### 2. Advisor agent (`agents/advisor/config.py`)
 
 * **Purpose**: Provide consultation and recommendations
 * **Functions**: `handoff_to_next_agent`, `end_conversation`
 * **Context**: Receives summary from qualifier
 
-### 3. Closer Agent (`agents/closer/config.py`)
+### 3. Closer agent (`agents/closer/config.py`)
 
 * **Purpose**: Schedule follow-up and gather feedback
 * **Functions**: `schedule_followup`, `record_satisfaction`, `end_conversation`
 * **Context**: Receives summary from advisor
 
-## Implementation Details
+## Implementation details
 
-### How Agent Transitions Work
+### How agent transitions work
 
 When an agent calls `handoff_to_next_agent`, the orchestrator:
 
@@ -187,7 +187,7 @@ When an agent calls `handoff_to_next_agent`, the orchestrator:
 3. **Starts** a new Voice Agent session with the summarized context
 4. **Continues** audio forwarding to the new agent seamlessly
 
-### Creating an Agent Configuration
+### Creating an agent configuration
 
 Each agent is configured with settings for STT, LLM, TTS, and functions:
 
@@ -246,7 +246,7 @@ public static AgentV1Settings getQualifierConfig(String context) {
 }
 ```
 
-### Function Definitions
+### Function definitions
 
 Functions include detailed descriptions to guide the LLM's behavior. See `agents/shared/functions.py` for examples. For comprehensive function definition best practices, refer to [docs/FUNCTION_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/FUNCTION_GUIDE.md).
 
@@ -285,7 +285,7 @@ AgentV1Function handoffFunction = AgentV1Function.builder()
     .build();
 ```
 
-## Quick Start
+## Quick start
 
 ### Prerequisites
 
@@ -295,7 +295,7 @@ AgentV1Function handoffFunction = AgentV1Function.builder()
 * Groq API key (free tier available at [https://console.groq.com/](https://console.groq.com/))
 * Public tunnel (ngrok, zrok, etc.)
 
-### 1. Install Dependencies
+### 1. Install dependencies
 
 This implementation uses the Deepgram Python SDK:
 
@@ -308,7 +308,7 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Configure Environment
+### 2. Configure environment
 
 Copy `.env.example` to `.env` and add your API keys:
 
@@ -324,7 +324,7 @@ The key environment variables (`config.py` manages these):
 * `LEAD_SERVER_EXTERNAL_URL` - Your public tunnel URL
 * `LEAD_PHONE_NUMBER` - Phone number to call
 
-### 3. Start Public Tunnel
+### 3. Start public tunnel
 
 ```bash
 # Using zrok (free, easy)
@@ -336,7 +336,7 @@ ngrok http 8000 --scheme=ws
 
 Copy the public URL and update `LEAD_SERVER_EXTERNAL_URL` in your `.env` file.
 
-### 4. Run the System
+### 4. Run the system
 
 ```bash
 python main.py
@@ -348,11 +348,11 @@ The system will:
 2. Initiate an outbound call to `LEAD_PHONE_NUMBER`
 3. Begin the conversation with the Qualifier agent
 
-## Example Conversation Flow
+## Example conversation flow
 
 Here's a simplified flow showing agent transitions and function calls:
 
-### Phase 1: Qualifier Agent
+### Phase 1: Qualifier agent
 
 ```
 Agent: "Hi, this is Alex calling from our advisory services.
@@ -375,7 +375,7 @@ Customer: "Yes, that'd be great"
 * Qualifier session closes
 * Advisor session starts with context
 
-### Phase 2: Advisor Agent
+### Phase 2: Advisor agent
 
 ```
 Agent: "Hi John! I understand you're interested in retirement planning.
@@ -393,7 +393,7 @@ Customer: "Yes please"
 * Advisor session closes
 * Closer session starts with context
 
-### Phase 3: Closer Agent
+### Phase 3: Closer agent
 
 ```
 Agent: "Thanks for speaking with our advisor.
@@ -407,7 +407,7 @@ Agent: "Thank you! Have a great day!"
 [Agent calls end_conversation function]
 ```
 
-## Project Structure
+## Project structure
 
 ```
 deepgram-voice-agent-multi-agent-/
@@ -437,7 +437,7 @@ deepgram-voice-agent-multi-agent-/
 
 ## Customization
 
-### Modify Agent Behavior
+### Modify agent behavior
 
 Edit the prompts in each agent's config file:
 
@@ -461,7 +461,7 @@ Edit the prompts in each agent's config file:
 
 **Important**: See `docs/PROMPT_GUIDE.md` for voice-specific prompt engineering best practices.
 
-### Add New Agents
+### Add new agents
 
 Quick overview:
 
@@ -469,7 +469,7 @@ Quick overview:
 2. Update `orchestrator/call_orchestrator.py` transition logic
 3. Add agent-specific function handlers if needed
 
-### Change Summarization
+### Change summarization
 
 Edit `utils/context_summarizer.py` to:
 
@@ -477,7 +477,7 @@ Edit `utils/context_summarizer.py` to:
 * Modify summarization prompts for better context extraction
 * Change which data points are captured
 
-## Additional Resources
+## Additional resources
 
 * **[docs/PROMPT_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/PROMPT_GUIDE.md)** - Voice agent prompt engineering best practices
 * **[docs/FUNCTION_GUIDE.md](https://github.com/deepgram-devs/deepgram-voice-agent-multi-agent/blob/main/docs/FUNCTION_GUIDE.md)** - Function definition best practices

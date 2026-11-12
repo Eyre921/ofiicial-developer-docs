@@ -1,5 +1,5 @@
 ---
-title: "Create Agent Configuration"
+title: "Create agent configuration"
 source: https://developers.deepgram.com/reference/voice-agent/agent-configurations/create-agent-configuration.md
 path: reference/voice-agent/agent-configurations/create-agent-configuration
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-configurations/create-agent-configuration
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Create Agent Configuration
+# Create agent configuration
 
 POST https://api.deepgram.com/v1/projects/{project_id}/agents
 Content-Type: application/json

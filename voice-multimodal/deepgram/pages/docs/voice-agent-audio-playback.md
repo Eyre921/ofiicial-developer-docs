@@ -1,5 +1,5 @@
 ---
-title: "Voice Agent Audio & Playback"
+title: "Voice Agent audio & playback"
 source: https://developers.deepgram.com/docs/voice-agent-audio-playback.md
 path: docs/voice-agent-audio-playback
 ---
@@ -7,31 +7,31 @@ path: docs/voice-agent-audio-playback
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Voice Agent Audio & Playback
+# Voice Agent audio & playback
 
 The Agent API involves challenges like producing natural-sounding speech and eliminating audio errors. Achieving high-quality output requires careful text pre-processing, accurate phonetic and prosodic modeling, and post-processing steps like noise reduction and compression.
 
-Deepgram handles much of this for you, but if you are experiencing issues with your speech output, this guide will help you troubleshoot those problems.
+Deepgram handles much of this for you, but if you're experiencing issues with your speech output, this guide will help you troubleshoot those problems.
 
 # Common problems
 
-## The Audio Output Sounds Like Static
+## The audio output sounds like static
 
-If you are able to connect your websocket to the Agent API successfully, but are getting a screeching or distorted playback on the audio, it is possible that your Agent [Settings](/docs/voice-agent-settings) were not set correctly. Verify that after you send the `Settings` message, you are properly receiving a [SettingsApplied](/docs/voice-agent-setting-applied-message) message from the server.
+If you're able to connect your websocket to the Agent API successfully, but are getting a screeching or distorted playback on the audio, it's possible that your Agent [Settings](/docs/voice-agent-settings) weren't set correctly. Verify that after you send the `Settings` message, you're properly receiving a [SettingsApplied](/docs/voice-agent-setting-applied-message) message from the server.
 
-The distorted or static-like sounds you are hearing may result from audio `encoding` and `sample_rate` settings for the output being set incorrectly. You may inadvertently be setting an incorrect value, leading to specific default values being used.
+The distorted or static-like sounds you're hearing may result from audio `encoding` and `sample_rate` settings for the output being set incorrectly. You may inadvertently be setting an incorrect value, leading to specific default values being used.
 
 > **Info**
 >
 > Learn more about [TTS audio encoding](/docs/tts-encoding) and [TTS audio sample rates ](/docs/tts-sample-rate)by checking out our documentation on these topics.
 
-## Attempting to Play Audio in a Web Browser
+## Attempting to play audio in a web browser
 
-When attempting to play generated audio within a web browser, like Chrome, you may not hear any audio playing from your speakers because the stream is not containerized audio (ie, audio with a defined header, like `wav`).
+When attempting to play generated audio within a web browser, like Chrome, you may not hear any audio playing from your speakers because the stream isn't containerized audio (ie, audio with a defined header, like `wav`).
 
-Currently, the Text-to-Speech WebSocket implementation does not support[ containerized audio formats.](/docs/tts-container) To support playing audio through a web browser, it is recommended that you create and prepend a containerized audio header for your audio output bytes each time they are generated.
+Currently, the text-to-speech WebSocket implementation doesn't support[ containerized audio formats.](/docs/tts-container) To support playing audio through a web browser, it's recommended that you create and prepend a containerized audio header for your audio output bytes each time they are generated.
 
-In the `linear16` audio encoding case, you will need to prepend a [`WAV` container header](https://en.wikipedia.org/wiki/WAV#WAV_file_header) to each audio segment you plan to play through the speakers. This is required for many media device implementations within a browser. In several cases for Python, this may be sufficient for a `WAV` header in the case of a file:
+In the `linear16` audio encoding case, you'll need to prepend a [`WAV` container header](https://en.wikipedia.org/wiki/WAV#WAV_file_header) to each audio segment you plan to play through the speakers. This is required for many media device implementations within a browser. In several cases for Python, this may be sufficient for a `WAV` header in the case of a file:
 
 **`Python`**
 
@@ -48,7 +48,7 @@ header.close()
 # then continue saving the rest of the audio stream to the file
 ```
 
-In many cases, file-based playback is not desired, and you may want to play the audio directly by streaming to the media device. For those cases, you may need to manipulate the audio stream and create the header bytes directly in front of the audio stream segments:
+In many cases, file-based playback isn't desired, and you may want to play the audio directly by streaming to the media device. For those cases, you may need to manipulate the audio stream and create the header bytes directly in front of the audio stream segments:
 
 **`JavaScript`**
 
@@ -213,7 +213,7 @@ System.arraycopy(audioBuffer, 0, audio, header.length, audioBuffer.length);
 
 ## The Agent Voice Is Triggering Itself
 
-Depending on the application you are attempting to build, a possible scenario that could occur is the LLM's speech/audio output is triggering itself. In other words, the LLM begins responding to itself.
+Depending on the application you're attempting to build, a possible scenario that could occur is the LLM's speech/audio output is triggering itself. In other words, the LLM begins responding to itself.
 
 There are numerous ways to mitigate this. Some of these include:
 
@@ -222,7 +222,7 @@ There are numerous ways to mitigate this. Some of these include:
 3. Enable echo cancellation in your `getUserMedia` audio constraints to help prevent the microphone from picking up the agent’s speech.
 4. Use a wired or Bluetooth headset, to physically separate audio playback from the microphone
 
-### Using Echo Cancellation
+### Using echo cancellation
 
 Some browsers provide built-in **echo cancellation** that can help reduce cases where the agent hears its own voice. You can enable this when capturing microphone input:
 

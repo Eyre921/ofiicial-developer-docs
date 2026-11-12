@@ -1,5 +1,5 @@
 ---
-title: "Compare Flux to Nova-3"
+title: "Compare Flux STT to Nova-3"
 source: https://developers.deepgram.com/docs/flux/flux-nova-3-comparison.md
 path: docs/flux/flux-nova-3-comparison
 ---
@@ -7,54 +7,54 @@ path: docs/flux/flux-nova-3-comparison
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Compare Flux to Nova-3
+# Compare Flux STT to Nova-3
 
-# Feature Matrix Comparison
+# Feature matrix comparison
 
-It's important to understand the differences between [Flux](/docs/models-languages-overview#flux) and [Nova-3](/docs/models-languages-overview#nova-3) so you can choose the right model for your use case. Below is a feature matrix comparison to help you understand the differences.
+It's important to understand the differences between [Flux STT](/docs/models-languages-overview#flux-stt) and [Nova-3](/docs/models-languages-overview#nova-3) so you can choose the right model for your use case. Below is a feature matrix comparison to help you understand the differences.
 
-## Use Cases
+## Use cases
 
-| Feature                 | Flux | Nova-3 |
-| ----------------------- | ---- | ------ |
-| Voice Agents            | ✅    | ✅      |
-| IVR Systems             | ✅    | ✅      |
-| Agent Assist            | ✅    | ✅      |
-| Real-time Transcription | ✅    | ✅      |
-| Meeting Transcription   | 🚫   | ✅      |
-| Event Captioning        | 🚫   | ✅      |
-| Pre-recorded Audio      | 🚫   | ✅      |
-| Call Analytics          | 🚫   | ✅      |
+| Feature                 | Flux STT | Nova-3 |
+| ----------------------- | -------- | ------ |
+| Voice Agents            | ✅        | ✅      |
+| IVR Systems             | ✅        | ✅      |
+| Agent Assist            | ✅        | ✅      |
+| Real-time Transcription | ✅        | ✅      |
+| Meeting Transcription   | 🚫       | ✅      |
+| Event Captioning        | 🚫       | ✅      |
+| Pre-recorded Audio      | 🚫       | ✅      |
+| Call Analytics          | 🚫       | ✅      |
 
-## Language Support
+## Language support
 
-| Feature               | Flux                                                                                        | Nova-3                                                                                                                     |
+| Feature               | Flux STT                                                                                    | Nova-3                                                                                                                     |
 | --------------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | English               | ✅                                                                                           | ✅                                                                                                                          |
 | Multilingual          | ✅ `flux-general-multi` — 10 languages ([Language Prompting](/docs/flux/language-prompting)) | ✅ `language=multi` — 55 languages ([see language support](/docs/models-languages-overview#nova-3))                         |
 | Monolingual languages | 🚫                                                                                          | ✅ [Full list](/docs/models-languages-overview#nova-3)                                                                      |
-| Language control      | `language_hint` parameter                                                                   | `language` parameter; `language_hint` with `language=multi` ([Nova-3 Language Prompting](/docs/nova-3-language-prompting)) |
+| Language control      | `language_hint` parameter                                                                   | `language` parameter; `language_hint` with `language=multi` ([Nova-3 language prompting](/docs/nova-3-language-prompting)) |
 | Code-switching        | ✅ Native with `flux-general-multi`                                                          | ✅ With `language=multi`                                                                                                    |
 
-## Technical Details
+## Technical details
 
-| Feature                  | Flux         | Nova-3       |
+| Feature                  | Flux STT     | Nova-3       |
 | ------------------------ | ------------ | ------------ |
 | Self-hosted Availability | ✅            | ✅            |
 | Endpoint                 | `/v2/listen` | `/v1/listen` |
 
-## Conversation Features
+## Conversation features
 
-| Feature           | Flux | Nova-3 |
-| ----------------- | ---- | ------ |
-| Start of Turn     | ✅    | 🚫     |
-| Speech Resumed    | ✅    | 🚫     |
-| End of Turn       | ✅    | 🚫     |
-| Eager End of Turn | ✅    | 🚫     |
+| Feature           | Flux STT | Nova-3 |
+| ----------------- | -------- | ------ |
+| Start of Turn     | ✅        | 🚫     |
+| Speech Resumed    | ✅        | 🚫     |
+| End of Turn       | ✅        | 🚫     |
+| Eager End of Turn | ✅        | 🚫     |
 
-## Transcription Features
+## Transcription features
 
-| Feature                  | Flux                     | Nova-3 |
+| Feature                  | Flux STT                 | Nova-3 |
 | ------------------------ | ------------------------ | ------ |
 | Word Times               | ✅                        | ✅      |
 | Smart Formatting         | 🚫                       | ✅      |
@@ -68,9 +68,9 @@ It's important to understand the differences between [Flux](/docs/models-languag
 | Search                   | 🚫                       | ✅      |
 | Turn-based Transcription | ✅                        | 🚫     |
 
-## Connection Management
+## Connection management
 
-| Feature                     | Flux                                            | Nova-3          |
+| Feature                     | Flux STT                                        | Nova-3          |
 | --------------------------- | ----------------------------------------------- | --------------- |
 | Endpointing + Utterance End | ✅ (Replaced by model integrated turn detection) | ✅               |
 | Interim Results             | ✅ (Replaced by Update Messages)                 | ✅               |

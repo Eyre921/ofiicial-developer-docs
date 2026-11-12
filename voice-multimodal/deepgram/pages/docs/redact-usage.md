@@ -11,7 +11,7 @@ path: docs/redact-usage
 
 `redact_usage` *boolean*
 
-Pre-recorded  Streaming:Nova Streaming:Flux
+Pre-recorded  Streaming:Nova Streaming:Flux STT
 
 We record the parameters of each request in your usage records, which you can view in the [Console](https://console.deepgram.com/usage/logs) and through the [Management API](/reference/manage/requests/get). Some parameters carry text you supply, such as keyterms, find-and-replace terms, or search terms. If that text contains names, account details, or other sensitive data, set `redact_usage=true` and we'll store `[REDACTED]` in place of those values.
 
@@ -38,7 +38,7 @@ The usage record for this request shows:
 /v1/listen?model=nova-3&keyterm=[REDACTED]&keyterm=[REDACTED]
 ```
 
-The parameter works the same way on pre-recorded (`/v1/listen`), streaming (`wss://api.deepgram.com/v1/listen`), and Flux STT (`wss://api.deepgram.com/v2/listen`) requests.
+The parameter works the same way on pre-recorded (`/v1/listen`), streaming (`wss://api.deepgram.com/v1/listen`), and Deepgram Flux STT (`wss://api.deepgram.com/v2/listen`) requests.
 
 ### Flux STT Configure messages
 

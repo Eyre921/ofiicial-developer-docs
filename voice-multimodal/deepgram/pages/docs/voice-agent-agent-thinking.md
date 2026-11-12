@@ -17,7 +17,7 @@ The `AgentThinking` message is used to inform the client the agent is processing
 
 The `AgentThinking` message informs the client when the agent is processing internally, without verbalizing its thoughts. This allows the system to handle non-verbalized reasoning and, in some cases, determine which functions to call, ensuring smoother and more dynamic interactions.
 
-## Example Payload
+## Example payload
 
 The server will send an `AgentThinking` message to inform the client of a non-verbalized agent thought. When functions are available, some LLMs use these thoughts to decide which functions to call.
 

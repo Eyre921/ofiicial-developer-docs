@@ -1,5 +1,5 @@
 ---
-title: "Feature Overview"
+title: "Feature overview"
 source: https://developers.deepgram.com/docs/text-intelligence-feature-overview.md
 path: docs/text-intelligence-feature-overview
 ---
@@ -7,22 +7,22 @@ path: docs/text-intelligence-feature-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Feature Overview
+# Feature overview
 
 > **Info**
 >
 > To learn how to get up and running with Text-to-Text Intelligence, read the [Text Intelligence](/docs/text-intelligence) getting started guide.
 
-## Text To Text Intelligence features
+## Text-to-Text Intelligence features
 
 | Feature                                                | Pre-recorded? | Streaming? | Language(s)                                                        |
 | ------------------------------------------------------ | ------------- | ---------- | ------------------------------------------------------------------ |
-| [Sentiment Analysis](/docs/text-sentiment-analysis)    | Yes           | No         | [English (all available regions)](/docs/models-languages-overview) |
-| [Intent Recognition](/docs/text-intention-recognition) | Yes           | No         | [English (all available regions)](/docs/models-languages-overview) |
-| [Topic Detection](/docs/text-topic-detection)          | Yes           | No         | [English (all available regions)](/docs/models-languages-overview) |
+| [Sentiment analysis](/docs/text-sentiment-analysis)    | Yes           | No         | [English (all available regions)](/docs/models-languages-overview) |
+| [Intent recognition](/docs/text-intention-recognition) | Yes           | No         | [English (all available regions)](/docs/models-languages-overview) |
+| [Topic detection](/docs/text-topic-detection)          | Yes           | No         | [English (all available regions)](/docs/models-languages-overview) |
 | [Summarization](/docs/text-summarization)              | Yes           | No         | [English (all available regions)](/docs/models-languages-overview) |
 
-## Rate Limits
+## Rate limits
 
 > **Info**
 >

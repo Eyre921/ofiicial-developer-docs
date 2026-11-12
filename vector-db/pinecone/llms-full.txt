@@ -3188,7 +3188,6 @@ await index.startImport(storageURI, errorMode, integrationID);
 import io.pinecone.clients.Pinecone;
 import io.pinecone.clients.AsyncIndex;
 import org.openapitools.db_data.client.ApiException;
-import org.openapitools.db_data.client.model.ImportErrorMode;
 import org.openapitools.db_data.client.model.StartImportResponse;
 
 public class StartImport {
@@ -3206,7 +3205,7 @@ public class StartImport {
         String integrationId = "a12b3d4c-47d2-492c-a97a-dd98c8dbefde";
 
         // Start an import
-        StartImportResponse response = asyncIndex.startImport(uri, integrationId, ImportErrorMode.OnErrorEnum.CONTINUE);
+        StartImportResponse response = asyncIndex.startImport(uri, integrationId, "continue");
     }
 }
 ```
@@ -4401,7 +4400,7 @@ import io.pinecone.configs.PineconeConfig;
 import io.pinecone.configs.PineconeConnection;
 import io.pinecone.proto.NamespaceDescription;
 import io.pinecone.proto.MetadataSchema;
-import io.pinecone.proto.MetadataSchemaField;
+import io.pinecone.proto.MetadataFieldProperties;
 
 public class CreateNamespaceExample {
     public static void main(String[] args) {
@@ -4413,7 +4412,7 @@ public class CreateNamespaceExample {
 
         Index index = new Index(config, connection, "INDEX_NAME");
 
-        MetadataSchemaField filterable = MetadataSchemaField.newBuilder()
+        MetadataFieldProperties filterable = MetadataFieldProperties.newBuilder()
             .setFilterable(true)
             .build();
 
@@ -4603,13 +4602,13 @@ public class Namespaces {
         Index index = new Index(config, connection, "docs-example");
 
         // List all namespaces with default pagination limit (100)
-        ListNamespacesResponse listNamespacesResponse = index.listNamespaces(null, null);
+        ListNamespacesResponse listNamespacesResponse = index.listNamespaces();
 
         // List all namespaces with pagination limit of 2
-        ListNamespacesResponse listNamespacesResponseWithLimit = index.listNamespaces(2);
+        ListNamespacesResponse listNamespacesResponseWithLimit = index.listNamespaces(null, 2);
 
         // List all namespaces with pagination limit and token
-        ListNamespacesResponse listNamespacesResponsePaginated = index.listNamespaces(5, "eyJza2lwX3Bhc3QiOiIxMDEwMy0=");
+        ListNamespacesResponse listNamespacesResponsePaginated = index.listNamespaces("eyJza2lwX3Bhc3QiOiIxMDEwMy0=", 5);
 
         System.out.println(listNamespacesResponseWithLimit);
     }
@@ -13037,7 +13036,7 @@ import io.pinecone.clients.Index;
 import io.pinecone.clients.Pinecone;
 
 public class GenerateEmbeddings {
-    public static void main(String[] args) throws ApiException {
+    public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
         Index index = pc.getIndexConnection("docs-example");
     }
@@ -14711,11 +14710,11 @@ If you are using an older version of the Python, Node.js, Java, or Go SDK, you m
    <dependency>
      <groupId>io.pinecone</groupId>
      <artifactId>pinecone-client</artifactId>
-     <version>5.0.0</version>
+     <version>6.3.0</version>
    </dependency>
 
    # Gradle
-   implementation "io.pinecone:pinecone-client:5.0.0"
+   implementation "io.pinecone:pinecone-client:6.3.0"
    ```
 
    ```go Go theme={null}
@@ -15224,6 +15223,8 @@ When you're ready to cutover to your new serverless index:
        public static void main(String[] args) {
            Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
            Index index = pc.getIndexConnection("YOUR_SERVERLESS_INDEX_NAME");
+       }
+   }
    ```
 
    ```go Go theme={null}
@@ -31131,23 +31132,23 @@ public class RerankExample {
         String query = "The tech company Apple is known for its innovative products like the iPhone.";
 
         // Add the documents to rerank
-        List<Map<String, String>> documents = new ArrayList<>();
-        Map<String, String> doc1 = new HashMap<>();
+        List<Map<String, Object>> documents = new ArrayList<>();
+        Map<String, Object> doc1 = new HashMap<>();
         doc1.put("id", "vec1");
         doc1.put("my_field", "Apple is a popular fruit known for its sweetness and crisp texture.");
         documents.add(doc1);
 
-        Map<String, String> doc2 = new HashMap<>();
+        Map<String, Object> doc2 = new HashMap<>();
         doc2.put("id", "vec2");
         doc2.put("my_field", "Many people enjoy eating apples as a healthy snack.");
         documents.add(doc2);
 
-        Map<String, String> doc3 = new HashMap<>();
+        Map<String, Object> doc3 = new HashMap<>();
         doc3.put("id", "vec3");
         doc3.put("my_field", "Apple Inc. has revolutionized the tech industry with its sleek designs and user-friendly interfaces.");
         documents.add(doc3);
 
-        Map<String, String> doc4 = new HashMap<>();
+        Map<String, Object> doc4 = new HashMap<>();
         doc4.put("id", "vec4");
         doc4.put("my_field", "An apple a day keeps the doctor away, as the saying goes.");
         documents.add(doc4);
@@ -31162,7 +31163,7 @@ public class RerankExample {
         boolean returnDocuments = true;
 
         // Additional model-specific parameters for the reranker
-        Map<String, String> parameters = new HashMap<>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put("truncate", "END");
 
         // Send ranking request
@@ -32387,7 +32388,7 @@ await pc.describeCollection('example-collection');
 
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
-import org.openapitools.client.model.CollectionModel;
+import org.openapitools.db_control.client.model.CollectionModel;
 
 public class DescribeCollectionExample {
     public static void main(String[] args) {
@@ -32463,7 +32464,9 @@ await pc.listCollections();
 
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
-import org.openapitools.client.model.CollectionModel;
+import org.openapitools.db_control.client.model.CollectionModel;
+
+import java.util.List;
 
 public class ListCollectionsExample {
     public static void main(String[] args) {
@@ -39296,14 +39299,13 @@ await pc.createIndex({
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
 import org.openapitools.db_control.client.model.IndexModel;
-import org.openapitools.db_control.client.model.DeletionProtection;
 
 public class CreateServerlessIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
 
         // Creates an index using the API key stored in the client 'pc'.
-        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1");
+        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1", "disabled", null);
     }
 }
 ```
@@ -40248,14 +40250,13 @@ await pc.createIndex({
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
 import org.openapitools.db_control.client.model.IndexModel;
-import org.openapitools.db_control.client.model.DeletionProtection;
 
 public class CreateServerlessIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
 
         // Creates an index using the API key stored in the client 'pc'.
-        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1");
+        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1", "disabled", null);
     }
 }
 ```
@@ -45103,6 +45104,7 @@ The mappings between API versions and Java SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2025-10` | v6.x |
 | `2025-04` | v5.x |
 | `2025-01` | v4.x |
 | `2024-10` | v3.x |
@@ -45120,20 +45122,20 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-4.0.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/4.0.0/pinecone-client-4.0.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
 > [!WARNING]
 >
-> Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
+> Before upgrading from `v5.x` to `v6.x`, update code that passes enum values. Deletion protection, cloud, and import error mode now take strings, such as `"enabled"`, `"aws"`, and `"continue"`. For the full list of breaking changes, see the [`v6.0.0` release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0).
 
 If you are already using the Java SDK, upgrade the dependency in the current module to the latest version:
 
@@ -45142,11 +45144,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
 ## Initialize
@@ -46002,14 +46004,13 @@ await pc.createIndex({
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
 import org.openapitools.db_control.client.model.IndexModel;
-import org.openapitools.db_control.client.model.DeletionProtection;
 
 public class CreateServerlessIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
 
         // Creates an index using the API key stored in the client 'pc'.
-        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1");
+        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1", "disabled", null);
     }
 }
 ```
@@ -50857,6 +50858,7 @@ The mappings between API versions and Java SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2025-10` | v6.x |
 | `2025-04` | v5.x |
 | `2025-01` | v4.x |
 | `2024-10` | v3.x |
@@ -50874,20 +50876,20 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-4.0.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/4.0.0/pinecone-client-4.0.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
 > [!WARNING]
 >
-> Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
+> Before upgrading from `v5.x` to `v6.x`, update code that passes enum values. Deletion protection, cloud, and import error mode now take strings, such as `"enabled"`, `"aws"`, and `"continue"`. For the full list of breaking changes, see the [`v6.0.0` release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0).
 
 If you are already using the Java SDK, upgrade the dependency in the current module to the latest version:
 
@@ -50896,11 +50898,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
 ## Initialize
@@ -51756,14 +51758,13 @@ await pc.createIndex({
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
 import org.openapitools.db_control.client.model.IndexModel;
-import org.openapitools.db_control.client.model.DeletionProtection;
 
 public class CreateServerlessIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
 
         // Creates an index using the API key stored in the client 'pc'.
-        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1");
+        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1", "disabled", null);
     }
 }
 ```
@@ -56611,6 +56612,7 @@ The mappings between API versions and Java SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2025-10` | v6.x |
 | `2025-04` | v5.x |
 | `2025-01` | v4.x |
 | `2024-10` | v3.x |
@@ -56628,20 +56630,20 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-4.0.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/4.0.0/pinecone-client-4.0.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
 > [!WARNING]
 >
-> Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
+> Before upgrading from `v5.x` to `v6.x`, update code that passes enum values. Deletion protection, cloud, and import error mode now take strings, such as `"enabled"`, `"aws"`, and `"continue"`. For the full list of breaking changes, see the [`v6.0.0` release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0).
 
 If you are already using the Java SDK, upgrade the dependency in the current module to the latest version:
 
@@ -56650,11 +56652,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
 ## Initialize
@@ -57510,14 +57512,13 @@ await pc.createIndex({
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
 import org.openapitools.db_control.client.model.IndexModel;
-import org.openapitools.db_control.client.model.DeletionProtection;
 
 public class CreateServerlessIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
 
         // Creates an index using the API key stored in the client 'pc'.
-        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1");
+        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1", "disabled", null);
     }
 }
 ```
@@ -62365,6 +62366,7 @@ The mappings between API versions and Java SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2025-10` | v6.x |
 | `2025-04` | v5.x |
 | `2025-01` | v4.x |
 | `2024-10` | v3.x |
@@ -62382,20 +62384,20 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-4.0.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/4.0.0/pinecone-client-4.0.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
 > [!WARNING]
 >
-> Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
+> Before upgrading from `v5.x` to `v6.x`, update code that passes enum values. Deletion protection, cloud, and import error mode now take strings, such as `"enabled"`, `"aws"`, and `"continue"`. For the full list of breaking changes, see the [`v6.0.0` release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0).
 
 If you are already using the Java SDK, upgrade the dependency in the current module to the latest version:
 
@@ -62404,11 +62406,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
 ## Initialize
@@ -67247,14 +67249,13 @@ await pc.createIndex({
 ```java Java theme={null}
 import io.pinecone.clients.Pinecone;
 import org.openapitools.db_control.client.model.IndexModel;
-import org.openapitools.db_control.client.model.DeletionProtection;
 
 public class CreateServerlessIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
 
         // Creates an index using the API key stored in the client 'pc'.
-        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1");
+        pc.createServerlessIndex("docs-example", "cosine", 1536, "aws", "us-east-1", "disabled", null);
     }
 }
 ```
@@ -72102,6 +72103,7 @@ The mappings between API versions and Java SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2025-10` | v6.x |
 | `2025-04` | v5.x |
 | `2025-01` | v4.x |
 | `2024-10` | v3.x |
@@ -72119,20 +72121,20 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-4.0.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/4.0.0/pinecone-client-4.0.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
 > [!WARNING]
 >
-> Before upgrading to `v4.0.0`, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-3).
+> Before upgrading from `v5.x` to `v6.x`, update code that passes enum values. Deletion protection, cloud, and import error mode now take strings, such as `"enabled"`, `"aws"`, and `"continue"`. For the full list of breaking changes, see the [`v6.0.0` release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0).
 
 If you are already using the Java SDK, upgrade the dependency in the current module to the latest version:
 
@@ -72141,11 +72143,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>5.0.0</version>
+  <version>6.3.0</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:5.0.0"
+implementation "io.pinecone:pinecone-client:6.3.0"
 ```
 
 ## Initialize
@@ -89332,6 +89334,14 @@ For more information, see [Dedicated Read Nodes](/guides/optimize/dedicated-read
 
 * The [Search with text](/reference/api/2025-10/data-plane/search_records) endpoint now supports a `match_terms` parameter that allows you to specify terms that must be present in search results for sparse indexes.
 
+**2025-11-12**
+
+### Released Java SDK v6.0.0
+
+Released [`v6.0.0`](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0) of the [Pinecone Java SDK](/reference/sdks/java/overview). This version uses API version `2025-10` and adds support for [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud) indexes, [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview), [metadata indexing](/guides/indexes/configure-metadata-indexing), [creating namespaces](/guides/data/manage-namespaces) and listing them by prefix, and [fetching](/guides/legacy/vectors-api/fetch-vectors#fetch-records-by-metadata) and [updating](/guides/legacy/vectors-api/update-vectors#update-by-metadata) records by metadata.
+
+Before upgrading, update code that passes enum values. Deletion protection, cloud, and import error mode now take strings, such as `"enabled"`, `"aws"`, and `"continue"`. For the full list of breaking changes, see the [release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.0.0).
+
 **2025-11-03**
 
 ### n8n quickstarts
@@ -89925,6 +89935,12 @@ Source: https://docs.pinecone.io/release-notes/2026
 Every change to Pinecone in 2026, including new features, API updates, deprecations, and pricing and plan changes.
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
+
+**2026-11-12**
+
+### Released Java SDK v6.3.0
+
+Released [`v6.3.0`](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.3.0) of the [Pinecone Java SDK](/reference/sdks/java/overview). This version fixes 33 published security advisories in its dependencies, one of them critical, and fixes a bug where clients in the same JVM with different API keys could share an index connection. For upgrade details, see the [release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.3.0).
 
 **2026-11-08**
 

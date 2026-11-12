@@ -25,6 +25,8 @@ This guide describes how Stripe processes disputes for each charge type and how 
 
 For connected accounts that use [direct charges](https://docs.stripe.com/connect/direct-charges.md), Stripe always attempts to debit disputed amounts from the connected account’s balance. However, if Stripe can’t debit the amount, ultimate responsibility depends on whether Stripe or the platform is [responsible for negative balances](https://docs.stripe.com/connect/risk-management.md#identify-negative-balance-responsibility).
 
+Regardless of a dispute’s outcome, Stripe doesn’t automatically refund the [application fee](https://docs.stripe.com/connect/direct-charges.md#collect-fees) to the connected account. To return some or all of the application fee on a disputed charge, [refund it](https://docs.stripe.com/api/fee_refunds/create.md) from your platform account.
+
 For dispute-related fees, responsibility depends on your connected account options. The following table shows whether Stripe debits dispute-related fees from the platform or the connected account:
 
 | Account option | Dispute fee payer |

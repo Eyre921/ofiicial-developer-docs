@@ -14,4 +14,5 @@ This article has multiple variants. Fetch one of the following URLs to view spec
 
 - [Stripe-hosted page](https://docs.stripe.com/payments/checkout/custom-domains.md?payment-ui=stripe-hosted)
 - [Full embedded page](https://docs.stripe.com/payments/checkout/custom-domains.md?payment-ui=embedded-page)
+- [Elements](https://docs.stripe.com/payments/checkout/custom-domains.md?payment-ui=embedded-components)
 

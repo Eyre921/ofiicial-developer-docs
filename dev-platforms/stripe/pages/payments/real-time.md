@@ -37,7 +37,7 @@ When a customer uses a real-time payment method, their statement lists the appli
 
 ## API support
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | `pay_by_bank` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [PayNow](https://docs.stripe.com/payments/paynow.md) | `paynow` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | No |

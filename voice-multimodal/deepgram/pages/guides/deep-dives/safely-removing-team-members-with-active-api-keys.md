@@ -15,7 +15,7 @@ When you remove a team member from a Deepgram project, any API keys they created
 
 This guide explains how to safely offboard team members without disrupting your services.
 
-## Understanding API Key Ownership
+## Understanding API key ownership
 
 In Deepgram, every API key belongs to a project but is created by a specific user. This distinction matters:
 
@@ -24,7 +24,7 @@ In Deepgram, every API key belongs to a project but is created by a specific use
 
 When you remove a user from a project, all API keys they created are automatically disabled — even if those keys are actively used in production. This security feature ensures former team members can't retain API access, but it means you need to plan ahead when offboarding users.
 
-### Why It Works This Way
+### Why it works this way
 
 This ownership model provides:
 
@@ -34,7 +34,7 @@ This ownership model provides:
 
 A key's effective permissions are also limited by its creator's role. If a user with the Owner role creates an Owner-scoped key and is later demoted to Admin, the key loses its Owner permissions too. This is another reason to create production keys with a stable service account rather than an individual whose role may change.
 
-## Before You Remove a User
+## Before you remove a user
 
 When you attempt to remove a team member in Console, you'll see a warning if they have active API keys.
 
@@ -49,9 +49,9 @@ The warning shows:
 >
 > If you see this warning, do not proceed until you've completed the migration steps below.
 
-## Step-by-Step Migration Process
+## Step-by-step migration process
 
-### Step 1: Review the User's Active Keys
+### Step 1: review the user's active keys
 
 The removal dialog already tells you how many active keys the user has and their recent request count. To see the details:
 
@@ -67,7 +67,7 @@ Note the key names (comments) and Key IDs. You'll need these to:
 >
 > If the user created keys with descriptive names (e.g., "Production - Main App", "Staging"), that gives you a clue about where they're used. If names are generic, check [Usage](/docs/using-logs-usage) in Console to see request volume and patterns for each key, or ask your team which systems use which keys.
 
-### Step 2: Create Replacement Keys
+### Step 2: create replacement keys
 
 For each active key that needs to be replaced:
 
@@ -87,7 +87,7 @@ For each active key that needs to be replaced:
 >
 > Copy and securely store the secret immediately — it won't be shown again.
 
-To learn more about creating API keys, see [Creating API Keys](/docs/create-additional-api-keys). To learn more about roles, see [Working with Roles](/guides/deep-dives/working-with-roles).
+To learn more about creating API keys, see [Creating API keys](/docs/create-additional-api-keys). To learn more about roles, see [Working with Roles](/guides/deep-dives/working-with-roles).
 
 > **Info**
 >
@@ -95,7 +95,7 @@ To learn more about creating API keys, see [Creating API Keys](/docs/create-addi
 >
 > Service accounts are less likely to be removed during normal team changes, reducing the need for urgent key rotation.
 
-### Step 3: Update Your Systems
+### Step 3: update your systems
 
 Replace the old API key secret with the new one everywhere it's used:
 
@@ -107,7 +107,7 @@ Replace the old API key secret with the new one everywhere it's used:
 
 Deploy these changes to all environments before proceeding.
 
-### Step 4: Verify the Migration
+### Step 4: verify the migration
 
 Before removing the user, confirm that traffic has moved to the new keys:
 
@@ -128,7 +128,7 @@ Before removing the user, confirm that traffic has moved to the new keys:
 >
 > Wait at least one full week before removing the user to ensure no background jobs or low-frequency systems are still using the old key.
 
-### Step 5: Remove the User
+### Step 5: remove the user
 
 Once you've confirmed the old keys have no active usage:
 
@@ -140,7 +140,7 @@ Once you've confirmed the old keys have no active usage:
 
 The user will lose access immediately, and all their API keys will be disabled.
 
-## Special Scenarios
+## Special scenarios
 
 ### The User Already Left and You Can't Reach Them
 
@@ -155,7 +155,7 @@ If the person you're removing is the only Owner of the project:
 
 If the owner is completely unavailable, [contact Deepgram Support](/support/) for assistance.
 
-### You Need To Remove the User Immediately
+### You need to remove the user immediately
 
 If you must remove the user before completing migration (e.g., a security incident), understand that:
 
@@ -165,7 +165,7 @@ If you must remove the user before completing migration (e.g., a security incide
 
 In this case, prioritize creating new keys and updating your most critical systems first.
 
-## Tips for Avoiding This in the Future
+## Tips for avoiding this in the future
 
 * **Use service accounts for production keys** — for example, `engineering@company.com`.
 * **Document key usage** — give each key a descriptive name and tag it with the service or environment it runs in (e.g., `production`, `staging`). This makes migrations quick when needed.

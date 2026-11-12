@@ -11,15 +11,15 @@ path: docs/encoding
 
 `encoding` *string*
 
-Pre-recorded  Streaming:Nova Streaming:Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming:Flux STT  All available languages
 
 Encoding is required when raw, headerless audio packets are sent to the streaming service. If containerized audio packets are sent to the streaming service, this feature should not be used.
 
 > **Info**
 >
-> If you are using the Encoding feature, the [Sample Rate](/docs/sample-rate) feature is also required.
+> If you're using the Encoding feature, the [Sample rate](/docs/sample-rate) feature is also required.
 
-## Enable Feature
+## Enable feature
 
 To enable Encoding, when you call Deepgram’s API, add an `encoding` parameter in the query string and set it to the audio coding algorithm of your submitted audio:
 
@@ -36,11 +36,11 @@ curl \
   --url 'https://api.deepgram.com/v1/listen?sample_rate=8000&encoding=linear16'
 ```
 
-Deepgram supports the following audio coding algorithms:
+We support the following audio coding algorithms:
 
 > **Info**
 >
-> Flux supports `linear16`, `linear32`, `mulaw`, `alaw`, `opus`, and `ogg-opus` for non-containerized/raw audio. Flux also supports containerized formats: `linear16` in WAV containers, `opus` in Ogg containers, and `opus` in WebM containers (omit the `encoding` parameter for containerized audio).
+> Flux STT supports `linear16`, `linear32`, `mulaw`, `alaw`, `opus`, and `ogg-opus` for non-containerized/raw audio. Flux STT also supports containerized formats: `linear16` in WAV containers, `opus` in Ogg containers, and `opus` in WebM containers (omit the `encoding` parameter for containerized audio).
 
 * `linear16`: 16-bit, little endian, signed PCM WAV data
 * `linear32`: 32-bit, little endian, floating-point PCM WAV data

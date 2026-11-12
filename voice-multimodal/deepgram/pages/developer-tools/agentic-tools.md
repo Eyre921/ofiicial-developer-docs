@@ -9,7 +9,7 @@ path: developer-tools/agentic-tools
 
 # Agentic developer tools
 
-Deepgram provides multiple ways to embed Deepgram knowledge directly into AI-powered developer tools: a **CLI with a built-in MCP server**, a **docs MCP server** for querying documentation, and a **skills marketplace** with structured reference material your tools can load on demand.
+We provide multiple ways to embed Deepgram knowledge directly into AI-powered developer tools: a **CLI with a built-in MCP server**, a **docs MCP server** for querying documentation, and a **skills marketplace** with structured reference material your tools can load on demand.
 
 ## Deepgram CLI
 
@@ -64,7 +64,7 @@ For full CLI documentation, visit the [CLI documentation](/developer-tools/cli/g
 
 ## Docs MCP server
 
-The Deepgram docs MCP server lets AI coding tools query the full Deepgram documentation. It is available over HTTP at two endpoints:
+The Deepgram docs MCP server lets AI coding tools query the full Deepgram documentation. It's available over HTTP at two endpoints:
 
 |                     |                                        |
 | ------------------- | -------------------------------------- |
@@ -128,7 +128,7 @@ This gives you the following slash commands: `/deepgram:api`, `/deepgram:docs`, 
 
 ## SDKs
 
-Deepgram provides official SDKs so you can integrate speech-to-text, text-to-speech, voice agents, and audio intelligence into your application in the language of your choice.
+We provide official SDKs so you can integrate speech-to-text, text-to-speech, voice agents, and audio intelligence into your application in the language of your choice.
 
 * [Python SDK](https://github.com/deepgram/deepgram-python-sdk)
 * [JavaScript / TypeScript SDK](https://github.com/deepgram/deepgram-js-sdk)

@@ -1,5 +1,5 @@
 ---
-title: "FIPS-Compliant Deployment"
+title: "FIPS-compliant deployment"
 source: https://developers.deepgram.com/docs/fips-compliant-deployment.md
 path: docs/fips-compliant-deployment
 ---
@@ -7,22 +7,22 @@ path: docs/fips-compliant-deployment
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# FIPS-Compliant Deployment
+# FIPS-compliant deployment
 
 > **Info**
 >
 > Deploying Deepgram on Amazon SageMaker? SageMaker supports AWS FIPS 140-3 endpoints without
-> deploying these images yourself. See [Use FIPS Endpoints](/docs/fips-endpoints-sagemaker).
+> deploying these images yourself. See [Use FIPS endpoints](/docs/fips-endpoints-sagemaker).
 
 Deepgram provides FIPS 140-3 self-hosted images for the API, Engine, License Proxy, and Billing containers, plus models encrypted using FIPS-approved algorithms.
 
-## Container Images
+## Container images
 
 Use the FIPS variants (the `-fips` tag suffix) of API, Engine, and License Proxy images from a recent self-hosted release. See the [release changelog](/changelog?filter=Self+Hosted) for specific release versions and tags.
 
 ## Configuration
 
-### Enable FIPS Mode
+### Enable FIPS mode
 
 FIPS mode is set per service. Add the following block to the configuration file of **every** service you deploy:
 
@@ -42,7 +42,7 @@ The FIPS images do not enable FIPS mode on their own. A service whose configurat
 
 Confirm each service logs both `openssl_fips_enabled=true` and `has_fips_encryption=true` at startup. `openssl_fips_enabled` reports only that FIPS mode was requested and the OpenSSL FIPS provider loaded, so on its own it does not establish that a service is running FIPS-validated cryptography.
 
-On Kubernetes, the [Deepgram self-hosted Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted) renders these configuration files, so set `global.fips.enabled: true` (chart `0.43.0` or later) instead of editing them directly. The chart requires a `-fips` image tag on every deployed component when that value is set.
+On Kubernetes, the [Deepgram Self-Hosted Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted) renders these configuration files, so set `global.fips.enabled: true` (chart `0.43.0` or later) instead of editing them directly. The chart requires a `-fips` image tag on every deployed component when that value is set.
 
 ### Engine Environment Variables
 
@@ -55,7 +55,7 @@ NVIDIA_DRIVER_CAPABILITIES=compute,utility
 
 These are set in your container orchestration configuration. See the reference configs for [Docker](https://github.com/deepgram/self-hosted-resources/blob/85b1eda4f4f2be3eac18848a8f2dd0d67633563d/docker/docker-compose.license-proxy.yml#L8-L12) and [Kubernetes](https://github.com/deepgram/self-hosted-resources/blob/85b1eda4f4f2be3eac18848a8f2dd0d67633563d/charts/deepgram-self-hosted/templates/engine/engine.deployment.yaml#L145-L151).
 
-### TLS Certificate
+### TLS certificate
 
 Customers must provide their own full-chain PKI certificate for the API's HTTPS endpoint.
 
@@ -67,15 +67,15 @@ Your Deepgram account team provides download links for the FIPS-encrypted models
 >
 > `.dgv2` and `.dg` models are not interchangeable. The FIPS Engine loads only `.dgv2` models — it will not load `.dg` models.
 
-### Model Support
+### Model support
 
-**Flux STT runs on FIPS images starting with `release-261020`.** [Flux STT](/docs/flux-self-hosted) loads `.dgv2` Flux model files from that release onward. All Engine images require NVIDIA driver `>=580` (open kernel modules). The FIPS Engine image enforces this: on an older driver it falls back to CPU, and with Flux enabled it restarts repeatedly and Flux requests return `503`. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms). Earlier releases run Flux STT on standard (non-FIPS) images only.
+**Deepgram Flux STT runs on FIPS images starting with `release-261020`.** [Flux STT](/docs/flux-self-hosted) loads `.dgv2` Flux STT model files from that release onward. All Engine images require NVIDIA driver `>=580` (open kernel modules). The FIPS Engine image enforces this: on an older driver it falls back to CPU, and with Flux STT enabled it restarts repeatedly and Flux STT requests return `503`. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms). Earlier releases run Flux STT on standard (non-FIPS) images only.
 
-**Flux TTS runs on FIPS images.** [Flux TTS](/docs/deploy-flux-tts) is subject to the [MP3 and FLAC output](#mp3-and-flac-output) issue below: batch `/v2/speak` requests return MP3 unless they set `encoding`, so set it explicitly. Streaming `/v2/speak` output is unaffected.
+**Deepgram Flux TTS runs on FIPS images.** [Flux TTS](/docs/deploy-flux-tts) is subject to the [MP3 and FLAC output](#mp3-and-flac-output) issue below: batch `/v2/speak` requests return MP3 unless they set `encoding`, so set it explicitly. Streaming `/v2/speak` output is unaffected.
 
 ## Caveats
 
-### MP3 and FLAC Output
+### MP3 and FLAC output
 
 MP3 and FLAC output are not available on FIPS images. This is a known issue. A text-to-speech request that asks for either format returns `HTTP 200` with an empty body rather than an error.
 
@@ -89,7 +89,7 @@ Format support on FIPS images:
 
 This limitation applies to audio output only. Speech-to-text requests that submit MP3 or FLAC *input* are unaffected.
 
-### TLS 1.3 Only
+### TLS 1.3 only
 
 The FIPS API image enforces TLS 1.3 exclusively. It rejects TLS 1.2 connections outright and rejects non-FIPS cipher suites (such as ChaCha20). Any TLS-1.2-only client, SDK, or proxy in front of the API will fail to connect.
 
@@ -99,13 +99,13 @@ Ensure your entire client stack negotiates TLS 1.3 before cutover.
 >
 > The `[fips]` configuration flag does not control TLS behavior. TLS 1.3 enforcement is baked into the FIPS image itself, so disabling the `[fips]` flag will not restore TLS 1.2 support.
 
-## Airgapped (Offline) Deployment
+## Airgapped (offline) deployment
 
 The deployment above reaches Deepgram's hosted license server through the License Proxy, which requires outbound internet access. If you require running FIPS-compliant self-hosted Deepgram deployments in environments without public internet connectivity, contact your Deepgram account team to inquire about airgapped access, which uses the FIPS Billing image to run license validation offline.
 
 ---
 
-## What's Next
+## What's next
 
 * [Deploy STT Services](/docs/deploy-stt-services) - Standard deployment guide
-* [Status Endpoint](/docs/self-hosted-status-endpoint) - Monitor node health and readiness
+* [Status endpoint](/docs/self-hosted-status-endpoint) - Monitor node health and readiness

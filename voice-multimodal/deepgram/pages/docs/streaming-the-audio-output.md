@@ -1,5 +1,5 @@
 ---
-title: "Audio Output Streaming"
+title: "Audio output streaming"
 source: https://developers.deepgram.com/docs/streaming-the-audio-output.md
 path: docs/streaming-the-audio-output
 ---
@@ -7,23 +7,23 @@ path: docs/streaming-the-audio-output
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Audio Output Streaming
+# Audio output streaming
 
-Upon successful processing of a Deepgram text-to-speech request, you will receive an audio file containing the synthesized text-to-speech output.
+Upon successful processing of a Deepgram text-to-speech request, you'll receive an audio file containing the synthesized text-to-speech output.
 
-Fortunately, you do not have to wait for the entire audio file to be available before playing the audio. As soon as the first byte arrives, the playback can begin, and the subsequent bytes can continue to be streamed in while the audio is already playing.
+Fortunately, you don't have to wait for the entire audio file to be available before playing the audio. As soon as the first byte arrives, the playback can begin, and the subsequent bytes can continue to be streamed in while the audio is already playing.
 
 This guide will give you some tips and provide some examples so you can start streaming the audio as soon as you receive the first byte.
 
 > **Info**
 >
-> This guide covers playing back the REST endpoint's response as it arrives — not the streaming WebSockets ([Aura](/reference/text-to-speech/speak-streaming) and [Flux](/reference/text-to-speech/speak-flux)), which are separate APIs that emit raw `linear16`, `mulaw`, or `alaw` audio only.
+> This guide covers playing back the REST endpoint's response as it arrives — not the streaming WebSockets ([Aura](/reference/text-to-speech/speak-streaming) and [Flux TTS](/reference/text-to-speech/speak-flux)), which are separate APIs that emit raw `linear16`, `mulaw`, or `alaw` audio only.
 
-## Implementation Examples
+## Implementation examples
 
 The following two examples demonstrate how to play the audio as soon as the first byte is returned. The first example takes a single text source and sends it to Deepgram for processing, while the second example chunks the text source by sentence boundaries and then consecutively sends each chunk to Deepgram for processing.
 
-### Single Text Source Payload
+### Single text source payload
 
 **`Python`**
 
@@ -179,7 +179,7 @@ Files.copy(audioStream, Path.of("output.mp3"), StandardCopyOption.REPLACE_EXISTI
 System.out.println("Audio download complete");
 ```
 
-### Chunked Text Source Payload
+### Chunked text source payload
 
 **`Python`**
 
@@ -425,13 +425,13 @@ func main() {
 
 ## Tips
 
-### Chunked Transfer Encoding
+### Chunked transfer encoding
 
 Use a reasonable chunk size to strike a balance between efficiency and responsiveness. This allows for efficient processing of the response content without overwhelming memory resources.
 
 The optimal chunk size might vary depending on the audio format, but for real-time applications where low latency is crucial, smaller chunks are generally preferred regardless of the audio format. Smaller chunks allow for faster data transmission and processing, reducing overall latency in the audio playback pipeline.
 
-### Dynamic Buffering
+### Dynamic buffering
 
 Implement dynamic buffering techniques to adapt to fluctuations in network conditions and audio playback requirements. Instead of using a fixed buffer size, dynamically adjust the buffer size based on factors such as network latency, available bandwidth, and audio playback latency.
 
@@ -535,14 +535,14 @@ func getAvailableBandwidth() int {
 }
 ```
 
-## Optimizing Streaming Performance
+## Optimizing streaming performance
 
 Select the audio format and configuration that best suits your streaming requirements and playback environment. Consider factors such as compression efficiency, network bandwidth, and device compatibility.
 
-### Efficient Streaming with Lower Bandwidth
+### Efficient streaming with lower bandwidth
 
-Opus, AAC, and MP3 are considered efficient for streaming over networks with lower available bandwidth. These formats typically offer good compression without significant loss of audio quality, making them suitable for streaming applications where conserving bandwidth is crucial. They are optimized for efficient transmission and decoding, allowing for smoother playback even under bandwidth constraints. These compressed formats apply to REST responses only.
+Opus, AAC, and MP3 are considered efficient for streaming over networks with lower available bandwidth. These formats typically offer good compression without significant loss of audio quality, making them suitable for streaming applications where conserving bandwidth is crucial. They're optimized for efficient transmission and decoding, allowing for smoother playback even under bandwidth constraints. These compressed formats apply to REST responses only.
 
-### High-Quality Streaming with Higher Bandwidth
+### High-quality streaming with higher bandwidth
 
 FLAC and Linear PCM (linear16), along with AAC at high bitrates, are better suited for streaming over networks with higher available bandwidth. These formats prioritize audio quality over compression efficiency, resulting in higher fidelity audio reproduction. While they may require more bandwidth for transmission compared to efficient codecs, they deliver superior audio quality, making them ideal for scenarios where audio fidelity is paramount, such as music streaming or professional audio applications.

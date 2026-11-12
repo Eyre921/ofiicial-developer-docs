@@ -13,15 +13,15 @@ path: docs/search
 
 `search` *string*
 
-Pre-recorded  Streaming:Nova Streaming: Flux  All available languages
+Pre-recorded  Streaming:Nova Streaming: Flux STT  All available languages
 
-Deepgram’s Search feature searches for terms or phrases by matching acoustic patterns in audio (which we have found is more accurate than matching for text patterns in transcripts) and returns results in the response JSON object. This allows you to accurately identify whether a phrase was uttered in submitted audio by letting Deepgram "hear" whether the phrase was uttered rather than by trying to look for sufficiently close matches in the text transcript.
+Deepgram’s Search feature searches for terms or phrases by matching acoustic patterns in audio (which we've found is more accurate than matching for text patterns in transcripts) and returns results in the response JSON object. This allows you to accurately identify whether a phrase was uttered in submitted audio by letting Deepgram "hear" whether the phrase was uttered rather than by trying to look for sufficiently close matches in the text transcript.
 
 > **Info**
 >
 > Because the search feature is looking for phonetic matches, it works best on longer, multisyllabic terms, or even on short to medium-length phrases.
 
-## Enable Feature
+## Enable feature
 
 To enable Search, when you call Deepgram’s API, add a `search` parameter in the querystring and set it to your chosen search term or phrase:
 
@@ -48,25 +48,25 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Search for a Term
+### Search for a term
 
 To search for a single term, send one instance of the `search` parameter in the query string when calling the API:
 
 `search=epistemology`
 
-### Search for Multiple Terms
+### Search for multiple terms
 
 You can search for multiple terms individually:
 
 `search=epistemology&search=warwick`
 
-### Search for a Phrase
+### Search for a phrase
 
 You can search for a phrase. URL-encode the phrase when submitting it.
 
 `search=social%20epistemology`
 
-## Analyze Response
+## Analyze response
 
 The term "epistemology" in this audio file is sufficiently technical that our model may not transcribe it accurately, but our phonetic search will be able to find it.
 
@@ -130,7 +130,7 @@ Let's look more closely at the `alternatives` object:
 ]
 ```
 
-The audio file contains multiple occurrences of the word "epistemology". Nova 2 correctly transcribes `epistemology` each instance correctly.
+The audio file contains multiple occurrences of the word "epistemology". Deepgram Nova 2 correctly transcribes `epistemology` each instance correctly.
 
 Now, let's take a look at the `search` object:
 
@@ -164,7 +164,7 @@ In this response, we see that each `search` contains:
 
 In this part of the response, notice:
 
-* we have received multiple hits for the word. The first two have high confidence of 1 and the third has a confidence of 97.8%.
+* we've received multiple hits for the word. The first two have high confidence of 1 and the third has a confidence of 97.8%.
 * the results contain the `start` and `end` times for each place in the audio where the model heard the word.
 * after the first three hits, there's a steep decline in the model's confidence that it heard the requested word, and none of these hits do in fact correspond to the requested word.
 

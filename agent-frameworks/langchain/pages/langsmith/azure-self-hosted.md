@@ -66,12 +66,12 @@ We recommend using Azure's managed services to provide a scalable, secure, and r
 
 | | Components | How it's installed |
 | - | - | - |
-| **LangSmith Helm release** | Frontend, backend, queue, platform backend, Playground, ACE, and optionally the LangSmith Deployment control/data plane | One `helm upgrade --install` from the [`langchain/langsmith`](https://github.com/langchain-ai/helm/tree/main/charts/langsmith) chart |
+| **LangSmith Helm release** | Frontend, backend, queue, platform backend, Playground, ACE, and optionally the LangSmith Agent Server control/data plane | One `helm upgrade --install` from the [`langchain/langsmith`](https://github.com/langchain-ai/helm/tree/main/charts/langsmith) chart |
 | **You provision** | AKS, PostgreSQL, Managed Redis, Blob Storage, Key Vault, ingress, and ClickHouse | Your IaC tooling (Terraform, ARM templates, or Azure portal) before installing LangSmith |
 
 ![Architecture diagram showing Azure relations to LangSmith services](https://mintcdn.com/langchain-5e9cc07a/_pHMPlUcXtBZtZXs/langsmith/images/azure-architecture-self-hosted.png?fit=max\&auto=format\&n=_pHMPlUcXtBZtZXs\&q=85\&s=b865048fe887c518fced3d41b3220d40)
 
-**Installation order:** provision Azure infrastructure → provision or subscribe to ClickHouse → configure Entra ID and Workload Identity → run `helm upgrade --install`. LangSmith Deployment, Fleet, Insights, and Chat are enabled through the same Helm release, not as separate installs.
+**Installation order:** provision Azure infrastructure → provision or subscribe to ClickHouse → configure Entra ID and Workload Identity → run `helm upgrade --install`. Agent Server hosting, Fleet, Insights, and Chat are enabled through the same Helm release, not as separate installs.
 
 **Compliance surface:** one application review for the LangSmith chart and its container images, plus standard Azure service reviews for each managed resource. ClickHouse Cloud adds one third-party SaaS review.
 
@@ -216,7 +216,7 @@ Ensure LangSmith services emit logs to stdout/stderr and forward them via [Fluen
 
 ## Continuous integration
 
-* The preferred method to manage [LangSmith deployments](/langsmith/deployment) is to create a CI process that builds [Agent Server](/langsmith/agent-server) images and pushes them to [Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry). Create a test deployment for pull requests before deploying a new revision to staging or production upon PR merge.
+* The preferred method to manage [Agent Servers](/langsmith/deployment) is to create a CI process that builds [Agent Server](/langsmith/agent-server) images and pushes them to [Azure Container Registry](https://azure.microsoft.com/en-us/products/container-registry). Create a test deployment for pull requests before deploying a new revision to staging or production upon PR merge.
 
 ***
 

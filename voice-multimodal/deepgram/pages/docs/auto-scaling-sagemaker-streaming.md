@@ -1,5 +1,5 @@
 ---
-title: "Auto-Scaling Real-Time Endpoints"
+title: "Auto-scaling real-time endpoints"
 source: https://developers.deepgram.com/docs/auto-scaling-sagemaker-streaming.md
 path: docs/auto-scaling-sagemaker-streaming
 ---
@@ -7,7 +7,7 @@ path: docs/auto-scaling-sagemaker-streaming
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Auto-Scaling Real-Time Endpoints
+# Auto-scaling real-time endpoints
 
 A Deepgram **real-time** endpoint serves two kinds of requests: **streaming** over a bidirectional stream (`InvokeEndpointWithBidirectionalStream`, up to 30 minutes each) and **synchronous pre-recorded** requests (`InvokeEndpoint` — a single file up to 25 MB, returned in one immediate response, Deepgram's "batch" API). Both are in-flight invocations that load the instance, so concurrent requests is the right scaling signal — which is why the high-resolution `ConcurrentRequestsPerModel` metric is ideal here.
 
@@ -151,13 +151,13 @@ To determine the right target value:
 
 For example, if one instance handles *N* concurrent streams at acceptable latency, set `TargetValue` to roughly 0.7–0.8 × *N*.
 
-Per-instance capacity varies several-fold with the request parameters — interim results, smart formatting, diarization, keyterms, and multilingual settings each change how much work a stream costs — so a number measured with one configuration does not transfer to another. Measure with your real request parameters, or contact a [Deepgram representative](https://deepgram.com/contact-us) for a planning estimate for your workload.
+Per-instance capacity varies several-fold with the request parameters — interim results, smart formatting, diarization, keyterms, and multilingual settings each change how much work a stream costs — so a number measured with one configuration doesn't transfer to another. Measure with your real request parameters, or contact a [Deepgram representative](https://deepgram.com/contact-us) for a planning estimate for your workload.
 
-If your endpoint uses [heterogeneous instance pools](#use-multiple-instance-types-for-resilience), the predefined `ConcurrentRequestsPerModel` metric is not sufficient on its own because per-instance capacity varies across pools. Follow the AWS guidance on driving the scaling policy from a weighted custom metric for mixed fleets. See [Use heterogeneous instance type endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html) for details.
+If your endpoint uses [heterogeneous instance pools](#use-multiple-instance-types-for-resilience), the predefined `ConcurrentRequestsPerModel` metric isn't sufficient on its own because per-instance capacity varies across pools. Follow the AWS guidance on driving the scaling policy from a weighted custom metric for mixed fleets. See [Use heterogeneous instance type endpoints](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html) for details.
 
 ## Verify the scaling policy
 
-After applying the policy, confirm it is active:
+After applying the policy, confirm it's active:
 
 #### AWS CLI
 
@@ -219,4 +219,4 @@ What's Next
 * [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker)
 * [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
-* [Measuring Streaming Latency](/docs/measuring-streaming-latency)
+* [Measuring streaming latency](/docs/measuring-streaming-latency)

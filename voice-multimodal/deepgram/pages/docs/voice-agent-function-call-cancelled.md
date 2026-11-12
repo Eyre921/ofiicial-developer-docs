@@ -17,11 +17,11 @@ The Voice Agent server sends `FunctionCallCancelled` when a client-side function
 
 The agent begins building a reply before the user's turn is confirmed. Function calls produced in that window are dispatched immediately unless the function sets [`defer_until_eot`](/docs/configure-voice-agent#agentthinkfunctionsdefer_until_eot). When the turn resumes, those calls are cancelled, and this message tells you which ones. The same message arrives when the user barges in after the turn was confirmed and the agent abandons the reply that produced the call.
 
-Without it, a client holding a [`FunctionCallRequest`](/docs/voice-agent-function-call-request) cannot tell a live request from an abandoned one. For background on the window itself, see [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies).
+Without it, a client holding a [`FunctionCallRequest`](/docs/voice-agent-function-call-request) cannot tell a live request from an abandoned one. For background on the window itself, see [Speculative replies & turn confirmation](/docs/voice-agent-speculative-replies).
 
 ## When you receive it
 
-The server sends this message only for calls it already sent you, whether the cancellation came from a resumed turn or from a barge-in after the turn was confirmed. A call that was still held when the turn resumed was never announced, so there is nothing to cancel and no message arrives.
+The server sends this message only for calls it already sent you, whether the cancellation came from a resumed turn or from a barge-in after the turn was confirmed. A call that was still held when the turn resumed was never announced, so there's nothing to cancel and no message arrives.
 
 ## Handling the message
 
@@ -57,4 +57,4 @@ When your client receives a `FunctionCallCancelled`:
 
 * [`FunctionCallRequest`](/docs/voice-agent-function-call-request): The message this one cancels.
 * [`UserStartedSpeaking`](/docs/voice-agent-user-started-speaking): Sent when the turn resumes, which is what triggers the cancellation.
-* [Speculative Replies & Turn Confirmation](/docs/voice-agent-speculative-replies): Why calls can be cancelled, and how to stop it happening.
+* [Speculative replies & turn confirmation](/docs/voice-agent-speculative-replies): Why calls can be cancelled, and how to stop it happening.

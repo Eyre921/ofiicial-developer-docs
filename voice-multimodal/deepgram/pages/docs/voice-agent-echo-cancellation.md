@@ -1,5 +1,5 @@
 ---
-title: "Voice Agent Adaptive Echo Cancellation"
+title: "Voice Agent adaptive echo cancellation"
 source: https://developers.deepgram.com/docs/voice-agent-echo-cancellation.md
 path: docs/voice-agent-echo-cancellation
 ---
@@ -7,7 +7,7 @@ path: docs/voice-agent-echo-cancellation
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Voice Agent Adaptive Echo Cancellation
+# Voice Agent adaptive echo cancellation
 
 Adaptive echo cancellation reduces or eliminates audio feedback that occurs when a microphone picks up audio from speakers in the same environment, dynamically adjusting based on the audio conditions.
 
@@ -15,7 +15,7 @@ Adaptive echo cancellation reduces or eliminates audio feedback that occurs when
 
 Echo cancellation addresses audio feedback issues in real-time communication applications. Many modern browsers and telephony systems have built-in echo cancellation, so you may not need additional configuration depending on your Voice Agent implementation.
 
-## Browser Implementation
+## Browser implementation
 
 Chrome implements adaptive echo cancellation effectively through its built-in WebRTC capabilities for real-time communication. Most browsers and communication apps enable adaptive echo cancellation by default.
 
@@ -25,7 +25,7 @@ References for browser-based echo cancellation:
 * [MediaTrackSettings: echoCancellation property](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackSettings/echoCancellation?)
 * [MediaTrackConstraints: echoCancellation property](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints/echoCancellation?)
 
-## Telephony Systems
+## Telephony systems
 
 Modern phones have hardware-level and software-level echo cancellation built in, ensuring users don't hear their own voice echoed back during calls. When integrating with telephony services (PSTN or VoIP), the built-in echo cancellation handles audio issues automatically without requiring additional configuration.
 
@@ -34,7 +34,7 @@ Modern phones have hardware-level and software-level echo cancellation built in,
 * VoIP apps integrated with a phone's native dialer benefit from built-in echo cancellation
 * No extra code or custom echo management is needed
 
-## What Echo Cancellation Addresses
+## What echo cancellation addresses
 
 Echo cancellation is most effective for:
 
@@ -58,6 +58,6 @@ If you're experiencing playback issues unrelated to feedback loops (stuttering, 
 
 In Voice Agent workflows, echo cancellation might not be the core issue if you're experiencing other audio problems.
 
-## Noise Suppression, Barge-In & Broader Audio Preprocessing
+## Noise suppression, barge-in & broader audio preprocessing
 
-Echo cancellation is one part of the audio preprocessing picture. For full recommendations on when to use noise suppression, echo cancellation, barge-in strategies, and other preprocessing techniques (including when they can hurt transcription accuracy), see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in).
+Echo cancellation is one part of the audio preprocessing picture. For full recommendations on when to use noise suppression, echo cancellation, barge-in strategies, and other preprocessing techniques (including when they can hurt transcription accuracy), see [Audio preprocessing & barge-in](/guides/deep-dives/audio-preprocessing-barge-in).

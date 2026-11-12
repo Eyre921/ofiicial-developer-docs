@@ -39,7 +39,7 @@ We’ve created a single integration for all bank redirects that works across St
 
 ## API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md) | `bancontact` | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | Yes |
 | [BLIK](https://docs.stripe.com/payments/blik.md)4 | `blik` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported 1 | No |

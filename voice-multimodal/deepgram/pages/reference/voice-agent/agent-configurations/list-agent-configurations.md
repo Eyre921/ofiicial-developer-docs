@@ -1,5 +1,5 @@
 ---
-title: "List Agent Configurations"
+title: "List agent configurations"
 source: https://developers.deepgram.com/reference/voice-agent/agent-configurations/list-agent-configurations.md
 path: reference/voice-agent/agent-configurations/list-agent-configurations
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-configurations/list-agent-configurations
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Agent Configurations
+# List agent configurations
 
 GET https://api.deepgram.com/v1/projects/{project_id}/agents
 

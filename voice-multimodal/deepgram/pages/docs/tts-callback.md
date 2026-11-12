@@ -1,5 +1,5 @@
 ---
-title: "TTS Callback"
+title: "TTS callback"
 source: https://developers.deepgram.com/docs/tts-callback.md
 path: docs/tts-callback
 ---
@@ -7,15 +7,15 @@ path: docs/tts-callback
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# TTS Callback
+# TTS callback
 
 `callback` *string*
 
-Text to Speech Request  Text to Speech Stream
+Text-to-Speech Request  Text-to-Speech Stream
 
-Deepgram’s Callback feature allows you to supply a callback URL to which generated text-to-speech audio can be returned. When passed, Deepgram will immediately respond with a `request_id` before processing your text asynchronously.
+Our Callback feature allows you to supply a callback URL to which generated text-to-speech audio can be returned. When passed, Deepgram will immediately respond with a `request_id` before processing your text asynchronously.
 
-## Enable Feature
+## Enable feature
 
 To enable Callback, when you call Deepgram’s API, add a `callback` parameter in the query string and set it to the URL to which you would like transcriptions sent:
 
@@ -34,13 +34,13 @@ curl \
   --url 'https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&callback=URL'
 ```
 
-## URL Structure
+## URL structure
 
 An example URL is `https://example.com/callback`.
 
 Your callback URLs may reference the `http` or `https` protocols.
 
-## Authenticating Callback Requests
+## Authenticating callback requests
 
 Authenticate callback requests to confirm that they come from Deepgram. Use Basic Auth: embed username-password credentials in the callback URL in the format `https://username:password@example.com`. Deepgram includes these credentials when it sends results to your callback server, which can then reject any request without the expected credentials.
 

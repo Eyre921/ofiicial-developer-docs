@@ -45,7 +45,7 @@ Payment methods with delayed notification can’t guarantee the outcome while th
 
 You can reuse certain payment methods (for example, cards or bank debits) for additional payments without authorizing and collecting payment details again.
 
-You should always set up reusable payment methods for future use to reduce the chance of future declines and payment friction (such as [authentication being required](https://docs.stripe.com/strong-customer-authentication.md)). Reusable payment methods can be [set up for future use when accepting a payment](https://docs.stripe.com/payments/save-during-payment.md) or [set up for future use without taking a payment](https://docs.stripe.com/payments/save-and-reuse.md).
+You should always set up reusable payment methods for future use to reduce the chance of future declines and payment friction (such as [authentication being required](https://docs.stripe.com/strong-customer-authentication.md)). Reusable payment methods can be [set up for future use when accepting a payment](https://docs.stripe.com/payments/checkout/save-during-payment.md) or [set up for future use without taking a payment](https://docs.stripe.com/payments/save-and-reuse.md).
 
 Single-use payment methods (for example, some kinds of bank transfers) can’t be attached to customers because they’re consumed after a payment attempt.
 

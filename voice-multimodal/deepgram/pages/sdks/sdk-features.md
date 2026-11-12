@@ -1,5 +1,5 @@
 ---
-title: "SDK Feature Matrix"
+title: "SDK feature matrix"
 source: https://developers.deepgram.com/sdks/sdk-features.md
 path: sdks/sdk-features
 ---
@@ -7,7 +7,7 @@ path: sdks/sdk-features
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# SDK Feature Matrix
+# SDK feature matrix
 
 Below is a list of all the features supported by our SDKs. For more details on any of these SDKs or features please refer to the corresponding documentation.
 
@@ -21,15 +21,15 @@ Below is a list of all the features supported by our SDKs. For more details on a
 | ------------------------------------------------- | ------------- | ------ | ------------------------------------ |
 | [Voice Agent](/reference/voice-agent/voice-agent) | All Available | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
 
-## Listen API (v2): Turn-based streaming
+## Listen API (v2): turn-based streaming
 
-| API Reference                                 | Options         | Status | SDK Availability                             |
-| --------------------------------------------- | --------------- | ------ | -------------------------------------------- |
-| [Flux](/reference/speech-to-text/listen-flux) | All Available\* | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| API Reference                                     | Options         | Status | SDK Availability                             |
+| ------------------------------------------------- | --------------- | ------ | -------------------------------------------- |
+| [Flux STT](/reference/speech-to-text/listen-flux) | All Available\* | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 
-* Flux Multilingual (`flux-general-multi`) is available in all six SDKs. See the [Flux Multilingual and Language Prompting guide](/docs/flux/language-prompting) for SDK-specific `language_hint` and `language_hints` examples.
+* Deepgram Flux STT Multilingual (`flux-general-multi`) is available in all six SDKs. See the [Flux STT Multilingual and Language Prompting guide](/docs/flux/language-prompting) for SDK-specific `language_hint` and `language_hints` examples.
 
-## Listen API (v1): Streaming
+## Listen API (v1): streaming
 
 | API Reference                                           | Query Options          | Status | SDK Availability                              |
 | ------------------------------------------------------- | ---------------------- | ------ | --------------------------------------------- |
@@ -61,7 +61,7 @@ Below is a list of all the features supported by our SDKs. For more details on a
 | [Streaming](/reference/speech-to-text/listen-streaming) | vad_events             | `Beta` | `JS`, `.NET``Python`,`Go`, `Rust`, `Java`     |
 | [Streaming](/reference/speech-to-text/listen-streaming) | version                | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`    |
 
-## Listen API (v1): Pre-recorded
+## Listen API (v1): pre-recorded
 
 | API Reference                                                       | Query Options    | Status | SDK Availability                             |
 | ------------------------------------------------------------------- | ---------------- | ------ | -------------------------------------------- |
@@ -96,7 +96,7 @@ Below is a list of all the features supported by our SDKs. For more details on a
 | [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | utt_split        | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
 | [Pre-recorded Audio](/reference/speech-to-text/listen-pre-recorded) | version          | `GA`   | `JS`,`.NET`, `Python`,`Go`, `Rust`, `Java`   |
 
-## Intelligence API: Pre-recorded
+## Intelligence API: pre-recorded
 
 | API Reference                                                       | Query Options   | Status | SDK Availability                              |
 | ------------------------------------------------------------------- | --------------- | ------ | --------------------------------------------- |
@@ -106,7 +106,7 @@ Below is a list of all the features supported by our SDKs. For more details on a
 | [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | summarize       | `GA`   | `JS`, `.NET`, `Python` , `Go`, `Rust`, `Java` |
 | [Intelligence Audio](/reference/speech-to-text/listen-pre-recorded) | topics          | `GA`   | `JS`, `.NET`,`Python` , `Go`, `Rust`, `Java`  |
 
-## Intelligence API: Text
+## Intelligence API: text
 
 | API Reference                                                  | Query Options | Status | SDK Availability                     |
 | -------------------------------------------------------------- | ------------- | ------ | ------------------------------------ |
@@ -115,24 +115,24 @@ Below is a list of all the features supported by our SDKs. For more details on a
 | [Intelligence Text](/reference/text-intelligence/analyze-text) | summarize     | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
 | [Intelligence Text](/reference/text-intelligence/analyze-text) | topics        | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
 
-## Text to Speech API: Streaming
+## Text-to-speech API: streaming
 
 | API Reference                                               | Query Options | Status | SDK Availability                     |
 | ----------------------------------------------------------- | ------------- | ------ | ------------------------------------ |
-| [Text to Speech](/reference/text-to-speech/speak-streaming) | encoding      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-streaming) | model         | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-streaming) | sample_rate   | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-streaming) | encoding      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-streaming) | model         | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-streaming) | sample_rate   | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Java` |
 
-## Text to Speech API: REST
+## Text-to-speech API: REST
 
 | API Reference                                             | Query Options | Status | SDK Availability                             |
 | --------------------------------------------------------- | ------------- | ------ | -------------------------------------------- |
-| [Text to Speech](/reference/text-to-speech/speak-request) | bit_rate      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-request) | callback      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-request) | container     | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-request) | encoding      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-request) | model         | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
-| [Text to Speech](/reference/text-to-speech/speak-request) | sample_rate   | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-request) | bit_rate      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-request) | callback      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-request) | container     | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-request) | encoding      | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-request) | model         | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
+| [Text-to-Speech](/reference/text-to-speech/speak-request) | sample_rate   | `GA`   | `JS`, `.NET`, `Python`, `Go`, `Rust`, `Java` |
 
 ## Manage API
 

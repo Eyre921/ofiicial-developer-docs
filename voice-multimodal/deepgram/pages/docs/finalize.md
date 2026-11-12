@@ -15,9 +15,9 @@ Use the `Finalize` message to flush the WebSocket stream. This forces the server
 
 ## Purpose
 
-In real-time audio processing, there are scenarios where you may need to force the server to process (*or flush*) all unprocessed audio data immediately. Deepgram supports a `Finalize` message to handle such situations, ensuring that interim results are treated as final.
+In real-time audio processing, there are scenarios where you may need to force the server to process (*or flush*) all unprocessed audio data immediately. We support a `Finalize` message to handle such situations, ensuring that interim results are treated as final.
 
-## Example Payloads
+## Example payloads
 
 To send the `Finalize` message, you need to send the following JSON message to the server:
 
@@ -40,7 +40,7 @@ You can optionally specify a `channel` field to finalize a specific channel. If 
 }
 ```
 
-Upon receiving the Finalize message, the server will process all remaining audio data and return the final results. You may receive a response with the `from_finalize` attribute set to `true`, indicating that the finalization process is complete. This response typically occurs when there is a noticeable amount of audio buffered in the server.
+Upon receiving the Finalize message, the server will process all remaining audio data and return the final results. You may receive a response with the `from_finalize` attribute set to `true`, indicating that the finalization process is complete. This response typically occurs when there's a noticeable amount of audio buffered in the server.
 
 If you specified a `channel` to be finalized, use the response's `channel_index` field to check which channel was finalized.
 
@@ -54,9 +54,9 @@ If you specified a `channel` to be finalized, use the response's `channel_index`
 
 > **Info**
 >
-> In most cases, you will receive this response, but it is not guaranteed if there is no significant amount of audio data to process.
+> In most cases, you'll receive this response, but it is not guaranteed if there's no significant amount of audio data to process.
 
-## Language-Specific Implementations
+## Language-specific implementations
 
 Below are code examples to help you get started using `Finalize`.
 
@@ -197,7 +197,7 @@ WebSocket ws = client.newWebSocketBuilder()
     .join();
 ```
 
-### Streaming Examples
+### Streaming examples
 
 Here are more complete examples that make a streaming request and use Finalize. Try running these examples to see how Finalize can be sent to Deepgram, forcing the API to process all unprocessed audio data and immediately return the results.
 

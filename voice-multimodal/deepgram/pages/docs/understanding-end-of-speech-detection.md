@@ -1,5 +1,5 @@
 ---
-title: "End of Speech Detection While Live Streaming"
+title: "End of speech detection while live streaming"
 source: https://developers.deepgram.com/docs/understanding-end-of-speech-detection.md
 path: docs/understanding-end-of-speech-detection
 ---
@@ -7,15 +7,15 @@ path: docs/understanding-end-of-speech-detection
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# End of Speech Detection While Live Streaming
+# End of speech detection while live streaming
 
 To pinpoint the end of speech post-speaking more effectively, immediate notification of speech detection is preferred over relying on the initial transcribed word inference. This is achieved through a Voice Activity Detector (VAD), which gauges the tonal nuances of human speech and can better differentiate between silent and non-silent audio.
 
-# Limitations of Endpointing
+# Limitations of endpointing
 
-Deepgram's [Endpointing](/docs/endpointing) and [Interim Results](/docs/interim-results) features are designed to detect when a speaker finishes speaking.
+Deepgram's [Endpointing](/docs/endpointing) and [Interim results](/docs/interim-results) features are designed to detect when a speaker finishes speaking.
 
-Deepgram's Endpointing feature uses an audio-based Voice Activity Detector (VAD) to determine when a person is speaking and when there is silence. When the state of the audio goes from speech to a configurable duration of silence (set by the `endpointing` query parameter), Deepgram will chunk the audio and return a transcript with the `speech_final` flag set to `true`.
+Deepgram's Endpointing feature uses an audio-based Voice Activity Detector (VAD) to determine when a person is speaking and when there's silence. When the state of the audio goes from speech to a configurable duration of silence (set by the `endpointing` query parameter), Deepgram will chunk the audio and return a transcript with the `speech_final` flag set to `true`.
 
 > **Info**
 >
@@ -29,7 +29,7 @@ In a quiet room with little background noise, Deepgram's Endpointing feature wor
 
 ## Using UtteranceEnd
 
-To address the limitations described above, Deepgram offers the [UtteranceEnd](/docs/utterance-end) feature. The UtteranceEnd feature looks at the word timings of both finalized and interim results to determine if a sufficiently long gap in words has occurred. If it has, Deepgram will send a JSON message over the websocket with following shape:
+To address the limitations described above, we offer the [UtteranceEnd](/docs/utterance-end) feature. The UtteranceEnd feature looks at the word timings of both finalized and interim results to determine if a sufficiently long gap in words has occurred. If it has, Deepgram will send a JSON message over the websocket with following shape:
 
 **`JSON`**
 
@@ -45,17 +45,17 @@ The `"last_word_end"` field is the end timestamp of the last word spoken before 
 
 To enable this feature, add the query parameter `utterance_end_ms=1234` to your websocket URL and replace `1234` with the number of milliseconds you want Deepgram to wait before sending the `UtteranceEnd` message.
 
-For example, if you set `utterance_end_ms=1000` Deepgram will wait for a 1000 ms gaps between transcribed words before sending the `UtteranceEnd` message. Since this feature relies on word timings in the message transcript, it ignores non-speech audio such as: door knocking, a phone ringing or street noise.
+For example, if you set `utterance_end_ms=1000` Deepgram will wait for a 1000 ms gaps between transcribed words before sending the `UtteranceEnd` message. Since this feature relies on word timings in the message transcript, it ignores non-speech audio such as: door knocking, a phone ringing, or street noise.
 
-You should set the value of `utterance_end_ms` to be `1000` ms or higher. Deepgram's Interim Results are sent every 1 second, so using a value of less than 1 second will not offer any benefits.
+You should set the value of `utterance_end_ms` to be `1000` ms or higher. Deepgram's Interim Results are sent every 1 second, so using a value of less than 1 second won't offer any benefits.
 
 > **Info**
 >
 > When using `utterance_end_ms`, setting `interim_results=true` is also required.
 
-## Using UtteranceEnd and Endpointing
+## Using UtteranceEnd and endpointing
 
-You can use both the [Endpointing](/docs/endpointing) and [UtteranceEnd](/docs/utterance-end) features. They operate completely independently from one another, so it is possible to use both at the same time. When using both features in your app, you may want to trigger your "speaker has finished speaking" logic using the following rules:
+You can use both the [Endpointing](/docs/endpointing) and [UtteranceEnd](/docs/utterance-end) features. They operate completely independently from one another, so it's possible to use both at the same time. When using both features in your app, you may want to trigger your "speaker has finished speaking" logic using the following rules:
 
 * trigger when a transcript with `speech_final=true` is received (which may be followed by an `UtteranceEnd` message which can be ignored),
 * trigger if you receive an `UtteranceEnd` message with no preceding `speech_final=true` message and send the last-received transcript for further processing.

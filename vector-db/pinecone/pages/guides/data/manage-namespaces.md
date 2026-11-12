@@ -70,7 +70,7 @@ import io.pinecone.configs.PineconeConfig;
 import io.pinecone.configs.PineconeConnection;
 import io.pinecone.proto.NamespaceDescription;
 import io.pinecone.proto.MetadataSchema;
-import io.pinecone.proto.MetadataSchemaField;
+import io.pinecone.proto.MetadataFieldProperties;
 
 public class CreateNamespaceExample {
     public static void main(String[] args) {
@@ -82,7 +82,7 @@ public class CreateNamespaceExample {
 
         Index index = new Index(config, connection, "INDEX_NAME");
 
-        MetadataSchemaField filterable = MetadataSchemaField.newBuilder()
+        MetadataFieldProperties filterable = MetadataFieldProperties.newBuilder()
             .setFilterable(true)
             .build();
 
@@ -272,13 +272,13 @@ public class Namespaces {
         Index index = new Index(config, connection, "docs-example");
 
         // List all namespaces with default pagination limit (100)
-        ListNamespacesResponse listNamespacesResponse = index.listNamespaces(null, null);
+        ListNamespacesResponse listNamespacesResponse = index.listNamespaces();
 
         // List all namespaces with pagination limit of 2
-        ListNamespacesResponse listNamespacesResponseWithLimit = index.listNamespaces(2);
+        ListNamespacesResponse listNamespacesResponseWithLimit = index.listNamespaces(null, 2);
 
         // List all namespaces with pagination limit and token
-        ListNamespacesResponse listNamespacesResponsePaginated = index.listNamespaces(5, "eyJza2lwX3Bhc3QiOiIxMDEwMy0=");
+        ListNamespacesResponse listNamespacesResponsePaginated = index.listNamespaces("eyJza2lwX3Bhc3QiOiIxMDEwMy0=", 5);
 
         System.out.println(listNamespacesResponseWithLimit);
     }

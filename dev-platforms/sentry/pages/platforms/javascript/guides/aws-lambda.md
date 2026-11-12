@@ -21,22 +21,22 @@ AWS Lambda offers two function types for Node.js, and each needs a different Sen
 * **[Lambda Event Functions](https://docs.aws.amazon.com/lambda/latest/dg/lambda-functions-chapter.html)** run a handler that Lambda invokes in response to events, such as API Gateway requests or SQS messages. Use the `@sentry/aws-serverless` SDK described on this page.
 * **[Lambda Web Functions](https://docs.aws.amazon.com/lambda/latest/dg/web-functions.html)** run a standard HTTP server, like Express or Hono, that listens on a port and has no Lambda handler. Use the [Node.js SDK](https://docs.sentry.io/platforms/javascript/guides/node.md) instead. Its default [`awsLambdaWebIntegration`](https://docs.sentry.io/platforms/javascript/guides/node/configuration/integrations/awslambdaweb.md) adds Lambda metadata, like request IDs and cold starts, to your errors and spans.
 
-On this page you'll get an overview how to install, configure and use Sentry in your AWS Lambda functions. Once set up, our SDK will automatically report error and performance data from your Lambda Functions. Issues in Sentry will automatically include cloudwatch data, function details and execution time measurements.
+On this page you'll get an overview how to install, configure and use Sentry in your AWS Lambda Event Functions (formerly called Lambda functions). Once set up, our SDK will automatically report error and performance data from your functions. Issues in Sentry will automatically include cloudwatch data, function details and execution time measurements.
 
 ## [Installation](https://docs.sentry.io/platforms/javascript/guides/aws-lambda.md#installation)
 
-Depending on your preferences, you can install Sentry in your Lambda functions using the [Sentry AWS Lambda Layer](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/install/layer.md) (recommended) or the [Sentry AWS NPM package](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/install/npm.md).
+Depending on your preferences, you can install Sentry in your Event Functions using the [Sentry AWS Lambda Layer](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/install/layer.md) (recommended) or the [Sentry AWS NPM package](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/install/npm.md).
 
 ### [Should I use the Lambda Layer or the NPM package?](https://docs.sentry.io/platforms/javascript/guides/aws-lambda.md#should-i-use-the-lambda-layer-or-the-npm-package)
 
 We generally recommend using the Lambda layer as it doesn't require you to deploy any Sentry dependency alongside your function. With the layer, you can achieve the same level of customization as with the NPM package. There are two reasons why you still might want to use the NPM package instead:
 
-1. You want to minimize lambda function size and tree-shake parts of the SDK code that you don't need. A related reason might be because you're transpiling your code and want to transpile your dependencies as well.
+1. You want to minimize function size and tree-shake parts of the SDK code that you don't need. A related reason might be because you're transpiling your code and want to transpile your dependencies as well.
 2. You already use NPM packages and deploy `node_modules` with your function and you don't want to add a (or another) Lambda layer to your functions.
 
 ## [Configuration](https://docs.sentry.io/platforms/javascript/guides/aws-lambda.md#configuration)
 
-After installing the SDK, you might want to configure some parameters. Besides the [common SDK configuration](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/configuration.md), you can also [configure Sentry's Lambda Function handler wrapper](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/configuration/lambda-wrapper.md) to optimize function runtime overhead and timeout warnings.
+After installing the SDK, you might want to configure some parameters. Besides the [common SDK configuration](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/configuration.md), you can also [configure Sentry's Lambda handler wrapper](https://docs.sentry.io/platforms/javascript/guides/aws-lambda/configuration/lambda-wrapper.md) to optimize function runtime overhead and timeout warnings.
 
 ## [Verify](https://docs.sentry.io/platforms/javascript/guides/aws-lambda.md#verify)
 

@@ -182,6 +182,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Error handling](#error-handling-docs-dictation-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx)
 - [Reduce connection overhead](#reduce-connection-overhead-docs-dictation-connection-pre-warming-mdx)
+- [Authenticate your app](#authenticate-your-app-docs-dictation-authenticate-your-app-mdx)
 - [Inserting at the cursor](#inserting-at-the-cursor-docs-dictation-inserting-at-the-cursor-mdx)
 - [Quickstart](#quickstart-docs-tts-getting-started-quickstart-mdx)
 - [Optimizing Accuracy and Latency](#optimizing-accuracy-and-latency-docs-tts-getting-started-optimizing-accuracy-and-latency-mdx)
@@ -3735,6 +3736,7 @@ Each product page shows how its client uses the token:
 
 - [Real-time STT](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming TTS](/tts/authenticate-with-a-temporary-token)
+- [Dictation](/dictation/authenticate-your-app)
 - [Voice Agent API](/voice-agents/voice-agent-api/browser-integration)
 
 ## Limit what a token can do
@@ -47693,6 +47695,10 @@ Authorization: <YOUR_API_KEY>
   "Unauthorized", "detail": "Invalid API key"}` when the key is wrong, and
   `"Missing Authorization header"` when there is no key at all.
 
+If your app calls Dictation from your users' devices, don't ship your API key in
+it. Your server can mint each user a short-lived, Dictation-only temporary token
+to send instead. See [Authenticate your app](/dictation/authenticate-your-app).
+
 ### Request body
 
 The body is `multipart/form-data` with two parts, in this order:
@@ -49847,6 +49853,251 @@ dictation app that is the moment the user starts recording: the handshake then
 runs concurrently with the recording, and by the time they stop speaking the
 connection is open and fresh. `/warm` is idempotent and cheap, so calling it
 again to refresh an aging connection is fine.
+
+---
+
+<a id="authenticate-your-app-docs-dictation-authenticate-your-app-mdx"></a>
+
+# Authenticate your app
+
+URL: https://www.assemblyai.com/docs/dictation/authenticate-your-app
+Source: docs/dictation/authenticate-your-app.mdx
+Navigation: Dictation API > Advanced
+Description: Keep your API key on your server, give each user a short-lived Dictation-only token, and keep your rewrite prompt off their device.
+
+If your app calls Dictation from your users' devices (a desktop app, a mobile
+app or a web page), don't ship your API key in it. Anyone can read a key out of
+an app or its network traffic and use it for anything your account can do.
+
+Instead, your server keeps the key and hands each signed-in user a temporary
+token when they're about to dictate. The token works in place of your key, only
+for Dictation, and expires after a short window. If you send your own rewrite
+prompt, save it in your account so the app sends its name instead of the prompt.
+
+  
+    When a signed-in user is about to dictate, your server sends your API key to
+    the token endpoint and gets back a token that can only open Dictation.
+  
+  
+    The app sends the dictation request as usual, with the token in the
+    `Authorization` header instead of your API key.
+  
+  
+    The token stops opening new requests after the time you set, so a token
+    that leaks is worth little.
+  
+
+## Mint a Dictation-only token
+
+Send `POST` to a token host with your API key and an `access` block that turns
+off every other product:
+
+```bash
+curl -X POST "https://token.assemblyai.com/v1/token" \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "product": "dictation",
+    "expires_in_seconds": 60,
+    "access": {
+      "streaming": { "enabled": false },
+      "sync": { "enabled": false },
+      "speech_to_speech": { "enabled": false },
+      "tts": { "enabled": false },
+      "llm_gateway": { "enabled": false }
+    }
+  }'
+```
+
+```json
+{ "token": "<temporary token>", "expires_in_seconds": 60 }
+```
+
+  `"product": "dictation"` on its own doesn't stop the token opening other
+  products. Without the `access` block, a token minted for Dictation can also
+  call Streaming, Sync, the Voice Agent API, TTS and LLM Gateway, billed to your
+  account. Always send the
+  `access` block from a token you hand to a user's device.
+
+Turning off `sync` and `llm_gateway` doesn't affect Dictation, which calls them
+with its own credentials, not your token. `llm_response`,
+`llm_instruction`, `rewrite_mode` and saved prompts work the same with a
+Dictation-only token.
+
+Here's the same request from a server, in Python and Node.js:
+
+```python Python
+import os
+import requests
+
+DICTATION_ONLY = {
+    "streaming": {"enabled": False},
+    "sync": {"enabled": False},
+    "speech_to_speech": {"enabled": False},
+    "tts": {"enabled": False},
+    "llm_gateway": {"enabled": False},
+}
+
+def mint_dictation_token() -> str:
+    response = requests.post(
+        "https://token.assemblyai.com/v1/token",
+        headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+        json={"product": "dictation", "expires_in_seconds": 60, "access": DICTATION_ONLY},
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()["token"]
+```
+
+```javascript Node.js
+const DICTATION_ONLY = {
+  streaming: { enabled: false },
+  sync: { enabled: false },
+  speech_to_speech: { enabled: false },
+  tts: { enabled: false },
+  llm_gateway: { enabled: false },
+};
+
+export async function mintDictationToken() {
+  const response = await fetch("https://token.assemblyai.com/v1/token", {
+    method: "POST",
+    headers: {
+      Authorization: process.env.ASSEMBLYAI_API_KEY,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ product: "dictation", expires_in_seconds: 60, access: DICTATION_ONLY }),
+  });
+  if (!response.ok) throw new Error(`Token request failed: ${response.status}`);
+  return (await response.json()).token;
+}
+```
+
+Serve this from an endpoint in your own backend that only your signed-in users
+can call. See [Temporary tokens](/temporary-tokens) for every field the token
+endpoint takes.
+
+## Dictate with the token
+
+On the device, send the dictation request exactly as you would with your API
+key, and put the token in the `Authorization` header. Both endpoints accept the
+token, and both allow requests from any web origin, so a browser can call
+Dictation directly:
+
+```javascript
+async function dictate(audioBlob, { getToken }) {
+  const token = await getToken(); // from your backend's mint endpoint
+
+  const form = new FormData();
+  form.append("config", JSON.stringify({}));      // config goes first
+  form.append("audio", audioBlob, "audio.wav");
+
+  const response = await fetch("https://dictation.assemblyai.com/v1/transcribe/live", {
+    method: "POST",
+    headers: { Authorization: token },
+    body: form,
+  });
+  if (!response.ok) throw new Error(`Dictation failed: ${response.status}`);
+
+  const result = await response.json();
+  return result.llm_response || result.text; // fall back to the verbatim transcript
+}
+```
+
+To upload while the user is still speaking, use the same token with the
+streaming request in [Achieve lowest latency](/dictation/uploading-while-recording).
+
+## Keep tokens off the critical path
+
+Fetching a token is one more round trip, so don't wait to fetch it until the
+user starts speaking:
+
+- **Fetch it early.** Mint a token when the user is likely to dictate soon, such
+  as when your dictation UI opens or the app comes to the front, and keep it
+  until it's close to expiring.
+- **Mint a fresh token before it expires.** `expires_in_seconds` is how long a
+  token can wait before it opens a request, from 1 to 600. A request that opens
+  in time runs to the end, even a long recording on
+  [`/v1/transcribe`](/dictation/recordings-over-two-minutes).
+- **Keep the window short.** Until it expires, a token can open more than one
+  request. A short window limits what a leaked token can do.
+- **Pre-warm without a token.** [`GET /warm`](/dictation/connection-pre-warming)
+  needs no key or token, so you can warm the connection while the token is still
+  on its way.
+
+Mint the token before you start recording. If a streaming request is rejected
+with `401` partway through, the audio you already streamed can't be sent again,
+so get a fresh token first and avoid starting a dictation on a token that's
+about to expire.
+
+## Protect your mint endpoint
+
+Usage through a token is billed to the API key that minted it, and a token
+carries nothing about which of your users it was minted for. Your backend is the
+only place that knows who asked for each token, so put your controls there:
+
+- Mint tokens only for users who are signed in to your app.
+- Rate-limit the endpoint per user, for example a few tokens a minute, which is
+  plenty for dictation.
+- Log which user each token was minted for, so you can trace unusual usage back
+  to an account and block it.
+
+## Keep your prompt off the device
+
+If you rewrite with your own prompt, the prompt travels in every request your
+app sends, where anyone inspecting the traffic can read it. Save the prompt in
+your account instead, and have the app send only its name.
+
+Create the [saved prompt](/llm-gateway/saved-prompts) once, from your server or
+as a deploy step, with your API key. Put `{{ text }}` where the transcript goes:
+
+```bash
+curl -X POST "https://llm-gateway.assemblyai.com/v1/prompts" \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "my-app-cleanup",
+    "prompt": "{\"model\": \"gemma-4-31b\", \"max_tokens\": 500, \"messages\": [{\"role\": \"system\", \"content\": \"Clean up this dictation for {{ user_name }}. Remove filler words and fix punctuation. Reply with only the text.\"}, {\"role\": \"user\", \"content\": \"{{ text }}\"}]}"
+  }'
+```
+
+Then the app refers to it by name in the `llm` field of its dictation config,
+with any per-user values in `prompt_replacements`:
+
+```json
+{
+  "llm": {
+    "aai_prompt": "my-app-cleanup",
+    "prompt_replacements": { "user_name": "Sam" }
+  }
+}
+```
+
+The prompt itself never reaches the device, and you can change it without
+shipping a new version of your app. The model, `max_tokens` and other settings
+come from the saved prompt, so don't send `rewrite_mode` or other `llm` fields
+with it. See [Sending your own LLM request](/dictation/transcript-rewriting#sending-your-own-llm-request)
+for the details.
+
+## Data zones
+
+Mint the token on the token host for the data zone your app sends dictations to:
+
+| Dictation host | Token host |
+|---|---|
+| `https://dictation.assemblyai.com` | `https://token.assemblyai.com` |
+| `https://dictation.us.assemblyai.com` | `https://token.us.assemblyai.com` |
+| `https://dictation.eu.assemblyai.com` | `https://token.eu.assemblyai.com` |
+
+See [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones).
+
+## Related pages
+
+- [Temporary tokens](/temporary-tokens): every field the token endpoint takes.
+- [Transcript rewriting](/dictation/transcript-rewriting): instructions, rewrite
+  modes and saved prompts.
+- [Error handling](/dictation/error-handling): status codes and retries.
+- [Achieve lowest latency](/dictation/uploading-while-recording): upload while
+  the user speaks.
 
 ---
 
@@ -61425,189 +61676,67 @@ Description: Open the LLM Gateway model catalog.
 URL: https://www.assemblyai.com/docs/llm-gateway/choose-a-model
 Source: docs/llm-gateway/choose-a-model.mdx
 Navigation: LLM Gateway > Getting started
-Description: Pick the best LLM Gateway model for voice post-processing tasks like summarization, extraction, text correction, and dictation, using the benchmark data from the models endpoint.
+Description: Compare LLM Gateway models on quality, cost, and latency for summarization, extraction, transcript clean-up, and dictation, with live benchmark charts and recommended models for each use case.
 
-## Overview
+AssemblyAI benchmarks every model on LLM Gateway on the jobs you run on transcripts: summaries, extracting action items and entities, cleaning up transcripts, and applying dictation commands. Each model is scored on real call transcripts at four audio lengths, along with what it costs and how fast it responds. Start with the recommendations below, compare models in the live chart, or have your coding agent pick one for you.
 
-LLM Gateway gives you access to dozens of models, and the best one depends on your task, how long your audio is, and whether you care most about quality, speed, or cost. The [models endpoint](/llm-gateway/api-reference/list-available-models) answers this for you. Alongside each model's pricing and supported parameters, it returns a `performance` block with benchmark results for voice post-processing tasks.
+## Recommended models
 
-The numbers come from [Voice Standard Bench](https://github.com/AssemblyAI/voice-standard-bench), AssemblyAI's open source benchmark. It runs every model behind LLM Gateway on real call transcripts and measures quality, latency, and cost.
+| Use case | Top score | Cheapest near the top | Fastest near the top |
+| --- | --- | --- | --- |
+| Summarize 2-minute calls | `claude-opus-5-5` | `mercury-voice` (low) | `mercury-voice` (low) |
+| Summarize 1-hour meetings | `deepseek-v4.1-flash` | `deepseek-v4.1-flash` | `gpt-6-astra` |
+| Extract action items from 2-minute calls | `gpt-6-luna` (high) | `gpt-6-luna` (high) | `gpt-6.1-terra` |
+| Extract action items from 1-hour meetings | `gpt-6.1-sol` | `gpt-6-luna` | `gpt-6-luna` |
+| Clean up 2-minute transcripts | `gpt-6.1-sol` | `gpt-5.6-luna` | `gpt-5.6-luna` |
+| Apply dictation commands | `gemini-4-argon` | `gemini-2.5-flash-lite` | `mercury-voice` (low) |
+| Several tasks on 1-hour recordings | `gpt-6-astra` | `gpt-6-luna` | `gpt-6-sol` |
 
-  Field names and values can change as the benchmark grows, so read it from the endpoint instead of copying numbers into your code.
+**Near the top** means within 3 points of the top score, about as close as the benchmark can tell models apart. Faster and cheaper models exist further down, at a bigger drop in quality, and the chart below shows them. A value in parentheses is the [`reasoning_effort`](#reasoning-effort) to send. Dictation picks use 30-second audio, and extraction covers action items, decisions, participants, and entities. These picks are from the October 29, 2026 benchmark run. The chart below always shows the latest results. `mercury-voice` runs on Inception Labs, an opt-in provider, so turn it on in [Data Controls](https://www.assemblyai.com/dashboard/settings/data-controls) first, or requests to it return `400`.
 
-## How the numbers work
+## Compare models
 
-### Tasks
+Pick a task and an audio length, then compare each model's score against its cost or its latency. Each dot is a model at one reasoning effort. Purple dots are the best score you can get for that cost or latency, so a model below the purple line has a better option to its left. The shaded band holds the models near the top score. Hover over a dot for its numbers, and sort the table by any column.
 
-Each model is tested on four voice post-processing tasks. Your model's score for each task is in `task_quality`.
+## How to pick
 
-| Task                   | Key in `task_quality`    | What the model does                                                                  | How it's scored                                                                            |
-| ---------------------- | ------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| Summarization          | `summarization`          | Summarizes a call transcript.                                                        | An LLM judge scores faithfulness, coverage, and conciseness against the source transcript. |
-| Information extraction | `information_extraction` | Pulls participants, action items, decisions, and entities from a transcript as JSON. | An LLM judge scores groundedness and completeness against the source transcript.           |
-| Text correction        | `text_correction`        | Cleans up disfluencies and errors in a transcript without changing its meaning.      | An LLM judge scores faithfulness and improvement.                                          |
-| Dictation              | `dictation`              | Applies spoken commands such as "comma", "all caps", and "new paragraph".            | Scored mechanically against an answer key, with no LLM judge.                              |
+1. **Match your audio length.** Scores drop as transcripts get longer, so a model that's best on 2-minute calls can be a poor choice for hour-long meetings. If your audio falls between two lengths, use the longer one.
+2. **Rank on the task you run.** Use the score for that task. Look at **All tasks** only if one model will handle several jobs.
+3. **Keep to what you can use.** Choose **EU** if you need [EU data residency](/llm-gateway/cloud-endpoints-and-data-residency). Check that the model supports the features you need on the [Models](/llm-gateway/available-models) page, such as `response_format` for [structured outputs](/llm-gateway/structured-outputs) or `tools` for [tool calling](/llm-gateway/tool-calling).
+4. **Treat close scores as a tie.** A gap of 1 or 2 points isn't meaningful, so take the cheaper or faster model.
+5. **Check the slow tail for real-time use.** Compare p95 latency as well as the median, and time to first token if you stream.
+6. **Add a fallback.** Set the runner-up as a [fallback](/llm-gateway/fallback) so requests keep working if your first choice fails.
+7. **Test on your own transcripts.** The benchmark uses fixed prompts on call audio. Run your shortlist on a few of your own transcripts before you go to production.
 
-Quality scores run from 1 to 100, where higher is better. The overall `quality_score` is the equal-weight average of the tasks that have data.
+### Reasoning effort
 
-### Audio length buckets
+Some models are measured at more than one `reasoning_effort`, such as `none`, `low`, or `high`, and each setting is a separate dot with its own score, cost, and latency. A lower setting is often much faster and cheaper for a small drop in score. To use one, send it in the [`reasoning_effort`](/llm-gateway/api-reference/create-chat-completion#body-reasoning-effort) parameter of your [chat completions](/llm-gateway/chat-completions) request. Models without a value in parentheses were measured without the parameter. Only models that list `reasoning_effort` under supported parameters on the [Models](/llm-gateway/available-models) page accept it, and other models return `400` if you send it.
 
-Every row in `performance.data` is for one audio length, in the `bucket` field: `30s`, `120s`, `900s`, or `3600s`. Pick the bucket closest to the transcripts you process. Scores generally drop as transcripts get longer, so a model that is excellent on 30-second calls can be a different choice for hour-long recordings.
+## Let a coding agent pick
 
-### Fields
-
-| Field                                | Meaning                                                                                                                                                             |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `quality_score`                      | Combined quality, 1 to 100.                                                                                                                                         |
-| `task_quality`                       | Quality per task, 1 to 100.                                                                                                                                         |
-| `cost_per_hour_usd`                  | Estimated cost to process one hour of audio. Use this to compare cost across models, buckets, and tasks. `task_cost_per_hour_usd` gives the same estimate per task. |
-| `total_cost_usd`, `cost_per_quality` | Cost of the benchmark samples behind the score. `cost_per_quality` is cost per call per quality point, in cents, where lower is more efficient.                     |
-| `latency`                            | End-to-end request latency in seconds, with `p50`, `p95`, `mean`, `min`, `max`, and sample count `n`.                                                               |
-| `ttft`                               | Time to first token in seconds from a separate streaming run, with the same statistics as `latency`.                                                                |
-| `tokens_per_second`                  | Output speed.                                                                                                                                                       |
-| `reasoning_effort`                   | The reasoning setting the row was measured with. See [Reasoning effort rows](#reasoning-effort-rows).                                                               |
-
-### Reading the numbers carefully
-
-- **A `0` means no data, not a bad score.** Dictation isn't measured on the `900s` and `3600s` buckets, so its `task_quality` is `0` there. A `ttft` of `0` means it wasn't measured. Skip zeros instead of ranking on them.
-- **Small gaps are noise.** A one- or two-point difference between models doesn't tell you much. Prefer the cheaper or faster model when scores are close.
-- **Cross-check outliers.** If a single task score is far above the model's `quality_score` or its other tasks, it may come from very few usable samples. Check `latency.n` and the other tasks before trusting it.
-- **Look at `p95`, not just `p50`.** A model with a fast median can still have a slow tail, which matters for real-time use.
-- **Costs use global pricing.** They don't include the regional surcharge shown on the [Models](/llm-gateway/available-models#pricing-details) page. `cost_per_hour_usd` is an estimate based on average tokens per hour of audio, so fast or slow talkers shift your real cost.
-- **The benchmark uses fixed prompts.** Your prompts, your audio, and your domain will differ. Treat the numbers as a way to build a shortlist, then test the shortlist on your own data.
-
-### Reasoning effort rows
-
-Most models have one row per bucket with `reasoning_effort` set to `default`. That means the benchmark didn't send the `reasoning_effort` parameter. A few models have extra rows measured with a specific value, such as `none`, `low`, or `high`. Each row is a separate configuration with its own quality, latency, and cost, so a lower setting can be much faster and cheaper at a small cost in quality.
-
-To use a non-default row, send that value in the `reasoning_effort` parameter of your [chat completions](/llm-gateway/chat-completions) request. Only models that list `reasoning_effort` in `supported_parameters` accept it.
-
-## Pick a model
-
-Work through these filters in order. They're the same ones the coding agent prompt below applies.
-
-1. **Match the bucket.** Choose the `bucket` closest to your typical audio length. If your audio falls between buckets, use the longer one.
-2. **Rank by the task you run.** Use `task_quality` for that task. Use `quality_score` only if you run several tasks with the same model.
-3. **Filter to what you can use.** Drop models where `retirement_date` isn't `0`, models whose `available_regions` don't include your region (see [Cloud endpoints and data residency](/llm-gateway/cloud-endpoints-and-data-residency)), and models whose `supported_parameters` lack what you need, such as `response_format` for [structured outputs](/llm-gateway/structured-outputs) or `tools` for [tool calling](/llm-gateway/tool-calling).
-4. **Apply your constraint.** For lowest cost, sort by `cost_per_hour_usd`. For real-time responses, sort by `latency.p50` and check `latency.p95` (or `ttft` if you stream). For best quality, take the top score.
-5. **Break ties on cost.** Among models within a couple of quality points of the top, choose the cheapest or fastest.
-6. **Add a fallback.** Pick the runner-up as a [fallback](/llm-gateway/fallback) so requests keep working if your primary model fails.
-
-### Example from the data
-
-This snapshot is from October 15, 2026. For each bucket it shows the top-scoring model and the cheapest model within 3 points of it, excluding models with a retirement date. Quality is the combined `quality_score`. The endpoint is the source of truth, so query it for current results.
-
-| Audio length | Goal                     | Model                  | Quality | Cost per hour | p50 latency | Regions        |
-| ------------ | ------------------------ | ---------------------- | ------- | ------------- | ----------- | -------------- |
-| `30s`        | Top score                | `gpt-6-luna` (`high`)  | 96      | $0.0054       | 2.5 s       | US, global     |
-| `30s`        | Cheapest within 3 points | `gpt-6-luna` (`none`)  | 94      | $0.0028       | 0.9 s       | US, global     |
-| `120s`       | Top score                | `gemini-4-argon`       | 94      | $0.073        | 2.6 s       | US, EU, global |
-| `120s`       | Cheapest within 3 points | `gemma-4-31b` (`none`) | 91      | $0.0036       | 1.7 s       | US             |
-| `900s`       | Top score                | `claude-opus-5`        | 89      | $0.32         | 14.9 s      | US, global     |
-| `900s`       | Cheapest within 3 points | `gpt-6-luna`           | 87      | $0.0048       | 15.5 s      | US, global     |
-| `3600s`      | Top score                | `gpt-6-astra`          | 88      | $0.35         | 24.1 s      | US             |
-| `3600s`      | Cheapest within 3 points | `gpt-6-luna`           | 85      | $0.0039       | 19.0 s      | US, global     |
-
-Models with no setting in parentheses were measured at `default` reasoning effort. Per-task winners differ from these overall winners, so rank on `task_quality` for your task before you decide.
-
-## Query the models endpoint
-
-The endpoint is public, so you don't need an API key. This example lists the five best models for summarization on 2-minute audio, skipping retiring models and models with no summarization data:
-
-```bash
-curl -s https://llm-gateway.assemblyai.com/v1/models | jq -r '
-  [ .data[] | select(.retirement_date == 0) | . as $m
-    | .performance.data[]
-    | select(.bucket == "120s" and .task_quality.summarization > 0)
-    | { model: $m.id, reasoning_effort, summarization: .task_quality.summarization,
-        cost_per_hour_usd, p50_latency_s: .latency.p50 } ]
-  | sort_by(-.summarization) | .[:5][]
-  | [.model, .reasoning_effort, .summarization, .cost_per_hour_usd, .p50_latency_s] | @tsv'
-```
-
-Each model in the response has this shape. Fields not used for model selection are omitted here:
-
-```json
-{
-  "id": "gpt-6-luna",
-  "available_regions": ["us", "global"],
-  "retirement_date": 0,
-  "supported_parameters": ["max_tokens", "tools", "tool_choice", "stream", "response_format", "reasoning_effort"],
-  "performance": {
-    "status": "beta",
-    "data": [
-      {
-        "model": "gpt-6-luna",
-        "reasoning_effort": "default",
-        "bucket": "30s",
-        "quality_score": 95,
-        "task_quality": { "dictation": 97, "information_extraction": 88, "summarization": 97, "text_correction": 96 },
-        "cost_per_hour_usd": 0.00427,
-        "latency": { "n": 100, "p50": 1.694, "p95": 5.055 },
-        "ttft": { "n": 50, "p50": 0.992, "p95": 3.565 }
-      }
-    ]
-  }
-}
-```
-
-To use the EU endpoint, replace `llm-gateway.assemblyai.com` with `llm-gateway.eu.assemblyai.com`.
-
-## Choose a model with a coding agent
-
-Describe what you're building in plain language, and your coding agent can read the endpoint, work out which tasks, audio length, and constraints apply, and write the integration code for the model it picks. Paste this prompt into Claude Code, Cursor, or your agent of choice, and replace the bracketed text with your description. For example: "a meeting notetaker that summarizes hour-long recordings and lists action items, with data kept in the EU."
+The benchmark results are in the `performance` block of each model in the [models endpoint](/llm-gateway/api-reference/list-available-models), which is public and needs no API key. Paste this prompt into Claude Code, Cursor, or another coding agent, and replace the bracketed text with what you're building:
 
 ```text
-Help me choose the best AssemblyAI LLM Gateway model for what I'm building, then wire it into my code.
+Help me choose an AssemblyAI LLM Gateway model for what I'm building, then wire it into my code.
 
-What I'm building: [describe what you want to do with your audio or transcripts]
+What I'm building: [for example, a meeting notetaker that summarizes hour-long recordings and lists action items, with data kept in the EU]
 
-Work out my requirements from that description and from my codebase, instead of asking me for a list of settings. Infer:
-- Which of the benchmark's tasks I need: summarization, information_extraction, text_correction, and/or dictation. A use case can need more than one, such as meeting notes (summarization and information_extraction) or cleaning up a transcript before display (text_correction).
-- How long my audio is, and so which benchmark bucket to use: 30s, 120s, 900s, or 3600s.
-- What I'm optimizing for: lowest cost, lowest latency, highest quality, or a balance. Real-time and interactive use points to latency. High-volume batch work points to cost. Clinical, legal, or customer-facing output points to quality.
-- Which region I need. Mentions of EU, GDPR, or data residency point to eu.
-- Which features I need, such as structured outputs (`response_format`), tool calling (`tools`), or streaming (`stream`).
-
-State each of these as an assumption. Only ask me a question if the description leaves out something that would change the answer, and ask all such questions at once.
-
-Then pick a model:
-1. Fetch https://llm-gateway.assemblyai.com/v1/models. It is public and needs no API key.
-2. Read https://www.assemblyai.com/docs/llm-gateway/choose-a-model.md to understand the `performance` fields before you rank anything.
-3. Each model has `performance.data`, with one row per `bucket` and `reasoning_effort` value. Use the bucket closest to my audio length, rounding up to the longer bucket if it falls between two.
-4. Rank on `task_quality[<task>]` for each task I need. If I need several tasks with one model, use their average, or `quality_score` if all four tasks have data.
-5. Treat a `task_quality` value of 0 as "not measured", never as a poor score. Dictation has no data for 900s or 3600s.
-6. Drop any model that has a non-zero `retirement_date`, whose `available_regions` doesn't include my region, or whose `supported_parameters` is missing something I need.
-7. Compare cost with `cost_per_hour_usd`. Compare latency with `latency.p50` and `latency.p95`, and `ttft` if I stream.
-8. Treat scores within about 2 points as ties and break them with my priority.
-9. Each `reasoning_effort` row is a separate configuration. If the best row is not "default", send that value as the `reasoning_effort` request parameter.
-10. Show me a shortlist of 3 models as a table with the score for my task, cost per hour, p50 and p95 latency, bucket, and reasoning effort. Explain the tradeoffs in one or two sentences each, and recommend one.
-
-After I pick a model:
-- Write the code to call POST /v1/chat/completions on the LLM Gateway with that model, reading my API key from the ASSEMBLYAI_API_KEY environment variable. Use https://llm-gateway.eu.assemblyai.com if I need EU data residency.
-- Set the runner-up from the shortlist as a fallback using the `fallbacks` parameter. See https://www.assemblyai.com/docs/llm-gateway/fallback.md
-- Put the model ID and reasoning effort in configuration, not hardcoded in the logic.
-
-Do not copy benchmark scores into the code or comments. They change. Remind me that the numbers come from fixed benchmark prompts, and suggest I test the shortlist on a few of my own transcripts before going to production.
+1. Read https://www.assemblyai.com/docs/llm-gateway/choose-a-model.md for how to pick, and https://www.assemblyai.com/docs/llm-gateway/api-reference/list-available-models.md for what each `performance` field means.
+2. From my description and my codebase, work out which tasks I need (summarization, information_extraction, text_correction, dictation), how long my audio is (30s, 120s, 900s or 3600s bucket), whether I care most about quality, cost or latency, my region, and the request features I use (response_format, tools, stream). State these as assumptions, and only ask me about something that would change the answer.
+3. Fetch https://llm-gateway.assemblyai.com/v1/models. For my bucket, rank rows by task_quality for my tasks. Treat 0 as not measured. Skip models with a non-zero retirement_date, a region I can't use, or whose supported_parameters lack a feature I use, and be wary of a high task score from a model whose quality_score is well below the best.
+4. Show me a shortlist of 3 as a table with score, cost_per_hour_usd, latency p50 and p95, and reasoning_effort, and recommend one.
+5. Once I choose, call POST /v1/chat/completions with that model, reading the key from ASSEMBLYAI_API_KEY. Use https://llm-gateway.eu.assemblyai.com for EU data residency. Send reasoning_effort if the row isn't "default", set the runner-up as a fallback (https://www.assemblyai.com/docs/llm-gateway/fallback.md), and keep the model ID in configuration. Don't copy benchmark numbers into the code.
 ```
 
-  To keep your agent on current information in an ongoing project, see [Build with AI agents](/coding-agent-prompts) for how to pin AssemblyAI docs in your project instructions.
+## About the benchmark
 
-## Run Voice Standard Bench
+The results come from [Voice Standard Bench](https://github.com/AssemblyAI/voice-standard-bench), AssemblyAI's open source (MIT) benchmark. It runs each task on call transcripts of 30 seconds, 2 minutes, 15 minutes, and 1 hour, and records quality, cost, and latency.
 
-The endpoint reflects one benchmark run on AssemblyAI's own transcripts and prompts. [Voice Standard Bench](https://github.com/AssemblyAI/voice-standard-bench) is open source (MIT), so you can see exactly how every number is produced and run it yourself.
+- **Summaries, extraction, and clean-up** are scored from 1 to 100 by LLM judges against the source transcript. **Dictation** is scored against an answer key, and isn't measured on 15-minute or 1-hour audio.
+- **Cost per hour** estimates what it costs to run the task on one hour of audio at global pricing, without the [regional surcharge](/llm-gateway/available-models#pricing-details).
+- **Latency** is the end-to-end request time, and **first token** comes from a separate streaming run.
 
-**What it measures.** For every model behind LLM Gateway, it runs the four tasks above on transcripts grouped by audio length. It records latency, token usage, cost, and quality, and rolls them up into the fields you see in the endpoint.
-
-**What the repository gives you:**
-
-- **Published results.** Open `use_cases.html` in `results/canonical/` for a browsable report that groups the best models by use case and audio length, with no setup. `summary.csv` and `summary.json` hold every row.
-- **The prompts.** The task prompts, judge prompts, and scoring rubrics live in `src/prompts`. Read them to see what a score is measuring.
-- **The harness.** A Go CLI that benchmarks models through LLM Gateway. Use it to benchmark a specific shortlist of models, try a different `reasoning_effort`, or replay a run with a different judge without calling the models again.
-
-**When to run it yourself.** Run it when the published numbers aren't enough to decide, for example if your transcripts look very different from call audio, or you want to compare models on your own data. Otherwise the endpoint and the published results are the faster route.
-
-  The benchmark reads its transcripts from a `normalized/` directory that isn't included in the repository, and running it makes billable LLM Gateway calls. Read the [README](https://github.com/AssemblyAI/voice-standard-bench#readme) before you start. It covers the dataset layout, the flags, and how scores are calculated.
+The repository has the [prompts and scoring rubrics](https://github.com/AssemblyAI/voice-standard-bench/tree/main/src/prompts), the [full results](https://github.com/AssemblyAI/voice-standard-bench/tree/main/results/canonical), and the harness to rerun the benchmark on your own transcripts. Results are in beta, so fields and values can change.
 
 ## Related
 
@@ -87406,6 +87535,14 @@ components:
           minimum: 0.0
           maximum: 2.0
           description: Controls randomness. Lower values produce more deterministic results.
+        reasoning_effort:
+          type: string
+          description: >
+            Optional. How much the model reasons before it answers, for models that support it, for example
+            `none`, `low` or `high`. A lower setting is usually faster and cheaper. See
+            [Choose a model](https://www.assemblyai.com/docs/llm-gateway/choose-a-model#reasoning-effort) for the
+            settings each model was benchmarked with.
+          examples: ["low"]
         stream:
           type: boolean
           default: false
@@ -88956,7 +89093,7 @@ channels:
 
       language_codes:
         description: >-
-          Steers transcription toward a set of languages by biasing output toward them on a per-token basis while still allowing native code-switching among them. Pass a list of language codes for the languages you expect (for example, `["en", "es"]`), or a single-element list (for example, `["es"]`) for a monolingual session. When unset, no steering is applied and the model code-switches natively across all of its supported languages. This is distinct from `language_detection`, which only controls whether the detected language is reported. Accepted codes: `af`, `ar`, `yue`, `ca`, `da`, `nl`, `en`, `et`, `fi`, `fr`, `gl`, `de`, `he`, `hi`, `it`, `ja`, `ko`, `zh`, `mr`, `no`, `nn`, `fa`, `pt`, `ro`, `ru`, `es`, `sv`, `tr`, `ur`, `vi`, `xh`, `zu`. Universal-3.5 Pro Streaming supports the same set minus `af`, `yue`, `et`, `gl`, `ko`, `mr`, `nn`, `fa`, `ro`, `ru`, `ur`, `xh`, and `zu`, which are Universal-3.6 Pro only. Universal-3.6 Pro and Universal-3.5 Pro Streaming only.
+          Steers transcription toward a set of languages by biasing output toward them on a per-token basis while still allowing native code-switching among them. Pass a list of language codes for the languages you expect (for example, `["en", "es"]`), or a single-element list (for example, `["es"]`) for a monolingual session. When unset, no steering is applied and the model code-switches natively across all of its supported languages. This is distinct from `language_detection`, which only controls whether the detected language is reported. Accepted codes: `af`, `ar`, `yue`, `ca`, `da`, `nl`, `en`, `et`, `fi`, `fr`, `gl`, `de`, `he`, `hi`, `it`, `ja`, `ko`, `zh`, `mr`, `no`, `nn`, `fa`, `pt`, `ro`, `ru`, `es`, `sv`, `tr`, `ur`, `vi`, `xh`, `zu`. Universal-3.5 Pro Streaming supports the same set minus `af`, `yue`, `ca`, `et`, `gl`, `ko`, `mr`, `nn`, `fa`, `ro`, `ru`, `ur`, `xh`, and `zu`, which are Universal-3.6 Pro only. Universal-3.6 Pro and Universal-3.5 Pro Streaming only.
         location: $message.payload#/language_codes
         examples:
           - '["en", "es"]'

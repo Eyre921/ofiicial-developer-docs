@@ -13,7 +13,7 @@ path: docs/redaction
 
 `redact` *string* Default: `False`
 
-Pre-recorded  Streaming:Nova Streaming:Flux  Specific languages only
+Pre-recorded  Streaming:Nova Streaming:Flux STT  Specific languages only
 
 ## Redaction options
 
@@ -32,7 +32,7 @@ Deepgram provides the following options to redact common groups of entities:
 * `numbers` (or `true`): Redacts any sequence of three or more consecutive numerals, plus the entity types in the `numbers` redaction group (dates, account numbers, credit cards, SSNs, and more).
 * `aggressive_numbers`: Redacts every numeral (including single- and two-digit numbers), plus the entity types in the `numbers` redaction group.
 
-To see exactly which entity types are included in each group, refer to the Redaction Groups column in the [Supported Entity Types](/docs/supported-entity-types) table.
+To see exactly which entity types are included in each group, refer to the Redaction Groups column in the [Supported entity types](/docs/supported-entity-types) table.
 
 ### Specific entity types
 
@@ -42,7 +42,7 @@ Specific entity types rely on entity recognition and are available for English o
 
 ### Multichannel audio
 
-For pre-recorded audio sent with [`multichannel=true`](/docs/multichannel), entity redaction uses context from all channels. For example, a CVV read out by a customer on one channel can be recognized from the agent's question on another. Streaming entity redaction uses only the channel the value was spoken on. The entity types included in `numbers` and `aggressive_numbers` use the same labels. Their numeral rules (three or more consecutive numerals for `numbers`, every numeral for `aggressive_numbers`) do not depend on context. See [Entity Detection: Multichannel Audio](/docs/detect-entities#multichannel-audio) for an example.
+For pre-recorded audio sent with [`multichannel=true`](/docs/multichannel), entity redaction uses context from all channels. For example, a CVV read out by a customer on one channel can be recognized from the agent's question on another. Streaming entity redaction uses only the channel the value was spoken on. The entity types included in `numbers` and `aggressive_numbers` use the same labels. Their numeral rules (three or more consecutive numerals for `numbers`, every numeral for `aggressive_numbers`) don't depend on context. See [Entity Detection: Multichannel Audio](/docs/detect-entities#multichannel-audio) for an example.
 
 ## Enable redaction
 
@@ -102,7 +102,7 @@ On Nova streaming (`/v1/listen`), Deepgram follows a two-phase approach. During 
 >
 > For the highest streaming redaction accuracy, set `no_delay=false` or omit `no_delay` entirely. Setting `no_delay=true` opts for low latency at the risk of redaction performance.
 
-Flux (`/v2/listen`) uses a different output format — see [Redaction on Flux](#redaction-on-flux).
+Deepgram Flux STT (`/v2/listen`) uses a different output format — see [Redaction on Flux STT](#redaction-on-flux-stt).
 
 Example with `redact=pci&redact=pii`:
 
@@ -114,15 +114,15 @@ Example with `redact=pci&redact=pii`:
 
 Redaction language coverage differs by kind and deployment:
 
-| Environment                                | Number redaction                                                                                                                                                                                    | Entity redaction |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| Hosted API — pre-recorded                  | All available languages                                                                                                                                                                             | English only     |
-| Hosted API — Nova streaming (`/v1/listen`) | 12 languages (see below)                                                                                                                                                                            | English only     |
-| Hosted API — Flux streaming (`/v2/listen`) | `numbers`, `aggressive_numbers` only                                                                                                                                                                | Not supported    |
-| Self-hosted — pre-recorded                 | Bulgarian, Cantonese, Chinese, Danish, Dutch, English, French, German, German (Swiss), Hebrew, Italian, Japanese, Korean, Malay, Norwegian, Polish, Portuguese, Romanian, Russian, Spanish, Swedish | English only     |
-| Self-hosted — streaming                    | All loaded Nova-3 languages (see note below)                                                                                                                                                        | English only     |
+| Environment                                    | Number redaction                                                                                                                                                                                    | Entity redaction |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| Hosted API — pre-recorded                      | All available languages                                                                                                                                                                             | English only     |
+| Hosted API — Nova streaming (`/v1/listen`)     | 12 languages (see below)                                                                                                                                                                            | English only     |
+| Hosted API — Flux STT streaming (`/v2/listen`) | `numbers`, `aggressive_numbers` only                                                                                                                                                                | Not supported    |
+| Self-hosted — pre-recorded                     | Bulgarian, Cantonese, Chinese, Danish, Dutch, English, French, German, German (Swiss), Hebrew, Italian, Japanese, Korean, Malay, Norwegian, Polish, Portuguese, Romanian, Russian, Spanish, Swedish | English only     |
+| Self-hosted — streaming                        | All loaded Nova-3 languages (see note below)                                                                                                                                                        | English only     |
 
-On the hosted API, pre-recorded (batch) number redaction is available for all supported languages. In hosted streaming, it is limited to:
+On the hosted API, pre-recorded (batch) number redaction is available for all supported languages. In hosted streaming, it's limited to:
 
 Danish, Dutch, English, French, German, German (Swiss), Italian, Norwegian, Polish, Portuguese, Spanish, and Swedish.
 
@@ -134,10 +134,10 @@ Self-hosted number redaction requires release 260430 or later; Bulgarian, Chines
 >
 > For non-English audio, only numbers are redacted. Entity redaction — names, addresses, PHI, and other `pii`/`phi` entities — is applied for English only, even when you request `true`.
 
-## Redaction on Flux
+## Redaction on Flux STT
 
-Flux (`/v2/listen`) supports **number redaction only**. `redact` accepts `numbers` and `aggressive_numbers`; any other value — including `true`, `pci`, `pii`, `phi`, and specific entity types such as `ssn` or `credit_card` — is rejected: the WebSocket connection fails to open with an HTTP `400` at connection time rather than being silently ignored. Use Nova streaming or pre-recorded for entity redaction.
+Flux STT (`/v2/listen`) supports **number redaction only**. `redact` accepts `numbers` and `aggressive_numbers`; any other value — including `true`, `pci`, `pii`, `phi`, and specific entity types such as `ssn` or `credit_card` — is rejected: the WebSocket connection fails to open with an HTTP `400` at connection time rather than being silently ignored. Use Nova streaming or pre-recorded for entity redaction.
 
-Number redaction works on both `flux-general-en` and `flux-general-multi`. Because Flux does not produce word-level language tags, number redaction is applied across every language detected in the transcript.
+Number redaction works on both `flux-general-en` and `flux-general-multi`. Because Flux STT doesn't produce word-level language tags, number redaction is applied across every language detected in the transcript.
 
-Currently, Flux replaces each redacted span with a single `*` (for example, `my phone number is *`) rather than the `[REDACTED]` placeholder or specific entity tags (such as `[CREDIT_CARD_1]`) used by Nova — Flux performs digit redaction only, without entity recognition. Treat the redacted text as removed rather than depending on this exact placeholder format, which may change.
+Currently, Flux STT replaces each redacted span with a single `*` (for example, `my phone number is *`) rather than the `[REDACTED]` placeholder or specific entity tags (such as `[CREDIT_CARD_1]`) used by Nova — Flux STT performs digit redaction only, without entity recognition. Treat the redacted text as removed rather than depending on this exact placeholder format, which may change.

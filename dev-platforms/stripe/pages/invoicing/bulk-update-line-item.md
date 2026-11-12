@@ -56,15 +56,13 @@ The example above updates the description and metadata for line item 1, the pric
 
 You can delete or unassign multiple line items on the same invoice by referencing the invoice ID and line item IDs and distinguishing between different removal types with the `behavior` key. Here’s how to permanently delete `LINE_ITEM_1` and unassign `LINE_ITEM_2`. You can reassign `LINE_ITEM_2` to another invoice in another request.
 
-#### curl
-
-```bash
+```curl
 curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}}/remove_lines \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "lines[0][id]"={{LINE_ITEM_1}} \
-  -d "lines[0][behavior]"="delete" \
-  -d "lines[1][id]"={{LINE_ITEM_2}} \
-  -d "lines[1][behavior]"="unassign"
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "lines[0][id]={{LINE_ITEM_1}}" \
+  -d "lines[0][behavior]=delete" \
+  -d "lines[1][id]={{LINE_ITEM_2}}" \
+  -d "lines[1][behavior]=unassign"
 ```
 
 ## Limitations 

@@ -11,7 +11,7 @@ path: docs/configure-deepgram-modal-deployment
 
 ## Configure Deepgram
 
-Modal Deepgram deployments are managed by labels. Each label specifies a set of Deepgram TOML files and models. Keep in mind that Deepgram models, such as Flux and Aura-2, must be deployed on independent Modal stacks, and cannot be co-hosted with any other models.
+Modal Deepgram deployments are managed by labels. Each label specifies a set of Deepgram TOML files and models. Keep in mind that Deepgram models, such as Flux STT and Aura-2, must be deployed on independent Modal stacks, and cannot be co-hosted with any other models.
 
 Set the label by exporting an environment variable.
 
@@ -41,7 +41,7 @@ This will
 When calling `modal run -m modal_deepgram.deepgram_resources`, note that
 
 * the models `.txt` filepath should be local
-* the config file names should match one of those found in the [Deepgram self-hosted resources repo](https://github.com/deepgram/self-hosted-resources/tree/main/common)
+* the config file names should match one of those found in the [Deepgram Self-Hosted resources repo](https://github.com/deepgram/self-hosted-resources/tree/main/common)
 * the `--deploy-type` argument takes either `license-proxy` or `standard` and will choose the appropriate directory to pull the configs (default is `license-proxy`)
 
 ### Edit a Deepgram TOML config

@@ -19,7 +19,7 @@ Sentry supports [.NET for Android](https://learn.microsoft.com/dotnet/android/ge
 Add the Sentry dependency to your .NET for Android application:
 
 ```shell
-dotnet add package Sentry -v 6.13.0
+dotnet add package Sentry -v 7.0.0
 ```
 
 *Other available variations of the above snippet: Package Manager*

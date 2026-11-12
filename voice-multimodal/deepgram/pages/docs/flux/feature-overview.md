@@ -1,5 +1,5 @@
 ---
-title: "Flux Feature Overview"
+title: "Flux STT feature overview"
 source: https://developers.deepgram.com/docs/flux/feature-overview.md
 path: docs/flux/feature-overview
 ---
@@ -7,16 +7,16 @@ path: docs/flux/feature-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Flux Feature Overview
+# Flux STT feature overview
 
 ## Model Selection
 
 | Feature                  | Language(s)                                                                                                            |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
 | [Model](/docs/model)     | `flux-general-en` (English), `flux-general-multi` (10 languages — [Language Prompting](/docs/flux/language-prompting)) |
-| [Version](/docs/version) | [All available](/docs/model#flux)                                                                                      |
+| [Version](/docs/version) | [All available](/docs/model#flux-stt)                                                                                  |
 
-## Language Configuration
+## Language configuration
 
 | Feature                                             | Model                     | Description                                                     |
 | --------------------------------------------------- | ------------------------- | --------------------------------------------------------------- |
@@ -27,28 +27,28 @@ path: docs/flux/feature-overview
 
 | Feature                                    | Language(s)                                                                      |
 | ------------------------------------------ | -------------------------------------------------------------------------------- |
-| [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux)                                                |
+| [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux-stt)                                            |
 | [Numerals](/docs/numerals)                 | English + Multilingual (excludes Hindi)                                          |
 | [Redaction](/docs/redaction)               | Number redaction only (`numbers`, `aggressive_numbers`) — English + Multilingual |
 
 ## Transcription
 
-| Feature               | Language(s)                       |
-| --------------------- | --------------------------------- |
-| Word-level Timestamps | [All available](/docs/model#flux) |
+| Feature               | Language(s)                           |
+| --------------------- | ------------------------------------- |
+| Word-level Timestamps | [All available](/docs/model#flux-stt) |
 
-## Custom Vocabulary
+## Custom vocabulary
 
 | Feature                            | Language(s)                                      |
 | ---------------------------------- | ------------------------------------------------ |
-| [Keyterm Prompting](/docs/keyterm) | [All available](/docs/models-languages-overview) |
+| [Keyterm prompting](/docs/keyterm) | [All available](/docs/models-languages-overview) |
 
 ## Media Input Settings
 
 | Feature                          | Language(s)                                      |
 | -------------------------------- | ------------------------------------------------ |
 | [Sample rate](/docs/sample-rate) | [All available](/docs/models-languages-overview) |
-| [Encoding](/docs/encoding)       | [All available](/docs/model#flux)                |
+| [Encoding](/docs/encoding)       | [All available](/docs/model#flux-stt)            |
 
 ## Results processing
 
@@ -56,7 +56,7 @@ path: docs/flux/feature-overview
 | ---------------------------------- | ------------------------------------------------ |
 | [Redact usage](/docs/redact-usage) | [All available](/docs/models-languages-overview) |
 
-## End-of-Turn Configuration
+## End-of-turn configuration
 
 | Feature                                             | Description                                                                                  |
 | --------------------------------------------------- | -------------------------------------------------------------------------------------------- |
@@ -64,9 +64,9 @@ path: docs/flux/feature-overview
 
 > **Info**
 >
-> Flux's end-of-turn detection is configurable to match your use case. Use `eot_threshold` for standard turn detection, or enable `eager_eot_threshold` for ultra-low latency response generation. See the [End-of-Turn Configuration](/docs/flux/configuration) for detailed configuration guidance.
+> Flux STT's end-of-turn detection is configurable to match your use case. Use `eot_threshold` for standard turn detection, or enable `eager_eot_threshold` for ultra-low latency response generation. See the [End-of-Turn Configuration](/docs/flux/configuration) for detailed configuration guidance.
 
-## Control Messages
+## Control messages
 
 | Feature                                     | Description                                                                           |
 | ------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -74,7 +74,7 @@ path: docs/flux/feature-overview
 | [Close Stream](/docs/flux/close-stream)     | Close the WebSocket stream                                                            |
 | [Force End Turn](/docs/flux/force-end-turn) | End the current turn immediately from an external signal                              |
 
-## Rate Limits
+## Rate limits
 
 > **Info**
 >
@@ -82,10 +82,10 @@ path: docs/flux/feature-overview
 
 ## Deepgram Self-Hosted
 
-Flux is now available for self-hosted deployments!
+Flux STT is now available for self-hosted deployments.
 
 > **Info**
 >
-> For setup instructions, see [Using the Flux Model](/docs/flux-self-hosted). For more information about Deepgram's self-hosted solution, visit our [Self-Hosted Introduction](/docs/self-hosted-introduction).
+> For setup instructions, see [Using the Flux STT model](/docs/flux-self-hosted). For more information about Deepgram's self-hosted solution, visit our [Self-Hosted Introduction](/docs/self-hosted-introduction).
 
 ---

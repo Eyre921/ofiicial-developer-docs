@@ -9,7 +9,7 @@ path: docs/azure-docker-podman
 
 # Microsoft Azure
 
-Deploying Deepgram on Microsoft Azure requires some preparation. In this section, you will learn how to provision a Virtual Machine where you will deploy Deepgram products. You will need to perform some of these steps in the Azure Console and some in your local terminal.
+Deploying Deepgram on Microsoft Azure requires some preparation. In this section, you'll learn how to provision a Virtual Machine where you'll deploy Deepgram products. You'll need to perform some of these steps in the Azure Console and some in your local terminal.
 
 ## Requesting Quotas for NVIDIA GPUs
 
@@ -19,7 +19,7 @@ You can submit a quota request in the Azure portal. Search for **Subscriptions**
 
 ## Prerequisites
 
-Make sure you have completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
+Make sure you've completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction#prerequisites).
 
 GPU availability has been extremely limited across cloud providers, including Azure. You may need to contact Microsoft directly for access if you are not able to obtain a spot GPU instance.
 
@@ -31,7 +31,7 @@ GPU availability has been extremely limited across cloud providers, including Az
 
 In the Azure portal, search for and select the **Virtual Machines** service. Then, in the top menu bar, click **Create**, then click **Azure virtual machine**.
 
-The Azure virtual machine creation wizard includes multiple high-level groups/tabs. We will step through each.
+The Azure virtual machine creation wizard includes multiple high-level groups/tabs. We'll step through each.
 
 #### Basics
 
@@ -55,7 +55,7 @@ The Azure virtual machine creation wizard includes multiple high-level groups/ta
 
    > **Info**
    >
-   > As of Q4 2023, Azure only accepts RSA SSH keys. If you have an existing SSH key that is not RSA, you will need to create a new one.
+   > As of Q4 2023, Azure only accepts RSA SSH keys. If you have an existing SSH key that is not RSA, you'll need to create a new one.
 
 4. For the **Inbound port rules** wizard step, you must allow the SSH (22) inbound port for remote administration as configured in the previous step. If you want to be able to receive requests from the public internet, make sure to also check the box to allow HTTPS traffic from the public internet.
 
@@ -63,20 +63,20 @@ The Azure virtual machine creation wizard includes multiple high-level groups/ta
 
 1. For the **VM disk encryption** wizard step, check the box according to your use case. It is recommended to become familiar with the performance and security ramifications of this option.
 2. For the **OS disk** wizard step, select an OS disk size that meets Deepgram's [minimum required hardware specifications](/docs/self-hosted-deployment-environments#hardware-specifications). Select a disk type suitable for production workloads. Complete other fields in this wizard step according to your use case.
-3. For the **Data disks for** wizard step, configure additional disks if desired for your use case; additional disks are not necessary for Deepgram services.
+3. For the **Data disks for** wizard step, configure additional disks if desired for your use case; additional disks aren't necessary for Deepgram services.
 
 #### Networking
 
 1. For the **Network interface** wizard step, name the virtual network and choose a subnet as desired. In previous steps, we chose to perform remote administration over SSH. If you plan to SSH into your VM from your local machine via the public internet, make sure to assign a Public IP to this VM. Fill out all other required field according to your use case.
 2. For the **Load balancing** wizard step, select a value according to your use case. For a Proof-of-Concept, no load balancer may be required. For larger production workloads, a load balancer may be helpful as described in our [scaling guide](/docs/autoscaling-best-practices).
 
-#### Other Groups/Tabs
+#### Other groups/tabs
 
 Complete all other fields according to your use case.
 
-#### Create the Virtual Machine
+#### Create the virtual machine
 
-Once you have reviewed all relevant details, click "Create". If you requested Azure generate a new SSH keypair for you, it will prompt you to download the private key.
+Once you've reviewed all relevant details, click "Create". If you requested Azure generate a new SSH keypair for you, it will prompt you to download the private key.
 
 Azure will display the provisioning status of your VM. Once available, click "Go to resource" to view your VM details.
 
@@ -91,6 +91,6 @@ To complete the rest of the installation, including configuring your environment
 
 What’s Next
 
-Now that we have provisioned a deployment environment, we need to start configuring it for inference.
+Now that we've provisioned a deployment environment, we need to start configuring it for inference.
 
 * [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms)

@@ -64,7 +64,7 @@ Key characteristics:
 
 * **High-resolution**: Emitted every 10 seconds, making it up to 6x faster than standard 1-minute metrics at detecting load changes.
 * **Includes queued requests**: The count includes requests waiting in the SageMaker queue, not just those actively being processed.
-* **Directly maps to capacity**: Each instance supports a finite number of concurrent streams at acceptable latency. See [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker-streaming#choose-a-target-value) for guidance on determining the right concurrency limit for your instance type.
+* **Directly maps to capacity**: Each instance supports a finite number of concurrent streams at acceptable latency. See [Auto-scaling SageMaker endpoints](/docs/auto-scaling-sagemaker-streaming#choose-a-target-value) for guidance on determining the right concurrency limit for your instance type.
 
 To query this metric with the AWS CLI:
 
@@ -112,13 +112,13 @@ aws cloudwatch get-metric-statistics \
 
 ### Streaming sessions
 
-`ModelLatency` is not emitted for streaming sessions, and `OverheadLatency` carries no useful signal for them. Monitor `FirstChunkLatency` instead: it records one sample per session, measuring the time from session start until the first response chunk reaches the client — how quickly a new connection becomes productive. It supports percentile statistics, so alert on `p99` (see [Streaming latency alarm](#streaming-latency-alarm)).
+`ModelLatency` isn't emitted for streaming sessions, and `OverheadLatency` carries no useful signal for them. Monitor `FirstChunkLatency` instead: it records one sample per session, measuring the time from session start until the first response chunk reaches the client — how quickly a new connection becomes productive. It supports percentile statistics, so alert on `p99` (see [Streaming latency alarm](#streaming-latency-alarm)).
 
-`MidStreamErrors` counts errors that occur after a response has started streaming. It is only populated when mid-stream failures occur — on a healthy endpoint this metric may not appear in CloudWatch at all.
+`MidStreamErrors` counts errors that occur after a response has started streaming. It's only populated when mid-stream failures occur — on a healthy endpoint this metric may not appear in CloudWatch at all.
 
 ## Enable enhanced metrics
 
-By default, SageMaker reports utilization metrics aggregated across all instances behind the endpoint. Because Deepgram streaming connections are long-lived and remain on the instance that accepted them, load is not always spread evenly — an endpoint-level average can look healthy while one instance or GPU is saturated.
+By default, SageMaker reports utilization metrics aggregated across all instances behind the endpoint. Because Deepgram streaming connections are long-lived and remain on the instance that accepted them, load isn't always spread evenly — an endpoint-level average can look healthy while one instance or GPU is saturated.
 
 Enhanced metrics add per-instance and per-GPU utilization visibility, the same way per-instance Log Streams isolate logs:
 
@@ -260,7 +260,7 @@ aws logs filter-log-events \
 | `INFO Deepgram Engine is ready`                     | The inference engine has loaded models and is accepting requests.                                                                                              |
 | `ERROR`                                             | An error occurred. Check the message for details — common causes include GPU initialization failures, model loading errors, or out-of-memory conditions.       |
 | `thread 'main' panicked at`                         | A Rust-level application panic. The container process has crashed and the instance will restart. Capture the full backtrace from the log stream for diagnosis. |
-| `WARNING` entries with `skipped`                    | An environment variable override was not applied, usually due to a parse error in the TOML expression.                                                         |
+| `WARNING` entries with `skipped`                    | An environment variable override wasn't applied, usually due to a parse error in the TOML expression.                                                          |
 
 ## Configure CloudWatch alarms
 
@@ -426,7 +426,7 @@ cloudwatch.put_metric_alarm(
 
 #### GPU utilization alarm
 
-GPU utilization is not a primary metric for Deepgram workloads — `ConcurrentRequestsPerModel` is a more direct indicator of load. However, GPU utilization is still useful for gauging the general level of load that a particular GPU instance is under and for detecting hardware-level saturation.
+GPU utilization isn't a primary metric for Deepgram workloads — `ConcurrentRequestsPerModel` is a more direct indicator of load. However, GPU utilization is still useful for gauging the general level of load that a particular GPU instance is under and for detecting hardware-level saturation.
 
 #### AWS CLI
 
@@ -596,7 +596,7 @@ After creating the dashboard, view it in the [CloudWatch console](https://consol
 * [Prometheus & OpenTelemetry Metrics](/docs/prometheus-otel-sagemaker)
 * [Deepgram Enhanced Metrics](/docs/enhanced-metrics-sagemaker)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
-* [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker-streaming)
+* [Auto-scaling SageMaker endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)
 * [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint)
 * [Amazon SageMaker AI metrics in Amazon CloudWatch](https://docs.aws.amazon.com/sagemaker/latest/dg/monitoring-cloudwatch.html)

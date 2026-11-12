@@ -9,9 +9,9 @@ path: docs/flux/close-stream
 
 # Close Stream
 
-Streaming:Flux
+Streaming:Flux STT
 
-Use the `CloseStream` message to close the WebSocket stream. Flux decodes the audio it has already received — emitting the corresponding interim `Update` messages — and then closes the connection.
+Use the `CloseStream` message to close the WebSocket stream. Deepgram Flux STT decodes the audio it has already received — emitting the corresponding interim `Update` messages — and then closes the connection.
 
 ## Purpose
 
@@ -19,9 +19,9 @@ In conversational audio processing, there are scenarios where you need to stop a
 
 > **Warning**
 >
-> `CloseStream` does not finalize the active turn. No `EndOfTurn` event is emitted, so the last message you receive is an interim `Update`, not a confirmed final transcript — treat the most recent `Update` as the final transcript for the stream. Flux does not emit a summary metadata object, and the server closes the connection without sending a WebSocket close status code.
+> `CloseStream` does not finalize the active turn. No `EndOfTurn` event is emitted, so the last message you receive is an interim `Update`, not a confirmed final transcript — treat the most recent `Update` as the final transcript for the stream. Flux STT does not emit a summary metadata object, and the server closes the connection without sending a WebSocket close status code.
 
-## Example Payloads
+## Example payloads
 
 To send the `CloseStream` message, you need to send the following JSON message to the server:
 
@@ -52,10 +52,10 @@ Upon receiving `CloseStream`, the server emits `Update` messages for any audio i
 }
 ```
 
-## Related Resources
+## Related resources
 
 * [Configure](/docs/flux/configure) - Update stream configuration mid-stream
 * [Force End Turn](/docs/flux/force-end-turn) - End the current turn immediately from an external signal
-* [Getting Started with Flux](/docs/flux/quickstart) - Quickstart guide with basic configuration
+* [Getting started with Flux STT](/docs/flux/quickstart) - Quickstart guide with basic configuration
 
 ---

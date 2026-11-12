@@ -15,9 +15,9 @@ Use the `CloseStream` message to close the WebSocket stream. This forces the ser
 
 ## Purpose
 
-In real-time audio processing, there are scenarios where you may need to force the server to close. Deepgram supports a `CloseStream` message to handle such situations. This message will send a shutdown command to the server instructing it to finish processing any cached data, send the response to the client, send a summary metadata object, and then terminate the WebSocket connection.
+In real-time audio processing, there are scenarios where you may need to force the server to close. We support a `CloseStream` message to handle such situations. This message will send a shutdown command to the server instructing it to finish processing any cached data, send the response to the client, send a summary metadata object, and then terminate the WebSocket connection.
 
-## Example Payloads
+## Example payloads
 
 To send the `CloseStream` message, you need to send the following JSON message to the server:
 
@@ -45,7 +45,7 @@ Upon receiving the `CloseStream` message, the server will process all remaining 
 }
 ```
 
-## Language-Specific Implementations
+## Language-specific implementations
 
 Below are code examples to help you get started using `CloseStream`.
 

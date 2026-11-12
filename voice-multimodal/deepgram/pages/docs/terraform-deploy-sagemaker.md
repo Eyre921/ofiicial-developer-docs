@@ -565,14 +565,14 @@ After the endpoint reaches `InService`, run a test inference to confirm it retur
 
 ### Instance types
 
-Choose an instance type based on the Deepgram product you are deploying. GPU-accelerated instances are required.
+Choose an instance type based on the Deepgram product you're deploying. GPU-accelerated instances are required.
 
-| Product                       | Recommended instance type | Notes                                      |
-| ----------------------------- | ------------------------- | ------------------------------------------ |
-| Speech-to-Text (Nova-3, Flux) | `ml.g6.2xlarge`           | Single NVIDIA L4 GPU, 24 GB GPU RAM        |
-| Text-to-Speech (Aura-2)       | `ml.g6.12xlarge`          | 4 NVIDIA L4 GPUs (Aura-2 requires 2+ GPUs) |
+| Product                           | Recommended instance type | Notes                                      |
+| --------------------------------- | ------------------------- | ------------------------------------------ |
+| Speech-to-Text (Nova-3, Flux STT) | `ml.g6.2xlarge`           | Single NVIDIA L4 GPU, 24 GB GPU RAM        |
+| Text-to-Speech (Aura-2)           | `ml.g6.12xlarge`          | 4 NVIDIA L4 GPUs (Aura-2 requires 2+ GPUs) |
 
-For the full list of supported and unsupported instance types per product, including the `g7` and `g7e` families, see [Supported Products](/docs/supported-products-sagemaker#instance-types).
+For the full list of supported and unsupported instance types per product, including the `g7` and `g7e` families, see [Supported products](/docs/supported-products-sagemaker#instance-types).
 
 The host driver your instances boot with is set separately — see [Inference AMI versions](#inference-ami-versions).
 
@@ -652,7 +652,7 @@ resource "aws_sagemaker_model" "deepgram" {
 
 By default this configuration deploys a **real-time** endpoint for streaming and synchronous transcription. To instead deploy an **asynchronous** endpoint — for large pre-recorded files (up to 1 GB), queued processing, and scale-to-zero — set `enable_async_inference = true` and provide an `async_s3_output_path`.
 
-Asynchronous inference is a distinct endpoint mode: an async endpoint accepts **only** asynchronous invocations (`InvokeEndpointAsync` with S3 input/output) and cannot serve streaming or synchronous requests. Switching `enable_async_inference` replaces the endpoint configuration and endpoint.
+Asynchronous inference is a distinct endpoint mode: an async endpoint accepts **only** asynchronous invocations (`InvokeEndpointAsync` with S3 input/output) and can't serve streaming or synchronous requests. Switching `enable_async_inference` replaces the endpoint configuration and endpoint.
 
 When async is enabled, the configuration also:
 
@@ -679,7 +679,7 @@ This removes the SageMaker Endpoint, Endpoint Configuration, Model, auto-scaling
 * [Subscribe on AWS Marketplace](/docs/subscribe-aws-marketplace)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)
-* [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker-streaming)
+* [Auto-scaling SageMaker endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)
 * [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint)
 * [Terraform AWS Provider — aws_sagemaker_model](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sagemaker_model)

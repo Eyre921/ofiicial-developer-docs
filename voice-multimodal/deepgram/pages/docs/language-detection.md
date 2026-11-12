@@ -1,5 +1,5 @@
 ---
-title: "Language Detection"
+title: "Language detection"
 source: https://developers.deepgram.com/docs/language-detection.md
 path: docs/language-detection
 ---
@@ -7,7 +7,7 @@ path: docs/language-detection
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Language Detection
+# Language detection
 
 `detect_language` *boolean* Default: `false`
 
@@ -19,7 +19,7 @@ Deepgram’s Language Detection feature identifies the dominant language spoken 
 >
 > If you need to process multiple languages for real-time streaming, we recommend using Deepgram's [Nova-2](./models-languages-overview#nova-2) or [Nova-3](./models-languages-overview#nova-3) multilingual models.
 
-If you are submitting multichannel audio, Language Detection identifies one language per channel. Language Detection is supported for the following languages:
+If you're submitting multichannel audio, Language Detection identifies one language per channel. Language Detection is supported for the following languages:
 
 * Bulgarian - `bg`
 * Catalan - `ca`
@@ -57,7 +57,7 @@ If you are submitting multichannel audio, Language Detection identifies one lang
 * Vietnamese - `vi`
 * Chinese - `zh`
 
-## Enable Feature
+## Enable feature
 
 To enable Language Detection, when you call Deepgram’s API, add a `detect_language` parameter set to `true` in the query string:
 
@@ -80,7 +80,7 @@ curl \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing (often after only a few seconds), you’ll receive a JSON response that has the following basic structure:
 
@@ -118,17 +118,17 @@ In this response, we see that each channel contains:
 
 * `detected_language`: [BCP-47](https://tools.ietf.org/html/bcp47) language tag for the dominant language identified in the channel.
 
-* `language_confidence`: Floating point value between 0 and 1 that indicates the confidence of the language selection (see below for important details). `language_confidence` is not supported for Whisper models and will not be included in the API response for Whisper requests.
+* `language_confidence`: Floating point value between 0 and 1 that indicates the confidence of the language selection (see below for important details). `language_confidence` isn't supported for Whisper models and won't be included in the API response for Whisper requests.
 
-## Advanced Functionality
+## Advanced functionality
 
 ### Model Selection
 
-If you specify both `detect_language=true` and a `model` in your query parameter, Deepgram will attempt to use the specified model for the language that is detected. However, if the detected language is not available for that model, Deepgram will automatically select the next highest model to complete the request.
+If you specify both `detect_language=true` and a `model` in your query parameter, Deepgram will attempt to use the specified model for the language that is detected. However, if the detected language isn't available for that model, Deepgram will automatically select the next highest model to complete the request.
 
 To use the best Deepgram model available, use `model=nova-3-general&detect_language=true`. The order of precedence  will be: `Nova-3 -> Nova-2 -> Nova-1 -> Enhanced -> Base`.
 
-For example, you may send a request with the parameters `detect_language=true&model=nova-3-general`. If the detected language is supported by Base and Enhanced models, but not a Nova-3 model, Deepgram will process the request with the Enhanced model since that is the next highest model available for that language.
+For example, you may send a request with the parameters `detect_language=true&model=nova-3-general`. If the detected language is supported by Base and Enhanced models, but not a Nova-3 model, Deepgram will process the request with the Enhanced model since that's the next highest model available for that language.
 
 ### Interaction with `language` query parameter
 
@@ -150,11 +150,11 @@ Deepgram outputs a `language_confidence` score that ranges between 0 and 1 with 
 
 The `language_confidence` score can be used as a metric to determine whether the transcript is accurate. For example, if the `language_confidence` falls below a certain threshold, you may want to default to another language or reject the transcript.
 
-It is critical to know that the `language_confidence` score only takes into account the 35 supported languages. If the audio is in a language not supported by language detection, the value of `language_confidence` should be ignored.
+It's critical to know that the `language_confidence` score only takes into account the 35 supported languages. If the audio is in a language not supported by language detection, the value of `language_confidence` should be ignored.
 
 ## Streaming and Multilingual Alternatives
 
-Language Detection is not currently supported for streaming. If you need to handle multiple languages in a real-time streaming context, we recommend using Deepgram's [Nova-2](./models-languages-overview#nova-2) or [Nova-3](./models-languages-overview#nova-3) multilingual models instead.
+Language Detection isn't currently supported for streaming. If you need to handle multiple languages in a real-time streaming context, we recommend using Deepgram's [Nova-2](./models-languages-overview#nova-2) or [Nova-3](./models-languages-overview#nova-3) multilingual models instead.
 
 These models can transcribe speech containing multiple languages within the same audio stream without requiring explicit language detection, making them ideal for streaming applications where language detection functionality is needed.
 

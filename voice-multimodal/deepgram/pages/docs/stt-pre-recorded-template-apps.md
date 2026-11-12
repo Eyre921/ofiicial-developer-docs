@@ -1,5 +1,5 @@
 ---
-title: "Template Apps"
+title: "Template apps"
 source: https://developers.deepgram.com/docs/stt-pre-recorded-template-apps.md
 path: docs/stt-pre-recorded-template-apps
 ---
@@ -7,7 +7,7 @@ path: docs/stt-pre-recorded-template-apps
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Template Apps
+# Template apps
 
 * [Node.js](https://github.com/deepgram-starters/node-transcription) — Pre-recorded transcription demo app using Node.js
 * [Bun](https://github.com/deepgram-starters/bun-transcription) — Pre-recorded transcription demo app using Bun

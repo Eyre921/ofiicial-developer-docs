@@ -1,5 +1,5 @@
 ---
-title: "System Maintenance"
+title: "System maintenance"
 source: https://developers.deepgram.com/docs/maintaining.md
 path: docs/maintaining
 ---
@@ -7,9 +7,9 @@ path: docs/maintaining
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# System Maintenance
+# System maintenance
 
-## Updating Models
+## Updating models
 
 Deepgram model updates include releases of new architectures, features, and language support, as well an incremental improvements for existing models. Please contact your Deepgram Account Representative to find out whether there are updates available for the models you use.
 
@@ -19,7 +19,7 @@ Your Deepgram Account Representative provides you with a list of several differe
 
 * Which [Speech-to-text (STT) Models](/docs/models-languages-overview) and [Text-to-speech (TTS) Models](/docs/tts-models) you want to deploy.
 
-* Language(s) you will transcribe. Each model file name contains a language code, such as `en` (English) or `es` (Spanish).
+* Language(s) you'll transcribe. Each model file name contains a language code, such as `en` (English) or `es` (Spanish).
 
 * Pre-recorded (batch) or streaming transcription. Look for `batch` or `streaming` in the model file name.
 
@@ -32,8 +32,8 @@ Your Deepgram Account Representative provides you with a list of several differe
 * Additional features you plan to use, including formatting, diarization, keywords, redaction, audio intelligence, etc.
 
   * The use of [smart formatting](/docs/smart-format) in English depends on the Named Entity Recognition (NER) model.
-  * Nova-3 introduces the native [Keyterms](/docs/keyterm) parameter which replaces the [Keywords](/docs/keywords) parameter used with other model architectures.
-  * Nova-2 and other model archticture Keywords requires the `phoneme` and `g2p` models.
+  * Deepgram Nova-3 introduces the native [Keyterms](/docs/keyterm) parameter which replaces the [Keywords](/docs/keywords) parameter used with other model architectures.
+  * Deepgram Nova-2 and other model archticture Keywords requires the `phoneme` and `g2p` models.
   * Sentiment analysis, intent recognition, and topic detection require the `sit` model.
   * Each of the language detection (`language-detector`), diarization (`diarizer`), profanity filtering, summarization, and search features require its own model.
 
@@ -49,7 +49,7 @@ Putting it all together, the model `nova-3-general.en.streaming.a12b345.dg` will
 
 ### Model-Dependent Feature Support
 
-An individual inference request to your self-hosted environment will require one or more deep learning models to be present. If your request attempts to use a feature that is powered by its own model, and the model is not present in your models directory in your self-hosted deployment, you will get a `400 Bad Request` HTTP response.
+An individual inference request to your self-hosted environment will require one or more deep learning models to be present. If your request attempts to use a feature that's powered by its own model, and the model isn't present in your models directory in your self-hosted deployment, you'll get a `400 Bad Request` HTTP response.
 
 For example, if you make a speech-to-text request that doesn't have the appropriate language or streaming/batch mode available, you may see this error:
 
@@ -63,7 +63,7 @@ For example, if you make a speech-to-text request that doesn't have the appropri
 }   
 ```
 
-Additionally, if you request one of the following model-based features, and the model is not present, your request may be incomplete or receive an error response.
+Additionally, if you request one of the following model-based features, and the model isn't present, your request may be incomplete or receive an error response.
 
 * Diarization
 * Keywords
@@ -75,7 +75,7 @@ Additionally, if you request one of the following model-based features, and the 
 
 Contact your Deepgram Account Representative with the set of features you'd like to utilize on your requests, and you'll receive the necessary models to support that desired feature set.
 
-### Adding New Models to your Deployment
+### Adding new models to your deployment
 
 #### Docker/Podman
 
@@ -108,9 +108,9 @@ To troubleshoot:
 
 1. **Verify the project ID.** Confirm that the project ID in the model download link matches the project ID associated with your deployment's API key.
 2. **Re-download the model.** Delete the model artifact that failed to load and download it again.
-3. **Verify download integrity.** Compare the file size or `sha256sum` of multiple downloads of the same model link to confirm the file was not corrupted or incomplete.
+3. **Verify download integrity.** Compare the file size or `sha256sum` of multiple downloads of the same model link to confirm the file wasn't corrupted or incomplete.
 
-## Installing Product Updates
+## Installing product updates
 
 Deepgram regularly updates the container images for its self-hosted offering. Some updates are recommended, while others are mandatory and, if not installed, will result in Deepgram products ceasing to function.
 
@@ -145,13 +145,13 @@ In the `deepgram-self-hosted` Helm chart, you can specify the container image ta
 
 You can then run [`helm upgrade`](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted#upgrade-and-rollback-strategies) to roll these changes out to your cluster.
 
-## Updating Configuration Files
+## Updating configuration files
 
 Besides the container image tags, there may be other updates to configuration files that are available. Deepgram's [`self-hosted-resources` repository](https://github.com/deepgram/self-hosted-resources) contains up-to-date configuration files for Docker and Podman, as well as the `deepgram-self-hosted` Helm chart. Consult this repository regularly to see if updates are available.
 
 ### Docker/Podman
 
-Updated files may include the Compose file and the API/Engine/License Proxy `toml` configuration files. If you modify your configuration files, you will need to restart your existing containers for changes to take effect.
+Updated files may include the Compose file and the API/Engine/License Proxy `toml` configuration files. If you modify your configuration files, you'll need to restart your existing containers for changes to take effect.
 
 **`Shell`**
 
@@ -168,13 +168,13 @@ The `deepgram-self-hosted` Helm chart has regular releases, and you should regul
 
 Existing Pods will need to be restarted when underlying ConfigMaps are changed. This is handled automatically in version `>=0.2.1` of the `deepgram-self-hosted` Helm chart.
 
-## Managing Deepgram Licenses
+## Managing Deepgram licenses
 
-You may manage your own Deepgram licensing per the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide, including rotation and expiration of credentials.
+You may manage your own Deepgram licensing per the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide, including rotation and expiration of credentials.
 
 If you have ever been issued a license file for specialized, offline/air-gapped deployments, please contact your Deepgram Account Representative for additional documentation about maintaining your license.
 
-## Backing up Deepgram Products
+## Backing up Deepgram products
 
 When backing up a Deepgram installation, you should back up all Infrastructure-as-Code artifacts.
 
@@ -188,15 +188,15 @@ When backing up a Deepgram installation, you should back up all Infrastructure-a
 
 * Kubernetes
 
-  * Version of `deepgram-self-hosted` Helm chart that is in use
+  * Version of `deepgram-self-hosted` Helm chart that's in use
   * `values.yaml` configuration file
 
-We highly recommend backing up your entire environment state, if possible. If you are using Docker/Podman, this can be done with a VM snapshot. If you are using Kubernetes, you may consider a cluster backup tool, such as [Velero](https://velero.io/).
+We highly recommend backing up your entire environment state, if possible. If you're using Docker/Podman, this can be done with a VM snapshot. If you're using Kubernetes, you may consider a cluster backup tool, such as [Velero](https://velero.io/).
 
 ---
 
 What’s Next
 
-Now that you understand how to maintain your deployed Deepgram self-hosted environment, it's time to take a look at best practices related to autoscaling your system based on demand.
+Now that you understand how to maintain your deployed Deepgram Self-Hosted environment, it's time to take a look at best practices related to autoscaling your system based on demand.
 
 * [Autoscaling Best Practices](/docs/autoscaling-best-practices)

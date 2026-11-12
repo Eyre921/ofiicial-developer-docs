@@ -17,7 +17,7 @@ Deepgram's Speech Started feature can be used for speech detection and can be us
 
 SpeechStarted complements Voice Activity Detection (VAD) to promptly detect the start of speech post-silence. By gauging tonal nuances in human speech, the VAD can effectively differentiate between silent and non-silent audio segments, providing immediate notification of speech detection.
 
-## Enable Feature
+## Enable feature
 
 To enable the SpeechStarted event, include the parameter `vad_events=true` in your request:
 

@@ -1,5 +1,5 @@
 ---
-title: "Formatting Text for Aura-2"
+title: "Formatting text for Aura-2"
 source: https://developers.deepgram.com/docs/improving-aura-2-formatting.md
 path: docs/improving-aura-2-formatting
 ---
@@ -7,17 +7,17 @@ path: docs/improving-aura-2-formatting
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Formatting Text for Aura-2
+# Formatting text for Aura-2
 
-> Optimize Aura-2 Text-to-Speech Generation Quality
+> Optimize Aura-2 text-to-speech generation quality
 
-Aura-2 is a context-aware text-to-speech (TTS) model that applies natural pacing, expressiveness, and fillers based on the context of the provided text. The quality of your text input directly impacts the naturalness of the audio output.
+Deepgram Aura-2 is a context-aware text-to-speech (TTS) model that applies natural pacing, expressiveness, and fillers based on the context of the provided text. The quality of your text input directly impacts the naturalness of the audio output.
 
 This guide provides essential formatting techniques to optimize text for Aura-2 text-to-speech conversion. Following these guidelines will produce more natural-sounding speech output with appropriate pacing, intonation, and emphasis.
 
-> **Note for LLM-Generated Text**
+> **Note for LLM-generated text**
 >
-> If you are using a Large Language Model (LLM) to generate input text for Aura-2, you can prompt the LLM to provide conversational responses. For example, instruct the LLM to "respond in a natural, conversational tone with appropriate punctuation for text-to-speech" to get output that will sound more natural when processed by Aura-2.
+> If you're using a Large Language Model (LLM) to generate input text for Aura-2, you can prompt the LLM to provide conversational responses. For example, instruct the LLM to "respond in a natural, conversational tone with appropriate punctuation for text-to-speech" to get output that will sound more natural when processed by Aura-2.
 
 ## Core Principles
 
@@ -30,7 +30,7 @@ This guide provides essential formatting techniques to optimize text for Aura-2 
 | **Put command words in quotes**           | Say "add item" to add more to your order.       | Say add item to add more to your order       |
 | **Spell out names with spaces**           | Your confirmation code is J O H N.              | Your confirmation code is J-O-H-N or J,O,H,N |
 
-## Natural Speech Patterns
+## Natural speech patterns
 
 * **Direct address:** Include commas before names
   * ✓ "Hello, Maria! We have a special offer today."
@@ -44,7 +44,7 @@ This guide provides essential formatting techniques to optimize text for Aura-2 
   * ✓ "One moment. I'm searching for that information."
   * ✗ Long combined sentences without pauses
 
-## Special Formatting
+## Special formatting
 
 | Technique                         | Example                                                           |
 | --------------------------------- | ----------------------------------------------------------------- |
@@ -52,12 +52,12 @@ This guide provides essential formatting techniques to optimize text for Aura-2 
 | **Clear step boundaries**         | Please arrive early. Bring your insurance card - and medications. |
 | **Quotes for acronyms**           | Would you like to purchase the 2020 Acura "RX" 350?               |
 
-## Context Adaptation
+## Context adaptation
 
 * **Professional tone:** "We've processed your refund according to company policy."
 * **Casual tone:** "Good news! We've processed your refund - money should be back soon."
 
-## Common Pitfalls
+## Common pitfalls
 
 * ❌ Missing punctuation
 * ❌ Run-on sentences
@@ -67,7 +67,7 @@ This guide provides essential formatting techniques to optimize text for Aura-2 
 * ❌ No space before ? after URLs/emails
 * ❌ Insufficient pauses for complex information
 
-## Testing Your Text
+## Testing your text
 
 1. Read your text aloud naturally
 2. Mark where you naturally pause

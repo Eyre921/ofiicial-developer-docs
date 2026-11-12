@@ -1,5 +1,5 @@
 ---
-title: "CLI Authentication"
+title: "CLI authentication"
 source: https://developers.deepgram.com/developer-tools/cli/authentication.md
 path: developer-tools/cli/authentication
 ---
@@ -7,9 +7,9 @@ path: developer-tools/cli/authentication
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# CLI Authentication
+# CLI authentication
 
-## Interactive Login
+## Interactive login
 
 The simplest way to authenticate:
 
@@ -19,7 +19,7 @@ dg login
 
 This opens your browser to the Deepgram Console where you can authorize the CLI. The CLI stores API keys in your operating system keyring when available. Direct API-key login falls back to profile configuration when the keyring is unavailable.
 
-## API Key Flag
+## API key flag
 
 For CI/CD environments or scripted usage, pass your API key directly:
 
@@ -27,7 +27,7 @@ For CI/CD environments or scripted usage, pass your API key directly:
 dg --api-key YOUR_API_KEY listen audio.mp3
 ```
 
-## Environment Variable
+## Environment variable
 
 Set your API key as an environment variable:
 
@@ -36,7 +36,7 @@ export DEEPGRAM_API_KEY=YOUR_API_KEY
 dg listen audio.mp3
 ```
 
-## Named Profiles
+## Named profiles
 
 Use multiple API keys with named profiles:
 
@@ -58,7 +58,7 @@ dg whoami
 
 The command reports the active profile, a masked API key, its credential source, and the configured project ID.
 
-## CI/CD Usage
+## CI/CD usage
 
 For CI/CD pipelines, use the `--api-key` flag or environment variable:
 

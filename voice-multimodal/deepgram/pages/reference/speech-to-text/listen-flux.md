@@ -1,5 +1,5 @@
 ---
-title: "Turn-based Audio (Flux)"
+title: "Turn-based audio (Flux STT)"
 source: https://developers.deepgram.com/reference/speech-to-text/listen-flux.md
 path: reference/speech-to-text/listen-flux
 ---
@@ -7,7 +7,7 @@ path: reference/speech-to-text/listen-flux
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Turn-based Audio (Flux)
+# Turn-based audio (Flux STT)
 
 GET /v2/listen
 

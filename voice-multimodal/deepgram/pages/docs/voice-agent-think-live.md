@@ -13,9 +13,9 @@ Voice Agent
 
 Today's cascaded voice agents are fast and accurate, but they still struggle with the parts of a conversation that people handle without thinking: knowing when to hold the floor, when to yield it, whether a silence means "I'm thinking" or "I'm done," and when a quick "mhmm" is a better response than a full LLM turn.
 
-Think Live is Deepgram's first step toward closing that gap. It introduces the **Think Live model**, a Deepgram model that runs alongside the reasoning LLM you already configure and participates directly in orchestration. The reasoning LLM keeps doing the deeper thinking (answering the question, calling your functions, working through your prompt). The Think Live model keeps the conversation alive while that happens: acknowledging, holding the floor, checking whether the caller is still there, and reading frustration.
+Think Live is our first step toward closing that gap. It introduces the **Think Live model**, a Deepgram model that runs alongside the reasoning LLM you already configure and participates directly in orchestration. The reasoning LLM keeps doing the deeper thinking (answering the question, calling your functions, working through your prompt). The Think Live model keeps the conversation alive while that happens: acknowledging, holding the floor, checking whether the caller is still there, and reading frustration.
 
-This is also the first customer-visible piece of the architecture Deepgram is building toward, where a conversational model is a first-class stage of the pipeline rather than glue code in your client.
+This is also the first customer-visible piece of the architecture we're building toward, where a conversational model is a first-class stage of the pipeline rather than glue code in your client.
 
 ## Key features
 
@@ -25,7 +25,7 @@ This is also the first customer-visible piece of the architecture Deepgram is bu
 * **Presence Check** – When the user goes quiet for longer than expected, the agent can prompt rather than leave dead air ("take your time," "are you still there?").
 * **Frustration Detection** – The Think Live model monitors user turns for frustration signals (negative valence, high arousal, frustrated intent) and categorizes them accordingly, allowing you to proceed forward with any escalation-dependent workflows.
 * **Agent filler** – The Think Live model covers waits on a function call, or any wait your client knows about, with short filler it words itself instead of leaving dead air.
-* **Improved End-of-Turn Detection** – With the addition of the Think Live model, you should see improved performance in end-of-turn detection. Semantic end-of-turn and silence handling inherit from your Flux listen settings.
+* **Improved End-of-Turn Detection** – With the addition of the Think Live model, you should see improved performance in end-of-turn detection. Semantic end-of-turn and silence handling inherit from your Deepgram Flux STT listen settings.
 
 ## Recent updates
 
@@ -37,7 +37,7 @@ Think Live changes ship here rather than in the main changelog.
 
 ## The API surface
 
-The Voice Agent API today configures one provider per stage:
+The Deepgram Voice Agent API today configures one provider per stage:
 
 * `agent.listen.provider` (STT)
 * `agent.think.provider` (LLM)
@@ -47,7 +47,7 @@ Think Live splits `think` into two providers, because there are now two models t
 
 * `agent.listen.provider` (STT)
 * `agent.think.provider` (your reasoning LLM)
-* `agent.think_live.provider` (Deepgram's Think Live model)
+* `agent.think_live.provider` (our Think Live model)
 * `agent.speak.provider` (TTS)
 
 Existing configurations keep working: `agent.think.provider` is the reasoning LLM in both modes. The server also accepts `agent.think_reasoning.provider` as an alias, but sending both is an error, so prefer `agent.think`. Think Live is off until you provide the `think_live.provider`.
@@ -62,7 +62,7 @@ Existing configurations keep working: `agent.think.provider` is the reasoning LL
 | `agent.think_live.provider.`  `presence_check_max_count`      | Integer | Maximum number of times the agent will probe the user for a response after extended silence. Once the maximum is reached, the agent stays silent. `0` disables the feature. Defaults to `3`.                                                           |
 | `agent.think_live.provider.`  `presence_check_interval_ms`    | Integer | Time in milliseconds the agent waits between presence-check utterances. Valid range `1` to `60000`, though the first check is floored at `3000`, so lower values behave as `3000`. Ignored when `presence_check_max_count` is `0`. Defaults to `4500`. |
 | `agent.think_live.provider.`  `frustration_max_count`         | Integer | Maximum number of [`FrustrationDetected`](#frustrationdetected) events the agent will try to resolve before setting the `escalated` flag. `0` stops `FrustrationDetected` from being sent at all. Omit it to use the server default.                   |
-| `agent.think_live.provider.`  `restricted_terms`              | Array   | Terms the Think Live model will not say. Each entry is a plain string; pass a multi-word phrase as a single array element. Defaults to `["human", "transfer"]`.                                                                                        |
+| `agent.think_live.provider.`  `restricted_terms`              | Array   | Terms the Think Live model won't say. Each entry is a plain string; pass a multi-word phrase as a single array element. Defaults to `["human", "transfer"]`.                                                                                           |
 
 #### `agent.think_live.provider.agent_backchannel_sensitivity`
 
@@ -122,7 +122,7 @@ See [Configure the Voice Agent](/docs/configure-voice-agent#agent---listen-setti
 }
 ```
 
-Note: The released SDKs do not yet expose `think_live` as a typed field. It passes through unchanged: build the Settings object from a dict in Python, or cast the object in TypeScript before calling `sendSettings`. The same applies to the agent filler fields on functions. Dynamic `InjectAgentMessage` has its own method in the next SDK release; until then, send it as a raw JSON message.
+Note: The released SDKs don't yet expose `think_live` as a typed field. It passes through unchanged: build the Settings object from a dict in Python, or cast the object in TypeScript before calling `sendSettings`. The same applies to the agent filler fields on functions. Dynamic `InjectAgentMessage` has its own method in the next SDK release; until then, send it as a raw JSON message.
 
 ## Agent filler
 
@@ -138,7 +138,7 @@ Three optional fields on each function definition (`agent.think.functions`) cont
 
 | Field                      | Type    | Default | Description                                                                                                                                                                                          |
 | -------------------------- | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `initial_agent_filler`     | Boolean | `false` | Speak one filler once the call is dispatched and the user's turn is confirmed, if the `FunctionCallResponse` has not arrived yet.                                                                    |
+| `initial_agent_filler`     | Boolean | `false` | Speak one filler once the call is dispatched and the user's turn is confirmed, if the `FunctionCallResponse` hasn't arrived yet.                                                                     |
 | `agent_filler_max_count`   | Integer | `0`     | Maximum number of additional fillers while the call is still outstanding. `0` disables additional filler.                                                                                            |
 | `agent_filler_interval_ms` | Integer | `5000`  | Silence, in milliseconds, before each additional filler. Ignored when `agent_filler_max_count` is `0`, which is also the only case in which a value outside the `1000` to `60000` range is accepted. |
 
@@ -165,7 +165,7 @@ With these settings, the agent speaks one filler when the call goes out, then up
 
 How filler timing works:
 
-* **Confirmed turns only.** If a call is dispatched early (for example, from an eager end-of-turn), the initial filler waits until the user's turn is confirmed. If the user keeps talking and the turn is not confirmed, no filler is spoken.
+* **Confirmed turns only.** If a call is dispatched early (for example, from an eager end-of-turn), the initial filler waits until the user's turn is confirmed. If the user keeps talking and the turn isn't confirmed, no filler is spoken.
 * **No double announcements.** If the reasoning LLM already said something in the same response that made the call ("Let me look that up"), the initial filler is skipped because that line already covers the moment.
 * **One schedule per turn.** When a turn makes several calls, they share one filler schedule, taken from the first call that asked for filler.
 * **Silence-based spacing.** `agent_filler_interval_ms` counts from when the agent last stopped speaking, not from when the call started.
@@ -177,7 +177,7 @@ How filler timing works:
 
 ### Filler on demand
 
-Your client sometimes knows about a wait the agent does not: a slow lookup outside a function call, a handoff, or reasoning LLM latency you are tracking yourself. Send [`InjectAgentMessage`](/docs/voice-agent-inject-agent-message) with `is_dynamic: true` and the Think Live model words a filler for you.
+Your client sometimes knows about a wait the agent does not: a slow lookup outside a function call, a handoff, or reasoning LLM latency you're tracking yourself. Send [`InjectAgentMessage`](/docs/voice-agent-inject-agent-message) with `is_dynamic: true` and the Think Live model words a filler for you.
 
 | Field        | Type    | Required    | Description                                                                                               |
 | ------------ | ------- | ----------- | --------------------------------------------------------------------------------------------------------- |
@@ -257,7 +257,7 @@ Use the field to keep transcripts and UI readable. Backchannels, presence checks
 
 ## Mid-session updates
 
-You can change the Think Live model configuration in the middle of a session by sending an `UpdateThink_Live` message. It replaces the entire `agent.think_live.provider` block, so include every parameter you want in effect, not only the ones you are changing. Parameters you omit fall back to their defaults.
+You can change the Think Live model configuration in the middle of a session by sending an `UpdateThink_Live` message. It replaces the entire `agent.think_live.provider` block, so include every parameter you want in effect, not only the ones you're changing. Parameters you omit fall back to their defaults.
 
 **`JSON`**
 

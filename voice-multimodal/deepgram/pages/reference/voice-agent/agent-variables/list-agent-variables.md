@@ -1,5 +1,5 @@
 ---
-title: "List Agent Variables"
+title: "List agent variables"
 source: https://developers.deepgram.com/reference/voice-agent/agent-variables/list-agent-variables.md
 path: reference/voice-agent/agent-variables/list-agent-variables
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-variables/list-agent-variables
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List Agent Variables
+# List agent variables
 
 GET https://api.deepgram.com/v1/projects/{project_id}/agent-variables
 

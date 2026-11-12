@@ -1,5 +1,5 @@
 ---
-title: "Update a Project"
+title: "Update a project"
 source: https://developers.deepgram.com/reference/manage/projects/update.md
 path: reference/manage/projects/update
 ---
@@ -7,7 +7,7 @@ path: reference/manage/projects/update
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Update a Project
+# Update a project
 
 PATCH https://api.deepgram.com/v1/projects/{project_id}
 Content-Type: application/json

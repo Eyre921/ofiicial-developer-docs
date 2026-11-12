@@ -36,6 +36,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Local, offline-capable Microsoft Word (.docx) redlining and parsing tools for LLM agents.
 
+> [card] [ActeraMiddleware](https://github.com/Actera-AI/langchain-actera#readme)
+>
+> Sends each tool call to Actera, where policies determine whether to allow, block or escalate it for approval in Slack or email, with an audit log.
+
 > [card] [Actian VectorAI DB](https://docs.vectoraidb.actian.com)
 >
 > Portable, high-performance vector database for embedded, edge, and cloud AI applications.
@@ -324,6 +328,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Pay-per-call LangChain tools over x402 for OCR, analysis, transcription, browsers, and agent inboxes.
 
+> [card] [AutomSearch](https://github.com/automdev/langchain-autom#readme)
+>
+> Live Google, Bing, Brave, DuckDuckGo and Yahoo search results as a tool and a retriever, through the Autom SERP API.
+
 > [card] [Auxen](https://auxen.ai)
 >
 > Dedicated per-customer LLM endpoints with an OpenAI-compatible API.
@@ -363,6 +371,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [BhivedMiddleware](https://bhived.ai/docs/integrations/langchain)
 >
 > Recalls shared lessons from the bhived network before model calls and adds tools to write verified lessons back.
+
+> [card] [BhivedToolkit](https://bhived.ai/docs/integrations/langchain)
+>
+> Tools to search shared lessons other developers' AI agents verified (fixes, known mistakes, API changes) and to write verified lessons back.
 
 > [card] [Bidda](https://bidda.com/developers)
 >
@@ -468,6 +480,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > OpenAI-compatible LLM gateway that serves models from many labs below list price.
 
+> [card] [ChatLinkrra](https://github.com/weare-linkrra/linkrra-synap/tree/main/langchain-linkrra#readme)
+>
+> Chat model for Linkrra Synap, an OpenAI-compatible API serving open-weight models such as Qwen3 Coder, gpt-oss-20b and Gemma 4.
+
 > [card] [ChatLlamay](https://github.com/kosa8ai/langchain-llamay#readme)
 >
 > Chat models served locally by llamay, a runtime for macOS, Windows, and Linux, through its Ollama-compatible API.
@@ -483,6 +499,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [ChatRouter](https://github.com/danielpolok/langchain-model-router)
 >
 > A chat model that sends each request to one of several LangChain chat models, chosen by a routing strategy defined in application code.
+
+> [card] [ChopperCompressor](https://github.com/wiiiktor/chopper_demo/tree/main/integrations/chopper-rag)
+>
+> Local document compressor that cuts the exact quotes answering a query out of retrieved documents (fine-tuned mmBERT).
 
 > [card] [Chroma](/oss/python/integrations/providers/chroma)
 >
@@ -1039,6 +1059,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [HirePulse](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030)
 >
 > StructuredTools for public hiring signals, website technologies, jobs, Google Ads transparency, profiles, and bulk lookup quotes.
+
+> [card] [HopBase](https://hop-base.com/en/docs)
+>
+> API gateway with OpenAI-compatible and Anthropic-compatible base URLs for GPT, Claude, Gemini, DeepSeek, GLM, and Qwen models.
 
 > [card] [HouyiVectorStore](https://github.com/houyidb-community/houyidb/blob/main/sdk/python/langchain-houyidb/README.en.md)
 >
@@ -1716,6 +1740,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Authorization and access control platform.
 
+> [card] [PiloterrGoogleSearch](https://github.com/piloterr/langchain-piloterr#readme)
+>
+> Google search and web page scraping (plain, rendered or unblocked) as tools and a document loader, through the Piloterr web data API.
+
 > [card] [Pinecone](/oss/python/integrations/providers/pinecone)
 >
 > Managed vector database for ML applications.
@@ -2012,6 +2040,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Web scraping API and proxy service.
 
+> [card] [ScrapelyActorsTool](https://scrape.ly/docs/langchain)
+>
+> Tools and a document loader that run Scrape.ly web scrapers (Google Maps, Amazon, LinkedIn and more) and return their results to agents.
+
 > [card] [ScrapeUnblockerToolkit](https://docs.scrapeunblocker.com/sdks/langchain)
 >
 > ScrapeUnblockerToolkit uses a web data API to load pages in a real browser and return Markdown or structured JSON.
@@ -2127,6 +2159,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Snowflake](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-rest-api)
 >
 > Cloud data platform and analytics.
+
+> [card] [SocialScrapeToolkit](https://socialscrape.dev/docs/langchain)
+>
+> SocialScrapeToolkit returns social media data and video transcripts from YouTube, TikTok, Instagram, X, and other platforms as JSON.
 
 > [card] [SofyaSearch](https://sofya.co/docs/langchain)
 >
@@ -2551,6 +2587,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [WayzaToolkit](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza)
 >
 > Tools that give an agent a Wayza address to ask people or other AIs questions, get recorded answers, and answer Wayza chat links.
+
+> [card] [WBXSandbox](https://github.com/WBX-Sandbox/langchain-wbxsandbox#readme)
+>
+> WBX Sandbox runs Deep Agents commands and file operations in Firecracker microVMs, each with its own Linux kernel and disk.
 
 > [card] [Weaviate](/oss/python/integrations/providers/weaviate)
 >

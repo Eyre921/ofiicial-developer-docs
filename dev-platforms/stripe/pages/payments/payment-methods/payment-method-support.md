@@ -225,7 +225,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Bank debits API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [ACH Direct Debit](https://docs.stripe.com/payments/ach-direct-debit.md) | `us_bank_account` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | No |
 | [Bacs Direct debit](https://docs.stripe.com/payments/bacs-debit.md) | `bacs_debit` | ✓ Supported 3 | - Unsupported 4 | - Unsupported | ✓ Supported | No |
@@ -240,7 +240,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Bank redirects API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md) | `bancontact` | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | Yes |
 | [BLIK](https://docs.stripe.com/payments/blik.md)4 | `blik` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported 1 | No |
@@ -254,7 +254,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Bank transfers API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Bank transfers | `customer_balance` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | No |
 
@@ -262,7 +262,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Buy now, pay later API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Affirm](https://docs.stripe.com/payments/affirm.md) | `affirm` | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | Yes |
 | [Afterpay/Clearpay](https://docs.stripe.com/payments/afterpay-clearpay.md) | `afterpay_clearpay` | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | Yes |
@@ -279,7 +279,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Cards API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | Cards | `card` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | No |
 
@@ -287,7 +287,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Link API support
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Link](https://docs.stripe.com/payments/link.md) | `link` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | No |
 
@@ -295,7 +295,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Real-time payments API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | `pay_by_bank` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [PayNow](https://docs.stripe.com/payments/paynow.md) | `paynow` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | No |
@@ -308,13 +308,13 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Stablecoin payments API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Stablecoin payments](https://docs.stripe.com/payments/stablecoin-payments.md) | `crypto` | ✓ Supported | (Private preview) | ✓ Supported | (Private preview) | Yes |
 
 ### Vouchers API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Boleto](https://docs.stripe.com/payments/boleto.md) | `boleto` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | No |
 | [Konbini](https://docs.stripe.com/payments/konbini.md) | `konbini` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | No |
@@ -325,7 +325,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 ### Wallets API support 
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Alipay](https://docs.stripe.com/payments/alipay.md) | `alipay` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Amazon Pay](https://docs.stripe.com/payments/amazon-pay.md) | `amazon_pay` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | Yes |

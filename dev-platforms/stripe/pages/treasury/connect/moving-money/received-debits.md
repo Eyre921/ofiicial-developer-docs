@@ -27,7 +27,7 @@ Receiving ACH or Bacs direct debits requires the `money_manager.capabilities.rec
 
 ## Manage mandates
 Available in: GB
-When a third party establishes authorization to debit a financial account, Stripe creates a [ReceivedDebitMandate](https://docs.stripe.com/api/v2/money-management/received-debit-mandates/object.md?api-version=preview) and sends the `v2.money_management.received_debit_mandate.created` webhook event. The third party can then initiate a [ReceivedDebit](https://docs.stripe.com/api/v2/money-management/received-debits/object.md?api-version=preview), unless the financial account owner cancels the mandate.
+When a third party establishes authorization to debit a financial account, Stripe creates a [SpendingMandate](https://docs.stripe.com/api/v2/money-management/spending-mandates/object.md?api-version=preview) and sends the `v2.money_management.spending_mandate.created` webhook event. The third party can then initiate a [ReceivedDebit](https://docs.stripe.com/api/v2/money-management/received-debits/object.md?api-version=preview), unless the financial account owner cancels the mandate.
 
 When you make API calls to manage mandates on behalf of a connected account, specify the connected account’s ID in the `Stripe-Account` header.
 
@@ -36,7 +36,7 @@ When you make API calls to manage mandates on behalf of a connected account, spe
 You can retrieve the mandate using the ID from the webhook event to review the authorization details and validate its legitimacy.
 
 ```curl
-curl https://api.stripe.com/v2/money_management/received_debit_mandates/{{RECEIVED_DEBIT_MANDATE_ID}} \
+curl https://api.stripe.com/v2/money_management/spending_mandates/{{SPENDING_MANDATE_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
@@ -46,8 +46,8 @@ The response includes information about the initiating party. If the third party
 
 ```json
 {
-  "id": "rdm_1234",
-  "object": "v2.money_management.received_debit_mandate",
+  "id": "spdmnd_1234",
+  "object": "v2.money_management.spending_mandate",
   "livemode": false,
   "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
   "type": "bank_transfer",
@@ -77,20 +77,20 @@ You can cancel a mandate to end debit authorization at any time. Canceling while
 > You can’t cancel or decline a scheduled received debit without canceling the mandate.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/money_management/received_debit_mandates/{{RECEIVED_DEBIT_MANDATE_ID}}/cancel \
+curl -X POST https://api.stripe.com/v2/money_management/spending_mandates/{{SPENDING_MANDATE_ID}}/cancel \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
 ```
 
-The response confirms the mandate is `pending_cancellation`. After the cancellation completes, Stripe sends the `v2.money_management.received_debit_mandate.canceled` webhook event signaling the transition to `canceled`.
+The response confirms the mandate is `pending_cancellation`. After the cancellation completes, Stripe sends the `v2.money_management.spending_mandate.canceled` webhook event signaling the transition to `canceled`.
 
 ### List mandates
 
 You can retrieve the set of mandates in place for a connected account. Use inline parameters, such as `statuses=active`, to filter the results.
 
 ```curl
-curl https://api.stripe.com/v2/money_management/received_debit_mandates \
+curl https://api.stripe.com/v2/money_management/spending_mandates \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
@@ -102,8 +102,8 @@ The result includes information about each mandate’s originator and when they 
 {
   "data": [
     {
-      "id": "rdm_test_61UxLhI8gPhKNsOwu16Ux87t0BE9ZVFsBHMMih6wSNPM",
-      "object": "v2.money_management.received_debit_mandate",
+      "id": "spdmnd_test_61UxLhI8gPhKNsOwu16Ux87t0BE9ZVFsBHMMih6wSNPM",
+      "object": "v2.money_management.spending_mandate",
       "bank_transfer": {
         "account_holder_name": "Test Originator",
         "financial_address": "{{FINANCIAL_ADDRESS_ID}}",
@@ -184,7 +184,7 @@ curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT
 
 ### List received debits
 
-[List received debits](https://docs.stripe.com/api/v2/money-management/received-debits/list.md?api-version=preview) to review debit transactions for a financial account. Use parameters in the request to limit responses or filter results by created date. UK users can also filter by a specific `received_debit_mandate`.
+[List received debits](https://docs.stripe.com/api/v2/money-management/received-debits/list.md?api-version=preview) to review debit transactions for a financial account. Use parameters in the request to limit responses or filter results by created date. UK users can also filter by a specific `spending_mandate`.
 
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debits \
@@ -240,7 +240,7 @@ curl https://api.stripe.com/v2/money_management/debit_disputes \
 
 Use the [debit test helper](https://docs.stripe.com/api/v2/money-management/financial-addresses/debit.md?api-version=preview) to simulate a `ReceivedDebit` in a sandbox so you can verify that your integration handles incoming debits correctly. You can trigger a failed debit by making sure the financial account has an insufficient balance for the test payment.
 
-If you simulate a Bacs GBP debit, the helper also creates a `ReceivedDebitMandate`. The simulated debit remains `scheduled` for approximately five minutes before transitioning to `succeeded`. While it’s `scheduled`, its `settles_at` field indicates the expected settlement time.
+If you simulate a Bacs GBP debit, the helper also creates a `SpendingMandate`. The simulated debit remains `scheduled` for approximately five minutes before transitioning to `succeeded`. While it’s `scheduled`, its `settles_at` field indicates the expected settlement time.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/debit \
@@ -273,8 +273,8 @@ Listen for the following `v2.money_management` events to track and handle status
 
 | Event | Description |
 | --- | --- |
-| `received_debit_mandate.created` | Stripe creates a mandate after a third party establishes authorization to debit a financial account. |
-| `received_debit_mandate.canceled` | A received debit mandate is canceled, preventing further debits authorized by that mandate. |
+| `spending_mandate.created` | Stripe creates a mandate after a third party establishes authorization to debit a financial account. |
+| `spending_mandate.canceled` | A spending mandate is canceled, preventing further debits authorized by that mandate. |
 | `received_debit.scheduled` | A received debit is scheduled, but hasn’t debited the financial account yet. |
 | `received_debit.pending` | A received debit related to Issuing card spend is pending, but hasn’t debited the financial account yet. |
 | `received_debit.succeeded` | A received debit succeeds. |

@@ -36,7 +36,7 @@ History is particularly useful when:
 | `role`    | String | Either "user" (human statements) or "assistant" (agent responses) |
 | `content` | String | The actual text content of what was said                          |
 
-### Example Payload
+### Example payload
 
 **`Conversation History`**
 
@@ -100,7 +100,7 @@ Each function call in the history includes:
 | `arguments`   | String  | JSON string containing the arguments passed to the function       |
 | `response`    | String  | The response/result returned by the function                      |
 
-### Example Payload
+### Example payload
 
 **`Function Call History`**
 

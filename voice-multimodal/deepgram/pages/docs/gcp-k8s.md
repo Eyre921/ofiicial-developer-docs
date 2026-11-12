@@ -9,11 +9,11 @@ path: docs/gcp-k8s
 
 # Google Cloud Platform
 
-Deploying Deepgram on Google Cloud Platform (GCP) requires some preparation. In this section, you will learn how to provision a managed Kubernetes Cluster where you will deploy Deepgram products. You will need to perform some of these steps in the Google Cloud Console and some in your local terminal.
+Deploying Deepgram on Google Cloud Platform (GCP) requires some preparation. In this section, you'll learn how to provision a managed Kubernetes Cluster where you'll deploy Deepgram products. You'll need to perform some of these steps in the Google Cloud Console and some in your local terminal.
 
 # Prerequisites
 
-Make sure you have completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction).
+Make sure you've completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction).
 
 GPU availability has been extremely limited across cloud providers, including GCP. You may need to [request a GPU quota](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#request_quota) if you are not able to provision spot GPU instances in your node pools.
 
@@ -38,19 +38,19 @@ The [`gcloud` CLI](https://cloud.google.com/sdk/gcloud) provides programmatic ac
 >
 > If you would like to deploy to a different region, make sure to adjust templates and steps in this guide accordingly.
 
-## Cluster Management with `gcloud container clusters`
+## Cluster management with `gcloud container clusters`
 
 The `gcloud container clusters` command group allows you to create and manage GKE clusters.
 
 Certain steps in this guide use these commands, although many of the same actions can be performed manually in the Google Cloud Console.
 
-## Kubernetes Packages with `helm`
+## Kubernetes packages with `helm`
 
 [Helm](https://helm.sh/) is the package manager for Kubernetes. A package in Kubernetes is defined by a Helm Chart, which helps you define, install, and upgrade even the most complex Kubernetes application.
 
 We use Helm to install several components in this guide. See the [installation guide](https://helm.sh/docs/intro/install/) for details on how to install locally.
 
-# Creating a Cluster
+# Creating a cluster
 
 Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes in GCP. In the cloud, GKE automatically manages the availability and scalability of the Kubernetes control plane nodes responsible for scheduling containers, managing application availability, storing cluster data, and other key tasks.
 
@@ -130,7 +130,7 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
    kubectl config set-context --current --namespace=dg-self-hosted
    ```
 
-### Configure Namespace Resource Quotas for GKE
+### Configure namespace resource quotas for GKE
 
 When deploying workloads in a non-default namespace (such as `dg-self-hosted`), GKE does not automatically provision quotas for the `system-node-critical` and `system-cluster-critical` priority classes in that namespace. GPU driver DaemonSets (and other node-critical system workloads) rely on these priorities to schedule correctly.
 
@@ -297,11 +297,11 @@ Next, create a Google Cloud Persistent Disk to hold the Deepgram model files. Po
 
 # Configure Kubernetes Secrets
 
-Deepgram strongly recommends following [best practices for configuring Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) . Please refer to [Securing Your Cluster](/docs/securing-your-cluster) for more details.
+Deepgram strongly recommends following [best practices for configuring Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/) . Please refer to [Securing your cluster](/docs/securing-your-cluster) for more details.
 
 The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set of distribution credentials that allow the cluster to pull images from Deepgram's container image repository. The other is your self-hosted API key that licenses each Deepgram container that is created.
 
-1. Complete the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide to generate distribution credentials and a self-hosted API key.
+1. Complete the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide to generate distribution credentials and a self-hosted API key.
 
 2. If using an external Secret store provider, configure cluster access to these two Secrets, naming them `dg-regcred` (distribution credentials) and `dg-self-hosted-api-key`.
 
@@ -318,7 +318,7 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
 
       > **Info**
       >
-      > Replace the placeholders `QUAY_DG_USER` and `QUAY_DG_PASSWORD` with the distribution credentials you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > Replace the placeholders `QUAY_DG_USER` and `QUAY_DG_PASSWORD` with the distribution credentials you generated in the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide.
 
    2. Create a Kubernetes Secret named `dg-self-hosted-api-key` to store your self-hosted API key.
 
@@ -329,7 +329,7 @@ The `deepgram-self-hosted` Helm chart takes two Secret references. One is a set 
 
       > **Info**
       >
-      > Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) guide.
+      > Replace the placeholder `YOUR_API_KEY_HERE` with the Deepgram API key you generated in the [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) guide.
 
 # Deploy Deepgram
 
@@ -389,7 +389,7 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    >
    > If you want to monitor the status, or your pods aren't being scheduled as you expect, you can see a pod's scheduling status with `kubectl describe pod <pod-name>`, which may contain details on what is preventing scheduling.
 
-# Test Your Deepgram Setup with a Sample Request
+# Test your Deepgram setup with a sample request
 
 Test your environment and container setup with a local file.
 
@@ -444,9 +444,9 @@ Test your environment and container setup with a local file.
    > * the service name `deepgram-api-external`
    > * the namespace `dg-self-hosted`
 
-You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working!
+You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working.
 
-# Next Steps
+# Next steps
 
 Your Deepgram services are accessible within your cluster via the `deepgram-api-external` Service that was created by the Helm Chart.
 
@@ -458,6 +458,6 @@ What’s Next
 
 Now that you have a basic Deepgram setup working, take some time to learn about building up to a production-level environment, as well as helpful Deepgram add-on services.
 
-* [Securing Your Cluster](/docs/securing-your-cluster)
-* [Scaling and Deployment Strategies](/docs/scaling-and-deployment-strategies)
+* [Securing your cluster](/docs/securing-your-cluster)
+* [Scaling and deployment strategies](/docs/scaling-and-deployment-strategies)
 * [Self-Hosted Add Ons](/docs/self-hosted-add-ons)

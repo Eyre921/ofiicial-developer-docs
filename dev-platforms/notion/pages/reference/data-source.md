@@ -40,7 +40,7 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 | `title` | array of [rich text objects](/reference/rich-text) | Name of the data source as it appears in Notion. See [rich text object](/reference/rich-text)) for a breakdown of the properties. | `[ { "type": "text", "text": { "content": "Can I create a URL property", "link": null }, "annotations": { "bold": false, "italic": false, "strikethrough": false, "underline": false, "code": false, "color": "default" }, "plain_text": "Can I create a URL property", "href": null } ]` |
 | `description` | array of [rich text objects](/reference/rich-text) | Description of the data source as it appears in Notion. See [rich text object](/reference/rich-text)) for a breakdown of the properties. | |
 | `icon` | [Emoji](/reference/emoji-and-icon#emoji), [Icon](/reference/emoji-and-icon#icon), [Custom emoji](/reference/emoji-and-icon#custom-emoji), or [File](/reference/file-object) | Data source icon. See [Icon](/reference/emoji-and-icon) for all supported types. | |
-| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value. | `false` |
+| `archived` | `boolean` | **Deprecated.** Use `in_trash` instead. In API versions before `2026-03-11`, this is an alias for `in_trash` and always returns the same value. Version `2026-03-11` removed `archived` from requests and responses. | `false` |
 | `in_trash` | `boolean` | Whether the data source has been trashed. | `false` |
 | `sync_metadata` | `object` | Optional, read-only sync identity and available health included when listing or retrieving a data source. See [Sync metadata](#sync-metadata). | `{"sync_id": "2f26ee68-df30-4251-aad4-8ddc420cba3d"}` |
 

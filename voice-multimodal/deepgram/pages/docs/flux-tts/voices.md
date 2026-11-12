@@ -9,7 +9,7 @@ path: docs/flux-tts/voices
 
 # Flux TTS Voices & Languages
 
-Flux TTS voices use the model string format `flux-{voice}-{language}` (e.g. `flux-haley-en`). The same voice catalog is served on both `/v2/speak` transports — the [streaming WebSocket](/docs/flux-tts/quickstart) and [batch REST](/docs/flux-tts/batch). Every voice in every language is also available in the [Voice Agent API](/docs/voice-agent-tts-models#flux-tts).
+Deepgram Flux TTS voices use the model string format `flux-{voice}-{language}` (e.g. `flux-haley-en`). The same voice catalog is served on both `/v2/speak` transports — the [streaming WebSocket](/docs/flux-tts/quickstart) and [batch REST](/docs/flux-tts/batch). Every voice in every language is also available in the [Voice Agent API](/docs/voice-agent-tts-models#flux-tts).
 
 ## Selecting a voice
 
@@ -537,9 +537,9 @@ Flux TTS voices speak English — with accents spanning American, British, Irish
 
 Bengali (`bn`), Bulgarian (`bg`), Catalan (`ca`), Chinese (`zh`), Croatian (`hr`), Czech (`cs`), Danish (`da`), Dutch (`nl`), Estonian (`et`), Finnish (`fi`), French (`fr`), German (`de`), Greek (`el`), Gujarati (`gu`), Hindi (`hi`), Hungarian (`hu`), Indonesian (`id`), Italian (`it`), Japanese (`ja`), Kannada (`kn`), Korean (`ko`), Latvian (`lv`), Lithuanian (`lt`), Malay (`ms`), Marathi (`mr`), Norwegian (`no`), Polish (`pl`), Portuguese (`pt`), Romanian (`ro`), Russian (`ru`), Slovak (`sk`), Slovenian (`sl`), Spanish (`es`), Swedish (`sv`), Tagalog (`tl`), Tamil (`ta`), Telugu (`te`), Turkish (`tr`), Ukrainian (`uk`), Urdu (`ur`), Vietnamese (`vi`).
 
-Languages marked Early Access do not have text normalization yet: numbers, dates and abbreviations are read as written, so write them out in words. Text normalization is available for English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and Spanish.
+Languages marked Early Access don't have text normalization yet: numbers, dates, and abbreviations are read as written, so write them out in words. Text normalization is available for English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian, and Spanish.
 
-The voices in these 41 languages are available on `api.deepgram.com`, `api.eu.deepgram.com` and `api.in.deepgram.com`; they are not yet available on the Australia endpoint (`api.au.deepgram.com`).
+The voices in these 41 languages are available on `api.deepgram.com`, `api.eu.deepgram.com`, and `api.in.deepgram.com`; they aren't yet available on the Australia endpoint (`api.au.deepgram.com`).
 
 ## Related resources
 

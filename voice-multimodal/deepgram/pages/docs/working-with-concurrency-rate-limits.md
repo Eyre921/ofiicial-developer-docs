@@ -25,9 +25,9 @@ API Concurrency limits are associated to your Deepgram project, not your API key
 >
 > For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
-### Managing Concurrency
+### Managing concurrency
 
-When using the Deepgram Speech-to-Text API, you might need to process multiple audio files simultaneously.
+When using the Deepgram speech-to-text API, you might need to process multiple audio files simultaneously.
 
 In this scenario, you must ensure your application doesn't exceed the concurrency limits. Implementing a queue system can help manage requests efficiently, ensuring no more than the allowed number of concurrent requests are sent to the Deepgram API.
 
@@ -39,15 +39,15 @@ Concurrency rate limits define the maximum number of API requests you can make i
 >
 > For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
-### Handling Rate Limits
+### Handling rate limits
 
 To avoid hitting rate limits, consider the following strategies:
 
-1. **Rate Limiting Middleware**: Implement middleware in your application to throttle requests, ensuring they do not exceed the allowed rate.
+1. **Rate Limiting Middleware**: Implement middleware in your application to throttle requests, ensuring they don't exceed the allowed rate.
 2. **Exponential Backoff**: Use an exponential backoff strategy to retry requests after hitting a rate limit, gradually increasing the delay between retries. An exponential-backoff strategy introduces a delay before each retry attempt. The delay between retries increases exponentially with each consecutive failure, helping to mitigate the impact of transient errors and reduce the likelihood of overwhelming the system with retries.
 3. **Monitor Usage**: Regularly monitor your API usage to anticipate and adjust to usage patterns.
 
-## Other Considerations
+## Other considerations
 
 ### What Happens if You Hit Your Concurrency Rate Limits?
 
@@ -58,7 +58,7 @@ If you exceed your rate limits, the API will return a `429: Too Many Requests` e
 * Users on Pay As You Go and Growth plans cannot have their limits increased.
 * New and existing Enterprise customers can request an increase by discussing your needs with the [Deepgram Sales Team.](https://deepgram.com/contact-us)
 
-## Getting Help
+## Getting help
 
 If you encounter issues with concurrency or rate limits, Deepgram offers several support options:
 

@@ -46,7 +46,7 @@ You can use a single integration for all bank debits that works across Stripe pr
 
 ## API support
 
-| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
+| Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [ACH Direct Debit](https://docs.stripe.com/payments/ach-direct-debit.md) | `us_bank_account` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | No |
 | [Bacs Direct debit](https://docs.stripe.com/payments/bacs-debit.md) | `bacs_debit` | ✓ Supported 3 | - Unsupported 4 | - Unsupported | ✓ Supported | No |

@@ -11,7 +11,7 @@ path: docs/configure-sagemaker-deployments
 
 Deepgram on Amazon SageMaker supports runtime configuration through environment variables. When your SageMaker Endpoint starts, the container reads these variables and applies them to the appropriate configuration files (`api.toml` and `engine.toml`) before launching Deepgram services.
 
-Use environment variables to tune settings for a specific SageMaker deployment, such as specifying the maximum number of streams for Flux or adjusting the step parameter for interim results (Nova-3).
+Use environment variables to tune settings for a specific SageMaker deployment, such as specifying the maximum number of streams for Deepgram Flux STT or adjusting the step parameter for Nova-3 interim results.
 
 > **Warning**
 >
@@ -53,9 +53,9 @@ DEEPGRAM_ENGINE_01=max_active_requests=120
 DEEPGRAM_API_01=features.entity_detection=false
 ```
 
-### Specify maximum Flux streams
+### Specify maximum Flux STT streams
 
-This is separate from `max_active_requests` and is specific to the Flux streaming transcription model.
+This is separate from `max_active_requests` and is specific to the Flux STT streaming transcription model.
 
 ```
 DEEPGRAM_ENGINE_01=flux.max_streams=25
@@ -181,7 +181,7 @@ Check CloudWatch Logs for warning messages indicating a variable was skipped due
 ### Parse error in CloudWatch Logs
 
 * Quote string values within the value expression: `driver_pool.standard.url="https://engine:8080/v2"`
-* Boolean values do not require quoting: `features.listen_v2=true`
+* Boolean values don't require quoting: `features.listen_v2=true`
 
 ### Environment variable support not enabled
 

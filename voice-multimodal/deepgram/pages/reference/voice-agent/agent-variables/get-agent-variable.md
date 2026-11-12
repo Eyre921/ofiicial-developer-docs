@@ -1,5 +1,5 @@
 ---
-title: "Get Agent Variable"
+title: "Get agent variable"
 source: https://developers.deepgram.com/reference/voice-agent/agent-variables/get-agent-variable.md
 path: reference/voice-agent/agent-variables/get-agent-variable
 ---
@@ -7,7 +7,7 @@ path: reference/voice-agent/agent-variables/get-agent-variable
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Get Agent Variable
+# Get agent variable
 
 GET https://api.deepgram.com/v1/projects/{project_id}/agent-variables/{variable_id}
 

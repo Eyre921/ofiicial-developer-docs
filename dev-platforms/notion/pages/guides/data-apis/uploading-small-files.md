@@ -28,6 +28,19 @@ Attach the file to content in your workspace
 >
 > Upload once, attach many times. You can reuse the same `file_upload` ID across multiple blocks or pages.
 
+## Before you begin
+
+You need an integration token. Creating and sending a file upload needs either the **Insert content** or the **Update content** capability. Adding a block needs **Insert content**, setting a page cover or `files` property needs **Update content**, and checking the result needs **Read content**. Keep the token on your server. Don’t put it in browser page source, client bundles, or public repositories.
+
+The examples upload a PNG image named `logo.png` from your working directory. They read your token and the ID of an existing page that’s shared with the integration from your shell:
+
+```bash theme={null}
+export NOTION_TOKEN="ntn_..."
+export NOTION_PAGE_ID="your-page-id"
+```
+
+The Python examples run in order as one script and use the [`requests`](https://pypi.org/project/requests/) package. The JavaScript example needs Node.js 20 or later and no extra packages. Save it as an `.mjs` file.
+
 ## Step 1 - Create a File Upload object
 
 Before uploading any content, start by creating a [File Upload object](/reference/file-upload). This returns a unique `id` and `upload_url` used to send the file.
@@ -45,7 +58,7 @@ This snippet sends a `POST` request to create the upload object.
 ```curl cURL theme={null}
 curl --request POST \
   --url 'https://api.notion.com/v1/file_uploads' \
-  -H 'Authorization: Bearer ntn_****' \
+  -H "Authorization: Bearer $NOTION_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'Notion-Version: 2026-03-11' \
   --data '{}'
@@ -53,14 +66,13 @@ curl --request POST \
 
 ```python Python theme={null}
 import json
+import os
+
 import requests
 
-payload = {
-    "filename": file_name,
-    "content_type": "image/png"
-}
+NOTION_KEY = os.environ["NOTION_TOKEN"]
 
-file_create_response = requests.post("https://api.notion.com/v1/file_uploads", json=payload, headers={
+file_create_response = requests.post("https://api.notion.com/v1/file_uploads", json={}, headers={
     "Authorization": f"Bearer {NOTION_KEY}",
     "accept": "application/json",
     "content-type": "application/json",
@@ -73,6 +85,13 @@ if file_create_response.status_code != 200:
     )
 
 file_upload_id = json.loads(file_create_response.text)['id']
+print(file_upload_id)
+```
+
+Save the `id` from the response, or the ID that the Python example prints, in your shell. The JavaScript and cURL examples read it from there:
+
+```bash theme={null}
+export FILE_UPLOAD_ID="id-from-the-response"
 ```
 
 ### Example Response
@@ -82,10 +101,14 @@ file_upload_id = json.loads(file_create_response.text)['id']
   "object": "file_upload",
   "id": "a3f9d3e2-1abc-42de-b904-badc0ffee000",
   "created_time": "2025-04-09T22:26:00.000Z",
+  "created_by": {
+    "id": "c2f20311-9e54-4d11-8c79-7398424ae41e",
+    "type": "bot"
+  },
   "last_edited_time": "2025-04-09T22:26:00.000Z",
   "expiry_time": "2025-04-09T23:26:00.000Z",
   "upload_url": "https://api.notion.com/v1/file_uploads/a3f9d3e2-1abc-42de-b904-badc0ffee000/send",
-  "archived": false,
+  "in_trash": false,
   "status": "pending",
   "filename": null,
   "content_type": null,
@@ -112,22 +135,25 @@ This uploads the file directly from your local system.
 
 ```bash cURL theme={null}
 curl --request POST \
-  --url 'https://api.notion.com/v1/file_uploads/a3f9d3e2-1abc-42de-b904-badc0ffee000/send' \
-  -H 'Authorization: Bearer ntn_****' \
+  --url "https://api.notion.com/v1/file_uploads/$FILE_UPLOAD_ID/send" \
+  -H "Authorization: Bearer $NOTION_TOKEN" \
   -H 'Notion-Version: 2026-03-11' \
-  -H 'Content-Type: multipart/form-data' \
-  -F "file=@path/to-file.gif"
+  -F "file=@logo.png;type=image/png"
 ```
 
 ```javascript JavaScript expandable theme={null}
-// Open a read stream for the file
-const fileStream = fs.createReadStream(filePath)
+import { readFile } from 'node:fs/promises'
+
+const notionToken = process.env.NOTION_TOKEN
+const fileUploadId = process.env.FILE_UPLOAD_ID
+const notionVersion = '2026-03-11'
+
+// Read the file into a Blob with its MIME type
+const fileBlob = new Blob([await readFile('logo.png')], { type: 'image/png' })
 
 // Create form data with the (named) file contents under the `file` key.
 const form = new FormData()
-form.append('file', fileStream, {
-	filename: path.basename(filePath)
-})
+form.append('file', fileBlob, 'logo.png')
 
 // HTTP POST to the Send File Upload API.
 const response = await fetch(
@@ -157,11 +183,10 @@ const data = await response.json()
 ```
 
 ```python Python expandable theme={null}
-
-file_name = "test.png"
+file_name = "logo.png"
 
 with open(file_name, "rb") as f:
-		# Provide the MIME content type of the file as the 3rd argument.
+    # Provide the MIME content type of the file as the 3rd argument.
     files = {
         "file": (file_name, f, "image/png")
     }
@@ -187,13 +212,17 @@ with open(file_name, "rb") as f:
   "object": "file_upload",
   "id": "a3f9d3e2-1abc-42de-b904-badc0ffee000",
   "created_time": "2025-04-09T22:26:00.000Z",
+  "created_by": {
+    "id": "c2f20311-9e54-4d11-8c79-7398424ae41e",
+    "type": "bot"
+  },
   "last_edited_time": "2025-04-09T22:27:00.000Z",
   "expiry_time": "2025-04-09T23:26:00.000Z",
-  "archived": false,
+  "in_trash": false,
   "status": "uploaded",
-  "filename": "Really funny.gif",
-  "content_type": "image/gif",
-  "content_length": "4435",
+  "filename": "logo.png",
+  "content_type": "image/png",
+  "content_length": 4435,
   "request_id": "91a4ee8c-61f6-4c27-bd41-09aa35299929"
 }
 ```
@@ -202,7 +231,7 @@ with open(file_name, "rb") as f:
 >
 > **Reminder:**
 >
-> Files must be attached within **1 hour** of upload or they’ll be automatically moved to an `archived` status.
+> Files must be attached within **1 hour** of creating the file upload or they’ll be automatically moved to an `expired` status.
 
 ## Step 3 - Attach the file to a page or block
 
@@ -244,8 +273,8 @@ This example uses the [Append block children](/reference/patch-block-children) A
 
 ```bash cURL theme={null}
 curl --request PATCH \
-	--url "https://api.notion.com/v1/blocks/$PAGE_OR_BLOCK_ID/children" \
-	-H "Authorization: Bearer ntn_*****" \
+	--url "https://api.notion.com/v1/blocks/$NOTION_PAGE_ID/children" \
+	-H "Authorization: Bearer $NOTION_TOKEN" \
 	-H 'Content-Type: application/json' \
 	-H 'Notion-Version: 2026-03-11' \
 	--data '{
@@ -256,7 +285,7 @@ curl --request PATCH \
 					"caption": [],
 					"type": "file_upload",
 					"file_upload": {
-						"id": "'"$FILE_UPLOAD_ID'""
+						"id": "'"$FILE_UPLOAD_ID"'"
 					}
 				}
 			}
@@ -267,6 +296,7 @@ curl --request PATCH \
 ```python Python theme={null}
 # Append image to desired block (this could be a page,
 # or a block within a page)
+append_block_id = os.environ["NOTION_PAGE_ID"]
 url = f"https://api.notion.com/v1/blocks/{append_block_id}/children"
 
 payload = {
@@ -294,6 +324,8 @@ response = requests.patch(url, headers={
 if response.status_code != 200:
     raise Exception(
         f"Block append failed with status code {response.status_code}: {response.text}")
+
+print(response.json()["results"][0]["id"])
 ```
 
 ### Example: add a file block to a page
@@ -302,8 +334,8 @@ example uses the [Append block children](/reference/patch-block-children) API to
 
 ```bash cURL expandable theme={null}
 curl --request PATCH \
-  --url "https://api.notion.com/v1/blocks/$PAGE_OR_BLOCK_ID/children" \
-  -H "Authorization: Bearer ntn_*****" \
+  --url "https://api.notion.com/v1/blocks/$NOTION_PAGE_ID/children" \
+  -H "Authorization: Bearer $NOTION_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'Notion-Version: 2026-03-11' \
   --data '{
@@ -323,12 +355,12 @@ curl --request PATCH \
 
 ### Example: attach a file property to a page in a database
 
-This example uses the [Update page](/reference/patch-page) API to ad the uploaded file to a `files` property on a page that lives in a Notion database.
+This example uses the [Update page](/reference/patch-page) API to add the uploaded file to a `files` property on a page that lives in a Notion database. Set `DATABASE_PAGE_ID` to a page in a database with a `files` property named `Attachments`.
 
 ```bash cURL expandable theme={null}
 curl --request PATCH \
-  --url "https://api.notion.com/v1/pages/$PAGE_ID" \
-  -H 'Authorization: Bearer ntn_****' \
+  --url "https://api.notion.com/v1/pages/$DATABASE_PAGE_ID" \
+  -H "Authorization: Bearer $NOTION_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'Notion-Version: 2026-03-11' \
   --data '{
@@ -338,7 +370,7 @@ curl --request PATCH \
         "files": [
           {
             "type": "file_upload",
-            "file_upload": { "id": "9a8b7c6d-1e2f-4a3b-9e0f-a1b2c3d4e5f6" },
+            "file_upload": { "id": "'"$FILE_UPLOAD_ID"'" },
             "name": "logo.png"
           }
         ]
@@ -353,8 +385,8 @@ This example uses the [Update page](/reference/patch-page) API to add the upload
 
 ```bash cURL theme={null}
 curl --request PATCH \
-  --url "https://api.notion.com/v1/pages/$PAGE_ID" \
-  -H 'Authorization: Bearer ntn_****' \
+  --url "https://api.notion.com/v1/pages/$NOTION_PAGE_ID" \
+  -H "Authorization: Bearer $NOTION_TOKEN" \
   -H 'Content-Type: application/json' \
   -H 'Notion-Version: 2026-03-11' \
   --data '{
@@ -367,6 +399,24 @@ curl --request PATCH \
   }'
 ```
 
+### Check the attachment
+
+[Retrieve the file upload](/reference/retrieve-file-upload). After the first attachment, its `status` stays `uploaded` and its `expiry_time` is `null`.
+
+```bash theme={null}
+curl --url "https://api.notion.com/v1/file_uploads/$FILE_UPLOAD_ID" \
+  -H "Authorization: Bearer $NOTION_TOKEN" \
+  -H 'Notion-Version: 2026-03-11'
+```
+
+The append response lists the new block, and the Python example prints its ID. Save that `id` as `BLOCK_ID` and [retrieve the block](/reference/retrieve-a-block). An image block has an `image.type` of `file` and a temporary download URL in `image.file.url`.
+
+```bash theme={null}
+curl --url "https://api.notion.com/v1/blocks/$BLOCK_ID" \
+  -H "Authorization: Bearer $NOTION_TOKEN" \
+  -H 'Notion-Version: 2026-03-11'
+```
+
 > [!TIP]
 >
 > **You’ve successfully uploaded and attached a file using Notion’s Direct Upload method.**
@@ -377,7 +427,7 @@ When a file is first uploaded, it has an `expiry_time`, one hour from the time o
 
 Once attached to any page, block, or database in your workspace:
 
-* The `expiry_time` is removed.
+* The `expiry_time` becomes `null`.
 * The file becomes a permanent part of your workspace.
 * The `status` remains `uploaded`.
 

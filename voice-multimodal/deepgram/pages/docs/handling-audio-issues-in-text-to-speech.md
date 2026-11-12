@@ -1,5 +1,5 @@
 ---
-title: "Handling Audio Issues in Text To Speech"
+title: "Handling audio issues in text-to-speech"
 source: https://developers.deepgram.com/docs/handling-audio-issues-in-text-to-speech.md
 path: docs/handling-audio-issues-in-text-to-speech
 ---
@@ -7,21 +7,21 @@ path: docs/handling-audio-issues-in-text-to-speech
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Handling Audio Issues in Text To Speech
+# Handling audio issues in text-to-speech
 
 Text-to-speech (TTS) technology involves challenges like producing natural-sounding speech and eliminating audio errors. Achieving high-quality output requires careful text pre-processing, accurate phonetic and prosodic modeling, and post-processing steps like noise reduction and compression.
 
-Deepgram handles much of this for you, but if you are experiencing issues with your text-to-speech output, this guide will help you troubleshoot those problems.
+Deepgram handles much of this for you, but if you're experiencing issues with your text-to-speech output, this guide will help you troubleshoot those problems.
 
 # Common problems
 
-## Attempting to Play Audio in a Web Browser
+## Attempting to play audio in a web browser
 
-When attempting to play generated audio within a web browser, like Chrome, you may not hear any audio playing from your speakers because the stream is not containerized audio (ie, audio with a defining header, for example: `wav` header).
+When attempting to play generated audio within a web browser, like Chrome, you may not hear any audio playing from your speakers because the stream isn't containerized audio (ie, audio with a defining header, for example: `wav` header).
 
-Currently, the Text-to-Speech WebSocket implementation does not support containerized audio formats. To support playing audio through a web browser, it is recommended that you create and prepend a containerized audio header for your audio output bytes each time they are generated.
+Currently, the text-to-speech WebSocket implementation doesn't support containerized audio formats. To support playing audio through a web browser, it's recommended that you create and prepend a containerized audio header for your audio output bytes each time they're generated.
 
-In the `linear16` audio encoding case, you will need to prepend a [`WAV` container header](https://en.wikipedia.org/wiki/WAV#WAV_file_header) to each audio segment you plan to play through the speakers. This is required for many media device implementations within a browser. In several cases for Python, this may be sufficient for a `WAV` header in the case of a file:
+In the `linear16` audio encoding case, you'll need to prepend a [`WAV` container header](https://en.wikipedia.org/wiki/WAV#WAV_file_header) to each audio segment you plan to play through the speakers. This is required for many media device implementations within a browser. In several cases for Python, this may be sufficient for a `WAV` header in the case of a file:
 
 **`Python`**
 
@@ -38,7 +38,7 @@ header.close()
 # then continue saving the rest of the audio stream to the file
 ```
 
-In many cases, file-based playback is not desired, and you may want to play the audio directly by streaming to the media device. For those cases, you may need to manipulate the audio stream and create the header bytes directly in front of the audio stream segments. In Go, this may look like the following:
+In many cases, file-based playback isn't desired, and you may want to play the audio directly by streaming to the media device. For those cases, you may need to manipulate the audio stream and create the header bytes directly in front of the audio stream segments. In Go, this may look like the following:
 
 **`JavaScript`**
 
@@ -171,11 +171,11 @@ byte[] header = new byte[]
 
 There may be variations in creating this header based on the goals of your application.
 
-## DC Offset
+## DC offset
 
-DC (Direct Current) offset refers to a mean amplitude displacement from zero in an audio signal. Essentially, it means the audio waveform is not centered on the zero axis. This can cause problems such as reduced headroom, distortion, and other audio inefficiencies.
+DC (Direct Current) offset refers to a mean amplitude displacement from zero in an audio signal. Essentially, it means the audio waveform isn't centered on the zero axis. This can cause problems such as reduced headroom, distortion, and other audio inefficiencies.
 
-### Identifying DC Offset
+### Identifying DC offset
 
 * **Visual Inspection:** In an audio editing software, the waveform will appear shifted up or down above or below the zero axis.
 * **Measurement:** Calculate the average amplitude of the signal over time.
@@ -192,7 +192,7 @@ This audio doesn't contain a DC Offset.
 
 This audio does contain a DC Offset.
 
-### Correcting DC Offset
+### Correcting DC offset
 
 * **DC Offset Removal Tool:** Most audio editing software, like [Audacity ](https://www.audacityteam.org/)provides a DC offset correction tool.
 * **High-pass Filtering:** Applying a high-pass filter with a very low cutoff frequency can also remove DC offset.
@@ -218,7 +218,7 @@ Depending on your use case, you may require containerized audio. To understand t
 
 [FFmpeg](https://ffmpeg.org/) can be used to analyze audio and is a very powerful tool. You can use the tool to analyze your audio files with audio issues, such as clicking noises.
 
-For example, you could take an audio file that is having clicking noises and run:
+For example, you could take an audio file that's having clicking noises and run:
 
 **`Shell`**
 
@@ -264,7 +264,7 @@ Ensure your audio output contains no additional data types besides an audio resp
 
 ## Download Audacity
 
-[Audacity ](https://www.audacityteam.org/)is a free, open-source, cross-platform audio editing software. It allows users to record, edit, and mix audio tracks, and supports various file formats like WAV, MP3, and OGG. Key features include multi-track editing, noise reduction, click removal, equalization, compression, and various effects and plugins. Audacity is widely used for podcasting, music production, and general audio editing tasks due to its powerful features and user-friendly interface. It is available for Windows, macOS, and Linux.
+[Audacity ](https://www.audacityteam.org/)is a free, open-source, cross-platform audio editing software. It allows users to record, edit, and mix audio tracks, and supports various file formats like WAV, MP3, and OGG. Key features include multi-track editing, noise reduction, click removal, equalization, compression, and various effects and plugins. Audacity is widely used for podcasting, music production, and general audio editing tasks due to its powerful features and user-friendly interface. It's available for Windows, macOS, and Linux.
 
 ## Download FFMPEG
 

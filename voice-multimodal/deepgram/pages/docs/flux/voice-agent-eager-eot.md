@@ -1,5 +1,5 @@
 ---
-title: "Optimize Voice Agent Latency with Eager End of Turn"
+title: "Optimize voice agent latency with Eager End of Turn"
 source: https://developers.deepgram.com/docs/flux/voice-agent-eager-eot.md
 path: docs/flux/voice-agent-eager-eot
 ---
@@ -7,18 +7,18 @@ path: docs/flux/voice-agent-eager-eot
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Optimize Voice Agent Latency with Eager End of Turn
+# Optimize voice agent latency with Eager End of Turn
 
 Eager end of turn processing is the practice of starting LLM processing on **medium-confidence transcripts** (`EagerEndOfTurn` events) before waiting for a high-confidence `EndOfTurn`. By overlapping LLM generation with user speech, you can cut **hundreds of milliseconds** from your agent's response time.
 
-> **Important Note**
+> **Important note**
 >
-> `EagerEndOfTurn` and `TurnResumed` events are ONLY triggered if you have configured the `eager_eot_threshold` in your connection string.
+> `EagerEndOfTurn` and `TurnResumed` events are ONLY triggered if you've configured the `eager_eot_threshold` in your connection string.
 
 ## How Eager End of Turn Processing Works
 
 1. **Receive `EagerEndOfTurn`**
-   * Flux is moderately confident the user has finished speaking.
+   * Deepgram Flux STT is moderately confident the user has finished speaking.
    * Send the transcript downstream to your LLM and begin preparing a reply.
 
 2. **If `TurnResumed` occurs**
@@ -30,9 +30,9 @@ Eager end of turn processing is the practice of starting LLM processing on **med
    * Finalize and deliver the response you've already started preparing.
    * `EndOfTurn` transcript will exactly match the `EagerEndOfTurn` transcript, ensuring consistent transcription throughout the turn lifecycle.
 
-## Implementation Strategies
+## Implementation strategies
 
-### 1. Simple (Recommended Starting Point)
+### 1. Simple (recommended starting point)
 
 * Use **only `EndOfTurn`** events.
 * Simplest implementation and minimal LLM calls
@@ -47,25 +47,25 @@ Eager end of turn processing is the practice of starting LLM processing on **med
 
 ## Tips & Tricks for Eager End of Turn Processing
 
-### Tune Confidence Thresholds
+### Tune confidence thresholds
 
 * `eager_eot_threshold`: Lower values → earlier triggers, but more false starts.
 * `eot_threshold`: Higher values → more reliable `EndOfTurn`, but may increase latency.
 * Experiment with values to balance **speed vs. stability**.
 
-### Handle `TurnResumed` Gracefully
+### Handle `TurnResumed` gracefully
 
 * Treat `TurnResumed` as a cancellation signal.
 * Be ready to discard or revise any LLM replies in progress.
 * Consider a retry strategy if this happens often in your use case.
 
-### Keep Responses Flexible
+### Keep responses flexible
 
 * Avoid committing to a reply until `EndOfTurn`.
 * Use `EagerEndOfTurn` outputs to **draft**, not finalize.
 * Build resilience for handling `TurnResumed` events when the user continues speaking.
 
-### Optimize LLM Cost
+### Optimize LLM cost
 
 * Eager end of turn processing means **more LLM requests**.
 * To reduce spend:
@@ -73,18 +73,18 @@ Eager end of turn processing is the practice of starting LLM processing on **med
   * Only call the full LLM on `EndOfTurn`.
   * Cache prepared responses and reuse on `EndOfTurn` (transcript guaranteed to match).
 
-### Monitor and Log Events
+### Monitor and log events
 
 * Track how often `EagerEndOfTurn` → `TurnResumed` vs. `EagerEndOfTurn` → `EndOfTurn`.
 * Use this data to refine thresholds and tune your pipeline.
 
-### Optimize Audio Input
+### Optimize audio input
 
-* Echo and background noise can cause false `StartOfTurn` events, which disrupt the turn lifecycle. For guidance on echo cancellation, noise suppression, and barge-in strategies, see [Audio Preprocessing & Barge-In](/guides/deep-dives/audio-preprocessing-barge-in).
+* Echo and background noise can cause false `StartOfTurn` events, which disrupt the turn lifecycle. For guidance on echo cancellation, noise suppression, and barge-in strategies, see [Audio preprocessing & barge-in](/guides/deep-dives/audio-preprocessing-barge-in).
 
-## Example Code
+## Example code
 
-This code demonstrates how to handle Flux message events to implement eager end-of-turn processing. The examples show message parsing and event handling for the three critical events: -
+This code demonstrates how to handle Flux STT message events to implement eager end-of-turn processing. The examples show message parsing and event handling for the three critical events: -
 
 * `EagerEndOfTurn` (start preparing response)
 * `TurnResumed` (cancel draft response)

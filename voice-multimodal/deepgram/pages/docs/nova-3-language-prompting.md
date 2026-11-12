@@ -1,5 +1,5 @@
 ---
-title: "Nova-3 Language Prompting"
+title: "Nova-3 language prompting"
 source: https://developers.deepgram.com/docs/nova-3-language-prompting.md
 path: docs/nova-3-language-prompting
 ---
@@ -7,15 +7,15 @@ path: docs/nova-3-language-prompting
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Nova-3 Language Prompting
+# Nova-3 language prompting
 
 Pre-recorded  Streaming:Nova
 
-Nova-3 multilingual (`model=nova-3&language=multi`) transcribes 55 languages with one model, including speech that switches languages mid-conversation. The optional `language_hint` parameter biases detection toward the languages you expect. Without hints, the model auto-detects the spoken language.
+Deepgram Nova-3 multilingual (`model=nova-3&language=multi`) transcribes 55 languages with one model, including speech that switches languages mid-conversation. The optional `language_hint` parameter biases detection toward the languages you expect. Without hints, the model auto-detects the spoken language.
 
 Nova-3 multilingual uses the same `/v1/listen` endpoints, model string, and API key you already use for pre-recorded and streaming transcription.
 
-## Supported Languages
+## Supported languages
 
 | Language                         | Code                                                       |
 | -------------------------------- | ---------------------------------------------------------- |
@@ -79,11 +79,11 @@ Nova-3 multilingual uses the same `/v1/listen` endpoints, model string, and API 
 >
 > Locale subtags (for example, `en-GB` or `pt-BR`) are accepted as hints, resolve to the base language, and are returned as the base code in `languages_hinted`.
 
-## The `language_hint` Parameter
+## The `language_hint` parameter
 
 `language_hint` *string or array of strings* (optional, repeatable)
 
-Pass one or more `language_hint` values to bias detection toward specific languages. Repeat the parameter to pass several hints, for example `language_hint=en&language_hint=es`. Hints bias detection; they do not restrict it, so the model still transcribes any supported language it hears.
+Pass one or more `language_hint` values to bias detection toward specific languages. Repeat the parameter to pass several hints, for example `language_hint=en&language_hint=es`. Hints bias detection; they don't restrict it, so the model still transcribes any supported language it hears.
 
 | Behavior           | Description                                                                   |
 | ------------------ | ----------------------------------------------------------------------------- |
@@ -97,11 +97,11 @@ Pass one or more `language_hint` values to bias detection toward specific langua
 
 Set hints per request for pre-recorded audio, or in the connection URL for streaming audio. Hints stay fixed for the life of a streaming connection.
 
-## Usage Scenarios
+## Usage scenarios
 
 The examples below use the streaming endpoint. The same `language_hint` values work on pre-recorded requests to `https://api.deepgram.com/v1/listen`.
 
-### 1. Known Single Language
+### 1. Known single language
 
 When you know the speaker's language ahead of time (for example, a Spanish-language call center), set a single `language_hint`.
 
@@ -109,7 +109,7 @@ When you know the speaker's language ahead of time (for example, a Spanish-langu
 wss://api.deepgram.com/v1/listen?model=nova-3&language=multi&language_hint=es&encoding=linear16&sample_rate=16000
 ```
 
-### 2. Known Subset of Languages
+### 2. Known subset of languages
 
 When speakers may use one of several languages (for example, a bilingual English/Spanish support line), pass multiple hints. The model biases toward the set and still transcribes whichever language is spoken.
 
@@ -117,7 +117,7 @@ When speakers may use one of several languages (for example, a bilingual English
 wss://api.deepgram.com/v1/listen?model=nova-3&language=multi&language_hint=en&language_hint=es&encoding=linear16&sample_rate=16000
 ```
 
-### 3. Unknown Language
+### 3. Unknown language
 
 When you don't know which language the speaker will use, omit `language_hint`. The model auto-detects the language from the audio.
 
@@ -125,7 +125,7 @@ When you don't know which language the speaker will use, omit `language_hint`. T
 wss://api.deepgram.com/v1/listen?model=nova-3&language=multi&encoding=linear16&sample_rate=16000
 ```
 
-### 4. Code-Switching
+### 4. Code-switching
 
 When speakers switch between languages mid-conversation, hint every language you expect, or send no hints. Nova-3 multilingual handles mid-sentence language switches natively.
 
@@ -133,7 +133,7 @@ When speakers switch between languages mid-conversation, hint every language you
 wss://api.deepgram.com/v1/listen?model=nova-3&language=multi&language_hint=en&language_hint=es&language_hint=fr&encoding=linear16&sample_rate=16000
 ```
 
-## Language Fields in the Response
+## Language fields in the response
 
 With `language=multi`, each alternative in the response includes these fields:
 
@@ -145,7 +145,7 @@ With `language=multi`, each alternative in the response includes these fields:
 
 Pre-recorded responses return these fields in `results.channels[].alternatives[]`. Streaming responses return them in `channel.alternatives[]` on every interim and final result.
 
-### Pre-Recorded Example
+### Pre-recorded example
 
 **`cURL`**
 
@@ -201,7 +201,7 @@ The response, trimmed to the language fields:
 }
 ```
 
-### Streaming Example
+### Streaming example
 
 Open a WebSocket connection with hints in the URL:
 
@@ -243,10 +243,10 @@ Each `Results` message, interim and final, includes the language fields:
 
 Use the `languages` field to route downstream processing, for example to pick the TTS voice or LLM prompt language that matches what the speaker said.
 
-## Related Resources
+## Related resources
 
-* [Multilingual Codeswitching](/docs/multilingual-code-switching) — Codeswitching on Nova-2, Nova-3, and Flux
-* [Flux Multilingual & Language Prompting](/docs/flux/language-prompting) — Language hints for Flux on `/v2/listen`
-* [Models & Languages Overview](/docs/models-languages-overview#nova-3) — All models and supported languages
+* [Multilingual Codeswitching](/docs/multilingual-code-switching) — Codeswitching on Nova-2, Nova-3, and Flux STT
+* [Flux STT Multilingual & language prompting](/docs/flux/language-prompting) — Language hints for Flux STT on `/v2/listen`
+* [Models & languages overview](/docs/models-languages-overview#nova-3) — All models and supported languages
 * [Pre-Recorded API Reference](/reference/speech-to-text/listen-pre-recorded) — `POST /v1/listen`
 * [Streaming API Reference](/reference/speech-to-text/listen-streaming) — `WS /v1/listen`

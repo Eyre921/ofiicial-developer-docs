@@ -32,13 +32,13 @@ Summarization accepts an input text and analyzes the text. It then summarizes th
   }
 ```
 
-## Enable Feature
+## Enable feature
 
 To enable Summarization, use the following parameter in the query string when you call Deepgram’s `/read` endpoint :
 
 `summarize=true`
 
-### Basic Text Request
+### Basic text request
 
 To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
 
@@ -56,7 +56,7 @@ To analyze text from a file on your computer, run the following curl command in 
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
 
-### Basic URL Request
+### Basic URL request
 
 To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt))
 
@@ -74,7 +74,7 @@ curl -vX POST \
 >
 > Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
 
-### Query Parameters
+### Query parameters
 
 | Parameter   | Value  | Type    | Description                                                                                                                                                                   |
 | ----------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -85,7 +85,7 @@ curl -vX POST \
 >
 > Summarization requires a minimum of greater than 50 words for summarization. For shorter inputs (less than 50 words), the original input will be returned. In this case, no tokens in or out are billed as summarization usage.
 
-## Analyze Response
+## Analyze response
 
 When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
 
@@ -117,11 +117,11 @@ The `summary` object contains:
 
 ## API Error Responses
 
-### Unsupported Language
+### Unsupported language
 
 **Status** 400
 
-If you request Summarization with an unsupported language by specifying a language code such as `summarize=true&language=es` or `summarize=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
+If you request Summarization with an unsupported language by specifying a language code such as `summarize=true&language=es` or `summarize=true&detect_language=true` where the detected language is unsupported, you'll get the error message below.
 
 **`JSON`**
 
@@ -133,11 +133,11 @@ If you request Summarization with an unsupported language by specifying a langua
 }
 ```
 
-### Token Limit Exceeded
+### Token limit exceeded
 
 **Status** 400
 
-If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
+If the request's input length exceeded the 150k token rate limit per request, you'll get the error message below.
 
 **`JSON`**
 
@@ -149,11 +149,11 @@ If the request's input length exceeded the 150k token rate limit per request, yo
 }
 ```
 
-### Missing Query Parameter
+### Missing query parameter
 
 **Status** 400
 
-If the request sent contained only the feature parameter (`summarize`) but not the `language` parameter, you will receive this error.
+If the request sent contained only the feature parameter (`summarize`) but not the `language` parameter, you'll receive this error.
 
 **`JSON`**
 

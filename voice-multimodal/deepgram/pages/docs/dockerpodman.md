@@ -11,7 +11,7 @@ path: docs/dockerpodman
 
 ## Should I use this for my self-hosted environment?
 
-Docker and Podman are a simple, fast approach for deploying containers. They are best used in environments that require a small, static number of Deepgram containers. This may include development environments, proof-of-concept implementations, and production environments handling low levels of API traffic.
+Docker and Podman are a simple, fast approach for deploying containers. They're best used in environments that require a small, static number of Deepgram containers. This may include development environments, proof-of-concept implementations, and production environments handling low levels of API traffic.
 
 Larger production environments often have certain security, availability, and scaling requirements, such as:
 
@@ -25,10 +25,10 @@ If any of the above apply to you, a [Kubernetes cluster](/docs/kubernetes) may b
 
 What’s Next
 
-If you'll deploy with Docker or Podman, choose where you will deploy your infrastructure to begin setting up your deployment environment.
+If you'll deploy with Docker or Podman, choose where you'll deploy your infrastructure to begin setting up your deployment environment.
 
 * [Amazon Web Services](/docs/aws-docker-podman)
 * [Google Cloud Platform](/docs/gcp-docker-podman)
 * [Oracle Cloud Infrastructure](/docs/oci-docker-podman)
 * [Microsoft Azure](/docs/azure-docker-podman)
-* [Bare-Metal Servers](/docs/bare-metal)
+* [Bare-metal servers](/docs/bare-metal)

@@ -35,9 +35,9 @@ Currently, Deepgram offers these actions in Zapier:
 
 > **Info**
 >
-> To use the Create Transcription (Callback) integration, you will need to deploy a server to handle the callback response. This approach is best if you want to automate the transcription of files larger than approximately 200MB. You can find a step-by-step tutorial explaining how to do this in the [Deepgram Blog](https://deepgram.com/learn/no-more-zapier-timeouts-transcribe-large-audio-files-with-deepgram-and-zapier-s-w).
+> To use the Create Transcription (Callback) integration, you'll need to deploy a server to handle the callback response. This approach is best if you want to automate the transcription of files larger than approximately 200MB. You can find a step-by-step tutorial explaining how to do this in the [Deepgram Blog](https://deepgram.com/learn/no-more-zapier-timeouts-transcribe-large-audio-files-with-deepgram-and-zapier-s-w).
 
-## How to Build a Workflow in Zapier
+## How to build a workflow in Zapier
 
 ### Create a Zap
 
@@ -45,7 +45,7 @@ To create a Zap, click on the “Create Zap” button in the left-side navigatio
 
 ![](/_fern-files/_img/9ed364415a0b2d17c6ecb1603a688031912db19aefbeadddf74c500539187848.webp)
 
-### Set up the Trigger
+### Set up the trigger
 
 Click into the first box to change the trigger. A Zap must start with a trigger. The trigger starts off the workflow with an initial trigger event.
 
@@ -69,7 +69,7 @@ Configure the trigger with your chosen integration (Amazon S3, Dropbox, etc.). I
 
 Once your trigger has been set up, you can add actions.
 
-### Configure a Deepgram Action
+### Configure a Deepgram action
 
 Click into the action box to configure it to use Deepgram.
 
@@ -79,7 +79,7 @@ Connect to your Deepgram account by adding your API key.
 
 ![](/_fern-files/_img/4f8a0b7fc477b9f44b047b85918b9d702f4a6687603b4c621a369e432790d444.webp)
 
-After successfully connecting your account, you will select your configuration options in the form. Be sure to add a publicly accessible URL as the audio file to transcribe.
+After successfully connecting your account, you'll select your configuration options in the form. Be sure to add a publicly accessible URL as the audio file to transcribe.
 
 ![](/_fern-files/_img/5576112e39dfa2007723b6c4664a0732aef297e9a4bca6abb961091aef3a9f3b.webp)
 

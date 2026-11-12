@@ -1,5 +1,5 @@
 ---
-title: "Pre-Recorded Audio"
+title: "Pre-recorded audio"
 source: https://developers.deepgram.com/reference/speech-to-text/listen-pre-recorded.md
 path: reference/speech-to-text/listen-pre-recorded
 ---
@@ -7,7 +7,7 @@ path: reference/speech-to-text/listen-pre-recorded
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Pre-Recorded Audio
+# Pre-recorded audio
 
 POST https://api.deepgram.com/v1/listen
 Content-Type: application/json

@@ -1,5 +1,5 @@
 ---
-title: "List All Available Models"
+title: "List all available models"
 source: https://developers.deepgram.com/reference/manage/models/list.md
 path: reference/manage/models/list
 ---
@@ -7,7 +7,7 @@ path: reference/manage/models/list
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# List All Available Models
+# List all available models
 
 GET https://api.deepgram.com/v1/models
 

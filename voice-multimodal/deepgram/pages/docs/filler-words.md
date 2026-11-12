@@ -1,5 +1,5 @@
 ---
-title: "Filler Words"
+title: "Filler words"
 source: https://developers.deepgram.com/docs/filler-words.md
 path: docs/filler-words
 ---
@@ -7,13 +7,13 @@ path: docs/filler-words
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Filler Words
+# Filler words
 
 * [Try Filler Words in the Playground](https://playground.deepgram.com/?endpoint=listen-prerecorded\&filler_words=true\&language=en)
 
 `filler_words` *boolean* Default: `false`
 
-Pre-recorded  Streaming:Nova Streaming: Flux  English (all available regions)
+Pre-recorded  Streaming:Nova Streaming: Flux STT  English (all available regions)
 
 Deepgram is capable of transcribing the following filler words:
 
@@ -27,15 +27,15 @@ Deepgram is capable of transcribing the following filler words:
 
 These words will always be transcribed with the spelling listed above, regardless of their spoken duration (i.e., Deepgram will never transcribe "uhhhh" instead of "uh").
 
-## Enable Feature
+## Enable feature
 
 To enable Filler Words you can use the`filler_words` query parameter and set the value to `true`.
 
-When `filler_words=false` or the parameter is not set, the two most common fillers, "uh" and "um", are stripped out of the transcript to improve readability.
+When `filler_words=false` or the parameter isn't set, the two most common fillers, "uh" and "um", are stripped out of the transcript to improve readability.
 
 > **Info**
 >
-> Currently, Filler Words are only available for Deepgram's Nova, Nova-2 and Nova-3 general models.
+> Currently, Filler Words are only available for Deepgram's Nova, Nova-2, and Nova-3 general models.
 
 **Example**
 

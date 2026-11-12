@@ -18,7 +18,7 @@ This introduction opens a series of guides that aim to:
 * Provide a starting point for how to connect your own applications with your self-hosted Deepgram instance
 * Help you plan your server maintenance and security practices
 
-## Why Self-Host
+## Why self-host
 
 Using Deepgram as a service has a variety of benefits. First, it's extremely fast to start developing with. Signing up, getting an API key, and getting your first voice AI response can take as little as a minute. Using Deepgram as a service also enables you to avoid all hardware, installation, configuration, backup, and maintenance-related costs.
 
@@ -60,7 +60,7 @@ The Deepgram API interfaces with the Deepgram Engine to expose endpoints for you
 
 The Deepgram Engine performs the computationally intensive task of voice AI. It also manages GPU devices and responds to requests from the API layer. Because the Deepgram Engine is decoupled from the Deepgram API, you can scale it independently from the API.
 
-### Licensing and Usage
+### Licensing and usage
 
 Deepgram components register with the Deepgram License Server, represented above within the Deepgram Cloud, in order to verify licensing and report usage. API and Engine containers can be configured to connect directly to the licensing server, or to proxy their communication through the [Deepgram License Proxy](/docs/license-proxy).
 
@@ -81,7 +81,7 @@ For larger or longer-term deployments, [AWS Marketplace Private Offers](/docs/am
 
 ### Docker, Podman, and Kubernetes
 
-To self-host Deepgram with Docker/Podman or Kubernetes, you will need to enroll in a [Deepgram Enterprise Plan](https://deepgram.com/pricing). If you're interested, please [contact us](https://deepgram.com/contact-us/)! You'll be promptly connected with a Deepgram Account Representative who will help you every step of the way, from proof-of-concept to a full production environment.
+To self-host Deepgram with Docker/Podman or Kubernetes, you will need to enroll in a [Deepgram Enterprise Plan](https://deepgram.com/pricing). If you're interested, please [contact us](https://deepgram.com/contact-us/). You'll be promptly connected with a Deepgram Account Representative who will help you every step of the way, from proof-of-concept to a full production environment.
 
 Your Deepgram Account Representative will guide you through the process of setting up:
 
@@ -97,32 +97,32 @@ Providing this information will allow Deepgram to authorize your project for sel
 
 Detailed troubleshooting and on-demand support require an on-going support contract with Deepgram.
 
-## Initial Setup
+## Initial setup
 
 To set up your deployment environment and successfully self-host Deepgram products for the first time, the guides in this "Self-hosted deployments" section will take you through step by step.
 
 Starting with this guide, you can use the "What's Next" section at the bottom of each page to take you from one guide to another until you have a working environment. Unless specifically indicated, each step in a given guide is required - skipping steps will leave you with an incomplete or broken environment.
 
-Start with the [Deployment Environments](/docs/self-hosted-deployment-environments) guide to get an overview of the architecture. In that guide, you can decide on a container orchestrator and cloud platform, and proceed from that point. Alternatively, if you use AWS, you can deploy Deepgram through [Amazon SageMaker](/docs/deploy-amazon-sagemaker) for a simplified, managed deployment experience.
+Start with the [Deployment environments](/docs/self-hosted-deployment-environments) guide to get an overview of the architecture. In that guide, you can decide on a container orchestrator and cloud platform, and proceed from that point. Alternatively, if you use AWS, you can deploy Deepgram through [Amazon SageMaker](/docs/deploy-amazon-sagemaker) for a simplified, managed deployment experience.
 
-## Common Setup Path
+## Common setup path
 
 All deployments follow the same initial setup path through environment preparation:
 
-1. [Deployment Environments](/docs/self-hosted-deployment-environments) - Choose your architecture and infrastructure
+1. [Deployment environments](/docs/self-hosted-deployment-environments) - Choose your architecture and infrastructure
 2. Container orchestration choice: [Docker/Podman](/docs/dockerpodman) or [Kubernetes](/docs/kubernetes), or deploy via [Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 3. Platform setup (e.g., [Amazon Web Services](/docs/aws-docker-podman), [Google Cloud Platform](/docs/gcp-docker-podman), etc.)
 4. [Drivers and Container Orchestration Tools](/docs/drivers-and-containerization-platforms) - GPU drivers and container runtime
-5. [Self Service Licensing & Credentials](/docs/self-hosted-self-service-tutorial) - Authentication and access setup
+5. [Self service licensing & credentials](/docs/self-hosted-self-service-tutorial) - Authentication and access setup
 
-## Choose Your Service Path
+## Choose your service path
 
 After completing the common setup, you'll choose between two deployment paths:
 
 * **Speech-to-Text (STT):** Traditional transcription and real-time speech recognition - [Deploy STT Services](/docs/deploy-stt-services)
 * **Text-to-Speech (TTS):** Conversational AI voice synthesis - [Deploy TTS Services](/docs/deploy-tts-services)
 
-At the end of these guides, you should be able to make an inference request, and your deployment is complete!
+At the end of these guides, you should be able to make an inference request, and your deployment is complete.
 
 ---
 
@@ -130,4 +130,4 @@ What’s Next
 
 Our next step will be to start talking about your deployment environment.
 
-* [Deployment Environments](/docs/self-hosted-deployment-environments)
+* [Deployment environments](/docs/self-hosted-deployment-environments)

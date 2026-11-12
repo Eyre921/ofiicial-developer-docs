@@ -11,7 +11,7 @@ path: docs/prometheus-integration
 
 ## Kubernetes
 
-Deepgram supports self-hosted deployments on [Kubernetes](/docs/kubernetes) via the [`deepgram-self-hosted` Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted). Prometheus will be installed and automatically configured if either `scaling.auto.enabled` or `kube-prometheus-stack.includeDependency` is set to true.
+We support self-hosted deployments on [Kubernetes](/docs/kubernetes) via the [`deepgram-self-hosted` Helm chart](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted). Prometheus will be installed and automatically configured if either `scaling.auto.enabled` or `kube-prometheus-stack.includeDependency` is set to true.
 
 If you would like to add additional configuration, see the [`kube-prometheus-stack` Helm chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) for available values. See the [Overriding Values from a Parent Chart](https://helm.sh/docs/chart_template_guide/subcharts_and_globals/#overriding-values-from-a-parent-chart) documentation for details on setting these values in the `kube-prometheus-stack` subchart from the `deepgram-self-hosted` parent chart.
 
@@ -29,7 +29,7 @@ Before proceeding, ensure that you have the following:
 
 ### Integrate with Deepgram Engine
 
-#### Step 1: Add Prometheus Target
+#### Step 1: add Prometheus target
 
 Add the target to the Prometheus configuration file in the `prometheus.yml` file. Locate the `scrape_configs` section, and add a new job with the Engine container instance as a target:
 
@@ -45,7 +45,7 @@ scrape_configs:
 
 Replace `<ENGINE_INSTANCE_URI>` with the IP address or hostname of the Engine container. Keep `scrape_interval` at 15 seconds or less; the Prometheus default of 1 minute is too long for `engine_estimated_stream_capacity`. Save the configuration file.
 
-#### Step 2: Reload Prometheus Configuration
+#### Step 2: reload Prometheus configuration
 
 To apply the changes made to the `prometheus.yml` file, you need to reload the Prometheus configuration. You can do this by restarting the Prometheus service:
 
@@ -55,10 +55,10 @@ To apply the changes made to the `prometheus.yml` file, you need to reload the P
 sudo systemctl restart prometheus
 ```
 
-#### Step 3: Verify the Integration
+#### Step 3: verify the integration
 
 Open the Prometheus web interface, usually accessible at `http://localhost:9090`, and navigate to the "Targets" page (under the "Status" menu). You should see the `dg_self_hosted_instance` job listed with a status of "UP", indicating that Prometheus is successfully scraping metrics from the Engine container.
 
-### Querying Metrics
+### Querying metrics
 
-With the integration complete, you can now query the collected metrics using the Prometheus web interface or API. You may consider using a tool like [Grafana](https://grafana.com/) for handling visualization and alerting. Deepgram provides an open-source [Grafana dashboard template](https://github.com/deepgram/self-hosted-resources/tree/main/monitoring) for customers to begin monitoring self-hosted metrics.
+With the integration complete, you can now query the collected metrics using the Prometheus web interface or API. You may consider using a tool like [Grafana](https://grafana.com/) for handling visualization and alerting. We provide an open-source [Grafana dashboard template](https://github.com/deepgram/self-hosted-resources/tree/main/monitoring) for customers to begin monitoring self-hosted metrics.

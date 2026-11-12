@@ -19,7 +19,7 @@ This guide covers how to configure autoscaling — including scale-to-zero — f
 
 > **Note**
 >
-> **Need live streaming instead?** This page covers batch/non-streaming workloads on asynchronous endpoints. For live streaming speech-to-text on real-time endpoints, see [Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming). Real-time endpoints scale between a minimum and maximum instance count (both ≥ 1) and **cannot** scale to zero.
+> **Need live streaming instead?** This page covers batch/non-streaming workloads on asynchronous endpoints. For live streaming speech-to-text on real-time endpoints, see [Auto-scaling real-time endpoints](/docs/auto-scaling-sagemaker-streaming). Real-time endpoints scale between a minimum and maximum instance count (both ≥ 1) and **cannot** scale to zero.
 
 Asynchronous endpoints are the right choice when you process pre-recorded audio, work with large files (up to 1 GB), or have spiky or sporadic traffic — they can autoscale to zero when the queue is empty, so you only pay while requests are processing.
 
@@ -159,7 +159,7 @@ Watch these CloudWatch metrics (namespace `AWS/SageMaker`, dimensioned by `Endpo
 
 **Q: How is this different from real-time endpoint autoscaling?**
 
-**A:** Real-time endpoints serve streaming and synchronous pre-recorded requests, scale on concurrent in-flight requests (`ConcurrentRequestsPerModel`), and require a minimum of 1 instance. Asynchronous endpoints serve pre-recorded files only, scale on queue depth (`ApproximateBacklogSizePerInstance`), and can scale to zero. See [Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming) for the real-time guide.
+**A:** Real-time endpoints serve streaming and synchronous pre-recorded requests, scale on concurrent in-flight requests (`ConcurrentRequestsPerModel`), and require a minimum of 1 instance. Asynchronous endpoints serve pre-recorded files only, scale on queue depth (`ApproximateBacklogSizePerInstance`), and can scale to zero. See [Auto-scaling real-time endpoints](/docs/auto-scaling-sagemaker-streaming) for the real-time guide.
 
 **Q: What's the maximum input size and processing time?**
 
@@ -168,7 +168,7 @@ Watch these CloudWatch metrics (namespace `AWS/SageMaker`, dimensioned by `Endpo
 ## Related resources
 
 * [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker)
-* [Auto-Scaling Real-Time Endpoints](/docs/auto-scaling-sagemaker-streaming)
+* [Auto-scaling real-time endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Amazon SageMaker Asynchronous Inference](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html)
 * [Autoscale an asynchronous endpoint (AWS)](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference-autoscale.html)

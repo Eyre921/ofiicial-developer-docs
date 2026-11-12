@@ -1,5 +1,5 @@
 ---
-title: "Flux TTS Feature Overview"
+title: "Flux TTS feature overview"
 source: https://developers.deepgram.com/docs/flux-tts/feature-overview.md
 path: docs/flux-tts/feature-overview
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/feature-overview
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Flux TTS Feature Overview
+# Flux TTS feature overview
 
-This page summarizes what the Flux TTS `/v2/speak` WebSocket supports. For the full wire protocol, see [Client Messages](/docs/flux-tts/client-messages) and [Server Messages](/docs/flux-tts/server-messages).
+This page summarizes what the Deepgram Flux TTS `/v2/speak` WebSocket supports. For the full wire protocol, see [Client messages](/docs/flux-tts/client-messages) and [Server messages](/docs/flux-tts/server-messages).
 
 ## Model Selection
 
@@ -33,7 +33,7 @@ The streaming WebSocket emits **raw audio** (no container), so it supports raw P
 >
 > Compressed/containerized encodings (`opus`, `mp3`, `flac`, `aac`) and the `container` / `bit_rate` parameters are reserved for the batch REST transport (see [Transports](#transports)), not the streaming WebSocket. The streaming connection rejects unknown or batch-only parameters.
 
-## Conversational Surface
+## Conversational surface
 
 The streaming WebSocket only — the batch REST transport is a single request/response (see [Transports](#transports)).
 
@@ -51,24 +51,24 @@ The streaming WebSocket only — the batch REST transport is a single request/re
 | Streaming | `wss://api.deepgram.com/v2/speak`        | Live voice agents: low time-to-first-byte, turn-based synthesis                                                                                                                                                    |
 | Batch     | `POST https://api.deepgram.com/v2/speak` | Pre-generating fixed audio (IVR prompts, notifications) where the whole text is known up front. Supports containerized/compressed encodings (`mp3` default, plus `opus`/`flac`/`aac` with `container`/`bit_rate`). |
 
-## Session Limits
+## Session limits
 
 | Limit                | Value  | Notes                                                                                                              |
 | -------------------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
 | Max session duration | 1 hour | Server closes the WebSocket at the 1-hour mark.                                                                    |
 | Inactivity timeout   | 60s    | Session closes after 60s with no inbound client message (`NET-0004`). A WebSocket Ping (or Pong) resets the timer. |
 
-## Interruption & Control
+## Interruption & control
 
 | Feature                 | Description                                                                                                                                                                                                                                              |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Interruption / barge-in | `Interrupt` cancels the active turn; `SpeechInterrupted` reports `text_spoken` / `text_remaining`. See [Interruption Handling](/docs/flux-tts/interrupt-handling).                                                                                       |
+| Interruption / barge-in | `Interrupt` cancels the active turn; `SpeechInterrupted` reports `text_spoken` / `text_remaining`. See [Interruption handling](/docs/flux-tts/interrupt-handling).                                                                                       |
 | Mid-stream `Configure`  | Adjust `speed` (`0.5`–`1.5` in `0.05` steps) without reconnecting; applies at the next segment boundary.                                                                                                                                                 |
 | `expressivity` (beta)   | Integer delivery-register dial, `-2` (calm) to `2` (animated), default `0`. Available on both transports. See [Expressivity](/docs/tts-expressivity).                                                                                                    |
-| Inline controls         | Inline pronunciation (IPA, Early Access) on both transports; inline pause on batch only. Pronunciation cannot be combined with pause or with a `speed` other than `1.0`. See [Speed, Pause, Pronunciation](/docs/tts-voice-controls#combining-controls). |
+| Inline controls         | Inline pronunciation (IPA, Early Access) on both transports; inline pause on batch only. Pronunciation cannot be combined with pause or with a `speed` other than `1.0`. See [Speed, pause, pronunciation](/docs/tts-voice-controls#combining-controls). |
 | Markup stripping        | Recognized SSML / competitor tags are stripped with an `INPUT_MARKUP_STRIPPED` warning; synthesis continues. See [Markup handling](/docs/flux-tts/client-messages#markup-handling).                                                                      |
 
-## Rate Limits
+## Rate limits
 
 > **Info**
 >

@@ -1,5 +1,5 @@
 ---
-title: "Get Project Usage"
+title: "Get project usage"
 source: https://developers.deepgram.com/reference/manage/usage/get.md
 path: reference/manage/usage/get
 ---
@@ -7,7 +7,7 @@ path: reference/manage/usage/get
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Get Project Usage
+# Get project usage
 
 GET https://api.deepgram.com/v1/projects/{project_id}/usage
 

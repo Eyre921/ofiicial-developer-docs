@@ -1,5 +1,5 @@
 ---
-title: "Sample Rate"
+title: "Sample rate"
 source: https://developers.deepgram.com/docs/tts-sample-rate.md
 path: docs/tts-sample-rate
 ---
@@ -7,11 +7,11 @@ path: docs/tts-sample-rate
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Sample Rate
+# Sample rate
 
 `sample_rate` *string*
 
-Text to Speech Request  Text to Speech Stream
+Text-to-Speech Request  Text-to-Speech Stream
 
 The Sample Rate feature allows users to specify the desired sample rate of the resulting text-to-speech audio output. Sample rate refers to the number of samples of audio carried per second, measured in Hertz (Hz).
 
@@ -21,7 +21,7 @@ Choosing the appropriate sample rate is crucial as it directly impacts the audio
 >
 > The `sample_rate` value must adhere to the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). Choose a value based on the encoding type and your use case. Based on encoding `8000` or `24000`are possible defaults. For some encodings sample rate is not configurable.
 
-## Enable Feature
+## Enable feature
 
 To enable the Sample Rate feature, include the `sample_rate` parameter in the query string with the desired sample rate value.
 
@@ -46,21 +46,21 @@ curl --request POST \
 >
 > Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](/docs/create-additional-api-keys).
 
-### Query Parameters
+### Query parameters
 
 | Parameter     | Value                                                                                                                                                | Type     | Description                                   |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------------------------------------------- |
 | `sample_rate` | See list of supported audio format combinations in the [Audio Format Combinations table](/docs/tts-media-output-settings#audio-format-combinations). | `string` | The desired sample rate for the output audio. |
 
-## Analyze Response
+## Analyze response
 
-Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
+Upon successful processing of the request, you'll receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
 > **Info**
 >
 > The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
-### Response Headers Example
+### Response headers example
 
 **`http`**
 

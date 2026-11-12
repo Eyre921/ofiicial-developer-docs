@@ -23,8 +23,8 @@ The power of Kubernetes is bundled with a greater level of complexity when compa
 
 What’s Next
 
-If you'll deploy with Kubernetes, choose where you will deploy your infrastructure to begin setting up your deployment environment.
+If you'll deploy with Kubernetes, choose where you'll deploy your infrastructure to begin setting up your deployment environment.
 
 * [Amazon Web Services](/docs/aws-k8s)
 * [Google Cloud Platform](/docs/gcp-k8s)
-* [Self-Managed Kubernetes](/docs/self-managed-kubernetes)
+* [Self-managed Kubernetes](/docs/self-managed-kubernetes)

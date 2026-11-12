@@ -1,5 +1,5 @@
 ---
-title: "Getting Started"
+title: "Getting started"
 source: https://developers.deepgram.com/docs/text-to-speech.md
 path: docs/text-to-speech
 ---
@@ -7,20 +7,20 @@ path: docs/text-to-speech
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started
+# Getting started
 
 Deepgram API Playground
 
 Try this feature out in our API Playground.
 
 \
-&#x20;Text to Speech Request
+&#x20;Text-to-Speech Request
 
 This guide will walk you through how to turn text into speech with Deepgram's text-to-speech REST API.
 
 > **Info**
 >
-> Before you start, you'll need to follow the steps in the [Make Your First API Request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you are choosing to use a Deepgram SDK.
+> Before you start, you'll need to follow the steps in the [Make your first API request](/guides/fundamentals/make-your-first-api-request) guide to obtain a Deepgram API key, and configure your environment if you're choosing to use a Deepgram SDK.
 
 ## CURL
 
@@ -135,7 +135,7 @@ dotnet add package Deepgram
 # implementation 'com.deepgram:deepgram-java-sdk:0.10.0'
 ```
 
-### Add Dependencies
+### Add dependencies
 
 **`JavaScript`**
 
@@ -165,7 +165,7 @@ pip install python-dotenv
 # Importing the Deepgram Go SDK should pull in all dependencies required
 ```
 
-### Make the Request with the SDK
+### Make the request with the SDK
 
 **`JavaScript`**
 
@@ -405,21 +405,21 @@ public class Main {
 
 > **Info**
 >
-> To learn more about how you can customize the audio file to meet the needs of your use case, take a look at this [Audio Format Combinations](/docs/tts-media-output-settings#audio-format-combinations) table.
+> To learn more about how you can customize the audio file to meet the needs of your use case, take a look at this [Audio format combinations](/docs/tts-media-output-settings#audio-format-combinations) table.
 
-## Non-SDK Code Examples
+## Non-SDK code examples
 
 If you would like to try out making a Deepgram speech-to-text request in a specific language (but not using Deepgram's SDKs), we offer a library of code-samples in this [Github repo](https://github.com/deepgram-devs/code-samples). However, we recommend first trying out our SDKs, which we presented in the previous section.
 
 ## Results
 
-Upon successful processing of the request, you will receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
+Upon successful processing of the request, you'll receive an audio file containing the synthesized text-to-speech output, along with response headers providing additional information.
 
 > **Info**
 >
 > The audio file is streamed back to you, so you may begin playback as soon as the first byte arrives. Read the guide [Streaming Audio Outputs](/docs/streaming-the-audio-output) to learn how to begin playing the stream immediately versus waiting for the entire file to arrive.
 
-### Example Response Headers
+### Example response headers
 
 **`http`**
 
@@ -452,9 +452,9 @@ This includes:
 
 Keep these limits in mind when making a Deepgram text-to-speech request.
 
-### Input Text Limit
+### Input text limit
 
-Sending a request with a text payload longer than the maximum number of characters can result in a [**413: Input Text Exceeds Character Limits**](/docs/errors#413-input-text-exceeded-character-limit) error, and the audio file will not be created.
+Sending a request with a text payload longer than the maximum number of characters can result in a [**413: Input Text Exceeds Character Limits**](/docs/errors#413-input-text-exceeded-character-limit) error, and the audio file won't be created.
 
 | Model          | Max Characters |
 | -------------- | -------------- |
@@ -464,13 +464,13 @@ Sending a request with a text payload longer than the maximum number of characte
 
 A [**422: Unprocessable Content**](/docs/errors#422-unprocessable-content) error can be returned if the client fails to send the request successfully.
 
-### Rate Limits
+### Rate limits
 
 > **Info**
 >
 > For information on Deepgram's Concurrency Rate Limits, refer to our [API Rate Limits Documentation](/reference/api-rate-limits).
 
-#### Handling Rate Limits
+#### Handling rate limits
 
 If the number of in-progress requests for a project meets or exceeds the rate limit, new requests will receive a **429: Too Many Requests** error.
 
@@ -478,27 +478,27 @@ If the number of in-progress requests for a project meets or exceeds the rate li
 >
 > For suggestions on handling Concurrency Rate Limits, refer to our [Working with Concurrency Rate Limits Documentation](/docs/working-with-concurrency-rate-limits) guide.
 
-## What's Next?
+## What's next?
 
 Now that you've transformed text into speech with Deepgram's API, enhance your knowledge by exploring the following areas.
 
-### Template Apps
+### Template apps
 
-* Clone and run one of our [Template Apps](/docs/tts-rest-template-apps) to see a full application with a frontend UI and a backend server sending text to Deepgram to be converted into audio.
+* Clone and run one of our [Template apps](/docs/tts-rest-template-apps) to see a full application with a frontend UI and a backend server sending text to Deepgram to be converted into audio.
 
-### Read the Feature Guides
+### Read the feature guides
 
 Deepgram's features help you to customize your request to produce the output that works best for your use case.
 
-* [Media Output Settings](/docs/tts-media-output-settings): Learn how to customize the audio file that is returned.
+* [Media Output Settings](/docs/tts-media-output-settings): Learn how to customize the audio file that's returned.
 * [Callback](/docs/tts-callback): Discover how to provide a callback url, so that your audio can be processed asynchronously.
-* [Feature Overview](/docs/tts-feature-overview): Review the list of features available for pre-recorded speech-to-text. Then, dive into individual guides for more details.
+* [Feature overview](/docs/tts-feature-overview): Review the list of features available for pre-recorded speech-to-text. Then, dive into individual guides for more details.
 
-### Try the Conversational AI Demo
+### Try the conversational AI demo
 
 * The purpose of[ this demo](https://aura-tts-demo.deepgram.com/) is to showcase how you can build a Conversational AI application that engages users in natural language interactions, mimicking human conversation through natural language processing using Deepgram and [OpenAI ChatGPT.](https://openai.com/chatgpt)
 
-### Watch This Video
+### Watch this video
 
 * Watch this [video](https://www.youtube.com/watch?v=J2sbC8X5Pp8) to learn how you can use Deepgram Aura with [Groq](https://groq.com/) to build a blazing fast Conversational AI application.
 

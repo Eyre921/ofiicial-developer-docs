@@ -1,5 +1,5 @@
 ---
-title: "Use FIPS Endpoints"
+title: "Use FIPS endpoints"
 source: https://developers.deepgram.com/docs/fips-endpoints-sagemaker.md
 path: docs/fips-endpoints-sagemaker
 ---
@@ -7,11 +7,11 @@ path: docs/fips-endpoints-sagemaker
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Use FIPS Endpoints
+# Use FIPS endpoints
 
 > How to configure boto3, the AWS SDKs, and the AWS CLI to reach Deepgram on Amazon SageMaker over FIPS 140-3 endpoints, including bidirectional streaming on port 8443, asynchronous endpoints on s3-fips, the IAM Identity Center caveat, and how to confirm a run used FIPS endpoints.
 
-Amazon SageMaker AI publishes FIPS 140-3 endpoints alongside its standard ones. Switching to them changes only the hostname your client connects to; the endpoint, the model, and the request payload stay the same. For what these endpoints do and do not cover, see [Security and Compliance](/docs/security-and-compliance-sagemaker#fips-140-3-endpoints).
+Amazon SageMaker AI publishes FIPS 140-3 endpoints alongside its standard ones. Switching to them changes only the hostname your client connects to; the endpoint, the model, and the request payload stay the same. For what these endpoints do and do not cover, see [Security and compliance](/docs/security-and-compliance-sagemaker#fips-140-3-endpoints).
 
 ## Select FIPS endpoints
 
@@ -130,6 +130,6 @@ This check matters most in the IAM Identity Center case above, where a misconfig
 
 ## Related resources
 
-* [Security and Compliance](/docs/security-and-compliance-sagemaker) — what FIPS endpoints cover, FedRAMP coverage, network isolation, and VPC options
+* [Security and compliance](/docs/security-and-compliance-sagemaker) — what FIPS endpoints cover, FedRAMP coverage, network isolation, and VPC options
 * [Invoke a Deepgram SageMaker Endpoint](/docs/invoke-sagemaker-endpoint) — full request examples for each transport
 * [Invoke through a SageMaker Runtime interface endpoint](/docs/invoke-sagemaker-endpoint#invoke-through-a-sagemaker-runtime-interface-endpoint) — private, low-latency connectivity, including FIPS

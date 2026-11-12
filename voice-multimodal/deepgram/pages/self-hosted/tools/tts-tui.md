@@ -13,7 +13,7 @@ path: self-hosted/tools/tts-tui
 
 ## Features
 
-* **Validate self-hosted TTS** — confirm that Aura-2 models produce correct audio on your own infrastructure before going to production.
+* **Validate self-hosted TTS** — confirm that Deepgram Aura-2 models produce correct audio on your own infrastructure before going to production.
 * **Test output formats** — switch between MP3, Linear16 (WAV), FLAC, and other encodings with configurable sample rates.
 * **Multi-language support** — synthesize speech in any Deepgram-supported language and save utterances for comparison.
 * **Audio caching** — repeated playback is served from disk instantly, so you can iterate without redundant API calls.
@@ -22,17 +22,17 @@ path: self-hosted/tools/tts-tui
 ## Prerequisites
 
 * [Rust Toolchain](https://rustup.rs) (only required when building from source)
-* Deepgram self-hosted TTS deployment
+* Deepgram Self-Hosted TTS deployment
 
 ## Installation
 
-### Run Pre-compiled Binary
+### Run pre-compiled binary
 
 1. Download the latest release from [GitHub Releases](https://github.com/deepgram-devs/deepgram-demos-rust/releases/latest).
 2. Extract the ZIP file.
 3. Run the `tts-tui` binary.
 
-### Build from Source
+### Build from source
 
 ```bash
 git clone https://github.com/deepgram-devs/deepgram-demos-rust.git

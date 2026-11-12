@@ -53,7 +53,7 @@ Use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#updating-
 
 ## Assign tax codes to your product catalog
 
-To calculate taxes, Stripe Tax requires that you classify products into tax codes. You can do so by supplying [a preset tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#preset-tax-codes) for the platform account, which might be sufficient if you typically sell a single category of items or services.
+Product tax codes classify what your marketplace sells so Stripe Tax can apply the appropriate tax treatment in each jurisdiction. You can supply [a preset tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#preset-tax-codes) for the platform account, which might be sufficient if you typically sell a single category of items or services.
 
 Additionally, you can [map tax codes to each product](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#tax-code-on-product) to give you more control over tax categorization. You might have to map each product that a seller sets up on your marketplace. You can find a list of supported tax codes from [available tax codes](https://docs.stripe.com/tax/tax-codes.md) or retrieve it from the Stripe [Tax Code API](https://docs.stripe.com/api/tax_codes.md).
 

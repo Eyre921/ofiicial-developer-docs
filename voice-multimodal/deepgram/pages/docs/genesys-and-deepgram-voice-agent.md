@@ -31,7 +31,7 @@ The Voice Agent API bundles speech-to-text, LLM reasoning, and text-to-speech in
 
 ## Before you begin
 
-You will need:
+You'll need:
 
 * A Deepgram API key with Voice Agent enabled
 * A Genesys Cloud CX account with Audio Connector access
@@ -39,11 +39,11 @@ You will need:
 
 > **Info**
 >
-> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features!
+> Before you can use Deepgram, you'll need to [create a Deepgram account](https://console.deepgram.com/signup?jump=keys). Signup is free and includes **\$200** in free credit and access to all of Deepgram's features.
 
 ---
 
-## Step 1: Create an Audio Connector in Genesys
+## Step 1: create an Audio Connector in Genesys
 
 1. Go to **Admin > Integrations**
 2. Add **Audio Connector**
@@ -54,7 +54,7 @@ You will need:
 
 ---
 
-## Step 2: Add the connector to your Architect flow
+## Step 2: add the connector to your Architect flow
 
 1. Open **Architect** in Genesys Cloud
 2. Open or create an **Inbound Call Flow**
@@ -65,7 +65,7 @@ This action hands the call to the Deepgram Voice Agent.
 
 ---
 
-## Step 3: Configure your AI agent
+## Step 3: configure your AI agent
 
 In the Audio Connector's **Session Variables**, add a variable:
 
@@ -114,7 +114,7 @@ In the Audio Connector's **Session Variables**, add a variable:
 
 ---
 
-## Step 4: Set up middleware server (self-hosted only)
+## Step 4: set up middleware server (self-hosted only)
 
 If you use a self-hosted setup, deploy a middleware server to connect Genesys with the Deepgram Voice Agent. Contact your Deepgram account executive for access and setup instructions.
 

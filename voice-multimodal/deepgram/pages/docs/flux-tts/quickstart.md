@@ -1,5 +1,5 @@
 ---
-title: "Getting Started with Flux TTS"
+title: "Getting started with Flux TTS"
 source: https://developers.deepgram.com/docs/flux-tts/quickstart.md
 path: docs/flux-tts/quickstart
 ---
@@ -7,9 +7,9 @@ path: docs/flux-tts/quickstart
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Getting Started with Flux TTS
+# Getting started with Flux TTS
 
-Flux TTS brings the Flux promise to speech synthesis. Where `/v1/speak` renders a buffer of text into audio and discards everything else, `/v2/speak` is built for the realities of a voice agent pipeline: streaming text in from an LLM, speaking it to a user, getting interrupted, resuming, and doing it across dozens of turns without losing conversational coherence.
+Deepgram Flux TTS is text-to-speech built for real-time conversations. Where `/v1/speak` renders a buffer of text into audio and discards everything else, `/v2/speak` is built for the realities of a voice agent pipeline: streaming text in from an LLM, speaking it to a user, getting interrupted, resuming, and doing it across dozens of turns without losing conversational coherence.
 
 **Flux TTS is perfect for:** turn-based voice agents, customer service bots, phone assistants, and any application that streams LLM output to a speaker in real time.
 
@@ -33,7 +33,7 @@ Flux TTS brings the Flux promise to speech synthesis. Where `/v1/speak` renders 
 
 > **Warning**
 >
-> **Flux TTS requires the `/v2/speak` endpoint.** The `/v1/speak` endpoint does not serve Flux voices. A `model` is **required** on every connection — connections without it are rejected.
+> **Flux TTS requires the `/v2/speak` endpoint.** The `/v1/speak` endpoint does not serve Flux TTS voices. A `model` is **required** on every connection — connections without it are rejected.
 
 When connecting to Flux TTS, you must use:
 
@@ -180,7 +180,7 @@ wscat -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
 
 ## A note on streaming text
 
-Send **plain text**. For English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and Spanish, the server applies text normalization (e.g. number and date expansion) before synthesis; the other languages are in Early Access without it, so write numbers and dates out in words. The server does not reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream raw LLM tokens without coordinating chunk boundaries.
+Send **plain text**. For English, German, Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian, and Spanish, the server applies text normalization (e.g. number and date expansion) before synthesis; the other languages are in Early Access without it, so write numbers and dates out in words. The server doesn't reorder your content or insert or strip whitespace between successive `Speak` messages — so you can stream raw LLM tokens without coordinating chunk boundaries.
 
 > **Warning**
 >
@@ -197,11 +197,11 @@ Send **plain text**. For English, German, Dutch, French, Hindi, Italian, Japanes
 | Mid-stream control | Fixed at connection                      | `Configure` speed mid-session                |
 | Voices             | Aura 1 / Aura 2                          | Flux TTS voice portfolio                     |
 
-Build new voice-agent integrations on `/v2/speak`. Stay on `/v1/speak` if you depend on the legacy manual-flush toggles, or if you are using Aura voices and don't yet need the conversational surface. See the [Migration guide](/docs/flux-tts/migrating) for a step-by-step path.
+Build new voice-agent integrations on `/v2/speak`. Stay on `/v1/speak` if you depend on the legacy manual-flush toggles, or if you're using Deepgram Aura voices and don't yet need the conversational surface. See the [Migration guide](/docs/flux-tts/migrating) for a step-by-step path.
 
 ## Streaming vs. batch
 
-`/v2/speak` is exposed over two transports against the same Flux voices:
+`/v2/speak` is exposed over two transports against the same Flux TTS voices:
 
 * **Streaming (WebSocket)** — `wss://api.deepgram.com/v2/speak`. The conversational path covered throughout these docs: text streams in, audio streams back, turns are interruptible. Use it for live voice agents that need low time-to-first-byte and barge-in.
 * **Batch (REST)** — `POST https://api.deepgram.com/v2/speak`. Submit a complete block of text, receive the full audio in one response. Use it for pre-generating fixed audio (IVR prompts, notifications, audiobook lines) where the whole text is known up front and interruption isn't needed.
@@ -216,17 +216,17 @@ curl "https://api.deepgram.com/v2/speak?model=flux-haley-en" \
   --output audio.mp3
 ```
 
-The batch path shares `model`, `speed`, `expressivity`, and media-output settings with the streaming surface, and adds containerized/compressed encodings (`mp3` default, plus `opus`/`flac`/`aac` with `container`/`bit_rate`). Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch; per-request telemetry is returned as response headers, mirroring Aura's REST conventions.
+The batch path shares `model`, `speed`, `expressivity`, and media-output settings with the streaming surface, and adds containerized/compressed encodings (`mp3` default, plus `opus`/`flac`/`aac` with `container`/`bit_rate`). Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) don't apply to batch; per-request telemetry is returned as response headers, mirroring Aura's REST conventions.
 
 ## What's next?
 
 * [Feature Overview](/docs/flux-tts/feature-overview)
-* [Client Messages](/docs/flux-tts/client-messages)
-* [Server Messages](/docs/flux-tts/server-messages)
-* [The Speech Lifecycle](/docs/flux-tts/state)
-* [Cross-Turn Context](/docs/flux-tts/context)
+* [Client messages](/docs/flux-tts/client-messages)
+* [Server messages](/docs/flux-tts/server-messages)
+* [The speech lifecycle](/docs/flux-tts/state)
+* [Cross-turn context](/docs/flux-tts/context)
 * [Voice Agent Patterns](/docs/flux-tts/voice-agent)
-* [Template Apps](/docs/flux-tts/template-apps)
+* [Template apps](/docs/flux-tts/template-apps)
 * [Migrating from /v1/speak](/docs/flux-tts/migrating)
 
 ---

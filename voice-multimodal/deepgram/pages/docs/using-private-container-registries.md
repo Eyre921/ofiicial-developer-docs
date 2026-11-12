@@ -17,7 +17,7 @@ Deepgram's self-hosted offering is powered by a [set of container images](/docs/
 
 Another option is to use a private container registry. Most cloud providers offer a managed private container registry solution, such as [AWS' ECR](https://aws.amazon.com/ecr/) or [GCP's Artifact Registry](https://cloud.google.com/artifact-registry). You can also self-host using tools like [Harbor](https://www.cncf.io/projects/harbor/) or [zot](https://www.cncf.io/projects/zot/). The typical workflow for using a private container registry includes a one-time pull of relevant containers from Quay and subsequent push to your private registry. Your self-hosted deployment can then use the private registry to create new containers as needed.
 
-### Use Cases
+### Use cases
 
 #### Performance
 
@@ -40,15 +40,15 @@ Best practices for self-hosting software include only deploying trusted containe
   * Your private registry should be accessible from within your environment's private network, and your container orchestrator will no longer need to request images directly from Quay
   * Therefore, you can [adjust your firewall](/docs/self-hosted-deployment-environments#firewall) to deny-list all egress traffic to the public internet (with the exception of `license.deepgram.com`)
 
-### Guide Structure
+### Guide structure
 
-This guide provides commands for creating private container registries on certain cloud platforms and updating your Deepgram self-hosted configuration to utilize the private container registry.
+This guide provides commands for creating private container registries on certain cloud platforms and updating your Deepgram Self-Hosted configuration to utilize the private container registry.
 
-The list of supported cloud platforms is not exhaustive; if your environment is not covered by these examples, you can use the general principles to extrapolate to your platform of choice.
+The list of supported cloud platforms isn't exhaustive; if your environment isn't covered by these examples, you can use the general principles to extrapolate to your platform of choice.
 
-This guide gives explicit commands for hosting the Deepgram API container image in a private registry. You will likely want to also complete this guide for then Engine and License Proxy (if applicable) container images. You will need to adjust the CLI parameters in a few steps, but the core commands will be the same.
+This guide gives explicit commands for hosting the Deepgram API container image in a private registry. You'll likely want to also complete this guide for then Engine and License Proxy (if applicable) container images. You'll need to adjust the CLI parameters in a few steps, but the core commands will be the same.
 
-## Pulling Images from Quay
+## Pulling images from Quay
 
 Before setting up your private registry, you need to pull the necessary Deepgram container images from Quay.
 
@@ -77,7 +77,7 @@ Before setting up your private registry, you need to pull the necessary Deepgram
    >
    > Replace `<LATEST_RELEASE_TAG>` with the tag of the latest release from the Changelog.
 
-## Platform-Specific Registry Setup
+## Platform-specific registry setup
 
 Complete one of the following subsections, depending on your cloud platform of choice and whether you prefer to use a Cloud Console or CLI tools.
 
@@ -183,7 +183,7 @@ The following steps are a summary of [this official GCP documentation](https://c
    API_REPO_URI="$GCP_REGION-docker.pkg.dev/$GCP_PROJECT/deepgram/self-hosted-api"
    ```
 
-## Pushing Images to Private Registry
+## Pushing images to private registry
 
 Push your local copy of the Deepgram container, previously pulled from Quay, to your private registry.
 
@@ -197,7 +197,7 @@ docker tag \
 docker push "$API_REPO_URI:$RELEASE_TAG"
 ```
 
-## Configuring Deployment to Use Private Registry
+## Configuring deployment to use private registry
 
 Complete one of the following subsections, depending on your cloud platform of choice and container orchestrator used in your deployment.
 
@@ -205,7 +205,7 @@ Complete one of the following subsections, depending on your cloud platform of c
 
 #### AWS
 
-1. You will need an existing EC2 instance, which can be setup using the [AWS with Docker/Podman](/docs/aws-docker-podman), [Drivers and Container Orchestration Tools](/docs/drivers-and-containerization-platforms), and [Deploy STT Services](/docs/deploy-stt-services) guides. We will be modifying this instance with a new IAM role to allow pulling images from your ECR registry.
+1. You'll need an existing EC2 instance, which can be setup using the [AWS with Docker/Podman](/docs/aws-docker-podman), [Drivers and Container Orchestration Tools](/docs/drivers-and-containerization-platforms), and [Deploy STT Services](/docs/deploy-stt-services) guides. We'll be modifying this instance with a new IAM role to allow pulling images from your ECR registry.
 
 2. Create a new IAM role for EC2 to access ECR:
 
@@ -231,7 +231,7 @@ Complete one of the following subsections, depending on your cloud platform of c
 
 #### GCP
 
-1. You will need an existing Compute Engine instance, which can be setup using the [GCP with Docker/Podman](/docs/gcp-docker-podman), [Drivers and Container Orchestration Tools](/docs/drivers-and-containerization-platforms), and [Deploy STT Services](/docs/deploy-stt-services) guides.
+1. You'll need an existing Compute Engine instance, which can be setup using the [GCP with Docker/Podman](/docs/gcp-docker-podman), [Drivers and Container Orchestration Tools](/docs/drivers-and-containerization-platforms), and [Deploy STT Services](/docs/deploy-stt-services) guides.
 
    1. Google Compute Engine instances with default IAM settings should have access to pull images from your Artifact Registry by default. You will just need to configure your Docker client to use the instance's default credentials.
 
@@ -253,7 +253,7 @@ EKS clusters created using [the Deepgram AWS EKS guide](/docs/aws-k8s) should ha
 
 GKE clusters with default IAM settings should have access to pull images from your Artifact Registry by default.
 
-## Updating your Deepgram Deployment
+## Updating your Deepgram deployment
 
 ### Docker/Podman
 
@@ -323,4 +323,4 @@ What’s Next
 
 Now that you've modified your self-hosted deployment to use images from a private container registry, you can explore other guides on scaling and maintaining your deployment.
 
-* [Scaling and Deployment Strategies](/docs/scaling-and-deployment-strategies)
+* [Scaling and deployment strategies](/docs/scaling-and-deployment-strategies)
