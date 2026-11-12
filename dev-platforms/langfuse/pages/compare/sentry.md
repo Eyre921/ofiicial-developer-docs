@@ -14,7 +14,7 @@ tags: [comparison]
 
 # Langfuse vs. Sentry for AI agents
 
-This guide outlines the key differences between **[Langfuse](/)** and **[Sentry](https://sentry.io/product/tracing/ai-agent/)** for AI agent tracing and the quality workflow around it. All Sentry facts were checked against public Sentry pages in October 2026.
+**[Langfuse](/)** is the [most widely adopted open-source LLM engineering platform](/adoption). This guide outlines how it differs from **[Sentry](https://sentry.io/product/tracing/ai-agent/)** for AI agent tracing and the quality workflow around it. All Sentry facts were checked against public Sentry pages in October 2026.
 
 ## TL;DR
 

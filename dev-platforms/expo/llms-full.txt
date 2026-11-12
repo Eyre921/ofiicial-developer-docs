@@ -627,6 +627,55 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [App store privacy declarations for Expo Observe](https://docs.expo.dev/eas/observe/reference/store-privacy-declarations.md)
 - [Troubleshooting Expo Observe](https://docs.expo.dev/eas/observe/reference/troubleshooting.md)
 
+## Expo Simulators
+
+- [Introduction to Expo Simulators](https://docs.expo.dev/eas/simulators/introduction.md): Run and control remote Android Emulators and iOS Simulators on Expo infrastructure from the CLI, REST API, an AI agent, or a browser.
+- [Get started with Expo Simulators](https://docs.expo.dev/eas/simulators/get-started.md)
+- [Troubleshoot Expo Simulators](https://docs.expo.dev/eas/simulators/troubleshooting.md)
+- [Expo Simulators limitations](https://docs.expo.dev/eas/simulators/limitations.md)
+
+### How-to
+- [Start a remote Android Emulator or iOS Simulator session](https://docs.expo.dev/eas/simulators/how-to/start-a-session.md)
+- [Install an app on a remote Android Emulator or iOS Simulator](https://docs.expo.dev/eas/simulators/how-to/install-your-app.md)
+- [Control a remote simulator with agent-device, Argent, or Appium](https://docs.expo.dev/eas/simulators/how-to/drive-the-device.md)
+- [Control a remote iOS Simulator with EAS CLI](https://docs.expo.dev/eas/simulators/how-to/control-with-eas-cli.md)
+- [Use Fast Refresh with Metro on a remote simulator](https://docs.expo.dev/eas/simulators/how-to/iterate-on-your-code.md)
+- [Capture screenshots, recordings, and logs from a remote simulator](https://docs.expo.dev/eas/simulators/how-to/capture-evidence.md)
+- [Name, tag, and find Expo Simulators sessions](https://docs.expo.dev/eas/simulators/how-to/organize-sessions.md)
+- [Let an AI coding agent verify a change on a remote simulator](https://docs.expo.dev/eas/simulators/how-to/verify-a-change-with-an-agent.md)
+- [Use an iOS Simulator on Linux or Windows](https://docs.expo.dev/eas/simulators/how-to/work-without-a-mac.md)
+- [Review a pull request on a remote Android Emulator or iOS Simulator](https://docs.expo.dev/eas/simulators/how-to/review-a-pull-request.md)
+- [Run Expo Simulators sessions in CI](https://docs.expo.dev/eas/simulators/how-to/run-in-ci.md)
+- [Share a live Expo Simulators session or start one from a link](https://docs.expo.dev/eas/simulators/how-to/hand-off-a-session.md)
+- [Show an Expo Simulators session on your own web page](https://docs.expo.dev/eas/simulators/how-to/embed-a-session.md)
+
+### Works with
+- [Which apps and frameworks work with Expo Simulators](https://docs.expo.dev/eas/simulators/works-with/overview.md): Expo Simulators runs any app built for the Android Emulator or the iOS Simulator, including Expo, React Native, native, Flutter, and Unity apps. React Native features work only in React Native apps.
+- [Run an Expo or React Native app on Expo Simulators](https://docs.expo.dev/eas/simulators/works-with/expo-and-react-native.md)
+- [Test your project in Expo Go on a remote simulator](https://docs.expo.dev/eas/simulators/works-with/expo-go.md)
+- [Run a native Android or iOS app on Expo Simulators](https://docs.expo.dev/eas/simulators/works-with/native-ios-and-android.md)
+- [Run a Flutter app on a remote Android Emulator or iOS Simulator](https://docs.expo.dev/eas/simulators/works-with/flutter.md)
+- [Run a Unity or hybrid app on Expo Simulators](https://docs.expo.dev/eas/simulators/works-with/unity-and-hybrid.md)
+- [Run Appium tests on a remote Android Emulator or iOS Simulator](https://docs.expo.dev/eas/simulators/works-with/appium.md)
+- [Use Maestro flows with Expo Simulators](https://docs.expo.dev/eas/simulators/works-with/maestro.md)
+
+### Reference
+- [Expo Simulators session types](https://docs.expo.dev/eas/simulators/reference/session-types.md)
+- [Expo Simulators CLI reference](https://docs.expo.dev/eas/simulators/reference/cli.md)
+- [Expo Simulators REST API](https://docs.expo.dev/eas/simulators/reference/rest-api.md)
+- [Expo Simulators devices](https://docs.expo.dev/eas/simulators/reference/devices.md)
+- [Expo Simulators usage, limits, and billing](https://docs.expo.dev/eas/simulators/reference/usage-and-billing.md)
+- [Expo Simulators security, permissions, and data retention](https://docs.expo.dev/eas/simulators/reference/security-and-data.md)
+
+### How it works
+- [How Expo Simulators sessions work](https://docs.expo.dev/eas/simulators/how-it-works/sessions.md)
+- [Expo Simulators security model](https://docs.expo.dev/eas/simulators/how-it-works/security-model.md)
+- [Network traffic and local egress in Expo Simulators](https://docs.expo.dev/eas/simulators/how-it-works/network-inspection.md)
+- [Which build to install on Expo Simulators](https://docs.expo.dev/eas/simulators/how-it-works/builds-and-bundles.md)
+- [How EAS CLI and agents select an Expo Simulators session](https://docs.expo.dev/eas/simulators/how-it-works/agent-targeting.md)
+- [Expo Simulators compared with local simulators, physical devices, and device clouds](https://docs.expo.dev/eas/simulators/how-it-works/devices-compared.md)
+- [How long an Expo Simulators session runs](https://docs.expo.dev/eas/simulators/how-it-works/session-lifetime.md)
+
 ## Expo Metadata
 
 - [Expo Metadata](https://docs.expo.dev/eas/metadata.md): An overview on how to automate and maintain your app store presence from the command line with Expo Metadata.

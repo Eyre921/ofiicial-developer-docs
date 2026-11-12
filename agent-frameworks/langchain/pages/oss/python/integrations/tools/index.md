@@ -304,7 +304,6 @@ The following table shows tools that generate video, image, or audio assets:
 | [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
 | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
 | [`ReefAPIToolkit`](https://reefapi.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reefapi/month)](https://pypi.org/project/langchain-reefapi/) |
-| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
 | [`DiffbotAskTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotDQLProbeTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
@@ -506,6 +505,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
 | [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
 | [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
+| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
 | [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
 | [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |

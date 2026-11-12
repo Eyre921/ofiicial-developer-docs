@@ -19,8 +19,8 @@ Sentry provides an integration with Azure Functions through the [Sentry.Extensio
 Add the Sentry dependencies to your Azure Functions application:
 
 ```shell
-dotnet add package Sentry.Extensions.Logging -v 6.12.1
-dotnet add package Sentry.OpenTelemetry.Exporter -v 6.12.1
+dotnet add package Sentry.Extensions.Logging -v 6.13.0
+dotnet add package Sentry.OpenTelemetry.Exporter -v 6.13.0
 dotnet add package OpenTelemetry.Extensions.Hosting
 dotnet add package OpenTelemetry.Instrumentation.Http
 ```

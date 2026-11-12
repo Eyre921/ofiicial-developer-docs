@@ -20066,10 +20066,10 @@ export default defineConfig({
 
 Trigger.dev runs your deployed tasks on one of these runtimes:
 
-* Node.js `node` — the default, tracks the current Node.js LTS (today `24.22.1`)
-* Node.js `node-22` — `22.23.4`
-* Node.js `node-24` — `24.22.1`
-* Node.js `node-26` — `26.12.1`
+* Node.js `node` — the default, tracks the current Node.js LTS (today `24.22.3`)
+* Node.js `node-22` — `22.23.5`
+* Node.js `node-24` — `24.22.3`
+* Node.js `node-26` — `26.13.1`
 * Bun `bun-1.4` — `1.4.4`, no Node.js binary
 * Bun `bun` — `1.3.3` with Node.js `20` alongside it (also spelled `bun-legacy`). Deprecated: deploys are rejected from January 5, 2027
 
@@ -45431,10 +45431,10 @@ What's new in v4, how to migrate, and breaking changes.
 
 Trigger.dev runs your deployed tasks on one of these runtimes:
 
-* Node.js `node` — the default, tracks the current Node.js LTS (today `24.22.1`)
-* Node.js `node-22` — `22.23.4`
-* Node.js `node-24` — `24.22.1`
-* Node.js `node-26` — `26.12.1`
+* Node.js `node` — the default, tracks the current Node.js LTS (today `24.22.3`)
+* Node.js `node-22` — `22.23.5`
+* Node.js `node-24` — `24.22.3`
+* Node.js `node-26` — `26.13.1`
 * Bun `bun-1.4` — `1.4.4`, no Node.js binary
 * Bun `bun` — `1.3.3` with Node.js `20` alongside it (also spelled `bun-legacy`). Deprecated: deploys are rejected from January 5, 2027
 
@@ -60527,7 +60527,7 @@ Or change the tsconfig jsx setting:
 
 This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER\_SECRET\_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
 
-```ts theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```ts theme={"theme":"css-variables"}
 export const dynamic = "force-dynamic";
 ```
 
@@ -60537,13 +60537,13 @@ An issue can sometimes arise when you try to pass a function directly to the `on
 
 This works:
 
-```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"}
 <Button onClick={() => myTask()}>Trigger my task</Button>
 ```
 
 Whereas this does not work:
 
-```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"}
 <Button onClick={myTask}>Trigger my task</Button>
 ```
 

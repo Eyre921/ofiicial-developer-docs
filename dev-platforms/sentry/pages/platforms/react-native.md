@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/react-native/
 
 # Sentry for React Native
 
+## Set up with Sentry CLI
+
+Set up the Sentry React Native SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 Read on to find out how to set up Sentry's React Native SDK, which automatically reports errors and exceptions in your application. If you prefer video instructions, see [How to Install the Sentry React Native SDK in 60 Seconds](https://vimeo.com/899369012).
 
 If you don't already have an account and Sentry project, head over to [sentry.io](https://sentry.io/signup/), then return to this page.

@@ -235676,7 +235676,7 @@ Handing off tasks to subagents isolates context, keeping the main (supervisor) a
 
 The subagents middleware from [Deep Agents](/oss/javascript/deepagents/overview) allows you to supply subagents through a `task` tool.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -235716,7 +235716,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -235756,7 +235756,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -235796,7 +235796,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -235836,7 +235836,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -235876,7 +235876,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -235916,7 +235916,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -235960,7 +235960,7 @@ A subagent is defined with a **name**, **description**, **system prompt**, and *
 
 For more complex use cases, you can also provide your own prebuilt LangGraph graph as a subagent.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -235999,7 +235999,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -236038,7 +236038,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -236077,7 +236077,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -236116,7 +236116,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -236155,7 +236155,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -236194,7 +236194,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -309966,6 +309966,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > x402-gated web surface markdown parser for token-efficient LLM ingestion.
 
+> [card] [NoMacSandbox](https://github.com/NoMac-app/langchain-nomac#readme)
+>
+> Cloud macOS VMs with Xcode as a Deep Agents sandbox: shell commands and file upload and download on a NoMac Mac, billed per minute.
+
 > [card] [Nomic](https://atlas.nomic.ai/)
 >
 > Open-source embedding models and tools.
@@ -310858,9 +310862,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > LangChain agent middleware that keeps recent human-anchored conversation turns together with matching tool-call and tool-result messages.
 
-> [card] [TwittrAPI](https://github.com/twittrapi/langchain-twittrapi#readme)
+> [card] [TwittrAPIToolkit](https://github.com/twittrapi/langchain-twittrapi#readme)
 >
-> TwittrAPI provides REST APIs and LangChain tools for read-only access to public X (Twitter) tweets, profiles, timelines, lists, communities, and trends.
+> Tools for reading public Twitter/X data: tweet search, user profiles, timelines, followers, replies and trends.
 
 > [card] [TypeDB](https://typedb.com/docs)
 >
@@ -313069,6 +313073,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`SuperserveSandbox`](https://docs.superserve.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-superserve/month)](https://pypi.org/project/langchain-superserve/) |
 | [`BoxdSandbox`](https://github.com/boxd-sh/boxd-langchain#readme) | N/A |
 | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith) | N/A |
+| [`NoMacSandbox`](https://github.com/NoMac-app/langchain-nomac#readme) | N/A |
 
 If you'd like to contribute a sandbox, see [Implement a sandbox integration](/oss/python/contributing/implement-langchain).
 
@@ -313491,7 +313496,6 @@ The following table shows tools that generate video, image, or audio assets:
 | [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
 | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
 | [`ReefAPIToolkit`](https://reefapi.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reefapi/month)](https://pypi.org/project/langchain-reefapi/) |
-| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
 | [`DiffbotAskTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotDQLProbeTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
@@ -313693,6 +313697,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
 | [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
 | [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
+| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
 | [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
 | [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
@@ -325941,6 +325946,8 @@ The PII middleware supports multiple strategies for handling detected PII:
 > [!NOTE]
 >
 > With `apply_to_output=True`, `PIIMiddleware` also redacts streamed wire output—text deltas, tool-call args, tool outputs, and state snapshots—via a registered stream transformer. Requires `langchain>=1.3.2`. See [Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware).
+>
+> The stream transformer holds back the last 128 characters of each text block, tool-call argument, and tool output until more text arrives or the block finishes, and runs the detector on the held text plus the new delta. A match that is split across deltas is detected before any part of it is sent, as long as the whole match fits in 128 characters. Keep custom detector matches to 128 characters or fewer: the start of a longer match can be sent before the rest of it arrives. For background, see [OWASP AI Exchange: sensitive output handling](https://owaspai.org/go/sensitiveoutputhandling) and [Split-Boundary Leaks in Streaming Guardrails](https://doi.org/10.5281/zenodo.22909585).
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -332004,6 +332011,8 @@ Detect and handle Personally Identifiable Information (PII) in conversations usi
 > [!NOTE]
 >
 > With `apply_to_output=True`, `PIIMiddleware` also redacts streamed wire output—text deltas, tool-call args, tool outputs, and state snapshots—via a registered stream transformer. Requires `langchain>=1.3.2`. See [Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware).
+>
+> The stream transformer holds back the last 128 characters of each text block, tool-call argument, and tool output until more text arrives or the block finishes, and runs the detector on the held text plus the new delta. A match that is split across deltas is detected before any part of it is sent, as long as the whole match fits in 128 characters. Keep custom detector matches to 128 characters or fewer: the start of a longer match can be sent before the rest of it arrives. For background, see [OWASP AI Exchange: sensitive output handling](https://owaspai.org/go/sensitiveoutputhandling) and [Split-Boundary Leaks in Streaming Guardrails](https://doi.org/10.5281/zenodo.22909585).
 
 **API reference:** [`PIIMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/pii/PIIMiddleware)
 
@@ -332577,7 +332586,7 @@ Handing off tasks to subagents isolates context, keeping the main (supervisor) a
 
 The subagents middleware from [Deep Agents](/oss/python/deepagents/overview) allows you to supply subagents through a `task` tool.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -332612,7 +332621,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -332647,7 +332656,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -332682,7 +332691,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -332717,7 +332726,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -332752,7 +332761,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -332787,7 +332796,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
 from langchain.agents import create_agent
@@ -332826,7 +332835,7 @@ A declarative subagent requires a **name**, **description**, **model**, and **to
 
 For more complex use cases, you can also provide your own prebuilt LangGraph graph as a subagent.
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -332868,7 +332877,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -332910,7 +332919,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -332952,7 +332961,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -332994,7 +333003,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -333036,7 +333045,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -333078,7 +333087,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import CompiledSubAgent
 from deepagents.backends import StateBackend
 from deepagents.middleware.subagents import SubAgentMiddleware
@@ -333132,7 +333141,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
 
 **API reference:** [`RubricMiddleware`](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -333148,7 +333157,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -333164,7 +333173,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -333180,7 +333189,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -333196,7 +333205,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -333212,7 +333221,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -333228,7 +333237,7 @@ agent = create_deep_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import RubricMiddleware, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 

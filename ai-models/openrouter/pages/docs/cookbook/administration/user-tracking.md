@@ -55,6 +55,68 @@ Registration alone does not attribute requests. Continue sending the same identi
 
 ## Implementation Example
 
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: '~openai/gpt-sol-latest',
+    input: "What's the weather like today?",
+    user: 'user_12345', // Your user identifier
+    stream: false,
+  },
+});
+
+if (!('output' in response)) {
+  throw new Error('Expected a non-streaming response');
+}
+
+const message = [...response.output].reverse().find((item) => item.type === 'message');
+console.log(message?.content.find((part) => part.type === 'output_text')?.text);
+```
+
+```python title="Python (OpenAI SDK)" lines theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key="<OPENROUTER_API_KEY>",
+)
+
+response = client.responses.create(
+    model="~openai/gpt-sol-latest",
+    input="What's the weather like today?",
+    user="user_12345",  # Your user identifier
+)
+
+print(response.output_text)
+```
+
+```typescript title="TypeScript (OpenAI SDK)" expandable lines theme={null}
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+async function chatWithUserTracking() {
+  const response = await openai.responses.create({
+    model: '~openai/gpt-sol-latest',
+    input: "What's the weather like today?",
+    user: 'user_12345', // Your user identifier
+  });
+
+  console.log(response.output_text);
+}
+
+chatWithUserTracking();
+```
+
 ## Per-User Abuse Isolation
 
 Send a stable per-end-user identifier with every request as `user` on chat completions, image generation, and the Responses API. On the Responses API, `safety_identifier` sets only the upstream abuse-isolation identity. A client-side hash or pseudonym works — when a provider requires a user identity, OpenRouter folds it into the hashed identity sent upstream and never forwards the raw value. Requests that include neither field share a single account-level identity upstream, so a provider policy block triggered by one end user can affect your whole account.

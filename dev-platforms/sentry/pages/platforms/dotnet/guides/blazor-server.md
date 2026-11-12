@@ -19,7 +19,7 @@ Blazor Interactive SSR (also known as Blazor Server) runs components on the serv
 Add the Sentry dependency to your Blazor Server application:
 
 ```shell
-dotnet add package Sentry.AspNetCore -v 6.12.1
+dotnet add package Sentry.AspNetCore -v 6.13.0
 ```
 
 *Other available variations of the above snippet: Package Manager*
@@ -82,7 +82,7 @@ However, on .NET 10 and later, Blazor emits OpenTelemetry activities for circuit
 Install the OTLP exporter and OpenTelemetry instrumentation:
 
 ```shell
-dotnet add package Sentry.OpenTelemetry.Exporter -v 6.12.1
+dotnet add package Sentry.OpenTelemetry.Exporter -v 6.13.0
 dotnet add package OpenTelemetry.Extensions.Hosting
 dotnet add package OpenTelemetry.Instrumentation.AspNetCore
 ```

@@ -122,9 +122,9 @@ Keep sufficiently detailed records for 10 years from December 31 of the year in 
 
 Contact [Stripe support](https://support.stripe.com/contact) as soon as you find missing or incorrect information.
 
-- **Before Stripe submits the return:** Send corrections by the review deadline in your filing email.
-- **After a Canadian return is filed:** Don’t file a replacement return. The CRA requires an adjustment to the filed return. Contact Stripe to determine whether you must submit the adjustment directly.
-- **After an OSS return is filed:** Report the correction in a later OSS return when permitted. Contact Stripe to determine whether Stripe can include the correction in a later supported filing.
+- **Before Stripe submits the return**: Send corrections by the review deadline in your filing email.
+- **After Stripe files a Canadian return**: Don’t file a replacement return. The CRA requires an adjustment to the filed return. Contact Stripe to determine whether you must submit the adjustment directly.
+- **After an OSS return is filed**: Report the correction in a later OSS return when permitted. Contact Stripe to determine whether Stripe can include the correction in a later supported filing.
 
 You remain responsible to the applicable tax authority for the completeness and accuracy of your returns and for paying tax, interest, and any penalties legally assessed against you. Providing information late, incompletely, or inaccurately might result in additional tax, interest, or penalties under applicable law. Using Stripe’s filing service doesn’t transfer your statutory tax obligations to Stripe.
 

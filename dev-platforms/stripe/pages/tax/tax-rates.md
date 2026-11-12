@@ -61,7 +61,7 @@ Required properties:
 Optional properties:
 
 - The optional `country` property is a valid [two-letter ISO country code](https://www.nationsonline.org/oneworld/country_code_list.htm). Some countries (for example, United States) require an additional two-letter `state` property. Use these properties to apply dynamic tax rates based on your customer’s billing or shipping address in Checkout Sessions.
-- The optional `jurisdiction` property represents the tax jurisdiction of the tax rate and can be used to differentiate between tax rates of the same percentage. `jurisdiction` appears on your customer’s invoice. In the Dashboard, jurisdiction appears as the *Region* label for the tax rate.
+- The optional `jurisdiction` property represents the tax jurisdiction of the tax rate. Use it to differentiate between tax rates of the same percentage. `jurisdiction` appears on your customer’s invoice. In the Dashboard, jurisdiction appears as the *Region* label for the tax rate.
 - You can also store additional details in the `description`. Your customers won’t see this property.
 
 You can’t change the percentage, country, or state properties after you set them, and you can only set them when you create the tax rate. This ensures that existing subscriptions and invoices using tax rates aren’t affected. If you need to update these properties, create a new tax rate and archive the old object.
@@ -85,7 +85,7 @@ In the case where the customer is liable for the tax (that is, under the reverse
 
 [Download example reverse-charge invoice PDF](https://d37ugbyn3rpeym.cloudfront.net/docs/files/billing/taxes/example-reverse-charge.pdf)
 
-If a one time payment is performed using Checkout, the exemption status is captured as [customer_details](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details) in the Checkout Session object.
+If the customer makes a one-time payment using Checkout, the exemption status is captured as [customer_details](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details) in the Checkout Session object.
 
 If the customer is either exempt or reverse, for invoices with *inclusive* tax rates, the customer pays the `unit_amount` price *minus* the tax that would’ve been paid had the user not been exempt or reverse. In other words, manual tax rates effectively calculate taxes as if the user weren’t exempt and then “backs out” the taxes.
 

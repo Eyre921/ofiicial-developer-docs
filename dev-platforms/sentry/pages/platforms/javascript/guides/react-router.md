@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/javascript/guides/react-router/
 
 # Sentry for React Router Framework
 
+## Set up with Sentry CLI
+
+Set up the Sentry React Router SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 ##### Looking for data/declarative mode?
 
 If you're using React Router in data or declarative mode, follow the instructions in our [React guide for v7](https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/v7.md) or [v8](https://docs.sentry.io/platforms/javascript/guides/react/features/react-router/v8.md).

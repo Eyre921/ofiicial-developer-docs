@@ -1173,6 +1173,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/reference/supply-chain-security/troubleshoot-dependabot/dependabot-on-actions
 /en/code-security/reference/supply-chain-security/troubleshoot-dependabot/vulnerability-detection
 /en/code-security/reference/supply-chain-security/troubleshoot-dependabot/dependabot-errors
+/en/code-security/reference/supply-chain-security/troubleshooting-github-package-firewall
 /en/code-security/reference/supply-chain-security/java-package-metadata-dependabot
 /en/code-security/reference/code-quality
 /en/code-security/reference/code-quality/metrics-and-ratings

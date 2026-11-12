@@ -67,9 +67,9 @@ curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}}/remove_lines \
   -d "lines[1][behavior]"="unassign"
 ```
 
-## Restrictions 
+## Limitations 
 
-There are some restrictions when using this feature
+There are some limitations when using this feature
 
 - The invoice must still be in a draft state
 - There are two [types of invoice line items](https://docs.stripe.com/api/invoice-line-item/object.md#invoice_line_item_object-type)

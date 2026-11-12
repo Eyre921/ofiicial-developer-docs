@@ -14,7 +14,7 @@ Use this guide if your connected accounts are responsible for collecting, filing
 
 ## Set up your connected accounts for tax
 
-As a platform, you must make sure that a connected account has their [tax settings and registrations set up](https://docs.stripe.com/tax/set-up.md) before enabling tax calculations. This can be achieved by:
+As a platform, you must make sure that a connected account has their [tax settings and registrations set up](https://docs.stripe.com/tax/set-up.md) before enabling tax calculations. You can do this by:
 
 ### Connected account using the Stripe Dashboard
 
@@ -605,7 +605,7 @@ curl https://api.stripe.com/v1/transfers \
 
 ### Custom flows (Payment Intents, non-Stripe gateways) 
 
-Custom flows use the Stripe Tax Calculation API directly—for example, to calculate taxes for Payment Intents, or to preview taxes on product pages or checkout carts before a payment is created. This is also the correct workflow if you use a payment gateway other than Stripe and only need Stripe for tax calculation.
+Custom flows use the Stripe Tax Calculation API directly—for example, to calculate taxes for Payment Intents, or to preview taxes on product pages or checkout carts before the customer pays. This is also the correct workflow if you use a payment gateway other than Stripe and only need Stripe for tax calculation.
 
 ### Payment Intents
 
@@ -771,7 +771,7 @@ This means the connected account doesn’t have an active [tax registration](htt
 
 A zero tax amount doesn’t always indicate an error. See [Zero tax amounts and reverse charges](https://docs.stripe.com/tax/zero-tax.md) for a full explanation of all scenarios where Stripe Tax returns a zero amount, including product exemptions, reverse charges, customer exemptions, and zero-rated products.
 
-If you believe tax should be applied but a zero amount is returned, verify the [product tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#product-tax-code) assigned to the item and the customer’s tax-exempt status.
+If you believe Stripe Tax should apply tax but it returns a zero amount, verify the [product tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#product-tax-code) assigned to the item and the customer’s tax-exempt status.
 
 ### Tax settings status is pending
 

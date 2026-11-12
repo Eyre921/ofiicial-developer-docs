@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/go/
 
 # Sentry for Go
 
+## Set up with Sentry CLI
+
+Set up the Sentry Go SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 On this page, we get you up and running with Sentry's SDK. If you are using our previous Go SDK, you can access the [legacy SDK](https://docs.sentry.io/platforms/go/legacy-sdk.md) documentation, until further notice.
 
 ##### Using a framework?

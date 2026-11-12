@@ -26,7 +26,7 @@ All queries executed are added as breadcrumbs and are sent with any event which 
 ## [Install](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md#install)
 
 ```powershell
-Install-Package Sentry.EntityFramework -Version 6.12.1
+Install-Package Sentry.EntityFramework -Version 6.13.0
 ```
 
 *Other available variations of the above snippet: .NET Core CLI*
@@ -48,7 +48,7 @@ Add the Entity Framework 6 support to your project in one step:
 The following example configures an ASP.NET application in `Global.asax.cs`. In addition to `Sentry.EntityFramework`, install [Sentry.AspNet](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md), which provides request context, request-scoped data, and the HTTP transaction helpers used here:
 
 ```powershell
-Install-Package Sentry.AspNet -Version 6.12.1
+Install-Package Sentry.AspNet -Version 6.13.0
 ```
 
 *Other available variations of the above snippet: .NET Core CLI*

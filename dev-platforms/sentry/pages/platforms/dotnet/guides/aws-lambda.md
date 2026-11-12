@@ -19,7 +19,7 @@ Sentry provides an integration with AWS Lambda ASP.NET Core Server through the [
 Add the Sentry dependency:
 
 ```powershell
-Install-Package Sentry.AspNetCore -Version 6.12.1
+Install-Package Sentry.AspNetCore -Version 6.13.0
 ```
 
 *Other available variations of the above snippet: .NET Core CLI*

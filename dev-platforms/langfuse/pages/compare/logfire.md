@@ -14,7 +14,7 @@ tags: [comparison]
 
 # Langfuse vs. Pydantic Logfire
 
-This guide outlines the key differences between **[Langfuse](/)** and **[Pydantic Logfire](https://pydantic.dev/pricing)** to help engineering teams choose the right AI engineering platform. All Logfire facts were checked against public Pydantic pages in October 2026.
+**[Langfuse](/)** is the [most widely adopted open-source LLM engineering platform](/adoption). This guide outlines how it differs from **[Pydantic Logfire](https://pydantic.dev/pricing)** to help engineering teams choose the right AI engineering platform. All Logfire facts were checked against public Pydantic pages in October 2026.
 
 ## TL;DR
 

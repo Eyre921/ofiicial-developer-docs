@@ -62,7 +62,7 @@ Add a button to redirect to the customer portal to allow customers to manage the
 
 ### Redirect to the customer portal session
 
-Make a request to the endpoint on your server to redirect to a new customer portal session. This example uses the `session_id` from the [Checkout session](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-id) to demonstrate retrieving the `customer_account`. In a production environment, we recommend that you store this value alongside the authenticated user in your database.
+Make a request to the endpoint on your server to redirect to a new customer portal session. This example uses the `session_id` from the [Checkout Session](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-id) to demonstrate retrieving the `customer_account`. In a production environment, we recommend that you store this value alongside the authenticated user in your database.
 
 ### Install the Stripe Node library
 
@@ -79,6 +79,8 @@ npm install --save stripe
 #### GitHub
 
 Or download the stripe-node library source code directly [from GitHub](https://github.com/stripe/stripe-node).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe Ruby library
 
@@ -104,6 +106,8 @@ gem 'stripe'
 
 Or download the stripe-ruby gem source code directly [from GitHub](https://github.com/stripe/stripe-ruby).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Java library
 
 Add the dependency to your build and import the library. Alternatively, if you’re starting from scratch and need a sample pom.xml file (for Maven), download the project files using the link in the code editor.
@@ -128,6 +132,8 @@ implementation "com.stripe:stripe-java:{VERSION}"
 
 Download the JAR directly [from GitHub](https://github.com/stripe/stripe-java/releases/latest).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Python package
 
 Install the Stripe package and import it in your code. Alternatively, if you’re starting from scratch and need a requirements.txt file, download the project files using the link in the code editor.
@@ -143,6 +149,8 @@ pip3 install stripe
 #### GitHub
 
 Download the stripe-python library source code directly [from GitHub](https://github.com/stripe/stripe-python).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe PHP library
 
@@ -160,6 +168,8 @@ composer require stripe/stripe-php
 
 Or download the stripe-php library source code directly [from GitHub](https://github.com/stripe/stripe-php).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Set up your server
 
 Add the dependency to your build and import the library. Alternatively, if you’re starting from scratch and need a go.mod file, download the project files using the link in the code editor.
@@ -175,6 +185,8 @@ go get -u github.com/stripe/stripe-go/v87
 #### GitHub
 
 Or download the stripe-go module source code directly [from GitHub](https://github.com/stripe/stripe-go).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe.net library
 
@@ -200,6 +212,8 @@ Install-Package Stripe.net
 
 Or download the Stripe.net library source code directly [from GitHub](https://github.com/stripe/stripe-dotnet).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe libraries
 
 Install the packages and import them in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the link in the code editor.
@@ -209,6 +223,8 @@ Install the libraries:
 ```bash
 npm install --save stripe @stripe/stripe-js next
 ```
+
+Get your API keys from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Create a Checkout Session
 
@@ -402,17 +418,17 @@ If you successfully subscribed to your product in your test, you have a working,
 
 ### Add trials
 
-Attach a trial period to a Checkout session.
+Attach a trial period to a Checkout Session.
 
 ### Add a trial period
 
 Use `subscription_data` to add an integer representing the number of `trial_period_days` before charging the customer for the first time. This must be at least `1`.
 
-If you start a free trial without a payment method, set the `trial_settings[end_behavior][missing_payment_method]` field to `pause` or `cancel` so the subscription doesn’t continue if the trial ends with no payment method. Pass this parameter into `subscription_data` when you create a Checkout session, or update it on the subscription at another time. See [Use trial periods](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md#create-free-trials-without-payment) for more information.
+If you start a free trial without a payment method, set the `trial_settings[end_behavior][missing_payment_method]` field to `pause` or `cancel` so the subscription doesn’t continue if the trial ends with no payment method. Pass this parameter into `subscription_data` when you create a Checkout Session, or update it on the subscription at another time. See [Use trial periods](https://docs.stripe.com/billing/subscriptions/trials/free-trials.md#create-free-trials-without-payment) for more information.
 
 ### Set billing cycle date
 
-Specify a billing cycle anchor when creating a Checkout session.
+Specify a billing cycle anchor when creating a Checkout Session.
 
 ### Anchor the subscription billing cycle
 

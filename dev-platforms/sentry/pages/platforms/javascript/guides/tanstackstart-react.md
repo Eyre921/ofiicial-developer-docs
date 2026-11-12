@@ -21,6 +21,36 @@ Runtime
 
 This SDK is compatible with TanStack Start 1.0 RC and is currently in **beta**. Beta features are still in progress and may have bugs. Please reach out on [GitHub](https://github.com/getsentry/sentry-javascript/issues/new/choose) if you have any feedback or concerns.
 
+## Set up with Sentry CLI
+
+Set up the Sentry TanStack Start SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#prerequisites)
 
 You need:

@@ -24,7 +24,7 @@ Stripe Issuing treats ATM withdrawals as standard transactions, but a few charac
 
 You can approve or decline them using the same [webhook integration](https://docs.stripe.com/issuing/controls/real-time-authorizations.md) as other authorizations.
 
-## Restrictions
+## Limitations 
 
 - **Limits**: ATM withdrawals are subject to a daily maximum limit. Your support representative can share your limit with you and work to increase it if it’s not sufficient for your use case.
 - **Cash deposits**: Stripe-issued cards aren’t enrolled in any ATM cash deposit programs and don’t have the ability to accept cash deposits. Cash deposit-enabled ATMs won’t trigger prompts for deposits when a Stripe-issued card is used.

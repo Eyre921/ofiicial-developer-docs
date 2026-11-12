@@ -127,7 +127,136 @@ For more details on this approach, see the [Get a Generation](https://openrouter
 
 ### Basic Usage with Token Tracking
 
+```typescript title="TypeScript SDK" lines theme={null}
+import { OpenRouter } from '@openrouter/sdk';
+
+const openRouter = new OpenRouter({
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+const response = await openRouter.responses.send({
+  responsesRequest: {
+    model: '~anthropic/claude-opus-latest',
+    input: 'What is the capital of France?',
+  },
+});
+
+if (!('output' in response)) {
+  throw new Error('Expected a non-streaming response');
+}
+
+const message = [...response.output].reverse().find((item) => item.type === 'message');
+console.log('Response:', message?.content.find((part) => part.type === 'output_text')?.text);
+// Usage is always included automatically
+console.log('Usage Stats:', response.usage);
+```
+
+```python title="Python (OpenAI SDK)" lines theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key="<OPENROUTER_API_KEY>",
+)
+
+response = client.responses.create(
+    model="~anthropic/claude-opus-latest",
+    input="What is the capital of France?",
+)
+
+print("Response:", response.output_text)
+# Usage is always included automatically
+print("Usage Stats:", response.usage)
+```
+
+```typescript title="TypeScript (OpenAI SDK)" expandable lines theme={null}
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+async function getResponseWithUsage() {
+  const response = await openai.responses.create({
+    model: '~anthropic/claude-opus-latest',
+    input: 'What is the capital of France?',
+  });
+
+  console.log('Response:', response.output_text);
+  // Usage is always included automatically
+  console.log('Usage Stats:', response.usage);
+}
+
+getResponseWithUsage();
+```
+
 ### Streaming with Usage Information
 
 This example shows how to handle usage information in streaming mode:
+
+```python Python expandable lines theme={null}
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key="<OPENROUTER_API_KEY>",
+)
+
+def stream_response(input):
+    return client.responses.create(
+        model="~anthropic/claude-opus-latest",
+        input=input,
+        stream=True,
+    )
+
+# Usage is included in the terminal response.completed or response.incomplete event
+for event in stream_response("Write a haiku about Paris."):
+    if event.type == "response.output_text.delta":
+        print(event.delta, end="")
+    elif event.type in ("response.completed", "response.incomplete") and event.response.usage:
+        usage = event.response.usage
+        print(f"\nUsage Statistics:")
+        print(f"Total Tokens: {usage.total_tokens}")
+        print(f"Input Tokens: {usage.input_tokens}")
+        print(f"Output Tokens: {usage.output_tokens}")
+        print(f"Cost: {getattr(usage, 'cost', None)} credits")
+```
+
+```typescript TypeScript expandable lines theme={null}
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: '<OPENROUTER_API_KEY>',
+});
+
+async function streamResponse(input: string) {
+  return openai.responses.create({
+    model: '~anthropic/claude-opus-latest',
+    input,
+    stream: true,
+  });
+}
+
+// Usage is included in the terminal response.completed or response.incomplete event
+(async () => {
+  for await (const event of await streamResponse('Write a haiku about Paris.')) {
+    if (event.type === 'response.output_text.delta') {
+      process.stdout.write(event.delta);
+    } else if (
+      (event.type === 'response.completed' || event.type === 'response.incomplete') &&
+      event.response.usage
+    ) {
+      // OpenRouter adds `cost` to the usage object.
+      const usage: typeof event.response.usage & { cost?: number } = event.response.usage;
+      console.log('\nUsage Statistics:');
+      console.log(`Total Tokens: ${usage.total_tokens}`);
+      console.log(`Input Tokens: ${usage.input_tokens}`);
+      console.log(`Output Tokens: ${usage.output_tokens}`);
+      console.log(`Cost: ${usage.cost} credits`);
+    }
+  }
+})();
+```
 

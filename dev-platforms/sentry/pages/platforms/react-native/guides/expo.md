@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/react-native/guides/expo/
 
 # Sentry for Expo
 
+## Set up with Sentry CLI
+
+Set up the Sentry Expo SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 Use this guide to set up Sentry's React Native SDK in an [Expo](https://expo.dev/) project. The same `@sentry/react-native` SDK powers bare React Native and Expo apps. This guide covers Expo-specific setup, including the config plugin, Metro, and EAS.
 
 If you don't already have an account and Sentry project, head over to [sentry.io](https://sentry.io/signup/), then return to this page.

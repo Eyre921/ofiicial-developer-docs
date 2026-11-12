@@ -1254,7 +1254,7 @@ Handing off tasks to subagents isolates context, keeping the main (supervisor) a
 
 The subagents middleware from [Deep Agents](/oss/javascript/deepagents/overview) allows you to supply subagents through a `task` tool.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1294,7 +1294,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1334,7 +1334,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1374,7 +1374,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1414,7 +1414,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1454,7 +1454,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1494,7 +1494,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { createAgent } from "langchain";
 import { createSubAgentMiddleware } from "deepagents";
@@ -1538,7 +1538,7 @@ A subagent is defined with a **name**, **description**, **system prompt**, and *
 
 For more complex use cases, you can also provide your own prebuilt LangGraph graph as a subagent.
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -1577,7 +1577,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -1616,7 +1616,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -1655,7 +1655,7 @@ const agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -1694,7 +1694,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -1733,7 +1733,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";
@@ -1772,7 +1772,7 @@ const agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, createAgent } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 import { z } from "zod";

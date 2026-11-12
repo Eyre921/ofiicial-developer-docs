@@ -13,7 +13,7 @@ tags: [comparison]
 
 # Langfuse vs. Datadog Agent Observability
 
-This guide outlines the key differences between **[Langfuse](/)** and **[Datadog Agent Observability](https://www.datadoghq.com/products/ai/agent-observability/)**. All Datadog facts were checked against public Datadog sources in September 2026.
+**[Langfuse](/)** is the [most widely adopted open-source LLM engineering platform](/adoption). This guide outlines how it differs from **[Datadog Agent Observability](https://www.datadoghq.com/products/ai/agent-observability/)**. All Datadog facts were checked against public Datadog sources in September 2026.
 
 ## TL;DR
 

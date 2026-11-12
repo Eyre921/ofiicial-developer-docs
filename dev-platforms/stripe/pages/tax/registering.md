@@ -85,7 +85,7 @@ We group your location statuses into the following categories:
 - (Needs attention): You need to make a decision or take action for this location. This can appear when:
   - Your estimated sales or transactions exceed the location’s registration threshold and you need to register.
   - You have an active registration but your tax setup is incomplete (for example, missing head office address or preset product tax code).
-  - You have a draft registration application that needs to be submitted.
+  - You have a draft registration application that you need to submit.
 - (Collecting tax): You have an active registration in this location and your tax setup is complete. Stripe Tax is automatically calculating and collecting tax on applicable transactions.
 - (Not collecting tax): You aren’t collecting tax in this location. This can occur when:
   - Your registration is expired.

@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/javascript/guides/cloudflare/
 
 # Sentry for Cloudflare
 
+## Set up with Sentry CLI
+
+Set up the Sentry Cloudflare SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 This guide covers Cloudflare Workers. If you're deploying a Cloudflare Pages application, see [Cloudflare Pages](https://docs.sentry.io/platforms/javascript/guides/cloudflare/features/pages.md) instead, which is set up with middleware rather than a wrapper.
 
 If you're using a framework, select it to open its setup instructions:
@@ -101,7 +131,7 @@ Since the SDK needs access to the `AsyncLocalStorage` API, you need to set the `
 ```jsonc
 {
   // Set this to today's date
-  "compatibility_date": "2026-11-11",
+  "compatibility_date": "2026-11-12",
   "compatibility_flags": ["nodejs_compat"],
 }
 ```

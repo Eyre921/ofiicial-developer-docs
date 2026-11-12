@@ -3,7 +3,7 @@
     "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
@@ -34,8 +34,7 @@
     "status": "ok"
   },
   "agent-frameworks/mcp": {
-    "pages": 160,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://modelcontextprotocol.io/llms-full.txt: curl: (28) Operation timed out after 90002 milliseconds with 1458176 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
   },
   "agent-frameworks/crewai": {
     "pages": 257,
@@ -102,15 +101,14 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
     "status": "ok"
   },
   "dev-platforms/neon": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://neon.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1461130 out of 7660863 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_"
   },
   "dev-platforms/clerk": {
     "pages": 0,
@@ -121,8 +119,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 1007,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://upstash.com/docs/llms-full.txt: curl: (28) Operation timed out after 90002 milliseconds with 1523712 bytes received\ncurl: (28) Operation timed out after 90001 milliseconds with 0 bytes received\ncurl: (16) Error in the HTTP2 framing "
   },
   "dev-platforms/expo": {
     "pages": 0,
@@ -187,7 +184,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 83,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -206,5 +203,5 @@
     "pages": 75,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-11T23:30:43Z"
+  "_last_crawl": "2026-11-12T11:31:01Z"
 }

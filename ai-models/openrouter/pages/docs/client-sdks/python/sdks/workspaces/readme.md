@@ -123,7 +123,7 @@ with OpenRouter(
 | `disabled_server_tools` | List\[[components.CreateWorkspaceRequestDisabledServerTool](../../components/createworkspacerequestdisabledservertool.mdx)] | ➖ | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[ "openrouter:web\_search", "openrouter:bash" ] |
 | `io_logging_api_key_ids` | List\[*int*] | ➖ | Optional array of API key IDs to filter I/O logging | null |
 | `io_logging_sampling_rate` | *Optional\[float]* | ➖ | Sampling rate for I/O logging (0.0001-1) | 1 |
-| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled | true |
+| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403. | true |
 | `is_observability_broadcast_enabled` | *Optional\[bool]* | ➖ | Whether broadcast is enabled | false |
 | `is_observability_io_logging_enabled` | *Optional\[bool]* | ➖ | Whether private logging is enabled | false |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
@@ -282,7 +282,7 @@ with OpenRouter(
 | `disabled_server_tools` | List\[[components.UpdateWorkspaceRequestDisabledServerTool](../../components/updateworkspacerequestdisabledservertool.mdx)] | ➖ | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[ "openrouter:web\_search", "openrouter:bash" ] |
 | `io_logging_api_key_ids` | List\[*int*] | ➖ | Optional array of API key IDs to filter I/O logging | null |
 | `io_logging_sampling_rate` | *Optional\[float]* | ➖ | Sampling rate for I/O logging (0.0001-1) | 1 |
-| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled | true |
+| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403. | true |
 | `is_observability_broadcast_enabled` | *Optional\[bool]* | ➖ | Whether broadcast is enabled | false |
 | `is_observability_io_logging_enabled` | *Optional\[bool]* | ➖ | Whether private logging is enabled | false |
 | `name` | *Optional\[str]* | ➖ | New name for the workspace | Updated Workspace |
@@ -359,7 +359,7 @@ with OpenRouter(
 
 ## bulk\_add\_members
 
-Add multiple organization members to a workspace. Members are assigned the same role they hold in the organization. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Add multiple organization members to a workspace. New members are assigned the workspace role that matches their organization role. Users who are already members of the workspace keep their current role and are not included in the response. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -390,7 +390,7 @@ with OpenRouter(
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
 | `id` | *str* | ✔️ | The workspace ID (UUID) or slug | production |
-| `user_ids` | List\[*str*] | ✔️ | List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization. | \[ "user\_abc123", "user\_def456" ] |
+| `user_ids` | List\[*str*] | ✔️ | List of user IDs to add to the workspace. New members are assigned the workspace role that matches their organization role; users already in the workspace keep their current role. | \[ "user\_abc123", "user\_def456" ] |
 | `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings. This is used to track API usage per application.  | |
 | `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.  | |
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |

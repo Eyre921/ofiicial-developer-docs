@@ -547,7 +547,7 @@ After you implement it, Stripe automatically starts collecting tax in jurisdicti
 
 ## Withhold collected tax amount
 
-You must make sure that the tax collected is transferred to your marketplace account, so that you can then remit the tax to relevant jurisdictions.
+You must make sure that the collected tax transfers to your marketplace account, so that you can then remit the tax to relevant jurisdictions.
 
 ### Checkout and Payment Links
 

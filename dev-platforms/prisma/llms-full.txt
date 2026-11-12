@@ -9677,6 +9677,397 @@ One habit pays for all of this. Ship each service's fake from its own package as
 - [`Databases`](https://www.prisma.io/docs/composer/databases): Give a service a Postgres database, either as a plain connection or typed by a Prisma ORM contract with managed migrations.
 - [`Deploying`](https://www.prisma.io/docs/composer/deploying): Deploy a Prisma App to production or another environment, run it in CI, and tear environments down safely.
 
+# Concepts (/docs/console/concepts)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+Location: Console > Concepts
+
+The Console workflows are based on five main concepts:
+
+* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
+* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
+* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
+* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
+* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
+
+Here is a visual illustration of how these concepts relate to each other:
+
+![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
+
+## User account [#user-account]
+
+A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
+
+If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+
+## Workspace [#workspace]
+
+You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
+
+In each workspace, you can:
+
+* view and manage all projects (and their resources) in that workspace.
+* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
+* view the usage of your enabled Prisma products across all projects in that workspace.
+* invite other users to collaborate in the workspace. See [Members and deletion](https://www.prisma.io/docs/console/more/workspaces).
+* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
+
+## Project [#project]
+
+In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
+
+In each project, you can:
+
+* view and manage all resources (like databases) in that project.
+
+The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
+
+## Branch [#branch]
+
+For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
+
+```text
+workspace → project → branch → { apps, databases }
+```
+
+A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
+
+* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
+* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
+* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
+
+Learn more in [Environments](https://www.prisma.io/docs/compute/branching).
+
+## Resources [#resources]
+
+Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
+
+* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
+* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
+* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
+
+In each project, you can:
+
+* Create and manage multiple resources (databases or environments)
+* Generate connection strings specific to each resource
+* Configure product-specific settings:
+  * **For Prisma Postgres databases**:
+    * View database metrics and performance
+    * Configure connection settings
+    * Manage database users and permissions
+  * **For Accelerate resources**:
+    * Set your database connection string
+    * Configure the region for connection pooling
+    * Adjust connection pool size and performance settings
+    * Set query duration and response size limits
+    * Enable static IP for secure connections
+
+The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
+
+## Related pages
+
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+- [`Workspace roles and project access`](https://www.prisma.io/docs/console/workspace-access): Give workspace members the Admin, Developer, Viewer, or Billing role, with access to the entire workspace or to selected projects.
+
+# Getting Started (/docs/console/getting-started)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Quick start guide for setting up and using the Prisma Console
+
+Location: Console > Getting Started
+
+This guide walks you through setting up your Console account and creating your first project.
+
+## Prerequisites [#prerequisites]
+
+* A GitHub account (for authentication)
+* A Prisma project (optional, but recommended)
+
+## Step 1: Create your account [#step-1-create-your-account]
+
+1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
+2. Click **Sign in with GitHub**
+3. Authorize Prisma Console to access your GitHub account
+
+You now have a Console account with a default workspace.
+
+## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
+
+When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
+
+### Create a workspace (optional) [#create-a-workspace-optional]
+
+To create an additional workspace:
+
+1. Click the workspace dropdown in the top navigation
+2. Click **Create Workspace**
+3. Enter a name for your workspace
+4. Click **Create**
+
+## Step 3: Create a project [#step-3-create-a-project]
+
+Projects organize your databases and environments within a workspace.
+
+### Using the Console web interface [#using-the-console-web-interface]
+
+1. Navigate to your workspace
+2. Click **Create Project**
+3. Enter a project name
+4. Click **Create**
+
+## Step 4: Create a resource [#step-4-create-a-resource]
+
+Resources are the actual databases or environments within your project.
+
+### For Prisma Postgres [#for-prisma-postgres]
+
+1. Navigate to your project
+2. Click **Create Database**
+3. Enter a database name
+4. Select a region
+5. Click **Create**
+
+### For Accelerate [#for-accelerate]
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
+> 
+> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+
+1. Navigate to your project
+2. Click **Create Environment**
+3. Enter an environment name (e.g., "production")
+4. Click **Create**
+
+## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
+
+Connection strings authenticate your application's requests to Prisma products.
+
+### Using the Console web interface [#using-the-console-web-interface-1]
+
+1. Navigate to your resource (database or environment)
+2. Click **Connection Strings** tab
+3. Click **Create Connection String**
+4. Enter a name for the connection string
+5. Copy the connection string and store it securely
+6. Click **Done**
+
+## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
+
+Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
+
+```bash
+# Application traffic over pooled TCP
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
+
+# Prisma CLI commands and administrative tooling
+DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
+```
+
+In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
+> 
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+
+## Next steps [#next-steps]
+
+* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
+* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
+* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+- [`Workspace roles and project access`](https://www.prisma.io/docs/console/workspace-access): Give workspace members the Admin, Developer, Viewer, or Billing role, with access to the entire workspace or to selected projects.
+
+# Console (/docs/console)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use the Console to manage and integrate Prisma products into your application.
+
+Location: Console
+
+## Overview [#overview]
+
+The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
+
+* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
+* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
+* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
+
+## Getting started [#getting-started]
+
+To start using Prisma products, you'll need to:
+
+1. Create a Console account
+2. Set up a workspace for your team
+3. Create a project for your application
+4. Generate connection strings for your resources
+
+Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
+
+## Core concepts [#core-concepts]
+
+The Console is organized around four main concepts:
+
+* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
+* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
+* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
+* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
+
+Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
+
+## Console CLI [#console-cli]
+
+In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
+
+Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is a release candidate.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+- [`Overview`](https://www.prisma.io/docs/guides): Practical, step-by-step guides for building with Prisma ORM and deploying to Prisma Compute, each one run end to end before it ships.
+
+# Workspace roles and project access (/docs/console/workspace-access)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Give workspace members the Admin, Developer, Viewer, or Billing role, with access to the entire workspace or to selected projects.
+
+Location: Console > Workspace roles and project access
+
+Every member of a workspace has a role. The role controls what they can do. Developers and Viewers also have a scope: the entire workspace, or only the projects an Admin selects. Roles and project access are available on all plans.
+
+For example, a contractor can be a Developer on one project, while a team lead is a Viewer across the entire workspace.
+
+Project resources include databases, branches, applications hosted on [Prisma Compute](https://www.prisma.io/docs/compute) (called apps), deployed versions of those apps (called deployments), and [Object Storage](https://www.prisma.io/docs/storage) buckets. A bucket is a container for files.
+
+Managing a project resource means creating, viewing, changing, and deleting it, including its settings, stored data, secrets, and credentials. Existing resource limits and lifecycle rules still apply.
+
+This page uses two kinds of token. A **personal user token** belongs to one Prisma account and follows that member's current role and project access. A **workspace service token** is for automation. It has its own scope, the entire workspace or one project, which does not change when its creator's role or project access changes.
+
+## Roles [#roles]
+
+| Role          | Intended use                               | Access                                                                                                                                                                                                                                                          |
+| ------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Admin**     | People responsible for the workspace       | Manage all projects, members, roles, workspace settings, and billing.                                                                                                                                                                                           |
+| **Developer** | People building and operating applications | Manage databases, branches, apps, deployments, buckets and their files, connection strings, access keys, and application environment variables, including their values, in the projects they can access. Cannot manage members, workspace settings, or billing. |
+| **Viewer**    | People monitoring projects                 | View project, branch, app, and database names, regions, deployment status, and totals or averages such as query counts and average query duration. Cannot change resources, see secrets, read database records or stored files, or run SQL.                     |
+| **Billing**   | People responsible for payments and costs  | View workspace costs, invoices, and the usage totals used to calculate charges. Manage payment details and subscriptions. Cannot access database contents, stored files, connection strings, access keys, or project settings.                                  |
+
+Only Admins can change a member's role or scope, including their own. A workspace always keeps at least one Admin: the last Admin cannot be demoted, removed, or leave.
+
+### Permission summary [#permission-summary]
+
+Project permissions apply only to projects within the member's scope.
+
+| Action                                                                                | Admin | Developer                   | Viewer | Billing |
+| ------------------------------------------------------------------------------------- | ----- | --------------------------- | ------ | ------- |
+| View project status and performance metrics                                           | Yes   | Yes                         | Yes    | No      |
+| Create, change, or delete resources within a project                                  | Yes   | Yes                         | No     | No      |
+| Deploy apps and manage branches within a project                                      | Yes   | Yes                         | No     | No      |
+| View or change application environment variables, including secret values             | Yes   | Yes                         | No     | No      |
+| Use Studio in Console, run SQL, or access database credentials                        | Yes   | Yes                         | No     | No      |
+| Read or change files in Object Storage                                                | Yes   | Yes                         | No     | No      |
+| Read application logs, SQL text, or values passed into SQL queries                    | Yes   | Yes                         | No     | No      |
+| Create a project                                                                      | Yes   | Entire-workspace scope only | No     | No      |
+| Delete a project                                                                      | Yes   | No                          | No     | No      |
+| See the member list, invite or remove members, change roles or project access         | Yes   | No                          | No     | No      |
+| Manage workspace settings, workspace service tokens, integrations, and the GitHub app | Yes   | No                          | No     | No      |
+| Open support requests, the audit log, and compliance settings                         | Yes   | No                          | No     | No      |
+| View workspace costs, invoices, and usage totals used to calculate charges            | Yes   | No                          | No     | Yes     |
+| Manage payment details and subscriptions                                              | Yes   | No                          | No     | Yes     |
+| Delete the workspace                                                                  | Yes   | No                          | No     | No      |
+
+Developer access includes production resources in every project the Developer can access. Member roles do not separate development and production permissions.
+
+Viewer access does not include read-only access to database records or stored files. Application logs, SQL text, values passed into SQL queries, environment variable values, and connection strings can contain sensitive information, so Viewers cannot see them.
+
+Billing access covers workspace-wide financial information, including project costs and the usage totals used to calculate charges. It does not include performance measurements such as query duration, or access to any project's resources.
+
+## Access scopes [#access-scopes]
+
+Developers and Viewers have one of these scopes:
+
+| Scope                 | Projects included              | Future projects        |
+| --------------------- | ------------------------------ | ---------------------- |
+| **Entire workspace**  | Every project in the workspace | Included automatically |
+| **Selected projects** | Only projects an Admin assigns | Need a new assignment  |
+
+Admin always covers the entire workspace. Billing covers workspace billing and has no project selector.
+
+A member has one role in a workspace. That role applies to every resource in every project in their scope. There are no per-project roles, custom roles, or branch-specific permissions, and no separate permissions for individual databases, buckets, or files.
+
+### Selected projects [#selected-projects]
+
+A Developer or Viewer with selected-project access:
+
+* Sees only their assigned projects in project lists and dashboards.
+* Cannot open another project by its URL, or reach it through the REST API, CLI, or [MCP tools](https://www.prisma.io/docs/ai/mcp-tools) with their personal user token. MCP tools let AI assistants work with Prisma.
+* Cannot create a project or give themselves access to another project.
+* Can use the branches and resources in each assigned project, as their role allows.
+
+Removing a member's last project assignment leaves them with no project access. It never changes their scope to the entire workspace. If a project moves to another workspace, its project assignments do not move with it.
+
+## Inviting members and changing access [#inviting-members-and-changing-access]
+
+Only Admins can invite members. When inviting, an Admin chooses a role. For a Developer or Viewer, the Admin also chooses the entire workspace or one or more projects. New invitations start with the Developer role, and the Admin must choose the scope.
+
+* The invitation keeps its role and scope until the person accepts it, an Admin revokes it, or it expires after seven days. An Admin can resend a pending invitation, which starts a new seven-day period with the same role and scope.
+* Only the account with the invited email address can accept the invitation.
+* If a selected project is deleted or moved to another workspace before the person accepts, the invitation can no longer be accepted. Send a new one.
+* To change a pending invitation's role or scope, revoke it and send a new invitation.
+* A workspace can have up to 100 members and 100 pending invitations.
+
+Members who joined before roles were available kept the Admin role with access to the entire workspace. An Admin can change their role and scope at any time. Members who join through the Vercel or Stripe Projects integrations also get the Admin role.
+
+When an Admin saves an access change, the member's next action in Console, the CLI, the REST API, or MCP tools uses the new permissions. A deployment, query, or file download that started before the change may still finish. A Console page that stays open does not allow new actions after access is removed, and neither does a saved project URL or an older personal user token.
+
+## Credentials and automation [#credentials-and-automation]
+
+Roles and project access apply in Console, and in the CLI, REST API, and MCP tools when they use a personal user token. A personal user token never has more access than its user has right now. This also applies to an AI assistant or script that uses that token.
+
+Database connection strings and bucket access keys give access to their resources directly. They do not depend on Console membership.
+
+Admins create workspace service tokens in **Settings > Service Tokens**. By default, a service token expires after 90 days.
+
+* An **entire-workspace** service token can create, read, change, and delete projects and their resources, manage workspace settings, other service tokens, and integrations through the REST API. It cannot manage members or billing.
+* A **project-scoped** service token can read and change its project, and create, change, and delete the resources in it. It cannot delete or move its project, create another project, or read workspace-level settings.
+
+Removing a member or changing their role does not revoke database connection strings, bucket access keys, or workspace service tokens they may have copied. When a member with access to these credentials leaves, review the [database credentials](https://www.prisma.io/docs/postgres/database/connecting-to-your-database#rotate-or-delete-a-credential), [bucket access keys](https://www.prisma.io/docs/cli/bucket), and [workspace service tokens](https://www.prisma.io/docs/rest-api/endpoints/service-tokens/delete-workspaces-by-workspace-id-service-tokens-by-service-token-id) they could have copied. Revoke the ones whose access should end. If an application still needs access, give it a new credential and delete the old one.
+
+Workspace roles control who can manage Prisma projects. They do not set permissions for your application's own users, and they do not add a role check to your application's requests or database queries.
+
+## Examples [#examples]
+
+* **Contractor:** Developer with access to one project. They can deploy and manage that project's resources, but cannot invite teammates or see other projects.
+* **Team lead:** Viewer for the entire workspace. They can follow project status and metrics, including for new projects, without seeing database records or secrets.
+* **Finance teammate:** Billing. They can view invoices and update payment details without access to production databases.
+
+Learn more about [workspaces and projects](https://www.prisma.io/docs/console/concepts).
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+
 # Alchemy (/docs/compute/alchemy)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -13236,397 +13627,6 @@ Send something early even when the real payload is not ready, and keep data flow
 - [`Deployments`](https://www.prisma.io/docs/compute/deployments): How deploys create service versions on Prisma Compute, and how to inspect, promote, roll back, start, and stop them.
 - [`Domains`](https://www.prisma.io/docs/compute/domains): Point a custom domain at a production app and the platform verifies DNS and provisions TLS for you.
 - [`Environment variables`](https://www.prisma.io/docs/compute/environment-variables): Project configuration that gets injected into your deployments, scoped to production, preview, or a single branch.
-
-# Concepts (/docs/console/concepts)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-Location: Console > Concepts
-
-The Console workflows are based on five main concepts:
-
-* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
-* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
-* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
-* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
-* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
-
-Here is a visual illustration of how these concepts relate to each other:
-
-![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
-
-## User account [#user-account]
-
-A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
-
-If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-
-## Workspace [#workspace]
-
-You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
-
-In each workspace, you can:
-
-* view and manage all projects (and their resources) in that workspace.
-* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
-* view the usage of your enabled Prisma products across all projects in that workspace.
-* invite other users to collaborate in the workspace. See [Members and deletion](https://www.prisma.io/docs/console/more/workspaces).
-* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
-
-## Project [#project]
-
-In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
-
-In each project, you can:
-
-* view and manage all resources (like databases) in that project.
-
-The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
-
-## Branch [#branch]
-
-For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
-
-```text
-workspace → project → branch → { apps, databases }
-```
-
-A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
-
-* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
-* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
-* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
-
-Learn more in [Environments](https://www.prisma.io/docs/compute/branching).
-
-## Resources [#resources]
-
-Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
-
-* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
-* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
-* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
-
-In each project, you can:
-
-* Create and manage multiple resources (databases or environments)
-* Generate connection strings specific to each resource
-* Configure product-specific settings:
-  * **For Prisma Postgres databases**:
-    * View database metrics and performance
-    * Configure connection settings
-    * Manage database users and permissions
-  * **For Accelerate resources**:
-    * Set your database connection string
-    * Configure the region for connection pooling
-    * Adjust connection pool size and performance settings
-    * Set query duration and response size limits
-    * Enable static IP for secure connections
-
-The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
-
-## Related pages
-
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
-- [`Workspace roles and project access`](https://www.prisma.io/docs/console/workspace-access): Give workspace members the Admin, Developer, Viewer, or Billing role, with access to the entire workspace or to selected projects.
-
-# Getting Started (/docs/console/getting-started)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Quick start guide for setting up and using the Prisma Console
-
-Location: Console > Getting Started
-
-This guide walks you through setting up your Console account and creating your first project.
-
-## Prerequisites [#prerequisites]
-
-* A GitHub account (for authentication)
-* A Prisma project (optional, but recommended)
-
-## Step 1: Create your account [#step-1-create-your-account]
-
-1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
-2. Click **Sign in with GitHub**
-3. Authorize Prisma Console to access your GitHub account
-
-You now have a Console account with a default workspace.
-
-## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
-
-When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
-
-### Create a workspace (optional) [#create-a-workspace-optional]
-
-To create an additional workspace:
-
-1. Click the workspace dropdown in the top navigation
-2. Click **Create Workspace**
-3. Enter a name for your workspace
-4. Click **Create**
-
-## Step 3: Create a project [#step-3-create-a-project]
-
-Projects organize your databases and environments within a workspace.
-
-### Using the Console web interface [#using-the-console-web-interface]
-
-1. Navigate to your workspace
-2. Click **Create Project**
-3. Enter a project name
-4. Click **Create**
-
-## Step 4: Create a resource [#step-4-create-a-resource]
-
-Resources are the actual databases or environments within your project.
-
-### For Prisma Postgres [#for-prisma-postgres]
-
-1. Navigate to your project
-2. Click **Create Database**
-3. Enter a database name
-4. Select a region
-5. Click **Create**
-
-### For Accelerate [#for-accelerate]
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
-> 
-> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-
-1. Navigate to your project
-2. Click **Create Environment**
-3. Enter an environment name (e.g., "production")
-4. Click **Create**
-
-## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
-
-Connection strings authenticate your application's requests to Prisma products.
-
-### Using the Console web interface [#using-the-console-web-interface-1]
-
-1. Navigate to your resource (database or environment)
-2. Click **Connection Strings** tab
-3. Click **Create Connection String**
-4. Enter a name for the connection string
-5. Copy the connection string and store it securely
-6. Click **Done**
-
-## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
-
-Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
-
-```bash
-# Application traffic over pooled TCP
-DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
-
-# Prisma CLI commands and administrative tooling
-DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
-```
-
-In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
-> 
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-
-## Next steps [#next-steps]
-
-* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
-* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
-* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-- [`Workspace roles and project access`](https://www.prisma.io/docs/console/workspace-access): Give workspace members the Admin, Developer, Viewer, or Billing role, with access to the entire workspace or to selected projects.
-
-# Console (/docs/console)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use the Console to manage and integrate Prisma products into your application.
-
-Location: Console
-
-## Overview [#overview]
-
-The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
-
-* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
-* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
-* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
-
-## Getting started [#getting-started]
-
-To start using Prisma products, you'll need to:
-
-1. Create a Console account
-2. Set up a workspace for your team
-3. Create a project for your application
-4. Generate connection strings for your resources
-
-Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
-
-## Core concepts [#core-concepts]
-
-The Console is organized around four main concepts:
-
-* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
-* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
-* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
-* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
-
-Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
-
-## Console CLI [#console-cli]
-
-In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
-
-Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is a release candidate.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
-- [`Overview`](https://www.prisma.io/docs/guides): Practical, step-by-step guides for building with Prisma ORM and deploying to Prisma Compute, each one run end to end before it ships.
-
-# Workspace roles and project access (/docs/console/workspace-access)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Give workspace members the Admin, Developer, Viewer, or Billing role, with access to the entire workspace or to selected projects.
-
-Location: Console > Workspace roles and project access
-
-Every member of a workspace has a role. The role controls what they can do. Developers and Viewers also have a scope: the entire workspace, or only the projects an Admin selects. Roles and project access are available on all plans.
-
-For example, a contractor can be a Developer on one project, while a team lead is a Viewer across the entire workspace.
-
-Project resources include databases, branches, applications hosted on [Prisma Compute](https://www.prisma.io/docs/compute) (called apps), deployed versions of those apps (called deployments), and [Object Storage](https://www.prisma.io/docs/storage) buckets. A bucket is a container for files.
-
-Managing a project resource means creating, viewing, changing, and deleting it, including its settings, stored data, secrets, and credentials. Existing resource limits and lifecycle rules still apply.
-
-This page uses two kinds of token. A **personal user token** belongs to one Prisma account and follows that member's current role and project access. A **workspace service token** is for automation. It has its own scope, the entire workspace or one project, which does not change when its creator's role or project access changes.
-
-## Roles [#roles]
-
-| Role          | Intended use                               | Access                                                                                                                                                                                                                                                          |
-| ------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Admin**     | People responsible for the workspace       | Manage all projects, members, roles, workspace settings, and billing.                                                                                                                                                                                           |
-| **Developer** | People building and operating applications | Manage databases, branches, apps, deployments, buckets and their files, connection strings, access keys, and application environment variables, including their values, in the projects they can access. Cannot manage members, workspace settings, or billing. |
-| **Viewer**    | People monitoring projects                 | View project, branch, app, and database names, regions, deployment status, and totals or averages such as query counts and average query duration. Cannot change resources, see secrets, read database records or stored files, or run SQL.                     |
-| **Billing**   | People responsible for payments and costs  | View workspace costs, invoices, and the usage totals used to calculate charges. Manage payment details and subscriptions. Cannot access database contents, stored files, connection strings, access keys, or project settings.                                  |
-
-Only Admins can change a member's role or scope, including their own. A workspace always keeps at least one Admin: the last Admin cannot be demoted, removed, or leave.
-
-### Permission summary [#permission-summary]
-
-Project permissions apply only to projects within the member's scope.
-
-| Action                                                                                | Admin | Developer                   | Viewer | Billing |
-| ------------------------------------------------------------------------------------- | ----- | --------------------------- | ------ | ------- |
-| View project status and performance metrics                                           | Yes   | Yes                         | Yes    | No      |
-| Create, change, or delete resources within a project                                  | Yes   | Yes                         | No     | No      |
-| Deploy apps and manage branches within a project                                      | Yes   | Yes                         | No     | No      |
-| View or change application environment variables, including secret values             | Yes   | Yes                         | No     | No      |
-| Use Studio in Console, run SQL, or access database credentials                        | Yes   | Yes                         | No     | No      |
-| Read or change files in Object Storage                                                | Yes   | Yes                         | No     | No      |
-| Read application logs, SQL text, or values passed into SQL queries                    | Yes   | Yes                         | No     | No      |
-| Create a project                                                                      | Yes   | Entire-workspace scope only | No     | No      |
-| Delete a project                                                                      | Yes   | No                          | No     | No      |
-| See the member list, invite or remove members, change roles or project access         | Yes   | No                          | No     | No      |
-| Manage workspace settings, workspace service tokens, integrations, and the GitHub app | Yes   | No                          | No     | No      |
-| Open support requests, the audit log, and compliance settings                         | Yes   | No                          | No     | No      |
-| View workspace costs, invoices, and usage totals used to calculate charges            | Yes   | No                          | No     | Yes     |
-| Manage payment details and subscriptions                                              | Yes   | No                          | No     | Yes     |
-| Delete the workspace                                                                  | Yes   | No                          | No     | No      |
-
-Developer access includes production resources in every project the Developer can access. Member roles do not separate development and production permissions.
-
-Viewer access does not include read-only access to database records or stored files. Application logs, SQL text, values passed into SQL queries, environment variable values, and connection strings can contain sensitive information, so Viewers cannot see them.
-
-Billing access covers workspace-wide financial information, including project costs and the usage totals used to calculate charges. It does not include performance measurements such as query duration, or access to any project's resources.
-
-## Access scopes [#access-scopes]
-
-Developers and Viewers have one of these scopes:
-
-| Scope                 | Projects included              | Future projects        |
-| --------------------- | ------------------------------ | ---------------------- |
-| **Entire workspace**  | Every project in the workspace | Included automatically |
-| **Selected projects** | Only projects an Admin assigns | Need a new assignment  |
-
-Admin always covers the entire workspace. Billing covers workspace billing and has no project selector.
-
-A member has one role in a workspace. That role applies to every resource in every project in their scope. There are no per-project roles, custom roles, or branch-specific permissions, and no separate permissions for individual databases, buckets, or files.
-
-### Selected projects [#selected-projects]
-
-A Developer or Viewer with selected-project access:
-
-* Sees only their assigned projects in project lists and dashboards.
-* Cannot open another project by its URL, or reach it through the REST API, CLI, or [MCP tools](https://www.prisma.io/docs/ai/mcp-tools) with their personal user token. MCP tools let AI assistants work with Prisma.
-* Cannot create a project or give themselves access to another project.
-* Can use the branches and resources in each assigned project, as their role allows.
-
-Removing a member's last project assignment leaves them with no project access. It never changes their scope to the entire workspace. If a project moves to another workspace, its project assignments do not move with it.
-
-## Inviting members and changing access [#inviting-members-and-changing-access]
-
-Only Admins can invite members. When inviting, an Admin chooses a role. For a Developer or Viewer, the Admin also chooses the entire workspace or one or more projects. New invitations start with the Developer role, and the Admin must choose the scope.
-
-* The invitation keeps its role and scope until the person accepts it, an Admin revokes it, or it expires after seven days. An Admin can resend a pending invitation, which starts a new seven-day period with the same role and scope.
-* Only the account with the invited email address can accept the invitation.
-* If a selected project is deleted or moved to another workspace before the person accepts, the invitation can no longer be accepted. Send a new one.
-* To change a pending invitation's role or scope, revoke it and send a new invitation.
-* A workspace can have up to 100 members and 100 pending invitations.
-
-Members who joined before roles were available kept the Admin role with access to the entire workspace. An Admin can change their role and scope at any time. Members who join through the Vercel or Stripe Projects integrations also get the Admin role.
-
-When an Admin saves an access change, the member's next action in Console, the CLI, the REST API, or MCP tools uses the new permissions. A deployment, query, or file download that started before the change may still finish. A Console page that stays open does not allow new actions after access is removed, and neither does a saved project URL or an older personal user token.
-
-## Credentials and automation [#credentials-and-automation]
-
-Roles and project access apply in Console, and in the CLI, REST API, and MCP tools when they use a personal user token. A personal user token never has more access than its user has right now. This also applies to an AI assistant or script that uses that token.
-
-Database connection strings and bucket access keys give access to their resources directly. They do not depend on Console membership.
-
-Admins create workspace service tokens in **Settings > Service Tokens**. By default, a service token expires after 90 days.
-
-* An **entire-workspace** service token can create, read, change, and delete projects and their resources, manage workspace settings, other service tokens, and integrations through the REST API. It cannot manage members or billing.
-* A **project-scoped** service token can read and change its project, and create, change, and delete the resources in it. It cannot delete or move its project, create another project, or read workspace-level settings.
-
-Removing a member or changing their role does not revoke database connection strings, bucket access keys, or workspace service tokens they may have copied. When a member with access to these credentials leaves, review the [database credentials](https://www.prisma.io/docs/postgres/database/connecting-to-your-database#rotate-or-delete-a-credential), [bucket access keys](https://www.prisma.io/docs/cli/bucket), and [workspace service tokens](https://www.prisma.io/docs/rest-api/endpoints/service-tokens/delete-workspaces-by-workspace-id-service-tokens-by-service-token-id) they could have copied. Revoke the ones whose access should end. If an application still needs access, give it a new credential and delete the old one.
-
-Workspace roles control who can manage Prisma projects. They do not set permissions for your application's own users, and they do not add a role check to your application's requests or database queries.
-
-## Examples [#examples]
-
-* **Contractor:** Developer with access to one project. They can deploy and manage that project's resources, but cannot invite teammates or see other projects.
-* **Team lead:** Viewer for the entire workspace. They can follow project status and metrics, including for new projects, without seeing database records or secrets.
-* **Finance teammate:** Billing. They can view invoices and update payment details without access to production databases.
-
-Learn more about [workspaces and projects](https://www.prisma.io/docs/console/concepts).
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
 
 # Overview (/docs/guides)
 
@@ -69834,7 +69834,7 @@ At SQL or MongoDB context construction, including `mongo()` and `mongoStatic()`,
 
 ### RUNTIME.DATE_STYLE_NOT_ISO [#RUNTIME.DATE_STYLE_NOT_ISO]
 
-A PostgreSQL date and time codec that reads a date or timestamp (`pg/date-string@1`, `pg/date-temporal@1`, `pg/timestamp-string@1`, `pg/timestamp-temporal@1`, `pg/timestamptz-string@1`, `pg/timestamptz-temporal@1`, `pg/timestamptz-date@1`) read a value PostgreSQL printed under a `DateStyle` other than `ISO`, such as `02.01.2026` under `German`: the driver could not ensure the `DateStyle=ISO` the PostgreSQL target requires. The driver starts each connection it opens with `DateStyle=ISO` as a startup option, and sets it with a statement on a connection of a `pg.Pool` or `pg.Client` the application supplies before first use and after an exclusive use ends. So a statement in the application set a `DateStyle` other than `ISO` on a connection Prisma uses, or a connection pooler dropped the startup option (PgBouncer does when `ignore_startup_parameters` lists `options`) or runs each statement on another server connection. Do not set a `DateStyle` other than `ISO` on a connection Prisma uses. Behind a pooler that refuses startup options, pass Prisma your own `pg.Pool`; behind one that moves statements between server connections, set `DateStyle` to `ISO` on the role or database. `time` and `timetz` print the same text in every `DateStyle`. On a flat read the envelope surfaces as it is; on an `.include()` read it is the `cause` of a `RUNTIME.DECODE_FAILED`. Payload: `codecId`, `received` (the text, cut to 100 characters).
+A PostgreSQL date and time codec that reads a date or timestamp (`pg/date-string@1`, `pg/date-temporal@1`, `pg/timestamp-string@1`, `pg/timestamp-temporal@1`, `pg/timestamptz-string@1`, `pg/timestamptz-temporal@1`, `pg/timestamptz-date@1`) read a value PostgreSQL printed under a `DateStyle` other than `ISO`, such as `02.01.2026` under `German`: the driver could not ensure the `DateStyle=ISO` the PostgreSQL target requires. The driver starts each connection it opens with `DateStyle=ISO` as a startup option, and sets it with a statement on a connection of a `pg.Pool` or `pg.Client` the application supplies before first use and after an exclusive use ends. So a statement in the application set a `DateStyle` other than `ISO` on a connection Prisma uses, or a connection pooler dropped the startup option (PgBouncer does when `ignore_startup_parameters` lists `options`) or runs each statement on another server connection. Do not set a `DateStyle` other than `ISO` on a connection Prisma uses. Behind a pooler that refuses startup options, pass Prisma your own `pg.Pool`; behind one that moves statements between server connections, set `DateStyle` to `ISO` on the role or database. A write that returns its row, such as `create()`, gets the row from the same statement (`INSERT ... RETURNING`), and Prisma decodes it only after PostgreSQL has run the statement. A `create()` that runs as one statement outside a transaction is therefore already committed when this error is raised. A `create()` with nested writes runs inside a transaction the ORM opens, and a transaction you open yourself behaves the same way: an error that ends the transaction rolls it back, so nothing is committed. `time` and `timetz` print the same text in every `DateStyle`. On a flat read the envelope surfaces as it is; on an `.include()` read it is the `cause` of a `RUNTIME.DECODE_FAILED`. Payload: `codecId`, `received` (the text, cut to 100 characters).
 
 ### RUNTIME.DDL_UNSUPPORTED [#RUNTIME.DDL_UNSUPPORTED]
 
@@ -69905,7 +69905,7 @@ The `arktype-json` codec rejected a JSON value that does not satisfy the column'
 
 ### RUNTIME.LC_MONETARY_NOT_C [#RUNTIME.LC_MONETARY_NOT_C]
 
-The PostgreSQL `money` codec (`pg/money@1`) read a value PostgreSQL printed under an `lc_monetary` other than `C`, such as `1.234,56 €` under a German locale: the driver could not ensure the `lc_monetary=C` the PostgreSQL target requires. The driver starts each connection it opens with `lc_monetary=C` as a startup option, and sets it with a statement on a connection of a `pg.Pool` or `pg.Client` the application supplies before first use and after an exclusive use ends. So a statement in the application set another `lc_monetary` on a connection Prisma uses, or a connection pooler dropped the startup option or runs each statement on another server connection. Do not change `lc_monetary` on a connection Prisma uses; behind a pooler, set `lc_monetary` to `C` on the role or database. The PostgreSQL adapter sends each `money` parameter as `numeric` and casts it to `money` in SQL, so a write does not depend on the locale's separators; PostgreSQL still scales it by the locale's number of fraction digits, so under a locale whose number is not two, such as `ja_JP`, a write is stored wrong as well. On a flat read the envelope surfaces as it is; on an `.include()` read it is the `cause` of a `RUNTIME.DECODE_FAILED`. Payload: `codecId`, `received` (the text, cut to 100 characters).
+The PostgreSQL `money` codec (`pg/money@1`) read a value PostgreSQL printed under an `lc_monetary` other than `C`, such as `1.234,56 €` under a German locale: the driver could not ensure the `lc_monetary=C` the PostgreSQL target requires. The driver starts each connection it opens with `lc_monetary=C` as a startup option, and sets it with a statement on a connection of a `pg.Pool` or `pg.Client` the application supplies before first use and after an exclusive use ends. So a statement in the application set another `lc_monetary` on a connection Prisma uses, or a connection pooler dropped the startup option or runs each statement on another server connection. Do not change `lc_monetary` on a connection Prisma uses; behind a pooler, set `lc_monetary` to `C` on the role or database. A write that returns its row, such as `create()`, gets the row from the same statement (`INSERT ... RETURNING`), and Prisma decodes it only after PostgreSQL has run the statement. A `create()` that runs as one statement outside a transaction is therefore already committed when this error is raised. A `create()` with nested writes runs inside a transaction the ORM opens, and a transaction you open yourself behaves the same way: an error that ends the transaction rolls it back, so nothing is committed. The PostgreSQL adapter sends each `money` parameter as `numeric` and casts it to `money` in SQL, so a write does not depend on the locale's separators; PostgreSQL still scales it by the locale's number of fraction digits, so under a locale whose number is not two, such as `ja_JP`, a write is stored wrong as well. On a flat read the envelope surfaces as it is; on an `.include()` read it is the `cause` of a `RUNTIME.DECODE_FAILED`. Payload: `codecId`, `received` (the text, cut to 100 characters).
 
 ### RUNTIME.MIDDLEWARE_FAMILY_MISMATCH [#RUNTIME.MIDDLEWARE_FAMILY_MISMATCH]
 
@@ -70194,7 +70194,7 @@ A migration object's `endContract`/`startContract` accessor was read, but the in
 
 ### MIGRATION.DATA_TRANSFORM_CHECK_NOT_READ_ONLY [#MIGRATION.DATA_TRANSFORM_CHECK_NOT_READ_ONLY]
 
-MongoDB only: a data transform's precheck or postcheck reads with a command that writes, such as an update, so running the check could change the database. The runner refuses the check before sending it. Write the check's source as an `aggregate` or `rawAggregate` pipeline. Payload: `checkDescription`, `commandKind`, `collection`.
+MongoDB only: a migration check, such as a data transform's precheck or postcheck or a validator change's document check, reads with a command that writes, such as an update, so running the check could change the database. The runner refuses the check before sending it (`Migration check rejected: command kind "rawUpdateMany" is not read-only`). Write the check's source as an `aggregate` or `rawAggregate` pipeline. An aggregate whose pipeline has a `$out` or `$merge` stage writes too, and is refused the same way (`Migration check rejected: stage "$out" is not read-only`); remove that stage. Payload: `checkDescription`, `collection`, and `commandKind` or `stage`.
 
 ### MIGRATION.DATA_TRANSFORM_CONTRACT_MISMATCH [#MIGRATION.DATA_TRANSFORM_CONTRACT_MISMATCH]
 
@@ -70230,7 +70230,7 @@ The per-space migration planner received the same contract-space id more than on
 
 ### MIGRATION.EXECUTION_FAILED [#MIGRATION.EXECUTION_FAILED]
 
-A migration operation's SQL step failed while being executed against the database during apply (`db init`, `db update`, `db migrate`). The envelope carries the database error detail so you can see which statement failed and why. When the step converts a column's values, the failure names the field and says who converted them and why it failed (`failedTypeChange`: `by` is `cast` or `conversion`; for a cast, `reason` is `value` or `noCast`; for a conversion, `value`, `invalidResult` or `expressionError`). On Postgres every SQL error of an alter with `using`, other than a connection, transaction or server failure, is the conversion's; on SQLite an error of the copy step of a rebuild that converts columns is the conversion's only when a copy expression fails on its own (`expressionError`) or the broken constraint names a converted column (`invalidResult`); any other error of the copy, such as a duplicate in another column made unique, gets the general advice. When a SQLite table rebuild's copy fails on a column becoming required, it counts the rows with no value (`rowsWithoutValue`) and the summary says so. `db init`, `db update` and `db migrate` report it with this code. When a type change answered with `--delete` met a value the database's cast cannot convert, or the database has no cast between the two types (on SQLite, a value kept a storage class its new column does not hold, and the why names the first such value). The advice names `--convert <field>`: through `migration plan` for `db update`, starting from `--from <hash>` under the same condition. For `db migrate` it says the failed migration's `migration.ts` has no conversion for the field and to write one there, run the file with `node`, and re-run `db migrate`, or to plan the failed migration again with `--convert`. When the migration's own `--convert` conversion failed, the advice says how: `The conversion of field "User.age" failed on a value its new type cannot hold.` (Postgres raised an error on a value), `… left a value its new type cannot hold.` (the SQLite check found one, or the value broke a constraint), or `… failed with an error in its expression.` (any other error of the conversion, such as an unknown function or operator). It then says to fix the conversion in that migration's `migration.ts`, run the file with the printed `node` command, and re-run `db migrate`, each command repeating the run's `--config` and `--db`. Rows without a value are advised as for `MIGRATION.PRECHECK_FAILED`. On Postgres a table drop that a view or another object depends on fails here (SQLSTATE `2BP01`): the summary names each dependent object from Postgres's error detail, such as `Table "billing"."Invoice" cannot be dropped while view billing.v_paid depends on it.`, the payload lists them as `blockingObjects`, and the advice says to drop or change them in the database and re-run the same command with the same `--to` and statements. Payload: `operationId`, `stepDescription`, `sql`, `sqlState`, `constraint`, `table`, `column`, `detail`, `failedTypeChange` or `rowsWithoutValue` when the step converted values or tightened a column, and `blockingObjects` (each `{ kind, name }`) when objects depend on what the step drops. On MongoDB it is raised when a field rename or removal rewrites documents with `bypassDocumentValidation` and the database user lacks that action (MongoDB error 13, `Unauthorized`), as a `readWrite` user on a hosted cluster does; the message says to grant the `bypassDocumentValidation` action, for example with the `dbAdmin` or `restore` role, and to run the command again. Payload: `operationId`, `mongoCode`, `codeName`. When the connection is lost during the step, such as the server ending the session (SQLSTATE class `08` or `57P01`–`57P05`), the payload also carries `connectionLost: true`, `transient`, and the `sqlState` when the server sent one. On MySQL, an error thrown while a space applies that has a structured code, such as `CONTRACT.MARKER_ROW_CORRUPT` or a `DRIVER` error, is reported as it is, with its own code, advice and docs link, and with `failingSpace` and `databaseUnchanged` added to its payload. An error without one, such as a socket error from the driver, is reported with this code, its own code in `errorCode`, and `failingSpace` and `databaseUnchanged`. When releasing the marker lock fails after a failed apply, the apply's failure is what is reported.
+A migration operation's SQL step failed while being executed against the database during apply (`db init`, `db update`, `db migrate`). The envelope carries the database error detail so you can see which statement failed and why. When the step converts a column's values, the failure names the field and says who converted them and why it failed (`failedTypeChange`: `by` is `cast` or `conversion`; for a cast, `reason` is `value` or `noCast`; for a conversion, `value`, `invalidResult` or `expressionError`). On Postgres every SQL error of an alter with `using`, other than a connection, transaction or server failure, is the conversion's; on SQLite an error of the copy step of a rebuild that converts columns is the conversion's only when a copy expression fails on its own (`expressionError`) or the broken constraint names a converted column (`invalidResult`); any other error of the copy, such as a duplicate in another column made unique, gets the general advice. When a SQLite table rebuild's copy fails on a column becoming required, it counts the rows with no value (`rowsWithoutValue`) and the summary says so. `db init`, `db update` and `db migrate` report it with this code. When a type change answered with `--delete` met a value the database's cast cannot convert, or the database has no cast between the two types (on SQLite, a value kept a storage class its new column does not hold, and the why names the first such value). The advice names `--convert <field>`: through `migration plan` for `db update`, starting from `--from <hash>` under the same condition. For `db migrate` it says the failed migration's `migration.ts` changes the field with the database's cast, which met a value it cannot cast, and to replace that cast with your own conversion of the values there, run the file with `node`, and re-run `db migrate` (when the database has no cast between the two types, it says instead that the file changes the field with a cast the database does not have, and to replace it with your own conversion there); or to change the value the failure names so the cast accepts it, and re-run `db migrate`; or to plan the failed migration again with `--convert`. For `db update` it also says to change that value and re-run `db update`. When the migration's own `--convert` conversion failed, the advice says how: `The conversion of field "User.age" failed on a value its new type cannot hold.` (Postgres raised an error on a value), `… left a value its new type cannot hold.` (the SQLite check found one, or the value broke a constraint), or `… failed with an error in its expression.` (any other error of the conversion, such as an unknown function or operator). It then says to fix the conversion in that migration's `migration.ts`, run the file with the printed `node` command, and re-run `db migrate`, each command repeating the run's `--config` and `--db`. Rows without a value are advised as for `MIGRATION.PRECHECK_FAILED`. On Postgres a table drop that a view or another object depends on fails here (SQLSTATE `2BP01`): the summary names each dependent object from Postgres's error detail, such as `Table "billing"."Invoice" cannot be dropped while view billing.v_paid depends on it.`, the payload lists them as `blockingObjects`, and the advice says to drop or change them in the database and re-run the same command with the same `--to` and statements. Payload: `operationId`, `stepDescription`, `sql`, `sqlState`, `constraint`, `table`, `column`, `detail`, `failedTypeChange` or `rowsWithoutValue` when the step converted values or tightened a column, and `blockingObjects` (each `{ kind, name }`) when objects depend on what the step drops. On MongoDB it is raised when a rewrite of documents to fit the new schema, such as a field rename, removal or cast, or a data transform's update, skips document validation with `bypassDocumentValidation` and the database user lacks that action (MongoDB error 13, `Unauthorized`), as a `readWrite` user on a hosted cluster does; the message says to grant the `bypassDocumentValidation` action, for example with the `dbAdmin` or `restore` role, and to run the command again. Payload: `operationId`, `mongoCode`, `codeName`. On MongoDB it is also raised when a `castField`, which `--delete` plans for a field whose type changes, meets a value `$convert` cannot cast (MongoDB error 241, `ConversionFailure`): `Operation field.users.age.cast(int) failed: a value of field "User.age" in collection users cannot be cast to int`. The `why` gives MongoDB's reason, such as `Failed to parse number 'abc' in $convert with no onError value`, and says that documents cast before that value stay cast and a re-run casts the rest, and that until it does those documents hold a type the current validator does not allow, so updates to them fail, so the failure does not say the database is unchanged. The advice, built from `failedTypeChange` as for SQL, names `--convert User.age`. A unique index build that meets two documents holding the same value, such as documents that lack the field and so hold `null`, fails with `Operation index.users.create(code_1) failed: the unique index code_1 cannot be built, because two documents in collection users hold the same value { code: null }`, and says to give each document its own value or remove the duplicates. When every value of the duplicate key is `null`, it says the documents lack the field or hold `null` in it, and, where the planner would accept the statement, that under `migration plan` `--backfill User.code` writes a slot to give each document its own value. The build changes nothing (payload `index`, `collection`, `duplicateKey`). Any other error MongoDB raises during a rewrite fails with a summary that names the error, such as `Operation field.users.code.cast(int) failed: MongoDB error 11000 (DuplicateKey): E11000 duplicate key error …`, and a `why` that says documents rewritten before the error stay changed. For a duplicate key it names the unique index and says to change or remove the documents that would collide, then run the command again. When a data transform's update, the code a user writes for `--convert` or `--backfill`, meets a value `$convert` cannot convert, the failure says `Operation data_transform.User.age failed: its update met a value MongoDB cannot convert`, and the `why` says to fix the update in that `migration.ts`, run the file with `node` and run the command again. It names no type change, since the update is the user's own. Any other MongoDB error in a data transform's update, such as a duplicate key, is named the same way, and the `why` says that documents the update changed stay changed, that until a re-run finishes they may no longer fit the current validator, so updates to them fail, and to fix what MongoDB names, changing the update in `migration.ts` when the error comes from it; it never gets the advice written for the planner's own rewrites. Payload: `operationId`, `mongoCode`, `codeName` when MongoDB gives one, and, for a planner cast, `failedTypeChange` (`by: 'cast'`, `reason: 'value'`). When the connection is lost during the step, such as the server ending the session (SQLSTATE class `08` or `57P01`–`57P05`), the payload also carries `connectionLost: true`, `transient`, and the `sqlState` when the server sent one. On MySQL, an error thrown while a space applies that has a structured code, such as `CONTRACT.MARKER_ROW_CORRUPT` or a `DRIVER` error, is reported as it is, with its own code, advice and docs link, and with `failingSpace` and `databaseUnchanged` added to its payload. An error without one, such as a socket error from the driver, is reported with this code, its own code in `errorCode`, and `failingSpace` and `databaseUnchanged`. When releasing the marker lock fails after a failed apply, the apply's failure is what is reported.
 
 ### MIGRATION.FIELD_NAME_UNSUPPORTED [#MIGRATION.FIELD_NAME_UNSUPPORTED]
 
@@ -70380,7 +70380,7 @@ A planned operation's class (e.g. `destructive`) is not allowed by the execution
 
 ### MIGRATION.POSTCHECK_FAILED [#MIGRATION.POSTCHECK_FAILED]
 
-After executing a migration operation, one of its postcheck steps (a query expected to return true) did not hold. Postgres and SQLite roll the apply back; on MySQL and MongoDB the operations that ran stay applied. The `why` says which check failed, after the operation ran; when the check states that one object must be absent or present, it names it, such as `After operation index.Item.Item_state_idx ran, it checks: verify index "Item_state_idx" exists. That check failed: the database has no index "Item_state_idx".` The SQLite check after a rebuild that a retyped column's values took the new type names the field (`failedTypeChange`) and the first value that kept its old storage class; it runs after a `--convert` copy expression too, and then `failedTypeChange.by` is `conversion` and its `reason` is `invalidResult`. When the step checks that a backfill left no row without a value (the postcheck of a Postgres backfill data transform, or a SQLite tightening rebuild), the runner counts the rows that still hold NULL (`rowsWithoutValue`), and the summary names the count, for example `1 row of "user" still holds NULL in "name" after its backfill step, so it cannot become required.` When the migration's own backfill step for the field left rows without a value (on Postgres, found by the postcheck of its data transform; on SQLite, where the step has no check of its own, by the rebuild that tightens the field), the summary says so, such as `1 row of "User" still holds NULL in "email" after its backfill step, so it cannot become required.`, and the advice says to make the step's run fill every row in that migration's `migration.ts`, run the file with `node`, and re-run `db migrate`. A failed cast or conversion is advised as for `MIGRATION.EXECUTION_FAILED`, and rows without a value as for `MIGRATION.PRECHECK_FAILED`. Payload: `failedCheck` (`operationId`, `phase`, `description`, and `expectation`, `{ expects, object }`, when the check states that one object must be absent or present), `databaseUnchanged`, and `failedTypeChange` or `rowsWithoutValue` when the step checked one.
+After executing a migration operation, one of its postcheck steps (a query expected to return true) did not hold. Postgres and SQLite roll the apply back; on MySQL and MongoDB the operations that ran stay applied. The `why` says which check failed, after the operation ran; when the check states that one object must be absent or present, it names it, such as `After operation index.Item.Item_state_idx ran, it checks: verify index "Item_state_idx" exists. That check failed: the database has no index "Item_state_idx".` The SQLite check after a rebuild that a retyped column's values took the new type names the field (`failedTypeChange`) and the first value that kept its old storage class; it runs after a `--convert` copy expression too, and then `failedTypeChange.by` is `conversion` and its `reason` is `invalidResult`. When the step checks that a backfill left no row without a value (the postcheck of a Postgres backfill data transform, or a SQLite tightening rebuild), the runner counts the rows that still hold NULL (`rowsWithoutValue`), and the summary names the count, for example `1 row of "user" still holds NULL in "name" after its backfill step, so it cannot become required.` When the migration's own backfill step for the field left rows without a value (on Postgres, found by the postcheck of its data transform; on SQLite, where the step has no check of its own, by the rebuild that tightens the field), the summary says so, such as `1 row of "User" still holds NULL in "email" after its backfill step, so it cannot become required.`, and the advice says to make the step's run fill every row in that migration's `migration.ts`, run the file with `node`, and re-run `db migrate`. On MongoDB, when a data transform's check still finds documents after its update, the summary counts them, as `Operation data_transform.User.age failed: after its update, 1 document in collection users still matches its check`, and the `why` gives one `_id`, the `mongosh` query that finds them all, and says to change the update in that `migration.ts`, run the file with `node`, and run the command again; the payload carries them as `documentsStillMatching` (`collection`, `documents`, `documentId`, `query`). When the operation is one the planner wrote, such as a `castField` or a `fillField`, the `why` gives the same count, `_id` and query, and says the operation's update did not change them: another client may have written them during the apply, or its value does not pass its own check; run the command again, and change them by hand if they are still found. A failed cast or conversion is advised as for `MIGRATION.EXECUTION_FAILED`, and rows without a value as for `MIGRATION.PRECHECK_FAILED`. Payload: `failedCheck` (`operationId`, `phase`, `description`, and `expectation`, `{ expects, object }`, when the check states that one object must be absent or present), `databaseUnchanged`, and `failedTypeChange` or `rowsWithoutValue` when the step checked one.
 
 ### MIGRATION.POSTGRES_CONTROL_STACK_MISSING [#MIGRATION.POSTGRES_CONTROL_STACK_MISSING]
 
@@ -70406,9 +70406,11 @@ No command offers a default: one value in every row breaks a unique field, and a
 
 **A schema still holds objects.** On Postgres a schema drop checks that the schema holds no table, view, sequence, type or function, since it drops without `CASCADE`. When it does, the summary names them, such as `Schema "billing" still holds view billing.v_const, so it cannot be dropped.`, and the advice says to drop or move them in the database and re-run the same command with the same `--to` and statements.
 
+**MongoDB documents that do not fit a new validator.** A validator change written with `checkDocuments: true` (`setValidation(collection, schema, { checkDocuments: true })`, or `collMod` with `checkDocuments: true` in its meta, as `migration plan` and `db update` write it for every validator they add or change) first looks for a document the new validator rejects. When it finds one it stops before it changes the validator, and counts them: `Operation validator.users.update stopped: 2 documents in collection users do not fit the new validator`. The `why` first names what the change touches, read from the validator the collection has and the new one: `This validator change makes "plan" required and changes what "age" accepts.` These are the fields the change touches, not necessarily what the documents lack. It then gives one `_id`, and says why that document does not fit, against the root model or variant it fits best: the required fields it lacks, the fields that hold a type the new validator does not allow, the fields that hold a value outside the field's enum (`holds "gone" in "status", a value the new validator does not allow there`), and, for a validator that allows no other field, the fields it does not name, inside a value object too (`"address.zip"`), and a field stored under a name containing `.` or starting with `$`, which the validator cannot check (when that is the only reason, the advice says no change of the documents helps, and to store the field under another name or apply the validator over them), such as `That document has no "plan" and has "legacyScore", a field the new validator does not name.` The `_id` is written as `mongosh` writes it: `ObjectId("64b7f0c2a1b2c3d4e5f60718")`, `ISODate("2024-05-01T10:00:00.000Z")`, `UUID("3f2a8c1e-4b5d-4e6f-8a9b-0c1d2e3f4a5b")`, and any other type, such as a string or a number, as JSON. It also gives the `mongosh` query that finds them all, `db.getCollection("users").find({"$nor":[{"$jsonSchema":{…}}]})`. Against a validator with variants, the reasons are read against the variant whose discriminator value the document holds. When the collection has a validator and the change makes fields required, it names the `--backfill` statements that let `migration plan` write a step to fill them, only for the required fields that some document that does not fit lacks or holds as `null`; when the collection has no validator, as after adopting a Prisma 6 database, it names neither `--backfill` nor the old validator, and says to change the documents with a `dataTransform` or an update in `mongosh`. The old validator is still in place and may reject a document changed to the new shape, so an update that fixes one can skip document validation: write a `dataTransform` in `migration.ts`, or in `mongosh` run an update command with `bypassDocumentValidation: true`, such as `db.runCommand({ update: "users", updates: [{ q: { _id: … }, u: { $set: { … } } }], bypassDocumentValidation: true })`. Under `db migrate` you can instead apply the validator over them: set `checkDocuments` to `false` on that operation in `migration.ts`, run the file with `node`, and run `db migrate` again; `db update` writes no `migration.ts`, so there the documents must be fixed first. The `why` says the operation did not change the validator. Operations of the same apply that ran before it, such as an index drop, a fill or a cast, stay applied, and the `why` ends with "The operations that ran before the failure stay applied."; a re-run skips them through their postchecks. Without the option the validator change does not check, and documents that do not fit fail their next update with "Document failed validation". If no such document is left when the runner counts them, it reports the plain precheck failure instead. A re-run after the validator was set skips the operation, so it does not check again.
+
 **MongoDB renames.** A field rename stops when documents already hold the new name; the message gives the `mongosh` query that finds them. A collection rename stops when the new collection exists; the message says to drop it, or to make the rename the first operation of its `migration.ts`.
 
-Payload: `failedCheck` (`operationId`, `phase`, `description`, and `expectation` when the check states one), `databaseUnchanged`, `rowsWithoutValue` or, on SQLite, `failedTypeChange` when the check found them, and `blockingObjects` (each `{ kind, name }`) for a schema that still holds objects. On MongoDB: `operationId`, and `name` for a field rename.
+Payload: `failedCheck` (`operationId`, `phase`, `description`, and `expectation` when the check states one), `databaseUnchanged`, `rowsWithoutValue` or, on SQLite, `failedTypeChange` when the check found them, and `blockingObjects` (each `{ kind, name }`) for a schema that still holds objects. On MongoDB: `operationId`, `name` for a field rename, and `documentsFailingValidator` (`collection`, `documents`, `documentId` as `mongosh` writes it, `query`, and the field names in `requires` and `retypes`) for a validator change whose documents do not fit.
 
 ### MIGRATION.PROVIDED_INVARIANTS_MISMATCH [#MIGRATION.PROVIDED_INVARIANTS_MISMATCH]
 
@@ -81741,53 +81743,41 @@ The command preselects PostgreSQL and prompts you for the project name, the temp
 
 Setup gives you the app template, a starter contract, `prisma-8.md`, project-level Prisma ORM skills for your coding agent, and package scripts for the database steps below. Answer no at the skills prompt, or pass `--skills none`, to skip the agent skill files; to remove them later, see [`skills sync`](https://www.prisma.io/docs/cli/skills) and the [`skills` config section](https://www.prisma.io/docs/cli/configuration#agent-skills). Sample users are seeded automatically the first time the app queries the database, so there is no separate seed step.
 
-From here you have two paths: let [Prisma Composer](https://www.prisma.io/docs/composer) run a local Prisma Postgres database for you, or connect a PostgreSQL database you provide.
+Next, get a PostgreSQL database, connect the app to it, and run your first query. To keep everything on your machine, skip to [Run with a local database instead](#run-with-a-local-database-instead).
 
-## Path A: Run with a local database [#path-a-run-with-a-local-database]
+### 1. Get a database [#1-get-a-database]
 
-Composer builds the app, starts a local Prisma Postgres database, and applies the starter contract for you, so you do not need a connection string.
+If you already have a PostgreSQL database, go to [step 2](#2-set-the-database-connection) with its connection string. If you don't, create a [Prisma Postgres](https://www.prisma.io/docs/postgres) database from the terminal, without an account or with a free one.
 
-  
-
-#### bun
+**Without an account:** run [`npx create-db`](https://www.prisma.io/docs/postgres/npx-create-db) to create a temporary Prisma Postgres database. It prints a connection string and a claim URL:
 
 ```bash
-bun run dev:composer
+npx create-db@latest
 ```
 
-#### pnpm
+The temporary database is deleted after 24 hours unless you claim it with a free Prisma account, using the claim URL in the same output.
+
+**With a free Prisma account:** to keep the database from the start, sign in from the generated project directory, create a project, and create a database in it. If you have no account yet, [create one](https://console.prisma.io/sign-up?utm_source=docs\&utm_medium=content\&utm_content=orm-quickstart-postgresql) first; the Free plan needs no credit card.
 
 ```bash
-pnpm run dev:composer
+npx prisma auth login
+npx prisma project create my-app-db
+npx prisma postgres create my-db
 ```
 
-#### yarn
+`auth login` opens your browser, and `project create` links the directory to the new project. Name the project differently from your app, so that it does not collide with the project a later deploy creates. `postgres create` prints the connection string once; mint another later with `npx prisma postgres connection create my-db` if you need one. See [`postgres`](https://www.prisma.io/docs/cli/postgres).
+
+### 2. Set the database connection [#2-set-the-database-connection]
+
+Export `DATABASE_URL` in the shell you run the commands from, with the connection string from step 1 as its value. The generated scripts read the variable from the environment, not from `.env`.
 
 ```bash
-yarn dev:composer
+export DATABASE_URL="<connection string from step 1>"
 ```
 
-#### npm
+A PostgreSQL connection string has the form `postgresql://username:password@host:5432/database?sslmode=require`. Without a database to connect to, `npm run db:init` in step 3 stops with `CONFIG.DB_CONNECTION_REQUIRED` when `DATABASE_URL` is not set, or with `DRIVER.CONNECTION_FAILED` when it is still a placeholder.
 
-```bash
-npm run dev:composer
-```
-
-Open the URL the command prints. You should see the seeded users returned from PostgreSQL.
-
-## Path B: Connect your own database [#path-b-connect-your-own-database]
-
-### 1. Set the database connection [#1-set-the-database-connection]
-
-Export `DATABASE_URL` in the shell you run the commands from. The generated scripts read the variable from the environment, not from `.env`.
-
-```bash
-export DATABASE_URL="postgresql://username:password@host:5432/database?sslmode=require"
-```
-
-If you don't have a PostgreSQL database yet, `npx create-db@latest` creates a temporary Prisma Postgres database and prints its connection string, plus a claim URL; claim it with a free Prisma account to keep it. For a database on your own machine, see [A database on your machine](https://www.prisma.io/docs/prisma-orm/local-database).
-
-### 2. Initialize the database [#2-initialize-the-database]
+### 3. Initialize the database [#3-initialize-the-database]
 
 From the generated project directory, run `db:init` to apply the starter contract to PostgreSQL and sign the database.
 
@@ -81819,7 +81809,7 @@ npm run db:init
 
 The output includes a summary like `Applied 5 operation(s) across 1 contract space`, followed by the operations and the marker it wrote.
 
-### 3. Run the app [#3-run-the-app]
+### 4. Run the app [#4-run-the-app]
 
 Start the app and confirm the sample query runs successfully.
 
@@ -81850,6 +81840,38 @@ npm run dev
 ```
 
 Use the URL or terminal output shown by your template. You should see the seeded users returned from PostgreSQL. If the response is `Could not query users yet`, `DATABASE_URL` is not set in the environment the app runs in; export it in the same shell and restart.
+
+## Run with a local database instead [#run-with-a-local-database-instead]
+
+[Prisma Composer](https://www.prisma.io/docs/composer) builds the app, starts a local Prisma Postgres database, and applies the starter contract for you, so you need no connection string and none of the steps above.
+
+  
+
+#### bun
+
+```bash
+bun run dev:composer
+```
+
+#### pnpm
+
+```bash
+pnpm run dev:composer
+```
+
+#### yarn
+
+```bash
+yarn dev:composer
+```
+
+#### npm
+
+```bash
+npm run dev:composer
+```
+
+Open the URL the command prints. You should see the seeded users returned from PostgreSQL. For other ways to run the database locally, see [A database on your machine](https://www.prisma.io/docs/prisma-orm/local-database).
 
 ## Next steps [#next-steps]
 
@@ -109973,12 +109995,12 @@ datasource db {
 }
 ```
 
-You can then either set the environment variable in your terminal or by providing a [dotenv](https://github.com/motdotla/dotenv) file named `.env`. This will automatically be picked up by the Prisma CLI.
+You can then either set the environment variable in your terminal or by providing a [dotenv](https://github.com/motdotla/dotenv) file named `.env`. Prisma ORM 7 does not load `.env` files by itself: load the file explicitly, for example with `import "dotenv/config"` at the top of your Prisma config file (`prisma.config.ts`, or `prisma7.config.ts` in projects created with Prisma ORM 7.10 or later). See [Using environment variables](https://www.prisma.io/docs/orm/v7/reference/prisma-config-reference#using-environment-variables).
 
-Prisma ORM reads the connection URL from the dotenv file in the following situations:
+`DATABASE_URL` is then read in the following situations:
 
-* When it updates the schema during build time
-* When it connects to the database during run time
+* When a Prisma CLI command such as `prisma migrate dev` runs: the CLI reads it through `datasource.url` in the Prisma config file
+* When your application connects to the database at run time: your code loads `.env` in the same way and passes the connection string to the driver adapter
 
 ```
 DATABASE_URL=postgresql://janedoe:mypassword@localhost:5432/mydb
@@ -110868,6 +110890,16 @@ Learn more: https://pris.ly/getting-started
 `prisma init` also creates `.env` and `.gitignore`. Prisma ORM 7.10 and later 7.x releases name the config file `prisma7.config.ts`.
 
 Next, run the `prisma dev` command to interact with your local Prisma Postgres instance (e.g. to run migrations or execute queries).
+
+For a cloud database instead, use the `Cloud` option from the output: [`npx create-db`](#npx-create-db) creates a temporary [Prisma Postgres](https://www.prisma.io/docs/postgres) database without an account and prints its connection string.
+
+```bash
+npx create-db@latest
+```
+
+Replace the `DATABASE_URL` value that `init` wrote to your `.env` file with that connection string. The temporary database is deleted after 24 hours unless you claim it with a free Prisma account, using the claim URL in the same output.
+
+If `.env` already had a `DATABASE_URL` before you ran `init`, the command kept it. Leave that value as it is and follow the `CONNECT EXISTING DATABASE` steps in the output.
 
 **Run `prisma init --datasource-provider sqlite`**
 
@@ -112203,6 +112235,15 @@ Apply all migrations and create a new migration if there are schema changes, but
 ```bash
 prisma migrate dev --create-only
 ```
+
+Create and apply a migration on a different database than the one in your Prisma config. `--url` takes a connection string for the database provider in your Prisma schema and applies to this run only: `DATABASE_URL` and your `.env` file stay as they are. For a `postgresql` datasource, [`npx create-db`](#npx-create-db) prints a connection string for a temporary Prisma Postgres database (deleted after 24 hours unless you claim it):
+
+```bash
+SCRATCH_DATABASE_URL="$(npx -y create-db@latest --quiet)" &&
+prisma migrate dev --name added_job_title --url "${SCRATCH_DATABASE_URL:?}"
+```
+
+The migration file is saved in your migrations directory, and the database in your Prisma config does not have it yet. Data loss warnings are evaluated against the database the command runs on, so review the generated SQL before you run `prisma migrate dev` or `prisma migrate deploy` against a database that holds data. `--quiet` prints only the connection string, and the claim URL goes to the terminal's error stream.
 
 ### `migrate reset` [#migrate-reset]
 
@@ -134449,9 +134490,18 @@ datasource db {
 }
 ```
 
+Then set the connection URL in the Prisma config file: `prisma.config.ts`, or `prisma7.config.ts` in projects created with Prisma ORM 7.10 or later. Edit the file your project already has instead of adding a second one: if a project has both, the CLI reads `prisma7.config.ts`. The examples load `.env` with the `dotenv` package, which you install with `npm install dotenv`.
+
+The one-URL example comes first, and hosted services that use a pooled and a direct URL follow in the order of [Supported variants](#supported-variants).
+
 **Self-hosted PostgreSQL:**
 
+```text title=".env"
+DATABASE_URL="postgres://user:pass@host:5432/db"
+```
+
 ```typescript title="prisma.config.ts"
+import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
 export default defineConfig({
@@ -134461,6 +134511,35 @@ export default defineConfig({
   },
 });
 ```
+
+**Prisma Postgres:**
+
+Each Prisma Postgres database has a pooled and a direct connection string that differ only in the host: `pooled.db.prisma.io` for application traffic and `db.prisma.io` for Prisma CLI commands. Generate both under **Connect to your database** in the Prisma Console.
+
+```text title=".env"
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
+DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
+```
+
+```typescript title="prisma.config.ts"
+import "dotenv/config";
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  datasource: {
+    url: env("DIRECT_URL"), // CLI uses the direct host
+  },
+});
+```
+
+If you have no database yet, you can create a temporary [Prisma Postgres](https://www.prisma.io/docs/postgres) database without an account. The temporary database is deleted after 24 hours unless you claim it with a free Prisma account, using the claim URL the command prints.
+
+```bash
+npx create-db@latest
+```
+
+The command prints the direct connection string and a claim URL, and it does not edit `.env`. In a project that has no `DATABASE_URL` yet, put the printed string in `DIRECT_URL`, which the config above reads, and set `DATABASE_URL` to the same string with `pooled.db.prisma.io` in place of `db.prisma.io`. If the Prisma config of that project reads only `DATABASE_URL`, put the printed string there.
 
 **Serverless (Neon/Supabase):**
 
@@ -134472,6 +134551,7 @@ DIRECT_URL="postgres://user:pass@host:5432/db"
 ```
 
 ```typescript title="prisma.config.ts"
+import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
 export default defineConfig({
@@ -134516,13 +134596,13 @@ npm install @prisma/adapter-pg
 
 ```ts
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/prisma";
+import { PrismaClient } from "./generated/prisma/client";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 ```
 
-`DATABASE_URL` has to be set in the process environment when this code runs. Node.js does not read `.env` files on its own, so install `dotenv` and add `import "dotenv/config";` at the top of your entry file, or start Node with its [`--env-file`](https://nodejs.org/api/cli.html#--env-filefile) flag. If the variable is missing, `pg` gets no connection string and falls back to its defaults, and the usual symptom is `SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string`.
+`DATABASE_URL` has to be set in the process environment when this code runs. Node.js does not read `.env` files on its own, so install `dotenv` and add `import "dotenv/config";` at the top of your entry file, or start Node with its [`--env-file`](https://nodejs.org/api/cli.html#--env-filefile) flag. If the variable is missing, `pg` gets no connection string and falls back to its defaults, and the usual symptom is `SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string`. If the project has no `DATABASE_URL` at all, in `.env` or in the shell, [Setup](#setup) shows what the value looks like for self-hosted and hosted PostgreSQL.
 
 **Neon serverless:**
 
@@ -134554,7 +134634,7 @@ npm install @prisma/adapter-neon
 
 ```ts
 import { PrismaNeon } from "@prisma/adapter-neon";
-import { PrismaClient } from "./generated/prisma";
+import { PrismaClient } from "./generated/prisma/client";
 
 const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -134573,7 +134653,7 @@ Managed PostgreSQL 17 from Prisma, with connection pooling built in.
 * Connection URL: `postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require`
 * Application traffic uses the pooled host `pooled.db.prisma.io` (PgBouncer in transaction mode). Prisma Migrate, other CLI commands, and workloads that need session state or `LISTEN`/`NOTIFY` use the direct host `db.prisma.io`.
 * Daily backups on the Starter, Pro and Business plans, taken only on days the database has activity; none on Free. No point-in-time recovery yet; it is coming in November 2026.
-* `npx create-db` creates a temporary database in seconds, without signing up. It is deleted after 24 hours unless you claim it, which needs a Prisma account.
+* [`npx create-db`](https://www.prisma.io/docs/postgres/npx-create-db) creates a temporary database in seconds, without an account (deleted after 24 hours unless you claim it).
 
 **Resources:** [Prisma Postgres docs](https://www.prisma.io/docs/postgres) • [Connection setup](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) • [create-db](https://www.prisma.io/docs/postgres/npx-create-db) • [Connection pooling](https://www.prisma.io/docs/postgres/database/connection-pooling)
 
@@ -145260,949 +145340,6 @@ Prisma Client supports multiple ways of handling transactions, either directly t
 - [`Filtering and sorting`](https://www.prisma.io/docs/orm/v7/prisma-client/queries/filtering-and-sorting): Learn how to filter Prisma Client queries with where and sort results with orderBy.
 - [`Full-text search`](https://www.prisma.io/docs/orm/v7/prisma-client/queries/full-text-search): Learn how to search text fields with Prisma Client using your database's native full-text search support.
 
-# Custom model and field names (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
-
-Location: ORM > v7 > Prisma Client > Setup and Configuration > Custom model and field names
-
-The Prisma Client API is generated based on the models in your [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview). Models are *typically* 1:1 mappings of your database tables.
-
-In some cases, especially when using [introspection](https://www.prisma.io/docs/orm/v7/prisma-schema/introspection), it might be useful to *decouple* the naming of database tables and columns from the names that are used in your Prisma Client API. This can be done via the [`@map` and `@@map`](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#mapping-model-names-to-tables-or-collections) attributes in your Prisma schema.
-
-You can use `@map` and `@@map` to rename MongoDB fields and collections respectively. This page uses a relational database example.
-
-## Example: Relational database [#example-relational-database]
-
-Assume you have a PostgreSQL relational database schema looking similar to this:
-
-```sql
-CREATE TABLE users (
-	user_id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(256),
-	email VARCHAR(256) UNIQUE NOT NULL
-);
-CREATE TABLE posts (
-	post_id SERIAL PRIMARY KEY NOT NULL,
-	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-	title VARCHAR(256) NOT NULL,
-	content TEXT,
-	author_id INTEGER REFERENCES users(user_id)
-);
-CREATE TABLE profiles (
-	profile_id SERIAL PRIMARY KEY NOT NULL,
-	bio TEXT,
-	user_id INTEGER NOT NULL UNIQUE REFERENCES users(user_id)
-);
-CREATE TABLE categories (
-	category_id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(256)
-);
-CREATE TABLE post_in_categories (
-	post_id INTEGER NOT NULL REFERENCES posts(post_id),
-	category_id INTEGER NOT NULL REFERENCES categories(category_id)
-);
-CREATE UNIQUE INDEX post_id_category_id_unique ON post_in_categories(post_id int4_ops,category_id int4_ops);
-```
-
-When introspecting a database with that schema, you'll get a Prisma schema looking similar to this:
-
-```prisma
-model categories {
-  category_id        Int                  @id @default(autoincrement())
-  name               String?              @db.VarChar(256)
-  post_in_categories post_in_categories[]
-}
-
-model post_in_categories {
-  post_id     Int
-  category_id Int
-  categories  categories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
-  posts       posts      @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@unique([post_id, category_id], map: "post_id_category_id_unique")
-}
-
-model posts {
-  post_id            Int                  @id @default(autoincrement())
-  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
-  title              String               @db.VarChar(256)
-  content            String?
-  author_id          Int?
-  users              users?               @relation(fields: [author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  post_in_categories post_in_categories[]
-}
-
-model profiles {
-  profile_id Int     @id @default(autoincrement())
-  bio        String?
-  user_id    Int     @unique
-  users      users   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model users {
-  user_id  Int       @id @default(autoincrement())
-  name     String?   @db.VarChar(256)
-  email    String    @unique @db.VarChar(256)
-  posts    posts[]
-  profiles profiles?
-}
-```
-
-There are a few "issues" with this Prisma schema when the Prisma Client API is generated:
-
-**Adhering to Prisma ORM's naming conventions**
-
-Prisma ORM has a [naming convention](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#naming-conventions) of **camelCasing** and using the **singular form** for Prisma models. If these naming conventions are not met, the Prisma schema can become harder to interpret and the generated Prisma Client API will feel less natural. Consider the following, generated model:
-
-```prisma
-model users {
-  user_id  Int       @id @default(autoincrement())
-  name     String?   @db.VarChar(256)
-  email    String    @unique @db.VarChar(256)
-  posts    posts[]
-  profiles profiles?
-}
-```
-
-Although `profiles` refers to a 1:1 relation, its type is currently called `profiles` in plural, suggesting that there might be many `profiles` in this relation. With Prisma ORM conventions, the models and fields were *ideally* named as follows:
-
-```prisma
-model User {
-  user_id Int      @id @default(autoincrement())
-  name    String?  @db.VarChar(256)
-  email   String   @unique @db.VarChar(256)
-  posts   Post[]
-  profile Profile?
-}
-```
-
-Because these fields are "Prisma ORM-level" [relation fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations#relation-fields) that do not manifest you can manually rename them in your Prisma schema.
-
-**Naming of annotated relation fields**
-
-Foreign keys are represented as a combination of a [annotated relation fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations#relation-fields) and its corresponding relation scalar field in the Prisma schema. Here's how all the relations from the SQL schema are currently represented:
-
-```prisma
-model categories {
-  category_id        Int                  @id @default(autoincrement())
-  name               String?              @db.VarChar(256)
-  post_in_categories post_in_categories[] // virtual relation field
-}
-
-model post_in_categories {
-  post_id     Int // relation scalar field
-  category_id Int // relation scalar field
-  categories  categories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction) // virtual relation field
-  posts       posts      @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@unique([post_id, category_id], map: "post_id_category_id_unique")
-}
-
-model posts {
-  post_id            Int                  @id @default(autoincrement())
-  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
-  title              String               @db.VarChar(256)
-  content            String?
-  author_id          Int?
-  users              users?               @relation(fields: [author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  post_in_categories post_in_categories[]
-}
-
-model profiles {
-  profile_id Int     @id @default(autoincrement())
-  bio        String?
-  user_id    Int     @unique
-  users      users   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model users {
-  user_id  Int       @id @default(autoincrement())
-  name     String?   @db.VarChar(256)
-  email    String    @unique @db.VarChar(256)
-  posts    posts[]
-  profiles profiles?
-}
-```
-
-## Using @map and @@map to rename fields and models in the Prisma Client API [#using-map-and-map-to-rename-fields-and-models-in-the-prisma-client-api]
-
-You can "rename" fields and models that are used in Prisma Client by mapping them to the "original" names in the database using the `@map` and `@@map` attributes. For the example above, you could e.g. annotate your models as follows.
-
-*After* you introspected your database with `prisma db pull`, you can manually adjust the resulting Prisma schema as follows:
-
-```prisma
-model Category {
-  id                 Int                @id @default(autoincrement()) @map("category_id")
-  name               String?            @db.VarChar(256)
-  post_in_categories PostInCategories[]
-
-  @@map("categories")
-}
-
-model PostInCategories {
-  post_id     Int
-  category_id Int
-  categories  Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  posts       Post     @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@unique([post_id, category_id], map: "post_id_category_id_unique")
-  @@map("post_in_categories")
-}
-
-model Post {
-  id                 Int                @id @default(autoincrement()) @map("post_id")
-  created_at         DateTime?          @default(now()) @db.Timestamptz(6)
-  title              String             @db.VarChar(256)
-  content            String?
-  author_id          Int?
-  users              User?              @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post_in_categories PostInCategories[]
-
-  @@map("posts")
-}
-
-model Profile {
-  id      Int     @id @default(autoincrement()) @map("profile_id")
-  bio     String?
-  user_id Int     @unique
-  users   User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-
-  @@map("profiles")
-}
-
-model User {
-  id       Int      @id @default(autoincrement()) @map("user_id")
-  name     String?  @db.VarChar(256)
-  email    String   @unique @db.VarChar(256)
-  posts    Post[]
-  profiles Profile?
-
-  @@map("users")
-}
-```
-
-With these changes, you're now adhering to Prisma ORM's naming conventions and the generated Prisma Client API feels more "natural":
-
-```ts
-// Nested writes
-const profile = await prisma.profile.create({
-  data: {
-    bio: "Hello World",
-    users: {
-      create: {
-        name: "Alice",
-        email: "alice@prisma.io",
-      },
-    },
-  },
-});
-
-// Fluent API
-const userByProfile = await prisma.profile
-  .findUnique({
-    where: { id: 1 },
-  })
-  .users();
-```
-
-> [!NOTE]
-> `prisma db pull` preserves the custom names you defined via `@map` and `@@map` in your Prisma schema on re-introspecting your database.
-
-## Renaming relation fields [#renaming-relation-fields]
-
-Prisma ORM-level [relation fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations#relation-fields) (sometimes referred to as "virtual relation fields") only exist in the Prisma schema, but do not actually manifest in the underlying database. You can therefore name these fields whatever you want.
-
-Consider the following example of an ambiguous relation in a SQL database:
-
-```sql
-CREATE TABLE "User" (
-    id SERIAL PRIMARY KEY
-);
-CREATE TABLE "Post" (
-    id SERIAL PRIMARY KEY,
-    "author" integer NOT NULL,
-    "favoritedBy" INTEGER,
-    FOREIGN KEY ("author") REFERENCES "User"(id),
-    FOREIGN KEY ("favoritedBy") REFERENCES "User"(id)
-);
-```
-
-Prisma ORM's introspection will output the following Prisma schema:
-
-```prisma
-model Post {
-  id                          Int   @id @default(autoincrement())
-  author                      Int
-  favoritedBy                 Int?
-  User_Post_authorToUser      User  @relation("Post_authorToUser", fields: [author], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User_Post_favoritedByToUser User? @relation("Post_favoritedByToUser", fields: [favoritedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model User {
-  id                          Int    @id @default(autoincrement())
-  Post_Post_authorToUser      Post[] @relation("Post_authorToUser")
-  Post_Post_favoritedByToUser Post[] @relation("Post_favoritedByToUser")
-}
-```
-
-Because the names of the virtual relation fields `Post_Post_authorToUser` and `Post_Post_favoritedByToUser` are based on the generated relation names, they don't look very friendly in the Prisma Client API. In that case, you can rename the relation fields. For example:
-
-```prisma highlight=11-12;edit
-model Post {
-  id                          Int   @id @default(autoincrement())
-  author                      Int
-  favoritedBy                 Int?
-  User_Post_authorToUser      User  @relation("Post_authorToUser", fields: [author], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User_Post_favoritedByToUser User? @relation("Post_favoritedByToUser", fields: [favoritedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model User {
-  id             Int    @id @default(autoincrement())
-  //edit-start
-  writtenPosts   Post[] @relation("Post_authorToUser")
-  favoritedPosts Post[] @relation("Post_favoritedByToUser")
-  //edit-end
-}
-```
-
-> [!NOTE]
-> `prisma db pull` preserves custom relation fields defined in your Prisma schema on re-introspecting your database.
-
-## Related pages
-
-- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
-- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
-- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
-- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
-- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
-
-# Database polyfills (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
-
-Location: ORM > v7 > Prisma Client > Setup and Configuration > Database polyfills
-
-Prisma Client provides features that are typically either not achievable with particular databases or require extensions. These features are referred to as *polyfills*. For all databases, this includes:
-
-* Initializing [ID](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#defining-an-id-field) values with `cuid` and `uuid` values
-* Using [`@updatedAt`](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#defining-attributes) to store the time when a record was last updated
-
-For relational databases, this includes:
-
-* [Implicit many-to-many relations](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations/many-to-many-relations#implicit-many-to-many-relations)
-
-For MongoDB, this includes:
-
-* [Relations in general](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations) - foreign key relations between documents are not enforced in MongoDB
-
-## Related pages
-
-- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
-- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
-- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
-- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
-- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
-
-# Configuring error formatting (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-This page explains how to configure the formatting of errors when using Prisma Client
-
-Location: ORM > v7 > Prisma Client > Setup and Configuration > Configuring error formatting
-
-By default, Prisma Client uses [ANSI escape characters](https://en.wikipedia.org/wiki/ANSI_escape_code) to pretty print the error stack and give recommendations on how to fix a problem. While this is very useful when using Prisma Client from the terminal, in contexts like a GraphQL API, you only want the minimal error without any additional formatting.
-
-This page explains how error formatting can be configured with Prisma Client.
-
-## Formatting levels [#formatting-levels]
-
-There are 3 error formatting levels:
-
-1. **Pretty Error** (default): Includes a full stack trace with colors, syntax highlighting of the code and extended error message with a possible solution for the problem.
-2. **Colorless Error**: Same as pretty errors, just without colors.
-3. **Minimal Error**: The raw error message.
-
-In order to configure these different error formatting levels, there are two options:
-
-* Setting the config options via environment variables
-* Providing the config options to the `PrismaClient` constructor
-
-## Formatting via environment variables [#formatting-via-environment-variables]
-
-* [`NO_COLOR`](https://www.prisma.io/docs/orm/v7/reference/environment-variables-reference#no_color): If this env var is provided, colors are stripped from the error messages. Therefore you end up with a **colorless error**. The `NO_COLOR` environment variable is a standard described in [the NO_COLOR specification](https://no-color.org/).
-* `NODE_ENV=production`: If the env var `NODE_ENV` is set to `production`, only the **minimal error** will be printed. This allows for easier digestion of logs in production environments.
-
-### Formatting via the `PrismaClient` constructor [#formatting-via-the-prismaclient-constructor]
-
-Alternatively, use the `PrismaClient` [`errorFormat`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#errorformat) parameter to set the error format:
-
-```ts
-const prisma = new PrismaClient({
-  errorFormat: "pretty",
-});
-```
-
-## Related pages
-
-- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
-- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
-- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
-- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
-- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
-
-# Generating Prisma Client (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
-
-Location: ORM > v7 > Prisma Client > Setup and Configuration > Generating Prisma Client
-
-`prisma generate` creates Prisma Client from the models and generator configuration in your `schema.prisma` file.
-
-## Define a generator [#define-a-generator]
-
-In Prisma ORM v7, the `output` field is required:
-
-```prisma title="schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output   = "./generated"
-}
-```
-
-## Generate the client [#generate-the-client]
-
-Run the following command whenever you add models, change fields, or update generator settings:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-If you want the CLI-specific options such as `--watch` or `--generator`, see the [`prisma generate` command reference](https://www.prisma.io/docs/cli/v7/generate).
-
-## Import the generated client [#import-the-generated-client]
-
-Import Prisma Client from the output path you configured:
-
-```ts
-import { PrismaClient } from "./generated/client";
-
-const prisma = new PrismaClient();
-```
-
-## When to run generate [#when-to-run-generate]
-
-You should run `prisma generate` after:
-
-* changing your Prisma schema
-* updating generator configuration
-* enabling features that affect the client API
-* pulling schema changes from another branch or teammate
-
-In many projects it also makes sense to run `prisma generate` in `postinstall` or before your production build so deployments always use a current client.
-
-## Related pages [#related-pages]
-
-* [Introduction to Prisma Client](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction)
-* [Generators in the Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview/generators)
-* [Prisma CLI reference for generate](https://www.prisma.io/docs/cli/v7/generate)
-
-## Related pages
-
-- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
-- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
-- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
-- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
-- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
-
-# Introduction to Prisma Client (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/introduction)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to set up and configure Prisma Client in your project
-
-Location: ORM > v7 > Prisma Client > Setup and Configuration > Introduction to Prisma Client
-
-Prisma Client is an auto-generated and type-safe query builder that's *tailored&#x2A; to your data. To get started with Prisma Client, follow the &#x2A;*[Quickstart](https://www.prisma.io/docs/v7/prisma-orm/quickstart/sqlite)**.
-
-[Quickstart (5 min)](https://www.prisma.io/docs/v7/prisma-orm/quickstart/sqlite)
-
-## Prerequisites [#prerequisites]
-
-In order to set up Prisma Client, you need a Prisma Config and a [Prisma schema file](https://www.prisma.io/docs/orm/v7/prisma-schema/overview):
-
-  
-
-#### Prisma Config
-
-```ts title="prisma.config.ts" 
-import 'dotenv/config';
-import { defineConfig, env } from 'prisma/config';
-
-export default defineConfig({
-  schema: 'prisma/schema.prisma',
-  datasource: {
-    url: env('DATABASE_URL'),
-  },
-});
-```
-
-#### Prisma Schema
-
-```prisma title="schema.prisma" 
-datasource db {
-  provider = "postgresql"
-}
-
-generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-}
-```
-
-## Installation [#installation]
-
-[Install the Prisma CLI](https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference), the Prisma Client library, and the [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) for your database:
-
-  
-
-#### PostgreSQL
-
-  
-
-  <CodeBlockTab value="bun">
-    ```bash
-    bun add prisma@prev --dev
-    bun add @prisma/client@7 @prisma/adapter-pg pg
-    ```
-
-#### pnpm
-
-```bash
-pnpm add prisma@prev --save-dev
-pnpm add @prisma/client@7 @prisma/adapter-pg pg
-```
-
-#### yarn
-
-```bash
-yarn add prisma@prev --dev
-yarn add @prisma/client@7 @prisma/adapter-pg pg
-```
-
-#### npm
-
-```bash
-npm install prisma@prev --save-dev
-npm install @prisma/client@7 @prisma/adapter-pg pg
-```
-    
-  </CodeBlockTab>
-
-#### MySQL / MariaDB
-
-  
-
-  <CodeBlockTab value="bun">
-    ```bash
-    bun add prisma@prev --dev
-    bun add @prisma/client@7 @prisma/adapter-mariadb mariadb
-    ```
-
-#### pnpm
-
-```bash
-pnpm add prisma@prev --save-dev
-pnpm add @prisma/client@7 @prisma/adapter-mariadb mariadb
-```
-
-#### yarn
-
-```bash
-yarn add prisma@prev --dev
-yarn add @prisma/client@7 @prisma/adapter-mariadb mariadb
-```
-
-#### npm
-
-```bash
-npm install prisma@prev --save-dev
-npm install @prisma/client@7 @prisma/adapter-mariadb mariadb
-```
-    
-  </CodeBlockTab>
-
-#### SQLite
-
-  
-
-  <CodeBlockTab value="bun">
-    ```bash
-    bun add prisma@prev --dev
-    bun add @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
-    ```
-
-#### pnpm
-
-```bash
-pnpm add prisma@prev --save-dev
-pnpm add @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
-```
-
-#### yarn
-
-```bash
-yarn add prisma@prev --dev
-yarn add @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
-```
-
-#### npm
-
-```bash
-npm install prisma@prev --save-dev
-npm install @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
-```
-    
-  </CodeBlockTab>
-
-> [!NOTE]
-> Prisma 7 requires a [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) to connect to your database. Make sure your `package.json` includes `"type": "module"` for ESM support. See the [upgrade guide](https://www.prisma.io/docs/guides/upgrade-prisma-orm/v7) for details.
-
-## Generate the Client API [#generate-the-client-api]
-
-Prisma Client is based on the models in Prisma Schema. To provide the correct types, you need generate the client code:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-This will create a `generated` directory based on where you set the `output` to in the Prisma Schema. Any time your import Prisma Client, it will need to come from this generated client API.
-
-## Importing Prisma Client [#importing-prisma-client]
-
-With the client generated, import it along with your [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) and create a new instance:
-
-  
-
-#### PostgreSQL
-
-```ts
-import { PrismaClient } from "./path/to/generated/prisma";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-export const prisma = new PrismaClient({ adapter });
-```
-
-#### MySQL / MariaDB
-
-```ts
-import { PrismaClient } from "./path/to/generated/prisma";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-
-const adapter = new PrismaMariaDb({
-  host: "localhost",
-  user: "root",
-  database: "mydb",
-});
-
-export const prisma = new PrismaClient({ adapter });
-```
-
-#### SQLite
-
-```ts
-import { PrismaClient } from "./path/to/generated/prisma";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-
-const adapter = new PrismaBetterSqlite3({
-  url: "file:./dev.db",
-});
-
-export const prisma = new PrismaClient({ adapter });
-```
-
-#### PostgreSQL (Edge)
-
-```ts
-import { PrismaClient } from "./path/to/generated/prisma/edge";
-import { PrismaPostgresAdapter } from "@prisma/adapter-ppg";
-
-const adapter = new PrismaPostgresAdapter({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-export const prisma = new PrismaClient({ adapter });
-```
-
-> [!WARNING]
-> `PrismaClient` requires a driver adapter in Prisma 7. Calling `new PrismaClient()` without an `adapter` will result in an error.
-
-Find out what [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) is needed for your database.
-
-Your application should generally only create **one instance** of `PrismaClient`. How to achieve this depends on whether you are using Prisma ORM in a [long-running application](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#prismaclient-in-long-running-applications) or in a [serverless environment](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#prismaclient-in-serverless-environments).
-
-Creating multiple instances of `PrismaClient` will create multiple connection pools and can hit the connection limit for your database. Too many connections may start to **slow down your database** and eventually lead to errors such as:
-
-```bash
-Error in connector: Error querying the database: db error: FATAL: sorry, too many clients already
-   at PrismaClientFetcher.request
-```
-
-## Use Prisma Client to send queries to your database [#use-prisma-client-to-send-queries-to-your-database]
-
-Once you have instantiated `PrismaClient`, you can start sending queries in your code:
-
-```ts
-// run inside `async` function
-const newUser = await prisma.user.create({
-  data: {
-    name: "Alice",
-    email: "alice@prisma.io",
-  },
-});
-
-const users = await prisma.user.findMany();
-```
-
-## Evolving your application [#evolving-your-application]
-
-Whenever you make changes to your database that are reflected in the Prisma schema, you need to manually re-generate Prisma Client to update the generated code in your output directory:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-## Related pages
-
-- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
-- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
-- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
-- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
-- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
-
-# Read replicas (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/read-replicas)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to set up and use read replicas with Prisma Client
-
-Location: ORM > v7 > Prisma Client > Setup and Configuration > Read replicas
-
-Read replicas enable you to distribute workloads across database replicas for high-traffic workloads. The [read replicas extension](https://github.com/prisma/extension-read-replicas), `@prisma/extension-read-replicas`, adds support for read-only database replicas to Prisma Client.
-
-If you run into a bug or have feedback, create a GitHub issue in [the `prisma/extension-read-replicas` repository](https://github.com/prisma/extension-read-replicas/issues/new).
-
-## Setup the read replicas extension [#setup-the-read-replicas-extension]
-
-Install the extension:
-
-  
-
-#### bun
-
-```bash
-bun add @prisma/extension-read-replicas@latest
-```
-
-#### pnpm
-
-```bash
-pnpm add @prisma/extension-read-replicas@latest
-```
-
-#### yarn
-
-```bash
-yarn add @prisma/extension-read-replicas@latest
-```
-
-#### npm
-
-```bash
-npm install @prisma/extension-read-replicas@latest
-```
-
-Initialize the extension by extending your Prisma Client instance and provide the extension with full `PrismaClient` instances for your read replicas. The default approach is to use driver adapters:
-
-```ts
-import { readReplicas } from "@prisma/extension-read-replicas";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/prisma/client";
-
-// Create main client with adapter
-const mainAdapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-const mainClient = new PrismaClient({ adapter: mainAdapter });
-
-// Create replica client with adapter
-const replicaAdapter = new PrismaPg({
-  connectionString: process.env.REPLICA_URL!,
-});
-
-const replicaClient = new PrismaClient({ adapter: replicaAdapter });
-
-// Extend main client with read replicas
-const prisma = mainClient.$extends(readReplicas({ replicas: [replicaClient] }));
-
-// Query is run against the database replica
-await prisma.post.findMany();
-
-// Query is run against the primary database
-await prisma.post.create({
-  data: {
-    /** */
-  },
-});
-```
-
-All read operations (e.g. `findMany`) are executed against the database replica. All write operations (e.g. `create`, `update`) and `$transaction` queries are executed against your primary database.
-
-## Configure multiple database replicas [#configure-multiple-database-replicas]
-
-The `replicas` property accepts an array of `PrismaClient` instances for all your database replicas:
-
-```ts
-import { readReplicas } from "@prisma/extension-read-replicas";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/prisma/client";
-
-// Create main client
-const mainAdapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-const mainClient = new PrismaClient({ adapter: mainAdapter });
-
-// Create multiple replica clients
-const replicaAdapter1 = new PrismaPg({
-  connectionString: process.env.DATABASE_URL_REPLICA_1!,
-});
-const replicaClient1 = new PrismaClient({ adapter: replicaAdapter1 });
-
-const replicaAdapter2 = new PrismaPg({
-  connectionString: process.env.DATABASE_URL_REPLICA_2!,
-});
-const replicaClient2 = new PrismaClient({ adapter: replicaAdapter2 });
-
-// Configure multiple replicas
-const prisma = mainClient.$extends(
-  readReplicas({
-    replicas: [replicaClient1, replicaClient2],
-  }),
-);
-```
-
-If you have more than one read replica configured, a database replica will be randomly selected to execute your query.
-
-## Executing read operations against your primary database [#executing-read-operations-against-your-primary-database]
-
-You can use the `$primary()` method to explicitly execute a read operation against your primary database:
-
-```ts
-const posts = await prisma.$primary().post.findMany();
-```
-
-## Executing operations against a database replica [#executing-operations-against-a-database-replica]
-
-You can use the `$replica()` method to explicitly execute your query against a replica instead of your primary database:
-
-```ts
-const result = await prisma.$replica().user.findFirst(...)
-```
-
-## Related pages
-
-- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
-- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
-- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
-- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
-- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
-
 # Composite types (Prisma ORM v7) (/docs/orm/v7/prisma-client/special-fields-and-types/composite-types)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -148979,6 +148116,949 @@ To work around this issue, you can set the default value of array fields to `[]`
 - [`Null and undefined`](https://www.prisma.io/docs/orm/v7/prisma-client/special-fields-and-types/null-and-undefined): How Prisma Client handles null and undefined
 - [`Working with compound IDs and unique constraints`](https://www.prisma.io/docs/orm/v7/prisma-client/special-fields-and-types/working-with-composite-ids-and-constraints): How to read, write, and filter by compound IDs and unique constraints
 - [`Working with Json fields`](https://www.prisma.io/docs/orm/v7/prisma-client/special-fields-and-types/working-with-json-fields): How to read, write, and filter by Json fields
+
+# Custom model and field names (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
+
+Location: ORM > v7 > Prisma Client > Setup and Configuration > Custom model and field names
+
+The Prisma Client API is generated based on the models in your [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview). Models are *typically* 1:1 mappings of your database tables.
+
+In some cases, especially when using [introspection](https://www.prisma.io/docs/orm/v7/prisma-schema/introspection), it might be useful to *decouple* the naming of database tables and columns from the names that are used in your Prisma Client API. This can be done via the [`@map` and `@@map`](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#mapping-model-names-to-tables-or-collections) attributes in your Prisma schema.
+
+You can use `@map` and `@@map` to rename MongoDB fields and collections respectively. This page uses a relational database example.
+
+## Example: Relational database [#example-relational-database]
+
+Assume you have a PostgreSQL relational database schema looking similar to this:
+
+```sql
+CREATE TABLE users (
+	user_id SERIAL PRIMARY KEY NOT NULL,
+	name VARCHAR(256),
+	email VARCHAR(256) UNIQUE NOT NULL
+);
+CREATE TABLE posts (
+	post_id SERIAL PRIMARY KEY NOT NULL,
+	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	title VARCHAR(256) NOT NULL,
+	content TEXT,
+	author_id INTEGER REFERENCES users(user_id)
+);
+CREATE TABLE profiles (
+	profile_id SERIAL PRIMARY KEY NOT NULL,
+	bio TEXT,
+	user_id INTEGER NOT NULL UNIQUE REFERENCES users(user_id)
+);
+CREATE TABLE categories (
+	category_id SERIAL PRIMARY KEY NOT NULL,
+	name VARCHAR(256)
+);
+CREATE TABLE post_in_categories (
+	post_id INTEGER NOT NULL REFERENCES posts(post_id),
+	category_id INTEGER NOT NULL REFERENCES categories(category_id)
+);
+CREATE UNIQUE INDEX post_id_category_id_unique ON post_in_categories(post_id int4_ops,category_id int4_ops);
+```
+
+When introspecting a database with that schema, you'll get a Prisma schema looking similar to this:
+
+```prisma
+model categories {
+  category_id        Int                  @id @default(autoincrement())
+  name               String?              @db.VarChar(256)
+  post_in_categories post_in_categories[]
+}
+
+model post_in_categories {
+  post_id     Int
+  category_id Int
+  categories  categories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  posts       posts      @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([post_id, category_id], map: "post_id_category_id_unique")
+}
+
+model posts {
+  post_id            Int                  @id @default(autoincrement())
+  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  title              String               @db.VarChar(256)
+  content            String?
+  author_id          Int?
+  users              users?               @relation(fields: [author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  post_in_categories post_in_categories[]
+}
+
+model profiles {
+  profile_id Int     @id @default(autoincrement())
+  bio        String?
+  user_id    Int     @unique
+  users      users   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  user_id  Int       @id @default(autoincrement())
+  name     String?   @db.VarChar(256)
+  email    String    @unique @db.VarChar(256)
+  posts    posts[]
+  profiles profiles?
+}
+```
+
+There are a few "issues" with this Prisma schema when the Prisma Client API is generated:
+
+**Adhering to Prisma ORM's naming conventions**
+
+Prisma ORM has a [naming convention](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#naming-conventions) of **camelCasing** and using the **singular form** for Prisma models. If these naming conventions are not met, the Prisma schema can become harder to interpret and the generated Prisma Client API will feel less natural. Consider the following, generated model:
+
+```prisma
+model users {
+  user_id  Int       @id @default(autoincrement())
+  name     String?   @db.VarChar(256)
+  email    String    @unique @db.VarChar(256)
+  posts    posts[]
+  profiles profiles?
+}
+```
+
+Although `profiles` refers to a 1:1 relation, its type is currently called `profiles` in plural, suggesting that there might be many `profiles` in this relation. With Prisma ORM conventions, the models and fields were *ideally* named as follows:
+
+```prisma
+model User {
+  user_id Int      @id @default(autoincrement())
+  name    String?  @db.VarChar(256)
+  email   String   @unique @db.VarChar(256)
+  posts   Post[]
+  profile Profile?
+}
+```
+
+Because these fields are "Prisma ORM-level" [relation fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations#relation-fields) that do not manifest you can manually rename them in your Prisma schema.
+
+**Naming of annotated relation fields**
+
+Foreign keys are represented as a combination of a [annotated relation fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations#relation-fields) and its corresponding relation scalar field in the Prisma schema. Here's how all the relations from the SQL schema are currently represented:
+
+```prisma
+model categories {
+  category_id        Int                  @id @default(autoincrement())
+  name               String?              @db.VarChar(256)
+  post_in_categories post_in_categories[] // virtual relation field
+}
+
+model post_in_categories {
+  post_id     Int // relation scalar field
+  category_id Int // relation scalar field
+  categories  categories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction) // virtual relation field
+  posts       posts      @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([post_id, category_id], map: "post_id_category_id_unique")
+}
+
+model posts {
+  post_id            Int                  @id @default(autoincrement())
+  created_at         DateTime?            @default(now()) @db.Timestamptz(6)
+  title              String               @db.VarChar(256)
+  content            String?
+  author_id          Int?
+  users              users?               @relation(fields: [author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  post_in_categories post_in_categories[]
+}
+
+model profiles {
+  profile_id Int     @id @default(autoincrement())
+  bio        String?
+  user_id    Int     @unique
+  users      users   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  user_id  Int       @id @default(autoincrement())
+  name     String?   @db.VarChar(256)
+  email    String    @unique @db.VarChar(256)
+  posts    posts[]
+  profiles profiles?
+}
+```
+
+## Using @map and @@map to rename fields and models in the Prisma Client API [#using-map-and-map-to-rename-fields-and-models-in-the-prisma-client-api]
+
+You can "rename" fields and models that are used in Prisma Client by mapping them to the "original" names in the database using the `@map` and `@@map` attributes. For the example above, you could e.g. annotate your models as follows.
+
+*After* you introspected your database with `prisma db pull`, you can manually adjust the resulting Prisma schema as follows:
+
+```prisma
+model Category {
+  id                 Int                @id @default(autoincrement()) @map("category_id")
+  name               String?            @db.VarChar(256)
+  post_in_categories PostInCategories[]
+
+  @@map("categories")
+}
+
+model PostInCategories {
+  post_id     Int
+  category_id Int
+  categories  Category @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  posts       Post     @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([post_id, category_id], map: "post_id_category_id_unique")
+  @@map("post_in_categories")
+}
+
+model Post {
+  id                 Int                @id @default(autoincrement()) @map("post_id")
+  created_at         DateTime?          @default(now()) @db.Timestamptz(6)
+  title              String             @db.VarChar(256)
+  content            String?
+  author_id          Int?
+  users              User?              @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  post_in_categories PostInCategories[]
+
+  @@map("posts")
+}
+
+model Profile {
+  id      Int     @id @default(autoincrement()) @map("profile_id")
+  bio     String?
+  user_id Int     @unique
+  users   User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("profiles")
+}
+
+model User {
+  id       Int      @id @default(autoincrement()) @map("user_id")
+  name     String?  @db.VarChar(256)
+  email    String   @unique @db.VarChar(256)
+  posts    Post[]
+  profiles Profile?
+
+  @@map("users")
+}
+```
+
+With these changes, you're now adhering to Prisma ORM's naming conventions and the generated Prisma Client API feels more "natural":
+
+```ts
+// Nested writes
+const profile = await prisma.profile.create({
+  data: {
+    bio: "Hello World",
+    users: {
+      create: {
+        name: "Alice",
+        email: "alice@prisma.io",
+      },
+    },
+  },
+});
+
+// Fluent API
+const userByProfile = await prisma.profile
+  .findUnique({
+    where: { id: 1 },
+  })
+  .users();
+```
+
+> [!NOTE]
+> `prisma db pull` preserves the custom names you defined via `@map` and `@@map` in your Prisma schema on re-introspecting your database.
+
+## Renaming relation fields [#renaming-relation-fields]
+
+Prisma ORM-level [relation fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations#relation-fields) (sometimes referred to as "virtual relation fields") only exist in the Prisma schema, but do not actually manifest in the underlying database. You can therefore name these fields whatever you want.
+
+Consider the following example of an ambiguous relation in a SQL database:
+
+```sql
+CREATE TABLE "User" (
+    id SERIAL PRIMARY KEY
+);
+CREATE TABLE "Post" (
+    id SERIAL PRIMARY KEY,
+    "author" integer NOT NULL,
+    "favoritedBy" INTEGER,
+    FOREIGN KEY ("author") REFERENCES "User"(id),
+    FOREIGN KEY ("favoritedBy") REFERENCES "User"(id)
+);
+```
+
+Prisma ORM's introspection will output the following Prisma schema:
+
+```prisma
+model Post {
+  id                          Int   @id @default(autoincrement())
+  author                      Int
+  favoritedBy                 Int?
+  User_Post_authorToUser      User  @relation("Post_authorToUser", fields: [author], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User_Post_favoritedByToUser User? @relation("Post_favoritedByToUser", fields: [favoritedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id                          Int    @id @default(autoincrement())
+  Post_Post_authorToUser      Post[] @relation("Post_authorToUser")
+  Post_Post_favoritedByToUser Post[] @relation("Post_favoritedByToUser")
+}
+```
+
+Because the names of the virtual relation fields `Post_Post_authorToUser` and `Post_Post_favoritedByToUser` are based on the generated relation names, they don't look very friendly in the Prisma Client API. In that case, you can rename the relation fields. For example:
+
+```prisma highlight=11-12;edit
+model Post {
+  id                          Int   @id @default(autoincrement())
+  author                      Int
+  favoritedBy                 Int?
+  User_Post_authorToUser      User  @relation("Post_authorToUser", fields: [author], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User_Post_favoritedByToUser User? @relation("Post_favoritedByToUser", fields: [favoritedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model User {
+  id             Int    @id @default(autoincrement())
+  //edit-start
+  writtenPosts   Post[] @relation("Post_authorToUser")
+  favoritedPosts Post[] @relation("Post_favoritedByToUser")
+  //edit-end
+}
+```
+
+> [!NOTE]
+> `prisma db pull` preserves custom relation fields defined in your Prisma schema on re-introspecting your database.
+
+## Related pages
+
+- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
+- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
+- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
+- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
+- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
+
+# Database polyfills (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
+
+Location: ORM > v7 > Prisma Client > Setup and Configuration > Database polyfills
+
+Prisma Client provides features that are typically either not achievable with particular databases or require extensions. These features are referred to as *polyfills*. For all databases, this includes:
+
+* Initializing [ID](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#defining-an-id-field) values with `cuid` and `uuid` values
+* Using [`@updatedAt`](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#defining-attributes) to store the time when a record was last updated
+
+For relational databases, this includes:
+
+* [Implicit many-to-many relations](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations/many-to-many-relations#implicit-many-to-many-relations)
+
+For MongoDB, this includes:
+
+* [Relations in general](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations) - foreign key relations between documents are not enforced in MongoDB
+
+## Related pages
+
+- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
+- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
+- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
+- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
+- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
+
+# Configuring error formatting (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+This page explains how to configure the formatting of errors when using Prisma Client
+
+Location: ORM > v7 > Prisma Client > Setup and Configuration > Configuring error formatting
+
+By default, Prisma Client uses [ANSI escape characters](https://en.wikipedia.org/wiki/ANSI_escape_code) to pretty print the error stack and give recommendations on how to fix a problem. While this is very useful when using Prisma Client from the terminal, in contexts like a GraphQL API, you only want the minimal error without any additional formatting.
+
+This page explains how error formatting can be configured with Prisma Client.
+
+## Formatting levels [#formatting-levels]
+
+There are 3 error formatting levels:
+
+1. **Pretty Error** (default): Includes a full stack trace with colors, syntax highlighting of the code and extended error message with a possible solution for the problem.
+2. **Colorless Error**: Same as pretty errors, just without colors.
+3. **Minimal Error**: The raw error message.
+
+In order to configure these different error formatting levels, there are two options:
+
+* Setting the config options via environment variables
+* Providing the config options to the `PrismaClient` constructor
+
+## Formatting via environment variables [#formatting-via-environment-variables]
+
+* [`NO_COLOR`](https://www.prisma.io/docs/orm/v7/reference/environment-variables-reference#no_color): If this env var is provided, colors are stripped from the error messages. Therefore you end up with a **colorless error**. The `NO_COLOR` environment variable is a standard described in [the NO_COLOR specification](https://no-color.org/).
+* `NODE_ENV=production`: If the env var `NODE_ENV` is set to `production`, only the **minimal error** will be printed. This allows for easier digestion of logs in production environments.
+
+### Formatting via the `PrismaClient` constructor [#formatting-via-the-prismaclient-constructor]
+
+Alternatively, use the `PrismaClient` [`errorFormat`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#errorformat) parameter to set the error format:
+
+```ts
+const prisma = new PrismaClient({
+  errorFormat: "pretty",
+});
+```
+
+## Related pages
+
+- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
+- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
+- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
+- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
+- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
+
+# Generating Prisma Client (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
+
+Location: ORM > v7 > Prisma Client > Setup and Configuration > Generating Prisma Client
+
+`prisma generate` creates Prisma Client from the models and generator configuration in your `schema.prisma` file.
+
+## Define a generator [#define-a-generator]
+
+In Prisma ORM v7, the `output` field is required:
+
+```prisma title="schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+```
+
+## Generate the client [#generate-the-client]
+
+Run the following command whenever you add models, change fields, or update generator settings:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+If you want the CLI-specific options such as `--watch` or `--generator`, see the [`prisma generate` command reference](https://www.prisma.io/docs/cli/v7/generate).
+
+## Import the generated client [#import-the-generated-client]
+
+Import Prisma Client from the output path you configured:
+
+```ts
+import { PrismaClient } from "./generated/client";
+
+const prisma = new PrismaClient();
+```
+
+## When to run generate [#when-to-run-generate]
+
+You should run `prisma generate` after:
+
+* changing your Prisma schema
+* updating generator configuration
+* enabling features that affect the client API
+* pulling schema changes from another branch or teammate
+
+In many projects it also makes sense to run `prisma generate` in `postinstall` or before your production build so deployments always use a current client.
+
+## Related pages [#related-pages]
+
+* [Introduction to Prisma Client](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction)
+* [Generators in the Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview/generators)
+* [Prisma CLI reference for generate](https://www.prisma.io/docs/cli/v7/generate)
+
+## Related pages
+
+- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
+- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
+- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
+- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
+- [`Introduction to Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/introduction): Learn how to set up and configure Prisma Client in your project
+
+# Introduction to Prisma Client (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/introduction)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to set up and configure Prisma Client in your project
+
+Location: ORM > v7 > Prisma Client > Setup and Configuration > Introduction to Prisma Client
+
+Prisma Client is an auto-generated and type-safe query builder that's *tailored&#x2A; to your data. To get started with Prisma Client, follow the &#x2A;*[Quickstart](https://www.prisma.io/docs/v7/prisma-orm/quickstart/sqlite)**.
+
+[Quickstart (5 min)](https://www.prisma.io/docs/v7/prisma-orm/quickstart/sqlite)
+
+## Prerequisites [#prerequisites]
+
+In order to set up Prisma Client, you need a Prisma Config and a [Prisma schema file](https://www.prisma.io/docs/orm/v7/prisma-schema/overview):
+
+  
+
+#### Prisma Config
+
+```ts title="prisma.config.ts" 
+import 'dotenv/config';
+import { defineConfig, env } from 'prisma/config';
+
+export default defineConfig({
+  schema: 'prisma/schema.prisma',
+  datasource: {
+    url: env('DATABASE_URL'),
+  },
+});
+```
+
+#### Prisma Schema
+
+```prisma title="schema.prisma" 
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+}
+```
+
+## Installation [#installation]
+
+[Install the Prisma CLI](https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference), the Prisma Client library, and the [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) for your database:
+
+  
+
+#### PostgreSQL
+
+  
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun add prisma@prev --dev
+    bun add @prisma/client@7 @prisma/adapter-pg pg
+    ```
+
+#### pnpm
+
+```bash
+pnpm add prisma@prev --save-dev
+pnpm add @prisma/client@7 @prisma/adapter-pg pg
+```
+
+#### yarn
+
+```bash
+yarn add prisma@prev --dev
+yarn add @prisma/client@7 @prisma/adapter-pg pg
+```
+
+#### npm
+
+```bash
+npm install prisma@prev --save-dev
+npm install @prisma/client@7 @prisma/adapter-pg pg
+```
+    
+  </CodeBlockTab>
+
+#### MySQL / MariaDB
+
+  
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun add prisma@prev --dev
+    bun add @prisma/client@7 @prisma/adapter-mariadb mariadb
+    ```
+
+#### pnpm
+
+```bash
+pnpm add prisma@prev --save-dev
+pnpm add @prisma/client@7 @prisma/adapter-mariadb mariadb
+```
+
+#### yarn
+
+```bash
+yarn add prisma@prev --dev
+yarn add @prisma/client@7 @prisma/adapter-mariadb mariadb
+```
+
+#### npm
+
+```bash
+npm install prisma@prev --save-dev
+npm install @prisma/client@7 @prisma/adapter-mariadb mariadb
+```
+    
+  </CodeBlockTab>
+
+#### SQLite
+
+  
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun add prisma@prev --dev
+    bun add @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
+    ```
+
+#### pnpm
+
+```bash
+pnpm add prisma@prev --save-dev
+pnpm add @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
+```
+
+#### yarn
+
+```bash
+yarn add prisma@prev --dev
+yarn add @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
+```
+
+#### npm
+
+```bash
+npm install prisma@prev --save-dev
+npm install @prisma/client@7 @prisma/adapter-better-sqlite3 better-sqlite3
+```
+    
+  </CodeBlockTab>
+
+> [!NOTE]
+> Prisma 7 requires a [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) to connect to your database. Make sure your `package.json` includes `"type": "module"` for ESM support. See the [upgrade guide](https://www.prisma.io/docs/guides/upgrade-prisma-orm/v7) for details.
+
+## Generate the Client API [#generate-the-client-api]
+
+Prisma Client is based on the models in Prisma Schema. To provide the correct types, you need generate the client code:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+This will create a `generated` directory based on where you set the `output` to in the Prisma Schema. Any time your import Prisma Client, it will need to come from this generated client API.
+
+## Importing Prisma Client [#importing-prisma-client]
+
+With the client generated, import it along with your [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) and create a new instance:
+
+  
+
+#### PostgreSQL
+
+```ts
+import { PrismaClient } from "./path/to/generated/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+export const prisma = new PrismaClient({ adapter });
+```
+
+#### MySQL / MariaDB
+
+```ts
+import { PrismaClient } from "./path/to/generated/prisma";
+import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+
+const adapter = new PrismaMariaDb({
+  host: "localhost",
+  user: "root",
+  database: "mydb",
+});
+
+export const prisma = new PrismaClient({ adapter });
+```
+
+#### SQLite
+
+```ts
+import { PrismaClient } from "./path/to/generated/prisma";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+
+const adapter = new PrismaBetterSqlite3({
+  url: "file:./dev.db",
+});
+
+export const prisma = new PrismaClient({ adapter });
+```
+
+#### PostgreSQL (Edge)
+
+```ts
+import { PrismaClient } from "./path/to/generated/prisma/edge";
+import { PrismaPostgresAdapter } from "@prisma/adapter-ppg";
+
+const adapter = new PrismaPostgresAdapter({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+export const prisma = new PrismaClient({ adapter });
+```
+
+> [!WARNING]
+> `PrismaClient` requires a driver adapter in Prisma 7. Calling `new PrismaClient()` without an `adapter` will result in an error.
+
+Find out what [driver adapter](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) is needed for your database.
+
+Your application should generally only create **one instance** of `PrismaClient`. How to achieve this depends on whether you are using Prisma ORM in a [long-running application](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#prismaclient-in-long-running-applications) or in a [serverless environment](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#prismaclient-in-serverless-environments).
+
+Creating multiple instances of `PrismaClient` will create multiple connection pools and can hit the connection limit for your database. Too many connections may start to **slow down your database** and eventually lead to errors such as:
+
+```bash
+Error in connector: Error querying the database: db error: FATAL: sorry, too many clients already
+   at PrismaClientFetcher.request
+```
+
+## Use Prisma Client to send queries to your database [#use-prisma-client-to-send-queries-to-your-database]
+
+Once you have instantiated `PrismaClient`, you can start sending queries in your code:
+
+```ts
+// run inside `async` function
+const newUser = await prisma.user.create({
+  data: {
+    name: "Alice",
+    email: "alice@prisma.io",
+  },
+});
+
+const users = await prisma.user.findMany();
+```
+
+## Evolving your application [#evolving-your-application]
+
+Whenever you make changes to your database that are reflected in the Prisma schema, you need to manually re-generate Prisma Client to update the generated code in your output directory:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+## Related pages
+
+- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
+- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
+- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
+- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
+- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
+
+# Read replicas (Prisma ORM v7) (/docs/orm/v7/prisma-client/setup-and-configuration/read-replicas)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to set up and use read replicas with Prisma Client
+
+Location: ORM > v7 > Prisma Client > Setup and Configuration > Read replicas
+
+Read replicas enable you to distribute workloads across database replicas for high-traffic workloads. The [read replicas extension](https://github.com/prisma/extension-read-replicas), `@prisma/extension-read-replicas`, adds support for read-only database replicas to Prisma Client.
+
+If you run into a bug or have feedback, create a GitHub issue in [the `prisma/extension-read-replicas` repository](https://github.com/prisma/extension-read-replicas/issues/new).
+
+## Setup the read replicas extension [#setup-the-read-replicas-extension]
+
+Install the extension:
+
+  
+
+#### bun
+
+```bash
+bun add @prisma/extension-read-replicas@latest
+```
+
+#### pnpm
+
+```bash
+pnpm add @prisma/extension-read-replicas@latest
+```
+
+#### yarn
+
+```bash
+yarn add @prisma/extension-read-replicas@latest
+```
+
+#### npm
+
+```bash
+npm install @prisma/extension-read-replicas@latest
+```
+
+Initialize the extension by extending your Prisma Client instance and provide the extension with full `PrismaClient` instances for your read replicas. The default approach is to use driver adapters:
+
+```ts
+import { readReplicas } from "@prisma/extension-read-replicas";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/prisma/client";
+
+// Create main client with adapter
+const mainAdapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+const mainClient = new PrismaClient({ adapter: mainAdapter });
+
+// Create replica client with adapter
+const replicaAdapter = new PrismaPg({
+  connectionString: process.env.REPLICA_URL!,
+});
+
+const replicaClient = new PrismaClient({ adapter: replicaAdapter });
+
+// Extend main client with read replicas
+const prisma = mainClient.$extends(readReplicas({ replicas: [replicaClient] }));
+
+// Query is run against the database replica
+await prisma.post.findMany();
+
+// Query is run against the primary database
+await prisma.post.create({
+  data: {
+    /** */
+  },
+});
+```
+
+All read operations (e.g. `findMany`) are executed against the database replica. All write operations (e.g. `create`, `update`) and `$transaction` queries are executed against your primary database.
+
+## Configure multiple database replicas [#configure-multiple-database-replicas]
+
+The `replicas` property accepts an array of `PrismaClient` instances for all your database replicas:
+
+```ts
+import { readReplicas } from "@prisma/extension-read-replicas";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/prisma/client";
+
+// Create main client
+const mainAdapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+const mainClient = new PrismaClient({ adapter: mainAdapter });
+
+// Create multiple replica clients
+const replicaAdapter1 = new PrismaPg({
+  connectionString: process.env.DATABASE_URL_REPLICA_1!,
+});
+const replicaClient1 = new PrismaClient({ adapter: replicaAdapter1 });
+
+const replicaAdapter2 = new PrismaPg({
+  connectionString: process.env.DATABASE_URL_REPLICA_2!,
+});
+const replicaClient2 = new PrismaClient({ adapter: replicaAdapter2 });
+
+// Configure multiple replicas
+const prisma = mainClient.$extends(
+  readReplicas({
+    replicas: [replicaClient1, replicaClient2],
+  }),
+);
+```
+
+If you have more than one read replica configured, a database replica will be randomly selected to execute your query.
+
+## Executing read operations against your primary database [#executing-read-operations-against-your-primary-database]
+
+You can use the `$primary()` method to explicitly execute a read operation against your primary database:
+
+```ts
+const posts = await prisma.$primary().post.findMany();
+```
+
+## Executing operations against a database replica [#executing-operations-against-a-database-replica]
+
+You can use the `$replica()` method to explicitly execute your query against a replica instead of your primary database:
+
+```ts
+const result = await prisma.$replica().user.findFirst(...)
+```
+
+## Related pages
+
+- [`Configuring error formatting`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/error-formatting): This page explains how to configure the formatting of errors when using Prisma Client
+- [`Custom model and field names`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/custom-model-and-field-names): Learn how you can decouple the naming of Prisma models from database tables to improve the ergonomics of the generated Prisma Client API
+- [`Database connections`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections): Learn how to manage database connections and configure connection pools
+- [`Database polyfills`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/database-polyfills): Prisma Client provides features that are not achievable with relational databases. These features are referred to as "polyfills" and explained on this page.
+- [`Generating Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/generating-prisma-client): Learn when and how to run prisma generate, configure the generator output, and import the generated client in your app.
 
 # Integration testing (Prisma ORM v7) (/docs/orm/v7/prisma-client/testing/integration-testing)
 
@@ -164786,6 +164866,8 @@ The pool size cannot exceed what the underlying database can support. Configure 
 
 Consider introducing [an external connection pooler like PgBouncer](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#pgbouncer) to prevent your application or functions from exhausting the database connection limit.
 
+Some database hosts run the pooler for you. [Prisma Postgres](https://www.prisma.io/docs/postgres/database/connection-pooling), for example, runs PgBouncer in transaction mode on every plan, with a pooled connection limit per plan. In transaction mode, do not rely on session state such as `SET` values between transactions. Use the pooled connection string (host `pooled.db.prisma.io`) for application traffic and the direct connection string (host `db.prisma.io`) for Prisma CLI commands, for work that depends on session state and for queries that can run longer than 10 minutes. For the configuration, see [Prisma Migrate and PgBouncer workaround](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections/pgbouncer#prisma-migrate-and-pgbouncer-workaround).
+
 ## Manual database connection handling [#manual-database-connection-handling]
 
 When using Prisma Client with a driver adapter, database connections are managed by the driver and its pool. They are not exposed to the developer and it is not possible to manually access individual connections.
@@ -164925,7 +165007,7 @@ A traffic spike causes AWS Lambda to spawn two additional lambdas to handle the 
 Many *concurrent functions* responding to a traffic spike 📈 can exhaust the database connection limit very quickly. Any functions that are **paused** also keep their connections open by default and block them from being used by another function.
 
 1. Configure a small pool size for your [driver adapter](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections/connection-pool) (adapter-specific; start small when not using a pooler)
-2. If you need more connections per function, consider using an [external connection pooler like PgBouncer](#external-connection-poolers)
+2. If you need more connections per function, consider using an [external connection pooler like PgBouncer](#external-connection-poolers) or a database that includes a pooler, such as [Prisma Postgres](https://www.prisma.io/docs/postgres/database/connection-pooling), within the pooled connection limit of its plan
 
 ### `PrismaClient` in serverless environments [#prismaclient-in-serverless-environments]
 
@@ -165052,7 +165134,7 @@ Usually, this works transparently, but some connection poolers only support a li
 * How does Prisma Migrate work with PgBouncer?
 
 > [!NOTE]
-> If you don't want to run your own pooler, [Prisma Accelerate](https://www.prisma.io/accelerate?utm_source=docs\&utm_campaign=pgbouncer-help) provides connection pooling for all databases supported by Prisma ORM with little setup. To get started, open the [Prisma Console](https://console.prisma.io?utm_source=docs\&utm_campaign=pgbouncer-help).
+> If you don't want to run your own pooler, some PostgreSQL hosts include one. [Prisma Postgres](https://www.prisma.io/docs/postgres/database/connection-pooling), for example, runs PgBouncer in transaction mode on every plan. Use the pooled connection string (host `pooled.db.prisma.io`) for application traffic and the direct connection string (host `db.prisma.io`) for Prisma CLI commands, for work that depends on session state and for queries that can run longer than 10 minutes. For Supabase, see [Supabase Supavisor](#supabase-supavisor). Prisma Accelerate also pools connections, but it [will be retired on December 1, 2026](https://www.prisma.io/docs/accelerate#retirement-options).
 
 ## PgBouncer [#pgbouncer]
 

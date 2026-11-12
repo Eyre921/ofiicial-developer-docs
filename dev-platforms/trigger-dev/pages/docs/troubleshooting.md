@@ -420,7 +420,7 @@ Or change the tsconfig jsx setting:
 
 This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER\_SECRET\_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
 
-```ts theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```ts theme={"theme":"css-variables"}
 export const dynamic = "force-dynamic";
 ```
 
@@ -430,12 +430,12 @@ An issue can sometimes arise when you try to pass a function directly to the `on
 
 This works:
 
-```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"}
 <Button onClick={() => myTask()}>Trigger my task</Button>
 ```
 
 Whereas this does not work:
 
-```tsx theme={"theme":"css-variables"} theme={"theme":"css-variables"}
+```tsx theme={"theme":"css-variables"}
 <Button onClick={myTask}>Trigger my task</Button>
 ```

@@ -1516,6 +1516,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > x402-gated web surface markdown parser for token-efficient LLM ingestion.
 
+> [card] [NoMacSandbox](https://github.com/NoMac-app/langchain-nomac#readme)
+>
+> Cloud macOS VMs with Xcode as a Deep Agents sandbox: shell commands and file upload and download on a NoMac Mac, billed per minute.
+
 > [card] [Nomic](https://atlas.nomic.ai/)
 >
 > Open-source embedding models and tools.
@@ -2408,9 +2412,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > LangChain agent middleware that keeps recent human-anchored conversation turns together with matching tool-call and tool-result messages.
 
-> [card] [TwittrAPI](https://github.com/twittrapi/langchain-twittrapi#readme)
+> [card] [TwittrAPIToolkit](https://github.com/twittrapi/langchain-twittrapi#readme)
 >
-> TwittrAPI provides REST APIs and LangChain tools for read-only access to public X (Twitter) tweets, profiles, timelines, lists, communities, and trends.
+> Tools for reading public Twitter/X data: tweet search, user profiles, timelines, followers, replies and trends.
 
 > [card] [TypeDB](https://typedb.com/docs)
 >

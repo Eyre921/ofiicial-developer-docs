@@ -230,9 +230,9 @@ The customer portal displays promotion codes that have been applied to a subscri
 
 Customize controls and limits on promotion codes by specifying eligible customers, first time orders, minimum order values, expiration dates, and redemption limits.
 
-### Restrictions
+### Limitations 
 
-There are some restrictions to promotion codes.
+There are some limitations to promotion codes.
 
 - You can’t apply a promotion code with amount restrictions on:
   - [Subscription Item objects](https://docs.stripe.com/api/subscription_items/object.md)
@@ -480,9 +480,9 @@ curl https://api.stripe.com/v1/subscriptions \
   -d "discounts[1][promotion_code]=sub-promo"
 ```
 
-### Restrictions 
+### Limitations 
 
-There are some restrictions to using multiple discounts.
+There are some limitations to using multiple discounts.
 
 - You can set up to 20 entries in the `discounts` parameter.
 - Each entry in `discounts` has to be unique.

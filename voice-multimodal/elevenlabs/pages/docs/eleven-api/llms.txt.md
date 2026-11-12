@@ -29,6 +29,7 @@ path: docs/eleven-api/llms.txt
 - [Understanding latency](https://elevenlabs.io/docs/eleven-api/concepts/latency.md): What latency means in audio generation, what contributes to it, and how to reason about tradeoffs.
 - [How ElevenLabs latency figures are measured](https://elevenlabs.io/docs/eleven-api/concepts/latency-methodology.md): What the published latency figures for Eleven v4 Turbo, Eleven v3 Conversational, Eleven Flash and Scribe v2 Realtime measure, and the conditions behind them.
 - [Voice cloning: how it works](https://elevenlabs.io/docs/eleven-api/concepts/voice-cloning.md): The technical differences between Instant and Professional Voice Cloning, and what they mean for quality.
+- [Content Provenance API (Beta)](https://elevenlabs.io/docs/eleven-api/concepts/content-provenance.md): Check whether an audio file carries an ElevenLabs watermark, and what that tells you about where it came from.
 - [Streaming text to speech](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/streaming.md): This guide shows you how to stream text to speech and optionally upload audio to AWS S3.
 - [Stitching multiple requests](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/request-stitching.md): This guide shows you how to maintain voice prosody across multiple text chunks/generations.
 - [Using pronunciation dictionaries](https://elevenlabs.io/docs/eleven-api/guides/how-to/text-to-speech/pronunciation-dictionaries.md): This guide shows you how to manage pronunciation dictionaries programmatically.

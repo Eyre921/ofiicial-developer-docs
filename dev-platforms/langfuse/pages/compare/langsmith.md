@@ -14,7 +14,7 @@ tags: [comparison, integration]
 
 # Langfuse vs. LangSmith
 
-This guide outlines the key differences between **[Langfuse](/)** and **[LangSmith](https://www.langchain.com/langsmith)** to help engineering teams choose the right AI engineering platform. All LangSmith facts were checked against public LangChain sources in October 2026.
+**[Langfuse](/)** is the [most widely adopted open-source LLM engineering platform](/adoption). This guide outlines how it differs from **[LangSmith](https://www.langchain.com/langsmith)** to help engineering teams choose the right AI engineering platform. All LangSmith facts were checked against public LangChain sources in October 2026.
 
 ## TL;DR
 

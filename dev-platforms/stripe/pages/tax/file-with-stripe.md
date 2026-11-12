@@ -49,7 +49,7 @@ Confirm your business details, including your address and [bank details](https:/
 Provide your state-specific business registration and filing information. These details differ by state, but generally include your state tax ID, nexus start date, and assigned filing frequency. Select the first filing period you want Stripe to file, typically the next available filing period. Available filing period options are based on the date you submit your filing application, your filing frequency, and state processing deadlines. TaxJar has [detailed information by state](https://stripe-tax-filing.helpscoutdocs.com/category/1150-set-up-filings) to help you set up your filings.
 
 - **Filing for previous filing periods**: If you need to file returns for previous filing periods, you can request TaxJar to [file overdue returns](https://stripe-tax-filing.helpscoutdocs.com/article/1213-file-overdue-returns) for you.
-- **Updating your filing frequency**: If you later receive a notice that a state has changed your filing frequency, [send a copy to TaxJar support](https://stripe-tax-filing.helpscoutdocs.com/article/1214-change-your-filing-frequency-for-a-state) to make sure that your filing is updated correctly and you don’t miss a return.
+- **Updating your filing frequency**: If you later receive a notice that a state has changed your filing frequency, [send a copy to TaxJar support](https://stripe-tax-filing.helpscoutdocs.com/article/1214-change-your-filing-frequency-for-a-state) to make sure TaxJar updates your filing correctly and you don’t miss a return.
 
 ## Review and submit your application
 

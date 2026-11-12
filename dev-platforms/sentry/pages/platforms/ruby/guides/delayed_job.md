@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/ruby/guides/delayed_job/
 
 # Sentry for DelayedJob
 
+## Set up with Sentry CLI
+
+Set up the Sentry Ruby SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 ##### Using a framework?
 
 Check out the other SDKs we support in the left-hand dropdown.

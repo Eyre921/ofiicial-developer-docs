@@ -199,20 +199,20 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 
 \> \[accordion] Should I use Serverless or Dedicated Training?
 \>
-\> |                | Serverless Training                                                            | Dedicated Training                                                                          |
-\> | -------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
-\> | Models         | The \[serverless models]\(/fine-tuning/training-api/serverless#supported-models) | Any model with a Training API shape in \[Models]\(/fine-tuning/models)                        |
-\> | Parameter mode | LoRA only                                                                      | LoRA or full-parameter                                                                      |
-\> | Methods        | SFT and DPO                                                                    | SFT, DPO and ORPO                                                                           |
-\> | Billing        | Per token                                                                      | Per GPU hour while the trainer runs                                                         |
-\> | Limits         | 8 concurrent runs per account by default                                       | Your account's \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job                     | Train it on                                                                                                                                              |
-\> | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-\> | LoRA on a serverless model           | Serverless Training                                                                                                                                      |
-\> | LoRA on any other model              | Dedicated Training, LoRA                                                                                                                                 |
-\> | Full-parameter (LoRA rank \`0\`)       | Dedicated Training, full-parameter, when \[Models]\(/fine-tuning/models) lists a full-parameter shape for the base model. Otherwise, train a LoRA adapter. |
-\> | ORPO                                 | Dedicated Training                                                                                                                                       |
-\> | A warm start from an earlier adapter | Dedicated Training                                                                                                                                       |
-\> | A reservation                        | Dedicated Training, on the same reservation                                                                                                              |\*\*Serverless models.\*\* \`serverless=True\` works only on these base models. On any other model it fails with \`no eligible shared trainer found for base model\`:
+\> | | Serverless Training | Dedicated Training |
+\> | - | - | - |
+\> | Models | The \[serverless models]\(/fine-tuning/training-api/serverless#supported-models) | Any model with a Training API shape in \[Models]\(/fine-tuning/models) |
+\> | Parameter mode | LoRA only | LoRA or full-parameter |
+\> | Methods | SFT, DPO and RL | SFT, DPO, ORPO and RL |
+\> | Billing | Per token | Per GPU hour while the trainer runs |
+\> | Limits | 8 concurrent runs per account by default | Your account's \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
+\> | - | - |
+\> | LoRA on a serverless model | Serverless Training |
+\> | LoRA on any other model | Dedicated Training, LoRA |
+\> | Full-parameter (LoRA rank \`0\`) | Dedicated Training, full-parameter, when \[Models]\(/fine-tuning/models) lists a full-parameter shape for the base model. Otherwise, train a LoRA adapter. |
+\> | ORPO | Dedicated Training |
+\> | A warm start from an earlier adapter | Dedicated Training |
+\> | A reservation | Dedicated Training, on the same reservation |\*\*Serverless models.\*\* \`serverless=True\` works only on these base models. On any other model it fails with \`no eligible shared trainer found for base model\`:
 \>
 \> \\\<table>\<thead>\<tr>\<th>Base model\</th>
 \>               \\\<th>Model ID\</th>

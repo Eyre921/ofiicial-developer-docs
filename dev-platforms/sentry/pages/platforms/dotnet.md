@@ -29,7 +29,7 @@ If you're using a framework, such as ASP.NET Core or MAUI, please select the fra
 Install the `Sentry` NuGet package to add the SDK:
 
 ```shell
-dotnet add package Sentry -v 6.12.1
+dotnet add package Sentry -v 6.13.0
 ```
 
 *Other available variations of the above snippet: Package Manager*
@@ -69,7 +69,7 @@ Profiling for .NET is in Alpha. The `Sentry.Profiling` package requires .NET 8 o
 To profile your app, install the `Sentry.Profiling` package:
 
 ```shell
-dotnet add package Sentry.Profiling -v 6.12.1
+dotnet add package Sentry.Profiling -v 6.13.0
 ```
 
 *Other available variations of the above snippet: Package Manager*

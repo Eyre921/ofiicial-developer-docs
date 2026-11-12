@@ -57,7 +57,7 @@ with OpenRouter(
 | `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.  | |
 | `dimensions` | *Optional\[int]* | ➖ | The number of dimensions for the output embeddings | 1536 |
 | `encoding_format` | [Optional\[operations.EncodingFormat\]](../../operations/encodingformat.mdx) | ➖ | The format of the output embeddings | float |
-| `input_type` | *Optional\[str]* | ➖ | The type of input (e.g. search\_query, search\_document) | search\_query |
+| `input_type` | *Optional\[str]* | ➖ | The type of input (e.g. search\_query, search\_document). Document-chunk input (`string[][]`) is only valid with a document input type. | search\_query |
 | `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | N/A | \{ "allow\_fallbacks": true } |
 | `session_id` | *Optional\[str]* | ➖ | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | session-1234 |
 | `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{ "trace\_id": "trace-abc123", "trace\_name": "my-app-trace" } |

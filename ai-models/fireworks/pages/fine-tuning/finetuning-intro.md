@@ -24,7 +24,7 @@ Set up Fireworks training for me. Fetch https://docs.fireworks.ai/fine-tuning/ag
 **Step 2: Run your first job.** Ask the agent:
 
 ```text wrap theme={null}
-Fine-tune Muse Glimmer 30B with Serverless Training on the example data at https://storage.googleapis.com/fireworks-onboarding-datasets/v1/prompt-router/train.jsonl
+Fine-tune Muse Glimmer 30B with Serverless Training on the SupraLabs/Prompt-Routing-Dataset example. Download and convert it at runtime with the cookbook helper `python -m examples.sft.example_datasets --example prompt-router`.
 ```
 
 The agent shows you the parameters and cost, then waits for your approval before it starts anything.

@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/apple/guides/ios/
 
 # Sentry for iOS
 
+## Set up with Sentry CLI
+
+Set up the Sentry Apple SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 On this page, you'll set up Sentry's Apple SDK to report errors and exceptions in your application.
 
 If you don't already have a Sentry account and project, [create them](https://sentry.io/signup/) before you continue.

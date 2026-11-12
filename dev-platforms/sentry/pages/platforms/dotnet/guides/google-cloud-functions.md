@@ -19,7 +19,7 @@ Sentry provides an integration with `Google Cloud Functions` through the [Sentry
 Add the Sentry dependency:
 
 ```powershell
-Install-Package Sentry.Google.Cloud.Functions -Version 6.12.1
+Install-Package Sentry.Google.Cloud.Functions -Version 6.13.0
 ```
 
 *Other available variations of the above snippet: .NET Core CLI*
@@ -28,7 +28,7 @@ Or, manually add the Sentry dependency into your csproj file:
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="Sentry.Google.Cloud.Functions" Version="6.12.1"/>
+    <PackageReference Include="Sentry.Google.Cloud.Functions" Version="6.13.0"/>
   </ItemGroup>
 ```
 

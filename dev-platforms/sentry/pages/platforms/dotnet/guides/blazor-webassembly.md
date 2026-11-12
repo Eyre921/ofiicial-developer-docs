@@ -19,7 +19,7 @@ Sentry provides an integration with Blazor WebAssembly through the [Sentry.AspNe
 Add the Sentry dependency to your Blazor WebAssembly application:
 
 ```shell
-dotnet add package Sentry.AspNetCore.Blazor.WebAssembly -v 6.12.1
+dotnet add package Sentry.AspNetCore.Blazor.WebAssembly -v 6.13.0
 ```
 
 *Other available variations of the above snippet: Package Manager*

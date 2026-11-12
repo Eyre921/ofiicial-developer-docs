@@ -4,20 +4,11 @@ source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/muse-glimmer
 path: fine-tuning/training-api/cookbook/muse-glimmer
 ---
 
-Run a free first LoRA fine-tune of Muse Glimmer 30B on Managed SFT or Serverless Training, then measure base versus tuned.
+Run a free first LoRA fine-tune of Muse Glimmer 30B on Serverless Training with a public Hugging Face example, then measure base versus tuned.
 
 This guide runs a first fine-tune of Muse Glimmer 30B end to end with the
 cookbook's [Muse Glimmer starter](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/muse_glimmer).
-The same script runs the job on two surfaces:
-
-* **Managed SFT**: Fireworks runs the training loop on a dataset in your
-  account, such as the preloaded prompt-router example: given a user prompt, the
-  model returns a compact JSON object that scores its complexity and picks a
-  small or big model. This is the quickest first result.
-* **[Serverless Training](/fine-tuning/training-api/serverless)**: your Python
-  process runs the loop on your own chat JSONL on the shared trainer pool, then
-  samples the base and tuned adapters in the same session to compare them on
-  rows it held out.
+Download a public Hugging Face example at runtime, or bring your own chat JSONL. **[Serverless Training](/fine-tuning/training-api/serverless)** runs the loop on the shared trainer pool, then samples the base and tuned adapters in the same session to compare them on held-out rows.
 
 > [!NOTE]
 >
@@ -33,7 +24,7 @@ The same script runs the job on two surfaces:
 | Base model | `accounts/fireworks/models/muse-glimmer-30b` |
 | Tokenizer | `meta-models/Muse-Glimmer-30B` |
 | Renderer | `muse_glimmer` |
-| Example datasets | `onboarding-prompt-router` (600 rows) and `onboarding-cord-receipts` (300 rows), preloaded in eligible accounts |
+| Example datasets | [Prompt routing](https://huggingface.co/datasets/SupraLabs/Prompt-Routing-Dataset) (600 rows) and [receipt extraction](https://huggingface.co/datasets/naver-clova-ix/cord-v2) (300 rows), downloaded from Hugging Face at runtime |
 | Default LoRA rank | 8 |
 
 ## Quickstart
@@ -56,72 +47,31 @@ Run the remaining commands from `cookbook/training`. You can instead put
 
 ### Step 2: Check the plan
 
-`plan` is read-only. It confirms the account, the example dataset, whether the
+Run the cookbook downloader before planning. It converts the public Hugging Face data into local chat JSONL without creating a Fireworks dataset:
+
+```bash theme={null}
+python -m examples.sft.example_datasets --example prompt-router --upload prompt-router-v1
+```
+
+First download the example with the cookbook helper. This creates a local file, not a Fireworks dataset:
+
+```bash theme={null}
+python -m examples.sft.example_datasets --example prompt-router
+```
+
+`plan` is read-only. It confirms the account, the local dataset, whether the
 promotion is active, and every training parameter before anything is created:
 
 ```bash theme={null}
-python -m examples.sft.muse_glimmer_starter plan
+python -m examples.sft.muse_glimmer_starter plan --surface serverless --file prompt-router.jsonl
 ```
 
 Pass `--surface serverless` to see the Serverless Training plan, including
 batch size, sequence length, LoRA alpha, and optimizer settings.
 
-## Managed SFT
+## Train and evaluate
 
-### Step 3: Launch and watch
-
-Use a fresh run ID for every run. The run ID names the job and its output model:
-
-```bash theme={null}
-RUN=router-$(date +%Y%m%d-%H%M%S)
-python -m examples.sft.muse_glimmer_starter launch --surface managed --run-id $RUN
-python -m examples.sft.muse_glimmer_starter watch --run-id $RUN
-```
-
-`launch` creates a LoRA SFT job on `onboarding-prompt-router` with an automatic
-evaluation carve-out. If the run ID already exists, `launch` reuses that job only
-when every setting matches and otherwise stops with the differences.
-
-`watch` polls every minute and prints:
-
-* on every poll, the job state and status message (percent complete and epoch,
-  or a waiting message while the job waits for a training slot);
-* once they are ready, a summary of the platform's rendered training samples:
-  token counts, how many tokens carry loss, and image tokens for vision data;
-* when the job finishes, train and eval loss from the job's metrics, plus the
-  learning rate and steps the platform actually used.
-
-It stops on a terminal state, or if a running job makes no progress for 30 minutes (time waiting in the queue does not count).
-
-A typical run finishes in a few minutes once it starts. In one example run, eval
-loss fell from 0.58 to 0.03 over 17 steps. The output is a LoRA model named
-`accounts/<account>/models/muse-starter-$RUN`.
-
-> [!NOTE]
->
-> Managed SFT reports loss, not task accuracy. Low loss on short, templated
-> answers mostly shows the model learned the output format. To measure routing
-> accuracy, use the Serverless Training path below, or deploy the model and
-> evaluate it on held-out prompts.
-
-### Vision: receipt extraction
-
-The same path trains on receipt images. Image tokens count toward the context,
-so 8,192 leaves headroom:
-
-```bash theme={null}
-RUN=cord-$(date +%Y%m%d-%H%M%S)
-python -m examples.sft.muse_glimmer_starter launch --surface managed --run-id $RUN \
-  --dataset onboarding-cord-receipts --max-context-length 8192
-python -m examples.sft.muse_glimmer_starter watch --run-id $RUN
-```
-
-The `watch` output summarizes a sample of the rendered rows; check that
-`tokens_min_max` (image tokens included) is well under the context length.
-
-## Serverless Training with a base-versus-tuned evaluation
-
-This path trains on a local chat JSONL file in the format shown in
+This workflow trains on the downloaded example or any local chat JSONL file in the format shown in
 [Your own data](#your-own-data).
 
 ### Step 3: Prepare the data
@@ -132,7 +82,7 @@ refuses the file if any row is malformed and lists those rows, holds out 40 rows
 
 ```bash theme={null}
 RUN=tickets-$(date +%Y%m%d-%H%M%S)
-python -m examples.sft.muse_glimmer_starter prepare --file data.jsonl --run-id $RUN
+python -m examples.sft.muse_glimmer_starter prepare --file prompt-router.jsonl --run-id $RUN
 ```
 
 Read the rendered example before you launch: check the token count against
@@ -142,7 +92,7 @@ the assistant's reply.
 ### Step 4: Train and evaluate
 
 ```bash theme={null}
-python -m examples.sft.muse_glimmer_starter launch --surface serverless --file data.jsonl --run-id $RUN
+python -m examples.sft.muse_glimmer_starter launch --surface serverless --file prompt-router.jsonl --run-id $RUN
 ```
 
 The script:
@@ -175,7 +125,7 @@ It writes these files to `muse_starter_logs/$RUN/`:
 
 ## Your own data
 
-Both paths take chat JSONL, one example per line:
+The starter takes chat JSONL, one example per line:
 
 ```json theme={null}
 {"messages": [
@@ -185,19 +135,7 @@ Both paths take chat JSONL, one example per line:
 ]}
 ```
 
-`upload` validates every row, refuses the file if any row is malformed or has an
-empty assistant reply, and lists those rows. It never drops or rewrites rows
-itself. For Managed SFT, fix them in a copy, then upload to a new dataset ID and
-train on it:
-
-```bash theme={null}
-python -m examples.sft.muse_glimmer_starter upload --file data.jsonl --dataset my-tickets-v1
-RUN=tickets-$(date +%Y%m%d-%H%M%S)
-python -m examples.sft.muse_glimmer_starter launch --surface managed --run-id $RUN --dataset my-tickets-v1
-python -m examples.sft.muse_glimmer_starter watch --run-id $RUN
-```
-
-Hold out some rows before uploading so you can compare base and tuned on data
+Use the `prepare` step to hold out rows so you can compare base and tuned on data the model has not seen. A few hundred clean rows are enough for a first signal.
 the model has not seen (the Serverless `prepare` step does this split for you). A few hundred clean rows are enough for a first signal.
 
 ## Clean up
@@ -206,9 +144,8 @@ the model has not seen (the Serverless `prepare` step does this split for you). 
 python -m examples.sft.muse_glimmer_starter cleanup --run-id $RUN
 ```
 
-Run it once for each run ID you created; each section above sets a new `$RUN`.
-`cleanup` deletes the Managed SFT job, its output model, and the promoted
-Serverless Training model for that run ID, if they exist. A Serverless Training
+Run it once for each run ID you created. `cleanup` deletes the promoted
+Serverless Training model for that run ID if it exists. A Serverless Training
 session closes when the script exits.
 
 None of these steps leaves anything running. Serving a tuned model requires an

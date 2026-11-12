@@ -34,6 +34,8 @@ npm install --save stripe
 
 Or download the stripe-node library source code directly [from GitHub](https://github.com/stripe/stripe-node).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Ruby library
 
 Install the Stripe ruby gem and require it in your code. Alternatively, if you’re starting from scratch and need a Gemfile, download the project files using the link in the code editor.
@@ -57,6 +59,8 @@ gem 'stripe'
 #### GitHub
 
 Or download the stripe-ruby gem source code directly [from GitHub](https://github.com/stripe/stripe-ruby).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe Java library
 
@@ -82,6 +86,8 @@ implementation "com.stripe:stripe-java:{VERSION}"
 
 Download the JAR directly [from GitHub](https://github.com/stripe/stripe-java/releases/latest).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Python package
 
 Install the Stripe package and import it in your code. Alternatively, if you’re starting from scratch and need a requirements.txt file, download the project files using the link in the code editor.
@@ -97,6 +103,8 @@ pip3 install stripe
 #### GitHub
 
 Download the stripe-python library source code directly [from GitHub](https://github.com/stripe/stripe-python).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe PHP library
 
@@ -114,6 +122,8 @@ composer require stripe/stripe-php
 
 Or download the stripe-php library source code directly [from GitHub](https://github.com/stripe/stripe-php).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Set up your server
 
 Add the dependency to your build and import the library. Alternatively, if you’re starting from scratch and need a go.mod file, download the project files using the link in the code editor.
@@ -129,6 +139,8 @@ go get -u github.com/stripe/stripe-go/v87
 #### GitHub
 
 Or download the stripe-go module source code directly [from GitHub](https://github.com/stripe/stripe-go).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe.net library
 
@@ -154,6 +166,8 @@ Install-Package Stripe.net
 
 Or download the Stripe.net library source code directly [from GitHub](https://github.com/stripe/stripe-dotnet).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe libraries
 
 Install the packages and import them in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the link in the code editor.
@@ -163,6 +177,8 @@ Install the libraries:
 ```bash
 npm install --save stripe @stripe/stripe-js next
 ```
+
+Get your API keys from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Create Locations for your readers
 
@@ -239,6 +255,8 @@ npm install --save stripe
 
 Or download the stripe-node library source code directly [from GitHub](https://github.com/stripe/stripe-node).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Ruby library
 
 Install the Stripe ruby gem and require it in your code. Alternatively, if you’re starting from scratch and need a Gemfile, download the project files using the link in the code editor.
@@ -262,6 +280,8 @@ gem 'stripe'
 #### GitHub
 
 Or download the stripe-ruby gem source code directly [from GitHub](https://github.com/stripe/stripe-ruby).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe Java library
 
@@ -287,6 +307,8 @@ implementation "com.stripe:stripe-java:{VERSION}"
 
 Download the JAR directly [from GitHub](https://github.com/stripe/stripe-java/releases/latest).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Python package
 
 Install the Stripe package and import it in your code. Alternatively, if you’re starting from scratch and need a requirements.txt file, download the project files using the link in the code editor.
@@ -302,6 +324,8 @@ pip3 install stripe
 #### GitHub
 
 Download the stripe-python library source code directly [from GitHub](https://github.com/stripe/stripe-python).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe PHP library
 
@@ -319,6 +343,8 @@ composer require stripe/stripe-php
 
 Or download the stripe-php library source code directly [from GitHub](https://github.com/stripe/stripe-php).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Set up your server
 
 Add the dependency to your build and import the library. Alternatively, if you’re starting from scratch and need a go.mod file, download the project files using the link in the code editor.
@@ -334,6 +360,8 @@ go get -u github.com/stripe/stripe-go/v87
 #### GitHub
 
 Or download the stripe-go module source code directly [from GitHub](https://github.com/stripe/stripe-go).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe.net library
 
@@ -359,6 +387,8 @@ Install-Package Stripe.net
 
 Or download the Stripe.net library source code directly [from GitHub](https://github.com/stripe/stripe-dotnet).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe libraries
 
 Install the packages and import them in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the link in the code editor.
@@ -368,6 +398,8 @@ Install the libraries:
 ```bash
 npm install --save stripe @stripe/stripe-js next
 ```
+
+Get your API keys from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 > #### Terminal access on macOS
 > 
@@ -456,6 +488,8 @@ npm install --save stripe
 
 Or download the stripe-node library source code directly [from GitHub](https://github.com/stripe/stripe-node).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Ruby library
 
 Install the Stripe ruby gem and require it in your code. Alternatively, if you’re starting from scratch and need a Gemfile, download the project files using the link in the code editor.
@@ -479,6 +513,8 @@ gem 'stripe'
 #### GitHub
 
 Or download the stripe-ruby gem source code directly [from GitHub](https://github.com/stripe/stripe-ruby).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe Java library
 
@@ -504,6 +540,8 @@ implementation "com.stripe:stripe-java:{VERSION}"
 
 Download the JAR directly [from GitHub](https://github.com/stripe/stripe-java/releases/latest).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Python package
 
 Install the Stripe package and import it in your code. Alternatively, if you’re starting from scratch and need a requirements.txt file, download the project files using the link in the code editor.
@@ -519,6 +557,8 @@ pip3 install stripe
 #### GitHub
 
 Download the stripe-python library source code directly [from GitHub](https://github.com/stripe/stripe-python).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe PHP library
 
@@ -536,6 +576,8 @@ composer require stripe/stripe-php
 
 Or download the stripe-php library source code directly [from GitHub](https://github.com/stripe/stripe-php).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Set up your server
 
 Add the dependency to your build and import the library. Alternatively, if you’re starting from scratch and need a go.mod file, download the project files using the link in the code editor.
@@ -551,6 +593,8 @@ go get -u github.com/stripe/stripe-go/v87
 #### GitHub
 
 Or download the stripe-go module source code directly [from GitHub](https://github.com/stripe/stripe-go).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe.net library
 
@@ -576,6 +620,8 @@ Install-Package Stripe.net
 
 Or download the Stripe.net library source code directly [from GitHub](https://github.com/stripe/stripe-dotnet).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe libraries
 
 Install the packages and import them in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the link in the code editor.
@@ -585,6 +631,8 @@ Install the libraries:
 ```bash
 npm install --save stripe @stripe/stripe-js next
 ```
+
+Get your API keys from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 > #### Terminal access on macOS
 > 
@@ -716,6 +764,8 @@ npm install --save stripe
 
 Or download the stripe-node library source code directly [from GitHub](https://github.com/stripe/stripe-node).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Ruby library
 
 Install the Stripe ruby gem and require it in your code. Alternatively, if you’re starting from scratch and need a Gemfile, download the project files using the link in the code editor.
@@ -739,6 +789,8 @@ gem 'stripe'
 #### GitHub
 
 Or download the stripe-ruby gem source code directly [from GitHub](https://github.com/stripe/stripe-ruby).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe Java library
 
@@ -764,6 +816,8 @@ implementation "com.stripe:stripe-java:{VERSION}"
 
 Download the JAR directly [from GitHub](https://github.com/stripe/stripe-java/releases/latest).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Python package
 
 Install the Stripe package and import it in your code. Alternatively, if you’re starting from scratch and need a requirements.txt file, download the project files using the link in the code editor.
@@ -779,6 +833,8 @@ pip3 install stripe
 #### GitHub
 
 Download the stripe-python library source code directly [from GitHub](https://github.com/stripe/stripe-python).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe PHP library
 
@@ -796,6 +852,8 @@ composer require stripe/stripe-php
 
 Or download the stripe-php library source code directly [from GitHub](https://github.com/stripe/stripe-php).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Set up your server
 
 Add the dependency to your build and import the library. Alternatively, if you’re starting from scratch and need a go.mod file, download the project files using the link in the code editor.
@@ -811,6 +869,8 @@ go get -u github.com/stripe/stripe-go/v87
 #### GitHub
 
 Or download the stripe-go module source code directly [from GitHub](https://github.com/stripe/stripe-go).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe.net library
 
@@ -836,6 +896,8 @@ Install-Package Stripe.net
 
 Or download the Stripe.net library source code directly [from GitHub](https://github.com/stripe/stripe-dotnet).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe libraries
 
 Install the packages and import them in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the link in the code editor.
@@ -845,6 +907,8 @@ Install the libraries:
 ```bash
 npm install --save stripe @stripe/stripe-js next
 ```
+
+Get your API keys from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 > #### Terminal access on macOS
 > 
@@ -978,6 +1042,8 @@ npm install --save stripe
 
 Or download the stripe-node library source code directly [from GitHub](https://github.com/stripe/stripe-node).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Ruby library
 
 Install the Stripe ruby gem and require it in your code. Alternatively, if you’re starting from scratch and need a Gemfile, download the project files using the link in the code editor.
@@ -1001,6 +1067,8 @@ gem 'stripe'
 #### GitHub
 
 Or download the stripe-ruby gem source code directly [from GitHub](https://github.com/stripe/stripe-ruby).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe Java library
 
@@ -1026,6 +1094,8 @@ implementation "com.stripe:stripe-java:{VERSION}"
 
 Download the JAR directly [from GitHub](https://github.com/stripe/stripe-java/releases/latest).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe Python package
 
 Install the Stripe package and import it in your code. Alternatively, if you’re starting from scratch and need a requirements.txt file, download the project files using the link in the code editor.
@@ -1041,6 +1111,8 @@ pip3 install stripe
 #### GitHub
 
 Download the stripe-python library source code directly [from GitHub](https://github.com/stripe/stripe-python).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe PHP library
 
@@ -1058,6 +1130,8 @@ composer require stripe/stripe-php
 
 Or download the stripe-php library source code directly [from GitHub](https://github.com/stripe/stripe-php).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Set up your server
 
 Add the dependency to your build and import the library. Alternatively, if you’re starting from scratch and need a go.mod file, download the project files using the link in the code editor.
@@ -1073,6 +1147,8 @@ go get -u github.com/stripe/stripe-go/v87
 #### GitHub
 
 Or download the stripe-go module source code directly [from GitHub](https://github.com/stripe/stripe-go).
+
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 ### Install the Stripe.net library
 
@@ -1098,6 +1174,8 @@ Install-Package Stripe.net
 
 Or download the Stripe.net library source code directly [from GitHub](https://github.com/stripe/stripe-dotnet).
 
+Get your API key from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
+
 ### Install the Stripe libraries
 
 Install the packages and import them in your code. Alternatively, if you’re starting from scratch and need a `package.json` file, download the project files using the link in the code editor.
@@ -1107,6 +1185,8 @@ Install the libraries:
 ```bash
 npm install --save stripe @stripe/stripe-js next
 ```
+
+Get your API keys from the [Dashboard](https://dashboard.stripe.com/apikeys) under **Developers** > **API keys**.
 
 > #### Terminal access on macOS
 > 

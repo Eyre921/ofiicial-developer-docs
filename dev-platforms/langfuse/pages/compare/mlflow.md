@@ -14,7 +14,7 @@ tags: [comparison]
 
 # Langfuse vs. MLflow
 
-This guide outlines the key differences between **[Langfuse](/)** and **[MLflow](https://mlflow.org/)** for LLM and agent engineering. All MLflow facts were checked against public MLflow docs, release notes, and Databricks documentation in October 2026.
+**[Langfuse](/)** is the [most widely adopted open-source LLM engineering platform](/adoption). This guide outlines how it differs from **[MLflow](https://mlflow.org/)** for LLM and agent engineering. All MLflow facts were checked against public MLflow docs, release notes, and Databricks documentation in October 2026.
 
 ## TL;DR
 

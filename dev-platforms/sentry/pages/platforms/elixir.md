@@ -12,6 +12,36 @@ url: https://docs.sentry.io/platforms/elixir/
 
 # Sentry for Elixir
 
+## Set up with Sentry CLI
+
+Set up the Sentry Elixir SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
+
+**cURL**
+
+```bash
+curl https://cli.sentry.dev/install -fsS | bash
+```
+
+**PowerShell**
+
+```powershell
+irm https://cli.sentry.dev/install.ps1 | iex
+```
+
+**Homebrew**
+
+```bash
+brew install getsentry/tools/sentry
+```
+
+**npx**
+
+```bash
+npx sentry@latest
+```
+
+[Learn more about the Sentry CLI](https://cli.sentry.dev/)
+
 On this page, we get you up and running with Sentry's SDK.
 
 You don't have an account and Sentry project established? Head over to [sentry.io](https://sentry.io/signup/), then return to this page.

@@ -6,15 +6,13 @@ path: fine-tuning/training-api/serverless
 
 Fine-tune open models with your own Python training loop on shared Fireworks GPUs. Nothing to provision, and you pay per token.
 
-Serverless training runs on shared Fireworks GPUs, so there is no trainer job or inference deployment to provision or delete. You can run supervised fine-tuning, preference optimization (DPO and ORPO), reinforcement learning, distillation, or your own custom loop.Serverless supports LoRA training only. For full-parameter training or a model outside the serverless pool, use [Dedicated Training](/fine-tuning/training-api/dedicated). If you're not sure, [compare dedicated and serverless training](/fine-tuning/training-api/introduction#infrastructure) or [contact us](https://fireworks.ai/contact-training).## How it works1 · LocalYour Python loopBuilds batches, rewards, and optimizer requests.2 · SharedTrainerRuns remote LoRA forward, backward, and optimizer work.3 · In sessionCheckpointCaptures the current adapter weights for sampling.4 · SharedSamplerReturns rollouts for local scoring and the next step.You write the training loop in Python. Fireworks runs the forward pass, backward pass, and optimizer step on shared GPUs, then serves your latest weights for sampling in the same session. For the terms used on this page, see the [glossary](#glossary).## What you can run> [card] [Supervised fine-tuning (SFT)](/fine-tuning/training-api/cookbook/sft)
+Serverless training runs on shared Fireworks GPUs, so there is no trainer job or inference deployment to provision or delete. You can run supervised fine-tuning, preference optimization (DPO), reinforcement learning, distillation, or your own custom loop.Serverless supports LoRA training only. For full-parameter training or a model outside the serverless pool, use [Dedicated Training](/fine-tuning/training-api/dedicated). If you're not sure, [compare dedicated and serverless training](/fine-tuning/training-api/introduction#infrastructure) or [contact us](https://fireworks.ai/contact-training).## How it works1 · LocalYour Python loopBuilds batches, rewards, and optimizer requests.2 · SharedTrainerRuns remote LoRA forward, backward, and optimizer work.3 · In sessionCheckpointCaptures the current adapter weights for sampling.4 · SharedSamplerReturns rollouts for local scoring and the next step.You write the training loop in Python. Fireworks runs the forward pass, backward pass, and optimizer step on shared GPUs, then serves your latest weights for sampling in the same session. For the terms used on this page, see the [glossary](#glossary).## What you can run> [card] [Supervised fine-tuning (SFT)](/fine-tuning/training-api/cookbook/sft)
 >
 > Train on labeled examples with a cross-entropy loss.> [card] [Reinforcement learning (RL)](/fine-tuning/training-api/cookbook/rl)
 >
 > Sample, score with your own reward function, and train on the results.> [card] [Direct preference optimization (DPO)](/fine-tuning/training-api/cookbook/dpo)
 >
-> Train from pairs of chosen and rejected responses.> [card] [Odds ratio preference optimization (ORPO)](/fine-tuning/training-api/cookbook/dpo)
->
-> Supervised learning and a preference objective in one step.> [card] [Distillation](/fine-tuning/training-api/cookbook/distillation)
+> Train from pairs of chosen and rejected responses.> [card] [Distillation](/fine-tuning/training-api/cookbook/distillation)
 >
 > Train a student model from a teacher model's scores.> [card] [Custom loss](/fine-tuning/training-api/dedicated#loss-functions)
 >
