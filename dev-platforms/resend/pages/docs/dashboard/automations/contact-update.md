@@ -365,11 +365,11 @@ For more help working with variables in templates, see the [Send Email](/docs/da
 
 ## Configuration
 
-**config.first\_name** `string | object`
+**config.first_name** `string | object`
 
 The contact's first name. Accepts a hardcoded string or a variable reference.
 
-**config.last\_name** `string | object`
+**config.last_name** `string | object`
 
 The contact's last name. Accepts a hardcoded string or a variable reference.
 

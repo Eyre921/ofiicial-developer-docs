@@ -10,7 +10,7 @@ When a table outgrows a single Postgres server, you can move its vector search t
 
 ## Before you begin
 
-* pg_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database, which the `remote` engine needs even if you bring your own vectors. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * A table with a `native` index. The examples use the `docs` table from the quickstart, so skip the quickstart's clean-up step if you want to follow along.
 

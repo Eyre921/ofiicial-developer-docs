@@ -35,7 +35,7 @@ Cannot be used with the `after` parameter.
 > [pagination guide](/docs/api-reference/pagination) for more
 > information.
 
-**segment\_id** `string`
+**segment_id** `string`
 
 The Segment ID to filter contacts by. If provided, only contacts in this
 Segment will be returned.

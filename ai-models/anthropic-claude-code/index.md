@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 206 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 207 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -38,6 +38,7 @@
 - `claude-tag` — [Claude Tag](pages/claude-tag.md) · [原文](https://code.claude.com/docs/en/claude-tag)
 - `cli-reference` — [CLI reference](pages/cli-reference.md) · [原文](https://code.claude.com/docs/en/cli-reference)
 - `cloud-environments` — [Configure cloud environments](pages/cloud-environments.md) · [原文](https://code.claude.com/docs/en/cloud-environments)
+- `code-mode` — [Run tool calls from code with Code Mode](pages/code-mode.md) · [原文](https://code.claude.com/docs/en/code-mode)
 - `code-review` — [Code Review](pages/code-review.md) · [原文](https://code.claude.com/docs/en/code-review)
 - `code-review-costs` — [Code Review costs and usage](pages/code-review-costs.md) · [原文](https://code.claude.com/docs/en/code-review-costs)
 - `code-review-customize` — [Customize Code Review](pages/code-review-customize.md) · [原文](https://code.claude.com/docs/en/code-review-customize)

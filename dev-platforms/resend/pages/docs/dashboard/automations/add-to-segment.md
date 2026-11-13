@@ -289,7 +289,7 @@ Common use cases:
 
 ## Configuration
 
-**config.segment\_id** `string` *required*
+**config.segment_id** `string` *required*
 
 The ID of the segment to add the contact to.
 

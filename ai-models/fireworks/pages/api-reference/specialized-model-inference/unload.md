@@ -24,11 +24,11 @@ firectl model unload-lora my-lora --serverless --wait
 
 ## Path parameters
 
-**account\_id** `string` *required*
+**account_id** `string` *required*
 
 Your account ID.
 
-**deployed\_model\_id** `string` *required*
+**deployed_model_id** `string` *required*
 
 The last segment of the deployed model's `name`.
 

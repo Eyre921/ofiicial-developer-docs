@@ -111,9 +111,9 @@ You can use the following filters to display tax forms:
 | Filter name | Filter values |
 | --- | --- |
 | Type | Type of tax form: 1099-K, 1099-MISC, or 1099-NEC |
-| Overall filing status | Overall status of tax form: Won’t file, Needs attention, Ready, Filing, Accepted, or Rejected |
-| Federal filing status | Status of the Federal tax form: Won’t file, Needs attention, Ready, Filing, Accepted, or Rejected |
-| State filing status | Status of the State tax form: Won’t file, Needs attention, Ready, Filing, Accepted, or Rejected |
+| Overall filing status | Overall status of tax form: Won’t file, Needs attention, Ready, Filing, Accepted, Accepted with errors, or Rejected |
+| Federal filing status | Status of the Federal tax form: Won’t file, Needs attention, Ready, Filing, Accepted, Accepted with errors, or Rejected |
+| State filing status | Status of the State tax form: Won’t file, Needs attention, Ready, Filing, Accepted, Accepted with errors, or Rejected |
 | Delivery status | Delivery status of the tax form: Won’t deliver, Needs attention, Ready, Scheduled, Delivering, Delivered, Failed |
 | Postal delivery status | Postal delivery status of the tax form: Won’t deliver, Needs attention, Ready, Scheduled, Delivering, Delivered, Failed |
 | Electronic delivery status | Electronic delivery status of the tax form: Won’t deliver, Needs attention, Ready, Scheduled, Delivering, Delivered, Failed |
@@ -140,6 +140,7 @@ Stripe automatically calculates the overall status for each tax form, and allows
 | Status | Description | Next steps |
 | --- | --- | --- |
 | Accepted | The IRS or state accepted the tax form. | No further action required. |
+| Accepted with errors | For tax year 2026 and later, the IRS accepted the tax form but reported an issue that requires followup. | Review the filing status warning and follow the instructions to [correct a form accepted with errors](https://docs.stripe.com/connect/correct-tax-forms.md#correct-a-form-accepted-with-errors). |
 | Filing | The tax form has been queued for transmission to the IRS or state, and will be sent shortly. | No further action required. |
 | Filed | The tax form was sent to the IRS or state, but hasn’t been accepted yet. | No further action required. |
 | Exported | The tax form was included in a state filing export, which you can find on the [bulk jobs listing](https://dashboard.stripe.com/connect/taxes/forms/?showJobs=true). | You must download the export and manually submit these to the appropriate state reporting agency. |

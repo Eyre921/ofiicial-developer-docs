@@ -56,7 +56,7 @@ Your custom system prompt is prepended to the built-in system prompt, which incl
 from deepagents import create_deep_agent
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     system_prompt=(
         "You are a research assistant specializing in scientific literature. "
         "Always cite sources. Use subagents for parallel research on different topics."
@@ -153,7 +153,7 @@ Memory files ([`AGENTS.md`](https://agents.md/)) provide persistent context that
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
 )
 ```
@@ -210,7 +210,7 @@ Skills provide **on-demand** capabilities. The agent reads frontmatter from each
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     skills=["/skills/"],
 )
 ```
@@ -355,7 +355,7 @@ def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[fetch_user_data],
     context_schema=Context,
 )
@@ -594,7 +594,7 @@ def cite_page(runtime: ToolRuntime) -> str:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     tools=[cite_page],
     state_schema=ResearchState,
 )
@@ -889,7 +889,7 @@ from deepagents.middleware.summarization import create_summarization_tool_middle
 
 backend = StateBackend  # if using default backend
 
-model = "google_genai:gemini-3.6-flash"
+model = "google_genai:gemini-4-hydrogen"
 agent = create_deep_agent(
     model=model,
     middleware=[  # [!code highlight]
@@ -1048,7 +1048,7 @@ from langgraph.store.memory import InMemoryStore
 store = InMemoryStore()
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     store=store,
     backend=CompositeBackend(
         default=StateBackend(),

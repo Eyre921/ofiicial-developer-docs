@@ -18,17 +18,17 @@ The flow:
 
 ## Query Parameters
 
-**client\_id** `string` *required*
+**client_id** `string` *required*
 
 The `client_id` from [registration](/docs/api-reference/oauth/register), or the
 HTTPS URL of a [Client ID Metadata Document](#client-id-metadata-documents).
 Resend tells the two apart by the `https://` prefix.
 
-**response\_type** `string` *required*
+**response_type** `string` *required*
 
 Must be `"code"`.
 
-**redirect\_uri** `string` *required*
+**redirect_uri** `string` *required*
 
 Must exactly match one of the client's registered redirect URIs. The only
 exception is loopback URIs (`127.0.0.1`, `localhost`, `[::1]`), where the port
@@ -54,13 +54,13 @@ the callback to the request that started the flow. Recommended, not required
 by the server, but a client that skips it can't detect CSRF on the callback.
 Maximum 1024 characters.
 
-**code\_challenge** `string` *required*
+**code_challenge** `string` *required*
 
 Base64url-encoded SHA-256 hash of a
-[code\_verifier](/docs/api-reference/oauth/token#param-code-verifier) your client
+[code_verifier](/docs/api-reference/oauth/token#param-code-verifier) your client
 generates.
 
-**code\_challenge\_method** `string` *required*
+**code_challenge_method** `string` *required*
 
 Must be `"S256"`. Resend does not support the `plain` method.
 

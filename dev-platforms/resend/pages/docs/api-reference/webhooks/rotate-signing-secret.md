@@ -28,7 +28,7 @@ Always `webhook`.
 
 The Webhook ID.
 
-**signing\_secret** `string`
+**signing_secret** `string`
 
 The new signing secret.
 

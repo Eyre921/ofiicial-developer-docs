@@ -50,18 +50,18 @@ firectl billing export-metrics \
 The exported CSV includes the following columns:
 
 * **email**: Account email
-* **start\_time**: Request start timestamp
-* **end\_time**: Request end timestamp
-* **usage\_type**: Type of usage (e.g., TEXT\_COMPLETION\_INFERENCE\_USAGE)
-* **accelerator\_type**: GPU/hardware type used
-* **accelerator\_seconds**: Compute time in seconds
-* **base\_model\_name**: The model used
-* **model\_bucket**: Model category
-* **parameter\_count**: Model size
-* **prompt\_tokens**: Input tokens
-* **completion\_tokens**: Output tokens
-* **cached\_prompt\_tokens**: Prompt tokens served from cache (text inference only). Subset of `prompt_tokens`.
-* **uncached\_prompt\_tokens**: Prompt tokens not served from cache (text inference only). `prompt_tokens - cached_prompt_tokens`.
+* **start_time**: Request start timestamp
+* **end_time**: Request end timestamp
+* **usage_type**: Type of usage (e.g., TEXT_COMPLETION_INFERENCE_USAGE)
+* **accelerator_type**: GPU/hardware type used
+* **accelerator_seconds**: Compute time in seconds
+* **base_model_name**: The model used
+* **model_bucket**: Model category
+* **parameter_count**: Model size
+* **prompt_tokens**: Input tokens
+* **completion_tokens**: Output tokens
+* **cached_prompt_tokens**: Prompt tokens served from cache (text inference only). Subset of `prompt_tokens`.
+* **uncached_prompt_tokens**: Prompt tokens not served from cache (text inference only). `prompt_tokens - cached_prompt_tokens`.
 
 > [!NOTE]
 >

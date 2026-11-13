@@ -56,11 +56,11 @@ firectl billing export-usage-costs \
 
 The exported CSV always has these six columns, regardless of which dimension you group by:
 
-* **account\_id**: Your Fireworks account ID
+* **account_id**: Your Fireworks account ID
 * **date**: UTC day bucket, as `YYYY-MM-DD`
-* **group\_by\_dimension**: The dimension the row is grouped by — `model`, `model_tier`, `user`, or `api_key`
-* **group\_by\_value**: The value for that dimension (see below)
-* **subtotal\_usd**: Rated cost for that day and value, as an exact decimal with nine fractional digits
+* **group_by_dimension**: The dimension the row is grouped by — `model`, `model_tier`, `user`, or `api_key`
+* **group_by_value**: The value for that dimension (see below)
+* **subtotal_usd**: Rated cost for that day and value, as an exact decimal with nine fractional digits
 * **currency**: Currency code for `subtotal_usd`, for example `USD`
 
 `group_by_value` depends on `--group-by`:

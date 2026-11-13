@@ -395,7 +395,7 @@ See [Connect webhooks](https://docs.stripe.com/connect/webhooks.md?accounts-name
 Use the following command to forward [snapshot events](https://docs.stripe.com/events/how-events-work.md#event-formats) from connected accounts to your local listener.
 
 ```bash
-stripe listen --forward-connect-to localhost:4242/webhook
+stripe listen --all-snapshot --forward-connect-to localhost:4242/webhook
 ```
 
 #### Thin events

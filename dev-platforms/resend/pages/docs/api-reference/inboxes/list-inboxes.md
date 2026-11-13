@@ -49,7 +49,7 @@ Cannot be used with the `after` parameter.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more inboxes exist beyond this page.
 
@@ -67,11 +67,11 @@ The ID of the inbox.
 
 Internal name for the inbox. Recipients do not see it.
 
-**email\_address** `string`
+**email_address** `string`
 
 The address of the inbox.
 
-**from\_name** `string | null`
+**from_name** `string | null`
 
 The name recipients see when mail is sent from this inbox. `null` when
 not set.
@@ -80,16 +80,16 @@ not set.
 
 The number of unread threads in the Inbox folder.
 
-**last\_received** `string | null`
+**last_received** `string | null`
 
 ISO 8601 timestamp of the newest received email in the Inbox folder.
 `null` when the folder has no received email.
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the inbox was created.
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the inbox was updated.
 

@@ -386,11 +386,11 @@ Flash v2.5 supports 32 languages - all languages from v2 models plus:
 
 When using Flash v2.5, numbers aren't normalized by default in a way you might expect. For example, phone numbers might be read out in way that isn't clear for the user. Dates and currencies are affected in a similar manner.
 
-By default, normalization is disabled for Flash v2.5 to maintain the low latency. However, Enterprise customers can now enable text normalization for v2.5 models by setting the `apply_text_normalization` parameter to "on" in your request.
+By default, normalization is disabled for Flash v2.5 to maintain low latency. You can enable text normalization for Flash v2.5 by setting the `apply_text_normalization` parameter to "on" in your request.
 
 The Multilingual v2 model does a better job of normalizing numbers, so we recommend using it for phone numbers and other cases where number normalization is important.
 
-For low-latency or Agents Platform applications, best practice is to have your LLM [normalize the text](/docs/overview/capabilities/text-to-speech/best-practices#text-normalization) before passing it to the TTS model, or use the `apply_text_normalization` parameter (Enterprise plans only for v2.5 models).
+For low-latency or Agents Platform applications, best practice is to have your LLM [normalize the text](/docs/overview/capabilities/text-to-speech/best-practices#text-normalization) before passing it to the TTS model, or use the `apply_text_normalization` parameter.
 
 ## Model selection guide
 

@@ -183,13 +183,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.

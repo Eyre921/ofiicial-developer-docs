@@ -16,7 +16,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `contact.topics.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`

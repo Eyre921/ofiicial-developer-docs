@@ -36,7 +36,7 @@ The name of the label.
 The color of the label as an uppercase `#RRGGBB` hex code, like
 `#E93D82`.
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the label was created.
 

@@ -37,16 +37,16 @@ Comma-separated CC recipients. Up to `20` values.
 
 Comma-separated BCC recipients. Up to `20` values.
 
-**has\_attachment** `boolean`
+**has_attachment** `boolean`
 
 `true` matches emails with an attachment. `false` matches emails without one.
 
-**start\_date** `string`
+**start_date** `string`
 
 Matches emails sent on or after this date. Accepts a date like `2026-09-01` or
 an ISO 8601 timestamp, in UTC unless the timestamp has an offset.
 
-**end\_date** `string`
+**end_date** `string`
 
 Matches emails sent on or before this date. Same formats as `start_date`. A
 date covers that whole day, so `start_date=2026-09-01&end_date=2026-09-30`
@@ -111,7 +111,7 @@ page. Cannot be combined with `after`. Must be a thread ID.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more threads exist beyond this page. Pass the last thread's `id` as
 `after` to continue.
@@ -166,15 +166,15 @@ The name of the label.
 
 The color of the label as an uppercase `#RRGGBB` hex code.
 
-**email\_count** `number`
+**email_count** `number`
 
 The number of emails in the thread.
 
-**has\_attachment** `boolean`
+**has_attachment** `boolean`
 
 Whether the most recent message in the thread has an attachment.
 
-**has\_draft** `boolean`
+**has_draft** `boolean`
 
 Whether the thread has an unsent draft.
 
@@ -182,7 +182,7 @@ Whether the thread has an unsent draft.
 
 True only when every message in the thread is read.
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the thread was last active.
 
@@ -198,7 +198,7 @@ within its inbox. You can move a thread to `inbox`, `archive`, `spam`, or
 * `trash`: The thread is scheduled for deletion in 30 days.
 * `sent`: Threads whose messages are all outbound.
 
-**matched\_email\_id** `string | null`
+**matched_email_id** `string | null`
 
 Identifies the email in the thread that matched the search. When `query`
 has words or phrases, it's the most relevant match. Otherwise, it's the

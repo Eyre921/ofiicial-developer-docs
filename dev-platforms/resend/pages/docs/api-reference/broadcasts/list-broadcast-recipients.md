@@ -43,7 +43,7 @@ Filter by bounce classification. One of `permanent`, `transient`, or
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more recipients exist beyond this page.
 
@@ -58,7 +58,7 @@ The recipients matching the requested `type`.
 An opaque cursor for this row, used only for pagination. It does not
 identify any entity in Resend. Use `contact_id` to reference the contact.
 
-**contact\_id** `string | null`
+**contact_id** `string | null`
 
 The matching contact's ID. `null` when the recipient's email no longer
 maps to a contact.
@@ -72,12 +72,12 @@ The recipient's email address.
 How many times the recipient triggered the event. Only returned for
 `type=opened` and `type=clicked`.
 
-**bounce\_type** `string | null`
+**bounce_type** `string | null`
 
 The bounce classification: `permanent`, `transient`, or `undetermined`.
 Only returned for `type=bounced`.
 
-**clicked\_links** `array`
+**clicked_links** `array`
 
 The links this recipient clicked. Only returned for `type=clicked`.
 

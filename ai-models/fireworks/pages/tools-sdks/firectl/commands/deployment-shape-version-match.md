@@ -12,7 +12,7 @@ Prints the validated deployment shape versions compatible with a model, restrict
 
 Unlike 'deployment-shape-version list --base-model', which shows every validated shape matching the model, this returns the deployable set for the account: shapes not usable by the account are dropped, exact base-model matches are preferred over same model-type and parameter-count siblings, and PEFT addons are resolved to their base model.
 
-This runs the same server-side matching the shape picker in 'firectl create deployment' uses, but only on the model. It does not take the rest of a deployment's configuration into account, so it reports the default (non-addon) result: shapes are not filtered down to those advertising MULTI\_LORA, which a deployment created with --enable-addons requires.
+This runs the same server-side matching the shape picker in 'firectl create deployment' uses, but only on the model. It does not take the rest of a deployment's configuration into account, so it reports the default (non-addon) result: shapes are not filtered down to those advertising MULTI_LORA, which a deployment created with --enable-addons requires.
 
 A bare model ID is resolved against the account being matched for, so public models must be given as a full name (accounts/fireworks/models/...).
 

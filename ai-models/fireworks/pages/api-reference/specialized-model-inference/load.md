@@ -26,7 +26,7 @@ firectl model load-lora my-lora --serverless --wait
 
 ## Path parameters
 
-**account\_id** `string` *required*
+**account_id** `string` *required*
 
 Your account ID.
 

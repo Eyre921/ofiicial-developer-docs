@@ -159,11 +159,11 @@ client.chat.completions.create(
 
 > [card] [Reasoning](/guides/reasoning)
 >
-> Native reasoning\_effort, streaming, and tool use
+> Native reasoning_effort, streaming, and tool use
 
 > [card] [Structured responses](/structured-responses/structured-response-formatting)
 >
-> json\_schema and grammar response\_format
+> json_schema and grammar response_format
 
 > [card] [OpenAI compatibility](/tools-sdks/openai-compatibility)
 >

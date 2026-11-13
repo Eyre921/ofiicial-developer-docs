@@ -32,7 +32,7 @@ Each skill is a directory containing a `SKILL.md` file: a markdown file with YAM
 
 **scripts**
 
-**fetch\_docs.py**
+**fetch_docs.py**
 
 **references**
 
@@ -526,7 +526,7 @@ Deep Agents supports different backends depending on how you want to store and m
 > }
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     skills=["/skills/"],
 >     checkpointer=checkpointer,
@@ -775,7 +775,7 @@ Deep Agents supports different backends depending on how you want to store and m
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     store=store,
 >     skills=["/skills/"],
@@ -808,7 +808,7 @@ Deep Agents supports different backends depending on how you want to store and m
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     skills=["/skills/"],
 >     interrupt_on={
@@ -1071,7 +1071,7 @@ research_subagent = {
 }
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     skills=["/skills/main/"],  # Main agent and GP subagent get these
     subagents=[research_subagent],  # Researcher gets only its own skills
 )
@@ -1095,7 +1095,7 @@ from langgraph.store.memory import InMemoryStore
 store = InMemoryStore()  # Good for local dev; omit for LangSmith Agent Server
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     backend=CompositeBackend(
         default=StateBackend(),
         routes={
@@ -1487,7 +1487,7 @@ async def main() -> None:
 
     try:
         agent = create_deep_agent(
-            model="google_genai:gemini-3.6-flash",
+            model="google_genai:gemini-4-hydrogen",
             backend=backend,
             skills=["/skills/"],
             store=store,

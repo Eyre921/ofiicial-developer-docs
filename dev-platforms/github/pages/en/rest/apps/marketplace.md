@@ -4,7 +4,7 @@ source: https://docs.github.com/en/rest/apps/marketplace.md
 path: en/rest/apps/marketplace
 ---
 
-# REST API endpoints for {% data variables.product.prodname\_marketplace %}
+# REST API endpoints for GitHub Marketplace
 
 Use the REST API to interact with GitHub Marketplace
 

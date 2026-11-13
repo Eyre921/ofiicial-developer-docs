@@ -121,7 +121,7 @@ import { z } from "zod";
 const contextSchema = z.object({ userId: z.string() });
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   contextSchema,
 });
 
@@ -588,7 +588,7 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
 >       idleTtlSeconds: 3600, // TTL: clean up when idle
 >     }));
 >   return createDeepAgent({
->     model: "google:gemini-3.6-flash",
+>     model: "google:gemini-4-hydrogen",
 >     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
 >   });
 > }
@@ -617,7 +617,7 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
 >       name: sandboxName,
 >     }));
 >   return createDeepAgent({
->     model: "google:gemini-3.6-flash",
+>     model: "google:gemini-4-hydrogen",
 >     backend: new LangSmithSandbox({ sandbox: lsSandbox }),
 >   });
 > }
@@ -858,7 +858,7 @@ If your agent processes user input that might contain emails, credit card number
 import { createAgent, piiMiddleware } from "langchain";
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [
     piiMiddleware("email", { strategy: "redact", applyToInput: true }),
     piiMiddleware("credit_card", { strategy: "mask", applyToInput: true }),

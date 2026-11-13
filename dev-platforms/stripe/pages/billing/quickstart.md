@@ -685,7 +685,7 @@ app.post(
   '/webhook',
   express.raw({ type: 'application/json' }),
   (request, response) => {
-    let event = request.body;
+    let event = JSON.parse(request.body);
 
     // To run this example, set an environment variable STRIPE_WEBHOOK_SECRET to
     // your endpoint's unique secret.
@@ -1082,6 +1082,21 @@ try {
   http_response_code(400);
   exit();
 }
+if ($endpoint_secret) {
+  // Only verify the event if there is an endpoint secret defined.
+  // Otherwise use the basic decoded event.
+  $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'] ?? '';
+  try {
+    $event = \Stripe\Webhook::constructEvent(
+      $payload, $sig_header, $endpoint_secret
+    );
+  } catch(\Stripe\Exception\SignatureVerificationException $e) {
+    // Invalid signature
+    echo '⚠️  Webhook error while validating signature.';
+    http_response_code(400);
+    exit();
+  }
+}
 // Handle the event
 switch ($event->type) {
   case 'customer.subscription.trial_will_end':
@@ -1105,7 +1120,7 @@ switch ($event->type) {
     // handleSubscriptionUpdated($subscription);
     break;
   case 'entitlements.active_entitlement_summary.updated':
-    $subscription = $event->data->object; // contains a \Stripe\Subscription
+    $subscription = $event->data->object; // contains a \Stripe\Entitlements\ActiveEntitlementSummary
     // Then define and call a method to handle active entitlement summary updated.
     // handleEntitlementUpdated($subscription);
     break;
@@ -1258,9 +1273,9 @@ $stripe = new \Stripe\StripeClient($stripeSecretKey);
                     // Then define and call a method to handle the successful payment intent.
                     // handleSubscriptionUpdated(subscription);
                 }
-                else if (stripeEvent.Type == EventTypes.ActiveEntitlementSummaryUpdated)
+                else if (stripeEvent.Type == EventTypes.EntitlementsActiveEntitlementSummaryUpdated)
                 {
-                    var summary = stripeEvent.Data.Object as ActiveEntitlementSummary;
+                    var summary = stripeEvent.Data.Object as Stripe.Entitlements.ActiveEntitlementSummary;
                     Console.WriteLine("Active entitlement summary updated for customer", summary.Customer);
                     // Then define and call a method to handle active entitlement summary updated.
                     // handleEntitlementUpdated($subscription);
@@ -1278,7 +1293,6 @@ $stripe = new \Stripe\StripeClient($stripeSecretKey);
             }
         }
     "github.com/stripe/stripe-go/v87"
-    "github.com/stripe/stripe-go/v87/webhook"
     // This is a public sample test API key.
     // Don't submit any personally identifiable information in requests made with this key.
     // Sign in to see your own test API key embedded in code samples.
@@ -1490,9 +1504,15 @@ require github.com/stripe/stripe-go/v87 v87.0.0
         return "";
       }
       String sigHeader = request.headers("Stripe-Signature");
-      if (endpointSecret != null && sigHeader != null) {
+      if (endpointSecret != null) {
         // Only verify the event if you have an endpoint secret defined.
         // Otherwise use the basic event deserialized with GSON.
+        if (sigHeader == null) {
+          // Missing signature header
+          System.out.println("⚠️  Webhook error: missing Stripe-Signature header.");
+          response.status(400);
+          return "";
+        }
         try {
           event = client.constructEvent(payload, sigHeader, endpointSecret);
         } catch (SignatureVerificationException e) {

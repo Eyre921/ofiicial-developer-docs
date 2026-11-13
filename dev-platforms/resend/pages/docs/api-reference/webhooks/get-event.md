@@ -27,7 +27,7 @@ The event ID.
 
 The event type, for example `email.sent`.
 
-**created\_at** `string`
+**created_at** `string`
 
 When the event was created.
 
@@ -36,7 +36,7 @@ When the event was created.
 Delivery status of the event to this webhook: `success`, `failed`,
 `attempting`, or `pending`.
 
-**next\_attempt\_at** `string | null`
+**next_attempt_at** `string | null`
 
 When the next delivery attempt is scheduled. `null` once the event reaches
 `success` or `failed`.

@@ -143,7 +143,7 @@ Many base models default to FP8 or FP4 shapes. If you need LoRA addon inference 
 
 **Option 1 — Use a BF16 deployment shape**
 
-Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set — it returns only shapes with the MULTI\_LORA capability, so quantized shapes are filtered out for you:
+Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set — it returns only shapes with the MULTI_LORA capability, so quantized shapes are filtered out for you:
 
 ```bash theme={null}
 curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \

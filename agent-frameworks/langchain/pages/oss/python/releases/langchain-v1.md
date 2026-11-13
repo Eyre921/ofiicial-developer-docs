@@ -6,7 +6,7 @@ path: oss/python/releases/langchain-v1
 
 **LangChain v1 is a focused, production-ready foundation for building agents.** We've streamlined the framework around three core improvements:
 
-> [card] [create\_agent](#create_agent)
+> [card] [create_agent](#create_agent)
 >
 > The new standard for building agents in LangChain, replacing `langgraph.prebuilt.create_react_agent`.
 

@@ -87465,29 +87465,26 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/quickstart
 
 Install the pg_pinecone extension for Postgres and search a sample table with a native index, which runs the search engine Pinecone uses at scale.
 
-This quickstart installs pg_pinecone on a PostgreSQL server you manage. You create a sample table with vectors and search it with a `native` index, which runs the search engine Pinecone uses at scale inside Postgres. You can bring your own vectors, with no API key or network access, or have Pinecone generate embeddings. To compare `native` with the other engines, see [Storage engines](/guides/pg-pinecone/storage-engines).
+This quickstart installs pg_pinecone on a PostgreSQL server you manage, or deploys it to a hosting platform. You create a sample table with vectors and search it with a `native` index, which runs the search engine Pinecone uses at scale inside Postgres. You can bring your own vectors, with no API key or network access, or have Pinecone generate embeddings. To compare `native` with the other engines, see [Storage engines](/guides/pg-pinecone/storage-engines).
 
 If you already have a table with a pgvector index, complete steps 1 and 2 to install pg_pinecone, then [switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
 
 ## Prerequisites
 
-* A PostgreSQL 17 or 18 server and a superuser role on it.
-* pgvector installed on that server, because pg_pinecone uses its `vector` column type and distance operators. If you don't have it, run `sudo apt install postgresql-17-pgvector` on Debian or Ubuntu, or `brew install pgvector` with Homebrew on macOS. For other Linux distributions, see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation). If you install with Docker, the image includes Postgres and pgvector, so you need only Docker.
+* A PostgreSQL 17 or 18 server with a superuser role, Docker, or an account on a supported hosting platform. The Docker image and the hosting platform templates include Postgres and pgvector.
 * Optional: a [Pinecone API key](https://app.pinecone.io/organizations/-/projects/-/keys), if you want Pinecone to generate the embeddings. A key from the free [Starter plan](https://www.pinecone.io/pricing/) is enough.
-
-> [!NOTE]
->
-> The `native` engine never calls Pinecone. Steps 3 and 4 each have two tabs, so pick the same one in both. **Your own vectors** runs entirely in your database with no API key or network access, and **Pinecone embeddings** generates embeddings with a Pinecone-hosted model.
 
 ## 1. Install pg_pinecone
 
 > [tab] Release archive
 >
-> 1. Download the release archive for your platform and Postgres version from the [releases page](https://github.com/pinecone-io/pg_pinecone/releases).
+> 1. If your server doesn't have pgvector, install it. Run `sudo apt install postgresql-17-pgvector` (or `postgresql-18-pgvector`) on Debian or Ubuntu, `brew install pgvector` on macOS, or see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation).
+>
+> 2. Download the release archive for your platform and Postgres version from the [releases page](https://github.com/pinecone-io/pg_pinecone/releases).
 >
 >    Archives are published for PostgreSQL 17 and 18 on Linux x86_64, Linux arm64, and macOS arm64. The Linux x86_64 build needs a CPU that supports x86-64-v3 (Intel Haswell or newer, which covers current cloud instances), and the Linux builds need glibc 2.39 or later, such as Ubuntu 24.04 or Debian 13.
 >
-> 2. Extract the archive and copy its files into your Postgres installation.
+> 3. Extract the archive and copy its files into your Postgres installation.
 >
 >    The commands use `PG=17`. If your server runs PostgreSQL 18, change it to `PG=18`. To check your version, run `pg_config --version`. `pg_config` also reports where your Postgres installation keeps extension files:
 >
@@ -87528,30 +87525,45 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >
 >    The `shared_preload_libraries` setting isn't needed for this quickstart, but the `remote` engine, full-text search, and semantic search need it, and setting it now saves a restart later.
 
+> [tab] Hosting platform
+>
+> Deploy a template to a hosting platform, then connect to it. Each template runs PostgreSQL 18 with pg_pinecone installed and preloaded.
+>
+> | Platform | Deploy | Connect |
+> | - | - | - |
+> | Render | [pg_pinecone template](https://render.com/deploy?repo=https://github.com/pinecone-io/pg_pinecone_render) | In the service's **Shell**, run `psql -U postgres -d pg_pinecone`. |
+> | Railway | [pg_pinecone template](https://railway.com/deploy/pg-pinecone) | On your computer, run `psql "YOUR_DATABASE_PUBLIC_URL"` with the `DATABASE_PUBLIC_URL` value from the service's **Variables** tab. If you don't have `psql`, install the [PostgreSQL client](https://www.postgresql.org/download/). |
+>
+> The template creates the extensions, so you can skip to [step 3](#3-add-sample-data).
+
 ## 2. Connect and create the extensions
 
-1. Connect to your database as a superuser with `psql`:
+### 1. Connect to your database
 
-   ```bash Linux theme={null}
-   sudo -u postgres psql
-   ```
+Connect as a superuser with `psql`:
 
-   ```bash macOS theme={null}
-   psql postgres
-   ```
+```bash Linux theme={null}
+sudo -u postgres psql
+```
 
-   ```bash Docker theme={null}
-   docker exec -it pg_pinecone psql -U postgres
-   ```
+```bash macOS theme={null}
+psql postgres
+```
 
-   On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
+```bash Docker theme={null}
+docker exec -it pg_pinecone psql -U postgres
+```
 
-2. Create the extensions. Create pgvector first, because pg_pinecone builds on its `vector` type and operators:
+On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
 
-   ```sql SQL theme={null}
-   CREATE EXTENSION vector;
-   CREATE EXTENSION pg_pinecone;
-   ```
+### 2. Create the extensions
+
+Create pgvector first, because pg_pinecone builds on its `vector` type and operators:
+
+```sql SQL theme={null}
+CREATE EXTENSION vector;
+CREATE EXTENSION pg_pinecone;
+```
 
 ## 3. Add sample data
 
@@ -87712,6 +87724,8 @@ If you don't need the sample table anymore, delete it. `DROP TABLE` permanently 
 ```sql SQL theme={null}
 DROP TABLE docs;
 ```
+
+If you deployed to a hosting platform, delete the deployment so it stops billing. On Render, select **Disconnect Blueprint** in the Blueprint's settings, then delete the service. On Railway, delete the project.
 
 ## Next steps
 
@@ -87958,7 +87972,7 @@ A table with a pgvector index, such as an [HNSW index](https://github.com/pgvect
 
 ## Before you begin
 
-* pg_pinecone installed and created in the database, as steps 1 and 2 of the [quickstart](/guides/pg-pinecone/quickstart) show.
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A table with a `vector` column and a pgvector index on that column created with `CREATE INDEX`. If `pinecone.create_index()` built the pgvector index instead, skip this guide and switch it with one call: `SELECT pinecone.set_engine('your_table', 'native');`.
 * A single-column primary key, if you plan to [switch to `remote`](/guides/pg-pinecone/switch-to-remote) later. A `native` index doesn't need one.
 
@@ -88027,7 +88041,7 @@ When a table outgrows a single Postgres server, you can move its vector search t
 
 ## Before you begin
 
-* pg_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database, which the `remote` engine needs even if you bring your own vectors. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * A table with a `native` index. The examples use the `docs` table from the quickstart, so skip the quickstart's clean-up step if you want to follow along.
 
@@ -89928,6 +89942,12 @@ Source: https://docs.pinecone.io/release-notes/2026
 Every change to Pinecone in 2026, including new features, API updates, deprecations, and pricing and plan changes.
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
+
+**2026-11-13**
+
+### Deploy pg_pinecone to Render or Railway
+
+You can now deploy [pg_pinecone](/guides/pg-pinecone/overview) to Render or Railway with a one-click template. Each template runs PostgreSQL 18 with pg_pinecone installed and preloaded, so you don't need a server of your own. To deploy one and connect, see the [quickstart](/guides/pg-pinecone/quickstart#hosting-platform).
 
 **2026-11-12**
 

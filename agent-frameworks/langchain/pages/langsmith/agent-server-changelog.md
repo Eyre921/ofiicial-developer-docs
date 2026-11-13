@@ -18,11 +18,53 @@ path: langsmith/agent-server-changelog
 
 Deployments use the newest `stable` version by default and are automatically updated to the newest `stable` version on each new revision. To pin to a specific version, set [`api_version`](/langsmith/cli#pinning-api-version) to the desired version in langgraph.json.
 
+## v0.19
+
+Latest version: `0.19.0rc1`
+
+This minor line is still a release candidate. The last stable release is `0.18.0`.
+
+### Changes
+
+#### New Features
+
+* `langgraph dev` runs on the Go core with SQLite, matching deployed servers more closely.
+* On 0.19 only, set `FF_INMEM_CORE=false` to run `langgraph dev` on the Python in-memory runtime instead of the Go core; install `langgraph-runtime-inmem>=0.39,<0.40` if your environment doesn't already have it. Data saved by one runtime doesn't appear in the other.
+
+#### Fixes
+
+* Fixes checkpoint writes from JS graphs continuing to run after the graph's request to the checkpointer timed out.
+* Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+* Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+
+#### General Notes
+
+* The Agent Server OpenAPI spec is now titled "LangSmith Agent Server".
+
+> [accordion] v0.19 releases
+>
+> **2026-11-12**
+>
+> ## v0.19.0rc1
+>
+> ### New Features
+>
+> * `langgraph dev` runs on the Go core with SQLite, matching deployed servers more closely.
+> * On 0.19 only, set `FF_INMEM_CORE=false` to run `langgraph dev` on the Python in-memory runtime instead of the Go core; install `langgraph-runtime-inmem>=0.39,<0.40` if your environment doesn't already have it. Data saved by one runtime doesn't appear in the other.
+>
+> ### Fixes
+>
+> * Fixes checkpoint writes from JS graphs continuing to run after the graph's request to the checkpointer timed out.
+> * Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+> * Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+>
+> ### General Notes
+>
+> * The Agent Server OpenAPI spec is now titled "LangSmith Agent Server".
+
 ## v0.18
 
-Latest version: `0.18.0rc4`
-
-This minor line is still a release candidate. The last stable release is `0.17.1`.
+Latest version: `0.18.0`
 
 ### Changes
 
@@ -55,7 +97,7 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 * Fixes `input.respond` rejecting interrupts with `no_such_interrupt` when the run that raised them then failed, timed out or was cancelled, or was started from an earlier checkpoint.
 * Ignores a `cron_id` sent in a run's or cron's `config.configurable`, `context` or `checkpoint`; the server sets it for cron runs.
 * `run.start` input sent while a thread is paused on several interrupts now returns `invalid_argument` and leaves the thread paused, instead of starting a run that fails.
-* Ignores server-reserved keys such as cron\_id and **after\_seconds** when they arrive in a v2 event-streaming run.start config, in a cron's stored checkpoint, or in a request header matched by http.configurable\_headers, as the REST routes already do for request bodies.
+* Ignores server-reserved keys such as cron_id and **after_seconds** when they arrive in a v2 event-streaming run.start config, in a cron's stored checkpoint, or in a request header matched by http.configurable_headers, as the REST routes already do for request bodies.
 * Lower Agent Server memory use for streaming v2 SSE connections, which no longer keep a per-run event replay buffer.
 * Thread event streams now reject a thread the caller can't read before streaming: `POST /threads/{thread_id}/stream/events` returns 403 or 404 instead of a 200 with an error frame (422 for a malformed thread ID), and the WebSocket endpoint closes with 4403, 4404 or 4422.
 * A message sent with `run.start` while a run is going is now queued at once instead of after up to 5 seconds, and is no longer lost when sent while answered interrupts are running or after cancelling a run that had none open.
@@ -94,6 +136,13 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 * Ignores a `fairness_weight` returned by a priority callback, with a warning, instead of failing the run.
 * Ships langgraph-sdk 0.4.12. Its `PrioritySettings` no longer offers `fairness_weight`, and its documentation now states that -5 runs first, matching the server.
 * Exposes queue loop metrics when `DISPATCH_MODE` is set to `multi-process`.
+* Allows redis-py 8.x in Agent Server images and user graph dependencies.
+* Reduces memory use for thread get and search responses on large threads, because thread values are no longer decoded and re-encoded.
+* Fixes dropped events in live streams on LangSmith-hosted deployments when a thread streams large state (over 8 MB) more than a minute apart.
+* Fixes `run.start` with a fork checkpoint while the thread waits on an interrupt: it now starts a new run from that checkpoint instead of answering the interrupt, or being refused when several are pending.
+* Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
+* Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+* Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
 
 #### Security
 
@@ -103,8 +152,56 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 * Updates Go builds to mitigate the eMudhra certificate authority compromise.
 * Updates Python certificate trust bundles.
 * Patches Agent Server networking and tracing dependencies.
+* Updates bundled dependencies to address security vulnerabilities.
 
 > [accordion] v0.18 releases
+>
+> **2026-11-12**
+>
+> ## v0.18.0
+>
+> ### Fixes
+>
+> * Fixes the per-priority queue metrics to count only runs that can start, and renames them to `lg_api_num_startable_runs` and `lg_api_startable_runs_wait_time_{max,med}`; the `/metrics?format=json` keys under `queue.by_priority` change to match.
+> * Fixes store reads over 4 MiB failing with `RESOURCE_EXHAUSTED`.
+>
+> ### Security
+>
+> * Updates bundled dependencies to address security vulnerabilities.
+>
+> **2026-11-11**
+>
+> ## v0.18.0rc8
+>
+> ### Fixes
+>
+> * Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
+>
+> **2026-11-10**
+>
+> ## v0.18.0rc7
+>
+> ### Security
+>
+> * Includes dependency and security maintenance updates.
+>
+> **2026-11-10**
+>
+> ## v0.18.0rc6
+>
+> ### Fixes
+>
+> * Fixes `run.start` with a fork checkpoint while the thread waits on an interrupt: it now starts a new run from that checkpoint instead of answering the interrupt, or being refused when several are pending.
+>
+> **2026-11-10**
+>
+> ## v0.18.0rc5
+>
+> ### Fixes
+>
+> * Allows redis-py 8.x in Agent Server images and user graph dependencies.
+> * Reduces memory use for thread get and search responses on large threads, because thread values are no longer decoded and re-encoded.
+> * Fixes dropped events in live streams on LangSmith-hosted deployments when a thread streams large state (over 8 MB) more than a minute apart.
 >
 > **2026-11-05**
 >
@@ -167,7 +264,7 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 > * Fixes `input.respond` rejecting interrupts with `no_such_interrupt` when the run that raised them then failed, timed out or was cancelled, or was started from an earlier checkpoint.
 > * Ignores a `cron_id` sent in a run's or cron's `config.configurable`, `context` or `checkpoint`; the server sets it for cron runs.
 > * `run.start` input sent while a thread is paused on several interrupts now returns `invalid_argument` and leaves the thread paused, instead of starting a run that fails.
-> * Ignores server-reserved keys such as cron\_id and **after\_seconds** when they arrive in a v2 event-streaming run.start config, in a cron's stored checkpoint, or in a request header matched by http.configurable\_headers, as the REST routes already do for request bodies.
+> * Ignores server-reserved keys such as cron_id and **after_seconds** when they arrive in a v2 event-streaming run.start config, in a cron's stored checkpoint, or in a request header matched by http.configurable_headers, as the REST routes already do for request bodies.
 > * Lower Agent Server memory use for streaming v2 SSE connections, which no longer keep a per-run event replay buffer.
 > * Thread event streams now reject a thread the caller can't read before streaming: `POST /threads/{thread_id}/stream/events` returns 403 or 404 instead of a 200 with an error frame (422 for a malformed thread ID), and the WebSocket endpoint closes with 4403, 4404 or 4422.
 > * A message sent with `run.start` while a run is going is now queued at once instead of after up to 5 seconds, and is no longer lost when sent while answered interrupts are running or after cancelling a run that had none open.
@@ -215,7 +312,7 @@ This minor line is still a release candidate. The last stable release is `0.17.1
 
 ## v0.17
 
-Latest version: `0.17.1`
+Latest version: `0.17.2`
 
 ### Changes
 
@@ -255,21 +352,35 @@ Latest version: `0.17.1`
 * Fixes paused threads showing as `idle` after a run is cancelled or rolled back before its first checkpoint. A cancelled run now reports why in `cancel_reason`, instead of the thread's `error`.
 * Fixes crons created with top-level `context` stopping after their first run on the in-memory runtime.
 * Fixes `GET /threads/{thread_id}/storage` returning 500 when core-server owns all database access.
-* Fixed Postgres connections closed server-side (e.g. by idle\_session\_timeout) being reused from the pool.
+* Fixed Postgres connections closed server-side (e.g. by idle_session_timeout) being reused from the pool.
 * Fixes AES-encrypted JSON data losing number formatting and precision (for example, `4.0` stored as `4`).
 * Fixed `langgraph dev` losing data: thread state and long-term store items are now saved to `.langgraph_api/` every 10 seconds as intended, and a restart no longer deletes every thread when saved state references a class from the graph file or one that was moved or renamed (an unreadable file is kept as a `.bak` copy).
 * Allows redis-py 8.x in Agent Server images and user graph dependencies.
+* Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
 
 #### Security
 
 * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 * Updates Agent Server Go builds, Datadog initialization, uv, and telemetry certificate dependencies.
+* Updates bundled dependencies to address security vulnerabilities.
 
 #### General Notes
 
 * Removes the built-in Python Postgres store; the Go store is now always used and `LANGGRAPH_STORE_BACKEND` is ignored. Custom stores and the in-memory runtime are unaffected.
 
 > [accordion] v0.17 releases
+>
+> **2026-11-12**
+>
+> ## v0.17.2
+>
+> ### Fixes
+>
+> * Replays a run's stored events in pages instead of inside Redis, so rejoining a long run no longer stalls Redis for other clients
+>
+> ### Security
+>
+> * Updates bundled dependencies to address security vulnerabilities.
 >
 > **2026-11-03**
 >
@@ -393,7 +504,7 @@ Latest version: `0.17.1`
 > * Fixes paused threads showing as `idle` after a run is cancelled or rolled back before its first checkpoint. A cancelled run now reports why in `cancel_reason`, instead of the thread's `error`.
 > * Fixes crons created with top-level `context` stopping after their first run on the in-memory runtime.
 > * Fixes `GET /threads/{thread_id}/storage` returning 500 when core-server owns all database access.
-> * Fixed Postgres connections closed server-side (e.g. by idle\_session\_timeout) being reused from the pool.
+> * Fixed Postgres connections closed server-side (e.g. by idle_session_timeout) being reused from the pool.
 > * Fixes AES-encrypted JSON data losing number formatting and precision (for example, `4.0` stored as `4`).
 > * Fixed `langgraph dev` losing data: thread state and long-term store items are now saved to `.langgraph_api/` every 10 seconds as intended, and a restart no longer deletes every thread when saved state references a class from the graph file or one that was moved or renamed (an unreadable file is kept as a `.bak` copy).
 >
@@ -403,7 +514,7 @@ Latest version: `0.17.1`
 
 ## v0.16
 
-Latest version: `0.16.10`
+Latest version: `0.16.11`
 
 ### Changes
 
@@ -419,7 +530,7 @@ Latest version: `0.16.10`
 
 #### Fixes
 
-* Studio auth users now include ls\_user\_id when available.
+* Studio auth users now include ls_user_id when available.
 * Added support for A2UI DataParts containing a single message object.
 * Pin the optional OpenTelemetry tracer's Requests dependency to a patched version independently of the application lockfiles.
 * Fix global checkpointer TTL not being applied when runs implicitly create threads, including named threads created with `if_not_exists="create"`.
@@ -471,8 +582,17 @@ Latest version: `0.16.10`
 * Updates certifi, Hono and Vite to patched versions to address published security advisories.
 * Patches Agent Server networking and tracing dependencies.
 * Pins the optional OpenTelemetry tracer's certificate bundle.
+* Updates bundled dependencies to address security vulnerabilities.
 
 > [accordion] v0.16 releases
+>
+> **2026-11-12**
+>
+> ## v0.16.11
+>
+> ### Security
+>
+> * Updates bundled dependencies to address security vulnerabilities.
 >
 > **2026-11-03**
 >
@@ -639,7 +759,7 @@ Latest version: `0.16.10`
 >
 > ### Fixes
 >
-> * Studio auth users now include ls\_user\_id when available.
+> * Studio auth users now include ls_user_id when available.
 > * Added support for A2UI DataParts containing a single message object.
 > * Pin the optional OpenTelemetry tracer's Requests dependency to a patched version independently of the application lockfiles.
 > * Fix global checkpointer TTL not being applied when runs implicitly create threads, including named threads created with `if_not_exists="create"`.
@@ -665,13 +785,13 @@ Latest version: `0.16.10`
 
 ## v0.15
 
-Latest version: `0.15.13`
+Latest version: `0.15.14`
 
 ### Changes
 
 #### New Features
 
-* Adds A2A\_A2UI\_ENABLED and A2A\_A2UI\_TOOL\_CALL\_RESULTS so A2UI can be enabled for every assistant and published from listed tools as spec DataParts next to unchanged tool results, accepts object-valued A2UI DataParts, and stops A2A replies from repeating an earlier turn's answer or UI.
+* Adds A2A_A2UI_ENABLED and A2A_A2UI_TOOL_CALL_RESULTS so A2UI can be enabled for every assistant and published from listed tools as spec DataParts next to unchanged tool results, accepts object-valued A2UI DataParts, and stops A2A replies from repeating an earlier turn's answer or UI.
 * Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
 
 #### Fixes
@@ -707,8 +827,17 @@ Latest version: `0.15.13`
 * Updates bundled certifi and Hono to clear known CVEs.
 * Patches Agent Server networking and tracing dependencies and fixes a loopback cancellation race.
 * Update bundled npm tooling to address vulnerabilities in brace-expansion and undici.
+* Fixes a crash when decoding malformed compressed stream frames.
 
 > [accordion] v0.15 releases
+>
+> **2026-11-12**
+>
+> ## v0.15.14
+>
+> ### Security
+>
+> * Fixes a crash when decoding malformed compressed stream frames.
 >
 > **2026-11-07**
 >
@@ -830,7 +959,7 @@ Latest version: `0.15.13`
 >
 > ### New Features
 >
-> * Adds A2A\_A2UI\_ENABLED and A2A\_A2UI\_TOOL\_CALL\_RESULTS so A2UI can be enabled for every assistant and published from listed tools as spec DataParts next to unchanged tool results, accepts object-valued A2UI DataParts, and stops A2A replies from repeating an earlier turn's answer or UI.
+> * Adds A2A_A2UI_ENABLED and A2A_A2UI_TOOL_CALL_RESULTS so A2UI can be enabled for every assistant and published from listed tools as spec DataParts next to unchanged tool results, accepts object-valued A2UI DataParts, and stops A2A replies from repeating an earlier turn's answer or UI.
 >
 > **2026-09-24**
 >
@@ -914,7 +1043,7 @@ Latest version: `0.14.10`
 #### New Features
 
 * Custom encryption (`LANGGRAPH_ENCRYPTION`) now works with the gRPC Postgres checkpointer (`PREFER_GRPC_CHECKPOINTER=true`). Existing AES-encrypted checkpoints remain readable when migrating to custom encryption.
-* Custom auth can now accept LangSmith API keys alongside the existing handler. Set `auth.allow_langsmith_api_keys: true` in `langgraph.json` (requires `LANGGRAPH_AUTH_TYPE=langsmith`). Requests with an `Authorization` header still go to custom auth. All others go to LangSmith (`x-api-key`). LangSmith-authenticated callers are have two parameters: ctx.user.identity = LangSmith user\_id (or missing) and ctx.permissions = \["authenticated"]. `@auth.on` handlers still run. Off by default.
+* Custom auth can now accept LangSmith API keys alongside the existing handler. Set `auth.allow_langsmith_api_keys: true` in `langgraph.json` (requires `LANGGRAPH_AUTH_TYPE=langsmith`). Requests with an `Authorization` header still go to custom auth. All others go to LangSmith (`x-api-key`). LangSmith-authenticated callers are have two parameters: ctx.user.identity = LangSmith user_id (or missing) and ctx.permissions = \["authenticated"]. `@auth.on` handlers still run. Off by default.
 * Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
 
 #### Fixes
@@ -925,7 +1054,7 @@ Latest version: `0.14.10`
 * Fixes webhook field allowlists.
 * Fixed intermittent run creation failures caused by thread lock contention with custom encryption.
 * Fixes a bug where the sweeper could fail for large back logs of pending runs.
-* Fixes a problem where runs.join did not respect the cancel\_on\_disconnect parameter.
+* Fixes a problem where runs.join did not respect the cancel_on_disconnect parameter.
 * Fixes v2 thread streaming failures caused by Redis Cluster `MOVED` redirects.
 * Fixed cancellation of JavaScript agent runs so signal-aware graph nodes, tools, and model calls stop after an interrupt.
 * Fixes a bug with historical subgraph replay.
@@ -937,7 +1066,7 @@ Latest version: `0.14.10`
 
 #### Security
 
-* Fixes a bug where create\_run auth could be bypassed by a run using if\_not\_exists.
+* Fixes a bug where create_run auth could be bypassed by a run using if_not_exists.
 * Fixed the default wildcard CORS policy so browser credentials are disabled unless trusted origins are configured.
 * Bumping @langchain/langgraph to `1.4.12` and @langchain/langgraph-checkpoint to `1.1.5` to resolve [GHSA-j87f-x5h5-gr75](https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-j87f-x5h5-gr75).
 * Patch AnyIO vulnerabilities in server dependencies, preserve HTTPS webhook compatibility, and prevent obsolete Python package files from surviving image upgrades.
@@ -1104,7 +1233,7 @@ Latest version: `0.14.10`
 >
 > ## New Features
 >
-> * Custom auth can now accept LangSmith API keys alongside the existing handler. Set `auth.allow_langsmith_api_keys: true` in `langgraph.json` (requires `LANGGRAPH_AUTH_TYPE=langsmith`). Requests with an `Authorization` header still go to custom auth. All others go to LangSmith (`x-api-key`). LangSmith-authenticated callers are have two parameters: ctx.user.identity = LangSmith user\_id (or missing) and ctx.permissions = \["authenticated"]. `@auth.on` handlers still run. Off by default.
+> * Custom auth can now accept LangSmith API keys alongside the existing handler. Set `auth.allow_langsmith_api_keys: true` in `langgraph.json` (requires `LANGGRAPH_AUTH_TYPE=langsmith`). Requests with an `Authorization` header still go to custom auth. All others go to LangSmith (`x-api-key`). LangSmith-authenticated callers are have two parameters: ctx.user.identity = LangSmith user_id (or missing) and ctx.permissions = \["authenticated"]. `@auth.on` handlers still run. Off by default.
 >
 > ### Fixes
 >
@@ -1116,7 +1245,7 @@ Latest version: `0.14.10`
 >
 > ### Fixes
 >
-> * Fixes a problem where runs.join did not respect the cancel\_on\_disconnect parameter.
+> * Fixes a problem where runs.join did not respect the cancel_on_disconnect parameter.
 >
 > **2026-08-21**
 >
@@ -1137,7 +1266,7 @@ Latest version: `0.14.10`
 >
 > ### Security
 >
-> * Fixes a bug where create\_run auth could be bypassed by a run using if\_not\_exists.
+> * Fixes a bug where create_run auth could be bypassed by a run using if_not_exists.
 > * Fixed the default wildcard CORS policy so browser credentials are disabled unless trusted origins are configured.
 > * Bumping @langchain/langgraph to `1.4.12` and @langchain/langgraph-checkpoint to `1.1.5` to resolve [GHSA-j87f-x5h5-gr75](https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-j87f-x5h5-gr75).
 
@@ -1164,10 +1293,10 @@ Latest version: `0.13.8`
 * Disable rate limiting and warn when the rate-limit configuration is invalid instead of preventing server startup.
 * Configure core rate limits exclusively through environment variables.
 * Rename Postgres IAM auth provider environment variable to `AGENT_POSTGRES_IAM_AUTH_PROVIDER`.
-* Rename Redis IAM auth provider environment variable to AGENT\_REDIS\_IAM\_AUTH\_PROVIDER.
+* Rename Redis IAM auth provider environment variable to AGENT_REDIS_IAM_AUTH_PROVIDER.
 * Fix queue entrypoint import order to prevent port binding conflicts when running alongside the API.
 * Fix A2A streaming to return final output as an Artifact and filter task history to public conversation turns.
-* Fix store search and list\_namespaces to scope namespace matching to segment boundaries and treat namespace labels as literal characters.
+* Fix store search and list_namespaces to scope namespace matching to segment boundaries and treat namespace labels as literal characters.
 * Fix bug where cancelled runs could be retried if the worker died before acknowledging the cancellation.
 * Fix JavaScript graph checkpointer failures when tool routing uses Send objects.
 * Reject Send.timeout in gRPC serialization to prevent silent loss of per-task timeout semantics.
@@ -1329,10 +1458,10 @@ Latest version: `0.13.8`
 > * Disable rate limiting and warn when the rate-limit configuration is invalid instead of preventing server startup.
 > * Configure core rate limits exclusively through environment variables.
 > * Rename Postgres IAM auth provider environment variable to `AGENT_POSTGRES_IAM_AUTH_PROVIDER`.
-> * Rename Redis IAM auth provider environment variable to AGENT\_REDIS\_IAM\_AUTH\_PROVIDER.
+> * Rename Redis IAM auth provider environment variable to AGENT_REDIS_IAM_AUTH_PROVIDER.
 > * Fix queue entrypoint import order to prevent port binding conflicts when running alongside the API.
 > * Fix A2A streaming to return final output as an Artifact and filter task history to public conversation turns.
-> * Fix store search and list\_namespaces to scope namespace matching to segment boundaries and treat namespace labels as literal characters.
+> * Fix store search and list_namespaces to scope namespace matching to segment boundaries and treat namespace labels as literal characters.
 > * Fix bug where cancelled runs could be retried if the worker died before acknowledging the cancellation.
 > * Fix JavaScript graph checkpointer failures when tool routing uses Send objects.
 > * Reject Send.timeout in gRPC serialization to prevent silent loss of per-task timeout semantics.
@@ -1362,9 +1491,9 @@ Latest version: `0.12.12`
 
 * Update customer-facing support links to the Support Portal.
 * Fix Redis Cluster pub/sub connection failures on TLS-only clusters.
-* Fix race condition causing spurious no\_such\_interrupt errors on stateless thread commands.
-* Fix custom stream events from subgraphs being dropped when using stream\_subgraphs=True on JS deployments.
-* Fix join\_stream to correctly include namespaced subgraph events when filtering by stream mode.
+* Fix race condition causing spurious no_such_interrupt errors on stateless thread commands.
+* Fix custom stream events from subgraphs being dropped when using stream_subgraphs=True on JS deployments.
+* Fix join_stream to correctly include namespaced subgraph events when filtering by stream mode.
 * Fix OpenAPI docstring parsing warnings for affected assistant, event streaming, and inmem deploy routes.
 * Fix race condition in WebSocket input respond by waiting for interrupt persistence.
 * Assign JavaScript worker ports per entrypoint to prevent collisions in shared network namespaces.
@@ -1379,7 +1508,7 @@ Latest version: `0.12.12`
 * Rename IAM authentication environment variables for Postgres and Redis to prevent naming collisions.
 * Accept and convert A2A FilePart inputs to LangChain multimodal content blocks.
 * Fix custom JavaScript auth port conflicts between colocated API and queue worker processes.
-* Fix store search and list\_namespaces to match namespace segments exactly and treat `_` and `%` as literal characters.
+* Fix store search and list_namespaces to match namespace segments exactly and treat `_` and `%` as literal characters.
 * Fix JS graph checkpointer failures when tool routing uses Send objects.
 * Fix A2A streaming to return final outputs as Artifacts before terminal status and restrict task history to public client and agent conversation turns.
 * Restore support for `langgraph-sdk` versions starting at 0.3.5.
@@ -1531,7 +1660,7 @@ Latest version: `0.12.12`
 >
 > ### Fixes
 >
-> * Fix store search and list\_namespaces to match namespace segments exactly and treat `_` and `%` as literal characters.
+> * Fix store search and list_namespaces to match namespace segments exactly and treat `_` and `%` as literal characters.
 > * Fix JS graph checkpointer failures when tool routing uses Send objects.
 >
 > **2026-07-24**
@@ -1604,9 +1733,9 @@ Latest version: `0.12.12`
 >
 > * Update customer-facing support links to the Support Portal.
 > * Fix Redis Cluster pub/sub connection failures on TLS-only clusters.
-> * Fix race condition causing spurious no\_such\_interrupt errors on stateless thread commands.
-> * Fix custom stream events from subgraphs being dropped when using stream\_subgraphs=True on JS deployments.
-> * Fix join\_stream to correctly include namespaced subgraph events when filtering by stream mode.
+> * Fix race condition causing spurious no_such_interrupt errors on stateless thread commands.
+> * Fix custom stream events from subgraphs being dropped when using stream_subgraphs=True on JS deployments.
+> * Fix join_stream to correctly include namespaced subgraph events when filtering by stream mode.
 > * Fix OpenAPI docstring parsing warnings for affected assistant, event streaming, and inmem deploy routes.
 > * Fix race condition in WebSocket input respond by waiting for interrupt persistence.
 > * Assign JavaScript worker ports per entrypoint to prevent collisions in shared network namespaces.
@@ -2007,8 +2136,8 @@ Latest version: `0.10.3`
 ### General Notes
 
 * Added cron metadata filtering in /runs/crons/search and /runs/crons/count, matching metadata filter behavior already available for assistants/threads.
-* Added Postgres checkpointer pool tuning knobs for cases when loading lots of large checkpoints at once. LANGGRAPH\_CHECKPOINTER\_POSTGRES\_POOL\_MIN\_SIZE and LANGGRAPH\_CHECKPOINTER\_POSTGRES\_POOL\_TIMEOUT\_SECONDS can now be set.
-* Fixed a crash in update\_state in the mongo checkpointer when a thread has no prior checkpoint.
+* Added Postgres checkpointer pool tuning knobs for cases when loading lots of large checkpoints at once. LANGGRAPH_CHECKPOINTER_POSTGRES_POOL_MIN_SIZE and LANGGRAPH_CHECKPOINTER_POSTGRES_POOL_TIMEOUT_SECONDS can now be set.
+* Fixed a crash in update_state in the mongo checkpointer when a thread has no prior checkpoint.
 * Includes dependency updates for security vulnerabilities.
 
 ### New Features
@@ -2103,7 +2232,7 @@ This does not require code changes to upgrade, but there are a few things to be 
 
 ## v0.7.103
 
-* Resolved migration version conflict for checkpoint\_delete\_queue, ensuring proper execution and added duplicate version detection for future migrations.
+* Resolved migration version conflict for checkpoint_delete_queue, ensuring proper execution and added duplicate version detection for future migrations.
 
 **2026-04-14**
 
@@ -2380,7 +2509,7 @@ This does not require code changes to upgrade, but there are a few things to be 
 ## v0.7.52
 
 * Added feedback URLs to the `/wait` and `/join` endpoint responses under a `__feedback__` key when `feedback_keys` are supplied.
-* Added feedback\_keys support to the distributed runtime, including presigned feedback token generation using langsmith-go SDK.
+* Added feedback_keys support to the distributed runtime, including presigned feedback token generation using langsmith-go SDK.
 * Upgraded Werkzeug from version 3.1.5 to 3.1.6 to address a Windows security issue with special device names in multi-segment paths.
 * Upgraded Go runtime to 1.25.7 to address critical and high severity CVEs identified in vulnerability scans.
 
@@ -2466,10 +2595,10 @@ This does not require code changes to upgrade, but there are a few things to be 
 ## v0.7.33
 
 * Enhanced the Redis fixture by removing custom checkpointer test skips, improving typed serialization, and adding missing Redis methods.
-* Resolved a stored XSS vulnerability in the handle\_ui endpoint by sanitizing message names in single-quoted HTML onload attributes.
+* Resolved a stored XSS vulnerability in the handle_ui endpoint by sanitizing message names in single-quoted HTML onload attributes.
 * Fixed an authorization bypass issue in `put_item` to ensure correct namespace rewrite by the auth handler.
 * Enforced assistant ownership checks during run creation, preventing execution on unowned assistants while ensuring system assistants remain accessible to all authenticated users.
-* Implemented AES encryption for checkpoint blobs and writes in the Go checkpointer when using LANGGRAPH\_AES\_KEY.
+* Implemented AES encryption for checkpoint blobs and writes in the Go checkpointer when using LANGGRAPH_AES_KEY.
 * Implemented initial checkpointer gRPC servicer with all necessary methods and conversion helpers.
 
 **2026-02-11**
@@ -2701,7 +2830,7 @@ This does not require code changes to upgrade, but there are a few things to be 
 
 ## v0.6.31
 
-* Properly respected the disable\_a2a setting to ensure accurate configuration handling.
+* Properly respected the disable_a2a setting to ensure accurate configuration handling.
 
 **2026-01-09**
 
@@ -2798,7 +2927,7 @@ This does not require code changes to upgrade, but there are a few things to be 
 
 ## v0.6.12
 
-* Improved resolve\_embeddings to be more robust, enabling multiple calls without errors.
+* Improved resolve_embeddings to be more robust, enabling multiple calls without errors.
 * Updated `@langchain/langgraph` from version 1.0.4 to 1.0.7, adding support for resumableStreams on remote graphs and undeprecating toolsCondition.
 * Implemented `RemoteCheckpointer` to enable subgraph checkpointing, enhancing task execution reliability.
 
@@ -2895,7 +3024,7 @@ This bump also includes some fixes, including a bug exposing unintended internal
 
 ## v0.5.41
 
-Fixed an issue with cron jobs in hybrid mode by ensuring proper initialization of the ENTERPRISE\_SAAS global flag.
+Fixed an issue with cron jobs in hybrid mode by ensuring proper initialization of the ENTERPRISE_SAAS global flag.
 
 **2025-12-10**
 
@@ -2982,7 +3111,7 @@ Resolved issues with `store.put` when used without AsyncBatchedStore in the Java
 ## v0.5.25
 
 * Introduced the ability to search assistants by their `name` using a new endpoint.
-* Casted store\_get return types to tuple in JavaScript to ensure type consistency.
+* Casted store_get return types to tuple in JavaScript to ensure type consistency.
 
 **2025-11-21**
 
@@ -3376,7 +3505,7 @@ Fixed a race condition when joining streams, preventing duplicate start events.
 
 ## v0.4.4
 
-* Set the custom auth thread\_id to None for stateless runs to prevent conflicts.
+* Set the custom auth thread_id to None for stateless runs to prevent conflicts.
 * Improved Redis signaling in the Go runtime by adding a wakeup worker and Redis lock implementation, and updated sweep logic.
 
 **2025-08-27**
@@ -3399,13 +3528,13 @@ Ensured pubsub is initialized before creating a run to prevent errors from missi
 Minor version 0.4 comes with a number of improvements as well as some breaking changes.
 
 * Emitted attempt messages correctly within the thread stream.
-* Reduced cluster conflicts by using only the thread ID for hashing in cluster mapping, prioritizing efficiency with stream\_thread\_cache.
+* Reduced cluster conflicts by using only the thread ID for hashing in cluster mapping, prioritizing efficiency with stream_thread_cache.
 * Introduced a stream endpoint for threads to track all outputs across sequentially executed runs.
 * Made the filter query builder in PostgreSQL more robust against malformed expressions and improved validation to prevent potential security risks.
 
 This minor version also includes a couple of breaking changes to improve the usability and security of the service:
 
-* In this minor version, we stop the practice of automatically including headers as configurable values in your runs. You can opt-in to specific patterns by setting **configurable\_headers** in your agent server config.
+* In this minor version, we stop the practice of automatically including headers as configurable values in your runs. You can opt-in to specific patterns by setting **configurable_headers** in your agent server config.
 * Run stream event IDs (for resumable streams) are now in the format of `ms-seq` instead of the previous format. We retain backwards compatibility for the old format, but we recommend using the new format for new code.
 
 **2025-08-25**
@@ -3434,7 +3563,7 @@ Added a statement timeout to the pool to prevent long-running queries.
 ## v0.3.0
 
 * Set a default 15-minute statement timeout and implemented monitoring for long-running queries to ensure system efficiency.
-* Stop propagating run configurable values to the thread configuration, because this can cause issues on subsequent runs if you are specifying a checkpoint\_id. This is a **slight breaking change** in behavior, since the thread value will no longer automatically reflect the unioned configuration of the most recent run. We believe this behavior is more intuitive, however.
+* Stop propagating run configurable values to the thread configuration, because this can cause issues on subsequent runs if you are specifying a checkpoint_id. This is a **slight breaking change** in behavior, since the thread value will no longer automatically reflect the unioned configuration of the most recent run. We believe this behavior is more intuitive, however.
 * Enhanced compatibility with older worker versions by handling event data in channel names within ops.py.
 
 **2025-08-20**
@@ -3490,7 +3619,7 @@ Added support for `object agent spec` with descriptions in JS.
 
 ## v0.2.130
 
-* Added a feature flag (FF\_RICH\_THREADS=false) to disable thread updates on run creation, reducing lock contention and simplifying thread status handling.
+* Added a feature flag (FF_RICH_THREADS=false) to disable thread updates on run creation, reducing lock contention and simplifying thread status handling.
 * Utilized existing connections for `aput` and `apwrite` operations to improve performance.
 * Improved error handling for decoding issues to enhance data processing reliability.
 * Excluded headers from logs to improve security while maintaining runtime functionality.
@@ -3697,7 +3826,7 @@ Added a fallback mechanism for configurable header patterns to handle exclude/in
 ## v0.2.94
 
 * Improved performance by omitting pending sends for langgraph versions 0.5 and above.
-* Improved server startup logs to provide clearer warnings when the DD\_API\_KEY environment variable is set.
+* Improved server startup logs to provide clearer warnings when the DD_API_KEY environment variable is set.
 
 **2025-07-16**
 
@@ -3822,7 +3951,7 @@ Scheduled webhooks in an isolated loop to ensure thread-safe operations and prev
 
 ## v0.2.73
 
-* Fixed an infinite frame loop issue and removed the dict\_parser due to structlog's unexpected behavior.
+* Fixed an infinite frame loop issue and removed the dict_parser due to structlog's unexpected behavior.
 * Throw a 409 error on deadlock occurrence during run cancellations to handle lock conflicts gracefully.
 
 **2025-06-27**
@@ -3854,7 +3983,7 @@ Added sorting and pagination to the crons API and updated schema definitions for
 
 ## v0.2.66
 
-Fixed a 404 error when creating multiple runs with the same thread\_id using `on_not_exist="create"`.
+Fixed a 404 error when creating multiple runs with the same thread_id using `on_not_exist="create"`.
 
 **2025-06-25**
 
@@ -3945,7 +4074,7 @@ Improved application stability by adding a handler for SIGTERM signals.
 * Added LG API version and request ID to metadata and logs to improve traceability.
 * Improved database performance by creating indexes concurrently.
 * Ensured postgres write is committed only after the Redis running marker is set to prevent race conditions.
-* Enhanced query efficiency and reliability by adding a unique index on thread\_id/running, optimizing row locks, and ensuring deterministic run selection.
+* Enhanced query efficiency and reliability by adding a unique index on thread_id/running, optimizing row locks, and ensuring deterministic run selection.
 * Resolved a race condition by ensuring Postgres updates only occur after the Redis running marker is set.
 
 **2025-06-07**

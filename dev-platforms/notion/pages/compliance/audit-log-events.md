@@ -128,7 +128,6 @@ Events are split into the following categories:
 * **Custom Agent default model updated**: That the default model for new Custom Agents was updated for the workspace.
 * **Custom agent performed action in setup mode**: That an action was performed in setup mode for a custom agent in the workspace.
 * **Custom agent published**: That a custom agent was published.
-* **Custom Agents support restriction updated**: That Notion Support added or removed the workspace restriction on Custom Agents. Removing the restriction preserves the workspace’s own Custom Agents policy.
 * **Custom emoji created**: That a custom emoji was created.
 * **Custom emoji deleted**: That a custom emoji was deleted.
 * **Custom emoji updated**: That a custom emoji was updated.

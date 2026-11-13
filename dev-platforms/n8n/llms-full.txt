@@ -1,4 +1,4 @@
-> This is part 1 of 15 of the full documentation (pages 1–100 of 1410).
+> This is part 1 of 15 of the full documentation (pages 1–100 of 1414).
 > The content is paginated: fetch every part to see all of it.
 > Next part: https://docs.n8n.io/llms-full.txt/1
 > Page index: https://docs.n8n.io/llms.txt
@@ -39,17 +39,17 @@ This page helps with both.
 
 Use this guide to choose a deployment option:
 
-| Your situation                                               | Recommended option                  | Reason                                                |
-| ------------------------------------------------------------ | ----------------------------------- | ----------------------------------------------------- |
-| Want to start right away                                     | **n8n Cloud**                       | No installation needed                                |
-| Don't have technical expertise                               | **n8n Cloud**                       | Fully managed, no setup or maintenance required       |
-| Need production-ready deployment                             | **Both options work**               | Both n8n Cloud and self-hosted support production use |
-| Don't want to manage infrastructure                          | **n8n Cloud**                       | n8n handles hosting, updates, and scaling             |
-| Need full control over deployment                            | **Self-hosted**                     | You control the environment and configuration         |
-| Have customized use cases                                    | **Self-hosted**                     | Full control over deployment and configuration        |
-| Need enterprise features (SSO, environments, projects, etc.) | **Both options work**               | Enterprise plans (paid) are available with both       |
-| Have infrastructure and technical resources                  | **Self-hosted**                     | You can manage your own deployment                    |
-| Want to run n8n for free                                     | **Self-hosted (Community edition)** | Free with almost the complete feature set             |
+| Your situation                                               | Recommended option                  | Reason                                                                                     |
+| ------------------------------------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------ |
+| Want to start right away                                     | **n8n Cloud**                       | No installation needed                                                                     |
+| Don't have technical expertise                               | **n8n Cloud**                       | Fully managed, no setup or maintenance required                                            |
+| Need production-ready deployment                             | **Both options work**               | Both n8n Cloud and self-hosted support production use                                      |
+| Don't want to manage infrastructure                          | **n8n Cloud**                       | n8n handles hosting, updates, and scaling                                                  |
+| Need full control over deployment                            | **Self-hosted**                     | You control the environment and configuration                                              |
+| Have customized use cases                                    | **Self-hosted**                     | Full control over deployment and configuration                                             |
+| Need enterprise features (SSO, environments, projects, etc.) | **Both options work**               | Enterprise plans (paid) are available with both. See the [Enterprise Hub](/enterprise-hub) |
+| Have infrastructure and technical resources                  | **Self-hosted**                     | You can manage your own deployment                                                         |
+| Want to run n8n for free                                     | **Self-hosted (Community edition)** | Free with almost the complete feature set                                                  |
 
 For specific feature availability across different plans, see the [pricing page](https://n8n.io/pricing/).
 
@@ -673,7 +673,7 @@ These features help you secure, govern and scale n8n across your organization. T
 
 Your Enterprise journey begins with a dependable foundation. These guides help self-hosted teams prepare, secure, scale, and monitor their n8n instance. If you use n8n Cloud, n8n manages the infrastructure for you.
 
-<table data-view="cards"><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><i class="fa-clipboard-check">:clipboard-check:</i> <strong>Prepare</strong></td><td><ul><li><a href="/deploy/host-n8n/understand-the-architecture">Understand the architecture</a></li></ul></td></tr><tr><td><i class="fa-download">:download:</i> <strong>Install</strong></td><td><ul><li><a href="/deploy/host-n8n/install-options">Install options</a></li><li><a href="/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform">Deploy with Terraform</a></li><li><a href="/deploy/host-n8n/install-options/use-a-cloud-provider">Use a cloud provider</a></li><li><a href="/deploy/host-n8n/configure-n8n/choose-n8ns-database">Choose n8n's database</a></li><li><a href="/deploy/host-n8n/configure-n8n/manage-your-license">Add your license key</a></li></ul></td></tr><tr><td><i class="fa-layer-group">:layer-group:</i> <strong>Set up scaling &#x26; queue mode</strong></td><td><ul><li><a href="/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode">Enable queue mode</a></li><li><a href="/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/queue-mode">Queue mode environment variables</a></li><li><a href="/deploy/host-n8n/configure-n8n/scaling/control-concurrency">Control concurrency</a></li><li><a href="/deploy/host-n8n/configure-n8n/scaling/use-external-storage">Use external storage</a></li><li><a href="/deploy/host-n8n/configure-n8n/set-up-task-runners">Set up task runners</a></li></ul></td></tr><tr><td><p><i class="fa-shield-halved">:shield-halved:</i> <strong>Secure your deployment</strong></p><ul><li><a href="/deploy/host-n8n/configure-n8n/security/set-up-ssl">Set up SSL</a></li><li><a href="/deploy/host-n8n/configure-n8n/security/run-security-audits">Run security audits</a></li><li><a href="/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-a-custom-encryption-key">Set a custom encryption key</a></li><li><a href="/deploy/host-n8n/configure-n8n/security/rotate-encryption-keys">Rotate encryption key</a></li></ul></td><td></td></tr><tr><td><i class="fa-wave-pulse">:wave-pulse:</i> <strong>Set up monitoring and logging</strong></td><td><ul><li><a href="/deploy/host-n8n/keep-n8n-running/set-up-logging">Set up logging</a></li><li><a href="/administer/observe-and-log/stream-logs-to-external-systems">Stream logs to external systems</a></li><li><a href="/deploy/host-n8n/keep-n8n-running/monitor-n8n">Monitor your instance</a></li><li><a href="/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-prometheus-metrics">Enable Prometheus metrics</a></li><li><a href="/deploy/host-n8n/keep-n8n-running/visualize-metrics-with-grafana">Visualize metrics with Grafana</a></li></ul></td></tr><tr><td><i class="fa-arrow-up-right-dots">:arrow-up-right-dots:</i> <strong>Back up and upgrade</strong></td><td><ul><li><a href="/deploy/host-n8n/keep-n8n-running/update-n8n">Update n8n</a></li><li><a href="/deploy/host-n8n/keep-n8n-running/backup-and-restore">Back up your instance</a></li></ul></td></tr></tbody></table>
+<table data-view="cards"><thead><tr><th></th><th></th></tr></thead><tbody><tr><td><i class="fa-clipboard-check">:clipboard-check:</i> <strong>Prepare</strong></td><td><ul><li><a href="/deploy/host-n8n/understand-the-architecture">Understand the architecture</a></li><li><a href="https://app.gitbook.com/s/jm0ZYRpZIPWge2ZSiDYO/host-n8n/install-options/production-requirements">Production requirements</a></li></ul></td></tr><tr><td><i class="fa-download">:download:</i> <strong>Install</strong></td><td><ul><li><a href="/deploy/host-n8n/install-options">Install options</a></li><li><a href="/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-aws-with-terraform">Deploy with Terraform</a></li><li><a href="/deploy/host-n8n/install-options/use-a-cloud-provider">Use a cloud provider</a></li><li><a href="/deploy/host-n8n/configure-n8n/choose-n8ns-database">Choose n8n's database</a></li><li><a href="/deploy/host-n8n/configure-n8n/manage-your-license">Add your license key</a></li></ul></td></tr><tr><td><i class="fa-layer-group">:layer-group:</i> <strong>Set up scaling &#x26; queue mode</strong></td><td><ul><li><a href="/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode">Enable queue mode</a></li><li><a href="/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/queue-mode">Queue mode environment variables</a></li><li><a href="/deploy/host-n8n/configure-n8n/scaling/control-concurrency">Control concurrency</a></li><li><a href="/deploy/host-n8n/configure-n8n/scaling/use-external-storage">Use external storage</a></li><li><a href="/deploy/host-n8n/configure-n8n/set-up-task-runners">Set up task runners</a></li></ul></td></tr><tr><td><p><i class="fa-shield-halved">:shield-halved:</i> <strong>Secure your deployment</strong></p><ul><li><a href="/deploy/host-n8n/configure-n8n/security/set-up-ssl">Set up SSL</a></li><li><a href="/deploy/host-n8n/configure-n8n/security/run-security-audits">Run security audits</a></li><li><a href="/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-a-custom-encryption-key">Set a custom encryption key</a></li><li><a href="/deploy/host-n8n/configure-n8n/security/rotate-encryption-keys">Rotate encryption key</a></li></ul></td><td></td></tr><tr><td><i class="fa-wave-pulse">:wave-pulse:</i> <strong>Set up monitoring and logging</strong></td><td><ul><li><a href="/deploy/host-n8n/keep-n8n-running/set-up-logging">Set up logging</a></li><li><a href="/administer/observe-and-log/stream-logs-to-external-systems">Stream logs to external systems</a></li><li><a href="/deploy/host-n8n/keep-n8n-running/monitor-n8n">Monitor your instance</a></li><li><a href="/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-prometheus-metrics">Enable Prometheus metrics</a></li><li><a href="/deploy/host-n8n/keep-n8n-running/visualize-metrics-with-grafana">Visualize metrics with Grafana</a></li></ul></td></tr><tr><td><i class="fa-arrow-up-right-dots">:arrow-up-right-dots:</i> <strong>Back up and upgrade</strong></td><td><ul><li><a href="/deploy/host-n8n/keep-n8n-running/update-n8n">Update n8n</a></li><li><a href="/deploy/host-n8n/keep-n8n-running/backup-and-restore">Back up your instance</a></li></ul></td></tr></tbody></table>
 
 ## Publish first workflow
 
@@ -765,7 +765,7 @@ Manage your n8n Cloud trial, plan, and instance.
 
 ## In this section
 
-* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial): start a free trial, then compare the Starter, Pro, and Enterprise plans.
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial): start a free trial, then compare the Starter, Pro, and Enterprise plans. For Enterprise rollout guidance, see the [Enterprise Hub](/enterprise-hub).
 * [Use the Cloud console](/deploy/use-n8n-cloud/use-the-cloud-console): open the n8n Cloud console, where you manage your instance, plan, billing, and credits.
 * [Update your version](/deploy/use-n8n-cloud/update-your-version): update your n8n version on Cloud.
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud): set your timezone, find your IP addresses, and manage your data.
@@ -852,7 +852,7 @@ To test the [Enterprise plan](https://n8n.io/pricing/), contact the sales team. 
 * Log streaming
 * Version control using Git
 
-Select the **Contact** button on the [n8n website](https://n8n.io/pricing/).
+Select the **Contact** button on the [n8n website](https://n8n.io/pricing/). For guidance on rolling out Enterprise after you subscribe, see the [Enterprise Hub](/enterprise-hub).
 
 ## Related resources
 
@@ -1768,7 +1768,7 @@ curl -fsSL https://get.n8n.io | sh
 Requires Docker on Linux or macOS (or WSL on Windows). Sets up n8n locally in one step. See the [one-line setup guide](/deploy/host-n8n/install-options/one-line-setup) for what it does, or keep reading to compare every installation method.
 {% endhint %}
 
-All self-hosted installations use the same core product. Without a license key, n8n runs as the free Community edition. Adding a Business or Enterprise license key enables those editions. See [Compare editions](/deploy/host-n8n/community-edition-features) for the differences between the self-hosted editions.
+All self-hosted installations use the same core product. Without a license key, n8n runs as the free Community edition. Adding a Business or Enterprise license key enables those editions. See [Compare editions](/deploy/host-n8n/community-edition-features) for the differences between the self-hosted editions. For Enterprise rollout guidance, see the [Enterprise Hub](/enterprise-hub).
 
 ## In this section
 
@@ -1868,6 +1868,7 @@ Compare ways to install self-hosted n8n.
 * [Install with npm](/deploy/host-n8n/install-options/install-with-npm): install n8n directly using Node Package Manager.
 * [Install with Docker](/deploy/host-n8n/install-options/install-with-docker): install and run n8n using Docker.
 * [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider): deploy self-hosted n8n to DigitalOcean, AWS, Azure, Google Cloud, and more.
+* [Production requirements](/deploy/host-n8n/install-options/production-requirements): check database, operating system, runtime, storage, and software requirements for a production deployment.
 
 ## Related resources
 
@@ -1965,7 +1966,11 @@ Running the command sets up everything below automatically. There's nothing extr
 
 If you're setting n8n up for a team or a production environment, consider a more robust database like Postgres rather than the built-in default. See [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose) for that setup.
 
-The same goes for the sandbox: this setup uses n8n's own bundled sandbox, which is a good fit for trying things out, but for production, n8n currently recommends Daytona instead. See [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant) for how to configure it.
+{% hint style="warning" %}
+The bundled sandbox is for development and testing, not production. Its runner (`sandbox-runner-1`) runs with `privileged: true` and Docker-in-Docker, which gives weak isolation. If code escapes the sandbox, it reaches the host, so treat the runner as equivalent to root on the host.
+
+Run this setup on a dedicated machine or VM with nothing else on it, and never expose it to the internet. For production, see [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant). It describes the self-hosted option, which is the n8n sandbox service with Sysbox runners, ideally on Kubernetes. The managed option is Daytona, a third-party service that receives your workflow data.
+{% endhint %}
 
 ## Optional: Turn on n8n Assistant
 
@@ -2032,6 +2037,7 @@ The one-line setup command needs a terminal that understands shell scripts, whic
 * [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
 * [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
 * [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
+* [Production requirements](/deploy/host-n8n/install-options/production-requirements)
 * [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
 
 
@@ -2043,12 +2049,18 @@ Build a Docker Compose setup for self-hosted n8n, including the sandbox stack fo
 
 This guide walks through building your own Docker Compose setup by hand, including the sandbox stack that powers n8n Assistant. Use it if you want full control over your configuration, or need to fold n8n into an existing Compose project.
 
+The sandbox in this setup is for development and testing, not production. For production sandbox options, see [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant).
+
 If you just want n8n (and n8n Assistant) running quickly without writing any files yourself, use the [one-line setup](/deploy/host-n8n/install-options/one-line-setup) instead. It sets up everything below automatically.
 
 ## What you need before you start
 
 * Docker Engine and Docker Compose v2. Run `docker compose version` to check.
 * At least 4 GB of RAM and 2 vCPUs. The sandbox that runs AI-generated code (`sandbox-runner-1`) uses Docker-in-Docker, which needs more headroom than a typical container.
+
+{% hint style="warning" %}
+`sandbox-runner-1` runs with `privileged: true` and Docker-in-Docker. That's weak isolation: code that escapes the sandbox reaches the host. Run this setup on a dedicated host or VM with nothing else on it.
+{% endhint %}
 
 {% hint style="info" %}
 **Windows users:** Use WSL, with either Docker Desktop (WSL2 backend) or Docker Engine installed directly in your Linux distribution. Keep your project folder inside the WSL filesystem (for example, `~/n8n`), not under `/mnt/c/...`. Bind mounts across that boundary are slow and can cause permission issues.
@@ -2118,7 +2130,7 @@ This defines every service you're setting up: n8n itself, the sandbox stack that
 | **sandbox-runner-1** | Does the actual work; a privileged Docker-in-Docker container that creates and runs the sandboxes. |
 | **searxng**          | Bundled web search backend for n8n Assistant.                                                      |
 
-This bundles n8n's own sandbox (`n8n-sandbox`), which is a good fit for local development and testing. For a production instance, n8n currently recommends Daytona as the sandbox provider instead. See [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant) for how to configure a Daytona sandbox.
+This bundles n8n's own sandbox (`n8n-sandbox`), which is for development and testing only. Its runner is privileged, so it gives weak isolation. For a production instance, n8n recommends the n8n sandbox service with Sysbox runners, ideally on Kubernetes. If a third party can process your workflow data, Daytona is a managed alternative. See [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant) for how to configure each option.
 
 There's no database service defined here. n8n falls back to its built-in SQLite database. The `n8n-data` volume in `get-n8n-compose.yml` stores the database and n8n's encryption key, so your data survives restarts and container recreation. For a production instance, swap in Postgres. See [Use PostgreSQL instead of SQLite](#optional-use-postgresql-instead-of-sqlite) below.
 
@@ -2248,6 +2260,8 @@ SQLite is fine for trying things out, but for a production instance that must ha
 ## Security checklist
 
 * `sandbox-runner-1` (`privileged: true`, Docker-in-Docker) is never exposed to the public internet. Treat it as equivalent to root on the host.
+* Nothing else runs on the same host or VM as the Compose stack. If code escapes the sandbox, it reaches everything on that host.
+* This setup isn't your production sandbox. For production, use the n8n sandbox service with Sysbox runners, ideally on Kubernetes. If a third party can process your workflow data, Daytona is a managed alternative. See [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant).
 * Only n8n's port is open on your cloud firewall.
 * `SANDBOX_API_KEYS`, the registration token, and the runner key are unique, not left as `change-me-...`, and rotated periodically.
 * `sandbox-api` and `sandbox-runner-1` do **not** use `env_file: .env`. Each only receives the specific variables it needs, explicitly, in its `environment` block. The model API key, Brave key, Postgres password, and n8n encryption key never reach the sandbox containers.
@@ -2276,7 +2290,7 @@ flowchart LR
     class certs oneshot
 ```
 
-n8n sends code execution requests to `sandbox-api`, which hands them to `sandbox-runner-1`, which creates and runs the actual sandbox containers. `sandbox-certs` runs once at startup to generate the TLS certificates the other two need and then exits; everything else waits on it.
+n8n sends code execution requests to `sandbox-api`, which hands them to `sandbox-runner-1`, which creates and runs the actual sandbox containers. `sandbox-runner-1` is the privileged component. In the production setup, Sysbox runners on Kubernetes replace it. `sandbox-certs` runs once at startup to generate the TLS certificates the other two need and then exits; everything else waits on it.
 
 ## Related resources
 
@@ -2284,7 +2298,9 @@ n8n sends code execution requests to `sandbox-api`, which hands them to `sandbox
 * [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
 * [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
 * [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
+* [Production requirements](/deploy/host-n8n/install-options/production-requirements)
 * [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant)
 
 
 # Install with npm
@@ -2426,6 +2442,7 @@ If you're experiencing issues running n8n on Windows, verify your Node.js enviro
 * [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
 * [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
 * [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
+* [Production requirements](/deploy/host-n8n/install-options/production-requirements)
 * [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
 
 
@@ -2659,6 +2676,7 @@ pnpm --filter n8n-containers services:clean
 * [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
 * [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
 * [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
+* [Production requirements](/deploy/host-n8n/install-options/production-requirements)
 * [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
 
 [^1]: In n8n, credentials store authentication information to connect with specific apps and services. After creating credentials with your authentication information (username and password, API key, OAuth secrets, etc.), you can use the associated app node to interact with the service.
@@ -2699,6 +2717,7 @@ Configuration guides to help you get started on other platforms:
 * [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
 * [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
 * [Install with Docker](/deploy/host-n8n/install-options/install-with-docker)
+* [Production requirements](/deploy/host-n8n/install-options/production-requirements)
 
 
 # Deploy to Digital Ocean
@@ -2907,7 +2926,7 @@ sudo docker compose stop
 
 n8n Assistant needs a sandbox to run code in. You can add the same sandbox stack used in the [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose) to this setup. A few things are worth knowing before you start:
 
-* This sandbox is suitable for local development and testing. The stack below uses n8n's own bundled sandbox (`n8n-sandbox`). Since a DigitalOcean droplet with a public domain is often a real deployment, consider Daytona instead if this is going to production.
+* This sandbox is for development and testing only. The stack below uses n8n's own bundled sandbox (`n8n-sandbox`), whose runner runs with `privileged: true` and gives weak isolation. Since a DigitalOcean droplet with a public domain is often a real deployment, don't use this stack for production. Run nothing else on the droplet. If you need a more isolated sandbox on a single Linux VM, [install Sysbox on the VM](https://github.com/n8n-io/n8n-sandbox-service/blob/main/docs/quickstart-linux.md) and follow its steps to run the runner with Sysbox instead of `privileged: true`. The Compose file in this guide doesn't include those changes. See [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant) for other production options.
 * **Resize if needed.** The sandbox runner uses Docker-in-Docker, which needs more headroom than n8n alone. Make sure you provision at least 4 GB RAM / 2 vCPU.
 * **No networking changes required.** Caddy only ever proxies n8n itself; the sandbox services stay internal to the Compose network and don't need DNS, firewall, or Caddyfile changes.
 
@@ -3365,7 +3384,7 @@ sudo docker compose stop
 
 n8n Assistant needs a sandbox to run code in. You can add the same sandbox stack used in the [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose) to this setup. A few things are worth knowing before you start:
 
-* This sandbox is suitable for local development and testing. The stack below uses n8n's own bundled sandbox (`n8n-sandbox`). Since a DigitalOcean droplet with a public domain is often a real deployment, consider Daytona instead if this is going to production.
+* This sandbox is for development and testing only. The stack below uses n8n's own bundled sandbox (`n8n-sandbox`), whose runner runs with `privileged: true` and gives weak isolation. Since a Hetzner server with a public domain is often a real deployment, don't use this stack for production. Run nothing else on the server. If you need a more isolated sandbox on a single Linux VM, [install Sysbox on the VM](https://github.com/n8n-io/n8n-sandbox-service/blob/main/docs/quickstart-linux.md) and follow its steps to run the runner with Sysbox instead of `privileged: true`. The Compose file in this guide doesn't include those changes. See [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant) for other production options.
 * **Resize if needed.** The sandbox runner uses Docker-in-Docker, which needs more headroom than n8n alone. Make sure you provision at least 4 GB RAM / 2 vCPU.
 * **No networking changes required.** Caddy only ever proxies n8n itself; the sandbox services stay internal to the Compose network and don't need DNS, firewall, or Caddyfile changes.
 
@@ -6521,6 +6540,142 @@ If you have trouble reaching your instance, check your server's firewall setting
 * [Google Cloud Run](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-cloud-run)
 * [Google Kubernetes Engine](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-google-kubernetes)
 * [OpenShift Local (CRC)](/deploy/host-n8n/install-options/use-a-cloud-provider/deploy-to-openshift-local-crc)
+
+
+# Production requirements
+
+Check the database, operating system, runtime, storage, and software requirements for a production n8n deployment, and complete the pre-deployment checklist.
+
+Before you run a production n8n deployment that you manage yourself, confirm that your database, operating system, runtime, storage, and deployment tooling meet n8n's requirements.
+
+{% hint style="info" %}
+**Looking for a quickstart?** You don't need this page. [One-line setup](/deploy/host-n8n/install-options/one-line-setup) only needs Docker and handles the database and storage for you. [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose) starts with the built-in SQLite database, with PostgreSQL as an optional step. Use this page when you move to production, run your own PostgreSQL, use queue mode, or deploy to Kubernetes or bare metal.
+{% endhint %}
+
+## Database
+
+This section applies when you run n8n in production. [One-line setup](/deploy/host-n8n/install-options/one-line-setup) and the [Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose) guide start with n8n's built-in SQLite database, which suits testing and small setups.
+
+n8n needs a database to store workflows, credentials, and execution history.
+
+* **PostgreSQL:** n8n recommends PostgreSQL for production, on a [supported PostgreSQL version](/deploy/host-n8n/configure-n8n/choose-n8ns-database#supported-postgresql-versions).
+* **SQLite:** n8n doesn't support SQLite in queue mode, and doesn't recommend it for multi-user production use.
+* **Database user permissions:** the n8n database user must be able to connect to the database, use and create objects in the configured schema, and alter or drop n8n's tables during migrations. The simplest setup is to let the n8n user own the tables it creates. Refer to [Required permissions](/deploy/host-n8n/configure-n8n/choose-n8ns-database#required-permissions) for an example.
+
+Refer to [Choose n8n's database](/deploy/host-n8n/configure-n8n/choose-n8ns-database) for the environment variables that configure PostgreSQL.
+
+## Operating system and runtime
+
+* **Operating system:** n8n recommends a 64-bit Linux host for production.
+* **Node.js:** in n8n 2.x, you only need Node.js for [npm installations](/deploy/host-n8n/install-options/install-with-npm). Docker and Kubernetes installations include the correct version. Refer to [Install with npm](/deploy/host-n8n/install-options/install-with-npm) for the supported Node.js versions. From n8n 3.0, n8n no longer supports npm installations, so you need a Docker-based deployment. Refer to [v3.0 breaking changes](/changelog/v30-breaking-changes#docker-based-deployment-required-for-self-hosted-n8n).
+
+## Storage
+
+[One-line setup](/deploy/host-n8n/install-options/one-line-setup) and the [Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose) guide store n8n's data in a Docker volume, so you don't need to set up storage for them. If you adapt either setup, keep a volume for n8n's data. This section applies to production deployments and to deployments that [enable queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode), where you manage storage yourself.
+
+For those deployments, plan for the following:
+
+* **n8n data directory:** a persistent volume for the n8n data directory, which holds the encryption key and file logs, when enabled. It also holds local binary data in [filesystem mode](/deploy/host-n8n/configure-n8n/scaling/handle-binary-data#enable-filesystem-mode), the default in regular mode from n8n 2.0.
+* **PostgreSQL data:** if you run PostgreSQL yourself, a persistent volume for PostgreSQL data.
+* **Binary data in queue mode:** n8n stores binary data in the database by default unless you configure another storage mode. If your license includes the relevant [external storage](/deploy/host-n8n/configure-n8n/scaling/use-external-storage) option, you can use AWS S3 or Azure Blob Storage. If you use filesystem storage, all main instances, workers, and webhook processors that handle binary data must access the same shared volume at the same configured path. Database mode increases the size of your PostgreSQL database. If your license includes external storage, prefer it for queue mode. Refer to [Handle binary data](/deploy/host-n8n/configure-n8n/scaling/handle-binary-data) for details.
+
+## Redis
+
+This section applies only if you [enable queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode).
+
+In queue mode, Redis holds the queue state for pending executions between the main n8n instance and its workers. PostgreSQL holds your workflows and execution data. If Redis loses queued jobs, n8n doesn't rebuild them from PostgreSQL. It marks the affected executions as crashed instead. Configure Redis persistence and availability to match how much lost work you can tolerate. Provision a Redis instance that the main instance and every worker can reach. Refer to [Start Redis](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode#start-redis) for the connection settings.
+
+## Network
+
+This section applies to production deployments that you expose to users or to external services.
+
+### Ports
+
+| Port | Component       | Purpose                                                                                                                                                                                                                                                                                                                      |
+| ---- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 5678 | n8n             | HTTP API, editor UI, and webhooks. This is the default value of `N8N_PORT`.                                                                                                                                                                                                                                                  |
+| 5432 | PostgreSQL      | Database connections. This is the PostgreSQL default.                                                                                                                                                                                                                                                                        |
+| 6379 | Redis           | Queue communication in queue mode. This is the Redis default. Use the port and TLS settings of your Redis service, since managed services often use a different port for TLS.                                                                                                                                                |
+| 5679 | n8n task broker | Connections from external task runners. This is the default value of `N8N_RUNNERS_BROKER_PORT`. The broker listens on `127.0.0.1` by default. If runners can’t connect through loopback, set `N8N_RUNNERS_BROKER_LISTEN_ADDRESS` to a bind address they can reach. Keep the port private and restrict access to the runners. |
+
+### Firewall rules
+
+At a minimum, configure your firewall so that:
+
+* The main n8n instance and workers can reach PostgreSQL and, in queue mode, Redis.
+* Your load balancer or reverse proxy can reach the main n8n instance on port 5678.
+* n8n has outbound internet access to reach the external services your workflows use. This doesn't apply if you run n8n in an air-gapped environment where workflows only call internal services.
+* Users can reach the editor UI through your load balancer or reverse proxy, from their networks.
+* Services that call your webhooks can reach the webhook URLs, on the internet if those callers are external.
+* If you run more than one main instance, your load balancer uses sticky sessions. Refer to [Enable queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode#multi-main-setup).
+
+Don't expose the n8n process directly to the internet. Put a reverse proxy or load balancer in front of it.
+
+### DNS
+
+Create a DNS record that points a hostname, such as `n8n.example.com`, at your load balancer or reverse proxy. You use this hostname in the `N8N_HOST`, `N8N_EDITOR_BASE_URL`, and `N8N_WEBHOOK_URL` environment variables. `N8N_HOST` takes the hostname (`n8n.example.com`). `N8N_EDITOR_BASE_URL` and `N8N_WEBHOOK_URL` take full URLs (`https://n8n.example.com/`). `N8N_WEBHOOK_URL` is available from n8n 2.30.0; on earlier versions, use `WEBHOOK_URL`.
+
+Behind a reverse proxy, also set `N8N_PROXY_HOPS`, which controls whether n8n trusts forwarded headers for the client IP and protocol. Refer to [Configure webhook URLs with reverse proxy](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/configure-webhook-urls-with-reverse-proxy) for how n8n builds webhook URLs behind a proxy and how to set `N8N_PROXY_HOPS`.
+
+### TLS
+
+Provision a TLS certificate for your hostname. n8n recommends terminating TLS at a reverse proxy or load balancer, which can also renew certificates if you configure it to. Refer to [Set up SSL](/deploy/host-n8n/configure-n8n/security/set-up-ssl) for how to set up SSL for n8n. On Kubernetes, [cert-manager](https://cert-manager.io/docs/) can issue and renew certificates.
+
+## Software dependencies
+
+Choose the subsection that matches how you deploy n8n.
+
+### Docker
+
+* A supported version of [Docker Engine](https://docs.docker.com/engine/install/) or [Docker Desktop](https://docs.docker.com/desktop/).
+* The Docker Compose v2 plugin, for the Compose-based setups.
+
+Refer to [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose) for installation steps.
+
+### Kubernetes
+
+* A Kubernetes version that the [official n8n Helm chart](https://github.com/n8n-io/n8n-hosting/tree/main/charts/n8n) supports. The chart declares its supported range in `Chart.yaml`.
+* [`kubectl`](https://kubernetes.io/docs/tasks/tools/) configured with access to your cluster.
+* [Helm](https://helm.sh/docs/intro/install/), for Helm-based deployments.
+* A supported Ingress controller, such as the AWS Load Balancer Controller.
+
+### Bare metal
+
+{% hint style="info" %}
+**Feature availability**
+
+Bare metal installations with npm are available in n8n 2.x. From n8n 3.0, n8n no longer supports npm installations, so you need a Docker-based deployment. Refer to [v3.0 breaking changes](/changelog/v30-breaking-changes#docker-based-deployment-required-for-self-hosted-n8n).
+{% endhint %}
+
+* A supported Node.js version. Refer to [Install with npm](/deploy/host-n8n/install-options/install-with-npm).
+* npm, which comes with Node.js.
+* A process manager, such as PM2 or `systemd`.
+* A reverse proxy, such as NGINX or Caddy, for SSL termination.
+
+## Pre-deployment checklist
+
+Use this checklist for production deployments. Skip items that don't apply to your setup, such as Redis if you don't use queue mode, or external storage if you don't use it.
+
+* [ ] [License key](/deploy/host-n8n/configure-n8n/manage-your-license) obtained and ready to activate, if you use Business or Enterprise features.
+* [ ] [PostgreSQL](#database) provisioned and accessible, on a supported version.
+* [ ] [Redis](#redis) provisioned and accessible (queue mode only).
+* [ ] [External storage](#storage) bucket or container created, if you use external storage.
+* [ ] [DNS record](#dns) pointing to your load balancer.
+* [ ] [TLS certificate](#tls) provisioned, or cert-manager configured.
+* [ ] [Firewall rules](#firewall-rules) configured.
+* [ ] [Persistent volumes](#storage) available.
+* [ ] [Encryption key](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/set-a-custom-encryption-key) generated, stored securely, and set to the same value on every n8n instance. Run `openssl rand -hex 32` to generate one.
+* [ ] [Backup strategy](/deploy/host-n8n/keep-n8n-running/backup-and-restore) decided.
+
+## Related resources
+
+* [Install options](/deploy/host-n8n/install-options)
+* [One-line setup](/deploy/host-n8n/install-options/one-line-setup)
+* [Install using Docker Compose](/deploy/host-n8n/install-options/install-using-docker-compose)
+* [Install with npm](/deploy/host-n8n/install-options/install-with-npm)
+* [Use a cloud provider](/deploy/host-n8n/install-options/use-a-cloud-provider)
+* [Choose n8n's database](/deploy/host-n8n/configure-n8n/choose-n8ns-database)
+* [Enable queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode)
 
 
 # Configure n8n
@@ -11305,461 +11460,6 @@ These series only cover timer runs. The durable path has its own equivalents in 
 | `n8n_system_task_runs_skipped_total` | Counter   | How many occurrences didn't run, split by `reason`. `overlap` means the previous run was still going. `provisioned_elsewhere` means the task has a durable job, so the leader timer stood down. `aborted` means the occurrence fired after the instance had already started stepping down. `coalesced` means the process slept through occurrences and the timer fired a single time for the whole batch, so the counter grows by the number of occurrences that fire stood in for. |
 | `n8n_system_task_retries_total`      | Counter   | How many retries n8n scheduled after a failed run. Only tasks that declare a retry delay retry at all, so a failing task with a flat count here isn't a bug.                                                                                                                                                                                                                                                                                                                        |
 | `n8n_system_task_fire_lag_seconds`   | Histogram | How late each timer fires, in seconds. Small values mean a busy event loop. Large ones mean the process paused or slept, and its buckets reach a day because a coalesced fire is late by at least one full cadence.                                                                                                                                                                                                                                                                 |
-
-## Related resources
-
-* [Configure n8n](/deploy/host-n8n/configure-n8n)
-
-
-# Set up n8n Assistant
-
-Set up n8n Assistant on self-hosted n8n using environment variables.
-
-{% hint style="info" %}
-**Feature availability**
-
-n8n Assistant is available on:
-
-* **n8n Cloud:** Starter, Pro
-* **Self-hosted:** Community, Registered Community, Business
-  {% endhint %}
-
-{% hint style="info" %}
-**Limited enterprise readiness**
-
-n8n Assistant has **Limited enterprise readiness**. It partially supports the following Enterprise capabilities:
-
-* **RBAC and project scoping**
-* **Data residency**
-* **Queue mode and multi-main**
-* **Environments and source control**
-
-It doesn't yet support all other relevant Enterprise capabilities.
-{% endhint %}
-
-## What n8n Assistant needs
-
-Every self-hosted n8n Assistant setup needs three things:
-
-* **A model provider:** An API key for Anthropic, OpenAI, or OpenRouter.
-* **A sandbox (required):** An isolated environment where n8n Assistant runs code.
-* **A search provider (optional):** Lets n8n Assistant look things up on the web.
-
-How you provide the sandbox is the main decision. n8n's own bundled sandbox (`n8n-sandbox`) is a good fit for local development and testing. It's what the [one-line setup command](/deploy/host-n8n/install-options/one-line-setup) and [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose) set up automatically. For production, use Daytona instead.
-
-[Pick your setup](#pick-your-setup) below based on how you installed n8n and where you're running it.
-
-### Before you start
-
-Make sure you have:
-
-* Access to configure environment variables for the n8n instance.
-* A recent version of n8n. Run the latest stable release or later; older versions may work, but newer is better.
-* An API key for a supported LLM provider: Anthropic, OpenAI, or OpenRouter.
-
-## Pick your setup
-
-| Setup                                                                                                    | When to use this                                                                             | Sandbox hosted by  | Best for                      |
-| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------ | ----------------------------- |
-| [1. Already running the sandbox](#setup-1-already-running-the-sandbox-recommended-for-local-development) | You installed with the one-line setup command or the Docker Compose guide.                   | You (already done) | Local development and testing |
-| [2. Self-host the sandbox manually](#setup-2-self-host-the-sandbox-manually-advanced)                    | You're running n8n some other way and want to self-host the sandbox rather than use Daytona. | You                | Local development and testing |
-| [3. Daytona (managed sandbox)](#setup-3-daytona-managed-sandbox-recommended-for-production)              | You're deploying to production, or don't want to run sandbox containers yourself.            | Daytona            | Production                    |
-
-### Setup 1: Already running the sandbox (recommended for local development)
-
-If you installed n8n with the [one-line setup command](/deploy/host-n8n/install-options/one-line-setup) or built it by hand with the [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose), the sandbox and search, using bundled SearXNG, are already running. All that's left is a model key.
-
-**What you need:** an LLM API key. Nothing else.
-
-**Steps:**
-
-The quickest way: open the editor, go to the instance's AI settings, and add your model key there. Prefer `.env`? Use the steps below.
-
-1. Add your model key to `.env`:
-
-   ```bash
-   N8N_INSTANCE_AI_MODEL_API_KEY=sk-ant-xxx
-   ```
-2. Restart n8n.
-3. Open the editor and confirm n8n Assistant appears and responds.
-
-`N8N_INSTANCE_AI_MODEL` defaults to `anthropic/claude-opus-5-5` from n8n 2.48.0. Earlier versions default to `anthropic/claude-opus-4-8`. Set it explicitly only if you want a different model (see [Choose a model provider](#choose-a-model-provider)).
-
-If you connect through a gateway with `N8N_INSTANCE_AI_MODEL_URL` and don't set a model, make sure the gateway offers Claude Opus 5.5. If it doesn't, set `N8N_INSTANCE_AI_MODEL` to a model it offers, such as `anthropic/claude-opus-4-8`.
-
-Prefer to watch? This [video guide](https://go.n8n.io/RZZWq1) covers the setup end to end, from the one-line install to selecting a provider and model in the editor.
-
-### Setup 2: Self-host the sandbox manually (advanced)
-
-Use this if you're configuring n8n outside of the one-line setup command or Docker Compose guide, and you want to run the sandbox yourself rather than hand it to Daytona.
-
-{% hint style="warning" %}
-This means hosting two extra containers yourself: the sandbox API and a privileged Docker-in-Docker runner, plus mutual TLS between them. Like setup 1, this uses `n8n-sandbox`, which is best suited to local development and testing. For production, use [Daytona](#setup-3-daytona-managed-sandbox-recommended-for-production) instead.
-{% endhint %}
-
-**What you need:**
-
-* The n8n Sandbox Service running and reachable from n8n. See the [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose) for the full stack (`sandbox-certs`, `sandbox-api`, `sandbox-runner-1`) and its secrets.
-* An LLM API key.
-
-**Steps:**
-
-1. Stand up the sandbox stack (Docker Compose guide linked above).
-2. Point n8n at it:
-
-   ```bash
-   N8N_INSTANCE_AI_SANDBOX_ENABLED=true
-   N8N_INSTANCE_AI_SANDBOX_PROVIDER=n8n-sandbox
-   N8N_SANDBOX_SERVICE_URL=http://sandbox-api:8080
-   N8N_SANDBOX_SERVICE_API_KEY=my-sandbox-api-key
-   ```
-
-   | Variable                           | Description                                         |
-   | ---------------------------------- | --------------------------------------------------- |
-   | `N8N_INSTANCE_AI_SANDBOX_ENABLED`  | Set to `true`.                                      |
-   | `N8N_INSTANCE_AI_SANDBOX_PROVIDER` | Set to `n8n-sandbox`.                               |
-   | `N8N_SANDBOX_SERVICE_URL`          | URL of the sandbox API, reachable from n8n.         |
-   | `N8N_SANDBOX_SERVICE_API_KEY`      | Must match `SANDBOX_API_KEYS` on the API container. |
-3. Add your model key (see [Choose a model provider](#choose-a-model-provider)) and restart n8n.
-
-**Verify:**
-
-```bash
-curl http://<sandbox-api-host>:8080/healthz
-```
-
-Expected response: `{"status":"ok"}`
-
-**Notes:**
-
-* Replace `my-sandbox-api-key` with your own secret, and set matching registration-token and runner-key secrets on the API and runner containers. See the [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose) for the full set of variables and how they connect.
-* `N8N_SANDBOX_SERVICE_API_KEY` must match a value in `SANDBOX_API_KEYS` on the sandbox API container.
-* The runner pulls its sandbox image on first use. For air-gapped setups, preload that image into the runner's inner Docker.
-* Hostnames matter. The certificates are issued for `sandbox-api` and `sandbox-runner-<n>`, so keep those service names or regenerate certificates with matching SANs.
-
-### Setup 3: Daytona (managed sandbox, recommended for production)
-
-Daytona creates sandboxes on demand instead of you hosting the containers yourself. It's the sandbox provider n8n recommends for production use.
-
-**What you need:** a Daytona account and API key, plus an LLM API key.
-
-**Steps:**
-
-1. Set these environment variables on your n8n instance:
-
-   ```bash
-   # Enable the module and choose a model
-   N8N_ENABLED_MODULES=instance-ai
-   N8N_INSTANCE_AI_MODEL=anthropic/claude-opus-5-5
-   N8N_INSTANCE_AI_MODEL_API_KEY=sk-ant-xxx
-
-   # Sandbox, required
-   N8N_INSTANCE_AI_SANDBOX_ENABLED=true
-   N8N_INSTANCE_AI_SANDBOX_PROVIDER=daytona
-   N8N_INSTANCE_AI_SANDBOX_IMAGE=daytonaio/sandbox:0.5.3-slim
-
-   # Daytona
-   DAYTONA_API_URL=https://app.daytona.io/api
-   DAYTONA_API_KEY=dtn_xxx
-
-   # Web search, recommended
-   INSTANCE_AI_BRAVE_SEARCH_API_KEY=BSA-xxx
-   ```
-
-   | Variable                           | Description                                                                                                                                    |
-   | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-   | `N8N_ENABLED_MODULES`              | Must include `instance-ai` to enable the module.                                                                                               |
-   | `N8N_INSTANCE_AI_MODEL`            | Selects the LLM in `provider/model` format. Has a default (`anthropic/claude-opus-5-5`). Set it explicitly only if you want a different model. |
-   | `N8N_INSTANCE_AI_MODEL_API_KEY`    | API key for the selected provider.                                                                                                             |
-   | `N8N_INSTANCE_AI_SANDBOX_ENABLED`  | Set to `true`. n8n Assistant requires a sandbox.                                                                                               |
-   | `N8N_INSTANCE_AI_SANDBOX_PROVIDER` | Set to `daytona`.                                                                                                                              |
-   | `N8N_INSTANCE_AI_SANDBOX_IMAGE`    | Base container image for Daytona sandboxes.                                                                                                    |
-   | `DAYTONA_API_URL`                  | Daytona API endpoint.                                                                                                                          |
-   | `DAYTONA_API_KEY`                  | Your Daytona API key.                                                                                                                          |
-   | `INSTANCE_AI_BRAVE_SEARCH_API_KEY` | Brave Search API key for web search. This variable intentionally doesn't use the `N8N_` prefix.                                                |
-
-   Docker Compose example:
-
-   ```yaml
-   services:
-     n8n:
-       image: n8nio/n8n
-       environment:
-         N8N_ENABLED_MODULES: instance-ai
-         N8N_INSTANCE_AI_MODEL: anthropic/claude-opus-5-5
-         N8N_INSTANCE_AI_MODEL_API_KEY: sk-ant-xxx
-         N8N_INSTANCE_AI_SANDBOX_ENABLED: 'true'
-         N8N_INSTANCE_AI_SANDBOX_PROVIDER: daytona
-         N8N_INSTANCE_AI_SANDBOX_IMAGE: daytonaio/sandbox:0.5.3-slim
-         DAYTONA_API_URL: https://app.daytona.io/api
-         DAYTONA_API_KEY: dtn_xxx
-         INSTANCE_AI_BRAVE_SEARCH_API_KEY: BSA-xxx
-   ```
-2. Restart n8n, open the editor, and confirm n8n Assistant appears and responds.
-
-**Optional: tune the sandbox lifecycle**
-
-```bash
-N8N_INSTANCE_AI_SANDBOX_AUTO_STOP_MINUTES=15
-N8N_INSTANCE_AI_SANDBOX_AUTO_ARCHIVE_MINUTES=60
-N8N_INSTANCE_AI_SANDBOX_AUTO_DELETE_MINUTES=10080
-```
-
-{% hint style="info" %}
-By default, Daytona stops an idle sandbox after 15 minutes, archives a stopped sandbox after one hour, and deletes it after seven days. Change these settings with the variables above.
-{% endhint %}
-
-## Choose a model provider
-
-`N8N_INSTANCE_AI_MODEL` uses this format:
-
-```
-provider/model
-```
-
-Supported providers are:
-
-* `anthropic`
-* `openai`
-* `openrouter`
-
-For a hosted provider, start with `anthropic/claude-opus-5-5` or `openai/gpt-5.5`.
-
-Examples:
-
-```bash
-# Anthropic
-N8N_INSTANCE_AI_MODEL=anthropic/claude-opus-5-5
-
-# OpenAI
-N8N_INSTANCE_AI_MODEL=openai/gpt-5.5
-
-# OpenRouter
-N8N_INSTANCE_AI_MODEL=openrouter/deepseek/deepseek-v4-pro
-```
-
-Set `N8N_INSTANCE_AI_MODEL_API_KEY` to the API key for the provider you choose.
-
-If `N8N_INSTANCE_AI_MODEL_API_KEY` isn't set, n8n uses the provider's standard environment variable as a fallback:
-
-* `ANTHROPIC_API_KEY`
-* `OPENAI_API_KEY`
-* `OPENROUTER_API_KEY`
-
-### Use a local or custom OpenAI-compatible endpoint
-
-To use a local or custom OpenAI-compatible endpoint, set `N8N_INSTANCE_AI_MODEL_URL`.
-
-```bash
-N8N_INSTANCE_AI_MODEL_URL=http://localhost:1234/v1
-N8N_INSTANCE_AI_MODEL_API_KEY=optional-key
-```
-
-Some local servers don't require an API key.
-
-## Enable web search
-
-Web search lets n8n Assistant look things up on the web. It's optional, and the rest of n8n Assistant works without it.
-
-If you used the [one-line setup](/deploy/host-n8n/install-options/one-line-setup) or the [Docker Compose guide](/deploy/host-n8n/install-options/install-using-docker-compose), SearXNG is already bundled and running. No setup is needed unless you'd rather use Brave Search instead.
-
-```bash
-# Brave Search
-INSTANCE_AI_BRAVE_SEARCH_API_KEY=BSA-xxx
-
-# SearXNG
-N8N_INSTANCE_AI_SEARXNG_URL=http://searxng:8080
-```
-
-{% hint style="info" %}
-`INSTANCE_AI_BRAVE_SEARCH_API_KEY` intentionally doesn't use the `N8N_` prefix. Use the variable exactly as shown.
-{% endhint %}
-
-If you configure both, Brave Search takes priority over SearXNG. Free or unauthenticated providers, including SearXNG, can hit rate limits, so use Brave Search for a more reliable setup.
-
-If an instance admin selects a Brave Search or SearXNG credential in the AI settings UI, n8n uses that credential instead of these environment variables.
-
-## Enable instance context
-
-{% hint style="info" %}
-**Feature availability**
-
-The shared instance context flag and activity log retention settings documented here are available from n8n 2.41.0.
-{% endhint %}
-
-{% hint style="info" %}
-**Preview status**
-
-Instance context is in Preview and may change in future releases. n8n hasn't enabled instance context for all instances. Avoid relying on instance context for production work.
-{% endhint %}
-
-Instance context gives n8n Assistant a short summary of the project you open a conversation in. It includes workflows, recent changes, and execution results. It's optional, and the rest of n8n Assistant works without it. See [What n8n Assistant knows about your instance](/build/ways-of-building-workflows/n8n-assistant#what-n8n-assistant-knows-about-your-instance).
-
-The `114_instance_activity_context` PostHog flag controls it. n8n evaluates the flag for each instance, not for each user. The same flag controls activity recording, instance context in n8n Assistant, and the instance context tools on the [n8n MCP server](/connect/connect-to-n8n-mcp-server/mcp-server-tools-reference#instance-context).
-
-On a self-hosted instance, set `N8N_FEATURE_FLAG_OVERRIDES` to override the PostHog value. For example, add this value to your `.env` file. Preserve any other entries in the JSON object.
-
-```bash
-N8N_FEATURE_FLAG_OVERRIDES='{"114_instance_activity_context":true}'
-```
-
-Restart n8n to apply the change.
-
-| `N8N_FEATURE_FLAG_OVERRIDES` value        | Result                                               |
-| ----------------------------------------- | ---------------------------------------------------- |
-| `{"114_instance_activity_context":true}`  | On, regardless of the PostHog value                  |
-| `{"114_instance_activity_context":false}` | Off, even when PostHog returns `true`                |
-| No override for this flag                 | On only when PostHog returns `true`. Off otherwise   |
-| Invalid JSON or invalid override data     | n8n ignores the overrides and uses the PostHog value |
-
-If PostHog flag evaluation fails, the feature is off unless a valid override enables it.
-
-One flag controls both halves. With the flag off, n8n writes no activity entries and n8n Assistant reads no instance context.
-
-The activity log records that a change happened and which node types you added or removed in it. It never records parameter values. It reports what changed in a save, not what the project uses now. Node type counting reports current usage. It needs its own flag.
-
-Turning the flag off stops new activity recording and new instance context reads. The activity log tool is unavailable. Entries recorded earlier remain subject to these retention settings:
-
-| Variable                          | Default | Description                                                                     |
-| --------------------------------- | ------- | ------------------------------------------------------------------------------- |
-| `N8N_ACTIVITY_LOG_RETENTION_DAYS` | `0`     | Days to keep activity entries. `0` disables age-based pruning.                  |
-| `N8N_ACTIVITY_LOG_MAX_ENTRIES`    | `1000`  | Maximum activity entries across all projects. `0` disables count-based pruning. |
-
-By default, n8n keeps the newest 1,000 activity entries across the instance. It doesn't remove entries based on age. An entry can remain indefinitely if the log stays below this limit.
-
-Pruning runs every hour and continues when the flag is off. Restart n8n after changing these environment variables.
-
-## Enable node type counting
-
-{% hint style="info" %}
-**Feature availability**
-
-Node type counting is available from n8n 2.39.0. Enable node type counting with the feature flag or environment variable below.
-{% endhint %}
-
-Node type counting lets n8n Assistant ask how many workflows in a project use each node type, so it can follow your conventions without reading every workflow. It's separate from instance context and has its own flag.
-
-The `109_instance_ai_node_usage` PostHog flag controls it. On a self-hosted instance, `N8N_INSTANCE_AI_NODE_USAGE_ENABLED` force-enables it:
-
-```bash
-N8N_INSTANCE_AI_NODE_USAGE_ENABLED=true
-```
-
-| Variable                             | Default | Description                                                                     |
-| ------------------------------------ | ------- | ------------------------------------------------------------------------------- |
-| `N8N_INSTANCE_AI_NODE_USAGE_ENABLED` | `false` | Set to `true` to turn node type counting on, whatever the PostHog flag returns. |
-
-This variable only turns node type counting on. Setting it to `false`, or leaving it out, hands the decision back to the PostHog flag, so it isn't a way to keep the feature off.
-
-Node type counting reports counts of node types, never parameter values.
-
-## Enable agents
-
-You can [build and run agents on your instance](/build/build-and-manage-agents) with or without n8n Assistant. Agents are in Preview and available from n8n 2.32.3.
-
-{% hint style="info" %}
-**Feature availability**
-
-Agents are on by default on all self-hosted plans, including Enterprise.
-{% endhint %}
-
-You build agents manually with just the `agents` module: you pick the model, write the instructions, and attach the tools and skills yourself. n8n Assistant (`instance-ai`) is optional and adds AI-assisted building, where you describe an agent and n8n scaffolds it for you.
-
-To change the instance setting:
-
-1. Sign in as an instance owner or admin.
-2. Open **Settings > Agents**.
-3. Turn **Enable Agents** on or off.
-
-n8n saves this choice across restarts and license changes. The setting is separate from **Settings > Assistant**. Turning agents off blocks new runs and cancels queued messages for future runs. Active runs can finish. See [Enable or disable agents](/build/build-and-manage-agents#enable-or-disable-agents) for details.
-
-The `agents` module loads by default. If you disabled it with `N8N_DISABLED_MODULES`, remove `agents` from that list and restart n8n to restore the settings page. Module environment variables don't override the saved agents setting.
-
-### Shared sandbox and optional features
-
-Use **Settings > Agents > Shared sandbox** to [configure the sandbox connection](/build/build-and-manage-agents#configure-the-shared-sandbox). Agents and n8n Assistant use the same connection. Changes affect both features. You can configure it while either feature is off.
-
-The shared sandbox editor requires the `instance-ai` module, which also loads by default. If you excluded it with `N8N_DISABLED_MODULES`, remove it from that list and restart n8n. You can keep n8n Assistant off in **Settings > Assistant**. You can also configure the sandbox with environment variables.
-
-Enabling the shared sandbox also enables the agent knowledge base. For an environment-based setup, use these optional settings:
-
-```bash
-# Enable the agent knowledge base with your existing Daytona connection
-N8N_AGENTS_AI_SANDBOX_ENABLED=true
-N8N_INSTANCE_AI_SANDBOX_PROVIDER=daytona
-
-# Let channels reach your instance
-N8N_WEBHOOK_URL=https://<your-public-hostname>
-```
-
-| Variable                           | Description                                                                                                                                                                          |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `N8N_AGENTS_AI_SANDBOX_ENABLED`    | Set to `true` to enable the knowledge base when the shared sandbox isn't already enabled. Requires a configured sandbox. Default: `false`.                                           |
-| `N8N_INSTANCE_AI_SANDBOX_PROVIDER` | Shared sandbox provider for agents and n8n Assistant. Use `n8n-sandbox` or `daytona`. Default: `n8n-sandbox`.                                                                        |
-| `N8N_WEBHOOK_URL`                  | Public, secure URL for your instance. Required to connect agents to channels such as Slack, Telegram, and Linear. Available from n8n 2.30.0; on earlier versions, use `WEBHOOK_URL`. |
-
-{% hint style="info" %}
-**Feature availability**
-
-The knowledge base needs a configured sandbox on self-hosted n8n. Without it, the rest of the agent still works. See [Pick your setup](#pick-your-setup) for sandbox options.
-{% endhint %}
-
-{% hint style="info" %}
-**Preview status**
-
-On self-hosted, the knowledge base is in Preview.
-{% endhint %}
-
-For a full deployment example, see [Installation options](/deploy/host-n8n/install-options). To create your first agent, see [Build and manage agents](/build/build-and-manage-agents).
-
-## Disable n8n Assistant
-
-To turn n8n Assistant off, use **Settings > Assistant**. To unload its module, add `instance-ai` to `N8N_DISABLED_MODULES` and restart n8n:
-
-```bash
-N8N_DISABLED_MODULES=instance-ai
-```
-
-Unloading `instance-ai` also removes the shared sandbox editor from **Settings > Agents**. You can still configure the sandbox with environment variables.
-
-## Troubleshooting
-
-If n8n Assistant doesn't appear or doesn't work, check for these issues.
-
-**General**
-
-* `N8N_DISABLED_MODULES` doesn't include `instance-ai`.
-* The model value uses `provider/model` format if you set `N8N_INSTANCE_AI_MODEL`.
-* The API key is valid for the selected provider.
-* `N8N_INSTANCE_AI_SANDBOX_ENABLED` is set to `true`.
-
-**Self-hosted sandbox (setup 2)**
-
-* `N8N_SANDBOX_SERVICE_API_KEY` matches `SANDBOX_API_KEYS` on the API container.
-* The sandbox health check returns `{"status":"ok"}`.
-* `N8N_SANDBOX_SERVICE_URL` is reachable from the n8n container.
-
-**Daytona (setup 3)**
-
-* `DAYTONA_API_URL` and `DAYTONA_API_KEY` are set.
-* Your Daytona account has capacity to create a new sandbox.
-
-**Web search**
-
-* `INSTANCE_AI_BRAVE_SEARCH_API_KEY` is set, or `N8N_INSTANCE_AI_SEARXNG_URL` is set.
-* If nothing is set, this is expected. Web search is optional and the rest of n8n Assistant still works.
-
-**Instance context**
-
-* The `114_instance_activity_context` flag is on for your instance. Set `N8N_FEATURE_FLAG_OVERRIDES` to `{"114_instance_activity_context":true}` to force it on.
-* Nothing changed in the project yet. The activity log only records changes made after the flag went on.
-* The project is empty, and nothing has run in it. n8n Assistant reports nothing rather than an empty summary.
-
-**Node type counting**
-
-* The `109_instance_ai_node_usage` flag is on, or `N8N_INSTANCE_AI_NODE_USAGE_ENABLED` has the value `true`.
-* Setting the variable to `false` doesn't keep the feature off. It hands the decision back to the flag.
-* It's independent of instance context. Turning instance context on doesn't turn node type counting on.
 
 ## Related resources
 

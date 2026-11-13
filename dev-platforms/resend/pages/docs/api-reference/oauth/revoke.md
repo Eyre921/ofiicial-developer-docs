@@ -19,28 +19,28 @@ Confidential clients must authenticate the same way they do at the [token endpoi
 
 The refresh token to revoke.
 
-**client\_id** `string`
+**client_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
 already carries it, and with `private_key_jwt`, where the assertion does.
 
-**client\_secret** `string`
+**client_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic` (send the secret in the `Authorization`
 header instead).
 
-**client\_assertion\_type** `string`
+**client_assertion_type** `string`
 
 Required with `private_key_jwt`. Must be
 `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
 
-**client\_assertion** `string`
+**client_assertion** `string`
 
 Required with `private_key_jwt`: a newly signed JWT, as at the [token
 endpoint](/docs/api-reference/oauth/token#client-authentication).
 
-**token\_type\_hint** `string`
+**token_type_hint** `string`
 
 Optional per RFC 7009. If set to `"access_token"`, the request fails: access
 token revocation isn't supported. Any other value (including

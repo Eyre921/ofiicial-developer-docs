@@ -280,15 +280,15 @@ For large full-parameter snapshots, notify the hint endpoint as each shard finis
 
 Snapshot directory name under the configured bucket prefix. Must not contain `/`.
 
-**incremental\_snapshot\_metadata** `object`
+**incremental_snapshot_metadata** `object`
 
 Required for incremental snapshots. Includes `previous_snapshot_identity`, `compression_format` (`arc_v2`), and `checksum_format` (`alder32`). See the incremental snapshots guide.
 
-**reset\_prompt\_cache** `string`
+**reset_prompt_cache** `string`
 
 Prompt-cache policy after the swap: `all` (default), `none`, or `new_session`. See [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts) for active stream, session ID, and reset-option semantics.
 
-**validation.extra\_fields\_ignore** `string[]`
+**validation.extra_fields_ignore** `string[]`
 
 Top-level `config.json` fields to ignore during snapshot validation. Only use for known-safe metadata fields.
 

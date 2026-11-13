@@ -34,7 +34,7 @@ page. Cannot be combined with `after`.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more drafts exist beyond this page. Pass the last draft's `id` as
 `after` to continue.
@@ -74,15 +74,15 @@ The subject.
 
 A short preview of the body.
 
-**thread\_id** `string | null`
+**thread_id** `string | null`
 
 The Thread ID when this draft is a reply. `null` otherwise.
 
-**reply\_to\_email\_id** `string | null`
+**reply_to_email_id** `string | null`
 
 The Email ID being replied to. `null` otherwise.
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the draft was last saved.
 
@@ -100,7 +100,7 @@ The ID of the attachment.
 
 The filename of the attachment.
 
-**content\_type** `string`
+**content_type** `string`
 
 The MIME type of the attachment, such as `application/pdf`.
 

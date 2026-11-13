@@ -9,7 +9,7 @@ Retrieve a single API request log.
 
 ## Path Parameters
 
-**log\_id** `string` *required*
+**log_id** `string` *required*
 
 The Log ID.
 

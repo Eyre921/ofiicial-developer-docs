@@ -78,7 +78,7 @@ completion = client.chat.completions.create(
 )
 ```
 
-See the [reasoning\_effort](/api-reference/post-chatcompletions) parameter for more details.
+See the [reasoning_effort](/api-reference/post-chatcompletions) parameter for more details.
 
 #### Using `thinking` (Anthropic-compatible)
 

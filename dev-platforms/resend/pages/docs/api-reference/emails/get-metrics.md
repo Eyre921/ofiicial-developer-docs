@@ -29,13 +29,13 @@ List-type query parameters below accept a comma-separated value, the
 parameter repeated (`domain_id=a&domain_id=b`), or a mix of
 both.
 
-**start\_date** `string`
+**start_date** `string`
 
 The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
 (`2026-07-01T00:00:00Z`). Must be on or before `end_date`, and can equal it to
 query a single day. Defaults to 6 days before `end_date`.
 
-**end\_date** `string`
+**end_date** `string`
 
 The end of the date range, as an ISO 8601 date or datetime. Values in the
 future are clamped to the current time. Defaults to now.
@@ -70,16 +70,16 @@ Possible values:
 * `email`: groups the data by email. Cannot be combined with `broadcast`.
 * `broadcast`: groups the data by broadcast. Cannot be combined with `email`.
 
-**domain\_id** `string[]`
+**domain_id** `string[]`
 
 List of sending domain IDs to restrict the response to, up to 100.
 
-**email\_id** `string[]`
+**email_id** `string[]`
 
 List of email IDs to restrict the response to, up to 100. Cannot be combined
 with the `broadcast` dimension or `broadcast_id`.
 
-**broadcast\_id** `string[]`
+**broadcast_id** `string[]`
 
 List of broadcast IDs to restrict the response to, up to 100. Cannot be
 combined with the `email` dimension or `email_id`.

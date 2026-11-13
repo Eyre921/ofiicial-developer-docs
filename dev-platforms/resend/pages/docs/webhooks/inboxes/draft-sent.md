@@ -18,7 +18,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.draft.sent`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -33,19 +33,19 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
-**email\_id** `string`
+**email_id** `string`
 
 The ID of the email
 
-**draft\_id** `string`
+**draft_id** `string`
 
 The ID of the draft
 
@@ -109,7 +109,7 @@ The CC recipients of the email
 
 The BCC recipients of the email
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses
 
@@ -117,7 +117,7 @@ The Reply-To addresses
 
 The subject of the email
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the email
 
@@ -143,7 +143,7 @@ The size of the attachment in bytes
 
 Whether the email has been read
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the email arrived or was sent
 
@@ -181,23 +181,23 @@ BCC recipients
 
 The subject
 
-**thread\_id** `string | null`
+**thread_id** `string | null`
 
 The Thread ID when this draft is a reply. `null` otherwise
 
-**reply\_to\_email\_id** `string | null`
+**reply_to_email_id** `string | null`
 
 The Email ID being replied to. `null` otherwise
 
-**email\_id** `string | null`
+**email_id** `string | null`
 
 The queued outbound email after send. `null` until then
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the draft was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the draft was last saved
 
@@ -215,7 +215,7 @@ The ID of the attachment
 
 The filename of the attachment
 
-**content\_type** `string`
+**content_type** `string`
 
 The MIME type of the attachment
 

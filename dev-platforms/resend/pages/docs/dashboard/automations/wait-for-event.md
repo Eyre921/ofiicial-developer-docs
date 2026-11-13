@@ -430,7 +430,7 @@ You can use `wait_events` in [send email](/docs/dashboard/automations/send-email
 
 ## Configuration
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event to wait for.
 
@@ -439,7 +439,7 @@ The name of the event to wait for.
 The maximum time to wait before timing out (e.g. `"3 days"`, `"1 hour"`).
 Maximum: 30 days.
 
-**config.filter\_rule** `object`
+**config.filter_rule** `object`
 
 An optional rule that filters which incoming events resume the step.
 `wait_events.` is not available.

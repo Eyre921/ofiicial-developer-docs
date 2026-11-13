@@ -1,5 +1,5 @@
 ---
-title: "Docs (159 pages)"
+title: "Docs (161 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -12,6 +12,7 @@ path: docs/_llms/docs.txt
 
 - [Quickstart](https://openrouter.ai/docs/quickstart.md): Get started with OpenRouter
 - [Principles](https://openrouter.ai/docs/guides/overview/principles.md): Core principles and values of OpenRouter
+- [OpenAI Compatibility](https://openrouter.ai/docs/guides/features/compatibility.md): Use OpenRouter as a drop-in replacement for OpenAI SDKs and REST clients. Complete compatibility matrix, base URL configuration, the OPENAI_API_KEY fallback trap, and routing options.
 - [Models](https://openrouter.ai/docs/guides/overview/models.md): One API for hundreds of models
 - [Frequently Asked Questions](https://openrouter.ai/docs/faq.md): Common questions about OpenRouter
 - [Report Feedback](https://openrouter.ai/docs/guides/overview/report-feedback.md)
@@ -96,6 +97,7 @@ path: docs/_llms/docs.txt
 - [Custom Classifiers](https://openrouter.ai/docs/guides/features/classifiers.md): Automatically categorize LLM generations in your workspace
 - [Response Caching](https://openrouter.ai/docs/guides/features/response-caching.md): Cache responses for identical API requests to save time and money
 - [Structured Outputs](https://openrouter.ai/docs/guides/features/structured-outputs.md): Return structured data from your models
+- [Decisions API](https://openrouter.ai/docs/guides/features/decisions.md): Complete guide to OpenRouter's Decisions API. Submit application state with typed questions (noul, choice, score, box) and receive deterministic, structured judgments with calibrated probabilities instead of generated text.
 - [Message Transforms](https://openrouter.ai/docs/guides/features/message-transforms.md): Transform prompt messages
 - [Zero Completion Insurance](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md): OpenRouter will not charge you for zero token responses
 - [App Attribution](https://openrouter.ai/docs/app-attribution.md): Get your app featured in OpenRouter rankings and analytics

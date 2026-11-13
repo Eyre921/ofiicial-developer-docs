@@ -32,6 +32,8 @@ Then describe the stack you want to your agent:
 
 The agent installs the CLI plugin, runs `stripe projects init`, adds your services, and syncs credentials automatically.
 
+If you connect your agent to Stripe MCP, it can also provision services, deploy to Vercel, and add custom domains without the CLI. See [Provision and deploy apps with AI agents](https://docs.stripe.com/projects/mcp.md).
+
 ## Quickstart 
 
 Install the plugin, create a project, add services, and pull credentials to your local environment:

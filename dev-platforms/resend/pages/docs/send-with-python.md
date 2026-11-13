@@ -187,14 +187,14 @@ async def send_welcome_email():
 3. **Wrap `resend.Emails.send()` in `try`/`except`** and catch `resend.exceptions.ResendError` (or a specific subclass) — the SDK raises on failure, it does not return `{data, error}`.
 4. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 5. **Check the project for an existing package/dependency manager** (pip, poetry, uv) and use that to install the SDK.
-6. **Use snake\_case** for SDK parameters (`reply_to`, `scheduled_at`), not camelCase.
+6. **Use snake_case** for SDK parameters (`reply_to`, `scheduled_at`), not camelCase.
 7. **Use `send_async`** instead of `send` inside async code (e.g. FastAPI handlers).
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** assume `resend.Emails.send()` returns an error object — it raises an exception. A bare, unhandled call will crash on failure.
-3. **Do not** use camelCase parameter names (`replyTo`, `scheduledAt`) — the Python SDK uses snake\_case (`reply_to`, `scheduled_at`).
+3. **Do not** use camelCase parameter names (`replyTo`, `scheduledAt`) — the Python SDK uses snake_case (`reply_to`, `scheduled_at`).
 4. **Do not** send `html` or `text` alongside `template` — these are mutually exclusive.
 5. **Do not** pass an idempotency key inside `params` — it belongs in the separate `options` argument: `send(params, options)`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -263,7 +263,7 @@ Before returning any Resend-related solution, you **must** verify:
 1. **Import**: Is `resend` imported, and is `resend.api_key` set from an environment variable?
 2. **Error Handling**: Is `resend.Emails.send()` wrapped in `try`/`except` catching `resend.exceptions.ResendError`?
 3. **Async**: Is `send_async` used instead of `send` inside `async def` code?
-4. **Parameters**: Are all parameter names in snake\_case?
+4. **Parameters**: Are all parameter names in snake_case?
 5. **Idempotency**: If used, is the idempotency key passed as a separate `options` argument, not inside `params`?
 6. **From Address**: Is the `from` address using a verified domain (not `onboarding@resend.dev` in production)?
 

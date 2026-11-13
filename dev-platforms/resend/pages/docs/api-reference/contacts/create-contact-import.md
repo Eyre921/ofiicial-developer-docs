@@ -17,21 +17,21 @@ This endpoint accepts `multipart/form-data`. Object and array fields
 The CSV file to import. The file must be sent as a form field named `file`.
 Maximum file size is 200MB.
 
-**column\_map** `object`
+**column_map** `object`
 
 Maps CSV columns to contact fields.
 
-**column\_map**
+**column_map**
 
 **email** `string`
 
 The CSV column that contains contact email addresses.
 
-**first\_name** `string`
+**first_name** `string`
 
 The CSV column that contains contact first names.
 
-**last\_name** `string`
+**last_name** `string`
 
 The CSV column that contains contact last names.
 
@@ -59,7 +59,7 @@ The CSV column that contains the custom property value.
 
 The custom property value type. Defaults to `string`.
 
-**on\_conflict** `'upsert' | 'skip'`
+**on_conflict** `'upsert' | 'skip'`
 
 How to handle contacts that already exist. Defaults to `upsert`.
 

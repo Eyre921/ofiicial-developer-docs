@@ -13,7 +13,7 @@ Retrieve a single attachment from a received email.
 
 The Attachment ID.
 
-**email\_id** `string` *required*
+**email_id** `string` *required*
 
 The Email ID.
 

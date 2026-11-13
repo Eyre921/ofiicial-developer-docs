@@ -92,7 +92,7 @@ Once you have your VMC, you can set your BIMI DNS record. This TXT record points
 
 | Name | Type | Value |
 | - | - | - |
-| default.\_bimi | TXT | v=BIMI1; l=link\_to\_logo; a=link\_to\_certificate; |
+| default.\_bimi | TXT | v=BIMI1; l=link_to_logo; a=link_to_certificate; |
 
 Here is an example of a BIMI record:
 

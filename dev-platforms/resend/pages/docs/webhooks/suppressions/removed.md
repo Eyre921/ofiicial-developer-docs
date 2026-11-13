@@ -17,7 +17,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `suppression.removed`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -40,12 +40,12 @@ The suppressed email address
 
 How the address was suppressed: `bounce`, `complaint`, or `manual`
 
-**source\_id** `string | null`
+**source_id** `string | null`
 
 ID of the email that triggered the suppression. For suppressions with a
 `manual` origin, `source_id` is `null`
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the suppression was created
 

@@ -253,7 +253,7 @@ ORDER BY day DESC, event_type;
 > [!NOTE]
 >
 > See the
-> [queries\_examples.md](https://github.com/resend/resend-webhooks-ingester/blob/main/queries_examples.md)
+> [queries_examples.md](https://github.com/resend/resend-webhooks-ingester/blob/main/queries_examples.md)
 > file in the repository for more analytics queries including bounce rates, open
 > rates, and click-through rates.
 
@@ -271,7 +271,7 @@ WHERE event_created_at < NOW() - INTERVAL '90 days';
 > [!TIP]
 >
 > For Supabase, use
-> [pg\_cron](https://supabase.com/docs/guides/database/extensions/pg_cron) to
+> [pg_cron](https://supabase.com/docs/guides/database/extensions/pg_cron) to
 > schedule cleanup queries. For MongoDB, consider using [TTL
 > indexes](https://www.mongodb.com/docs/manual/core/index-ttl/) or [Atlas
 > scheduled

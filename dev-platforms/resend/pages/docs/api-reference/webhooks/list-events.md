@@ -29,7 +29,7 @@ The `before` parameter is not supported for this endpoint.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more events exist beyond this page.
 
@@ -48,7 +48,7 @@ or [list its attempts](/docs/api-reference/webhooks/list-event-attempts).
 
 The event type, for example `email.sent`.
 
-**created\_at** `string`
+**created_at** `string`
 
 When the event was created.
 

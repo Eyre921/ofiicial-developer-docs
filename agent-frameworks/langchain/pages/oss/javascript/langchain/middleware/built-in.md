@@ -1274,7 +1274,7 @@ const getWeather = tool(
 );
 
 const agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [
     createSubAgentMiddleware({
       defaultModel: "claude-sonnet-4-6",
@@ -1561,7 +1561,7 @@ const weatherSubagent: SubAgent = {
   description: "This subagent can get weather in cities.",
   systemPrompt: "Use the get_weather tool to get the weather in a city.",
   tools: [getWeather],
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [],
 };
 
@@ -1933,7 +1933,7 @@ const agent = createAgent({
 >
 > **model** `string | BaseChatModel`
 >
-> Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google:gemini-3.6-flash'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified.
+> Model to use for generating emulated tool responses. Can be a model identifier string (e.g., `'google:gemini-4-hydrogen'`) or a `BaseChatModel` instance. Defaults to the agent's model if not specified.
 
 > [accordion] Full example
 >

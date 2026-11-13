@@ -80895,65 +80895,89 @@ need to manually restart it by running `supabase functions serve`.
 
 # Getting Started
 
-Resources for getting started with Supabase.
+Create a Supabase project and connect it to your app with an AI agent, the Supabase CLI, or the Supabase Dashboard.
 
-- **[Build with AI tools](https://supabase.com/docs/guides/ai-tools):** Develop with Supabase AI-first using plugins, MCP, and skills.
-- **[API Keys](https://supabase.com/docs/guides/getting-started/api-keys):** Learn about the different API keys in Supabase and how to use them.
-- **[Local Development](https://supabase.com/docs/guides/local-development):** Use the Supabase CLI to develop locally and collaborate between teams.
+Create a Supabase project and connect it to your app. Start with an AI agent, the Supabase CLI, or the Supabase Dashboard.
 
-## Use cases
+## Start with an AI agent
 
-- **[AI, Vectors, and embeddings](https://supabase.com/docs/guides/ai#examples):** Build AI-enabled applications using our Vector toolkit.
-- **[Subscription Payments (SaaS)](https://github.com/vercel/nextjs-subscription-payments#nextjs-subscription-payments-starter):** Clone, deploy, and fully customize a SaaS subscription application with Next.js.
-- **[Partner Gallery](https://github.com/supabase-community/partner-gallery-example#supabase-partner-gallery-example):** Postgres full-text search, image storage, and more.
+Copy this prompt into your agent:
 
-## Framework quickstarts
+```text
+Help me set up Supabase in my app. Before you create a project or change my files, tell me your plan and wait for my go-ahead. Do the following:
+1. Find the framework and language of my app from its project files, such as `package.json`, `pubspec.yaml`, or `Package.swift`. If the folder has no app, ask what I want to build, then suggest a framework and wait for my choice.
+2. Install the Supabase CLI. In a Node.js project, install it as a dev dependency with `npm install supabase --save-dev`. Otherwise, use the method for my operating system from https://supabase.com/docs/guides/local-development/cli/getting-started.md.
+3. Install the Supabase plugin with `npx plugins add supabase-community/supabase-plugin`.
+4. If I do not have a Supabase project, ask whether I want a hosted project (https://supabase.com/dashboard/new) or a local one (`supabase init`, then `supabase start`). In a Node.js project, put `npx` before each command.
+5. Connect my app. Follow the quickstart for its framework from https://supabase.com/docs/guides/getting-started.md.
+6. Ask me which features I need, then follow the matching guides: Auth (https://supabase.com/docs/guides/auth.md), Storage (https://supabase.com/docs/guides/storage/quickstart.md), Realtime (https://supabase.com/docs/guides/realtime.md), Edge Functions (https://supabase.com/docs/guides/functions/quickstart.md).
+7. Check the connection. Create a `todos` table with a `title` column and one row, and enable Row Level Security with a policy that lets anyone read it. Then read the row from my app and show its title, and ask whether I want to keep the `todos` table or drop it.
+8. Finish by telling me what you changed and how to run my app.
+```
 
-- **[React](https://supabase.com/docs/guides/getting-started/quickstarts/reactjs):** Build single-page apps from reusable components, and query Supabase Postgres from the browser.
-- **[Next.js](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs):** Full-stack React with server rendering, wired to Supabase Postgres and cookie-based auth.
-- **[TanStack Start](https://supabase.com/docs/guides/getting-started/quickstarts/tanstack):** Type-safe full-stack React that queries Supabase Postgres in server functions.
-- **[Astro](https://supabase.com/docs/guides/getting-started/quickstarts/astrojs):** Content-driven sites that render on the server and pull Supabase Postgres data per request.
-- **[Vue](https://supabase.com/docs/guides/getting-started/quickstarts/vue):** Build single-page apps with the Vue composition API, backed by Supabase Postgres.
-- **[Nuxt](https://supabase.com/docs/guides/getting-started/quickstarts/nuxtjs):** Full-stack Vue with server rendering, reading Postgres through a Supabase composable.
-- **[SvelteKit](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit):** Full-stack Svelte that loads Supabase Postgres data in server load functions.
-- **[SolidJS](https://supabase.com/docs/guides/getting-started/quickstarts/solidjs):** Fine-grained reactive UIs that load Supabase Postgres data with Solid resources.
-- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/quickstarts/redwoodjs):** Full-stack React and GraphQL, with Prisma migrations against your Supabase Postgres database.
-- **[Refine](https://supabase.com/docs/guides/getting-started/quickstarts/refine):** Scaffold CRUD dashboards and admin panels straight from your Supabase Postgres tables.
-- **[Hono](https://supabase.com/docs/guides/getting-started/quickstarts/hono):** Lightweight web APIs with Supabase Auth anonymous sign-in and RLS-protected reads.
-- **[iOS SwiftUI](https://supabase.com/docs/guides/getting-started/quickstarts/ios-swiftui):** Native iOS apps in Swift, reading Postgres through the Supabase Swift SDK.
-- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/quickstarts/kotlin):** Native Android apps in Kotlin and Jetpack Compose, using the Supabase Kotlin SDK.
-- **[Expo React Native](https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native):** Ship iOS and Android from one React Native codebase, backed by Supabase Postgres.
-- **[Flutter](https://supabase.com/docs/guides/getting-started/quickstarts/flutter):** Ship iOS and Android from one Dart codebase, backed by Supabase Postgres.
-- **[Python](https://supabase.com/docs/guides/getting-started/quickstarts/flask):** Serve Flask web apps that query Postgres with the Supabase Python client.
-- **[Reflex](https://supabase.com/docs/guides/getting-started/quickstarts/reflex):** Full-stack Python web apps that query Supabase Postgres with the async Python client.
-- **[Laravel](https://supabase.com/docs/guides/getting-started/quickstarts/laravel):** Full-stack PHP with Eloquent ORM connected directly to your Supabase Postgres database.
-- **[Ruby on Rails](https://supabase.com/docs/guides/getting-started/quickstarts/ruby-on-rails):** Convention-driven Ruby apps with Active Record connected directly to your Supabase Postgres database.
-- **[Spring Boot](https://supabase.com/docs/guides/getting-started/quickstarts/spring-boot):** Java APIs with Spring Data JPA connected directly to your Supabase Postgres database.
+## Run Supabase locally
 
+Install the Supabase CLI, initialize your project, then start the local stack. The CLI needs Node.js 20 or later, and the local stack needs Docker or another container runtime. Without a Node.js project, [install the CLI for your operating system](https://supabase.com/docs/guides/local-development/cli/getting-started) instead.
 
+```bash
+npm install supabase --save-dev
+npx supabase init
+npx supabase start
+```
 
-## Web app demos
+## Create a hosted project
 
-- **[Next.js](https://supabase.com/docs/guides/getting-started/tutorials/with-nextjs):** Learn how to build a user management app with Next.js and Supabase Database, Auth, and Storage functionality.
-- **[React](https://supabase.com/docs/guides/getting-started/tutorials/with-react):** Learn how to build a user management app with React and Supabase Database, Auth, and Storage functionality.
-- **[Vue 3](https://supabase.com/docs/guides/getting-started/tutorials/with-vue-3):** Learn how to build a user management app with Vue 3 and Supabase Database, Auth, and Storage functionality.
-- **[Nuxt 3](https://supabase.com/docs/guides/getting-started/tutorials/with-nuxt-3):** Learn how to build a user management app with Nuxt 3 and Supabase Database, Auth, and Storage functionality.
-- **[Angular](https://supabase.com/docs/guides/getting-started/tutorials/with-angular):** Learn how to build a user management app with Angular and Supabase Database, Auth, and Storage functionality.
-- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/tutorials/with-redwoodjs):** Learn how to build a user management app with RedwoodJS and Supabase Database, Auth, and Storage functionality.
-- **[Svelte](https://supabase.com/docs/guides/getting-started/tutorials/with-svelte):** Learn how to build a user management app with Svelte and Supabase Database, Auth, and Storage functionality.
-- **[SvelteKit](https://supabase.com/docs/guides/getting-started/tutorials/with-sveltekit):** Learn how to build a user management app with SvelteKit and Supabase Database, Auth, and Storage functionality.
-- **[Refine](https://supabase.com/docs/guides/getting-started/tutorials/with-refine):** Learn how to build a user management app with Refine and Supabase Database, Auth, and Storage functionality.
+Create a hosted project in the [Supabase Dashboard](https://supabase.com/dashboard/new), then connect your app.
 
-## Mobile tutorials
+## Connect your app
 
-- **[Flutter](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter):** Learn how to build a user management app with Flutter and Supabase Database, Auth, and Storage functionality.
-- **[Expo React Native](https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native):** Learn how to build a user management app with Expo React Native and Supabase Database, Auth, and Storage functionality.
-- **[Expo React Native Social Sign-in](https://supabase.com/docs/guides/auth/quickstarts/with-expo-react-native-social-sign-in):** Learn how to implement social sign-in in an app with Expo React Native and Supabase Database and Auth functionality.
-- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/tutorials/with-kotlin):** Learn how to build a product management app with Android and Supabase Database, Auth, and Storage functionality.
-- **[iOS Swift](https://supabase.com/docs/guides/getting-started/tutorials/with-swift):** Learn how to build a user management app with iOS and Supabase Database, Auth, and Storage functionality.
-- **[Ionic React](https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-react):** Learn how to build a user management app with Ionic React and Supabase Database, Auth, and Storage functionality.
-- **[Ionic Vue](https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-vue):** Learn how to build a user management app with Ionic Vue and Supabase Database, Auth, and Storage functionality.
-- **[Ionic Angular](https://supabase.com/docs/guides/getting-started/tutorials/with-ionic-angular):** Learn how to build a user management app with Ionic Angular and Supabase Database, Auth, and Storage functionality.
+Install the client library, then follow the quickstart for your framework.
+
+### Full stack
+
+- **[Next.js](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs)**
+- **[TanStack Start](https://supabase.com/docs/guides/getting-started/quickstarts/tanstack)**: `npm install @supabase/supabase-js @supabase/ssr`
+- **[Astro](https://supabase.com/docs/guides/getting-started/quickstarts/astrojs)**: `npm install @supabase/supabase-js`
+- **[Nuxt](https://supabase.com/docs/guides/getting-started/quickstarts/nuxtjs)**: `npm install @supabase/supabase-js`
+- **[SvelteKit](https://supabase.com/docs/guides/getting-started/quickstarts/sveltekit)**: `npm install @supabase/supabase-js`
+- **[RedwoodJS](https://supabase.com/docs/guides/getting-started/quickstarts/redwoodjs)**
+- **[Reflex](https://supabase.com/docs/guides/getting-started/quickstarts/reflex)**: `uv add supabase`
+- **[Laravel](https://supabase.com/docs/guides/getting-started/quickstarts/laravel)**
+- **[Ruby on Rails](https://supabase.com/docs/guides/getting-started/quickstarts/ruby-on-rails)**
+
+### Frontend
+
+- **[React](https://supabase.com/docs/guides/getting-started/quickstarts/reactjs)**: `npm install @supabase/supabase-js`
+- **[Vue](https://supabase.com/docs/guides/getting-started/quickstarts/vue)**: `npm install @supabase/supabase-js`
+- **[SolidJS](https://supabase.com/docs/guides/getting-started/quickstarts/solidjs)**: `npm install @supabase/supabase-js`
+- **[Refine](https://supabase.com/docs/guides/getting-started/quickstarts/refine)**
+
+### Mobile
+
+- **[Expo React Native](https://supabase.com/docs/guides/getting-started/quickstarts/expo-react-native)**: `npx expo install @supabase/supabase-js react-native-url-polyfill expo-sqlite`
+- **[Flutter](https://supabase.com/docs/guides/getting-started/quickstarts/flutter)**: `flutter pub add supabase_flutter`
+- **[iOS Swift](https://supabase.com/docs/guides/getting-started/quickstarts/ios-swiftui)**
+- **[Android Kotlin](https://supabase.com/docs/guides/getting-started/quickstarts/kotlin)**
+
+### Backend
+
+- **[Hono](https://supabase.com/docs/guides/getting-started/quickstarts/hono)**
+- **[Python](https://supabase.com/docs/guides/getting-started/quickstarts/flask)**: `pip install supabase`
+- **[Spring Boot](https://supabase.com/docs/guides/getting-started/quickstarts/spring-boot)**
+
+## Next steps
+
+- **[Secure your data](https://supabase.com/docs/guides/database/postgres/row-level-security):** Control who can read and write each row with Row Level Security.
+- **[Go to production](https://supabase.com/docs/guides/deployment/going-into-prod):** Check security, performance, and availability before you launch.
+
+### Add features
+
+- **[Add users](https://supabase.com/docs/guides/auth) (Auth):** Sign users in with email, passwordless links, OAuth, or phone.
+- **[Connect your AI agent](https://supabase.com/docs/guides/ai-tools) (AI tools):** Install the Supabase plugin, which bundles the MCP server and agent skills.
+- **[Handle files and uploads](https://supabase.com/docs/guides/storage/quickstart) (Storage):** Store and serve files with access policies.
+- **[Reflect changes live](https://supabase.com/docs/guides/realtime) (Realtime):** Listen to database changes, broadcast messages, and track presence.
+- **[Add server-side logic](https://supabase.com/docs/guides/functions/quickstart) (Edge Functions):** Run TypeScript close to your users, for webhooks, emails, and AI calls.
+
 
 
 ---

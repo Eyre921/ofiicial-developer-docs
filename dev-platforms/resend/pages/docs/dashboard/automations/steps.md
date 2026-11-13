@@ -72,7 +72,7 @@ Below is a list of all the possible step types and their configurations.
 
 The trigger step starts the automation when a matching event is received.
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event that triggers the automation.
 
@@ -202,7 +202,7 @@ The delay duration in natural language (e.g. `"1 hour"`, `"3 days"`). Maximum:
 
 Pauses execution until a specific event is received or a timeout is reached.
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event to wait for.
 
@@ -211,7 +211,7 @@ The name of the event to wait for.
 The maximum time to wait before timing out (e.g. `"3 days"`, `"1 hour"`).
 Maximum: 30 days.
 
-**config.filter\_rule** `object`
+**config.filter_rule** `object`
 
 An optional rule that filters which incoming events resume the step.
 `wait_events.` is not available.
@@ -309,7 +309,7 @@ The email subject line.
 
 If provided, this value will override the template's default value.
 
-**config.reply\_to** `string`
+**config.reply_to** `string`
 
 Reply-to email address.
 
@@ -337,7 +337,7 @@ If provided, this value will override the template's default value.
 
 Adds the contact to a segment.
 
-**config.segment\_id** `string` *required*
+**config.segment_id** `string` *required*
 
 The ID of the segment to add the contact to.
 
@@ -360,11 +360,11 @@ Variable references use dot-notation with one of these scopes:
 * `event.*`: references a field from the triggering event payload (e.g., `event.firstName`).
 * `contact.*`: references a field from the current contact (e.g., `contact.last_name`, `contact.properties.company`).
 
-**config.first\_name** `string | object`
+**config.first_name** `string | object`
 
 The contact's first name. Accepts a hardcoded string or a variable reference.
 
-**config.last\_name** `string | object`
+**config.last_name** `string | object`
 
 The contact's last name. Accepts a hardcoded string or a variable reference.
 

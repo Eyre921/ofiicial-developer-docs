@@ -20,7 +20,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.email.sent`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -35,15 +35,15 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
-**email\_id** `string`
+**email_id** `string`
 
 The ID of the email
 
@@ -107,7 +107,7 @@ The CC recipients of the email
 
 The BCC recipients of the email
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses
 
@@ -115,7 +115,7 @@ The Reply-To addresses
 
 The subject of the email
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the email
 
@@ -141,7 +141,7 @@ The size of the attachment in bytes
 
 Whether the email has been read
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the email arrived or was sent
 

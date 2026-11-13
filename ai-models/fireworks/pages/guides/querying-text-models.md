@@ -521,7 +521,7 @@ Extend text models with additional features for structured outputs, tool integra
 >     print(f"Token: {content.token}, Logprob: {content.logprob}")
 > ```
 
-> [accordion] Prompt inspection (echo & raw\_output)
+> [accordion] Prompt inspection (echo & raw_output)
 >
 > Verify how your prompt was formatted:
 >

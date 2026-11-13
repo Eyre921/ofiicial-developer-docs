@@ -40,7 +40,7 @@ Learn how to add the Resend integration to your Base44 project.
 
 However you add Resend to your project, you'll need to add a Resend API key, which you can create in the [Resend Dashboard](https://resend.com/api-keys). Do not share your API key with others or expose it in the browser or other client-side code.
 
-Copy the API key and paste it into the **RESEND\_API\_KEY** field in Base44.
+Copy the API key and paste it into the **RESEND_API_KEY** field in Base44.
 
 ![Adding your Resend API key to Base44](https://mintcdn.com/resend/ABWmVTZIHGIFNTFD/images/base44-integration-1.png?fit=max\&auto=format\&n=ABWmVTZIHGIFNTFD\&q=85\&s=e10a7a52b06dde106b7a2db585bb7b30)
 

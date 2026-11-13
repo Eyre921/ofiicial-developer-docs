@@ -43,7 +43,7 @@ Refer to the following table to see where each [payment method](https://docs.str
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md) | EUR | European Union, AU, HK, JP, MX, NZ, SG, US | BE |
 | [Bank transfers](https://docs.stripe.com/payments/bank-transfers.md) | EUR, GBP, JPY, MXN, USD | European Union, JP, MX, GB, US | European Union, JP, MX, GB, US |
 | [BECS direct debit](https://docs.stripe.com/payments/au-becs-debit.md) | AUD | AU | AU |
-| [BLIK](https://docs.stripe.com/payments/blik.md) | PLN | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, HU, IS, IE, IT, LV, LI, LT, LU, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE | PL |
+| [BLIK](https://docs.stripe.com/payments/blik.md) | PLN | AT, BE, BG, HR, CY, CZ, DK, EE, FI, FR, DE, GR, HU, IS, IE, IT, LV, LI, LT, LU, MT, NL, NO, PL, PT, RO, SK, SI, ES, SE, AU, CA, CH, GB, HK, JP, SG, US | PL |
 | [Boleto](https://docs.stripe.com/payments/boleto.md) | BRL | BR | BR |
 | [Cards](https://docs.stripe.com/payments/cards/overview.md) | Most currencies | Most locations | Most locations |
 | [Cash App Pay](https://docs.stripe.com/payments/cash-app-pay.md) | USD | US | US customers (excluding accounts in US territories) |

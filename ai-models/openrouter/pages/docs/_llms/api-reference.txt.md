@@ -1,5 +1,5 @@
 ---
-title: "API Reference (184 pages)"
+title: "API Reference (186 pages)"
 source: https://openrouter.ai/docs/_llms/api-reference.txt
 path: docs/_llms/api-reference.txt
 ---
@@ -11,8 +11,10 @@ path: docs/_llms/api-reference.txt
 ### API Guides
 
 - [API Reference](https://openrouter.ai/docs/api_reference/overview.md): An overview of OpenRouter's API
+- [Models API](https://openrouter.ai/docs/api_reference/models.md): Complete API reference for OpenRouter's Models API. Discover models, filter by input and output modalities, query supported parameters, sort by price and latency, and resolve aliases and variants.
 - [Streaming](https://openrouter.ai/docs/api_reference/streaming.md)
 - [Embeddings](https://openrouter.ai/docs/api_reference/embeddings.md): Generate vector embeddings from text and images
+- [Video Generation API](https://openrouter.ai/docs/api_reference/videos.md): Complete API reference for OpenRouter's dedicated asynchronous Video Generation API. Submit jobs, poll status, stream video content, discover models, and configure webhooks.
 - [Limits](https://openrouter.ai/docs/api_reference/limits.md): Credit Limits and Rate Limits
 - [Authentication](https://openrouter.ai/docs/api_reference/authentication.md): API Authentication
 - [Parameters](https://openrouter.ai/docs/api_reference/parameters.md)

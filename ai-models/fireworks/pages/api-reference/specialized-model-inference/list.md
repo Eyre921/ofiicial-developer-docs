@@ -22,7 +22,7 @@ firectl deployed-model list
 
 ## Path parameters
 
-**account\_id** `string` *required*
+**account_id** `string` *required*
 
 Your account ID.
 

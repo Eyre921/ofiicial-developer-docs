@@ -340,7 +340,7 @@ Add a `fireworks.json` file to the directory containing your adapter files:
 
 ### Uploading the LoRA adapter
 
-To upload a LoRA addon, run the following command. The MODEL\_ID is an arbitrary [resource ID](/getting-started/concepts#resource-names-and-ids) to refer to the model within Fireworks.
+To upload a LoRA addon, run the following command. The MODEL_ID is an arbitrary [resource ID](/getting-started/concepts#resource-names-and-ids) to refer to the model within Fireworks.
 
 > [!NOTE]
 >

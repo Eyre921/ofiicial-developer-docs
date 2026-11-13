@@ -3503,7 +3503,7 @@ Cursor to fetch the page before this link. Cannot be used with `after`.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more links exist beyond this page.
 
@@ -3527,7 +3527,7 @@ The URL that was clicked.
 Total clicks on this link, including repeat clicks by the same
 recipient.
 
-**unique\_clicks** `number`
+**unique_clicks** `number`
 
 The number of distinct recipients who clicked this link.
 
@@ -3688,7 +3688,7 @@ Filter by bounce classification. One of `permanent`, `transient`, or
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more recipients exist beyond this page.
 
@@ -3703,7 +3703,7 @@ The recipients matching the requested `type`.
 An opaque cursor for this row, used only for pagination. It does not
 identify any entity in Resend. Use `contact_id` to reference the contact.
 
-**contact\_id** `string | null`
+**contact_id** `string | null`
 
 The matching contact's ID. `null` when the recipient's email no longer
 maps to a contact.
@@ -3717,12 +3717,12 @@ The recipient's email address.
 How many times the recipient triggered the event. Only returned for
 `type=opened` and `type=clicked`.
 
-**bounce\_type** `string | null`
+**bounce_type** `string | null`
 
 The bounce classification: `permanent`, `transient`, or `undetermined`.
 Only returned for `type=bounced`.
 
-**clicked\_links** `array`
+**clicked_links** `array`
 
 The links this recipient clicked. Only returned for `type=clicked`.
 
@@ -5312,7 +5312,7 @@ Create a contact.
 
 **email** `string` *required*
 
-The email address of the contact.
+The email address of the contact. Max length is `320` characters.
 
 The first name of the contact.
 
@@ -5536,21 +5536,21 @@ This endpoint accepts `multipart/form-data`. Object and array fields
 The CSV file to import. The file must be sent as a form field named `file`.
 Maximum file size is 200MB.
 
-**column\_map** `object`
+**column_map** `object`
 
 Maps CSV columns to contact fields.
 
-**column\_map**
+**column_map**
 
 **email** `string`
 
 The CSV column that contains contact email addresses.
 
-**first\_name** `string`
+**first_name** `string`
 
 The CSV column that contains contact first names.
 
-**last\_name** `string`
+**last_name** `string`
 
 The CSV column that contains contact last names.
 
@@ -5578,7 +5578,7 @@ The CSV column that contains the custom property value.
 
 The custom property value type. Defaults to `string`.
 
-**on\_conflict** `'upsert' | 'skip'`
+**on_conflict** `'upsert' | 'skip'`
 
 How to handle contacts that already exist. Defaults to `upsert`.
 
@@ -7174,7 +7174,7 @@ Cannot be used with the `after` parameter.
 > [pagination guide](/docs/api-reference/pagination) for more
 > information.
 
-**segment\_id** `string`
+**segment_id** `string`
 
 The Segment ID to filter contacts by. If provided, only contacts in this
 Segment will be returned.
@@ -9492,13 +9492,13 @@ List-type query parameters below accept a comma-separated value, the
 parameter repeated (`domain_id=a&domain_id=b`), or a mix of
 both.
 
-**start\_date** `string`
+**start_date** `string`
 
 The start of the date range, as an ISO 8601 date (`2026-07-01`) or datetime
 (`2026-07-01T00:00:00Z`). Must be on or before `end_date`, and can equal it to
 query a single day. Defaults to 6 days before `end_date`.
 
-**end\_date** `string`
+**end_date** `string`
 
 The end of the date range, as an ISO 8601 date or datetime. Values in the
 future are clamped to the current time. Defaults to now.
@@ -9533,16 +9533,16 @@ Possible values:
 * `email`: groups the data by email. Cannot be combined with `broadcast`.
 * `broadcast`: groups the data by broadcast. Cannot be combined with `email`.
 
-**domain\_id** `string[]`
+**domain_id** `string[]`
 
 List of sending domain IDs to restrict the response to, up to 100.
 
-**email\_id** `string[]`
+**email_id** `string[]`
 
 List of email IDs to restrict the response to, up to 100. Cannot be combined
 with the `broadcast` dimension or `broadcast_id`.
 
-**broadcast\_id** `string[]`
+**broadcast_id** `string[]`
 
 List of broadcast IDs to restrict the response to, up to 100. Cannot be
 combined with the `email` dimension or `email_id`.
@@ -9799,7 +9799,7 @@ Cannot be used with the `after` parameter.
 
 ## Path Parameters
 
-**email\_id** `string` *required*
+**email_id** `string` *required*
 
 The Email ID.
 
@@ -10149,7 +10149,7 @@ Cannot be used with the `after` parameter.
 
 ## Path Parameters
 
-**email\_id** `string` *required*
+**email_id** `string` *required*
 
 The Email ID.
 
@@ -10594,7 +10594,7 @@ Retrieve a single attachment from a sent email.
 
 The Attachment ID.
 
-**email\_id** `string` *required*
+**email_id** `string` *required*
 
 The Email ID.
 
@@ -10746,7 +10746,7 @@ The ID for the received email.
 
 ## Query Parameters
 
-**html\_format** `'data_uri' | 'cid'`
+**html_format** `'data_uri' | 'cid'`
 
 Controls how inline images are returned inside `html`. The response echoes
 the form actually served as `html_format` on the body.
@@ -10757,13 +10757,13 @@ Emails whose inlined HTML would exceed 100 MB, typically long reply chains that 
 
 ## Response Fields
 
-**html\_format** `'data_uri' | 'cid'`
+**html_format** `'data_uri' | 'cid'`
 
 How inline images are referenced in `html`. Usually matches the requested
 format, but is `cid` when the email is too large to inline (see the query
 parameter above).
 
-**received\_for** `array`
+**received_for** `array`
 
 The recipient addresses the email was forwarded for, taken from the `for`
 clause of the message's `Received` headers.
@@ -10797,11 +10797,11 @@ Raw email content download information. Contains a signed URL to download the or
 
 **properties**
 
-**download\_url** `string`
+**download_url** `string`
 
 Signed CloudFront URL to download the raw email file.
 
-**expires\_at** `string`
+**expires_at** `string`
 
 ISO 8601 timestamp indicating when the download URL expires.
 
@@ -10971,7 +10971,7 @@ Retrieve a single attachment from a received email.
 
 The Attachment ID.
 
-**email\_id** `string` *required*
+**email_id** `string` *required*
 
 The Email ID.
 
@@ -15515,24 +15515,24 @@ The HTML body.
 
 The plain-text body.
 
-**thread\_id** `string | null`
+**thread_id** `string | null`
 
 The Thread ID when this draft is a reply. `null` otherwise.
 
-**reply\_to\_email\_id** `string | null`
+**reply_to_email_id** `string | null`
 
 The Email ID being replied to. `null` otherwise.
 
-**email\_id** `string | null`
+**email_id** `string | null`
 
 The ID of the outbound email queued when the draft was sent. `null` until the
 draft is sent.
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the draft was created.
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the draft was last saved.
 
@@ -15550,7 +15550,7 @@ The ID of the attachment.
 
 The filename of the attachment.
 
-**content\_type** `string`
+**content_type** `string`
 
 The MIME type of the attachment, such as `application/pdf`.
 
@@ -15725,19 +15725,19 @@ The ID of the inbox.
 
 Internal name for the inbox. Recipients do not see it.
 
-**email\_address** `string`
+**email_address** `string`
 
 The address of the inbox.
 
-**domain\_id** `string`
+**domain_id** `string`
 
 The ID of the domain that owns the address.
 
-**receiving\_address** `string | null`
+**receiving_address** `string | null`
 
 The address to forward mail to when forwarding is enabled. `null` otherwise.
 
-**from\_name** `string | null`
+**from_name** `string | null`
 
 The name recipients see when mail is sent from this inbox. `null` when not
 set.
@@ -15750,16 +15750,16 @@ The number of unread threads in the Inbox folder.
 
 The number of unsent drafts.
 
-**last\_received** `string | null`
+**last_received** `string | null`
 
 ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
 when the folder has no received email.
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the inbox was created.
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the inbox was updated.
 
@@ -16117,7 +16117,7 @@ The CC recipients of the message.
 
 The BCC recipients of the message. Always empty for a received message.
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses.
 
@@ -16125,7 +16125,7 @@ The Reply-To addresses.
 
 The subject of the message.
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the message.
 
@@ -16159,7 +16159,7 @@ The size of the attachment in bytes.
 
 Whether the message has been read.
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the inbox received the message, or when the inbox sent
 it.
@@ -16346,7 +16346,7 @@ page. Cannot be combined with `after`.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more drafts exist beyond this page. Pass the last draft's `id` as
 `after` to continue.
@@ -16386,15 +16386,15 @@ The subject.
 
 A short preview of the body.
 
-**thread\_id** `string | null`
+**thread_id** `string | null`
 
 The Thread ID when this draft is a reply. `null` otherwise.
 
-**reply\_to\_email\_id** `string | null`
+**reply_to_email_id** `string | null`
 
 The Email ID being replied to. `null` otherwise.
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the draft was last saved.
 
@@ -16412,7 +16412,7 @@ The ID of the attachment.
 
 The filename of the attachment.
 
-**content\_type** `string`
+**content_type** `string`
 
 The MIME type of the attachment, such as `application/pdf`.
 
@@ -16591,7 +16591,7 @@ Cannot be used with the `after` parameter.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more inboxes exist beyond this page.
 
@@ -16609,11 +16609,11 @@ The ID of the inbox.
 
 Internal name for the inbox. Recipients do not see it.
 
-**email\_address** `string`
+**email_address** `string`
 
 The address of the inbox.
 
-**from\_name** `string | null`
+**from_name** `string | null`
 
 The name recipients see when mail is sent from this inbox. `null` when
 not set.
@@ -16622,16 +16622,16 @@ not set.
 
 The number of unread threads in the Inbox folder.
 
-**last\_received** `string | null`
+**last_received** `string | null`
 
 ISO 8601 timestamp of the newest received email in the Inbox folder.
 `null` when the folder has no received email.
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the inbox was created.
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the inbox was updated.
 
@@ -16787,7 +16787,7 @@ The name of the label.
 The color of the label as an uppercase `#RRGGBB` hex code, like
 `#E93D82`.
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the label was created.
 
@@ -16942,7 +16942,7 @@ page. Cannot be combined with `after`.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more messages exist beyond this page. Pass the last message's `id` as
 `after` to continue.
@@ -16981,7 +16981,7 @@ The CC recipients of the message.
 
 The BCC recipients of the message. Always empty for a received message.
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses.
 
@@ -16989,7 +16989,7 @@ The Reply-To addresses.
 
 The subject of the message.
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the message.
 
@@ -17023,7 +17023,7 @@ The size of the attachment in bytes.
 
 Whether the message has been read.
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the inbox received the message, or when the inbox
 sent it.
@@ -17238,7 +17238,7 @@ Threads](/docs/api-reference/inboxes/search-threads).
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more threads exist beyond this page. Pass the last thread's `id` as
 `after` to continue.
@@ -17293,15 +17293,15 @@ The name of the label.
 
 The color of the label as an uppercase `#RRGGBB` hex code.
 
-**email\_count** `number`
+**email_count** `number`
 
 The number of emails in the thread.
 
-**has\_attachment** `boolean`
+**has_attachment** `boolean`
 
 Whether the most recent message in the thread has an attachment.
 
-**has\_draft** `boolean`
+**has_draft** `boolean`
 
 Whether the thread has an unsent draft.
 
@@ -17309,7 +17309,7 @@ Whether the thread has an unsent draft.
 
 True only when every message in the thread is read.
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the thread was last active.
 
@@ -18022,16 +18022,16 @@ Comma-separated CC recipients. Up to `20` values.
 
 Comma-separated BCC recipients. Up to `20` values.
 
-**has\_attachment** `boolean`
+**has_attachment** `boolean`
 
 `true` matches emails with an attachment. `false` matches emails without one.
 
-**start\_date** `string`
+**start_date** `string`
 
 Matches emails sent on or after this date. Accepts a date like `2026-09-01` or
 an ISO 8601 timestamp, in UTC unless the timestamp has an offset.
 
-**end\_date** `string`
+**end_date** `string`
 
 Matches emails sent on or before this date. Same formats as `start_date`. A
 date covers that whole day, so `start_date=2026-09-01&end_date=2026-09-30`
@@ -18096,7 +18096,7 @@ page. Cannot be combined with `after`. Must be a thread ID.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more threads exist beyond this page. Pass the last thread's `id` as
 `after` to continue.
@@ -18151,15 +18151,15 @@ The name of the label.
 
 The color of the label as an uppercase `#RRGGBB` hex code.
 
-**email\_count** `number`
+**email_count** `number`
 
 The number of emails in the thread.
 
-**has\_attachment** `boolean`
+**has_attachment** `boolean`
 
 Whether the most recent message in the thread has an attachment.
 
-**has\_draft** `boolean`
+**has_draft** `boolean`
 
 Whether the thread has an unsent draft.
 
@@ -18167,7 +18167,7 @@ Whether the thread has an unsent draft.
 
 True only when every message in the thread is read.
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the thread was last active.
 
@@ -18183,7 +18183,7 @@ within its inbox. You can move a thread to `inbox`, `archive`, `spam`, or
 * `trash`: The thread is scheduled for deletion in 30 days.
 * `sent`: Threads whose messages are all outbound.
 
-**matched\_email\_id** `string | null`
+**matched_email_id** `string | null`
 
 Identifies the email in the thread that matched the search. When `query`
 has words or phrases, it's the most relevant match. Otherwise, it's the
@@ -20187,7 +20187,7 @@ Retrieve a single API request log.
 
 ## Path Parameters
 
-**log\_id** `string` *required*
+**log_id** `string` *required*
 
 The Log ID.
 
@@ -20326,17 +20326,17 @@ The flow:
 
 ## Query Parameters
 
-**client\_id** `string` *required*
+**client_id** `string` *required*
 
 The `client_id` from [registration](/docs/api-reference/oauth/register), or the
 HTTPS URL of a [Client ID Metadata Document](#client-id-metadata-documents).
 Resend tells the two apart by the `https://` prefix.
 
-**response\_type** `string` *required*
+**response_type** `string` *required*
 
 Must be `"code"`.
 
-**redirect\_uri** `string` *required*
+**redirect_uri** `string` *required*
 
 Must exactly match one of the client's registered redirect URIs. The only
 exception is loopback URIs (`127.0.0.1`, `localhost`, `[::1]`), where the port
@@ -20362,13 +20362,13 @@ the callback to the request that started the flow. Recommended, not required
 by the server, but a client that skips it can't detect CSRF on the callback.
 Maximum 1024 characters.
 
-**code\_challenge** `string` *required*
+**code_challenge** `string` *required*
 
 Base64url-encoded SHA-256 hash of a
-[code\_verifier](/docs/api-reference/oauth/token#param-code-verifier) your client
+[code_verifier](/docs/api-reference/oauth/token#param-code-verifier) your client
 generates.
 
-**code\_challenge\_method** `string` *required*
+**code_challenge_method** `string` *required*
 
 Must be `"S256"`. Resend does not support the `plain` method.
 
@@ -20529,20 +20529,20 @@ Unauthenticated (no API key). Rate-limited to 20 registrations per hour per IP a
 
 ## Body Parameters
 
-**client\_name** `string` *required*
+**client_name** `string` *required*
 
 A human-readable name for the client. Maximum 200 characters.
 
-**redirect\_uris** `string[]` *required*
+**redirect_uris** `string[]` *required*
 
 1 to 10 URIs, each up to 2048 characters. See [Allowed redirect
 URIs](#allowed-redirect-uris).
 
-**grant\_types** `string[]` (default: \["authorization\_code", "refresh\_token"])
+**grant_types** `string[]` (default: \["authorization_code", "refresh_token"])
 
 Must include `authorization_code`. `refresh_token` is also supported.
 
-**response\_types** `string[]` (default: \["code"])
+**response_types** `string[]` (default: \["code"])
 
 Only `code` is supported. Validated if present but not stored; the response
 always echoes back `["code"]`.
@@ -20553,7 +20553,7 @@ Space-delimited list of scopes, e.g. `"emails:send"`. Must be a subset of the
 [supported scopes](/docs/api-reference/oauth/authorize#scopes). If omitted, the
 client is registered with every supported scope.
 
-**token\_endpoint\_auth\_method** `string` (default: none)
+**token_endpoint_auth_method** `string` (default: none)
 
 How the client authenticates at the [token](/docs/api-reference/oauth/token) and
 [revocation](/docs/api-reference/oauth/revoke) endpoints. `none` registers a public
@@ -20562,11 +20562,11 @@ confidential client and issue a `client_secret` in the response. See
 [Confidential clients](#confidential-clients). PKCE is required on every
 authorization code exchange regardless of method.
 
-**client\_uri** `string`
+**client_uri** `string`
 
 A URL for the client's homepage. Echoed back, not otherwise used.
 
-**logo\_uri** `string`
+**logo_uri** `string`
 
 A URL for the client's logo. Shown on the consent screen.
 
@@ -20587,13 +20587,13 @@ Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `c
 
 The response echoes back the registered client metadata along with the issued `client_id`. Registering a [confidential client](#confidential-clients) returns two extra fields:
 
-**client\_secret** `string`
+**client_secret** `string`
 
 The generated client secret. Returned **only once**, in this response. Resend
 stores a hash and can't show it again, so persist it securely at registration
 time. If it's lost, register a new client.
 
-**client\_secret\_expires\_at** `number`
+**client_secret_expires_at** `number`
 
 Unix time at which the secret expires. Always `0`: the secret does not expire.
 
@@ -20680,28 +20680,28 @@ Confidential clients must authenticate the same way they do at the [token endpoi
 
 The refresh token to revoke.
 
-**client\_id** `string`
+**client_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
 already carries it, and with `private_key_jwt`, where the assertion does.
 
-**client\_secret** `string`
+**client_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic` (send the secret in the `Authorization`
 header instead).
 
-**client\_assertion\_type** `string`
+**client_assertion_type** `string`
 
 Required with `private_key_jwt`. Must be
 `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
 
-**client\_assertion** `string`
+**client_assertion** `string`
 
 Required with `private_key_jwt`: a newly signed JWT, as at the [token
 endpoint](/docs/api-reference/oauth/token#client-authentication).
 
-**token\_type\_hint** `string`
+**token_type_hint** `string`
 
 Optional per RFC 7009. If set to `"access_token"`, the request fails: access
 token revocation isn't supported. Any other value (including
@@ -20854,27 +20854,27 @@ const codeChallenge = base64url(
 
 ### Body Parameters
 
-**grant\_type** `string` *required*
+**grant_type** `string` *required*
 
 Must be `"authorization_code"`.
 
-**client\_id** `string`
+**client_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
 already carries it, and with `private_key_jwt`, where the assertion does.
 
-**client\_secret** `string`
+**client_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic` (send the secret in the `Authorization`
 header instead). See [Client authentication](#client-authentication).
 
-**client\_assertion\_type** `string`
+**client_assertion_type** `string`
 
 Required with `private_key_jwt`. Must be
 `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
 
-**client\_assertion** `string`
+**client_assertion** `string`
 
 Required with `private_key_jwt`: a JWT signed with the client's private key.
 See [Client authentication](#client-authentication).
@@ -20884,14 +20884,14 @@ See [Client authentication](#client-authentication).
 The code from the `/oauth/authorize` callback. Single-use: redeeming it twice
 fails with `invalid_grant`. Expires 10 minutes after it was issued.
 
-**redirect\_uri** `string` *required*
+**redirect_uri** `string` *required*
 
 Must exactly match the `redirect_uri` used in the authorization request.
 
-**code\_verifier** `string` *required*
+**code_verifier** `string` *required*
 
 The original value that
-[code\_challenge](/docs/api-reference/oauth/authorize#param-code-challenge) was
+[code_challenge](/docs/api-reference/oauth/authorize#param-code-challenge) was
 derived from.
 
 ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -20931,32 +20931,32 @@ curl -X POST 'https://api.resend.com/oauth/token' \
 
 ### Body Parameters
 
-**grant\_type** `string` *required*
+**grant_type** `string` *required*
 
 Must be `"refresh_token"`.
 
-**client\_id** `string`
+**client_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
 already carries it, and with `private_key_jwt`, where the assertion does.
 
-**client\_secret** `string`
+**client_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic`. See [Client
 authentication](#client-authentication).
 
-**client\_assertion\_type** `string`
+**client_assertion_type** `string`
 
 Required with `private_key_jwt`. Must be
 `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
 
-**client\_assertion** `string`
+**client_assertion** `string`
 
 Required with `private_key_jwt`: a JWT signed with the client's private key.
 See [Client authentication](#client-authentication).
 
-**refresh\_token** `string` *required*
+**refresh_token** `string` *required*
 
 **scope** `string`
 
@@ -21109,7 +21109,7 @@ Paginated endpoints return responses in the following format:
 
 Always set to `list` for paginated responses.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Indicates whether there are more items available beyond the current page.
 
@@ -25716,7 +25716,7 @@ The event ID.
 
 The event type, for example `email.sent`.
 
-**created\_at** `string`
+**created_at** `string`
 
 When the event was created.
 
@@ -25725,7 +25725,7 @@ When the event was created.
 Delivery status of the event to this webhook: `success`, `failed`,
 `attempting`, or `pending`.
 
-**next\_attempt\_at** `string | null`
+**next_attempt_at** `string | null`
 
 When the next delivery attempt is scheduled. `null` once the event reaches
 `success` or `failed`.
@@ -26011,7 +26011,7 @@ The `before` parameter is not supported for this endpoint.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more attempts exist beyond this page.
 
@@ -26025,7 +26025,7 @@ The delivery attempts for this event, most recent first.
 
 The attempt ID.
 
-**http\_status\_code** `number`
+**http_status_code** `number`
 
 The HTTP status code your endpoint returned for this attempt.
 
@@ -26033,7 +26033,7 @@ The HTTP status code your endpoint returned for this attempt.
 
 The response body your endpoint returned for this attempt.
 
-**sent\_at** `string`
+**sent_at** `string`
 
 When this attempt was sent.
 
@@ -26197,7 +26197,7 @@ The `before` parameter is not supported for this endpoint.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more events exist beyond this page.
 
@@ -26216,7 +26216,7 @@ or [list its attempts](/docs/api-reference/webhooks/list-event-attempts).
 
 The event type, for example `email.sent`.
 
-**created\_at** `string`
+**created_at** `string`
 
 When the event was created.
 
@@ -26664,7 +26664,7 @@ Always `webhook`.
 
 The Webhook ID.
 
-**signing\_secret** `string`
+**signing_secret** `string`
 
 The new signing secret.
 
@@ -27150,7 +27150,7 @@ Learn how to add the Resend integration to your Base44 project.
 
 However you add Resend to your project, you'll need to add a Resend API key, which you can create in the [Resend Dashboard](https://resend.com/api-keys). Do not share your API key with others or expose it in the browser or other client-side code.
 
-Copy the API key and paste it into the **RESEND\_API\_KEY** field in Base44.
+Copy the API key and paste it into the **RESEND_API_KEY** field in Base44.
 
 ![Adding your Resend API key to Base44](https://mintcdn.com/resend/ABWmVTZIHGIFNTFD/images/base44-integration-1.png?fit=max\&auto=format\&n=ABWmVTZIHGIFNTFD\&q=85\&s=e10a7a52b06dde106b7a2db585bb7b30)
 
@@ -29341,7 +29341,7 @@ Common use cases:
 
 ## Configuration
 
-**config.segment\_id** `string` *required*
+**config.segment_id** `string` *required*
 
 The ID of the segment to add the contact to.
 
@@ -30956,11 +30956,11 @@ For more help working with variables in templates, see the [Send Email](/docs/da
 
 ## Configuration
 
-**config.first\_name** `string | object`
+**config.first_name** `string | object`
 
 The contact's first name. Accepts a hardcoded string or a variable reference.
 
-**config.last\_name** `string | object`
+**config.last_name** `string | object`
 
 The contact's last name. Accepts a hardcoded string or a variable reference.
 
@@ -33721,7 +33721,7 @@ The email subject line.
 
 If provided, this value will override the template's default value.
 
-**config.reply\_to** `string`
+**config.reply_to** `string`
 
 Reply-to email address.
 
@@ -33817,7 +33817,7 @@ Below is a list of all the possible step types and their configurations.
 
 The trigger step starts the automation when a matching event is received.
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event that triggers the automation.
 
@@ -33947,7 +33947,7 @@ The delay duration in natural language (e.g. `"1 hour"`, `"3 days"`). Maximum:
 
 Pauses execution until a specific event is received or a timeout is reached.
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event to wait for.
 
@@ -33956,7 +33956,7 @@ The name of the event to wait for.
 The maximum time to wait before timing out (e.g. `"3 days"`, `"1 hour"`).
 Maximum: 30 days.
 
-**config.filter\_rule** `object`
+**config.filter_rule** `object`
 
 An optional rule that filters which incoming events resume the step.
 `wait_events.` is not available.
@@ -34054,7 +34054,7 @@ The email subject line.
 
 If provided, this value will override the template's default value.
 
-**config.reply\_to** `string`
+**config.reply_to** `string`
 
 Reply-to email address.
 
@@ -34082,7 +34082,7 @@ If provided, this value will override the template's default value.
 
 Adds the contact to a segment.
 
-**config.segment\_id** `string` *required*
+**config.segment_id** `string` *required*
 
 The ID of the segment to add the contact to.
 
@@ -34105,11 +34105,11 @@ Variable references use dot-notation with one of these scopes:
 * `event.*`: references a field from the triggering event payload (e.g., `event.firstName`).
 * `contact.*`: references a field from the current contact (e.g., `contact.last_name`, `contact.properties.company`).
 
-**config.first\_name** `string | object`
+**config.first_name** `string | object`
 
 The contact's first name. Accepts a hardcoded string or a variable reference.
 
-**config.last\_name** `string | object`
+**config.last_name** `string | object`
 
 The contact's last name. Accepts a hardcoded string or a variable reference.
 
@@ -34874,7 +34874,7 @@ View the [Send Event API reference](/docs/api-reference/events/send-event) for t
 
 ## Configuration
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event that triggers the automation.
 
@@ -35318,7 +35318,7 @@ You can use `wait_events` in [send email](/docs/dashboard/automations/send-email
 
 ## Configuration
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event to wait for.
 
@@ -35327,7 +35327,7 @@ The name of the event to wait for.
 The maximum time to wait before timing out (e.g. `"3 days"`, `"1 hour"`).
 Maximum: 30 days.
 
-**config.filter\_rule** `object`
+**config.filter_rule** `object`
 
 An optional rule that filters which incoming events resume the step.
 `wait_events.` is not available.
@@ -37343,11 +37343,11 @@ You can subscribe multiple Contacts to Topics in the [Dashboard](https://resend.
 
 **3. Click the **Edit** button in the bulk actions bar.**
 
-**4. Select **Subscribe to Topics****
+**4. Select __Subscribe to Topics__**
 
 **5. Choose the Topics you want to subscribe the Contacts to.**
 
-**6. Click **Subscribe****
+**6. Click __Subscribe__**
 
 Learn more about [bulk actions for Contacts](/docs/dashboard/contacts/manage-contacts#bulk-actions).
 
@@ -38176,7 +38176,7 @@ Once you have your VMC, you can set your BIMI DNS record. This TXT record points
 
 | Name | Type | Value |
 | - | - | - |
-| default.\_bimi | TXT | v=BIMI1; l=link\_to\_logo; a=link\_to\_certificate; |
+| default.\_bimi | TXT | v=BIMI1; l=link_to_logo; a=link_to_certificate; |
 
 Here is an example of a BIMI record:
 
@@ -49628,14 +49628,14 @@ sequenceDiagram
     AS-->>C: access_token + refresh_token
 ```
 
-**1. Load the pre-issued client\_id and client\_secret**
+**1. Load the pre-issued client_id and client_secret**
 
 **2. Generate PKCE and state**
 
 `code_verifier`, `code_challenge`, and `state`. See
 [above](#generating-pkce-values-and-state).
 
-**3. Store state and code\_verifier server-side**
+**3. Store state and code_verifier server-side**
 
 Tie them to the user's session.
 
@@ -49719,7 +49719,7 @@ Pick a random high port and bind it to `127.0.0.1` or `[::1]`, never
 `code_verifier`, `code_challenge`, and `state`. See
 [above](#generating-pkce-values-and-state).
 
-**3. Get a client\_id**
+**3. Get a client_id**
 
 Use the URL of a [metadata document](#client-id-metadata-documents) that
 lists the loopback redirect URI and the minimum required scope. If the
@@ -54966,7 +54966,7 @@ In the settings menu, under **Labels**, you can add, edit and remove labels that
 
 In the Dashboard, you can delete an inbox either from the settings panel at the bottom of the general settings, or from the [list of inboxes](https://resend.com/inboxes). To delete an inbox:
 
-**1. Click **Delete inbox****
+**1. Click __Delete inbox__**
 
 **2. Enter the email address into the form to confirm**
 
@@ -62671,7 +62671,7 @@ Open source client libraries for your favorite platforms.
 
 > [card] [Dart](https://github.com/coderaveHQ/dart_resend)
 >
-> github.com/coderaveHQ/dart\_resend
+> github.com/coderaveHQ/dart_resend
 
 ## OpenAPI
 
@@ -62966,13 +62966,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -63846,13 +63846,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -64227,13 +64227,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -65597,7 +65597,7 @@ npx skills add resend/react-email
 7. **Use `await`** — `resend.emails.send()` returns a Promise. Always use `async/await`.
 8. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 9. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
-10. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+10. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
@@ -65605,7 +65605,7 @@ npx skills add resend/react-email
 2. **Do not** hardcode API keys in source code.
 3. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
 4. **Do not** use Express, Hono, Koa, or any other HTTP framework — Encore.ts provides its own API routing via `api()`.
-5. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase.
+5. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase.
 6. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 7. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 8. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -66067,13 +66067,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -66731,13 +66731,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -67704,13 +67704,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -68137,13 +68137,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -68591,13 +68591,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -69219,14 +69219,14 @@ async def send_welcome_email():
 3. **Wrap `resend.Emails.send()` in `try`/`except`** and catch `resend.exceptions.ResendError` (or a specific subclass) — the SDK raises on failure, it does not return `{data, error}`.
 4. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 5. **Check the project for an existing package/dependency manager** (pip, poetry, uv) and use that to install the SDK.
-6. **Use snake\_case** for SDK parameters (`reply_to`, `scheduled_at`), not camelCase.
+6. **Use snake_case** for SDK parameters (`reply_to`, `scheduled_at`), not camelCase.
 7. **Use `send_async`** instead of `send` inside async code (e.g. FastAPI handlers).
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** assume `resend.Emails.send()` returns an error object — it raises an exception. A bare, unhandled call will crash on failure.
-3. **Do not** use camelCase parameter names (`replyTo`, `scheduledAt`) — the Python SDK uses snake\_case (`reply_to`, `scheduled_at`).
+3. **Do not** use camelCase parameter names (`replyTo`, `scheduledAt`) — the Python SDK uses snake_case (`reply_to`, `scheduled_at`).
 4. **Do not** send `html` or `text` alongside `template` — these are mutually exclusive.
 5. **Do not** pass an idempotency key inside `params` — it belongs in the separate `options` argument: `send(params, options)`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -69295,7 +69295,7 @@ Before returning any Resend-related solution, you **must** verify:
 1. **Import**: Is `resend` imported, and is `resend.api_key` set from an environment variable?
 2. **Error Handling**: Is `resend.Emails.send()` wrapped in `try`/`except` catching `resend.exceptions.ResendError`?
 3. **Async**: Is `send_async` used instead of `send` inside `async def` code?
-4. **Parameters**: Are all parameter names in snake\_case?
+4. **Parameters**: Are all parameter names in snake_case?
 5. **Idempotency**: If used, is the idempotency key passed as a separate `options` argument, not inside `params`?
 6. **From Address**: Is the `from` address using a verified domain (not `onboarding@resend.dev` in production)?
 
@@ -69861,13 +69861,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -70229,13 +70229,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -71168,13 +71168,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -71699,13 +71699,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -72141,13 +72141,13 @@ npx skills add resend/react-email
 4. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 5. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
 6. **Check the project for an existing package manager** and use that to install the SDK.
-7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+7. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
 1. **Do not** hardcode API keys in source code. Always use environment variables.
 2. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
-3. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
+3. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase (`replyTo`, `scheduledAt`).
 4. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 5. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 6. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.
@@ -72424,7 +72424,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `contact.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -72439,19 +72439,19 @@ parameters:
 
 Unique identifier for the contact
 
-**audience\_id** `string`
+**audience_id** `string`
 
 Unique identifier for the audience this contact belongs to
 
-**segment\_ids** `array`
+**segment_ids** `array`
 
 Array of segment IDs the contact belongs to
 
-**created\_at** `string` *required*
+**created_at** `string` *required*
 
 ISO 8601 timestamp when the contact was created
 
-**updated\_at** `string` *required*
+**updated_at** `string` *required*
 
 ISO 8601 timestamp when the contact was last updated
 
@@ -72459,11 +72459,11 @@ ISO 8601 timestamp when the contact was last updated
 
 Contact's email address
 
-**first\_name** `string | null`
+**first_name** `string | null`
 
 Contact's first name. May be absent from the payload
 
-**last\_name** `string | null`
+**last_name** `string | null`
 
 Contact's last name. May be absent from the payload
 
@@ -72506,7 +72506,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `contact.deleted`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -72521,19 +72521,19 @@ parameters:
 
 Unique identifier for the contact
 
-**audience\_id** `string`
+**audience_id** `string`
 
 Unique identifier for the audience this contact belongs to
 
-**segment\_ids** `array`
+**segment_ids** `array`
 
 Array of segment IDs the contact belongs to
 
-**created\_at** `string` *required*
+**created_at** `string` *required*
 
 ISO 8601 timestamp when the contact was created
 
-**updated\_at** `string` *required*
+**updated_at** `string` *required*
 
 ISO 8601 timestamp when the contact was last updated
 
@@ -72541,11 +72541,11 @@ ISO 8601 timestamp when the contact was last updated
 
 Contact's email address
 
-**first\_name** `string | null`
+**first_name** `string | null`
 
 Contact's first name. May be absent from the payload
 
-**last\_name** `string | null`
+**last_name** `string | null`
 
 Contact's last name. May be absent from the payload
 
@@ -72588,7 +72588,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `contact.topics.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -72653,7 +72653,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `contact.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -72668,19 +72668,19 @@ parameters:
 
 Unique identifier for the contact
 
-**audience\_id** `string`
+**audience_id** `string`
 
 Unique identifier for the audience this contact belongs to
 
-**segment\_ids** `array`
+**segment_ids** `array`
 
 Array of segment IDs the contact belongs to
 
-**created\_at** `string` *required*
+**created_at** `string` *required*
 
 ISO 8601 timestamp when the contact was created
 
-**updated\_at** `string` *required*
+**updated_at** `string` *required*
 
 ISO 8601 timestamp when the contact was last updated
 
@@ -72688,11 +72688,11 @@ ISO 8601 timestamp when the contact was last updated
 
 Contact's email address
 
-**first\_name** `string | null`
+**first_name** `string | null`
 
 Contact's first name. May be absent from the payload
 
-**last\_name** `string | null`
+**last_name** `string | null`
 
 Contact's last name. May be absent from the payload
 
@@ -72954,7 +72954,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `domain.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -72992,7 +72992,7 @@ Current verification status of the domain:
 > `partially_verified` (one capability verified, the other pending) or
 > `partially_failed` (one capability verified, the other failed).
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the domain was created
 
@@ -73115,7 +73115,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `domain.deleted`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73153,7 +73153,7 @@ Current verification status of the domain:
 > `partially_verified` (one capability verified, the other pending) or
 > `partially_failed` (one capability verified, the other failed).
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the domain was created
 
@@ -73276,7 +73276,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `domain.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73314,7 +73314,7 @@ Current verification status of the domain:
 > `partially_verified` (one capability verified, the other pending) or
 > `partially_failed` (one capability verified, the other failed).
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the domain was created
 
@@ -73440,7 +73440,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.bounced`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73451,19 +73451,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -73481,7 +73481,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -73565,7 +73565,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.clicked`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73576,19 +73576,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -73606,7 +73606,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -73687,7 +73687,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.complained`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73698,19 +73698,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -73728,7 +73728,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -73787,7 +73787,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.delivered`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73798,19 +73798,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -73828,7 +73828,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -73883,7 +73883,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.delivery_delayed`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73894,19 +73894,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -73924,7 +73924,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -73979,7 +73979,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.failed`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -73990,19 +73990,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -74020,7 +74020,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -74090,7 +74090,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.opened`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -74101,19 +74101,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -74131,7 +74131,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -74193,7 +74193,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.received`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -74204,19 +74204,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -74234,7 +74234,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -74251,7 +74251,7 @@ Example:
 }
 ```
 
-**received\_for** `array`
+**received_for** `array`
 
 The recipient addresses the email was forwarded for, taken from the `for` clause of the message's `Received` headers.
 
@@ -74298,7 +74298,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.scheduled`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -74309,19 +74309,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -74339,7 +74339,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -74391,7 +74391,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.sent`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -74402,19 +74402,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -74432,7 +74432,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -74490,7 +74490,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.suppressed`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -74501,19 +74501,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -74531,7 +74531,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 
@@ -75029,7 +75029,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -75044,7 +75044,7 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
@@ -75067,19 +75067,19 @@ The ID of the inbox
 Internal name for the inbox. Recipients do not see it. Falls back to the inbox
 address
 
-**email\_address** `string`
+**email_address** `string`
 
 The address of the inbox
 
-**domain\_id** `string`
+**domain_id** `string`
 
 The ID of the domain the inbox belongs to
 
-**receiving\_address** `string | null`
+**receiving_address** `string | null`
 
 The address to forward mail to when forwarding is enabled. `null` otherwise
 
-**from\_name** `string | null`
+**from_name** `string | null`
 
 The name recipients see when mail is sent from this inbox. `null` when not set
 
@@ -75091,16 +75091,16 @@ The number of unread threads in the Inbox folder
 
 The number of unsent drafts
 
-**last\_received** `string | null`
+**last_received** `string | null`
 
 ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
 when the folder has no received email
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the inbox was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp set when the inbox is created and updated whenever its name
 or from name changes
@@ -75146,7 +75146,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.deleted`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -75161,7 +75161,7 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
@@ -75192,7 +75192,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.draft.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -75207,15 +75207,15 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread. Only on reply drafts
 
-**draft\_id** `string`
+**draft_id** `string`
 
 The ID of the draft
 
@@ -75283,23 +75283,23 @@ BCC recipients
 
 The subject
 
-**thread\_id** `string | null`
+**thread_id** `string | null`
 
 The Thread ID when this draft is a reply. `null` otherwise
 
-**reply\_to\_email\_id** `string | null`
+**reply_to_email_id** `string | null`
 
 The Email ID being replied to. `null` otherwise
 
-**email\_id** `string | null`
+**email_id** `string | null`
 
 The queued outbound email after send. `null` until then
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the draft was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the draft was last saved
 
@@ -75317,7 +75317,7 @@ The ID of the attachment
 
 The filename of the attachment
 
-**content\_type** `string`
+**content_type** `string`
 
 The MIME type of the attachment
 
@@ -75379,7 +75379,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.draft.deleted`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -75394,15 +75394,15 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread. Only on reply drafts
 
-**draft\_id** `string`
+**draft_id** `string`
 
 The ID of the draft
 
@@ -75475,7 +75475,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.draft.sent`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -75490,19 +75490,19 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
-**email\_id** `string`
+**email_id** `string`
 
 The ID of the email
 
-**draft\_id** `string`
+**draft_id** `string`
 
 The ID of the draft
 
@@ -75566,7 +75566,7 @@ The CC recipients of the email
 
 The BCC recipients of the email
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses
 
@@ -75574,7 +75574,7 @@ The Reply-To addresses
 
 The subject of the email
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the email
 
@@ -75600,7 +75600,7 @@ The size of the attachment in bytes
 
 Whether the email has been read
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the email arrived or was sent
 
@@ -75638,23 +75638,23 @@ BCC recipients
 
 The subject
 
-**thread\_id** `string | null`
+**thread_id** `string | null`
 
 The Thread ID when this draft is a reply. `null` otherwise
 
-**reply\_to\_email\_id** `string | null`
+**reply_to_email_id** `string | null`
 
 The Email ID being replied to. `null` otherwise
 
-**email\_id** `string | null`
+**email_id** `string | null`
 
 The queued outbound email after send. `null` until then
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the draft was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the draft was last saved
 
@@ -75672,7 +75672,7 @@ The ID of the attachment
 
 The filename of the attachment
 
-**content\_type** `string`
+**content_type** `string`
 
 The MIME type of the attachment
 
@@ -75733,7 +75733,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.draft.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -75748,15 +75748,15 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread. Only on reply drafts
 
-**draft\_id** `string`
+**draft_id** `string`
 
 The ID of the draft
 
@@ -75824,23 +75824,23 @@ BCC recipients
 
 The subject
 
-**thread\_id** `string | null`
+**thread_id** `string | null`
 
 The Thread ID when this draft is a reply. `null` otherwise
 
-**reply\_to\_email\_id** `string | null`
+**reply_to_email_id** `string | null`
 
 The Email ID being replied to. `null` otherwise
 
-**email\_id** `string | null`
+**email_id** `string | null`
 
 The queued outbound email after send. `null` until then
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the draft was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the draft was last saved
 
@@ -75858,7 +75858,7 @@ The ID of the attachment
 
 The filename of the attachment
 
-**content\_type** `string`
+**content_type** `string`
 
 The MIME type of the attachment
 
@@ -75920,7 +75920,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.email.received`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -75935,15 +75935,15 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
-**email\_id** `string`
+**email_id** `string`
 
 The ID of the email
 
@@ -76007,7 +76007,7 @@ The CC recipients of the email
 
 The BCC recipients of the email
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses
 
@@ -76015,7 +76015,7 @@ The Reply-To addresses
 
 The subject of the email
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the email
 
@@ -76041,7 +76041,7 @@ The size of the attachment in bytes
 
 Whether the email has been read
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the email arrived or was sent
 
@@ -76106,7 +76106,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.email.sent`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -76121,15 +76121,15 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
-**email\_id** `string`
+**email_id** `string`
 
 The ID of the email
 
@@ -76193,7 +76193,7 @@ The CC recipients of the email
 
 The BCC recipients of the email
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses
 
@@ -76201,7 +76201,7 @@ The Reply-To addresses
 
 The subject of the email
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the email
 
@@ -76227,7 +76227,7 @@ The size of the attachment in bytes
 
 Whether the email has been read
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the email arrived or was sent
 
@@ -76282,7 +76282,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.thread.assigned`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -76293,15 +76293,15 @@ parameters:
 
 **object parameters**
 
-**assignee\_email** `string | null`
+**assignee_email** `string | null`
 
 The email of the member the thread is now assigned to
 
-**assigned\_by\_email** `string | null`
+**assigned_by_email** `string | null`
 
 The email of the member who made the assignment. `null` when no member made it
 
-**previous\_assignee\_email** `string | null`
+**previous_assignee_email** `string | null`
 
 The email of the member the thread was assigned to before. `null` when it was unassigned
 
@@ -76309,11 +76309,11 @@ The email of the member the thread was assigned to before. `null` when it was un
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
@@ -76388,7 +76388,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.thread.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -76403,15 +76403,15 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
-**email\_id** `string`
+**email_id** `string`
 
 The ID of the email
 
@@ -76475,7 +76475,7 @@ The CC recipients of the email
 
 The BCC recipients of the email
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses
 
@@ -76483,7 +76483,7 @@ The Reply-To addresses
 
 The subject of the email
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the email
 
@@ -76509,7 +76509,7 @@ The size of the attachment in bytes
 
 Whether the email has been read
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the email arrived or was sent
 
@@ -76572,7 +76572,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.thread.folder.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -76595,11 +76595,11 @@ The folder the thread moved to
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
@@ -76675,7 +76675,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.thread.labels.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -76698,11 +76698,11 @@ The labels removed, each with an `id`, `name`, and `color`. One event carries ev
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
@@ -76786,7 +76786,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.thread.unassigned`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -76797,7 +76797,7 @@ parameters:
 
 **object parameters**
 
-**previous\_assignee\_email** `string | null`
+**previous_assignee_email** `string | null`
 
 The email of the member the thread was assigned to
 
@@ -76805,11 +76805,11 @@ The email of the member the thread was assigned to
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 
@@ -76880,7 +76880,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -76895,7 +76895,7 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
@@ -76918,19 +76918,19 @@ The ID of the inbox
 Internal name for the inbox. Recipients do not see it. Falls back to the inbox
 address
 
-**email\_address** `string`
+**email_address** `string`
 
 The address of the inbox
 
-**domain\_id** `string`
+**domain_id** `string`
 
 The ID of the domain the inbox belongs to
 
-**receiving\_address** `string | null`
+**receiving_address** `string | null`
 
 The address to forward mail to when forwarding is enabled. `null` otherwise
 
-**from\_name** `string | null`
+**from_name** `string | null`
 
 The name recipients see when mail is sent from this inbox. `null` when not set
 
@@ -76942,16 +76942,16 @@ The number of unread threads in the Inbox folder
 
 The number of unsent drafts
 
-**last\_received** `string | null`
+**last_received** `string | null`
 
 ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
 when the folder has no received email
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the inbox was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp set when the inbox is created and updated whenever its name
 or from name changes
@@ -77234,7 +77234,7 @@ ORDER BY day DESC, event_type;
 > [!NOTE]
 >
 > See the
-> [queries\_examples.md](https://github.com/resend/resend-webhooks-ingester/blob/main/queries_examples.md)
+> [queries_examples.md](https://github.com/resend/resend-webhooks-ingester/blob/main/queries_examples.md)
 > file in the repository for more analytics queries including bounce rates, open
 > rates, and click-through rates.
 
@@ -77252,7 +77252,7 @@ WHERE event_created_at < NOW() - INTERVAL '90 days';
 > [!TIP]
 >
 > For Supabase, use
-> [pg\_cron](https://supabase.com/docs/guides/database/extensions/pg_cron) to
+> [pg_cron](https://supabase.com/docs/guides/database/extensions/pg_cron) to
 > schedule cleanup queries. For MongoDB, consider using [TTL
 > indexes](https://www.mongodb.com/docs/manual/core/index-ttl/) or [Atlas
 > scheduled
@@ -77463,7 +77463,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `suppression.added`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -77486,12 +77486,12 @@ The suppressed email address
 
 How the address was suppressed: `bounce`, `complaint`, or `manual`
 
-**source\_id** `string | null`
+**source_id** `string | null`
 
 ID of the email that triggered the suppression. For suppressions with a
 `manual` origin, `source_id` is `null`
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the suppression was created
 
@@ -77526,7 +77526,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `suppression.removed`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -77549,12 +77549,12 @@ The suppressed email address
 
 How the address was suppressed: `bounce`, `complaint`, or `manual`
 
-**source\_id** `string | null`
+**source_id** `string | null`
 
 ID of the email that triggered the suppression. For suppressions with a
 `manual` origin, `source_id` is `null`
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the suppression was created
 
@@ -77588,7 +77588,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `topic.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -77611,7 +77611,7 @@ The topic name
 
 The topic description
 
-**default\_subscription** `opt_in | opt_out`
+**default_subscription** `opt_in | opt_out`
 
 The default subscription preference for new contacts
 
@@ -77619,11 +77619,11 @@ The default subscription preference for new contacts
 
 Whether the topic was deleted
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the topic was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the topic was last updated
 
@@ -77659,7 +77659,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `topic.deleted`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -77682,7 +77682,7 @@ The topic name
 
 The topic description
 
-**default\_subscription** `opt_in | opt_out`
+**default_subscription** `opt_in | opt_out`
 
 The default subscription preference for new contacts
 
@@ -77690,11 +77690,11 @@ The default subscription preference for new contacts
 
 Whether the topic was deleted
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the topic was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the topic was last updated
 
@@ -77730,7 +77730,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `topic.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -77753,7 +77753,7 @@ The topic name
 
 The topic description
 
-**default\_subscription** `opt_in | opt_out`
+**default_subscription** `opt_in | opt_out`
 
 The default subscription preference for new contacts
 
@@ -77761,11 +77761,11 @@ The default subscription preference for new contacts
 
 Whether the topic was deleted
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the topic was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the topic was last updated
 

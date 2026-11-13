@@ -37,7 +37,7 @@ Cannot be used with the `after` parameter.
 
 ## Path Parameters
 
-**email\_id** `string` *required*
+**email_id** `string` *required*
 
 The Email ID.
 

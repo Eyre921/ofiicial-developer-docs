@@ -119,7 +119,7 @@ Paginated endpoints return responses in the following format:
 
 Always set to `list` for paginated responses.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Indicates whether there are more items available beyond the current page.
 

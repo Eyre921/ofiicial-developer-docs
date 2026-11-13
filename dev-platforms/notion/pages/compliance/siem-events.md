@@ -235,7 +235,6 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.ai_meeting_notes_availability_updated**: The AI meeting notes availability setting was updated.
 * **workspace.settings.allow_chatgpt_subscription_sharing_setting_updated**: A workspace owner enabled or disabled ChatGPT subscription sharing.
 * **workspace.settings.allow_content_export_setting_updated**: A workspace owner enabled or disabled exporting.
-* **workspace.settings.allow_custom_agents_by_notion_support_updated**: Notion Support added or removed the workspace restriction on Custom Agents. Removing the restriction preserves the workspace’s own Custom Agents policy.
 * **workspace.settings.allow_custom_mcp_servers_setting_updated**: Custom MCP servers were enabled or disabled for the workspace. Disabling also disconnects custom MCP servers that were already added.
 * **workspace.settings.allow_group_creation_setting_updated**: A user enabled or disabled the ability for non-admin members to create groups.
 * **workspace.settings.allow_guests_setting_updated**: A workspace owner enabled or disabled the ability to add guests to the workspace.

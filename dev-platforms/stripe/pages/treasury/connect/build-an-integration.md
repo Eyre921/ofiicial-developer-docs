@@ -550,6 +550,8 @@ The response includes the recipient account ID and requested capabilities.
 
 Onboard a recipient-configured account in the same way you [onboard connected accounts](https://docs.stripe.com/treasury/connect/build-an-integration.md#onboard-the-connected-account) with other types of configurations.
 
+To create an Account Link for the recipient, set the `Stripe-Context` header to `{{CONNECTED_ACCOUNT_ID}}` and the `account` parameter to `{{RECIPIENT_ACCOUNT_ID}}`.
+
 ## Create a payout method
 
 Create a payout method for the recipient using an [OutboundSetupIntent](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents.md?api-version=preview). Include both the connected account and recipient in the `Stripe-Context` header to identify that you’re making a request on behalf of your connected account for its recipient account: `{{CONNECTED_ACCOUNT_ID}}/{{RECIPIENT_ACCOUNT_ID}}`.

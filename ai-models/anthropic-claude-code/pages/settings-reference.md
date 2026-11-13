@@ -884,7 +884,7 @@ Send every Bash and PowerShell command through the auto mode classifier while au
 }
 ```
 
-See [Route all shell commands through the classifier](/docs/en/auto-mode-config#route-all-shell-commands-through-the-classifier).
+This key works differently in a Code Mode session. See [Route all shell commands through the classifier](/docs/en/auto-mode-config#route-all-shell-commands-through-the-classifier).
 
 ### `disableAutoMode`
 
@@ -2454,7 +2454,7 @@ This example turns off automatic compaction and routes API requests through a pr
 
 #### How `env` values interact with your shell
 
-* A value here overwrites the same variable exported in your shell, and when more than one settings file sets a variable, the [highest-precedence](/docs/en/settings#settings-precedence) one applies. [Variables Claude Code ignores in `env`](#variables-claude-code-ignores-in-env) lists the exceptions for project and local settings.
+* A value here overwrites the same variable exported in your shell, and when more than one settings file sets a variable, the [highest-precedence](/docs/en/settings#settings-precedence) one applies. [Variables Claude Code ignores in `env`](#variables-claude-code-ignores-in-env) lists the exceptions.
 * When the Claude Desktop app or a [self-hosted environment](/docs/en/self-hosted-environments) runner starts the session, the launch environment it builds takes precedence instead: Claude Code ignores an `env` value from any settings file for a variable the launch environment already sets. The [debug log](/docs/en/debug-your-config) names each ignored variable.
 * To cancel a shell export, set the variable to `""`. Claude Code treats an empty value as unset for provider selection, and subprocesses inherit the empty value.
 * `NO_COLOR` and `FORCE_COLOR` set here reach only subprocesses. To change Claude Code's own interface colors, set them in your shell before launching `claude`.
@@ -2495,6 +2495,7 @@ This example turns off automatic compaction and routes API requests through a pr
   * [`CLAUDE_CODE_DISABLE_FILE_MENTIONS`](/docs/en/env-vars#variables), which stops Claude Code from expanding `@` mentions of files and directories.
 
   Before v2.1.251, project and local settings could also set the variables in this list that choose where Claude Code writes its files or that export session content, except `HOME` and `XDG_CONFIG_HOME`. Before v2.1.290, they could also set the dialog timer variables and `CLAUDE_CODE_DISABLE_ATTACHMENTS`.
+* You can turn on [Code Mode](/docs/en/code-mode) with [`CLAUDE_CODE_EXPERIMENTAL_CODE_MODE`](/docs/en/env-vars#variables) from your shell, user settings, or a `--settings` file, and not from managed, project, or local settings. With a `0` in any of the first three or in managed settings, Code Mode stays off whatever you set elsewhere. When managed settings contain a `1`, set your own `1` in user settings, because a `1` in your shell is ignored
 * Identity variables that Claude Code's hosting environments own, such as `CLAUDE_CODE_REMOTE` and `CLAUDE_CODE_ACCOUNT_UUID`, are ignored from every file.
 * [`CLAUDE_CODE_MESSAGING_SOCKET` and `CLAUDE_CODE_MESSAGING_TOKEN`](/docs/en/env-vars#variables), which Claude Code exports itself, are ignored from every file. Ignoring the socket variable requires Claude Code v2.1.224 or later, and ignoring the token requires v2.1.228 or later.
 * [`CLAUDE_CODE_PROJECT_DIR_NAME`](/docs/en/sessions#name-the-project-directory-yourself), which Claude Code reads from the launch environment only, is ignored from every file; requires v2.1.234 or later.
@@ -4869,7 +4870,7 @@ Configure Remote Control, cloud environments, the desktop app, and the notificat
 
 ### `agentPushNotifEnabled`
 
-Allow Claude to send a push notification to your phone when it decides one is worth sending, for example when a long task finishes. In a local session, Claude can send one while [Remote Control](/docs/en/remote-control) is connected. Appears in `/config` as **Push when Claude decides**. When you change it there, Claude Code also saves the value to your account.
+Allow Claude to send a push notification to your phone when it decides one is worth sending, for example when a long task finishes. In a local session, Claude can send one while [Remote Control](/docs/en/remote-control) is connected. Appears in `/config` as **Push when Claude decides**.
 
 * **Scope**: [`Any file`](#scopes). Claude Code also reads a value left in `~/.claude.json` by older versions.
 * **Type**: Boolean
@@ -4883,9 +4884,9 @@ Allow Claude to send a push notification to your phone when it decides one is wo
 }
 ```
 
-If you run sessions under a [`claude remote-control`](/docs/en/remote-control#start-a-remote-control-session) server, they follow the value saved to your account rather than this key. To change that value, run `/config` in a Claude Code session in your terminal and turn **Push when Claude decides** on or off. If the toggle already shows the value you want, change it and change it back so that Claude Code saves that value to your account.
+You don't receive notifications with this key alone. To set them up, follow the steps in [Mobile push notifications](/docs/en/remote-control#mobile-push-notifications).
 
-See [Mobile push notifications](/docs/en/remote-control#mobile-push-notifications).
+If you run sessions under a [`claude remote-control`](/docs/en/remote-control#start-a-remote-control-session) server, they follow the value saved to your account rather than this key. To change that value, run `/config` in a Claude Code session in your terminal and turn **Push when Claude decides** on or off. If the toggle already shows the value you want, change it and change it back so that Claude Code saves that value to your account.
 
 ### `awaySummaryEnabled`
 
@@ -5042,7 +5043,7 @@ Get a push notification on your phone when a permission prompt or question is wa
 }
 ```
 
-See [Mobile push notifications](/docs/en/remote-control#mobile-push-notifications).
+You don't receive notifications with this key alone. To set them up, follow the steps in [Mobile push notifications](/docs/en/remote-control#mobile-push-notifications).
 
 ### `preferredNotifChannel`
 
@@ -5187,7 +5188,7 @@ List the services a machine may reach Claude through, such as the Anthropic API,
 
 * **Scope**: [`Managed`](#scopes). A list that the machine's own admin sources set, MDM policies and managed settings files, keeps applying when server-managed settings also deliver one: a session may then use only the providers on both lists, so a server-managed list can narrow what the machine allows but never widen it. Which machine source's `allowedProviders` counts follows [how Claude Code combines managed sources](/docs/en/managed-settings#how-claude-code-combines-managed-sources). A list delivered through server-managed settings alone reaches only the sessions that [fetch server-managed settings](/docs/en/server-managed-settings#platform-availability).
 * **Type**: array of strings, each one of:
-  * `"anthropic"`: the Anthropic API on Anthropic's own host, through a claude.ai or Console sign-in or an API key. Pair it with [`forceLoginMethod`](#forceloginmethod) or [`forceLoginOrgUUID`](#forceloginorguuid) to also restrict the sign-in
+  * `"anthropic"`: the Anthropic API on Anthropic's own host, through a claude.ai or Console sign-in or an API key. Pair it with [`forceLoginMethod`](#forceloginmethod) or [`forceLoginOrgUUID`](#forceloginorguuid) to also restrict the sign-in. Desktop's Cowork [on the user's machine](/docs/en/managed-settings#where-and-when-a-policy-applies) counts as `"anthropic"` when signed in to claude.ai, so without it in the machine's list, Cowork [is refused at start](/docs/en/errors#managed-settings-dont-allow-this-api-provider). To let Cowork start, add it, which also opens this list to direct Anthropic sessions.
   * `"bedrock"`: [Amazon Bedrock](/docs/en/amazon-bedrock)
   * `"vertex"`: [Google Cloud's Agent Platform](/docs/en/google-vertex-ai), formerly Vertex AI
   * `"foundry"`: [Microsoft Foundry](/docs/en/microsoft-foundry)

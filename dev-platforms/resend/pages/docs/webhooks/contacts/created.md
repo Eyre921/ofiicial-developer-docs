@@ -18,7 +18,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `contact.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -33,19 +33,19 @@ parameters:
 
 Unique identifier for the contact
 
-**audience\_id** `string`
+**audience_id** `string`
 
 Unique identifier for the audience this contact belongs to
 
-**segment\_ids** `array`
+**segment_ids** `array`
 
 Array of segment IDs the contact belongs to
 
-**created\_at** `string` *required*
+**created_at** `string` *required*
 
 ISO 8601 timestamp when the contact was created
 
-**updated\_at** `string` *required*
+**updated_at** `string` *required*
 
 ISO 8601 timestamp when the contact was last updated
 
@@ -53,11 +53,11 @@ ISO 8601 timestamp when the contact was last updated
 
 Contact's email address
 
-**first\_name** `string | null`
+**first_name** `string | null`
 
 Contact's first name. May be absent from the payload
 
-**last\_name** `string | null`
+**last_name** `string | null`
 
 Contact's last name. May be absent from the payload
 

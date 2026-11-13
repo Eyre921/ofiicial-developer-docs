@@ -38,7 +38,7 @@ page. Cannot be combined with `after`.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more messages exist beyond this page. Pass the last message's `id` as
 `after` to continue.
@@ -77,7 +77,7 @@ The CC recipients of the message.
 
 The BCC recipients of the message. Always empty for a received message.
 
-**reply\_to** `string[]`
+**reply_to** `string[]`
 
 The Reply-To addresses.
 
@@ -85,7 +85,7 @@ The Reply-To addresses.
 
 The subject of the message.
 
-**message\_id** `string | null`
+**message_id** `string | null`
 
 The Message-ID header of the message.
 
@@ -119,7 +119,7 @@ The size of the attachment in bytes.
 
 Whether the message has been read.
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the inbox received the message, or when the inbox
 sent it.

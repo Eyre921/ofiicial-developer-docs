@@ -18,7 +18,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.thread.folder.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -41,11 +41,11 @@ The folder the thread moved to
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 

@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1727 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1731 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -541,6 +541,7 @@
 - `langsmith/run-data-format` — [Run (span) data format](pages/langsmith/run-data-format.md) · [原文](https://docs.langchain.com/langsmith/run-data-format)
 - `langsmith/run-evals-api-only` — [How to use the REST API](pages/langsmith/run-evals-api-only.md) · [原文](https://docs.langchain.com/langsmith/run-evals-api-only)
 - `langsmith/run-evaluation-from-playground` — [Run an evaluation from the Playground](pages/langsmith/run-evaluation-from-playground.md) · [原文](https://docs.langchain.com/langsmith/run-evaluation-from-playground)
+- `langsmith/run-priority` — [Prioritize runs](pages/langsmith/run-priority.md) · [原文](https://docs.langchain.com/langsmith/run-priority)
 - `langsmith/runs` — [Runs](pages/langsmith/runs.md) · [原文](https://docs.langchain.com/langsmith/runs)
 - `langsmith/same-thread` — [How to run multiple assistants on the same thread](pages/langsmith/same-thread.md) · [原文](https://docs.langchain.com/langsmith/same-thread)
 - `langsmith/sample-traces` — [Set a sampling rate for traces](pages/langsmith/sample-traces.md) · [原文](https://docs.langchain.com/langsmith/sample-traces)
@@ -589,10 +590,13 @@
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
 - `langsmith/self-host-slack` — [Connect self-hosted and BYOC LangSmith to Slack](pages/langsmith/self-host-slack.md) · [原文](https://docs.langchain.com/langsmith/self-host-slack)
 - `langsmith/self-host-smithdb` — [Enable SmithDB on self-hosted LangSmith](pages/langsmith/self-host-smithdb.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb)
+- `langsmith/self-host-smithdb-architecture` — [SmithDB architecture](pages/langsmith/self-host-smithdb-architecture.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-architecture)
+- `langsmith/self-host-smithdb-common-issues` — [Common SmithDB issues to monitor](pages/langsmith/self-host-smithdb-common-issues.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-common-issues)
+- `langsmith/self-host-smithdb-data-paths` — [How SmithDB handles data](pages/langsmith/self-host-smithdb-data-paths.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-data-paths)
 - `langsmith/self-host-smithdb-features` — [SmithDB feature availability](pages/langsmith/self-host-smithdb-features.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-features)
 - `langsmith/self-host-smithdb-infrastructure` — [Prepare SmithDB supporting infrastructure](pages/langsmith/self-host-smithdb-infrastructure.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-infrastructure)
 - `langsmith/self-host-smithdb-install` — [Install LangSmith with SmithDB](pages/langsmith/self-host-smithdb-install.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-install)
-- `langsmith/self-host-smithdb-metrics` — [SmithDB metrics reference](pages/langsmith/self-host-smithdb-metrics.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-metrics)
+- `langsmith/self-host-smithdb-metrics` — [Essential SmithDB metrics](pages/langsmith/self-host-smithdb-metrics.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-metrics)
 - `langsmith/self-host-smithdb-migrate` — [Migrate ClickHouse history to SmithDB](pages/langsmith/self-host-smithdb-migrate.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-migrate)
 - `langsmith/self-host-smithdb-observability` — [Configure SmithDB observability](pages/langsmith/self-host-smithdb-observability.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-observability)
 - `langsmith/self-host-smithdb-scale` — [Configure SmithDB for scale](pages/langsmith/self-host-smithdb-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-scale)

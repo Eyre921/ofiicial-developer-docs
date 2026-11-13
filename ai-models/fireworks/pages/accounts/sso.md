@@ -27,7 +27,7 @@ Create an OIDC client application in your identity provider, e.g. Okta.
 
 **2. Configure client**
 
-Ensure the client is configured for "code authorization" of the "web" type (i.e. with a client\_secret).
+Ensure the client is configured for "code authorization" of the "web" type (i.e. with a client_secret).
 
 **3. Set redirect URL**
 

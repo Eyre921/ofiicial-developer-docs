@@ -107,7 +107,7 @@ Use [`create_agent`](https://reference.langchain.com/javascript/langchain/index/
 import { createAgent } from "langchain";
 
 let agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
 });
 ```
@@ -194,7 +194,7 @@ const sandbox = await client.createSandbox({
 const backend = new LangSmithSandbox({ sandbox });
 
 agent = createAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [],
   middleware: [createFilesystemMiddleware({ backend })],
 });
@@ -371,7 +371,7 @@ Update your agent from step 2 by adding [`SummarizationMiddleware`](https://refe
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createSummarizationMiddleware } from "deepagents";
 
-let model = "google:gemini-3.6-flash";
+let model = "google:gemini-4-hydrogen";
 
 agent = createAgent({
   model,
@@ -563,7 +563,7 @@ Then create your agent with your skills by adding [`SkillsMiddleware`](https://r
 ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createSkillsMiddleware } from "deepagents";
 
-model = "google:gemini-3.6-flash";
+model = "google:gemini-4-hydrogen";
 
 agent = createAgent({
   model,
@@ -686,7 +686,7 @@ Update your agent from step 4 by adding [`TodoListMiddleware`](https://reference
 import { todoListMiddleware } from "langchain";
 import { createSubAgentMiddleware, type SubAgent } from "deepagents";
 
-model = "google:gemini-3.6-flash";
+model = "google:gemini-4-hydrogen";
 
 const visualizer: SubAgent = {
   name: "visualizer",

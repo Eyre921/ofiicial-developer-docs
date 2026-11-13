@@ -176,7 +176,7 @@ In the settings menu, under **Labels**, you can add, edit and remove labels that
 
 In the Dashboard, you can delete an inbox either from the settings panel at the bottom of the general settings, or from the [list of inboxes](https://resend.com/inboxes). To delete an inbox:
 
-**1. Click **Delete inbox****
+**1. Click __Delete inbox__**
 
 **2. Enter the email address into the form to confirm**
 

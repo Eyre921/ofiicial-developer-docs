@@ -24,8 +24,7 @@ To create multiple line items on the same invoice, reference the [invoice ID](ht
 curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}}/add_lines \
   -u <<YOUR_SECRET_KEY>>: \
   -d "lines[0][amount]"=7500 \
-  -d "lines[0][currency]"="usd" \
-  -d "lines[1][price]"={{PRICE_ID}} \
+  -d "lines[1][pricing][price]"={{PRICE_ID}} \
   -d "lines[1][description]"="New line item" \
   -d "lines[2][invoice_item]"={{INVOICE_ITEM_1}}
 ```
@@ -45,7 +44,7 @@ curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}}/update_lines \
   -d "lines[0][description]"="New description" \
   -d "lines[0][metadata][key]"="new value" \
   -d "lines[1][id]"={{LINE_ITEM_2}} \
-  -d "lines[1][price]"={{PRICE_ID}} \
+  -d "lines[1][pricing][price]"={{PRICE_ID}} \
   -d "lines[2][id]"={{LINE_ITEM_3}} \
   -d "lines[2][discountable]"=true
 ```

@@ -154,7 +154,7 @@ The script:
 
 * Reads your existing Batch input file in the [OpenAI batch format](/guides/batch-inference) (`custom_id` plus `body`)
 * Writes successful rows to `--output` and failed rows to `<output>.errors.jsonl`, in the matching Batch output format
-* Retries `408`, `409`, `425`, `429`, `5xx` (except `501` and `505`), timeouts and dropped connections, honoring `Retry-After`, for up to 30 minutes per row
+* Retries `408`, `409`, `425`, `429`, `5xx` (except `501` and `505`), timeouts and dropped connections, honoring `Retry-After`, for up to a day per row by default (`--max-retry-time`)
 * Resumes where it stopped when you rerun the same command, sending every row without a result: failed rows and rows a stopped run never finished. Add `--skip-errors` to rerun without resending rows that already failed.
 
 Rows are written as they finish, so match output rows on `custom_id`, not line order. See the [script README](https://github.com/fw-ai-external/cookbook/tree/main/case-studies/batch-migration) for every flag, the output formats and the exit codes.
@@ -163,7 +163,7 @@ Rows are written as they finish, so match output rows on `custom_id`, not line o
 
 * **Validate on a sample first.** Run a few hundred rows and compare outputs with your Batch results before running the full file.
 * **Tune `--concurrency`** (default 16, up to 256). Start at about 8 to 16 per replica and raise it while latency stays acceptable.
-* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and the deployment stays `READY`, so you don't need to recreate it. Watch `replicaStats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than 30 minutes, raise `--max-retry-time`, or rerun the same command later.
+* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and the deployment stays `READY`, so you don't need to recreate it. Watch `replicaStats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than a day, raise `--max-retry-time`, or rerun the same command later.
 * **Know when it happens.** Each preempted replica adds an event to the deployment's activity log, in the app and in `firectl deployment events list` (see [Step 2](#step-2-check-the-deployment-status)). If preemption leaves the deployment with no ready replicas, the user who created it gets an email, and another when it can serve again.
 
 ## Step 4: Delete the deployment

@@ -152,7 +152,7 @@ A **Datum** is the unit of training data sent to the remote GPU. It wraps tokeni
 
 For SFT, token weight `0.0` marks prompt tokens and `1.0` marks response tokens. Cookbook renderers construct these weights from chat messages.
 
-### Logprobs and forward\_backward\_custom
+### Logprobs and forward_backward_custom
 
 When you call `forward_backward_custom`, the GPU runs a forward pass and returns **per-token log-probabilities** as PyTorch tensors with `requires_grad=True`. Your loss function computes a scalar loss, the API calls `loss.backward()`, and gradients are sent back to the GPU for the model backward pass.
 

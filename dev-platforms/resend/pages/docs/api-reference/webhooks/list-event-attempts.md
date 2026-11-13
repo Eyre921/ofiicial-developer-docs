@@ -31,7 +31,7 @@ The `before` parameter is not supported for this endpoint.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more attempts exist beyond this page.
 
@@ -45,7 +45,7 @@ The delivery attempts for this event, most recent first.
 
 The attempt ID.
 
-**http\_status\_code** `number`
+**http_status_code** `number`
 
 The HTTP status code your endpoint returned for this attempt.
 
@@ -53,7 +53,7 @@ The HTTP status code your endpoint returned for this attempt.
 
 The response body your endpoint returned for this attempt.
 
-**sent\_at** `string`
+**sent_at** `string`
 
 When this attempt was sent.
 

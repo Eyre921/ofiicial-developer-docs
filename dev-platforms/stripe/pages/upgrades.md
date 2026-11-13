@@ -46,9 +46,8 @@ require 'stripe'
 client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
 intent = client.v1.payment_intents.retrieve(
   'pi_1DlIVK2eZvKYlo2CW4yj5l2C',
-  {
-    stripe_version: '2026-10-28.endive',
-  },
+  {},
+  {stripe_version: '2026-10-28.endive'},
 )
 intent.capture
 ```

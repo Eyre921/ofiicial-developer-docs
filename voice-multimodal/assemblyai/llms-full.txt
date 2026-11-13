@@ -47584,7 +47584,7 @@ Every field except `llm_instruction` and `rewrite_mode` controls transcription. 
 | `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
 | `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
 | `llm_instruction` | string | Plain-English description of the rewrite you want. Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
-| `rewrite_mode` | string | Model tier that runs the rewrite: `fast` (the default) or `smart`, which follows detailed formatting instructions more reliably but has higher latency. See [Choosing a rewrite mode](/dictation/transcript-rewriting#choosing-a-rewrite-mode). |
+| `rewrite_mode` | string | Model tier that runs the rewrite. `fast` (the default) is a lighter-touch cleanup with the lowest latency. `smart` gives a more thorough cleanup and follows instructions more reliably, with higher latency. See [Choosing a rewrite mode](/dictation/transcript-rewriting#choosing-a-rewrite-mode). |
 
 Unknown fields are rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
 
@@ -48706,8 +48706,8 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
 
 | `rewrite_mode` | Use it for |
 |---|---|
-| `fast` (default) | The default cleanup task and short, simple instructions, at the lowest latency |
-| `smart` | Detailed formatting instructions that `fast` doesn't follow reliably, such as [spoken punctuation](#example-spoken-punctuation). The rewrite has higher latency. |
+| `fast` (default) | A lighter-touch cleanup and short, simple instructions, at the lowest latency. It often leaves clean speech unchanged. |
+| `smart` | A more thorough cleanup (filler words, self-corrections, punctuation), and any `llm_instruction` you need followed reliably. The rewrite has higher latency. |
 
 ```json
 { "rewrite_mode": "smart", "llm_instruction": "Turn this into a bulleted list of action items." }

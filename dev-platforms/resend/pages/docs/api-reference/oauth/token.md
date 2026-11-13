@@ -50,27 +50,27 @@ const codeChallenge = base64url(
 
 ### Body Parameters
 
-**grant\_type** `string` *required*
+**grant_type** `string` *required*
 
 Must be `"authorization_code"`.
 
-**client\_id** `string`
+**client_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
 already carries it, and with `private_key_jwt`, where the assertion does.
 
-**client\_secret** `string`
+**client_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic` (send the secret in the `Authorization`
 header instead). See [Client authentication](#client-authentication).
 
-**client\_assertion\_type** `string`
+**client_assertion_type** `string`
 
 Required with `private_key_jwt`. Must be
 `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
 
-**client\_assertion** `string`
+**client_assertion** `string`
 
 Required with `private_key_jwt`: a JWT signed with the client's private key.
 See [Client authentication](#client-authentication).
@@ -80,14 +80,14 @@ See [Client authentication](#client-authentication).
 The code from the `/oauth/authorize` callback. Single-use: redeeming it twice
 fails with `invalid_grant`. Expires 10 minutes after it was issued.
 
-**redirect\_uri** `string` *required*
+**redirect_uri** `string` *required*
 
 Must exactly match the `redirect_uri` used in the authorization request.
 
-**code\_verifier** `string` *required*
+**code_verifier** `string` *required*
 
 The original value that
-[code\_challenge](/docs/api-reference/oauth/authorize#param-code-challenge) was
+[code_challenge](/docs/api-reference/oauth/authorize#param-code-challenge) was
 derived from.
 
 ```bash Public client theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -127,32 +127,32 @@ curl -X POST 'https://api.resend.com/oauth/token' \
 
 ### Body Parameters
 
-**grant\_type** `string` *required*
+**grant_type** `string` *required*
 
 Must be `"refresh_token"`.
 
-**client\_id** `string`
+**client_id** `string`
 
 Required, except with `client_secret_basic`, where the `Authorization` header
 already carries it, and with `private_key_jwt`, where the assertion does.
 
-**client\_secret** `string`
+**client_secret** `string`
 
 Required for a confidential client using `client_secret_post`. Omit for public
 clients and for `client_secret_basic`. See [Client
 authentication](#client-authentication).
 
-**client\_assertion\_type** `string`
+**client_assertion_type** `string`
 
 Required with `private_key_jwt`. Must be
 `urn:ietf:params:oauth:client-assertion-type:jwt-bearer`.
 
-**client\_assertion** `string`
+**client_assertion** `string`
 
 Required with `private_key_jwt`: a JWT signed with the client's private key.
 See [Client authentication](#client-authentication).
 
-**refresh\_token** `string` *required*
+**refresh_token** `string` *required*
 
 **scope** `string`
 

@@ -14,7 +14,7 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
 import { createDeepAgent } from "deepagents";
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: "You are a helpful assistant.",
   tools: [search, fetchUrl],
   memory: ["./AGENTS.md"],
@@ -478,7 +478,7 @@ const internetSearch = tool(
 );
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [internetSearch],
 });
 ```
@@ -792,7 +792,7 @@ const client = new MultiServerMCPClient({
 const tools = await client.getTools();
 
 const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
+    model: "google:gemini-4-hydrogen",
     tools,
 });
 
@@ -960,7 +960,7 @@ const researchInstructions =
   `write a polished report.`;
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   systemPrompt: researchInstructions,
 });
 ```
@@ -1208,7 +1208,7 @@ const logToolCallsMiddleware = createMiddleware({
 });
 
 const agent = await createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [getWeather] as any,
   middleware: [logToolCallsMiddleware] as any,
 });
@@ -1619,7 +1619,7 @@ import { createDeepAgent } from "deepagents";
 import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   middleware: [createCodeInterpreterMiddleware()],
 });
 ```
@@ -1736,12 +1736,12 @@ const researchSubagent: SubAgent = {
   description: "Used to research more in depth questions",
   systemPrompt: "You are a great researcher",
   tools: [internetSearch],
-  model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
+  model: "google:gemini-4-hydrogen", // Optional override, defaults to main agent model
 };
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1797,7 +1797,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1853,7 +1853,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1909,7 +1909,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -1965,7 +1965,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -2021,7 +2021,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -2077,7 +2077,7 @@ const researchSubagent: SubAgent = {
 const subagents = [researchSubagent];
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   subagents,
 });
 ```
@@ -2122,7 +2122,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > import { createDeepAgent, FilesystemBackend } from "deepagents";
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
 > });
 > ```
@@ -2201,7 +2201,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const backend = new LocalShellBackend({ workingDirectory: "." });
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend,
 > });
 > ```
@@ -2283,7 +2283,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Agent Server
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new StoreBackend({
 >     namespace: (rt) => [rt.serverInfo.user.identity],
 >   }),
@@ -2411,7 +2411,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
 > const store = new InMemoryStore();
 >
 > const agent = createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new CompositeBackend(new StateBackend(), {
 >     "/memories/": new StoreBackend({
 >       namespace: () => ["memories"],
@@ -2656,7 +2656,7 @@ const notifyEmail = tool(
 const checkpointer = new MemorySaver();
 
 const agent = createDeepAgent({
-  model: "google:gemini-3.6-flash",
+  model: "google:gemini-4-hydrogen",
   tools: [removeFile, fetchFile, notifyEmail],
   interruptOn: {
     remove_file: true, // Default: approve, edit, reject, respond
@@ -2861,7 +2861,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > }
 >
 > const agent = await createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   memory: ["/AGENTS.md"],
 >   checkpointer: checkpointer,
 > });
@@ -3215,7 +3215,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new StoreBackend({
 >     namespace: () => ["filesystem"],
 >   }),
@@ -3587,7 +3587,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
 > const checkpointer = new MemorySaver();
 >
 > const agent = await createDeepAgent({
->   model: "google:gemini-3.6-flash",
+>   model: "google:gemini-4-hydrogen",
 >   backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
 >   memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
 >   interruptOn: {

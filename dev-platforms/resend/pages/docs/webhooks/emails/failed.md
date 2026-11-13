@@ -18,7 +18,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `email.failed`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -29,19 +29,19 @@ parameters:
 
 **object parameters**
 
-**broadcast\_id** `string`
+**broadcast_id** `string`
 
 Unique identifier for the broadcast campaign (if applicable)
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the email was created
 
-**email\_id** `string`
+**email_id** `string`
 
 Unique identifier for the specific email
 
-**message\_id** `string`
+**message_id** `string`
 
 RFC Message-ID header value for the email. Not included on `email.scheduled`,
 `email.failed` and `email.suppressed` events, because the email has not been
@@ -59,7 +59,7 @@ Array of impacted recipient email addresses
 
 Email subject line
 
-**template\_id** `string`
+**template_id** `string`
 
 Unique identifier for the template used (if applicable)
 

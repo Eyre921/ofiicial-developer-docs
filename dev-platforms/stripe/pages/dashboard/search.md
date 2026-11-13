@@ -69,16 +69,17 @@ You can use the following operators when searching for amounts and dates to refi
 
 You can also use the Boolean operator `is:` to filter results to a specific object type or state.
 
-Use `is:` with an object type to only show results of that type.
+Use `is:` with an object type to only show results of that type. Use singular or plural forms, such as `is:account` or `is:accounts`.
 
 | Operator | Description | Example |
 | --- | --- | --- |
-| `account` | A connected account. | **is:account** |
+| `account` | When combined account search is available in your Dashboard, customers (excluding guest customers), connected accounts, and Global Payouts recipients. Otherwise, connected accounts only. | `is:accounts` |
 | `charge` | A payment (identical to `payment`). | **is:charge** |
 | `checkout_session` | A Checkout Session. | **is:checkout\_session** |
+| `connected_account` | A connected account. | `is:connected_account` |
 | `coupon` | A coupon. | **is:coupon** |
 | `credit_note` | A credit note. | **is:credit\_note** |
-| `customer` | A customer. | **is:customer** |
+| `customer` | A customer, including guest customers. | `is:customer` |
 | `dispute` | A dispute. | **is:dispute** |
 | `document` | A document. | **is:document** |
 | `invoice` | An invoice. | **is:invoice** |
@@ -94,6 +95,7 @@ Use `is:` with an object type to only show results of that type.
 | `product` | A product. | **is:product** |
 | `promotion_code` | A promotion code. | **is:promotion\_code** |
 | `quote` | A quote. | **is:quote** |
+| `recipient` | A Global Payouts recipient. | `is:recipient` |
 | `refund` | A refund. | **is:refund** |
 | `setup_intent` | A SetupIntent. | **is:setup\_intent** |
 | `source` | A [Source](https://docs.stripe.com/sources.md). | **is:source** |

@@ -22,7 +22,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `domain.created`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -60,7 +60,7 @@ Current verification status of the domain:
 > `partially_verified` (one capability verified, the other pending) or
 > `partially_failed` (one capability verified, the other failed).
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the domain was created
 

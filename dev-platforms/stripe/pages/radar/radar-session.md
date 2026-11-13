@@ -25,6 +25,8 @@ This guide shows you how to provide Stripe with complete fraud information for t
 
 Include [Stripe.js](https://docs.stripe.com/js/including) on your website. To get started with Radar Sessions using the mobile SDKs, see the documentation for [iOS](https://github.com/stripe/stripe-ios) (v21.6.0 or later) and [Android](https://github.com/stripe/stripe-android) (v16.9.0 or later).
 
+For pages that only create Radar Sessions, [request access to Radar.js](https://docs.stripe.com/radar/radar-session.md#radar-js) as an alternative to Stripe.js. Radar.js is in private preview and requires approval before use.
+
 ## Create a Radar Session from your client and send it to your server
 
 You need to create a Radar Session in your checkout flow or when saving card details. Stripe uses the Radar Session to associate the client information captured by Stripe libraries with subsequent server-side API requests.
@@ -48,6 +50,51 @@ if (error) {
 ```
 
 > Call `createRadarSession` as late in your checkout flow as possible. Your payment details or confirmation pages are good candidates. `createRadarSession` can be loaded asynchrously.
+
+### Create a Radar Session with Radar.js (Private preview) 
+
+If a page only needs to create a Radar Session and doesn’t use Elements or other Stripe.js features, use Radar.js instead of Stripe.js. Radar.js only creates Radar Sessions, so the page doesn’t need to load the full Stripe.js library. This is useful on pages where load time matters, such as signup and login.
+
+After you create a Radar Session, send its ID to your server. Your server then passes it to Stripe the same way it would a Radar Session created with Stripe.js.
+
+### Request access to Radar.js
+
+Radar.js is in private preview. Enter your email to request access. Our team will contact you about your use case and next steps.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/radar/radar-session" \
+  -d '{"email": "EMAIL", "preview": "radar_js_preview"}'
+```
+
+Add the Radar.js script to your page.
+
+```html
+<script src="https://js.stripe.com/endive/radar.js"></script>
+```
+
+Initialize Radar.js with your publishable key, then create a Radar Session.
+
+```javascript
+// Initialize Radar.js with your publishable key.
+const radar = Radar('<<YOUR_PUBLISHABLE_KEY>>');
+
+const {radarSession, error} = await radar.createRadarSession();
+
+if (error) {
+  // In most cases, continue your signup, login, or checkout flow if an error occurs.
+  console.error(error);
+} else {
+  // Send the Radar Session to your server.
+  radarSessionHandler(radarSession);
+}
+```
+
+> Load Radar.js only once per page. If the page already loads Stripe.js, use `stripe.createRadarSession()` instead of adding Radar.js.
+
+Next, [send the Radar Session from your server to Stripe](https://docs.stripe.com/radar/radar-session.md#submit-payment-info).
 
 ## Send a Radar Session from your server to Stripe
 

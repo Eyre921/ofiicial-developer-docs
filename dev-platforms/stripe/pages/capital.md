@@ -454,7 +454,7 @@ When you’re eligible for a new Stripe Capital offer, it appears automatically 
 
 For questions regarding eligibility, [email our partner, Fundbox](mailto:stripe-capital@fundbox.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt in to receiving Stripe Capital emails.
 
-You might see a banner in the Stripe Dashboard that indicates that you could be eligible for a future offer. This isn’t a guarantee of a future offer, or a promise of specific terms, and it doesn’t reflect a credit decision or evaluation.
+You might see a banner in the Stripe Dashboard that indicates that you could be eligible for a future offer. This isn’t a guarantee of a future offer, specific terms, or timing, and doesn’t reflect a credit decision or evaluation.
 
 If your business has multiple Stripe accounts, we might generate a financing offer based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
@@ -490,13 +490,11 @@ The more information we can see about the health of your business, the better we
 
 We base our underwriting model on the payment volume that you process on Stripe. Shifting transaction volume from other payment sources onto Stripe increases your overall Stripe processing volume and improves your likelihood of receiving an offer.
 
-### Get feedback on your eligibility
-
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/au/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
+See our [Privacy Center](https://stripe.com/au/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
 
 ## Review your offer
 
-When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose. The amount and terms shown in your Dashboard reflect the financing offer currently available to your business.
 
 Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 

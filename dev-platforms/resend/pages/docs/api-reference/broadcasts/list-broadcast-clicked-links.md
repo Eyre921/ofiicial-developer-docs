@@ -34,7 +34,7 @@ Cursor to fetch the page before this link. Cannot be used with `after`.
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more links exist beyond this page.
 
@@ -58,7 +58,7 @@ The URL that was clicked.
 Total clicks on this link, including repeat clicks by the same
 recipient.
 
-**unique\_clicks** `number`
+**unique_clicks** `number`
 
 The number of distinct recipients who clicked this link.
 

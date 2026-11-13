@@ -453,7 +453,7 @@ client.v1.subscription_schedules.update(
         ],
         default_tax_rates: [],
         automatic_tax: {enabled: true},
-        iterations: 1
+        duration: {interval: 'month', interval_count: 1}
       }
     ]
   }

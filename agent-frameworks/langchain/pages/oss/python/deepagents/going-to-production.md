@@ -84,7 +84,7 @@ class Context:
 
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     context_schema=Context,
 )
 
@@ -454,7 +454,7 @@ Otherwise, to share memory across threads, route a path like `/memories/` to a [
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=CompositeBackend(
 >         default=StateBackend(),
 >         routes={
@@ -483,7 +483,7 @@ Otherwise, to share memory across threads, route a path like `/memories/` to a [
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=CompositeBackend(
 >         default=StateBackend(),
 >         routes={
@@ -506,7 +506,7 @@ Otherwise, to share memory across threads, route a path like `/memories/` to a [
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=CompositeBackend(
 >         default=StateBackend(),
 >         routes={
@@ -527,7 +527,7 @@ Otherwise, to share memory across threads, route a path like `/memories/` to a [
 > from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=CompositeBackend(
 >         default=StateBackend(),
 >         routes={
@@ -614,7 +614,7 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
 >             idle_ttl_seconds=3600,  # TTL: clean up when idle
 >         )
 >     return create_deep_agent(
->         model="google_genai:gemini-3.6-flash",
+>         model="google_genai:gemini-4-hydrogen",
 >         backend=LangSmithSandbox(sandbox=ls_sandbox),
 >     )
 > ```
@@ -645,7 +645,7 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
 >     else:
 >         ls_sandbox = client.create_sandbox(name=sandbox_name)
 >     return create_deep_agent(
->         model="google_genai:gemini-3.6-flash",
+>         model="google_genai:gemini-4-hydrogen",
 >         backend=LangSmithSandbox(sandbox=ls_sandbox),
 >     )
 > ```
@@ -814,7 +814,7 @@ For provider-specific file transfer examples, see [working with files](/oss/pyth
 > )
 >
 > agent = create_deep_agent(
->     model="google_genai:gemini-3.6-flash",
+>     model="google_genai:gemini-4-hydrogen",
 >     backend=backend,
 >     middleware=[SandboxSyncMiddleware(backend)],
 > )
@@ -884,7 +884,7 @@ from deepagents import create_deep_agent
 from langchain.agents.middleware import PIIMiddleware
 
 agent = create_deep_agent(
-    model="google_genai:gemini-3.6-flash",
+    model="google_genai:gemini-4-hydrogen",
     middleware=[
         PIIMiddleware("email", strategy="redact", apply_to_input=True),
         PIIMiddleware("credit_card", strategy="mask", apply_to_input=True),

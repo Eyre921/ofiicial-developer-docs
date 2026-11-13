@@ -229,14 +229,14 @@ sequenceDiagram
     AS-->>C: access_token + refresh_token
 ```
 
-**1. Load the pre-issued client\_id and client\_secret**
+**1. Load the pre-issued client_id and client_secret**
 
 **2. Generate PKCE and state**
 
 `code_verifier`, `code_challenge`, and `state`. See
 [above](#generating-pkce-values-and-state).
 
-**3. Store state and code\_verifier server-side**
+**3. Store state and code_verifier server-side**
 
 Tie them to the user's session.
 
@@ -320,7 +320,7 @@ Pick a random high port and bind it to `127.0.0.1` or `[::1]`, never
 `code_verifier`, `code_challenge`, and `state`. See
 [above](#generating-pkce-values-and-state).
 
-**3. Get a client\_id**
+**3. Get a client_id**
 
 Use the URL of a [metadata document](#client-id-metadata-documents) that
 lists the loopback redirect URI and the minimum required scope. If the

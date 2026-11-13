@@ -127,11 +127,11 @@ You can subscribe multiple Contacts to Topics in the [Dashboard](https://resend.
 
 **3. Click the **Edit** button in the bulk actions bar.**
 
-**4. Select **Subscribe to Topics****
+**4. Select __Subscribe to Topics__**
 
 **5. Choose the Topics you want to subscribe the Contacts to.**
 
-**6. Click **Subscribe****
+**6. Click __Subscribe__**
 
 Learn more about [bulk actions for Contacts](/docs/dashboard/contacts/manage-contacts#bulk-actions).
 

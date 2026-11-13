@@ -272,7 +272,7 @@ npx skills add resend/react-email
 7. **Use `await`** — `resend.emails.send()` returns a Promise. Always use `async/await`.
 8. **Handle both `data` and `error`** — the SDK returns `{ data, error }`. Always check for errors.
 9. **Use a verified domain** in the `from` address for production. `onboarding@resend.dev` is for testing only.
-10. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake\_case.
+10. **Use camelCase** for SDK parameters (`replyTo`, `scheduledAt`), not snake_case.
 
 ### **4.2 - NEVER DO THE FOLLOWING**
 
@@ -280,7 +280,7 @@ npx skills add resend/react-email
 2. **Do not** hardcode API keys in source code.
 3. **Do not** use `try/catch` for error handling with `resend.emails.send()` — the SDK returns `{ data, error }` instead of throwing. Only use `try/catch` if you need to handle network-level failures.
 4. **Do not** use Express, Hono, Koa, or any other HTTP framework — Encore.ts provides its own API routing via `api()`.
-5. **Do not** use snake\_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase.
+5. **Do not** use snake_case parameter names (`reply_to`, `scheduled_at`) — the Node.js SDK uses camelCase.
 6. **Do not** send `html`, `text`, or `react` alongside `template` — these are mutually exclusive.
 7. **Do not** import from `@resend/node` or any other package name. The correct package is `resend`.
 8. **Do not** use `onboarding@resend.dev` as the `from` address in production code. It is a test-only address.

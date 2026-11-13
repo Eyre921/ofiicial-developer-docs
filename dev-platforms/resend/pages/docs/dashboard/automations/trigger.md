@@ -726,7 +726,7 @@ View the [Send Event API reference](/docs/api-reference/events/send-event) for t
 
 ## Configuration
 
-**config.event\_name** `string` *required*
+**config.event_name** `string` *required*
 
 The name of the event that triggers the automation.
 

@@ -298,7 +298,7 @@ The same settings work for the [Claude Agent SDK](https://github.com/anthropics/
 | `404` with "Model not found, inaccessible, and/or not deployed" | `ANTHROPIC_MODEL` is not a Fireworks model resource name, or the model is not deployed to your account. Use the full `accounts/<account>/models/<model>` form. |
 | `404` "Path not found" | The base URL includes `/v1`. Set `ANTHROPIC_BASE_URL` to `https://api.fireworks.ai/inference`; the client appends `/v1/messages`. |
 | "Not logged in" | The key is in `ANTHROPIC_API_KEY`. Move it to `ANTHROPIC_AUTH_TOKEN`. |
-| `400` "max\_tokens is required and must be > 0" | A client or proxy dropped `max_tokens`. It is required on every request. |
+| `400` "max_tokens is required and must be > 0" | A client or proxy dropped `max_tokens`. It is required on every request. |
 | `400` naming `web_search_20250305` | Claude Code's WebSearch tool requested server-side execution in a region where it is unavailable. Disable WebSearch, or supply your own client-side `web_search` tool. |
 | Slow multi-turn responses | Prompt-cache misses. Claude Code sends a session header that Fireworks uses to route follow-up turns to the same replica; avoid stripping `X-Claude-Code-Session-Id` in an intermediate proxy. |
 

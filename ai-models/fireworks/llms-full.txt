@@ -219,18 +219,18 @@ firectl billing export-metrics \
 The exported CSV includes the following columns:
 
 * **email**: Account email
-* **start\_time**: Request start timestamp
-* **end\_time**: Request end timestamp
-* **usage\_type**: Type of usage (e.g., TEXT\_COMPLETION\_INFERENCE\_USAGE)
-* **accelerator\_type**: GPU/hardware type used
-* **accelerator\_seconds**: Compute time in seconds
-* **base\_model\_name**: The model used
-* **model\_bucket**: Model category
-* **parameter\_count**: Model size
-* **prompt\_tokens**: Input tokens
-* **completion\_tokens**: Output tokens
-* **cached\_prompt\_tokens**: Prompt tokens served from cache (text inference only). Subset of `prompt_tokens`.
-* **uncached\_prompt\_tokens**: Prompt tokens not served from cache (text inference only). `prompt_tokens - cached_prompt_tokens`.
+* **start_time**: Request start timestamp
+* **end_time**: Request end timestamp
+* **usage_type**: Type of usage (e.g., TEXT_COMPLETION_INFERENCE_USAGE)
+* **accelerator_type**: GPU/hardware type used
+* **accelerator_seconds**: Compute time in seconds
+* **base_model_name**: The model used
+* **model_bucket**: Model category
+* **parameter_count**: Model size
+* **prompt_tokens**: Input tokens
+* **completion_tokens**: Output tokens
+* **cached_prompt_tokens**: Prompt tokens served from cache (text inference only). Subset of `prompt_tokens`.
+* **uncached_prompt_tokens**: Prompt tokens not served from cache (text inference only). `prompt_tokens - cached_prompt_tokens`.
 
 > [!NOTE]
 >
@@ -790,11 +790,11 @@ firectl billing export-usage-costs \
 
 The exported CSV always has these six columns, regardless of which dimension you group by:
 
-* **account\_id**: Your Fireworks account ID
+* **account_id**: Your Fireworks account ID
 * **date**: UTC day bucket, as `YYYY-MM-DD`
-* **group\_by\_dimension**: The dimension the row is grouped by — `model`, `model_tier`, `user`, or `api_key`
-* **group\_by\_value**: The value for that dimension (see below)
-* **subtotal\_usd**: Rated cost for that day and value, as an exact decimal with nine fractional digits
+* **group_by_dimension**: The dimension the row is grouped by — `model`, `model_tier`, `user`, or `api_key`
+* **group_by_value**: The value for that dimension (see below)
+* **subtotal_usd**: Rated cost for that day and value, as an exact decimal with nine fractional digits
 * **currency**: Currency code for `subtotal_usd`, for example `USD`
 
 `group_by_value` depends on `--group-by`:
@@ -1132,7 +1132,7 @@ Create an OIDC client application in your identity provider, e.g. Okta.
 
 **2. Configure client**
 
-Ensure the client is configured for "code authorization" of the "web" type (i.e. with a client\_secret).
+Ensure the client is configured for "code authorization" of the "web" type (i.e. with a client_secret).
 
 **3. Set redirect URL**
 
@@ -2128,7 +2128,7 @@ Returns the deployment shape versions compatible with the provided deployment cr
 
 Use this endpoint to discover the deployment shape versions compatible with a model before creating a deployment. Pass a [Create Deployment](/api-reference/create-deployment) request in the body — at minimum `createDeploymentRequest.deployment.baseModel` — and the response returns the latest validated shape versions that can serve that model, ready to pass as `deploymentShape`. The CLI equivalent is `firectl deployment-shape-version match --model <model>`.
 
-Match applies the full server-side compatibility logic for you. For LoRA addons and live-merge models, shapes are matched against the model's base model. It also handles model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI\_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
+Match applies the full server-side compatibility logic for you. For LoRA addons and live-merge models, shapes are matched against the model's base model. It also handles model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
 
 > [!NOTE]
 >
@@ -2149,7 +2149,7 @@ curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentSha
   }'
 ```
 
-To match shapes for a deployment with LoRA addons enabled, include `enableAddons` in the request — only shapes with the MULTI\_LORA capability are returned. (`firectl deployment-shape-version match` does not take addons into account, so addon deployments need this API call.)
+To match shapes for a deployment with LoRA addons enabled, include `enableAddons` in the request — only shapes with the MULTI_LORA capability are returned. (`firectl deployment-shape-version match` does not take addons into account, so addon deployments need this API call.)
 
 ```bash theme={null}
 curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
@@ -2579,11 +2579,11 @@ This takes the deployed model ID, not the adapter ID. Get it from the load respo
 
 ## Path parameters
 
-**account\_id** `string` *required*
+**account_id** `string` *required*
 
 Your account ID.
 
-**deployed\_model\_id** `string` *required*
+**deployed_model_id** `string` *required*
 
 The last segment of the deployed model's `name`.
 
@@ -2625,7 +2625,7 @@ firectl deployed-model list
 
 ## Path parameters
 
-**account\_id** `string` *required*
+**account_id** `string` *required*
 
 Your account ID.
 
@@ -2702,7 +2702,7 @@ firectl model load-lora my-lora --serverless --wait
 
 ## Path parameters
 
-**account\_id** `string` *required*
+**account_id** `string` *required*
 
 Your account ID.
 
@@ -2887,11 +2887,11 @@ firectl model unload-lora my-lora --serverless --wait
 
 ## Path parameters
 
-**account\_id** `string` *required*
+**account_id** `string` *required*
 
 Your account ID.
 
-**deployed\_model\_id** `string` *required*
+**deployed_model_id** `string` *required*
 
 The last segment of the deployed model's `name`.
 
@@ -5040,7 +5040,7 @@ If you don't see your credits reflected immediately:
 
 ## Why did I receive an invoice after depositing credits?
 
-Most accounts on pre-paid billing should not see month-end overage invoices. If you received an invoice, your account may be on a post-paid contract. Contact [community\_billing@fireworks.ai](mailto:community_billing@fireworks.ai) so we can confirm your billing configuration.
+Most accounts on pre-paid billing should not see month-end overage invoices. If you received an invoice, your account may be on a post-paid contract. Contact [community_billing@fireworks.ai](mailto:community_billing@fireworks.ai) so we can confirm your billing configuration.
 
 ## What happens when I finish my \$1 credit?
 
@@ -5059,7 +5059,7 @@ When you finish your \$1 credit, the following occurs:
 
 ## Where's my receipt for purchased credits?
 
-Receipts for purchased credits are sent via Stripe upon purchase. Check your email for receipts from Stripe (not Fireworks). If you can't find your receipt, contact [community\_billing@fireworks.ai](mailto:community_billing@fireworks.ai).
+Receipts for purchased credits are sent via Stripe upon purchase. Check your email for receipts from Stripe (not Fireworks). If you can't find your receipt, contact [community_billing@fireworks.ai](mailto:community_billing@fireworks.ai).
 
 > [!NOTE]
 >
@@ -5832,7 +5832,7 @@ Many base models default to FP8 or FP4 shapes. If you need LoRA addon inference 
 
 **Option 1 — Use a BF16 deployment shape**
 
-Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set — it returns only shapes with the MULTI\_LORA capability, so quantized shapes are filtered out for you:
+Over the API, call [Match Deployment Shape Versions](/api-reference/match-deployment-shape-versions) with `enableAddons` set — it returns only shapes with the MULTI_LORA capability, so quantized shapes are filtered out for you:
 
 ```bash theme={null}
 curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \
@@ -6568,8 +6568,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 > * The agent prompt on this page tells the agent the key is already set, and not to ask for it or print it.
 > * If you pasted a key into a chat by mistake, delete it in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) and create a new one.
 
-
-
+&#xA;
 \> \[accordion] Should I use Serverless or Dedicated Training?
 \>
 \> | | Serverless Training | Dedicated Training |
@@ -6578,36 +6577,30 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 \> | Parameter mode | LoRA only | LoRA or full-parameter |
 \> | Methods | SFT, DPO and RL | SFT, DPO, ORPO and RL |
 \> | Billing | Per token | Per GPU hour while the trainer runs |
-\> | Limits | 8 concurrent runs per account by default | Your account's \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
+\> | Limits | 8 concurrent runs per account by default | Your account's \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
 \> | - | - |
 \> | LoRA on a serverless model | Serverless Training |
 \> | LoRA on any other model | Dedicated Training, LoRA |
 \> | Full-parameter (LoRA rank \`0\`) | Dedicated Training, full-parameter, when \[Models]\(/fine-tuning/models) lists a full-parameter shape for the base model. Otherwise, train a LoRA adapter. |
 \> | ORPO | Dedicated Training |
 \> | A warm start from an earlier adapter | Dedicated Training |
-\> | A reservation | Dedicated Training, on the same reservation |\*\*Serverless models.\*\* \`serverless=True\` works only on these base models. On any other model it fails with \`no eligible shared trainer found for base model\`:
-\>
-\> \\\<table>\<thead>\<tr>\<th>Base model\</th>
-\>               \\\<th>Model ID\</th>
-\>               \\\<th>Max context\</th>\</tr>\</thead>
-\>           \\\<tbody />\</table>
-\>
-\> \*\*Train on a dedicated trainer instead.\*\* Remove \`serverless=True\` from the \`Config\`. The recipe then provisions a dedicated trainer on a validated training shape for the base model. Everything else in the examples stays the same:\`\`\`python theme=\{null}
-\> sft\_loop.Config(
-\>     log\_path="./runs/\<NEW\_MODEL\_ID>",
-\>     base\_model="accounts/fireworks/models/\<BASE\_MODEL>",
-\>     tokenizer\_model="\<HF\_ORG>/\<HF\_REPO>",
+\> | A reservation | Dedicated Training, on the same reservation |\*\*Serverless models.\*\* \`serverless=True\` works only on these base models. On any other model it fails with \`no eligible shared trainer found for base model\`:\&#xA;\&#xA;\\\<table>\\\<thead>\\\<tr>\\\<th>Base model\\\</th>
+\> \&#x20;             \\\<th>Model ID\\\</th>
+\> \&#x20;             \\\<th>Max context\\\</th>\\\</tr>\\\</thead>
+\> \&#x20;         \\\<tbody />\\\</table>\&#xA;\&#xA;\*\*Train on a dedicated trainer instead.\*\* Remove \`serverless=True\` from the \`Config\`. The recipe then provisions a dedicated trainer on a validated training shape for the base model. Everything else in the examples stays the same:\`\`\`python theme=\\\{null}
+\> sft_loop.Config(
+\>     log_path="./runs/\<NEW_MODEL_ID>",
+\>     base_model="accounts/fireworks/models/\<BASE_MODEL>",
+\>     tokenizer_model="\<HF_ORG>/\<HF_REPO>",
 \>     dataset="./train.jsonl",
-\>     output\_model\_id="\<NEW\_MODEL\_ID>",
+\>     output_model_id="\<NEW_MODEL_ID>",
 \>     epochs=1,
-\>     learning\_rate=1e-4,
-\>     lora\_rank=16,  # 0 for full-parameter, if Models lists a full-parameter shape
-\>     batch\_size=32,
-\>     dcp\_save\_interval=20,
+\>     learning_rate=1e-4,
+\>     lora_rank=16,  # 0 for full-parameter, if Models lists a full-parameter shape
+\>     batch_size=32,
+\>     dcp_save_interval=20,
 \> )
-\> \`\`\`A dedicated trainer uses your \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) and bills per GPU hour while it runs. Without a reservation, it can wait in a queue for capacity, for up to 48 hours by default.
-
-
+\> \`\`\`A dedicated trainer uses your \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) and bills per GPU hour while it runs. Without a reservation, it can wait in a queue for capacity, for up to 48 hours by default.&#xA;&#xA;
 
 > [accordion] My managed job's base model isn't available. What should I train instead?
 >
@@ -7341,15 +7334,15 @@ For large full-parameter snapshots, notify the hint endpoint as each shard finis
 
 Snapshot directory name under the configured bucket prefix. Must not contain `/`.
 
-**incremental\_snapshot\_metadata** `object`
+**incremental_snapshot_metadata** `object`
 
 Required for incremental snapshots. Includes `previous_snapshot_identity`, `compression_format` (`arc_v2`), and `checksum_format` (`alder32`). See the incremental snapshots guide.
 
-**reset\_prompt\_cache** `string`
+**reset_prompt_cache** `string`
 
 Prompt-cache policy after the swap: `all` (default), `none`, or `new_session`. See [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts) for active stream, session ID, and reset-option semantics.
 
-**validation.extra\_fields\_ignore** `string[]`
+**validation.extra_fields_ignore** `string[]`
 
 Top-level `config.json` fields to ignore during snapshot validation. Only use for known-safe metadata fields.
 
@@ -9688,7 +9681,7 @@ A **Datum** is the unit of training data sent to the remote GPU. It wraps tokeni
 
 For SFT, token weight `0.0` marks prompt tokens and `1.0` marks response tokens. Cookbook renderers construct these weights from chat messages.
 
-### Logprobs and forward\_backward\_custom
+### Logprobs and forward_backward_custom
 
 When you call `forward_backward_custom`, the GPU runs a forward pass and returns **per-token log-probabilities** as PyTorch tensors with `requires_grad=True`. Your loss function computes a scalar loss, the API calls `loss.backward()`, and gradients are sent back to the GPU for the model backward pass.
 
@@ -10961,6 +10954,31 @@ result = training_client.forward_backward(datums, "cross_entropy").result()
 print(result.metrics)
 ```
 
+#### TIS/MIS clipping metrics
+
+With trainer release `0.638.816` or later, a built-in policy loss (`reinforce`, `ppo`, ...) whose `loss_fn_config["weighting"]` is `"tis"` or `"mis"` also reports how many tokens its importance weights clipped or masked:
+
+```python theme={null}
+result = training_client.forward_backward(
+    datums, "reinforce",
+    loss_fn_config={"weighting": "tis", "weight_low": 0.5, "weight_high": 2.0},
+).result()
+print(result.metrics["clip_frac:mean"], result.metrics["clip_high_frac:mean"], result.metrics["clip_low_frac:mean"])
+```
+
+| Key | Weighting | Tokens counted |
+| - | - | - |
+| `clip_high_cnt:sum`, `clip_high_frac:mean` | TIS | `ratio > weight_high` |
+| `clip_low_cnt:sum`, `clip_low_frac:mean` | TIS | `ratio < weight_low` |
+| `clip_cnt:sum`, `clip_frac:mean` | TIS | Both bands |
+| `mask_cnt:sum`, `mask_frac:mean` | MIS | Ratio outside `[weight_low, weight_high]`; these tokens get weight 0 |
+
+* Counted tokens are response tokens with a real target label. For each, `ratio = exp(trainer_logprob - sampler_logprob)`.
+* A `_frac` is its count divided by the counted tokens.
+* Nothing is reported with `weighting="none"`.
+* When the SDK splits a call into several requests (more than 1024 datums, or about 5 MB), counts stay exact but fractions are averaged by datum count, so they are approximate.
+* The cookbook recipes log these as `train/clip_frac:mean` and so on. See [Step metrics](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/step-metrics.md#server-tismis-clipping).
+
 ### `forward_backward_custom(datums, loss_fn)`
 
 Forward + backward with your custom loss function. See [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) for details:
@@ -11544,30 +11562,26 @@ Serverless training runs on shared Fireworks GPUs, so there is no trainer job or
 >
 > Train a student model from a teacher model's scores.> [card] [Custom loss](/fine-tuning/training-api/dedicated#loss-functions)
 >
-> Write your own loss function using the same Training API calls as dedicated training.## Quickstart**Requires Python 3.11 or later.**### Step 1: Create a key, install, and authenticateCreate an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys), or run `firectl api-key create` in your terminal. Then install the SDK and export the key:The example below runs from a source checkout. To import released recipes in your own project, use [the PyPI installation](/fine-tuning/training-api/cookbook/overview#installation).```bash theme={null}
+> Write your own loss function using the same Training API calls as dedicated training.## Quickstart**Requires Python 3.11 or later.**### Step 1: Create a key, install, and authenticateCreate an API key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys), or run `firectl api-key create` in your terminal. Then install the SDK and export the key:The example below runs from a source checkout. To import released recipes in your own project, use [the PyPI installation](/fine-tuning/training-api/cookbook/overview#installation).```bash theme=\{null}
 git clone https://github.com/fw-ai-external/cookbook
 pip install -e ./cookbook/training
 pip install math-verify   # used by the DeepMath example to grade answers
 export FIREWORKS_API_KEY="fw_..."   # the key you just created
-```### Step 2: Run the complete serverless RL exampleThe cookbook's DeepMath example includes its dataset, reward, training loop, and metrics. It trains on math problems with reinforcement learning (RL), using Group Relative Policy Optimization (GRPO). These flags keep the first run small:```bash theme={null}
+```### Step 2: Run the complete serverless RL exampleThe cookbook's DeepMath example includes its dataset, reward, training loop, and metrics. It trains on math problems with reinforcement learning (RL), using Group Relative Policy Optimization (GRPO). These flags keep the first run small:```bash theme=\{null}
 cd cookbook/training
 python -m examples.rl.deepmath.train_deepmath_serverless \
   --base-model accounts/fireworks/models/muse-glimmer-30b \
   --tokenizer-model meta-models/Muse-Glimmer-30B --renderer-name muse_glimmer \
   --max-rows 32 --prompt-groups-per-step 8 --completions-per-prompt 4 \
   --max-completion-tokens 4096 --max-seq-len 8192 --lora-rank 8
-```This is a real paid run. It first evaluates the base model, then trains, then evaluates again.### Step 3: Clean upThe run keeps one of your training slots until you delete its session. You can still list and [promote](#promote-a-sampler-checkpoint-to-a-model) its checkpoints after you delete the session, while the session/trainer records and checkpoint artifacts remain available, but promote the ones you want to keep soon after training. Training checkpoints stay loadable from a new run for about 30 days (see [Checkpoint retention](#checkpoint-retention)). Then delete the session, using the training session name the example printed (`accounts/<ACCOUNT_ID>/trainingSessions/<SESSION_ID>`):```bash theme={null}
+```This is a real paid run. It first evaluates the base model, then trains, then evaluates again.### Step 3: Clean upThe run keeps one of your training slots until you delete its session. You can still list and [promote](#promote-a-sampler-checkpoint-to-a-model) its checkpoints after you delete the session, while the session/trainer records and checkpoint artifacts remain available, but promote the ones you want to keep soon after training. Training checkpoints stay loadable from a new run for about 30 days (see [Checkpoint retention](#checkpoint-retention)). Then delete the session, using the training session name the example printed (`accounts/<ACCOUNT_ID>/trainingSessions/<SESSION_ID>`):```bash theme=\{null}
 curl -X DELETE \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   https://api.fireworks.ai/v1/accounts/<ACCOUNT_ID>/trainingSessions/<SESSION_ID>
-```To write your own loop instead of running the example, see [Write your own training loop](#write-your-own-training-loop).## Supported modelsServerless supports these base models. For dedicated and managed options, see the [Models catalog](/fine-tuning/models).
-
-\<table><thead><tr><th>Base model</th>
-              \<th>Model ID</th>
-              \<th>Max context</th></tr></thead>
-          \<tbody /></table>
-
-## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the lower cached prefill rate.
+```To write your own loop instead of running the example, see [Write your own training loop](#write-your-own-training-loop).## Supported modelsServerless supports these base models. For dedicated and managed options, see the [Models catalog](/fine-tuning/models).&#xA;&#xA;\<table>\<thead>\<tr>\<th>Base model\</th>
+&#x20;             \<th>Model ID\</th>
+&#x20;             \<th>Max context\</th>\</tr>\</thead>
+&#x20;         \<tbody />\</table>&#xA;&#xA;## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the lower cached prefill rate.
 - **Sample:** tokens the sampler generates.
 - **Train:** tokens you train on (passed through `forward_backward`).Rates are USD per 1 million tokens. Available models and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and the [pricing page](https://fireworks.ai/pricing) before launch.| Base model | Context | Prefill | Cached prefill | Sample | Train |
 | - | - | - | - | - | - |
@@ -11580,9 +11594,9 @@ curl -X DELETE \
 | Qwen 3.8 27B | 128K | \$1.86 | \$0.372 | \$5.595 | \$4.103 |
 | Kimi K3.1 Pro | 256K | \$2.40 | \$0.24 | \$12.00 | \$25.00 |
 | Kimi K3 | 192K | \$10.87 | \$2.17 | \$27.11 | \$32.55 |
-| Muse Glimmer 30B | 128K | \$1.96 | \$0.39 | \$4.88 | \$5.86 |Nemotron 3.5 Super VL uses the current Tinker 256K card, which includes a limited-time 50% discount.## Write your own training loopThe DeepMath example wraps a loop you can write yourself with the SDK. To use the SDK without the cookbook, install it on its own:```bash theme={null}
+| Muse Glimmer 30B | 128K | \$1.96 | \$0.39 | \$4.88 | \$5.86 |Nemotron 3.5 Super VL uses the current Tinker 256K card, which includes a limited-time 50% discount.## Write your own training loopThe DeepMath example wraps a loop you can write yourself with the SDK. To use the SDK without the cookbook, install it on its own:```bash theme=\{null}
 pip install "fireworks-ai[training]"
-```### Connect to a serverless sessionRun this Python script:```python theme={null}
+```### Connect to a serverless sessionRun this Python script:```python theme=\{null}
 import os
 from fireworks.training.sdk import FiretitanServiceClient
 
@@ -11596,7 +11610,7 @@ max_seq_len = 131072  # enforce this when rendering prompts and training datums
 training_client = service.create_lora_training_client(base_model=base_model, rank=8)
 
 print(f"session={service.training_session_id} run={training_client.run_id}")
-```If it prints a session ID that starts with `ts-`, your setup works. The session holds a training slot until you delete it.### Train, checkpoint, and sampleEach training step follows the order below. This excerpt doesn't run on its own: it continues from the code above and uses `datums`, `tokenizer`, `prompt`, and `params`, which a complete loop such as the [DeepMath example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) defines.```python theme={null}
+```If it prints a session ID that starts with `ts-`, your setup works. The session holds a training slot until you delete it.### Train, checkpoint, and sampleEach training step follows the order below. This excerpt doesn't run on its own: it continues from the code above and uses `datums`, `tokenizer`, `prompt`, and `params`, which a complete loop such as the [DeepMath example](https://github.com/fw-ai-external/cookbook/blob/main/training/examples/rl/deepmath/train_deepmath_serverless.py) defines.```python theme=\{null}
 from fireworks.training.sdk import AdamParams
 
 # One optimizer step
@@ -11625,7 +11639,7 @@ sampler.close()
 | Resumable — the trainer can load it back and keep training | ✅ Yes | ❌ No |
 | Promotable to a deployable model | ❌ No | ✅ Yes |> [!WARNING]
 >
-> Only **sampler checkpoints** can be promoted to a final model, and only **training checkpoints** can be loaded back by the trainer to resume. A training checkpoint cannot be served or promoted. A sampler checkpoint cannot restore training state (weights + optimizer).Checkpoint storage is currently included at no charge.For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, and cross-job resolution), see [Dedicated Training](/fine-tuning/training-api/dedicated#saving-and-loading) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference#checkpoints).### Save and resume training checkpointsSave training checkpoints periodically so an interrupted run can continue:```python theme={null}
+> Only **sampler checkpoints** can be promoted to a final model, and only **training checkpoints** can be loaded back by the trainer to resume. A training checkpoint cannot be served or promoted. A sampler checkpoint cannot restore training state (weights + optimizer).Checkpoint storage is currently included at no charge.For the full SDK-level checkpoint reference (base/delta sampler types, weight sync, and cross-job resolution), see [Dedicated Training](/fine-tuning/training-api/dedicated#saving-and-loading) and the [Cookbook Reference](/fine-tuning/training-api/cookbook/reference#checkpoints).### Save and resume training checkpointsSave training checkpoints periodically so an interrupted run can continue:```python theme=\{null}
 # Save a training checkpoint (adapter weights + optimizer) for resume
 training_client.save_state("step-0100").result()
 
@@ -11642,7 +11656,7 @@ training_client.load_state("step-0100").result()
 >
 > To fork a new run from a previous run's training checkpoint, use `create_training_client_from_state` on the service client. The SDK reads the base model and LoRA configuration from the checkpoint itself, creates a fresh run, and loads the saved state:
 >
-> ```python theme={null}
+> ```python theme=\{null}
 > # Continue a previous run's training checkpoint in a new run (weights + optimizer)
 > resumed_client = service.create_training_client_from_state_with_optimizer(
 >     "<account>/<run-id>/step-0100",
@@ -11657,9 +11671,9 @@ training_client.load_state("step-0100").result()
 > Checkpoint references are fully qualified as `<account>/<run-id>/<checkpoint-name>`, where `run-id` is the previous run's `training_client.run_id` (`run-<hex>`). `weights_access_token` is not supported — load checkpoints accessible to your API key.### Checkpoint retention- **Training checkpoints** are kept for about 30 days after you save them. Load one into a new run with `<account>/<run-id>/<checkpoint-name>`, as in [Resume a new run from a training checkpoint](#save-and-resume-training-checkpoints), even after the original session has expired or been deleted.
 - **Listing and promoting** keep working after the session expires or is deleted, while the session/trainer records and checkpoint artifacts remain available. Promote the sampler checkpoints you want to keep soon after training.
 - **Sessions** expire once they've had no active runs for 10 minutes. Expiry is checked every 5 minutes.
-- **Unsaved progress** isn't saved for you. If the trainer unloads your run, the weights and optimizer state since your last `save_state` are lost, so save at regular intervals.### Promote a sampler checkpoint to a modelPromotion turns a **sampler checkpoint** into a deployable Fireworks model (a standard LoRA addon model). Training checkpoints are not promotable — save a sampler checkpoint first.**1. Save a sampler checkpoint during training**```python theme={null}
+- **Unsaved progress** isn't saved for you. If the trainer unloads your run, the weights and optimizer state since your last `save_state` are lost, so save at regular intervals.### Promote a sampler checkpoint to a modelPromotion turns a **sampler checkpoint** into a deployable Fireworks model (a standard LoRA addon model). Training checkpoints are not promotable — save a sampler checkpoint first.**1. Save a sampler checkpoint during training**```python theme=\{null}
 snapshot = training_client.save_weights_for_sampler("final").result().path
-```Save one at the end of training, and at any intermediate step you may want to deploy later.**2. List the session's checkpoints**Listing and promotion are session-scoped control-plane operations on `FireworksClient` (against the regular API gateway, not the serverless base URL). The session resource name is available as `service.training_session_name`:```python theme={null}
+```Save one at the end of training, and at any intermediate step you may want to deploy later.**2. List the session's checkpoints**Listing and promotion are session-scoped control-plane operations on `FireworksClient` (against the regular API gateway, not the serverless base URL). The session resource name is available as `service.training_session_name`:```python theme=\{null}
 import os
 from datetime import datetime
 from fireworks.training.sdk import FireworksClient
@@ -11676,7 +11690,7 @@ target = max(
 > Each row carries `name` (the full 4-segment resource name), `checkpointName`, `checkpointType`, `promotable`, and `createTime`. Two things to know about the values:
 >
 > * `checkpointName` is the server-side checkpoint ID, **not** the bare name you passed: it is prefixed with the source run ID and, for sampler checkpoints, suffixed with an 8-hex-char session ID — a save named `final` surfaces as `run-<hex>-final-<8hex>`. Select rows on `promotable` + `createTime` as above, or with a prefix/substring test — never by equality with your logical name. The composed ID caps your own name at [17 characters](#save-and-resume-training-checkpoints).
-> * `checkpointType` is a server enum string: `CHECKPOINT_TYPE_TRAINING_LORA` for training checkpoints, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler checkpoints. Treat it as opaque and filter on `promotable`, which is authoritative.**3. Promote the checkpoint**```python theme={null}
+> * `checkpointType` is a server enum string: `CHECKPOINT_TYPE_TRAINING_LORA` for training checkpoints, `CHECKPOINT_TYPE_INFERENCE_LORA` for sampler checkpoints. Treat it as opaque and filter on `promotable`, which is authoritative.**3. Promote the checkpoint**```python theme=\{null}
 model = fw_client.promote_session_checkpoint(
     name=target["name"],  # accounts/<a>/trainingSessions/<s>/checkpoints/<c>
     output_model_id="my-serverless-lora",
@@ -11684,10 +11698,10 @@ model = fw_client.promote_session_checkpoint(
 )
 ````output_model_id` must be 1-63 characters of lowercase a-z, 0-9, and hyphens. The promoted model appears in your account's model list like any other trained model.> [!NOTE]
 >
-> Session-scoped list and promote keep working after the session expires or is deleted, while the session/trainer records and checkpoint artifacts remain available. Once they're gone, both calls return `NOT_FOUND` and the checkpoints are no longer reachable through this API, so promote any checkpoint you want to keep soon after training. Cross-run training-checkpoint resume (above) is resolved per run and is not subject to this limit.### Deploy the promoted model to productionA promoted model deploys like any LoRA model trained on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.Deploy the promoted model directly:```bash theme={null}
+> Session-scoped list and promote keep working after the session expires or is deleted, while the session/trainer records and checkpoint artifacts remain available. Once they're gone, both calls return `NOT_FOUND` and the checkpoints are no longer reachable through this API, so promote any checkpoint you want to keep soon after training. Cross-run training-checkpoint resume (above) is resolved per run and is not subject to this limit.### Deploy the promoted model to productionA promoted model deploys like any LoRA model trained on Fireworks: with **live merge**, Fireworks merges the adapter into the base weights at deployment time, so the deployment performs identically to the base model.Deploy the promoted model directly:```bash theme=\{null}
 firectl deployment create "accounts/<account-id>/models/my-serverless-lora" \
   --deployment-shape default
-```To pick a specific shape instead of `default`, see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).Then send requests with the model name:```python theme={null}
+```To pick a specific shape instead of `default`, see [Deployment shapes](/guides/ondemand-deployments#deployment-shapes).Then send requests with the model name:```python theme=\{null}
 from fireworks import Fireworks
 
 client = Fireworks()
@@ -11697,7 +11711,7 @@ response = client.chat.completions.create(
 )
 ```For deployment configuration, performance, and troubleshooting, see [Deploying trained models](/fine-tuning/deploying-loras).If the base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can skip the deployment and serve the promoted model on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview), paying per token.## Sampling without a training clientSample from a checkpoint during or after a run to evaluate it. The sampler is not a chat endpoint for your adapter: to evaluate through the chat completions API, promote the checkpoint and evaluate it on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview) if its base model is supported, or on a preemptible deployment. Serverless sampling does not work for adapters produced by dedicated training. See [Evaluating trained models](/fine-tuning/evaluating-fine-tuned-models).Sampling does not need `create_lora_training_client`. A fresh `FiretitanServiceClient` can sample a base model in the serverless pool, or any sampler checkpoint your account saved with `save_weights_for_sampler`, including checkpoints from a run that has already ended. These samplers create no training run and do not use a [concurrent-run](#capacity-and-rate-limits) slot, so evaluation workers can open and close them freely. Sampled tokens are billed per token like other serverless training sampling.> [!NOTE]
 >
-> Requires SDK version 1.2.29 or later: `pip install --upgrade "fireworks-ai[training]>=1.2.29"`.### Sample a base model```python theme={null}
+> Requires SDK version 1.2.29 or later: `pip install --upgrade "fireworks-ai[training]>=1.2.29"`.### Sample a base model```python theme=\{null}
 import os
 from fireworks.training.sdk import FiretitanServiceClient, types
 
@@ -11715,7 +11729,7 @@ result = sampler.sample(
     sampling_params=types.SamplingParams(max_tokens=20, temperature=0.7),
 ).result()
 sampler.close()
-```### Sample a saved checkpointPass the path that `save_weights_for_sampler` returned, `<account>/<run-id>/<checkpoint-name>`. The process that saved it can be gone:```python theme={null}
+```### Sample a saved checkpointPass the path that `save_weights_for_sampler` returned, `<account>/<run-id>/<checkpoint-name>`. The process that saved it can be gone:```python theme=\{null}
 # In the training process
 path = training_client.save_weights_for_sampler("step-0100").result().path
 
@@ -11733,7 +11747,7 @@ sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
 >
 > **Pickle the client.** The pickle carries the connection state, including the API key and headers, so workers need no environment of their own. Each worker gets its own event loop, HTTP connections, and concurrency controller. A fixed concurrency limit carries over.
 >
-> ```python theme={null}
+> ```python theme=\{null}
 > from concurrent.futures import ProcessPoolExecutor
 >
 > def evaluate(sampler, prompt):
@@ -11745,7 +11759,7 @@ sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
 >
 > **Pass a sampler handle.** To avoid putting credentials in a pickle, pass a string handle instead. It carries no API key or credential headers. The receiving process authenticates with `api_key=` or its own `FIREWORKS_API_KEY`.
 >
-> ```python theme={null}
+> ```python theme=\{null}
 > handle = sampler.get_sampler_handle()  # str: store it, queue it, send it anywhere
 >
 > # In the worker
@@ -14679,7 +14693,7 @@ The script:
 
 * Reads your existing Batch input file in the [OpenAI batch format](/guides/batch-inference) (`custom_id` plus `body`)
 * Writes successful rows to `--output` and failed rows to `<output>.errors.jsonl`, in the matching Batch output format
-* Retries `408`, `409`, `425`, `429`, `5xx` (except `501` and `505`), timeouts and dropped connections, honoring `Retry-After`, for up to 30 minutes per row
+* Retries `408`, `409`, `425`, `429`, `5xx` (except `501` and `505`), timeouts and dropped connections, honoring `Retry-After`, for up to a day per row by default (`--max-retry-time`)
 * Resumes where it stopped when you rerun the same command, sending every row without a result: failed rows and rows a stopped run never finished. Add `--skip-errors` to rerun without resending rows that already failed.
 
 Rows are written as they finish, so match output rows on `custom_id`, not line order. See the [script README](https://github.com/fw-ai-external/cookbook/tree/main/case-studies/batch-migration) for every flag, the output formats and the exit codes.
@@ -14688,7 +14702,7 @@ Rows are written as they finish, so match output rows on `custom_id`, not line o
 
 * **Validate on a sample first.** Run a few hundred rows and compare outputs with your Batch results before running the full file.
 * **Tune `--concurrency`** (default 16, up to 256). Start at about 8 to 16 per replica and raise it while latency stays acceptable.
-* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and the deployment stays `READY`, so you don't need to recreate it. Watch `replicaStats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than 30 minutes, raise `--max-retry-time`, or rerun the same command later.
+* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and the deployment stays `READY`, so you don't need to recreate it. Watch `replicaStats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than a day, raise `--max-retry-time`, or rerun the same command later.
 * **Know when it happens.** Each preempted replica adds an event to the deployment's activity log, in the app and in `firectl deployment events list` (see [Step 2](#step-2-check-the-deployment-status)). If preemption leaves the deployment with no ready replicas, the user who created it gets an email, and another when it can serve again.
 
 ## Step 4: Delete the deployment
@@ -15129,7 +15143,7 @@ JSON Schema supports: `string`, `number`, `integer`, `object`, `array`, `boolean
 
 ## Additional configurations
 
-### tool\_choice
+### tool_choice
 
 The [`tool_choice`](/api-reference/post-chatcompletions) parameter controls how the model uses tools:
 
@@ -17314,7 +17328,7 @@ Extend text models with additional features for structured outputs, tool integra
 >     print(f"Token: {content.token}, Logprob: {content.logprob}")
 > ```
 
-> [accordion] Prompt inspection (echo & raw\_output)
+> [accordion] Prompt inspection (echo & raw_output)
 >
 > Verify how your prompt was formatted:
 >
@@ -18087,7 +18101,7 @@ completion = client.chat.completions.create(
 )
 ```
 
-See the [reasoning\_effort](/api-reference/post-chatcompletions) parameter for more details.
+See the [reasoning_effort](/api-reference/post-chatcompletions) parameter for more details.
 
 #### Using `thinking` (Anthropic-compatible)
 
@@ -21836,7 +21850,7 @@ Add a `fireworks.json` file to the directory containing your adapter files:
 
 ### Uploading the LoRA adapter
 
-To upload a LoRA addon, run the following command. The MODEL\_ID is an arbitrary [resource ID](/getting-started/concepts#resource-names-and-ids) to refer to the model within Fireworks.
+To upload a LoRA addon, run the following command. The MODEL_ID is an arbitrary [resource ID](/getting-started/concepts#resource-names-and-ids) to refer to the model within Fireworks.
 
 > [!NOTE]
 >
@@ -26263,7 +26277,6 @@ Decision models such as [Rune 26B-A4B](https://app.fireworks.ai/models/fireworks
 Other things to know:
 
 * The `usage` object in each response is the source of truth for what was billed (`prompt_tokens`, `completion_tokens`, `total_tokens`).
-* **Batch inference** is billed at 50% of standard Serverless rates on both input and output. See [Batch inference](/guides/batch-inference).
 * Your **spend tier** influences Serverless capacity caps. Your monthly spend limit is a separate account control. Higher spend tiers unlock higher TPM upper bounds. See [Account quotas](/guides/quotas_usage/account-quotas) and [Serverless rate limits](/serverless/rate-limits).
 
 ## Request and response headers
@@ -26373,7 +26386,6 @@ Embeddings are billed only on input tokens.
 ## How pricing works
 
 * Prices below are **per 1 million tokens** in US dollars.
-* **Batch inference** is billed at **50% of serverless pricing** on both input and output. See [Batch inference](/guides/batch-inference).
 
 ## Text and vision models
 
@@ -27838,7 +27850,7 @@ The same settings work for the [Claude Agent SDK](https://github.com/anthropics/
 | `404` with "Model not found, inaccessible, and/or not deployed" | `ANTHROPIC_MODEL` is not a Fireworks model resource name, or the model is not deployed to your account. Use the full `accounts/<account>/models/<model>` form. |
 | `404` "Path not found" | The base URL includes `/v1`. Set `ANTHROPIC_BASE_URL` to `https://api.fireworks.ai/inference`; the client appends `/v1/messages`. |
 | "Not logged in" | The key is in `ANTHROPIC_API_KEY`. Move it to `ANTHROPIC_AUTH_TOKEN`. |
-| `400` "max\_tokens is required and must be > 0" | A client or proxy dropped `max_tokens`. It is required on every request. |
+| `400` "max_tokens is required and must be > 0" | A client or proxy dropped `max_tokens`. It is required on every request. |
 | `400` naming `web_search_20250305` | Claude Code's WebSearch tool requested server-side execution in a region where it is unavailable. Disable WebSearch, or supply your own client-side `web_search` tool. |
 | Slow multi-turn responses | Prompt-cache misses. Claude Code sends a session header that Fireworks uses to route follow-up turns to the same replica; avoid stripping `X-Claude-Code-Session-Id` in an intermediate proxy. |
 
@@ -29272,7 +29284,7 @@ Prints the validated deployment shape versions compatible with a model, restrict
 
 Unlike 'deployment-shape-version list --base-model', which shows every validated shape matching the model, this returns the deployable set for the account: shapes not usable by the account are dropped, exact base-model matches are preferred over same model-type and parameter-count siblings, and PEFT addons are resolved to their base model.
 
-This runs the same server-side matching the shape picker in 'firectl create deployment' uses, but only on the model. It does not take the rest of a deployment's configuration into account, so it reports the default (non-addon) result: shapes are not filtered down to those advertising MULTI\_LORA, which a deployment created with --enable-addons requires.
+This runs the same server-side matching the shape picker in 'firectl create deployment' uses, but only on the model. It does not take the rest of a deployment's configuration into account, so it reports the default (non-addon) result: shapes are not filtered down to those advertising MULTI_LORA, which a deployment created with --enable-addons requires.
 
 A bare model ID is resolved against the account being matched for, so public models must be given as a full name (accounts/fireworks/models/...).
 
@@ -32191,11 +32203,11 @@ client.chat.completions.create(
 
 > [card] [Reasoning](/guides/reasoning)
 >
-> Native reasoning\_effort, streaming, and tool use
+> Native reasoning_effort, streaming, and tool use
 
 > [card] [Structured responses](/structured-responses/structured-response-formatting)
 >
-> json\_schema and grammar response\_format
+> json_schema and grammar response_format
 
 > [card] [OpenAI compatibility](/tools-sdks/openai-compatibility)
 >
@@ -33062,7 +33074,7 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 > * **GPU Information:** Deployments table displays GPU type and count (Web App)
 > * **DPO Job Resume:** Preference Fine-Tuning jobs can now be resumed after stopping (Web App, API)
 > * **Free Tuning Filter:** New filter in RFT model selector for free-to-fine-tune models (Web App)
-> * **Playground Inputs:** Editable number inputs for temperature, top\_p, and other parameters (Web App)
+> * **Playground Inputs:** Editable number inputs for temperature, top_p, and other parameters (Web App)
 > * **Clone Fine-Tuning Jobs:** Fixed field population when cloning jobs (Web App)
 > * **Evaluation Job Errors:** Errors now display with alert banners (Web App)
 > * **Invoice CSV Export:** Improved download experience (Web App)
@@ -33494,7 +33506,7 @@ Fireworks to manage the training and deployment of your models. This gives you
 full control over your reinforcement learning workflows while leveraging
 Fireworks' infrastructure for model training and deployment.
 
-See the new [LLM.reinforcement\_step()](/tools-sdks/python-client/sdk-reference#reinforcement_step) method and [ReinforcementStep](/tools-sdks/python-client/sdk-reference#reinforcementstep) class for usage examples and details.
+See the new [LLM.reinforcement_step()](/tools-sdks/python-client/sdk-reference#reinforcement_step) method and [ReinforcementStep](/tools-sdks/python-client/sdk-reference#reinforcementstep) class for usage examples and details.
 
 **2025-07-16**
 

@@ -385,7 +385,7 @@ The email subject line.
 
 If provided, this value will override the template's default value.
 
-**config.reply\_to** `string`
+**config.reply_to** `string`
 
 Reply-to email address.
 

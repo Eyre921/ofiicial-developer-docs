@@ -9,7 +9,7 @@ Returns the deployment shape versions compatible with the provided deployment cr
 
 Use this endpoint to discover the deployment shape versions compatible with a model before creating a deployment. Pass a [Create Deployment](/api-reference/create-deployment) request in the body — at minimum `createDeploymentRequest.deployment.baseModel` — and the response returns the latest validated shape versions that can serve that model, ready to pass as `deploymentShape`. The CLI equivalent is `firectl deployment-shape-version match --model <model>`.
 
-Match applies the full server-side compatibility logic for you. For LoRA addons and live-merge models, shapes are matched against the model's base model. It also handles model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI\_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
+Match applies the full server-side compatibility logic for you. For LoRA addons and live-merge models, shapes are matched against the model's base model. It also handles model-type and parameter-count tiers, embedding vs. non-embedding models, the MULTI_LORA capability gate when `enableAddons` is set, and hiding of FP4 shapes for full-parameter fine-tunes. [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) only lists versions of a shape you already know and cannot answer "which shapes work with this model?" — use Match for that.
 
 > [!NOTE]
 >
@@ -30,7 +30,7 @@ curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentSha
   }'
 ```
 
-To match shapes for a deployment with LoRA addons enabled, include `enableAddons` in the request — only shapes with the MULTI\_LORA capability are returned. (`firectl deployment-shape-version match` does not take addons into account, so addon deployments need this API call.)
+To match shapes for a deployment with LoRA addons enabled, include `enableAddons` in the request — only shapes with the MULTI_LORA capability are returned. (`firectl deployment-shape-version match` does not take addons into account, so addon deployments need this API call.)
 
 ```bash theme={null}
 curl -X POST "https://api.fireworks.ai/v1/accounts/YOUR_ACCOUNT_ID/deploymentShapeVersions:match" \

@@ -62,7 +62,7 @@ import { ChatGoogle } from "@langchain/google";
 
 const llm = new ChatGoogle({
   apiKey: "your-api-key",
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
 });
 ```
 
@@ -83,7 +83,7 @@ type as `gcp` when instantiating the model.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   platformType: "gcp",
   // apiKey: "...", // Optional if GOOGLE_API_KEY is set
 });
@@ -124,7 +124,7 @@ You can also provide these credentials directly in your code using the
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   platformType: "gcp",
   credentials: {
     type: "service_account",
@@ -188,7 +188,7 @@ The model will automatically determine whether to use the Google AI API or Gemin
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   maxRetries: 2,
   // apiKey: "...", // Optional if GOOGLE_API_KEY is set
 });
@@ -198,7 +198,7 @@ const llm = new ChatGoogle({
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   // credentials: { ... }, // Optional if using ADC or GOOGLE_CLOUD_CREDENTIALS
 });
 ```
@@ -209,7 +209,7 @@ To use Gemini Enterprise Agent Platform with an API key (Express Mode), you must
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   platformType: "gcp",
   // apiKey: "...", // Optional if GOOGLE_API_KEY is set
 });
@@ -272,7 +272,7 @@ the `response_metadata`.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llmWithLogprobs = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   logprobs: 2, // Number of top candidates to return
 });
 
@@ -292,7 +292,7 @@ the `safetySettings` attribute of the model.
 import { ChatGoogle } from "@langchain/google";
 
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   safetySettings: [
     {
       category: "HARM_CATEGORY_HARASSMENT",
@@ -310,7 +310,7 @@ You can use the `withStructuredOutput` method to get structured JSON output from
 import { ChatGoogle } from "@langchain/google";
 import { z } from "zod";
 
-const llm = new ChatGoogle("gemini-3.7-flash");
+const llm = new ChatGoogle("gemini-4-hydrogen");
 
 const schema = z.object({
   people: z.array(z.object({
@@ -358,7 +358,7 @@ const weatherTool = tool((input) => {
   }),
 });
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([weatherTool]);
 
 const res = await llm.invoke("What is the weather in SF?");
@@ -382,7 +382,7 @@ Python code to solve complex problems.
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       codeExecution: {},
@@ -405,7 +405,7 @@ This is useful for questions about current events or specific facts.
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       googleSearch: {},
@@ -423,7 +423,7 @@ You can also ground responses using a specific URL.
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
 
-const llm = new ChatGoogle("gemini-3.7-flash")
+const llm = new ChatGoogle("gemini-4-hydrogen")
   .bindTools([
     {
       urlContext: {},
@@ -501,7 +501,7 @@ import { ChatGoogle } from "@langchain/google";
 import { HumanMessage } from "@langchain/core/messages";
 import * as fs from "fs";
 
-const llm = new ChatGoogle("gemini-3.7-flash");
+const llm = new ChatGoogle("gemini-4-hydrogen");
 
 const image = fs.readFileSync("./hotdog.jpg").toString("base64");
 
@@ -587,7 +587,7 @@ This library offers compatibility between models, allowing you to use unified pa
   * `> 0`: Sets the specific token budget.
 
 * `reasoningEffort` (or `thinkingLevel`): Sets the relative effort.
-  * Values: `"minimal"`, `"low"`, `"medium"`, `"high"`.
+  * Values: `"minimal"`, `"low"`, `"medium"`, `"high"`, `"xhigh"` (supported on `gemini-4-hydrogen`).
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
@@ -758,7 +758,7 @@ Agent Platform.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const llm = new ChatGoogle({
-  model: "gemini-3.7-flash",
+  model: "gemini-4-hydrogen",
   apiHandler: "interactions",
 });
 

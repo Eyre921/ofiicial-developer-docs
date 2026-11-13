@@ -16,7 +16,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.updated`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -31,7 +31,7 @@ parameters:
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
@@ -54,19 +54,19 @@ The ID of the inbox
 Internal name for the inbox. Recipients do not see it. Falls back to the inbox
 address
 
-**email\_address** `string`
+**email_address** `string`
 
 The address of the inbox
 
-**domain\_id** `string`
+**domain_id** `string`
 
 The ID of the domain the inbox belongs to
 
-**receiving\_address** `string | null`
+**receiving_address** `string | null`
 
 The address to forward mail to when forwarding is enabled. `null` otherwise
 
-**from\_name** `string | null`
+**from_name** `string | null`
 
 The name recipients see when mail is sent from this inbox. `null` when not set
 
@@ -78,16 +78,16 @@ The number of unread threads in the Inbox folder
 
 The number of unsent drafts
 
-**last\_received** `string | null`
+**last_received** `string | null`
 
 ISO 8601 timestamp of the newest received email in the Inbox folder. `null`
 when the folder has no received email
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the inbox was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp set when the inbox is created and updated whenever its name
 or from name changes

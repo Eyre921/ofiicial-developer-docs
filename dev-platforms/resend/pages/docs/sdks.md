@@ -60,7 +60,7 @@ Open source client libraries for your favorite platforms.
 
 > [card] [Dart](https://github.com/coderaveHQ/dart_resend)
 >
-> github.com/coderaveHQ/dart\_resend
+> github.com/coderaveHQ/dart_resend
 
 ## OpenAPI
 

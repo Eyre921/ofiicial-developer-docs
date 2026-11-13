@@ -10,7 +10,7 @@ A table with a pgvector index, such as an [HNSW index](https://github.com/pgvect
 
 ## Before you begin
 
-* pg_pinecone installed and created in the database, as steps 1 and 2 of the [quickstart](/guides/pg-pinecone/quickstart) show.
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A table with a `vector` column and a pgvector index on that column created with `CREATE INDEX`. If `pinecone.create_index()` built the pgvector index instead, skip this guide and switch it with one call: `SELECT pinecone.set_engine('your_table', 'native');`.
 * A single-column primary key, if you plan to [switch to `remote`](/guides/pg-pinecone/switch-to-remote) later. A `native` index doesn't need one.
 

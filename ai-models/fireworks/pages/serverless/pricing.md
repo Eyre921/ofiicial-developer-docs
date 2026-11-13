@@ -21,7 +21,6 @@ Embeddings are billed only on input tokens.
 ## How pricing works
 
 * Prices below are **per 1 million tokens** in US dollars.
-* **Batch inference** is billed at **50% of serverless pricing** on both input and output. See [Batch inference](/guides/batch-inference).
 
 ## Text and vision models
 

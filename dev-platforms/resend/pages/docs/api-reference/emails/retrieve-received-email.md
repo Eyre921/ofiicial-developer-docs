@@ -15,7 +15,7 @@ The ID for the received email.
 
 ## Query Parameters
 
-**html\_format** `'data_uri' | 'cid'`
+**html_format** `'data_uri' | 'cid'`
 
 Controls how inline images are returned inside `html`. The response echoes
 the form actually served as `html_format` on the body.
@@ -26,13 +26,13 @@ Emails whose inlined HTML would exceed 100 MB, typically long reply chains that 
 
 ## Response Fields
 
-**html\_format** `'data_uri' | 'cid'`
+**html_format** `'data_uri' | 'cid'`
 
 How inline images are referenced in `html`. Usually matches the requested
 format, but is `cid` when the email is too large to inline (see the query
 parameter above).
 
-**received\_for** `array`
+**received_for** `array`
 
 The recipient addresses the email was forwarded for, taken from the `for`
 clause of the message's `Received` headers.
@@ -66,11 +66,11 @@ Raw email content download information. Contains a signed URL to download the or
 
 **properties**
 
-**download\_url** `string`
+**download_url** `string`
 
 Signed CloudFront URL to download the raw email file.
 
-**expires\_at** `string`
+**expires_at** `string`
 
 ISO 8601 timestamp indicating when the download URL expires.
 

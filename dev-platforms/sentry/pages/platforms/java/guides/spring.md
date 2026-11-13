@@ -40,7 +40,7 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[ ]Logs\[x]OpenTelemetry
 
 ```groovy
 plugins {
-  id "io.sentry.jvm.gradle" version "6.26.0"
+  id "io.sentry.jvm.gradle" version "6.27.0"
 }
 // ___PRODUCT_OPTION_START___ profiling
 dependencies {

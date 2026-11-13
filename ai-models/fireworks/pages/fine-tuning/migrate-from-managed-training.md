@@ -195,8 +195,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 > * The agent prompt on this page tells the agent the key is already set, and not to ask for it or print it.
 > * If you pasted a key into a chat by mistake, delete it in the [dashboard](https://app.fireworks.ai/settings/users/api-keys) and create a new one.
 
-
-
+&#xA;
 \> \[accordion] Should I use Serverless or Dedicated Training?
 \>
 \> | | Serverless Training | Dedicated Training |
@@ -205,36 +204,30 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 \> | Parameter mode | LoRA only | LoRA or full-parameter |
 \> | Methods | SFT, DPO and RL | SFT, DPO, ORPO and RL |
 \> | Billing | Per token | Per GPU hour while the trainer runs |
-\> | Limits | 8 concurrent runs per account by default | Your account's \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
+\> | Limits | 8 concurrent runs per account by default | Your account's \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
 \> | - | - |
 \> | LoRA on a serverless model | Serverless Training |
 \> | LoRA on any other model | Dedicated Training, LoRA |
 \> | Full-parameter (LoRA rank \`0\`) | Dedicated Training, full-parameter, when \[Models]\(/fine-tuning/models) lists a full-parameter shape for the base model. Otherwise, train a LoRA adapter. |
 \> | ORPO | Dedicated Training |
 \> | A warm start from an earlier adapter | Dedicated Training |
-\> | A reservation | Dedicated Training, on the same reservation |\*\*Serverless models.\*\* \`serverless=True\` works only on these base models. On any other model it fails with \`no eligible shared trainer found for base model\`:
-\>
-\> \\\<table>\<thead>\<tr>\<th>Base model\</th>
-\>               \\\<th>Model ID\</th>
-\>               \\\<th>Max context\</th>\</tr>\</thead>
-\>           \\\<tbody />\</table>
-\>
-\> \*\*Train on a dedicated trainer instead.\*\* Remove \`serverless=True\` from the \`Config\`. The recipe then provisions a dedicated trainer on a validated training shape for the base model. Everything else in the examples stays the same:\`\`\`python theme=\{null}
-\> sft\_loop.Config(
-\>     log\_path="./runs/\<NEW\_MODEL\_ID>",
-\>     base\_model="accounts/fireworks/models/\<BASE\_MODEL>",
-\>     tokenizer\_model="\<HF\_ORG>/\<HF\_REPO>",
+\> | A reservation | Dedicated Training, on the same reservation |\*\*Serverless models.\*\* \`serverless=True\` works only on these base models. On any other model it fails with \`no eligible shared trainer found for base model\`:\&#xA;\&#xA;\\\<table>\\\<thead>\\\<tr>\\\<th>Base model\\\</th>
+\> \&#x20;             \\\<th>Model ID\\\</th>
+\> \&#x20;             \\\<th>Max context\\\</th>\\\</tr>\\\</thead>
+\> \&#x20;         \\\<tbody />\\\</table>\&#xA;\&#xA;\*\*Train on a dedicated trainer instead.\*\* Remove \`serverless=True\` from the \`Config\`. The recipe then provisions a dedicated trainer on a validated training shape for the base model. Everything else in the examples stays the same:\`\`\`python theme=\\\{null}
+\> sft_loop.Config(
+\>     log_path="./runs/\<NEW_MODEL_ID>",
+\>     base_model="accounts/fireworks/models/\<BASE_MODEL>",
+\>     tokenizer_model="\<HF_ORG>/\<HF_REPO>",
 \>     dataset="./train.jsonl",
-\>     output\_model\_id="\<NEW\_MODEL\_ID>",
+\>     output_model_id="\<NEW_MODEL_ID>",
 \>     epochs=1,
-\>     learning\_rate=1e-4,
-\>     lora\_rank=16,  # 0 for full-parameter, if Models lists a full-parameter shape
-\>     batch\_size=32,
-\>     dcp\_save\_interval=20,
+\>     learning_rate=1e-4,
+\>     lora_rank=16,  # 0 for full-parameter, if Models lists a full-parameter shape
+\>     batch_size=32,
+\>     dcp_save_interval=20,
 \> )
-\> \`\`\`A dedicated trainer uses your \[training GPU quota]\(/guides/quotas\_usage/account-quotas#training-gpu-quota) and bills per GPU hour while it runs. Without a reservation, it can wait in a queue for capacity, for up to 48 hours by default.
-
-
+\> \`\`\`A dedicated trainer uses your \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) and bills per GPU hour while it runs. Without a reservation, it can wait in a queue for capacity, for up to 48 hours by default.&#xA;&#xA;
 
 > [accordion] My managed job's base model isn't available. What should I train instead?
 >

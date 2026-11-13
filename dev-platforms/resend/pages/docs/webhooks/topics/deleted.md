@@ -16,7 +16,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `topic.deleted`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -39,7 +39,7 @@ The topic name
 
 The topic description
 
-**default\_subscription** `opt_in | opt_out`
+**default_subscription** `opt_in | opt_out`
 
 The default subscription preference for new contacts
 
@@ -47,11 +47,11 @@ The default subscription preference for new contacts
 
 Whether the topic was deleted
 
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the topic was created
 
-**updated\_at** `string`
+**updated_at** `string`
 
 ISO 8601 timestamp when the topic was last updated
 

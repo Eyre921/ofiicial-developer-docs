@@ -62,7 +62,7 @@ Threads](/docs/api-reference/inboxes/search-threads).
 
 Always `list`.
 
-**has\_more** `boolean`
+**has_more** `boolean`
 
 Whether more threads exist beyond this page. Pass the last thread's `id` as
 `after` to continue.
@@ -117,15 +117,15 @@ The name of the label.
 
 The color of the label as an uppercase `#RRGGBB` hex code.
 
-**email\_count** `number`
+**email_count** `number`
 
 The number of emails in the thread.
 
-**has\_attachment** `boolean`
+**has_attachment** `boolean`
 
 Whether the most recent message in the thread has an attachment.
 
-**has\_draft** `boolean`
+**has_draft** `boolean`
 
 Whether the thread has an unsent draft.
 
@@ -133,7 +133,7 @@ Whether the thread has an unsent draft.
 
 True only when every message in the thread is read.
 
-**received\_at** `string`
+**received_at** `string`
 
 ISO 8601 timestamp when the thread was last active.
 

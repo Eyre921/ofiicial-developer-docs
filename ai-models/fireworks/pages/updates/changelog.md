@@ -649,7 +649,7 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 > * **GPU Information:** Deployments table displays GPU type and count (Web App)
 > * **DPO Job Resume:** Preference Fine-Tuning jobs can now be resumed after stopping (Web App, API)
 > * **Free Tuning Filter:** New filter in RFT model selector for free-to-fine-tune models (Web App)
-> * **Playground Inputs:** Editable number inputs for temperature, top\_p, and other parameters (Web App)
+> * **Playground Inputs:** Editable number inputs for temperature, top_p, and other parameters (Web App)
 > * **Clone Fine-Tuning Jobs:** Fixed field population when cloning jobs (Web App)
 > * **Evaluation Job Errors:** Errors now display with alert banners (Web App)
 > * **Invoice CSV Export:** Improved download experience (Web App)
@@ -1081,7 +1081,7 @@ Fireworks to manage the training and deployment of your models. This gives you
 full control over your reinforcement learning workflows while leveraging
 Fireworks' infrastructure for model training and deployment.
 
-See the new [LLM.reinforcement\_step()](/tools-sdks/python-client/sdk-reference#reinforcement_step) method and [ReinforcementStep](/tools-sdks/python-client/sdk-reference#reinforcementstep) class for usage examples and details.
+See the new [LLM.reinforcement_step()](/tools-sdks/python-client/sdk-reference#reinforcement_step) method and [ReinforcementStep](/tools-sdks/python-client/sdk-reference#reinforcementstep) class for usage examples and details.
 
 **2025-07-16**
 

@@ -19,20 +19,20 @@ Unauthenticated (no API key). Rate-limited to 20 registrations per hour per IP a
 
 ## Body Parameters
 
-**client\_name** `string` *required*
+**client_name** `string` *required*
 
 A human-readable name for the client. Maximum 200 characters.
 
-**redirect\_uris** `string[]` *required*
+**redirect_uris** `string[]` *required*
 
 1 to 10 URIs, each up to 2048 characters. See [Allowed redirect
 URIs](#allowed-redirect-uris).
 
-**grant\_types** `string[]` (default: \["authorization\_code", "refresh\_token"])
+**grant_types** `string[]` (default: \["authorization_code", "refresh_token"])
 
 Must include `authorization_code`. `refresh_token` is also supported.
 
-**response\_types** `string[]` (default: \["code"])
+**response_types** `string[]` (default: \["code"])
 
 Only `code` is supported. Validated if present but not stored; the response
 always echoes back `["code"]`.
@@ -43,7 +43,7 @@ Space-delimited list of scopes, e.g. `"emails:send"`. Must be a subset of the
 [supported scopes](/docs/api-reference/oauth/authorize#scopes). If omitted, the
 client is registered with every supported scope.
 
-**token\_endpoint\_auth\_method** `string` (default: none)
+**token_endpoint_auth_method** `string` (default: none)
 
 How the client authenticates at the [token](/docs/api-reference/oauth/token) and
 [revocation](/docs/api-reference/oauth/revoke) endpoints. `none` registers a public
@@ -52,11 +52,11 @@ confidential client and issue a `client_secret` in the response. See
 [Confidential clients](#confidential-clients). PKCE is required on every
 authorization code exchange regardless of method.
 
-**client\_uri** `string`
+**client_uri** `string`
 
 A URL for the client's homepage. Echoed back, not otherwise used.
 
-**logo\_uri** `string`
+**logo_uri** `string`
 
 A URL for the client's logo. Shown on the consent screen.
 
@@ -77,13 +77,13 @@ Registering with `token_endpoint_auth_method` set to `client_secret_basic` or `c
 
 The response echoes back the registered client metadata along with the issued `client_id`. Registering a [confidential client](#confidential-clients) returns two extra fields:
 
-**client\_secret** `string`
+**client_secret** `string`
 
 The generated client secret. Returned **only once**, in this response. Resend
 stores a hash and can't show it again, so persist it securely at registration
 time. If it's lost, register a new client.
 
-**client\_secret\_expires\_at** `number`
+**client_secret_expires_at** `number`
 
 Unix time at which the secret expires. Always `0`: the secret does not expire.
 

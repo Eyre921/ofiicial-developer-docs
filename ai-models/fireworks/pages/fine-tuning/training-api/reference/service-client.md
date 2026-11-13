@@ -249,6 +249,31 @@ result = training_client.forward_backward(datums, "cross_entropy").result()
 print(result.metrics)
 ```
 
+#### TIS/MIS clipping metrics
+
+With trainer release `0.638.816` or later, a built-in policy loss (`reinforce`, `ppo`, ...) whose `loss_fn_config["weighting"]` is `"tis"` or `"mis"` also reports how many tokens its importance weights clipped or masked:
+
+```python theme={null}
+result = training_client.forward_backward(
+    datums, "reinforce",
+    loss_fn_config={"weighting": "tis", "weight_low": 0.5, "weight_high": 2.0},
+).result()
+print(result.metrics["clip_frac:mean"], result.metrics["clip_high_frac:mean"], result.metrics["clip_low_frac:mean"])
+```
+
+| Key | Weighting | Tokens counted |
+| - | - | - |
+| `clip_high_cnt:sum`, `clip_high_frac:mean` | TIS | `ratio > weight_high` |
+| `clip_low_cnt:sum`, `clip_low_frac:mean` | TIS | `ratio < weight_low` |
+| `clip_cnt:sum`, `clip_frac:mean` | TIS | Both bands |
+| `mask_cnt:sum`, `mask_frac:mean` | MIS | Ratio outside `[weight_low, weight_high]`; these tokens get weight 0 |
+
+* Counted tokens are response tokens with a real target label. For each, `ratio = exp(trainer_logprob - sampler_logprob)`.
+* A `_frac` is its count divided by the counted tokens.
+* Nothing is reported with `weighting="none"`.
+* When the SDK splits a call into several requests (more than 1024 datums, or about 5 MB), counts stay exact but fractions are averaged by datum count, so they are approximate.
+* The cookbook recipes log these as `train/clip_frac:mean` and so on. See [Step metrics](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/step-metrics.md#server-tismis-clipping).
+
 ### `forward_backward_custom(datums, loss_fn)`
 
 Forward + backward with your custom loss function. See [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) for details:

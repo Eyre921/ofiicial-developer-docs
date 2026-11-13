@@ -16,7 +16,7 @@ event-specific data nested within the `data` object.
 **type** `string`
 
 The event type that triggered the webhook (e.g., `inbox.thread.unassigned`).
-**created\_at** `string`
+**created_at** `string`
 
 ISO 8601 timestamp when the webhook event was created.
 **data** `object`
@@ -27,7 +27,7 @@ parameters:
 
 **object parameters**
 
-**previous\_assignee\_email** `string | null`
+**previous_assignee_email** `string | null`
 
 The email of the member the thread was assigned to
 
@@ -35,11 +35,11 @@ The email of the member the thread was assigned to
 
 What made the change
 
-**inbox\_id** `string`
+**inbox_id** `string`
 
 The ID of the inbox
 
-**thread\_id** `string`
+**thread_id** `string`
 
 The ID of the thread
 

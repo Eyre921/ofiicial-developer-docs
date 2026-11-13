@@ -243,7 +243,7 @@ JSON Schema supports: `string`, `number`, `integer`, `object`, `array`, `boolean
 
 ## Additional configurations
 
-### tool\_choice
+### tool_choice
 
 The [`tool_choice`](/api-reference/post-chatcompletions) parameter controls how the model uses tools:
 

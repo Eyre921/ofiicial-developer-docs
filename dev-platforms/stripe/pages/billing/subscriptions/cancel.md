@@ -75,11 +75,13 @@ As a result, adding a new phase to a schedule that’s currently in its last pha
 
 ### Configure automatic cancellation after a dispute 
 
-> #### Limited support
-> 
-> This feature supports only credit and debit card payments disputed for the full amount. Automatic cancellation after a dispute doesn’t work with [test clocks](https://docs.stripe.com/billing/testing.md#simulate-subscriptions).
-
 When a customer [disputes](https://docs.stripe.com/disputes.md) a charge for a subscription, the subscription continues to cycle, which can create more disputed charges. You can change this behavior in the [Dashboard](https://dashboard.stripe.com/settings/billing/automatic) to cancel subscriptions instead. Changes to the subscription take effect after approximately one hour.
+
+> #### Limitations
+> 
+> Automatic cancellation applies only to credit and debit card payments when the dispute amount is at least the original payment amount. It doesn’t work with [test clocks](https://docs.stripe.com/billing/testing.md#simulate-subscriptions).
+> 
+> With [Adaptive Pricing](https://docs.stripe.com/payments/currencies/localize-prices/adaptive-pricing.md), currency conversion differences can make the dispute amount less than the original payment amount, even when your customer disputes the full payment. In this case, the subscription might not cancel automatically. If it doesn’t, [cancel the subscription](https://docs.stripe.com/billing/subscriptions/cancel.md#canceling) manually.
 
 Under [Manage disputed payments](https://dashboard.stripe.com/settings/billing/automatic), select one of the following:
 

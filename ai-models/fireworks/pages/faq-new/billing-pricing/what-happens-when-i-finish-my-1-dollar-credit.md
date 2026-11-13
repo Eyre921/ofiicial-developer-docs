@@ -31,7 +31,7 @@ If you don't see your credits reflected immediately:
 
 ## Why did I receive an invoice after depositing credits?
 
-Most accounts on pre-paid billing should not see month-end overage invoices. If you received an invoice, your account may be on a post-paid contract. Contact [community\_billing@fireworks.ai](mailto:community_billing@fireworks.ai) so we can confirm your billing configuration.
+Most accounts on pre-paid billing should not see month-end overage invoices. If you received an invoice, your account may be on a post-paid contract. Contact [community_billing@fireworks.ai](mailto:community_billing@fireworks.ai) so we can confirm your billing configuration.
 
 ## What happens when I finish my \$1 credit?
 
@@ -50,7 +50,7 @@ When you finish your \$1 credit, the following occurs:
 
 ## Where's my receipt for purchased credits?
 
-Receipts for purchased credits are sent via Stripe upon purchase. Check your email for receipts from Stripe (not Fireworks). If you can't find your receipt, contact [community\_billing@fireworks.ai](mailto:community_billing@fireworks.ai).
+Receipts for purchased credits are sent via Stripe upon purchase. Check your email for receipts from Stripe (not Fireworks). If you can't find your receipt, contact [community_billing@fireworks.ai](mailto:community_billing@fireworks.ai).
 
 > [!NOTE]
 >
