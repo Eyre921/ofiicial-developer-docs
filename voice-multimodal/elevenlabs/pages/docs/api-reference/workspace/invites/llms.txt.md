@@ -13,13 +13,12 @@ path: docs/api-reference/workspace/invites/llms.txt
 
 ## API Docs
 
-- Invites [Invite user](https://elevenlabs.io/docs/api-reference/workspace/invites/create.md)
-- Invites [Invite Multiple Users](https://elevenlabs.io/docs/api-reference/workspace/invites/create-batch.md)
-- Invites [Delete invite](https://elevenlabs.io/docs/api-reference/workspace/invites/delete.md)
+- [Invite user](https://elevenlabs.io/docs/api-reference/workspace/invites/create.md): Invites
+- [Invite Multiple Users](https://elevenlabs.io/docs/api-reference/workspace/invites/create-batch.md): Invites
+- [Delete invite](https://elevenlabs.io/docs/api-reference/workspace/invites/delete.md): Invites
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

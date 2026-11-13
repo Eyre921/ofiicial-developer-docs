@@ -41276,7 +41276,7 @@ Redeploy the function, refresh the ChatGPT connector or start a new chat, then a
 
 Long-running serverless functions on your Neon branch, next to your data.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-12
 
 Host APIs, agents, and webhooks at an HTTP URL, with no servers to manage, running on your Neon branch right next to your Postgres data.
 
@@ -41337,7 +41337,7 @@ export default async function handler(request: Request) {
 }
 ```
 
-A [Hono](https://hono.dev) app exports the object shape, so `export default app` works directly. Hono is the recommended framework.
+A [Hono](https://hono.dev) app exports the object shape, so `export default app` works directly. Hono is the recommended framework. Other frameworks with a built-in `fetch` method work the same way: see [Run an h3 app on Neon Functions](https://neon.com/guides/h3-neon-functions).
 
 ## When to use Neon Functions
 
@@ -83484,13 +83484,13 @@ When you reach your root branch allowance, you can't create another schema-only 
 
 > Summary: Neon branching lets you create an instant copy-on-write clone of your production database to safely run destructive or schema-altering queries before they touch live data. Use this page when you need to test a DELETE, UPDATE, or DDL statement against real production data without risk of data loss. The guide covers creating a test branch via the Neon Console, CLI, or API; running queries in the SQL Editor; and deleting the branch when done.
 
-# Branching — Testing queries
+# Test queries on a branch
 
 Create a Neon branch to test queries before running them in production
 
 Last updated: 2026-10-09
 
-Complex queries that modify data or alter schemas have the potential to be destructive. It is advisable to test these types of queries before running them in production. On other database systems, testing potentially destructive queries can be time and resource intensive. For example, testing may involve setting up a separate database instance and replicating data. With Neon, you can instantly create a database branch with a full copy-on-write clone of your production data in just a few clicks. When you finish testing, you can remove the branch just as easily.
+Queries that modify data or alter schemas can be destructive, so test them before you run them in production. On other database systems, testing takes time and resources, such as a separate database instance with replicated data. With Neon, you create a branch with a copy-on-write clone of your production data. When you finish, you delete the branch just as easily.
 
 **Tip: working with sensitive data?**
 
@@ -83502,7 +83502,7 @@ This guide walks you through creating a branch of your production data, testing 
 2. [Test your query](https://neon.com/docs/guides/branching-test-queries#test-your-query)
 3. [Delete the test branch](https://neon.com/docs/guides/branching-test-queries#delete-the-test-branch)
 
-For the purpose of this guide, let's assume you have a database in Neon with the following table and data:
+This guide assumes a database with the following table and data:
 
 ```sql
 CREATE TABLE Post (
@@ -83571,7 +83571,7 @@ DELETE FROM Post
 WHERE author_name = 'Alice' AND date_published < '2020-01-01';
 ```
 
-Next, inspect the data to ensure the intended records were deleted, while others remained unaffected. This query allows you to quickly see if the number of records matches your expectations:
+Next, check that the query deleted only the intended records. This query returns the row count:
 
 ```sql
 SELECT COUNT(*) FROM Post;
@@ -83593,7 +83593,7 @@ You can also delete a branch using the [Neon CLI](https://neon.com/docs/cli/bran
 **CLI**
 
 ```bash
-neon branches delete my_test_branch
+neon branches delete my_test_branch --project-id <project-id>
 ```
 
 **API**
@@ -136261,7 +136261,7 @@ You can find the connection details for your database by clicking the **Connect*
 
 # Postgres version support
 
-Last updated: 2026-10-09
+Last updated: 2026-11-13
 
 This topic outlines [PostgreSQL version support on Neon](https://neon.com/docs/postgresql/postgres-version-support#postgresql-version-support-on-neon).
 
@@ -136322,6 +136322,7 @@ The table below shows when recent Postgres releases became available on Neon. Ea
 
 | Postgres release date | Versions in the release                                                                                                                                                                                                                                                                   | First available on Neon | Time to availability |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- | -------------------- |
+| 2026-11-12            | [18.7](https://www.postgresql.org/docs/release/18.7/), [17.12](https://www.postgresql.org/docs/release/17.12/), [16.16](https://www.postgresql.org/docs/release/16.16/), [15.20](https://www.postgresql.org/docs/release/15.20/), [14.25](https://www.postgresql.org/docs/release/14.25/) | 2026-11-12              | Under 30 minutes     |
 | 2026-08-13            | [18.6](https://www.postgresql.org/docs/release/18.6/), [17.11](https://www.postgresql.org/docs/release/17.11/), [16.15](https://www.postgresql.org/docs/release/16.15/), [15.19](https://www.postgresql.org/docs/release/15.19/), [14.24](https://www.postgresql.org/docs/release/14.24/) | 2026-08-18              | 5 days               |
 | 2026-05-14            | [18.4](https://www.postgresql.org/docs/release/18.4/), [17.10](https://www.postgresql.org/docs/release/17.10/), [16.14](https://www.postgresql.org/docs/release/16.14/), [15.18](https://www.postgresql.org/docs/release/15.18/), [14.23](https://www.postgresql.org/docs/release/14.23/) | 2026-05-19              | 5 days               |
 | 2026-02-12            | [18.2](https://www.postgresql.org/docs/release/18.2/), [17.8](https://www.postgresql.org/docs/release/17.8/), [16.12](https://www.postgresql.org/docs/release/16.12/), [15.16](https://www.postgresql.org/docs/release/15.16/), [14.21](https://www.postgresql.org/docs/release/14.21/)   | 2026-02-13              | 1 day                |
@@ -136329,7 +136330,7 @@ The table below shows when recent Postgres releases became available on Neon. Ea
 
 The **First available on Neon** date marks when a release first became available to run, not the point at which every compute is running it; each compute picks it up on the next restart, as described above.
 
-As of August 2026, Neon runs the latest community minor release for every supported major version: 18.6, 17.11, 16.15, 15.19, and 14.24. For the current version list, see [Compatibility](https://neon.com/docs/reference/compatibility).
+As of November 2026, Neon runs the latest community minor release for every supported major version: 18.7, 17.12, 16.16, 15.20, and 14.25. For the current version list, see [Compatibility](https://neon.com/docs/reference/compatibility).
 
 #### Manual actions after minor release upgrades
 

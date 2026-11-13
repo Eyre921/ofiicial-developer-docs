@@ -432,7 +432,7 @@ Example expressions with fixed inputs:
 
 `prop("Name")` looks up a property by its current name. The saved formula refers to its ID, so a later rename does not break that reference.
 
-An expression that cannot be parsed or checked returns [validation\_error](/reference/status-codes#error-codes). This includes references to properties that do not exist.
+An expression that cannot be parsed or checked returns [validation_error](/reference/status-codes#error-codes). This includes references to properties that do not exist.
 
 Schema responses normally use the same `prop("Name")` syntax as requests. If an expression cannot be represented that way, the response uses `{{notion:block_property:...}}` references. Those references are also valid in requests.
 

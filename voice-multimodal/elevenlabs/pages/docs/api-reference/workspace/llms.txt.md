@@ -13,20 +13,19 @@ path: docs/api-reference/workspace/llms.txt
 
 ## API Docs
 
-- Settings [Get settings](https://elevenlabs.io/docs/api-reference/workspace/get.md)
-- Settings [Update settings](https://elevenlabs.io/docs/api-reference/workspace/update.md)
-- Secrets [Get secrets](https://elevenlabs.io/docs/api-reference/workspace/secrets/list.md)
-- Secrets [Create secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/create.md)
-- Secrets [Get secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/get.md)
-- Secrets [Update secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/update.md)
-- Secrets [Delete secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/delete.md)
-- Secrets [Get secret dependencies](https://elevenlabs.io/docs/api-reference/workspace/secrets/get-dependencies.md)
-- Dashboard [Get dashboard settings](https://elevenlabs.io/docs/api-reference/workspace/dashboard/get.md)
-- Dashboard [Update Convai Dashboard Settings](https://elevenlabs.io/docs/api-reference/workspace/dashboard/update.md)
+- [Get settings](https://elevenlabs.io/docs/api-reference/workspace/get.md): Settings
+- [Update settings](https://elevenlabs.io/docs/api-reference/workspace/update.md): Settings
+- [Get secrets](https://elevenlabs.io/docs/api-reference/workspace/secrets/list.md): Secrets
+- [Create secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/create.md): Secrets
+- [Get secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/get.md): Secrets
+- [Update secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/update.md): Secrets
+- [Delete secret](https://elevenlabs.io/docs/api-reference/workspace/secrets/delete.md): Secrets
+- [Get secret dependencies](https://elevenlabs.io/docs/api-reference/workspace/secrets/get-dependencies.md): Secrets
+- [Get dashboard settings](https://elevenlabs.io/docs/api-reference/workspace/dashboard/get.md): Dashboard
+- [Update Convai Dashboard Settings](https://elevenlabs.io/docs/api-reference/workspace/dashboard/update.md): Dashboard
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

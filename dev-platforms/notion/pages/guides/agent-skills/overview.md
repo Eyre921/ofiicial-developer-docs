@@ -81,7 +81,7 @@ The first result is a tagged plugin holding every skill tagged **Engineering**. 
 
 &#x20;
 
-**2. Compare version\_id values**
+**2. Compare version_id values**
 
 Compare each plugin's `version_id` against the value you stored the last time
 you downloaded it. Equal values mean the plugin has not changed and you can

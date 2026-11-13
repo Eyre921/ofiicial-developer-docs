@@ -15,7 +15,7 @@ Create a recurring backup schedule for a serverless or BYOC index. Backups are c
 
 ### Path parameters
 
-**index\_name** `string` *required*
+**index_name** `string` *required*
 
 The name of the index to create a backup schedule for.
 
@@ -45,7 +45,7 @@ The retention policy for backups created by this schedule.
 
 **retention properties**
 
-**expire\_after\_days** `integer` *required*
+**expire_after_days** `integer` *required*
 
 The number of days after which backups created by this schedule are automatically deleted.
 

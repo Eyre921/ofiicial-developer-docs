@@ -50,7 +50,7 @@ Create a customer object to represent the person purchasing your product.
 ```curl
 curl https://api.stripe.com/v1/customers \
   -u "<<YOUR_SECRET_KEY>>:" \
-  --data-urlencode "email=${env:userEmail}" \
+  --data-urlencode "email=support@example.com" \
   -d "description=Customer to Invoice"
 ```
 
@@ -67,7 +67,7 @@ You can also configure Stripe to immediately pay the invoice using the customer�
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  --data-urlencode "customer=${node.set-up.create-customer.create-customer-request:id}" \
+  --data-urlencode "customer={{CUSTOMER_ID}}" \
   -d collection_method=send_invoice \
   -d days_until_due=30
 ```
@@ -79,9 +79,9 @@ Create and attach an invoice item to represent what the customer is purchasing. 
 ```curl
 curl https://api.stripe.com/v1/invoiceitems \
   -u "<<YOUR_SECRET_KEY>>:" \
-  --data-urlencode "customer=${node.set-up.create-customer.create-customer-request:id}" \
-  --data-urlencode "pricing[price]=${node.set-up.create-product.create-product-request:default_price}" \
-  --data-urlencode "invoice=${node.create-invoice.create-invoice.create-invoice-request:id}"
+  --data-urlencode "customer={{CUSTOMER_ID}}" \
+  --data-urlencode "pricing[price]={{PRODUCT_ID}}" \
+  --data-urlencode "invoice={{INVOICE_ID}}"
 ```
 
 Send the invoice to the customer’s email address. Stripe [finalizes](https://docs.stripe.com/invoicing/integration/workflow-transitions.md#finalized) immediately after you send it. You can only collect payment on finalized invoices. Many jurisdictions consider a finalized invoice a legal document and limit what you can change on. Learn more about [finalized invoice restrictions](https://docs.stripe.com/invoicing/integration/workflow-transitions.md#not-editable-status).
@@ -89,7 +89,7 @@ Send the invoice to the customer’s email address. Stripe [finalizes](https://d
 ### Send the invoice
 
 ```curl
-curl -X POST https://api.stripe.com/v1/invoices/${node.create-invoice.create-invoice.create-invoice-request:id}/send \
+curl -X POST https://api.stripe.com/v1/invoices/{{INVOICE_ID}}/send \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

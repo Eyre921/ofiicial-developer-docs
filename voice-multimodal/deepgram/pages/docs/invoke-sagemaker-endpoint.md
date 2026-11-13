@@ -19,7 +19,7 @@ Once your endpoint is deployed and in service, you invoke it to transcribe audio
 
 > **Note**
 >
-> **Passing Deepgram parameters.** For synchronous invocations, the Deepgram model and feature parameters are passed in the `CustomAttributes` field (the `X-Amzn-SageMaker-Custom-Attributes` header) as `v1/listen?model=...&language=...`. For streaming, the same values are split across `ModelInvocationPath` (`v1/listen`) and `ModelQueryString`. In all cases an API path such as `v1/listen` is required — without it the container returns a 404. The examples on this page use `v1/listen` (speech-to-text), but other routes are available (for example, `v1/speak` for text-to-speech).
+> **Passing Deepgram parameters.** For synchronous invocations, the Deepgram model and feature parameters are passed in the `CustomAttributes` field (the `X-Amzn-SageMaker-Custom-Attributes` header) as `v1/listen?model=...&language=...`. For streaming, the same values are split across `ModelInvocationPath` (`v1/listen`) and `ModelQueryString`. AWS limits `ModelQueryString` to 2048 characters; see [Troubleshooting](/docs/troubleshooting-sagemaker#endpoint-is-inservice-but-every-request-returns-400) if a long query, such as a large keyterm list, fails or hangs. In all cases an API path such as `v1/listen` is required — without it the container returns a 404. The examples on this page use `v1/listen` (speech-to-text), but other routes are available (for example, `v1/speak` for text-to-speech).
 
 > **Tip**
 >

@@ -325,7 +325,7 @@ curl -X POST "https://articles-abc123.svc.us-east-1.pinecone.io/namespaces/__def
   }'
 ```
 
-### Cross-field boolean query (query\_string)
+### Cross-field boolean query (query_string)
 
 ```bash theme={null}
 curl -X POST "https://articles-abc123.svc.us-east-1.pinecone.io/namespaces/__default__/documents/search" \

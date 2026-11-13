@@ -10,7 +10,7 @@ Dedicated read nodes support two optional query-time parameters, `scan_factor` a
 
 These parameters only take effect on dedicated read nodes indexes with dense vectors. On-demand indexes accept the parameters but ignore them. On indexes that store only sparse vectors, specifying either parameter returns an error. Using these parameters requires API version `2025-10` or later.
 
-## How scan\_factor and max\_candidates work
+## How scan_factor and max_candidates work
 
 Dense vector search on dedicated read nodes uses a two-stage pipeline:
 
@@ -46,7 +46,7 @@ Lower `scan_factor` or `max_candidates` values reduce the work done per query, w
 
 Starting from the default (4.0), lowering `scan_factor` reduces the fraction of IVF partitions scanned:
 
-| scan\_factor | Approximate recall (p50) | Relative throughput |
+| scan_factor | Approximate recall (p50) | Relative throughput |
 | :- | :- | :- |
 | 4.0 (default) | \~96% | 1x (baseline) |
 | 2.0 | \~94% | \~1.5x |

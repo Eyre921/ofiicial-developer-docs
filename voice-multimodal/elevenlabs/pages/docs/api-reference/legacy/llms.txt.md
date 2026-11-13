@@ -13,21 +13,20 @@ path: docs/api-reference/legacy/llms.txt
 
 ## API Docs
 
-- Voices [List voices](https://elevenlabs.io/docs/api-reference/legacy/voices/get-all.md)
-- Voices [Voice design](https://elevenlabs.io/docs/api-reference/legacy/voices/create-previews.md)
-- Knowledge Base [Add To Knowledge Base](https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md)
-- Dubbing [Dub a video or an audio file](https://elevenlabs.io/docs/api-reference/legacy/dubbing/create.md)
-- Dubbing [List dubs](https://elevenlabs.io/docs/api-reference/legacy/dubbing/list.md)
-- Dubbing [Get dubbing](https://elevenlabs.io/docs/api-reference/legacy/dubbing/get.md)
-- Dubbing [Delete dubbing](https://elevenlabs.io/docs/api-reference/legacy/dubbing/delete.md)
-- Dubbing [Get dubbed file](https://elevenlabs.io/docs/api-reference/legacy/dubbing/audio/get.md)
-- Dubbing [Retrieve a transcript](https://elevenlabs.io/docs/api-reference/legacy/dubbing/transcripts/get.md)
-- Dubbing [Get dubbed transcript](https://elevenlabs.io/docs/api-reference/legacy/dubbing/get-transcript-for-dub.md)
-- Usage [Get character metrics usage](https://elevenlabs.io/docs/api-reference/legacy/usage/get.md)
+- [List voices](https://elevenlabs.io/docs/api-reference/legacy/voices/get-all.md): Voices
+- [Voice design](https://elevenlabs.io/docs/api-reference/legacy/voices/create-previews.md): Voices
+- [Add To Knowledge Base](https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md): Knowledge Base
+- [Dub a video or an audio file](https://elevenlabs.io/docs/api-reference/legacy/dubbing/create.md): Dubbing
+- [List dubs](https://elevenlabs.io/docs/api-reference/legacy/dubbing/list.md): Dubbing
+- [Get dubbing](https://elevenlabs.io/docs/api-reference/legacy/dubbing/get.md): Dubbing
+- [Delete dubbing](https://elevenlabs.io/docs/api-reference/legacy/dubbing/delete.md): Dubbing
+- [Get dubbed file](https://elevenlabs.io/docs/api-reference/legacy/dubbing/audio/get.md): Dubbing
+- [Retrieve a transcript](https://elevenlabs.io/docs/api-reference/legacy/dubbing/transcripts/get.md): Dubbing
+- [Get dubbed transcript](https://elevenlabs.io/docs/api-reference/legacy/dubbing/get-transcript-for-dub.md): Dubbing
+- [Get character metrics usage](https://elevenlabs.io/docs/api-reference/legacy/usage/get.md): Usage
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

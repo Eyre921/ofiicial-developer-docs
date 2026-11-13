@@ -775,9 +775,9 @@ try {
 > * Store the state securely and validate on callback
 > * Expire after \~10 minutes
 
-> [accordion] Invalid code\_verifier
+> [accordion] Invalid code_verifier
 >
-> * Use the exact verifier that produced the code\_challenge
+> * Use the exact verifier that produced the code_challenge
 > * Ensure base64url encoding (no +, /, =)
 
 > [accordion] Discovery fails
@@ -794,7 +794,7 @@ try {
 >
 > * Do token exchange server-side; browser should only handle redirects
 
-> [accordion] Token refresh fails with invalid\_grant
+> [accordion] Token refresh fails with invalid_grant
 >
 > When refresh returns `{ "error": "invalid_grant" }`, the refresh token is
 > invalid, expired, revoked, or superseded by rotation. Do not retry refresh;

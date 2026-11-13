@@ -15,7 +15,7 @@ List backups created by a specific schedule. When a backup's `status` is `Schedu
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule.
 

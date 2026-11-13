@@ -350,7 +350,7 @@ You can view and update your connection’s capabilities in the **Capabilities**
 
 ### ⏳ 3. Understand aggregated event timing
 
-Not all webhook events are sent immediately. Some, like page.content\_updated, are aggregated to reduce noise from frequent edits (e.g., typing, formatting, moving blocks). This is normal and helps group multiple rapid changes into a single webhook event.
+Not all webhook events are sent immediately. Some, like page.content_updated, are aggregated to reduce noise from frequent edits (e.g., typing, formatting, moving blocks). This is normal and helps group multiple rapid changes into a single webhook event.
 
 See [Event Delivery ](/reference/webhooks-events-delivery#event-delivery)for a deeper explanation.
 

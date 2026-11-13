@@ -6,11 +6,11 @@ path: guides/pg-pinecone/semantic-search
 
 Search a Postgres table by meaning in SQL, with a hosted embedding model or your own vectors, using a Pinecone index that pg_pinecone keeps in sync.
 
-pg\_pinecone can rank a Postgres table's rows by meaning with [semantic search](/guides/search/semantic-search), using a Pinecone index it keeps in sync with the table. Pinecone can embed one of the table's text columns with a hosted model, or you can store your own vectors in a vector column.
+pg_pinecone can rank a Postgres table's rows by meaning with [semantic search](/guides/search/semantic-search), using a Pinecone index it keeps in sync with the table. Pinecone can embed one of the table's text columns with a hosted model, or you can store your own vectors in a vector column.
 
 ## Before you begin
 
-* [pg\_pinecone installed](/guides/pg-pinecone/quickstart).
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
 * A table with a single-column primary key, which becomes each document's ID. You must own the table.
@@ -72,11 +72,11 @@ The two notes about search rank first, though neither contains the words "findin
 
 Keep these points in mind:
 
-* **Model settings**: pg\_pinecone passes the `embed` object to Pinecone. `model` is required, and you can also set `dimension`, `metric`, `processing_location`, `write_parameters`, and `read_parameters`. Pinecone fills in defaults for anything you leave out.
+* **Model settings**: pg_pinecone passes the `embed` object to Pinecone. `model` is required, and you can also set `dimension`, `metric`, `processing_location`, `write_parameters`, and `read_parameters`. Pinecone fills in defaults for anything you leave out.
 * **Keyword and semantic search on one column**: The column keeps its full-text index, so `mode => 'text'` still ranks it with BM25. Semantic and BM25 scores use different scales. To rank by both, run two searches and merge the results by rank.
 * **Filters**: `mode => 'embed'` works with `filter` and `must`, so you can rank by meaning within rows that match a metadata value or required text. For examples, see the [full-text search guide](/guides/pg-pinecone/full-text-search#filter-results).
 * **One embedded column**: Only one text column can set `embed`, and you can't combine it with `vector_column`.
-* **Empty text**: A row whose `embed` column is `NULL` or blank isn't indexed. If Pinecone already has a copy of that row, pg\_pinecone deletes it.
+* **Empty text**: A row whose `embed` column is `NULL` or blank isn't indexed. If Pinecone already has a copy of that row, pg_pinecone deletes it.
 
 ## Combine text and vector search
 

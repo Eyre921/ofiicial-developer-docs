@@ -10,7 +10,7 @@ This guide shows you how to migrate a vector-search workload from pgvector to Pi
 
 > [!TIP]
 >
-> To keep your data in Postgres and search it with Pinecone instead, see [pg\_pinecone](/guides/pg-pinecone/overview), an open-source Postgres extension.
+> To keep your data in Postgres and search it with Pinecone instead, see [pg_pinecone](/guides/pg-pinecone/overview), an open-source Postgres extension.
 
 ## Before you migrate
 

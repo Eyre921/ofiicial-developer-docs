@@ -13,27 +13,26 @@ path: docs/api-reference/dubbing/llms.txt
 
 ## API Docs
 
-- Dubbing [Create project](https://elevenlabs.io/docs/api-reference/dubbing/create-project.md)
-- Dubbing [List projects](https://elevenlabs.io/docs/api-reference/dubbing/list-projects.md)
-- Dubbing [Get project](https://elevenlabs.io/docs/api-reference/dubbing/get-project.md)
-- Dubbing [Delete project](https://elevenlabs.io/docs/api-reference/dubbing/delete-project.md)
-- Language targets [Create language target](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/create-language-target.md)
-- Language targets [List language targets](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/list-language-targets.md)
-- Language targets [Get language target](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/get-language-target.md)
-- Language targets [Delete language target](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/delete-language-target.md)
-- Source transcript [Get source transcript](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/get-source-transcript.md)
-- Source transcript [Add source segment](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/add-source-segment.md)
-- Source transcript [Update source segment](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/update-source-segment.md)
-- Source transcript [Batch update source segments](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/batch-update-source-segments.md)
-- Source transcript [Delete source segment](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/delete-source-segment.md)
-- Target transcript [Get target transcript](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/get-target-transcript.md)
-- Target transcript [Update target segment](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/update-target-segment.md)
-- Target transcript [Batch update target segments](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/batch-update-target-segments.md)
-- Target transcript [Regenerate target](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/regenerate-target.md)
+- [Create project](https://elevenlabs.io/docs/api-reference/dubbing/create-project.md): Dubbing
+- [List projects](https://elevenlabs.io/docs/api-reference/dubbing/list-projects.md): Dubbing
+- [Get project](https://elevenlabs.io/docs/api-reference/dubbing/get-project.md): Dubbing
+- [Delete project](https://elevenlabs.io/docs/api-reference/dubbing/delete-project.md): Dubbing
+- [Create language target](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/create-language-target.md): Language targets
+- [List language targets](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/list-language-targets.md): Language targets
+- [Get language target](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/get-language-target.md): Language targets
+- [Delete language target](https://elevenlabs.io/docs/api-reference/dubbing/language-targets/delete-language-target.md): Language targets
+- [Get source transcript](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/get-source-transcript.md): Source transcript
+- [Add source segment](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/add-source-segment.md): Source transcript
+- [Update source segment](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/update-source-segment.md): Source transcript
+- [Batch update source segments](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/batch-update-source-segments.md): Source transcript
+- [Delete source segment](https://elevenlabs.io/docs/api-reference/dubbing/source-transcript/delete-source-segment.md): Source transcript
+- [Get target transcript](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/get-target-transcript.md): Target transcript
+- [Update target segment](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/update-target-segment.md): Target transcript
+- [Batch update target segments](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/batch-update-target-segments.md): Target transcript
+- [Regenerate target](https://elevenlabs.io/docs/api-reference/dubbing/target-transcript/regenerate-target.md): Target transcript
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

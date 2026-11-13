@@ -70,7 +70,7 @@ See [networking](/self-hosting/security/networking) documentation for more detai
 
 ## Optimized for performance, reliability, and uptime
 
-Langfuse OSS and Enterprise use the same codebase as Langfuse Cloud. Langfuse processes **90B+ observations per month** and is trusted by **21 of the Fortune 50**. Its Docker images have been pulled **38M+ times**.
+Langfuse OSS and Enterprise use the same codebase as Langfuse Cloud. Langfuse processes **110B+ observations per month** and is trusted by **21 of the Fortune 50**. Its Docker images have been pulled **38M+ times**.
 
 <details>
 <summary>How Langfuse is optimized for scale and reliability</summary>

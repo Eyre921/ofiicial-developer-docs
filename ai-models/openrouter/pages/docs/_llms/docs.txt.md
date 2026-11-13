@@ -1,5 +1,5 @@
 ---
-title: "Docs (160 pages)"
+title: "Docs (159 pages)"
 source: https://openrouter.ai/docs/_llms/docs.txt
 path: docs/_llms/docs.txt
 ---
@@ -172,7 +172,6 @@ path: docs/_llms/docs.txt
 ### Ori
 
 - [Ori](https://openrouter.ai/docs/guides/ori/overview.md): Ori is OpenRouter's family of tools for putting agents to work with any model, in your terminal, in Slack, and on your desktop
-- [Ori Eval](https://openrouter.ai/docs/guides/ori/eval.md): Find the best model for your project by testing your agent on real prompts, with one harness and one model for each run
 - [File Writing](https://openrouter.ai/docs/guides/ori/files.md): Find the files and directories that Ori creates during a run
 - [Ori Configuration](https://openrouter.ai/docs/guides/ori/configuration.md): How to configure Ori, from a single shell to a managed fleet, plus every setting it reads
 - [Vault Secrets for Interns](https://openrouter.ai/docs/guides/ori/vault.md): Store host-bound secrets for a workspace or an intern with the Vault API

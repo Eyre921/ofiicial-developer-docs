@@ -6,11 +6,11 @@ path: guides/pg-pinecone/full-text-search
 
 Search a Postgres table with BM25 keyword search and filters in SQL, using a Pinecone index that pg_pinecone keeps in sync.
 
-pg\_pinecone can keep a Pinecone index for [full-text search](/guides/search/full-text-search) in sync with a Postgres table's text columns. You declare the searchable columns once and search them with SQL, and Postgres stays the system of record.
+pg_pinecone can keep a Pinecone index for [full-text search](/guides/search/full-text-search) in sync with a Postgres table's text columns. You declare the searchable columns once and search them with SQL, and Postgres stays the system of record.
 
 ## Before you begin
 
-* [pg\_pinecone installed](/guides/pg-pinecone/quickstart).
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
 * A table with a single-column primary key, which becomes each document's ID. You must own the table.
@@ -59,7 +59,7 @@ SELECT pinecone.track_docs(
 );
 ```
 
-This creates a Pinecone index and queues the table's existing rows to be copied to it. Only the declared columns leave Postgres. From then on, pg\_pinecone copies every committed insert, update, and delete in the background.
+This creates a Pinecone index and queues the table's existing rows to be copied to it. Only the declared columns leave Postgres. From then on, pg_pinecone copies every committed insert, update, and delete in the background.
 
 A list of column names uses English text analysis with stemming and stop words. To set options per column, pass an object instead. For example, on a table with a `sku` column, turn off stemming and stop words so identifiers match exactly:
 
@@ -146,7 +146,7 @@ FROM pinecone.search_docs('tickets', 'invoice pdf', partition => 42, k => 10) s;
 
 A search covers exactly one tenant, and BM25 scores are calculated within that tenant's documents. A search without `partition` returns an error. With [`engine => 'local'`](#search-without-pinecone), `partition` becomes a condition on the column instead. `pinecone.delete_partition('tickets', 42)` deletes one tenant's documents from Pinecone, and its rows stay in the table.
 
-The partition column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg\_pinecone warns when a table has more than 1,000 distinct values.
+The partition column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg_pinecone warns when a table has more than 1,000 distinct values.
 
 ## Highlight matches
 
@@ -181,9 +181,9 @@ The local engine reflects writes immediately. It also works on tables you haven'
 
 ## Manage a tracked table
 
-Once a table is tracked, pg\_pinecone keeps its Pinecone index in sync on its own. These functions handle the cases that need your attention:
+Once a table is tracked, pg_pinecone keeps its Pinecone index in sync on its own. These functions handle the cases that need your attention:
 
-* **Retry rejected documents**: If Pinecone rejects a document, pg\_pinecone sets it aside without stopping the rest of the table. `pinecone.failed_docs('articles')` lists rejected documents and why, and `pinecone.retry_failed_docs('articles')` queues them again.
+* **Retry rejected documents**: If Pinecone rejects a document, pg_pinecone sets it aside without stopping the rest of the table. `pinecone.failed_docs('articles')` lists rejected documents and why, and `pinecone.retry_failed_docs('articles')` queues them again.
 * **Re-send every row**: `pinecone.backfill_docs('articles', clear => true)` copies the whole table again, for example after restoring a database backup.
 * **Change a declared column**: Stop tracking the table before you drop, rename, or change the type of a declared column.
 * **Stop tracking**: `pinecone.untrack_docs('articles', drop_index => true)` stops syncing and deletes the Pinecone index.

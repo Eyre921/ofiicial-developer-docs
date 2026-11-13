@@ -15,7 +15,7 @@ Update a backup schedule. Send only the fields you want to change. All body fiel
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule to update.
 
@@ -35,7 +35,7 @@ The retention policy for backups created by this schedule.
 
 **retention properties**
 
-**expire\_after\_days** `integer`
+**expire_after_days** `integer`
 
 The number of days after which backups created by this schedule are automatically deleted.
 

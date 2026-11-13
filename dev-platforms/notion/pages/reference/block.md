@@ -68,7 +68,7 @@ Use the [Retrieve block children](/reference/get-block-children) endpoint to lis
 | `object`\* | `string` | Always `"block"`. | `"block"` |
 | `id`\* | `string` (UUIDv4) | Identifier for the block. | `"7af38973-3787-41b3-bd75-0ed3a1edfac9"` |
 | `parent` | `object` | Information about the block's parent. See [Parent object](/reference/parent-object). | `{ "type": "block_id", "block_id": "7d50a184-5bbe-4d90-8f29-6bec57ed817b" }` |
-| `type` | `string` (enum) | Type of block. Possible values are:  - [`"bookmark"`](/reference/block#bookmark) - [`"breadcrumb"`](/reference/block#breadcrumb) - [`"bulleted_list_item"`](/reference/block#bulleted-list-item) - [`"callout"`](/reference/block#callout) - [`"child_database"`](/reference/block#child-database) - [`"child_page"`](/reference/block#child-page) - [`"column"`](/reference/block#column-list-and-column) - [`"column_list"`](/reference/block#column-list-and-column) - [`"divider"`](/reference/block#divider) - [`"embed"`](/reference/block#embed) - [`"equation"`](/reference/block#equation) - [`"file"`](/reference/block#file) - [`"heading_1"`](/reference/block#headings) - [`"heading_2"`](/reference/block#headings) - [`"heading_3"`](/reference/block#headings) - [`"heading_4"`](/reference/block#headings) - [`"image"`](/reference/block#image) - [`"link_preview"`](/reference/block#link-preview) - [`"numbered_list_item"`](/reference/block#numbered-list-item) - [`"paragraph"`](/reference/block#paragraph) - [`"pdf"`](/reference/block#pdf) - [`"quote"`](/reference/block#quote) - [`"synced_block"`](/reference/block#synced-block) - [`"table"`](/reference/block#table) - [`"table_of_contents"`](/reference/block#table-of-contents) - [`"table_row"`](/reference/block#table-rows) - [`"template"`](/reference/block#template) - [`"to_do"`](/reference/block#to-do) - [`"toggle"`](/reference/block#toggle-blocks) - [`"transcription"`](/reference/block#transcription) - [`"unsupported"`](/reference/block#unsupported) - [`"video"`](/reference/block#video) | `"paragraph"` |
+| `type` | `string` (enum) | Type of block. Possible values are: - [`"bookmark"`](/reference/block#bookmark) - [`"breadcrumb"`](/reference/block#breadcrumb) - [`"bulleted_list_item"`](/reference/block#bulleted-list-item) - [`"callout"`](/reference/block#callout) - [`"child_database"`](/reference/block#child-database) - [`"child_page"`](/reference/block#child-page) - [`"column"`](/reference/block#column-list-and-column) - [`"column_list"`](/reference/block#column-list-and-column) - [`"divider"`](/reference/block#divider) - [`"embed"`](/reference/block#embed) - [`"equation"`](/reference/block#equation) - [`"file"`](/reference/block#file) - [`"heading_1"`](/reference/block#headings) - [`"heading_2"`](/reference/block#headings) - [`"heading_3"`](/reference/block#headings) - [`"heading_4"`](/reference/block#headings) - [`"image"`](/reference/block#image) - [`"link_preview"`](/reference/block#link-preview) - [`"numbered_list_item"`](/reference/block#numbered-list-item) - [`"paragraph"`](/reference/block#paragraph) - [`"pdf"`](/reference/block#pdf) - [`"quote"`](/reference/block#quote) - [`"synced_block"`](/reference/block#synced-block) - [`"table"`](/reference/block#table) - [`"table_of_contents"`](/reference/block#table-of-contents) - [`"table_row"`](/reference/block#table-rows) - [`"template"`](/reference/block#template) - [`"to_do"`](/reference/block#to-do) - [`"toggle"`](/reference/block#toggle-blocks) - [`"transcription"`](/reference/block#transcription) - [`"unsupported"`](/reference/block#unsupported) - [`"video"`](/reference/block#video) | `"paragraph"` |
 | `created_time` | `string` ([ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this block was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `created_by` | [Partial User](/reference/user) | User who created the block. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this block was last updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
@@ -191,7 +191,7 @@ Bulleted list item block objects contain the following information within the `b
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text in the `bulleted_list_item` block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks (if any) of the `bulleted_list_item` block. |
 
 ```json Example Bulleted list item block object theme={null}
@@ -225,7 +225,7 @@ Callout block objects contain the following information within the `callout` pro
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text in the `callout` block. |
 | `icon` | `object` | The callout's icon. Can be an [emoji](/reference/emoji-and-icon#emoji), [custom emoji](/reference/emoji-and-icon#custom-emoji), [native icon](/reference/emoji-and-icon#icon), or [file](/reference/file-object). |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 
 ```json Example Callout block object expandable theme={null}
 {
@@ -501,8 +501,8 @@ File block objects contain the following information within the `file` property:
 | Field | Type | Description |
 | :- | :- | :- |
 | `caption` | `array` of [rich text objects](/reference/rich-text) | The caption of the file block. |
-| `type` | One of:  - `"file"` - `"external"` - `"file_upload"` | Type of file. This enum value indicates which of the following three objects are populated. |
-| `file` | [Notion-hosted file object](/reference/file-object#notion-hosted-files-type-file) | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`.  Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
+| `type` | One of: - `"file"` - `"external"` - `"file_upload"` | Type of file. This enum value indicates which of the following three objects are populated. |
+| `file` | [Notion-hosted file object](/reference/file-object#notion-hosted-files-type-file) | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`. Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
 | `external` | [External file object](/reference/file-object#external-files-type-external) | An object with a `url` property, identifying a publicly accessible URL. |
 | `file_upload` | [File upload object](/reference/file-upload) | An object with the `id` of a [FileUpload](/reference/file-upload) to attach to the block. After attaching, the API response responds with a type of `file`, not `file_upload`, so your connection can access a download `url`. |
 | `name` | `string` | The name of the file, as shown in the Notion UI. Note that the UI may auto-append `.pdf` or other extensions.  When attaching a `file_upload`, the `name` parameter is not required. |
@@ -530,7 +530,7 @@ All heading block objects, `heading_1`, `heading_2`, `heading_3`, and `heading_4
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text of the heading. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `is_toggleable` | `boolean` | Whether or not the heading block is a toggle heading or not. If `true`, then the heading block toggles and can support children. If `false`, then the heading block is a static heading block. |
 
 ```json Example Heading 1 block object theme={null}
@@ -755,7 +755,7 @@ Numbered list item block objects contain the following information within the `n
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the `numbered_list_item` block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `list_start_index` | `integer` (optional) | The start index of a list, used to represent a list that doesn't start at 1.  Only present on the first item of a list. |
 | `list_format` | `string` (enum) (optional) | The type of list format. Possible values are: `"numbers"`, `"letters"`, and `"roman"`.  Only present on the first item of a list. |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks (if any) of the `numbered_list_item` block. |
@@ -786,7 +786,7 @@ Paragraph block objects contain the following information within the `paragraph`
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the paragraph block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `icon` | [emoji](/reference/emoji-and-icon#emoji), [custom emoji](/reference/emoji-and-icon#custom-emoji), [icon](/reference/emoji-and-icon#icon), or [file object](/reference/file-object) (nullable) | An optional icon for the paragraph. Can only be set when the paragraph is a direct child of a [tab](/reference/block#tab) block. |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks (if any) of the `paragraph` block. |
 
@@ -865,7 +865,7 @@ A PDF block object represents a PDF that has been embedded within a Notion page.
 | Property | Type | Description |
 | :- | :- | :- |
 | `caption` | `array` of [rich text objects](/reference/rich-text) | A caption, if provided, for the PDF block. |
-| `type` | One of:  - `"file"` - `"external"` - `"file_upload"` | A constant string representing the type of PDF. `file` indicates a Notion-hosted file, and `external` represents a third-party link. `file_upload` is only valid when providing parameters to attach a [File Upload](/reference/file-upload) to a PDF block. |
+| `type` | One of: - `"file"` - `"external"` - `"file_upload"` | A constant string representing the type of PDF. `file` indicates a Notion-hosted file, and `external` represents a third-party link. `file_upload` is only valid when providing parameters to attach a [File Upload](/reference/file-upload) to a PDF block. |
 | `external` \|`file` \|`file_upload` | [file object](/reference/file-object) | An object containing type-specific information about the PDF. |
 
 ```json JSON theme={null}
@@ -895,7 +895,7 @@ Quote block objects contain the following information within the `quote` propert
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the quote block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the quote block. |
 
 ```json Example Quote block theme={null}
@@ -965,7 +965,7 @@ Duplicate synced block objects contain the following information within the `syn
 
 | Field | Type | Description |
 | :- | :- | :- |
-| `type` | `string` (enum) | The type of the synced from object.  Possible values are:  - `"block_id"` |
+| `type` | `string` (enum) | The type of the synced from object.  Possible values are: - `"block_id"` |
 | `block_id` | `string` (UUIDv4) | An identifier for the original `synced_block`. |
 
 ```json Example Duplicate synced block object theme={null}
@@ -990,7 +990,7 @@ Table block objects are parent blocks for table row children. Table block object
 
 | Field | Type | Description |
 | :- | :- | :- |
-| `table_width` | `integer` | The number of columns in the table.  **Note that this cannot be changed using the API once a table is created.** |
+| `table_width` | `integer` | The number of columns in the table. **Note that this cannot be changed using the API once a table is created.** |
 | `has_column_header` | `boolean` | Whether the table has a column header. If `true`, then the first row in the table appears visually distinct from the other rows. |
 | `has_row_header` | `boolean` | Whether the table has a header row. If `true`, then the first column in the table appears visually distinct from the other columns. |
 
@@ -1108,7 +1108,7 @@ Table of contents block objects contain the following information within the `ta
 
 | Property | Type | Description |
 | :- | :- | :- |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 
 ```json Example Table of contents block object theme={null}
 {
@@ -1227,7 +1227,7 @@ To do block objects contain the following information within the `to_do` propert
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the To do block. |
 | `checked` | `boolean` (optional) | Whether the To do is checked. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the To do block. |
 
 ```json Example To do block object theme={null}
@@ -1259,7 +1259,7 @@ Toggle block objects contain the following information within the `toggle` prope
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the Toggle block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the Toggle block. |
 
 ```json Toggle Block theme={null}

@@ -76,11 +76,11 @@ df.head()
 
 | | title | context |
 | - | - | - |
-| 0 | University\_of\_Notre\_Dame | Architecturally, the school has a Catholic cha... |
-| 5 | University\_of\_Notre\_Dame | As at most other universities, Notre Dame's st... |
-| 10 | University\_of\_Notre\_Dame | The university is the major seat of the Congre... |
-| 15 | University\_of\_Notre\_Dame | The College of Engineering was established in ... |
-| 20 | University\_of\_Notre\_Dame | All of Notre Dame's undergraduate students are... |
+| 0 | University_of_Notre_Dame | Architecturally, the school has a Catholic cha... |
+| 5 | University_of_Notre_Dame | As at most other universities, Notre Dame's st... |
+| 10 | University_of_Notre_Dame | The university is the major seat of the Congre... |
+| 15 | University_of_Notre_Dame | The College of Engineering was established in ... |
+| 20 | University_of_Notre_Dame | All of Notre Dame's undergraduate students are... |
 
 Then convert these records into the Document format.
 

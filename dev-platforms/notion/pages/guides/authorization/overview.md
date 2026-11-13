@@ -301,7 +301,7 @@ The body of the request contains the following JSON-encoded fields:
 | :- | :- | :- | :- |
 | `"grant_type"` | `string` | Always use `"authorization_code"`. | ✅ |
 | `"code"` | `string` | The temporary authorization code received in the incoming request to the `"redirect_uri"`. | ✅ |
-| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step. | ✅/❌\*   \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
+| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step. | ✅/❌\*  \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
 
 The following is an example request to exchange the authorization code for an access token:
 

@@ -3713,7 +3713,9 @@ Update the Customer's email address
 
 `actions.updatePhoneNumber(phoneNumber: nullable string)`
 
-Use this method to update the Customer's phone number. If your integration uses the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md), the phone number is collected directly from the wallet and the value set by `updatePhoneNumber` is not used for express checkout payments.
+Updates the customer's phone number. Requires `phone_number_collection.enabled` to be `true` on the Checkout Session.
+
+If your integration uses the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md), the phone number is collected directly from the wallet and the value set by `updatePhoneNumber` isn't used for express checkout payments.
 
 - `phoneNumber`
   The Customer's phone number.
@@ -3855,6 +3857,8 @@ Learn how to [save payment methods](https://docs.stripe.com/checkout/custom-chec
 If provided, this value overrides any values previously set using [updateEmail](https://docs.stripe.com/js/custom_checkout/update_email.md).
     - `phoneNumber`
       The Customer's phone number.
+
+Requires `phone_number_collection.enabled` to be `true` on the Checkout Session.
 
 If provided, this value overrides any values previously set using [updatePhoneNumber](https://docs.stripe.com/js/custom_checkout/update_phone_number.md).
     - `billingAddress`
@@ -6844,7 +6848,9 @@ Update the Customer's email address
 
 `updatePhoneNumber(phoneNumber: nullable string)`
 
-Use this method to update the Customer's phone number. If your integration uses the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md), the phone number is collected directly from the wallet and the value set by `updatePhoneNumber` is not used for express checkout payments.
+Updates the customer's phone number. Requires `phone_number_collection.enabled` to be `true` on the Checkout Session.
+
+If your integration uses the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md), the phone number is collected directly from the wallet and the value set by `updatePhoneNumber` isn't used for express checkout payments.
 
 - `phoneNumber`
   The Customer's phone number.
@@ -6970,6 +6976,8 @@ Learn how to [save payment methods](https://docs.stripe.com/checkout/custom-chec
 If provided, this value overrides any values previously set using [updateEmail](https://docs.stripe.com/js/custom_checkout/update_email.md).
     - `phoneNumber`
       The Customer's phone number.
+
+Requires `phone_number_collection.enabled` to be `true` on the Checkout Session.
 
 If provided, this value overrides any values previously set using [updatePhoneNumber](https://docs.stripe.com/js/custom_checkout/update_phone_number.md).
     - `billingAddress`

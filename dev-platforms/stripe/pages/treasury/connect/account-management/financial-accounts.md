@@ -55,6 +55,10 @@ Your [connected account](https://docs.stripe.com/treasury/connect/account-manage
 > 
 > Storage financial accounts for US businesses are FDIC-eligible.
 
+### Savings (Private preview)
+Available in: GB
+Connected accounts in the UK can have one [savings financial account](https://docs.stripe.com/treasury/connect/savings-financial-accounts.md) that earns interest.
+
 ### Payments (Private preview)
 Available in: US
 If you’re a platform in the US using [Prebuilt embedded finance](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md), Stripe automatically creates a `payments` financial account representing the Stripe payments balance you see in your Dashboard. The funds in this financial account aren’t FDIC-eligible.

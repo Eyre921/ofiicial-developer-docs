@@ -13,11 +13,10 @@ path: docs/api-reference/text-to-sound-effects/llms.txt
 
 ## API Docs
 
-- Sound Effects [Create sound effect](https://elevenlabs.io/docs/api-reference/text-to-sound-effects/convert.md)
+- [Create sound effect](https://elevenlabs.io/docs/api-reference/text-to-sound-effects/convert.md): Sound Effects
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

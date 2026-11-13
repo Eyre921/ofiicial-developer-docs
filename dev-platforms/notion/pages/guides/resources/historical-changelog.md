@@ -1361,7 +1361,7 @@ We have added support for adding and retrieving `synced_block`, `link_to_page` a
 
 Similar to the UI, there are two versions of a `synced_block` -- the original block that was created first and doesn't yet sync with anything else, and the reference blocks that are synced to the original synced block.
 
-**Original Synced Block** To create a `synced_block`, the developer needs to create an original synced block. Developers will be able to identify the original `synced_block` because it does not "sync\_from" any other block (i.e. the `synced_from` property is set to `null`).
+**Original Synced Block** To create a `synced_block`, the developer needs to create an original synced block. Developers will be able to identify the original `synced_block` because it does not "sync_from" any other block (i.e. the `synced_from` property is set to `null`).
 
 This is an example of an "original" `synced_block`. Note that all of the blocks available to be synced in another `synced_block` are captured in the `children` property.
 
@@ -1525,7 +1525,7 @@ Columns are parent blocks for any supported block children, excluding `column`s.
 
 When initially creating a column list block via [Append block children](/reference/patch-block-children), the column list must have at least 2 columns, and those columns must have at least one child each.
 
-When fetching content for a column\_list, first fetch the the column children via [Retrieve block children](/reference/get-block-children). Then fetch the children for each column block.
+When fetching content for a column_list, first fetch the the column children via [Retrieve block children](/reference/get-block-children). Then fetch the children for each column block.
 
 Below is an example request body for appending `column_list` and nested `column` children.
 
@@ -3501,23 +3501,23 @@ The number property type in databases now supports additional currency options.
 
 The new options are:
 
-* "hong\_kong\_dollar"
-* "new\_zealand\_dollar"
+* "hong_kong_dollar"
+* "new_zealand_dollar"
 * "krona"
-* "norwegian\_krone"
-* "mexican\_peso"
+* "norwegian_krone"
+* "mexican_peso"
 * "rand"
-* "new\_taiwan\_dollar"
-* "danish\_krone"
+* "new_taiwan_dollar"
+* "danish_krone"
 * "zloty"
 * "baht"
 * "forint"
 * "koruna"
 * "shekel"
-* "chilean\_peso"
-* "philippine\_peso"
+* "chilean_peso"
+* "philippine_peso"
 * "dirham"
-* "colombian\_peso"
+* "colombian_peso"
 * "riyal"
 * "ringgit"
 * "leu"
@@ -3554,7 +3554,7 @@ Once selected, any nested pages appear in the "Manually Added" section.
 
 **July 15, 2021**
 
-### Rollup property functions now include show\_original
+### Rollup property functions now include show_original
 
 The `function` `show_original` has now been added to [rollup database property objects](/reference/property-schema-object#rollup-configuration). This fixes a bug where rollup properties were omitted if the calculation was "Show Original".
 
@@ -3854,7 +3854,7 @@ Database objects now return a [parent property](/reference/parent-object#databas
 
 ### Other Improvements and Fixes
 
-* Inline database mentions are now included in [rich\_text mention](/reference/rich-text#database-mention-type-object) responses.
+* Inline database mentions are now included in [rich_text mention](/reference/rich-text#database-mention-type-object) responses.
 * When an integration does not have access to a [page or database mention](/reference/rich-text#page-mention-type-object), we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as "Untitled" and annotations will be default).
 * When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new [select](/reference/page-property-values#select) or [multi-select](/reference/page-property-values#multi-select) properties through the create or update page endpoints without the ability to edit the database parent.
 

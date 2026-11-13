@@ -113,7 +113,7 @@ curl -s -X POST "https://api.pinecone.io/embed" \
   -d @- > embeddings.json
 ```
 
-### 2. Create an index with a dense\_vector field
+### 2. Create an index with a dense_vector field
 
 Declare a `dense_vector` field whose `dimension` matches your model's output and whose `metric` matches what the model was trained for. `llama-text-embed-v2` uses `cosine`. This schema also declares `chunk_text` with `full_text_search`, so the index stores each document's text and can rank it by keyword too. Fields you don't declare are stored as metadata.
 

@@ -717,7 +717,7 @@ Pages and blocks parented by an agent now serialize their `parent` as `{ "type":
 
 Improvements to pagination reliability for the [Query a data source](/reference/post-database-query) endpoint:
 
-* Pagination cursors now embed a session identifier, eliminating intermittent `400 validation_error` ("The start\_cursor provided is invalid") errors that could occur when multiple pagination sessions for the same query overlapped.
+* Pagination cursors now embed a session identifier, eliminating intermittent `400 validation_error` ("The start_cursor provided is invalid") errors that could occur when multiple pagination sessions for the same query overlapped.
 * The `start_cursor` parameter now accepts opaque string values in addition to UUIDs. Existing UUID-based cursors continue to work. As documented in our [versioning policy](/reference/versioning), cursors should always be treated as opaque — pass `next_cursor` values back as `start_cursor` without parsing or validating their format.
 
 **April 20, 2026**
@@ -751,9 +751,9 @@ If your integration needs to process all pages in a large data source, we recomm
 
 The [Update a comment](/reference/update-a-comment) (`PATCH /v1/comments/:comment_id`) and [Delete a comment](/reference/delete-a-comment) (`DELETE /v1/comments/:comment_id`) endpoints are now generally available. Non-DLP integrations can only modify or delete comments they created.
 
-### Multi-value filters for select, status, and multi\_select properties
+### Multi-value filters for select, status, and multi_select properties
 
-[Database](/reference/post-database-query-filter) and [data source](/reference/filter-data-source-entries) filters now accept an array of values for `equals` / `does_not_equal` on select and status properties, and for `contains` / `does_not_contain` on multi\_select properties, matching the multi-value conditions available in the Notion UI. The same schema is used by [view filters and quick filters](/guides/data-apis/working-with-views#quick-filters). Person filters set via the API also now round-trip cleanly on read without extra combinator nesting.
+[Database](/reference/post-database-query-filter) and [data source](/reference/filter-data-source-entries) filters now accept an array of values for `equals` / `does_not_equal` on select and status properties, and for `contains` / `does_not_contain` on multi_select properties, matching the multi-value conditions available in the Notion UI. The same schema is used by [view filters and quick filters](/guides/data-apis/working-with-views#quick-filters). Person filters set via the API also now round-trip cleanly on read without extra combinator nesting.
 
 ### Notion MCP improvements
 
@@ -767,7 +767,7 @@ The [Update a comment](/reference/update-a-comment) (`PATCH /v1/comments/:commen
 
 The [Create a comment](/reference/create-a-comment) and [Update a comment](/reference/update-a-comment) references now explicitly document that the `markdown` body parameter supports inline formatting only — fenced code blocks, headings, lists, tables, and blockquotes do not render as structured blocks in comments.
 
-**SDK support**: `@notionhq/client` [`v5.18.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.18.0) adds typed support for multi-value select, status, and multi\_select filters. [`v5.19.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.19.0) adds `notion.comments.update()` and `notion.comments.delete()`.
+**SDK support**: `@notionhq/client` [`v5.18.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.18.0) adds typed support for multi-value select, status, and multi_select filters. [`v5.19.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.19.0) adds `notion.comments.update()` and `notion.comments.delete()`.
 
 **April 7, 2026**
 
@@ -856,7 +856,7 @@ Three new [webhook events](/reference/webhooks/view-created) (`view.created`, `v
 You can now [create and update status properties](/reference/property-object#status) through the Notion API and [Notion MCP](/guides/mcp/mcp). Previously, status properties were read-only — they could be queried but not created or modified via the API.
 
 * **Create**: pass `{ status: {} }` in a [Create database](/reference/create-database) or [Create data source](/reference/create-a-data-source) request to add a status property with default options (Not started, In progress, Done). Custom initial options are also supported.
-* **Update**: add new options to an existing status property via [Update data source](/reference/update-a-data-source), following the same pattern as select and multi\_select.
+* **Update**: add new options to an existing status property via [Update data source](/reference/update-a-data-source), following the same pattern as select and multi_select.
 * **MCP**: the `notion-create-database` and `notion-update-data-source` tools now support the `STATUS` column type in their schema definitions.
 
 **March 11, 2026**

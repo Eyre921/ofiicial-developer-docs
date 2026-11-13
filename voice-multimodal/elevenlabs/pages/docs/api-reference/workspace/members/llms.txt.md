@@ -13,13 +13,12 @@ path: docs/api-reference/workspace/members/llms.txt
 
 ## API Docs
 
-- Members [Get Workspace Members](https://elevenlabs.io/docs/api-reference/workspace/members/list.md)
-- Members [Update member](https://elevenlabs.io/docs/api-reference/workspace/members/update.md)
-- Members [Update Member Usage Limit](https://elevenlabs.io/docs/api-reference/workspace/members/update-usage-limit.md)
+- [Get Workspace Members](https://elevenlabs.io/docs/api-reference/workspace/members/list.md): Members
+- [Update member](https://elevenlabs.io/docs/api-reference/workspace/members/update.md): Members
+- [Update Member Usage Limit](https://elevenlabs.io/docs/api-reference/workspace/members/update-usage-limit.md): Members
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

@@ -13,12 +13,11 @@ path: docs/api-reference/user/llms.txt
 
 ## API Docs
 
-- User [Get user](https://elevenlabs.io/docs/api-reference/user/get.md)
-- Subscription [Get user subscription](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
+- [Get user](https://elevenlabs.io/docs/api-reference/user/get.md): User
+- [Get user subscription](https://elevenlabs.io/docs/api-reference/user/subscription/get.md): Subscription
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

@@ -265,7 +265,7 @@ print(ask("What approval do I need for a $15,000 vendor invoice?"))
 
 > [card] [Search methods](/guides/search/search-overview)
 >
-> Explore semantic, hybrid, and full-text search
+> Compare full-text, semantic, sparse-vector, and hybrid search
 
 > [card] [Data modeling](/guides/indexes/data-modeling)
 >

@@ -147,7 +147,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### page.properties\_updated
+### page.properties_updated
 
 ```json JSON expandable theme={null}
 {
@@ -189,7 +189,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### page.content\_updated
+### page.content_updated
 
 ```json JSON expandable theme={null}
 {
@@ -490,7 +490,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### database.content\_updated
+### database.content_updated
 
 > [!NOTE]
 >
@@ -668,7 +668,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### database.schema\_updated
+### database.schema_updated
 
 > [!NOTE]
 >
@@ -730,7 +730,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.content\_updated
+### data_source.content_updated
 
 > [!NOTE]
 >
@@ -785,7 +785,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.created
+### data_source.created
 
 > [!NOTE]
 >
@@ -821,7 +821,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.deleted
+### data_source.deleted
 
 > [!NOTE]
 >
@@ -857,7 +857,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.moved
+### data_source.moved
 
 > [!NOTE]
 >
@@ -893,7 +893,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.schema\_updated
+### data_source.schema_updated
 
 > [!NOTE]
 >
@@ -955,7 +955,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.undeleted
+### data_source.undeleted
 
 > [!NOTE]
 >

@@ -13,23 +13,21 @@ path: docs/api-reference/text-to-dialogue/llms.txt
 
 ## API Docs
 
-- Text to Dialogue [Create dialogue](https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert.md)
-- Text to Dialogue [Stream dialogue](https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream.md)
-- Text to Dialogue [Create dialogue with timestamps](https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert-with-timestamps.md)
-- Text to Dialogue [Stream dialogue with timestamps](https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream-with-timestamps.md)
-- Text to Dialogue [WebSocket](https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-websocket.md)
-- Text to Dialogue [Multi-Context WebSocket](https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-multi-websocket.md)
+- [Create dialogue](https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert.md): Text to Dialogue
+- [Stream dialogue](https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream.md): Text to Dialogue
+- [Create dialogue with timestamps](https://elevenlabs.io/docs/api-reference/text-to-dialogue/convert-with-timestamps.md): Text to Dialogue
+- [Stream dialogue with timestamps](https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream-with-timestamps.md): Text to Dialogue
+- [WebSocket](https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-websocket.md): Text to Dialogue
+- [Multi-Context WebSocket](https://elevenlabs.io/docs/api-reference/text-to-dialogue/ttd-multi-websocket.md): Text to Dialogue
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 
 
 ## AsyncAPI Specification
 
-The raw AsyncAPI 2.6.0 specification for the WebSocket channels is available at:
-- [AsyncAPI JSON](https://elevenlabs.io/docs/asyncapi.json)
-- [AsyncAPI YAML](https://elevenlabs.io/docs/asyncapi.yaml)
+- [AsyncAPI JSON](https://elevenlabs.io/docs/asyncapi.json): raw AsyncAPI 2.6.0 specification for the WebSocket channels, JSON format
+- [AsyncAPI YAML](https://elevenlabs.io/docs/asyncapi.yaml): raw AsyncAPI 2.6.0 specification for the WebSocket channels, YAML format
 

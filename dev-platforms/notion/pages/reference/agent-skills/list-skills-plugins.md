@@ -15,7 +15,7 @@ Each unique value in a skills database's **Tags** property becomes a plugin. An 
 
 For an overview of how to use the Agent Skills API, see the [guide overview](/guides/agent-skills/overview).
 
-## Using version\_id
+## Using version_id
 
 `version_id` is an opaque string. An unchanged value means the plugin's contents are unchanged so you can skip re-downloading its directory.
 

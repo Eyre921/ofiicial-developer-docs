@@ -29,7 +29,7 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 | :- | :- | :- | :- |
 | `object`\* | `string` | Always `"data_source"`. | `"data_source"` |
 | `id`\* | `string` (UUID) | Unique identifier for the data source. | `"2f26ee68-df30-4251-aad4-8ddc420cba3d"` |
-| `properties`\* | `object` | Schema of properties for the data source as they appear in Notion.  `key` string The name of the property as it appears in Notion.  `value` object A [Property object](/reference/property-object). | |
+| `properties`\* | `object` | Schema of properties for the data source as they appear in Notion. `key` string The name of the property as it appears in Notion. `value` object A [Property object](/reference/property-object). | |
 | `parent` | `object` | Information about the data source's immediate parent. Most data sources are parented by a database (`type: "database_id"`). Some externally synced data sources can be parented by another data source (`type: "data_source_id"`) and include the containing `database_id`. See [Parent object](/reference/parent-object). | `{"type": "database_id", "database_id": "842a0286-cef0-46a8-abba-eac4c8ca644e"}` |
 | `database_parent` | `object` | Information about the containing database's parent. See [Parent object](/reference/parent-object). | `{ "type": "page_id", "page_id": "af5f89b5-a8ff-4c56-a5e8-69797d11b9f8" }` |
 | `database_type` | `string` or `null` | The type of typed database this data source belongs to. `null` for a regular data source. | `"skills"` |

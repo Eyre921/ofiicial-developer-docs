@@ -6,27 +6,27 @@ path: guides/pg-pinecone/quickstart
 
 Install the pg_pinecone extension for Postgres and search a sample table with a native index, which runs the search engine Pinecone uses at scale.
 
-This quickstart installs pg\_pinecone on a PostgreSQL server you manage. You create a sample table with vectors and search it with a `native` index, which runs the search engine Pinecone uses at scale inside Postgres. You can bring your own vectors, with no API key or network access, or have Pinecone generate embeddings. To compare `native` with the other engines, see [Storage engines](/guides/pg-pinecone/storage-engines).
+This quickstart installs pg_pinecone on a PostgreSQL server you manage. You create a sample table with vectors and search it with a `native` index, which runs the search engine Pinecone uses at scale inside Postgres. You can bring your own vectors, with no API key or network access, or have Pinecone generate embeddings. To compare `native` with the other engines, see [Storage engines](/guides/pg-pinecone/storage-engines).
 
-If you already have a table with a pgvector index, complete steps 1 and 2 to install pg\_pinecone, then [switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
+If you already have a table with a pgvector index, complete steps 1 and 2 to install pg_pinecone, then [switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
 
 ## Prerequisites
 
 * A PostgreSQL 17 or 18 server and a superuser role on it.
-* pgvector installed on that server, because pg\_pinecone uses its `vector` column type and distance operators. If you don't have it, run `sudo apt install postgresql-17-pgvector` on Debian or Ubuntu, or `brew install pgvector` with Homebrew on macOS. For other Linux distributions, see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation). If you install with Docker, the image includes Postgres and pgvector, so you need only Docker.
+* pgvector installed on that server, because pg_pinecone uses its `vector` column type and distance operators. If you don't have it, run `sudo apt install postgresql-17-pgvector` on Debian or Ubuntu, or `brew install pgvector` with Homebrew on macOS. For other Linux distributions, see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation). If you install with Docker, the image includes Postgres and pgvector, so you need only Docker.
 * Optional: a [Pinecone API key](https://app.pinecone.io/organizations/-/projects/-/keys), if you want Pinecone to generate the embeddings. A key from the free [Starter plan](https://www.pinecone.io/pricing/) is enough.
 
 > [!NOTE]
 >
 > The `native` engine never calls Pinecone. Steps 3 and 4 each have two tabs, so pick the same one in both. **Your own vectors** runs entirely in your database with no API key or network access, and **Pinecone embeddings** generates embeddings with a Pinecone-hosted model.
 
-## 1. Install pg\_pinecone
+## 1. Install pg_pinecone
 
 > [tab] Release archive
 >
 > 1. Download the release archive for your platform and Postgres version from the [releases page](https://github.com/pinecone-io/pg_pinecone/releases).
 >
->    Archives are published for PostgreSQL 17 and 18 on Linux x86\_64, Linux arm64, and macOS arm64. The Linux x86\_64 build needs a CPU that supports x86-64-v3 (Intel Haswell or newer, which covers current cloud instances), and the Linux builds need glibc 2.39 or later, such as Ubuntu 24.04 or Debian 13.
+>    Archives are published for PostgreSQL 17 and 18 on Linux x86_64, Linux arm64, and macOS arm64. The Linux x86_64 build needs a CPU that supports x86-64-v3 (Intel Haswell or newer, which covers current cloud instances), and the Linux builds need glibc 2.39 or later, such as Ubuntu 24.04 or Debian 13.
 >
 > 2. Extract the archive and copy its files into your Postgres installation.
 >
@@ -46,11 +46,11 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    cp opt/homebrew/share/postgresql@$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
 >
-> On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86\_64 CPUs, [build from source](https://github.com/pinecone-io/pg_pinecone#readme).
+> On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86_64 CPUs, [build from source](https://github.com/pinecone-io/pg_pinecone#readme).
 
 > [tab] Docker
 >
-> The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg\_pinecone added, so it includes Postgres and pgvector. It runs on x86\_64 and arm64 hosts. On x86\_64, it needs a CPU that supports x86-64-v3, like the Linux x86\_64 release archive.
+> The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg_pinecone added, so it includes Postgres and pgvector. It runs on x86_64 and arm64 hosts. On x86_64, it needs a CPU that supports x86-64-v3, like the Linux x86_64 release archive.
 >
 > 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.12.1-pg18` tag here and in the next step instead:
 >
@@ -87,7 +87,7 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 
    On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
 
-2. Create the extensions. Create pgvector first, because pg\_pinecone builds on its `vector` type and operators:
+2. Create the extensions. Create pgvector first, because pg_pinecone builds on its `vector` type and operators:
 
    ```sql SQL theme={null}
    CREATE EXTENSION vector;
@@ -178,7 +178,7 @@ With Pinecone embeddings, `pinecone.create_index()` prints an informational mess
 
 ### 2. Run a search
 
-Search with an ordinary pgvector query, the same query you'd run without pg\_pinecone. `<=>` is pgvector's cosine distance operator:
+Search with an ordinary pgvector query, the same query you'd run without pg_pinecone. `<=>` is pgvector's cosine distance operator:
 
 > [tab] Your own vectors
 >

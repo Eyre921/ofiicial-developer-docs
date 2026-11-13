@@ -330,7 +330,7 @@ You'll receive a response that contains a list of block objects.
 }
 ```
 
-This is a paginated response. Paginated responses are used throughout the Notion API when returning a potentially large list of objects. The maximum number of results in one paginated response is 100. The [pagination reference](/reference/pagination) explains how to use the "start\_cursor" and "page\_size" parameters to get more than 100 results.
+This is a paginated response. Paginated responses are used throughout the Notion API when returning a potentially large list of objects. The maximum number of results in one paginated response is 100. The [pagination reference](/reference/pagination) explains how to use the "start_cursor" and "page_size" parameters to get more than 100 results.
 
 In this case, the individual child blocks we requested are in the "results" array.
 

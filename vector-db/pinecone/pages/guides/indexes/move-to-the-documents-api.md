@@ -63,7 +63,7 @@ Index-management calls like `describe_index` and `list_indexes` also return a ne
 
 > [accordion] I use hybrid search (dense + sparse, legacy Vectors API). What happens?
 >
-> Your existing hybrid indexes keep working through the legacy Vectors API, with the same single combined query. On the Documents API, a schema can declare both a `dense_vector` and a `sparse_vector` field, so one index holds both, but a search ranks by one scoring type per request. There's no single combined dense + sparse query, so to combine results, run each search separately and fuse them client-side with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
+> Your existing indexes that store both dense and sparse vectors keep working through the legacy Vectors API, with the same single combined query. On the Documents API, a schema can declare both a `dense_vector` and a `sparse_vector` field, so one index holds both, but a search ranks by one scoring type per request. There's no single combined dense + sparse query, so to combine results, run each search separately and fuse them client-side with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
 > [accordion] I use integrated embedding (the legacy Records API). Does anything change?
 >

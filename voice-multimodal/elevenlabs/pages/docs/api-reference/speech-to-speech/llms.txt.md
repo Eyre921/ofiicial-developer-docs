@@ -13,12 +13,11 @@ path: docs/api-reference/speech-to-speech/llms.txt
 
 ## API Docs
 
-- Voice Changer [Voice changer](https://elevenlabs.io/docs/api-reference/speech-to-speech/convert.md)
-- Voice Changer [Voice changer stream](https://elevenlabs.io/docs/api-reference/speech-to-speech/stream.md)
+- [Voice changer](https://elevenlabs.io/docs/api-reference/speech-to-speech/convert.md): Voice Changer
+- [Voice changer stream](https://elevenlabs.io/docs/api-reference/speech-to-speech/stream.md): Voice Changer
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

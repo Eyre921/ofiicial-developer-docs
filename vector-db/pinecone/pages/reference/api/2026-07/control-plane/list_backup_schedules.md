@@ -15,7 +15,7 @@ List all backup schedules configured for a specific index.
 
 ### Path parameters
 
-**index\_name** `string` *required*
+**index_name** `string` *required*
 
 The name of the index to list backup schedules for.
 

@@ -13,14 +13,13 @@ path: docs/api-reference/workspace/auth-connections/llms.txt
 
 ## API Docs
 
-- Auth Connections [Get Workspace Auth Connections](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/list.md)
-- Auth Connections [Create Workspace Auth Connection](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/create.md)
-- Auth Connections [Delete Workspace Auth Connection](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/delete.md)
-- Auth Connections [Update Workspace Auth Connection](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/update.md)
+- [Get Workspace Auth Connections](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/list.md): Auth Connections
+- [Create Workspace Auth Connection](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/create.md): Auth Connections
+- [Delete Workspace Auth Connection](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/delete.md): Auth Connections
+- [Update Workspace Auth Connection](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/update.md): Auth Connections
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

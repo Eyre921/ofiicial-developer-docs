@@ -39,7 +39,7 @@ Each rich text object contains the following fields.
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `type` | `string` (enum) | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`. | `"text"` |
-| `text` \| `mention` \| `equation` | `object` | An object containing type-specific configuration.   Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples. |
+| `text` \| `mention` \| `equation` | `object` | An object containing type-specific configuration.  Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples. |
 | `annotations` | `object` | The information used to style the rich text object. Refer to the annotation object section below for details. | Refer to the annotation object section below for examples. |
 | `plain_text` | `string` | The plain text without annotations. | `"Some words "` |
 | `href` | `string` (optional) | The URL of any link or Notion mention in this text, if any. | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
@@ -55,7 +55,7 @@ All rich text objects contain an `annotations` object that sets the styling for 
 | `strikethrough` | `boolean` | Whether the text is struck through. | `false` |
 | `underline` | `boolean` | Whether the text is underlined. | `false` |
 | `code` | `boolean` | Whether the text is `code style`. | `true` |
-| `color` | `string` (enum) | Color of the text. Possible values include:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` -`"orange_background"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background”` - `"yellow"` - `"yellow_background"` | `"green"` |
+| `color` | `string` (enum) | Color of the text. Possible values include: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` -`"orange_background"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background”` - `"yellow"` - `"yellow_background"` | `"green"` |
 
 ## Rich text type objects
 
@@ -96,7 +96,7 @@ If a rich text object’s `type` value is `"mention"`, then the corresponding `m
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `type` | `string` (enum) | The type of the inline mention. Possible values include:  - `"database"` - `"date"` - `"link_preview"` - `"page"` - `"template_mention"` - `"user"` | `"user"` |
+| `type` | `string` (enum) | The type of the inline mention. Possible values include: - `"database"` - `"date"` - `"link_preview"` - `"page"` - `"template_mention"` - `"user"` | `"user"` |
 | `database` \| `date` \| `link_preview` \| `page` \| `template_mention` \| `user` | `object` | An object containing type-specific configuration. Refer to the mention type object sections below for details. | Refer to the mention type object sections below for example values. |
 
 #### Database mention type object
@@ -336,7 +336,7 @@ If a rich text object’s `type` value is `"text"`, then the corresponding `text
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `content` | `string` | The actual text content of the text. | `"Some words "` |
-| `link` | `object` (optional) | An object with information about any inline link in this text, if included.  If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address.  If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
+| `link` | `object` (optional) | An object with information about any inline link in this text, if included. If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address. If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
 
 #### Example rich text `text` object without link
 

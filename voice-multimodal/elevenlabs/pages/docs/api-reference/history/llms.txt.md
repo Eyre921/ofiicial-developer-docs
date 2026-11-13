@@ -13,15 +13,14 @@ path: docs/api-reference/history/llms.txt
 
 ## API Docs
 
-- History [Get generated items](https://elevenlabs.io/docs/api-reference/history/list.md)
-- History [Get history item](https://elevenlabs.io/docs/api-reference/history/get.md)
-- History [Delete history item](https://elevenlabs.io/docs/api-reference/history/delete.md)
-- History [Get audio from history item](https://elevenlabs.io/docs/api-reference/history/get-audio.md)
-- History [Download history items](https://elevenlabs.io/docs/api-reference/history/download.md)
+- [Get generated items](https://elevenlabs.io/docs/api-reference/history/list.md): History
+- [Get history item](https://elevenlabs.io/docs/api-reference/history/get.md): History
+- [Delete history item](https://elevenlabs.io/docs/api-reference/history/delete.md): History
+- [Get audio from history item](https://elevenlabs.io/docs/api-reference/history/get-audio.md): History
+- [Download history items](https://elevenlabs.io/docs/api-reference/history/download.md): History
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

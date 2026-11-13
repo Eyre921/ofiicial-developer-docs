@@ -6,42 +6,36 @@ path: guides/search/search-overview
 
 Compare Pinecone search types and choose the right retrieval approach: full-text (BM25), semantic (dense vector), sparse-vector, and hybrid.
 
-> [!TIP]
->
-> Searches consume [read units (RUs)](/guides/cost/understand-cost#read-units). See [Understand Pinecone cost](/guides/cost/understand-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.
+Pinecone supports four retrieval approaches. Three of them rank on a signal the index declares a field for, and hybrid search combines two or more of them. One document index can declare fields for all three, so the choice is mostly about which signal should order your results.
 
-## Choosing a search approach
+## Choose an approach
 
-Pinecone supports four retrieval approaches. They differ in the signal they rank on and the index shape they require.
+| Approach | Ranks on | Index declares | Reach for it when |
+| - | - | - | - |
+| [Full-text search](/guides/search/full-text-search) | BM25 token overlap, with optional Lucene query syntax | A `string` field with `full_text_search` | Queries mostly share exact words with the data, such as product names, error strings, source code, or identifiers |
+| [Semantic search](/guides/search/semantic-search) | Dense-vector similarity, which captures meaning rather than wording | A `dense_vector` field, or a `string` field with [`embed`](/guides/search/integrated-embedding) | Queries are natural language, and a synonym or a paraphrase should still match |
+| [Sparse-vector search](/guides/search/sparse-vector-search) | Per-token weights | A `sparse_vector` field, or a `string` field with [`sparse_embed`](/guides/search/integrated-embedding) | A sparse model such as [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) produces the representation, or your application produces its own sparse vectors |
 
-### Quick decision tree
+Full-text search and sparse-vector search both rank on tokens. Full-text search matches tokens exactly, unless a field opts into [stemming or other text processing](/guides/search/full-text-search/text-processing). Sparse-vector search weights each token in your documents, which puts it between full-text search and semantic search. For general keyword retrieval, start with full-text search.
 
-Walk through these questions in order. Pick the first match.
+## Hybrid search
 
-1. **Do your queries share specific tokens with the data?** (Product names, error messages, source code, named entities, technical jargon, identifiers.) → **[Full-text search](/guides/search/full-text-search)**. BM25 ranks results that share tokens with the query; Lucene syntax adds boolean and phrase operators.
+Hybrid search combines two or more signals in a single workflow. It isn't a field type, so an index declares nothing extra for it, and any index whose schema covers at least two signals can serve it. Reach for it when no single signal orders results well, as in a catalog where part numbers and descriptive phrases are both relevant.
 
-2. **Are your queries natural language where meaning matters more than exact wording?** (Synonyms, paraphrases, conceptual similarity.) → **[Semantic search](/guides/search/semantic-search)** with a dense vector field.
+Full-text with dense is the common pairing on a document index, and sparse with dense is what a [legacy vector index](/guides/legacy/vectors-api/hybrid-search-single-index) runs, but any combination works, including all three at once. A [metadata or text-match filter](/guides/search/filter-by-metadata) can also serve as one of the signals, narrowing the pool before another one ranks what's left.
 
-3. **Do you need both keyword and semantic signals on the same data?** → **[Hybrid search](/guides/search/hybrid-search)**. Declare a `dense_vector` field alongside one or more `string` fields with `full_text_search`, then add a text-match filter to a `dense_vector` query, or run two searches and merge the results client-side.
+See [Hybrid search](/guides/search/hybrid-search) for the patterns that combine them.
 
-4. **Do you produce a learned sparse-vector representation upstream of Pinecone?** (For example, using [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) or your own sparse encoder.) → **[Sparse-vector search](/guides/search/sparse-vector-search)**.
+## Tune search
 
-### Approach details
+Each of these works with any approach:
 
-A useful gradient: **dense** ranks on concept (semantic similarity), **full-text search** ranks on strict character-level token matching (BM25), and **sparse-vector search** sits between them — token-aware, but with learned per-token weights and term expansion.
-
-* **[Full-text search](/guides/search/full-text-search)** — **recommended** for keyword and phrase search over text content. You upsert typed JSON documents and rank with `score_by`: BM25 token matching on a `string` field with `full_text_search`, Lucene query syntax (`query_string`), `dense_vector` similarity, or `sparse_vector` similarity. A single index with a document schema can mix all four field types, so it's also the recommended single-index path when a workload needs more than one signal (BM25 + dense, BM25 + sparse, etc.).
-
-* **[Semantic search](/guides/search/semantic-search) (dense-vector)** — for queries where intent and meaning matter more than exact keyword matches (synonyms, paraphrases, conceptual similarity). Uses dense embeddings.
-
-* **[Hybrid search](/guides/search/hybrid-search)** — combines a keyword signal with a semantic signal so one query benefits from both. There are two patterns: a text-match filter on a `dense_vector` query, or client-side RRF fusion of two searches. See [Hybrid search](/guides/search/hybrid-search) to choose.
-
-* **[Sparse-vector search](/guides/search/sparse-vector-search)** — recommended for workflows that use a learned sparse-vector model (for example, [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) or where the application owns the sparse-vector representation directly. For general-purpose keyword and phrase retrieval over text, start with full-text search.
+* [Filter by metadata](/guides/search/filter-by-metadata) narrows the candidate pool before ranking, so an out-of-scope document can't take a result slot. [Text-match filters](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) do the same on full-text fields.
+* [Rerank results](/guides/search/rerank-results) reorders what a search returns, using a model that reads the query and the document together.
+* [Parallel queries](/guides/optimize/increase-throughput#parallel-queries) raise throughput when you run many searches at once.
 
 Once you've chosen an approach, see [Data modeling](/guides/indexes/data-modeling) to structure your documents or records, then [Create an index](/guides/indexes/create-an-index) to set it up.
 
-## Optimization
-
-* [Filter by metadata](/guides/search/filter-by-metadata)
-* [Rerank results](/guides/search/rerank-results)
-* [Parallel queries](/guides/optimize/increase-throughput#parallel-queries)
+> [!TIP]
+>
+> Searches consume [read units (RUs)](/guides/cost/understand-cost#read-units). See [Understand Pinecone cost](/guides/cost/understand-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.

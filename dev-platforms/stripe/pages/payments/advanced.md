@@ -40,7 +40,7 @@ Use [Stripe Elements](https://docs.stripe.com/payments/elements.md) and the Paym
 
 [Collect additional information](https://docs.stripe.com/payments/advanced/collect-additional-info.md): Collect shipping and other customer info during checkout.
 
-[Collect taxes](https://docs.stripe.com/tax/standalone-tax-api.md): Use Stripe Tax APIs to implement tax calculations in your custom integration.
+[Collect taxes](https://docs.stripe.com/payments/advanced/tax.md): Collect taxes with Stripe Tax using the Checkout Sessions API or Payment Intents API.
 
 [Flexible payment scenarios](https://docs.stripe.com/payments/flexible-payments.md): Support complex payment flows through flexible and customizable acquiring features.
 

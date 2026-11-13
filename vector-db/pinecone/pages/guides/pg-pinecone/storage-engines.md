@@ -6,7 +6,7 @@ path: guides/pg-pinecone/storage-engines
 
 Learn how pg_pinecone's pgvector, native, and remote storage engines work, when to use each, and how to switch between them.
 
-pg\_pinecone searches a table's vector column with one of three engines: `pgvector` or `native` inside Postgres, or `remote` on Pinecone. The engine is a setting on the table's one pg\_pinecone index, so you switch engines per table. Your queries are the same on all three, so you can change engines without touching application code:
+pg_pinecone searches a table's vector column with one of three engines: `pgvector` or `native` inside Postgres, or `remote` on Pinecone. The engine is a setting on the table's one pg_pinecone index, so you switch engines per table. Your queries are the same on all three, so you can change engines without touching application code:
 
 ```sql SQL theme={null}
 SELECT id, body FROM docs ORDER BY embedding <=> $1 LIMIT 10;
@@ -28,7 +28,7 @@ Postgres stays the system of record with every engine. Your rows, including the 
 
 ## When to use each engine
 
-* **`pgvector`**: A table that already has a pgvector index and doesn't filter its searches. You can keep that index and add pg\_pinecone without changing anything.
+* **`pgvector`**: A table that already has a pgvector index and doesn't filter its searches. You can keep that index and add pg_pinecone without changing anything.
 * **`native`**: Filtered search, especially when the rows that match a filter are clustered, such as per-tenant data queried with `WHERE tenant_id = $1`. The `native` engine scans by cluster, so it keeps finding matches where a graph index like pgvector's [HNSW](https://github.com/pgvector/pgvector#hnsw) can miss them. It runs without an account or network access.
 * **`remote`**: A table that has outgrown a single Postgres server. Pinecone stores and searches the vectors, and Postgres keeps the rest of the row.
 
@@ -36,8 +36,8 @@ Postgres stays the system of record with every engine. Your rows, including the 
 
 You switch a table between `native` and `remote` with one call to `pinecone.set_engine()`, in either direction:
 
-* **To `remote`**: pg\_pinecone creates a Pinecone index and copies the table's vectors to it in the background. Queries keep using the `native` index until the copy finishes, and new writes go to both, so reads and writes are never interrupted. In version 0.10.0 and later, a table of a million rows takes up to about an hour to copy at the default settings.
-* **To `native`**: pg\_pinecone queues a rebuild of the `native` index and keeps serving queries from Pinecone until the rebuild starts. The rebuild blocks reads that use the index, and writes to the table, until it finishes. That usually takes seconds to a few minutes, depending on table size. After the rebuild, pg\_pinecone deletes the Pinecone index it created.
+* **To `remote`**: pg_pinecone creates a Pinecone index and copies the table's vectors to it in the background. Queries keep using the `native` index until the copy finishes, and new writes go to both, so reads and writes are never interrupted. In version 0.10.0 and later, a table of a million rows takes up to about an hour to copy at the default settings.
+* **To `native`**: pg_pinecone queues a rebuild of the `native` index and keeps serving queries from Pinecone until the rebuild starts. The rebuild blocks reads that use the index, and writes to the table, until it finishes. That usually takes seconds to a few minutes, depending on table size. After the rebuild, pg_pinecone deletes the Pinecone index it created.
 
 To switch a pgvector index you created with `CREATE INDEX` to `native`, create the `native` index with `pinecone.create_index()`, then drop the pgvector index. A pgvector index that `pinecone.create_index()` built switches with one call, `pinecone.set_engine('your_table', 'native')`. To switch from `native` back to `pgvector`, drop the `native` index and create the pgvector index again.
 
@@ -63,7 +63,7 @@ LIMIT 10;
 ```
 
 * **On `native`**: The engine applies the filter while it scans.
-* **On `remote`**: pg\_pinecone stores the column as Pinecone metadata and sends `WHERE tenant_id = $1` to Pinecone as a [metadata filter](/guides/search/filter-by-metadata). A filtered `native` index keeps its filter column when you switch it to `remote`.
+* **On `remote`**: pg_pinecone stores the column as Pinecone metadata and sends `WHERE tenant_id = $1` to Pinecone as a [metadata filter](/guides/search/filter-by-metadata). A filtered `native` index keeps its filter column when you switch it to `remote`.
 * **Other conditions**: Only `=` on the filter column is applied inside the index. Any other condition, such as a range or a second column, is applied to each batch the index returns, so a selective one can leave fewer rows than `LIMIT`. On `native`, the scan keeps going until the query has enough rows, because `pinecone.iterative_scan` defaults to `auto`. On `remote`, the scan asks Pinecone for more rows, up to 10,000, and returns an error if that's still not enough. To return the rows found instead, run `SET pinecone.iterative_scan = 'relaxed_order'`. Rows after the first batch arrive in batch order, so re-sort them if exact order matters. On the `pgvector` engine, use pgvector's own [`hnsw.iterative_scan`](https://github.com/pgvector/pgvector#iterative-index-scans) instead.
 
 The filter column must be a `smallint`, `integer`, `bigint`, `text`, or `varchar` column.
@@ -79,7 +79,7 @@ SELECT pinecone.create_index('docs', 'embedding', engine => 'remote', partition_
 * **Namespaces**: Each value maps to a namespace named `<schema>.<table>:<value>`, such as `public.docs:42`.
 * **Queries**: Every query must include `WHERE tenant_id = <value>`, and it searches only that tenant's namespace. A query without it returns an error instead of searching across tenants.
 * **Removing a tenant**: `pinecone.delete_partition('docs', 42)` deletes that tenant's namespace. Its rows stay in the table.
-* **Limits**: The column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg\_pinecone warns when a table has more than 1,000 distinct values.
+* **Limits**: The column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg_pinecone warns when a table has more than 1,000 distinct values.
 
 You can also set `partition_column` when you switch a filtered `native` index to `remote` with `pinecone.set_engine()`.
 

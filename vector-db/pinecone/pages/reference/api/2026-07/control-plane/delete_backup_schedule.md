@@ -15,7 +15,7 @@ Delete a backup schedule. This does **not** delete any backups that were previou
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule to delete.
 

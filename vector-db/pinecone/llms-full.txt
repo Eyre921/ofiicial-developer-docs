@@ -262,7 +262,7 @@ print(ask("What approval do I need for a $15,000 vendor invoice?"))
 
 > [card] [Search methods](/guides/search/search-overview)
 >
-> Explore semantic, hybrid, and full-text search
+> Compare full-text, semantic, sparse-vector, and hybrid search
 
 > [card] [Data modeling](/guides/indexes/data-modeling)
 >
@@ -5012,7 +5012,7 @@ This guide shows you how to migrate a vector-search workload from pgvector to Pi
 
 > [!TIP]
 >
-> To keep your data in Postgres and search it with Pinecone instead, see [pg\_pinecone](/guides/pg-pinecone/overview), an open-source Postgres extension.
+> To keep your data in Postgres and search it with Pinecone instead, see [pg_pinecone](/guides/pg-pinecone/overview), an open-source Postgres extension.
 
 ## Before you migrate
 
@@ -7069,7 +7069,7 @@ On a document index, you choose a scoring method per query with `score_by`. The 
 * `embed`: Vector similarity, with Pinecone embedding the query text using the field's `embed` model.
 * `sparse_embed`: Sparse-vector similarity, with Pinecone embedding the query text using the field's `sparse_embed` model.
 
-You can combine several `text` and `query_string` clauses in one query. Any other type must be the only clause. To combine a keyword signal with a dense signal, restrict a dense search with a text-match [filter](#metadata-filters), or run separate searches and merge the results client-side.
+You can combine several `text` and `query_string` clauses in one query. Any other type must be the only clause. To combine two or more signals, restrict a dense search with a text-match [filter](#metadata-filters), or run separate searches and merge the results client-side.
 
 ### Metadata filters
 
@@ -12062,7 +12062,7 @@ Index-management calls like `describe_index` and `list_indexes` also return a ne
 
 > [accordion] I use hybrid search (dense + sparse, legacy Vectors API). What happens?
 >
-> Your existing hybrid indexes keep working through the legacy Vectors API, with the same single combined query. On the Documents API, a schema can declare both a `dense_vector` and a `sparse_vector` field, so one index holds both, but a search ranks by one scoring type per request. There's no single combined dense + sparse query, so to combine results, run each search separately and fuse them client-side with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
+> Your existing indexes that store both dense and sparse vectors keep working through the legacy Vectors API, with the same single combined query. On the Documents API, a schema can declare both a `dense_vector` and a `sparse_vector` field, so one index holds both, but a search ranks by one scoring type per request. There's no single combined dense + sparse query, so to combine results, run each search separately and fuse them client-side with [reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
 > [accordion] I use integrated embedding (the legacy Records API). Does anything change?
 >
@@ -13121,7 +13121,7 @@ As a rule, a single p1 pod with 1M vectors of 768 dimensions each and no replica
 
 **Table 2: QPS by pod type and `top_k` value**\*
 
-| Pod type | top\_k 10 | top\_k 250 | top\_k 1000 |
+| Pod type | top_k 10 | top_k 250 | top_k 1000 |
 | - | - | - | - |
 | p1 | 30 | 25 | 20 |
 | p2 | 150 | 50 | 20 |
@@ -25115,7 +25115,7 @@ Dedicated read nodes support two optional query-time parameters, `scan_factor` a
 
 These parameters only take effect on dedicated read nodes indexes with dense vectors. On-demand indexes accept the parameters but ignore them. On indexes that store only sparse vectors, specifying either parameter returns an error. Using these parameters requires API version `2025-10` or later.
 
-## How scan\_factor and max\_candidates work
+## How scan_factor and max_candidates work
 
 Dense vector search on dedicated read nodes uses a two-stage pipeline:
 
@@ -25151,7 +25151,7 @@ Lower `scan_factor` or `max_candidates` values reduce the work done per query, w
 
 Starting from the default (4.0), lowering `scan_factor` reduces the fraction of IVF partitions scanned:
 
-| scan\_factor | Approximate recall (p50) | Relative throughput |
+| scan_factor | Approximate recall (p50) | Relative throughput |
 | :- | :- | :- |
 | 4.0 (default) | \~96% | 1x (baseline) |
 | 2.0 | \~94% | \~1.5x |
@@ -28210,7 +28210,7 @@ curl -s -X POST "https://api.pinecone.io/embed" \
   -d @- > embeddings.json
 ```
 
-### 2. Create an index with a dense\_vector field
+### 2. Create an index with a dense_vector field
 
 Declare a `dense_vector` field whose `dimension` matches your model's output and whose `metric` matches what the model was trained for. `llama-text-embed-v2` uses `cosine`. This schema also declares `chunk_text` with `full_text_search`, so the index stores each document's text and can rank it by keyword too. Fields you don't declare are stored as metadata.
 
@@ -29007,7 +29007,7 @@ curl -X POST "https://articles-abc123.svc.us-east-1.pinecone.io/namespaces/__def
   }'
 ```
 
-### Cross-field boolean query (query\_string)
+### Cross-field boolean query (query_string)
 
 ```bash theme={null}
 curl -X POST "https://articles-abc123.svc.us-east-1.pinecone.io/namespaces/__default__/documents/search" \
@@ -29579,32 +29579,31 @@ response = index.documents.search(
 # Hybrid search overview
 Source: https://docs.pinecone.io/guides/search/hybrid-search
 
-Combine keyword and semantic retrieval in Pinecone with a text-match filter on a dense search, or by fusing separate searches with reciprocal rank fusion.
+Combine two or more retrieval signals in Pinecone with a filter that narrows a ranking, or by fusing separate searches with reciprocal rank fusion.
 
-Hybrid search combines a keyword signal with a semantic signal so your results benefit from both. Full-text search (BM25) and sparse-vector search match specific terms like product codes, error strings, and names. Semantic search (dense vectors) matches on meaning, so a query still finds an answer phrased with different words. Each method misses what the other catches, and hybrid search closes that gap.
-
-> [!NOTE]
->
-> "Hybrid" covers several combinations: full-text (BM25) plus dense, sparse plus dense, or a text-match filter plus dense.
+Hybrid search combines two or more retrieval signals so your results benefit from each. Full-text search (BM25) and sparse-vector search match specific terms like product codes, error strings, and names. Semantic search (dense vectors) matches on meaning, so a query still finds an answer phrased with different words. Each method misses what the others catch, and hybrid search closes that gap.
 
 ## Combine signals
 
-Pinecone gives you two ways to combine a keyword signal with a dense signal. [Metadata filtering](/guides/search/filter-by-metadata) is a separate lever that composes with both: it narrows the candidate pool before ranking, so an out-of-scope document can't compete for a result slot.
+The following patterns differ in where the signals meet. A filter can serve as one of them: [metadata filtering](/guides/search/filter-by-metadata) narrows the candidate pool before ranking, so an out-of-scope document can't compete for a result slot.
 
 | Pattern | How it works | When to use it |
 | - | - | - |
-| Filter, then rank | A [text-match filter](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) on a full-text field narrows the candidates, then a dense search ranks what remains, all in one request. The dense search can score the same `string` field with `embed`, or score a `dense_vector` field. | Document and text workloads on the Documents API. One index, one call, and no score normalization. |
-| Client-side fusion | Run a keyword search and a dense search separately, then merge the two ranked lists with [reciprocal rank fusion (RRF)](/guides/search/reciprocal-rank-fusion). | When you want both signals to contribute to the ranking, not just to filter. |
+| Filter, then rank | A filter narrows the candidates, then any ranking clause scores what remains, all in one request. The filter can be a [metadata filter](/guides/search/filter-by-metadata) on any filterable field, or a [text-match filter](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) on a full-text field. The ranking clause can score the same `string` field with `embed`, or score a `dense_vector`, `sparse_vector`, or full-text field. | Document and text workloads on the Documents API. One index, one call, and no score normalization. |
+| Client-side fusion | Run separate searches, then merge any number of their ranked lists with [reciprocal rank fusion (RRF)](/guides/search/reciprocal-rank-fusion). | When you want every signal to contribute to the ranking rather than only narrow the pool. |
 
 RRF is a fusion method, not a synonym for hybrid search. It's one way to merge ranked lists, while "hybrid search" is the broader approach of combining signals. See [Reciprocal rank fusion](/guides/search/reciprocal-rank-fusion).
 
-## Choose an approach
+## Set up an index
 
-For a new document or text workload, use the [Documents API](/guides/get-started/documents-api). Declare one `string` field with both `full_text_search` and `embed`, so Pinecone indexes its text for full-text search and embeds it for semantic search. Then either filter an `embed` search with a text-match filter on that field, or run a `text` search and an `embed` search and fuse them with RRF. See [Integrated embedding](/guides/search/integrated-embedding).
+For a new document or text workload, use the [Documents API](/guides/get-started/documents-api). Declare one or more `string` fields with `full_text_search`, then add the dense side:
 
-If you generate your own embeddings, declare a `dense_vector` field alongside one or more full-text `string` fields instead. See the full-text search [example schemas](/guides/search/full-text-search#example-schemas).
+* **Integrated embedding**: Add `embed` to a `string` field, so Pinecone indexes the text for full-text search and embeds it for semantic search. See [Integrated embedding](/guides/search/integrated-embedding).
+* **Your own vectors**: Declare a `dense_vector` field alongside the full-text fields. See [Bring your own vectors](/guides/search/bring-your-own-vectors) and the full-text search [example schemas](/guides/search/full-text-search#example-schemas).
 
-For hybrid search on a legacy vector index, see [Hybrid search on a single index](/guides/legacy/vectors-api/hybrid-search-single-index) and [Hybrid search on separate indexes](/guides/legacy/vectors-api/hybrid-search-separate-indexes).
+If you [converted a legacy vector index](/guides/indexes/convert-an-index) that held both dense and sparse vectors, the new index has a separate field for each, plus any `string` field you gave `full_text_search`. The legacy combined dense and sparse query doesn't carry over, because a document search ranks by one scoring type per request. Combine them with one of the patterns above.
+
+For a legacy vector index, see [Hybrid search on a single index](/guides/legacy/vectors-api/hybrid-search-single-index) and [Hybrid search on separate indexes](/guides/legacy/vectors-api/hybrid-search-separate-indexes).
 
 
 # Integrated embedding
@@ -31267,45 +31266,39 @@ Source: https://docs.pinecone.io/guides/search/search-overview
 
 Compare Pinecone search types and choose the right retrieval approach: full-text (BM25), semantic (dense vector), sparse-vector, and hybrid.
 
-> [!TIP]
->
-> Searches consume [read units (RUs)](/guides/cost/understand-cost#read-units). See [Understand Pinecone cost](/guides/cost/understand-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.
+Pinecone supports four retrieval approaches. Three of them rank on a signal the index declares a field for, and hybrid search combines two or more of them. One document index can declare fields for all three, so the choice is mostly about which signal should order your results.
 
-## Choosing a search approach
+## Choose an approach
 
-Pinecone supports four retrieval approaches. They differ in the signal they rank on and the index shape they require.
+| Approach | Ranks on | Index declares | Reach for it when |
+| - | - | - | - |
+| [Full-text search](/guides/search/full-text-search) | BM25 token overlap, with optional Lucene query syntax | A `string` field with `full_text_search` | Queries mostly share exact words with the data, such as product names, error strings, source code, or identifiers |
+| [Semantic search](/guides/search/semantic-search) | Dense-vector similarity, which captures meaning rather than wording | A `dense_vector` field, or a `string` field with [`embed`](/guides/search/integrated-embedding) | Queries are natural language, and a synonym or a paraphrase should still match |
+| [Sparse-vector search](/guides/search/sparse-vector-search) | Per-token weights | A `sparse_vector` field, or a `string` field with [`sparse_embed`](/guides/search/integrated-embedding) | A sparse model such as [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) produces the representation, or your application produces its own sparse vectors |
 
-### Quick decision tree
+Full-text search and sparse-vector search both rank on tokens. Full-text search matches tokens exactly, unless a field opts into [stemming or other text processing](/guides/search/full-text-search/text-processing). Sparse-vector search weights each token in your documents, which puts it between full-text search and semantic search. For general keyword retrieval, start with full-text search.
 
-Walk through these questions in order. Pick the first match.
+## Hybrid search
 
-1. **Do your queries share specific tokens with the data?** (Product names, error messages, source code, named entities, technical jargon, identifiers.) → **[Full-text search](/guides/search/full-text-search)**. BM25 ranks results that share tokens with the query; Lucene syntax adds boolean and phrase operators.
+Hybrid search combines two or more signals in a single workflow. It isn't a field type, so an index declares nothing extra for it, and any index whose schema covers at least two signals can serve it. Reach for it when no single signal orders results well, as in a catalog where part numbers and descriptive phrases are both relevant.
 
-2. **Are your queries natural language where meaning matters more than exact wording?** (Synonyms, paraphrases, conceptual similarity.) → **[Semantic search](/guides/search/semantic-search)** with a dense vector field.
+Full-text with dense is the common pairing on a document index, and sparse with dense is what a [legacy vector index](/guides/legacy/vectors-api/hybrid-search-single-index) runs, but any combination works, including all three at once. A [metadata or text-match filter](/guides/search/filter-by-metadata) can also serve as one of the signals, narrowing the pool before another one ranks what's left.
 
-3. **Do you need both keyword and semantic signals on the same data?** → **[Hybrid search](/guides/search/hybrid-search)**. Declare a `dense_vector` field alongside one or more `string` fields with `full_text_search`, then add a text-match filter to a `dense_vector` query, or run two searches and merge the results client-side.
+See [Hybrid search](/guides/search/hybrid-search) for the patterns that combine them.
 
-4. **Do you produce a learned sparse-vector representation upstream of Pinecone?** (For example, using [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0) or your own sparse encoder.) → **[Sparse-vector search](/guides/search/sparse-vector-search)**.
+## Tune search
 
-### Approach details
+Each of these works with any approach:
 
-A useful gradient: **dense** ranks on concept (semantic similarity), **full-text search** ranks on strict character-level token matching (BM25), and **sparse-vector search** sits between them — token-aware, but with learned per-token weights and term expansion.
-
-* **[Full-text search](/guides/search/full-text-search)** — **recommended** for keyword and phrase search over text content. You upsert typed JSON documents and rank with `score_by`: BM25 token matching on a `string` field with `full_text_search`, Lucene query syntax (`query_string`), `dense_vector` similarity, or `sparse_vector` similarity. A single index with a document schema can mix all four field types, so it's also the recommended single-index path when a workload needs more than one signal (BM25 + dense, BM25 + sparse, etc.).
-
-* **[Semantic search](/guides/search/semantic-search) (dense-vector)** — for queries where intent and meaning matter more than exact keyword matches (synonyms, paraphrases, conceptual similarity). Uses dense embeddings.
-
-* **[Hybrid search](/guides/search/hybrid-search)** — combines a keyword signal with a semantic signal so one query benefits from both. There are two patterns: a text-match filter on a `dense_vector` query, or client-side RRF fusion of two searches. See [Hybrid search](/guides/search/hybrid-search) to choose.
-
-* **[Sparse-vector search](/guides/search/sparse-vector-search)** — recommended for workflows that use a learned sparse-vector model (for example, [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) or where the application owns the sparse-vector representation directly. For general-purpose keyword and phrase retrieval over text, start with full-text search.
+* [Filter by metadata](/guides/search/filter-by-metadata) narrows the candidate pool before ranking, so an out-of-scope document can't take a result slot. [Text-match filters](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) do the same on full-text fields.
+* [Rerank results](/guides/search/rerank-results) reorders what a search returns, using a model that reads the query and the document together.
+* [Parallel queries](/guides/optimize/increase-throughput#parallel-queries) raise throughput when you run many searches at once.
 
 Once you've chosen an approach, see [Data modeling](/guides/indexes/data-modeling) to structure your documents or records, then [Create an index](/guides/indexes/create-an-index) to set it up.
 
-## Optimization
-
-* [Filter by metadata](/guides/search/filter-by-metadata)
-* [Rerank results](/guides/search/rerank-results)
-* [Parallel queries](/guides/optimize/increase-throughput#parallel-queries)
+> [!TIP]
+>
+> Searches consume [read units (RUs)](/guides/cost/understand-cost#read-units). See [Understand Pinecone cost](/guides/cost/understand-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.
 
 
 # Semantic search
@@ -33688,7 +33681,7 @@ Create a recurring backup schedule for a serverless or BYOC index. Backups are c
 
 ### Path parameters
 
-**index\_name** `string` *required*
+**index_name** `string` *required*
 
 The name of the index to create a backup schedule for.
 
@@ -33718,7 +33711,7 @@ The retention policy for backups created by this schedule.
 
 **retention properties**
 
-**expire\_after\_days** `integer` *required*
+**expire_after_days** `integer` *required*
 
 The number of days after which backups created by this schedule are automatically deleted.
 
@@ -34519,7 +34512,7 @@ Delete a backup schedule. This does **not** delete any backups that were previou
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule to delete.
 
@@ -34807,7 +34800,7 @@ Get the details of a specific backup schedule by its ID.
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule.
 
@@ -35129,7 +35122,7 @@ List backups created by a specific schedule. When a backup's `status` is `Schedu
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule.
 
@@ -35186,7 +35179,7 @@ List all backup schedules configured for a specific index.
 
 ### Path parameters
 
-**index\_name** `string` *required*
+**index_name** `string` *required*
 
 The name of the index to list backup schedules for.
 
@@ -35647,7 +35640,7 @@ Update a backup schedule. Send only the fields you want to change. All body fiel
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule to update.
 
@@ -35667,7 +35660,7 @@ The retention policy for backups created by this schedule.
 
 **retention properties**
 
-**expire\_after\_days** `integer`
+**expire_after_days** `integer`
 
 The number of days after which backups created by this schedule are automatically deleted.
 
@@ -44323,9 +44316,9 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
 >
 > | Platform | Architectures |
 > | :- | :- |
-> | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
-> | Linux | x86\_64, ARM64, i386 |
-> | Windows | x86\_64, i386 |
+> | macOS | Intel (x86_64), Apple Silicon (ARM64) |
+> | Linux | x86_64, ARM64, i386 |
+> | Windows | x86_64, i386 |
 
 ## Authenticate
 
@@ -50077,9 +50070,9 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
 >
 > | Platform | Architectures |
 > | :- | :- |
-> | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
-> | Linux | x86\_64, ARM64, i386 |
-> | Windows | x86\_64, i386 |
+> | macOS | Intel (x86_64), Apple Silicon (ARM64) |
+> | Linux | x86_64, ARM64, i386 |
+> | Windows | x86_64, i386 |
 
 ## Authenticate
 
@@ -55831,9 +55824,9 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
 >
 > | Platform | Architectures |
 > | :- | :- |
-> | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
-> | Linux | x86\_64, ARM64, i386 |
-> | Windows | x86\_64, i386 |
+> | macOS | Intel (x86_64), Apple Silicon (ARM64) |
+> | Linux | x86_64, ARM64, i386 |
+> | Windows | x86_64, i386 |
 
 ## Authenticate
 
@@ -61585,9 +61578,9 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
 >
 > | Platform | Architectures |
 > | :- | :- |
-> | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
-> | Linux | x86\_64, ARM64, i386 |
-> | Windows | x86\_64, i386 |
+> | macOS | Intel (x86_64), Apple Silicon (ARM64) |
+> | Linux | x86_64, ARM64, i386 |
+> | Windows | x86_64, i386 |
 
 ## Authenticate
 
@@ -64684,11 +64677,11 @@ df.head()
 
 | | title | context |
 | - | - | - |
-| 0 | University\_of\_Notre\_Dame | Architecturally, the school has a Catholic cha... |
-| 5 | University\_of\_Notre\_Dame | As at most other universities, Notre Dame's st... |
-| 10 | University\_of\_Notre\_Dame | The university is the major seat of the Congre... |
-| 15 | University\_of\_Notre\_Dame | The College of Engineering was established in ... |
-| 20 | University\_of\_Notre\_Dame | All of Notre Dame's undergraduate students are... |
+| 0 | University_of_Notre_Dame | Architecturally, the school has a Catholic cha... |
+| 5 | University_of_Notre_Dame | As at most other universities, Notre Dame's st... |
+| 10 | University_of_Notre_Dame | The university is the major seat of the Congre... |
+| 15 | University_of_Notre_Dame | The College of Engineering was established in ... |
+| 20 | University_of_Notre_Dame | All of Notre Dame's undergraduate students are... |
 
 Then convert these records into the Document format.
 
@@ -71322,9 +71315,9 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
 >
 > | Platform | Architectures |
 > | :- | :- |
-> | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
-> | Linux | x86\_64, ARM64, i386 |
-> | Windows | x86\_64, i386 |
+> | macOS | Intel (x86_64), Apple Silicon (ARM64) |
+> | Linux | x86_64, ARM64, i386 |
+> | Windows | x86_64, i386 |
 
 ## Authenticate
 
@@ -87199,11 +87192,11 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/full-text-search
 
 Search a Postgres table with BM25 keyword search and filters in SQL, using a Pinecone index that pg_pinecone keeps in sync.
 
-pg\_pinecone can keep a Pinecone index for [full-text search](/guides/search/full-text-search) in sync with a Postgres table's text columns. You declare the searchable columns once and search them with SQL, and Postgres stays the system of record.
+pg_pinecone can keep a Pinecone index for [full-text search](/guides/search/full-text-search) in sync with a Postgres table's text columns. You declare the searchable columns once and search them with SQL, and Postgres stays the system of record.
 
 ## Before you begin
 
-* [pg\_pinecone installed](/guides/pg-pinecone/quickstart).
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
 * A table with a single-column primary key, which becomes each document's ID. You must own the table.
@@ -87252,7 +87245,7 @@ SELECT pinecone.track_docs(
 );
 ```
 
-This creates a Pinecone index and queues the table's existing rows to be copied to it. Only the declared columns leave Postgres. From then on, pg\_pinecone copies every committed insert, update, and delete in the background.
+This creates a Pinecone index and queues the table's existing rows to be copied to it. Only the declared columns leave Postgres. From then on, pg_pinecone copies every committed insert, update, and delete in the background.
 
 A list of column names uses English text analysis with stemming and stop words. To set options per column, pass an object instead. For example, on a table with a `sku` column, turn off stemming and stop words so identifiers match exactly:
 
@@ -87339,7 +87332,7 @@ FROM pinecone.search_docs('tickets', 'invoice pdf', partition => 42, k => 10) s;
 
 A search covers exactly one tenant, and BM25 scores are calculated within that tenant's documents. A search without `partition` returns an error. With [`engine => 'local'`](#search-without-pinecone), `partition` becomes a condition on the column instead. `pinecone.delete_partition('tickets', 42)` deletes one tenant's documents from Pinecone, and its rows stay in the table.
 
-The partition column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg\_pinecone warns when a table has more than 1,000 distinct values.
+The partition column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg_pinecone warns when a table has more than 1,000 distinct values.
 
 ## Highlight matches
 
@@ -87374,9 +87367,9 @@ The local engine reflects writes immediately. It also works on tables you haven'
 
 ## Manage a tracked table
 
-Once a table is tracked, pg\_pinecone keeps its Pinecone index in sync on its own. These functions handle the cases that need your attention:
+Once a table is tracked, pg_pinecone keeps its Pinecone index in sync on its own. These functions handle the cases that need your attention:
 
-* **Retry rejected documents**: If Pinecone rejects a document, pg\_pinecone sets it aside without stopping the rest of the table. `pinecone.failed_docs('articles')` lists rejected documents and why, and `pinecone.retry_failed_docs('articles')` queues them again.
+* **Retry rejected documents**: If Pinecone rejects a document, pg_pinecone sets it aside without stopping the rest of the table. `pinecone.failed_docs('articles')` lists rejected documents and why, and `pinecone.retry_failed_docs('articles')` queues them again.
 * **Re-send every row**: `pinecone.backfill_docs('articles', clear => true)` copies the whole table again, for example after restoring a database backup.
 * **Change a declared column**: Stop tracking the table before you drop, rename, or change the type of a declared column.
 * **Stop tracking**: `pinecone.untrack_docs('articles', drop_index => true)` stops syncing and deletes the Pinecone index.
@@ -87412,7 +87405,7 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/overview
 
 pg_pinecone is an open-source PostgreSQL extension that runs the search engine Pinecone uses at scale inside Postgres, or on an index in Pinecone's cloud.
 
-pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine, full-text search, and semantic search also need a server setting.
+pg_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine, full-text search, and semantic search also need a server setting.
 
 > [card] [Quickstart](/guides/pg-pinecone/quickstart)
 >
@@ -87432,9 +87425,9 @@ pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0]
 
 ## How it works
 
-pg\_pinecone has three engines for a table's vector search:
+pg_pinecone has three engines for a table's vector search:
 
-* **`pgvector`**: Uses pgvector's own index, the same one you'd run without pg\_pinecone.
+* **`pgvector`**: Uses pgvector's own index, the same one you'd run without pg_pinecone.
 * **`native`**: The default. Runs the search engine Pinecone uses at scale, inside your Postgres database. It doesn't call Pinecone.
 * **`remote`**: Runs the search on an index in Pinecone's cloud instead, for a table that outgrows one server.
 
@@ -87442,7 +87435,7 @@ Your tables and queries stay the same on every engine, and you switch a table be
 
 ### Architecture
 
-![An application sends pgvector SQL to Postgres, which keeps the rows and their vector column. pg\_pinecone searches them with the native engine (the default), the pgvector engine, or the remote engine, which syncs to a Pinecone serverless index and returns the results.](https://mintcdn.com/pinecone/qIfhVY6y5p5rJ02f/images/pg-pinecone/pg-pinecone-overview-light.svg?fit=max\&auto=format\&n=qIfhVY6y5p5rJ02f\&q=85\&s=a925c57ae6c04da11de0bda31fb8041a)
+![An application sends pgvector SQL to Postgres, which keeps the rows and their vector column. pg_pinecone searches them with the native engine (the default), the pgvector engine, or the remote engine, which syncs to a Pinecone serverless index and returns the results.](https://mintcdn.com/pinecone/qIfhVY6y5p5rJ02f/images/pg-pinecone/pg-pinecone-overview-light.svg?fit=max\&auto=format\&n=qIfhVY6y5p5rJ02f\&q=85\&s=a925c57ae6c04da11de0bda31fb8041a)
 
 The diagram names these index types:
 
@@ -87456,7 +87449,7 @@ The diagram names these index types:
 * **Scale**: The `remote` engine moves a table's vector search to a Pinecone index, and Postgres keeps the rows.
 * **Unchanged queries**: A pgvector query like `ORDER BY embedding <=> $1` works the same on every engine.
 * **Tenant isolation**: With the `remote` engine, each tenant can have its own Pinecone namespace, so a query searches only that tenant's data.
-* **Full-text and semantic search**: pg\_pinecone keeps a Pinecone index in sync with a table's text columns, and you run [BM25](/guides/pg-pinecone/full-text-search), [semantic](/guides/pg-pinecone/semantic-search), or hybrid searches on it from SQL.
+* **Full-text and semantic search**: pg_pinecone keeps a Pinecone index in sync with a table's text columns, and you run [BM25](/guides/pg-pinecone/full-text-search), [semantic](/guides/pg-pinecone/semantic-search), or hybrid searches on it from SQL.
 * **SQL functions**: You can generate embeddings and rerank results in SQL. See the [SQL reference](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/reference.md).
 
 ## Choose your path
@@ -87472,27 +87465,27 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/quickstart
 
 Install the pg_pinecone extension for Postgres and search a sample table with a native index, which runs the search engine Pinecone uses at scale.
 
-This quickstart installs pg\_pinecone on a PostgreSQL server you manage. You create a sample table with vectors and search it with a `native` index, which runs the search engine Pinecone uses at scale inside Postgres. You can bring your own vectors, with no API key or network access, or have Pinecone generate embeddings. To compare `native` with the other engines, see [Storage engines](/guides/pg-pinecone/storage-engines).
+This quickstart installs pg_pinecone on a PostgreSQL server you manage. You create a sample table with vectors and search it with a `native` index, which runs the search engine Pinecone uses at scale inside Postgres. You can bring your own vectors, with no API key or network access, or have Pinecone generate embeddings. To compare `native` with the other engines, see [Storage engines](/guides/pg-pinecone/storage-engines).
 
-If you already have a table with a pgvector index, complete steps 1 and 2 to install pg\_pinecone, then [switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
+If you already have a table with a pgvector index, complete steps 1 and 2 to install pg_pinecone, then [switch from pgvector to native](/guides/pg-pinecone/switch-from-pgvector).
 
 ## Prerequisites
 
 * A PostgreSQL 17 or 18 server and a superuser role on it.
-* pgvector installed on that server, because pg\_pinecone uses its `vector` column type and distance operators. If you don't have it, run `sudo apt install postgresql-17-pgvector` on Debian or Ubuntu, or `brew install pgvector` with Homebrew on macOS. For other Linux distributions, see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation). If you install with Docker, the image includes Postgres and pgvector, so you need only Docker.
+* pgvector installed on that server, because pg_pinecone uses its `vector` column type and distance operators. If you don't have it, run `sudo apt install postgresql-17-pgvector` on Debian or Ubuntu, or `brew install pgvector` with Homebrew on macOS. For other Linux distributions, see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation). If you install with Docker, the image includes Postgres and pgvector, so you need only Docker.
 * Optional: a [Pinecone API key](https://app.pinecone.io/organizations/-/projects/-/keys), if you want Pinecone to generate the embeddings. A key from the free [Starter plan](https://www.pinecone.io/pricing/) is enough.
 
 > [!NOTE]
 >
 > The `native` engine never calls Pinecone. Steps 3 and 4 each have two tabs, so pick the same one in both. **Your own vectors** runs entirely in your database with no API key or network access, and **Pinecone embeddings** generates embeddings with a Pinecone-hosted model.
 
-## 1. Install pg\_pinecone
+## 1. Install pg_pinecone
 
 > [tab] Release archive
 >
 > 1. Download the release archive for your platform and Postgres version from the [releases page](https://github.com/pinecone-io/pg_pinecone/releases).
 >
->    Archives are published for PostgreSQL 17 and 18 on Linux x86\_64, Linux arm64, and macOS arm64. The Linux x86\_64 build needs a CPU that supports x86-64-v3 (Intel Haswell or newer, which covers current cloud instances), and the Linux builds need glibc 2.39 or later, such as Ubuntu 24.04 or Debian 13.
+>    Archives are published for PostgreSQL 17 and 18 on Linux x86_64, Linux arm64, and macOS arm64. The Linux x86_64 build needs a CPU that supports x86-64-v3 (Intel Haswell or newer, which covers current cloud instances), and the Linux builds need glibc 2.39 or later, such as Ubuntu 24.04 or Debian 13.
 >
 > 2. Extract the archive and copy its files into your Postgres installation.
 >
@@ -87512,11 +87505,11 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    cp opt/homebrew/share/postgresql@$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
 >
-> On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86\_64 CPUs, [build from source](https://github.com/pinecone-io/pg_pinecone#readme).
+> On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86_64 CPUs, [build from source](https://github.com/pinecone-io/pg_pinecone#readme).
 
 > [tab] Docker
 >
-> The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg\_pinecone added, so it includes Postgres and pgvector. It runs on x86\_64 and arm64 hosts. On x86\_64, it needs a CPU that supports x86-64-v3, like the Linux x86\_64 release archive.
+> The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg_pinecone added, so it includes Postgres and pgvector. It runs on x86_64 and arm64 hosts. On x86_64, it needs a CPU that supports x86-64-v3, like the Linux x86_64 release archive.
 >
 > 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.12.1-pg18` tag here and in the next step instead:
 >
@@ -87553,7 +87546,7 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 
    On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
 
-2. Create the extensions. Create pgvector first, because pg\_pinecone builds on its `vector` type and operators:
+2. Create the extensions. Create pgvector first, because pg_pinecone builds on its `vector` type and operators:
 
    ```sql SQL theme={null}
    CREATE EXTENSION vector;
@@ -87644,7 +87637,7 @@ With Pinecone embeddings, `pinecone.create_index()` prints an informational mess
 
 ### 2. Run a search
 
-Search with an ordinary pgvector query, the same query you'd run without pg\_pinecone. `<=>` is pgvector's cosine distance operator:
+Search with an ordinary pgvector query, the same query you'd run without pg_pinecone. `<=>` is pgvector's cosine distance operator:
 
 > [tab] Your own vectors
 >
@@ -87734,11 +87727,11 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/semantic-search
 
 Search a Postgres table by meaning in SQL, with a hosted embedding model or your own vectors, using a Pinecone index that pg_pinecone keeps in sync.
 
-pg\_pinecone can rank a Postgres table's rows by meaning with [semantic search](/guides/search/semantic-search), using a Pinecone index it keeps in sync with the table. Pinecone can embed one of the table's text columns with a hosted model, or you can store your own vectors in a vector column.
+pg_pinecone can rank a Postgres table's rows by meaning with [semantic search](/guides/search/semantic-search), using a Pinecone index it keeps in sync with the table. Pinecone can embed one of the table's text columns with a hosted model, or you can store your own vectors in a vector column.
 
 ## Before you begin
 
-* [pg\_pinecone installed](/guides/pg-pinecone/quickstart).
+* [pg_pinecone installed](/guides/pg-pinecone/quickstart).
 * A Pinecone API key stored in the database. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * `pg_pinecone` in `shared_preload_libraries`, followed by a Postgres restart. See [Preload the extension](/guides/pg-pinecone/switch-to-remote#preload-the-extension).
 * A table with a single-column primary key, which becomes each document's ID. You must own the table.
@@ -87800,11 +87793,11 @@ The two notes about search rank first, though neither contains the words "findin
 
 Keep these points in mind:
 
-* **Model settings**: pg\_pinecone passes the `embed` object to Pinecone. `model` is required, and you can also set `dimension`, `metric`, `processing_location`, `write_parameters`, and `read_parameters`. Pinecone fills in defaults for anything you leave out.
+* **Model settings**: pg_pinecone passes the `embed` object to Pinecone. `model` is required, and you can also set `dimension`, `metric`, `processing_location`, `write_parameters`, and `read_parameters`. Pinecone fills in defaults for anything you leave out.
 * **Keyword and semantic search on one column**: The column keeps its full-text index, so `mode => 'text'` still ranks it with BM25. Semantic and BM25 scores use different scales. To rank by both, run two searches and merge the results by rank.
 * **Filters**: `mode => 'embed'` works with `filter` and `must`, so you can rank by meaning within rows that match a metadata value or required text. For examples, see the [full-text search guide](/guides/pg-pinecone/full-text-search#filter-results).
 * **One embedded column**: Only one text column can set `embed`, and you can't combine it with `vector_column`.
-* **Empty text**: A row whose `embed` column is `NULL` or blank isn't indexed. If Pinecone already has a copy of that row, pg\_pinecone deletes it.
+* **Empty text**: A row whose `embed` column is `NULL` or blank isn't indexed. If Pinecone already has a copy of that row, pg_pinecone deletes it.
 
 ## Combine text and vector search
 
@@ -87849,7 +87842,7 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/storage-engines
 
 Learn how pg_pinecone's pgvector, native, and remote storage engines work, when to use each, and how to switch between them.
 
-pg\_pinecone searches a table's vector column with one of three engines: `pgvector` or `native` inside Postgres, or `remote` on Pinecone. The engine is a setting on the table's one pg\_pinecone index, so you switch engines per table. Your queries are the same on all three, so you can change engines without touching application code:
+pg_pinecone searches a table's vector column with one of three engines: `pgvector` or `native` inside Postgres, or `remote` on Pinecone. The engine is a setting on the table's one pg_pinecone index, so you switch engines per table. Your queries are the same on all three, so you can change engines without touching application code:
 
 ```sql SQL theme={null}
 SELECT id, body FROM docs ORDER BY embedding <=> $1 LIMIT 10;
@@ -87871,7 +87864,7 @@ Postgres stays the system of record with every engine. Your rows, including the 
 
 ## When to use each engine
 
-* **`pgvector`**: A table that already has a pgvector index and doesn't filter its searches. You can keep that index and add pg\_pinecone without changing anything.
+* **`pgvector`**: A table that already has a pgvector index and doesn't filter its searches. You can keep that index and add pg_pinecone without changing anything.
 * **`native`**: Filtered search, especially when the rows that match a filter are clustered, such as per-tenant data queried with `WHERE tenant_id = $1`. The `native` engine scans by cluster, so it keeps finding matches where a graph index like pgvector's [HNSW](https://github.com/pgvector/pgvector#hnsw) can miss them. It runs without an account or network access.
 * **`remote`**: A table that has outgrown a single Postgres server. Pinecone stores and searches the vectors, and Postgres keeps the rest of the row.
 
@@ -87879,8 +87872,8 @@ Postgres stays the system of record with every engine. Your rows, including the 
 
 You switch a table between `native` and `remote` with one call to `pinecone.set_engine()`, in either direction:
 
-* **To `remote`**: pg\_pinecone creates a Pinecone index and copies the table's vectors to it in the background. Queries keep using the `native` index until the copy finishes, and new writes go to both, so reads and writes are never interrupted. In version 0.10.0 and later, a table of a million rows takes up to about an hour to copy at the default settings.
-* **To `native`**: pg\_pinecone queues a rebuild of the `native` index and keeps serving queries from Pinecone until the rebuild starts. The rebuild blocks reads that use the index, and writes to the table, until it finishes. That usually takes seconds to a few minutes, depending on table size. After the rebuild, pg\_pinecone deletes the Pinecone index it created.
+* **To `remote`**: pg_pinecone creates a Pinecone index and copies the table's vectors to it in the background. Queries keep using the `native` index until the copy finishes, and new writes go to both, so reads and writes are never interrupted. In version 0.10.0 and later, a table of a million rows takes up to about an hour to copy at the default settings.
+* **To `native`**: pg_pinecone queues a rebuild of the `native` index and keeps serving queries from Pinecone until the rebuild starts. The rebuild blocks reads that use the index, and writes to the table, until it finishes. That usually takes seconds to a few minutes, depending on table size. After the rebuild, pg_pinecone deletes the Pinecone index it created.
 
 To switch a pgvector index you created with `CREATE INDEX` to `native`, create the `native` index with `pinecone.create_index()`, then drop the pgvector index. A pgvector index that `pinecone.create_index()` built switches with one call, `pinecone.set_engine('your_table', 'native')`. To switch from `native` back to `pgvector`, drop the `native` index and create the pgvector index again.
 
@@ -87906,7 +87899,7 @@ LIMIT 10;
 ```
 
 * **On `native`**: The engine applies the filter while it scans.
-* **On `remote`**: pg\_pinecone stores the column as Pinecone metadata and sends `WHERE tenant_id = $1` to Pinecone as a [metadata filter](/guides/search/filter-by-metadata). A filtered `native` index keeps its filter column when you switch it to `remote`.
+* **On `remote`**: pg_pinecone stores the column as Pinecone metadata and sends `WHERE tenant_id = $1` to Pinecone as a [metadata filter](/guides/search/filter-by-metadata). A filtered `native` index keeps its filter column when you switch it to `remote`.
 * **Other conditions**: Only `=` on the filter column is applied inside the index. Any other condition, such as a range or a second column, is applied to each batch the index returns, so a selective one can leave fewer rows than `LIMIT`. On `native`, the scan keeps going until the query has enough rows, because `pinecone.iterative_scan` defaults to `auto`. On `remote`, the scan asks Pinecone for more rows, up to 10,000, and returns an error if that's still not enough. To return the rows found instead, run `SET pinecone.iterative_scan = 'relaxed_order'`. Rows after the first batch arrive in batch order, so re-sort them if exact order matters. On the `pgvector` engine, use pgvector's own [`hnsw.iterative_scan`](https://github.com/pgvector/pgvector#iterative-index-scans) instead.
 
 The filter column must be a `smallint`, `integer`, `bigint`, `text`, or `varchar` column.
@@ -87922,7 +87915,7 @@ SELECT pinecone.create_index('docs', 'embedding', engine => 'remote', partition_
 * **Namespaces**: Each value maps to a namespace named `<schema>.<table>:<value>`, such as `public.docs:42`.
 * **Queries**: Every query must include `WHERE tenant_id = <value>`, and it searches only that tenant's namespace. A query without it returns an error instead of searching across tenants.
 * **Removing a tenant**: `pinecone.delete_partition('docs', 42)` deletes that tenant's namespace. Its rows stay in the table.
-* **Limits**: The column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg\_pinecone warns when a table has more than 1,000 distinct values.
+* **Limits**: The column must be `NOT NULL`. Pinecone limits the number of namespaces per index by plan, and pg_pinecone warns when a table has more than 1,000 distinct values.
 
 You can also set `partition_column` when you switch a filtered `native` index to `remote` with `pinecone.set_engine()`.
 
@@ -87944,11 +87937,11 @@ Source: https://docs.pinecone.io/guides/pg-pinecone/support
 Ask questions about pg_pinecone in the Pinecone Discord community, and report bugs or request features in GitHub issues.
 
 * **Questions and feedback**: Ask in the [Pinecone Discord community](https://discord.gg/tJ8V62S3sH), where other users and the Pinecone team answer.
-* **Bugs and feature requests**: Open an issue in the [pg\_pinecone repository](https://github.com/pinecone-io/pg_pinecone/issues). To propose a code change, open an issue first so the approach can be agreed on before any work starts.
+* **Bugs and feature requests**: Open an issue in the [pg_pinecone repository](https://github.com/pinecone-io/pg_pinecone/issues). To propose a code change, open an issue first so the approach can be agreed on before any work starts.
 * **Security issues**: Don't open a public issue. Email [security@pinecone.io](mailto:security@pinecone.io), or follow the [security policy](https://github.com/pinecone-io/pg_pinecone/blob/main/SECURITY.md) to report it privately on GitHub.
 * **Your Pinecone account or index**: For a problem with the Pinecone index that the `remote` engine or full-text search uses, [contact Pinecone Support](/admin/support/contact-support).
 
-When you report a bug, include your pg\_pinecone and Postgres versions, your operating system, the table's engine, and the full error message. To find the versions, run:
+When you report a bug, include your pg_pinecone and Postgres versions, your operating system, the table's engine, and the full error message. To find the versions, run:
 
 ```sql SQL theme={null}
 SELECT extversion FROM pg_extension WHERE extname = 'pg_pinecone';
@@ -87965,7 +87958,7 @@ A table with a pgvector index, such as an [HNSW index](https://github.com/pgvect
 
 ## Before you begin
 
-* pg\_pinecone installed and created in the database, as steps 1 and 2 of the [quickstart](/guides/pg-pinecone/quickstart) show.
+* pg_pinecone installed and created in the database, as steps 1 and 2 of the [quickstart](/guides/pg-pinecone/quickstart) show.
 * A table with a `vector` column and a pgvector index on that column created with `CREATE INDEX`. If `pinecone.create_index()` built the pgvector index instead, skip this guide and switch it with one call: `SELECT pinecone.set_engine('your_table', 'native');`.
 * A single-column primary key, if you plan to [switch to `remote`](/guides/pg-pinecone/switch-to-remote) later. A `native` index doesn't need one.
 
@@ -88034,7 +88027,7 @@ When a table outgrows a single Postgres server, you can move its vector search t
 
 ## Before you begin
 
-* pg\_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
+* pg_pinecone installed, as the [quickstart](/guides/pg-pinecone/quickstart) shows.
 * A Pinecone API key stored in the database, which the `remote` engine needs even if you bring your own vectors. Store it with `SELECT pinecone.set_api_key('YOUR_API_KEY');`.
 * A table with a `native` index. The examples use the `docs` table from the quickstart, so skip the quickstart's clean-up step if you want to follow along.
 
@@ -88112,7 +88105,7 @@ Switching back moves the table's search into Postgres again. Postgres still has 
 SELECT pinecone.set_engine('docs', 'native');
 ```
 
-pg\_pinecone rebuilds the `native` index from the table, then deletes the Pinecone index it created.
+pg_pinecone rebuilds the `native` index from the table, then deletes the Pinecone index it created.
 
 ### 2. Check that the switch finished
 
@@ -89944,9 +89937,9 @@ Released [`v6.3.0`](https://github.com/pinecone-io/pinecone-java-client/releases
 
 **2026-11-08**
 
-### Search by meaning in pg\_pinecone
+### Search by meaning in pg_pinecone
 
-[pg\_pinecone](/guides/pg-pinecone/overview) can now embed a table's text column with a hosted model, such as [`gemini-embedding-2`](/models/gemini-embedding-2), so you can [search by meaning](/guides/pg-pinecone/semantic-search) without a vector column. It's available in [v0.12.1](https://github.com/pinecone-io/pg_pinecone/releases/tag/v0.12.1). To upgrade an existing install, see the [operator runbook](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/runbook.md#upgrading-from-0100-and-later).
+[pg_pinecone](/guides/pg-pinecone/overview) can now embed a table's text column with a hosted model, such as [`gemini-embedding-2`](/models/gemini-embedding-2), so you can [search by meaning](/guides/pg-pinecone/semantic-search) without a vector column. It's available in [v0.12.1](https://github.com/pinecone-io/pg_pinecone/releases/tag/v0.12.1). To upgrade an existing install, see the [operator runbook](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/runbook.md#upgrading-from-0100-and-later).
 
 **2026-11-04**
 
@@ -89967,9 +89960,9 @@ For the current limits, see [Rate limits](/reference/api/database-limits/rate-li
 
 **2026-10-27**
 
-### Released pg\_pinecone
+### Released pg_pinecone
 
-[pg\_pinecone](/guides/pg-pinecone/overview), an open-source PostgreSQL extension, is now available. It brings Pinecone's vector search into the Postgres database you already run, without changes to your tables or pgvector queries. Search inside Postgres with the `native` engine, or move a table's search to a Pinecone index with the `remote` engine when it outgrows one server. Get started in the [pg\_pinecone quickstart](/guides/pg-pinecone/quickstart).
+[pg_pinecone](/guides/pg-pinecone/overview), an open-source PostgreSQL extension, is now available. It brings Pinecone's vector search into the Postgres database you already run, without changes to your tables or pgvector queries. Search inside Postgres with the `native` engine, or move a table's search to a Pinecone index with the `remote` engine when it outgrows one server. Get started in the [pg_pinecone quickstart](/guides/pg-pinecone/quickstart).
 
 **2026-10-20**
 

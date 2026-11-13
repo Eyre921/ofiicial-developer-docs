@@ -15,7 +15,7 @@ Get the details of a specific backup schedule by its ID.
 
 ### Path parameters
 
-**schedule\_id** `string` *required*
+**schedule_id** `string` *required*
 
 The ID of the backup schedule.
 

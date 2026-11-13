@@ -315,7 +315,7 @@ The response is the newly created [view object](#structure) with all fields popu
 >
 > **Filtering by multiple select or status values**
 >
-> Select, status, and multi\_select filter operators accept an array of strings to filter by multiple values at once. For example, to match Priority "Low" or "Medium":
+> Select, status, and multi_select filter operators accept an array of strings to filter by multiple values at once. For example, to match Priority "Low" or "Medium":
 >
 > ```json theme={null}
 > {
@@ -762,7 +762,7 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 | `zoom_level` | enum | **Required.** One of: `"hours"`, `"day"`, `"week"`, `"bi_week"`, `"month"`, `"quarter"`, `"year"`, `"5_years"`. |
 | `center_timestamp` | integer | Timestamp in milliseconds to center the timeline on. |
 
-**Timeline arrows\_by object:**
+**Timeline arrows_by object:**
 
 | Field | Type | Description |
 | - | - | - |

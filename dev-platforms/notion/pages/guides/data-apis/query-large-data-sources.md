@@ -38,11 +38,11 @@ if (response.request_status?.type === "incomplete") {
 }
 ```
 
-## Read every row with created\_time windows
+## Read every row with created_time windows
 
 Because the limit is per query, you can change the query to get a fresh budget. Split the data source into windows by `created_time`: sort ascending, and each time a window hits the limit, start a new query from the last row's timestamp.
 
-**1. Sort by created\_time ascending**
+**1. Sort by created_time ascending**
 
 This gives every window a stable order to walk through.
 

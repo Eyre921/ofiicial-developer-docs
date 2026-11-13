@@ -73,7 +73,7 @@ As a rule, a single p1 pod with 1M vectors of 768 dimensions each and no replica
 
 **Table 2: QPS by pod type and `top_k` value**\*
 
-| Pod type | top\_k 10 | top\_k 250 | top\_k 1000 |
+| Pod type | top_k 10 | top_k 250 | top_k 1000 |
 | - | - | - | - |
 | p1 | 30 | 25 | 20 |
 | p2 | 150 | 50 | 20 |

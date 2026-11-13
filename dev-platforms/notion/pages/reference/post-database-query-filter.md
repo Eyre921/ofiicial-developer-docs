@@ -428,9 +428,9 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | equals | string or string\[] | The value(s) to compare the status property value against.   Returns database entries where the status property value matches any of the provided values. Status group names (e.g. "To-do", "In progress", "Complete") are also accepted. | "This week" or \["To-do", "In progress"] |
-| does\_not\_equal | string or string\[] | The value(s) to compare the status property value against.   Returns database entries where the status property value does not match any of the provided values. | "Backlog" or \["Done", "Archive"] |
-| is\_empty | true | Whether the status property value does not contain data.   Returns database entries where the status property value is empty. | true |
-| is\_not\_empty | true | Whether the status property value contains data.   Returns database entries where the status property value is not empty. | true |
+| does_not_equal | string or string\[] | The value(s) to compare the status property value against.   Returns database entries where the status property value does not match any of the provided values. | "Backlog" or \["Done", "Archive"] |
+| is_empty | true | Whether the status property value does not contain data.   Returns database entries where the status property value is empty. | true |
+| is_not_empty | true | Whether the status property value contains data.   Returns database entries where the status property value is not empty. | true |
 
 ```json Example status filter condition theme={null}
 {
@@ -449,8 +449,8 @@ Use a timestamp filter condition to filter results based on `created_time` or `l
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| timestamp | created\_time last\_edited\_time | A constant string representing the type of timestamp to use as a filter. | "created\_time" |
-| created\_time last\_edited\_time | object | A date filter condition used to filter the specified timestamp. | Refer to the [date](#date) filter condition. |
+| timestamp | created_time last_edited_time | A constant string representing the type of timestamp to use as a filter. | "created_time" |
+| created_time last_edited_time | object | A date filter condition used to filter the specified timestamp. | Refer to the [date](#date) filter condition. |
 
 ```json Example timestamp filter condition for created_time theme={null}
 {
@@ -493,12 +493,12 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `does_not_equal` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value differs from the provided value. | `42` |
-| `equals` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is the same as the provided value. | `42` |
-| `greater_than` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value exceeds the provided value. | `42` |
-| `greater_than_or_equal_to` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is equal to or exceeds the provided value. | `42` |
-| `less_than` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is less than the provided value. | `42` |
-| `less_than_or_equal_to` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is equal to or is less than the provided value. | `42` |
+| `does_not_equal` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value differs from the provided value. | `42` |
+| `equals` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is the same as the provided value. | `42` |
+| `greater_than` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value exceeds the provided value. | `42` |
+| `greater_than_or_equal_to` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is equal to or exceeds the provided value. | `42` |
+| `less_than` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is less than the provided value. | `42` |
+| `less_than_or_equal_to` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is equal to or is less than the provided value. | `42` |
 
 ```json Example ID filter condition theme={null}
 {

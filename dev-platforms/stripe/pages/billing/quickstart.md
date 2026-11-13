@@ -240,7 +240,7 @@ Always keep sensitive information about your product inventory, such as price an
 
 ### Set the mode
 
-Set the mode to `subscription`. Checkout also supports [payment](https://docs.stripe.com/checkout/quickstart.md) and [setup](https://docs.stripe.com/payments/save-and-reuse.md) modes for non-recurring payments.
+Set the mode to `subscription`. Checkout also supports [payment](https://docs.stripe.com/checkout/quickstart.md) and [setup](https://docs.stripe.com/payments/checkout/save-and-reuse.md) modes for non-recurring payments.
 
 ### Supply success URL
 

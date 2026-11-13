@@ -13,14 +13,13 @@ path: docs/api-reference/audio-native/llms.txt
 
 ## API Docs
 
-- Audio Native [Create audio native project](https://elevenlabs.io/docs/api-reference/audio-native/create.md)
-- Audio Native [Get Audio Native Project Settings](https://elevenlabs.io/docs/api-reference/audio-native/get-settings.md)
-- Audio Native [Update audio native project](https://elevenlabs.io/docs/api-reference/audio-native/update.md)
-- Audio Native [Update Audio-Native Content From Url](https://elevenlabs.io/docs/api-reference/audio-native/update-content-from-url.md)
+- [Create audio native project](https://elevenlabs.io/docs/api-reference/audio-native/create.md): Audio Native
+- [Get Audio Native Project Settings](https://elevenlabs.io/docs/api-reference/audio-native/get-settings.md): Audio Native
+- [Update audio native project](https://elevenlabs.io/docs/api-reference/audio-native/update.md): Audio Native
+- [Update Audio-Native Content From Url](https://elevenlabs.io/docs/api-reference/audio-native/update-content-from-url.md): Audio Native
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

@@ -425,7 +425,7 @@ const response = await notion.pages.updateMarkdown({
 >
 > The `insert_content` and `replace_content_range` commands are still supported but are no longer recommended. They use an ellipsis-based selection format that is less precise than the search-and-replace approach of `update_content`. New connections should use `update_content` or `replace_content` instead.
 
-> [accordion] insert\_content (legacy)
+> [accordion] insert_content (legacy)
 >
 > Insert new markdown content at the start of a page, after a specific point in the page, or at the end.
 >
@@ -514,7 +514,7 @@ const response = await notion.pages.updateMarkdown({
 >
 > The `after` parameter uses an **ellipsis-based selection** format: `"start text...end text"`. This matches a range from the first occurrence of the start text to the end text. Do not provide `after` and `position` in the same request.
 
-> [accordion] replace\_content\_range (legacy)
+> [accordion] replace_content_range (legacy)
 >
 > Replace a matched range of existing content with new markdown.
 >

@@ -23,9 +23,9 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
 >
 > | Platform | Architectures |
 > | :- | :- |
-> | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
-> | Linux | x86\_64, ARM64, i386 |
-> | Windows | x86\_64, i386 |
+> | macOS | Intel (x86_64), Apple Silicon (ARM64) |
+> | Linux | x86_64, ARM64, i386 |
+> | Windows | x86_64, i386 |
 
 ## Authenticate
 

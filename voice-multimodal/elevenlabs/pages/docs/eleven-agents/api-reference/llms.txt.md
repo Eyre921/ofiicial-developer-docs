@@ -13,248 +13,246 @@ path: docs/eleven-agents/api-reference/llms.txt
 
 ## API Docs
 
-- ElevenAgents [Agent WebSockets](https://elevenlabs.io/docs/eleven-agents/api-reference/eleven-agents/websocket.md)
-- API Reference > Agents > Branches [List agent branches](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list.md)
-- API Reference > Agents > Branches [Create agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md)
-- API Reference > Agents > Branches [Get agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md)
-- API Reference > Agents > Branches [Update agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/update.md)
-- API Reference > Agents > Branches [Preview merged configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-merge.md)
-- API Reference > Agents > Branches [Merge agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/merge.md)
-- API Reference > Agents > Branches [Preview rebased configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-rebase.md)
-- API Reference > Agents > Branches [Rebase a branch onto main](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/rebase.md)
-- API Reference > Agents > Procedures [List Procedures](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/list.md)
-- API Reference > Agents > Procedures [Create Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/create.md)
-- API Reference > Agents > Procedures [Compile Procedures (legacy)](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md)
-- API Reference > Agents > Procedures [Get Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get.md)
-- API Reference > Agents > Procedures [Remove Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/remove.md)
-- API Reference > Agents > Procedures [Get Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get-draft.md)
-- API Reference > Agents > Procedures [Delete Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/delete.md)
-- API Reference > Agents > Procedures [Update Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/update.md)
-- API Reference > Agents > Merge proposals [List Proposals](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/list.md)
-- API Reference > Agents > Merge proposals [Create A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/create.md)
-- API Reference > Agents > Merge proposals [Get A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/get.md)
-- API Reference > Agents > Merge proposals [Update A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/update.md)
-- API Reference > Agents > Merge proposals [Review A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md)
-- API Reference > Agents > Merge proposals [Comment On A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/add-comment.md)
-- API Reference > Agents > Merge proposals [Merge A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md)
-- API Reference > Agents > Deployments [Create deployment](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/create.md)
-- API Reference > Agents > Deployments [List Agent Deployments](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/list.md)
-- API Reference > Agents > Drafts [Create draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/create.md)
-- API Reference > Agents > Drafts [Delete draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/delete.md)
-- API Reference > Agents > Versions [Get agent version metadata](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/versions/get.md)
-- API Reference > Agents > Hold audio [Post agent hold audio](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/create.md)
-- API Reference > Agents > Hold audio [Delete agent hold audio](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/delete.md)
-- API Reference > Agents [Create agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/create.md)
-- API Reference > Agents [Get agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get.md)
-- API Reference > Agents [List agents](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list.md)
-- API Reference > Agents [Update agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update.md)
-- API Reference > Agents [Delete agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/delete.md)
-- API Reference > Agents [Duplicate agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/duplicate.md)
-- API Reference > Agents [Get link](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link.md)
-- API Reference > Agents [Simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation.md)
-- API Reference > Agents [Stream simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation-stream.md)
-- API Reference > Agents [Calculate expected LLM usage](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/calculate.md)
-- API Reference > Agents [Get agent summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-summaries.md)
-- API Reference > Conversations > Analysis [Run conversation analysis](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-analysis.md)
-- API Reference > Conversations > Analysis [Run conversation evaluation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-evaluation.md)
-- API Reference > Conversations > Analysis items [List analysis items](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/list.md)
-- API Reference > Conversations > Analysis items [Create analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/create.md)
-- API Reference > Conversations > Analysis items [Get analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/get.md)
-- API Reference > Conversations > Analysis items [Update analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/update.md)
-- API Reference > Conversations > Analysis items [Delete analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/delete.md)
-- API Reference > Conversations > Analysis items [Update analysis item attachments](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/update-attachments.md)
-- API Reference > Conversations > Analysis items [List analysis item versions](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/list-versions.md)
-- API Reference > Conversations > Analysis items [Copy analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/copy.md)
-- API Reference > Conversations > Realtime conversation groups [List realtime conversation groups](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/list-conversation-groups.md)
-- API Reference > Conversations > Realtime conversation groups [Create realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/create-conversation-group.md)
-- API Reference > Conversations > Realtime conversation groups [Get realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/get-conversation-group.md)
-- API Reference > Conversations > Realtime conversation groups [Update realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/update-conversation-group.md)
-- API Reference > Conversations > Realtime conversation groups [Delete realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/delete-conversation-group.md)
-- API Reference > Conversations > Realtime conversation groups [Set realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/set-conversation-group.md)
-- API Reference > Conversations > Realtime conversation groups [Clear realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/clear-conversation-group.md)
-- API Reference > Conversations > Messages [Text search](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/messages/text-search.md)
-- API Reference > Conversations > Messages [Smart search](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/messages/search.md)
-- API Reference > Conversations > Topics [Get agent conversation topics](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/topics/get.md)
-- API Reference > Conversations > Tags [List tags](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/list.md)
-- API Reference > Conversations > Tags [Create tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/create.md)
-- API Reference > Conversations > Tags [Get tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/get.md)
-- API Reference > Conversations > Tags [Update tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/update.md)
-- API Reference > Conversations > Tags [Delete tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/delete.md)
-- API Reference > Conversations > Tags [Add tag to conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/assign.md)
-- API Reference > Conversations > Tags [Remove tag from conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/unassign.md)
-- API Reference > Conversations [List conversations](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/list.md)
-- API Reference > Conversations [Get conversation details](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get.md)
-- API Reference > Conversations [Get conversation summary](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-summary.md)
-- API Reference > Conversations [Delete conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete.md)
-- API Reference > Conversations [Get conversation audio](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-audio.md)
-- API Reference > Conversations [Get signed URL](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-signed-url.md)
-- API Reference > Conversations [Get conversation token](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-webrtc-token.md)
-- API Reference > Conversations [Create realtime client secret](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create-client-secret.md)
-- API Reference > Conversations [Send conversation feedback](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create.md)
-- API Reference > Conversations [Upload conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file.md)
-- API Reference > Conversations [Get conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-file.md)
-- API Reference > Conversations [Delete conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete-file.md)
-- API Reference > Conversations [Get SIP messages for a conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-sip-messages.md)
-- API Reference > Conversations [Resolve conversation reference](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/resolve.md)
-- API Reference > Triage Tickets [List workspace tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md)
-- API Reference > Triage Tickets [Create conversation ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create.md)
-- API Reference > Triage Tickets [List tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list.md)
-- API Reference > Triage Tickets [Create manual ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create-manual.md)
-- API Reference > Triage Tickets [List assignable users](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-assignable-users.md)
-- API Reference > Triage Tickets [Get ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/get.md)
-- API Reference > Triage Tickets [Update ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/update.md)
-- API Reference > Triage Tickets [Delete ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/delete.md)
-- API Reference > Triage Tickets [Add comment](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-comment.md)
-- API Reference > Triage Tickets [Add turn comment](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-turn-comment.md)
-- API Reference > Triage Tickets [Merge tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/merge.md)
-- API Reference > Users [List users](https://elevenlabs.io/docs/eleven-agents/api-reference/users/list.md)
-- API Reference > Tools [List tools](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/list.md)
-- API Reference > Tools [Get tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get.md)
-- API Reference > Tools [Create tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/create.md)
-- API Reference > Tools [Update tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/update.md)
-- API Reference > Tools [Delete tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/delete.md)
-- API Reference > Tools [Get dependent agents](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-dependent-agents.md)
-- API Reference > Tools [Get tool executions](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-executions.md)
-- API Reference > Knowledge Base > Documents [List knowledge base documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list.md)
-- API Reference > Knowledge Base > Documents [Delete knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete.md)
-- API Reference > Knowledge Base > Documents [Bulk delete knowledge base documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-delete.md)
-- API Reference > Knowledge Base > Documents [Get knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-document.md)
-- API Reference > Knowledge Base > Documents [Update knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update.md)
-- API Reference > Knowledge Base > Documents [Create knowledge base document from URL](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-url.md)
-- API Reference > Knowledge Base > Documents [Create knowledge base document from text](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-text.md)
-- API Reference > Knowledge Base > Documents [Create knowledge base document from file](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file.md)
-- API Reference > Knowledge Base > Documents [Get document content](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-content.md)
-- API Reference > Knowledge Base > Documents [Get document chunk](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md)
-- API Reference > Knowledge Base > Documents [Get source file URL](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-source-file-url.md)
-- API Reference > Knowledge Base > Documents [Refresh knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/refresh.md)
-- API Reference > Knowledge Base > Documents [Get RAG chunks for a document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md)
-- API Reference > Knowledge Base > Documents [Update document file](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update-file.md)
-- API Reference > Knowledge Base > Folders [Create folder](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-folder.md)
-- API Reference > Knowledge Base > Folders [Move document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/move-document.md)
-- API Reference > Knowledge Base > Folders [Bulk move documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md)
-- API Reference > Knowledge Base > RAG [Compute RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md)
-- API Reference > Knowledge Base > RAG [Get RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-rag-index.md)
-- API Reference > Knowledge Base > RAG [Get RAG index overview](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/rag-index-overview.md)
-- API Reference > Knowledge Base > RAG [Compute RAG index in batch](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index-batch.md)
-- API Reference > Knowledge Base > RAG [Delete RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete-rag-index.md)
-- API Reference > Knowledge Base > Crawl jobs [List crawl jobs](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list-crawl-jobs.md)
-- API Reference > Knowledge Base > Crawl jobs [Create crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-crawl-job.md)
-- API Reference > Knowledge Base > Crawl jobs [Get crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-crawl-job.md)
-- API Reference > Knowledge Base > Crawl jobs [Cancel crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md)
-- API Reference > Knowledge Base [Search knowledge base](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/search.md)
-- API Reference > Knowledge Base [Get dependent agents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-agents.md)
-- API Reference > Knowledge Base [Get dependent agents for multiple documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/dependent-agents-multiple.md)
-- API Reference > Knowledge Base [Get knowledge base size](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/size.md)
-- API Reference > Knowledge Base [Get knowledge base summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-summaries.md)
-- API Reference > Tests [List tests](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/list.md)
-- API Reference > Tests [Get test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/get.md)
-- API Reference > Tests [Create test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create.md)
-- API Reference > Tests [Update test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update.md)
-- API Reference > Tests [Delete test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/delete.md)
-- API Reference > Tests [Get test summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/summaries.md)
-- API Reference > Tests [Run tests on agent](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests.md)
-- API Reference > Tests > Test Folders [Create folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/create.md)
-- API Reference > Tests > Test Folders [Get folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/get.md)
-- API Reference > Tests > Test Folders [Update folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/update.md)
-- API Reference > Tests > Test Folders [Delete folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/delete.md)
-- API Reference > Tests > Test Folders [Bulk move tests to folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/move.md)
-- API Reference > Tests > Test Invocations [Get test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/get.md)
-- API Reference > Tests > Test Invocations [Update test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/update.md)
-- API Reference > Tests > Test Invocations [Resubmit test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/resubmit.md)
-- API Reference > Tests > Test Invocations [Cancel Test Invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/cancel.md)
-- API Reference > Tests > Test Invocations [List test invocations](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/list.md)
-- API Reference > Phone Numbers [Import phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/create.md)
-- API Reference > Phone Numbers [List phone numbers](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list.md)
-- API Reference > Phone Numbers [Get phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get.md)
-- API Reference > Phone Numbers [Update phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/update.md)
-- API Reference > Phone Numbers [Delete phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/delete.md)
-- API Reference > Phone Numbers [Get SIP messages for a phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get-sip-messages.md)
-- API Reference > Phone Numbers [List Phone Numbers Page](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list-v-2.md)
-- API Reference > Widget [Get widget](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/get.md)
-- API Reference > Widget [Create widget avatar](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/create.md)
-- API Reference > Workspace > Settings [Get settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/get.md)
-- API Reference > Workspace > Settings [Update settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/update.md)
-- API Reference > Workspace > Secrets [Get secrets](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/list.md)
-- API Reference > Workspace > Secrets [Create secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/create.md)
-- API Reference > Workspace > Secrets [Get secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get.md)
-- API Reference > Workspace > Secrets [Update secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/update.md)
-- API Reference > Workspace > Secrets [Delete secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/delete.md)
-- API Reference > Workspace > Secrets [Get secret dependencies](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies.md)
-- API Reference > Workspace > Dashboard [Get dashboard settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/get.md)
-- API Reference > Workspace > Dashboard [Update Convai Dashboard Settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/update.md)
-- API Reference > SIP Trunk [Outbound call via SIP trunk](https://elevenlabs.io/docs/eleven-agents/api-reference/sip-trunk/outbound-call.md)
-- API Reference > Integrations > Twilio [Outbound call via twilio](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/outbound-call.md)
-- API Reference > Integrations > Twilio [Register call](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/register-call.md)
-- API Reference > Integrations > Exotel [Outbound call via Exotel](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/exotel/outbound-call.md)
-- API Reference > Integrations > WhatsApp > Accounts [List WhatsApp accounts](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/list.md)
-- API Reference > Integrations > WhatsApp > Accounts [Get WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/get.md)
-- API Reference > Integrations > WhatsApp > Accounts [Update WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/update.md)
-- API Reference > Integrations > WhatsApp > Accounts [Delete WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/delete.md)
-- API Reference > Integrations > WhatsApp [Outbound call via WhatsApp](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/outbound-call.md)
-- API Reference > Integrations > WhatsApp [Outbound message via WhatsApp](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/outbound-message.md)
-- API Reference > Batch Calling [Submit batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/create.md)
-- API Reference > Batch Calling [List workspace batch calling jobs](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/list.md)
-- API Reference > Batch Calling [Get batch call information](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/get.md)
-- API Reference > Batch Calling [Export batch call results](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/export.md)
-- API Reference > Batch Calling [Cancel batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/cancel.md)
-- API Reference > Batch Calling [Retry batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/retry.md)
-- API Reference > Batch Calling [Delete batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/delete.md)
-- API Reference > Campaigns [List campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/list.md)
-- API Reference > Campaigns [Create campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/create.md)
-- API Reference > Campaigns [Get campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get.md)
-- API Reference > Campaigns [Get campaign progress](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-progress.md)
-- API Reference > Campaigns [Get follow-up requests](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-follow-up-requests.md)
-- API Reference > Campaigns [Pause campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/pause.md)
-- API Reference > Campaigns [Resume campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/resume.md)
-- API Reference > Campaigns [Stop campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/stop.md)
-- API Reference > Campaigns [Pause all campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/pause-all.md)
-- API Reference > Campaigns [Stop all campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/stop-all.md)
-- API Reference > Campaigns > Config [Get campaign config](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/config/get.md)
-- API Reference > Campaigns > Config [Replace campaign config](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/config/update.md)
-- API Reference > Campaigns > Leads [List leads](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/list.md)
-- API Reference > Campaigns > Leads [Get lead](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/get.md)
-- API Reference > Campaigns > Leads [Remove lead](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/delete.md)
-- API Reference > Campaigns > Calls [List calls](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/calls/list.md)
-- API Reference > Campaigns > Calls [Export calls](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/calls/export.md)
-- API Reference > Campaigns > Attention [List attention items](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/list.md)
-- API Reference > Campaigns > Attention [Retry attention item](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/retry.md)
-- API Reference > Campaigns > Attention [Resolve attention item](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/resolve.md)
-- API Reference > LLM [List LLMs](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/list.md)
-- API Reference > LLM [Calculate expected LLM usage](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/calculate.md)
-- API Reference > MCP [Create MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/create.md)
-- API Reference > MCP [Delete MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/delete.md)
-- API Reference > MCP [List MCP servers](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/list.md)
-- API Reference > MCP [Get MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/get.md)
-- API Reference > MCP [List MCP server tools](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/list-tools.md)
-- API Reference > MCP [Update MCP server configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/update.md)
-- API Reference > MCP > Approval Policies [Update MCP server approval policy](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/update.md)
-- API Reference > MCP > Approval Policies [Create MCP server tool approval](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/create.md)
-- API Reference > MCP > Approval Policies [Delete MCP server tool approval](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/delete.md)
-- API Reference > MCP > Tool Configuration [Create configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/create.md)
-- API Reference > MCP > Tool Configuration [Get configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/get.md)
-- API Reference > MCP > Tool Configuration [Update configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/update.md)
-- API Reference > MCP > Tool Configuration [Delete configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/delete.md)
-- API Reference > Analytics [Get live count](https://elevenlabs.io/docs/eleven-agents/api-reference/analytics/get.md)
-- API Reference > Environment Variables [List environment variables](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/list.md)
-- API Reference > Environment Variables [Create environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/create.md)
-- API Reference > Environment Variables [Get environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/get.md)
-- API Reference > Environment Variables [Update environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md)
-- API Reference > Environment Variables [Delete environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/delete.md)
-- API Reference > Environments [List environments](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/list.md)
-- API Reference > Environments [Create environment](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/create.md)
-- API Reference > Environments [Delete environment](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/delete.md)
-- API Reference > Speech Engine Upstream [Speech Engine Upstream](https://elevenlabs.io/docs/eleven-agents/api-reference/speech-engine-upstream/speech-engine-upstream.md)
+- [Agent WebSockets](https://elevenlabs.io/docs/eleven-agents/api-reference/eleven-agents/websocket.md): ElevenAgents
+- [List agent branches](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list.md): API Reference > Agents > Branches
+- [Create agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md): API Reference > Agents > Branches
+- [Get agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md): API Reference > Agents > Branches
+- [Update agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/update.md): API Reference > Agents > Branches
+- [Preview merged configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-merge.md): API Reference > Agents > Branches
+- [Merge agent branch](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/merge.md): API Reference > Agents > Branches
+- [Preview rebased configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-rebase.md): API Reference > Agents > Branches
+- [Rebase a branch onto main](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/rebase.md): API Reference > Agents > Branches
+- [List Procedures](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/list.md): API Reference > Agents > Procedures
+- [Create Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/create.md): API Reference > Agents > Procedures
+- [Compile Procedures (legacy)](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md): API Reference > Agents > Procedures
+- [Get Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get.md): API Reference > Agents > Procedures
+- [Remove Procedure](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/remove.md): API Reference > Agents > Procedures
+- [Get Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get-draft.md): API Reference > Agents > Procedures
+- [Delete Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/delete.md): API Reference > Agents > Procedures
+- [Update Procedure Draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/update.md): API Reference > Agents > Procedures
+- [List Proposals](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/list.md): API Reference > Agents > Merge proposals
+- [Create A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/create.md): API Reference > Agents > Merge proposals
+- [Get A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/get.md): API Reference > Agents > Merge proposals
+- [Update A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/update.md): API Reference > Agents > Merge proposals
+- [Review A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md): API Reference > Agents > Merge proposals
+- [Comment On A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/add-comment.md): API Reference > Agents > Merge proposals
+- [Merge A Merge Proposal](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md): API Reference > Agents > Merge proposals
+- [Create deployment](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/create.md): API Reference > Agents > Deployments
+- [List Agent Deployments](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/deployments/list.md): API Reference > Agents > Deployments
+- [Create draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/create.md): API Reference > Agents > Drafts
+- [Delete draft](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/delete.md): API Reference > Agents > Drafts
+- [Get agent version metadata](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/versions/get.md): API Reference > Agents > Versions
+- [Post agent hold audio](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/create.md): API Reference > Agents > Hold audio
+- [Delete agent hold audio](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/hold-audio/delete.md): API Reference > Agents > Hold audio
+- [Create agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/create.md): API Reference > Agents
+- [Get agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get.md): API Reference > Agents
+- [List agents](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list.md): API Reference > Agents
+- [Update agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update.md): API Reference > Agents
+- [Delete agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/delete.md): API Reference > Agents
+- [Duplicate agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/duplicate.md): API Reference > Agents
+- [Get link](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link.md): API Reference > Agents
+- [Simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation.md): API Reference > Agents
+- [Stream simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation-stream.md): API Reference > Agents
+- [Calculate expected LLM usage](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/calculate.md): API Reference > Agents
+- [Get agent summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-summaries.md): API Reference > Agents
+- [Run conversation analysis](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-analysis.md): API Reference > Conversations > Analysis
+- [Run conversation evaluation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis/run-evaluation.md): API Reference > Conversations > Analysis
+- [List analysis items](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/list.md): API Reference > Conversations > Analysis items
+- [Create analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/create.md): API Reference > Conversations > Analysis items
+- [Get analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/get.md): API Reference > Conversations > Analysis items
+- [Update analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/update.md): API Reference > Conversations > Analysis items
+- [Delete analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/delete.md): API Reference > Conversations > Analysis items
+- [Update analysis item attachments](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/update-attachments.md): API Reference > Conversations > Analysis items
+- [List analysis item versions](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/list-versions.md): API Reference > Conversations > Analysis items
+- [Copy analysis item](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/analysis-items/copy.md): API Reference > Conversations > Analysis items
+- [List realtime conversation groups](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/list-conversation-groups.md): API Reference > Conversations > Realtime conversation groups
+- [Create realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/create-conversation-group.md): API Reference > Conversations > Realtime conversation groups
+- [Get realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/get-conversation-group.md): API Reference > Conversations > Realtime conversation groups
+- [Update realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/update-conversation-group.md): API Reference > Conversations > Realtime conversation groups
+- [Delete realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/delete-conversation-group.md): API Reference > Conversations > Realtime conversation groups
+- [Set realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/set-conversation-group.md): API Reference > Conversations > Realtime conversation groups
+- [Clear realtime conversation group](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/realtime-conversation-groups/clear-conversation-group.md): API Reference > Conversations > Realtime conversation groups
+- [Text search](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/messages/text-search.md): API Reference > Conversations > Messages
+- [Smart search](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/messages/search.md): API Reference > Conversations > Messages
+- [Get agent conversation topics](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/topics/get.md): API Reference > Conversations > Topics
+- [List tags](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/list.md): API Reference > Conversations > Tags
+- [Create tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/create.md): API Reference > Conversations > Tags
+- [Get tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/get.md): API Reference > Conversations > Tags
+- [Update tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/update.md): API Reference > Conversations > Tags
+- [Delete tag](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/delete.md): API Reference > Conversations > Tags
+- [Add tag to conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/assign.md): API Reference > Conversations > Tags
+- [Remove tag from conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/unassign.md): API Reference > Conversations > Tags
+- [List conversations](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/list.md): API Reference > Conversations
+- [Get conversation details](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get.md): API Reference > Conversations
+- [Get conversation summary](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-summary.md): API Reference > Conversations
+- [Delete conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete.md): API Reference > Conversations
+- [Get conversation audio](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-audio.md): API Reference > Conversations
+- [Get signed URL](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-signed-url.md): API Reference > Conversations
+- [Get conversation token](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-webrtc-token.md): API Reference > Conversations
+- [Create realtime client secret](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create-client-secret.md): API Reference > Conversations
+- [Send conversation feedback](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create.md): API Reference > Conversations
+- [Upload conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file.md): API Reference > Conversations
+- [Get conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-file.md): API Reference > Conversations
+- [Delete conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete-file.md): API Reference > Conversations
+- [Get SIP messages for a conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-sip-messages.md): API Reference > Conversations
+- [Resolve conversation reference](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/resolve.md): API Reference > Conversations
+- [List workspace tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md): API Reference > Triage Tickets
+- [Create conversation ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create.md): API Reference > Triage Tickets
+- [List tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list.md): API Reference > Triage Tickets
+- [Create manual ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create-manual.md): API Reference > Triage Tickets
+- [List assignable users](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-assignable-users.md): API Reference > Triage Tickets
+- [Get ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/get.md): API Reference > Triage Tickets
+- [Update ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/update.md): API Reference > Triage Tickets
+- [Delete ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/delete.md): API Reference > Triage Tickets
+- [Add comment](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-comment.md): API Reference > Triage Tickets
+- [Add turn comment](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/add-turn-comment.md): API Reference > Triage Tickets
+- [Merge tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/merge.md): API Reference > Triage Tickets
+- [List users](https://elevenlabs.io/docs/eleven-agents/api-reference/users/list.md): API Reference > Users
+- [List tools](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/list.md): API Reference > Tools
+- [Get tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get.md): API Reference > Tools
+- [Create tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/create.md): API Reference > Tools
+- [Update tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/update.md): API Reference > Tools
+- [Delete tool](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/delete.md): API Reference > Tools
+- [Get dependent agents](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-dependent-agents.md): API Reference > Tools
+- [Get tool executions](https://elevenlabs.io/docs/eleven-agents/api-reference/tools/get-executions.md): API Reference > Tools
+- [List knowledge base documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list.md): API Reference > Knowledge Base > Documents
+- [Delete knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete.md): API Reference > Knowledge Base > Documents
+- [Bulk delete knowledge base documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-delete.md): API Reference > Knowledge Base > Documents
+- [Get knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-document.md): API Reference > Knowledge Base > Documents
+- [Update knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update.md): API Reference > Knowledge Base > Documents
+- [Create knowledge base document from URL](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-url.md): API Reference > Knowledge Base > Documents
+- [Create knowledge base document from text](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-text.md): API Reference > Knowledge Base > Documents
+- [Create knowledge base document from file](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file.md): API Reference > Knowledge Base > Documents
+- [Get document content](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-content.md): API Reference > Knowledge Base > Documents
+- [Get document chunk](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md): API Reference > Knowledge Base > Documents
+- [Get source file URL](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-source-file-url.md): API Reference > Knowledge Base > Documents
+- [Refresh knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/refresh.md): API Reference > Knowledge Base > Documents
+- [Get RAG chunks for a document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md): API Reference > Knowledge Base > Documents
+- [Update document file](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update-file.md): API Reference > Knowledge Base > Documents
+- [Create folder](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-folder.md): API Reference > Knowledge Base > Folders
+- [Move document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/move-document.md): API Reference > Knowledge Base > Folders
+- [Bulk move documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/bulk-move.md): API Reference > Knowledge Base > Folders
+- [Compute RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index.md): API Reference > Knowledge Base > RAG
+- [Get RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-rag-index.md): API Reference > Knowledge Base > RAG
+- [Get RAG index overview](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/rag-index-overview.md): API Reference > Knowledge Base > RAG
+- [Compute RAG index in batch](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/compute-rag-index-batch.md): API Reference > Knowledge Base > RAG
+- [Delete RAG index](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/delete-rag-index.md): API Reference > Knowledge Base > RAG
+- [List crawl jobs](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/list-crawl-jobs.md): API Reference > Knowledge Base > Crawl jobs
+- [Create crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-crawl-job.md): API Reference > Knowledge Base > Crawl jobs
+- [Get crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-crawl-job.md): API Reference > Knowledge Base > Crawl jobs
+- [Cancel crawl job](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/cancel-crawl-job.md): API Reference > Knowledge Base > Crawl jobs
+- [Search knowledge base](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/search.md): API Reference > Knowledge Base
+- [Get dependent agents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-agents.md): API Reference > Knowledge Base
+- [Get dependent agents for multiple documents](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/dependent-agents-multiple.md): API Reference > Knowledge Base
+- [Get knowledge base size](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/size.md): API Reference > Knowledge Base
+- [Get knowledge base summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-summaries.md): API Reference > Knowledge Base
+- [List tests](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/list.md): API Reference > Tests
+- [Get test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/get.md): API Reference > Tests
+- [Create test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/create.md): API Reference > Tests
+- [Update test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/update.md): API Reference > Tests
+- [Delete test](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/delete.md): API Reference > Tests
+- [Get test summaries](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/summaries.md): API Reference > Tests
+- [Run tests on agent](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/run-tests.md): API Reference > Tests
+- [Create folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/create.md): API Reference > Tests > Test Folders
+- [Get folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/get.md): API Reference > Tests > Test Folders
+- [Update folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/update.md): API Reference > Tests > Test Folders
+- [Delete folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/delete.md): API Reference > Tests > Test Folders
+- [Bulk move tests to folder](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-folders/move.md): API Reference > Tests > Test Folders
+- [Get test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/get.md): API Reference > Tests > Test Invocations
+- [Update test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/update.md): API Reference > Tests > Test Invocations
+- [Resubmit test invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/resubmit.md): API Reference > Tests > Test Invocations
+- [Cancel Test Invocation](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/cancel.md): API Reference > Tests > Test Invocations
+- [List test invocations](https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-invocations/list.md): API Reference > Tests > Test Invocations
+- [Import phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/create.md): API Reference > Phone Numbers
+- [List phone numbers](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list.md): API Reference > Phone Numbers
+- [Get phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get.md): API Reference > Phone Numbers
+- [Update phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/update.md): API Reference > Phone Numbers
+- [Delete phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/delete.md): API Reference > Phone Numbers
+- [Get SIP messages for a phone number](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/get-sip-messages.md): API Reference > Phone Numbers
+- [List Phone Numbers Page](https://elevenlabs.io/docs/eleven-agents/api-reference/phone-numbers/list-v-2.md): API Reference > Phone Numbers
+- [Get widget](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/get.md): API Reference > Widget
+- [Create widget avatar](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/create.md): API Reference > Widget
+- [Get settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/get.md): API Reference > Workspace > Settings
+- [Update settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/update.md): API Reference > Workspace > Settings
+- [Get secrets](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/list.md): API Reference > Workspace > Secrets
+- [Create secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/create.md): API Reference > Workspace > Secrets
+- [Get secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get.md): API Reference > Workspace > Secrets
+- [Update secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/update.md): API Reference > Workspace > Secrets
+- [Delete secret](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/delete.md): API Reference > Workspace > Secrets
+- [Get secret dependencies](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies.md): API Reference > Workspace > Secrets
+- [Get dashboard settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/get.md): API Reference > Workspace > Dashboard
+- [Update Convai Dashboard Settings](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/dashboard/update.md): API Reference > Workspace > Dashboard
+- [Outbound call via SIP trunk](https://elevenlabs.io/docs/eleven-agents/api-reference/sip-trunk/outbound-call.md): API Reference > SIP Trunk
+- [Outbound call via twilio](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/outbound-call.md): API Reference > Integrations > Twilio
+- [Register call](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/twilio/register-call.md): API Reference > Integrations > Twilio
+- [Outbound call via Exotel](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/exotel/outbound-call.md): API Reference > Integrations > Exotel
+- [List WhatsApp accounts](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/list.md): API Reference > Integrations > WhatsApp > Accounts
+- [Get WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/get.md): API Reference > Integrations > WhatsApp > Accounts
+- [Update WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/update.md): API Reference > Integrations > WhatsApp > Accounts
+- [Delete WhatsApp account](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/accounts/delete.md): API Reference > Integrations > WhatsApp > Accounts
+- [Outbound call via WhatsApp](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/outbound-call.md): API Reference > Integrations > WhatsApp
+- [Outbound message via WhatsApp](https://elevenlabs.io/docs/eleven-agents/api-reference/integrations/whats-app/outbound-message.md): API Reference > Integrations > WhatsApp
+- [Submit batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/create.md): API Reference > Batch Calling
+- [List workspace batch calling jobs](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/list.md): API Reference > Batch Calling
+- [Get batch call information](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/get.md): API Reference > Batch Calling
+- [Export batch call results](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/export.md): API Reference > Batch Calling
+- [Cancel batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/cancel.md): API Reference > Batch Calling
+- [Retry batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/retry.md): API Reference > Batch Calling
+- [Delete batch calling job](https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/delete.md): API Reference > Batch Calling
+- [List campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/list.md): API Reference > Campaigns
+- [Create campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/create.md): API Reference > Campaigns
+- [Get campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get.md): API Reference > Campaigns
+- [Get campaign progress](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-progress.md): API Reference > Campaigns
+- [Get follow-up requests](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/get-follow-up-requests.md): API Reference > Campaigns
+- [Pause campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/pause.md): API Reference > Campaigns
+- [Resume campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/resume.md): API Reference > Campaigns
+- [Stop campaign](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/stop.md): API Reference > Campaigns
+- [Pause all campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/pause-all.md): API Reference > Campaigns
+- [Stop all campaigns](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/stop-all.md): API Reference > Campaigns
+- [Get campaign config](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/config/get.md): API Reference > Campaigns > Config
+- [Replace campaign config](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/config/update.md): API Reference > Campaigns > Config
+- [List leads](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/list.md): API Reference > Campaigns > Leads
+- [Get lead](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/get.md): API Reference > Campaigns > Leads
+- [Remove lead](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/leads/delete.md): API Reference > Campaigns > Leads
+- [List calls](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/calls/list.md): API Reference > Campaigns > Calls
+- [Export calls](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/calls/export.md): API Reference > Campaigns > Calls
+- [List attention items](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/list.md): API Reference > Campaigns > Attention
+- [Retry attention item](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/retry.md): API Reference > Campaigns > Attention
+- [Resolve attention item](https://elevenlabs.io/docs/eleven-agents/api-reference/campaigns/attention/resolve.md): API Reference > Campaigns > Attention
+- [List LLMs](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/list.md): API Reference > LLM
+- [Calculate expected LLM usage](https://elevenlabs.io/docs/eleven-agents/api-reference/llm/calculate.md): API Reference > LLM
+- [Create MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/create.md): API Reference > MCP
+- [Delete MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/delete.md): API Reference > MCP
+- [List MCP servers](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/list.md): API Reference > MCP
+- [Get MCP server](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/get.md): API Reference > MCP
+- [List MCP server tools](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/list-tools.md): API Reference > MCP
+- [Update MCP server configuration](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/update.md): API Reference > MCP
+- [Update MCP server approval policy](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/update.md): API Reference > MCP > Approval Policies
+- [Create MCP server tool approval](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/create.md): API Reference > MCP > Approval Policies
+- [Delete MCP server tool approval](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/approval-policies/delete.md): API Reference > MCP > Approval Policies
+- [Create configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/create.md): API Reference > MCP > Tool Configuration
+- [Get configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/get.md): API Reference > MCP > Tool Configuration
+- [Update configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/update.md): API Reference > MCP > Tool Configuration
+- [Delete configuration override](https://elevenlabs.io/docs/eleven-agents/api-reference/mcp/tool-configuration/delete.md): API Reference > MCP > Tool Configuration
+- [Get live count](https://elevenlabs.io/docs/eleven-agents/api-reference/analytics/get.md): API Reference > Analytics
+- [List environment variables](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/list.md): API Reference > Environment Variables
+- [Create environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/create.md): API Reference > Environment Variables
+- [Get environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/get.md): API Reference > Environment Variables
+- [Update environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/update.md): API Reference > Environment Variables
+- [Delete environment variable](https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/delete.md): API Reference > Environment Variables
+- [List environments](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/list.md): API Reference > Environments
+- [Create environment](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/create.md): API Reference > Environments
+- [Delete environment](https://elevenlabs.io/docs/eleven-agents/api-reference/environments/delete.md): API Reference > Environments
+- [Speech Engine Upstream](https://elevenlabs.io/docs/eleven-agents/api-reference/speech-engine-upstream/speech-engine-upstream.md): API Reference > Speech Engine Upstream
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 
 
 ## AsyncAPI Specification
 
-The raw AsyncAPI 2.6.0 specification for the WebSocket channels is available at:
-- [AsyncAPI JSON](https://elevenlabs.io/docs/asyncapi.json)
-- [AsyncAPI YAML](https://elevenlabs.io/docs/asyncapi.yaml)
+- [AsyncAPI JSON](https://elevenlabs.io/docs/asyncapi.json): raw AsyncAPI 2.6.0 specification for the WebSocket channels, JSON format
+- [AsyncAPI YAML](https://elevenlabs.io/docs/asyncapi.yaml): raw AsyncAPI 2.6.0 specification for the WebSocket channels, YAML format
 

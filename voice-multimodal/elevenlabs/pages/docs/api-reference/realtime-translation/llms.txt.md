@@ -13,11 +13,10 @@ path: docs/api-reference/realtime-translation/llms.txt
 
 ## API Docs
 
-- Realtime Translation [WebSocket](https://elevenlabs.io/docs/api-reference/realtime-translation/v-1-translation-realtime.md)
+- [WebSocket](https://elevenlabs.io/docs/api-reference/realtime-translation/v-1-translation-realtime.md): Realtime Translation
 
 ## AsyncAPI Specification
 
-The raw AsyncAPI 2.6.0 specification for the WebSocket channels is available at:
-- [AsyncAPI JSON](https://elevenlabs.io/docs/asyncapi.json)
-- [AsyncAPI YAML](https://elevenlabs.io/docs/asyncapi.yaml)
+- [AsyncAPI JSON](https://elevenlabs.io/docs/asyncapi.json): raw AsyncAPI 2.6.0 specification for the WebSocket channels, JSON format
+- [AsyncAPI YAML](https://elevenlabs.io/docs/asyncapi.yaml): raw AsyncAPI 2.6.0 specification for the WebSocket channels, YAML format
 

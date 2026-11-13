@@ -6,7 +6,7 @@ path: guides/pg-pinecone/overview
 
 pg_pinecone is an open-source PostgreSQL extension that runs the search engine Pinecone uses at scale inside Postgres, or on an index in Pinecone's cloud.
 
-pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine, full-text search, and semantic search also need a server setting.
+pg_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0](https://github.com/pinecone-io/pg_pinecone/blob/main/LICENSE), that brings Pinecone's vector search into the Postgres database you already run. It runs on PostgreSQL 17 and 18 servers you manage yourself, because installing it needs superuser access. The `remote` engine, full-text search, and semantic search also need a server setting.
 
 > [card] [Quickstart](/guides/pg-pinecone/quickstart)
 >
@@ -26,9 +26,9 @@ pg\_pinecone is an open-source PostgreSQL extension, licensed under [Apache 2.0]
 
 ## How it works
 
-pg\_pinecone has three engines for a table's vector search:
+pg_pinecone has three engines for a table's vector search:
 
-* **`pgvector`**: Uses pgvector's own index, the same one you'd run without pg\_pinecone.
+* **`pgvector`**: Uses pgvector's own index, the same one you'd run without pg_pinecone.
 * **`native`**: The default. Runs the search engine Pinecone uses at scale, inside your Postgres database. It doesn't call Pinecone.
 * **`remote`**: Runs the search on an index in Pinecone's cloud instead, for a table that outgrows one server.
 
@@ -36,7 +36,7 @@ Your tables and queries stay the same on every engine, and you switch a table be
 
 ### Architecture
 
-![An application sends pgvector SQL to Postgres, which keeps the rows and their vector column. pg\_pinecone searches them with the native engine (the default), the pgvector engine, or the remote engine, which syncs to a Pinecone serverless index and returns the results.](https://mintcdn.com/pinecone/qIfhVY6y5p5rJ02f/images/pg-pinecone/pg-pinecone-overview-light.svg?fit=max\&auto=format\&n=qIfhVY6y5p5rJ02f\&q=85\&s=a925c57ae6c04da11de0bda31fb8041a)
+![An application sends pgvector SQL to Postgres, which keeps the rows and their vector column. pg_pinecone searches them with the native engine (the default), the pgvector engine, or the remote engine, which syncs to a Pinecone serverless index and returns the results.](https://mintcdn.com/pinecone/qIfhVY6y5p5rJ02f/images/pg-pinecone/pg-pinecone-overview-light.svg?fit=max\&auto=format\&n=qIfhVY6y5p5rJ02f\&q=85\&s=a925c57ae6c04da11de0bda31fb8041a)
 
 The diagram names these index types:
 
@@ -50,7 +50,7 @@ The diagram names these index types:
 * **Scale**: The `remote` engine moves a table's vector search to a Pinecone index, and Postgres keeps the rows.
 * **Unchanged queries**: A pgvector query like `ORDER BY embedding <=> $1` works the same on every engine.
 * **Tenant isolation**: With the `remote` engine, each tenant can have its own Pinecone namespace, so a query searches only that tenant's data.
-* **Full-text and semantic search**: pg\_pinecone keeps a Pinecone index in sync with a table's text columns, and you run [BM25](/guides/pg-pinecone/full-text-search), [semantic](/guides/pg-pinecone/semantic-search), or hybrid searches on it from SQL.
+* **Full-text and semantic search**: pg_pinecone keeps a Pinecone index in sync with a table's text columns, and you run [BM25](/guides/pg-pinecone/full-text-search), [semantic](/guides/pg-pinecone/semantic-search), or hybrid searches on it from SQL.
 * **SQL functions**: You can generate embeddings and rerank results in SQL. See the [SQL reference](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/reference.md).
 
 ## Choose your path

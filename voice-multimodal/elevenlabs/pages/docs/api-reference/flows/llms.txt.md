@@ -13,24 +13,23 @@ path: docs/api-reference/flows/llms.txt
 
 ## API Docs
 
-- Video [List Video Generations](https://elevenlabs.io/docs/api-reference/flows/video/list.md)
-- Video [Create Video Generation](https://elevenlabs.io/docs/api-reference/flows/video/create.md)
-- Video [Get Video Generation](https://elevenlabs.io/docs/api-reference/flows/video/get.md)
-- Image [List Image Generations](https://elevenlabs.io/docs/api-reference/flows/image/list.md)
-- Image [Create Image Generation](https://elevenlabs.io/docs/api-reference/flows/image/create.md)
-- Image [Get Image Generation](https://elevenlabs.io/docs/api-reference/flows/image/get.md)
-- Text to Speech [List Speech Generations](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/list.md)
-- Text to Speech [Create Speech Generation](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/create.md)
-- Text to Speech [Get Speech Generation](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/get.md)
-- Templates [List Templates](https://elevenlabs.io/docs/api-reference/flows/templates/list.md)
-- Templates [Get Template](https://elevenlabs.io/docs/api-reference/flows/templates/get.md)
-- Runs [List Template Runs](https://elevenlabs.io/docs/api-reference/flows/templates/runs/list.md)
-- Runs [Create Template Run](https://elevenlabs.io/docs/api-reference/flows/templates/runs/create.md)
-- Runs [Get Template Run](https://elevenlabs.io/docs/api-reference/flows/templates/runs/get.md)
+- [List Video Generations](https://elevenlabs.io/docs/api-reference/flows/video/list.md): Video
+- [Create Video Generation](https://elevenlabs.io/docs/api-reference/flows/video/create.md): Video
+- [Get Video Generation](https://elevenlabs.io/docs/api-reference/flows/video/get.md): Video
+- [List Image Generations](https://elevenlabs.io/docs/api-reference/flows/image/list.md): Image
+- [Create Image Generation](https://elevenlabs.io/docs/api-reference/flows/image/create.md): Image
+- [Get Image Generation](https://elevenlabs.io/docs/api-reference/flows/image/get.md): Image
+- [List Speech Generations](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/list.md): Text to Speech
+- [Create Speech Generation](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/create.md): Text to Speech
+- [Get Speech Generation](https://elevenlabs.io/docs/api-reference/flows/text-to-speech/get.md): Text to Speech
+- [List Templates](https://elevenlabs.io/docs/api-reference/flows/templates/list.md): Templates
+- [Get Template](https://elevenlabs.io/docs/api-reference/flows/templates/get.md): Templates
+- [List Template Runs](https://elevenlabs.io/docs/api-reference/flows/templates/runs/list.md): Runs
+- [Create Template Run](https://elevenlabs.io/docs/api-reference/flows/templates/runs/create.md): Runs
+- [Get Template Run](https://elevenlabs.io/docs/api-reference/flows/templates/runs/get.md): Runs
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

@@ -170,7 +170,7 @@ On a document index, you choose a scoring method per query with `score_by`. The 
 * `embed`: Vector similarity, with Pinecone embedding the query text using the field's `embed` model.
 * `sparse_embed`: Sparse-vector similarity, with Pinecone embedding the query text using the field's `sparse_embed` model.
 
-You can combine several `text` and `query_string` clauses in one query. Any other type must be the only clause. To combine a keyword signal with a dense signal, restrict a dense search with a text-match [filter](#metadata-filters), or run separate searches and merge the results client-side.
+You can combine several `text` and `query_string` clauses in one query. Any other type must be the only clause. To combine two or more signals, restrict a dense search with a text-match [filter](#metadata-filters), or run separate searches and merge the results client-side.
 
 ### Metadata filters
 

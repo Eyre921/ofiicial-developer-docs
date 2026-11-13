@@ -20,7 +20,7 @@ The Setup Intents API is useful for businesses that onboard customers but don’
 - A crowdfunding website that collects card details to be charged later, only if the campaign reaches a certain amount
 - A utility company that charges a different amount each month based on usage but collects SEPA payment details before the first month’s payment
 
-> You can also set up payment methods for future use when you do charge them during [Checkout](https://docs.stripe.com/payments/save-and-reuse.md?platform=checkout).
+> You can also set up payment methods for future use when you do charge them during [Checkout](https://docs.stripe.com/payments/checkout/save-during-payment.md).
 
 #### Get started
 

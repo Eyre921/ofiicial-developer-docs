@@ -1,4 +1,4 @@
-> This is part 1 of 15 of the full documentation (pages 1–100 of 1409).
+> This is part 1 of 15 of the full documentation (pages 1–100 of 1410).
 > The content is paginated: fetch every part to see all of it.
 > Next part: https://docs.n8n.io/llms-full.txt/1
 > Page index: https://docs.n8n.io/llms.txt
@@ -128,7 +128,7 @@ Some features require certain paid plan subscriptions, including:
 * Workflow and credential sharing
 * Version control using Git
 
-Feature availability changes over time and differs by plan and edition. For exactly what each plan and edition includes, the [pricing page](https://n8n.io/pricing/) is the definitive source. See also [Compare plans and editions](/deploy/host-n8n/community-edition-features) for how the self-hosted plans and editions differ.
+Feature availability changes over time and differs by plan and edition. For exactly what each plan and edition includes, the [pricing page](https://n8n.io/pricing/) is the definitive source. See also [Compare plans and editions](/deploy/host-n8n/community-edition-features) for how the self-hosted plans and editions differ. For how your plan, platform, and n8n version determine access, and how maturity status (Preview, GA, deprecated, or removed) affects whether you can rely on a feature, see [Understand feature availability](/administer/understand-feature-availability).
 
 ## Getting started <a href="#getting-started" id="getting-started"></a>
 
@@ -966,7 +966,7 @@ The release track sets which n8n release stream your instance follows. n8n tests
 * **Beta**: new releases delivered as soon as they're ready. Choose Beta to try the latest features first.
 * **Stable**: a later, more proven patch of a release, cut after it's spent time on the Beta track. n8n recommends Stable for all mission-critical workloads.
 
-You can switch between tracks at any time.
+You can switch between tracks at any time. For how n8n versions and feature availability relate to your release track, see [Understand feature availability](/administer/understand-feature-availability#feature-availability-by-n8n-version).
 
 ## Update cadence
 
@@ -2470,7 +2470,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2728,7 +2728,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -3100,7 +3100,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3202,7 +3202,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3572,7 +3572,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -4520,7 +4520,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -4736,7 +4736,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -5019,7 +5019,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -6313,7 +6313,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.47.5 Current `beta`: 2.48.2
+Current `stable`: 2.47.7 Current `beta`: 2.48.4
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -7414,26 +7414,28 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 
 You can run n8n in different modes depending on your needs. Queue mode provides the best scalability. Refer to [Queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode) for more information.
 
-| Variable                                          | Type    | Default     | Description                                                                                                                                                                                                                                                                                                                                       |
-| ------------------------------------------------- | ------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS`            | Boolean | `false`     | Set to `true` if you want manual executions to run on the worker rather than on main.                                                                                                                                                                                                                                                             |
-| `QUEUE_BULL_PREFIX`                               | String  | -           | Prefix to use for all queue keys.                                                                                                                                                                                                                                                                                                                 |
-| `QUEUE_BULL_REDIS_DB`                             | Number  | `0`         | The Redis database used.                                                                                                                                                                                                                                                                                                                          |
-| `QUEUE_BULL_REDIS_HOST`                           | String  | `localhost` | The Redis host.                                                                                                                                                                                                                                                                                                                                   |
-| `QUEUE_BULL_REDIS_PORT`                           | Number  | `6379`      | The Redis port used.                                                                                                                                                                                                                                                                                                                              |
-| `QUEUE_BULL_REDIS_USERNAME`                       | String  | -           | The Redis username (needs Redis version 6 or above). Don't define it for Redis < 6 compatibility                                                                                                                                                                                                                                                  |
-| `QUEUE_BULL_REDIS_PASSWORD`                       | String  | -           | The Redis password.                                                                                                                                                                                                                                                                                                                               |
-| `QUEUE_BULL_REDIS_TIMEOUT_THRESHOLD`              | Number  | `10000`     | The Redis timeout threshold (in ms).                                                                                                                                                                                                                                                                                                              |
-| `QUEUE_BULL_REDIS_CLUSTER_NODES`                  | String  | -           | Expects a comma-separated list of Redis Cluster nodes in the format `host:port`, for the Redis client to initially connect to. If running in queue mode (`EXECUTIONS_MODE = queue`), setting this variable will create a Redis Cluster client instead of a Redis client, and n8n will ignore `QUEUE_BULL_REDIS_HOST` and `QUEUE_BULL_REDIS_PORT`. |
-| `QUEUE_BULL_REDIS_TLS`                            | Boolean | `false`     | Enable TLS on Redis connections.                                                                                                                                                                                                                                                                                                                  |
-| `QUEUE_BULL_REDIS_DUALSTACK`                      | Boolean | `false`     | Enable dual-stack support (IPv4 and IPv6) on Redis connections.                                                                                                                                                                                                                                                                                   |
-| `QUEUE_WORKER_TIMEOUT` (**deprecated**)           | Number  | `30`        | Deprecated from n8n 1.22.0. Use `N8N_GRACEFUL_SHUTDOWN_TIMEOUT` instead. How long should n8n wait (seconds) for running executions before exiting worker process on shutdown.                                                                                                                                                                     |
-| `QUEUE_HEALTH_CHECK_ACTIVE`                       | Boolean | `false`     | Whether to enable health checks (true) or disable (false).                                                                                                                                                                                                                                                                                        |
-| `QUEUE_HEALTH_CHECK_PORT`                         | Number  | `5678`      | The port to serve health checks on. If you experience a port conflict error when starting a worker server using its default port, change this.                                                                                                                                                                                                    |
-| `QUEUE_WORKER_LOCK_DURATION`                      | Number  | `60000`     | How long (in ms) is the lease period for a worker to work on a message.                                                                                                                                                                                                                                                                           |
-| `QUEUE_WORKER_LOCK_RENEW_TIME`                    | Number  | `10000`     | How frequently (in ms) should a worker renew the lease time.                                                                                                                                                                                                                                                                                      |
-| `QUEUE_WORKER_STALLED_INTERVAL`                   | Number  | `30000`     | How often should a worker check for stalled jobs (use 0 for never).                                                                                                                                                                                                                                                                               |
-| `QUEUE_WORKER_MAX_STALLED_COUNT` (**deprecated**) | Number  | `1`         | **Deprecated** Removed in n8n 2.0. Setting this has no effect. See [Remove QUEUE\_WORKER\_MAX\_STALLED\_COUNT](/changelog/v20-breaking-changes#remove-queueworkermaxstalledcount) for migration details.                                                                                                                                          |
+| Variable                                          | Type    | Default     | Description                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------------------------------------- | ------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS`            | Boolean | `false`     | Set to `true` if you want manual executions to run on the worker rather than on main.                                                                                                                                                                                                                                                                                                                                                    |
+| `QUEUE_BULL_PREFIX`                               | String  | -           | Prefix to use for all queue keys.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `N8N_REDIS_KEY_PREFIX`                            | String  | `n8n`       | Prefix for Redis keys and pub/sub channels outside the job queue, such as the multi-main leader key, messages between main and worker instances, the cache, and locks. If two or more n8n deployments share one Redis, give each deployment a different value. Use the same value on every main and worker of a deployment. Before n8n 2.3.0, the prefix doesn't apply to pub/sub channels, so use a separate Redis for each deployment. |
+| `N8N_CACHE_REDIS_KEY_PREFIX`                      | String  | `cache`     | Prefix for cache keys in Redis. n8n adds it after `N8N_REDIS_KEY_PREFIX`, for example `n8n:cache`.                                                                                                                                                                                                                                                                                                                                       |
+| `QUEUE_BULL_REDIS_DB`                             | Number  | `0`         | The Redis database used.                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `QUEUE_BULL_REDIS_HOST`                           | String  | `localhost` | The Redis host.                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `QUEUE_BULL_REDIS_PORT`                           | Number  | `6379`      | The Redis port used.                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `QUEUE_BULL_REDIS_USERNAME`                       | String  | -           | The Redis username (needs Redis version 6 or above). Don't define it for Redis < 6 compatibility                                                                                                                                                                                                                                                                                                                                         |
+| `QUEUE_BULL_REDIS_PASSWORD`                       | String  | -           | The Redis password.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `QUEUE_BULL_REDIS_TIMEOUT_THRESHOLD`              | Number  | `10000`     | The Redis timeout threshold (in ms).                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `QUEUE_BULL_REDIS_CLUSTER_NODES`                  | String  | -           | Expects a comma-separated list of Redis Cluster nodes in the format `host:port`, for the Redis client to initially connect to. If running in queue mode (`EXECUTIONS_MODE = queue`), setting this variable will create a Redis Cluster client instead of a Redis client, and n8n will ignore `QUEUE_BULL_REDIS_HOST` and `QUEUE_BULL_REDIS_PORT`.                                                                                        |
+| `QUEUE_BULL_REDIS_TLS`                            | Boolean | `false`     | Enable TLS on Redis connections.                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `QUEUE_BULL_REDIS_DUALSTACK`                      | Boolean | `false`     | Enable dual-stack support (IPv4 and IPv6) on Redis connections.                                                                                                                                                                                                                                                                                                                                                                          |
+| `QUEUE_WORKER_TIMEOUT` (**deprecated**)           | Number  | `30`        | Deprecated from n8n 1.22.0. Use `N8N_GRACEFUL_SHUTDOWN_TIMEOUT` instead. How long should n8n wait (seconds) for running executions before exiting worker process on shutdown.                                                                                                                                                                                                                                                            |
+| `QUEUE_HEALTH_CHECK_ACTIVE`                       | Boolean | `false`     | Whether to enable health checks (true) or disable (false).                                                                                                                                                                                                                                                                                                                                                                               |
+| `QUEUE_HEALTH_CHECK_PORT`                         | Number  | `5678`      | The port to serve health checks on. If you experience a port conflict error when starting a worker server using its default port, change this.                                                                                                                                                                                                                                                                                           |
+| `QUEUE_WORKER_LOCK_DURATION`                      | Number  | `60000`     | How long (in ms) is the lease period for a worker to work on a message.                                                                                                                                                                                                                                                                                                                                                                  |
+| `QUEUE_WORKER_LOCK_RENEW_TIME`                    | Number  | `10000`     | How frequently (in ms) should a worker renew the lease time.                                                                                                                                                                                                                                                                                                                                                                             |
+| `QUEUE_WORKER_STALLED_INTERVAL`                   | Number  | `30000`     | How often should a worker check for stalled jobs (use 0 for never).                                                                                                                                                                                                                                                                                                                                                                      |
+| `QUEUE_WORKER_MAX_STALLED_COUNT` (**deprecated**) | Number  | `1`         | **Deprecated** Removed in n8n 2.0. Setting this has no effect. See [Remove QUEUE\_WORKER\_MAX\_STALLED\_COUNT](/changelog/v20-breaking-changes#remove-queueworkermaxstalledcount) for migration details.                                                                                                                                                                                                                                 |
 
 ## Webhook responses
 

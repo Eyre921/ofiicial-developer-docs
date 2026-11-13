@@ -198,7 +198,7 @@ Always keep sensitive information about your product inventory, such as price an
 
 ### Choose the mode
 
-To handle different transaction types, adjust the `mode` parameter. For one-time payments, use `payment`. To initiate recurring payments with [subscriptions](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md?payment-ui=checkout&ui=embedded-page), switch the `mode` to `subscription`. And for [setting up future payments](https://docs.stripe.com/payments/save-and-reuse.md?platform=web&ui=embedded-page), set the `mode` to `setup`.
+To handle different transaction types, adjust the `mode` parameter. For one-time payments, use `payment`. To initiate recurring payments with [subscriptions](https://docs.stripe.com/billing/subscriptions/build-subscriptions.md?payment-ui=checkout&ui=embedded-page), switch the `mode` to `subscription`. And for [setting up future payments](https://docs.stripe.com/payments/checkout/save-and-reuse.md?payment-ui=embedded-page), set the `mode` to `setup`.
 
 ### Add Stripe to your React app
 

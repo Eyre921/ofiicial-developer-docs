@@ -13,11 +13,10 @@ path: docs/api-reference/workspace/audit-logs/llms.txt
 
 ## API Docs
 
-- Audit Logs [List audit logs](https://elevenlabs.io/docs/api-reference/workspace/audit-logs/list.md)
+- [List audit logs](https://elevenlabs.io/docs/api-reference/workspace/audit-logs/list.md): Audit Logs
 
 ## OpenAPI Specification
 
-The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json)
-- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml)
+- [OpenAPI JSON](https://elevenlabs.io/docs/openapi.json): raw OpenAPI 3.1 specification for this API, JSON format
+- [OpenAPI YAML](https://elevenlabs.io/docs/openapi.yaml): raw OpenAPI 3.1 specification for this API, YAML format
 

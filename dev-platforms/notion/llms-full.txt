@@ -1548,271 +1548,271 @@ When available, applicable events include a top-level `team_ids` array containin
 ### Page events
 
 * **page.archived**: A page was archived.
-* **page.button\_automation\_created**: A [button](https://www.notion.so/help/template-buttons) automation was created on a page.
-* **page.button\_automation\_updated**: A [button](https://www.notion.so/help/template-buttons) automation was updated on a page.
-* **page.comments\_read**: A user viewed comments on a page.
-* **page.content\_edited**: The content of an existing page was edited by a user. Page content is also known as a [block](https://www.notion.so/help/what-is-a-block). Content edit events are consolidated into one event every minute while edits are occurring.
+* **page.button_automation_created**: A [button](https://www.notion.so/help/template-buttons) automation was created on a page.
+* **page.button_automation_updated**: A [button](https://www.notion.so/help/template-buttons) automation was updated on a page.
+* **page.comments_read**: A user viewed comments on a page.
+* **page.content_edited**: The content of an existing page was edited by a user. Page content is also known as a [block](https://www.notion.so/help/what-is-a-block). Content edit events are consolidated into one event every minute while edits are occurring.
 * **page.created**: A new page nested under a parent page was created by a user.
 * **page.deleted**: A page was deleted by a user. Deleted pages may be restored in the future.
 * **page.discussion.comment.created**: A comment on a page was created by a user.
 * **page.discussion.comment.deleted**: A comment on a page was deleted by a user.
 * **page.discussion.comment.updated**: A comment on a page was edited by a user. Comment edit events are consolidated into one event every minute while edits are occurring.
 * **page.exported**: A page was exported to a PDF, HTML, or Markdown file by a user.
-* **page.file\_deleted**: A file was deleted from a page by a user.
-* **page.file\_downloaded**: A file in a page was downloaded or opened by a user.
-* **page.file\_uploaded**: A file was uploaded to a page by a user.
+* **page.file_deleted**: A file was deleted from a page by a user.
+* **page.file_downloaded**: A file in a page was downloaded or opened by a user.
+* **page.file_uploaded**: A file was uploaded to a page by a user.
 * **page.locked**: A page was locked to prevent further editing.
-* **page.meeting\_notes.audio\_recording.downloaded**: A user downloaded an audio recording from an AI Meeting Notes block.
-* **page.meeting\_notes.consent.confirmed**: A user confirmed consent to start an AI Meeting Notes transcription.
+* **page.meeting_notes.audio_recording.downloaded**: A user downloaded an audio recording from an AI Meeting Notes block.
+* **page.meeting_notes.consent.confirmed**: A user confirmed consent to start an AI Meeting Notes transcription.
 * **page.moved**: A page was relocated by a user, i.e. the page's parent page updated.
-* **page.permanently\_deleted**: A page was permanently deleted from Trash. This can be done by a user, or automatically by Notion after 30 days, or within a [custom time frame](https://www.notion.com/help/custom-data-retention-settings) on Enterprise Plans.
-* **page.permissions.group\_role\_added**: A workspace group's page permissions were added, which will allow them to access the page.
-* **page.permissions.group\_role\_removed**: A group's page permissions were removed for a page, which will restrict them from having access to the page.
-* **page.permissions.group\_role\_updated**: A workspace group's page permissions were updated, changing their type of access.
-* **page.permissions.guest\_role\_added**: A guest's page permissions were added, which will allow them to access the page.
-* **page.permissions.guest\_role\_removed**: A guest's page permissions were removed, which will restrict them from having access to the page.
-* **page.permissions.guest\_role\_updated**: A guest's page permissions were updated, changing their type of access.
-* **page.permissions.integration\_role\_added**: A user added an [integration](https://www.notion.so/help/add-and-manage-connections-with-the-api) to a page. Integrations of any type — internal or public/external — will trigger this event.
-* **page.permissions.integration\_role\_removed**: A user removed the page permissions for an integration (or "connection"), which will restrict the integration from having access to the page. Integrations of any type — internal or public/external — will trigger this event.
-* **page.permissions.integration\_role\_updated**: A user updated the page permissions of an integration (or "connection"). Integrations of any type — internal or public/external — will trigger this event.
-* **page.permissions.member\_role\_added**: A member's page permissions were added, which will allow them to access the page.
-* **page.permissions.member\_role\_removed**: A member's page permissions were removed, which will restrict them from having access to the page.
-* **page.permissions.member\_role\_updated**: A member's page permissions were updated, changing their type of access.
-* **page.permissions.shared\_to\_public\_role\_added**: A user enabled sharing a page to the public web.
-* **page.permissions.shared\_to\_public\_role\_removed**: A user disabled sharing a page to the public web.
-* **page.permissions.shared\_to\_public\_role\_updated**: A user updated the public sharing settings for a page.
-* **page.permissions.shared\_with\_email\_domain\_role\_added**: A user granted page access to users with a specific email domain.
-* **page.permissions.shared\_with\_email\_domain\_role\_removed**: A user removed page access for users with a specific email domain.
-* **page.permissions.space\_role\_added**: Workspace-wide page permissions were added, allowing all workspace members to access the page.
-* **page.permissions.space\_role\_removed**: Workspace-wide page permissions were removed, restricting access to the page.
-* **page.permissions.space\_role\_updated**: Workspace-wide page permissions were updated, changing the type of access for all workspace members.
-* **page.permissions.team\_guest\_role\_added**: A teamspace guest's page permissions were added, allowing them to access the page.
-* **page.permissions.team\_guest\_role\_removed**: A teamspace guest's page permissions were removed, restricting them from accessing the page.
-* **page.permissions.team\_guest\_role\_updated**: A teamspace guest's page permissions were updated, changing their type of access.
-* **page.permissions.team\_owner\_role\_added**: A teamspace owner's page permissions were added, allowing them to access the page.
-* **page.permissions.team\_owner\_role\_removed**: A teamspace owner's page permissions were removed, restricting them from accessing the page.
-* **page.permissions.team\_owner\_role\_updated**: A teamspace owner's page permissions were updated, changing their type of access.
-* **page.permissions.team\_role\_added**: A teamspace's page permissions were added, allowing teamspace members to access the page.
-* **page.permissions.team\_role\_removed**: A teamspace's page permissions were removed, restricting teamspace members from accessing the page.
-* **page.permissions.team\_role\_updated**: A teamspace's page permissions were updated, changing the type of access for teamspace members.
-* **page.properties\_edited**: A user edited a page's property, like a page title or a database property.
-* **page.property.permissions.role\_added**: A user added someone to a person property that controls access to a property on a page.
-* **page.property.permissions.role\_removed**: A user removed someone from a person property that controls access to a property on a page.
+* **page.permanently_deleted**: A page was permanently deleted from Trash. This can be done by a user, or automatically by Notion after 30 days, or within a [custom time frame](https://www.notion.com/help/custom-data-retention-settings) on Enterprise Plans.
+* **page.permissions.group_role_added**: A workspace group's page permissions were added, which will allow them to access the page.
+* **page.permissions.group_role_removed**: A group's page permissions were removed for a page, which will restrict them from having access to the page.
+* **page.permissions.group_role_updated**: A workspace group's page permissions were updated, changing their type of access.
+* **page.permissions.guest_role_added**: A guest's page permissions were added, which will allow them to access the page.
+* **page.permissions.guest_role_removed**: A guest's page permissions were removed, which will restrict them from having access to the page.
+* **page.permissions.guest_role_updated**: A guest's page permissions were updated, changing their type of access.
+* **page.permissions.integration_role_added**: A user added an [integration](https://www.notion.so/help/add-and-manage-connections-with-the-api) to a page. Integrations of any type — internal or public/external — will trigger this event.
+* **page.permissions.integration_role_removed**: A user removed the page permissions for an integration (or "connection"), which will restrict the integration from having access to the page. Integrations of any type — internal or public/external — will trigger this event.
+* **page.permissions.integration_role_updated**: A user updated the page permissions of an integration (or "connection"). Integrations of any type — internal or public/external — will trigger this event.
+* **page.permissions.member_role_added**: A member's page permissions were added, which will allow them to access the page.
+* **page.permissions.member_role_removed**: A member's page permissions were removed, which will restrict them from having access to the page.
+* **page.permissions.member_role_updated**: A member's page permissions were updated, changing their type of access.
+* **page.permissions.shared_to_public_role_added**: A user enabled sharing a page to the public web.
+* **page.permissions.shared_to_public_role_removed**: A user disabled sharing a page to the public web.
+* **page.permissions.shared_to_public_role_updated**: A user updated the public sharing settings for a page.
+* **page.permissions.shared_with_email_domain_role_added**: A user granted page access to users with a specific email domain.
+* **page.permissions.shared_with_email_domain_role_removed**: A user removed page access for users with a specific email domain.
+* **page.permissions.space_role_added**: Workspace-wide page permissions were added, allowing all workspace members to access the page.
+* **page.permissions.space_role_removed**: Workspace-wide page permissions were removed, restricting access to the page.
+* **page.permissions.space_role_updated**: Workspace-wide page permissions were updated, changing the type of access for all workspace members.
+* **page.permissions.team_guest_role_added**: A teamspace guest's page permissions were added, allowing them to access the page.
+* **page.permissions.team_guest_role_removed**: A teamspace guest's page permissions were removed, restricting them from accessing the page.
+* **page.permissions.team_guest_role_updated**: A teamspace guest's page permissions were updated, changing their type of access.
+* **page.permissions.team_owner_role_added**: A teamspace owner's page permissions were added, allowing them to access the page.
+* **page.permissions.team_owner_role_removed**: A teamspace owner's page permissions were removed, restricting them from accessing the page.
+* **page.permissions.team_owner_role_updated**: A teamspace owner's page permissions were updated, changing their type of access.
+* **page.permissions.team_role_added**: A teamspace's page permissions were added, allowing teamspace members to access the page.
+* **page.permissions.team_role_removed**: A teamspace's page permissions were removed, restricting teamspace members from accessing the page.
+* **page.permissions.team_role_updated**: A teamspace's page permissions were updated, changing the type of access for teamspace members.
+* **page.properties_edited**: A user edited a page's property, like a page title or a database property.
+* **page.property.permissions.role_added**: A user added someone to a person property that controls access to a property on a page.
+* **page.property.permissions.role_removed**: A user removed someone from a person property that controls access to a property on a page.
 * **page.purged**: A page was permanently removed from Trash based on workspace data retention settings.
-* **page.recurrence\_automation\_created**: A recurring automation was created on a page.
-* **page.recurrence\_automation\_deleted**: A recurring automation was deleted from a page.
-* **page.recurrence\_automation\_updated**: A recurring automation was updated on a page.
-* **page.restored\_from\_trash**: A user restored a formerly deleted page from Trash.
+* **page.recurrence_automation_created**: A recurring automation was created on a page.
+* **page.recurrence_automation_deleted**: A recurring automation was deleted from a page.
+* **page.recurrence_automation_updated**: A recurring automation was updated on a page.
+* **page.restored_from_trash**: A user restored a formerly deleted page from Trash.
 * **page.suggestion.accepted**: A user accepted a suggested edit on a page.
 * **page.suggestion.comment.created**: A user added a comment on a suggested edit.
 * **page.suggestion.comment.deleted**: A user deleted a comment on a suggested edit.
 * **page.suggestion.comment.updated**: A user updated a comment on a suggested edit.
 * **page.suggestion.created**: A user suggested an edit on a page.
 * **page.suggestion.rejected**: A user rejected a suggested edit on a page.
-* **page.transcription\_block.transcript\_deleted**: A transcript for AI Meeting Notes was permanently deleted based on workspace settings.
+* **page.transcription_block.transcript_deleted**: A transcript for AI Meeting Notes was permanently deleted based on workspace settings.
 * **page.unarchived**: A page was unarchived.
 * **page.unlocked**: A page was unlocked to allow editing.
 * **page.unverified**: A page's verification was removed.
 * **page.verified**: A page was verified.
 * **page.viewed**: A user viewed a page.
-* **page.viewed.by\_shared\_email\_domain\_user**: A user with an email domain that was granted access to the page viewed it.
+* **page.viewed.by_shared_email_domain_user**: A user with an email domain that was granted access to the page viewed it.
 
 ### Data source events
 
 * **database.permission.added**: A user added a page-level access rule for a data source in a database.
 * **database.permission.removed**: A user removed a page-level access rule for a data source in a database.
 * **database.permission.updated**: A user changed a page-level access rule for a data source in a database.
-* **database.permissions.can\_create\_pages.group\_disabled**: A group's 'can create pages' permission was disabled for a database.
-* **database.permissions.can\_create\_pages.group\_enabled**: A group's 'can create pages' permission was enabled for a database.
-* **database.permissions.can\_create\_pages.member\_disabled**: A member's 'can create pages' permission was disabled for a database.
-* **database.permissions.can\_create\_pages.member\_enabled**: A member's 'can create pages' permission was enabled for a database.
-* **database.permissions.can\_create\_pages.space\_disabled**: Workspace-wide 'can create pages' permission was disabled for a database.
-* **database.permissions.can\_create\_pages.space\_enabled**: Workspace-wide 'can create pages' permission was enabled for a database.
-* **database.permissions.can\_create\_pages.space\_owner\_disabled**: Workspace owners' 'can create pages' permission was disabled for a database.
-* **database.permissions.can\_create\_pages.space\_owner\_enabled**: Workspace owners' 'can create pages' permission was enabled for a database.
-* **database.permissions.can\_create\_pages.team\_disabled**: A teamspace's 'can create pages' permission was disabled for a database.
-* **database.permissions.can\_create\_pages.team\_enabled**: A teamspace's 'can create pages' permission was enabled for a database.
-* **database.permissions.can\_create\_pages.team\_owner\_disabled**: Teamspace owners' 'can create pages' permission was disabled for a database.
-* **database.permissions.can\_create\_pages.team\_owner\_enabled**: Teamspace owners' 'can create pages' permission was enabled for a database.
-* **database.property.permissions.default\_access\_updated**: A user changed the default access level for a database property.
-* **database.property.permissions.exception\_added**: A user added an access exception for a database property.
-* **database.property.permissions.exception\_removed**: A user removed an access exception for a database property.
-* **database.property.permissions.exception\_updated**: A user changed an access exception for a database property.
-* **database.schema\_edited**: A user edited the schema of a database.
+* **database.permissions.can_create_pages.group_disabled**: A group's 'can create pages' permission was disabled for a database.
+* **database.permissions.can_create_pages.group_enabled**: A group's 'can create pages' permission was enabled for a database.
+* **database.permissions.can_create_pages.member_disabled**: A member's 'can create pages' permission was disabled for a database.
+* **database.permissions.can_create_pages.member_enabled**: A member's 'can create pages' permission was enabled for a database.
+* **database.permissions.can_create_pages.space_disabled**: Workspace-wide 'can create pages' permission was disabled for a database.
+* **database.permissions.can_create_pages.space_enabled**: Workspace-wide 'can create pages' permission was enabled for a database.
+* **database.permissions.can_create_pages.space_owner_disabled**: Workspace owners' 'can create pages' permission was disabled for a database.
+* **database.permissions.can_create_pages.space_owner_enabled**: Workspace owners' 'can create pages' permission was enabled for a database.
+* **database.permissions.can_create_pages.team_disabled**: A teamspace's 'can create pages' permission was disabled for a database.
+* **database.permissions.can_create_pages.team_enabled**: A teamspace's 'can create pages' permission was enabled for a database.
+* **database.permissions.can_create_pages.team_owner_disabled**: Teamspace owners' 'can create pages' permission was disabled for a database.
+* **database.permissions.can_create_pages.team_owner_enabled**: Teamspace owners' 'can create pages' permission was enabled for a database.
+* **database.property.permissions.default_access_updated**: A user changed the default access level for a database property.
+* **database.property.permissions.exception_added**: A user added an access exception for a database property.
+* **database.property.permissions.exception_removed**: A user removed an access exception for a database property.
+* **database.property.permissions.exception_updated**: A user changed an access exception for a database property.
+* **database.schema_edited**: A user edited the schema of a database.
 
 ### Workspace events
 
 * **integration.created**: A developer created an internal integration and associated it with the workspace.
 * **integration.deleted**: An internal integration associated with the workspace was deleted. Deletions can occur in the My Integrations dashboard, or an admin can remove access to an internal integration for all users.
-* **integration.management\_permissions.updated**: The list of people, groups, or workspace owners allowed to manage page access for an internal integration was changed.
-* **integration.owner\_added**: A workspace member was added as an explicit owner of an internal integration.
-* **integration.owner\_break\_glass\_added**: A workspace admin used break-glass access to add themselves as an owner of an internal integration.
-* **integration.owner\_removed**: A workspace member was removed as an explicit owner of an internal integration.
+* **integration.management_permissions.updated**: The list of people, groups, or workspace owners allowed to manage page access for an internal integration was changed.
+* **integration.owner_added**: A workspace member was added as an explicit owner of an internal integration.
+* **integration.owner_break_glass_added**: A workspace admin used break-glass access to add themselves as an owner of an internal integration.
+* **integration.owner_removed**: A workspace member was removed as an explicit owner of an internal integration.
 * **integration.permission.updated**: An integration's capabilities (reading content, inserting a comment, etc.) were changed.
-* **integration.secret\_reset**: An internal integration's API token was reset (or "refreshed").
+* **integration.secret_reset**: An internal integration's API token was reset (or "refreshed").
 * **integration.settings.updated**: An integration's basic settings, like its name or icon, were changed.
 * **workspace.agent.created**: A user created an AI agent chat.
 * **workspace.agent.deleted**: A user deleted an AI agent chat.
-* **workspace.agent.file\_downloaded**: A user downloaded a file from an AI agent chat.
-* **workspace.agent.file\_uploaded**: A user submitted an uploaded file to an AI agent chat.
-* **workspace.agent.file\_viewed**: A user viewed a file from an AI agent chat.
+* **workspace.agent.file_downloaded**: A user downloaded a file from an AI agent chat.
+* **workspace.agent.file_uploaded**: A user submitted an uploaded file to an AI agent chat.
+* **workspace.agent.file_viewed**: A user viewed a file from an AI agent chat.
 * **workspace.agent.permission.updated**: A user updated permissions for an AI agent chat.
 * **workspace.agent.viewed**: A user viewed an AI agent chat.
-* **workspace.agent.web\_url\_viewed**: An AI agent viewed a web URL.
-* **workspace.audit\_log\_exported**: A workspace owner exported the workspace's audit log.
-* **workspace.content\_analytics\_exported**: The Content Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics) was exported.
-* **workspace.content\_exported**: Workspace content for a page or for the entire workspace was exported by a workspace user.
-* **workspace.content\_search\_exported**: The results of a [content search](https://www.notion.so/help/admin-content-search) for a workspace was exported by a workspace owner.
-* **workspace.content\_search\_queried**: A workspace owner used the [admin content search](https://www.notion.so/help/admin-content-search) functionality to find workspace content. Content searches can retrieve content from public and private pages.
-* **workspace.custom\_agent.created**: A custom agent was created in the workspace.
-* **workspace.custom\_agent.credit\_limit\_increase\_request.approved**: A request to increase a Custom Agent's credit limit was approved.
-* **workspace.custom\_agent.credit\_limit\_increase\_request.rejected**: A request to increase a Custom Agent's credit limit was rejected.
-* **workspace.custom\_agent.published**: A custom agent was published in the workspace.
-* **workspace.custom\_agent.setup\_mode\_used**: An action was performed in setup mode for a custom agent in the workspace.
-* **workspace.custom\_emoji.created**: A custom emoji was created in the workspace.
-* **workspace.custom\_emoji.deleted**: A custom emoji was deleted from the workspace.
-* **workspace.custom\_emoji.updated**: A custom emoji was updated in the workspace.
-* **workspace.domain\_management.claim\_request\_status\_updated**: The status of a claim and upgrade to Enterprise of a claimable workspace was updated.
-* **workspace.domain\_management.deletion\_request\_status\_updated**: The status of workspace deletion of a claimable workspace was updated.
-* **workspace.domain\_management.transfer\_request\_status\_updated**: A transfer request for a workspace created by a user with a verified domain was updated. See [domain management](https://www.notion.so/help/domain-management) for more information.
+* **workspace.agent.web_url_viewed**: An AI agent viewed a web URL.
+* **workspace.audit_log_exported**: A workspace owner exported the workspace's audit log.
+* **workspace.content_analytics_exported**: The Content Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics) was exported.
+* **workspace.content_exported**: Workspace content for a page or for the entire workspace was exported by a workspace user.
+* **workspace.content_search_exported**: The results of a [content search](https://www.notion.so/help/admin-content-search) for a workspace was exported by a workspace owner.
+* **workspace.content_search_queried**: A workspace owner used the [admin content search](https://www.notion.so/help/admin-content-search) functionality to find workspace content. Content searches can retrieve content from public and private pages.
+* **workspace.custom_agent.created**: A custom agent was created in the workspace.
+* **workspace.custom_agent.credit_limit_increase_request.approved**: A request to increase a Custom Agent's credit limit was approved.
+* **workspace.custom_agent.credit_limit_increase_request.rejected**: A request to increase a Custom Agent's credit limit was rejected.
+* **workspace.custom_agent.published**: A custom agent was published in the workspace.
+* **workspace.custom_agent.setup_mode_used**: An action was performed in setup mode for a custom agent in the workspace.
+* **workspace.custom_emoji.created**: A custom emoji was created in the workspace.
+* **workspace.custom_emoji.deleted**: A custom emoji was deleted from the workspace.
+* **workspace.custom_emoji.updated**: A custom emoji was updated in the workspace.
+* **workspace.domain_management.claim_request_status_updated**: The status of a claim and upgrade to Enterprise of a claimable workspace was updated.
+* **workspace.domain_management.deletion_request_status_updated**: The status of workspace deletion of a claimable workspace was updated.
+* **workspace.domain_management.transfer_request_status_updated**: A transfer request for a workspace created by a user with a verified domain was updated. See [domain management](https://www.notion.so/help/domain-management) for more information.
 * **workspace.ekm.cmk.rotation.completed**: Customer-managed key (CMK) rotation on WEK was completed.
 * **workspace.ekm.dek.rotation.completed**: Data encryption key (DEK) rotation was completed.
 * **workspace.ekm.dek.rotation.started**: Data encryption key (DEK) rotation was started.
 * **workspace.ekm.wek.generated**: A workspace encryption key (WEK) was generated.
 * **workspace.ekm.wek.revoked**: A workspace encryption key (WEK) was revoked.
-* **workspace.external\_account\_connected**: A public/external integration was connected to the workspace.
-* **workspace.external\_account\_disconnected**: A public/external integration was disconnected from the workspace, or a workspace owner removed access to a public integration for all users in the workspace.
-* **workspace.group.ai\_credit\_overage\_updated**: AI credit overage access for a group was updated.
+* **workspace.external_account_connected**: A public/external integration was connected to the workspace.
+* **workspace.external_account_disconnected**: A public/external integration was disconnected from the workspace, or a workspace owner removed access to a public integration for all users in the workspace.
+* **workspace.group.ai_credit_overage_updated**: AI credit overage access for a group was updated.
 * **workspace.group.created**: A new group was created. A group is a defined collection of workspace members.
-* **workspace.group.custom\_agent\_creation\_updated**: The custom agent creation permission for a group was enabled or disabled.
-* **workspace.group.custom\_mcp\_server\_creation\_updated**: A permission group's ability to create connections to custom MCP servers was updated.
+* **workspace.group.custom_agent_creation_updated**: The custom agent creation permission for a group was enabled or disabled.
+* **workspace.group.custom_mcp_server_creation_updated**: A permission group's ability to create connections to custom MCP servers was updated.
 * **workspace.group.deleted**: A group was deleted from the workspace.
-* **workspace.group.internal\_integration\_creation\_updated**: A permission group's ability to create internal integrations was updated.
-* **workspace.group.notion\_mcp\_personal\_access\_token\_updated**: A permission group's ability to use personal access tokens with Notion MCP was updated.
-* **workspace.group.permissions.member\_added**: A workspace owner or membership admin added a new member to a group. A group is a defined collection of workspace members.
-* **workspace.group.permissions.member\_removed**: A workspace owner or membership admin removed a member from a group.
-* **workspace.group.permissions.member\_role\_updated**: A group member's role was updated (Member ↔ Group owner).
-* **workspace.group.personal\_access\_token\_creation\_updated**: A permission group's ability to create personal access tokens was updated.
+* **workspace.group.internal_integration_creation_updated**: A permission group's ability to create internal integrations was updated.
+* **workspace.group.notion_mcp_personal_access_token_updated**: A permission group's ability to use personal access tokens with Notion MCP was updated.
+* **workspace.group.permissions.member_added**: A workspace owner or membership admin added a new member to a group. A group is a defined collection of workspace members.
+* **workspace.group.permissions.member_removed**: A workspace owner or membership admin removed a member from a group.
+* **workspace.group.permissions.member_role_updated**: A group member's role was updated (Member ↔ Group owner).
+* **workspace.group.personal_access_token_creation_updated**: A permission group's ability to create personal access tokens was updated.
 * **workspace.group.renamed**: A group name was changed.
-* **workspace.guest\_invite\_request\_resolved**: A guest invite to a page was requested for approval and the workspace owner either approved or denied the request.
-* **workspace.guest\_invite\_request.created**: A guest invite request was created, requesting to invite a guest to specific pages.
-* **workspace.imports.asana\_data\_fetched**: A Notion admin fetched Asana data on behalf of a workspace user for Asana data importer triage/debugging purposes.
-* **workspace.imports.confluence\_data\_fetched**: A Notion admin fetched Confluence data on behalf of a workspace user for Confluence data importer triage/debugging purposes.
-* **workspace.imports.monday\_data\_fetched**: A Notion admin fetched Monday.com data on behalf of a workspace user for Monday.com data importer triage/debugging purposes.
-* **workspace.integration\_added**: An integration was added to the workspace for the first time. This event will only be emitted the first time an integration is added to a workspace.
-* **workspace.integration\_removed**: All bots for a specific public integration were removed from the workspace.
-* **workspace.integration\_webhook\_inactivated**: An integration's webhook was inactivated due to repeated delivery failures.
-* **workspace.integration\_webhook\_reactivated**: An integration's webhook was reactivated after being inactive.
-* **workspace.mcp\_connection.tool\_list\_updated**: The selected tools for a workspace MCP connection were updated.
-* **workspace.mcp.allowlist\_disabled**: The MCP allowlist was disabled for the workspace.
-* **workspace.mcp.allowlist\_enabled**: The MCP allowlist was enabled for the workspace.
-* **workspace.mcp.client\_added**: An MCP client was added to the workspace's allowlist.
-* **workspace.mcp.client\_removed**: An MCP client was removed from the workspace's allowlist.
-* **workspace.mcp.enterprise\_managed\_connection\_disabled**: Enterprise-managed connections were disabled or removed for the workspace.
-* **workspace.mcp.enterprise\_managed\_connection\_enabled**: Enterprise-managed connections were enabled for the workspace.
-* **workspace.mcp.enterprise\_managed\_connection\_member\_access\_denied**: A workspace member was denied access to enterprise-managed connections.
-* **workspace.mcp.enterprise\_managed\_connection\_member\_access\_restored**: A workspace member's access to enterprise-managed connections was restored.
-* **workspace.mcp.enterprise\_managed\_connection\_updated**: Enterprise-managed connection settings were updated for the workspace.
-* **workspace.mcp.server\_connected**: An MCP server was connected to the workspace, including via an enterprise-managed connection.
-* **workspace.members\_exported**: A list of workspace members was exported.
-* **workspace.membership\_request\_resolved**: A membership request from a member to add a new person to the workspace was resolved, i.e. the workspace owner either approved or denied the request.
-* **workspace.permissions.guest\_removed**: A guest was removed from the workspace by a workspace owner or membership admin.
-* **workspace.permissions.member\_added**: A user accepted an invite to join a new workspace and has been added to the member list.
-* **workspace.permissions.member\_invited**: A user was invited to a workspace by a workspace owner or membership admin.
-* **workspace.permissions.member\_removed**: A member was removed from the workspace by a workspace owner or membership admin.
-* **workspace.permissions.member\_role\_updated**: A member's role in a workspace was updated. Roles include member, membership admin, and workspace owner.
-* **workspace.private\_content\_transferred**: The private content of a deprovisioned workspace member was transferred to a new location. Enterprise workspace owners can [transfer content](https://www.notion.so/help/transfer-content-deprovisioned-user) from deprovisioned users.
-* **workspace.public\_domain.created**: A public domain was created for the workspace.
-* **workspace.public\_domain.deleted**: A public domain was deleted from the workspace.
-* **workspace.public\_domain.updated**: A public domain was updated for the workspace.
-* **workspace.restricted\_member\_invite\_request\_resolved**: A restricted member invite request was approved or denied by a workspace owner.
-* **workspace.saml\_authorization**: A user verified workspace access via SAML SSO.
-* **workspace.saml\_sso\_idp\_metadata\_url\_added**: The IdP (Identity Provider) metadata URL was added by a workspace owner.
-* **workspace.saml\_sso\_idp\_metadata\_url\_removed**: The IdP (Identity Provider) metadata URL was removed by a workspace owner.
-* **workspace.saml\_sso\_idp\_metadata\_url\_updated**: The IdP (Identity Provider) metadata URL was updated by a workspace owner.
-* **workspace.saml\_sso\_idp\_metadata\_xml\_added**: The IdP (Identity Provider) metadata XML (Extensible Markup Language) was added by a workspace owner.
-* **workspace.saml\_sso\_idp\_metadata\_xml\_removed**: The IdP (Identity Provider) metadata XML (Extensible Markup Language) was removed by a workspace owner.
-* **workspace.saml\_sso\_idp\_metadata\_xml\_updated**: The IdP (Identity Provider) metadata XML (Extensible Markup Language) was updated by a workspace owner.
-* **workspace.scim\_token\_generated**: A workspace owner generated a SCIM API token.
-* **workspace.scim\_token\_revoked**: A workspace owner revoked a SCIM API token.
-* **workspace.search\_performed**: A search was performed in the workspace.
-* **workspace.settings.agent\_creation\_policy\_updated**: The agent creation policy setting was updated.
-* **workspace.settings.agent\_model\_policy\_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted. For `personal_agent`, `previous_require_auto` and `require_auto` say whether Notion Agent was required to use Auto before and after the change. While it's required, members can't pick a model.
-* **workspace.settings.ai\_credit\_overage\_policy\_updated**: The AI credit overage policy setting was updated.
-* **workspace.settings.ai\_leap\_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
-* **workspace.settings.ai\_legal\_terms\_setting\_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
-* **workspace.settings.ai\_meeting\_notes\_availability\_updated**: The AI meeting notes availability setting was updated.
-* **workspace.settings.allow\_chatgpt\_subscription\_sharing\_setting\_updated**: A workspace owner enabled or disabled ChatGPT subscription sharing.
-* **workspace.settings.allow\_content\_export\_setting\_updated**: A workspace owner enabled or disabled exporting.
-* **workspace.settings.allow\_custom\_agents\_by\_notion\_support\_updated**: Notion Support added or removed the workspace restriction on Custom Agents. Removing the restriction preserves the workspace’s own Custom Agents policy.
-* **workspace.settings.allow\_custom\_mcp\_servers\_setting\_updated**: Custom MCP servers were enabled or disabled for the workspace. Disabling also disconnects custom MCP servers that were already added.
-* **workspace.settings.allow\_group\_creation\_setting\_updated**: A user enabled or disabled the ability for non-admin members to create groups.
-* **workspace.settings.allow\_guests\_setting\_updated**: A workspace owner enabled or disabled the ability to add guests to the workspace.
-* **workspace.settings.allow\_public\_page\_sharing\_setting\_updated**: A workspace owner enabled or disabled public page sharing for the workspace.
-* **workspace.settings.allow\_teamspace\_creation\_setting\_updated**: A user enabled or disabled the ability for everyone in the workspace to create a teamspace.
-* **workspace.settings.allow\_workspace\_creation\_setting\_updated**: A workspace owner restricted creation of new workspaces by users with the claimed enterprise email domain.
-* **workspace.settings.analytics\_tracking\_setting\_updated**: A user enabled or disabled workspace analytics tracking within the workspace.
-* **workspace.settings.custom\_agent\_default\_model\_updated**: The default model for new Custom Agents was updated. `previous_model` and `model` contain the prior and current model, or `Auto` when no workspace default is set.
-* **workspace.settings.custom\_mcp\_server\_creation\_policy\_updated**: The workspace policy controlling who can create connections to custom MCP servers was updated.
-* **workspace.settings.delete\_from\_trash\_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
-* **workspace.settings.disallow\_webhook\_automation\_action\_toggled**: A workspace owner enabled or disabled the use of webhook automation actions in the workspace.
-* **workspace.settings.duplicate\_pages\_to\_workspaces\_setting\_updated**: A workspace owner enabled or disabled moving pages to other workspaces.
-* **workspace.settings.email\_domain\_added**: A user added an allowed email domain to the workspace.
-* **workspace.settings.email\_domain\_removed**: A user removed an allowed email domain from the workspace.
-* **workspace.settings.enable\_saml\_sso\_config\_updated**: An organization owner enabled or disabled SAML.
-* **workspace.settings.enforce\_saml\_sso\_config\_updated**: An organization owner enabled or disabled Enforce SAML.
-* **workspace.settings.external\_agent\_access\_policy\_updated**: The external agent access policy changed. Includes the previous and updated policy, without credentials.
-* **workspace.settings.guest\_invite\_request\_setting\_updated**: The guest invite request approval setting was enabled or disabled.
-* **workspace.settings.guest\_membership\_request\_setting\_updated**: A user enabled or disabled guest membership requests for the workspace.
-* **workspace.settings.hipaa\_compliance\_updated**: A workspace owner enabled or disabled HIPAA compliance by accepting or revoking Notion's Business Associate Agreement.
-* **workspace.settings.icon\_updated**: The workspace icon was changed.
-* **workspace.settings.integration\_restriction\_settings\_updated**: A workspace owner enabled or disabled integration restrictions.
-* **workspace.settings.internal\_integration\_creation\_policy\_updated**: The workspace policy controlling who can create internal integrations was updated.
-* **workspace.settings.invite\_link\_reset**: A user reset the workspace invite link.
-* **workspace.settings.invite\_link\_setting\_updated**: A user enabled or disabled the workspace invite link.
-* **workspace.settings.mcp\_server\_added\_to\_allowlist**: That an MCP server URL or pattern was added to the approved connections allowlist.
-* **workspace.settings.mcp\_server\_allowlist\_setting\_updated**: That enforcement of the MCP server URL allowlist was enabled or disabled.
-* **workspace.settings.mcp\_server\_removed\_from\_allowlist**: That an MCP server URL or pattern was removed from the approved connections allowlist.
-* **workspace.settings.meeting\_notes\_consent\_setting\_updated**: The setting requiring consent before AI meeting notes transcription was updated.
-* **workspace.settings.member\_add\_policy\_updated**: A user updated who can add members to the workspace.
-* **workspace.settings.membership\_request\_setting\_updated**: A user enabled or disabled new workspace membership requests.
-* **workspace.settings.name\_updated**: A user updated the workspace's name.
-* **workspace.settings.notion\_mcp\_personal\_access\_token\_policy\_updated**: The workspace policy controlling who can use personal access tokens with Notion MCP was updated.
-* **workspace.settings.page\_access\_request\_setting\_updated**: A user enabled or disabled page access requests from non-workspace-members.
-* **workspace.settings.people\_directory\_setting\_updated**: The people directory visibility setting was enabled or disabled.
-* **workspace.settings.people\_hover\_cards\_setting\_updated**: The people hover cards setting was enabled or disabled.
-* **workspace.settings.personal\_access\_token\_creation\_policy\_updated**: The workspace policy controlling who can create personal access tokens was updated.
-* **workspace.settings.public\_homepage\_added**: A workspace owner set a public homepage.
-* **workspace.settings.public\_homepage\_removed**: A workspace owner cleared the public homepage.
-* **workspace.settings.public\_homepage\_updated**: A workspace owner changed the public homepage.
-* **workspace.settings.public\_pages\_domain\_updated**: The domain for publicly shared pages was updated.
-* **workspace.settings.purge\_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) purge delay setting was updated.
-* **workspace.settings.saml\_automatic\_account\_creation\_setting\_updated**: A workspace owner enabled or disabled automatically creating accounts on SAML sign-in.
-* **workspace.settings.sidebar\_editing\_setting\_updated**: A workspace owner enabled or disabled the ability for users to change the workspace sidebar.
-* **workspace.teams\_read**: A user viewed the list of teamspaces in the workspace.
-* **workspace.user\_analytics\_exported**: The User Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics) was exported.
-* **workspace.users\_read**: A user viewed the list of users in the workspace.
+* **workspace.guest_invite_request_resolved**: A guest invite to a page was requested for approval and the workspace owner either approved or denied the request.
+* **workspace.guest_invite_request.created**: A guest invite request was created, requesting to invite a guest to specific pages.
+* **workspace.imports.asana_data_fetched**: A Notion admin fetched Asana data on behalf of a workspace user for Asana data importer triage/debugging purposes.
+* **workspace.imports.confluence_data_fetched**: A Notion admin fetched Confluence data on behalf of a workspace user for Confluence data importer triage/debugging purposes.
+* **workspace.imports.monday_data_fetched**: A Notion admin fetched Monday.com data on behalf of a workspace user for Monday.com data importer triage/debugging purposes.
+* **workspace.integration_added**: An integration was added to the workspace for the first time. This event will only be emitted the first time an integration is added to a workspace.
+* **workspace.integration_removed**: All bots for a specific public integration were removed from the workspace.
+* **workspace.integration_webhook_inactivated**: An integration's webhook was inactivated due to repeated delivery failures.
+* **workspace.integration_webhook_reactivated**: An integration's webhook was reactivated after being inactive.
+* **workspace.mcp_connection.tool_list_updated**: The selected tools for a workspace MCP connection were updated.
+* **workspace.mcp.allowlist_disabled**: The MCP allowlist was disabled for the workspace.
+* **workspace.mcp.allowlist_enabled**: The MCP allowlist was enabled for the workspace.
+* **workspace.mcp.client_added**: An MCP client was added to the workspace's allowlist.
+* **workspace.mcp.client_removed**: An MCP client was removed from the workspace's allowlist.
+* **workspace.mcp.enterprise_managed_connection_disabled**: Enterprise-managed connections were disabled or removed for the workspace.
+* **workspace.mcp.enterprise_managed_connection_enabled**: Enterprise-managed connections were enabled for the workspace.
+* **workspace.mcp.enterprise_managed_connection_member_access_denied**: A workspace member was denied access to enterprise-managed connections.
+* **workspace.mcp.enterprise_managed_connection_member_access_restored**: A workspace member's access to enterprise-managed connections was restored.
+* **workspace.mcp.enterprise_managed_connection_updated**: Enterprise-managed connection settings were updated for the workspace.
+* **workspace.mcp.server_connected**: An MCP server was connected to the workspace, including via an enterprise-managed connection.
+* **workspace.members_exported**: A list of workspace members was exported.
+* **workspace.membership_request_resolved**: A membership request from a member to add a new person to the workspace was resolved, i.e. the workspace owner either approved or denied the request.
+* **workspace.permissions.guest_removed**: A guest was removed from the workspace by a workspace owner or membership admin.
+* **workspace.permissions.member_added**: A user accepted an invite to join a new workspace and has been added to the member list.
+* **workspace.permissions.member_invited**: A user was invited to a workspace by a workspace owner or membership admin.
+* **workspace.permissions.member_removed**: A member was removed from the workspace by a workspace owner or membership admin.
+* **workspace.permissions.member_role_updated**: A member's role in a workspace was updated. Roles include member, membership admin, and workspace owner.
+* **workspace.private_content_transferred**: The private content of a deprovisioned workspace member was transferred to a new location. Enterprise workspace owners can [transfer content](https://www.notion.so/help/transfer-content-deprovisioned-user) from deprovisioned users.
+* **workspace.public_domain.created**: A public domain was created for the workspace.
+* **workspace.public_domain.deleted**: A public domain was deleted from the workspace.
+* **workspace.public_domain.updated**: A public domain was updated for the workspace.
+* **workspace.restricted_member_invite_request_resolved**: A restricted member invite request was approved or denied by a workspace owner.
+* **workspace.saml_authorization**: A user verified workspace access via SAML SSO.
+* **workspace.saml_sso_idp_metadata_url_added**: The IdP (Identity Provider) metadata URL was added by a workspace owner.
+* **workspace.saml_sso_idp_metadata_url_removed**: The IdP (Identity Provider) metadata URL was removed by a workspace owner.
+* **workspace.saml_sso_idp_metadata_url_updated**: The IdP (Identity Provider) metadata URL was updated by a workspace owner.
+* **workspace.saml_sso_idp_metadata_xml_added**: The IdP (Identity Provider) metadata XML (Extensible Markup Language) was added by a workspace owner.
+* **workspace.saml_sso_idp_metadata_xml_removed**: The IdP (Identity Provider) metadata XML (Extensible Markup Language) was removed by a workspace owner.
+* **workspace.saml_sso_idp_metadata_xml_updated**: The IdP (Identity Provider) metadata XML (Extensible Markup Language) was updated by a workspace owner.
+* **workspace.scim_token_generated**: A workspace owner generated a SCIM API token.
+* **workspace.scim_token_revoked**: A workspace owner revoked a SCIM API token.
+* **workspace.search_performed**: A search was performed in the workspace.
+* **workspace.settings.agent_creation_policy_updated**: The agent creation policy setting was updated.
+* **workspace.settings.agent_model_policy_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted. For `personal_agent`, `previous_require_auto` and `require_auto` say whether Notion Agent was required to use Auto before and after the change. While it's required, members can't pick a model.
+* **workspace.settings.ai_credit_overage_policy_updated**: The AI credit overage policy setting was updated.
+* **workspace.settings.ai_leap_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
+* **workspace.settings.ai_legal_terms_setting_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
+* **workspace.settings.ai_meeting_notes_availability_updated**: The AI meeting notes availability setting was updated.
+* **workspace.settings.allow_chatgpt_subscription_sharing_setting_updated**: A workspace owner enabled or disabled ChatGPT subscription sharing.
+* **workspace.settings.allow_content_export_setting_updated**: A workspace owner enabled or disabled exporting.
+* **workspace.settings.allow_custom_agents_by_notion_support_updated**: Notion Support added or removed the workspace restriction on Custom Agents. Removing the restriction preserves the workspace’s own Custom Agents policy.
+* **workspace.settings.allow_custom_mcp_servers_setting_updated**: Custom MCP servers were enabled or disabled for the workspace. Disabling also disconnects custom MCP servers that were already added.
+* **workspace.settings.allow_group_creation_setting_updated**: A user enabled or disabled the ability for non-admin members to create groups.
+* **workspace.settings.allow_guests_setting_updated**: A workspace owner enabled or disabled the ability to add guests to the workspace.
+* **workspace.settings.allow_public_page_sharing_setting_updated**: A workspace owner enabled or disabled public page sharing for the workspace.
+* **workspace.settings.allow_teamspace_creation_setting_updated**: A user enabled or disabled the ability for everyone in the workspace to create a teamspace.
+* **workspace.settings.allow_workspace_creation_setting_updated**: A workspace owner restricted creation of new workspaces by users with the claimed enterprise email domain.
+* **workspace.settings.analytics_tracking_setting_updated**: A user enabled or disabled workspace analytics tracking within the workspace.
+* **workspace.settings.custom_agent_default_model_updated**: The default model for new Custom Agents was updated. `previous_model` and `model` contain the prior and current model, or `Auto` when no workspace default is set.
+* **workspace.settings.custom_mcp_server_creation_policy_updated**: The workspace policy controlling who can create connections to custom MCP servers was updated.
+* **workspace.settings.delete_from_trash_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.
+* **workspace.settings.disallow_webhook_automation_action_toggled**: A workspace owner enabled or disabled the use of webhook automation actions in the workspace.
+* **workspace.settings.duplicate_pages_to_workspaces_setting_updated**: A workspace owner enabled or disabled moving pages to other workspaces.
+* **workspace.settings.email_domain_added**: A user added an allowed email domain to the workspace.
+* **workspace.settings.email_domain_removed**: A user removed an allowed email domain from the workspace.
+* **workspace.settings.enable_saml_sso_config_updated**: An organization owner enabled or disabled SAML.
+* **workspace.settings.enforce_saml_sso_config_updated**: An organization owner enabled or disabled Enforce SAML.
+* **workspace.settings.external_agent_access_policy_updated**: The external agent access policy changed. Includes the previous and updated policy, without credentials.
+* **workspace.settings.guest_invite_request_setting_updated**: The guest invite request approval setting was enabled or disabled.
+* **workspace.settings.guest_membership_request_setting_updated**: A user enabled or disabled guest membership requests for the workspace.
+* **workspace.settings.hipaa_compliance_updated**: A workspace owner enabled or disabled HIPAA compliance by accepting or revoking Notion's Business Associate Agreement.
+* **workspace.settings.icon_updated**: The workspace icon was changed.
+* **workspace.settings.integration_restriction_settings_updated**: A workspace owner enabled or disabled integration restrictions.
+* **workspace.settings.internal_integration_creation_policy_updated**: The workspace policy controlling who can create internal integrations was updated.
+* **workspace.settings.invite_link_reset**: A user reset the workspace invite link.
+* **workspace.settings.invite_link_setting_updated**: A user enabled or disabled the workspace invite link.
+* **workspace.settings.mcp_server_added_to_allowlist**: That an MCP server URL or pattern was added to the approved connections allowlist.
+* **workspace.settings.mcp_server_allowlist_setting_updated**: That enforcement of the MCP server URL allowlist was enabled or disabled.
+* **workspace.settings.mcp_server_removed_from_allowlist**: That an MCP server URL or pattern was removed from the approved connections allowlist.
+* **workspace.settings.meeting_notes_consent_setting_updated**: The setting requiring consent before AI meeting notes transcription was updated.
+* **workspace.settings.member_add_policy_updated**: A user updated who can add members to the workspace.
+* **workspace.settings.membership_request_setting_updated**: A user enabled or disabled new workspace membership requests.
+* **workspace.settings.name_updated**: A user updated the workspace's name.
+* **workspace.settings.notion_mcp_personal_access_token_policy_updated**: The workspace policy controlling who can use personal access tokens with Notion MCP was updated.
+* **workspace.settings.page_access_request_setting_updated**: A user enabled or disabled page access requests from non-workspace-members.
+* **workspace.settings.people_directory_setting_updated**: The people directory visibility setting was enabled or disabled.
+* **workspace.settings.people_hover_cards_setting_updated**: The people hover cards setting was enabled or disabled.
+* **workspace.settings.personal_access_token_creation_policy_updated**: The workspace policy controlling who can create personal access tokens was updated.
+* **workspace.settings.public_homepage_added**: A workspace owner set a public homepage.
+* **workspace.settings.public_homepage_removed**: A workspace owner cleared the public homepage.
+* **workspace.settings.public_homepage_updated**: A workspace owner changed the public homepage.
+* **workspace.settings.public_pages_domain_updated**: The domain for publicly shared pages was updated.
+* **workspace.settings.purge_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) purge delay setting was updated.
+* **workspace.settings.saml_automatic_account_creation_setting_updated**: A workspace owner enabled or disabled automatically creating accounts on SAML sign-in.
+* **workspace.settings.sidebar_editing_setting_updated**: A workspace owner enabled or disabled the ability for users to change the workspace sidebar.
+* **workspace.teams_read**: A user viewed the list of teamspaces in the workspace.
+* **workspace.user_analytics_exported**: The User Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics) was exported.
+* **workspace.users_read**: A user viewed the list of users in the workspace.
 
 ### Account events
 
 * **user.deleted**: A user account was deleted. This event will be sent to any workspace with which the account is associated.
 * **user.login**: A user logged into an account.
 * **user.logout**: A user logged out of an account.
-* **user.settings.alias\_added**: A user added an email alias to their account.
-* **user.settings.alias\_made\_primary**: A user made an email alias their primary email address.
-* **user.settings.alias\_removed**: A user removed an email alias from their account.
-* **user.settings.analytics\_tracking\_setting\_updated**: A user updated their analytics tracking setting.
-* **user.settings.email\_updated**: The email of a user was changed.
-* **user.settings.login\_method.mfa\_backup\_code\_updated**: A user updated their MFA (Multi-Factor Authentication) backup code settings.
-* **user.settings.login\_method.mfa\_sms\_updated**: A user updated their MFA (Multi-Factor Authentication) SMS (Short Message Service) settings.
-* **user.settings.login\_method.mfa\_totp\_updated**: A user updated their MFA (Multi-Factor Authentication) TOTP (Time-based One-Time Password) settings.
-* **user.settings.login\_method.password\_added**: A user added a password to their account for login purposes.
-* **user.settings.login\_method.password\_removed**: A user removed a password from their account.
-* **user.settings.login\_method.password\_updated**: A user updated their password.
-* **user.settings.preferred\_name\_updated**: A user updated their account's preferred name.
-* **user.settings.profile\_photo\_updated**: The profile photo of a user was changed.
-* **user.settings.support\_access\_granted**: A user's account was granted Notion support access.
-* **user.settings.support\_access\_revoked**: A user's account was revoked Notion support access.
+* **user.settings.alias_added**: A user added an email alias to their account.
+* **user.settings.alias_made_primary**: A user made an email alias their primary email address.
+* **user.settings.alias_removed**: A user removed an email alias from their account.
+* **user.settings.analytics_tracking_setting_updated**: A user updated their analytics tracking setting.
+* **user.settings.email_updated**: The email of a user was changed.
+* **user.settings.login_method.mfa_backup_code_updated**: A user updated their MFA (Multi-Factor Authentication) backup code settings.
+* **user.settings.login_method.mfa_sms_updated**: A user updated their MFA (Multi-Factor Authentication) SMS (Short Message Service) settings.
+* **user.settings.login_method.mfa_totp_updated**: A user updated their MFA (Multi-Factor Authentication) TOTP (Time-based One-Time Password) settings.
+* **user.settings.login_method.password_added**: A user added a password to their account for login purposes.
+* **user.settings.login_method.password_removed**: A user removed a password from their account.
+* **user.settings.login_method.password_updated**: A user updated their password.
+* **user.settings.preferred_name_updated**: A user updated their account's preferred name.
+* **user.settings.profile_photo_updated**: The profile photo of a user was changed.
+* **user.settings.support_access_granted**: A user's account was granted Notion support access.
+* **user.settings.support_access_revoked**: A user's account was revoked Notion support access.
 * **user.suspended**: An admin suspended a managed user account.
 * **user.unsuspended**: An admin unsuspended a managed user account.
 
@@ -1820,40 +1820,40 @@ When available, applicable events include a top-level `team_ids` array containin
 
 * **teamspace.archived**: A teamspace owner archived a teamspace.
 * **teamspace.created**: A user created a teamspace.
-* **teamspace.permissions.custom\_group\_role\_added**: A teamspace owner added custom permissions for a group that is added to the teamspace.
-* **teamspace.permissions.custom\_group\_role\_removed**: A teamspace owner removed custom permissions for a group that is added to the teamspace.
-* **teamspace.permissions.custom\_group\_role\_updated**: A teamspace owner updated custom permissions for a group that is added to the teamspace.
-* **teamspace.permissions.custom\_member\_role\_added**: A teamspace owner added custom page permissions for a specific teamspace member.
-* **teamspace.permissions.custom\_member\_role\_removed**: A teamspace owner removed custom page permissions for a specific teamspace member.
-* **teamspace.permissions.custom\_member\_role\_updated**: A teamspace owner updated custom page permissions for a specific teamspace member.
-* **teamspace.permissions.default\_member\_role\_updated**: The default teamspace page permissions applied to teamspace members was updated.
-* **teamspace.permissions.default\_workspace\_role\_added**: A teamspace owner gave page permissions to workspace users in a closed teamspace.
-* **teamspace.permissions.default\_workspace\_role\_removed**: A teamspace owner removed page permissions from workspace users in a closed teamspace.
-* **teamspace.permissions.default\_workspace\_role\_updated**: A teamspace owner updated the default page permissions for all workspace users in a teamspace.
-* **teamspace.permissions.group\_added**: A group was added to a teamspace. A group is a defined collection of users.
-* **teamspace.permissions.group\_removed**: A group was removed from the teamspace by a teamspace owner.
-* **teamspace.permissions.member\_added**: A user was added to the teamspace. The user either joined an open teamspace or was added by another member. The event payload will specify "as Teamspace owner" if the user was added with teamspace owner privileges.
-* **teamspace.permissions.member\_removed**: A teamspace member was removed from the teamspace. Removal can be triggered by a member leaving or being removed by a teamspace owner.
-* **teamspace.permissions.member\_role\_updated**: A teamspace member's role was updated. Roles include Teamspace Member and Teamspace Owner.
+* **teamspace.permissions.custom_group_role_added**: A teamspace owner added custom permissions for a group that is added to the teamspace.
+* **teamspace.permissions.custom_group_role_removed**: A teamspace owner removed custom permissions for a group that is added to the teamspace.
+* **teamspace.permissions.custom_group_role_updated**: A teamspace owner updated custom permissions for a group that is added to the teamspace.
+* **teamspace.permissions.custom_member_role_added**: A teamspace owner added custom page permissions for a specific teamspace member.
+* **teamspace.permissions.custom_member_role_removed**: A teamspace owner removed custom page permissions for a specific teamspace member.
+* **teamspace.permissions.custom_member_role_updated**: A teamspace owner updated custom page permissions for a specific teamspace member.
+* **teamspace.permissions.default_member_role_updated**: The default teamspace page permissions applied to teamspace members was updated.
+* **teamspace.permissions.default_workspace_role_added**: A teamspace owner gave page permissions to workspace users in a closed teamspace.
+* **teamspace.permissions.default_workspace_role_removed**: A teamspace owner removed page permissions from workspace users in a closed teamspace.
+* **teamspace.permissions.default_workspace_role_updated**: A teamspace owner updated the default page permissions for all workspace users in a teamspace.
+* **teamspace.permissions.group_added**: A group was added to a teamspace. A group is a defined collection of users.
+* **teamspace.permissions.group_removed**: A group was removed from the teamspace by a teamspace owner.
+* **teamspace.permissions.member_added**: A user was added to the teamspace. The user either joined an open teamspace or was added by another member. The event payload will specify "as Teamspace owner" if the user was added with teamspace owner privileges.
+* **teamspace.permissions.member_removed**: A teamspace member was removed from the teamspace. Removal can be triggered by a member leaving or being removed by a teamspace owner.
+* **teamspace.permissions.member_role_updated**: A teamspace member's role was updated. Roles include Teamspace Member and Teamspace Owner.
 * **teamspace.restored**: A previously archived teamspace was restored.
-* **teamspace.settings.allow\_content\_export\_setting\_updated**: The setting to allow exporting teamspace content was enabled or disabled.
-* **teamspace.settings.allow\_guests\_setting\_updated**: A teamspace owner enabled or disabled the ability to add guests (non-members) to a specific teamspace.
-* **teamspace.settings.allow\_public\_page\_sharing\_setting\_updated**: The setting to allow publicly sharing a teamspace page was enabled or disabled by a workspace owner.
-* **teamspace.settings.allow\_sidebar\_editing\_setting\_updated**: The setting that determines who can edit the sidebar was updated. The setting will indicate if any teamspace member can edit the sidebar or if editing is only available for teamspace owners.
-* **teamspace.settings.default\_setting\_updated**: A user enabled or disabled a teamspace as a default teamspace.
-* **teamspace.settings.description\_updated**: The teamspace description was updated.
-* **teamspace.settings.icon\_updated**: The teamspace icon was changed.
-* **teamspace.settings.member\_invitation\_setting\_updated**: A user updated settings for who can invite teamspace members.
-* **teamspace.settings.name\_updated**: A user updated the teamspace's name.
-* **teamspace.settings.privacy\_type\_updated**: A teamspace owner changed the teamspace privacy type.
+* **teamspace.settings.allow_content_export_setting_updated**: The setting to allow exporting teamspace content was enabled or disabled.
+* **teamspace.settings.allow_guests_setting_updated**: A teamspace owner enabled or disabled the ability to add guests (non-members) to a specific teamspace.
+* **teamspace.settings.allow_public_page_sharing_setting_updated**: The setting to allow publicly sharing a teamspace page was enabled or disabled by a workspace owner.
+* **teamspace.settings.allow_sidebar_editing_setting_updated**: The setting that determines who can edit the sidebar was updated. The setting will indicate if any teamspace member can edit the sidebar or if editing is only available for teamspace owners.
+* **teamspace.settings.default_setting_updated**: A user enabled or disabled a teamspace as a default teamspace.
+* **teamspace.settings.description_updated**: The teamspace description was updated.
+* **teamspace.settings.icon_updated**: The teamspace icon was changed.
+* **teamspace.settings.member_invitation_setting_updated**: A user updated settings for who can invite teamspace members.
+* **teamspace.settings.name_updated**: A user updated the teamspace's name.
+* **teamspace.settings.privacy_type_updated**: A teamspace owner changed the teamspace privacy type.
 
 ### Form events
 
-* **form\_response.created**: A form response was submitted.
+* **form_response.created**: A form response was submitted.
 * **form.content.updated**: A user updated a form's content.
 * **form.created**: A user created a form.
-* **form.permissions.shared\_to\_public\_role\_added**: A user enabled public sharing for a form.
-* **form.permissions.shared\_to\_public\_role\_removed**: A user disabled public sharing for a form.
+* **form.permissions.shared_to_public_role_added**: A user enabled public sharing for a form.
+* **form.permissions.shared_to_public_role_removed**: A user disabled public sharing for a form.
 * **form.viewed**: A user viewed a form.
 
 
@@ -1937,7 +1937,7 @@ The first result is a tagged plugin holding every skill tagged **Engineering**. 
 
 &#x20;
 
-**2. Compare version\_id values**
+**2. Compare version_id values**
 
 Compare each plugin's `version_id` against the value you stored the last time
 you downloaded it. Equal values mean the plugin has not changed and you can
@@ -2384,7 +2384,7 @@ The body of the request contains the following JSON-encoded fields:
 | :- | :- | :- | :- |
 | `"grant_type"` | `string` | Always use `"authorization_code"`. | ✅ |
 | `"code"` | `string` | The temporary authorization code received in the incoming request to the `"redirect_uri"`. | ✅ |
-| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step. | ✅/❌\*   \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
+| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step. | ✅/❌\*  \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
 
 The following is an example request to exchange the authorization code for an access token:
 
@@ -4467,11 +4467,11 @@ if (response.request_status?.type === "incomplete") {
 }
 ```
 
-## Read every row with created\_time windows
+## Read every row with created_time windows
 
 Because the limit is per query, you can change the query to get a fresh budget. Split the data source into windows by `created_time`: sort ascending, and each time a window hits the limit, start a new query from the last row's timestamp.
 
-**1. Sort by created\_time ascending**
+**1. Sort by created_time ascending**
 
 This gives every window a stable order to walk through.
 
@@ -6557,7 +6557,7 @@ const response = await notion.pages.updateMarkdown({
 >
 > The `insert_content` and `replace_content_range` commands are still supported but are no longer recommended. They use an ellipsis-based selection format that is less precise than the search-and-replace approach of `update_content`. New connections should use `update_content` or `replace_content` instead.
 
-> [accordion] insert\_content (legacy)
+> [accordion] insert_content (legacy)
 >
 > Insert new markdown content at the start of a page, after a specific point in the page, or at the end.
 >
@@ -6646,7 +6646,7 @@ const response = await notion.pages.updateMarkdown({
 >
 > The `after` parameter uses an **ellipsis-based selection** format: `"start text...end text"`. This matches a range from the first occurrence of the start text to the end text. Do not provide `after` and `position` in the same request.
 
-> [accordion] replace\_content\_range (legacy)
+> [accordion] replace_content_range (legacy)
 >
 > Replace a matched range of existing content with new markdown.
 >
@@ -7277,7 +7277,7 @@ You'll receive a response that contains a list of block objects.
 }
 ```
 
-This is a paginated response. Paginated responses are used throughout the Notion API when returning a potentially large list of objects. The maximum number of results in one paginated response is 100. The [pagination reference](/reference/pagination) explains how to use the "start\_cursor" and "page\_size" parameters to get more than 100 results.
+This is a paginated response. Paginated responses are used throughout the Notion API when returning a potentially large list of objects. The maximum number of results in one paginated response is 100. The [pagination reference](/reference/pagination) explains how to use the "start_cursor" and "page_size" parameters to get more than 100 results.
 
 In this case, the individual child blocks we requested are in the "results" array.
 
@@ -7811,7 +7811,7 @@ The response is the newly created [view object](#structure) with all fields popu
 >
 > **Filtering by multiple select or status values**
 >
-> Select, status, and multi\_select filter operators accept an array of strings to filter by multiple values at once. For example, to match Priority "Low" or "Medium":
+> Select, status, and multi_select filter operators accept an array of strings to filter by multiple values at once. For example, to match Priority "Low" or "Medium":
 >
 > ```json theme={null}
 > {
@@ -8258,7 +8258,7 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 | `zoom_level` | enum | **Required.** One of: `"hours"`, `"day"`, `"week"`, `"bi_week"`, `"month"`, `"quarter"`, `"year"`, `"5_years"`. |
 | `center_timestamp` | integer | Timestamp in milliseconds to center the timeline on. |
 
-**Timeline arrows\_by object:**
+**Timeline arrows_by object:**
 
 | Field | Type | Description |
 | - | - | - |
@@ -11133,9 +11133,9 @@ try {
 > * Store the state securely and validate on callback
 > * Expire after \~10 minutes
 
-> [accordion] Invalid code\_verifier
+> [accordion] Invalid code_verifier
 >
-> * Use the exact verifier that produced the code\_challenge
+> * Use the exact verifier that produced the code_challenge
 > * Ensure base64url encoding (no +, /, =)
 
 > [accordion] Discovery fails
@@ -11152,7 +11152,7 @@ try {
 >
 > * Do token exchange server-side; browser should only handle redirects
 
-> [accordion] Token refresh fails with invalid\_grant
+> [accordion] Token refresh fails with invalid_grant
 >
 > When refresh returns `{ "error": "invalid_grant" }`, the refresh token is
 > invalid, expired, revoked, or superseded by rotation. Do not retry refresh;
@@ -12721,7 +12721,7 @@ Find parameters and examples for creating, editing, moving, duplicating, and del
 
 `notion-create-pages`
 
-Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (an emoji character, a custom emoji by name, a Notion icon identifier as returned by fetch such as "icons/pizza\_blue", or an external image URL) and a cover image. Set `is_skill: true` to create a page as a [Notion Skill](/guides/mcp/notion-skills). If a parent is not specified, a private page will be created.
+Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (an emoji character, a custom emoji by name, a Notion icon identifier as returned by fetch such as "icons/pizza_blue", or an external image URL) and a cover image. Set `is_skill: true` to create a page as a [Notion Skill](/guides/mcp/notion-skills). If a parent is not specified, a private page will be created.
 
 To save a [personal memory](/guides/mcp/tools-skills-agents-reference#read-save-and-update-memories), pass `parent: "memory"` and omit `creation_mode`. Notion creates the managed memory destination on the first save.
 
@@ -13008,7 +13008,7 @@ MCP's signed cover URLs expire after five minutes; the REST API uses one hour. R
 
 Fetched pages, including database items, also include `icon`. It is `null` when there is no icon. Otherwise, it uses the REST API's [emoji and icon object](/reference/emoji-and-icon) shapes: `type: "emoji"` with `emoji`, `type: "custom_emoji"` with `custom_emoji.id`, `custom_emoji.name`, and `custom_emoji.url`, or `type: "icon"` with `icon.name` and `icon.color` for a [native Notion icon](/reference/emoji-and-icon#icon). Image icons use the [file object](/reference/file-object) shape: `type: "external"` with `external.url`, or `type: "file"` with `file.url` and `file.expiry_time` for an image uploaded to Notion.
 
-Signed icon URLs expire after five minutes, the same as cover URLs, and re-fetching the page returns a fresh URL. An omitted `icon` means the metadata is unavailable or not applicable, not that the page has no icon. The `icon` field is read-only. To set or change an icon, pass the icon string that `notion-create-pages` and `notion-update-page` accept: an emoji character (e.g. "🚀"), a custom emoji by name (e.g. ":rocket\_ship:"), a Notion icon identifier as returned by fetch (e.g. "icons/pizza\_blue"), or an external image URL.
+Signed icon URLs expire after five minutes, the same as cover URLs, and re-fetching the page returns a fresh URL. An omitted `icon` means the metadata is unavailable or not applicable, not that the page has no icon. The `icon` field is read-only. To set or change an icon, pass the icon string that `notion-create-pages` and `notion-update-page` accept: an emoji character (e.g. "🚀"), a custom emoji by name (e.g. ":rocket_ship:"), a Notion icon identifier as returned by fetch (e.g. "icons/pizza_blue"), or an external image URL.
 
 Page markdown cites files in page blocks by stable `notion-file-block://` references and doesn't sign them. Files in database properties are still signed inline. To get download URLs, call `notion-get-file-download-urls` with those references, or pass `include_file_urls: true` to get a `references` map from each reference to a signed URL. `include_file_urls` defaults to `false`.
 
@@ -15515,7 +15515,7 @@ We have added support for adding and retrieving `synced_block`, `link_to_page` a
 
 Similar to the UI, there are two versions of a `synced_block` -- the original block that was created first and doesn't yet sync with anything else, and the reference blocks that are synced to the original synced block.
 
-**Original Synced Block** To create a `synced_block`, the developer needs to create an original synced block. Developers will be able to identify the original `synced_block` because it does not "sync\_from" any other block (i.e. the `synced_from` property is set to `null`).
+**Original Synced Block** To create a `synced_block`, the developer needs to create an original synced block. Developers will be able to identify the original `synced_block` because it does not "sync_from" any other block (i.e. the `synced_from` property is set to `null`).
 
 This is an example of an "original" `synced_block`. Note that all of the blocks available to be synced in another `synced_block` are captured in the `children` property.
 
@@ -15679,7 +15679,7 @@ Columns are parent blocks for any supported block children, excluding `column`s.
 
 When initially creating a column list block via [Append block children](/reference/patch-block-children), the column list must have at least 2 columns, and those columns must have at least one child each.
 
-When fetching content for a column\_list, first fetch the the column children via [Retrieve block children](/reference/get-block-children). Then fetch the children for each column block.
+When fetching content for a column_list, first fetch the the column children via [Retrieve block children](/reference/get-block-children). Then fetch the children for each column block.
 
 Below is an example request body for appending `column_list` and nested `column` children.
 
@@ -17655,23 +17655,23 @@ The number property type in databases now supports additional currency options.
 
 The new options are:
 
-* "hong\_kong\_dollar"
-* "new\_zealand\_dollar"
+* "hong_kong_dollar"
+* "new_zealand_dollar"
 * "krona"
-* "norwegian\_krone"
-* "mexican\_peso"
+* "norwegian_krone"
+* "mexican_peso"
 * "rand"
-* "new\_taiwan\_dollar"
-* "danish\_krone"
+* "new_taiwan_dollar"
+* "danish_krone"
 * "zloty"
 * "baht"
 * "forint"
 * "koruna"
 * "shekel"
-* "chilean\_peso"
-* "philippine\_peso"
+* "chilean_peso"
+* "philippine_peso"
 * "dirham"
-* "colombian\_peso"
+* "colombian_peso"
 * "riyal"
 * "ringgit"
 * "leu"
@@ -17708,7 +17708,7 @@ Once selected, any nested pages appear in the "Manually Added" section.
 
 **July 15, 2021**
 
-### Rollup property functions now include show\_original
+### Rollup property functions now include show_original
 
 The `function` `show_original` has now been added to [rollup database property objects](/reference/property-schema-object#rollup-configuration). This fixes a bug where rollup properties were omitted if the calculation was "Show Original".
 
@@ -18008,7 +18008,7 @@ Database objects now return a [parent property](/reference/parent-object#databas
 
 ### Other Improvements and Fixes
 
-* Inline database mentions are now included in [rich\_text mention](/reference/rich-text#database-mention-type-object) responses.
+* Inline database mentions are now included in [rich_text mention](/reference/rich-text#database-mention-type-object) responses.
 * When an integration does not have access to a [page or database mention](/reference/rich-text#page-mention-type-object), we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as "Untitled" and annotations will be default).
 * When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new [select](/reference/page-property-values#select) or [multi-select](/reference/page-property-values#multi-select) properties through the create or update page endpoints without the ability to edit the database parent.
 
@@ -18873,7 +18873,7 @@ Pages and blocks parented by an agent now serialize their `parent` as `{ "type":
 
 Improvements to pagination reliability for the [Query a data source](/reference/post-database-query) endpoint:
 
-* Pagination cursors now embed a session identifier, eliminating intermittent `400 validation_error` ("The start\_cursor provided is invalid") errors that could occur when multiple pagination sessions for the same query overlapped.
+* Pagination cursors now embed a session identifier, eliminating intermittent `400 validation_error` ("The start_cursor provided is invalid") errors that could occur when multiple pagination sessions for the same query overlapped.
 * The `start_cursor` parameter now accepts opaque string values in addition to UUIDs. Existing UUID-based cursors continue to work. As documented in our [versioning policy](/reference/versioning), cursors should always be treated as opaque — pass `next_cursor` values back as `start_cursor` without parsing or validating their format.
 
 **April 20, 2026**
@@ -18907,9 +18907,9 @@ If your integration needs to process all pages in a large data source, we recomm
 
 The [Update a comment](/reference/update-a-comment) (`PATCH /v1/comments/:comment_id`) and [Delete a comment](/reference/delete-a-comment) (`DELETE /v1/comments/:comment_id`) endpoints are now generally available. Non-DLP integrations can only modify or delete comments they created.
 
-### Multi-value filters for select, status, and multi\_select properties
+### Multi-value filters for select, status, and multi_select properties
 
-[Database](/reference/post-database-query-filter) and [data source](/reference/filter-data-source-entries) filters now accept an array of values for `equals` / `does_not_equal` on select and status properties, and for `contains` / `does_not_contain` on multi\_select properties, matching the multi-value conditions available in the Notion UI. The same schema is used by [view filters and quick filters](/guides/data-apis/working-with-views#quick-filters). Person filters set via the API also now round-trip cleanly on read without extra combinator nesting.
+[Database](/reference/post-database-query-filter) and [data source](/reference/filter-data-source-entries) filters now accept an array of values for `equals` / `does_not_equal` on select and status properties, and for `contains` / `does_not_contain` on multi_select properties, matching the multi-value conditions available in the Notion UI. The same schema is used by [view filters and quick filters](/guides/data-apis/working-with-views#quick-filters). Person filters set via the API also now round-trip cleanly on read without extra combinator nesting.
 
 ### Notion MCP improvements
 
@@ -18923,7 +18923,7 @@ The [Update a comment](/reference/update-a-comment) (`PATCH /v1/comments/:commen
 
 The [Create a comment](/reference/create-a-comment) and [Update a comment](/reference/update-a-comment) references now explicitly document that the `markdown` body parameter supports inline formatting only — fenced code blocks, headings, lists, tables, and blockquotes do not render as structured blocks in comments.
 
-**SDK support**: `@notionhq/client` [`v5.18.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.18.0) adds typed support for multi-value select, status, and multi\_select filters. [`v5.19.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.19.0) adds `notion.comments.update()` and `notion.comments.delete()`.
+**SDK support**: `@notionhq/client` [`v5.18.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.18.0) adds typed support for multi-value select, status, and multi_select filters. [`v5.19.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.19.0) adds `notion.comments.update()` and `notion.comments.delete()`.
 
 **April 7, 2026**
 
@@ -19012,7 +19012,7 @@ Three new [webhook events](/reference/webhooks/view-created) (`view.created`, `v
 You can now [create and update status properties](/reference/property-object#status) through the Notion API and [Notion MCP](/guides/mcp/mcp). Previously, status properties were read-only — they could be queried but not created or modified via the API.
 
 * **Create**: pass `{ status: {} }` in a [Create database](/reference/create-database) or [Create data source](/reference/create-a-data-source) request to add a status property with default options (Not started, In progress, Done). Custom initial options are also supported.
-* **Update**: add new options to an existing status property via [Update data source](/reference/update-a-data-source), following the same pattern as select and multi\_select.
+* **Update**: add new options to an existing status property via [Update data source](/reference/update-a-data-source), following the same pattern as select and multi_select.
 * **MCP**: the `notion-create-database` and `notion-update-data-source` tools now support the `STATUS` column type in their schema definitions.
 
 **March 11, 2026**
@@ -20727,7 +20727,7 @@ Each unique value in a skills database's **Tags** property becomes a plugin. An 
 
 For an overview of how to use the Agent Skills API, see the [guide overview](/guides/agent-skills/overview).
 
-## Using version\_id
+## Using version_id
 
 `version_id` is an opaque string. An unchanged value means the plugin's contents are unchanged so you can skip re-downloading its directory.
 
@@ -20863,7 +20863,7 @@ Use the [Retrieve block children](/reference/get-block-children) endpoint to lis
 | `object`\* | `string` | Always `"block"`. | `"block"` |
 | `id`\* | `string` (UUIDv4) | Identifier for the block. | `"7af38973-3787-41b3-bd75-0ed3a1edfac9"` |
 | `parent` | `object` | Information about the block's parent. See [Parent object](/reference/parent-object). | `{ "type": "block_id", "block_id": "7d50a184-5bbe-4d90-8f29-6bec57ed817b" }` |
-| `type` | `string` (enum) | Type of block. Possible values are:  - [`"bookmark"`](/reference/block#bookmark) - [`"breadcrumb"`](/reference/block#breadcrumb) - [`"bulleted_list_item"`](/reference/block#bulleted-list-item) - [`"callout"`](/reference/block#callout) - [`"child_database"`](/reference/block#child-database) - [`"child_page"`](/reference/block#child-page) - [`"column"`](/reference/block#column-list-and-column) - [`"column_list"`](/reference/block#column-list-and-column) - [`"divider"`](/reference/block#divider) - [`"embed"`](/reference/block#embed) - [`"equation"`](/reference/block#equation) - [`"file"`](/reference/block#file) - [`"heading_1"`](/reference/block#headings) - [`"heading_2"`](/reference/block#headings) - [`"heading_3"`](/reference/block#headings) - [`"heading_4"`](/reference/block#headings) - [`"image"`](/reference/block#image) - [`"link_preview"`](/reference/block#link-preview) - [`"numbered_list_item"`](/reference/block#numbered-list-item) - [`"paragraph"`](/reference/block#paragraph) - [`"pdf"`](/reference/block#pdf) - [`"quote"`](/reference/block#quote) - [`"synced_block"`](/reference/block#synced-block) - [`"table"`](/reference/block#table) - [`"table_of_contents"`](/reference/block#table-of-contents) - [`"table_row"`](/reference/block#table-rows) - [`"template"`](/reference/block#template) - [`"to_do"`](/reference/block#to-do) - [`"toggle"`](/reference/block#toggle-blocks) - [`"transcription"`](/reference/block#transcription) - [`"unsupported"`](/reference/block#unsupported) - [`"video"`](/reference/block#video) | `"paragraph"` |
+| `type` | `string` (enum) | Type of block. Possible values are: - [`"bookmark"`](/reference/block#bookmark) - [`"breadcrumb"`](/reference/block#breadcrumb) - [`"bulleted_list_item"`](/reference/block#bulleted-list-item) - [`"callout"`](/reference/block#callout) - [`"child_database"`](/reference/block#child-database) - [`"child_page"`](/reference/block#child-page) - [`"column"`](/reference/block#column-list-and-column) - [`"column_list"`](/reference/block#column-list-and-column) - [`"divider"`](/reference/block#divider) - [`"embed"`](/reference/block#embed) - [`"equation"`](/reference/block#equation) - [`"file"`](/reference/block#file) - [`"heading_1"`](/reference/block#headings) - [`"heading_2"`](/reference/block#headings) - [`"heading_3"`](/reference/block#headings) - [`"heading_4"`](/reference/block#headings) - [`"image"`](/reference/block#image) - [`"link_preview"`](/reference/block#link-preview) - [`"numbered_list_item"`](/reference/block#numbered-list-item) - [`"paragraph"`](/reference/block#paragraph) - [`"pdf"`](/reference/block#pdf) - [`"quote"`](/reference/block#quote) - [`"synced_block"`](/reference/block#synced-block) - [`"table"`](/reference/block#table) - [`"table_of_contents"`](/reference/block#table-of-contents) - [`"table_row"`](/reference/block#table-rows) - [`"template"`](/reference/block#template) - [`"to_do"`](/reference/block#to-do) - [`"toggle"`](/reference/block#toggle-blocks) - [`"transcription"`](/reference/block#transcription) - [`"unsupported"`](/reference/block#unsupported) - [`"video"`](/reference/block#video) | `"paragraph"` |
 | `created_time` | `string` ([ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this block was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `created_by` | [Partial User](/reference/user) | User who created the block. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this block was last updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
@@ -20986,7 +20986,7 @@ Bulleted list item block objects contain the following information within the `b
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text in the `bulleted_list_item` block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks (if any) of the `bulleted_list_item` block. |
 
 ```json Example Bulleted list item block object theme={null}
@@ -21020,7 +21020,7 @@ Callout block objects contain the following information within the `callout` pro
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text in the `callout` block. |
 | `icon` | `object` | The callout's icon. Can be an [emoji](/reference/emoji-and-icon#emoji), [custom emoji](/reference/emoji-and-icon#custom-emoji), [native icon](/reference/emoji-and-icon#icon), or [file](/reference/file-object). |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"`  - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 
 ```json Example Callout block object expandable theme={null}
 {
@@ -21296,8 +21296,8 @@ File block objects contain the following information within the `file` property:
 | Field | Type | Description |
 | :- | :- | :- |
 | `caption` | `array` of [rich text objects](/reference/rich-text) | The caption of the file block. |
-| `type` | One of:  - `"file"` - `"external"` - `"file_upload"` | Type of file. This enum value indicates which of the following three objects are populated. |
-| `file` | [Notion-hosted file object](/reference/file-object#notion-hosted-files-type-file) | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`.  Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
+| `type` | One of: - `"file"` - `"external"` - `"file_upload"` | Type of file. This enum value indicates which of the following three objects are populated. |
+| `file` | [Notion-hosted file object](/reference/file-object#notion-hosted-files-type-file) | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`. Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
 | `external` | [External file object](/reference/file-object#external-files-type-external) | An object with a `url` property, identifying a publicly accessible URL. |
 | `file_upload` | [File upload object](/reference/file-upload) | An object with the `id` of a [FileUpload](/reference/file-upload) to attach to the block. After attaching, the API response responds with a type of `file`, not `file_upload`, so your connection can access a download `url`. |
 | `name` | `string` | The name of the file, as shown in the Notion UI. Note that the UI may auto-append `.pdf` or other extensions.  When attaching a `file_upload`, the `name` parameter is not required. |
@@ -21325,7 +21325,7 @@ All heading block objects, `heading_1`, `heading_2`, `heading_3`, and `heading_4
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text of the heading. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `is_toggleable` | `boolean` | Whether or not the heading block is a toggle heading or not. If `true`, then the heading block toggles and can support children. If `false`, then the heading block is a static heading block. |
 
 ```json Example Heading 1 block object theme={null}
@@ -21550,7 +21550,7 @@ Numbered list item block objects contain the following information within the `n
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the `numbered_list_item` block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `list_start_index` | `integer` (optional) | The start index of a list, used to represent a list that doesn't start at 1.  Only present on the first item of a list. |
 | `list_format` | `string` (enum) (optional) | The type of list format. Possible values are: `"numbers"`, `"letters"`, and `"roman"`.  Only present on the first item of a list. |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks (if any) of the `numbered_list_item` block. |
@@ -21581,7 +21581,7 @@ Paragraph block objects contain the following information within the `paragraph`
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the paragraph block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `icon` | [emoji](/reference/emoji-and-icon#emoji), [custom emoji](/reference/emoji-and-icon#custom-emoji), [icon](/reference/emoji-and-icon#icon), or [file object](/reference/file-object) (nullable) | An optional icon for the paragraph. Can only be set when the paragraph is a direct child of a [tab](/reference/block#tab) block. |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks (if any) of the `paragraph` block. |
 
@@ -21660,7 +21660,7 @@ A PDF block object represents a PDF that has been embedded within a Notion page.
 | Property | Type | Description |
 | :- | :- | :- |
 | `caption` | `array` of [rich text objects](/reference/rich-text) | A caption, if provided, for the PDF block. |
-| `type` | One of:  - `"file"` - `"external"` - `"file_upload"` | A constant string representing the type of PDF. `file` indicates a Notion-hosted file, and `external` represents a third-party link. `file_upload` is only valid when providing parameters to attach a [File Upload](/reference/file-upload) to a PDF block. |
+| `type` | One of: - `"file"` - `"external"` - `"file_upload"` | A constant string representing the type of PDF. `file` indicates a Notion-hosted file, and `external` represents a third-party link. `file_upload` is only valid when providing parameters to attach a [File Upload](/reference/file-upload) to a PDF block. |
 | `external` \|`file` \|`file_upload` | [file object](/reference/file-object) | An object containing type-specific information about the PDF. |
 
 ```json JSON theme={null}
@@ -21690,7 +21690,7 @@ Quote block objects contain the following information within the `quote` propert
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the quote block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the quote block. |
 
 ```json Example Quote block theme={null}
@@ -21760,7 +21760,7 @@ Duplicate synced block objects contain the following information within the `syn
 
 | Field | Type | Description |
 | :- | :- | :- |
-| `type` | `string` (enum) | The type of the synced from object.  Possible values are:  - `"block_id"` |
+| `type` | `string` (enum) | The type of the synced from object.  Possible values are: - `"block_id"` |
 | `block_id` | `string` (UUIDv4) | An identifier for the original `synced_block`. |
 
 ```json Example Duplicate synced block object theme={null}
@@ -21785,7 +21785,7 @@ Table block objects are parent blocks for table row children. Table block object
 
 | Field | Type | Description |
 | :- | :- | :- |
-| `table_width` | `integer` | The number of columns in the table.  **Note that this cannot be changed using the API once a table is created.** |
+| `table_width` | `integer` | The number of columns in the table. **Note that this cannot be changed using the API once a table is created.** |
 | `has_column_header` | `boolean` | Whether the table has a column header. If `true`, then the first row in the table appears visually distinct from the other rows. |
 | `has_row_header` | `boolean` | Whether the table has a header row. If `true`, then the first column in the table appears visually distinct from the other columns. |
 
@@ -21903,7 +21903,7 @@ Table of contents block objects contain the following information within the `ta
 
 | Property | Type | Description |
 | :- | :- | :- |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 
 ```json Example Table of contents block object theme={null}
 {
@@ -22022,7 +22022,7 @@ To do block objects contain the following information within the `to_do` propert
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the To do block. |
 | `checked` | `boolean` (optional) | Whether the To do is checked. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the To do block. |
 
 ```json Example To do block object theme={null}
@@ -22054,7 +22054,7 @@ Toggle block objects contain the following information within the `toggle` prope
 | Field | Type | Description |
 | :- | :- | :- |
 | `rich_text` | `array` of [rich text objects](/reference/rich-text) | The rich text displayed in the Toggle block. |
-| `color` | `string` (enum) | The color of the block. Possible values are:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
+| `color` | `string` (enum) | The color of the block. Possible values are: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` - `"orange_background"` - `"yellow"` - `"green"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background"` - `"yellow_background"` |
 | `children` | `array` of [block objects](/reference/block) | The nested child blocks, if any, of the Toggle block. |
 
 ```json Toggle Block theme={null}
@@ -22239,12 +22239,12 @@ Source: https://developers.notion.com/reference/changes-by-version
 
 | Version | Breaking changes |
 | :- | :- |
-| `2026-03-11` | The `after` parameter on Append Block Children is replaced by a `position` object. The `archived` field is removed in favor of `in_trash` across all request parameters and response bodies. The `transcription` block type is renamed to `meeting_notes`.   See [Upgrading to 2026-03-11](/guides/get-started/upgrade-guide-2026-03-11) for details. |
-| `2025-09-03` | `/v1/databases` APIs are re-organized into `/v1/data_sources` (for managing individual data sources under a database container) and `/v1/databases` (for managing the database container.)       Existing database IDs stay the same, but a new concept of data source IDs is introduced, and required in order to manage data source properties, to support multi-source databases (new in the Notion app as of September 2025.)       See [changelog](/page/changelog) and [Upgrading to 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03) guide for more details. |
-| `2022-06-28` | Page properties must be retrieved using the page properties endpoint.       Parents are now always direct parents; a parent field has been added to block.       Database relations have a type of `single_property` and `dual_property`.         See [changelog](/changelog/releasing-notion-version-2022-06-28) for more details. |
+| `2026-03-11` | The `after` parameter on Append Block Children is replaced by a `position` object. The `archived` field is removed in favor of `in_trash` across all request parameters and response bodies. The `transcription` block type is renamed to `meeting_notes`.  See [Upgrading to 2026-03-11](/guides/get-started/upgrade-guide-2026-03-11) for details. |
+| `2025-09-03` | `/v1/databases` APIs are re-organized into `/v1/data_sources` (for managing individual data sources under a database container) and `/v1/databases` (for managing the database container.)      Existing database IDs stay the same, but a new concept of data source IDs is introduced, and required in order to manage data source properties, to support multi-source databases (new in the Notion app as of September 2025.)      See [changelog](/page/changelog) and [Upgrading to 2025-09-03](/guides/get-started/upgrade-guide-2025-09-03) guide for more details. |
+| `2022-06-28` | Page properties must be retrieved using the page properties endpoint.      Parents are now always direct parents; a parent field has been added to block.      Database relations have a type of `single_property` and `dual_property`.        See [changelog](/changelog/releasing-notion-version-2022-06-28) for more details. |
 | `2022-02-22` | See [changelog](/changelog/releasing-notion-version-2022-02-22). |
-| `2021-08-16` | The [Append block children](/reference/patch-block-children) endpoint returns a list of new [Block object](/reference/block) children instead of the parent block.       Array rollup property types changed from `file`, `text` and `person` to `files`, `rich_text` and `people`.       Property IDs are now encoded to be URL safe.       Empty number, email, select, date, and rollup properties are now returned in page responses as `null`.       [More information](/changelog/notion-version-2021-08-16) |
-| `2021-05-13` | Rich text property values use the type `rich_text` instead of `text`.       [Migration details](/changelog/unversioned-requests-no-longer-accepted) |
+| `2021-08-16` | The [Append block children](/reference/patch-block-children) endpoint returns a list of new [Block object](/reference/block) children instead of the parent block.      Array rollup property types changed from `file`, `text` and `person` to `files`, `rich_text` and `people`.      Property IDs are now encoded to be URL safe.      Empty number, email, select, date, and rollup properties are now returned in page responses as `null`.      [More information](/changelog/notion-version-2021-08-16) |
+| `2021-05-13` | Rich text property values use the type `rich_text` instead of `text`.      [Migration details](/changelog/unversioned-requests-no-longer-accepted) |
 
 
 # Comment attachment
@@ -22825,7 +22825,7 @@ As of API version `2025-09-03`, there's a suite of APIs for managing data source
 | :- | :- | :- | :- |
 | `object`\* | `string` | Always `"data_source"`. | `"data_source"` |
 | `id`\* | `string` (UUID) | Unique identifier for the data source. | `"2f26ee68-df30-4251-aad4-8ddc420cba3d"` |
-| `properties`\* | `object` | Schema of properties for the data source as they appear in Notion.  `key` string The name of the property as it appears in Notion.  `value` object A [Property object](/reference/property-object). | |
+| `properties`\* | `object` | Schema of properties for the data source as they appear in Notion. `key` string The name of the property as it appears in Notion. `value` object A [Property object](/reference/property-object). | |
 | `parent` | `object` | Information about the data source's immediate parent. Most data sources are parented by a database (`type: "database_id"`). Some externally synced data sources can be parented by another data source (`type: "data_source_id"`) and include the containing `database_id`. See [Parent object](/reference/parent-object). | `{"type": "database_id", "database_id": "842a0286-cef0-46a8-abba-eac4c8ca644e"}` |
 | `database_parent` | `object` | Information about the containing database's parent. See [Parent object](/reference/parent-object). | `{ "type": "page_id", "page_id": "af5f89b5-a8ff-4c56-a5e8-69797d11b9f8" }` |
 | `database_type` | `string` or `null` | The type of typed database this data source belongs to. `null` for a regular data source. | `"skills"` |
@@ -22947,7 +22947,7 @@ Individual data sources don't have permissions settings, so the set of Notion us
 | :- | :- | :- | :- |
 | `object` | `string` | Always `"database"`. | `"database"` |
 | `id` | `string` (UUID) | Unique identifier for the database. | `"2f26ee68-df30-4251-aad4-8ddc420cba3d"` |
-| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`. [Retrieve a database](/reference/retrieve-database) may also include optional [sync metadata and health](/reference/data-source#sync-metadata) for each readable source.   Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
+| `data_sources` | array of data source objects | List of child data sources, each of which is a JSON object with an `id` and `name`. [Retrieve a database](/reference/retrieve-database) may also include optional [sync metadata and health](/reference/data-source#sync-metadata) for each readable source.  Use [Retrieve a data source](/reference/retrieve-a-data-source) to get more details on the data source, including its `properties`. | `[{"id": "c174b72c-d782-432f-8dc0-b647e1c96df6", "name": "Tasks data source"}]` |
 | `created_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T19:10:04.968Z"` |
 | `created_by` | [Partial User](/reference/user) | User who created the database. | `{"object": "user","id": "45ee8d13-687b-47ce-a5ca-6e2e45548c4b"}` |
 | `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this database was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string. | `"2020-03-17T21:49:37.913Z"` |
@@ -23512,9 +23512,9 @@ The response of File Upload APIs like [Retrieve a file upload](/reference/retrie
 | `created_time` | String | ISO 8601 timestamp when the FileUpload was created. |
 | `last_edited_time` | String | ISO 8601 timestamp when the FileUpload was last modified. |
 | `expiry_time` | String | Nullable. ISO 8601 timestamp when the FileUpload will expire, if the API connection that created it doesn't complete the upload and attach to at least one block or other object in a workspace. |
-| `status` | One of:  - `"pending"` - `"uploaded"` - `"expired"` - `"failed"` | Enum status of the file upload.  `pending` status means awaiting upload or completion of an upload.  `uploaded` status means file contents have been sent.  If the `expiry_time` is `null`, that means the file upload has already been attached to a block or other object.  `expired` and `failed` file uploads can no longer be used. `failed` is only used for FileUploads with `mode=external_url` when the import was unsuccessful. |
-| `filename` | String | Nullable. Name of the file, provided during the [Create a file upload](/reference/create-file) step, or, for `single_part` uploads, can be determined from the provided filename in the form data passed to the [Send a file upload](/reference/upload-file) step.  A file extension is automatically added based on the `content_type` if the filename doesn't already have one. |
-| `content_type` | String | Nullable. The MIME content type of the uploaded file. Must be provided explicitly or inferred from a `filename` that includes an extension.  For `single_part` uploads, the content type can remain `null` until the [Send a file upload](/reference/upload-file) step and inferred from the `file` parameter's content type. |
+| `status` | One of: - `"pending"` - `"uploaded"` - `"expired"` - `"failed"` | Enum status of the file upload. `pending` status means awaiting upload or completion of an upload. `uploaded` status means file contents have been sent. If the `expiry_time` is `null`, that means the file upload has already been attached to a block or other object. `expired` and `failed` file uploads can no longer be used. `failed` is only used for FileUploads with `mode=external_url` when the import was unsuccessful. |
+| `filename` | String | Nullable. Name of the file, provided during the [Create a file upload](/reference/create-file) step, or, for `single_part` uploads, can be determined from the provided filename in the form data passed to the [Send a file upload](/reference/upload-file) step. A file extension is automatically added based on the `content_type` if the filename doesn't already have one. |
+| `content_type` | String | Nullable. The MIME content type of the uploaded file. Must be provided explicitly or inferred from a `filename` that includes an extension. For `single_part` uploads, the content type can remain `null` until the [Send a file upload](/reference/upload-file) step and inferred from the `file` parameter's content type. |
 | `content_length` | Integer | Nullable. The total size of the file, in bytes. For pending `multi_part` uploads, this field is a running total based on the file segments uploaded so far and recalculated at the end during the [Complete a file upload](/reference/complete-file-upload) step. |
 | `upload_url` | String | Field only included for `pending` file uploads. This is the URL to use for [sending file contents](/reference/upload-file). |
 | `complete_url` | String | Field only included for `pending` file uploads created with a `mode` of `multi_part`. This is the URL to use to [complete a multi-part file upload](/reference/complete-file-upload). |
@@ -23612,13 +23612,13 @@ The condition contains the below fields:
 | `after` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.  Returns data source entries where the date property value is after the provided date. | `"2021-05-10"` `"yesterday"` |
 | `before` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.  Returns data source entries where the date property value is before the provided date. | `"2021-05-10"` `"tomorrow"` |
 | `equals` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.  Returns data source entries where the date property value is the provided date. | `"2021-05-10"` `"today"` |
-| `is_empty` | `true` | The value to compare the date property value against.   Returns data source entries where the date property value contains no data. | `true` |
-| `is_not_empty` | `true` | The value to compare the date property value against.   Returns data source entries where the date property value is not empty. | `true` |
+| `is_empty` | `true` | The value to compare the date property value against.  Returns data source entries where the date property value contains no data. | `true` |
+| `is_not_empty` | `true` | The value to compare the date property value against.  Returns data source entries where the date property value is not empty. | `true` |
 | `next_month` | `object` (empty) | A filter that limits the results to data source entries where the date property value is within the next month. | `{}` |
 | `next_week` | `object` (empty) | A filter that limits the results to data source entries where the date property value is within the next week. | `{}` |
 | `next_year` | `object` (empty) | A filter that limits the results to data source entries where the date property value is within the next year. | `{}` |
 | `on_or_after` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.  Returns data source entries where the date property value is on or after the provided date. | `"2021-05-10"` `"today"` |
-| `on_or_before` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.   Returns data source entries where the date property value is on or before the provided date. | `"2021-05-10"` `"today"` |
+| `on_or_before` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.  Returns data source entries where the date property value is on or before the provided date. | `"2021-05-10"` `"today"` |
 | `past_month` | `object` (empty) | A filter that limits the results to data source entries where the `date` property value is within the past month. | `{}` |
 | `past_week` | `object` (empty) | A filter that limits the results to data source entries where the `date` property value is within the past week. | `{}` |
 | `past_year` | `object` (empty) | A filter that limits the results to data source entries where the `date` property value is within the past year. | `{}` |
@@ -23707,10 +23707,10 @@ The primary field of the `formula` filter condition object matches the type of t
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `checkbox` | `object` | A [checkbox](#checkbox) filter condition to compare the formula result against.   Returns data source entries where the formula result matches the provided condition. | Refer to the [checkbox](#checkbox) filter condition. |
-| `date` | `object` | A [date](#date) filter condition to compare the formula result against.   Returns data source entries where the formula result matches the provided condition. | Refer to the [date](#date) filter condition. |
-| `number` | `object` | A [number](#number) filter condition to compare the formula result against.   Returns data source entries where the formula result matches the provided condition. | Refer to the [number](#number) filter condition. |
-| `string` | `object` | A [rich text](#rich-text) filter condition to compare the formula result against.   Returns data source entries where the formula result matches the provided condition. | Refer to the [rich text](#rich-text) filter condition. |
+| `checkbox` | `object` | A [checkbox](#checkbox) filter condition to compare the formula result against.  Returns data source entries where the formula result matches the provided condition. | Refer to the [checkbox](#checkbox) filter condition. |
+| `date` | `object` | A [date](#date) filter condition to compare the formula result against.  Returns data source entries where the formula result matches the provided condition. | Refer to the [date](#date) filter condition. |
+| `number` | `object` | A [number](#number) filter condition to compare the formula result against.  Returns data source entries where the formula result matches the provided condition. | Refer to the [number](#number) filter condition. |
+| `string` | `object` | A [rich text](#rich-text) filter condition to compare the formula result against.  Returns data source entries where the formula result matches the provided condition. | Refer to the [rich text](#rich-text) filter condition. |
 
 ```json Example formula filter condition theme={null}
 {
@@ -23729,10 +23729,10 @@ The primary field of the `formula` filter condition object matches the type of t
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `contains` | `string` or `string[]` | The value(s) to compare the multi-select property value against.   Returns data source entries where the multi-select value matches any of the provided values. | `"Marketing"` or `["Marketing", "Sales"]` |
-| `does_not_contain` | `string` or `string[]` | The value(s) to compare the multi-select property value against.   Returns data source entries where the multi-select value does not match any of the provided values. | `"Engineering"` or `["Engineering", "QA"]` |
-| `is_empty` | `true` | Whether the multi-select property value is empty.   Returns data source entries where the multi-select value does not contain any data. | `true` |
-| `is_not_empty` | `true` | Whether the multi-select property value is not empty.   Returns data source entries where the multi-select value does contains data. | `true` |
+| `contains` | `string` or `string[]` | The value(s) to compare the multi-select property value against.  Returns data source entries where the multi-select value matches any of the provided values. | `"Marketing"` or `["Marketing", "Sales"]` |
+| `does_not_contain` | `string` or `string[]` | The value(s) to compare the multi-select property value against.  Returns data source entries where the multi-select value does not match any of the provided values. | `"Engineering"` or `["Engineering", "QA"]` |
+| `is_empty` | `true` | Whether the multi-select property value is empty.  Returns data source entries where the multi-select value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the multi-select property value is not empty.  Returns data source entries where the multi-select value does contains data. | `true` |
 
 ```json Example multi-select filter condition theme={null}
 {
@@ -23749,14 +23749,14 @@ The primary field of the `formula` filter condition object matches the type of t
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `does_not_equal` | `number` | The `number` to compare the number property value against.   Returns data source entries where the number property value differs from the provided `number`. | `42` |
-| `equals` | `number` | The `number` to compare the number property value against.   Returns data source entries where the number property value is the same as the provided number. | `42` |
-| `greater_than` | `number` | The `number` to compare the number property value against.   Returns data source entries where the number property value exceeds the provided `number`. | `42` |
-| `greater_than_or_equal_to` | `number` | The `number` to compare the number property value against.   Returns data source entries where the number property value is equal to or exceeds the provided `number`. | `42` |
-| `is_empty` | `true` | Whether the `number` property value is empty.   Returns data source entries where the number property value does not contain any data. | `true` |
-| `is_not_empty` | `true` | Whether the number property value is not empty.   Returns data source entries where the number property value contains data. | `true` |
-| `less_than` | `number` | The `number` to compare the number property value against.   Returns data source entries where the number property value is less than the provided `number`. | `42` |
-| `less_than_or_equal_to` | `number` | The `number` to compare the number property value against.   Returns data source entries where the number property value is equal to or is less than the provided `number`. | `42` |
+| `does_not_equal` | `number` | The `number` to compare the number property value against.  Returns data source entries where the number property value differs from the provided `number`. | `42` |
+| `equals` | `number` | The `number` to compare the number property value against.  Returns data source entries where the number property value is the same as the provided number. | `42` |
+| `greater_than` | `number` | The `number` to compare the number property value against.  Returns data source entries where the number property value exceeds the provided `number`. | `42` |
+| `greater_than_or_equal_to` | `number` | The `number` to compare the number property value against.  Returns data source entries where the number property value is equal to or exceeds the provided `number`. | `42` |
+| `is_empty` | `true` | Whether the `number` property value is empty.  Returns data source entries where the number property value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the number property value is not empty.  Returns data source entries where the number property value contains data. | `true` |
+| `less_than` | `number` | The `number` to compare the number property value against.  Returns data source entries where the number property value is less than the provided `number`. | `42` |
+| `less_than_or_equal_to` | `number` | The `number` to compare the number property value against.  Returns data source entries where the number property value is equal to or is less than the provided `number`. | `42` |
 
 ```json Example number filter condition theme={null}
 {
@@ -23777,10 +23777,10 @@ The people filter condition contains the following fields:
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `contains` | `string` (UUIDv4) or `"me"` | The value to compare the people property value against.   Returns data source entries where the people property value contains the provided user. Pass a user UUID or `"me"` to match the current user (see note below). | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
-| `does_not_contain` | `string` (UUIDv4) or `"me"` | The value to compare the people property value against.   Returns data source entries where the people property value does not contain the provided user. Pass a user UUID or `"me"` to match the current user (see note below). | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
-| `is_empty` | `true` | Whether the people property value does not contain any data.   Returns data source entries where the people property value does not contain any data. | `true` |
-| `is_not_empty` | `true` | Whether the people property value contains data.   Returns data source entries where the people property value is not empty. | `true` |
+| `contains` | `string` (UUIDv4) or `"me"` | The value to compare the people property value against.  Returns data source entries where the people property value contains the provided user. Pass a user UUID or `"me"` to match the current user (see note below). | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
+| `does_not_contain` | `string` (UUIDv4) or `"me"` | The value to compare the people property value against.  Returns data source entries where the people property value does not contain the provided user. Pass a user UUID or `"me"` to match the current user (see note below). | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
+| `is_empty` | `true` | Whether the people property value does not contain any data.  Returns data source entries where the people property value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the people property value contains data.  Returns data source entries where the people property value is not empty. | `true` |
 
 ```json Example people filter condition theme={null}
 {
@@ -23812,10 +23812,10 @@ The people filter condition contains the following fields:
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `contains` | `string` (UUIDv4) | The value to compare the relation property value against.   Returns data source entries where the relation property value contains the provided `string`. | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
-| `does_not_contain` | `string` (UUIDv4) | The value to compare the relation property value against.   Returns entries where the relation property value does not contain the provided `string`. | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
-| `is_empty` | `true` | Whether the relation property value does not contain data.   Returns data source entries where the relation property value does not contain any data. | `true` |
-| `is_not_empty` | `true` | Whether the relation property value contains data.   Returns data source entries where the property value is not empty. | `true` |
+| `contains` | `string` (UUIDv4) | The value to compare the relation property value against.  Returns data source entries where the relation property value contains the provided `string`. | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
+| `does_not_contain` | `string` (UUIDv4) | The value to compare the relation property value against.  Returns entries where the relation property value does not contain the provided `string`. | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
+| `is_empty` | `true` | Whether the relation property value does not contain data.  Returns data source entries where the relation property value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the relation property value contains data.  Returns data source entries where the property value is not empty. | `true` |
 
 ```json Example relation filter condition theme={null}
 {
@@ -23832,14 +23832,14 @@ The people filter condition contains the following fields:
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `contains` | `string` | The `string` to compare the text property value against.   Returns data source entries with a text property value that includes the provided `string`. | `"Moved to Q2"` |
-| `does_not_contain` | `string` | The `string` to compare the text property value against.   Returns data source entries with a text property value that does not include the provided `string`. | `"Moved to Q2"` |
-| `does_not_equal` | `string` | The `string` to compare the text property value against.   Returns data source entries with a text property value that does not match the provided `string`. | `"Moved to Q2"` |
-| `ends_with` | `string` | The `string` to compare the text property value against.   Returns data source entries with a text property value that ends with the provided `string`. | `"Q2"` |
-| `equals` | `string` | The `string` to compare the text property value against.   Returns data source entries with a text property value that matches the provided `string`. | `"Moved to Q2"` |
-| `is_empty` | `true` | Whether the text property value does not contain any data.   Returns data source entries with a text property value that is empty. | `true` |
-| `is_not_empty` | `true` | Whether the text property value contains any data.   Returns data source entries with a text property value that contains data. | `true` |
-| `starts_with` | `string` | The `string` to compare the text property value against.   Returns data source entries with a text property value that starts with the provided `string`. | "Moved" |
+| `contains` | `string` | The `string` to compare the text property value against.  Returns data source entries with a text property value that includes the provided `string`. | `"Moved to Q2"` |
+| `does_not_contain` | `string` | The `string` to compare the text property value against.  Returns data source entries with a text property value that does not include the provided `string`. | `"Moved to Q2"` |
+| `does_not_equal` | `string` | The `string` to compare the text property value against.  Returns data source entries with a text property value that does not match the provided `string`. | `"Moved to Q2"` |
+| `ends_with` | `string` | The `string` to compare the text property value against.  Returns data source entries with a text property value that ends with the provided `string`. | `"Q2"` |
+| `equals` | `string` | The `string` to compare the text property value against.  Returns data source entries with a text property value that matches the provided `string`. | `"Moved to Q2"` |
+| `is_empty` | `true` | Whether the text property value does not contain any data.  Returns data source entries with a text property value that is empty. | `true` |
+| `is_not_empty` | `true` | Whether the text property value contains any data.  Returns data source entries with a text property value that contains data. | `true` |
+| `starts_with` | `string` | The `string` to compare the text property value against.  Returns data source entries with a text property value that starts with the provided `string`. | "Moved" |
 
 ```json Example rich text filter condition theme={null}
 {
@@ -23860,9 +23860,9 @@ A rollup data source property can evaluate to an array, date, or number value. T
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `any` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type.   Returns data source entries where the rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
-| `every` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type.   Returns data source entries where every rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
-| `none` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type.   Returns data source entries where no rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
+| `any` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type.  Returns data source entries where the rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
+| `every` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type.  Returns data source entries where every rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
+| `none` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type.  Returns data source entries where no rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
 
 ```json Example array rollup filter condition theme={null}
 {
@@ -23885,7 +23885,7 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `date` | `object` | A [date](#date) filter condition to compare the rollup value against.   Returns data source entries where the rollup value matches the provided condition. | Refer to the [date](#date) filter condition. |
+| `date` | `object` | A [date](#date) filter condition to compare the rollup value against.  Returns data source entries where the rollup value matches the provided condition. | Refer to the [date](#date) filter condition. |
 
 ```json Example date rollup filter condition theme={null}
 {
@@ -23904,7 +23904,7 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `number` | `object` | A [number](#number) filter condition to compare the rollup value against.   Returns data source entries where the rollup value matches the provided condition. | Refer to the [number](#number) filter condition. |
+| `number` | `object` | A [number](#number) filter condition to compare the rollup value against.  Returns data source entries where the rollup value matches the provided condition. | Refer to the [number](#number) filter condition. |
 
 ```json Example number rollup filter condition theme={null}
 {
@@ -23923,10 +23923,10 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `equals` | `string` or `string[]` | The value(s) to compare the select property value against.   Returns data source entries where the select property value matches any of the provided values. | `"This week"` or `["Low", "Medium"]` |
-| `does_not_equal` | `string` or `string[]` | The value(s) to compare the select property value against.   Returns data source entries where the select property value does not match any of the provided values. | `"Backlog"` or `["Done", "Archive"]` |
-| `is_empty` | `true` | Whether the select property value does not contain data.   Returns data source entries where the select property value is empty. | `true` |
-| `is_not_empty` | `true` | Whether the select property value contains data.   Returns data source entries where the select property value is not empty. | `true` |
+| `equals` | `string` or `string[]` | The value(s) to compare the select property value against.  Returns data source entries where the select property value matches any of the provided values. | `"This week"` or `["Low", "Medium"]` |
+| `does_not_equal` | `string` or `string[]` | The value(s) to compare the select property value against.  Returns data source entries where the select property value does not match any of the provided values. | `"Backlog"` or `["Done", "Archive"]` |
+| `is_empty` | `true` | Whether the select property value does not contain data.  Returns data source entries where the select property value is empty. | `true` |
+| `is_not_empty` | `true` | Whether the select property value contains data.  Returns data source entries where the select property value is not empty. | `true` |
 
 ```json Example select filter condition theme={null}
 {
@@ -23954,12 +23954,12 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| equals | string or string\[] | The option name(s) to compare the status property value against.   Returns data source entries where the status property value matches any of the provided values. If a value matches no option but matches a status group name, it matches the group. With the [status group filters beta](#status-group-filters-beta), values must be option names. | "This week" or \["Not started", "In progress"] |
-| does\_not\_equal | string or string\[] | The option name(s) to compare the status property value against.   Returns data source entries where the status property value does not match any of the provided values. The same status group rule as `equals` applies. | "Backlog" or \["Done", "Archive"] |
-| group\_equals | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to match. An array must have at least one name.   Returns entries whose status option belongs to any listed group. | `"In progress"` or `["To-do", "Complete"]` |
-| group\_does\_not\_equal | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to exclude. An array must have at least one name.   Returns entries whose status option belongs to none of the listed groups. | `"In progress"` or `["To-do", "Complete"]` |
-| is\_empty | true | Whether the status property value does not contain data.   Returns data source entries where the status property value is empty. | true |
-| is\_not\_empty | true | Whether the status property value contains data.   Returns data source entries where the status property value is not empty. | true |
+| equals | string or string\[] | The option name(s) to compare the status property value against.  Returns data source entries where the status property value matches any of the provided values. If a value matches no option but matches a status group name, it matches the group. With the [status group filters beta](#status-group-filters-beta), values must be option names. | "This week" or \["Not started", "In progress"] |
+| does_not_equal | string or string\[] | The option name(s) to compare the status property value against.  Returns data source entries where the status property value does not match any of the provided values. The same status group rule as `equals` applies. | "Backlog" or \["Done", "Archive"] |
+| group_equals | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to match. An array must have at least one name.  Returns entries whose status option belongs to any listed group. | `"In progress"` or `["To-do", "Complete"]` |
+| group_does_not_equal | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to exclude. An array must have at least one name.  Returns entries whose status option belongs to none of the listed groups. | `"In progress"` or `["To-do", "Complete"]` |
+| is_empty | true | Whether the status property value does not contain data.  Returns data source entries where the status property value is empty. | true |
+| is_not_empty | true | Whether the status property value contains data.  Returns data source entries where the status property value is not empty. | true |
 
 ```json Example status filter condition theme={null}
 {
@@ -24004,8 +24004,8 @@ Use a timestamp filter condition to filter results based on `created_time` or `l
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| timestamp | created\_time last\_edited\_time | A constant string representing the type of timestamp to use as a filter. | "created\_time" |
-| created\_time last\_edited\_time | object | A date filter condition used to filter the specified timestamp. | Refer to the [date](#date) filter condition. |
+| timestamp | created_time last_edited_time | A constant string representing the type of timestamp to use as a filter. | "created_time" |
+| created_time last_edited_time | object | A date filter condition used to filter the specified timestamp. | Refer to the [date](#date) filter condition. |
 
 ```json Example timestamp filter condition for created_time theme={null}
 {
@@ -24048,12 +24048,12 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `does_not_equal` | `number` | The value to compare the unique\_id property value against.   Returns data source entries where the unique\_id property value differs from the provided value. | `42` |
-| `equals` | `number` | The value to compare the unique\_id property value against.   Returns data source entries where the unique\_id property value is the same as the provided value. | `42` |
-| `greater_than` | `number` | The value to compare the unique\_id property value against.   Returns data source entries where the unique\_id property value exceeds the provided value. | `42` |
-| `greater_than_or_equal_to` | `number` | The value to compare the unique\_id property value against.   Returns data source entries where the unique\_id property value is equal to or exceeds the provided value. | `42` |
-| `less_than` | `number` | The value to compare the unique\_id property value against.   Returns data source entries where the unique\_id property value is less than the provided value. | `42` |
-| `less_than_or_equal_to` | `number` | The value to compare the unique\_id property value against.   Returns data source entries where the unique\_id property value is equal to or is less than the provided value. | `42` |
+| `does_not_equal` | `number` | The value to compare the unique_id property value against.  Returns data source entries where the unique_id property value differs from the provided value. | `42` |
+| `equals` | `number` | The value to compare the unique_id property value against.  Returns data source entries where the unique_id property value is the same as the provided value. | `42` |
+| `greater_than` | `number` | The value to compare the unique_id property value against.  Returns data source entries where the unique_id property value exceeds the provided value. | `42` |
+| `greater_than_or_equal_to` | `number` | The value to compare the unique_id property value against.  Returns data source entries where the unique_id property value is equal to or exceeds the provided value. | `42` |
+| `less_than` | `number` | The value to compare the unique_id property value against.  Returns data source entries where the unique_id property value is less than the provided value. | `42` |
+| `less_than_or_equal_to` | `number` | The value to compare the unique_id property value against.  Returns data source entries where the unique_id property value is equal to or is less than the provided value. | `42` |
 
 ```json Example ID filter condition theme={null}
 {
@@ -24104,8 +24104,8 @@ A compound filter condition contains an `and` or `or` key with a value that is a
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `and` | `array` | An array of [filter](#type-specific-filter-conditions) objects or compound filter conditions.   Returns data source entries that match **all** of the provided filter conditions. | Refer to the examples below. |
-| or | array | An array of [filter](#type-specific-filter-conditions) objects or compound filter conditions.   Returns data source entries that match **any** of the provided filter conditions | Refer to the examples below. |
+| `and` | `array` | An array of [filter](#type-specific-filter-conditions) objects or compound filter conditions.  Returns data source entries that match **all** of the provided filter conditions. | Refer to the examples below. |
+| or | array | An array of [filter](#type-specific-filter-conditions) objects or compound filter conditions.  Returns data source entries that match **any** of the provided filter conditions | Refer to the examples below. |
 
 ### Example compound filter conditions
 
@@ -27532,9 +27532,9 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | equals | string or string\[] | The value(s) to compare the status property value against.   Returns database entries where the status property value matches any of the provided values. Status group names (e.g. "To-do", "In progress", "Complete") are also accepted. | "This week" or \["To-do", "In progress"] |
-| does\_not\_equal | string or string\[] | The value(s) to compare the status property value against.   Returns database entries where the status property value does not match any of the provided values. | "Backlog" or \["Done", "Archive"] |
-| is\_empty | true | Whether the status property value does not contain data.   Returns database entries where the status property value is empty. | true |
-| is\_not\_empty | true | Whether the status property value contains data.   Returns database entries where the status property value is not empty. | true |
+| does_not_equal | string or string\[] | The value(s) to compare the status property value against.   Returns database entries where the status property value does not match any of the provided values. | "Backlog" or \["Done", "Archive"] |
+| is_empty | true | Whether the status property value does not contain data.   Returns database entries where the status property value is empty. | true |
+| is_not_empty | true | Whether the status property value contains data.   Returns database entries where the status property value is not empty. | true |
 
 ```json Example status filter condition theme={null}
 {
@@ -27553,8 +27553,8 @@ Use a timestamp filter condition to filter results based on `created_time` or `l
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| timestamp | created\_time last\_edited\_time | A constant string representing the type of timestamp to use as a filter. | "created\_time" |
-| created\_time last\_edited\_time | object | A date filter condition used to filter the specified timestamp. | Refer to the [date](#date) filter condition. |
+| timestamp | created_time last_edited_time | A constant string representing the type of timestamp to use as a filter. | "created_time" |
+| created_time last_edited_time | object | A date filter condition used to filter the specified timestamp. | Refer to the [date](#date) filter condition. |
 
 ```json Example timestamp filter condition for created_time theme={null}
 {
@@ -27597,12 +27597,12 @@ Use a timestamp filter condition to filter results based on the `unique_id` valu
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `does_not_equal` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value differs from the provided value. | `42` |
-| `equals` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is the same as the provided value. | `42` |
-| `greater_than` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value exceeds the provided value. | `42` |
-| `greater_than_or_equal_to` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is equal to or exceeds the provided value. | `42` |
-| `less_than` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is less than the provided value. | `42` |
-| `less_than_or_equal_to` | `number` | The value to compare the unique\_id property value against.   Returns database entries where the unique\_id property value is equal to or is less than the provided value. | `42` |
+| `does_not_equal` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value differs from the provided value. | `42` |
+| `equals` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is the same as the provided value. | `42` |
+| `greater_than` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value exceeds the provided value. | `42` |
+| `greater_than_or_equal_to` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is equal to or exceeds the provided value. | `42` |
+| `less_than` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is less than the provided value. | `42` |
+| `less_than_or_equal_to` | `number` | The value to compare the unique_id property value against.   Returns database entries where the unique_id property value is equal to or is less than the provided value. | `42` |
 
 ```json Example ID filter condition theme={null}
 {
@@ -28621,7 +28621,7 @@ Example expressions with fixed inputs:
 
 `prop("Name")` looks up a property by its current name. The saved formula refers to its ID, so a later rename does not break that reference.
 
-An expression that cannot be parsed or checked returns [validation\_error](/reference/status-codes#error-codes). This includes references to properties that do not exist.
+An expression that cannot be parsed or checked returns [validation_error](/reference/status-codes#error-codes). This includes references to properties that do not exist.
 
 Schema responses normally use the same `prop("Name")` syntax as requests. If an expression cannot be represented that way, the response uses `{{notion:block_property:...}}` references. Those references are also valid in requests.
 
@@ -30948,7 +30948,7 @@ Each rich text object contains the following fields.
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `type` | `string` (enum) | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`. | `"text"` |
-| `text` \| `mention` \| `equation` | `object` | An object containing type-specific configuration.   Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples. |
+| `text` \| `mention` \| `equation` | `object` | An object containing type-specific configuration.  Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples. |
 | `annotations` | `object` | The information used to style the rich text object. Refer to the annotation object section below for details. | Refer to the annotation object section below for examples. |
 | `plain_text` | `string` | The plain text without annotations. | `"Some words "` |
 | `href` | `string` (optional) | The URL of any link or Notion mention in this text, if any. | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
@@ -30964,7 +30964,7 @@ All rich text objects contain an `annotations` object that sets the styling for 
 | `strikethrough` | `boolean` | Whether the text is struck through. | `false` |
 | `underline` | `boolean` | Whether the text is underlined. | `false` |
 | `code` | `boolean` | Whether the text is `code style`. | `true` |
-| `color` | `string` (enum) | Color of the text. Possible values include:  - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` -`"orange_background"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background”` - `"yellow"` - `"yellow_background"` | `"green"` |
+| `color` | `string` (enum) | Color of the text. Possible values include: - `"blue"` - `"blue_background"` - `"brown"` - `"brown_background"` - `"default"` - `"gray"` - `"gray_background"` - `"green"` - `"green_background"` - `"orange"` -`"orange_background"` - `"pink"` - `"pink_background"` - `"purple"` - `"purple_background"` - `"red"` - `"red_background”` - `"yellow"` - `"yellow_background"` | `"green"` |
 
 ## Rich text type objects
 
@@ -31005,7 +31005,7 @@ If a rich text object’s `type` value is `"mention"`, then the corresponding `m
 
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
-| `type` | `string` (enum) | The type of the inline mention. Possible values include:  - `"database"` - `"date"` - `"link_preview"` - `"page"` - `"template_mention"` - `"user"` | `"user"` |
+| `type` | `string` (enum) | The type of the inline mention. Possible values include: - `"database"` - `"date"` - `"link_preview"` - `"page"` - `"template_mention"` - `"user"` | `"user"` |
 | `database` \| `date` \| `link_preview` \| `page` \| `template_mention` \| `user` | `object` | An object containing type-specific configuration. Refer to the mention type object sections below for details. | Refer to the mention type object sections below for example values. |
 
 #### Database mention type object
@@ -31245,7 +31245,7 @@ If a rich text object’s `type` value is `"text"`, then the corresponding `text
 | Field | Type | Description | Example value |
 | :- | :- | :- | :- |
 | `content` | `string` | The actual text content of the text. | `"Some words "` |
-| `link` | `object` (optional) | An object with information about any inline link in this text, if included.  If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address.  If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
+| `link` | `object` (optional) | An object with information about any inline link in this text, if included. If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address. If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
 
 #### Example rich text `text` object without link
 
@@ -33042,7 +33042,7 @@ You can view and update your connection’s capabilities in the **Capabilities**
 
 ### ⏳ 3. Understand aggregated event timing
 
-Not all webhook events are sent immediately. Some, like page.content\_updated, are aggregated to reduce noise from frequent edits (e.g., typing, formatting, moving blocks). This is normal and helps group multiple rapid changes into a single webhook event.
+Not all webhook events are sent immediately. Some, like page.content_updated, are aggregated to reduce noise from frequent edits (e.g., typing, formatting, moving blocks). This is normal and helps group multiple rapid changes into a single webhook event.
 
 See [Event Delivery ](/reference/webhooks-events-delivery#event-delivery)for a deeper explanation.
 
@@ -33210,7 +33210,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### page.properties\_updated
+### page.properties_updated
 
 ```json JSON expandable theme={null}
 {
@@ -33252,7 +33252,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### page.content\_updated
+### page.content_updated
 
 ```json JSON expandable theme={null}
 {
@@ -33553,7 +33553,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### database.content\_updated
+### database.content_updated
 
 > [!NOTE]
 >
@@ -33731,7 +33731,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### database.schema\_updated
+### database.schema_updated
 
 > [!NOTE]
 >
@@ -33793,7 +33793,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.content\_updated
+### data_source.content_updated
 
 > [!NOTE]
 >
@@ -33848,7 +33848,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.created
+### data_source.created
 
 > [!NOTE]
 >
@@ -33884,7 +33884,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.deleted
+### data_source.deleted
 
 > [!NOTE]
 >
@@ -33920,7 +33920,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.moved
+### data_source.moved
 
 > [!NOTE]
 >
@@ -33956,7 +33956,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.schema\_updated
+### data_source.schema_updated
 
 > [!NOTE]
 >
@@ -34018,7 +34018,7 @@ Notion currently supports the following event `type`s. We've added an example pa
 }
 ```
 
-### data\_source.undeleted
+### data_source.undeleted
 
 > [!NOTE]
 >
