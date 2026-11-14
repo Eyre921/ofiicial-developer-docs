@@ -59,7 +59,7 @@ Community discussion highlighted the need for flexibility in tool naming. While 
 * Example valid tool names:
   * getUser
   * user-profile/update
-  * DATA\_EXPORT\_v2
+  * DATA_EXPORT_v2
   * admin.tools.list
 
 ## Backwards Compatibility

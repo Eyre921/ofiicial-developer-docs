@@ -213,9 +213,9 @@ security decisions.&#x20;
 
 ### `ResultType`
 
-ResultType: "complete" | "input\_required" | stringIndicates the type of a [Result](#result) object, allowing the client to
+ResultType: "complete" | "input_required" | stringIndicates the type of a [Result](#result) object, allowing the client to
 determine how to parse the response. complete - the request completed successfully and the result contains the final content.
-input\_required - the request requires additional input and the result contains an [InputRequiredResult](#inputrequiredresult) object with instructions for the client to provide additional input before retrying the original request.&#x20;
+input_required - the request requires additional input and the result contains an [InputRequiredResult](#inputrequiredresult) object with instructions for the client to provide additional input before retrying the original request.&#x20;
 
 ### `Role`
 
@@ -233,7 +233,7 @@ interface Error \{\
 
 ### `HEADER_MISMATCH`
 
-HEADER\_MISMATCH: -32020Error code returned when the HTTP headers of a request do not match the
+HEADER_MISMATCH: -32020Error code returned when the HTTP headers of a request do not match the
 corresponding values in the request body, or required headers are
 missing or malformed.&#x20;
 
@@ -282,7 +282,7 @@ interface MethodNotFoundError \{\
 
 ### `MISSING_REQUIRED_CLIENT_CAPABILITY`
 
-MISSING\_REQUIRED\_CLIENT\_CAPABILITY: -32021Error code returned when a server requires a client capability that was
+MISSING_REQUIRED_CLIENT_CAPABILITY: -32021Error code returned when a server requires a client capability that was
 not declared in the request's `clientCapabilities`.&#x20;
 
 ### `MissingRequiredClientCapabilityError`
@@ -307,7 +307,7 @@ interface ParseError \{\
 
 ### `UNSUPPORTED_PROTOCOL_VERSION`
 
-UNSUPPORTED\_PROTOCOL\_VERSION: -32022Error code returned when the request's protocol version is not supported
+UNSUPPORTED_PROTOCOL_VERSION: -32022Error code returned when the request's protocol version is not supported
 by the server.&#x20;
 
 ### `UnsupportedProtocolVersionError`
@@ -385,11 +385,11 @@ interface ResourceLink \{\
   [annotations](#resourcelink-annotations)?: [Annotations](#annotations);\
   [size](#resourcelink-size)?: number;\
   [\_meta](#resourcelink-_meta)?: [MetaObject](#metaobject);\
-  [type](#resourcelink-type): "resource\_link";\
+  [type](#resourcelink-type): "resource_link";\
 }A resource that the server is capable of reading, included in a prompt or tool call result. Note: resource links returned by tools are not guaranteed to appear in the results of [resources/list](#listresourcesrequest) requests.  <details> <summary>Example: File resource link[Permalink](#resourcelink-example-file-resource-link)</summary><pre>`{  "type": "resource_link",  "uri": "file:///project/src/main.rs",  "name": "main.rs",  "description": "Primary application entry point",  "mimeType": "text/x-rust"} `Copy</pre> </details> icons?: Icon\[][Permalink](#resourcelink-icons) Optional set of sized icons that the client can display in a user interface. Clients that support rendering icons MUST support at least the following MIME types: <ul> <li>`image/png` - PNG images (safe, universal compatibility)</li> <li>`image/jpeg` (and `image/jpg`) - JPEG images (safe, universal compatibility)</li> </ul> Clients that support rendering icons SHOULD also support: <ul> <li>`image/svg+xml` - SVG images (scalable but requires security precautions)</li> <li>`image/webp` - WebP images (modern, efficient format)</li> </ul>  Inherited from [Resource](#resource).[icons](#resource-icons) name: string[Permalink](#resourcelink-name) Intended for programmatic or logical use, but used as a display name in past specs or fallback (if title isn't present).  Inherited from [Resource](#resource).[name](#resource-name) title?: string[Permalink](#resourcelink-title) Intended for UI and end-user contexts — optimized to be human-readable and easily understood,
 even by those unfamiliar with domain-specific terminology. If not provided, the name should be used for display (except for [Tool](#tool),
 where `annotations.title` should be given precedence over using `name`,
-if present).  Inherited from [Resource](#resource).[title](#resource-title) uri: string[Permalink](#resourcelink-uri) The URI of this resource.  Inherited from [Resource](#resource).[uri](#resource-uri) description?: string[Permalink](#resourcelink-description) A description of what this resource represents. This can be used by clients to improve the LLM's understanding of available resources. It can be thought of like a "hint" to the model.  Inherited from [Resource](#resource).[description](#resource-description) mimeType?: string[Permalink](#resourcelink-mimetype) The MIME type of this resource, if known.  Inherited from [Resource](#resource).[mimeType](#resource-mimetype) annotations?: Annotations[Permalink](#resourcelink-annotations) Optional annotations for the client.  Inherited from [Resource](#resource).[annotations](#resource-annotations) size?: number[Permalink](#resourcelink-size) The size of the raw resource content, in bytes (i.e., before base64 encoding or any tokenization), if known. This can be used by Hosts to display file sizes and estimate context window usage.  Inherited from [Resource](#resource).[size](#resource-size) \_meta?: MetaObject[Permalink](#resourcelink-_meta)  Inherited from [Resource](#resource).[\_meta](#resource-_meta) type: "resource\_link"[Permalink](#resourcelink-type)&#x20;
+if present).  Inherited from [Resource](#resource).[title](#resource-title) uri: string[Permalink](#resourcelink-uri) The URI of this resource.  Inherited from [Resource](#resource).[uri](#resource-uri) description?: string[Permalink](#resourcelink-description) A description of what this resource represents. This can be used by clients to improve the LLM's understanding of available resources. It can be thought of like a "hint" to the model.  Inherited from [Resource](#resource).[description](#resource-description) mimeType?: string[Permalink](#resourcelink-mimetype) The MIME type of this resource, if known.  Inherited from [Resource](#resource).[mimeType](#resource-mimetype) annotations?: Annotations[Permalink](#resourcelink-annotations) Optional annotations for the client.  Inherited from [Resource](#resource).[annotations](#resource-annotations) size?: number[Permalink](#resourcelink-size) The size of the raw resource content, in bytes (i.e., before base64 encoding or any tokenization), if known. This can be used by Hosts to display file sizes and estimate context window usage.  Inherited from [Resource](#resource).[size](#resource-size) \_meta?: MetaObject[Permalink](#resourcelink-_meta)  Inherited from [Resource](#resource).[\_meta](#resource-_meta) type: "resource_link"[Permalink](#resourcelink-type)&#x20;
 
 ### `TextContent`
 
@@ -695,9 +695,9 @@ interface ProgressNotificationParams \{\
 
 interface PromptListChangedNotification \{\
   [jsonrpc](#promptlistchangednotification-jsonrpc): "2.0";\
-  [method](#promptlistchangednotification-method): "notifications/prompts/list\_changed";\
+  [method](#promptlistchangednotification-method): "notifications/prompts/list_changed";\
   [params](#promptlistchangednotification-params)?: [NotificationParams](#notificationparams);\
-}An optional notification from the server to the client, informing it that the list of prompts it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `promptsListChanged` filter field.  <details> <summary>Example: Prompts list changed[Permalink](#promptlistchangednotification-example-prompts-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/prompts/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#promptlistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/prompts/list\_changed"[Permalink](#promptlistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#promptlistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
+}An optional notification from the server to the client, informing it that the list of prompts it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `promptsListChanged` filter field.  <details> <summary>Example: Prompts list changed[Permalink](#promptlistchangednotification-example-prompts-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/prompts/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#promptlistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/prompts/list_changed"[Permalink](#promptlistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#promptlistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
 
 ## `notifications/resources/list_changed`
 
@@ -705,9 +705,9 @@ interface PromptListChangedNotification \{\
 
 interface ResourceListChangedNotification \{\
   [jsonrpc](#resourcelistchangednotification-jsonrpc): "2.0";\
-  [method](#resourcelistchangednotification-method): "notifications/resources/list\_changed";\
+  [method](#resourcelistchangednotification-method): "notifications/resources/list_changed";\
   [params](#resourcelistchangednotification-params)?: [NotificationParams](#notificationparams);\
-}An optional notification from the server to the client, informing it that the list of resources it can read from has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `resourcesListChanged` filter field.  <details> <summary>Example: Resources list changed[Permalink](#resourcelistchangednotification-example-resources-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/resources/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#resourcelistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/resources/list\_changed"[Permalink](#resourcelistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#resourcelistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
+}An optional notification from the server to the client, informing it that the list of resources it can read from has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `resourcesListChanged` filter field.  <details> <summary>Example: Resources list changed[Permalink](#resourcelistchangednotification-example-resources-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/resources/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#resourcelistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/resources/list_changed"[Permalink](#resourcelistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#resourcelistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
 
 ## `notifications/resources/updated`
 
@@ -758,9 +758,9 @@ the server has no prompts), it is omitted from this set.&#x20;
 
 interface ToolListChangedNotification \{\
   [jsonrpc](#toollistchangednotification-jsonrpc): "2.0";\
-  [method](#toollistchangednotification-method): "notifications/tools/list\_changed";\
+  [method](#toollistchangednotification-method): "notifications/tools/list_changed";\
   [params](#toollistchangednotification-params)?: [NotificationParams](#notificationparams);\
-}An optional notification from the server to the client, informing it that the list of tools it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `toolsListChanged` filter field.  <details> <summary>Example: Tools list changed[Permalink](#toollistchangednotification-example-tools-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/tools/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#toollistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/tools/list\_changed"[Permalink](#toollistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#toollistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
+}An optional notification from the server to the client, informing it that the list of tools it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `toolsListChanged` filter field.  <details> <summary>Example: Tools list changed[Permalink](#toollistchangednotification-example-tools-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/tools/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#toollistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/tools/list_changed"[Permalink](#toollistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#toollistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
 
 ## Multi Round-Trip
 
@@ -1234,15 +1234,15 @@ deprecated features registry.  mode?: "none" | "required" | "auto"[Permalink](#t
 ### `ToolResultContent`
 
 interface ToolResultContent \{\
-  [type](#toolresultcontent-type): "tool\_result";\
+  [type](#toolresultcontent-type): "tool_result";\
   [toolUseId](#toolresultcontent-tooluseid): string;\
   [content](#toolresultcontent-content): [ContentBlock](#contentblock)\[];\
   [structuredContent](#toolresultcontent-structuredcontent)?: unknown;\
   [isError](#toolresultcontent-iserror)?: boolean;\
   [\_meta](#toolresultcontent-_meta)?: [MetaObject](#metaobject);\
-}The result of a tool use, provided by the user back to the assistant.  <details> <summary>Example: \`get\_weather\` tool result[Permalink](#toolresultcontent-example-get_weather-tool-result)</summary><pre>`{  "type": "tool_result",  "toolUseId": "call_abc123",  "content": [    {      "type": "text",      "text": "Weather in Paris: 18°C, partly cloudy"    }  ]} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
+}The result of a tool use, provided by the user back to the assistant.  <details> <summary>Example: \`get_weather\` tool result[Permalink](#toolresultcontent-example-get_weather-tool-result)</summary><pre>`{  "type": "tool_result",  "toolUseId": "call_abc123",  "content": [    {      "type": "text",      "text": "Weather in Paris: 18°C, partly cloudy"    }  ]} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
 Remains in the specification for at least twelve months; see the
-deprecated features registry.  type: "tool\_result"[Permalink](#toolresultcontent-type)  toolUseId: string[Permalink](#toolresultcontent-tooluseid) The ID of the tool use this result corresponds to. This MUST match the ID from a previous [ToolUseContent](#toolusecontent).  content: ContentBlock\[][Permalink](#toolresultcontent-content) The unstructured result content of the tool use. This has the same format as [CallToolResult.content](#calltoolresult-content) and can include text, images,
+deprecated features registry.  type: "tool_result"[Permalink](#toolresultcontent-type)  toolUseId: string[Permalink](#toolresultcontent-tooluseid) The ID of the tool use this result corresponds to. This MUST match the ID from a previous [ToolUseContent](#toolusecontent).  content: ContentBlock\[][Permalink](#toolresultcontent-content) The unstructured result content of the tool use. This has the same format as [CallToolResult.content](#calltoolresult-content) and can include text, images,
 audio, resource links, and embedded resources.  structuredContent?: unknown[Permalink](#toolresultcontent-structuredcontent) An optional structured result value. This can be any JSON value (object, array, string, number, boolean, or null).
 If the tool defined an [Tool.outputSchema](#tool-outputschema), this SHOULD conform to that schema.  isError?: boolean[Permalink](#toolresultcontent-iserror) Whether the tool use resulted in an error. If true, the content typically describes the error that occurred.
 Default: false  \_meta?: MetaObject[Permalink](#toolresultcontent-_meta) Optional metadata about the tool result. Clients SHOULD preserve this field when
@@ -1251,14 +1251,14 @@ including tool results in subsequent sampling requests to enable caching optimiz
 ### `ToolUseContent`
 
 interface ToolUseContent \{\
-  [type](#toolusecontent-type): "tool\_use";\
+  [type](#toolusecontent-type): "tool_use";\
   [id](#toolusecontent-id): string;\
   [name](#toolusecontent-name): string;\
   [input](#toolusecontent-input): \{ \[key: string]: unknown };\
   [\_meta](#toolusecontent-_meta)?: [MetaObject](#metaobject);\
-}A request from the assistant to call a tool.  <details> <summary>Example: \`get\_weather\` tool use[Permalink](#toolusecontent-example-get_weather-tool-use)</summary><pre>`{  "type": "tool_use",  "id": "call_abc123",  "name": "get_weather",  "input": {    "city": "Paris"  }} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
+}A request from the assistant to call a tool.  <details> <summary>Example: \`get_weather\` tool use[Permalink](#toolusecontent-example-get_weather-tool-use)</summary><pre>`{  "type": "tool_use",  "id": "call_abc123",  "name": "get_weather",  "input": {    "city": "Paris"  }} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
 Remains in the specification for at least twelve months; see the
-deprecated features registry.  type: "tool\_use"[Permalink](#toolusecontent-type)  id: string[Permalink](#toolusecontent-id) A unique identifier for this tool use. This ID is used to match tool results to their corresponding tool uses.  name: string[Permalink](#toolusecontent-name) The name of the tool to call.  input: \{ \[key: string]: unknown }[Permalink](#toolusecontent-input) The arguments to pass to the tool, conforming to the tool's input schema.  \_meta?: MetaObject[Permalink](#toolusecontent-_meta) Optional metadata about the tool use. Clients SHOULD preserve this field when
+deprecated features registry.  type: "tool_use"[Permalink](#toolusecontent-type)  id: string[Permalink](#toolusecontent-id) A unique identifier for this tool use. This ID is used to match tool results to their corresponding tool uses.  name: string[Permalink](#toolusecontent-name) The name of the tool to call.  input: \{ \[key: string]: unknown }[Permalink](#toolusecontent-input) The arguments to pass to the tool, conforming to the tool's input schema.  \_meta?: MetaObject[Permalink](#toolusecontent-_meta) Optional metadata about the tool use. Clients SHOULD preserve this field when
 including tool uses in subsequent sampling requests to enable caching optimizations.&#x20;
 
 ## `server/discover`
@@ -1416,7 +1416,7 @@ interface SubscriptionFilter \{\
   [resourcesListChanged](#subscriptionfilter-resourceslistchanged)?: boolean;\
   [resourceSubscriptions](#subscriptionfilter-resourcesubscriptions)?: string\[];\
 }The set of notification types a client may opt in to on a [subscriptions/listen](#subscriptionslistenrequest) request. Each notification type is **opt-in**; the server **MUST NOT** send
-notification types the client has not explicitly requested here.  toolsListChanged?: boolean[Permalink](#subscriptionfilter-toolslistchanged) If true, receive [notifications/tools/list\_changed](#toollistchangednotification).  promptsListChanged?: boolean[Permalink](#subscriptionfilter-promptslistchanged) If true, receive [notifications/prompts/list\_changed](#promptlistchangednotification).  resourcesListChanged?: boolean[Permalink](#subscriptionfilter-resourceslistchanged) If true, receive [notifications/resources/list\_changed](#resourcelistchangednotification).  resourceSubscriptions?: string\[][Permalink](#subscriptionfilter-resourcesubscriptions) Subscribe to [notifications/resources/updated](#resourceupdatednotification) for these resource URIs.
+notification types the client has not explicitly requested here.  toolsListChanged?: boolean[Permalink](#subscriptionfilter-toolslistchanged) If true, receive [notifications/tools/list_changed](#toollistchangednotification).  promptsListChanged?: boolean[Permalink](#subscriptionfilter-promptslistchanged) If true, receive [notifications/prompts/list_changed](#promptlistchangednotification).  resourcesListChanged?: boolean[Permalink](#subscriptionfilter-resourceslistchanged) If true, receive [notifications/resources/list_changed](#resourcelistchangednotification).  resourceSubscriptions?: string\[][Permalink](#subscriptionfilter-resourcesubscriptions) Subscribe to [notifications/resources/updated](#resourceupdatednotification) for these resource URIs.
 Replaces the former `resources/subscribe` RPC.&#x20;
 
 ### `SubscriptionsListenResultMetaObject`
@@ -1455,7 +1455,7 @@ interface CallToolRequestParams \{\
   [requestState](#calltoolrequestparams-requeststate)?: string;\
   [name](#calltoolrequestparams-name): string;\
   [arguments](#calltoolrequestparams-arguments)?: \{ \[key: string]: unknown };\
-}Parameters for a `tools/call` request.  <details> <summary>Example: \`get\_weather\` tool call params[Permalink](#calltoolrequestparams-example-get_weather-tool-call-params)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {}  },  "name": "get_weather",  "arguments": {    "location": "New York"  }} `Copy</pre> </details> <details> <summary>Example: Tool call params with progress token[Permalink](#calltoolrequestparams-example-tool-call-params-with-progress-token)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {},    "progressToken": "oivaizmir"  },  "name": "build_simulation",  "arguments": {    "city": "Micropolis"  }} `Copy</pre> </details> \_meta: RequestMetaObject[Permalink](#calltoolrequestparams-_meta)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[\_meta](#inputresponserequestparams-_meta) inputResponses?: InputResponses[Permalink](#calltoolrequestparams-inputresponses)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[inputResponses](#inputresponserequestparams-inputresponses) requestState?: string[Permalink](#calltoolrequestparams-requeststate)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[requestState](#inputresponserequestparams-requeststate) name: string[Permalink](#calltoolrequestparams-name) The name of the tool.  arguments?: \{ \[key: string]: unknown }[Permalink](#calltoolrequestparams-arguments) Arguments to use for the tool call.&#x20;
+}Parameters for a `tools/call` request.  <details> <summary>Example: \`get_weather\` tool call params[Permalink](#calltoolrequestparams-example-get_weather-tool-call-params)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {}  },  "name": "get_weather",  "arguments": {    "location": "New York"  }} `Copy</pre> </details> <details> <summary>Example: Tool call params with progress token[Permalink](#calltoolrequestparams-example-tool-call-params-with-progress-token)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {},    "progressToken": "oivaizmir"  },  "name": "build_simulation",  "arguments": {    "city": "Micropolis"  }} `Copy</pre> </details> \_meta: RequestMetaObject[Permalink](#calltoolrequestparams-_meta)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[\_meta](#inputresponserequestparams-_meta) inputResponses?: InputResponses[Permalink](#calltoolrequestparams-inputresponses)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[inputResponses](#inputresponserequestparams-inputresponses) requestState?: string[Permalink](#calltoolrequestparams-requeststate)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[requestState](#inputresponserequestparams-requeststate) name: string[Permalink](#calltoolrequestparams-name) The name of the tool.  arguments?: \{ \[key: string]: unknown }[Permalink](#calltoolrequestparams-arguments) Arguments to use for the tool call.&#x20;
 
 ### `CallToolResultResponse`
 

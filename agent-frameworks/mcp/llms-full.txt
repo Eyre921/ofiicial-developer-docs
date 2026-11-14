@@ -3986,7 +3986,7 @@ This tutorial will primarily focus on tools.
 > spring.ai.mcp.client.stdio.servers-configuration=file:PATH/TO/claude_desktop_config.json
 > ```
 >
-> When you start your client application, the auto-configuration will automatically create MCP clients from the claude\_desktop\_config.json.
+> When you start your client application, the auto-configuration will automatically create MCP clients from the claude_desktop_config.json.
 >
 > For more information, see the [MCP Client Boot Starters](https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html) reference documentation.
 >
@@ -8425,7 +8425,7 @@ When encountering issues:
 
 > [card] [Connect local servers](/docs/2026-07-28/develop/connect-local-servers)
 >
-> Full claude\_desktop\_config.json reference and troubleshooting
+> Full claude_desktop_config.json reference and troubleshooting
 
 
 # MCP Inspector
@@ -9609,7 +9609,7 @@ The server prints its URL on stderr. If the config's port is already in use, it 
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=ec5fddd86d1fe7ecc1ef83549798f33e)
 
-Legacy: the Logs tab offers a session-scoped Set Active Level control, and a log arrives after calling send\_notification.
+Legacy: the Logs tab offers a session-scoped Set Active Level control, and a log arrives after calling send_notification.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=85a1d7118a1e693930aefab8ca6b21a3)
 
@@ -9696,11 +9696,11 @@ The Inspector drives MRTR **manually**, so each round pauses at the **pending-re
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/mrtr-pending-request.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=99f8acb7f845a12aed42bcea4d310fee)
 
-An MRTR round paused at the pending-request modal, tagged input\_required. Answering it retries the original request.
+An MRTR round paused at the pending-request modal, tagged input_required. Answering it retries the original request.
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/mrtr-protocol-conversation.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=b083d8127a7a67028fcd9702b25aeac1)
 
-The monitoring sidebar's Protocol tab after mrtr\_confirm completes. Both tools/call rounds sit inside one MRTR conversation, Round 1 tagged input\_required and Round 2 complete, while unrelated traffic stays outside it.
+The monitoring sidebar's Protocol tab after mrtr_confirm completes. Both tools/call rounds sit inside one MRTR conversation, Round 1 tagged input_required and Round 2 complete, while unrelated traffic stays outside it.
 
 ***
 
@@ -9724,7 +9724,7 @@ Reproduce with `test-servers/configs/xmcpheader-modern-http.json`.
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/tools-sep2243.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=0e011c3012332c0a74d0f57fc84a5cf2)
 
-get\_weather shows its mirrored city -> Mcp-Param-City header, and the Network sidebar confirms the call carried mcp-param-city: Boston. invalid\_header\_tool is struck through under the Excluded (SEP-2243) divider.
+get_weather shows its mirrored city -> Mcp-Param-City header, and the Network sidebar confirms the call carried mcp-param-city: Boston. invalid_header_tool is struck through under the Excluded (SEP-2243) divider.
 
 ### `-32602` error panels
 
@@ -11867,7 +11867,7 @@ present:
 * MCP proxy server uses a **static client ID** with a third-party
   authorization server
 * MCP proxy server allows MCP clients to **dynamically register** (each
-  getting their own client\_id)
+  getting their own client_id)
 * The third-party authorization server sets a **consent cookie** after
   the first authorization
 * MCP proxy server does not implement proper per-client consent before
@@ -12633,7 +12633,7 @@ An attacker can claim to be any client by:
 
 1. Providing the legitimate client's metadata URL as their `client_id`
 2. Binding to any `localhost` port, and providing that address as
-   the redirect\_uri
+   the redirect_uri
 3. Receiving the authorization code via the redirect when the user
    approves
 
@@ -13303,7 +13303,7 @@ Key requirements include:
 
 **For Authorization Servers:**
 
-* **SHOULD** fetch metadata documents when encountering URL-formatted client\_ids
+* **SHOULD** fetch metadata documents when encountering URL-formatted client_ids
 * **MUST** validate that the fetched document's `client_id` matches the URL exactly
 * **SHOULD** cache metadata respecting HTTP cache headers
 * **MUST** validate redirect URIs presented in an authorization request against those in the metadata document
@@ -17726,7 +17726,7 @@ After receiving tool use requests from the LLM, the server typically:
 
 ### Tool Result Messages
 
-When a user message contains tool results (type: "tool\_result"), it **MUST** contain ONLY tool results. Mixing tool results with other content types (text, image, audio) in the same message is not allowed.
+When a user message contains tool results (type: "tool_result"), it **MUST** contain ONLY tool results. Mixing tool results with other content types (text, image, audio) in the same message is not allowed.
 
 This constraint ensures compatibility with provider APIs that use dedicated roles for tool results (e.g., OpenAI's "tool" role, Gemini's "function" role).
 
@@ -17803,7 +17803,7 @@ This requirement ensures:
 
 1. User message: "What's the weather like in Paris and London?"
 2. Assistant message: `ToolUseContent` (`id: "call_abc123", name: "get_weather", input: {city: "Paris"}`) + `ToolUseContent` (`id: "call_def456", name: "get_weather", input: {city: "London"}`)
-3. User message: `ToolResultContent` (`toolUseId: "call_abc123", content: "18°C, partly cloudy"`) ← Missing result for call\_def456
+3. User message: `ToolResultContent` (`toolUseId: "call_abc123", content: "18°C, partly cloudy"`) ← Missing result for call_def456
 4. Assistant message: Text response (invalid - not all tool uses were resolved)
 
 ## Cross-API Compatibility
@@ -18419,9 +18419,9 @@ security decisions.&#x20;
 
 ### `ResultType`
 
-ResultType: "complete" | "input\_required" | stringIndicates the type of a [Result](#result) object, allowing the client to
+ResultType: "complete" | "input_required" | stringIndicates the type of a [Result](#result) object, allowing the client to
 determine how to parse the response. complete - the request completed successfully and the result contains the final content.
-input\_required - the request requires additional input and the result contains an [InputRequiredResult](#inputrequiredresult) object with instructions for the client to provide additional input before retrying the original request.&#x20;
+input_required - the request requires additional input and the result contains an [InputRequiredResult](#inputrequiredresult) object with instructions for the client to provide additional input before retrying the original request.&#x20;
 
 ### `Role`
 
@@ -18439,7 +18439,7 @@ interface Error \{\
 
 ### `HEADER_MISMATCH`
 
-HEADER\_MISMATCH: -32020Error code returned when the HTTP headers of a request do not match the
+HEADER_MISMATCH: -32020Error code returned when the HTTP headers of a request do not match the
 corresponding values in the request body, or required headers are
 missing or malformed.&#x20;
 
@@ -18488,7 +18488,7 @@ interface MethodNotFoundError \{\
 
 ### `MISSING_REQUIRED_CLIENT_CAPABILITY`
 
-MISSING\_REQUIRED\_CLIENT\_CAPABILITY: -32021Error code returned when a server requires a client capability that was
+MISSING_REQUIRED_CLIENT_CAPABILITY: -32021Error code returned when a server requires a client capability that was
 not declared in the request's `clientCapabilities`.&#x20;
 
 ### `MissingRequiredClientCapabilityError`
@@ -18513,7 +18513,7 @@ interface ParseError \{\
 
 ### `UNSUPPORTED_PROTOCOL_VERSION`
 
-UNSUPPORTED\_PROTOCOL\_VERSION: -32022Error code returned when the request's protocol version is not supported
+UNSUPPORTED_PROTOCOL_VERSION: -32022Error code returned when the request's protocol version is not supported
 by the server.&#x20;
 
 ### `UnsupportedProtocolVersionError`
@@ -18591,11 +18591,11 @@ interface ResourceLink \{\
   [annotations](#resourcelink-annotations)?: [Annotations](#annotations);\
   [size](#resourcelink-size)?: number;\
   [\_meta](#resourcelink-_meta)?: [MetaObject](#metaobject);\
-  [type](#resourcelink-type): "resource\_link";\
+  [type](#resourcelink-type): "resource_link";\
 }A resource that the server is capable of reading, included in a prompt or tool call result. Note: resource links returned by tools are not guaranteed to appear in the results of [resources/list](#listresourcesrequest) requests.  <details> <summary>Example: File resource link[Permalink](#resourcelink-example-file-resource-link)</summary><pre>`{  "type": "resource_link",  "uri": "file:///project/src/main.rs",  "name": "main.rs",  "description": "Primary application entry point",  "mimeType": "text/x-rust"} `Copy</pre> </details> icons?: Icon\[][Permalink](#resourcelink-icons) Optional set of sized icons that the client can display in a user interface. Clients that support rendering icons MUST support at least the following MIME types: <ul> <li>`image/png` - PNG images (safe, universal compatibility)</li> <li>`image/jpeg` (and `image/jpg`) - JPEG images (safe, universal compatibility)</li> </ul> Clients that support rendering icons SHOULD also support: <ul> <li>`image/svg+xml` - SVG images (scalable but requires security precautions)</li> <li>`image/webp` - WebP images (modern, efficient format)</li> </ul>  Inherited from [Resource](#resource).[icons](#resource-icons) name: string[Permalink](#resourcelink-name) Intended for programmatic or logical use, but used as a display name in past specs or fallback (if title isn't present).  Inherited from [Resource](#resource).[name](#resource-name) title?: string[Permalink](#resourcelink-title) Intended for UI and end-user contexts — optimized to be human-readable and easily understood,
 even by those unfamiliar with domain-specific terminology. If not provided, the name should be used for display (except for [Tool](#tool),
 where `annotations.title` should be given precedence over using `name`,
-if present).  Inherited from [Resource](#resource).[title](#resource-title) uri: string[Permalink](#resourcelink-uri) The URI of this resource.  Inherited from [Resource](#resource).[uri](#resource-uri) description?: string[Permalink](#resourcelink-description) A description of what this resource represents. This can be used by clients to improve the LLM's understanding of available resources. It can be thought of like a "hint" to the model.  Inherited from [Resource](#resource).[description](#resource-description) mimeType?: string[Permalink](#resourcelink-mimetype) The MIME type of this resource, if known.  Inherited from [Resource](#resource).[mimeType](#resource-mimetype) annotations?: Annotations[Permalink](#resourcelink-annotations) Optional annotations for the client.  Inherited from [Resource](#resource).[annotations](#resource-annotations) size?: number[Permalink](#resourcelink-size) The size of the raw resource content, in bytes (i.e., before base64 encoding or any tokenization), if known. This can be used by Hosts to display file sizes and estimate context window usage.  Inherited from [Resource](#resource).[size](#resource-size) \_meta?: MetaObject[Permalink](#resourcelink-_meta)  Inherited from [Resource](#resource).[\_meta](#resource-_meta) type: "resource\_link"[Permalink](#resourcelink-type)&#x20;
+if present).  Inherited from [Resource](#resource).[title](#resource-title) uri: string[Permalink](#resourcelink-uri) The URI of this resource.  Inherited from [Resource](#resource).[uri](#resource-uri) description?: string[Permalink](#resourcelink-description) A description of what this resource represents. This can be used by clients to improve the LLM's understanding of available resources. It can be thought of like a "hint" to the model.  Inherited from [Resource](#resource).[description](#resource-description) mimeType?: string[Permalink](#resourcelink-mimetype) The MIME type of this resource, if known.  Inherited from [Resource](#resource).[mimeType](#resource-mimetype) annotations?: Annotations[Permalink](#resourcelink-annotations) Optional annotations for the client.  Inherited from [Resource](#resource).[annotations](#resource-annotations) size?: number[Permalink](#resourcelink-size) The size of the raw resource content, in bytes (i.e., before base64 encoding or any tokenization), if known. This can be used by Hosts to display file sizes and estimate context window usage.  Inherited from [Resource](#resource).[size](#resource-size) \_meta?: MetaObject[Permalink](#resourcelink-_meta)  Inherited from [Resource](#resource).[\_meta](#resource-_meta) type: "resource_link"[Permalink](#resourcelink-type)&#x20;
 
 ### `TextContent`
 
@@ -18901,9 +18901,9 @@ interface ProgressNotificationParams \{\
 
 interface PromptListChangedNotification \{\
   [jsonrpc](#promptlistchangednotification-jsonrpc): "2.0";\
-  [method](#promptlistchangednotification-method): "notifications/prompts/list\_changed";\
+  [method](#promptlistchangednotification-method): "notifications/prompts/list_changed";\
   [params](#promptlistchangednotification-params)?: [NotificationParams](#notificationparams);\
-}An optional notification from the server to the client, informing it that the list of prompts it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `promptsListChanged` filter field.  <details> <summary>Example: Prompts list changed[Permalink](#promptlistchangednotification-example-prompts-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/prompts/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#promptlistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/prompts/list\_changed"[Permalink](#promptlistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#promptlistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
+}An optional notification from the server to the client, informing it that the list of prompts it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `promptsListChanged` filter field.  <details> <summary>Example: Prompts list changed[Permalink](#promptlistchangednotification-example-prompts-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/prompts/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#promptlistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/prompts/list_changed"[Permalink](#promptlistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#promptlistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
 
 ## `notifications/resources/list_changed`
 
@@ -18911,9 +18911,9 @@ interface PromptListChangedNotification \{\
 
 interface ResourceListChangedNotification \{\
   [jsonrpc](#resourcelistchangednotification-jsonrpc): "2.0";\
-  [method](#resourcelistchangednotification-method): "notifications/resources/list\_changed";\
+  [method](#resourcelistchangednotification-method): "notifications/resources/list_changed";\
   [params](#resourcelistchangednotification-params)?: [NotificationParams](#notificationparams);\
-}An optional notification from the server to the client, informing it that the list of resources it can read from has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `resourcesListChanged` filter field.  <details> <summary>Example: Resources list changed[Permalink](#resourcelistchangednotification-example-resources-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/resources/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#resourcelistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/resources/list\_changed"[Permalink](#resourcelistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#resourcelistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
+}An optional notification from the server to the client, informing it that the list of resources it can read from has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `resourcesListChanged` filter field.  <details> <summary>Example: Resources list changed[Permalink](#resourcelistchangednotification-example-resources-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/resources/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#resourcelistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/resources/list_changed"[Permalink](#resourcelistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#resourcelistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
 
 ## `notifications/resources/updated`
 
@@ -18964,9 +18964,9 @@ the server has no prompts), it is omitted from this set.&#x20;
 
 interface ToolListChangedNotification \{\
   [jsonrpc](#toollistchangednotification-jsonrpc): "2.0";\
-  [method](#toollistchangednotification-method): "notifications/tools/list\_changed";\
+  [method](#toollistchangednotification-method): "notifications/tools/list_changed";\
   [params](#toollistchangednotification-params)?: [NotificationParams](#notificationparams);\
-}An optional notification from the server to the client, informing it that the list of tools it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `toolsListChanged` filter field.  <details> <summary>Example: Tools list changed[Permalink](#toollistchangednotification-example-tools-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/tools/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#toollistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/tools/list\_changed"[Permalink](#toollistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#toollistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
+}An optional notification from the server to the client, informing it that the list of tools it offers has changed. This is only delivered on a [subscriptions/listen](#subscriptionslistenrequest) stream when the client requested it via the `toolsListChanged` filter field.  <details> <summary>Example: Tools list changed[Permalink](#toollistchangednotification-example-tools-list-changed)</summary><pre>`{  "jsonrpc": "2.0",  "method": "notifications/tools/list_changed",  "params": {    "_meta": {      "io.modelcontextprotocol/subscriptionId": "listen-1"    }  }} `Copy</pre> </details> jsonrpc: "2.0"[Permalink](#toollistchangednotification-jsonrpc)  Inherited from [JSONRPCNotification](#jsonrpcnotification).[jsonrpc](#jsonrpcnotification-jsonrpc) method: "notifications/tools/list_changed"[Permalink](#toollistchangednotification-method)  Overrides [JSONRPCNotification](#jsonrpcnotification).[method](#jsonrpcnotification-method) params?: NotificationParams[Permalink](#toollistchangednotification-params)  Overrides [JSONRPCNotification](#jsonrpcnotification).[params](#jsonrpcnotification-params)
 
 ## Multi Round-Trip
 
@@ -19440,15 +19440,15 @@ deprecated features registry.  mode?: "none" | "required" | "auto"[Permalink](#t
 ### `ToolResultContent`
 
 interface ToolResultContent \{\
-  [type](#toolresultcontent-type): "tool\_result";\
+  [type](#toolresultcontent-type): "tool_result";\
   [toolUseId](#toolresultcontent-tooluseid): string;\
   [content](#toolresultcontent-content): [ContentBlock](#contentblock)\[];\
   [structuredContent](#toolresultcontent-structuredcontent)?: unknown;\
   [isError](#toolresultcontent-iserror)?: boolean;\
   [\_meta](#toolresultcontent-_meta)?: [MetaObject](#metaobject);\
-}The result of a tool use, provided by the user back to the assistant.  <details> <summary>Example: \`get\_weather\` tool result[Permalink](#toolresultcontent-example-get_weather-tool-result)</summary><pre>`{  "type": "tool_result",  "toolUseId": "call_abc123",  "content": [    {      "type": "text",      "text": "Weather in Paris: 18°C, partly cloudy"    }  ]} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
+}The result of a tool use, provided by the user back to the assistant.  <details> <summary>Example: \`get_weather\` tool result[Permalink](#toolresultcontent-example-get_weather-tool-result)</summary><pre>`{  "type": "tool_result",  "toolUseId": "call_abc123",  "content": [    {      "type": "text",      "text": "Weather in Paris: 18°C, partly cloudy"    }  ]} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
 Remains in the specification for at least twelve months; see the
-deprecated features registry.  type: "tool\_result"[Permalink](#toolresultcontent-type)  toolUseId: string[Permalink](#toolresultcontent-tooluseid) The ID of the tool use this result corresponds to. This MUST match the ID from a previous [ToolUseContent](#toolusecontent).  content: ContentBlock\[][Permalink](#toolresultcontent-content) The unstructured result content of the tool use. This has the same format as [CallToolResult.content](#calltoolresult-content) and can include text, images,
+deprecated features registry.  type: "tool_result"[Permalink](#toolresultcontent-type)  toolUseId: string[Permalink](#toolresultcontent-tooluseid) The ID of the tool use this result corresponds to. This MUST match the ID from a previous [ToolUseContent](#toolusecontent).  content: ContentBlock\[][Permalink](#toolresultcontent-content) The unstructured result content of the tool use. This has the same format as [CallToolResult.content](#calltoolresult-content) and can include text, images,
 audio, resource links, and embedded resources.  structuredContent?: unknown[Permalink](#toolresultcontent-structuredcontent) An optional structured result value. This can be any JSON value (object, array, string, number, boolean, or null).
 If the tool defined an [Tool.outputSchema](#tool-outputschema), this SHOULD conform to that schema.  isError?: boolean[Permalink](#toolresultcontent-iserror) Whether the tool use resulted in an error. If true, the content typically describes the error that occurred.
 Default: false  \_meta?: MetaObject[Permalink](#toolresultcontent-_meta) Optional metadata about the tool result. Clients SHOULD preserve this field when
@@ -19457,14 +19457,14 @@ including tool results in subsequent sampling requests to enable caching optimiz
 ### `ToolUseContent`
 
 interface ToolUseContent \{\
-  [type](#toolusecontent-type): "tool\_use";\
+  [type](#toolusecontent-type): "tool_use";\
   [id](#toolusecontent-id): string;\
   [name](#toolusecontent-name): string;\
   [input](#toolusecontent-input): \{ \[key: string]: unknown };\
   [\_meta](#toolusecontent-_meta)?: [MetaObject](#metaobject);\
-}A request from the assistant to call a tool.  <details> <summary>Example: \`get\_weather\` tool use[Permalink](#toolusecontent-example-get_weather-tool-use)</summary><pre>`{  "type": "tool_use",  "id": "call_abc123",  "name": "get_weather",  "input": {    "city": "Paris"  }} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
+}A request from the assistant to call a tool.  <details> <summary>Example: \`get_weather\` tool use[Permalink](#toolusecontent-example-get_weather-tool-use)</summary><pre>`{  "type": "tool_use",  "id": "call_abc123",  "name": "get_weather",  "input": {    "city": "Paris"  }} `Copy</pre> </details>  DeprecatedDeprecated as of protocol version 2026-07-28 (SEP-2577).
 Remains in the specification for at least twelve months; see the
-deprecated features registry.  type: "tool\_use"[Permalink](#toolusecontent-type)  id: string[Permalink](#toolusecontent-id) A unique identifier for this tool use. This ID is used to match tool results to their corresponding tool uses.  name: string[Permalink](#toolusecontent-name) The name of the tool to call.  input: \{ \[key: string]: unknown }[Permalink](#toolusecontent-input) The arguments to pass to the tool, conforming to the tool's input schema.  \_meta?: MetaObject[Permalink](#toolusecontent-_meta) Optional metadata about the tool use. Clients SHOULD preserve this field when
+deprecated features registry.  type: "tool_use"[Permalink](#toolusecontent-type)  id: string[Permalink](#toolusecontent-id) A unique identifier for this tool use. This ID is used to match tool results to their corresponding tool uses.  name: string[Permalink](#toolusecontent-name) The name of the tool to call.  input: \{ \[key: string]: unknown }[Permalink](#toolusecontent-input) The arguments to pass to the tool, conforming to the tool's input schema.  \_meta?: MetaObject[Permalink](#toolusecontent-_meta) Optional metadata about the tool use. Clients SHOULD preserve this field when
 including tool uses in subsequent sampling requests to enable caching optimizations.&#x20;
 
 ## `server/discover`
@@ -19622,7 +19622,7 @@ interface SubscriptionFilter \{\
   [resourcesListChanged](#subscriptionfilter-resourceslistchanged)?: boolean;\
   [resourceSubscriptions](#subscriptionfilter-resourcesubscriptions)?: string\[];\
 }The set of notification types a client may opt in to on a [subscriptions/listen](#subscriptionslistenrequest) request. Each notification type is **opt-in**; the server **MUST NOT** send
-notification types the client has not explicitly requested here.  toolsListChanged?: boolean[Permalink](#subscriptionfilter-toolslistchanged) If true, receive [notifications/tools/list\_changed](#toollistchangednotification).  promptsListChanged?: boolean[Permalink](#subscriptionfilter-promptslistchanged) If true, receive [notifications/prompts/list\_changed](#promptlistchangednotification).  resourcesListChanged?: boolean[Permalink](#subscriptionfilter-resourceslistchanged) If true, receive [notifications/resources/list\_changed](#resourcelistchangednotification).  resourceSubscriptions?: string\[][Permalink](#subscriptionfilter-resourcesubscriptions) Subscribe to [notifications/resources/updated](#resourceupdatednotification) for these resource URIs.
+notification types the client has not explicitly requested here.  toolsListChanged?: boolean[Permalink](#subscriptionfilter-toolslistchanged) If true, receive [notifications/tools/list_changed](#toollistchangednotification).  promptsListChanged?: boolean[Permalink](#subscriptionfilter-promptslistchanged) If true, receive [notifications/prompts/list_changed](#promptlistchangednotification).  resourcesListChanged?: boolean[Permalink](#subscriptionfilter-resourceslistchanged) If true, receive [notifications/resources/list_changed](#resourcelistchangednotification).  resourceSubscriptions?: string\[][Permalink](#subscriptionfilter-resourcesubscriptions) Subscribe to [notifications/resources/updated](#resourceupdatednotification) for these resource URIs.
 Replaces the former `resources/subscribe` RPC.&#x20;
 
 ### `SubscriptionsListenResultMetaObject`
@@ -19661,7 +19661,7 @@ interface CallToolRequestParams \{\
   [requestState](#calltoolrequestparams-requeststate)?: string;\
   [name](#calltoolrequestparams-name): string;\
   [arguments](#calltoolrequestparams-arguments)?: \{ \[key: string]: unknown };\
-}Parameters for a `tools/call` request.  <details> <summary>Example: \`get\_weather\` tool call params[Permalink](#calltoolrequestparams-example-get_weather-tool-call-params)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {}  },  "name": "get_weather",  "arguments": {    "location": "New York"  }} `Copy</pre> </details> <details> <summary>Example: Tool call params with progress token[Permalink](#calltoolrequestparams-example-tool-call-params-with-progress-token)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {},    "progressToken": "oivaizmir"  },  "name": "build_simulation",  "arguments": {    "city": "Micropolis"  }} `Copy</pre> </details> \_meta: RequestMetaObject[Permalink](#calltoolrequestparams-_meta)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[\_meta](#inputresponserequestparams-_meta) inputResponses?: InputResponses[Permalink](#calltoolrequestparams-inputresponses)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[inputResponses](#inputresponserequestparams-inputresponses) requestState?: string[Permalink](#calltoolrequestparams-requeststate)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[requestState](#inputresponserequestparams-requeststate) name: string[Permalink](#calltoolrequestparams-name) The name of the tool.  arguments?: \{ \[key: string]: unknown }[Permalink](#calltoolrequestparams-arguments) Arguments to use for the tool call.&#x20;
+}Parameters for a `tools/call` request.  <details> <summary>Example: \`get_weather\` tool call params[Permalink](#calltoolrequestparams-example-get_weather-tool-call-params)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {}  },  "name": "get_weather",  "arguments": {    "location": "New York"  }} `Copy</pre> </details> <details> <summary>Example: Tool call params with progress token[Permalink](#calltoolrequestparams-example-tool-call-params-with-progress-token)</summary><pre>`{  "_meta": {    "io.modelcontextprotocol/protocolVersion": "2026-07-28",    "io.modelcontextprotocol/clientInfo": {      "name": "ExampleClient",      "version": "1.0.0"    },    "io.modelcontextprotocol/clientCapabilities": {},    "progressToken": "oivaizmir"  },  "name": "build_simulation",  "arguments": {    "city": "Micropolis"  }} `Copy</pre> </details> \_meta: RequestMetaObject[Permalink](#calltoolrequestparams-_meta)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[\_meta](#inputresponserequestparams-_meta) inputResponses?: InputResponses[Permalink](#calltoolrequestparams-inputresponses)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[inputResponses](#inputresponserequestparams-inputresponses) requestState?: string[Permalink](#calltoolrequestparams-requeststate)  Inherited from [InputResponseRequestParams](#inputresponserequestparams).[requestState](#inputresponserequestparams-requeststate) name: string[Permalink](#calltoolrequestparams-name) The name of the tool.  arguments?: \{ \[key: string]: unknown }[Permalink](#calltoolrequestparams-arguments) Arguments to use for the tool call.&#x20;
 
 ### `CallToolResultResponse`
 
@@ -27143,7 +27143,7 @@ To ease migration:
 
 Client/server implementation in TypeScript: [feat/url-elicitation](https://github.com/modelcontextprotocol/typescript-sdk/compare/main...ArcadeAI:mcp-typescript-sdk:feat/url-elicitation)
 
-Explainer video: [https://drive.google.com/file/d/1llCFS9wmkK\_RUgi5B-zHfUUgy-CNb0n0/view?usp=sharing](https://drive.google.com/file/d/1llCFS9wmkK_RUgi5B-zHfUUgy-CNb0n0/view?usp=sharing)
+Explainer video: [https://drive.google.com/file/d/1llCFS9wmkK_RUgi5B-zHfUUgy-CNb0n0/view?usp=sharing](https://drive.google.com/file/d/1llCFS9wmkK_RUgi5B-zHfUUgy-CNb0n0/view?usp=sharing)
 
 ## Security Implications
 
@@ -28270,8 +28270,8 @@ Go with SHOULD over MAY for WWW-Authenticate is that it makes supporting other f
 Based on the above, following the updated flow:
 
 * Attempt the MCP request without a token.
-* If a 401 Unauthorized response is received: Check for a WWW-Authenticate header. If present and includes the resource\_metadata parameter, use it to locate the resource metadata.
-* If the header is absent or does not include resource\_metadata, fallback to requesting /.well-known/oauth-protected-resource.
+* If a 401 Unauthorized response is received: Check for a WWW-Authenticate header. If present and includes the resource_metadata parameter, use it to locate the resource metadata.
+* If the header is absent or does not include resource_metadata, fallback to requesting /.well-known/oauth-protected-resource.
 
 This change allows more flexible deployment models without removing existing capabilities.
 
@@ -28381,7 +28381,7 @@ Community discussion highlighted the need for flexibility in tool naming. While 
 * Example valid tool names:
   * getUser
   * user-profile/update
-  * DATA\_EXPORT\_v2
+  * DATA_EXPORT_v2
   * admin.tools.list
 
 ## Backwards Compatibility
@@ -28564,7 +28564,7 @@ Client ID Metadata Documents enable a unique trust model where:
    * Domain reputation and security policies
 
 2. **Servers maintain full control** through flexible policies:
-   * **Open Servers**: Can accept any HTTPS client\_id, enabling maximum interoperability
+   * **Open Servers**: Can accept any HTTPS client_id, enabling maximum interoperability
    * **Protected Servers**: Can restrict to trusted domains or specific clients
 
 3. **No client pre-coordination required**:
@@ -28619,7 +28619,7 @@ We will primarily rely on the text in the linked RFC, aiming not to repeat most 
 ### Client Requirements
 
 * Clients MUST host their metadata document at an HTTPS URL following RFC requirements
-* The client\_id URL MUST use "https" scheme and contain a path component
+* The client_id URL MUST use "https" scheme and contain a path component
 * Metadata documents MUST be valid JSON and include at minimum:
   * `client_id`: matching the document URL exactly
   * `client_name`: human-readable name for authorization prompts
@@ -28630,8 +28630,8 @@ Note a client can use `private_key_jwt` for a `token_endpoint_auth_method` given
 
 ### Server Requirements
 
-* Servers SHOULD fetch metadata documents when encountering URL-formatted client\_ids
-* Servers MUST validate the fetched document contains matching client\_id
+* Servers SHOULD fetch metadata documents when encountering URL-formatted client_ids
+* Servers MUST validate the fetched document contains matching client_id
 * Servers SHOULD cache metadata respecting HTTP headers (max 24 hours recommended)
 * Servers MUST validate redirect URIs match those in metadata document
 
@@ -28664,7 +28664,7 @@ This proposal adds Client ID Metadata Documents as a third registration option a
 
 * Pre-registration remains unchanged
 * DCR remains unchanged
-* Client ID Metadata Documents are detected by URL-formatted client\_ids, and server support is advertised in OAuth metadata.
+* Client ID Metadata Documents are detected by URL-formatted client_ids, and server support is advertised in OAuth metadata.
 
 ## Rationale
 
@@ -28691,7 +28691,7 @@ A key benefit of Client ID Metadata Documents is attestation of redirect URIs:
 
 A limitation of Client ID Metadata Documents is that they cannot prevent localhost URL impersonation by itself. An attacker can claim to be any client by:
 
-1. Providing the legitimate client's metadata URL as their client\_id
+1. Providing the legitimate client's metadata URL as their client_id
 2. Binding to the same localhost port the legitimate client uses
 3. Intercepting the authorization code when the user approves
 
@@ -28753,7 +28753,7 @@ This proposal also provides a unified mechanism for both open servers and server
 3. **Mutual TLS**: Requires trusting a client certificate authority, impractical in an open ecosystem
 4. **Status Quo**: Continues current pain points for server implementers
 
-Client ID Metadata document is a strict improvement over DCR for the most common open-ecosystem use case. It can be further extended in the future to better support things like OS-level attestations and jwks\_uri's.
+Client ID Metadata document is a strict improvement over DCR for the most common open-ecosystem use case. It can be further extended in the future to better support things like OS-level attestations and jwks_uri's.
 
 ## Backward Compatibility
 
@@ -29477,6 +29477,8 @@ Decisions are made at the lowest level that owns the matter and are recorded in 
 
 A vulnerability is reported through a private advisory first (see [Reporting a vulnerability](/community/policies#reporting-a-vulnerability)). The security row is the maintainer-internal escalation once a report exists.
 
+Maintainers who learn of an actively exploited vulnerability or a severe incident must follow the [EU Cyber Resilience Act (CRA) escalation rule](/community/policies#eu-cyber-resilience-act-cra-stewardship). They must notify a Core Maintainer or Lead Maintainer immediately in `#security-disclosures` on Discord while they fix the problem, and that Core Maintainer or Lead Maintainer works with the Linux Foundation CRA steward.
+
 To escalate:
 
 1. Document the decision, the options considered and the points of disagreement.
@@ -30108,14 +30110,14 @@ All discussions and sessions are protocol-focused and vendor-neutral. The Enterp
 | Role | Name | Organization | GitHub | Term |
 | - | - | - | - | - |
 | Facilitator | Raghu Chandra | Independent | [@raghu-chandra-mcp](https://github.com/raghu-chandra-mcp) | 6 months |
-| Facilitator | Yannj\_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | 6 months |
+| Facilitator | Yannj_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | 6 months |
 
 ## Membership
 
 | Name | Organization | GitHub | Discord | Level |
 | - | - | - | - | - |
 | Raghu Chandra | Independent | [@raghu-chandra-mcp](https://github.com/raghu-chandra-mcp) | raghu.chandra | Facilitator |
-| Yannj\_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | yannj\_fr | Facilitator |
+| Yannj_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | yannj_fr | Facilitator |
 | Peder H P | Saxo Bank | [@pederhp](https://github.com/pederhp) | | Participant |
 | Derek Lewis | Silex Data Solutions | [@derekelewis](https://github.com/derekelewis) | dlewis.io | Participant |
 | Aman s | Independent Researcher; Blue Shield of California | [@aman210122](https://github.com/aman210122) | | Participant |
@@ -30629,7 +30631,7 @@ Code and specification contributions are made under the Apache License 2.0 and o
 
 ## AI-assisted contributions
 
-Any AI assistance used for a contribution must be disclosed in the pull request or issue, together with its extent. This includes AI-written review responses and comments; trivial spacing or typo fixes are the only exception. The full policy is [AI\_POLICY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/AI_POLICY.md), which applies to every repository in the organization.
+Any AI assistance used for a contribution must be disclosed in the pull request or issue, together with its extent. This includes AI-written review responses and comments; trivial spacing or typo fixes are the only exception. The full policy is [AI_POLICY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/AI_POLICY.md), which applies to every repository in the organization.
 
 ## Reporting a vulnerability
 
@@ -30639,7 +30641,17 @@ Any AI assistance used for a contribution must be disclosed in the pull request 
 
 Open a private advisory on the affected repository at `github.com/modelcontextprotocol/<repo>/security/advisories/new`. Private vulnerability reporting is enabled on the specification repository and on every official SDK and project repository. Before filing, read [SECURITY.md](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md): it says [what to include](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#what-to-include), describes the [trust model and the behaviors that are intentional rather than vulnerabilities](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#intended-behaviors-and-trust-model) (stdio command execution, denial of service by a stdio peer, server side effects, LLM-driven tool invocation), and lists [what remains in scope](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#what-remains-in-scope).
 
+A private advisory is also the project's emergency security reporting mechanism. Report actively exploited vulnerabilities and severe incidents through a private advisory on the affected repository. State at the start of the report that the vulnerability is being actively exploited or that an incident is under way.
+
 The maintainers who receive a report coordinate the fix and advisory across every affected SDK so that advisories are released together, and raise it with the specification maintainers when the root cause is in the specification (see [SDK Vulnerability Disclosure](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/SECURITY.md#sdk-vulnerability-disclosure)). CVEs are assigned through GitHub's CNA. Questions that are not themselves a report, including which repository to file against, go to the [Security Interest Group](/community/interest-groups/security) in `#security-ig`.
+
+## EU Cyber Resilience Act (CRA) stewardship
+
+The Model Context Protocol project publishes software, including the official SDKs, that is ultimately intended for commercial activities. The project is supported under the [Linux Foundation CRA stewardship framework](https://www.linuxfoundation.org/security). See the Linux Foundation's [CRA guidance for open source projects](https://bestpractices.linuxfoundation.org/regulatory/cra/index.html) for more on what the CRA asks of projects like this one.
+
+Maintainers who learn of an actively exploited vulnerability or a severe incident, such as a compromise of the release process, must notify a Core Maintainer or Lead Maintainer immediately in `#security-disclosures` on [Discord](/community/communication#discord), while they fix the problem and never instead of fixing it. That Core Maintainer or Lead Maintainer contacts the Linux Foundation CRA steward at [steward@linuxfoundation.org](mailto:steward@linuxfoundation.org) and works with the steward from then on, so the project speaks to the steward with one voice. The CRA sets short deadlines for the steward's reports, starting with an early warning within 24 hours and a fuller notification within 72 hours. The advisory, if there is one, records when the project first learned of the problem and when the steward was notified.
+
+A vulnerability with no evidence of exploitation is not a CRA escalation event. Other maintainers do not contact the steward directly, and reporters must use a private advisory.
 
 ## Communication and records
 
@@ -31659,7 +31671,7 @@ The Inspector V2 Working Group is building Inspector V2, a new web-based MCP ins
 
 | Meeting | Frequency | Duration | Purpose |
 | - | - | - | - |
-| Working Session | Weekly, Wednesdays 11:00 America/New\_York | 60 minutes | Technical discussion, proposal review |
+| Working Session | Weekly, Wednesdays 11:00 America/New_York | 60 minutes | Technical discussion, proposal review |
 
 Meetings are held at [meet.modelcontextprotocol.io/tag/inspector-v2-wg](https://meet.modelcontextprotocol.io/tag/inspector-v2-wg). Agendas are posted at least 7 days in advance per current MCP meeting policy. Meeting notes are published to the [Meeting Notes — Inspector V2 WG](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/categories/meeting-notes-inspector-v2-wg) discussion category in the `modelcontextprotocol/modelcontextprotocol` repository.
 
@@ -32015,7 +32027,7 @@ The Registry Working Group exists to build and maintain the official MCP Registr
 | Radoslav Dimitrov | Stacklok | [@rdimitrov](https://github.com/rdimitrov) | dimitrovr | Lead | Yes |
 | Tadas Antanavicius | PulseMCP | [@tadasant](https://github.com/tadasant) | tadasant\_ | WG Member | Yes |
 | Bob Dickinson | TeamSpark | [@BobDickinson](https://github.com/BobDickinson) | rddthree | WG Member | Yes |
-| Preeti Dewani | Ravenmail | [@pree-dew](https://github.com/pree-dew) | pree\_dew | WG Member | No |
+| Preeti Dewani | Ravenmail | [@pree-dew](https://github.com/pree-dew) | pree_dew | WG Member | No |
 
 ## Emeritus Membership
 
@@ -33678,8 +33690,8 @@ Two bits needed here:
       * simpler for users (no need to think about where the shared prefix stops)
       * implicitly supports updating the cache (maybe even as subtree)
     * Cons: possibly harder to implement / more storage inefficient
-* Introduce allowed\_tools feature to enable / disable tools w/o breaking context caching
-  * Relevant to this SEP as we may want to merge this feature [under the tool\_choice field, similar to what OpenAI did](https://platform.openai.com/docs/guides/function-calling).
+* Introduce allowed_tools feature to enable / disable tools w/o breaking context caching
+  * Relevant to this SEP as we may want to merge this feature [under the tool_choice field, similar to what OpenAI did](https://platform.openai.com/docs/guides/function-calling).
 
     ```typescript theme={null}
     interface ToolChoice { // NEW
@@ -34025,7 +34037,7 @@ These concerns are backed by real use cases that Amazon has seen both internally
 ***Ideal:*** Built-in mechanisms for actively checking the status of ongoing work to avoid needing to implement notification systems specific to their own tool conventions themselves.
 
 **3. Code Migration Workflows**
-***Challenge*:** Amazon has automated code migration and transformation tools to perform upgrades across its own codebases and those of external customers, and is attempting to wrap those tools in MCP servers. These migrations analyze dependencies, transform code to avoid deprecated runtime features, and validate changes across multiple repositories. These migrations range from minutes to hours depending on migration scope, complexity, and validation requirements.
+**_Challenge_:** Amazon has automated code migration and transformation tools to perform upgrades across its own codebases and those of external customers, and is attempting to wrap those tools in MCP servers. These migrations analyze dependencies, transform code to avoid deprecated runtime features, and validate changes across multiple repositories. These migrations range from minutes to hours depending on migration scope, complexity, and validation requirements.
 ***Current Workaround:*** Developers implement manual tracking by splitting a job into `create` and `get` tools, forcing models to manage state and repeatedly poll for completion.
 ***Impact:*** Poor developer experience due to needing to replicate this hand-rolled polling mechanism across many tools. One team had to debug an issue where the model would hallucinate job names if it hadn’t listed them first. Validating that this does not happen across many tools in a large toolset is time-consuming and error-prone.
 ***Ideal:*** Support natively polling tool state at the data layer to support pushing a tool to the background and avoiding blocking other tasks in the chat session, while still supporting deterministic polling and result retrieval. The team needs the same pattern across many tools in their MCP servers, and wants a common solution across them, which this SEP directly supports.
@@ -35393,10 +35405,10 @@ The most straightforward approach is to have an Example Server for each SDK, sim
 
 **What is needed form SDKs maintainers:** implement everything server based on a spec. Spec will look like:
 
-* Tool “say\_hello” to return simple text
-* Tool “show\_image” to return and image
-* Tool “tool\_with\_logging” to return structured output in a format \<> and log three events: start, process, end
-* Tool "tool\_with\_notifications" to return structured output in a format \<> and have two notifications \<>
+* Tool “say_hello” to return simple text
+* Tool “show_image” to return and image
+* Tool “tool_with_logging” to return structured output in a format \<> and log three events: start, process, end
+* Tool "tool_with_notifications" to return structured output in a format \<> and have two notifications \<>
 
 Given well defined spec for the server and SDK documentation, it should be easy to implement it with the help of any coding agent. We want to check it into each SDKs repo as it will serve as an example for server implementers.
 
@@ -37822,12 +37834,12 @@ Current SDK implementations vary in their error handling for resource not found:
 | - | - | - |
 | TypeScript | `-32602` (InvalidParams) | [mcp.ts#L561](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/packages/server/src/server/mcp.ts#L561) |
 | Python | `0` (generic) | [server.py#L790](https://github.com/modelcontextprotocol/python-sdk/blob/main/src/mcp/server/lowlevel/server.py#L790) |
-| C# | `-32002` (custom RESOURCE\_NOT\_FOUND) | [McpServerImpl.cs#L289](https://github.com/modelcontextprotocol/csharp-sdk/blob/main/src/ModelContextProtocol.Core/Server/McpServerImpl.cs#L289) |
-| Rust | `-32002` (custom RESOURCE\_NOT\_FOUND) | [model.rs#L450](https://github.com/modelcontextprotocol/rust-sdk/blob/main/crates/rmcp/src/model.rs#L450) |
-| Java | `-32002` (custom RESOURCE\_NOT\_FOUND) | [McpAsyncServer.java#L732](https://github.com/modelcontextprotocol/java-sdk/blob/main/mcp-core/src/main/java/io/modelcontextprotocol/server/McpAsyncServer.java#L732) |
-| Go | `-32002` (custom RESOURCE\_NOT\_FOUND) | [server.go#L786](https://github.com/modelcontextprotocol/go-sdk/blob/main/mcp/server.go#L786) |
-| Kotlin | `-32603` (INTERNAL\_ERROR) | [Server.kt#L618-L621](https://github.com/modelcontextprotocol/kotlin-sdk/blob/main/kotlin-sdk-server/src/commonMain/kotlin/io/modelcontextprotocol/kotlin/sdk/server/Server.kt#L618-L621) |
-| PHP | `-32002` (custom RESOURCE\_NOT\_FOUND) | [Error.php#L37](https://github.com/modelcontextprotocol/php-sdk/blob/main/src/Schema/JsonRpc/Error.php#L37) |
+| C# | `-32002` (custom RESOURCE_NOT_FOUND) | [McpServerImpl.cs#L289](https://github.com/modelcontextprotocol/csharp-sdk/blob/main/src/ModelContextProtocol.Core/Server/McpServerImpl.cs#L289) |
+| Rust | `-32002` (custom RESOURCE_NOT_FOUND) | [model.rs#L450](https://github.com/modelcontextprotocol/rust-sdk/blob/main/crates/rmcp/src/model.rs#L450) |
+| Java | `-32002` (custom RESOURCE_NOT_FOUND) | [McpAsyncServer.java#L732](https://github.com/modelcontextprotocol/java-sdk/blob/main/mcp-core/src/main/java/io/modelcontextprotocol/server/McpAsyncServer.java#L732) |
+| Go | `-32002` (custom RESOURCE_NOT_FOUND) | [server.go#L786](https://github.com/modelcontextprotocol/go-sdk/blob/main/mcp/server.go#L786) |
+| Kotlin | `-32603` (INTERNAL_ERROR) | [Server.kt#L618-L621](https://github.com/modelcontextprotocol/kotlin-sdk/blob/main/kotlin-sdk-server/src/commonMain/kotlin/io/modelcontextprotocol/kotlin/sdk/server/Server.kt#L618-L621) |
+| PHP | `-32002` (custom RESOURCE_NOT_FOUND) | [Error.php#L37](https://github.com/modelcontextprotocol/php-sdk/blob/main/src/Schema/JsonRpc/Error.php#L37) |
 | Ruby | N/A (left to implementor) | [server.rb#L375-L379](https://github.com/modelcontextprotocol/ruby-sdk/blob/main/lib/mcp/server.rb#L375-L379) |
 | Swift | N/A (no built-in handler) | N/A |
 
@@ -37863,7 +37875,7 @@ Servers MUST NOT return an empty `contents` array for a non-existent resource. A
 
 ### Why Not a Custom Error Code?
 
-Several SDKs use `-32002` (RESOURCE\_NOT\_FOUND), but:
+Several SDKs use `-32002` (RESOURCE_NOT_FOUND), but:
 
 * Custom codes in the `-32000` to `-32099` range are "reserved for implementation-defined server errors" per JSON-RPC spec, not for protocol-level semantics
 * Adding a protocol-defined custom code requires all clients to be updated to recognize it
@@ -39970,19 +39982,19 @@ for this.
 
 Let's say that you are doing a rolling upgrade of your horizontally
 scaled server instances to deploy a new version of a tool implementation.
-The old version had two input requests with keys "github\_login" and
-"google\_login". However, in the new version of the tool implementation,
-it still uses the "github\_login" input request, but it replaces the
-"google\_login" input request with a new "microsoft\_login" input request.
+The old version had two input requests with keys "github_login" and
+"google_login". However, in the new version of the tool implementation,
+it still uses the "github_login" input request, but it replaces the
+"google_login" input request with a new "microsoft_login" input request.
 
 If the first request goes to an old version of the server but the second
 attempt (that includes the input responses) goes to a new version
-of the server, then the server will see the result for "github\_login",
-which it needs, but it won't see the result for "microsoft\_login".
-(It will also see the result for "google\_login", but it no longer needs
+of the server, then the server will see the result for "github_login",
+which it needs, but it won't see the result for "microsoft_login".
+(It will also see the result for "google_login", but it no longer needs
 that, so it doesn't matter.) At this point, the server needs to send a
-new input request for "microsoft\_login", but it also doesn't want
-to lose the answer that it's already gotten for "github\_login", so it
+new input request for "microsoft_login", but it also doesn't want
+to lose the answer that it's already gotten for "github_login", so it
 would use the kind of state proposed in 1685 to retain that information
 without having to store the state on the server side.
 
@@ -39991,21 +40003,21 @@ The workflow here would look like this:
 1. Client sends tool call request that hits a server instance running
    the old version.
 2. Server sends back an incomplete response indicating the input
-   requests for "github\_login" and "google\_login".
+   requests for "github_login" and "google_login".
 3. Client sends a new tool call request that includes the responses to
-   the input requests for "github\_login" and "google\_login". This
+   the input requests for "github_login" and "google_login". This
    time it hits a server instance running the new version.
 4. Server sends back another incomplete response indicating the
-   input request for "microsoft\_login", which the client has not
+   input request for "microsoft_login", which the client has not
    already provided. However, the response also includes request state
-   containing the already-provided "github\_login" response, so that the
+   containing the already-provided "github_login" response, so that the
    client does not need to prompt the user for the same information a
    second time.
 5. Client sends a third tool call request that includes the response to
-   the "microsoft\_login" input request as well as echoing back the
+   the "microsoft_login" input request as well as echoing back the
    request state provided by the server in step 4.
-6. Server now sees the "github\_login" info in the request state and the
-   "microsoft\_login" state in the input responses, so the request
+6. Server now sees the "github_login" info in the request state and the
+   "microsoft_login" state in the input responses, so the request
    now contains everything the server needs to perform the tool call and
    send back a complete response.
 
@@ -40280,7 +40292,7 @@ The above workflow and below example do not leverage any of the optional Task St
   ```
 
   8. **Server Response** Server should acknowledge the receipt of the
-     'tasks/input\_response' message by sending a 'JSONRPCResponse'. If the message
+     'tasks/input_response' message by sending a 'JSONRPCResponse'. If the message
      was successfully received a `JSONRPCResultResponse` is sent including the
      `taskId`. If an error occurs, a `JSONRPCErrorResponse` is sent. The server
      can now proceed to complete the `Task` using the provided input, and the
@@ -40639,7 +40651,7 @@ This SEP proposes recommending the inclusion and requiring the validation of an 
 
 The Model Context Protocol increasingly operates in environments where multiple authorization servers, identity providers, and intermediaries coexist. In such environments, OAuth mix‑up attacks become a realistic threat. Mix-up attacks are when an attacker causes a client to associate an authorization response with the wrong authorization server, potentially leading to token leakage or privilege escalation.
 
-OAuth specifications describe two mitigations for mix‑up attacks: requiring issuer (*iss*) parameter or using a unique redirect\_uri for each issuer a client interacts with. A unique redirect\_uri per issuer is not possible with Client ID Metadata Documents (the recommended registration approach) and is operationally expensive with Dynamic Client Registration. As such, the recommendation is for MCP environments to leverage the issuer mitigation.
+OAuth specifications describe two mitigations for mix‑up attacks: requiring issuer (*iss*) parameter or using a unique redirect_uri for each issuer a client interacts with. A unique redirect_uri per issuer is not possible with Client ID Metadata Documents (the recommended registration approach) and is operationally expensive with Dynamic Client Registration. As such, the recommendation is for MCP environments to leverage the issuer mitigation.
 
 Requiring an explicit iss parameter in MCP authorization responses provides a simple, interoperable, and well‑understood mechanism to bind responses to the correct authorization server and prevent mix‑up attacks by construction. Since not every authorization server sends the issuer parameter though, this SEP proposes a MUST for clients to validate issuer if provided and a SHOULD for authorization servers supporting MCP scenarios. Future SEPs and releases may change the SHOULD to a MUST.
 
@@ -40678,7 +40690,7 @@ Introducing MCP‑specific issuer binding fields
 
 * Rejected in favor of reusing established OAuth/OIDC mechanisms.
 
-Requiring unique redirect\_uri per issuer
+Requiring unique redirect_uri per issuer
 
 * CIMD metadata documents are static and cannot enumerate every issuer; with DCR it is technically possible but DCR has operational drawbacks in MCP deployments that make it undesirable to depend on for a security property. RFC 9207 works uniformly across registration approaches.
 
@@ -41303,7 +41315,7 @@ None of the following is normative. Handles are a tool-design pattern, not a pro
 
 * **Handles are opaque.** A handle that encodes internal structure (`cart_user42_2026-03-11`) invites clients to parse it or models to guess it; an opaque handle such as `bsk_a1b2c3` does not.
 * **Possession is not authorization (where auth exists).** For authenticated servers, validate `(handle, auth_context)` on every call; handles will end up in chat logs, copy-paste buffers, and subagent prompts. For unauthenticated servers, where the handle is necessarily a bearer token, generate it with at least 128 bits of cryptographically secure entropy and bound its lifetime. See [Security Implications](#security-implications).
-* **Durability is documented in the tool description.** Handles outlive connections by design, so "the state lasts until the connection closes" is no longer applicable. Put the policy in the `create_*` tool's description — "returns a basket\_id; baskets expire after 24h idle" — so it is visible to the model when it decides to create state. A policy only in server documentation is not visible to the model.
+* **Durability is documented in the tool description.** Handles outlive connections by design, so "the state lasts until the connection closes" is no longer applicable. Put the policy in the `create_*` tool's description — "returns a basket_id; baskets expire after 24h idle" — so it is visible to the model when it decides to create state. A policy only in server documentation is not visible to the model.
 * **Expired handles return useful errors.** When a tool receives a handle for state that has expired or been destroyed, the error should say so — "basket `bsk_a1b2c3` has expired" rather than "invalid argument". A clear expiry error lets the model recover by calling `create_*` again; an opaque error typically leads to retries or failure.
 * **Creation takes parameters.** `create_context(cluster="staging")` is preferable to `create_context()` followed by `set_cluster(ctx, "staging")`: one round-trip instead of two, and the state cannot exist half-configured.
 * **Cleanup is available.** A `destroy_*(handle)` tool lets models release resources. A `list_*()` tool lets a model recover after losing track of what it created. Neither is required.

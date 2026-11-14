@@ -309,8 +309,8 @@ Two bits needed here:
       * simpler for users (no need to think about where the shared prefix stops)
       * implicitly supports updating the cache (maybe even as subtree)
     * Cons: possibly harder to implement / more storage inefficient
-* Introduce allowed\_tools feature to enable / disable tools w/o breaking context caching
-  * Relevant to this SEP as we may want to merge this feature [under the tool\_choice field, similar to what OpenAI did](https://platform.openai.com/docs/guides/function-calling).
+* Introduce allowed_tools feature to enable / disable tools w/o breaking context caching
+  * Relevant to this SEP as we may want to merge this feature [under the tool_choice field, similar to what OpenAI did](https://platform.openai.com/docs/guides/function-calling).
 
     ```typescript theme={null}
     interface ToolChoice { // NEW

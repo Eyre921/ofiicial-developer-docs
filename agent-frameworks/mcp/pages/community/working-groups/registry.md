@@ -64,7 +64,7 @@ The Registry Working Group exists to build and maintain the official MCP Registr
 | Radoslav Dimitrov | Stacklok | [@rdimitrov](https://github.com/rdimitrov) | dimitrovr | Lead | Yes |
 | Tadas Antanavicius | PulseMCP | [@tadasant](https://github.com/tadasant) | tadasant\_ | WG Member | Yes |
 | Bob Dickinson | TeamSpark | [@BobDickinson](https://github.com/BobDickinson) | rddthree | WG Member | Yes |
-| Preeti Dewani | Ravenmail | [@pree-dew](https://github.com/pree-dew) | pree\_dew | WG Member | No |
+| Preeti Dewani | Ravenmail | [@pree-dew](https://github.com/pree-dew) | pree_dew | WG Member | No |
 
 ## Emeritus Membership
 

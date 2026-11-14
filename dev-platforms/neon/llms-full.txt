@@ -31666,7 +31666,7 @@ The `active_seconds_limit`, `projects_limit`, `branches_limit`, and `max_autosca
 
 --- [Document source](https://neon.com/docs/cli/neon-auth.md) ---
 
-> Summary: The Neon CLI `neon neon-auth` command manages Managed Better Auth on a database branch from the terminal. Use `enable`, `status`, and `disable` to provision, inspect, or remove Managed Better Auth, and the `oauth-provider` subcommands to add, update, or delete Google, GitHub, Vercel, Microsoft, and Apple OAuth providers. The `domain` subcommands manage trusted redirect domains, including `allow-localhost` settings for local development. The `config` subcommands cover email and password authentication, the email provider, the organization plugin, webhooks, and the OAuth server, and `oauth-client` manages that server's clients, while `plugins` and `user` let you inspect plugin configurations and manage auth users.
+> Summary: The Neon CLI `neon neon-auth` command manages Managed Better Auth on a database branch from the terminal. Use `enable`, `status`, and `disable` to provision, inspect, or remove Managed Better Auth, and the `oauth-provider` subcommands to add, update, or delete Google, GitHub, Vercel, Microsoft, Apple, and Discord OAuth providers. The `domain` subcommands manage trusted redirect domains, including `allow-localhost` settings for local development. The `config` subcommands cover email and password authentication, the email provider, the organization plugin, webhooks, and the OAuth server, and `oauth-client` manages that server's clients, while `plugins` and `user` let you inspect plugin configurations and manage auth users.
 
 # Neon CLI command: neon-auth
 
@@ -31741,7 +31741,7 @@ neon neon-auth disable --delete-data
 
 ## OAuth providers
 
-The `oauth-provider` subcommands manage the OAuth providers (`google`, `github`, `vercel`, `microsoft`, and `apple`) for the branch.
+The `oauth-provider` subcommands manage the OAuth providers (`google`, `github`, `vercel`, `microsoft`, `apple`, and `discord`) for the branch.
 
 Subcommands: [add](https://neon.com/docs/cli/neon-auth#oauth-provider-add), [delete](https://neon.com/docs/cli/neon-auth#oauth-provider-delete), [list](https://neon.com/docs/cli/neon-auth#oauth-provider-list), [update](https://neon.com/docs/cli/neon-auth#oauth-provider-update)
 
@@ -31770,17 +31770,17 @@ Adds an OAuth provider.
 neon neon-auth oauth-provider add [options]
 ```
 
-| Option                       | Description                                                                                                                                                                      | Type   | Default | Required |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--apple-key-id`             | Key ID of the Sign in with Apple private key (apple only). Sent together with a new apple client secret, and only with one                                                       | string | —       |    No    |
-| `--apple-team-id`            | Apple Developer Team ID (apple only)                                                                                                                                             | string | —       |    No    |
-| `--microsoft-tenant-id`      | Tenant ID for the microsoft provider: common, organizations, consumers, a tenant GUID, or a domain                                                                               | string | —       |    No    |
-| `--oauth-client-id`          | OAuth client ID from your provider app. For apple, the Services ID. Omit to use Neon's shared OAuth app, where one exists; microsoft and apple always need your own credentials. | string | —       |    No    |
-| `--oauth-client-secret`      | OAuth client secret from your provider app. Omit to use Neon's shared OAuth app, where one exists; microsoft and apple always need your own credentials.                         | string | —       |    No    |
-| `--oauth-client-secret-file` | Read the OAuth client secret from a file, for example the apple .p8 private key                                                                                                  | string | —       |    No    |
-| `--provider-id`              | OAuth provider ID. Supported values: google, github, vercel, microsoft, apple                                                                                                    | string | —       |    Yes   |
-| `--branch`                   | Branch ID or name                                                                                                                                                                | string | —       |    No    |
-| `--project-id`               | Project ID                                                                                                                                                                       | string | —       |    No    |
+| Option                       | Description                                                                                                                                                                               | Type   | Default | Required |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--apple-key-id`             | Key ID of the Sign in with Apple private key (apple only). Sent together with a new apple client secret, and only with one                                                                | string | —       |    No    |
+| `--apple-team-id`            | Apple Developer Team ID (apple only)                                                                                                                                                      | string | —       |    No    |
+| `--microsoft-tenant-id`      | Tenant ID for the microsoft provider: common, organizations, consumers, a tenant GUID, or a domain                                                                                        | string | —       |    No    |
+| `--oauth-client-id`          | OAuth client ID from your provider app. For apple, the Services ID. Omit to use Neon's shared OAuth app, where one exists; microsoft, apple and discord always need your own credentials. | string | —       |    No    |
+| `--oauth-client-secret`      | OAuth client secret from your provider app. Omit to use Neon's shared OAuth app, where one exists; microsoft, apple and discord always need your own credentials.                         | string | —       |    No    |
+| `--oauth-client-secret-file` | Read the OAuth client secret from a file, for example the apple .p8 private key                                                                                                           | string | —       |    No    |
+| `--provider-id`              | OAuth provider ID. Supported values: google, github, vercel, microsoft, apple, discord                                                                                                    | string | —       |    Yes   |
+| `--branch`                   | Branch ID or name                                                                                                                                                                         | string | —       |    No    |
+| `--project-id`               | Project ID                                                                                                                                                                                | string | —       |    No    |
 
 Add the Google OAuth provider with your own credentials:
 
@@ -31800,6 +31800,12 @@ Add Microsoft, optionally restricted to a tenant:
 neon neon-auth oauth-provider add --provider-id microsoft --oauth-client-id <client-id> --oauth-client-secret <client-secret> --microsoft-tenant-id <tenant>
 ```
 
+Add Discord, which always needs your own credentials from an application in the Discord Developer Portal:
+
+```bash
+neon neon-auth oauth-provider add --provider-id discord --oauth-client-id <client-id> --oauth-client-secret <client-secret>
+```
+
 See [Set up OAuth](https://neon.com/docs/auth/guides/setup-oauth) for the provider-side setup.
 
 ### neon neon-auth oauth-provider update
@@ -31810,17 +31816,17 @@ Updates the credentials for an existing OAuth provider.
 neon neon-auth oauth-provider update [options]
 ```
 
-| Option                       | Description                                                                                                                                                                      | Type   | Default | Required |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--apple-key-id`             | Key ID of the Sign in with Apple private key (apple only). Sent together with a new apple client secret, and only with one                                                       | string | —       |    No    |
-| `--apple-team-id`            | Apple Developer Team ID (apple only)                                                                                                                                             | string | —       |    No    |
-| `--microsoft-tenant-id`      | Tenant ID for the microsoft provider: common, organizations, consumers, a tenant GUID, or a domain                                                                               | string | —       |    No    |
-| `--oauth-client-id`          | OAuth client ID from your provider app. For apple, the Services ID. Omit to use Neon's shared OAuth app, where one exists; microsoft and apple always need your own credentials. | string | —       |    No    |
-| `--oauth-client-secret`      | OAuth client secret from your provider app. Omit to use Neon's shared OAuth app, where one exists; microsoft and apple always need your own credentials.                         | string | —       |    No    |
-| `--oauth-client-secret-file` | Read the OAuth client secret from a file, for example the apple .p8 private key                                                                                                  | string | —       |    No    |
-| `--provider-id`              | OAuth provider ID. Supported values: google, github, vercel, microsoft, apple                                                                                                    | string | —       |    Yes   |
-| `--branch`                   | Branch ID or name                                                                                                                                                                | string | —       |    No    |
-| `--project-id`               | Project ID                                                                                                                                                                       | string | —       |    No    |
+| Option                       | Description                                                                                                                                                                               | Type   | Default | Required |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--apple-key-id`             | Key ID of the Sign in with Apple private key (apple only). Sent together with a new apple client secret, and only with one                                                                | string | —       |    No    |
+| `--apple-team-id`            | Apple Developer Team ID (apple only)                                                                                                                                                      | string | —       |    No    |
+| `--microsoft-tenant-id`      | Tenant ID for the microsoft provider: common, organizations, consumers, a tenant GUID, or a domain                                                                                        | string | —       |    No    |
+| `--oauth-client-id`          | OAuth client ID from your provider app. For apple, the Services ID. Omit to use Neon's shared OAuth app, where one exists; microsoft, apple and discord always need your own credentials. | string | —       |    No    |
+| `--oauth-client-secret`      | OAuth client secret from your provider app. Omit to use Neon's shared OAuth app, where one exists; microsoft, apple and discord always need your own credentials.                         | string | —       |    No    |
+| `--oauth-client-secret-file` | Read the OAuth client secret from a file, for example the apple .p8 private key                                                                                                           | string | —       |    No    |
+| `--provider-id`              | OAuth provider ID. Supported values: google, github, vercel, microsoft, apple, discord                                                                                                    | string | —       |    Yes   |
+| `--branch`                   | Branch ID or name                                                                                                                                                                         | string | —       |    No    |
+| `--project-id`               | Project ID                                                                                                                                                                                | string | —       |    No    |
 
 ```bash
 neon neon-auth oauth-provider update --provider-id github --oauth-client-id <client-id> --oauth-client-secret <client-secret>
@@ -31834,11 +31840,11 @@ Deletes an OAuth provider from the branch.
 neon neon-auth oauth-provider delete [options]
 ```
 
-| Option          | Description                                                                   | Type   | Default | Required |
-| --------------- | ----------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--provider-id` | OAuth provider ID. Supported values: google, github, vercel, microsoft, apple | string | —       |    Yes   |
-| `--branch`      | Branch ID or name                                                             | string | —       |    No    |
-| `--project-id`  | Project ID                                                                    | string | —       |    No    |
+| Option          | Description                                                                            | Type   | Default | Required |
+| --------------- | -------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--provider-id` | OAuth provider ID. Supported values: google, github, vercel, microsoft, apple, discord | string | —       |    Yes   |
+| `--branch`      | Branch ID or name                                                                      | string | —       |    No    |
+| `--project-id`  | Project ID                                                                             | string | —       |    No    |
 
 ```bash
 neon neon-auth oauth-provider delete --provider-id vercel
@@ -37559,7 +37565,7 @@ For commonly used components, see the [Component Guide](https://neon.com/docs/co
 
 --- [Document source](https://neon.com/docs/community/contribution-guide.md) ---
 
-> Summary: How to submit edits and new guides to the neondatabase/website repository. Edit files directly on GitHub or fork the repo and open a pull request. The full authoring workflow covers frontmatter fields, navigation.yaml sidebar updates, Markdown syntax, CodeTabs, admonitions, image paths, and style rules for voice, capitalization, connection strings, and fake user data. Also covers the doc AI tools (Cursor and Claude slash commands) for consistency checks, redirects, and guided writing.
+> Summary: How to contribute to Neon content in the neondatabase/website repository. Fixes to the Neon docs and PostgreSQL tutorials are welcome. New guides are considered for the community guides section. Function templates and examples are also welcome. Covers how to submit a pull request, add yourself as a guide author, frontmatter, navigation.yaml, Markdown, components, and style rules.
 
 # Docs contribution guide
 
@@ -37567,34 +37573,73 @@ Learn how to contribute to the Neon documentation
 
 Last updated: 2026-09-17
 
-This page covers everything you need to contribute to the Neon documentation, whether you're fixing a typo or writing a full guide.
+Thanks for helping improve Neon content. This page explains ways to contribute, how to submit a contribution, and the Markdown and style conventions we follow.
 
-**Note: TL;DR: Contributing to the Neon Docs**
+## Ways to contribute
 
-- You can edit files on GitHub via the **Edit this page** link on our documentation pages or by forking the [neondatabase/website](https://github.com/neondatabase/website) repository and submitting a pull request.
-- If you want to contribute a guide, we provide a [template](https://github.com/neondatabase/website/blob/main/content/docs/guides/GUIDE_TEMPLATE.md) to help you get started. See [How to contribute](https://neon.com/docs/community/contribution-guide#how-to-contribute) for details.
-- Reference this contribution guide as needed for Markdown and style guidelines.
+We welcome contributions of many kinds. Some common ones:
 
-## Why should you contribute?
+- **Docs and tutorial updates:** Improve existing pages in the [Neon docs](https://neon.com/docs) or [PostgreSQL tutorials](https://neon.com/postgresql), from fixing a typo to clarifying a confusing section.
+- **Community guides:** Share a walkthrough of building something with Neon. New guides are generally considered for the [community guides](https://neon.com/docs/community/contribution-guide#contribute-a-community-guide) section rather than the main documentation.
+- **Function templates:** Add a reusable function to the Neon Function Registry. See [Contribute a function template](https://neon.com/docs/compute/functions/registry).
+- **Examples:** Add a sample app or code example to the [neondatabase/examples](https://github.com/neondatabase/examples) repository.
 
-Open-source projects are always evolving. Contributing to documentation is a good starting point for open source beginners, and a way for experienced developers to share knowledge with the community.
+Have another idea? Reach out on our [Discord server](https://neon.com/discord).
 
-By contributing to the Neon docs, you're helping us create a stronger learning resource for all developers. Whether you've found a typo, a section that's hard to understand, or a topic that's missing, we'd love to have your contribution.
+We appreciate every contribution, but we can't accept all of them. What we publish is at Neon's discretion and depends on factors such as fit with our products and direction, value to Neon users, adoption of the tools covered, and overlap with existing content.
+
+We review every contribution. We may test your instructions and code, ask for revisions, make revisions ourselves, or decide not to merge it. By submitting, you agree that Neon can edit, update, or remove your contribution at any time, including guides published under your name.
 
 ## How to contribute
 
-Documentation source files are located in the [neondatabase/website](https://github.com/neondatabase/website) repository, in the `/content/docs` directory. To contribute, you have two options:
+Docs, tutorials, and guides live in the [neondatabase/website](https://github.com/neondatabase/website) repository: Neon docs in `/content/docs`, PostgreSQL tutorials in `/content/postgresql`, and community guides in `/content/guides`.
 
-1. Edit files directly on GitHub.
-2. Fork the [neondatabase/website](https://github.com/neondatabase/website) repository, create a branch for your changes, and submit a pull request.
+- **Small fixes:** Click **Edit this page** at the bottom of any docs page, make your change on GitHub, and commit it to open a pull request.
 
-If you prefer the first option, which is great for edits and small updates, there is an **Edit this page** link at the bottom of each Neon documentation page.
+  ![GitHub edit this page link](https://neon.com/docs/community/edit_this_page.png)
 
-![GitHub edit this page link](https://neon.com/docs/community/edit_this_page.png)
+- **Larger changes and guides:** Fork the repository, create a branch, and open a pull request. If you're new to this, see the [GitHub Open Source Guide](https://opensource.guide/how-to-contribute/#opening-a-pull-request).
 
-Clicking the link takes you to the Markdown file in GitHub, where you can click the **Edit this page** icon to make a change. When you finish editing, commit your changes to create a pull request.
+## Contribute a community guide
 
-If you would rather fork the [neondatabase/website](https://github.com/neondatabase/website) repository and submit a pull request, but you're not familiar with the process, we suggest going through the [GitHub Open Source Guide](https://opensource.guide/how-to-contribute/#opening-a-pull-request). This guide describes how to fork a repository, create a branch, and submit a pull request. To help you get started, we provide a [GUIDE_TEMPLATE.md](https://github.com/neondatabase/website/blob/main/content/docs/guides/GUIDE_TEMPLATE.md) file, which you can find in the [neondatabase/website](https://github.com/neondatabase/website) repository, under the `/content/docs/guides` directory. After you create a branch, copy the template file and rename it. Don't forget to add your guide to the sidebar. See [Add a new page](https://neon.com/docs/community/contribution-guide#add-a-new-page).
+Each Markdown file in `/content/guides` becomes a page under [neon.com/guides](https://neon.com/guides). Guides don't need a `navigation.yaml` entry.
+
+1. Create a kebab-case file such as `content/guides/my-tool-neon.md`. The file name becomes the URL.
+
+2. Add frontmatter. Only `title` is required, and the title renders as the page heading, so don't add an `h1`. See the [guides README](https://github.com/neondatabase/website/blob/main/content/guides/README.md#fields) for all fields.
+
+   ```yaml
+   ---
+   title: Build a search API with My Tool and Neon
+   subtitle: Use My Tool to index and query data stored in Neon
+   author: alex-lopez
+   enableTableOfContents: true
+   createdAt: '2026-11-14T00:00:00.000Z'
+   ---
+   ```
+
+3. Put images in `/public/guides/images/<guide-name>/` and reference them as `/guides/images/<guide-name>/image.png`.
+
+4. Write a self-contained walkthrough with working code, following the [Style guide](https://neon.com/docs/community/contribution-guide#style-guide) below.
+
+### Add yourself as an author
+
+1. Add an entry to `content/guides/authors/data.json`. The key is your author ID, your name in kebab-case. Only `name` is required.
+
+   ```json
+   "alex-lopez": {
+     "name": "Alex Lopez",
+     "position": "Developer Advocate",
+     "bio": "Alex writes about databases and developer tooling.",
+     "link": { "title": "GitHub", "url": "https://github.com/example_username" }
+   }
+   ```
+
+2. Add a square photo named `<your-id>.jpg` to `public/guides/authors/`, for example `alex-lopez.jpg`. It must be a `.jpg` file with that exact name, or it won't display.
+
+3. Set `author: alex-lopez` in your guide's frontmatter. For multiple authors, use `authors: [alex-lopez, dana-smith]`.
+
+If you've contributed before, reuse your existing ID.
 
 ## Markdown
 
@@ -37609,12 +37654,6 @@ For advanced formatting and custom components, see the [Component Guide](https:/
 At Neon, we use VSCode for writing documentation. VSCode includes a built-in markdown previewer that you can use to view your changes locally.
 
 To use this feature, open the command palette (⌘ + ⇧ + V on Mac or Ctrl + Shift + V on Windows). This opens a preview window for viewing your changes in formatted Markdown.
-
-## Contribution review process
-
-After you submit a contribution, the Neon documentation team reviews your changes, provides feedback, and merges the pull request when it's ready.
-
-Please reach out to us on our [Discord Server](https://neon.com/discord) if you have any questions or need further assistance.
 
 ## Documentation file structure
 
@@ -45060,6 +45099,18 @@ The choice of which mode to use depends on the specific security requirements of
 
 `channel_binding=require` is a security parameter that ensures the client and server mutually authenticate each other using SCRAM-SHA-256-PLUS. This helps protect against man-in-the-middle attacks, even when using `sslmode=require` alone.
 
+With `sslmode=require`, the connection is encrypted, but the client doesn't check the server's certificate. Channel binding ties your password authentication to that specific TLS connection, so a server in the middle can't relay it. That's why the connection strings Neon gives you, from the Console, CLI, MCP server, and API, include both parameters.
+
+Channel binding is optional. A connection string without it still connects, encrypted and authenticated with SCRAM-SHA-256. To keep the same protection without channel binding, use `sslmode=verify-full` instead, as described below.
+
+Your client library has to support channel binding:
+
+- `psql` and other clients built on libpq, the Postgres client library, need libpq 13 or later. This is the version installed on your machine, not your Neon Postgres version. Older clients fail with an `invalid connection option` error. Run `psql --version` to check.
+- Some tools don't support channel binding and fail when the parameter is present. For example, `pgloader` throws an error, so the [SQLite migration guide](https://neon.com/docs/import/migrate-sqlite) removes it.
+- Some drivers and ORMs reject parameters they don't recognize or use their own names for them. For example, JDBC uses `channelBinding`, and Npgsql uses `Channel Binding=Require`.
+
+If a tool fails with an error that mentions `channel_binding` or an unknown connection option, remove `&channel_binding=require` from the connection string and use `sslmode=verify-full` instead.
+
 The required configuration for your connection depends on the client you are using.
 
 ## Connect from the psql client
@@ -45796,7 +45847,7 @@ With the right strategies, you can optimize your system to handle connection lat
 
 Learn how connection pooling works in Neon
 
-Last updated: 2026-10-19
+Last updated: 2026-11-14
 
 Neon uses [PgBouncer](https://www.pgbouncer.org/) to provide connection pooling, enabling up to 10,000 concurrent connections. This guide explains how pooling works, when to use it, and how to avoid common issues.
 
@@ -46043,23 +46094,37 @@ Neon uses PgBouncer in transaction mode (`pool_mode=transaction`), which means c
 
 The most common issue users encounter is with `SET` statements, particularly `SET search_path`.
 
+PgBouncer doesn't reset a server connection when it returns to the pool in transaction mode. A `SET` changes the setting on the server connection, not on your client, so two things can happen:
+
+- Your next transaction might run on a different server connection that doesn't have the setting.
+- Another client connecting to the same database with the same role might get the connection and inherit your setting. For example, a leftover `search_path` can make that client read from or write to tables in the wrong schema.
+
+PgBouncer does restore each client's own values for a few parameters: `client_encoding`, `DateStyle`, `TimeZone`, `standard_conforming_strings`, `application_name`, `IntervalStyle`, and `default_transaction_read_only`. Other settings, including `search_path`, `statement_timeout`, and `synchronous_commit`, carry over.
+
 **Problem example:**
 
 ```sql
 SET search_path TO myschema;
-SELECT * FROM mytable;  -- Works in this transaction
--- Transaction ends, connection returns to pool
-SELECT * FROM mytable;  -- ERROR: relation "mytable" does not exist
+SELECT * FROM mytable;  -- Works on this server connection
+-- Transaction ends, connection returns to the pool with search_path still set
+SELECT * FROM mytable;  -- Might run on another connection: ERROR: relation "mytable" does not exist
 ```
 
 **Solutions:**
 
-1. **Use a direct connection** when you need persistent session settings
+1. **Use `SET LOCAL` inside a transaction** so the setting reverts when the transaction ends:
+   ```sql
+   BEGIN;
+   SET LOCAL search_path TO myschema, public;
+   SELECT * FROM mytable;
+   COMMIT;
+   ```
 2. **Specify schema explicitly** in your queries: `SELECT * FROM myschema.mytable`
-3. **Set at the role level** (persists across transactions):
+3. **Set at the role level** (applies to new server connections, so pooled connections that are already open keep the old value until they close):
    ```sql
    ALTER ROLE user1 SET search_path TO myschema, public;
    ```
+4. **Use a direct connection** when you need persistent session settings
 
 This issue also affects tools like `pg_dump`, which relies on `SET` statements. Always use direct connections for `pg_dump`.
 
@@ -76464,6 +76529,8 @@ The `env.schema` entry declares `DATABASE_URL` as a server-only secret. Astro re
 
 **Note:** The adapter alone isn't enough. Astro's default output is `static`, so without `output: 'server'`, `npm run build` prerenders your pages and API routes at build time and production serves the build-time results. To render only some routes on demand, keep the default and add `export const prerender = false;` to those pages and endpoints. Development mode (`npm run dev`) renders every request, so you won't see the difference until you build.
 
+If your project already deploys with another adapter, such as `@astrojs/vercel` or `@astrojs/netlify`, keep it instead of adding the Node adapter. Set `output: 'server'` and the `env.schema` entry the same way, and add `DATABASE_URL` to your hosting platform's environment variables.
+
 ## Store your Neon credentials
 
 Add a `.env` file to your project directory and add your Neon connection string to it. You can find the connection string for your database by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
@@ -76473,6 +76540,8 @@ DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=re
 ```
 
 If you use node-postgres, `pg` 8.23 and later print a `SECURITY WARNING` for `sslmode=require`. Change it to `sslmode=verify-full` to keep the same behavior without the warning.
+
+Neon connection strings include `channel_binding=require`, which protects against man-in-the-middle attacks. To learn more, see [Channel binding for enhanced security](https://neon.com/docs/connect/connect-securely#channel-binding-for-enhanced-security).
 
 ## Create a database utility
 
@@ -76637,7 +76706,7 @@ To run the production build, run `npm run build`, then start the server with `DA
 node --env-file=.env ./dist/server/entry.mjs
 ```
 
-The server listens on port 4321 by default; set the `PORT` environment variable to change it. With `output: 'server'`, each request queries your database. If `DATABASE_URL` isn't set, Astro fails the request with an `EnvInvalidVariables` error.
+The server listens on port 4321 by default; set the `PORT` environment variable to change it. With `output: 'server'`, each request queries your database. If `DATABASE_URL` isn't set, Astro fails the request with an `EnvInvalidVariables` error. This command applies to the Node adapter. With another adapter, build and deploy the way your hosting platform documents.
 
 ## Next steps
 
@@ -87121,7 +87190,7 @@ Set up a database on Neon and run migrations for your Django project
 
 Last updated: 2026-10-28
 
-[Django](https://www.djangoproject.com/) is a high-level Python framework to make database-driven web applications. It provides an ORM (Object-Relational Mapping) layer that abstracts database operations, making it easy to interact with databases using Python code. Django also includes a powerful migration system that allows you to define and manage database schema changes over time.
+[Django](https://www.djangoproject.com/) is a high-level Python framework to make database-driven web applications. It provides an ORM (Object-Relational Mapping) layer that abstracts database operations, making it easy to interact with databases using Python code. Django also includes a migration system that allows you to define and manage database schema changes over time.
 
 This guide demonstrates how to use Django with a Lakebase Postgres database. We'll create a simple Django application and walk through the process of setting up the database, defining models, and generating and running migrations to manage schema changes.
 
@@ -87130,7 +87199,7 @@ This guide demonstrates how to use Django with a Lakebase Postgres database. We'
 To follow along with this guide, you will need:
 
 - A Neon account. If you do not have one, sign up at [Neon](https://neon.tech). Your Neon project comes with a ready-to-use Postgres database named `neondb`. We'll use this database in the following examples.
-- [Python](https://www.python.org/) installed on your local machine. We recommend using a newer version of Python, 3.8 or higher.
+- [Python](https://www.python.org/) 3.12 or later installed on your local machine. Django 6.1 requires Python 3.12 or later.
 
 ## Setting up your Neon database
 
@@ -87180,7 +87249,7 @@ pip install python-dotenv dj-database-url
 pip freeze > requirements.txt
 ```
 
-We installed Django and the `psycopg2-binary` package to connect to the Lakebase Postgres database. We also added the `python-dotenv` to read environment variables easily, and the `dj-database-url` package to parse the Neon connection string into Django settings. We also saved the installed packages to a `requirements.txt` file so the project can be easily recreated in another environment.
+We installed Django and the `psycopg2-binary` package to connect to the Lakebase Postgres database. We also added `python-dotenv` to read environment variables easily, and the `dj-database-url` package to parse the Neon connection string into Django settings. We also saved the installed packages to a `requirements.txt` file so the project can be easily recreated in another environment.
 
 ### Create a new Django project
 
@@ -87194,14 +87263,14 @@ This command creates a new Django project named `guide_neon_django` in the curre
 
 ### Set up the Database configuration
 
-Create a `.env` file in the project root directory and add the `DATABASE_URL` environment variable to it. Use the connection string that you obtained from the Neon Console earlier.
+Create a `.env` file in the project root directory (the directory that contains `manage.py`) and add the `DATABASE_URL` environment variable to it. Use the connection string that you obtained from the Neon Console earlier.
 
 ```bash
 # .env
 DATABASE_URL=NEON_POSTGRES_CONNECTION_STRING
 ```
 
-For Django to read the environment variables from the `.env` file, open the `settings.py` file located in the `guide_neon_django` directory and add the following code, updating the `DATABASES` setting:
+For Django to read the environment variables from the `.env` file, open the `settings.py` file located in the `guide_neon_django` directory. Add the following imports, and replace the `DATABASES` setting. `dotenv.load_dotenv()` finds the `.env` file by searching up from `settings.py`, so the file location doesn't depend on the directory you run commands from:
 
 ```python
 # settings.py
@@ -87210,7 +87279,7 @@ import os
 import dotenv
 import dj_database_url
 
-dotenv.load_dotenv("../.env")
+dotenv.load_dotenv()
 
 DATABASES = {
     "default": dj_database_url.parse(
@@ -87362,22 +87431,22 @@ We can now create views to display the authors and books in our application. Cre
 ```python
 # catalog/views.py
 
-from django.http import JsonResponse
+from django.http import HttpResponse
 from django.core import serializers
 from .models import Author, Book
 
 def list_authors(request):
     authors = Author.objects.all()
-    data = [serializers.serialize('json', authors)]
-    return JsonResponse(data, safe=False)
+    data = serializers.serialize('json', authors)
+    return HttpResponse(data, content_type='application/json')
 
 def list_books_by_author(request, author_id):
     books = Book.objects.filter(author_id=author_id)
-    data = [serializers.serialize('json', books)]
-    return JsonResponse(data, safe=False)
+    data = serializers.serialize('json', books)
+    return HttpResponse(data, content_type='application/json')
 ```
 
-We defined two views: `list_authors` to list all authors and `list_books_by_author` to list books by a specific author. The views return JSON responses with the serialized data.
+We defined two views: `list_authors` to list all authors and `list_books_by_author` to list books by a specific author. The views return the serialized records as a JSON array of objects.
 
 ### Define URLs for the views
 
@@ -87470,7 +87539,7 @@ Navigate to the url `http://localhost:8000/catalog/authors` to view the list of 
 
 ## Conclusion
 
-In this guide, we demonstrated how to set up a Django project with Lakebase Postgres, define database models, and generate migrations and run them. Django's ORM and migration system make it easy to interact with the database and manage schema evolution over time.
+In this guide, we set up a Django project with Lakebase Postgres, defined database models, and generated and ran migrations. Django's migration system records each schema change, so you can track how the schema evolves.
 
 ## Source code
 
@@ -88347,89 +88416,9 @@ Explore the following resources to learn how to integrate ORMs with Neon:
 - [.NET Documentation](https://learn.microsoft.com/en-us/dotnet/)
 - [Connect an Entity Framework application to Neon](https://neon.com/docs/guides/dotnet-entity-framework)
 
---- [Document source](https://neon.com/docs/guides/draxlr.md) ---
-
-> Summary: Draxlr is a no-code analytics tool that connects to a Lakebase Postgres database and lets you build dashboards and reports using a visual query builder, raw SQL, or an AI chat interface that translates natural-language questions into Postgres queries. Use this guide when you need product analytics, real-time metric monitoring with email or Slack alerts, or embeddable customer-facing dashboards on top of Neon without writing application code. Connection uses a Neon connection string or manual host, port, database, username, and password values from the Neon Console.
-
-# Build dashboards on Lakebase Postgres with Draxlr
-
-Create live Neon dashboards and reports directly from your Postgres data
-
-Last updated: 2026-08-04
-
-[Draxlr](https://www.draxlr.com) is a no code analytics tool for Lakebase Postgres that lets you build dashboards, reports, and insights using SQL, visual queries, or AI. It is commonly used for product analytics, reporting, and embedded dashboards.
-
-This guide shows how to connect Draxlr to a Lakebase Postgres database.
-
-## Prerequisites
-
-- A Draxlr account. See [Sign up for Draxlr](https://app.draxlr.com/register/).
-- A Neon project with a Postgres database. See [Create a Neon project](https://neon.com/docs/manage/projects#create-a-project).
-
-## Connect Neon to Draxlr
-
-1. **Get your Neon connection string**
-   In the Neon Console, open your project and copy the Postgres connection string. It will look similar to the following:
-
-   ```text
-   postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require
-   ```
-
-2. Open Draxlr and add a new data source
-   - Log in to Draxlr.
-   - Click on **Connect Database**.
-
-3. Select **Neon** as the database type
-   ![Connect to neon](https://neon.com/docs/guides/draxlr_connect_1.png)
-
-4. Paste the Neon connection details
-
-   - Click on **Import from URL** and paste the Neon connection string into the connection URL field, or
-   - Enter the _Host, Port, Database name, Username, and Password_ manually using values from the Neon Console.
-
-   ![Adding connection details](https://neon.com/docs/guides/draxlr_connect_2.png)
-
-5. Save the connection
-   - Click Next and if the connection is successful, choose your desired schemas. Your database is now connected to Draxlr.
-
-## Neon analytics with visual queries and SQL
-
-Once connected, Draxlr works as a Neon analytics tool that lets you analyze data in multiple ways.
-
-- **Visual Query Builder for Neon Analytics**: Build queries using a point-and-click interface. Select tables, define joins, apply filters, and create aggregations without writing SQL.
-  ![Draxlr Visual Query Builder](https://neon.com/docs/guides/draxlr_queries_1.png)
-- **Raw SQL for Neon Reporting and Analysis**: Switch to raw query mode to write SQL directly. This is ideal for advanced queries, performance tuning, or when you want full control over your Postgres queries.
-  ![Draxlr Raw SQL Mode](https://neon.com/docs/guides/draxlr_queries_2.png)
-
-You can freely move between visual queries and SQL, making it easy to start visually and refine queries as needed.
-
-## Ask questions with AI chat
-
-Draxlr also includes an AI-powered chat interface that lets you ask questions about your Lakebase Postgres data in natural language.
-
-For example, you can ask:
-
-- "What were the top 5 customers by revenue last month?"
-- "Show me daily signups for the past 30 days."
-- "Compare average order value by region."
-  ![Draxlr AI Chat](https://neon.com/docs/guides/draxlr_queries_3.png)
-
-Draxlr translates these questions into database queries, runs them on your database, and returns results as tables or visualizations - no SQL required.
-
-## What's next?
-
-With Draxlr and Neon, you can go beyond one-off queries and build reliable Neon analytics workflows.
-
-You can:
-
-1. Monitor key metrics from your database in real time and receive automated alerts via email or Slack when values changes.
-2. Create live Neon dashboards and embed them into customer facing applications for interactive analytics.
-
-Together, Draxlr and Neon provide a simple way to analyze, monitor, and visualize your data.
-
 --- [Document source](https://neon.com/docs/guides/drizzle-migrations.md) ---
 
-> Summary: Drizzle ORM schema migrations with Lakebase Postgres walks through defining TypeScript schemas, generating SQL migration files with drizzle-kit, and applying them to a database via the Neon serverless driver. Use this guide when you need a complete migration workflow for a Node.js TypeScript project, including initial table creation, seeding, and iterative schema changes. The guide uses drizzle-orm, drizzle-kit, @neondatabase/serverless, and Hono.js, and requires a direct (non-pooled) connection string for migrations.
+> Summary: Drizzle ORM schema migrations with Lakebase Postgres walks through defining TypeScript schemas, generating SQL migration files with drizzle-kit, and applying them to a database via the Neon serverless driver. Use this guide when you need a complete migration workflow for a Node.js TypeScript project, including initial table creation, seeding, and iterative schema changes. The guide uses drizzle-orm, drizzle-kit, @neondatabase/serverless, and Hono.js, and recommends a direct (non-pooled) connection string for migrations.
 
 # Schema migration with Lakebase Postgres and Drizzle ORM
 
@@ -88437,9 +88426,9 @@ Set up a database on Neon and run migrations for your TypeScript project using D
 
 Last updated: 2026-10-09
 
-[Drizzle](https://orm.drizzle.team/) is a TypeScript-first ORM that connects to all major databases and works across most Javascript runtimes. It provides a simple way to define database schemas and queries in an SQL-like dialect and tools to generate and run migrations.
+[Drizzle](https://orm.drizzle.team/) is a TypeScript-first ORM that connects to all major databases and works across most JavaScript runtimes. It provides a simple way to define database schemas and queries in an SQL-like dialect and tools to generate and run migrations.
 
-This guide shows how to use `Drizzle` with the Lakebase Postgres database in a Typescript project. We'll create a simple Node.js application with `Hono.js` and demonstrate the full workflow of setting up and working with your database using `Drizzle`.
+This guide shows how to use `Drizzle` with the Lakebase Postgres database in a TypeScript project. We'll create a simple Node.js application with `Hono.js` and demonstrate the full workflow of setting up and working with your database using `Drizzle`.
 
 ## Prerequisites
 
@@ -88477,20 +88466,12 @@ We'll create a simple catalog, with API endpoints that query the database for au
 npm create hono@latest neon-drizzle-guide
 ```
 
-This initiates an interactive CLI prompt to set up a new project. To follow along with this guide, you can use the following settings:
+This starts an interactive prompt that asks for a project name, a template, whether to install dependencies, and a package manager. To follow along with this guide, choose these settings:
 
-```bash
-Need to install the following packages:
-create-hono@0.9.0
-Ok to proceed? (y) y
-
-create-hono version 0.9.0
-✔ Using target directory … neon-drizzle-guide
-✔ Which template do you want to use? ' nodejs
-cloned honojs/starter#main to ./repos/javascript/neon-drizzle-guide
-✔ Do you want to install project dependencies? … yes
-✔ Which package manager do you want to use? ' npm
-```
+- Target directory: `neon-drizzle-guide`
+- Template: `nodejs`
+- Install project dependencies: `yes`
+- Package manager: `npm`
 
 To use Drizzle and connect to the Neon database, we also add the `drizzle-orm` and `drizzle-kit` packages to our project, along with the `Neon serverless` driver library.
 
@@ -88507,7 +88488,7 @@ Add the `DATABASE_URL` environment variable to your `.env` file, which you'll us
 DATABASE_URL=NEON_DATABASE_CONNECTION_STRING
 ```
 
-Test that the starter `Hono.js` application works by running `npm run dev` in the terminal. You should see the `Hello, Hono!` message when you navigate to `http://localhost:3000` in your browser.
+Test that the starter `Hono.js` application works by running `npm run dev` in the terminal. You should see the `Hello Hono!` message when you navigate to `http://localhost:3000` in your browser.
 
 ### Set up the database schema
 
@@ -88612,7 +88593,7 @@ To test the application works, we need to add some example data to our tables. C
 
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
-import { authors, books } from './schema';
+import { authors, books } from './schema.js';
 import { config } from 'dotenv';
 
 config({ path: '.env' });
@@ -88717,7 +88698,7 @@ import { config } from 'dotenv';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
-import { authors, books } from './schema';
+import { authors, books } from './schema.js';
 
 config({ path: '.env' });
 const app = new Hono();
@@ -90624,7 +90605,7 @@ Last updated: 2026-06-05
 
 _This guide was contributed by the Exograph team_
 
-[Exograph](https://exograph.dev) is a new approach to building GraphQL backends. With it, you can effortlessly create flexible, secure, high-performing GraphQL backends in minutes. Powered by a Rust-based runtime, Exograph ensures fast startup times, efficient execution, and minimal memory consumption. Exograph comes equipped with a comprehensive set of tools designed to support every stage of the development lifecycle: from initial development to deployment to ongoing maintenance.
+[Exograph](https://exograph.dev) is a framework for building GraphQL backends. You define your data model in an `.exo` file, and Exograph serves a GraphQL API for it. Its runtime is written in Rust. The CLI covers development, deployment, and schema management.
 
 Exograph supports Postgres for data persistence, which makes it a great fit to use with Neon.
 
@@ -90658,24 +90639,29 @@ exo schema create | psql <the connection string>
 ## Launch the backend
 
 ```bash
-EXO_POSTGRES_URL=<the connection string> exo dev
+EXO_POSTGRES_URL=<the connection string> exo dev --read-write
 ```
 
-It will print the necessary information for connecting to the backend.
+The `--read-write` flag lets the server run mutations, such as the `createTodo` mutation below. Without it, `exo dev` starts in read-only mode, and mutations fail.
+
+The command prints the information for connecting to the backend.
 
 ```raw
 Starting server in development mode...
-Watching the src directory for changes...
+Watching the current directory for changes...
 
 Verifying new model...
-Started server on 0.0.0.0:9876 in 717.19 ms
+Starting server...
+Started server on localhost:9876 in 995.77 ms
+- GraphQL endpoint hosted at:
+	http://localhost:9876/graphql
+- MCP endpoint hosted at:
+	http://localhost:9876/mcp
 - Playground hosted at:
- http://0.0.0.0:9876/playground
-- Endpoint hosted at:
- http://0.0.0.0:9876/graphql
+	http://localhost:9876/playground
 ```
 
-That's it! You can now open [http://localhost:9876/playground](http://localhost:9876/playground) in your browser to see the GraphQL Playground.
+Open [http://localhost:9876/playground](http://localhost:9876/playground) in your browser to see the GraphQL Playground.
 
 You can create a todo by running the following mutation:
 
@@ -93701,7 +93687,6 @@ Last updated: 2026-10-21
 
 - [Ask Your Database](https://neon.com/docs/guides/askyourdatabase): Chat with your Lakebase Postgres database with AskYourDatabase
 - [Cloudflare Hyperdrive](https://neon.com/docs/guides/cloudflare-hyperdrive): Use Neon with Cloudflare Hyperdrive
-- [Draxlr](https://neon.com/docs/guides/draxlr): Connect Draxlr to Neon
 - [Exograph](https://neon.com/docs/guides/exograph): Use Exograph with Neon
 - [Hasura](https://neon.com/docs/guides/hasura): Connect from Hasura Cloud to Neon
 - [PostgREST](https://neon.com/docs/guides/postgrest): Create a REST API from your Neon database
@@ -93712,7 +93697,6 @@ Last updated: 2026-10-21
 - [ClickHouse](https://neon.com/docs/guides/logical-replication-clickhouse): Replicate data from Neon to ClickHouse using ClickPipes
 - [Confluent (Kafka)](https://neon.com/docs/guides/logical-replication-kafka-confluent): Replicate data from Neon with Confluent (Kafka)
 - [Databricks](https://neon.com/docs/guides/logical-replication-databricks): Replicate data from Neon to Databricks with Lakeflow Connect
-- [Decodable](https://neon.com/docs/guides/logical-replication-decodable): Replicate data from Neon with Decodable
 - [Estuary](https://neon.com/docs/guides/logical-replication-estuary-flow): Replicate data from Neon with Estuary
 - [Fivetran](https://neon.com/docs/guides/logical-replication-fivetran): Replicate data from Neon with Fivetran
 - [Inngest](https://neon.com/docs/guides/logical-replication-inngest): Replicate data from Neon to Inngest
@@ -93721,7 +93705,6 @@ Last updated: 2026-10-21
 - [Neon to Neon](https://neon.com/docs/guides/logical-replication-neon-to-neon): Replicate data from Neon to Neon
 - [Neon to Postgres](https://neon.com/docs/guides/logical-replication-postgres): Replicate data from Neon to Postgres
 - [Snowflake](https://neon.com/docs/guides/logical-replication-airbyte-snowflake): Replicate data from Neon to Snowflake with Airbyte
-- [Stacksync](https://neon.com/docs/guides/logical-replication-stacksync): Replicate data from Neon with Stacksync
 
 ## Replicate to Neon
 
@@ -99307,193 +99290,6 @@ For adding tables, monitoring lag, and cleaning up slots, see Databricks' [Maint
 - [Logical replication](https://www.postgresql.org/docs/current/logical-replication.html)
 - [Publications](https://www.postgresql.org/docs/current/logical-replication-publication.html)
 
---- [Document source](https://neon.com/docs/guides/logical-replication-decodable.md) ---
-
-> Summary: Logical replication from Lakebase Postgres to Decodable uses a Postgres CDC connector (Apache Flink and Debezium) to stream row-level changes into Decodable streams for routing to sinks such as Snowflake, Kafka, Amazon S3, or Elasticsearch. Use this guide when you need continuous, low-latency change capture from Neon with optional SQL or Flink transformations before data reaches its destination. Setup requires enabling wal_level=logical on the Neon project (irreversible) and setting replica identity to FULL on each source table. Connect Decodable using a direct non-pooled connection string.
-
-# Replicate data with Decodable
-
-Learn how to replicate data from Neon with Decodable
-
-Last updated: 2026-10-09
-
-Neon's logical replication feature allows you to replicate data from your Lakebase Postgres database to external destinations.
-
-[Decodable](https://www.decodable.co/) is a fully managed platform for ETL, ELT, and stream processing,
-powered by Apache Flink® and Debezium.
-
-In this guide, you will learn how to configure a Postgres source connector in Decodable for ingesting changes from your Neon database so that you can replicate data from Lakebase Postgres to any of Decodable's [supported data sinks](https://docs.decodable.co/connections.html#sinks), optionally processing the data with SQL or custom Flink jobs.
-
-## Prerequisites
-
-- A [Decodable account](https://www.decodable.co/) ([start free](https://app.decodable.co/-/accounts/create), no credit card required)
-- A [Neon account](https://console.neon.tech/)
-- Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin
-
-**Important: Compute and billing**
-
-Replication keeps compute active (no [scale to zero](https://neon.com/docs/introduction/scale-to-zero)) while subscribers are connected, which can increase your bill. See [Important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices).
-
-## Enable logical replication in Neon
-
-**Important:** Enabling logical replication modifies the Postgres `wal_level` configuration parameter, changing it from `replica` to `logical` for all databases in your Neon project. Once the `wal_level` setting is changed to `logical`, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, meaning active connections will be dropped and have to reconnect.
-
-To enable logical replication in Neon:
-
-1. Select your project in the Neon Console.
-2. Select **Settings** in the sidebar.
-3. Select **Postgres**, then **Logical replication**.
-4. Click **Enable** to enable logical replication.
-
-You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
-
-```sql
-SHOW wal_level;
- wal_level
------------
- logical
-```
-
-## Create a Postgres role for replication
-
-It is recommended that you create a dedicated Postgres role for replicating data. The role must have the `REPLICATION` privilege. The default Postgres role created with your Neon project and roles created using the Neon CLI, Console, or API are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role, which has the required `REPLICATION` privilege.
-
-**CLI**
-
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
-
-```bash
-neon roles create --name replication_user
-```
-
-**Console**
-
-To create a role in the Neon Console:
-
-1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select a project.
-3. Select your branch from the project/branch menu at the top of the sidebar.
-4. Under **Postgres database**, select **Roles**.
-5. Click **Add Role**.
-6. In the role creation dialog, specify a role name.
-7. Click **Create**. The role is created, and you are provided with the password for the role.
-
-**API**
-
-The following Neon API method creates a role. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/create-project-branch-role).
-
-```bash
-curl 'https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/roles' \
-  -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "role": {
-    "name": "replication_user"
-  }
-}' | jq
-```
-
-> Replace `{project_id}` and `{branch_id}` with your actual Neon project and branch IDs, and set the `NEON_API_KEY` environment variable with your Neon API key.
-
-## Grant schema access to your Postgres role
-
-If your replication role does not own the schemas and tables you are replicating from, make sure to grant access. For example, the following commands grant access to all tables in the `public` schema to Postgres role `replication_user`:
-
-```sql
-GRANT USAGE ON SCHEMA public TO replication_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO replication_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO replication_user;
-```
-
-Granting `SELECT ON ALL TABLES IN SCHEMA` instead of naming the specific tables avoids having to add privileges later if you add tables to your publication.
-
-## Create a publication
-
-For each table you would like to ingest into Decodable, set its [replica identity](https://www.postgresql.org/docs/current/logical-replication-publication.html) to `FULL`.
-To do so, issue the following statement in the **Neon SQL Editor**:
-
-```sql
-ALTER TABLE <tbl1> REPLICA IDENTITY FULL;
-```
-
-Next, create a [publication](https://www.postgresql.org/docs/current/sql-createpublication.html) with the name `dbz_publication`. Include all the tables you would like to ingest into Decodable.
-
-```sql
-CREATE PUBLICATION dbz_publication FOR TABLE <tbl1, tbl2, tbl3>>;
-```
-
-Refer to the [Postgres docs](https://www.postgresql.org/docs/current/sql-alterpublication.html) if you need to add or remove tables from your publication.
-
-Upon start-up, the Decodable connector for Postgres will automatically create the [replication slot](https://www.postgresql.org/docs/current/logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS) required for ingesting data change events from Postgres.
-The slot's name will be prefixed with `decodable_`, followed by a unique identifier.
-
-## Allow inbound traffic
-
-If you are using Neon's **IP Allow** feature to limit the IP addresses that can connect to Neon, you will need to allow inbound traffic from Decodable's IP addresses.
-Refer to the [Decodable documentation](https://docs.decodable.co/reference/regions-and-ip-addresses.html#ip-addresses) for the list of IPs that need to be allowlisted for the Decodable region of your account.
-For information about configuring allowed IPs in Neon, see [Configure IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow).
-
-## Create a Postgres source connector in Decodable
-
-1. In the Decodable web UI, select **Connections** from the left navigation bar and click **New Connection**.
-
-2. In the connector catalog, choose **Postgres CDC** and click **Connect**.
-
-3. Enter the connection details for your Neon database. You can find your Neon database connection details by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal.
-
-   **Important:** Use a **direct connection** to your compute endpoint, not a pooled connection. Logical replication requires a persistent connection and is not compatible with connection poolers. When copying your connection string from Neon, make sure it does not include `-pooler` in the hostname. For more information about connection pooling and when to use direct connections, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
-
-   Your connection string will look like this:
-
-   ```bash
-   postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
-   ```
-
-   Enter the details for **your connection string** into the source connector fields. Based on the sample connection string above, the values would be specified as shown below. Your values will differ.
-
-   - **Connection Type**: Source (the default)
-   - **Host**: ep-cool-darkness-123456.us-east-2.aws.neon.tech
-   - **Port**: 5432
-   - **Database**: dbname
-   - **Username**: alex
-   - **Password**: Click **Add a new secret...**, then specify a name for that secret and `AbC123dEf` as its value
-   - **Decoding Plugin Name**: pgoutput (the default)
-
-   ![Creating a source connector in Decodable](https://neon.com/docs/guides/decodable_create_source_connector.png)
-
-4. Click **Next**. Decodable will now scan the source database for all the tables that can be replicated. Select one or more table(s) by checking the **Sync** box next to their name. Optionally, you can change the name of the destination stream for each table, which by default will be in the form of `<database name>__<schema name>__<table_name>`. You can also take a look a the schema of each stream by clicking **View Schema**.
-
-   ![Selecting source tables in Decodable](https://neon.com/docs/guides/decodable_select_source_tables.png)
-
-5. Click **Next** and specify a name for your connection, for instance: `neon-source`.
-
-6. Click **Create and start**. The default start options in the following dialog don't require any changes, so click **Start** to launch the connector.
-
-## Previewing the data
-
-Once the connector is in **Running** state, navigate to the connected Decodable stream, via **Outbound to...** on the connector's overview tab.
-By clicking **Run Preview**, you can examine the change events ingested by the connector.
-
-![Preview of ingested data in Decodable](https://neon.com/docs/guides/decodable_preview_ingested_data.png)
-
-## Next steps
-
-At this point, you have a running connector, which continuously ingests changes from a Neon database into Decodable with low latency.
-Next, you could set up one of the supported Decodable **sink connectors** which will propagate the data to a wide range of data stores and systems, such as Snowflake, Elasticsearch, Apache Kafka, Apache Iceberg, Amazon S3, any many more.
-
-If needed, you also can add a **processing step**, either using SQL or by deploying your own Apache Flink job,
-for instance, to filter and transform the data before propagating it to an external system.
-Of course, you also can take your processed data back to another Neon database, using the Decodable sink connector for Postgres.
-
-## References
-
-- [Decodable: The Pragmatic Approach to Data Movement](https://www.decodable.co/blog/pragmatic-approach-to-data-movement)
-- [Getting Started With Decodable](https://docs.decodable.co/welcome.html)
-- [Connecting Decodable to Sources and Destinations](https://docs.decodable.co/connections.html)
-- [About Decodable Pipelines](https://docs.decodable.co/pipelines.html)
-- [Postgres Documentation: Logical Replication](https://www.postgresql.org/docs/current/logical-replication.html)
-
 --- [Document source](https://neon.com/docs/guides/logical-replication-estuary-flow.md) ---
 
 > Summary: Estuary's Neon PostgreSQL source connector streams CDC events from a Lakebase Postgres database to any Estuary materialization destination at sub-100ms latency. Use this guide when you need continuous, low-latency replication of inserts, updates, and deletes from Neon to an external system. Setup requires enabling logical replication (permanently sets wal_level to logical project-wide), a direct non-pooled connection string, and IP allowlisting for Estuary's egress addresses.
@@ -99882,7 +99678,6 @@ To get started, jump into one of our step-by-step logical replication guides.
 - [ClickHouse](https://neon.com/docs/guides/logical-replication-clickhouse): Replicate data from Neon to ClickHouse using ClickPipes
 - [Confluent (Kafka)](https://neon.com/docs/guides/logical-replication-kafka-confluent): Replicate data from Neon with Confluent (Kafka)
 - [Databricks](https://neon.com/docs/guides/logical-replication-databricks): Replicate data from Neon to Databricks
-- [Decodable](https://neon.com/docs/guides/logical-replication-decodable): Replicate data from Neon with Decodable
 - [Estuary](https://neon.com/docs/guides/logical-replication-estuary-flow): Replicate data from Neon with Estuary
 - [Fivetran](https://neon.com/docs/guides/logical-replication-fivetran): Replicate data from Neon with Fivetran
 - [Materialize](https://neon.com/docs/guides/logical-replication-materialize): Replicate data from Neon to Materialize
@@ -102338,196 +102133,6 @@ If you have suggestions, tips, or requests regarding schema management in a repl
 
 - [PostgreSQL logical replication restrictions](https://www.postgresql.org/docs/current/logical-replication-restrictions.html)
 - [Import a database schema](https://neon.com/docs/import/migrate-schema-only)
-
---- [Document source](https://neon.com/docs/guides/logical-replication-stacksync.md) ---
-
-> Summary: Stacksync connects a Lakebase Postgres database to CRMs, ERPs, and other destinations via real-time one-way or two-way sync, using Postgres logical replication (wal_level=logical) as the change data capture method. Use this guide when you need to sync Neon table data to a Stacksync-supported connector without a third-party ETL tool. Each synced table must have a single-column auto-generated primary key, and you must use a direct connection string (no connection pooler) when configuring the Postgres source.
-
-# Replicate data with Stacksync
-
-Learn how to replicate data from Neon with Stacksync
-
-Last updated: 2026-10-09
-
-Neon's logical replication feature allows you to replicate data from your Lakebase Postgres database to external destinations.
-
-[Stacksync](https://www.stacksync.com/) connects databases with CRMs, ERPs, and other systems using real-time, two-way sync. In this guide, you will configure Stacksync to replicate data from your Lakebase Postgres database to a [supported destination](https://www.stacksync.com/connectors).
-
-## Prerequisites
-
-- A [Stacksync account](https://www.stacksync.com/)
-- A [Neon account](https://console.neon.tech/)
-- Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin
-
-**Important: Compute and billing**
-
-Replication keeps compute active (no [scale to zero](https://neon.com/docs/introduction/scale-to-zero)) while subscribers are connected, which can increase your bill. See [Important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices).
-
-## Prepare your Neon database
-
-### Enable logical replication in Neon
-
-**Important:** Enabling logical replication modifies the Postgres `wal_level` configuration parameter, changing it from `replica` to `logical` for all databases in your Neon project. Once the `wal_level` setting is changed to `logical`, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, meaning active connections will be temporarily dropped before automatically reconnecting.
-
-To enable logical replication in Neon:
-
-1. Select your project in the Neon Console.
-2. Select **Settings** in the sidebar.
-3. Select **Postgres**, then **Logical replication**.
-4. Click **Enable** to enable logical replication.
-
-You can verify that logical replication is enabled by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor):
-
-```sql
-SHOW wal_level;
- wal_level
------------
- logical
-```
-
-### Create a Postgres role for replication
-
-It is recommended that you create a dedicated Postgres role for replicating data. The role must have the `REPLICATION` privilege. The default Postgres role created with your Neon project and roles created using the Neon CLI, Console, or API are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role, which has the required `REPLICATION` privilege.
-
-**CLI**
-
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/cli/roles)
-
-```bash
-neon roles create --name replication_user
-```
-
-**Console**
-
-To create a role in the Neon Console:
-
-1. Navigate to the [Neon Console](https://console.neon.tech).
-2. Select a project.
-3. Select your branch from the project/branch menu at the top of the sidebar.
-4. Under **Postgres database**, select **Roles**.
-5. Click **Add Role**.
-6. In the role creation dialog, specify a role name, such as `replication_user`.
-7. Click **Create**. The role is created, and you are provided with the password for the role.
-
-**API**
-
-The following Neon API method creates a role. To view the API documentation for this method, refer to the [Neon API Reference](https://neon.com/docs/reference/api/branches/create-project-branch-role).
-
-```bash
-curl 'https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id}/roles' \
-  -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "role": {
-    "name": "replication_user"
-  }
-}' | jq
-```
-
-> Replace `{project_id}` and `{branch_id}` with your actual Neon project and branch IDs, and set the `NEON_API_KEY` environment variable with your Neon API key.
-
-### Grant schema access to your Postgres role
-
-If your replication role does not own the schemas and tables you are replicating from, make sure to grant access. For example, the following commands grant access to all tables in the `public` schema to Postgres role `replication_user`:
-
-```sql
-GRANT USAGE ON SCHEMA public TO replication_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO replication_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO replication_user;
-```
-
-Granting `SELECT ON ALL TABLES IN SCHEMA` instead of naming the specific tables avoids having to add privileges later if you add tables to your publication.
-
-### Create a publication
-
-**Important:** Stacksync requires every table you sync to have a single-column, auto-generated primary key (for example, a `serial` integer or a `uuid`). Tables with composite primary keys, no primary key, or a primary key without a default value will not appear in Stacksync. See [Stacksync Postgres connector requirements](https://docs.stacksync.com/two-way-sync/connectors/postgres).
-
-Create the Postgres publication. Include all tables you want to replicate as part of the publication:
-
-```sql
-CREATE PUBLICATION stacksync_pub FOR TABLE <tbl1, tbl2, tbl3>;
-```
-
-The publication name is customizable. Refer to the [Postgres docs](https://www.postgresql.org/docs/current/logical-replication-publication.html) if you need to add or remove tables from your publication.
-
-## Create a Postgres connection in Stacksync
-
-1. Log in to your [Stacksync](https://www.stacksync.com/) account.
-
-2. On the **All Resources** page, click **Create Resource**.
-
-3. Under **Jump right in, create a resource**, click **Connections**.
-
-4. Select **Postgres**.
-
-5. Enter your Neon database connection details. Click **Connect** in the Console nav, select the replication role you created earlier (not the default `neondb_owner` role), and click **Copy snippet**. Use a direct connection string; the hostname must not include `-pooler`. Logical replication is not compatible with connection poolers.
-
-6. If you have disabled **Allow traffic via the public internet** under **Networking** in Neon's **Settings**, select **I confirm I have allowlisted these Stacksync IPs on my side** in Stacksync, and copy the IP addresses into your trusted IP addresses in Neon's settings under **Networking**.
-
-7. In Stacksync, click **Next**.
-
-8. Enter a name for **Connection Name**.
-
-9. Click **Create**.
-
-## Create a connection to your destination in Stacksync
-
-Skip this step if you already have a destination connection configured in Stacksync.
-
-1. Log in to your [Stacksync](https://www.stacksync.com/) account.
-2. On the **All Resources** page, click **Create Resource**.
-3. Under **Jump right in, create a resource**, click **Connections**.
-4. Select the connector for your destination from one of [Stacksync's connectors](https://www.stacksync.com/connectors).
-5. Follow the prompt in the **Configure connection** popup.
-6. If you have disabled public internet access in Neon, allowlist the Stacksync IPs as described in the [Create a Postgres connection in Stacksync](https://neon.com/docs/guides/logical-replication-stacksync#create-a-postgres-connection-in-stacksync) section above.
-7. In Stacksync, click **Next**.
-8. Enter a name for **Connection Name**.
-9. Click **Create**.
-
-   **Tip:** There are in-depth connection setup guides on [Stacksync's connector docs](https://docs.stacksync.com/two-way-sync/connectors).
-
-## Create a sync
-
-Skip this step if you already have a sync configured.
-
-1. Log in to your [Stacksync](https://www.stacksync.com/) account.
-
-2. On the **All Resources** page, click **Create Resource**.
-
-3. Under **Jump right in, create a resource**, click **Syncs**.
-
-4. Enter a **Sync Name**.
-
-5. Select **Postgres** and choose the saved connection you created in the [Create a Postgres connection in Stacksync](https://neon.com/docs/guides/logical-replication-stacksync#create-a-postgres-connection-in-stacksync) section.
-
-6. On the schema screen, click the **Postgres** connection and select **Logical replication** under **Change Data Capture Method**.
-
-   ![Stacksync Logical Replication](https://neon.com/docs/guides/stacksync-logical-replication.png)
-
-7. Click one of the apps you have created a connection for in the [Create a connection to your destination in Stacksync](https://neon.com/docs/guides/logical-replication-stacksync#create-a-connection-to-your-destination-in-stacksync) section.
-
-8. Click **Link Tables**.
-
-9. Select a table you would like to sync under **Postgres**.
-
-10. Select a table you would like to sync the data to under your destination.
-
-11. Select if you would like the sync to be [one-way or two-way](https://www.stacksync.com/data-sync/two-way-vs-one-way-sync).
-
-12. Repeat from the previous step for any additional tables you would like to link.
-
-13. Click **Map Columns** to configure which columns to sync and the sync direction for each. Stacksync auto-maps columns by default; select or deselect columns as needed. See [Stacksync's two-way sync docs](https://docs.stacksync.com/two-way-sync/features/two-way-sync) for details on field selection and sync direction.
-
-14. Click **Create**.
-
-15. On the next page, turn on the sync by clicking the toggle in the top right.
-
-16. Optionally, update the **Data sync frequency** under **Settings**.
-
-## References
-
-- [Stacksync Generic PostgreSQL Setup Guide](https://docs.stacksync.com/two-way-sync/connectors/postgres)
 
 --- [Document source](https://neon.com/docs/guides/logical-replication-supabase-to-neon.md) ---
 
@@ -107888,7 +107493,7 @@ This tutorial walks you through building a Node.js application with Prisma ORM a
 
 ## Prerequisites
 
-- A [Neon account and project](https://neon.com/docs/get-started-with-neon/signing-up)
+- A [Neon account and project](https://neon.com/docs/get-started/signing-up)
 - [Node.js](https://nodejs.org/) 20.19+, 22.12+, or 24+ installed (required by Prisma ORM 7)
 - Both connection strings from your Neon Console (pooled and direct)
 
@@ -107901,7 +107506,7 @@ mkdir neon-prisma-migrations && cd neon-prisma-migrations
 npm init -y
 npm pkg set type="module"
 npm install express dotenv @prisma/client@7 @prisma/adapter-neon@7
-npm install prisma@7 typescript tsx @types/node --save-dev
+npm install prisma@7 typescript tsx @types/node @types/express --save-dev
 npx prisma init
 ```
 
@@ -107921,9 +107526,9 @@ DATABASE_URL_UNPOOLED="postgresql://[user]:[password]@[endpoint].[region].aws.ne
 
 **Important:** Prisma Migrate requires a direct connection to perform schema changes. The pooled connection is used by your application at runtime.
 
-### Configure prisma.config.ts
+### Configure Prisma
 
-Update the `prisma.config.ts` file in your project root:
+Update the config file that `prisma init` created in your project root. Prisma 7.10 and later create `prisma7.config.ts`, and earlier 7.x releases create `prisma.config.ts`. Don't create a second config file. Replace its contents with:
 
 ```typescript
 import 'dotenv/config'
@@ -107984,9 +107589,14 @@ This command:
 
 1. Creates a `prisma/migrations` folder with SQL migration files
 2. Applies the migration to your Neon database
-3. Generates the Prisma Client
 
 You should see output confirming the migration was applied.
+
+In Prisma 7.10, `migrate dev` doesn't regenerate the Prisma Client, so generate it yourself:
+
+```bash
+npx prisma generate
+```
 
 ## Set up Prisma Client
 
@@ -107994,7 +107604,7 @@ Create `src/db.ts` to instantiate Prisma Client with the Neon adapter:
 
 ```typescript
 import 'dotenv/config'
-import { PrismaClient } from './generated/prisma'
+import { PrismaClient } from './generated/prisma/client.js'
 import { PrismaNeon } from '@prisma/adapter-neon'
 
 const adapter = new PrismaNeon({
@@ -108009,7 +107619,7 @@ export const prisma = new PrismaClient({ adapter })
 Create `src/seed.ts` to populate the database with sample data:
 
 ```typescript
-import { prisma } from './db'
+import { prisma } from './db.js'
 
 async function seed() {
   const authors = [
@@ -108060,7 +107670,7 @@ Create `src/index.ts` with Express endpoints:
 
 ```typescript
 import express from 'express'
-import { prisma } from './db'
+import { prisma } from './db.js'
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -108125,7 +107735,11 @@ model Author {
 npx prisma migrate dev --name add-author-country
 ```
 
-Prisma creates a new migration file and applies it. The Prisma Client is automatically regenerated.
+Prisma creates a new migration file and applies it. Regenerate the client so the `country` field is available in your code:
+
+```bash
+npx prisma generate
+```
 
 ### Verify the change
 

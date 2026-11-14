@@ -366,4 +366,4 @@ When encountering issues:
 
 > [card] [Connect local servers](/docs/2026-07-28/develop/connect-local-servers)
 >
-> Full claude\_desktop\_config.json reference and troubleshooting
+> Full claude_desktop_config.json reference and troubleshooting

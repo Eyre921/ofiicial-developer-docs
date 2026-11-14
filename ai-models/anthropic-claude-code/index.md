@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 207 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 208 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -32,6 +32,7 @@
 - `claude-apps-gateway-spend-limits` — [Claude apps gateway spend limits](pages/claude-apps-gateway-spend-limits.md) · [原文](https://code.claude.com/docs/en/claude-apps-gateway-spend-limits)
 - `claude-code-on-the-web` — [Use Claude Code in the cloud](pages/claude-code-on-the-web.md) · [原文](https://code.claude.com/docs/en/claude-code-on-the-web)
 - `claude-directory` — [Explore the .claude directory](pages/claude-directory.md) · [原文](https://code.claude.com/docs/en/claude-directory)
+- `claude-models-on-google-cloud-anthropic-managed` — [Claude Code with Claude Models on Google Cloud (Anthropic managed)](pages/claude-models-on-google-cloud-anthropic-managed.md) · [原文](https://code.claude.com/docs/en/claude-models-on-google-cloud-anthropic-managed)
 - `claude-platform-on-aws` — [Claude Code on Claude Platform on AWS](pages/claude-platform-on-aws.md) · [原文](https://code.claude.com/docs/en/claude-platform-on-aws)
 - `claude-projects` — [Let Claude coordinate ongoing work with Projects](pages/claude-projects.md) · [原文](https://code.claude.com/docs/en/claude-projects)
 - `claude-security` — [Scan your codebase for vulnerabilities](pages/claude-security.md) · [原文](https://code.claude.com/docs/en/claude-security)

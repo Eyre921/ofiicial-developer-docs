@@ -43,7 +43,7 @@ Key requirements include:
 
 **For Authorization Servers:**
 
-* **SHOULD** fetch metadata documents when encountering URL-formatted client\_ids
+* **SHOULD** fetch metadata documents when encountering URL-formatted client_ids
 * **MUST** validate that the fetched document's `client_id` matches the URL exactly
 * **SHOULD** cache metadata respecting HTTP cache headers
 * **MUST** validate redirect URIs presented in an authorization request against those in the metadata document

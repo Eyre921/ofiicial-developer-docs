@@ -74,7 +74,7 @@ The Inspector V2 Working Group is building Inspector V2, a new web-based MCP ins
 
 | Meeting | Frequency | Duration | Purpose |
 | - | - | - | - |
-| Working Session | Weekly, Wednesdays 11:00 America/New\_York | 60 minutes | Technical discussion, proposal review |
+| Working Session | Weekly, Wednesdays 11:00 America/New_York | 60 minutes | Technical discussion, proposal review |
 
 Meetings are held at [meet.modelcontextprotocol.io/tag/inspector-v2-wg](https://meet.modelcontextprotocol.io/tag/inspector-v2-wg). Agendas are posted at least 7 days in advance per current MCP meeting policy. Meeting notes are published to the [Meeting Notes — Inspector V2 WG](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/categories/meeting-notes-inspector-v2-wg) discussion category in the `modelcontextprotocol/modelcontextprotocol` repository.
 

@@ -69,7 +69,7 @@ present:
 * MCP proxy server uses a **static client ID** with a third-party
   authorization server
 * MCP proxy server allows MCP clients to **dynamically register** (each
-  getting their own client\_id)
+  getting their own client_id)
 * The third-party authorization server sets a **consent cookie** after
   the first authorization
 * MCP proxy server does not implement proper per-client consent before
@@ -835,7 +835,7 @@ An attacker can claim to be any client by:
 
 1. Providing the legitimate client's metadata URL as their `client_id`
 2. Binding to any `localhost` port, and providing that address as
-   the redirect\_uri
+   the redirect_uri
 3. Receiving the authorization code via the redirect when the user
    approves
 

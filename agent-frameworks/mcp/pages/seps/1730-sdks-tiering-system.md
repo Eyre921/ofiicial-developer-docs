@@ -262,10 +262,10 @@ The most straightforward approach is to have an Example Server for each SDK, sim
 
 **What is needed form SDKs maintainers:** implement everything server based on a spec. Spec will look like:
 
-* Tool “say\_hello” to return simple text
-* Tool “show\_image” to return and image
-* Tool “tool\_with\_logging” to return structured output in a format \<> and log three events: start, process, end
-* Tool "tool\_with\_notifications" to return structured output in a format \<> and have two notifications \<>
+* Tool “say_hello” to return simple text
+* Tool “show_image” to return and image
+* Tool “tool_with_logging” to return structured output in a format \<> and log three events: start, process, end
+* Tool "tool_with_notifications" to return structured output in a format \<> and have two notifications \<>
 
 Given well defined spec for the server and SDK documentation, it should be easy to implement it with the help of any coding agent. We want to check it into each SDKs repo as it will serve as an example for server implementers.
 

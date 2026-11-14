@@ -45,12 +45,12 @@ Current SDK implementations vary in their error handling for resource not found:
 | - | - | - |
 | TypeScript | `-32602` (InvalidParams) | [mcp.ts#L561](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/packages/server/src/server/mcp.ts#L561) |
 | Python | `0` (generic) | [server.py#L790](https://github.com/modelcontextprotocol/python-sdk/blob/main/src/mcp/server/lowlevel/server.py#L790) |
-| C# | `-32002` (custom RESOURCE\_NOT\_FOUND) | [McpServerImpl.cs#L289](https://github.com/modelcontextprotocol/csharp-sdk/blob/main/src/ModelContextProtocol.Core/Server/McpServerImpl.cs#L289) |
-| Rust | `-32002` (custom RESOURCE\_NOT\_FOUND) | [model.rs#L450](https://github.com/modelcontextprotocol/rust-sdk/blob/main/crates/rmcp/src/model.rs#L450) |
-| Java | `-32002` (custom RESOURCE\_NOT\_FOUND) | [McpAsyncServer.java#L732](https://github.com/modelcontextprotocol/java-sdk/blob/main/mcp-core/src/main/java/io/modelcontextprotocol/server/McpAsyncServer.java#L732) |
-| Go | `-32002` (custom RESOURCE\_NOT\_FOUND) | [server.go#L786](https://github.com/modelcontextprotocol/go-sdk/blob/main/mcp/server.go#L786) |
-| Kotlin | `-32603` (INTERNAL\_ERROR) | [Server.kt#L618-L621](https://github.com/modelcontextprotocol/kotlin-sdk/blob/main/kotlin-sdk-server/src/commonMain/kotlin/io/modelcontextprotocol/kotlin/sdk/server/Server.kt#L618-L621) |
-| PHP | `-32002` (custom RESOURCE\_NOT\_FOUND) | [Error.php#L37](https://github.com/modelcontextprotocol/php-sdk/blob/main/src/Schema/JsonRpc/Error.php#L37) |
+| C# | `-32002` (custom RESOURCE_NOT_FOUND) | [McpServerImpl.cs#L289](https://github.com/modelcontextprotocol/csharp-sdk/blob/main/src/ModelContextProtocol.Core/Server/McpServerImpl.cs#L289) |
+| Rust | `-32002` (custom RESOURCE_NOT_FOUND) | [model.rs#L450](https://github.com/modelcontextprotocol/rust-sdk/blob/main/crates/rmcp/src/model.rs#L450) |
+| Java | `-32002` (custom RESOURCE_NOT_FOUND) | [McpAsyncServer.java#L732](https://github.com/modelcontextprotocol/java-sdk/blob/main/mcp-core/src/main/java/io/modelcontextprotocol/server/McpAsyncServer.java#L732) |
+| Go | `-32002` (custom RESOURCE_NOT_FOUND) | [server.go#L786](https://github.com/modelcontextprotocol/go-sdk/blob/main/mcp/server.go#L786) |
+| Kotlin | `-32603` (INTERNAL_ERROR) | [Server.kt#L618-L621](https://github.com/modelcontextprotocol/kotlin-sdk/blob/main/kotlin-sdk-server/src/commonMain/kotlin/io/modelcontextprotocol/kotlin/sdk/server/Server.kt#L618-L621) |
+| PHP | `-32002` (custom RESOURCE_NOT_FOUND) | [Error.php#L37](https://github.com/modelcontextprotocol/php-sdk/blob/main/src/Schema/JsonRpc/Error.php#L37) |
 | Ruby | N/A (left to implementor) | [server.rb#L375-L379](https://github.com/modelcontextprotocol/ruby-sdk/blob/main/lib/mcp/server.rb#L375-L379) |
 | Swift | N/A (no built-in handler) | N/A |
 
@@ -86,7 +86,7 @@ Servers MUST NOT return an empty `contents` array for a non-existent resource. A
 
 ### Why Not a Custom Error Code?
 
-Several SDKs use `-32002` (RESOURCE\_NOT\_FOUND), but:
+Several SDKs use `-32002` (RESOURCE_NOT_FOUND), but:
 
 * Custom codes in the `-32000` to `-32099` range are "reserved for implementation-defined server errors" per JSON-RPC spec, not for protocol-level semantics
 * Adding a protocol-defined custom code requires all clients to be updated to recognize it

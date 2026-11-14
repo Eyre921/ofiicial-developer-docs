@@ -71,7 +71,7 @@ Client ID Metadata Documents enable a unique trust model where:
    * Domain reputation and security policies
 
 2. **Servers maintain full control** through flexible policies:
-   * **Open Servers**: Can accept any HTTPS client\_id, enabling maximum interoperability
+   * **Open Servers**: Can accept any HTTPS client_id, enabling maximum interoperability
    * **Protected Servers**: Can restrict to trusted domains or specific clients
 
 3. **No client pre-coordination required**:
@@ -126,7 +126,7 @@ We will primarily rely on the text in the linked RFC, aiming not to repeat most 
 ### Client Requirements
 
 * Clients MUST host their metadata document at an HTTPS URL following RFC requirements
-* The client\_id URL MUST use "https" scheme and contain a path component
+* The client_id URL MUST use "https" scheme and contain a path component
 * Metadata documents MUST be valid JSON and include at minimum:
   * `client_id`: matching the document URL exactly
   * `client_name`: human-readable name for authorization prompts
@@ -137,8 +137,8 @@ Note a client can use `private_key_jwt` for a `token_endpoint_auth_method` given
 
 ### Server Requirements
 
-* Servers SHOULD fetch metadata documents when encountering URL-formatted client\_ids
-* Servers MUST validate the fetched document contains matching client\_id
+* Servers SHOULD fetch metadata documents when encountering URL-formatted client_ids
+* Servers MUST validate the fetched document contains matching client_id
 * Servers SHOULD cache metadata respecting HTTP headers (max 24 hours recommended)
 * Servers MUST validate redirect URIs match those in metadata document
 
@@ -171,7 +171,7 @@ This proposal adds Client ID Metadata Documents as a third registration option a
 
 * Pre-registration remains unchanged
 * DCR remains unchanged
-* Client ID Metadata Documents are detected by URL-formatted client\_ids, and server support is advertised in OAuth metadata.
+* Client ID Metadata Documents are detected by URL-formatted client_ids, and server support is advertised in OAuth metadata.
 
 ## Rationale
 
@@ -198,7 +198,7 @@ A key benefit of Client ID Metadata Documents is attestation of redirect URIs:
 
 A limitation of Client ID Metadata Documents is that they cannot prevent localhost URL impersonation by itself. An attacker can claim to be any client by:
 
-1. Providing the legitimate client's metadata URL as their client\_id
+1. Providing the legitimate client's metadata URL as their client_id
 2. Binding to the same localhost port the legitimate client uses
 3. Intercepting the authorization code when the user approves
 
@@ -260,7 +260,7 @@ This proposal also provides a unified mechanism for both open servers and server
 3. **Mutual TLS**: Requires trusting a client certificate authority, impractical in an open ecosystem
 4. **Status Quo**: Continues current pain points for server implementers
 
-Client ID Metadata document is a strict improvement over DCR for the most common open-ecosystem use case. It can be further extended in the future to better support things like OS-level attestations and jwks\_uri's.
+Client ID Metadata document is a strict improvement over DCR for the most common open-ecosystem use case. It can be further extended in the future to better support things like OS-level attestations and jwks_uri's.
 
 ## Backward Compatibility
 

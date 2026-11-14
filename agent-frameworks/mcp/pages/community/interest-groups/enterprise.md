@@ -58,14 +58,14 @@ All discussions and sessions are protocol-focused and vendor-neutral. The Enterp
 | Role | Name | Organization | GitHub | Term |
 | - | - | - | - | - |
 | Facilitator | Raghu Chandra | Independent | [@raghu-chandra-mcp](https://github.com/raghu-chandra-mcp) | 6 months |
-| Facilitator | Yannj\_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | 6 months |
+| Facilitator | Yannj_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | 6 months |
 
 ## Membership
 
 | Name | Organization | GitHub | Discord | Level |
 | - | - | - | - | - |
 | Raghu Chandra | Independent | [@raghu-chandra-mcp](https://github.com/raghu-chandra-mcp) | raghu.chandra | Facilitator |
-| Yannj\_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | yannj\_fr | Facilitator |
+| Yannj_Fr | MCPApps Builders | [@yannj-fr](https://github.com/yannj-fr) | yannj_fr | Facilitator |
 | Peder H P | Saxo Bank | [@pederhp](https://github.com/pederhp) | | Participant |
 | Derek Lewis | Silex Data Solutions | [@derekelewis](https://github.com/derekelewis) | dlewis.io | Participant |
 | Aman s | Independent Researcher; Blue Shield of California | [@aman210122](https://github.com/aman210122) | | Participant |

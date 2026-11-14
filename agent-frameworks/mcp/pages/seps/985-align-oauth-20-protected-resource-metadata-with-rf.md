@@ -68,8 +68,8 @@ Go with SHOULD over MAY for WWW-Authenticate is that it makes supporting other f
 Based on the above, following the updated flow:
 
 * Attempt the MCP request without a token.
-* If a 401 Unauthorized response is received: Check for a WWW-Authenticate header. If present and includes the resource\_metadata parameter, use it to locate the resource metadata.
-* If the header is absent or does not include resource\_metadata, fallback to requesting /.well-known/oauth-protected-resource.
+* If a 401 Unauthorized response is received: Check for a WWW-Authenticate header. If present and includes the resource_metadata parameter, use it to locate the resource metadata.
+* If the header is absent or does not include resource_metadata, fallback to requesting /.well-known/oauth-protected-resource.
 
 This change allows more flexible deployment models without removing existing capabilities.
 

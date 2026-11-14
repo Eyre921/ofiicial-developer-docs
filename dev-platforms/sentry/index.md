@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 237 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 235 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -18,7 +18,6 @@
 
 - `api/auth` — [Authentication](pages/api/auth.md) · [原文](https://docs.sentry.io/api/auth.md)
 - `api/crons` — [Crons](pages/api/crons.md) · [原文](https://docs.sentry.io/api/crons.md)
-- `api/dashboards` — [Dashboards](pages/api/dashboards.md) · [原文](https://docs.sentry.io/api/dashboards.md)
 - `api/discover` — [Discover & Performance](pages/api/discover.md) · [原文](https://docs.sentry.io/api/discover.md)
 - `api/environments` — [Environments](pages/api/environments.md) · [原文](https://docs.sentry.io/api/environments.md)
 - `api/events` — [Events & Issues](pages/api/events.md) · [原文](https://docs.sentry.io/api/events.md)
@@ -218,7 +217,6 @@
 - `platforms/python/integrations/sanic` — [Sanic](pages/platforms/python/integrations/sanic.md) · [原文](https://docs.sentry.io/platforms/python/integrations/sanic.md)
 - `platforms/python/integrations/starlette` — [Starlette](pages/platforms/python/integrations/starlette.md) · [原文](https://docs.sentry.io/platforms/python/integrations/starlette.md)
 - `platforms/python/integrations/starlite` — [Starlite](pages/platforms/python/integrations/starlite.md) · [原文](https://docs.sentry.io/platforms/python/integrations/starlite.md)
-- `platforms/python/integrations/tornado` — [Tornado](pages/platforms/python/integrations/tornado.md) · [原文](https://docs.sentry.io/platforms/python/integrations/tornado.md)
 - `platforms/react-native` — [React Native](pages/platforms/react-native.md) · [原文](https://docs.sentry.io/platforms/react-native.md)
 - `platforms/react-native/guides/expo` — [Expo](pages/platforms/react-native/guides/expo.md) · [原文](https://docs.sentry.io/platforms/react-native/guides/expo.md)
 - `platforms/ruby` — [Ruby](pages/platforms/ruby.md) · [原文](https://docs.sentry.io/platforms/ruby.md)

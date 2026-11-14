@@ -77,7 +77,7 @@ The server prints its URL on stderr. If the config's port is already in use, it 
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-legacy.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=ec5fddd86d1fe7ecc1ef83549798f33e)
 
-Legacy: the Logs tab offers a session-scoped Set Active Level control, and a log arrives after calling send\_notification.
+Legacy: the Logs tab offers a session-scoped Set Active Level control, and a log arrives after calling send_notification.
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/logs-modern.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=85a1d7118a1e693930aefab8ca6b21a3)
 
@@ -164,11 +164,11 @@ The Inspector drives MRTR **manually**, so each round pauses at the **pending-re
 
 ![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/mrtr-pending-request.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=99f8acb7f845a12aed42bcea4d310fee)
 
-An MRTR round paused at the pending-request modal, tagged input\_required. Answering it retries the original request.
+An MRTR round paused at the pending-request modal, tagged input_required. Answering it retries the original request.
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/mrtr-protocol-conversation.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=b083d8127a7a67028fcd9702b25aeac1)
 
-The monitoring sidebar's Protocol tab after mrtr\_confirm completes. Both tools/call rounds sit inside one MRTR conversation, Round 1 tagged input\_required and Round 2 complete, while unrelated traffic stays outside it.
+The monitoring sidebar's Protocol tab after mrtr_confirm completes. Both tools/call rounds sit inside one MRTR conversation, Round 1 tagged input_required and Round 2 complete, while unrelated traffic stays outside it.
 
 ***
 
@@ -192,7 +192,7 @@ Reproduce with `test-servers/configs/xmcpheader-modern-http.json`.
 
 ![](https://mintcdn.com/mcp/pUebPdrb6PY5_mfH/images/inspector/tools-sep2243.png?fit=max\&auto=format\&n=pUebPdrb6PY5_mfH\&q=85\&s=0e011c3012332c0a74d0f57fc84a5cf2)
 
-get\_weather shows its mirrored city -> Mcp-Param-City header, and the Network sidebar confirms the call carried mcp-param-city: Boston. invalid\_header\_tool is struck through under the Excluded (SEP-2243) divider.
+get_weather shows its mirrored city -> Mcp-Param-City header, and the Network sidebar confirms the call carried mcp-param-city: Boston. invalid_header_tool is struck through under the Excluded (SEP-2243) divider.
 
 ### `-32602` error panels
 
