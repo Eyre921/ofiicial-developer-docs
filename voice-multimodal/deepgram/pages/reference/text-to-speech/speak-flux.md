@@ -118,105 +118,147 @@ components:
     subpackage_speak/v2.speak.v2-server-0-SpeakV2Audio:
       name: SpeakV2Audio
       title: SpeakV2Audio
-      description: Receive audio chunks as they are generated
+      description: Audio data in the format specified by the connection parameters
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Audio'
     subpackage_speak/v2.speak.v2-server-1-SpeakV2Connected:
       name: SpeakV2Connected
       title: SpeakV2Connected
-      description: Receive a connected message on a successful connection
+      description: >-
+        Sent immediately on a successful connection. Successor to the
+        `/v1/speak` `Metadata` message.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Connected'
     subpackage_speak/v2.speak.v2-server-2-SpeakV2SpeechStarted:
       name: SpeakV2SpeechStarted
       title: SpeakV2SpeechStarted
       description: >-
-        Receive a message marking the start of a new turn, carrying the turn's
-        unique identifier
+        Emitted at the start of each new turn, before audio streaming begins.
+        Carries the server-assigned `speech_id` that identifies the turn. Fires
+        once per turn, not on internal auto-flush boundaries.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2SpeechStarted'
     subpackage_speak/v2.speak.v2-server-3-SpeakV2SpeechMetadata:
       name: SpeakV2SpeechMetadata
       title: SpeakV2SpeechMetadata
-      description: Receive per-turn billing and timing after a manual Flush
+      description: >-
+        Emitted at turn boundaries (manual `Flush`), after all audio for the
+        turn has been sent. Reports billing and timing for the completed turn.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2SpeechMetadata'
     subpackage_speak/v2.speak.v2-server-4-SpeakV2SpeechInterrupted:
       name: SpeakV2SpeechInterrupted
       title: SpeakV2SpeechInterrupted
       description: >-
-        Receive what the user heard, and the interrupted turn's billing, after
-        an Interrupt
+        Sent in reply to an `Interrupt`, once synthesis has concluded and audio
+        generation has stopped. Reports what the user heard, what they did not,
+        and the billing and timing of the turn the interrupt landed in.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2SpeechInterrupted'
     subpackage_speak/v2.speak.v2-server-5-SpeakV2Flushed:
       name: SpeakV2Flushed
       title: SpeakV2Flushed
-      description: Receive an echo confirming receipt of a manual Flush
+      description: >-
+        Immediate echo on receipt of a manual `Flush`, confirming the server
+        received it before synthesis completes. Not emitted for internal
+        auto-flush boundaries.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Flushed'
     subpackage_speak/v2.speak.v2-server-6-SpeakV2SessionMetadata:
       name: SpeakV2SessionMetadata
       title: SpeakV2SessionMetadata
-      description: Receive cumulative session totals before the socket closes
+      description: >-
+        Final server message before the WebSocket closes. Reports cumulative
+        session totals across all turns.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2SessionMetadata'
     subpackage_speak/v2.speak.v2-server-7-SpeakV2ConfigureSuccess:
       name: SpeakV2ConfigureSuccess
       title: SpeakV2ConfigureSuccess
       description: >-
-        Receive confirmation that a Configure was accepted and applied, echoing
-        the applied configuration
+        Sent when a `Configure` was accepted and applied. Echoes the
+        configuration now in effect. A `Configure` that named no field is
+        answered with an empty `applied` object.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2ConfigureSuccess'
     subpackage_speak/v2.speak.v2-server-8-SpeakV2ConfigureFailure:
       name: SpeakV2ConfigureFailure
       title: SpeakV2ConfigureFailure
       description: >-
-        Receive notice that a Configure was rejected or failed to apply; the
-        prior configuration is retained
+        Sent when a `Configure` was rejected. The stream is unaffected and the
+        previous configuration stays in force. When the failure is tied to a
+        specific field, `field` names it and `value` echoes the value that was
+        rejected.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2ConfigureFailure'
     subpackage_speak/v2.speak.v2-server-9-SpeakV2Warning:
       name: SpeakV2Warning
       title: SpeakV2Warning
-      description: Receive a warning; synthesis continues and the connection is unaffected
+      description: >-
+        Informational message; synthesis continues and the connection is
+        unaffected. Every warning carries a `code` and a human-readable
+        `description`.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Warning'
     subpackage_speak/v2.speak.v2-server-10-SpeakV2Error:
       name: SpeakV2Error
       title: SpeakV2Error
-      description: Receive a fatal error message followed by a WebSocket close
+      description: >-
+        A fatal, server-originated error. Always followed by a WebSocket close.
+        Codes use Deepgram's `DOMAIN-NNNN` convention.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Error'
     subpackage_speak/v2.speak.v2-client-0-SpeakV2Speak:
       name: SpeakV2Speak
       title: SpeakV2Speak
-      description: Send text to be synthesized into the active turn
+      description: >-
+        Send text to be synthesized into the active turn. For English, German,
+        Dutch, French, Hindi, Italian, Japanese, Portuguese, Russian and
+        Spanish, the server applies text normalization (numbers, dates,
+        abbreviations) before synthesis; the other languages are in Early Access
+        without it, so write numbers and dates out in words. It tracks the
+        active turn internally and assigns a `speech_id`; clients do not specify
+        one.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Speak'
     subpackage_speak/v2.speak.v2-client-1-SpeakV2Flush:
       name: SpeakV2Flush
       title: SpeakV2Flush
-      description: End the active turn and generate the remaining audio
+      description: >-
+        End the active turn. The server drains the buffer, generates the
+        remaining audio, and reports the turn with a `SpeechMetadata` event.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Flush'
     subpackage_speak/v2.speak.v2-client-2-SpeakV2Interrupt:
       name: SpeakV2Interrupt
       title: SpeakV2Interrupt
-      description: Cancel the active turn because the user barged in
+      description: >-
+        Report that the user barged in. The server stops active audio
+        generation, discards any buffered text pending generation, and replies
+        with `SpeechInterrupted` once the model confirms the cancelled turn has
+        drained.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Interrupt'
     subpackage_speak/v2.speak.v2-client-3-SpeakV2Configure:
       name: SpeakV2Configure
       title: SpeakV2Configure
-      description: Update synthesis configuration mid-session
+      description: >-
+        Update synthesis configuration mid-session without reconnecting. Omitted
+        fields keep their current value, and a `Configure` naming no field at
+        all is accepted as a no-op. An accepted change takes effect at the next
+        segment boundary, not mid-segment, so audio already generated is
+        unaffected. Answered by exactly one of `ConfigureSuccess` or
+        `ConfigureFailure`. A rejected `Configure` leaves the previous
+        configuration in force.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Configure'
     subpackage_speak/v2.speak.v2-client-4-SpeakV2Close:
       name: SpeakV2Close
       title: SpeakV2Close
-      description: Gracefully close the connection, draining all remaining and queued audio
+      description: >-
+        Gracefully close the connection. The server drains all remaining audio
+        (the active turn plus any turns still queued behind it), emits a final
+        `SessionMetadata`, then closes the socket.
       payload:
         $ref: '#/components/schemas/SpeakV2_SpeakV2Close'
   schemas:

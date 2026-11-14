@@ -1,5 +1,5 @@
 ---
-title: "Development Setup with Fireworks Docs MCP"
+title: "Development setup with Fireworks docs MCP"
 source: https://docs.fireworks.ai/ecosystem/integrations/development-setup
 path: ecosystem/integrations/development-setup
 ---
@@ -44,7 +44,7 @@ Or manually add to your workspace's `mcp.json`:
 }
 ```
 
-## Using the MCP Server
+## Using the MCP server
 
 Once configured, your AI coding agent can search the full Fireworks AI documentation. Example queries:
 

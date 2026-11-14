@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 236 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 237 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -29,6 +29,7 @@
 - `api/investigations` — [Investigations](pages/api/investigations.md) · [原文](https://docs.sentry.io/api/investigations.md)
 - `api/mobile-builds` — [Mobile Builds](pages/api/mobile-builds.md) · [原文](https://docs.sentry.io/api/mobile-builds.md)
 - `api/monitors` — [Monitors & Alerts](pages/api/monitors.md) · [原文](https://docs.sentry.io/api/monitors.md)
+- `api/notebooks` — [Notebooks](pages/api/notebooks.md) · [原文](https://docs.sentry.io/api/notebooks.md)
 - `api/organizations` — [Organizations](pages/api/organizations.md) · [原文](https://docs.sentry.io/api/organizations.md)
 - `api/pagination` — [Paginating Results](pages/api/pagination.md) · [原文](https://docs.sentry.io/api/pagination.md)
 - `api/permissions` — [Permissions & Scopes](pages/api/permissions.md) · [原文](https://docs.sentry.io/api/permissions.md)

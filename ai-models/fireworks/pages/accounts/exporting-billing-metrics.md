@@ -1,5 +1,5 @@
 ---
-title: "Exporting Billing Metrics"
+title: "Exporting billing metrics"
 source: https://docs.fireworks.ai/accounts/exporting-billing-metrics
 path: accounts/exporting-billing-metrics
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Training Overview"
+title: "Training overview"
 source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 path: fine-tuning/finetuning-intro
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Text Models"
+title: "Text models"
 source: https://docs.fireworks.ai/guides/querying-text-models
 path: guides/querying-text-models
 ---

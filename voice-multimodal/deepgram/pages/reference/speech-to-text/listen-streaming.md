@@ -160,79 +160,100 @@ components:
     subpackage_listen/v1.listen.v1-server-0-ListenV1ConfigureSuccess:
       name: ListenV1ConfigureSuccess
       title: ListenV1ConfigureSuccess
-      description: Receive confirmation that a Configure message was applied
+      description: >
+        Confirms that a `Configure` message was applied. Echoes the fields the
+        `Configure` replaced; fields it did not
+
+        change are omitted.
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1ConfigureSuccess'
     subpackage_listen/v1.listen.v1-server-1-ListenV1ConfigureFailure:
       name: ListenV1ConfigureFailure
       title: ListenV1ConfigureFailure
-      description: >-
-        Receive notice that a Configure message was rejected; the stream keeps
-        its previous configuration
+      description: >
+        Indicates that a `Configure` message was rejected in full. The stream
+        keeps its previous configuration and
+
+        stays open.
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1ConfigureFailure'
     subpackage_listen/v1.listen.v1-server-2-ListenV1Results:
       name: ListenV1Results
       title: ListenV1Results
-      description: Receive transcription results
+      description: Deepgram has responded with a transcription
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1Results'
     subpackage_listen/v1.listen.v1-server-3-ListenV1Metadata:
       name: ListenV1Metadata
       title: ListenV1Metadata
-      description: Receive metadata about the transcription
+      description: Metadata event - these are usually information describing the connection
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1Metadata'
     subpackage_listen/v1.listen.v1-server-4-ListenV1UtteranceEnd:
       name: ListenV1UtteranceEnd
       title: ListenV1UtteranceEnd
-      description: Receive an utterance end event
+      description: An utterance has ended
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1UtteranceEnd'
     subpackage_listen/v1.listen.v1-server-5-ListenV1SpeechStarted:
       name: ListenV1SpeechStarted
       title: ListenV1SpeechStarted
-      description: Receive a speech started event
+      description: |
+        `vad_events` is true and speech has been detected
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1SpeechStarted'
     subpackage_listen/v1.listen.v1-server-6-ListenV1Error:
       name: ListenV1Error
       title: ListenV1Error
-      description: >-
-        Receive a non-fatal error message, such as for an unparseable text
-        message. Fatal failures close the socket instead.
+      description: >
+        Receive an error message from the server. The stream stays open after a
+        `SchemaError` and
+
+        continues with its previous settings. Fatal failures close the socket
+        with a close frame and
+
+        send no `Error` message. Rejected `Configure` messages return
+        `ConfigureFailure` instead.
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1Error'
     subpackage_listen/v1.listen.v1-client-0-ListenV1Media:
       name: ListenV1Media
       title: ListenV1Media
-      description: Send audio or video data to be transcribed
+      description: Audio data is transmitted as raw binary WebSocket messages
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1Media'
     subpackage_listen/v1.listen.v1-client-1-ListenV1Finalize:
       name: ListenV1Finalize
       title: ListenV1Finalize
-      description: Send a Finalize message to flush the WebSocket stream
+      description: Control messages for managing the Speech to Text WebSocket connection
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1Finalize'
     subpackage_listen/v1.listen.v1-client-2-ListenV1CloseStream:
       name: ListenV1CloseStream
       title: ListenV1CloseStream
-      description: Send a CloseStream message to close the WebSocket stream
+      description: Control messages for managing the Speech to Text WebSocket connection
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1CloseStream'
     subpackage_listen/v1.listen.v1-client-3-ListenV1KeepAlive:
       name: ListenV1KeepAlive
       title: ListenV1KeepAlive
-      description: Send a KeepAlive message to keep the WebSocket stream alive
+      description: Control messages for managing the Speech to Text WebSocket connection
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1KeepAlive'
     subpackage_listen/v1.listen.v1-client-4-ListenV1Configure:
       name: ListenV1Configure
       title: ListenV1Configure
-      description: >-
-        Send a Configure message to update keyterms or formatting features
-        mid-stream
+      description: >
+        Updates the configuration of an open stream without reconnecting. Fields
+        you omit keep their current values.
+
+        The server answers every `Configure` with exactly one `ConfigureSuccess`
+        or `ConfigureFailure` message. On
+
+        failure, the stream keeps its previous configuration. Only one
+        `Configure` can be pending at a time; wait for
+
+        its response before sending another.
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1Configure'
   schemas:

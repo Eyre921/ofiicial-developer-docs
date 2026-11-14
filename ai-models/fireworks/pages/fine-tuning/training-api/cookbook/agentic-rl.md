@@ -1,5 +1,5 @@
 ---
-title: "Cookbook: Agentic Reinforcement Learning"
+title: "Cookbook: Agentic reinforcement learning"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl
 path: fine-tuning/training-api/cookbook/agentic-rl
 ---

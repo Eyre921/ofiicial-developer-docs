@@ -32,7 +32,7 @@ A model is a set of model weights and metadata associated with the model. Each m
 
 **LoRA (low-rank adaptation) addons:** A LoRA addon is a small, trained model that significantly reduces the amount of memory required to deploy compared to a fully trained model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-trained-models), and [**serving**](/fine-tuning/deploying-loras) LoRA addons. LoRA addons are served on a dedicated deployment of their base model, or, for [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits), on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview). Model IDs for LoRAs can be either auto-generated or user-specified.
 
-#### A Note on API Model Metadata
+#### A note on API model metadata
 
 When retrieving model details via the API, a model may be listed with both `supportsServerless: true` and `supportsLora: true`. This indicates that the base model is available for serverless inference, AND that the model architecture supports training with LoRA.
 

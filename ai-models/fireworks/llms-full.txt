@@ -159,7 +159,7 @@ Fireworks Enterprise accounts can use additional governance and administration f
 >
 > Monitor API and data-access activity across your account for security review and compliance.
 
-## Who can manage Enterprise features
+## Who can manage enterprise features
 
 Most Enterprise administration features require the **Admin** role on the account. Any account member can usually read current settings (for example, viewing the active model access policy), but only admins can change them.
 
@@ -170,7 +170,7 @@ See [Managing users](/accounts/users) for role definitions.
 Enterprise features are enabled on your Fireworks account type. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account representative if you need Enterprise access or want to confirm which features are active on your account.
 
 
-# Exporting Billing Metrics
+# Exporting billing metrics
 Source: https://docs.fireworks.ai/accounts/exporting-billing-metrics
 
 Export Fireworks billing and usage metrics as a per-event CSV dump across serverless, on-demand deployments, and fine-tuning for downstream reporting.
@@ -314,7 +314,7 @@ This export includes:
 * [Serverless rate limits](/serverless/rate-limits) - Adaptive serverless TPM bounds
 
 
-# Usage & Cost Breakdown
+# Usage & cost breakdown
 Source: https://docs.fireworks.ai/accounts/exporting-usage-and-costs
 
 Break down Fireworks usage and rated costs by deployment, model, API key, or custom tags using firectl, billingUsage, and the usageCosts query API.
@@ -735,7 +735,7 @@ done
 * [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and monthly spend limits
 
 
-# Exporting Usage Costs
+# Exporting usage costs
 Source: https://docs.fireworks.ai/accounts/exporting-usage-costs
 
 Export rated Fireworks serverless usage costs to CSV using firectl billing export-usage-costs, grouped by model, model tier, user, or API key for reporting.
@@ -1039,7 +1039,7 @@ All four permission booleans are required whenever `defaultPermissions` or a rul
 * [Audit & access logs](/guides/security_compliance/audit_logs) — monitor account activity
 
 
-# Service Accounts
+# Service accounts
 Source: https://docs.fireworks.ai/accounts/service-accounts
 
 Create Fireworks service accounts with firectl, issue API keys on their behalf, assign and update roles, and track their billing and audit log activity.
@@ -1054,7 +1054,7 @@ Service accounts can take actions using an API key, like creating deployments, r
 
 To manage service accounts in the Platform web UI, visit [app.fireworks.ai/account/users](https://app.fireworks.ai/account/users).
 
-## Creating a Service Account
+## Creating a service account
 
 Using our firectl you can create service accounts
 
@@ -1062,7 +1062,7 @@ Using our firectl you can create service accounts
 firectl user create --user-id "my-service-account" --service-account
 ```
 
-## Creating an API Key for a Service Account
+## Creating an API key for a service account
 
 Using firectl you can create an API key on behalf of a service account:
 
@@ -1088,7 +1088,7 @@ firectl user update my-service-account --role=inference-user
 
 See [Managing users](/accounts/users) for available roles.
 
-## Listing Service Accounts
+## Listing service accounts
 
 To list all service accounts in your account:
 
@@ -1196,7 +1196,7 @@ By default, Fireworks uses **service provider (SP) initiated** SAML: users start
 
 **IdP-initiated** SAML is supported as an opt-in for SAML identity providers. When enabled, users can also start from your identity provider's portal (for example, the Okta app tile). Enable it with [`--enable-idp-initiated-sso`](/tools-sdks/firectl/commands/identity-provider-create) when creating or updating the identity provider. This option is SAML-only; OIDC providers cannot use it.
 
-## Just-In-Time (JIT) user provisioning
+## Just-in-time (JIT) user provisioning
 
 JIT user provisioning automatically creates user accounts when they sign in through SSO for the first time. When enabled, users who authenticate through your identity provider are automatically added to your Fireworks account without requiring manual user creation.
 
@@ -3218,7 +3218,7 @@ Measure and optimize your deployment's performance with load testing
 
 Understanding your deployment's performance under various load conditions is essential for production readiness. Fireworks provides tools and best practices for benchmarking throughput, latency, and identifying bottlenecks.
 
-## Fireworks Benchmark Tool
+## Fireworks benchmark tool
 
 Use our open-source benchmarking tool to measure and optimize your deployment's performance:
 
@@ -3416,7 +3416,7 @@ This implementation:
 * Uses `asyncio.Semaphore` to control concurrency to avoid overwhelming the server
 
 
-# Deployment Tags
+# Deployment tags
 Source: https://docs.fireworks.ai/deployments/deployment-tags
 
 Attach key-value tags to dedicated Fireworks deployments to record environment, team, or workload, and manage them through firectl or the REST API.
@@ -3559,7 +3559,7 @@ firectl's `deployment tag list` command shows deployment tags and removes one le
 Tag filtering in `ListDeployments` and `firectl deployment list` is not currently supported.
 
 
-# Exporting Metrics
+# Exporting metrics
 Source: https://docs.fireworks.ai/deployments/exporting-metrics
 
 Export metrics from your dedicated deployments to your observability stack
@@ -3572,7 +3572,7 @@ Fireworks provides a metrics endpoint in Prometheus format, enabling integration
 >
 > This page covers real-time performance metrics (latency, throughput, etc.) for on-demand deployments. For billing and usage data across all Fireworks services, see [Exporting Billing Metrics](/accounts/exporting-billing-metrics).
 
-## Setting Up Metrics Collection
+## Setting up metrics collection
 
 ### Endpoint
 
@@ -3592,11 +3592,11 @@ Use the Authorization header with your Fireworks API key:
 }
 ```
 
-### Scrape Interval
+### Scrape interval
 
 We recommend using a 1-minute scrape interval as metrics are updated every 30s.
 
-### Rate Limits
+### Rate limits
 
 To ensure service stability and fair usage:
 
@@ -3604,15 +3604,15 @@ To ensure service stability and fair usage:
 * Exceeding this limit results in HTTP 429 (Too Many Requests) responses
 * Use a 1-minute scrape interval to stay within limits
 
-## Integration Options
+## Integration options
 
 Fireworks metrics can be integrated with various observability platforms through multiple approaches:
 
-### OpenTelemetry Collector Integration
+### OpenTelemetry collector integration
 
 The Fireworks metrics endpoint can be integrated with OpenTelemetry Collector by configuring a Prometheus receiver that scrapes the endpoint. This allows Fireworks metrics to be pushed to a variety of popular exporters—see the [OpenTelemetry registry](https://opentelemetry.io/ecosystem/registry/) for a full list.
 
-### Direct Prometheus Integration
+### Direct Prometheus integration
 
 To integrate directly with Prometheus, specify the Fireworks metrics endpoint in your scrape config:
 
@@ -3632,7 +3632,7 @@ scrape_configs:
 
 For more details on Prometheus configuration, refer to the [Prometheus documentation](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 
-### Supported Platforms
+### Supported platforms
 
 Fireworks metrics can be exported to various observability platforms including:
 
@@ -3641,9 +3641,9 @@ Fireworks metrics can be exported to various observability platforms including:
 * Grafana
 * New Relic
 
-## Available Metrics
+## Available metrics
 
-### Common Labels
+### Common labels
 
 All metrics include the following common labels:
 
@@ -3652,50 +3652,50 @@ All metrics include the following common labels:
 * `deployment_account`: The account name
 * `deployment_id`: The deployment identifier
 
-### Rate Metrics (per second)
+### Rate metrics (per second)
 
 These metrics show activity rates calculated using 1-minute windows:
 
-#### Request Rate
+#### Request rate
 
 * `request_counter_total:sum_by_deployment`: Request rate per deployment
 
-#### Error Rate
+#### Error rate
 
 * `requests_error_total:sum_by_deployment`: Error rate per deployment, broken down by HTTP status code (includes additional `http_code` label)
 
-#### Token Processing Rates
+#### Token processing rates
 
 * `tokens_cached_prompt_total:sum_by_deployment`: Rate of cached prompt tokens per deployment
 * `tokens_prompt_total:sum_by_deployment`: Rate of total prompt tokens processed per deployment
 
-### Latency Histogram Metrics
+### Latency histogram metrics
 
 These metrics provide latency distribution data with histogram buckets, calculated using 1-minute windows:
 
-#### Generation Latency
+#### Generation latency
 
 * `latency_generation_per_token_ms_bucket:sum_by_deployment`: Per-token generation time distribution
 * `latency_generation_queue_ms_bucket:sum_by_deployment`: Time spent waiting in generation queue
 
-#### Request Latency
+#### Request latency
 
 * `latency_overall_ms_bucket:sum_by_deployment`: End-to-end request latency distribution
 * `latency_to_first_token_ms_bucket:sum_by_deployment`: Time to first token distribution
 
-#### Prefill Latency
+#### Prefill latency
 
 * `latency_prefill_ms_bucket:sum_by_deployment`: Prefill processing time distribution
 * `latency_prefill_queue_ms_bucket:sum_by_deployment`: Time spent waiting in prefill queue
 
-### Token Distribution Metrics
+### Token distribution metrics
 
 These histogram metrics show token count distributions per request, calculated using 1-minute windows:
 
 * `tokens_generated_per_request_bucket:sum_by_deployment`: Distribution of generated tokens per request
 * `tokens_prompt_per_request_bucket:sum_by_deployment`: Distribution of prompt tokens per request
 
-### Resource Utilization Metrics
+### Resource utilization metrics
 
 These gauge metrics show average resource usage:
 
@@ -4018,7 +4018,7 @@ firectl router update my-router --deployments=new-deployment
 > Monitor your new deployment's latency and error rates at each step before shifting more traffic. This lets you catch issues early and roll back by increasing replicas on the old deployment.
 
 
-# Speculative Decoding
+# Speculative decoding
 Source: https://docs.fireworks.ai/deployments/speculative-decoding
 
 Speed up token generation on Fireworks dedicated deployments with speculative decoding using draft models, n-gram speculation, and per-request configuration.
@@ -4175,14 +4175,14 @@ verification work. Re-run the benchmark when the traffic mix, prompt format,
 model, quantization, or deployment shape changes.
 
 
-# Agent Frameworks
+# Agent frameworks
 Source: https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks
 
 Build production AI agents on Fireworks with LangChain, LlamaIndex, CrewAI, AutoGen, and other open-source frameworks using the OpenAI-compatible API.
 
 Fireworks AI seamlessly integrates with the best open-source agent frameworks, enabling you to build magical, production-ready applications powered by state-of-the-art language models.
 
-## Supported Frameworks
+## Supported frameworks
 
 > [card] [LangChain](https://docs.langchain.com/oss/python/integrations/providers/fireworks)
 >
@@ -4208,7 +4208,7 @@ Fireworks AI seamlessly integrates with the best open-source agent frameworks, e
 >
 > Build and deploy production AI agents with Fireworks models on AgentCore Runtime
 
-## Need Help?
+## Need help?
 
 For assistance with agent framework integrations, [contact our team](https://fireworks.ai/contact) or join our [Discord community](https://discord.gg/fireworks-ai).
 
@@ -4282,7 +4282,7 @@ print(response.choices[0].message.content)
 
 Find your project endpoint in the Microsoft Foundry portal under **Project settings**.
 
-## PTU (Provisioned Throughput)
+## PTU (provisioned throughput)
 
 PTU deployments provide dedicated GPU capacity reserved for your workload, with consistent throughput and global region availability.
 
@@ -4294,7 +4294,7 @@ You can create a PTU deployment directly in the Azure portal. For more on provis
 
 For help with PTU sizing on Fireworks models, [contact us](https://fireworks.ai/contact).
 
-## Custom Models
+## Custom models
 
 Train on Fireworks and deploy on Foundry, or bring your own weights from wherever you post-train to deploy on Foundry. Your model is served on Fireworks infrastructure within Azure, billed through your Azure account.
 
@@ -4333,7 +4333,7 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 * [Contact us](https://fireworks.ai/contact) for PTU provisioning and Custom Model support
 
 
-# How Setup Works
+# How setup works
 Source: https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works
 
 How Bring Your Own Cluster onboarding works, from account and cluster prerequisites through Fireworks control-plane connection, node setup, and validation.
@@ -4406,7 +4406,7 @@ Once validation is complete, Fireworks operates the serving stack and model life
 For ongoing responsibilities, see [Operational Model](/ecosystem/integrations/byoc/operational-model).
 
 
-# Operational Model
+# Operational model
 Source: https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model
 
 How Fireworks operates Bring Your Own Cluster environments day to day, including shared responsibilities, upgrades, monitoring, incident response, and support.
@@ -4488,7 +4488,7 @@ BYOC operations work best when Fireworks and the customer agree on:
 * Any environment-specific compliance requirements
 
 
-# Bring Your Own Cluster
+# Bring your own cluster
 Source: https://docs.fireworks.ai/ecosystem/integrations/byoc/overview
 
 Run Fireworks inference inside your own Kubernetes cluster, cloud account, or data center to keep GPUs, data, and network boundaries under your control.
@@ -4567,7 +4567,7 @@ Hybrid operation can help when:
 >
 > Hybrid BYOC is optional and must be reviewed during onboarding. Fireworks works with your team to confirm routing behavior, workload eligibility, data handling expectations, and any compliance constraints before enabling overflow onto Fireworks-managed capacity.
 
-## Known gaps during Private Preview
+## Known gaps during private preview
 
 Training is not supported in BYOC during Private Preview. If you need training and BYOC together, [contact us](https://fireworks.ai/contact) so the team can review your requirements and roadmap fit.
 
@@ -4594,7 +4594,7 @@ If BYOC may be a fit, [contact us](https://fireworks.ai/contact) to review your 
 > Learn how Fireworks operates BYOC clusters after onboarding.
 
 
-# Development Setup with Fireworks Docs MCP
+# Development setup with Fireworks docs MCP
 Source: https://docs.fireworks.ai/ecosystem/integrations/development-setup
 
 Configure the Fireworks AI Docs MCP server for Claude Code and Cursor
@@ -4637,7 +4637,7 @@ Or manually add to your workspace's `mcp.json`:
 }
 ```
 
-## Using the MCP Server
+## Using the MCP server
 
 Once configured, your AI coding agent can search the full Fireworks AI documentation. Example queries:
 
@@ -4647,14 +4647,14 @@ Once configured, your AI coding agent can search the full Fireworks AI documenta
 * "Find the API reference for batch inference"
 
 
-# MLOps & Observability
+# MLOps & observability
 Source: https://docs.fireworks.ai/ecosystem/integrations/mlops-observability
 
 Track and monitor Fireworks AI deployments with leading MLOps and observability platforms including Langfuse, Weights & Biases, LangSmith, and Helicone.
 
 Fireworks AI integrates with industry-leading MLOps and observability platforms to help you monitor, track, and optimize your AI applications in production.
 
-## Supported Platforms
+## Supported platforms
 
 > [card] [Weights & Biases](/ecosystem/integrations/wandb)
 >
@@ -4664,7 +4664,7 @@ Fireworks AI integrates with industry-leading MLOps and observability platforms 
 >
 > Mlflow Tracing to track prompts, outputs, latency etc as your build AI applications with FireworksAI
 
-## Need Help?
+## Need help?
 
 For assistance with MLOps and observability integrations, [contact our team](https://fireworks.ai/contact) or join our [Discord community](https://discord.gg/fireworks-ai).
 
@@ -5046,7 +5046,7 @@ Most accounts on pre-paid billing should not see month-end overage invoices. If 
 
 When you finish your \$1 credit, the following occurs:
 
-## Account Status
+## Account status
 
 * **Without payment method**: Your account will be **suspended** until you add a payment method. For request-rate behavior, see [Account quotas](/guides/quotas_usage/account-quotas#account-wide-request-limits); for serverless TPM upper bounds, see [Serverless rate limits](/serverless/rate-limits).
 * **With payment method**: Add credits to continue usage. [Account-wide request limits](/guides/quotas_usage/account-quotas#account-wide-request-limits) increase, and [serverless TPM upper bounds](/serverless/rate-limits) grow as your account spend tier rises.
@@ -5115,7 +5115,7 @@ Yes, we provide advance notice before removing models from the serverless infras
 4. Keep your contact information updated for timely notifications.
 
 
-# Do you support Auto Scaling?
+# Do you support auto scaling?
 Source: https://docs.fireworks.ai/faq-new/deployment-infrastructure/do-you-support-auto-scaling
 
 Yes, our system supports **auto scaling** with the following features:
@@ -5668,7 +5668,7 @@ Training method
 >   </li>
 > </ul>
 
-## Prepare inputs with the Training Skill
+## Prepare inputs with the training skill
 
 The [Fireworks Training Skill](/fine-tuning/agent/use-with-coding-agents)
 prepares inputs and calculates Serverless estimates from published
@@ -5690,7 +5690,7 @@ To compare the rollout inference cost of multi-turn agentic RL, use the separate
 does not estimate SFT or DPO training cost.
 
 
-# Deploying Trained Models
+# Deploying trained models
 Source: https://docs.fireworks.ai/fine-tuning/deploying-loras
 
 Deploy LoRA adapters trained or imported on Fireworks to on-demand deployments using live merge for one adapter or multi-LoRA for many adapters.
@@ -6110,7 +6110,7 @@ Signs you have hit this failure mode:
 > Upload LoRA models trained outside Fireworks
 
 
-# Evaluating Trained Models
+# Evaluating trained models
 Source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 
 Evaluate a trained Fireworks model by sampling its serverless checkpoints with the Training SDK, by loading a promoted LoRA onto serverless, or with a preemptible deployment.
@@ -6291,7 +6291,7 @@ For more on preemptible capacity and guarantees, see [Preemptible deployments](/
 > Serve LoRAs on supported base models on serverless
 
 
-# Training Overview
+# Training overview
 Source: https://docs.fireworks.ai/fine-tuning/finetuning-intro
 
 Train an open model on your own data with Fireworks, serverless or on dedicated GPUs. Start with agent skills.
@@ -6689,7 +6689,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 > * Region, accelerator and training shape. You don't set these; the recipe picks a validated training shape.
 
 
-# Models
+# Compatible models
 Source: https://docs.fireworks.ai/fine-tuning/models
 
 Base models supported for fine-tuning on Fireworks, with Serverless and Dedicated Training availability and supported methods per model.
@@ -6907,7 +6907,7 @@ $$
 \text{Cost (Tinker)} = \frac{\text{Prefill tokens}}{10^6} \cdot r_{\text{prefill}} + \frac{\text{Decode tokens}}{10^6} \cdot r_{\text{sample}}
 $$
 
-### Fireworks Dedicated — GPU-hour billing
+### Fireworks dedicated — GPU-hour billing
 
 Dedicated deployments are billed per GPU-second, so the prefix cache shows up
 as **higher effective throughput** rather than a discount on per-token rates.
@@ -7055,7 +7055,7 @@ from trainer execution time. Metric definitions and reductions live in the
 [step-metrics skill](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/step-metrics.md).
 
 
-# RL Rollouts with Your Own Trainer
+# RL rollouts with your own trainer
 Source: https://docs.fireworks.ai/fine-tuning/rl-rollout-integration
 
 Integrate an external RL trainer with Fireworks inference: hot-load new checkpoints from your bucket and run rollouts via the OpenAI-compatible API.
@@ -7730,7 +7730,7 @@ The relevant upstream templates are [GLM 5.1](https://huggingface.co/zai-org/GLM
 > Add `reasoning_content` to assistant messages in your JSONL dataset.
 
 
-# Cookbook: Agentic Reinforcement Learning
+# Cookbook: Agentic reinforcement learning
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl
 
 Run tool-using agents against environment-local TITO sidecars on the Fireworks Training API to return exact-token trajectories to async reinforcement learning.
@@ -7955,7 +7955,7 @@ python -m training.examples.distillation.gsm8k_privileged.train_gsm8k_privileged
 * [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) - how updated weights reach serving deployments
 
 
-# Cookbook: Preference Optimization
+# Cookbook: Preference optimization
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo
 
 Run Direct Preference Optimization (DPO) on Fireworks with the Training API cookbook recipe, using pairwise preference data and configurable reference models.
@@ -8071,7 +8071,7 @@ and [training skill](https://github.com/fw-ai-external/cookbook/blob/main/skills
 * [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions) — API-level DPO loss details
 
 
-# Cookbook: Fireworks x HUD RL Training
+# Cookbook: Fireworks x HUD RL training
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/hud-rl-training
 
 Train a LoRA adapter with reinforcement learning using HUD environments and Fireworks Serverless Training.
@@ -8405,7 +8405,7 @@ for the Fireworks requirements.
   [designing tasks for training signal](https://docs.hud.ai/v6/reference/advice?utm_source=fireworks\&utm_medium=partner\&utm_content=cookbook).
 
 
-# Cookbook: Muse Glimmer First Fine-Tune
+# Cookbook: Muse Glimmer first fine-tune
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/muse-glimmer
 
 Run a free first LoRA fine-tune of Muse Glimmer 30B on Serverless Training with a public Hugging Face example, then measure base versus tuned.
@@ -8572,12 +8572,12 @@ reports the results.
 * [Models](/fine-tuning/models): surfaces and methods each model supports
 
 
-# The Cookbook
+# The cookbook
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/overview
 
 Overview of the Training API cookbook: ready-to-run recipes for supervised fine-tuning, DPO, GRPO reinforcement learning, and distillation on Fireworks.
 
-## What is the Cookbook?
+## What is the cookbook?
 
 The [Fireworks Cookbook](https://github.com/fw-ai-external/cookbook/tree/main/training) is a collection of training recipes and utilities built on top of the [Training API](/fine-tuning/training-api/introduction). It provides config-driven training loops that handle trainer provisioning, data loading, tokenization, gradient accumulation, checkpointing, and cleanup automatically.
 
@@ -9005,7 +9005,7 @@ cfg = Config(
 For DCP vs sampler checkpoints, promote/resume edge cases, and cross-job warm start: [sdk-checkpoints](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) and [training-api-losses](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
 
 
-# Cookbook: Reinforcement Learning
+# Cookbook: Reinforcement learning
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 
 Run the experimental async GRPO cookbook recipe with a custom rollout function while Fireworks handles scheduling, training, checkpoints, and weight sync.
@@ -9178,7 +9178,7 @@ Keep implementation and tuning detail out of the recipe page:
 * [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) — how updated policy weights reach the sampler
 * [`rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
 
-## IGPO (Information Gain Policy Optimization)
+## IGPO (information gain policy optimization)
 
 IGPO prepares turn-level advantages through
 `rl_loop.main(..., prepare_batch_fn=igpo.prepare_batch(gamma=...))`. Answer
@@ -9186,7 +9186,7 @@ scoring runs across the complete batch while advantage normalization remains
 group-local. Start with the [multi-hop QA example](https://github.com/fw-ai-external/cookbook/tree/main/training/examples/rl/multihop_qa).
 
 
-# Cookbook: Supervised Fine-Tuning
+# Cookbook: Supervised fine-tuning
 Source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/sft
 
 Run supervised fine-tuning on Fireworks using the cookbook sft_loop recipe to handle dataset loading, tokenization, gradient accumulation, and checkpointing.
@@ -9530,7 +9530,7 @@ See [Serverless vs dedicated](/fine-tuning/training-api/introduction#infrastruct
 > Teardown contract
 
 
-# Overview
+# Training API overview
 Source: https://docs.fireworks.ai/fine-tuning/training-api/introduction
 
 The Fireworks Training API lets you write custom Python training loops with full control over objectives while Fireworks manages distributed GPU infrastructure.
@@ -9772,7 +9772,7 @@ Let the SDK select automatically. LoRA snapshots contain the full adapter; full-
 
 No. You implement training logic while Fireworks manages GPU provisioning and distributed infrastructure.
 
-### Should I start with a Cookbook recipe or the Python SDK?
+### Should I start with a cookbook recipe or the Python SDK?
 
 Start with a Cookbook recipe for most SFT, DPO, or GRPO adaptations. Use the Python SDK directly when you need custom loop semantics and full control.
 
@@ -11806,7 +11806,7 @@ sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
 - **Sampling:** generating completions from a base model or checkpoint, for rollouts and evaluation. Any process can sample a saved checkpoint. See [Sampling without a training client](#sampling-without-a-training-client).
 
 
-# Training Shapes
+# Training shapes
 Source: https://docs.fireworks.ai/fine-tuning/training-api/training-shapes
 
 Training shapes are pre-configured GPU and model profiles that fix distributed training layout, context limits, and trainer images for Fireworks trainer jobs.
@@ -11829,7 +11829,7 @@ You do not need to know the versioned shape reference, image tag, GPU layout, or
 
 Read the method off the shape card before you launch. For the same model, the LoRA shape and the full-parameter shape often differ in both GPU count and maximum context, so the two are rarely interchangeable.
 
-## What You Need To Know
+## What you need to know
 
 For most users, the workflow is:
 
@@ -11846,7 +11846,7 @@ Whether you can skip the shape ID depends on which of the two paths you use:
 
 On either path, set the shape ID yourself when you need a specific GPU layout or context limit.
 
-## What A Training Shape Controls
+## What a training shape controls
 
 A validated shape version can pin every field below. Together these are the launch profile, and none of them are yours to set. The hardware fields size one trainer replica: `acceleratorCount` × `nodeCount` is the GPU count for a single replica.
 
@@ -11892,7 +11892,7 @@ firectl training-shape-version get \
   accounts/fireworks/trainingShapes/qwen3-8b-128k/versions/latest
 ```
 
-## What You Can And Can't Change
+## What you can and can't change
 
 You can still configure normal training-loop fields such as:
 
@@ -11909,7 +11909,7 @@ Gradient accumulation is not a trainer-launch setting. To accumulate gradients, 
 
 For field-level behavior and dataclass details, see the [`FiretitanServiceClient`](/fine-tuning/training-api/reference/service-client) and [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
-## Using a Training Shape
+## Using a training shape
 
 At launch, the shape ID resolves in three steps:
 
@@ -11967,7 +11967,7 @@ With an active Fire Pass you get:
 
 Use a standard Fireworks key (`fw_...`) for models and features outside Fire Pass.
 
-## Getting Started
+## Getting started
 
 **1. Create an account**
 
@@ -12000,7 +12000,7 @@ Fire Pass is designed for personal agentic coding. Configure your tool manually 
 > ChatGPT desktop app use the Responses API, which isn't supported with Fire
 > Pass keys.
 
-### General Configuration
+### General configuration
 
 If your tool supports custom API endpoints, you can configure it manually using these details:
 
@@ -12150,7 +12150,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 >
 > See the LangChain docs for [models](https://docs.langchain.com/oss/python/deepagents/models) and [customization](https://docs.langchain.com/oss/python/deepagents/customization).
 
-## Terms of Use
+## Terms of use
 
 Fire Pass is intended for **non-production coding use only**. By activating Fire Pass you agree to the following:
 
@@ -12228,7 +12228,7 @@ A model is a set of model weights and metadata associated with the model. Each m
 
 **LoRA (low-rank adaptation) addons:** A LoRA addon is a small, trained model that significantly reduces the amount of memory required to deploy compared to a fully trained model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-trained-models), and [**serving**](/fine-tuning/deploying-loras) LoRA addons. LoRA addons are served on a dedicated deployment of their base model, or, for [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits), on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview). Model IDs for LoRAs can be either auto-generated or user-specified.
 
-#### A Note on API Model Metadata
+#### A note on API model metadata
 
 When retrieving model details via the API, a model may be listed with both `supportsServerless: true` and `supportsLora: true`. This indicates that the base model is available for serverless inference, AND that the model architecture supports training with LoRA.
 
@@ -12382,7 +12382,7 @@ The cost estimate Claude Code shows for the current session, through the Nexus C
 
 ***
 
-## Account & Billing
+## Account & billing
 
 **Account**\
 Your Fireworks AI organization identity. All deployments, models, training jobs, and API keys belong to an account. Referenced as `accounts/<your-account>` in firectl and the API.
@@ -12404,7 +12404,7 @@ An enterprise option to run inference entirely within your own cloud account. Yo
 
 ***
 
-## Fireworks Platform
+## Fireworks platform
 
 **Serverless inference**\
 Pay-per-token inference with no deployment management. Requests are routed globally by default; [US-only Serverless](/serverless/us-only-serverless) serves supported models from the US. Dedicated deployments support explicit placement with the **`--region`** flag on `firectl deployment create` (for example `GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`).
@@ -12435,7 +12435,7 @@ The Fireworks command-line tool for managing models, deployments, training jobs,
 
 ***
 
-## Models & Inference
+## Models & inference
 
 **Base model**\
 A foundation model available on Fireworks for inference or training. Referenced as `accounts/fireworks/models/<model-id>`.
@@ -12562,7 +12562,7 @@ JSON Lines format — one JSON object per line. Used for batch inference input f
 
 ***
 
-## Security & Compliance
+## Security & compliance
 
 **ISO 27001**\
 International standard for information security management systems (ISMS). Fireworks has achieved ISO 27001 certification. Certificate available at [trust.fireworks.ai](https://trust.fireworks.ai).
@@ -12587,7 +12587,7 @@ Fireworks' central repository for security documentation, compliance certificate
 
 ***
 
-## Inference Parameters
+## Inference parameters
 
 **Temperature**\
 Controls randomness in token sampling. `0.0` = deterministic. Higher values increase diversity.
@@ -12611,109 +12611,7 @@ One or more strings that cause the model to stop generating when produced. Usefu
 An instruction prepended to the conversation that sets the model's persona, task, or constraints.
 
 
-# Build with Fireworks AI
-Source: https://docs.fireworks.ai/getting-started/introduction
-
-Fast inference and training for open-source models on Fireworks AI, covering serverless APIs, dedicated deployments, fine-tuning, and multi-modal workflows.
-
-Fireworks AI is the fastest platform for building with open source AI models. Get production-ready inference and training with best-in-class speed, cost and quality.
-
-## Get started in minutes
-
-> [card] [Start fast with Serverless](/getting-started/quickstart)
->
-> Use popular models instantly with pay-per-token pricing. Perfect for quality vibe testing and prototyping.
-
-> [card] [Deploy models & autoscale on dedicated GPUs](/getting-started/ondemand-quickstart)
->
-> Deploy with high performance on dedicated GPUs with fast autoscaling and minimal cold starts. Optimize deployments for speed and throughput.
-
-> [card] [Train models for best quality](/fine-tuning/finetuning-intro)
->
-> Boost model quality with supervised and reinforcement fine-tuning of models up to 1T+ parameters. Start training in minutes, deploy immediately.
-
-> [card] [Connect your coding tools with Nexus](/nexus)
->
-> Connect coding tools with Nexus CLI, choose Fireworks models directly or through Nexus Auto, and manage supported serverless usage.
-
-> [!TIP]
->
-> Not sure where to start? First, pick the right model for your use case with our [**model selection guide**](/guides/recommended-models). Then choose [**Serverless**](/getting-started/quickstart) to prototype quickly, move to [**Deployments**](/getting-started/ondemand-quickstart) to optimize and run production workloads, or use [**Training**](/fine-tuning/finetuning-intro) to improve quality.
->
-> New to AI or Fireworks? Look up any term in the [**Glossary**](/getting-started/glossary).
->
-> Need help optimizing deployments, training models, or setting up production infrastructure? [Talk to our team](https://fireworks.ai/company/contact-us) - we'll help you get the best performance and reliability.
-
-## What you can build
-
-> [card] [100+ Supported Models](https://fireworks.ai/models)
->
-> Text, vision, audio, image, and embeddings
-
-> [card] [Migrate from OpenAI](/tools-sdks/openai-compatibility)
->
-> Drop-in replacement for inference and training — same API, same SFT data format
-
-> [card] [Function Calling](/guides/function-calling)
->
-> Connect models to tools and APIs
-
-> [card] [Structured Outputs](/structured-responses/structured-response-formatting)
->
-> Reliable JSON responses for agentic workflows
-
-> [card] [Vision Models](/guides/querying-vision-language-models)
->
-> Analyze images and documents
-
-> [card] [Embeddings & Reranking](/guides/querying-embeddings-models)
->
-> Use embeddings & reranking in search & context retrieval
-
-> [card] [Batch Inference](/guides/batch-inference)
->
-> Run async inference jobs at scale, faster and cheaper
-
-## Resources & help
-
-> [card] [Which model should I use?](/guides/recommended-models)
->
-> Find the best model for your use case
-
-> [card] [Cookbook](https://github.com/fw-ai-external/cookbook)
->
-> Code examples and tutorials
-
-> [card] [API Reference](/api-reference/introduction)
->
-> Complete API documentation
-
-> [card] [Discord Community](https://discord.gg/fireworks-ai)
->
-> Ask questions and get help from developers
-
-> [card] [Security & Compliance](https://trust.fireworks.ai/)
->
-> SOC 2, HIPAA, and audit reports
-
-> [card] [System Status](https://status.fireworks.ai/)
->
-> Check service uptime
-
-> [card] [Talk to Sales](https://fireworks.ai/company/contact-us)
->
-> Talk to our team
-
-
-# Fireworks Nexus
-Source: https://docs.fireworks.ai/getting-started/nexus
-
-Connect coding tools, agents, applications, and gateways to open models and Nexus Auto.
-
-See the [Nexus documentation](/nexus).
-
-
-# Deployments Quickstart
+# Deployments quickstart
 Source: https://docs.fireworks.ai/getting-started/ondemand-quickstart
 
 Deploy open-source models on dedicated GPUs on Fireworks in minutes, covering deployment creation, GPU sizing, and calling the endpoint from the API.
@@ -12995,12 +12893,14 @@ Ready to scale to production, explore other modalities, or customize your models
 > Complete API documentation
 
 
-# Serverless Quickstart
+# Serverless inference quickstart
 Source: https://docs.fireworks.ai/getting-started/quickstart
 
 Make your first serverless API call with GLM 5.3 Flash: create an API key and send a chat completion with curl or the Python SDK.
 
 Serverless is the fastest way to get started with using open models. This quickstart will help you make your first API call in minutes.
+
+To run models on your own dedicated GPUs instead, see the [Deployments quickstart](/getting-started/ondemand-quickstart).
 
 ## Step 1: Create and export an API key
 
@@ -13020,7 +12920,7 @@ Once you have your API key, export it as an environment variable in your termina
 > setx FIREWORKS_API_KEY "your_api_key_here"
 > ```
 
-## Step 2: Make your first Serverless API call
+## Step 2: Make your first serverless API call
 
 > [tab] Python (Fireworks SDK)
 >
@@ -14225,7 +14125,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
    2. Check that your account has sufficient quota for batch jobs.
 4. Progress may pause while waiting on capacity. The job will resume automatically.
 
-## Getting Started
+## Getting started
 
 > [accordion] 1. Prepare Your Dataset
 >
@@ -14525,7 +14425,7 @@ The equivalent HTTP field is `systemPrompt`:
 > * **Cache optimization:** Place static content first in prompts
 > * **Shared system prompt:** If every row uses the same system message, set it once with `--system-prompt` instead of repeating it per row — smaller upload and cache-friendly (see [Job-level system prompt](#job-level-system-prompt))
 
-## Next Steps
+## Next steps
 
 > [card] [Prompt Caching](/guides/prompt-caching)
 >
@@ -14901,7 +14801,7 @@ response = client.completions.create(
 > Complete API documentation
 
 
-# Tool Calling
+# Tool calling
 Source: https://docs.fireworks.ai/guides/function-calling
 
 Connect models to external tools and APIs
@@ -15276,7 +15176,7 @@ response = client.chat.completions.create(
 > Full chat completions API documentation
 
 
-# Inference Error Codes
+# Inference error codes
 Source: https://docs.fireworks.ai/guides/inference-error-codes
 
 Common error codes, their meanings, and resolutions for inference requests
@@ -15986,7 +15886,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-### Additional information on Predicted Outputs:
+### Additional information on predicted outputs:
 
 * Using Predicted Outputs is free at this time
 * We recommend setting `temperature=0` for best results for most intended use cases of Predicted Outputs. In these cases, using Predicted Outputs does not impact the quality of outputs generated
@@ -16327,7 +16227,7 @@ else:
 > Using consistent user-based routing ensures complete user sessions are maintained on the same deployment, optimizing prompt cache performance regardless of the traffic fraction.
 
 
-# Embeddings & Reranking
+# Embeddings & reranking
 Source: https://docs.fireworks.ai/guides/querying-embeddings-models
 
 Generate text embeddings and rerank results on Fireworks using Voyage, Qwen, Nomic, and legacy models for semantic search, RAG, and retrieval pipelines.
@@ -16808,7 +16708,7 @@ While Qwen3 Embedding 8b and Qwen3 Reranker 8b are available on serverless, you 
 > Dedicated deployments scale to zero when idle, so the first request after a quiet period can fail while the deployment cold-starts. Retry with backoff rather than treating it as a hard failure.
 
 
-# Text Models
+# Text models
 Source: https://docs.fireworks.ai/guides/querying-text-models
 
 Query, track, and manage inference for text models on Fireworks with chat completions, streaming, tool use, and structured output via the OpenAI-compatible API.
@@ -17459,7 +17359,7 @@ Fireworks provides an OpenAI-compatible API, making migration from OpenAI straig
 > Complete API documentation
 
 
-# Vision Models
+# Vision models
 Source: https://docs.fireworks.ai/guides/querying-vision-language-models
 
 Query Fireworks vision-language models with image inputs to analyze photos, screenshots, charts, and documents through the chat completions API and OpenAI SDKs.
@@ -18967,13 +18867,13 @@ Source: https://docs.fireworks.ai/guides/recommended-models
 
 Pick the best Fireworks open-weight model for chat, coding, vision, embeddings, and agents, or migrate off Claude, GPT, and Gemini to comparable open models.
 
-Looking for the right open source model? Whether you're exploring by use case or migrating from closed source models like Claude, GPT, or Gemini, this guide provides recommendations based on **Fireworks internal testing**, **customer deployments**, and **external benchmarks**. We update it regularly as new models emerge.
+Looking for the right open source model? Whether you're exploring by use case or migrating from closed source models like Claude, GPT, or Gemini, this guide provides recommendations based on **Fireworks internal testing**, **customer deployments**, and **external benchmarks**. We update it regularly as new models emerge. To browse every model, see the [model catalog](https://fireworks.ai/models).
 
 > [!TIP]
 >
 > Medium and small models typically offer faster responses and lower cost, with some tradeoff in capability for more complex tasks.
 
-## Choose by Use Case
+## Choose by use case
 
 <table>
   <colgroup>
@@ -19053,18 +18953,18 @@ Looking for the right open source model? Whether you're exploring by use case or
 
 ***
 
-## Migrating from Closed Models?
+## Migrating from closed models?
 
 If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide to the best open source alternatives on Fireworks by use case and latency requirements.
 
-### Claude Alternatives
+### Claude alternatives
 
 | **Closed Source** | **Use Case** | **Latency Budget** | **Open Source Alternative** |
 | - | - | - | - |
 | **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases • Coding • Research agents | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) |
 | **Claude Haiku 4.5** | • Agentic use cases • Coding • Research agents | Low | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4) • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) *(small)* |
 
-### OpenAI GPT Alternatives
+### OpenAI GPT alternatives
 
 | **Closed Source** | **Use Case** | **Latency Budget** | **Open Source Alternative** |
 | - | - | - | - |
@@ -19092,7 +18992,7 @@ If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide
 *Last updated: November 2026*
 
 
-# Reliability and Error Handling
+# Reliability and error handling
 Source: https://docs.fireworks.ai/guides/reliability
 
 Recommended patterns for timeouts, retries, and error handling when building production applications on the Fireworks API.
@@ -19544,7 +19444,7 @@ Set `wire_api = "responses"` so Codex targets this endpoint rather than chat com
 | `400` combining background and streaming | Codex requested both. Disable one. |
 
 
-# Inference for RL Rollouts
+# Inference for RL rollouts
 Source: https://docs.fireworks.ai/guides/rollout-inference
 
 Configure Fireworks inference deployments for RL rollout traffic, including session affinity, KV-cache behavior, weight-swap timing, and MoE Router Replay.
@@ -19711,7 +19611,7 @@ For RL rollouts, the usual policy is:
 
 If you do not send a stable `x-multi-turn-session-id` for the trajectory, later requests are treated like new sessions for `new_session` semantics.
 
-## MoE Router Replay
+## MoE router replay
 
 For Mixture-of-Experts models, training-inference divergence often comes from the router picking different top-K experts at the same token position between trainer and inference. Aligning those choices across rollouts and training is known as [Rollout Router Replay (R3)](https://arxiv.org/abs/2510.11370).
 
@@ -19818,7 +19718,7 @@ Non-streaming responses are adding the same `model@snapshot_identity` convention
 > Session-affinity patterns for general cache hit optimization.
 
 
-# Audit & Access Logs
+# Audit & access logs
 Source: https://docs.fireworks.ai/guides/security_compliance/audit_logs
 
 Monitor and track account activity with audit logging on Fireworks Enterprise, including the dashboard view, REST API pagination, and event schema.
@@ -19974,7 +19874,7 @@ This retention policy is designed to be consistent with the OpenAI API while pro
 > The Response API retention policy only applies to conversation data when using the Response API endpoints. All other Fireworks services follow the zero data retention policy described above.
 
 
-# Data Security
+# Data security
 Source: https://docs.fireworks.ai/guides/security_compliance/data_security
 
 How Fireworks handles data for inference and training: zero data retention, encryption in transit and at rest, BYOB storage, and compliance certifications.
@@ -19989,7 +19889,7 @@ Fireworks does not log or store prompt or generation data for open models, witho
 
 For US-only inference residency, see [US-only Serverless](/serverless/us-only-serverless).
 
-## Secure Data Handling
+## Secure data handling
 
 **Data Ownership & Control:** Customers maintain ownership of their data. Customer data stored as part of an active workflow can be permanently deleted with auditable confirmation, and secure wipe processes ensure deleted assets cannot be reconstructed.
 
@@ -20007,7 +19907,7 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Access Logging:** All customer data access is logged, monitored, and protected against tampering. See [Audit & Access Logs](https://docs.fireworks.ai/guides/security_compliance/audit_logs).
 
-## Workload Isolation
+## Workload isolation
 
 Dedicated workloads run in logically isolated environments, preventing cross-customer access or data leakage.
 
@@ -20029,7 +19929,7 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 >
 > For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
 
-## Technical Safeguards
+## Technical safeguards
 
 * **Device Trust**: Only approved, secured devices with strong authentication can access sensitive Fireworks systems.
 * **Identity & Access Management**: Fine-grained access controls are enforced across all Fireworks environments, following the principle of least privilege.
@@ -20040,18 +19940,18 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 * **Monitoring & Detection**: Real-time monitoring and anomaly detection systems alert on suspicious activity
 * **Vulnerability Management**: Continuous scanning and patching processes keep infrastructure up to date against known threats.
 
-## Operational Security
+## Operational security
 
 * **Security Reviews & Testing**: Regular penetration testing validates controls.
 * **Incident Response**: A formal incident response plan ensures swift containment, customer notification, and remediation if an issue arises.
 * **Employee Access**: Only a minimal subset of Fireworks personnel have access to production systems, and all access is logged and periodically reviewed.
 * **Third-Party Risk Management**: Vendors and subprocessors undergo rigorous due diligence and contractual security obligations.
 
-## Compliance & Certifications
+## Compliance & certifications
 
 Fireworks aligns with leading industry standards to support customer compliance obligations.
 
-## ISO Certifications
+## ISO certifications
 
 Fireworks has achieved all three ISO certifications covering security, privacy, and AI management:
 
@@ -20193,7 +20093,7 @@ The following controls are available for training workloads:
 
 For inference-side controls — disabling Response API storage (`store=False`) or deleting a specific response — see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
 
-## Related Resources
+## Related resources
 
 > [card] [Zero Data Retention](/guides/security_compliance/data_handling)
 >
@@ -20351,7 +20251,7 @@ firectl sftj create \
   --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
 ```
 
-### Alternative: Credentials Secret
+### Alternative: Credentials secret
 
 Instead of IAM role federation, you can use static AWS access keys stored in a Fireworks secret:
 
@@ -20411,7 +20311,7 @@ firectl sftj create \
   --azure-tenant-id "{AZURE_TENANT_ID}"
 ```
 
-### Alternative: Credentials Secret
+### Alternative: Credentials secret
 
 Instead of workload identity federation, you can store Azure credentials in a Fireworks secret. The secret value must be a JSON object containing one of: `connection_string`, `sas_token`, or `account_key`.
 
@@ -20433,7 +20333,7 @@ firectl sftj create \
 > Workload Identity Federation is recommended for production. If using credentials, rotate them regularly.
 
 
-# Customer-Managed Encryption Keys (CMEK)
+# Customer-managed encryption keys (CMEK)
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek
 
 Use your own cloud KMS key on Fireworks to control encryption of managed fine-tuning data and revoke access at any time by disabling the key in your KMS.
@@ -20670,7 +20570,7 @@ Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded 
 * Key registration, rotation, and CMEK enablement are performed by Fireworks on your behalf rather than self-serve.
 * Job metadata and transient scratch data are covered by separate operational and contractual controls, not your key.
 
-## Related Resources
+## Related resources
 
 > [card] [Bring Your Own Bucket (BYOB)](/guides/security_compliance/secure_training/byob)
 >
@@ -20681,7 +20581,7 @@ Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded 
 > Learn about our comprehensive security measures
 
 
-# Secure Reinforcement Fine-Tuning
+# Secure reinforcement fine-tuning
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft
 
 Run RFT end to end on Fireworks with your dataset, reward pipeline, and rollout infrastructure under your own control for data-sensitive training workloads.
@@ -20925,7 +20825,7 @@ print(response.choices[0].message.content)
 For a streaming request, fall back only if it fails before the stream starts. Replaying a stream that has already produced output can duplicate that output.
 
 
-# Video & Audio Inputs
+# Video & audio inputs
 Source: https://docs.fireworks.ai/guides/video-audio-inputs
 
 Query Fireworks multimodal models with video and audio inputs to transcribe, summarize, and reason over media directly through the chat completions API.
@@ -21251,7 +21151,66 @@ def preprocess_video(video_path: str) -> tuple[str, str]:
 > Deploy models on dedicated GPUs
 
 
-# Model Quality and Precision
+# Build with Fireworks
+Source: https://docs.fireworks.ai/index
+
+The intelligence platform to run, train, and deploy frontier intelligence with open models.
+
+[Get started](/getting-started/quickstart)
+[Use open models with your coding agent ](/nexus/quickstart)
+
+> [card] [Try open models](/getting-started/quickstart)
+>
+> Inference
+> Make your first serverless API call in minutes. Pay per token, with no GPUs to manage.
+
+> [card] [Power coding agents with open models](/nexus/quickstart)
+>
+> Nexus
+> Use Fireworks models with your agent through the Nexus CLI, or let Nexus Auto pick the model.
+
+> [card] [Train your own model](/fine-tuning/finetuning-intro)
+>
+> Training
+> Fine-tune models up to 1T+ parameters on your data with supervised or reinforcement learning, then deploy.
+
+Not sure where to start? [Talk to our team](https://fireworks.ai/contact).
+
+## Start building
+
+> [card] [Migrate to Fireworks](/tools-sdks/migrate-to-fireworks)
+>
+> Swap in open models with the same API and SFT data format you use today.
+
+> [card] [Deploy models & autoscale on dedicated GPUs](/getting-started/ondemand-quickstart)
+>
+> Deploy with high performance on dedicated GPUs with fast autoscaling and minimal cold starts. Optimize deployments for speed and throughput.
+
+> [card] [Explore the model catalog](https://fireworks.ai/models)
+>
+> Browse 100+ text, vision, audio, image, and embedding models.
+
+## Resources
+
+> [card] [Pricing](https://fireworks.ai/pricing)
+
+> [card] [Talk to sales](https://fireworks.ai/contact)
+
+> [card] [Compare models](/guides/recommended-models)
+
+> [card] [Security and compliance](https://trust.fireworks.ai/)
+
+Popular guides
+
+[Make your first API call](/getting-started/quickstart)
+[Migrate from OpenAI](/tools-sdks/openai-compatibility)
+[Call tools and get structured output](/structured-responses/structured-response-formatting)
+[Run batch jobs](/guides/batch-inference)
+[Function calling](/guides/function-calling)
+[Fine-tune a model](/fine-tuning/training-api/cookbook/sft)
+
+
+# Model quality and precision
 Source: https://docs.fireworks.ai/models/model-quality
 
 How Fireworks tunes precision per model and validates every launch against the provider's official API before it serves production traffic.
@@ -21511,7 +21470,7 @@ If no FP8 shape exists for your model, start from the closest shape and override
 > Quantized deployments can only be served using H100 GPUs.
 
 
-# Custom Models
+# Custom models
 Source: https://docs.fireworks.ai/models/uploading-custom-models
 
 Upload, verify, and deploy custom models on Fireworks from Hugging Face or local checkpoints, including supported architectures and quantization options.
@@ -22009,7 +21968,7 @@ If it returns `FAILED_PRECONDITION`, files are still landing — wait and retry.
 2. **Deploy**: see the [Custom Models guide](/models/uploading-custom-models#deploying-your-model) for deployment instructions.
 
 
-# Overview
+# Use coding agents with Fireworks
 Source: https://docs.fireworks.ai/nexus
 
 Use Nexus Auto in Claude Code, ChatGPT, Codex, and the tools you already use. Every task gets the right model, open or closed, at the lowest cost.
@@ -26244,12 +26203,12 @@ curl -X PATCH \
 * `PATCH /v1/accounts/<ACCOUNT_ID>/users/<USER_ID>/usageLimits` to set `limit_override` (an unset value removes the override)
 
 
-# Serverless Inference Overview
+# Serverless inference overview
 Source: https://docs.fireworks.ai/serverless/overview
 
 How Serverless inference works on Fireworks: serverless modes, per-token billing, request headers, prompt caching, model lifecycle, and when to pick Serverless.
 
-## What is Serverless Inference
+## What is Serverless inference
 
 Serverless Inference is multi-tenant inference for popular open models running on Fireworks-managed infrastructure. You point your client at `api.fireworks.ai`, send tokens, and pay only for what you use — no GPUs to size, no autoscaler to tune, no cold starts to wait through. Models eligible for Serverless carry the **Serverless** tag in the [model library](https://fireworks.ai/models). To make your first call, see the [Serverless quickstart](/getting-started/quickstart).
 
@@ -26321,7 +26280,7 @@ Serverless models are managed by the Fireworks team and may be updated or deprec
 
 For production workloads requiring long-term model stability, we recommend [on-demand deployments](/guides/ondemand-deployments), which give you full control over model versions and updates.
 
-## Serverless vs On-demand
+## Serverless vs on-demand
 
 | When Serverless fits | When On-demand fits |
 | - | - |
@@ -26366,7 +26325,7 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
 > Dedicated GPUs for predictable throughput and custom models.
 
 
-# Serverless Pricing
+# Serverless pricing
 Source: https://docs.fireworks.ai/serverless/pricing
 
 Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, Fast, and Ultra-fast (Preview) serverless mode rates.
@@ -26459,7 +26418,7 @@ Embeddings are billed per 1M input tokens.
 * For account-level controls (spend tiers, monthly spend limits, on-demand GPU quotas), see [Account quotas](/guides/quotas_usage/account-quotas).
 
 
-# Serverless Rate Limits
+# Serverless rate limits
 Source: https://docs.fireworks.ai/serverless/rate-limits
 
 How per-model adaptive rate limits work on Fireworks serverless inference: bounds, adjustment logic, and how limits grow and shrink with your recent usage of each model.
@@ -26779,7 +26738,7 @@ The diagram does not show Elastic Burst separately. When available, Elastic Burs
 > Yes. [Contact us](https://fireworks.ai/contact) to discuss your requirements.
 
 
-# Serverless Modes
+# Serverless modes
 Source: https://docs.fireworks.ai/serverless/serverless-modes
 
 Compare Standard, Priority, Fast, and Ultra-fast (Preview) serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
@@ -26833,7 +26792,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 
-## Ultra-fast (Preview)
+## Ultra-fast (preview)
 
 Ultra-fast is a high-speed mode, useful for extreme latency sensitive applications that require fast response speeds, at a higher price point. Ultra-fast variants aim for **6-8x generation speed (up to 10x for agentic coding tasks)**. Like fast, it is not a different model and the quality of the model remains the same.
 
@@ -27292,7 +27251,7 @@ For EU-only Serverless, contact [sales](https://fireworks.ai/company/contact-us)
 * [Data Security](/guides/security_compliance/data_security)
 
 
-# Structured Outputs
+# Structured outputs
 Source: https://docs.fireworks.ai/structured-responses/structured-response-formatting
 
 Enforce Fireworks LLM output formats with JSON schemas or custom grammars, including supported schema features like pattern, length, size, and oneOf keywords.
@@ -27303,7 +27262,7 @@ Structured outputs ensure model responses conform to your specified format, maki
 >
 > New to structured outputs? Check out the [Serverless Quickstart](/getting-started/quickstart#structured-outputs-json-mode) for a quick introduction.
 
-## Quick Start
+## Quick start
 
 Force model output to conform to a [JSON schema](https://json-schema.org/):
 
@@ -27345,7 +27304,7 @@ print(response.choices[0].message.content)
 >
 > Include the schema in **both** your prompt and the `response_format` for best results. The model doesn't automatically "see" the schema—it's enforced during generation.
 
-## Response Format Options
+## Response format options
 
 Fireworks supports two JSON mode variants:
 
@@ -27381,7 +27340,7 @@ Fireworks supports two JSON mode variants:
 >
 > **Function calling:** When using [Tool Calling](/guides/function-calling), JSON mode is enabled automatically—these guidelines don't apply.
 
-## JSON Schema Support
+## JSON schema support
 
 Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specification) constructs, and also accepts Draft-7 keyword aliases (`definitions`) for backward compatibility:
 
@@ -27409,7 +27368,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 >
 > `pattern` is enforced on a best-effort basis: regexes that can be compiled into the underlying grammar are enforced, and constructs that can't (e.g. lookahead/lookbehind) are safely ignored — the field falls back to an unconstrained string and the request still succeeds.
 
-### JSON Pointer references (`$ref`)
+### JSON pointer references (`$ref`)
 
 `$ref` follows the [RFC 6901 JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) syntax used by JSON Schema 2020-12. Fireworks supports two pointer forms in the same document:
 
@@ -27478,7 +27437,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 > >
 > > Using `response_format` with `json_schema` disables reasoning output. To get **both** reasoning and structured JSON, include the schema in your prompt instead and omit the `response_format` parameter.
 >
-> #### Example Usage
+> #### Example usage
 >
 > ````python theme={null}
 > import json
@@ -27528,7 +27487,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 > >
 > > If you don't need reasoning and just want guaranteed schema-conformant JSON, use the `response_format` parameter as shown in the [Quick Start](#quick-start) above. The `response_format` approach enforces the schema during generation, eliminating the need to parse the JSON yourself.
 >
-> #### Use Cases
+> #### Use cases
 >
 > Reasoning mode is useful for:
 >
@@ -27538,7 +27497,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 >
 > See the [Reasoning guide](/guides/reasoning) for more on working with reasoning models.
 
-## Grammar Mode
+## Grammar mode
 
 For advanced use cases where JSON isn't sufficient, use [Grammar mode](/structured-responses/structured-output-grammar-based) to constrain outputs using custom BNF grammars. Grammar mode is ideal for:
 
@@ -27590,7 +27549,7 @@ client = anthropic.Anthropic(
 )
 
 response = client.messages.create(
-    model="accounts/fireworks/models/kimi-k2p5",
+    model="accounts/fireworks/models/kimi-k3",
     max_tokens=256,
     messages=[
         {"role": "user", "content": "Say hello in Spanish. Reply in one word."}
@@ -27609,7 +27568,7 @@ const client = new Anthropic({
 });
 
 const response = await client.messages.create({
-  model: "accounts/fireworks/models/kimi-k2p5",
+  model: "accounts/fireworks/models/kimi-k3",
   max_tokens: 256,
   messages: [
     { role: "user", content: "Say hello in Spanish. Reply in one word." },
@@ -27625,7 +27584,7 @@ curl --request POST \
   --header "Authorization: Bearer $FIREWORKS_API_KEY" \
   --header "Content-Type: application/json" \
   --data '{
-    "model": "accounts/fireworks/models/kimi-k2p5",
+    "model": "accounts/fireworks/models/kimi-k3",
     "max_tokens": 256,
     "messages": [
       {
@@ -27642,7 +27601,7 @@ curl --request POST \
 
 ## Usage
 
-Use the Anthropic SDK as you normally would. Set `model` to a Fireworks model resource name, such as `accounts/fireworks/models/kimi-k2p5`.
+Use the Anthropic SDK as you normally would. Set `model` to a Fireworks model resource name, such as `accounts/fireworks/models/kimi-k3`.
 
 The [Serverless Quickstart](/getting-started/quickstart) includes Anthropic SDK examples for common use cases:
 
@@ -27834,7 +27793,7 @@ Point Claude Code at Fireworks by setting the base URL and using your Fireworks 
 ```bash theme={null}
 export ANTHROPIC_BASE_URL="https://api.fireworks.ai/inference"
 export ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY"
-export ANTHROPIC_MODEL="accounts/fireworks/models/kimi-k2p5"
+export ANTHROPIC_MODEL="accounts/fireworks/models/kimi-k3"
 
 claude
 ```
@@ -27870,7 +27829,7 @@ For non-streaming requests, usage is returned on the response object:
 
 ```python Python theme={null}
 response = client.messages.create(
-    model="accounts/fireworks/models/kimi-k2p5",
+    model="accounts/fireworks/models/kimi-k3",
     max_tokens=256,
     messages=[{"role": "user", "content": "Say hello"}],
 )
@@ -27881,7 +27840,7 @@ print(f"Output tokens: {response.usage.output_tokens}")
 
 ```javascript JavaScript theme={null}
 const response = await client.messages.create({
-  model: "accounts/fireworks/models/kimi-k2p5",
+  model: "accounts/fireworks/models/kimi-k3",
   max_tokens: 256,
   messages: [{ role: "user", content: "Say hello" }],
 });
@@ -27896,7 +27855,7 @@ For streaming requests, token usage is included in the final `message_delta` eve
 
 ```python Python theme={null}
 stream = client.messages.create(
-    model="accounts/fireworks/models/kimi-k2p5",
+    model="accounts/fireworks/models/kimi-k3",
     max_tokens=256,
     messages=[{"role": "user", "content": "Say hello"}],
     stream=True,
@@ -27910,7 +27869,7 @@ for event in stream:
 
 ```javascript JavaScript theme={null}
 const stream = client.messages.stream({
-  model: "accounts/fireworks/models/kimi-k2p5",
+  model: "accounts/fireworks/models/kimi-k3",
   max_tokens: 256,
   messages: [{ role: "user", content: "Say hello" }],
 });
@@ -32045,10 +32004,137 @@ sudo firectl upgrade
 ```
 
 
+# Migrate to Fireworks
+Source: https://docs.fireworks.ai/tools-sdks/migrate-to-fireworks
+
+Move an app from the OpenAI, Anthropic, NVIDIA NIM, or vLLM APIs to Fireworks. Keep your SDK and change the base URL, API key, and model name.
+
+Fireworks accepts OpenAI, Anthropic, and NVIDIA NIM or vLLM requests, so your SDK and app code stay as they are. You change three values: the base URL, the API key, and the model name.
+
+| Your app uses | Start here |
+| - | - |
+| OpenAI SDKs or the OpenAI API format | [OpenAI compatibility](/tools-sdks/openai-compatibility) |
+| Anthropic SDKs or the Messages API | [Anthropic compatibility](/tools-sdks/anthropic-compatibility) |
+| NVIDIA NIM or vLLM, including their extra request fields | [NIM compatibility](/tools-sdks/nim-compatibility) |
+
+## How to migrate
+
+**1. Create an API key**
+
+Create a key in the [Fireworks dashboard](https://app.fireworks.ai/settings/users/api-keys) and export it:
+
+```bash theme={null}
+export FIREWORKS_API_KEY="<YOUR_FIREWORKS_API_KEY>"
+```
+
+**2. Point your client at Fireworks**
+
+Pick your API in the tabs below. In your existing code, update the highlighted lines: the base URL, API key, and model name. The rest of your code stays the same.
+
+```python OpenAI {5-6,10} theme={null}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.fireworks.ai/inference/v1",
+    api_key=os.environ["FIREWORKS_API_KEY"],
+)
+
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/kimi-k3",
+    messages=[{"role": "user", "content": "Say hello in one word."}],
+)
+print(response.choices[0].message.content)
+```
+
+```python Anthropic {5-6,10} theme={null}
+import os
+import anthropic
+
+client = anthropic.Anthropic(
+    base_url="https://api.fireworks.ai/inference",  # no /v1
+    api_key=os.environ["FIREWORKS_API_KEY"],
+)
+
+response = client.messages.create(
+    model="accounts/fireworks/models/kimi-k3",
+    max_tokens=256,
+    messages=[{"role": "user", "content": "Say hello in one word."}],
+)
+print(response.content[0].text)
+```
+
+```python NIM / vLLM {5-6,10} theme={null}
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.fireworks.ai/inference/v1",
+    api_key=os.environ["FIREWORKS_API_KEY"],
+)
+
+response = client.chat.completions.create(
+    model="accounts/fireworks/models/kimi-k3",
+    messages=[{"role": "user", "content": "Say hello in one word."}],
+    # NIM-style extras still work. Fireworks maps this to reasoning_effort="none".
+    extra_body={"chat_template_kwargs": {"enable_thinking": False}},
+)
+print(response.choices[0].message.content)
+```
+
+```bash cURL theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "accounts/fireworks/models/kimi-k3",
+    "messages": [{"role": "user", "content": "Say hello in one word."}]
+  }'
+```
+
+```bash Environment variables theme={null}
+# OpenAI SDKs
+export OPENAI_BASE_URL="https://api.fireworks.ai/inference/v1"
+export OPENAI_API_KEY="$FIREWORKS_API_KEY"
+
+# Anthropic SDKs, Claude Code, and the Claude Agent SDK
+export ANTHROPIC_BASE_URL="https://api.fireworks.ai/inference"  # no /v1
+export ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY"
+```
+
+**3. Pick a replacement model**
+
+Fireworks model names use the format `accounts/fireworks/models/<model>`. To find the closest match for the model you use today, see [Compare models](/guides/recommended-models) or browse the [model catalog](https://fireworks.ai/models).
+
+**4. Check what behaves differently**
+
+Most requests work unchanged. These are the differences that most often affect a migration:
+
+* OpenAI: when the prompt plus `max_tokens` exceeds the context window, Fireworks lowers `max_tokens` instead of returning an error. Set `context_length_exceeded_behavior` to `error` to match OpenAI. Streaming responses include `usage` in the final chunk.
+* Anthropic: Fireworks does not run server-side tools such as web search, code execution, memory, or web fetch. Declare them as client-side tools and run them yourself. The `anthropic-version` header is ignored.
+* NIM and vLLM: Fireworks maps the thinking keys in `chat_template_kwargs` to `reasoning_effort` and drops any other keys in that object.
+
+Each guide lists every supported field: [OpenAI](/tools-sdks/openai-compatibility#api-compatibility), [Anthropic](/tools-sdks/anthropic-compatibility#differences-from-anthropic), [NIM](/tools-sdks/nim-compatibility).
+
+**5. Test before you switch traffic**
+
+Send one request first. Then run the prompts, tool calls, and streaming paths your app depends on, and compare output quality and latency before you move production traffic.
+
+## Next steps
+
+> [card] [Get an API key](https://app.fireworks.ai/settings/users/api-keys)
+>
+> Create and manage keys in the Fireworks dashboard.
+
+> [card] [Compare models](/guides/recommended-models)
+>
+> Open-weight alternatives to Claude, GPT, and Gemini by use case.
+
+
 # NIM compatibility
 Source: https://docs.fireworks.ai/tools-sdks/nim-compatibility
 
-Point NVIDIA NIM and vLLM OpenAI clients at Fireworks with translated request extras like chat_template_kwargs to avoid Extra inputs are not permitted errors.
+Use NVIDIA NIM and vLLM clients with Fireworks. Fireworks accepts their extra request fields, such as chat_template_kwargs, so requests don't fail with "Extra inputs are not permitted".
 
 If you already call models through **NVIDIA NIM**, **vLLM**, or another OpenAI-compatible stack that sends NIM-style extras, you can point that client at Fireworks without rewriting every request.
 
@@ -32292,7 +32378,7 @@ completion = client.completions.create(
 print(completion.choices[0].text)
 ```
 
-### Chat Completion
+### Chat completion
 
 Works best for models trained for conversation (e.g. llama\*-chat variants):
 
@@ -32455,7 +32541,7 @@ See [Cookbook installation and migration](/fine-tuning/training-api/cookbook/ove
 
 Inference
 
-# New Serverless mode: Ultra-fast (Preview)
+# New Serverless mode: Ultra-fast (preview)
 
 **Ultra-fast** is a new high-speed Serverless mode, now in Preview, for highly latency-sensitive applications. Ultra-fast variants aim for 6-8x generation speed, and up to 10x for agentic coding tasks. Like Fast, it is not a different model, so output quality is the same.
 
@@ -32592,7 +32678,7 @@ See the [training model catalog](/fine-tuning/models) for current availability a
 
 Inference
 
-# Expanded Small serverless rate-limit tier
+# Expanded small serverless rate-limit tier
 
 The **Small** serverless model tier now includes models with fewer than **800B total parameters**, up from 600B. The **Medium** tier now covers models from **800B to less than 1.6T**.
 
@@ -32612,7 +32698,7 @@ See the [Serverless Training guide](/fine-tuning/training-api/serverless) for se
 
 Inference
 
-# Doubled serverless rate limits for Small models
+# Doubled serverless rate limits for small models
 
 We doubled the adaptive rate-limit ceilings for **Small** serverless models.
 
@@ -32628,7 +32714,7 @@ Medium and Large model ceilings are unchanged. [Serverless rate limits](/serverl
 
 Inference
 
-# Higher serverless rate limits for Small models
+# Higher serverless rate limits for small models
 
 We increased the adaptive rate-limit ceilings for **Small** serverless models and expanded the Small tier.
 
@@ -32990,27 +33076,27 @@ We are continuing to invest in faster, more capable models and appreciate your s
 
 InferenceTrainingPlatform
 
-# Video & Audio Models, AWS S3 Training Integration, and SSO Improvements
+# Video & audio models, AWS S3 training integration, and SSO improvements
 
-## **Video & Audio Input Models**
+## **Video & audio input models**
 
 You can now query multimodal models with video and audio inputs for video captioning, scene analysis, and multimodal question answering. Deploy models like Qwen3 Omni and Molmo2 to process video and audio content directly using the Chat Completions API.
 
 See the [Video & Audio Inputs guide](/guides/video-audio-inputs) for deployment instructions and code examples.
 
-## **AWS S3 Integration for Training Datasets**
+## **AWS S3 integration for training datasets**
 
 Training datasets can now be stored in your own AWS S3 buckets using GCP-to-AWS OIDC federation. This Bring Your Own Bucket (BYOB) approach keeps your data private while enabling secure access during Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs—no long-lived credentials required.
 
 See the [Secure Training (BYOB) documentation](/guides/security_compliance/secure_training) for IAM role setup and usage examples.
 
-## **Just-In-Time (JIT) User Provisioning for SSO** (Enterprise)
+## **Just-in-time (JIT) user provisioning for SSO** (enterprise)
 
 JIT user provisioning automatically creates user accounts when users sign in through SSO for the first time. Enable this when configuring your identity provider to eliminate manual user creation.
 
 See the [SSO documentation](/accounts/sso) for setup instructions.
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Video & Audio Inputs:** New guide for processing video and audio with Qwen3 Omni and Molmo2 models ([Video & Audio Inputs](/guides/video-audio-inputs))
 * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/guides/security_compliance/secure_training))
@@ -33047,21 +33133,21 @@ See the [SSO documentation](/accounts/sso) for setup instructions.
 
 TrainingPlatform
 
-# Warm-Start Training and Azure Model Uploads
+# Warm-start training and Azure model uploads
 
-## **Warm-Start Training for Reinforcement Fine-Tuning**
+## **Warm-start training for reinforcement fine-tuning**
 
 You can now warm-start Reinforcement Fine-Tuning jobs from previously supervised fine-tuned checkpoints using the `--warm-start-from` flag. This enables a streamlined SFT-to-RFT workflow where you first train a model with supervised fine-tuning, then continue training with reinforcement learning.
 
 See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models) for details.
 
-## **Azure Federated Identity for Model Uploads**
+## **Azure federated identity for model uploads**
 
 Model uploads from Azure Blob Storage now support Azure AD federated identity authentication as an alternative to SAS tokens. This eliminates the need for credential rotation and enables secure, credential-less authentication.
 
 See the [Uploading Custom Models documentation](/models/uploading-custom-models) for setup instructions.
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models))
 * **Azure Federated Identity:** Setup instructions for Azure AD authentication ([Uploading Custom Models](/models/uploading-custom-models))
@@ -33086,13 +33172,13 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 
 InferenceTrainingPlatform
 
-# Playground Categories, New User Roles, Fine-Tuning Improvements, and New Models
+# Playground categories, new user roles, fine-tuning improvements, and new models
 
-## **Playground Categories**
+## **Playground categories**
 
 The Playground now features category tabs (LLM, Image, TTS, STT) in the header for easier switching between model types. The playground automatically detects the appropriate category based on the selected model and provides smart defaults for each category.
 
-## **User Roles: Contributor and Inference**
+## **User roles: Contributor and Inference**
 
 New user roles provide more granular access control for team collaboration:
 
@@ -33101,7 +33187,7 @@ New user roles provide more granular access control for team collaboration:
 
 Assign these roles when inviting team members to provide appropriate access levels.
 
-## **Fine-Tuning Improvements**
+## **Fine-tuning improvements**
 
 Fine-tuning workflows have been enhanced with several new capabilities:
 
@@ -33110,13 +33196,13 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 * **Download Output Datasets**: Download output datasets from Reinforcement Fine-Tuning jobs, including individual files or bulk download as a ZIP archive.
 * **Download Rollout Logs**: Download rollout logs from Reinforcement Fine-Tuning jobs for offline analysis.
 
-## ✨ New Models
+## ✨ New models
 
 * **[Gemma 3 12B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-12b-it)** is now available in the Model Library
 * **[Gemma 3 4B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-4b-it)** is now available in the Model Library
 * **[Qwen3 Omni 30B A3B Instruct](https://app.fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct)** is now available in the Model Library
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
 * **Evaluator APIs:** Added Create Evaluator, Update Evaluator, and helper endpoints for evaluator source code, build logs, and upload validation
@@ -33146,9 +33232,9 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 
 InferenceTrainingPlatform
 
-# Reasoning Guide, Prompt Caching Updates, New Models and CLI Updates
+# Reasoning guide, prompt caching updates, new models and CLI updates
 
-## **Reasoning Guide**
+## **Reasoning guide**
 
 A new [Reasoning guide](/guides/reasoning) is now available in the documentation. This comprehensive guide covers:
 
@@ -33159,7 +33245,7 @@ A new [Reasoning guide](/guides/reasoning) is now available in the documentation
 
 The guide provides code examples using the Fireworks Python SDK and explains how to work with models that support extended reasoning capabilities.
 
-## **Prompt Caching Updates**
+## **Prompt caching updates**
 
 Prompt caching documentation has been updated with expanded guidance:
 
@@ -33169,12 +33255,12 @@ Prompt caching documentation has been updated with expanded guidance:
 
 See the [Prompt Caching guide](/guides/prompt-caching) for details.
 
-## ✨ New Models
+## ✨ New models
 
 * **[Devstral Small 2 24B Instruct 2512](https://app.fireworks.ai/models/fireworks/devstral-small-2-24b-instruct-2512)** is now available in the Model Library
 * **[NVIDIA Nemotron Nano 3 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-nano-3-30b-a3b)** is now available in the Model Library
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Reasoning Guide:** New documentation for working with reasoning models, including `reasoning_content`, `reasoning_effort`, streaming, and interleaved thinking ([Reasoning](/guides/reasoning))
 * **Recommended Models:** Updated recommendations to include DeepSeek V3.2 for code generation and Kimi K2 Thinking as a GPT-5 alternative ([Recommended Models](/guides/recommended-models))
@@ -33210,20 +33296,20 @@ See the [Prompt Caching guide](/guides/prompt-caching) for details.
 
 InferenceTrainingPlatform
 
-# DeepSeek V3.2 on Serverless, Cached Token Pricing, and New Models
+# DeepSeek V3.2 on Serverless, cached token pricing, and new models
 
 ## ☁️ Serverless
 
 * **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available on serverless
 
-## **Cached Token Pricing Display**
+## **Cached token pricing display**
 
 The Model Library and model detail pages now display cached and uncached input
 token pricing for serverless models that support prompt caching. This gives you
 better visibility into potential cost savings when using prompt caching with
 supported models.
 
-## **Evaluations Dashboard Improvements**
+## **Evaluations dashboard improvements**
 
 The Evaluations dashboard has been enhanced with new filtering and status tracking capabilities:
 
@@ -33231,7 +33317,7 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 * Quick filters to filter evaluators and evaluation jobs by status
 * Improved table layout with actions integrated into the status column
 
-## ✨ New Models
+## ✨ New models
 
 * **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available in the Model Library
 * **[Ministral 3 14B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-14b-instruct-2512)** is now available in the Model Library
@@ -33241,7 +33327,7 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 * **[Qwen3-VL-32B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-32b-instruct)** is now available in the Model Library
 * **[Qwen3-VL-8B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-8b-instruct)** is now available in the Model Library
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Reranking Guide:** Added documentation for using the `/rerank` endpoint and `/embeddings` endpoint with `return_logits` for reranking, including parallel batching examples ([Querying Embeddings Models](/guides/querying-embeddings-models))
 
@@ -33269,9 +33355,9 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 
 InferenceTrainingPlatform
 
-# Audit Logs, Dataset Download, Weighted Training for Reinforcement Fine-Tuning, and New Model
+# Audit logs, dataset download, weighted training for reinforcement fine-tuning, and new model
 
-## **Audit Logs in Web App**
+## **Audit logs in web app**
 
 You can now view and search audit logs directly from the Fireworks web app. The new Audit Logs page provides:
 
@@ -33281,7 +33367,7 @@ You can now view and search audit logs directly from the Fireworks web app. The 
 
 See the [Audit Logs documentation](/guides/security_compliance/audit_logs) for more information.
 
-## **Dataset Download**
+## **Dataset download**
 
 You can now download datasets directly from the Fireworks web app. The new download functionality allows you to:
 
@@ -33289,13 +33375,13 @@ You can now download datasets directly from the Fireworks web app. The new downl
 * Download all files at once with "Download All"
 * Access downloads from the Datasets table in the dashboard
 
-## **Weighted Training for Reinforcement Fine-Tuning**
+## **Weighted training for reinforcement fine-tuning**
 
 Reinforcement Fine-Tuning now supports per-example weighting, giving you more control over which samples have greater influence during training. This feature mirrors the weighted training functionality already available in Supervised Fine-Tuning.
 
 See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models) for details on the weight field format.
 
-## ✨ New Models
+## ✨ New models
 
 * **[KAT Coder](https://app.fireworks.ai/models/fireworks/kat-coder)** is now available in the Model Library
 
@@ -33321,9 +33407,9 @@ See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning
 
 InferenceTrainingPlatform
 
-# Evaluator Improvements, Kimi K2 Thinking on Serverless, and New API Endpoints
+# Evaluator improvements, Kimi K2 Thinking on Serverless, and new API endpoints
 
-## **Improved Evaluator Creation Experience**
+## **Improved evaluator creation experience**
 
 The evaluator creation workflow has been significantly enhanced with GitHub template integration. You can now:
 
@@ -33332,14 +33418,14 @@ The evaluator creation workflow has been significantly enhanced with GitHub temp
 * Create evaluators with a streamlined save dialog
 * View evaluators in a new sortable and paginated table
 
-## **MLOps & Observability Integrations**
+## **MLOps & observability integrations**
 
 New documentation for integrating Fireworks with MLOps and observability tools:
 
 * [Weights & Biases (W\&B)](/ecosystem/integrations/wandb) integration for experiment tracking during fine-tuning
 * MLflow integration for model management and experiment logging
 
-## ✨ New Models
+## ✨ New models
 
 * **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available in the Model Library
 * **[KAT Dev 32B](https://app.fireworks.ai/models/fireworks/kat-dev-32b)** is now available in the Model Library
@@ -33349,7 +33435,7 @@ New documentation for integrating Fireworks with MLOps and observability tools:
 
 * **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available on serverless
 
-## 📚 New REST API Endpoints
+## 📚 New REST API endpoints
 
 New REST API endpoints are now available for managing Reinforcement Fine-Tuning Steps and deployments:
 
@@ -33453,7 +33539,7 @@ We now support Qwen3 MoE model (Qwen3 dense models are already supported) and GP
 
 TrainingPlatform
 
-## 🎨 Vision-Language Model Fine-Tuning
+## 🎨 Vision-language model fine-tuning
 
 You can now fine-tune Vision-Language Models (VLMs) on Fireworks AI using the Qwen 2.5 VL model family.
 This extends our Supervised Fine-tuning V2 platform to support multimodal training with both images and text data.

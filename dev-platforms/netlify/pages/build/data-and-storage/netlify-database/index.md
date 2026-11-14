@@ -13,7 +13,7 @@ description: "A zero-config, fully integrated Postgres database primitive for Ne
 
 Netlify Database is a fully managed Postgres database built into the Netlify platform. We automatically handle provisioning, [migrations](/build/data-and-storage/netlify-database/migrations/), and [branching](#database-branches) for you, so you can focus on building your application.
 
-> **Pricing Information:** Netlify Database is available on [Credit-based plans](https://www.netlify.com/pricing/) only. When a database is active, it consumes credits for the compute and bandwidth used. However, database storage space (i.e., the size of data stored) is free until July 1, 2026. Learn more in our [billing and usage docs](https://docs.netlify.com/build/data-and-storage/netlify-database/billing-and-usage/).
+> **Pricing Information:** Netlify Database is available on [Credit-based plans](https://www.netlify.com/pricing/) only. When a database is active, it consumes credits for the compute and bandwidth used. Database storage space (the size of the data stored) is currently free, and we'll notify you well in advance before we start charging for it. Learn more in our [billing and usage docs](https://docs.netlify.com/build/data-and-storage/netlify-database/billing-and-usage/).
 
 ## Use cases
 

@@ -21,7 +21,7 @@ Regardless of the method you choose, you need to provide identifiers for the obj
 ```curl
 curl -G https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d customer={{CUSTOMER_ID}}
+  -d "customer={{CUSTOMER_ID}}"
 ```
 
 The returns the set of subscriptions for the specified customer, from which you can retrieve the subscription ID (`id`), any subscription item IDs (`items.data.id`) and the subscription items price ID (`items.data.price.id`).

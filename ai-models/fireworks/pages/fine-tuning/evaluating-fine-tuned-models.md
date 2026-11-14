@@ -1,5 +1,5 @@
 ---
-title: "Evaluating Trained Models"
+title: "Evaluating trained models"
 source: https://docs.fireworks.ai/fine-tuning/evaluating-fine-tuned-models
 path: fine-tuning/evaluating-fine-tuned-models
 ---

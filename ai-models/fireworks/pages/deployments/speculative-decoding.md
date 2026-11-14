@@ -1,5 +1,5 @@
 ---
-title: "Speculative Decoding"
+title: "Speculative decoding"
 source: https://docs.fireworks.ai/deployments/speculative-decoding
 path: deployments/speculative-decoding
 ---

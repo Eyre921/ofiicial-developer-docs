@@ -4411,6 +4411,37 @@ export const userState = $state({
 
 Stores are still a good solution when you have complex asynchronous data streams or it's important to have more manual control over updating values or listening to changes. If you're familiar with RxJs and want to reuse that knowledge, the `$` also comes in handy for you.
 
+## Granularity of stores
+
+Stores notify subscribers about their entire value. Unlike a deeply reactive [`$state` proxy]($state#Deep-state), a plain object held in a store does not track individual property reads. An [`$effect`]($effect) that reads `$user.name` therefore also re-runs when the store is updated because another property, such as `age`, changed.
+
+If an effect should only react to a particular value, select that value with [`$derived`]($derived):
+
+<!-- codeblock:start {"title":"$effect.tracking()"} -->
+```svelte
+<!--- file: App.svelte --->
+<script>
+	import { writable } from 'svelte/store';
+
+	const user = writable({ name: 'Ada', age: 36 });
+	let name = $derived($user.name);
+
+	$effect(() => {
+		// Re-runs when either name or age changes
+		console.log('Store updated:', $user.name);
+	});
+
+	$effect(() => {
+		// Re-runs only when name changes
+		console.log('Name changed:', name);
+	});
+</script>
+
+<button onclick={() => ($user.age += 1)}>Increase age</button>
+<button onclick={() => ($user.name += '!')}>Change name</button>
+```
+<!-- codeblock:end -->
+
 ## svelte/store
 
 The `svelte/store` module contains a minimal store implementation which fulfil the store contract. It provides methods for creating stores that you can update from the outside, stores you can only update from the inside, and for combining and deriving stores.
@@ -11527,7 +11558,7 @@ move towards it over time, taking account of the `spring.stiffness` and `spring.
 </script>
 
 <input type="range" bind:value={spring.target} />
-<input type="range" bind:value={spring.current} disabled />
+<input type="range" value={spring.current} disabled />
 ```
 
 <div class="ts-block">
@@ -11663,7 +11694,7 @@ move towards it over time, taking account of the `delay`, `duration` and `easing
 </script>
 
 <input type="range" bind:value={tween.target} />
-<input type="range" bind:value={tween.current} disabled />
+<input type="range" value={tween.current} disabled />
 ```
 
 <div class="ts-block">
@@ -25710,7 +25741,7 @@ The [Svelte CLI](/docs/cli) gives the option to [set up Better Auth](/docs/cli/b
 
 ## Guides
 
-If you'd like to implement your own auth system, [the Lucia auth guide](https://lucia-auth.com/) provides a reference for session-based web app auth with SvelteKit examples.
+If you'd like to implement your own auth system, [Pilcrow's Auth Book](https://auth.pilcrowonpaper.com/) provides a reference for session-based web app auth . There's also a [simple example](https://github.com/lucia-auth/lucia/blob/main/code/auth_session.ts) of how to implement this generally.
 
 # Performance
 

@@ -1,5 +1,5 @@
 ---
-title: "Operational Model"
+title: "Operational model"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model
 path: ecosystem/integrations/byoc/operational-model
 ---

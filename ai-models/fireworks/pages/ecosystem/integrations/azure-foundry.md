@@ -70,7 +70,7 @@ print(response.choices[0].message.content)
 
 Find your project endpoint in the Microsoft Foundry portal under **Project settings**.
 
-## PTU (Provisioned Throughput)
+## PTU (provisioned throughput)
 
 PTU deployments provide dedicated GPU capacity reserved for your workload, with consistent throughput and global region availability.
 
@@ -82,7 +82,7 @@ You can create a PTU deployment directly in the Azure portal. For more on provis
 
 For help with PTU sizing on Fireworks models, [contact us](https://fireworks.ai/contact).
 
-## Custom Models
+## Custom models
 
 Train on Fireworks and deploy on Foundry, or bring your own weights from wherever you post-train to deploy on Foundry. Your model is served on Fireworks infrastructure within Azure, billed through your Azure account.
 

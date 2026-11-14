@@ -8,7 +8,7 @@ Measure and optimize your deployment's performance with load testing
 
 Understanding your deployment's performance under various load conditions is essential for production readiness. Fireworks provides tools and best practices for benchmarking throughput, latency, and identifying bottlenecks.
 
-## Fireworks Benchmark Tool
+## Fireworks benchmark tool
 
 Use our open-source benchmarking tool to measure and optimize your deployment's performance:
 

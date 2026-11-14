@@ -95,7 +95,7 @@ The cost estimate Claude Code shows for the current session, through the Nexus C
 
 ***
 
-## Account & Billing
+## Account & billing
 
 **Account**\
 Your Fireworks AI organization identity. All deployments, models, training jobs, and API keys belong to an account. Referenced as `accounts/<your-account>` in firectl and the API.
@@ -117,7 +117,7 @@ An enterprise option to run inference entirely within your own cloud account. Yo
 
 ***
 
-## Fireworks Platform
+## Fireworks platform
 
 **Serverless inference**\
 Pay-per-token inference with no deployment management. Requests are routed globally by default; [US-only Serverless](/serverless/us-only-serverless) serves supported models from the US. Dedicated deployments support explicit placement with the **`--region`** flag on `firectl deployment create` (for example `GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`).
@@ -148,7 +148,7 @@ The Fireworks command-line tool for managing models, deployments, training jobs,
 
 ***
 
-## Models & Inference
+## Models & inference
 
 **Base model**\
 A foundation model available on Fireworks for inference or training. Referenced as `accounts/fireworks/models/<model-id>`.
@@ -275,7 +275,7 @@ JSON Lines format — one JSON object per line. Used for batch inference input f
 
 ***
 
-## Security & Compliance
+## Security & compliance
 
 **ISO 27001**\
 International standard for information security management systems (ISMS). Fireworks has achieved ISO 27001 certification. Certificate available at [trust.fireworks.ai](https://trust.fireworks.ai).
@@ -300,7 +300,7 @@ Fireworks' central repository for security documentation, compliance certificate
 
 ***
 
-## Inference Parameters
+## Inference parameters
 
 **Temperature**\
 Controls randomness in token sampling. `0.0` = deterministic. Higher values increase diversity.

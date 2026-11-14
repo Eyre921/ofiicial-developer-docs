@@ -1,5 +1,5 @@
 ---
-title: "Tool Calling"
+title: "Tool calling"
 source: https://docs.fireworks.ai/guides/function-calling
 path: guides/function-calling
 ---

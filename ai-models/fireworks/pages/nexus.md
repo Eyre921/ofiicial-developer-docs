@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Use coding agents with Fireworks"
 source: https://docs.fireworks.ai/nexus
 path: nexus
 ---

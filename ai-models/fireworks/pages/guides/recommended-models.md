@@ -6,13 +6,13 @@ path: guides/recommended-models
 
 Pick the best Fireworks open-weight model for chat, coding, vision, embeddings, and agents, or migrate off Claude, GPT, and Gemini to comparable open models.
 
-Looking for the right open source model? Whether you're exploring by use case or migrating from closed source models like Claude, GPT, or Gemini, this guide provides recommendations based on **Fireworks internal testing**, **customer deployments**, and **external benchmarks**. We update it regularly as new models emerge.
+Looking for the right open source model? Whether you're exploring by use case or migrating from closed source models like Claude, GPT, or Gemini, this guide provides recommendations based on **Fireworks internal testing**, **customer deployments**, and **external benchmarks**. We update it regularly as new models emerge. To browse every model, see the [model catalog](https://fireworks.ai/models).
 
 > [!TIP]
 >
 > Medium and small models typically offer faster responses and lower cost, with some tradeoff in capability for more complex tasks.
 
-## Choose by Use Case
+## Choose by use case
 
 <table>
   <colgroup>
@@ -92,18 +92,18 @@ Looking for the right open source model? Whether you're exploring by use case or
 
 ***
 
-## Migrating from Closed Models?
+## Migrating from closed models?
 
 If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide to the best open source alternatives on Fireworks by use case and latency requirements.
 
-### Claude Alternatives
+### Claude alternatives
 
 | **Closed Source** | **Use Case** | **Latency Budget** | **Open Source Alternative** |
 | - | - | - | - |
 | **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases • Coding • Research agents | High | • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [Kimi K3.1 Pro](https://app.fireworks.ai/models/fireworks/kimi-k3p1-pro) • [GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3.7 Plus](https://app.fireworks.ai/models/fireworks/qwen3p7-plus) |
 | **Claude Haiku 4.5** | • Agentic use cases • Coding • Research agents | Low | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4) • [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) • [MiniMax M3](https://app.fireworks.ai/models/fireworks/minimax-m3) • [Qwen3 8B](https://app.fireworks.ai/models/fireworks/qwen3-8b) *(small)* |
 
-### OpenAI GPT Alternatives
+### OpenAI GPT alternatives
 
 | **Closed Source** | **Use Case** | **Latency Budget** | **Open Source Alternative** |
 | - | - | - | - |

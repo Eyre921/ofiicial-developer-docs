@@ -1,5 +1,5 @@
 ---
-title: "Reliability and Error Handling"
+title: "Reliability and error handling"
 source: https://docs.fireworks.ai/guides/reliability
 path: guides/reliability
 ---

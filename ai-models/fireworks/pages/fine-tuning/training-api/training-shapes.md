@@ -1,5 +1,5 @@
 ---
-title: "Training Shapes"
+title: "Training shapes"
 source: https://docs.fireworks.ai/fine-tuning/training-api/training-shapes
 path: fine-tuning/training-api/training-shapes
 ---
@@ -24,7 +24,7 @@ You do not need to know the versioned shape reference, image tag, GPU layout, or
 
 Read the method off the shape card before you launch. For the same model, the LoRA shape and the full-parameter shape often differ in both GPU count and maximum context, so the two are rarely interchangeable.
 
-## What You Need To Know
+## What you need to know
 
 For most users, the workflow is:
 
@@ -41,7 +41,7 @@ Whether you can skip the shape ID depends on which of the two paths you use:
 
 On either path, set the shape ID yourself when you need a specific GPU layout or context limit.
 
-## What A Training Shape Controls
+## What a training shape controls
 
 A validated shape version can pin every field below. Together these are the launch profile, and none of them are yours to set. The hardware fields size one trainer replica: `acceleratorCount` × `nodeCount` is the GPU count for a single replica.
 
@@ -87,7 +87,7 @@ firectl training-shape-version get \
   accounts/fireworks/trainingShapes/qwen3-8b-128k/versions/latest
 ```
 
-## What You Can And Can't Change
+## What you can and can't change
 
 You can still configure normal training-loop fields such as:
 
@@ -104,7 +104,7 @@ Gradient accumulation is not a trainer-launch setting. To accumulate gradients, 
 
 For field-level behavior and dataclass details, see the [`FiretitanServiceClient`](/fine-tuning/training-api/reference/service-client) and [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 
-## Using a Training Shape
+## Using a training shape
 
 At launch, the shape ID resolves in three steps:
 

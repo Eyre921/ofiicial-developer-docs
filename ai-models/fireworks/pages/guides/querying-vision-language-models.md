@@ -1,5 +1,5 @@
 ---
-title: "Vision Models"
+title: "Vision models"
 source: https://docs.fireworks.ai/guides/querying-vision-language-models
 path: guides/querying-vision-language-models
 ---

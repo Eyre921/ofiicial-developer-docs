@@ -89,13 +89,13 @@ components:
     subpackage_speak/v1.speak.v1-server-0-SpeakV1Audio:
       name: SpeakV1Audio
       title: SpeakV1Audio
-      description: Receive audio chunks as they are generated
+      description: Audio data in the format specified by the request parameters
       payload:
         $ref: '#/components/schemas/SpeakV1_SpeakV1Audio'
     subpackage_speak/v1.speak.v1-server-1-SpeakV1Metadata:
       name: SpeakV1Metadata
       title: SpeakV1Metadata
-      description: Receive metadata about the audio generation
+      description: Metadata sent after the WebSocket handshake
       payload:
         $ref: '#/components/schemas/SpeakV1_SpeakV1Metadata'
     subpackage_speak/v1.speak.v1-server-2-SpeakV1Flushed:
@@ -119,29 +119,25 @@ components:
     subpackage_speak/v1.speak.v1-client-0-SpeakV1Text:
       name: SpeakV1Text
       title: SpeakV1Text
-      description: Text to convert to audio
+      description: Request to convert text to speech
       payload:
         $ref: '#/components/schemas/SpeakV1_SpeakV1Text'
     subpackage_speak/v1.speak.v1-client-1-SpeakV1Flush:
       name: SpeakV1Flush
       title: SpeakV1Flush
-      description: Flush the buffer and receive the final audio for text sent so far
+      description: Control messages for managing the Text to Speech WebSocket connection
       payload:
         $ref: '#/components/schemas/SpeakV1_SpeakV1Flush'
     subpackage_speak/v1.speak.v1-client-2-SpeakV1Clear:
       name: SpeakV1Clear
       title: SpeakV1Clear
-      description: >-
-        Clear the buffer and start a new audio generation. Potentially
-        destructive operation for any text in the buffer
+      description: Control messages for managing the Text to Speech WebSocket connection
       payload:
         $ref: '#/components/schemas/SpeakV1_SpeakV1Clear'
     subpackage_speak/v1.speak.v1-client-3-SpeakV1Close:
       name: SpeakV1Close
       title: SpeakV1Close
-      description: >-
-        Flush the buffer and close the connection gracefully after all audio is
-        generated
+      description: Control messages for managing the Text to Speech WebSocket connection
       payload:
         $ref: '#/components/schemas/SpeakV1_SpeakV1Close'
   schemas:

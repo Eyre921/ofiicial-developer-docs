@@ -1,5 +1,5 @@
 ---
-title: "Agent Frameworks"
+title: "Agent frameworks"
 source: https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks
 path: ecosystem/integrations/agent-frameworks
 ---
@@ -8,7 +8,7 @@ Build production AI agents on Fireworks with LangChain, LlamaIndex, CrewAI, Auto
 
 Fireworks AI seamlessly integrates with the best open-source agent frameworks, enabling you to build magical, production-ready applications powered by state-of-the-art language models.
 
-## Supported Frameworks
+## Supported frameworks
 
 > [card] [LangChain](https://docs.langchain.com/oss/python/integrations/providers/fireworks)
 >
@@ -34,6 +34,6 @@ Fireworks AI seamlessly integrates with the best open-source agent frameworks, e
 >
 > Build and deploy production AI agents with Fireworks models on AgentCore Runtime
 
-## Need Help?
+## Need help?
 
 For assistance with agent framework integrations, [contact our team](https://fireworks.ai/contact) or join our [Discord community](https://discord.gg/fireworks-ai).

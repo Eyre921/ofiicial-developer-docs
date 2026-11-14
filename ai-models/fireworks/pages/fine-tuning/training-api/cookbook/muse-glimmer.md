@@ -1,5 +1,5 @@
 ---
-title: "Cookbook: Muse Glimmer First Fine-Tune"
+title: "Cookbook: Muse Glimmer first fine-tune"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/muse-glimmer
 path: fine-tuning/training-api/cookbook/muse-glimmer
 ---

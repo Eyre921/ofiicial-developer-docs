@@ -30,7 +30,7 @@ See [Cookbook installation and migration](/fine-tuning/training-api/cookbook/ove
 
 Inference
 
-# New Serverless mode: Ultra-fast (Preview)
+# New Serverless mode: Ultra-fast (preview)
 
 **Ultra-fast** is a new high-speed Serverless mode, now in Preview, for highly latency-sensitive applications. Ultra-fast variants aim for 6-8x generation speed, and up to 10x for agentic coding tasks. Like Fast, it is not a different model, so output quality is the same.
 
@@ -167,7 +167,7 @@ See the [training model catalog](/fine-tuning/models) for current availability a
 
 Inference
 
-# Expanded Small serverless rate-limit tier
+# Expanded small serverless rate-limit tier
 
 The **Small** serverless model tier now includes models with fewer than **800B total parameters**, up from 600B. The **Medium** tier now covers models from **800B to less than 1.6T**.
 
@@ -187,7 +187,7 @@ See the [Serverless Training guide](/fine-tuning/training-api/serverless) for se
 
 Inference
 
-# Doubled serverless rate limits for Small models
+# Doubled serverless rate limits for small models
 
 We doubled the adaptive rate-limit ceilings for **Small** serverless models.
 
@@ -203,7 +203,7 @@ Medium and Large model ceilings are unchanged. [Serverless rate limits](/serverl
 
 Inference
 
-# Higher serverless rate limits for Small models
+# Higher serverless rate limits for small models
 
 We increased the adaptive rate-limit ceilings for **Small** serverless models and expanded the Small tier.
 
@@ -565,27 +565,27 @@ We are continuing to invest in faster, more capable models and appreciate your s
 
 InferenceTrainingPlatform
 
-# Video & Audio Models, AWS S3 Training Integration, and SSO Improvements
+# Video & audio models, AWS S3 training integration, and SSO improvements
 
-## **Video & Audio Input Models**
+## **Video & audio input models**
 
 You can now query multimodal models with video and audio inputs for video captioning, scene analysis, and multimodal question answering. Deploy models like Qwen3 Omni and Molmo2 to process video and audio content directly using the Chat Completions API.
 
 See the [Video & Audio Inputs guide](/guides/video-audio-inputs) for deployment instructions and code examples.
 
-## **AWS S3 Integration for Training Datasets**
+## **AWS S3 integration for training datasets**
 
 Training datasets can now be stored in your own AWS S3 buckets using GCP-to-AWS OIDC federation. This Bring Your Own Bucket (BYOB) approach keeps your data private while enabling secure access during Supervised Fine-Tuning and Reinforcement Fine-Tuning jobs—no long-lived credentials required.
 
 See the [Secure Training (BYOB) documentation](/guides/security_compliance/secure_training) for IAM role setup and usage examples.
 
-## **Just-In-Time (JIT) User Provisioning for SSO** (Enterprise)
+## **Just-in-time (JIT) user provisioning for SSO** (enterprise)
 
 JIT user provisioning automatically creates user accounts when users sign in through SSO for the first time. Enable this when configuring your identity provider to eliminate manual user creation.
 
 See the [SSO documentation](/accounts/sso) for setup instructions.
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Video & Audio Inputs:** New guide for processing video and audio with Qwen3 Omni and Molmo2 models ([Video & Audio Inputs](/guides/video-audio-inputs))
 * **AWS S3 Bucket Integration:** BYOB dataset storage for training via OIDC federation ([Secure Training](/guides/security_compliance/secure_training))
@@ -622,21 +622,21 @@ See the [SSO documentation](/accounts/sso) for setup instructions.
 
 TrainingPlatform
 
-# Warm-Start Training and Azure Model Uploads
+# Warm-start training and Azure model uploads
 
-## **Warm-Start Training for Reinforcement Fine-Tuning**
+## **Warm-start training for reinforcement fine-tuning**
 
 You can now warm-start Reinforcement Fine-Tuning jobs from previously supervised fine-tuned checkpoints using the `--warm-start-from` flag. This enables a streamlined SFT-to-RFT workflow where you first train a model with supervised fine-tuning, then continue training with reinforcement learning.
 
 See the [Warm-Start Training guide](/fine-tuning/reinforcement-fine-tuning-models) for details.
 
-## **Azure Federated Identity for Model Uploads**
+## **Azure federated identity for model uploads**
 
 Model uploads from Azure Blob Storage now support Azure AD federated identity authentication as an alternative to SAS tokens. This eliminates the need for credential rotation and enables secure, credential-less authentication.
 
 See the [Uploading Custom Models documentation](/models/uploading-custom-models) for setup instructions.
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Warm-Start Training:** New guide for SFT-to-RFT workflows ([Warm-Start Training](/fine-tuning/reinforcement-fine-tuning-models))
 * **Azure Federated Identity:** Setup instructions for Azure AD authentication ([Uploading Custom Models](/models/uploading-custom-models))
@@ -661,13 +661,13 @@ See the [Uploading Custom Models documentation](/models/uploading-custom-models)
 
 InferenceTrainingPlatform
 
-# Playground Categories, New User Roles, Fine-Tuning Improvements, and New Models
+# Playground categories, new user roles, fine-tuning improvements, and new models
 
-## **Playground Categories**
+## **Playground categories**
 
 The Playground now features category tabs (LLM, Image, TTS, STT) in the header for easier switching between model types. The playground automatically detects the appropriate category based on the selected model and provides smart defaults for each category.
 
-## **User Roles: Contributor and Inference**
+## **User roles: Contributor and Inference**
 
 New user roles provide more granular access control for team collaboration:
 
@@ -676,7 +676,7 @@ New user roles provide more granular access control for team collaboration:
 
 Assign these roles when inviting team members to provide appropriate access levels.
 
-## **Fine-Tuning Improvements**
+## **Fine-tuning improvements**
 
 Fine-tuning workflows have been enhanced with several new capabilities:
 
@@ -685,13 +685,13 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 * **Download Output Datasets**: Download output datasets from Reinforcement Fine-Tuning jobs, including individual files or bulk download as a ZIP archive.
 * **Download Rollout Logs**: Download rollout logs from Reinforcement Fine-Tuning jobs for offline analysis.
 
-## ✨ New Models
+## ✨ New models
 
 * **[Gemma 3 12B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-12b-it)** is now available in the Model Library
 * **[Gemma 3 4B Instruct](https://app.fireworks.ai/models/fireworks/gemma-3-4b-it)** is now available in the Model Library
 * **[Qwen3 Omni 30B A3B Instruct](https://app.fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct)** is now available in the Model Library
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Deployment Shapes API:** Added [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions) and [Get Deployment Shape](/api-reference/get-deployment-shape) endpoints for querying available deployment shapes
 * **Evaluator APIs:** Added Create Evaluator, Update Evaluator, and helper endpoints for evaluator source code, build logs, and upload validation
@@ -721,9 +721,9 @@ Fine-tuning workflows have been enhanced with several new capabilities:
 
 InferenceTrainingPlatform
 
-# Reasoning Guide, Prompt Caching Updates, New Models and CLI Updates
+# Reasoning guide, prompt caching updates, new models and CLI updates
 
-## **Reasoning Guide**
+## **Reasoning guide**
 
 A new [Reasoning guide](/guides/reasoning) is now available in the documentation. This comprehensive guide covers:
 
@@ -734,7 +734,7 @@ A new [Reasoning guide](/guides/reasoning) is now available in the documentation
 
 The guide provides code examples using the Fireworks Python SDK and explains how to work with models that support extended reasoning capabilities.
 
-## **Prompt Caching Updates**
+## **Prompt caching updates**
 
 Prompt caching documentation has been updated with expanded guidance:
 
@@ -744,12 +744,12 @@ Prompt caching documentation has been updated with expanded guidance:
 
 See the [Prompt Caching guide](/guides/prompt-caching) for details.
 
-## ✨ New Models
+## ✨ New models
 
 * **[Devstral Small 2 24B Instruct 2512](https://app.fireworks.ai/models/fireworks/devstral-small-2-24b-instruct-2512)** is now available in the Model Library
 * **[NVIDIA Nemotron Nano 3 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-nano-3-30b-a3b)** is now available in the Model Library
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Reasoning Guide:** New documentation for working with reasoning models, including `reasoning_content`, `reasoning_effort`, streaming, and interleaved thinking ([Reasoning](/guides/reasoning))
 * **Recommended Models:** Updated recommendations to include DeepSeek V3.2 for code generation and Kimi K2 Thinking as a GPT-5 alternative ([Recommended Models](/guides/recommended-models))
@@ -785,20 +785,20 @@ See the [Prompt Caching guide](/guides/prompt-caching) for details.
 
 InferenceTrainingPlatform
 
-# DeepSeek V3.2 on Serverless, Cached Token Pricing, and New Models
+# DeepSeek V3.2 on Serverless, cached token pricing, and new models
 
 ## ☁️ Serverless
 
 * **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available on serverless
 
-## **Cached Token Pricing Display**
+## **Cached token pricing display**
 
 The Model Library and model detail pages now display cached and uncached input
 token pricing for serverless models that support prompt caching. This gives you
 better visibility into potential cost savings when using prompt caching with
 supported models.
 
-## **Evaluations Dashboard Improvements**
+## **Evaluations dashboard improvements**
 
 The Evaluations dashboard has been enhanced with new filtering and status tracking capabilities:
 
@@ -806,7 +806,7 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 * Quick filters to filter evaluators and evaluation jobs by status
 * Improved table layout with actions integrated into the status column
 
-## ✨ New Models
+## ✨ New models
 
 * **[DeepSeek V3.2](https://app.fireworks.ai/models/fireworks/deepseek-v3p2)** is now available in the Model Library
 * **[Ministral 3 14B Instruct 2512](https://app.fireworks.ai/models/fireworks/ministral-3-14b-instruct-2512)** is now available in the Model Library
@@ -816,7 +816,7 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 * **[Qwen3-VL-32B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-32b-instruct)** is now available in the Model Library
 * **[Qwen3-VL-8B-Instruct](https://app.fireworks.ai/models/fireworks/qwen3-vl-8b-instruct)** is now available in the Model Library
 
-## 📚 Documentation Updates
+## 📚 Documentation updates
 
 * **Reranking Guide:** Added documentation for using the `/rerank` endpoint and `/embeddings` endpoint with `return_logits` for reranking, including parallel batching examples ([Querying Embeddings Models](/guides/querying-embeddings-models))
 
@@ -844,9 +844,9 @@ The Evaluations dashboard has been enhanced with new filtering and status tracki
 
 InferenceTrainingPlatform
 
-# Audit Logs, Dataset Download, Weighted Training for Reinforcement Fine-Tuning, and New Model
+# Audit logs, dataset download, weighted training for reinforcement fine-tuning, and new model
 
-## **Audit Logs in Web App**
+## **Audit logs in web app**
 
 You can now view and search audit logs directly from the Fireworks web app. The new Audit Logs page provides:
 
@@ -856,7 +856,7 @@ You can now view and search audit logs directly from the Fireworks web app. The 
 
 See the [Audit Logs documentation](/guides/security_compliance/audit_logs) for more information.
 
-## **Dataset Download**
+## **Dataset download**
 
 You can now download datasets directly from the Fireworks web app. The new download functionality allows you to:
 
@@ -864,13 +864,13 @@ You can now download datasets directly from the Fireworks web app. The new downl
 * Download all files at once with "Download All"
 * Access downloads from the Datasets table in the dashboard
 
-## **Weighted Training for Reinforcement Fine-Tuning**
+## **Weighted training for reinforcement fine-tuning**
 
 Reinforcement Fine-Tuning now supports per-example weighting, giving you more control over which samples have greater influence during training. This feature mirrors the weighted training functionality already available in Supervised Fine-Tuning.
 
 See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning-models) for details on the weight field format.
 
-## ✨ New Models
+## ✨ New models
 
 * **[KAT Coder](https://app.fireworks.ai/models/fireworks/kat-coder)** is now available in the Model Library
 
@@ -896,9 +896,9 @@ See the [Weighted Training documentation](/fine-tuning/reinforcement-fine-tuning
 
 InferenceTrainingPlatform
 
-# Evaluator Improvements, Kimi K2 Thinking on Serverless, and New API Endpoints
+# Evaluator improvements, Kimi K2 Thinking on Serverless, and new API endpoints
 
-## **Improved Evaluator Creation Experience**
+## **Improved evaluator creation experience**
 
 The evaluator creation workflow has been significantly enhanced with GitHub template integration. You can now:
 
@@ -907,14 +907,14 @@ The evaluator creation workflow has been significantly enhanced with GitHub temp
 * Create evaluators with a streamlined save dialog
 * View evaluators in a new sortable and paginated table
 
-## **MLOps & Observability Integrations**
+## **MLOps & observability integrations**
 
 New documentation for integrating Fireworks with MLOps and observability tools:
 
 * [Weights & Biases (W\&B)](/ecosystem/integrations/wandb) integration for experiment tracking during fine-tuning
 * MLflow integration for model management and experiment logging
 
-## ✨ New Models
+## ✨ New models
 
 * **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available in the Model Library
 * **[KAT Dev 32B](https://app.fireworks.ai/models/fireworks/kat-dev-32b)** is now available in the Model Library
@@ -924,7 +924,7 @@ New documentation for integrating Fireworks with MLOps and observability tools:
 
 * **[Kimi K2 Thinking](https://app.fireworks.ai/models/fireworks/kimi-k2-thinking)** is now available on serverless
 
-## 📚 New REST API Endpoints
+## 📚 New REST API endpoints
 
 New REST API endpoints are now available for managing Reinforcement Fine-Tuning Steps and deployments:
 
@@ -1028,7 +1028,7 @@ We now support Qwen3 MoE model (Qwen3 dense models are already supported) and GP
 
 TrainingPlatform
 
-## 🎨 Vision-Language Model Fine-Tuning
+## 🎨 Vision-language model fine-tuning
 
 You can now fine-tune Vision-Language Models (VLMs) on Fireworks AI using the Qwen 2.5 VL model family.
 This extends our Supervised Fine-tuning V2 platform to support multimodal training with both images and text data.

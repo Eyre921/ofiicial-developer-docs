@@ -1,12 +1,12 @@
 ---
-title: "The Cookbook"
+title: "The cookbook"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/overview
 path: fine-tuning/training-api/cookbook/overview
 ---
 
 Overview of the Training API cookbook: ready-to-run recipes for supervised fine-tuning, DPO, GRPO reinforcement learning, and distillation on Fireworks.
 
-## What is the Cookbook?
+## What is the cookbook?
 
 The [Fireworks Cookbook](https://github.com/fw-ai-external/cookbook/tree/main/training) is a collection of training recipes and utilities built on top of the [Training API](/fine-tuning/training-api/introduction). It provides config-driven training loops that handle trainer provisioning, data loading, tokenization, gradient accumulation, checkpointing, and cleanup automatically.
 

@@ -1,5 +1,5 @@
 ---
-title: "Serverless Quickstart"
+title: "Serverless inference quickstart"
 source: https://docs.fireworks.ai/getting-started/quickstart
 path: getting-started/quickstart
 ---
@@ -7,6 +7,8 @@ path: getting-started/quickstart
 Make your first serverless API call with GLM 5.3 Flash: create an API key and send a chat completion with curl or the Python SDK.
 
 Serverless is the fastest way to get started with using open models. This quickstart will help you make your first API call in minutes.
+
+To run models on your own dedicated GPUs instead, see the [Deployments quickstart](/getting-started/ondemand-quickstart).
 
 ## Step 1: Create and export an API key
 
@@ -26,7 +28,7 @@ Once you have your API key, export it as an environment variable in your termina
 > setx FIREWORKS_API_KEY "your_api_key_here"
 > ```
 
-## Step 2: Make your first Serverless API call
+## Step 2: Make your first serverless API call
 
 > [tab] Python (Fireworks SDK)
 >

@@ -110,7 +110,7 @@ The following controls are available for training workloads:
 
 For inference-side controls — disabling Response API storage (`store=False`) or deleting a specific response — see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
 
-## Related Resources
+## Related resources
 
 > [card] [Zero Data Retention](/guides/security_compliance/data_handling)
 >

@@ -115,7 +115,9 @@ components:
     subpackage_listen/v2.listen.v2-server-0-ListenV2Connected:
       name: ListenV2Connected
       title: ListenV2Connected
-      description: Receive a connected message
+      description: >-
+        This message is sent at the start of each connection, indicating the
+        connection is active.
       payload:
         $ref: '#/components/schemas/ListenV2_ListenV2Connected'
     subpackage_listen/v2.listen.v2-server-1-ListenV2TurnInfo:
@@ -141,31 +143,39 @@ components:
     subpackage_listen/v2.listen.v2-server-4-ListenV2Warning:
       name: ListenV2Warning
       title: ListenV2Warning
-      description: Receive a warning; the server keeps the connection open
+      description: >-
+        Informational message; the server ignores the requested action and keeps
+        the connection open. Every warning carries a `code` and a human-readable
+        `description`.
       payload:
         $ref: '#/components/schemas/ListenV2_ListenV2Warning'
     subpackage_listen/v2.listen.v2-server-5-ListenV2FatalError:
       name: ListenV2FatalError
       title: ListenV2FatalError
-      description: Receive a fatal error message
+      description: Receive an error message from the server when a fatal error occurs
       payload:
         $ref: '#/components/schemas/ListenV2_ListenV2FatalError'
     subpackage_listen/v2.listen.v2-client-0-ListenV2Media:
       name: ListenV2Media
       title: ListenV2Media
-      description: Send audio or video data to be transcribed
+      description: Audio data is transmitted as raw binary WebSocket messages
       payload:
         $ref: '#/components/schemas/ListenV2_ListenV2Media'
     subpackage_listen/v2.listen.v2-client-1-ListenV2CloseStream:
       name: ListenV2CloseStream
       title: ListenV2CloseStream
-      description: Send a CloseStream message to close the WebSocket stream
+      description: Control messages for managing the Speech to Text WebSocket connection
       payload:
         $ref: '#/components/schemas/ListenV2_ListenV2CloseStream'
     subpackage_listen/v2.listen.v2-client-2-ListenV2ForceEndTurn:
       name: ListenV2ForceEndTurn
       title: ListenV2ForceEndTurn
-      description: Send a ForceEndTurn message to immediately end the current turn
+      description: >-
+        Force the current turn to end immediately. Flux ends the turn on the
+        audio transcribed so far — the transcript matches the most recent
+        `Update` — and emits a standard `EndOfTurn` message with `trigger` set
+        to `manual`. Sent as a WebSocket text frame, with no additional fields.
+        Supported only on the Flux `/v2/listen` endpoint.
       payload:
         $ref: '#/components/schemas/ListenV2_ListenV2ForceEndTurn'
     subpackage_listen/v2.listen.v2-client-3-ListenV2Configure:

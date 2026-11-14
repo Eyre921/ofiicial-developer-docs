@@ -10,7 +10,9 @@ Select your business model and monetization strategy, then get a tailored code q
 
 > **Integration guides available:**We've generated integration guides for you. View the quickstart guide or copy integration details for use with an LLM assistant.
 
-Configure the following options to get personalized guidance and best practices for building your Connect integration, including:
+Use [the controls below](https://docs.stripe.com/connect/interactive-platform-guide.md#configure-your-integration) to select your business model and monetization strategy.
+
+Based on your selections, this guide provides:
 
 - The recommended charge type
 - Your risk and compliance responsibilities

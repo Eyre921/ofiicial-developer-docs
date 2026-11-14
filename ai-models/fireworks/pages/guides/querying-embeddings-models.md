@@ -1,5 +1,5 @@
 ---
-title: "Embeddings & Reranking"
+title: "Embeddings & reranking"
 source: https://docs.fireworks.ai/guides/querying-embeddings-models
 path: guides/querying-embeddings-models
 ---

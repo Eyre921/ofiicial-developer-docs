@@ -90,7 +90,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)
 ```
 
-### Additional information on Predicted Outputs:
+### Additional information on predicted outputs:
 
 * Using Predicted Outputs is free at this time
 * We recommend setting `temperature=0` for best results for most intended use cases of Predicted Outputs. In these cases, using Predicted Outputs does not impact the quality of outputs generated

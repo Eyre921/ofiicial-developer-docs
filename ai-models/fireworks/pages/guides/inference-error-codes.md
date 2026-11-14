@@ -1,5 +1,5 @@
 ---
-title: "Inference Error Codes"
+title: "Inference error codes"
 source: https://docs.fireworks.ai/guides/inference-error-codes
 path: guides/inference-error-codes
 ---

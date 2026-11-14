@@ -18,7 +18,7 @@ The process described here is the recommended method for creating standard accou
 
 A *Standard* connected account is a conventional Stripe account where your connected account has a relationship with Stripe, is able to log in to the [Dashboard](https://dashboard.stripe.com), and can process charges on their own.
 
-Stripe’s sample integration, [Kavholm](https://github.com/stripe-samples/connect-onboarding-for-standard), shows you how to use [Connect Onboarding](https://stripe.com/connect/onboarding) for a seamless user onboarding experience.
+For a sample integration that uses [Connect Onboarding](https://stripe.com/connect/onboarding), see the [onboarding quickstart](https://docs.stripe.com/connect/onboarding/quickstart.md).
 ![Screenshot of Connect Onboarding form](https://b.stripecdn.com/docs-statics-srv/assets/Kavholm-Seamless-Standard.78b64d90c0bf87130c8b6ba1ef53df7f.png)
 
 ## How to use Connect Onboarding for Standard accounts

@@ -242,6 +242,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.allow_teamspace_creation_setting_updated**: A user enabled or disabled the ability for everyone in the workspace to create a teamspace.
 * **workspace.settings.allow_workspace_creation_setting_updated**: A workspace owner restricted creation of new workspaces by users with the claimed enterprise email domain.
 * **workspace.settings.analytics_tracking_setting_updated**: A user enabled or disabled workspace analytics tracking within the workspace.
+* **workspace.settings.available_ai_providers_updated**: The AI providers every AI feature in the workspace may use were updated. The turned-off provider list is sent both before and after the change. The same save also updates each agent's allowed model list, so it usually sends `workspace.settings.agent_model_policy_updated` events too.
 * **workspace.settings.custom_agent_default_model_updated**: The default model for new Custom Agents was updated. `previous_model` and `model` contain the prior and current model, or `Auto` when no workspace default is set.
 * **workspace.settings.custom_mcp_server_creation_policy_updated**: The workspace policy controlling who can create connections to custom MCP servers was updated.
 * **workspace.settings.delete_from_trash_delay**: The [custom data retention](https://www.notion.com/help/custom-data-retention-settings) delete from trash delay setting was updated.

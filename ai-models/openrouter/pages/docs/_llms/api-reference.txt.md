@@ -50,11 +50,11 @@ path: docs/_llms/api-reference.txt
 
 - [Submit an Extractions request](https://openrouter.ai/docs/api/api-reference/alphaextractions/submit-an-extractions-request.md): Extracts, computes, estimates or forecasts typed fields from a state string and image assets using an extraction-style System One model. Alpha: the shape is not stable.
 
-#### TTS
+#### Speech
 
 - [Create speech](https://openrouter.ai/docs/api/api-reference/tts/create-speech.md): Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
 
-#### STT
+#### Transcriptions
 
 - [Create transcription](https://openrouter.ai/docs/api/api-reference/stt/create-transcription.md): Transcribes audio into text. Accepts base64-encoded audio input as JSON, an OpenAI-style multipart/form-data file upload, or a URL the provider downloads directly, and returns the transcribed text.
 
@@ -279,7 +279,7 @@ path: docs/_llms/api-reference.txt
 - [Start a SCIM directory sync](https://openrouter.ai/docs/api/api-reference/scim/start-a-scim-directory-sync.md): Start a SCIM directory sync. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 - [Get SCIM directory sync status](https://openrouter.ai/docs/api/api-reference/scim/get-scim-directory-sync-status.md): Get SCIM directory sync status. [Management key](/docs/guides/overview/auth/management-api-keys) required.
 
-#### SystemOne
+#### System One
 
 - [Submit a System One request](https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request.md): Sends state and typed questions to a System One model such as Jev and returns its answers. Compatible with the TypeSafe SDKs. Bare System One model IDs such as `jev-1.13` and `jev-latest` are mapped onto the `typesafe/` namespace.
 

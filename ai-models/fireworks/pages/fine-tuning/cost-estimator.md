@@ -48,7 +48,7 @@ Training method
 >   </li>
 > </ul>
 
-## Prepare inputs with the Training Skill
+## Prepare inputs with the training skill
 
 The [Fireworks Training Skill](/fine-tuning/agent/use-with-coding-agents)
 prepares inputs and calculates Serverless estimates from published

@@ -1,5 +1,5 @@
 ---
-title: "Serverless Pricing"
+title: "Serverless pricing"
 source: https://docs.fireworks.ai/serverless/pricing
 path: serverless/pricing
 ---

@@ -176,7 +176,7 @@ $$
 \text{Cost (Tinker)} = \frac{\text{Prefill tokens}}{10^6} \cdot r_{\text{prefill}} + \frac{\text{Decode tokens}}{10^6} \cdot r_{\text{sample}}
 $$
 
-### Fireworks Dedicated — GPU-hour billing
+### Fireworks dedicated — GPU-hour billing
 
 Dedicated deployments are billed per GPU-second, so the prefix cache shows up
 as **higher effective throughput** rather than a discount on per-token rates.

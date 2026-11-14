@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/indexes/restore-an-index
 path: guides/indexes/restore-an-index
 ---
 
-Restore a Pinecone serverless index from a backup, change the index name, tags, or deletion protection, and preserve embedding model configuration.
+Restore a Pinecone serverless index from a backup into the same or a different region, and change the index name, tags, or deletion protection.
 
 ## Create a serverless index from a backup
 
@@ -178,41 +178,87 @@ class CreateIndexFromBackupResponse {
 
 ## Restore to a different region
 
-The [create index from backup](/reference/api/latest/control-plane/create_index_from_backup) endpoint always creates the new index in the same cloud and region as the backup. To restore a backup into a different region, use the `unstable` API version of the create index endpoint, documented under [`2026-04`](/reference/api/2026-04/control-plane/create_index). Specify the backup as `source_backup_id` within `spec.serverless` and set the target `region` there.
+By default, [create index from backup](/reference/api/latest/control-plane/create_index_from_backup) creates the new index in the same cloud and region as the backup. To restore a serverless backup into a different region, set `deployment` to a `managed` deployment in the target region.
 
 The following rules apply:
 
 * The target region must be on the same cloud provider as the backup. Restoring to a different cloud provider isn't supported.
 * The backup must be in the current Pinecone project, and the new index is created in the same project.
-* The `dimension`, `metric`, and `vector_type` must match the source index.
-* Restoring to a different region isn't supported for BYOC indexes.
+* A serverless backup can't be restored into a BYOC environment, and a BYOC backup can only be restored into the environment it was taken in.
 * In the Pinecone console, you can choose a different region only while the source index still exists.
 * Restoring to a different region incurs a cross-region transfer fee, charged per GB on top of the standard restore cost. The fee depends on the cloud provider and the backup's region. For details, see [Backups and restores](/guides/cost/understand-cost#backups-and-restores).
 
-> [!WARNING]
->
-> Restoring to a different region is in [public preview](/release-notes/feature-availability). It is available in the Pinecone console and through the `unstable` version of the REST API.
+For example, the following request restores a backup taken in the AWS `us-east-1` region into a new index in the AWS `us-west-2` region:
 
-For example, the following request restores a backup of a dense index hosted in the AWS `us-east-1` region into a new index in the AWS `us-west-2` region:
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+const response = await pc.backups.createIndex('a65ff585-d987-4da5-a622-72e19a6ed5f4', {
+  name: 'restored-index',
+  deployment: { deploymentType: 'managed', cloud: 'aws', region: 'us-west-2' },
+});
+
+console.log(response);
+```
+
+```go Go theme={null}
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+
+	"github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func prettifyStruct(obj interface{}) string {
+	bytes, _ := json.MarshalIndent(obj, "", "  ")
+	return string(bytes)
+}
+
+func main() {
+	ctx := context.Background()
+
+	pc, err := pinecone.NewClient(pinecone.NewClientParams{
+		ApiKey: "YOUR_API_KEY",
+	})
+	if err != nil {
+		log.Fatalf("Failed to create Client: %v", err)
+	}
+
+	res, err := pc.CreateIndexFromBackup(ctx, &pinecone.CreateIndexFromBackupParams{
+		BackupId: "a65ff585-d987-4da5-a622-72e19a6ed5f4",
+		Name:     "restored-index",
+		Deployment: &pinecone.IndexDeployment{
+			Managed: &pinecone.ManagedDeployment{Cloud: pinecone.CloudAWS, Region: "us-west-2"},
+		},
+	})
+	if err != nil {
+		log.Fatalf("Failed to restore backup: %v", err)
+	}
+
+	fmt.Println(prettifyStruct(res))
+}
+```
 
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
+BACKUP_ID="a65ff585-d987-4da5-a622-72e19a6ed5f4"
 
-curl "https://api.pinecone.io/indexes" \
+curl "https://api.pinecone.io/backups/$BACKUP_ID/create-index" \
   -H "Api-Key: $PINECONE_API_KEY" \
   -H "Content-Type: application/json" \
-  -H "X-Pinecone-Api-Version: unstable" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
     "name": "restored-index",
-    "vector_type": "dense",
-    "dimension": 1536,
-    "metric": "cosine",
-    "spec": {
-      "serverless": {
-        "cloud": "aws",
-        "region": "us-west-2",
-        "source_backup_id": "a65ff585-d987-4da5-a622-72e19a6ed5f4"
-      }
+    "deployment": {
+      "deployment_type": "managed",
+      "cloud": "aws",
+      "region": "us-west-2"
     }
   }'
 ```

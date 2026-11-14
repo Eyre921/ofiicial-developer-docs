@@ -127,27 +127,32 @@ components:
     subpackage_agent/v1.agent.v1-server-0-AgentV1ListenUpdated:
       name: AgentV1ListenUpdated
       title: AgentV1ListenUpdated
-      description: Receive listen update from Deepgram's Voice Agent API
+      description: Confirms that an UpdateListen message from the client has been applied
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1ListenUpdated'
     subpackage_agent/v1.agent.v1-server-1-AgentV1ThinkUpdated:
       name: AgentV1ThinkUpdated
       title: AgentV1ThinkUpdated
-      description: Receive think update from Deepgram's Voice Agent API
+      description: Confirms that an UpdateThink message from the client has been applied
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1ThinkUpdated'
     subpackage_agent/v1.agent.v1-server-2-AgentV1ThinkLiveUpdated:
       name: AgentV1ThinkLiveUpdated
       title: AgentV1ThinkLiveUpdated
       description: >-
-        Receive Think Live model update confirmation from Deepgram's Voice Agent
-        API
+        Confirms that an UpdateThink_Live message from the client has been
+        applied
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1ThinkLiveUpdated'
     subpackage_agent/v1.agent.v1-server-3-AgentV1FrustrationDetected:
       name: AgentV1FrustrationDetected
       title: AgentV1FrustrationDetected
-      description: Receive a frustration detection event from Deepgram's Voice Agent API
+      description: >-
+        Sent when the Think Live model detects frustration in a user turn
+        (negative valence, high arousal, or frustrated intent). Treat
+        `escalated: true` as the trigger for your own escalation workflow;
+        Deepgram does not transfer the call. Not sent when
+        `agent.think_live.provider.frustration_max_count` is 0
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1FrustrationDetected'
     subpackage_agent/v1.agent.v1-server-4-AgentV1ReceiveFunctionCallResponse:
@@ -162,169 +167,199 @@ components:
     subpackage_agent/v1.agent.v1-server-5-AgentV1PromptUpdated:
       name: AgentV1PromptUpdated
       title: AgentV1PromptUpdated
-      description: Receive prompt update from Deepgram's Voice Agent API
+      description: Confirms that an UpdatePrompt message from the client has been applied
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1PromptUpdated'
     subpackage_agent/v1.agent.v1-server-6-AgentV1SpeakUpdated:
       name: AgentV1SpeakUpdated
       title: AgentV1SpeakUpdated
-      description: Receive speak update from Deepgram's Voice Agent API
+      description: Confirms that an UpdateSpeak message from the client has been applied
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1SpeakUpdated'
     subpackage_agent/v1.agent.v1-server-7-AgentV1InjectionRefused:
       name: AgentV1InjectionRefused
       title: AgentV1InjectionRefused
-      description: Receive injection refused message from Deepgram's Voice Agent API
+      description: Receive injection refused message
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1InjectionRefused'
     subpackage_agent/v1.agent.v1-server-8-AgentV1Welcome:
       name: AgentV1Welcome
       title: AgentV1Welcome
-      description: Receive welcome message from Deepgram's Voice Agent API
+      description: Confirms that the WebSocket connection has been successfully opened
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1Welcome'
     subpackage_agent/v1.agent.v1-server-9-AgentV1SettingsApplied:
       name: AgentV1SettingsApplied
       title: AgentV1SettingsApplied
-      description: Receive settings applied message from Deepgram's Voice Agent API
+      description: >-
+        Confirm the server has successfully received and applied the Settings
+        message
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1SettingsApplied'
     subpackage_agent/v1.agent.v1-server-10-AgentV1ConversationText:
       name: AgentV1ConversationText
       title: AgentV1ConversationText
-      description: Receive conversation text from Deepgram's Voice Agent API
+      description: >-
+        Facilitate real-time communication by relaying spoken statements from
+        both the user and the assistant
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1ConversationText'
     subpackage_agent/v1.agent.v1-server-11-AgentV1UserStartedSpeaking:
       name: AgentV1UserStartedSpeaking
       title: AgentV1UserStartedSpeaking
-      description: Receive user started speaking message from Deepgram's Voice Agent API
+      description: Notify the client that the user has begun speaking
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1UserStartedSpeaking'
     subpackage_agent/v1.agent.v1-server-12-AgentV1AgentThinking:
       name: AgentV1AgentThinking
       title: AgentV1AgentThinking
-      description: Receive agent thinking message from Deepgram's Voice Agent API
+      description: Inform the client when the agent is processing information
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1AgentThinking'
     subpackage_agent/v1.agent.v1-server-13-AgentV1LatencyReport:
       name: AgentV1LatencyReport
       title: AgentV1LatencyReport
-      description: Receive a latency report from Deepgram's Voice Agent API
+      description: >-
+        Detailed latency breakdown across the STT, LLM, and TTS pipeline,
+        emitted by the server after a turn. All latency fields are floats in
+        seconds and are optional, so they are omitted when not applicable to
+        that turn.
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1LatencyReport'
     subpackage_agent/v1.agent.v1-server-14-AgentV1FunctionCallRequest:
       name: AgentV1FunctionCallRequest
       title: AgentV1FunctionCallRequest
-      description: Receive function call request from Deepgram's Voice Agent API
+      description: Client-side or server-side function call request sent by the server
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1FunctionCallRequest'
     subpackage_agent/v1.agent.v1-server-15-AgentV1FunctionCallCancelled:
       name: AgentV1FunctionCallCancelled
       title: AgentV1FunctionCallCancelled
       description: >-
-        Receive notice that a function call you already received was cancelled
-        because the user started speaking again
+        Sent when a client-side function call the server already sent you is
+        cancelled because the user started speaking again, either inside the
+        speculative window (the turn resumed) or after the turn was confirmed
+        (barge-in). Only calls the client already received are announced
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1FunctionCallCancelled'
     subpackage_agent/v1.agent.v1-server-16-AgentV1AgentStartedSpeaking:
       name: AgentV1AgentStartedSpeaking
       title: AgentV1AgentStartedSpeaking
-      description: Receive agent started speaking message from Deepgram's Voice Agent API
+      description: >-
+        Get notified when the server begins streaming an agent's audio response
+        for playback. This message is only sent when the experimental flag is
+        enabled
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1AgentStartedSpeaking'
     subpackage_agent/v1.agent.v1-server-17-AgentV1AgentAudioDone:
       name: AgentV1AgentAudioDone
       title: AgentV1AgentAudioDone
-      description: Receive agent audio done message from Deepgram's Voice Agent API
+      description: >-
+        Get signals that the server has finished sending the final audio segment
+        to the client
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1AgentAudioDone'
     subpackage_agent/v1.agent.v1-server-18-AgentV1CustomFromThinkProvider:
       name: AgentV1CustomFromThinkProvider
       title: AgentV1CustomFromThinkProvider
       description: >-
-        Experimental. Receive a response body from a custom think provider,
-        passed through unchanged. Requires a `wss://` custom Think endpoint in
+        Experimental. Receive the response body from your custom think provider
+        after sending a __customToThinkProvider message. Deepgram passes the
+        response through unchanged. Requires a `wss://` custom Think endpoint in
         `agent.think.endpoint.url`.
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1CustomFromThinkProvider'
     subpackage_agent/v1.agent.v1-server-19-AgentV1Error:
       name: AgentV1Error
       title: AgentV1Error
-      description: Receive error response from Deepgram's Voice Agent API
+      description: Receive an error message from the server when an error occurs
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1Error'
     subpackage_agent/v1.agent.v1-server-20-AgentV1Warning:
       name: AgentV1Warning
       title: AgentV1Warning
-      description: Receive warning messages from Deepgram's Voice Agent API
+      description: Notifies the client of non-fatal errors or warnings
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1Warning'
     subpackage_agent/v1.agent.v1-server-21-AgentV1History:
       name: AgentV1History
       title: AgentV1History
       description: >-
-        Receive a conversation history message from Deepgram's Voice Agent API.
-        Each message is either a conversation text (with role and content) or a
-        function call record (with function_calls array).
+        Conversation history message emitted by the server during a session.
+        Each message is either a conversation text message or a function call
+        message. These messages can be supplied in settings of a subsequent
+        Voice Agent session (via the agent.context.messages field) to allow the
+        agent to maintain awareness of prior interactions.
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1History'
     subpackage_agent/v1.agent.v1-server-22-AgentV1Audio:
       name: AgentV1Audio
       title: AgentV1Audio
-      description: Receive raw binary audio data generated by Deepgram's Voice Agent API
+      description: >-
+        Raw binary audio data generated by the Voice Agent and sent to the
+        client
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1Audio'
     subpackage_agent/v1.agent.v1-client-0-AgentV1Settings:
       name: AgentV1Settings
       title: AgentV1Settings
-      description: Send settings configuration to Deepgram's Voice Agent API
+      description: Configure the voice agent and sets the input and output audio formats
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1Settings'
     subpackage_agent/v1.agent.v1-client-1-AgentV1UpdateListen:
       name: AgentV1UpdateListen
       title: AgentV1UpdateListen
-      description: Send update listen to Deepgram's Voice Agent API
+      description: >-
+        Send a message to update the Listen configuration on the fly during a
+        conversation. The payload uses the same shape as agent.listen in the
+        Settings message — model, language, and the other tunable fields live
+        under listen.provider.
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1UpdateListen'
     subpackage_agent/v1.agent.v1-client-2-AgentV1UpdateThink:
       name: AgentV1UpdateThink
       title: AgentV1UpdateThink
-      description: Send update think to Deepgram's Voice Agent API
+      description: Send a message to change the Think model in the middle of a conversation
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1UpdateThink'
     subpackage_agent/v1.agent.v1-client-3-AgentV1UpdateThinkLive:
       name: AgentV1UpdateThinkLive
       title: AgentV1UpdateThinkLive
       description: >-
-        Send an update to the Think Live model configuration to Deepgram's Voice
-        Agent API
+        Change the Think Live model configuration in the middle of a
+        conversation. Replaces the entire `think_live.provider` block, so
+        include every parameter you want in effect; omitted parameters revert to
+        their defaults. Does not affect the reasoning LLM (use UpdateThink for
+        that). The server confirms with ThinkLiveUpdated
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1UpdateThinkLive'
     subpackage_agent/v1.agent.v1-client-4-AgentV1UpdateSpeak:
       name: AgentV1UpdateSpeak
       title: AgentV1UpdateSpeak
-      description: Send update speak to Deepgram's Voice Agent API
+      description: Send a message to change the Speak model in the middle of a conversation
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1UpdateSpeak'
     subpackage_agent/v1.agent.v1-client-5-AgentV1InjectUserMessage:
       name: AgentV1InjectUserMessage
       title: AgentV1InjectUserMessage
-      description: Send inject user message to Deepgram's Voice Agent API
+      description: Send a text based message to the agent
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1InjectUserMessage'
     subpackage_agent/v1.agent.v1-client-6-AgentV1InjectAgentMessage:
       name: AgentV1InjectAgentMessage
       title: AgentV1InjectAgentMessage
-      description: Send inject agent message to Deepgram's Voice Agent API
+      description: Immediately trigger an agent response during a conversation
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1InjectAgentMessage'
     subpackage_agent/v1.agent.v1-client-7-AgentV1InjectDynamicAgentMessage:
       name: AgentV1InjectDynamicAgentMessage
       title: AgentV1InjectDynamicAgentMessage
       description: >-
-        Send a dynamic inject agent message to Deepgram's Voice Agent API,
-        letting the Think Live model generate the filler line
+        Requires `agent.think_live`. Ask the Think Live model to generate a
+        short filler line instead of speaking a fixed message. Each request
+        produces one filler; another request during the same wait escalates the
+        wording. If filler cannot be generated, nothing is spoken and the server
+        sends a `DYNAMIC_FILLER_UNAVAILABLE` warning
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1InjectDynamicAgentMessage'
     subpackage_agent/v1.agent.v1-client-8-AgentV1SendFunctionCallResponse:
@@ -339,33 +374,40 @@ components:
     subpackage_agent/v1.agent.v1-client-9-AgentV1KeepAlive:
       name: AgentV1KeepAlive
       title: AgentV1KeepAlive
-      description: Send keep alive to Deepgram's Voice Agent API
+      description: Send a control message to the agent
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1KeepAlive'
     subpackage_agent/v1.agent.v1-client-10-AgentV1UpdatePrompt:
       name: AgentV1UpdatePrompt
       title: AgentV1UpdatePrompt
-      description: Send a prompt update to Deepgram's Voice Agent API
+      description: Send a message to update the system prompt of the agent
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1UpdatePrompt'
     subpackage_agent/v1.agent.v1-client-11-AgentV1ForceEndTurn:
       name: AgentV1ForceEndTurn
       title: AgentV1ForceEndTurn
-      description: Send a ForceEndTurn message to immediately end the current user turn
+      description: >-
+        End the current user turn immediately, without waiting for end-of-turn
+        detection. Requires a Deepgram V2 (Flux) listen provider; with any other
+        listen provider the server sends a FORCE_END_TURN_UNSUPPORTED warning
+        and the turn does not end.
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1ForceEndTurn'
     subpackage_agent/v1.agent.v1-client-12-AgentV1CustomToThinkProvider:
       name: AgentV1CustomToThinkProvider
       title: AgentV1CustomToThinkProvider
       description: >-
-        Experimental. Send an arbitrary JSON payload to a custom think provider.
-        Requires a `wss://` custom Think endpoint in `agent.think.endpoint.url`.
+        Experimental. Send an arbitrary JSON payload to your custom think
+        provider. Deepgram does not validate the content and forwards it to the
+        provider unchanged. Requires a `wss://` custom Think endpoint in
+        `agent.think.endpoint.url`. The provider's response arrives as a
+        __customFromThinkProvider message.
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1CustomToThinkProvider'
     subpackage_agent/v1.agent.v1-client-13-AgentV1Media:
       name: AgentV1Media
       title: AgentV1Media
-      description: Send raw binary audio data to Deepgram's Voice Agent API for processing
+      description: Raw binary audio data sent to the Voice Agent for processing
       payload:
         $ref: '#/components/schemas/AgentV1_AgentV1Media'
   schemas:

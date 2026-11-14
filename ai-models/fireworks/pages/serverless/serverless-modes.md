@@ -1,5 +1,5 @@
 ---
-title: "Serverless Modes"
+title: "Serverless modes"
 source: https://docs.fireworks.ai/serverless/serverless-modes
 path: serverless/serverless-modes
 ---
@@ -55,7 +55,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
 
-## Ultra-fast (Preview)
+## Ultra-fast (preview)
 
 Ultra-fast is a high-speed mode, useful for extreme latency sensitive applications that require fast response speeds, at a higher price point. Ultra-fast variants aim for **6-8x generation speed (up to 10x for agentic coding tasks)**. Like fast, it is not a different model and the quality of the model remains the same.
 

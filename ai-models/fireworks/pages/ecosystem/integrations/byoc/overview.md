@@ -1,5 +1,5 @@
 ---
-title: "Bring Your Own Cluster"
+title: "Bring your own cluster"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/overview
 path: ecosystem/integrations/byoc/overview
 ---
@@ -80,7 +80,7 @@ Hybrid operation can help when:
 >
 > Hybrid BYOC is optional and must be reviewed during onboarding. Fireworks works with your team to confirm routing behavior, workload eligibility, data handling expectations, and any compliance constraints before enabling overflow onto Fireworks-managed capacity.
 
-## Known gaps during Private Preview
+## Known gaps during private preview
 
 Training is not supported in BYOC during Private Preview. If you need training and BYOC together, [contact us](https://fireworks.ai/contact) so the team can review your requirements and roadmap fit.
 

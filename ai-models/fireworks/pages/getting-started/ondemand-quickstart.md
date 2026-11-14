@@ -1,5 +1,5 @@
 ---
-title: "Deployments Quickstart"
+title: "Deployments quickstart"
 source: https://docs.fireworks.ai/getting-started/ondemand-quickstart
 path: getting-started/ondemand-quickstart
 ---

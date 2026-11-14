@@ -22,29 +22,29 @@ The Nexus runtime runs each query. It's a single generic Python image that the o
 
 1. **Container:** Each query starts one isolated container that runs that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
 2. **Orientation:** The runtime reads the manifests and an artifact outline up front, so the model starts knowing what knowledge exists and where.
-3. **Agent loop:** The model writes Python into a persistent REPL that calls the retrieval SDK to read artifacts, run searches, walk the graph, and query structured tables.
-4. **Step events:** The runtime posts each step as it happens, which powers the live answer stream. You can replay the full sequence for any query in its [query trace](/guides/nexus/query-tracing).
-5. **Synthesis:** Once enough evidence is gathered, the runtime composes a grounded answer with inline citations, then finalizes the turn.
+3. **Agent loop:** The model writes Python into a persistent read-eval-print loop (REPL) that calls the retrieval SDK to read artifacts, run searches, walk the graph, and query structured tables. The runtime posts each step as it happens, which powers the live answer stream. You can replay the full sequence for any query in its [query trace](/guides/nexus/query-tracing).
+4. **Answer:** When the model can answer, it writes the answer with inline citations and ends the turn. The runtime then builds `citations` from what the loop retrieved and the files the answer names.
 
 ## Agent loop
 
-The model's primary tool is `run_python`, a persistent REPL. Variables survive across calls, so the model chains operations together: find an artifact, read it, filter its sources, drill for a verbatim quote, all in one block. It processes results in code and prints only what it needs.
+The model's primary tool is `run_python`, a persistent REPL. Variables carry over between calls, so in one block the model can find an artifact, read it, filter its sources, and pull a verbatim quote. It processes results in code and prints only what it needs.
 
-If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
+For example, this block finds a summary artifact about acquisition terms, reads it, and searches that artifact's sources for the purchase price:
 
-```python theme={null}
-# One turn: find an artifact, read it, drill its sources.
+```python Python theme={null}
 art = await search_knowledge("acquisition terms", kind="summary")
-srcs = read_artifact(art[0].name).sources
+srcs = read_artifact(art[0].fields["artifact_name"]).sources
 for h in await search_in_sources(srcs, "purchase price"):
     print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
 ```
+
+If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
 
 Independent searches run concurrently, and the model reuses lookups it already holds in a variable. The loop has a step cap, so the model aims to gather what it needs and answer in a few steps.
 
 ## Retrieval SDK
 
-The Composable Retriever loads these primitives into the REPL. The model reads artifacts off disk first because it's cheapest, falls back to search over the index, and uses SQL for counts and enumerations.
+The Composable Retriever, the Nexus component that serves artifacts to queries, loads these primitives into the REPL. The model reads artifacts off disk first because it's cheapest, falls back to search over the index, and uses SQL for counts and enumerations.
 
 ### Read artifacts
 
@@ -72,12 +72,16 @@ The Composable Retriever loads these primitives into the REPL. The model reads a
 | `query_db(sql)` | read-only SQL over typed artifact tables, the first choice for counts and per-item questions |
 | `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges |
 
-## Synthesis
+## Answers and citations
 
-* **Evidence:** The model composes the answer from the evidence its code surfaced, so it reasons over a small, relevant context.
-* **Citations:** Each inline citation marker maps to a source span, with the file, page, and verbatim text behind the claim.
-* **Structured output:** When a query includes a `shape`, synthesis returns a document that conforms to that schema.
+The model writes the answer at the end of the agent loop. These rules shape what the answer draws on and how it cites sources.
+
+* **Evidence:** The model answers from the evidence its code surfaced rather than from whole documents, so it reasons over a small, relevant context.
+* **Citations:** Each citation names its source file, plus the pages and sections of the passages it drew on when they're available.
+* **Duplicate sources:** When several sources contain the same content and the answer draws on one of them, the model is prompted to say which one it used and why. It's also prompted to name each of the others by its full file name, so they're cited too. If your question names the source, the answer uses it without listing the others. With more than five other copies, the answer gives their count instead.
+* **Earlier-turn citations:** In a session, a follow-up answer can cite a file that an earlier turn retrieved, if the answer names it. These citations are file-level, so they include the `source` but no pages or sections. Their `grounding` is `carried` because the current turn didn't retrieve the file itself.
+* **Structured output:** When a query includes a `shape`, a second model call turns the answer into a document built to that schema. Nexus checks the document against the schema, and the model rewrites it up to two times if it breaks a rule, such as a `maxLength`. If it still doesn't conform, the query returns the last version. The document's values don't include inline citation markers, and the sources are in `citations`.
 
 ## Session instructions
 
-A session can carry its own instructions, a system prompt layered over the context's default that shapes every answer in the session. See [Set session instructions](/guides/nexus/set-session-instructions).
+A session can have its own system prompt. It adds to the context's default instructions and shapes every answer in the session. See [Set session instructions](/guides/nexus/set-session-instructions).

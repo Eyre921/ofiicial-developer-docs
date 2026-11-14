@@ -1,5 +1,5 @@
 ---
-title: "Service Accounts"
+title: "Service accounts"
 source: https://docs.fireworks.ai/accounts/service-accounts
 path: accounts/service-accounts
 ---
@@ -16,7 +16,7 @@ Service accounts can take actions using an API key, like creating deployments, r
 
 To manage service accounts in the Platform web UI, visit [app.fireworks.ai/account/users](https://app.fireworks.ai/account/users).
 
-## Creating a Service Account
+## Creating a service account
 
 Using our firectl you can create service accounts
 
@@ -24,7 +24,7 @@ Using our firectl you can create service accounts
 firectl user create --user-id "my-service-account" --service-account
 ```
 
-## Creating an API Key for a Service Account
+## Creating an API key for a service account
 
 Using firectl you can create an API key on behalf of a service account:
 
@@ -50,7 +50,7 @@ firectl user update my-service-account --role=inference-user
 
 See [Managing users](/accounts/users) for available roles.
 
-## Listing Service Accounts
+## Listing service accounts
 
 To list all service accounts in your account:
 

@@ -1,5 +1,5 @@
 ---
-title: "How Setup Works"
+title: "How setup works"
 source: https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works
 path: ecosystem/integrations/byoc/how-setup-works
 ---

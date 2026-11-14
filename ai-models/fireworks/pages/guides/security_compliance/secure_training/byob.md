@@ -136,7 +136,7 @@ firectl sftj create \
   --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
 ```
 
-### Alternative: Credentials Secret
+### Alternative: Credentials secret
 
 Instead of IAM role federation, you can use static AWS access keys stored in a Fireworks secret:
 
@@ -196,7 +196,7 @@ firectl sftj create \
   --azure-tenant-id "{AZURE_TENANT_ID}"
 ```
 
-### Alternative: Credentials Secret
+### Alternative: Credentials secret
 
 Instead of workload identity federation, you can store Azure credentials in a Fireworks secret. The secret value must be a JSON object containing one of: `connection_string`, `sas_token`, or `account_key`.
 

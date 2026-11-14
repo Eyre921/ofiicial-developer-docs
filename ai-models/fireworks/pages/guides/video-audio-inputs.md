@@ -1,5 +1,5 @@
 ---
-title: "Video & Audio Inputs"
+title: "Video & audio inputs"
 source: https://docs.fireworks.ai/guides/video-audio-inputs
 path: guides/video-audio-inputs
 ---

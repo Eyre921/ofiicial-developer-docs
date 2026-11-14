@@ -1,5 +1,5 @@
 ---
-title: "Exporting Usage Costs"
+title: "Exporting usage costs"
 source: https://docs.fireworks.ai/accounts/exporting-usage-costs
 path: accounts/exporting-usage-costs
 ---

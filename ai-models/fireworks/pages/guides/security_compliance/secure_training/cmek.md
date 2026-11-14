@@ -1,5 +1,5 @@
 ---
-title: "Customer-Managed Encryption Keys (CMEK)"
+title: "Customer-managed encryption keys (CMEK)"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek
 path: guides/security_compliance/secure_training/cmek
 ---
@@ -238,7 +238,7 @@ Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded 
 * Key registration, rotation, and CMEK enablement are performed by Fireworks on your behalf rather than self-serve.
 * Job metadata and transient scratch data are covered by separate operational and contractual controls, not your key.
 
-## Related Resources
+## Related resources
 
 > [card] [Bring Your Own Bucket (BYOB)](/guides/security_compliance/secure_training/byob)
 >

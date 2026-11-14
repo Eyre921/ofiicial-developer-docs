@@ -1,5 +1,5 @@
 ---
-title: "Inference for RL Rollouts"
+title: "Inference for RL rollouts"
 source: https://docs.fireworks.ai/guides/rollout-inference
 path: guides/rollout-inference
 ---
@@ -168,7 +168,7 @@ For RL rollouts, the usual policy is:
 
 If you do not send a stable `x-multi-turn-session-id` for the trajectory, later requests are treated like new sessions for `new_session` semantics.
 
-## MoE Router Replay
+## MoE router replay
 
 For Mixture-of-Experts models, training-inference divergence often comes from the router picking different top-K experts at the same token position between trainer and inference. Aligning those choices across rollouts and training is known as [Rollout Router Replay (R3)](https://arxiv.org/abs/2510.11370).
 

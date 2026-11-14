@@ -1,5 +1,5 @@
 ---
-title: "Deployment Tags"
+title: "Deployment tags"
 source: https://docs.fireworks.ai/deployments/deployment-tags
 path: deployments/deployment-tags
 ---

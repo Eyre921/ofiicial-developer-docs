@@ -37,7 +37,7 @@ Most accounts on pre-paid billing should not see month-end overage invoices. If 
 
 When you finish your \$1 credit, the following occurs:
 
-## Account Status
+## Account status
 
 * **Without payment method**: Your account will be **suspended** until you add a payment method. For request-rate behavior, see [Account quotas](/guides/quotas_usage/account-quotas#account-wide-request-limits); for serverless TPM upper bounds, see [Serverless rate limits](/serverless/rate-limits).
 * **With payment method**: Add credits to continue usage. [Account-wide request limits](/guides/quotas_usage/account-quotas#account-wide-request-limits) increase, and [serverless TPM upper bounds](/serverless/rate-limits) grow as your account spend tier rises.

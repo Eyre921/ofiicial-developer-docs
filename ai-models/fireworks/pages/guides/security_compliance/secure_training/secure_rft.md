@@ -1,5 +1,5 @@
 ---
-title: "Secure Reinforcement Fine-Tuning"
+title: "Secure reinforcement fine-tuning"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft
 path: guides/security_compliance/secure_training/secure_rft
 ---

@@ -24,7 +24,7 @@ With an active Fire Pass you get:
 
 Use a standard Fireworks key (`fw_...`) for models and features outside Fire Pass.
 
-## Getting Started
+## Getting started
 
 **1. Create an account**
 
@@ -57,7 +57,7 @@ Fire Pass is designed for personal agentic coding. Configure your tool manually 
 > ChatGPT desktop app use the Responses API, which isn't supported with Fire
 > Pass keys.
 
-### General Configuration
+### General configuration
 
 If your tool supports custom API endpoints, you can configure it manually using these details:
 
@@ -207,7 +207,7 @@ page](https://app.fireworks.ai/fire-pass) when the latest alias changes.
 >
 > See the LangChain docs for [models](https://docs.langchain.com/oss/python/deepagents/models) and [customization](https://docs.langchain.com/oss/python/deepagents/customization).
 
-## Terms of Use
+## Terms of use
 
 Fire Pass is intended for **non-production coding use only**. By activating Fire Pass you agree to the following:
 

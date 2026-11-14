@@ -1,5 +1,5 @@
 ---
-title: "Structured Outputs"
+title: "Structured outputs"
 source: https://docs.fireworks.ai/structured-responses/structured-response-formatting
 path: structured-responses/structured-response-formatting
 ---
@@ -12,7 +12,7 @@ Structured outputs ensure model responses conform to your specified format, maki
 >
 > New to structured outputs? Check out the [Serverless Quickstart](/getting-started/quickstart#structured-outputs-json-mode) for a quick introduction.
 
-## Quick Start
+## Quick start
 
 Force model output to conform to a [JSON schema](https://json-schema.org/):
 
@@ -54,7 +54,7 @@ print(response.choices[0].message.content)
 >
 > Include the schema in **both** your prompt and the `response_format` for best results. The model doesn't automatically "see" the schema—it's enforced during generation.
 
-## Response Format Options
+## Response format options
 
 Fireworks supports two JSON mode variants:
 
@@ -90,7 +90,7 @@ Fireworks supports two JSON mode variants:
 >
 > **Function calling:** When using [Tool Calling](/guides/function-calling), JSON mode is enabled automatically—these guidelines don't apply.
 
-## JSON Schema Support
+## JSON schema support
 
 Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specification) constructs, and also accepts Draft-7 keyword aliases (`definitions`) for backward compatibility:
 
@@ -118,7 +118,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 >
 > `pattern` is enforced on a best-effort basis: regexes that can be compiled into the underlying grammar are enforced, and constructs that can't (e.g. lookahead/lookbehind) are safely ignored — the field falls back to an unconstrained string and the request still succeeds.
 
-### JSON Pointer references (`$ref`)
+### JSON pointer references (`$ref`)
 
 `$ref` follows the [RFC 6901 JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) syntax used by JSON Schema 2020-12. Fireworks supports two pointer forms in the same document:
 
@@ -187,7 +187,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 > >
 > > Using `response_format` with `json_schema` disables reasoning output. To get **both** reasoning and structured JSON, include the schema in your prompt instead and omit the `response_format` parameter.
 >
-> #### Example Usage
+> #### Example usage
 >
 > ````python theme={null}
 > import json
@@ -237,7 +237,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 > >
 > > If you don't need reasoning and just want guaranteed schema-conformant JSON, use the `response_format` parameter as shown in the [Quick Start](#quick-start) above. The `response_format` approach enforces the schema during generation, eliminating the need to parse the JSON yourself.
 >
-> #### Use Cases
+> #### Use cases
 >
 > Reasoning mode is useful for:
 >
@@ -247,7 +247,7 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 >
 > See the [Reasoning guide](/guides/reasoning) for more on working with reasoning models.
 
-## Grammar Mode
+## Grammar mode
 
 For advanced use cases where JSON isn't sufficient, use [Grammar mode](/structured-responses/structured-output-grammar-based) to constrain outputs using custom BNF grammars. Grammar mode is ideal for:
 

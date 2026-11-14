@@ -1,12 +1,12 @@
 ---
-title: "Serverless Inference Overview"
+title: "Serverless inference overview"
 source: https://docs.fireworks.ai/serverless/overview
 path: serverless/overview
 ---
 
 How Serverless inference works on Fireworks: serverless modes, per-token billing, request headers, prompt caching, model lifecycle, and when to pick Serverless.
 
-## What is Serverless Inference
+## What is Serverless inference
 
 Serverless Inference is multi-tenant inference for popular open models running on Fireworks-managed infrastructure. You point your client at `api.fireworks.ai`, send tokens, and pay only for what you use — no GPUs to size, no autoscaler to tune, no cold starts to wait through. Models eligible for Serverless carry the **Serverless** tag in the [model library](https://fireworks.ai/models). To make your first call, see the [Serverless quickstart](/getting-started/quickstart).
 
@@ -78,7 +78,7 @@ Serverless models are managed by the Fireworks team and may be updated or deprec
 
 For production workloads requiring long-term model stability, we recommend [on-demand deployments](/guides/ondemand-deployments), which give you full control over model versions and updates.
 
-## Serverless vs On-demand
+## Serverless vs on-demand
 
 | When Serverless fits | When On-demand fits |
 | - | - |

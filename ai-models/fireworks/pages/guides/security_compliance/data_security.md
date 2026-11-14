@@ -1,5 +1,5 @@
 ---
-title: "Data Security"
+title: "Data security"
 source: https://docs.fireworks.ai/guides/security_compliance/data_security
 path: guides/security_compliance/data_security
 ---
@@ -16,7 +16,7 @@ Fireworks does not log or store prompt or generation data for open models, witho
 
 For US-only inference residency, see [US-only Serverless](/serverless/us-only-serverless).
 
-## Secure Data Handling
+## Secure data handling
 
 **Data Ownership & Control:** Customers maintain ownership of their data. Customer data stored as part of an active workflow can be permanently deleted with auditable confirmation, and secure wipe processes ensure deleted assets cannot be reconstructed.
 
@@ -34,7 +34,7 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Access Logging:** All customer data access is logged, monitored, and protected against tampering. See [Audit & Access Logs](https://docs.fireworks.ai/guides/security_compliance/audit_logs).
 
-## Workload Isolation
+## Workload isolation
 
 Dedicated workloads run in logically isolated environments, preventing cross-customer access or data leakage.
 
@@ -56,7 +56,7 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 >
 > For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
 
-## Technical Safeguards
+## Technical safeguards
 
 * **Device Trust**: Only approved, secured devices with strong authentication can access sensitive Fireworks systems.
 * **Identity & Access Management**: Fine-grained access controls are enforced across all Fireworks environments, following the principle of least privilege.
@@ -67,18 +67,18 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 * **Monitoring & Detection**: Real-time monitoring and anomaly detection systems alert on suspicious activity
 * **Vulnerability Management**: Continuous scanning and patching processes keep infrastructure up to date against known threats.
 
-## Operational Security
+## Operational security
 
 * **Security Reviews & Testing**: Regular penetration testing validates controls.
 * **Incident Response**: A formal incident response plan ensures swift containment, customer notification, and remediation if an issue arises.
 * **Employee Access**: Only a minimal subset of Fireworks personnel have access to production systems, and all access is logged and periodically reviewed.
 * **Third-Party Risk Management**: Vendors and subprocessors undergo rigorous due diligence and contractual security obligations.
 
-## Compliance & Certifications
+## Compliance & certifications
 
 Fireworks aligns with leading industry standards to support customer compliance obligations.
 
-## ISO Certifications
+## ISO certifications
 
 Fireworks has achieved all three ISO certifications covering security, privacy, and AI management:
 

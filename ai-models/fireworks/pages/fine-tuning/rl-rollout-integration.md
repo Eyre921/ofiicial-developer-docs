@@ -1,5 +1,5 @@
 ---
-title: "RL Rollouts with Your Own Trainer"
+title: "RL rollouts with your own trainer"
 source: https://docs.fireworks.ai/fine-tuning/rl-rollout-integration
 path: fine-tuning/rl-rollout-integration
 ---

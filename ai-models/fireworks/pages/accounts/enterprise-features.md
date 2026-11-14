@@ -38,7 +38,7 @@ Fireworks Enterprise accounts can use additional governance and administration f
 >
 > Monitor API and data-access activity across your account for security review and compliance.
 
-## Who can manage Enterprise features
+## Who can manage enterprise features
 
 Most Enterprise administration features require the **Admin** role on the account. Any account member can usually read current settings (for example, viewing the active model access policy), but only admins can change them.
 

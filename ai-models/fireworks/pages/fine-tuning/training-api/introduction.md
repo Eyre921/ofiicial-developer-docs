@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Training API overview"
 source: https://docs.fireworks.ai/fine-tuning/training-api/introduction
 path: fine-tuning/training-api/introduction
 ---
@@ -243,7 +243,7 @@ Let the SDK select automatically. LoRA snapshots contain the full adapter; full-
 
 No. You implement training logic while Fireworks manages GPU provisioning and distributed infrastructure.
 
-### Should I start with a Cookbook recipe or the Python SDK?
+### Should I start with a cookbook recipe or the Python SDK?
 
 Start with a Cookbook recipe for most SFT, DPO, or GRPO adaptations. Use the Python SDK directly when you need custom loop semantics and full control.
 

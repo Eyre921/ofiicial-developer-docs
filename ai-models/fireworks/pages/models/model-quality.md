@@ -1,5 +1,5 @@
 ---
-title: "Model Quality and Precision"
+title: "Model quality and precision"
 source: https://docs.fireworks.ai/models/model-quality
 path: models/model-quality
 ---

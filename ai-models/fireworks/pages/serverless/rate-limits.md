@@ -1,5 +1,5 @@
 ---
-title: "Serverless Rate Limits"
+title: "Serverless rate limits"
 source: https://docs.fireworks.ai/serverless/rate-limits
 path: serverless/rate-limits
 ---

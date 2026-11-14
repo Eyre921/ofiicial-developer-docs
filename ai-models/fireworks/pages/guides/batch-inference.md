@@ -45,7 +45,7 @@ Not all models support the Batch API. Before submitting a batch job, verify your
    2. Check that your account has sufficient quota for batch jobs.
 4. Progress may pause while waiting on capacity. The job will resume automatically.
 
-## Getting Started
+## Getting started
 
 > [accordion] 1. Prepare Your Dataset
 >
@@ -345,7 +345,7 @@ The equivalent HTTP field is `systemPrompt`:
 > * **Cache optimization:** Place static content first in prompts
 > * **Shared system prompt:** If every row uses the same system message, set it once with `--system-prompt` instead of repeating it per row — smaller upload and cache-friendly (see [Job-level system prompt](#job-level-system-prompt))
 
-## Next Steps
+## Next steps
 
 > [card] [Prompt Caching](/guides/prompt-caching)
 >

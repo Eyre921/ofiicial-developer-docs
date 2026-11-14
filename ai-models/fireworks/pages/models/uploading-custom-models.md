@@ -1,5 +1,5 @@
 ---
-title: "Custom Models"
+title: "Custom models"
 source: https://docs.fireworks.ai/models/uploading-custom-models
 path: models/uploading-custom-models
 ---

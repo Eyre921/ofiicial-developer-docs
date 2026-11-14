@@ -79,7 +79,7 @@ completion = client.completions.create(
 print(completion.choices[0].text)
 ```
 
-### Chat Completion
+### Chat completion
 
 Works best for models trained for conversation (e.g. llama\*-chat variants):
 

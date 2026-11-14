@@ -1,5 +1,5 @@
 ---
-title: "Do you support Auto Scaling?"
+title: "Do you support auto scaling?"
 source: https://docs.fireworks.ai/faq-new/deployment-infrastructure/do-you-support-auto-scaling
 path: faq-new/deployment-infrastructure/do-you-support-auto-scaling
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Cookbook: Fireworks x HUD RL Training"
+title: "Cookbook: Fireworks x HUD RL training"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/hud-rl-training
 path: fine-tuning/training-api/cookbook/hud-rl-training
 ---

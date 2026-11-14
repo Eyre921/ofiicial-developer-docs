@@ -1,5 +1,5 @@
 ---
-title: "Models"
+title: "Compatible models"
 source: https://docs.fireworks.ai/fine-tuning/models
 path: fine-tuning/models
 ---

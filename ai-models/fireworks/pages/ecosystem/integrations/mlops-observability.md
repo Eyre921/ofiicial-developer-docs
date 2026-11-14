@@ -1,5 +1,5 @@
 ---
-title: "MLOps & Observability"
+title: "MLOps & observability"
 source: https://docs.fireworks.ai/ecosystem/integrations/mlops-observability
 path: ecosystem/integrations/mlops-observability
 ---
@@ -8,7 +8,7 @@ Track and monitor Fireworks AI deployments with leading MLOps and observability 
 
 Fireworks AI integrates with industry-leading MLOps and observability platforms to help you monitor, track, and optimize your AI applications in production.
 
-## Supported Platforms
+## Supported platforms
 
 > [card] [Weights & Biases](/ecosystem/integrations/wandb)
 >
@@ -18,6 +18,6 @@ Fireworks AI integrates with industry-leading MLOps and observability platforms 
 >
 > Mlflow Tracing to track prompts, outputs, latency etc as your build AI applications with FireworksAI
 
-## Need Help?
+## Need help?
 
 For assistance with MLOps and observability integrations, [contact our team](https://fireworks.ai/contact) or join our [Discord community](https://discord.gg/fireworks-ai).

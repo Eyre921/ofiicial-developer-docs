@@ -30,9 +30,11 @@ Reference: https://developers.deepgram.com/reference/manage/keys/create
 
 This endpoint expects a CreateKeyV1Request.
 
-- `CreateKeyV1Request`
-  - any
-  - any
+- `comment` (string, required)
+- `scopes` (list of string, required)
+- `tags` (list of string, optional)
+- `expiration_date` (string, optional)
+- `time_to_live_in_seconds` (double, optional)
 
 ## Response
 

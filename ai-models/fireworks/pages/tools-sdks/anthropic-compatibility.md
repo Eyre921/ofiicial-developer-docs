@@ -38,7 +38,7 @@ client = anthropic.Anthropic(
 )
 
 response = client.messages.create(
-    model="accounts/fireworks/models/kimi-k2p5",
+    model="accounts/fireworks/models/kimi-k3",
     max_tokens=256,
     messages=[
         {"role": "user", "content": "Say hello in Spanish. Reply in one word."}
@@ -57,7 +57,7 @@ const client = new Anthropic({
 });
 
 const response = await client.messages.create({
-  model: "accounts/fireworks/models/kimi-k2p5",
+  model: "accounts/fireworks/models/kimi-k3",
   max_tokens: 256,
   messages: [
     { role: "user", content: "Say hello in Spanish. Reply in one word." },
@@ -73,7 +73,7 @@ curl --request POST \
   --header "Authorization: Bearer $FIREWORKS_API_KEY" \
   --header "Content-Type: application/json" \
   --data '{
-    "model": "accounts/fireworks/models/kimi-k2p5",
+    "model": "accounts/fireworks/models/kimi-k3",
     "max_tokens": 256,
     "messages": [
       {
@@ -90,7 +90,7 @@ curl --request POST \
 
 ## Usage
 
-Use the Anthropic SDK as you normally would. Set `model` to a Fireworks model resource name, such as `accounts/fireworks/models/kimi-k2p5`.
+Use the Anthropic SDK as you normally would. Set `model` to a Fireworks model resource name, such as `accounts/fireworks/models/kimi-k3`.
 
 The [Serverless Quickstart](/getting-started/quickstart) includes Anthropic SDK examples for common use cases:
 
@@ -282,7 +282,7 @@ Point Claude Code at Fireworks by setting the base URL and using your Fireworks 
 ```bash theme={null}
 export ANTHROPIC_BASE_URL="https://api.fireworks.ai/inference"
 export ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY"
-export ANTHROPIC_MODEL="accounts/fireworks/models/kimi-k2p5"
+export ANTHROPIC_MODEL="accounts/fireworks/models/kimi-k3"
 
 claude
 ```
@@ -318,7 +318,7 @@ For non-streaming requests, usage is returned on the response object:
 
 ```python Python theme={null}
 response = client.messages.create(
-    model="accounts/fireworks/models/kimi-k2p5",
+    model="accounts/fireworks/models/kimi-k3",
     max_tokens=256,
     messages=[{"role": "user", "content": "Say hello"}],
 )
@@ -329,7 +329,7 @@ print(f"Output tokens: {response.usage.output_tokens}")
 
 ```javascript JavaScript theme={null}
 const response = await client.messages.create({
-  model: "accounts/fireworks/models/kimi-k2p5",
+  model: "accounts/fireworks/models/kimi-k3",
   max_tokens: 256,
   messages: [{ role: "user", content: "Say hello" }],
 });
@@ -344,7 +344,7 @@ For streaming requests, token usage is included in the final `message_delta` eve
 
 ```python Python theme={null}
 stream = client.messages.create(
-    model="accounts/fireworks/models/kimi-k2p5",
+    model="accounts/fireworks/models/kimi-k3",
     max_tokens=256,
     messages=[{"role": "user", "content": "Say hello"}],
     stream=True,
@@ -358,7 +358,7 @@ for event in stream:
 
 ```javascript JavaScript theme={null}
 const stream = client.messages.stream({
-  model: "accounts/fireworks/models/kimi-k2p5",
+  model: "accounts/fireworks/models/kimi-k3",
   max_tokens: 256,
   messages: [{ role: "user", content: "Say hello" }],
 });

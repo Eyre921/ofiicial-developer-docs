@@ -1,5 +1,5 @@
 ---
-title: "Cookbook: Reinforcement Learning"
+title: "Cookbook: Reinforcement learning"
 source: https://docs.fireworks.ai/fine-tuning/training-api/cookbook/rl
 path: fine-tuning/training-api/cookbook/rl
 ---
@@ -174,7 +174,7 @@ Keep implementation and tuning detail out of the recipe page:
 * [Weight sync](/fine-tuning/training-api/cookbook/reference#weight-sync) — how updated policy weights reach the sampler
 * [`rl_loop`](https://github.com/fw-ai-external/cookbook/blob/main/training/recipes/rl_loop.py) — simpler synchronous GRPO when rollout/training overlap is unnecessary
 
-## IGPO (Information Gain Policy Optimization)
+## IGPO (information gain policy optimization)
 
 IGPO prepares turn-level advantages through
 `rl_loop.main(..., prepare_batch_fn=igpo.prepare_batch(gamma=...))`. Answer

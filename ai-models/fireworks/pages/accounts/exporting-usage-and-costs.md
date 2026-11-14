@@ -1,5 +1,5 @@
 ---
-title: "Usage & Cost Breakdown"
+title: "Usage & cost breakdown"
 source: https://docs.fireworks.ai/accounts/exporting-usage-and-costs
 path: accounts/exporting-usage-and-costs
 ---

@@ -91,7 +91,7 @@ By default, Fireworks uses **service provider (SP) initiated** SAML: users start
 
 **IdP-initiated** SAML is supported as an opt-in for SAML identity providers. When enabled, users can also start from your identity provider's portal (for example, the Okta app tile). Enable it with [`--enable-idp-initiated-sso`](/tools-sdks/firectl/commands/identity-provider-create) when creating or updating the identity provider. This option is SAML-only; OIDC providers cannot use it.
 
-## Just-In-Time (JIT) user provisioning
+## Just-in-time (JIT) user provisioning
 
 JIT user provisioning automatically creates user accounts when they sign in through SSO for the first time. When enabled, users who authenticate through your identity provider are automatically added to your Fireworks account without requiring manual user creation.
 

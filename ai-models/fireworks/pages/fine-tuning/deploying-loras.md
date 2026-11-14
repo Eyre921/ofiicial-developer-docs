@@ -1,5 +1,5 @@
 ---
-title: "Deploying Trained Models"
+title: "Deploying trained models"
 source: https://docs.fireworks.ai/fine-tuning/deploying-loras
 path: fine-tuning/deploying-loras
 ---

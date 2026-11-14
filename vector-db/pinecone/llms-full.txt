@@ -9037,7 +9037,7 @@ Backup and restore times depend upon the size of the index and number of namespa
 Backup limitations are as follows:
 
 * Backups are stored in the same project, cloud provider, and region as the source index.
-* You can only restore an index to the same project and cloud provider as the source index. Restoring to a different region on the same cloud provider is supported using the `unstable` API version and incurs a cross-region transfer fee. For details, see [Restore to a different region](/guides/indexes/restore-an-index#restore-to-a-different-region).
+* You can only restore an index to the same project and cloud provider as the source index. Restoring to a different region on the same cloud provider is supported and incurs a cross-region transfer fee. For details, see [Restore to a different region](/guides/indexes/restore-an-index#restore-to-a-different-region).
 * Backups only include vectors that were in the index at least 15 minutes prior to the backup time. This means that if a vector was inserted into an index and a backup was immediately taken after, the recently inserted vector may not be backed up. More specifically, if a backup is created only a few minutes after the source index was created, the backup may have 0 vectors.
 * You can only perform operations on backups in the current Pinecone project.
 * Backups are supported for all serverless indexes, including document indexes with a schema (`full_text_search`, `dense_vector`, and `sparse_vector` fields) and indexes that use integrated embedding.
@@ -12120,7 +12120,7 @@ These rules apply:
 # Restore an index
 Source: https://docs.pinecone.io/guides/indexes/restore-an-index
 
-Restore a Pinecone serverless index from a backup, change the index name, tags, or deletion protection, and preserve embedding model configuration.
+Restore a Pinecone serverless index from a backup into the same or a different region, and change the index name, tags, or deletion protection.
 
 ## Create a serverless index from a backup
 
@@ -12294,41 +12294,87 @@ class CreateIndexFromBackupResponse {
 
 ## Restore to a different region
 
-The [create index from backup](/reference/api/latest/control-plane/create_index_from_backup) endpoint always creates the new index in the same cloud and region as the backup. To restore a backup into a different region, use the `unstable` API version of the create index endpoint, documented under [`2026-04`](/reference/api/2026-04/control-plane/create_index). Specify the backup as `source_backup_id` within `spec.serverless` and set the target `region` there.
+By default, [create index from backup](/reference/api/latest/control-plane/create_index_from_backup) creates the new index in the same cloud and region as the backup. To restore a serverless backup into a different region, set `deployment` to a `managed` deployment in the target region.
 
 The following rules apply:
 
 * The target region must be on the same cloud provider as the backup. Restoring to a different cloud provider isn't supported.
 * The backup must be in the current Pinecone project, and the new index is created in the same project.
-* The `dimension`, `metric`, and `vector_type` must match the source index.
-* Restoring to a different region isn't supported for BYOC indexes.
+* A serverless backup can't be restored into a BYOC environment, and a BYOC backup can only be restored into the environment it was taken in.
 * In the Pinecone console, you can choose a different region only while the source index still exists.
 * Restoring to a different region incurs a cross-region transfer fee, charged per GB on top of the standard restore cost. The fee depends on the cloud provider and the backup's region. For details, see [Backups and restores](/guides/cost/understand-cost#backups-and-restores).
 
-> [!WARNING]
->
-> Restoring to a different region is in [public preview](/release-notes/feature-availability). It is available in the Pinecone console and through the `unstable` version of the REST API.
+For example, the following request restores a backup taken in the AWS `us-east-1` region into a new index in the AWS `us-west-2` region:
 
-For example, the following request restores a backup of a dense index hosted in the AWS `us-east-1` region into a new index in the AWS `us-west-2` region:
+```javascript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone';
+
+const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+const response = await pc.backups.createIndex('a65ff585-d987-4da5-a622-72e19a6ed5f4', {
+  name: 'restored-index',
+  deployment: { deploymentType: 'managed', cloud: 'aws', region: 'us-west-2' },
+});
+
+console.log(response);
+```
+
+```go Go theme={null}
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"log"
+
+	"github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func prettifyStruct(obj interface{}) string {
+	bytes, _ := json.MarshalIndent(obj, "", "  ")
+	return string(bytes)
+}
+
+func main() {
+	ctx := context.Background()
+
+	pc, err := pinecone.NewClient(pinecone.NewClientParams{
+		ApiKey: "YOUR_API_KEY",
+	})
+	if err != nil {
+		log.Fatalf("Failed to create Client: %v", err)
+	}
+
+	res, err := pc.CreateIndexFromBackup(ctx, &pinecone.CreateIndexFromBackupParams{
+		BackupId: "a65ff585-d987-4da5-a622-72e19a6ed5f4",
+		Name:     "restored-index",
+		Deployment: &pinecone.IndexDeployment{
+			Managed: &pinecone.ManagedDeployment{Cloud: pinecone.CloudAWS, Region: "us-west-2"},
+		},
+	})
+	if err != nil {
+		log.Fatalf("Failed to restore backup: %v", err)
+	}
+
+	fmt.Println(prettifyStruct(res))
+}
+```
 
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"
+BACKUP_ID="a65ff585-d987-4da5-a622-72e19a6ed5f4"
 
-curl "https://api.pinecone.io/indexes" \
+curl "https://api.pinecone.io/backups/$BACKUP_ID/create-index" \
   -H "Api-Key: $PINECONE_API_KEY" \
   -H "Content-Type: application/json" \
-  -H "X-Pinecone-Api-Version: unstable" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
   -d '{
     "name": "restored-index",
-    "vector_type": "dense",
-    "dimension": 1536,
-    "metric": "cosine",
-    "spec": {
-      "serverless": {
-        "cloud": "aws",
-        "region": "us-west-2",
-        "source_backup_id": "a65ff585-d987-4da5-a622-72e19a6ed5f4"
-      }
+    "deployment": {
+      "deployment_type": "managed",
+      "cloud": "aws",
+      "region": "us-west-2"
     }
   }'
 ```
@@ -86836,29 +86882,29 @@ The Nexus runtime runs each query. It's a single generic Python image that the o
 
 1. **Container:** Each query starts one isolated container that runs that turn, then exits. It pulls the scoped contexts' curated knowledge: artifacts on disk plus their vector index.
 2. **Orientation:** The runtime reads the manifests and an artifact outline up front, so the model starts knowing what knowledge exists and where.
-3. **Agent loop:** The model writes Python into a persistent REPL that calls the retrieval SDK to read artifacts, run searches, walk the graph, and query structured tables.
-4. **Step events:** The runtime posts each step as it happens, which powers the live answer stream. You can replay the full sequence for any query in its [query trace](/guides/nexus/query-tracing).
-5. **Synthesis:** Once enough evidence is gathered, the runtime composes a grounded answer with inline citations, then finalizes the turn.
+3. **Agent loop:** The model writes Python into a persistent read-eval-print loop (REPL) that calls the retrieval SDK to read artifacts, run searches, walk the graph, and query structured tables. The runtime posts each step as it happens, which powers the live answer stream. You can replay the full sequence for any query in its [query trace](/guides/nexus/query-tracing).
+4. **Answer:** When the model can answer, it writes the answer with inline citations and ends the turn. The runtime then builds `citations` from what the loop retrieved and the files the answer names.
 
 ## Agent loop
 
-The model's primary tool is `run_python`, a persistent REPL. Variables survive across calls, so the model chains operations together: find an artifact, read it, filter its sources, drill for a verbatim quote, all in one block. It processes results in code and prints only what it needs.
+The model's primary tool is `run_python`, a persistent REPL. Variables carry over between calls, so in one block the model can find an artifact, read it, filter its sources, and pull a verbatim quote. It processes results in code and prints only what it needs.
 
-If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
+For example, this block finds a summary artifact about acquisition terms, reads it, and searches that artifact's sources for the purchase price:
 
-```python theme={null}
-# One turn: find an artifact, read it, drill its sources.
+```python Python theme={null}
 art = await search_knowledge("acquisition terms", kind="summary")
-srcs = read_artifact(art[0].name).sources
+srcs = read_artifact(art[0].fields["artifact_name"]).sources
 for h in await search_in_sources(srcs, "purchase price"):
     print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
 ```
+
+If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
 
 Independent searches run concurrently, and the model reuses lookups it already holds in a variable. The loop has a step cap, so the model aims to gather what it needs and answer in a few steps.
 
 ## Retrieval SDK
 
-The Composable Retriever loads these primitives into the REPL. The model reads artifacts off disk first because it's cheapest, falls back to search over the index, and uses SQL for counts and enumerations.
+The Composable Retriever, the Nexus component that serves artifacts to queries, loads these primitives into the REPL. The model reads artifacts off disk first because it's cheapest, falls back to search over the index, and uses SQL for counts and enumerations.
 
 ### Read artifacts
 
@@ -86886,15 +86932,19 @@ The Composable Retriever loads these primitives into the REPL. The model reads a
 | `query_db(sql)` | read-only SQL over typed artifact tables, the first choice for counts and per-item questions |
 | `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges |
 
-## Synthesis
+## Answers and citations
 
-* **Evidence:** The model composes the answer from the evidence its code surfaced, so it reasons over a small, relevant context.
-* **Citations:** Each inline citation marker maps to a source span, with the file, page, and verbatim text behind the claim.
-* **Structured output:** When a query includes a `shape`, synthesis returns a document that conforms to that schema.
+The model writes the answer at the end of the agent loop. These rules shape what the answer draws on and how it cites sources.
+
+* **Evidence:** The model answers from the evidence its code surfaced rather than from whole documents, so it reasons over a small, relevant context.
+* **Citations:** Each citation names its source file, plus the pages and sections of the passages it drew on when they're available.
+* **Duplicate sources:** When several sources contain the same content and the answer draws on one of them, the model is prompted to say which one it used and why. It's also prompted to name each of the others by its full file name, so they're cited too. If your question names the source, the answer uses it without listing the others. With more than five other copies, the answer gives their count instead.
+* **Earlier-turn citations:** In a session, a follow-up answer can cite a file that an earlier turn retrieved, if the answer names it. These citations are file-level, so they include the `source` but no pages or sections. Their `grounding` is `carried` because the current turn didn't retrieve the file itself.
+* **Structured output:** When a query includes a `shape`, a second model call turns the answer into a document built to that schema. Nexus checks the document against the schema, and the model rewrites it up to two times if it breaks a rule, such as a `maxLength`. If it still doesn't conform, the query returns the last version. The document's values don't include inline citation markers, and the sources are in `citations`.
 
 ## Session instructions
 
-A session can carry its own instructions, a system prompt layered over the context's default that shapes every answer in the session. See [Set session instructions](/guides/nexus/set-session-instructions).
+A session can have its own system prompt. It adds to the context's default instructions and shapes every answer in the session. See [Set session instructions](/guides/nexus/set-session-instructions).
 
 
 # Nexus query traces
@@ -89977,6 +90027,12 @@ Document indexes can now [embed text](/guides/search/integrated-embedding) with 
 From November 4 through December 31, 2026, Starter and Builder organizations get twice the included tokens on every embedding model. Starter includes 10,000,000 tokens per month per model (5,000,000 before the promotion), and Builder includes 20,000,000 (10,000,000 before). Reranking allowances and per-minute rate limits don't change. Allowances return to their usual levels on January 1, 2027.
 
 For the current limits, see [Rate limits](/reference/api/database-limits/rate-limits#monthly-usage-limits).
+
+**2026-11-02**
+
+### Restoring a backup to a different region is generally available
+
+[Restoring a serverless backup into a different region](/guides/indexes/restore-an-index#restore-to-a-different-region) on the same cloud provider is now generally available in the Pinecone console and the API. Restoring to a different cloud provider isn't supported. A [cross-region transfer fee](/guides/cost/understand-cost#backups-and-restores) applies.
 
 **2026-10-27**
 
