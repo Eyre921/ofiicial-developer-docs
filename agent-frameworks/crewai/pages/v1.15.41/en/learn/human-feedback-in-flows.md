@@ -63,7 +63,7 @@ When this flow runs, it will:
 3. Wait for the user to type feedback (or press Enter to skip)
 4. Pass a `HumanFeedbackResult` object to `process_feedback`
 
-## The @human\_feedback Decorator
+## The @human_feedback Decorator
 
 ### Parameters
 
@@ -172,7 +172,7 @@ def on_approval(self, result: HumanFeedbackResult):
 
 The `Flow` class provides two attributes for accessing human feedback:
 
-### last\_human\_feedback
+### last_human_feedback
 
 Returns the most recent `HumanFeedbackResult`:
 
@@ -183,7 +183,7 @@ def check_feedback(self):
         print(f"Last feedback: {self.last_human_feedback.feedback}")
 ```
 
-### human\_feedback\_history
+### human_feedback_history
 
 A list of all `HumanFeedbackResult` objects collected during the flow:
 

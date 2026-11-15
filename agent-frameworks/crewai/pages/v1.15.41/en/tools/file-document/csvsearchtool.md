@@ -20,7 +20,7 @@ are RAG tools designed for searching different sources of data.
 
 ## Installation
 
-Install the crewai\_tools package
+Install the crewai_tools package
 
 ```shell theme={null}
 pip install 'crewai[tools]'

@@ -65,7 +65,7 @@ The `HyperbrowserLoadTool` accepts the following parameters:
 
 ### Constructor Parameters
 
-* **api\_key**: Optional. Your Hyperbrowser API key. If not provided, it will be read from the `HYPERBROWSER_API_KEY` environment variable.
+* **api_key**: Optional. Your Hyperbrowser API key. If not provided, it will be read from the `HYPERBROWSER_API_KEY` environment variable.
 
 ### Run Parameters
 

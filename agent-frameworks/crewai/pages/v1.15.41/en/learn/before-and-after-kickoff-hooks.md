@@ -28,7 +28,7 @@ class MyCrew:
 #...
 ```
 
-In this example, the prepare\_data function modifies the inputs by adding a new key-value pair indicating that the inputs have been processed.
+In this example, the prepare_data function modifies the inputs by adding a new key-value pair indicating that the inputs have been processed.
 
 ## After Kickoff Hook
 

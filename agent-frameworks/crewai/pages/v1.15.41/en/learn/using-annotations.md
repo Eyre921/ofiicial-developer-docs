@@ -148,7 +148,7 @@ Note how the `llm` and `tools` in the YAML file correspond to the methods decora
 
 ## Best Practices
 
-* **Consistent Naming**: Use clear and consistent naming conventions for your methods. For example, agent methods could be named after their roles (e.g., researcher, reporting\_analyst).
+* **Consistent Naming**: Use clear and consistent naming conventions for your methods. For example, agent methods could be named after their roles (e.g., researcher, reporting_analyst).
 * **Environment Variables**: Use environment variables for sensitive information like API keys.
 * **Flexibility**: Design your crew to be flexible by allowing easy addition or removal of agents and tasks.
 * **YAML-Code Correspondence**: In classic projects, ensure that the names and structures in your YAML files correspond correctly to the decorated methods in your Python code.

@@ -67,11 +67,11 @@ print(result)
 
 | Argument | Type | Required | Default | Description |
 | :- | :- | :- | :- | :- |
-| **agent\_id** | `str` | Yes | None | The unique identifier of the Bedrock agent |
-| **agent\_alias\_id** | `str` | Yes | None | The unique identifier of the agent alias |
-| **session\_id** | `str` | No | timestamp | The unique identifier of the session |
-| **enable\_trace** | `bool` | No | False | Whether to enable trace for debugging |
-| **end\_session** | `bool` | No | False | Whether to end the session after invocation |
+| **agent_id** | `str` | Yes | None | The unique identifier of the Bedrock agent |
+| **agent_alias_id** | `str` | Yes | None | The unique identifier of the agent alias |
+| **session_id** | `str` | No | timestamp | The unique identifier of the session |
+| **enable_trace** | `bool` | No | False | Whether to enable trace for debugging |
+| **end_session** | `bool` | No | False | Whether to end the session after invocation |
 | **description** | `str` | No | None | Custom description for the tool |
 
 ## Environment Variables

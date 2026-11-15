@@ -65,15 +65,15 @@ result = crew.kickoff(inputs={"my_bucket": "s3://my-bucket/config/app-config.jso
 
 The `S3ReaderTool` accepts the following parameter when used by an agent:
 
-* **file\_path**: Required. The S3 file path in the format `s3://bucket-name/file-name`.
+* **file_path**: Required. The S3 file path in the format `s3://bucket-name/file-name`.
 
 ## AWS Credentials
 
 The tool requires AWS credentials to access S3 buckets. You can configure these credentials using environment variables:
 
-* **CREW\_AWS\_REGION**: The AWS region where your S3 bucket is located. Default is `us-east-1`.
-* **CREW\_AWS\_ACCESS\_KEY\_ID**: Your AWS access key ID.
-* **CREW\_AWS\_SEC\_ACCESS\_KEY**: Your AWS secret access key.
+* **CREW_AWS_REGION**: The AWS region where your S3 bucket is located. Default is `us-east-1`.
+* **CREW_AWS_ACCESS_KEY_ID**: Your AWS access key ID.
+* **CREW_AWS_SEC_ACCESS_KEY**: Your AWS secret access key.
 
 ## Usage
 

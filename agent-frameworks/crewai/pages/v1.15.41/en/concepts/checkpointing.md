@@ -366,7 +366,7 @@ The research task is skipped, the writer runs against the saved research output,
 
 Storage destination. A directory for `JsonProvider`, a database file path for `SqliteProvider`.
 
-**on\_events** `list[CheckpointEventType | Literal["*"]]` (default: \["task\_completed"])
+**on_events** `list[CheckpointEventType | Literal["*"]]` (default: \["task_completed"])
 
 Event types that trigger a checkpoint. `CheckpointEventType` is a `Literal` — your type checker will autocomplete and reject unsupported values. See [event types](#event-types) for the full list.
 
@@ -374,11 +374,11 @@ Event types that trigger a checkpoint. `CheckpointEventType` is a `Literal` — 
 
 Storage backend. Either `JsonProvider` or `SqliteProvider`.
 
-**max\_checkpoints** `int | None` (default: None)
+**max_checkpoints** `int | None` (default: None)
 
 Maximum checkpoints to retain. Oldest are pruned after each write.
 
-**restore\_from** `Path | str | None` (default: None)
+**restore_from** `Path | str | None` (default: None)
 
 Checkpoint to restore from when passed via `from_checkpoint`.
 

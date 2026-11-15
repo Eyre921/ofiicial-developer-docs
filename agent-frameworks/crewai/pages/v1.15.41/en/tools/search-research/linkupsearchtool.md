@@ -59,13 +59,13 @@ The `LinkupSearchTool` accepts the following parameters:
 
 ### Constructor Parameters
 
-* **api\_key**: Required. Your Linkup API key.
+* **api_key**: Required. Your Linkup API key.
 
 ### Run Parameters
 
 * **query**: Required. The search term or phrase.
 * **depth**: Optional. The search depth. Default is "standard".
-* **output\_type**: Optional. The type of output. Default is "searchResults".
+* **output_type**: Optional. The type of output. Default is "searchResults".
 
 ## Advanced Usage
 

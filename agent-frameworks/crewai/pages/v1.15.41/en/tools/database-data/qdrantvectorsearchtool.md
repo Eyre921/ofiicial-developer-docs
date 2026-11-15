@@ -203,7 +203,7 @@ print(result)
 ### Optional Tool Parameters
 
 * `custom_embedding_fn` (Callable\[\[str], list\[float]]): Custom function for text vectorization
-* `qdrant_package` (str): Base package path for Qdrant (default: "qdrant\_client")
+* `qdrant_package` (str): Base package path for Qdrant (default: "qdrant_client")
 * `client` (Any): Pre-initialized Qdrant client (optional)
 
 ## Advanced Filtering

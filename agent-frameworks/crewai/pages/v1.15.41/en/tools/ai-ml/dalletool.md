@@ -15,7 +15,7 @@ This tool allows the Agent to generate images based on the text input provided b
 
 ## Installation
 
-Install the crewai\_tools package
+Install the crewai_tools package
 
 ```shell theme={null}
 pip install 'crewai[tools]'

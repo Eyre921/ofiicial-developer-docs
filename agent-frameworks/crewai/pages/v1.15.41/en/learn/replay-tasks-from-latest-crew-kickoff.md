@@ -27,7 +27,7 @@ To use the replay feature, follow these steps:
 
 **3. Run the following commands:**
 
-To view the latest kickoff task\_ids use:
+To view the latest kickoff task_ids use:
 
 ```shell theme={null}
 crewai log-tasks-outputs

@@ -40,7 +40,7 @@ coding_agent = Agent(
    provide alternative solutions. The `max_retry_limit` parameter, which defaults to 2, controls the maximum number of retries for a task.
 
 3. **Dependencies**: To use the code execution feature, you need to install the `crewai_tools` package. If not installed, the agent will log an info message:
-   "Coding tools not available. Install crewai\_tools."
+   "Coding tools not available. Install crewai_tools."
 
 ## Code Execution Process
 

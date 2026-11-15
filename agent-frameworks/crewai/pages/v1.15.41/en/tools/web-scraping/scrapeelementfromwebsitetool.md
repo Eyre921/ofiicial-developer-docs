@@ -74,16 +74,16 @@ scrape_tool = ScrapeElementFromWebsiteTool(
 
 The `ScrapeElementFromWebsiteTool` accepts the following parameters during initialization:
 
-* **website\_url**: Optional. The URL of the website to scrape. If provided during initialization, the agent won't need to specify it when using the tool.
-* **css\_element**: Optional. The CSS selector for the elements to extract. If provided during initialization, the agent won't need to specify it when using the tool.
+* **website_url**: Optional. The URL of the website to scrape. If provided during initialization, the agent won't need to specify it when using the tool.
+* **css_element**: Optional. The CSS selector for the elements to extract. If provided during initialization, the agent won't need to specify it when using the tool.
 * **cookies**: Optional. A dictionary containing cookies to be sent with the request. This can be useful for websites that require authentication.
 
 ## Usage
 
 When using the `ScrapeElementFromWebsiteTool` with an agent, the agent will need to provide the following parameters (unless they were specified during initialization):
 
-* **website\_url**: The URL of the website to scrape.
-* **css\_element**: The CSS selector for the elements to extract.
+* **website_url**: The URL of the website to scrape.
+* **css_element**: The CSS selector for the elements to extract.
 
 The tool will return the text content of all elements matching the CSS selector, joined by newlines.
 

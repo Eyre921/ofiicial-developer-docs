@@ -1532,7 +1532,7 @@ Learn how to get the most out of your LLM configuration:
 >
 > 3. Use caching when possible
 >
-> 4. Set appropriate max\_tokens limits
+> 4. Set appropriate max_tokens limits
 >
 > > [!NOTE]
 > >

@@ -851,11 +851,11 @@ After running the `crewai create flow name_of_flow` command, you will see a fold
 | :- | :- |
 | `name_of_flow/` | Root directory for the flow. |
 | ├── `crews/` | Contains directories for specific crews. |
-| │ └── `poem_crew/` | Directory for the "poem\_crew" with its configurations and scripts. |
-| │ ├── `config/` | Configuration files directory for the "poem\_crew". |
-| │ │ ├── `agents.yaml` | YAML file defining the agents for "poem\_crew". |
-| │ │ └── `tasks.yaml` | YAML file defining the tasks for "poem\_crew". |
-| │ ├── `poem_crew.py` | Script for "poem\_crew" functionality. |
+| │ └── `poem_crew/` | Directory for the "poem_crew" with its configurations and scripts. |
+| │ ├── `config/` | Configuration files directory for the "poem_crew". |
+| │ │ ├── `agents.yaml` | YAML file defining the agents for "poem_crew". |
+| │ │ └── `tasks.yaml` | YAML file defining the tasks for "poem_crew". |
+| │ ├── `poem_crew.py` | Script for "poem_crew" functionality. |
 | ├── `tools/` | Directory for additional tools used in the flow. |
 | │ └── `custom_tool.py` | Custom tool implementation. |
 | ├── `main.py` | Main script for running the flow. |

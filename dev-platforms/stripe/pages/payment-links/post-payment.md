@@ -45,6 +45,10 @@ You can automatically handle fulfillment through a Stripe partner or programmati
 
 - **Handle fulfillment programmatically:** If you’re interested in handling fulfillment programmatically using the Stripe API and *webhooks* (A configurable endpoint that executes when it receives certain event notifications from an event destination), learn how to [fulfill orders after a customer pays](https://docs.stripe.com/checkout/fulfillment.md).
 
+## Use Workflows to notify your team about payment failures 
+
+To notify your team about failed delayed payments without writing code, use [Workflows](https://docs.stripe.com/workflows.md) with the [Notify your team when a delayed Checkout payment fails](https://dashboard.stripe.com/workflows/create?workflow=eyJkZWVwX2xpbmtfdmVyc2lvbiI6MSwibmFtZSI6Ik5vdGlmeSB5b3VyIHRlYW0gd2hlbiBhIGRlbGF5ZWQgQ2hlY2tvdXQgcGF5bWVudCBmYWlscyIsImRlZmluaXRpb24iOiJDdDRDRXFzQ0NoRmxiV0ZwYkY5MFpXRnRYMjFsYldKbGNoQUJHcE1DQ2lwemRISnBjR1V1YzJWdVpGOXRaWEpqYUdGdWRGOXViM1JwWm1sallYUnBiMjVmWlcxaGFXeGZkaklTNUFFSzRRRUtCRzFsYlc4UzJBRWExUUZCSUdSbGJHRjVaV1FnUTJobFkydHZkWFFnY0dGNWJXVnVkQ0JtWVdsc1pXUXVJRkpsZG1sbGR5QjBhR1Z6WlNCa1pYUmhhV3h6SUdKbFptOXlaU0JtZFd4bWFXeHNhVzVuSUhSb1pTQnZjbVJsY2k0S1EyaGxZMnR2ZFhRZ1UyVnpjMmx2YmlCSlJEb2dKSHQ3SUhSeWFXZG5aWEl1YVdRZ2ZYMEtRM1Z6ZEc5dFpYSWdaVzFoYVd3NklDUjdleUIwY21sbloyVnlMbU4xYzNSdmJXVnlYMlJsZEdGcGJITXVaVzFoYVd3Z2ZYMEtRVzF2ZFc1ME9pQWtlM3NnZEhKcFoyZGxjaTVoYlc5MWJuUmZkRzkwWVd3Z2ZYMGFMZ2dDRWlvS0pXTm9aV05yYjNWMExuTmxjM05wYjI0dVlYTjVibU5mY0dGNWJXVnVkRjltWVdsc1pXUWFBUUVTRVRJd01qWXRNRGt0TXpBdVpXNWthWFpsIiwic3RyaXBlX2FwaV92ZXJzaW9uIjoiMjAyNi0wOS0zMC5lbmRpdmUifQ) template. It triggers when a delayed Checkout payment fails and emails your team the customer’s email, the amount, and the Checkout Session ID. Choose the team members to notify before publishing the workflow.
+
 ## Change confirmation behavior 
 
 #### Dashboard

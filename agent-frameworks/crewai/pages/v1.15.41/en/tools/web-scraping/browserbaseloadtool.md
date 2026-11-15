@@ -45,8 +45,8 @@ The following parameters can be used to customize the `BrowserbaseLoadTool`'s be
 
 | Argument | Type | Description |
 | :- | :- | :- |
-| **api\_key** | `string` | *Optional*. Browserbase API key. Default is `BROWSERBASE_API_KEY` env variable. |
-| **project\_id** | `string` | *Optional*. Browserbase Project ID. Default is `BROWSERBASE_PROJECT_ID` env variable. |
-| **text\_content** | `bool` | *Optional*. Retrieve only text content. Default is `False`. |
-| **session\_id** | `string` | *Optional*. Provide an existing Session ID. |
+| **api_key** | `string` | *Optional*. Browserbase API key. Default is `BROWSERBASE_API_KEY` env variable. |
+| **project_id** | `string` | *Optional*. Browserbase Project ID. Default is `BROWSERBASE_PROJECT_ID` env variable. |
+| **text_content** | `bool` | *Optional*. Retrieve only text content. Default is `False`. |
+| **session_id** | `string` | *Optional*. Provide an existing Session ID. |
 | **proxy** | `bool` | *Optional*. Enable/Disable Proxies. Default is `False`. |

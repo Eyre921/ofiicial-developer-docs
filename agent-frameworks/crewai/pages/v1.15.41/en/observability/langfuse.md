@@ -42,7 +42,7 @@ os.environ["LANGFUSE_HOST"] = "https://cloud.langfuse.com" # 🇪🇺 EU region
 os.environ["OPENAI_API_KEY"] = "sk-proj-..."
 ```
 
-With the environment variables set, we can now initialize the Langfuse client. get\_client() initializes the Langfuse client using the credentials provided in the environment variables.
+With the environment variables set, we can now initialize the Langfuse client. get_client() initializes the Langfuse client using the credentials provided in the environment variables.
 
 ```python theme={null}
 from langfuse import get_client

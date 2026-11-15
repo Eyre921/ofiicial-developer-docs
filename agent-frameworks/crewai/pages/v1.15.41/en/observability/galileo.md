@@ -113,4 +113,4 @@ required to enable Galileo for a CrewAI run. When instantiated, the listener:
 No additional configuration or code changes are required.
 All data from this run is logged to the Galileo project and
 log stream specified by your environment configuration
-(for example, GALILEO\_PROJECT and GALILEO\_LOG\_STREAM).
+(for example, GALILEO_PROJECT and GALILEO_LOG_STREAM).

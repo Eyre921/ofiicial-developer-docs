@@ -281,7 +281,7 @@ Different models thrive on differently structured prompts. Making deeper adjustm
 ### Example: Llama 3.3 Prompting Template
 
 For instance, when dealing with Meta's Llama 3.3, deeper-level customization may reflect the recommended structure described at:
-[https://www.llama.com/docs/model-cards-and-prompt-formats/llama3\_1/#prompt-template](https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1/#prompt-template)
+[https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1/#prompt-template](https://www.llama.com/docs/model-cards-and-prompt-formats/llama3_1/#prompt-template)
 
 Here's an example to highlight how you might fine-tune an Agent to leverage Llama 3.3 in code:
 

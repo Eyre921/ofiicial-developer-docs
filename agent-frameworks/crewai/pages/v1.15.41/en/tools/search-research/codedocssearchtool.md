@@ -21,7 +21,7 @@ it searches across a wide array of code documentation known or discovered throug
 
 ## Installation
 
-To start using the CodeDocsSearchTool, first, install the crewai\_tools package via pip:
+To start using the CodeDocsSearchTool, first, install the crewai_tools package via pip:
 
 ```shell theme={null}
 pip install 'crewai[tools]'
@@ -56,7 +56,7 @@ The following parameters can be used to customize the `CodeDocsSearchTool`'s beh
 
 | Argument | Type | Description |
 | :- | :- | :- |
-| **docs\_url** | `string` | *Optional*. Specifies the URL of the code documentation to be searched. |
+| **docs_url** | `string` | *Optional*. Specifies the URL of the code documentation to be searched. |
 
 ## Custom model and embeddings
 

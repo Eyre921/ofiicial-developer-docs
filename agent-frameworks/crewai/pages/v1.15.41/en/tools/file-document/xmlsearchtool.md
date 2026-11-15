@@ -20,7 +20,7 @@ By specifying an XML path, users can target their search more precisely to the c
 
 ## Installation
 
-To start using the XMLSearchTool, you must first install the crewai\_tools package. This can be easily done with the following command:
+To start using the XMLSearchTool, you must first install the crewai_tools package. This can be easily done with the following command:
 
 ```shell theme={null}
 pip install 'crewai[tools]'

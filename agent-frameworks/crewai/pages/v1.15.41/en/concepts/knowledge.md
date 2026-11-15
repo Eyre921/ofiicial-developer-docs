@@ -443,7 +443,7 @@ agent = Agent(
 
 List of knowledge sources that provide content to be stored and queried. Can include PDF, CSV, Excel, JSON, text files, or string content.
 
-**collection\_name** `str`
+**collection_name** `str`
 
 Name of the collection where the knowledge will be stored. Used to identify different sets of knowledge. Defaults to "knowledge" if not provided.
 
@@ -1110,7 +1110,7 @@ This is useful when you've updated your knowledge sources and want to ensure tha
 >
 > * With the typical file structure provided by CrewAI, knowledge sources are embedded every time the kickoff is triggered.
 > * If the knowledge sources are large, this leads to inefficiency and increased latency, as the same data is embedded each time.
-> * To resolve this, directly initialize the knowledge parameter instead of the knowledge\_sources parameter.
+> * To resolve this, directly initialize the knowledge parameter instead of the knowledge_sources parameter.
 > * Link to the issue to get complete idea [Github Issue](https://github.com/crewAIInc/crewAI/issues/2755)
 
 > [accordion] Knowledge Management

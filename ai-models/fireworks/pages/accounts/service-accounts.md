@@ -8,7 +8,7 @@ Create Fireworks service accounts with firectl, issue API keys on their behalf, 
 
 Service accounts in Fireworks allow applications, scripts, and automated systems to authenticate and perform actions securely—without relying on human credentials. They are ideal for CI/CD pipelines, backend services, and automated workflows. Service Accounts let you avoid shared credentials and easily distinguish between what automated systems did vs humans in audit logs.
 
-Service accounts can take actions using an API key, like creating deployments, running models or creating datasets (see [API reference](https://fireworks.ai/docs/api-reference/introduction)). Service accounts cannot login through the web interface or use OIDC tokens.
+Service accounts can take actions using an API key, like creating deployments, running models, or managing custom models (see [API reference](/api-reference/introduction)). Service accounts cannot login through the web interface or use OIDC tokens.
 
 > [!NOTE]
 >

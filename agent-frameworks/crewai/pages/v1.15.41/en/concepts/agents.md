@@ -64,7 +64,7 @@ In the CrewAI framework, an `Agent` is an autonomous unit that can:
 | **Code Execution Mode** *(optional)* | `code_execution_mode` | `Literal["safe", "unsafe"]` | Mode for code execution: 'safe' (using Docker) or 'unsafe' (direct). Default is 'safe'. |
 | **Multimodal** *(optional)* | `multimodal` | `bool` | Whether the agent supports multimodal capabilities. Default is False. |
 | **Inject Date** *(optional)* | `inject_date` | `bool` | Whether to automatically inject the current date into the agent's prompt. Default is False. |
-| **Date Format** *(optional)* | `date_format` | `str` | Format string for date when inject\_date is enabled. Default is "%Y-%m-%d" (ISO format). |
+| **Date Format** *(optional)* | `date_format` | `str` | Format string for date when inject_date is enabled. Default is "%Y-%m-%d" (ISO format). |
 | **Reasoning** *(optional)* | `reasoning` | `bool` | Whether the agent should reflect and create a plan before executing a task. Default is False. |
 | **Max Reasoning Attempts** *(optional)* | `max_reasoning_attempts` | `Optional[int]` | Maximum number of reasoning attempts before executing the task. If None, will try until ready. |
 | **Embedder** *(optional)* | `embedder` | `Optional[Dict[str, Any]]` | Configuration for the embedder used by the agent. |

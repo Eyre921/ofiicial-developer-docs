@@ -42,7 +42,7 @@ The policy doesn't affect prompt caching, which holds KV caches only in memory, 
 | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs | Training | **Rejected** |
 | Training API: forward and backward passes, optimizer steps, sampling, and checkpoints | Training | **Rejected** |
 | Evaluators and evaluation jobs | Training | **Rejected** |
-| Dataset uploads | Training | **Rejected** |
+| Dataset uploads (retired platform-wide) | Training | **Rejected** |
 | Custom model uploads and imports | Inference or Training | **Rejected** |
 | Model quantization with `firectl model prepare` | Inference or Training | **Rejected** |
 

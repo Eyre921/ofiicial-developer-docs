@@ -52,8 +52,8 @@ The PGSearchTool is designed to require the following arguments for its operatio
 
 | Argument | Type | Description |
 | :- | :- | :- |
-| **db\_uri** | `string` | **Mandatory**. A string representing the URI of the PostgreSQL database to be queried. This argument will be mandatory and must include the necessary authentication details and the location of the database. |
-| **table\_name** | `string` | **Mandatory**. A string specifying the name of the table within the database on which the semantic search will be performed. This argument will also be mandatory. |
+| **db_uri** | `string` | **Mandatory**. A string representing the URI of the PostgreSQL database to be queried. This argument will be mandatory and must include the necessary authentication details and the location of the database. |
+| **table_name** | `string` | **Mandatory**. A string specifying the name of the table within the database on which the semantic search will be performed. This argument will also be mandatory. |
 
 ## Custom Model and Embeddings
 

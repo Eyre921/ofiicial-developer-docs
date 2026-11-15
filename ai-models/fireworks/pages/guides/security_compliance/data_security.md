@@ -24,7 +24,7 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Bring Your Own Bucket:** Customers may integrate their own cloud storage to retain governance and apply their own compliance frameworks.
 
-* Datasets: [Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob) (GCS, AWS S3, Azure)
+* Training data: Load directly from your local environment or cloud bucket via the [Training API](/fine-tuning/training-api/introduction) (legacy [BYOB dataset registration](/guides/security_compliance/secure_training/byob) is retired)
 * Models: [External AWS S3 Bucket Integration](/models/uploading-custom-models#uploading-your-model)
 
 **Bring Your Own Key:** Customers may integrate their own AWS KMS, Google Cloud KMS, or Azure Key Vault key to retain governance and apply their own encryption policies.

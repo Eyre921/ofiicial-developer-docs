@@ -132,7 +132,7 @@ Lifecycle commands are unchanged — for example `crewai tool install`, `crewai 
 
 #### Deprecated flag aliases
 
-These older snake\_case flags still work but are hidden from `--help`. Prefer the kebab-case forms documented in each command section below.
+These older snake_case flags still work but are hidden from `--help`. Prefer the kebab-case forms documented in each command section below.
 
 | Deprecated | Use instead |
 | :- | :- |
@@ -166,7 +166,7 @@ crewai train [OPTIONS]
 ```
 
 * `-n, --n-iterations INTEGER`: Number of iterations to train the crew (default: 5)
-* `-f, --filename TEXT`: Path to a custom file for training (default: "trained\_agents\_data.pkl")
+* `-f, --filename TEXT`: Path to a custom file for training (default: "trained_agents_data.pkl")
 
 Example:
 
@@ -200,7 +200,7 @@ crewai log-tasks-outputs
 
 ### 6. Reset-memories
 
-Reset the crew memories (long, short, entity, latest\_crew\_kickoff\_outputs).
+Reset the crew memories (long, short, entity, latest_crew_kickoff_outputs).
 
 ```shell Terminal theme={null}
 crewai reset-memories [OPTIONS]
@@ -540,13 +540,13 @@ Example output:
 
 | Setting | Value | Description |
 | :- | :- | :- |
-| enterprise\_base\_url | [https://app.crewai.com](https://app.crewai.com) | Base URL of the CrewAI AMP instance |
-| org\_name | Not set | Name of the currently active organization |
-| org\_uuid | Not set | UUID of the currently active organization |
-| oauth2\_provider | workos | OAuth2 provider (e.g., workos, okta, auth0) |
-| oauth2\_audience | client\_01YYY | Audience identifying the target API/resource |
-| oauth2\_client\_id | client\_01XXX | OAuth2 client ID issued by the provider |
-| oauth2\_domain | login.crewai.com | Provider domain (e.g., your-org.auth0.com) |
+| enterprise_base_url | [https://app.crewai.com](https://app.crewai.com) | Base URL of the CrewAI AMP instance |
+| org_name | Not set | Name of the currently active organization |
+| org_uuid | Not set | UUID of the currently active organization |
+| oauth2_provider | workos | OAuth2 provider (e.g., workos, okta, auth0) |
+| oauth2_audience | client_01YYY | Audience identifying the target API/resource |
+| oauth2_client_id | client_01XXX | OAuth2 client ID issued by the provider |
+| oauth2_domain | login.crewai.com | Provider domain (e.g., your-org.auth0.com) |
 
 Set the enterprise base URL:
 

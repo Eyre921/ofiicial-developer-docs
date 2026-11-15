@@ -194,7 +194,11 @@ Once a key is registered and CMEK is enabled, encryption is automatic — your d
 
 ## Running a CMEK fine-tune
 
-Once your key is registered, fine-tuning works exactly as it does today — encryption and decryption are transparent.
+> [!WARNING]
+>
+> Dataset creation, dataset uploads, and new Managed Training jobs are retired. Existing CMEK-encrypted dataset records remain wrapped under your KMS key and can be removed at any time with `firectl dataset delete <DATASET_ID>` (or [Delete Dataset](/api-reference/delete-dataset)), and key rotation or revocation below continues to apply to existing artifacts.
+
+Previously, once your key was registered, managed fine-tuning encrypted uploads and job artifacts transparently:
 
 ```bash theme={null}
 # Upload a dataset (encrypted client-side with your key)

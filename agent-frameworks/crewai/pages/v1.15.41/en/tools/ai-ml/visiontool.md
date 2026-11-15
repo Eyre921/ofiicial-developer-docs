@@ -25,7 +25,7 @@ When an explicit `llm` or `model` is provided to the tool, it takes precedence o
 
 ## Installation
 
-Install the crewai\_tools package
+Install the crewai_tools package
 
 ```shell theme={null}
 pip install 'crewai[tools]'
@@ -58,6 +58,6 @@ The VisionTool accepts the following arguments:
 
 | Argument | Type | Description |
 | :- | :- | :- |
-| **image\_path\_url** | `string` | **Mandatory**. The path to the image file (or URL) from which text needs to be extracted. |
+| **image_path_url** | `string` | **Mandatory**. The path to the image file (or URL) from which text needs to be extracted. |
 | **query** | `string` | **Optional**. The question or instruction to ask the model about the image. Defaults to `"What's in this image?"`. |
-| **complexity\_level** | `string` | **Optional**. The complexity of the request, which selects the model: `easy`, `medium`, or `hard`. Defaults to `medium`. |
+| **complexity_level** | `string` | **Optional**. The complexity of the request, which selects the model: `easy`, `medium`, or `hard`. Defaults to `medium`. |

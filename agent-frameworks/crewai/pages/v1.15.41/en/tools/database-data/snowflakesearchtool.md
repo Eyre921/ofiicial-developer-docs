@@ -100,12 +100,12 @@ The `SnowflakeConfig` class accepts the following parameters:
 * **account**: Required. Snowflake account identifier.
 * **user**: Required. Snowflake username.
 * **password**: Optional\*. Snowflake password.
-* **private\_key\_path**: Optional\*. Path to private key file (alternative to password).
+* **private_key_path**: Optional\*. Path to private key file (alternative to password).
 * **warehouse**: Required. Snowflake warehouse name.
 * **database**: Required. Default database.
-* **snowflake\_schema**: Required. Default schema.
+* **snowflake_schema**: Required. Default schema.
 * **role**: Optional. Snowflake role.
-* **session\_parameters**: Optional. Custom session parameters as a dictionary.
+* **session_parameters**: Optional. Custom session parameters as a dictionary.
 
 \*Either `password` or `private_key_path` must be provided.
 
@@ -114,10 +114,10 @@ The `SnowflakeConfig` class accepts the following parameters:
 The `SnowflakeSearchTool` accepts the following parameters during initialization:
 
 * **config**: Required. A `SnowflakeConfig` object containing connection details.
-* **pool\_size**: Optional. Number of connections in the pool. Default is 5.
-* **max\_retries**: Optional. Maximum retry attempts for failed queries. Default is 3.
-* **retry\_delay**: Optional. Delay between retries in seconds. Default is 1.0.
-* **enable\_caching**: Optional. Whether to enable query result caching. Default is True.
+* **pool_size**: Optional. Number of connections in the pool. Default is 5.
+* **max_retries**: Optional. Maximum retry attempts for failed queries. Default is 3.
+* **retry_delay**: Optional. Delay between retries in seconds. Default is 1.0.
+* **enable_caching**: Optional. Whether to enable query result caching. Default is True.
 
 ## Usage
 
@@ -125,7 +125,7 @@ When using the `SnowflakeSearchTool`, you need to provide the following paramete
 
 * **query**: Required. The SQL query to execute.
 * **database**: Optional. Override the default database specified in the config.
-* **snowflake\_schema**: Optional. Override the default schema specified in the config.
+* **snowflake_schema**: Optional. Override the default schema specified in the config.
 * **timeout**: Optional. Query timeout in seconds. Default is 300.
 
 The tool will return the query results as a list of dictionaries, where each dictionary represents a row with column names as keys.

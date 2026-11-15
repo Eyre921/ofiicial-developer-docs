@@ -64,9 +64,9 @@ result = crew.kickoff()
 
 The `MultiOnTool` accepts the following parameters during initialization:
 
-* **api\_key**: Optional. Specifies the MultiOn API key. If not provided, it will look for the `MULTION_API_KEY` environment variable.
+* **api_key**: Optional. Specifies the MultiOn API key. If not provided, it will look for the `MULTION_API_KEY` environment variable.
 * **local**: Optional. Set to `True` to run the agent locally on your browser. Make sure the MultiOn browser extension is installed and API Enabled is checked. Default is `False`.
-* **max\_steps**: Optional. Sets the maximum number of steps the MultiOn agent can take for a command. Default is `3`.
+* **max_steps**: Optional. Sets the maximum number of steps the MultiOn agent can take for a command. Default is `3`.
 
 ## Usage
 

@@ -1,218 +1,29 @@
 ---
-title: "Bring Your Own Bucket (BYOB)"
+title: "Bring your own bucket (BYOB)"
 source: https://docs.fireworks.ai/guides/security_compliance/secure_training/byob
 path: guides/security_compliance/secure_training/byob
 ---
 
-Keep managed fine-tuning datasets in your own S3 or GCS bucket on Fireworks so training reads data in place, without persisting a copy in Fireworks storage.
-
-Bring Your Own Bucket (BYOB) is the recommended configuration for Managed Training under strict data-governance requirements. Your dataset stays in your own cloud storage: Fireworks reads it in-place during active training only, with no copy persisted on Fireworks-managed storage, and you retain full ownership and deletion authority. This applies to both Supervised Fine-Tuning (SFT) and Reinforcement Fine-Tuning (RFT) jobs.
-
-BYOB works with all three major cloud providers — bring a bucket from whichever you already use:
-
-* [Google Cloud Storage (GCS)](#gcs-bucket-integration)
-* [AWS S3](#aws-s3-bucket-integration)
-* [Azure Blob Storage](#azure-blob-storage-integration)
-
-> [!TIP]
->
-> Grant least-privilege IAM to only the bucket/path prefixes needed for training. Use server-side encryption and your KMS policies where required.
-
-## GCS Bucket Integration
-
-Use external Google Cloud Storage (GCS) buckets for fine-tuning while keeping your data private. Fireworks creates proxy datasets that reference your external buckets—data is only accessed during fine-tuning within a secure, isolated cluster.
-
-> [!NOTE]
->
-> Your data never leaves your GCS bucket except during fine-tuning, ensuring maximum privacy and security.
-
-### Required Permissions
-
-You need to grant access to three service accounts. Fireworks provides the control plane and inference service account emails during BYOB onboarding.
-
-**Fireworks Control Plane**
-
-* **Account**: Fireworks control plane service account (provided at onboarding)
-* **Required role**: Custom role with `storage.buckets.getIamPolicy` permission
-
-```bash theme={null}
-gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=serviceAccount:<FIREWORKS_CONTROL_PLANE_SA> \
-  --role=projects/<YOUR_PROJECT>/roles/<YOUR_CUSTOM_ROLE>
-```
-
-**Inference Service Account**
-
-* **Account**: Fireworks inference service account (provided at onboarding)
-* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`)
-
-```bash theme={null}
-gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=serviceAccount:<FIREWORKS_INFERENCE_SA> \
-  --role=roles/storage.objectViewer
-```
-
-**Your Fireworks Account Email**
-
-* **Account**: Your company's Fireworks account email (get it with `firectl account get`). Grant it as a `user:` principal, not a service account.
-* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`), in the same role binding as the inference service account above
-
-```bash theme={null}
-gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
-  --role=roles/storage.objectViewer
-```
+Dataset creation and Managed Training are retired. Learn how the Training API reads data directly from your local machine or cloud bucket, and how to clean up existing BYOB dataset records.
 
 > [!WARNING]
 >
-> Dataset creation checks the bucket policy for a `roles/storage.objectViewer` binding that contains both `user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL>` and the Fireworks inference service account. A `serviceAccount:` member for your account email fails this check.
+> **Dataset creation and Managed Training are retired.** Creating new datasets (including `--external-url` proxy datasets), uploading or downloading dataset files, and launching new Managed Training jobs are disabled. Train new models with the [Training API](/fine-tuning/training-api/introduction), which reads data directly in your environment without creating a dataset resource on Fireworks.
 
-> [!TIP]
->
-> After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.
+Bring Your Own Bucket (BYOB) previously let Managed Training jobs read a dataset in place from your own Google Cloud Storage, Amazon S3, or Azure Blob Storage bucket without persisting a copy on Fireworks-managed storage.
 
-> [!NOTE]
->
-> GCS access is granted directly to the Fireworks service account emails above rather than through token federation, so there is no token audience to scope to your account the way the [S3](#aws-s3-bucket-integration) trust policy does. Fireworks instead verifies at dataset creation that the bucket grants access to your own Fireworks account, which is what keeps another customer from referencing your bucket.
+## Keep training data in your bucket on the Training API
 
-### Usage
+With the [Training API](/fine-tuning/training-api/introduction), your training script runs in your own environment, loads and tokenizes your dataset locally, and sends only tokenized batches to Fireworks GPUs on each step. No dataset resource is created, uploaded, or stored on Fireworks.
 
-```bash theme={null}
-# Create dataset referencing your GCS bucket
-firectl dataset create {DATASET_NAME} --external-url gs://bucket-name/path/to/data.jsonl
+* Read a local JSONL file or stream directly from your Google Cloud Storage bucket (`gs://...`) using your own cloud credentials. See [Cookbook: Supervised Fine-Tuning](/fine-tuning/training-api/cookbook/sft#using-the-recipe) and [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
+* For data in Amazon S3 or Azure Blob Storage, read or sync it in your own training environment before tokenizing batches.
 
-# Use in fine-tuning job
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME}
-```
+## Existing BYOB datasets
 
-## AWS S3 Bucket Integration
+Existing BYOB dataset records still point at your bucket, and any IAM bindings or federated credentials you configured during onboarding remain active until you remove them. Once any in-flight jobs have finished:
 
-Use external AWS S3 buckets for fine-tuning while keeping your data private. Fireworks accesses your S3 data using GCP-to-AWS OIDC federation—no long-lived credentials are stored.
+1. Inspect or list remaining dataset records with `firectl dataset list` / `firectl dataset get <DATASET_ID>`, and delete records you no longer need with `firectl dataset delete <DATASET_ID>` (or [Delete Dataset](/api-reference/delete-dataset)).
+2. Remove the IAM policy bindings, AWS IAM role trust, or Azure federated credential you granted to Fireworks.
 
-> [!NOTE]
->
-> S3 bucket integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
-
-### IAM Role Setup
-
-Create an IAM role that Fireworks can assume via web identity federation. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
-
-Trust policy on the role, locked to the Fireworks identity and scoped to your account:
-
-```json theme={null}
-{
-  "Effect": "Allow",
-  "Principal": { "Federated": "accounts.google.com" },
-  "Action": "sts:AssumeRoleWithWebIdentity",
-  "Condition": {
-    "StringEquals": {
-      "accounts.google.com:sub": "<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>",
-      "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
-    }
-  }
-}
-```
-
-This is the standard trust model described in [How Fireworks accesses your cloud](/guides/security_compliance/secure_training#how-fireworks-accesses-your-cloud): `sub` locks assumption to the Fireworks identity, `oaud` pins the token's audience to your Fireworks account so a token issued for any other account is rejected by your own IAM. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for the BYOB subject identifier; the audience is your own Fireworks account ID.
-
-Then attach a policy granting `s3:GetObject` and `s3:ListBucket` on your bucket.
-
-See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html) for detailed steps on creating roles for OIDC federation.
-
-### Usage
-
-```bash theme={null}
-# Create dataset referencing your S3 bucket
-firectl dataset create {DATASET_NAME} --external-url s3://bucket-name/path/to/data.jsonl
-
-# Use in fine-tuning job with IAM role
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
-```
-
-### Alternative: Credentials secret
-
-Instead of IAM role federation, you can use static AWS access keys stored in a Fireworks secret:
-
-```bash theme={null}
-# Create secret
-firectl secret create --name aws-creds \
-  --aws-access-key-id "AKIA..." \
-  --aws-secret-access-key "..."
-
-# Use in fine-tuning job
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --aws-credentials-secret "accounts/{ACCOUNT}/secrets/aws-creds"
-```
-
-> [!WARNING]
->
-> IAM role federation is recommended for production. If using credentials, rotate them regularly.
-
-## Azure Blob Storage Integration
-
-Use external Azure Blob Storage containers for fine-tuning while keeping your data private. Fireworks accesses your Azure data using GCP-to-Azure Workload Identity Federation—no long-lived credentials are stored.
-
-> [!NOTE]
->
-> Azure Blob Storage integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
-
-### Federated Identity Setup
-
-Create an App Registration (or user-assigned Managed Identity) in your Azure AD tenant with a federated credential that trusts the Fireworks GCP service account. Fireworks provides the subject identifier during BYOB onboarding.
-
-* **Issuer:** `https://accounts.google.com`
-* **Subject identifier:** `<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>`
-* **Audience:** `api://AzureADTokenExchange`
-
-Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
-
-Then assign the **Storage Blob Data Reader** role on your storage account or container to the app registration.
-
-See the [Azure documentation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust) for detailed steps on configuring workload identity federation.
-
-### Usage
-
-```bash theme={null}
-# Create dataset referencing your Azure Blob container
-firectl dataset create {DATASET_NAME} \
-  --external-url https://{STORAGE_ACCOUNT}.blob.core.windows.net/{CONTAINER}/path/to/data.jsonl
-
-# Use in fine-tuning job with managed identity federation
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --azure-managed-identity-client-id "{MANAGED_IDENTITY_CLIENT_ID}" \
-  --azure-tenant-id "{AZURE_TENANT_ID}"
-```
-
-### Alternative: Credentials secret
-
-Instead of workload identity federation, you can store Azure credentials in a Fireworks secret. The secret value must be a JSON object containing one of: `connection_string`, `sas_token`, or `account_key`.
-
-```bash theme={null}
-# Create secret with Azure credentials
-firectl secret create --name azure-creds \
-  --value '{"sas_token": "sv=2023-01-03&ss=b&srt=o&sp=rl&se=..."}'
-
-# Use in fine-tuning job
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --azure-credentials-secret "accounts/{ACCOUNT}/secrets/azure-creds"
-```
-
-> [!WARNING]
->
-> Workload Identity Federation is recommended for production. If using credentials, rotate them regularly.
+See [Secure Training](/guides/security_compliance/secure_training) for what Fireworks retains from training jobs and how to request artifact deletion.

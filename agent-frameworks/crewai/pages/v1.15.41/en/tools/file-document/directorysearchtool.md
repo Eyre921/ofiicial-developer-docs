@@ -18,7 +18,7 @@ The DirectorySearchTool enables semantic search within the content of specified 
 
 ## Installation
 
-To use the DirectorySearchTool, begin by installing the crewai\_tools package. Execute the following command in your terminal:
+To use the DirectorySearchTool, begin by installing the crewai_tools package. Execute the following command in your terminal:
 
 ```shell theme={null}
 pip install 'crewai[tools]'

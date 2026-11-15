@@ -59,7 +59,7 @@ crew = Crew(
 | **Markdown** *(optional)* | `markdown` | `Optional[bool]` | Whether the task should instruct the agent to return the final answer formatted in Markdown. Defaults to False. |
 | **Config** *(optional)* | `config` | `Optional[Dict[str, Any]]` | Task-specific configuration parameters. |
 | **Output File** *(optional)* | `output_file` | `Optional[str]` | File path for storing the task output. |
-| **Create Directory** *(optional)* | `create_directory` | `Optional[bool]` | Whether to create the directory for output\_file if it doesn't exist. Defaults to True. |
+| **Create Directory** *(optional)* | `create_directory` | `Optional[bool]` | Whether to create the directory for output_file if it doesn't exist. Defaults to True. |
 | **Output JSON** *(optional)* | `output_json` | `Optional[Type[BaseModel]]` | A Pydantic model to structure the JSON output. |
 | **Output Pydantic** *(optional)* | `output_pydantic` | `Optional[Type[BaseModel]]` | A Pydantic model for task output. |
 | **Callback** *(optional)* | `callback` | `Optional[Any]` | Function/object to be executed after task completion. |
@@ -188,7 +188,7 @@ By default, the `TaskOutput` will only include the `raw` output. A `TaskOutput` 
 | Method/Property | Description |
 | :- | :- |
 | **json** | Returns the JSON string representation of the task output if the output format is JSON, or `None` if the output could not be converted. |
-| **to\_dict** | Converts the JSON and Pydantic outputs to a dictionary. |
+| **to_dict** | Converts the JSON and Pydantic outputs to a dictionary. |
 | **str** | Returns the string representation of the task output, prioritizing Pydantic, then JSON, then raw. |
 
 ### Accessing Task Outputs
@@ -590,7 +590,7 @@ task = Task(
 
 The `output_pydantic` property allows you to define a Pydantic model that the task output should conform to. This ensures that the output is not only structured but also validated according to the Pydantic model.
 
-Here's an example demonstrating how to use output\_pydantic:
+Here's an example demonstrating how to use output_pydantic:
 
 ```python Code theme={null}
 import json
@@ -661,14 +661,14 @@ print("Blog:", result)
 In this example:
 
 * A Pydantic model Blog is defined with title and content fields.
-* The task task1 uses the output\_pydantic property to specify that its output should conform to the Blog model.
+* The task task1 uses the output_pydantic property to specify that its output should conform to the Blog model.
 * After executing the crew, you can access the structured output in multiple ways as shown.
 
 #### Explanation of Accessing the Output
 
-1. Dictionary-Style Indexing: You can directly access the fields using result\["field\_name"]. This works because the CrewOutput class implements the **getitem** method.
+1. Dictionary-Style Indexing: You can directly access the fields using result\["field_name"]. This works because the CrewOutput class implements the **getitem** method.
 2. Directly from Pydantic Model: Access the attributes directly from the result.pydantic object.
-3. Using to\_dict() Method: Convert the output to a dictionary and access the fields.
+3. Using to_dict() Method: Convert the output to a dictionary and access the fields.
 4. Printing the Entire Object: Simply print the result object to see the structured output.
 
 ### Using `output_json`
@@ -734,17 +734,17 @@ print("Blog:", result)
 In this example:
 
 * A Pydantic model Blog is defined with title and content fields, which is used to specify the structure of the JSON output.
-* The task task1 uses the output\_json property to indicate that it expects a JSON output conforming to the Blog model.
+* The task task1 uses the output_json property to indicate that it expects a JSON output conforming to the Blog model.
 * After executing the crew, you can access the structured JSON output in two ways as shown.
 
 #### Explanation of Accessing the Output
 
-1. Accessing Properties Using Dictionary-Style Indexing: You can access the fields directly using result\["field\_name"]. This is possible because the CrewOutput class implements the **getitem** method, allowing you to treat the output like a dictionary. In this option, we're retrieving the title and content from the result.
+1. Accessing Properties Using Dictionary-Style Indexing: You can access the fields directly using result\["field_name"]. This is possible because the CrewOutput class implements the **getitem** method, allowing you to treat the output like a dictionary. In this option, we're retrieving the title and content from the result.
 2. Printing the Entire Blog Object: By printing result, you get the string representation of the CrewOutput object. Since the **str** method is implemented to return the JSON output, this will display the entire output as a formatted string representing the Blog object.
 
 ***
 
-By using output\_pydantic or output\_json, you ensure that your tasks produce outputs in a consistent and structured format, making it easier to process and utilize the data within your application or across multiple tasks.
+By using output_pydantic or output_json, you ensure that your tasks produce outputs in a consistent and structured format, making it easier to process and utilize the data within your application or across multiple tasks.
 
 When the task's agent has tools, its requests carry no enforced response schema while tools are offered; the schema reaches the model only in the prompt. Once the agent gives its final answer, CrewAI checks that answer against the model. If it does not fit, CrewAI asks once more, over the same conversation, with the schema and without tools, so exact values from tool results reach the structured output. The task's `raw` output is then that answer as JSON, and a custom `converter_cls` is not used. With streaming on, the stream carries the text answer and then the structured one. An answer that already fits costs no extra call, and if the extra request fails, the text answer is kept and converted as before. The same applies to `Agent.kickoff(response_format=...)`.
 

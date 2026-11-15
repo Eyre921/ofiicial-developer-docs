@@ -134,7 +134,7 @@ The following values map directly to the Db2 `VECTOR_DISTANCE` function:
 * `HAMMING`
 * `MANHATTAN`
 
-Reference: [IBM Db2 VECTOR\_DISTANCE documentation](https://www.ibm.com/docs/en/db2/12.1.x?topic=functions-vector-distance)
+Reference: [IBM Db2 VECTOR_DISTANCE documentation](https://www.ibm.com/docs/en/db2/12.1.x?topic=functions-vector-distance)
 
 ## Schema Parameters (per query)
 

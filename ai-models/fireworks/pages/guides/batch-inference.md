@@ -108,7 +108,9 @@ Not all models support the Batch API. Before submitting a batch job, verify your
 >
 > > [tab] HTTP API
 > >
-> > You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset).
+> > > [!NOTE]
+> > >
+> > > Dataset creation and file uploads (`POST /v1/accounts/{account_id}/datasets` and `:upload`) are retired and return `501 Not Implemented`. Keep your JSONL file locally and follow [Migrating Batch API workloads to preemptible deployments](/guides/batch-migration).
 > >
 > > ```bash theme={null}
 > > # Create Dataset Entry

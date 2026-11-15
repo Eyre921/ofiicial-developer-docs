@@ -83,14 +83,14 @@ video_researcher = Agent(
 
 The `YoutubeVideoSearchTool` accepts the following parameters:
 
-* **youtube\_video\_url**: Optional. The URL of the YouTube video to search within. If provided during initialization, the agent won't need to specify it when using the tool.
+* **youtube_video_url**: Optional. The URL of the YouTube video to search within. If provided during initialization, the agent won't need to specify it when using the tool.
 * **config**: Optional. Configuration for the underlying RAG system, including LLM and embedder settings.
 * **summarize**: Optional. Whether to summarize the retrieved content. Default is `False`.
 
 When using the tool with an agent, the agent will need to provide:
 
-* **search\_query**: Required. The search query to find relevant information in the video content.
-* **youtube\_video\_url**: Required only if not provided during initialization. The URL of the YouTube video to search within.
+* **search_query**: Required. The search query to find relevant information in the video content.
+* **youtube_video_url**: Required only if not provided during initialization. The URL of the YouTube video to search within.
 
 ## Custom Model and Embeddings
 

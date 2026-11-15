@@ -55,7 +55,7 @@ Users can specify a model to query for inference using the model name and deploy
 
 ### Dataset
 
-A dataset is an immutable set of training examples that can be used to train a model.
+A dataset resource represents an archived set of training or batch examples previously uploaded to or registered on Fireworks. Creating, uploading, updating, validating, and downloading datasets on Fireworks is retired — only listing, viewing metadata, and deleting existing dataset records remain supported ([List Datasets](/api-reference/list-datasets), [Get Dataset](/api-reference/get-dataset), [Delete Dataset](/api-reference/delete-dataset)). New [Training API](/fine-tuning/training-api/introduction) workflows load and tokenize training data directly in your own environment without storing dataset files on Fireworks.
 
 ### Training job
 

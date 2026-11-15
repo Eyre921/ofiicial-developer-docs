@@ -8,6 +8,18 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 All
 
+**2026-11-15**
+
+Training
+
+# Dataset creation, upload, and download APIs retired
+
+Fireworks no longer stores new datasets. Creating, updating, uploading, validating, previewing, splitting, and downloading datasets now return `501 Not Implemented` across the REST/gRPC API, `firectl`, and the Python SDK.
+
+* **What remains available:** [List Datasets](/api-reference/list-datasets), [Get Dataset](/api-reference/get-dataset), and [Delete Dataset](/api-reference/delete-dataset) (`firectl dataset list`, `firectl dataset get`, and `firectl dataset delete`) remain active so you can inspect metadata for and delete existing dataset records.
+* **Training:** Load and tokenize training data directly from local files or your own cloud storage with the [Training API](/fine-tuning/training-api/introduction) — no dataset resource is created or stored on Fireworks. See [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
+* **Batch workloads:** Run bulk asynchronous workloads from local JSONL files on preemptible deployments. See [Migrate from Batch API](/guides/batch-migration).
+
 **2026-11-04**
 
 Training
@@ -935,7 +947,7 @@ New REST API endpoints are now available for managing Reinforcement Fine-Tuning 
 * [Scale Deployment](/api-reference/scale-deployment)
 * [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)
 * [Get Deployment Shape Version](/api-reference/get-deployment-shape-version)
-* [Get Dataset Download Endpoint](/api-reference/get-dataset-download-endpoint)
+* Get Dataset Download Endpoint
 
 > [accordion] Bug Fixes & Minor Improvements
 >

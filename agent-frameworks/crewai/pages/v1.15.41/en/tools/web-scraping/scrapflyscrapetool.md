@@ -100,24 +100,24 @@ The `ScrapflyScrapeWebsiteTool` accepts the following parameters:
 
 ### Initialization Parameters
 
-* **api\_key**: Required. Your Scrapfly API key.
+* **api_key**: Required. Your Scrapfly API key.
 
 ### Run Parameters
 
 * **url**: Required. The URL of the website to scrape.
-* **scrape\_format**: Optional. The format in which to extract the web page content. Options are "raw" (HTML), "markdown", or "text". Default is "markdown".
-* **scrape\_config**: Optional. A dictionary containing additional Scrapfly scraping configuration options.
-* **ignore\_scrape\_failures**: Optional. Whether to ignore failures during scraping. If set to `True`, the tool will return `None` instead of raising an exception when scraping fails.
+* **scrape_format**: Optional. The format in which to extract the web page content. Options are "raw" (HTML), "markdown", or "text". Default is "markdown".
+* **scrape_config**: Optional. A dictionary containing additional Scrapfly scraping configuration options.
+* **ignore_scrape_failures**: Optional. Whether to ignore failures during scraping. If set to `True`, the tool will return `None` instead of raising an exception when scraping fails.
 
 ## Scrapfly Configuration Options
 
 The `scrape_config` parameter allows you to customize the scraping behavior with the following options:
 
 * **asp**: Enable anti-scraping protection bypass.
-* **render\_js**: Enable JavaScript rendering with a cloud headless browser.
-* **proxy\_pool**: Select a proxy pool (e.g., "public\_residential\_pool", "datacenter").
+* **render_js**: Enable JavaScript rendering with a cloud headless browser.
+* **proxy_pool**: Select a proxy pool (e.g., "public_residential_pool", "datacenter").
 * **country**: Select a proxy location (e.g., "us", "uk").
-* **auto\_scroll**: Automatically scroll the page to load lazy-loaded content.
+* **auto_scroll**: Automatically scroll the page to load lazy-loaded content.
 * **js**: Execute custom JavaScript code by the headless browser.
 
 For a complete list of configuration options, refer to the [Scrapfly API documentation](https://scrapfly.io/docs/scrape-api/getting-started).

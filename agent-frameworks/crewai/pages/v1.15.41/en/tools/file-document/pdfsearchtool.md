@@ -19,7 +19,7 @@ This capability makes it especially useful for extracting specific information f
 
 ## Installation
 
-To get started with the PDFSearchTool, first, ensure the crewai\_tools package is installed with the following command:
+To get started with the PDFSearchTool, first, ensure the crewai_tools package is installed with the following command:
 
 ```shell theme={null}
 pip install 'crewai[tools]'

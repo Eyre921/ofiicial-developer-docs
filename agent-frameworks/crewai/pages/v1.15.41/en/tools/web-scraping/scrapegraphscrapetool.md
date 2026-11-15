@@ -84,17 +84,17 @@ scrape_tool = ScrapegraphScrapeTool(
 
 The `ScrapegraphScrapeTool` accepts the following parameters during initialization:
 
-* **api\_key**: Optional. Your Scrapegraph API key. If not provided, it will look for the `SCRAPEGRAPH_API_KEY` environment variable.
-* **website\_url**: Optional. The URL of the website to scrape. If provided during initialization, the agent won't need to specify it when using the tool.
-* **user\_prompt**: Optional. Custom instructions for content extraction. If provided during initialization, the agent won't need to specify it when using the tool.
-* **enable\_logging**: Optional. Whether to enable logging for the Scrapegraph client. Default is `False`.
+* **api_key**: Optional. Your Scrapegraph API key. If not provided, it will look for the `SCRAPEGRAPH_API_KEY` environment variable.
+* **website_url**: Optional. The URL of the website to scrape. If provided during initialization, the agent won't need to specify it when using the tool.
+* **user_prompt**: Optional. Custom instructions for content extraction. If provided during initialization, the agent won't need to specify it when using the tool.
+* **enable_logging**: Optional. Whether to enable logging for the Scrapegraph client. Default is `False`.
 
 ## Usage
 
 When using the `ScrapegraphScrapeTool` with an agent, the agent will need to provide the following parameters (unless they were specified during initialization):
 
-* **website\_url**: The URL of the website to scrape.
-* **user\_prompt**: Optional. Custom instructions for content extraction. Default is "Extract the main content of the webpage".
+* **website_url**: The URL of the website to scrape.
+* **user_prompt**: Optional. Custom instructions for content extraction. Default is "Extract the main content of the webpage".
 
 The tool will return the extracted content based on the provided prompt.
 

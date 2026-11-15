@@ -21,7 +21,7 @@ For large files, `start_line` and `line_count` read just a window of lines inste
 
 ## Installation
 
-To utilize the functionalities previously attributed to the FileReadTool, install the crewai\_tools package:
+To utilize the functionalities previously attributed to the FileReadTool, install the crewai_tools package:
 
 ```shell theme={null}
 pip install 'crewai[tools]'

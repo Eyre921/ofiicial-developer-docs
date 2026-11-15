@@ -387,7 +387,7 @@ When saving new content, the encoding pipeline automatically checks for similar 
 * **keep** -- The existing record is still accurate and not redundant.
 * **update** -- The existing record should be updated with new information (LLM provides the merged content).
 * **delete** -- The existing record is outdated, superseded, or contradicted.
-* **insert\_new** -- Whether the new content should also be inserted as a separate record.
+* **insert_new** -- Whether the new content should also be inserted as a separate record.
 
 This prevents duplicates from accumulating. For example, if you save "CrewAI ensures reliable operation" three times, consolidation recognizes the duplicates and keeps only one record.
 

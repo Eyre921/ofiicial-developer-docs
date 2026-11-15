@@ -646,7 +646,7 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 > * `url` (str): WatsonX API endpoint
 > * `api_key` (str): IBM Cloud API key
 > * `project_id` (str): WatsonX project ID
-> * `space_id` (str): WatsonX space ID (alternative to project\_id)
+> * `space_id` (str): WatsonX space ID (alternative to project_id)
 > * `batch_size` (int): Batch size for embeddings. Default: `100`
 > * `concurrency_limit` (int): Maximum concurrent requests. Default: `10`
 > * `persistent_connection` (bool): Use persistent connections. Default: `True`

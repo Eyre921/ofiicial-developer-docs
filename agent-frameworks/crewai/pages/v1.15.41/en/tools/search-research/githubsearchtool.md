@@ -18,13 +18,13 @@ The GithubSearchTool is a Retrieval-Augmented Generation (RAG) tool specifically
 
 ## Installation
 
-To use the GithubSearchTool, first ensure the crewai\_tools package is installed in your Python environment:
+To use the GithubSearchTool, first ensure the crewai_tools package is installed in your Python environment:
 
 ```shell theme={null}
 pip install 'crewai[tools]'
 ```
 
-This command installs the necessary package to run the GithubSearchTool along with any other tools included in the crewai\_tools package.
+This command installs the necessary package to run the GithubSearchTool along with any other tools included in the crewai_tools package.
 
 Get a GitHub Personal Access Token at [https://github.com/settings/tokens](https://github.com/settings/tokens) (Developer settings → Fine‑grained tokens or classic tokens).
 

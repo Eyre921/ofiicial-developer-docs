@@ -61,13 +61,13 @@ def search_agent(self) -> Agent:
 
 The `WeaviateVectorSearchTool` accepts the following parameters:
 
-* **collection\_name**: Required. The name of the collection to search within.
-* **weaviate\_cluster\_url**: Required. The URL of the Weaviate cluster.
-* **weaviate\_api\_key**: Required. The API key for the Weaviate cluster.
+* **collection_name**: Required. The name of the collection to search within.
+* **weaviate_cluster_url**: Required. The URL of the Weaviate cluster.
+* **weaviate_api_key**: Required. The API key for the Weaviate cluster.
 * **limit**: Optional. The number of results to return. Default is `3`.
 * **alpha**: Optional. Controls the weighting between vector and keyword (BM25) search. alpha = 0 -> BM25 only, alpha = 1 -> vector search only. Default is `0.75`.
 * **vectorizer**: Optional. The vectorizer to use. If not provided, it will use `text2vec_openai` with the `nomic-embed-text` model.
-* **generative\_model**: Optional. The generative model to use. If not provided, it will use OpenAI's `gpt-4o`.
+* **generative_model**: Optional. The generative model to use. If not provided, it will use OpenAI's `gpt-4o`.
 
 ## Advanced Configuration
 

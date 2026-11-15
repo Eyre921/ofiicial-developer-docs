@@ -67,11 +67,11 @@ print(result)
 
 | Argument | Type | Required | Default | Description |
 | :- | :- | :- | :- | :- |
-| **knowledge\_base\_id** | `str` | Yes | None | The unique identifier of the knowledge base (0-10 alphanumeric characters) |
-| **number\_of\_results** | `int` | No | 5 | Maximum number of results to return |
-| **retrieval\_configuration** | `dict` | No | None | Custom configurations for the knowledge base query |
-| **guardrail\_configuration** | `dict` | No | None | Content filtering settings |
-| **next\_token** | `str` | No | None | Token for pagination |
+| **knowledge_base_id** | `str` | Yes | None | The unique identifier of the knowledge base (0-10 alphanumeric characters) |
+| **number_of_results** | `int` | No | 5 | Maximum number of results to return |
+| **retrieval_configuration** | `dict` | No | None | Custom configurations for the knowledge base query |
+| **guardrail_configuration** | `dict` | No | None | Content filtering settings |
+| **next_token** | `str` | No | None | Token for pagination |
 
 ## Environment Variables
 

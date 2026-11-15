@@ -186,9 +186,9 @@ The `PatronusPredefinedCriteriaEvalTool` accepts the following parameters during
 
 The `PatronusLocalEvaluatorTool` accepts the following parameters during initialization:
 
-* **patronus\_client**: Required. The Patronus client instance.
+* **patronus_client**: Required. The Patronus client instance.
 * **evaluator**: Optional. The name of the registered local evaluator to use. Default is an empty string.
-* **evaluated\_model\_gold\_answer**: Optional. The gold answer to use for evaluation. Default is an empty string.
+* **evaluated_model_gold_answer**: Optional. The gold answer to use for evaluation. Default is an empty string.
 
 ## Usage
 
@@ -196,9 +196,9 @@ When using the Patronus evaluation tools, you provide the model input, output, a
 
 For the `PatronusEvalTool` and `PatronusPredefinedCriteriaEvalTool`, the following parameters are required when calling the tool:
 
-* **evaluated\_model\_input**: The agent's task description in simple text.
-* **evaluated\_model\_output**: The agent's output of the task.
-* **evaluated\_model\_retrieved\_context**: The agent's context.
+* **evaluated_model_input**: The agent's task description in simple text.
+* **evaluated_model_output**: The agent's output of the task.
+* **evaluated_model_retrieved_context**: The agent's context.
 
 For the `PatronusLocalEvaluatorTool`, the same parameters are required, but the evaluator and gold answer are specified during initialization.
 

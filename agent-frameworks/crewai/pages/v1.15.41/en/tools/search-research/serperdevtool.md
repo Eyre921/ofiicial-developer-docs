@@ -42,7 +42,7 @@ tool = SerperDevTool()
 
 The `SerperDevTool` comes with several parameters that will be passed to the API :
 
-* **search\_url**: The URL endpoint for the search API. (Default is `https://google.serper.dev/search`)
+* **search_url**: The URL endpoint for the search API. (Default is `https://google.serper.dev/search`)
 
 * **country**: Optional. Specify the country for the search results.
 

@@ -21,7 +21,7 @@ streamlining the process of finding specific information within large document c
 
 ## Installation
 
-Install the crewai\_tools package by running the following command in your terminal:
+Install the crewai_tools package by running the following command in your terminal:
 
 ```shell theme={null}
 uv pip install docx2txt 'crewai[tools]'

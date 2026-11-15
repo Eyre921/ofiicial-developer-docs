@@ -113,7 +113,7 @@ nl2sql = NL2SQLTool(
 
 ## Installation
 
-Install the crewai\_tools package
+Install the crewai_tools package
 
 ```shell theme={null}
 pip install 'crewai[tools]'

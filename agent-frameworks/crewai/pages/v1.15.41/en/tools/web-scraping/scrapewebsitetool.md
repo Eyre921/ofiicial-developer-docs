@@ -21,7 +21,7 @@ Fetches go through CrewAI's SSRF-safe HTTP helper: the requested URL and every r
 
 ## Installation
 
-Install the crewai\_tools package
+Install the crewai_tools package
 
 ```shell theme={null}
 pip install 'crewai[tools]'
@@ -48,4 +48,4 @@ print(text)
 
 | Argument | Type | Description |
 | :- | :- | :- |
-| **website\_url** | `string` | **Mandatory** website URL to read the file. This is the primary input for the tool, specifying which website's content should be scraped and read. |
+| **website_url** | `string` | **Mandatory** website URL to read the file. This is the primary input for the tool, specifying which website's content should be scraped and read. |

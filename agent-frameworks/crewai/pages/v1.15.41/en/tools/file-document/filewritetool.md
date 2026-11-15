@@ -10,13 +10,13 @@ The `FileWriterTool` is designed to write content to files.
 
 ## Description
 
-The `FileWriterTool` is a component of the crewai\_tools package, designed to simplify the process of writing content to files with cross-platform compatibility (Windows, Linux, macOS).
+The `FileWriterTool` is a component of the crewai_tools package, designed to simplify the process of writing content to files with cross-platform compatibility (Windows, Linux, macOS).
 It is particularly useful in scenarios such as generating reports, saving logs, creating configuration files, and more.
 This tool handles path differences across operating systems, writes UTF-8 by default rather than the platform's locale encoding, and automatically creates directories if they don't exist, making it easier to organize your output reliably across different platforms.
 
 ## Installation
 
-Install the crewai\_tools package to use the `FileWriterTool` in your projects:
+Install the crewai_tools package to use the `FileWriterTool` in your projects:
 
 ```shell theme={null}
 pip install 'crewai[tools]'

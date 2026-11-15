@@ -75,31 +75,31 @@ Step-by-step execution needs a ready plan with structured steps, which the plann
 
 ### Configuration options
 
-**reasoning\_effort** `str` (default: medium)
+**reasoning_effort** `str` (default: medium)
 
 How much the agent checks and adapts after each step: `"low"`, `"medium"`, or `"high"`.
 
-**observe\_steps** `bool` (default: None)
+**observe_steps** `bool` (default: None)
 
 Run an LLM review after each step. `None` reviews on `"medium"` and `"high"` only.
 
-**max\_attempts** `int` (default: None)
+**max_attempts** `int` (default: None)
 
 Maximum number of planning attempts, counting the first plan. `None` keeps refining until the planner marks the plan ready, which can add LLM calls. Set a number to bound it.
 
-**max\_steps** `int` (default: 20)
+**max_steps** `int` (default: 20)
 
 The step limit the planner is asked to respect. It is passed to the prompt as `{max_steps}` and is not enforced on the returned plan. Must be at least 1.
 
-**max\_replans** `int` (default: 3)
+**max_replans** `int` (default: 3)
 
 Maximum number of full replans before the agent finalizes its answer. `0` disables replanning.
 
-**max\_step\_iterations** `int` (default: 15)
+**max_step_iterations** `int` (default: 15)
 
 Maximum LLM iterations for a single step. Lower values make steps faster but less thorough.
 
-**step\_timeout** `int` (default: None)
+**step_timeout** `int` (default: None)
 
 Maximum seconds for a single step, checked before each LLM call in the step. When it is exceeded, the step stops and returns what it has so far. The step is not marked as failed, and an LLM or tool call already running is not interrupted. `None` means no timeout.
 
@@ -107,15 +107,15 @@ Maximum seconds for a single step, checked before each LLM call in the step. Whe
 
 The LLM used for planning and for the review after each step. `None` uses the agent's LLM.
 
-**system\_prompt** `str` (default: None)
+**system_prompt** `str` (default: None)
 
 Custom system prompt for planning. `None` uses the built-in prompt.
 
-**plan\_prompt** `str` (default: None)
+**plan_prompt** `str` (default: None)
 
 Custom prompt for the first plan. See Custom prompts below.
 
-**refine\_prompt** `str` (default: None)
+**refine_prompt** `str` (default: None)
 
 Custom prompt for refining a plan. See Custom prompts below.
 

@@ -22241,7 +22241,7 @@ See the [Webhooks guide](https://neon.com/docs/auth/guides/webhooks) for payload
 
 Add Google, GitHub, Vercel, Microsoft, Apple, or Discord sign-in to your application
 
-Last updated: 2026-11-09
+Last updated: 2026-11-13
 
 OAuth lets users sign in with their Google, GitHub, Vercel, Microsoft, Apple, or Discord account. Managed Better Auth handles the OAuth flow and creates a session after authorization.
 
@@ -22496,6 +22496,8 @@ neon neon-auth oauth-provider add --provider-id apple --oauth-client-id <service
 neon neon-auth oauth-provider add --provider-id microsoft --oauth-client-id <client-id> --oauth-client-secret <client-secret> --microsoft-tenant-id <tenant>
 ```
 
+For Discord, use the same command as Google with `--provider-id discord`.
+
 **API**
 
 Send a `POST` request to the [add OAuth provider](https://neon.com/docs/reference/api/auth/add-branch-neon-auth-oauth-provider) endpoint. Replace `{project_id}` and `{branch_id}` with your project and branch IDs.
@@ -22648,7 +22650,7 @@ Create an application in the [Discord Developer Portal](https://discord.com/deve
    https://ep-example.neonauth.us-east-2.aws.neon.tech/neondb/auth/callback/discord
    ```
 
-4. Add the Client ID and Client Secret to the branch with the [API](https://neon.com/docs/auth/guides/setup-oauth#3-create-oauth-apps-and-paste-credentials-into-neon), using `"id": "discord"`. The Neon Console and the Neon CLI don't list Discord as a provider yet.
+4. Add the Client ID and Client Secret to the branch, as described in [Create OAuth apps and paste credentials into Neon](https://neon.com/docs/auth/guides/setup-oauth#3-create-oauth-apps-and-paste-credentials-into-neon).
 
 Managed Better Auth requests the `identify` and `email` scopes, so you don't need to configure scopes in Discord.
 
@@ -90233,7 +90235,7 @@ You can find a complete Encore + Neon example application on GitHub:
 
 --- [Document source](https://neon.com/docs/guides/entity-migrations.md) ---
 
-> Summary: Entity Framework Core schema migrations on Lakebase Postgres walks through installing the Npgsql EF Core provider, defining C# models, and running dotnet-ef commands to create and evolve tables in a database. Use this guide when you need to connect an EF Core application to Neon and generate or apply migrations, including incremental schema changes such as adding a column. Migrations must use a direct (non-pooled) Neon connection string; PgBouncer pooled strings are not supported for dotnet-ef operations.
+> Summary: Entity Framework Core schema migrations on Lakebase Postgres walks through installing the Npgsql EF Core provider, defining C# models, and running dotnet-ef commands to create and evolve tables in a database. Use this guide when you need to connect an EF Core application to Neon and generate or apply migrations, including incremental schema changes such as adding a column. Use a direct (non-pooled) Neon connection string for migrations.
 
 # Schema migration with Lakebase Postgres and Entity Framework
 
@@ -90241,16 +90243,16 @@ Set up a database on Neon and run migrations for your Entity Framework project
 
 Last updated: 2026-10-28
 
-[Entity Framework](https://learn.microsoft.com/en-us/ef/) is a popular Object-Relational Mapping (ORM) framework for .NET applications. It simplifies database access by allowing developers to work with domain-specific objects and properties without focusing on the underlying database tables and columns. Entity Framework also provides a powerful migration system that enables you to define and manage database schema changes over time.
+[Entity Framework](https://learn.microsoft.com/en-us/ef/) is an Object-Relational Mapping (ORM) framework for .NET applications. It lets you work with domain-specific objects and properties without focusing on the underlying database tables and columns. Entity Framework also includes a migration system that lets you define and manage database schema changes over time.
 
-This guide demonstrates how to use Entity Framework with the Lakebase Postgres database. We'll create a simple .NET application and walk through the process of setting up the database, defining models, and generating and running migrations to manage schema changes.
+This guide shows how to use Entity Framework with the Lakebase Postgres database. You'll create a small .NET web application, set up the database, define models, and generate and run migrations to manage schema changes.
 
 ## Prerequisites
 
 To follow along with this guide, you will need:
 
 - A Neon account. If you do not have one, sign up at [Neon](https://neon.tech). Your Neon project comes with a ready-to-use Postgres database named `neondb`. We'll use this database in the following examples.
-- A recent version of the [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet) installed on your local machine. This guide uses .NET 8.0, which is the current Long-Term Support (LTS) version.
+- The [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet) installed on your local machine. .NET 10 is the current Long-Term Support (LTS) release. This guide was tested with .NET SDK 10.0.403.
 
 ## Setting up your Neon database
 
@@ -90261,7 +90263,7 @@ To follow along with this guide, you will need:
 
 ### Retrieve your Neon database connection string
 
-Find your database connection string by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. It should appear similar to the following:
+Click the **Connect** button in the Console nav to open the **Connect to your branch** modal. The **Connection pooling** toggle is on by default, which shows a pooled connection string. Turn the toggle off to show the direct connection string. It should look similar to the following:
 
 ```bash
 postgresql://username:password@hostname/dbname?sslmode=require&channel_binding=require
@@ -90273,39 +90275,40 @@ The Postgres client library we use in this guide requires the connection string 
 Host=hostname;Port=5432;Database=dbname;Username=username;Password=password;SSLMode=Require
 ```
 
-Construct the connection string in this format using the correct values for your Neon connection URI. Keep it handy for later use.
+Construct the connection string in this format using the values from your direct connection string. Keep it handy for later use.
 
-**Note:** Neon supports both direct and pooled database connection strings, which you can find by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. A pooled connection string connects your application to the database via a PgBouncer connection pool, allowing for a higher number of concurrent connections. However, using a pooled connection string for migrations can be prone to errors. For this reason, we recommend using a direct (non-pooled) connection when performing migrations. For more information about direct and pooled connections, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
+**Important: Use a direct connection for migrations**
+
+Neon supports both direct and pooled connection strings. A pooled connection string routes your connections through a PgBouncer connection pool, which allows more concurrent connections. Migrations can run into errors through a connection pool, so this guide uses the direct (non-pooled) connection string for all steps. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
 
 ## Setting up the Entity Framework project
 
 ### Create a new .NET project
 
-Open your terminal and run the following command to create a new .NET console application:
+Open your terminal and run the following commands to create a new ASP.NET Core web project. The `web` template includes the web SDK that the API endpoints in this guide need:
 
 ```bash
-dotnet new console -o guide-neon-entityframework
+dotnet new web -o guide-neon-entityframework
 cd guide-neon-entityframework
 ```
 
 ### Install dependencies
 
-Run the following commands to install the necessary NuGet packages:
+Run the following commands to install the NuGet packages. The versions are pinned to EF Core 10 to match the .NET 10 SDK. Without the pins, the latest EF Core 11 packages require .NET 11 and won't restore:
 
 ```bash
-dotnet add package Microsoft.EntityFrameworkCore
-dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet add Microsoft.AspNetCore.App
-dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+dotnet add package Microsoft.EntityFrameworkCore --version 10.0.15
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 10.0.15
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 10.0.3
 dotnet add package dotenv.net
 ```
 
-These packages include the Entity Framework Core libraries, the design-time components for migrations, and the Npgsql provider for PostgreSQL.
+These packages include the Entity Framework Core libraries, the design-time components for migrations, and the Npgsql provider for Postgres.
 
-We will also need the `EF Core` tools to generate and run migrations. Install the `dotnet-ef` tool globally:
+You also need the `dotnet-ef` tool to generate and run migrations. Install the version that matches your EF Core packages:
 
 ```bash
-dotnet tool install --global dotnet-ef
+dotnet tool install --global dotnet-ef --version 10.0.15
 ```
 
 ### Set up the database configuration
@@ -90324,13 +90327,11 @@ Replace `NEON_POSTGRES_CONNECTION_STRING` with the **formatted** connection stri
 
 Create a new file named `Models.cs` in the project directory and define the data models for your application:
 
-```csharp
-# Models.cs
-
+```csharp filename="Models.cs"
 using System;
 using Microsoft.EntityFrameworkCore;
 
-namespace NeonEFMigrations
+namespace GuideNeonEF
 {
     public class Author
     {
@@ -90351,15 +90352,12 @@ namespace NeonEFMigrations
 }
 ```
 
-This code defines two entities: `Author` and `Book`. The `Author` entity represents an author with properties for name, bio, and created timestamp. The `Book` entity represents a book with properties for title, author (as a foreign key to the `Author` entity), and created timestamp.
+This code defines two entities: `Author` and `Book`. The `Author` entity has properties for name, bio, and created timestamp. The `Book` entity has properties for title, author (a foreign key to the `Author` entity), and created timestamp.
 
 Also, create a new file named `ApplicationDbContext.cs` in the project directory and add the following code:
 
-```csharp
-# ApplicationDbContext.cs
-
+```csharp filename="ApplicationDbContext.cs"
 using Microsoft.EntityFrameworkCore;
-using GuideNeonEF.Models;
 using dotenv.net;
 
 namespace GuideNeonEF
@@ -90392,17 +90390,14 @@ namespace GuideNeonEF
 }
 ```
 
-The `ApplicationDbContext` class derives from `DbContext` and represents the database context. It includes the method where we configure the database connection and seed the database at initialization. We also set default values for the `CreatedAt` properties of the `Author` and `Book` entities.
+The `ApplicationDbContext` class derives from `DbContext` and represents the database context. It loads the connection string from the `.env` file, and it seeds the database when the model is built. It also sets default values for the `CreatedAt` properties of the `Author` and `Book` entities.
 
 ### Add seeding script
 
-To seed the database with some initial data, create another script named `ModelBuilderExtensions.cs` in the project directory and add the following code:
+To seed the database with some initial data, create another file named `ModelBuilderExtensions.cs` in the project directory and add the following code:
 
-```csharp
-# ModelBuilderExtensions.cs
-
+```csharp filename="ModelBuilderExtensions.cs"
 using Microsoft.EntityFrameworkCore;
-using GuideNeonEF.Models;
 
 namespace GuideNeonEF
 {
@@ -90412,9 +90407,9 @@ namespace GuideNeonEF
         {
             var authors = new[]
             {
-                new Author { Id = 1, Name = "J.R.R. Tolkien", Bio = "The creator of Middle-earth and author of The Lord of the Rings.", Country = "United Kingdom"},
-                new Author { Id = 2, Name = "George R.R. Martin", Bio = "The author of the epic fantasy series A Song of Ice and Fire.", Country = "United States"},
-                new Author { Id = 3, Name = "J.K. Rowling", Bio = "The creator of the Harry Potter series.", Country = "United Kingdom"}
+                new Author { Id = 1, Name = "J.R.R. Tolkien", Bio = "The creator of Middle-earth and author of The Lord of the Rings." },
+                new Author { Id = 2, Name = "George R.R. Martin", Bio = "The author of the epic fantasy series A Song of Ice and Fire." },
+                new Author { Id = 3, Name = "J.K. Rowling", Bio = "The creator of the Harry Potter series." }
             };
             modelBuilder.Entity<Author>().HasData(authors);
 
@@ -90434,7 +90429,7 @@ namespace GuideNeonEF
 }
 ```
 
-This code defines a static method `Seed` that populates the database with some initial authors and books. Entity framework will include this data when generating database migrations.
+This code defines a static method `Seed` that adds some initial authors and books. EF Core includes this data in the generated migrations.
 
 ### Generate migration files
 
@@ -90444,7 +90439,7 @@ To generate migration files based on the defined models, run the following comma
 dotnet ef migrations add InitialCreate
 ```
 
-This command detects the new `Author` and `Book` entities and generates migration files in the `Migrations` directory to create the corresponding tables in the database.
+This command detects the `Author` and `Book` entities and generates migration files in the `Migrations` directory to create the corresponding tables in the database.
 
 ### Apply the migration
 
@@ -90454,7 +90449,7 @@ To apply the migration and create the tables in the Lakebase Postgres database, 
 dotnet ef database update
 ```
 
-This command executes the migration file and creates the necessary tables in the database. It will also seed the database with the initial data defined in the `Seed` method.
+This command runs the migration file, creates the tables, and inserts the seed data defined in the `Seed` method.
 
 ## Creating the web application
 
@@ -90462,12 +90457,8 @@ This command executes the migration file and creates the necessary tables in the
 
 The project directory has a `Program.cs` file that contains the application entry point. Replace the contents of this file with the following code:
 
-```csharp
-# Program.cs
-
+```csharp filename="Program.cs"
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using GuideNeonEF;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -90484,34 +90475,32 @@ app.MapGet("/books/{authorId}", async (int authorId, ApplicationDbContext db) =>
 app.Run();
 ```
 
-This code sets up a simple web application with two endpoints: `/authors` and `/books/[authorId]`. The `/authors` endpoint returns a list of all authors, while the `/books/[authorId]` endpoint returns a list of books written by the author with the specified ID.
+This code sets up a simple web application with two endpoints: `/authors` and `/books/[authorId]`. The `/authors` endpoint returns a list of all authors, and the `/books/[authorId]` endpoint returns the books written by the author with the specified ID.
 
 ### Test the application
 
-To test the application, run the following command:
+To start the application, run the following command:
 
 ```bash
 dotnet run
 ```
 
-This will start a local web server at `http://localhost:5000`. Navigate to these endpoints in your browser to view the seeded data.
+The terminal prints the address the server listens on, for example `http://localhost:5086`. The port can change between runs, so use the address from your terminal. Open these endpoints in your browser, or use `curl` with your address:
 
 ```bash
-curl http://localhost:5000/authors
-curl http://localhost:5000/books/1
+curl http://localhost:5086/authors
+curl http://localhost:5086/books/1
 ```
 
 ## Applying schema changes
 
-We'll see how to handle schema changes by adding a new property `Country` to the `Author` entity to store the author's country of origin.
+You'll add a new property `Country` to the `Author` entity to store the author's country of origin.
 
 ### Update the data model
 
 Open the `Models.cs` file and add a new property to the `Author` entity:
 
-```csharp
-# Models.cs
-
+```csharp filename="Models.cs"
 public class Author
 {
     public int Id { get; set; }
@@ -90522,39 +90511,28 @@ public class Author
 }
 ```
 
-Also, update the seed data entries for the `Author` model to include the `Country` property:
+Also, update the seed data entries for the `Author` model in `ModelBuilderExtensions.cs` to include the `Country` property. The rest of the `Seed` method stays the same:
 
-```csharp
-# ModelBuilderExtensions.cs
-
-namespace GuideNeonEF
+```csharp filename="ModelBuilderExtensions.cs"
+var authors = new[]
 {
-    public static class ModelBuilderExtensions
-    {
-        public static void Seed(this ModelBuilder modelBuilder)
-        {
-            var authors = new[]
-            {
-                new Author { Id = 1, Name = "J.R.R. Tolkien", Bio = "The creator of Middle-earth and author of The Lord of the Rings.", Country = "United Kingdom" },
-                new Author { Id = 2, Name = "George R.R. Martin", Bio = "The author of the epic fantasy series A Song of Ice and Fire.", Country = "United States" },
-                new Author { Id = 3, Name = "J.K. Rowling", Bio = "The creator of the Harry Potter series.", Country = "United Kingdom" }
-            };
-            modelBuilder.Entity<Author>().HasData(authors);
-            ...
-        }
-    }
-}
+    new Author { Id = 1, Name = "J.R.R. Tolkien", Bio = "The creator of Middle-earth and author of The Lord of the Rings.", Country = "United Kingdom" },
+    new Author { Id = 2, Name = "George R.R. Martin", Bio = "The author of the epic fantasy series A Song of Ice and Fire.", Country = "United States" },
+    new Author { Id = 3, Name = "J.K. Rowling", Bio = "The creator of the Harry Potter series.", Country = "United Kingdom" }
+};
 ```
 
 ### Generate and run the migration
 
-To generate a new migration file for the above schema change, run the following command in the terminal:
+To generate a new migration file for the schema change, run the following command in the terminal:
 
 ```bash
 dotnet ef migrations add AddCountryToAuthor
 ```
 
-This command detects the updated `Author` entity and generates a new migration file to add the new column to the corresponding table in the database. It will also include upserting the seed data with the new property added.
+This command detects the new `Country` property and generates a migration that adds the column to the `Authors` table. It also updates the seeded author rows with their country values. The column is non-nullable with an empty string default, so rows that existed before the migration get an empty string until you update them.
+
+EF Core prints a warning that the migration "may result in the loss of data." This warning refers to the `Down` method, which drops the column if you roll back. The `Up` method doesn't remove data.
 
 Now, to apply the migration, run the following command:
 
@@ -90570,11 +90548,13 @@ Run the application again:
 dotnet run
 ```
 
-Now, if you navigate to the `/authors` endpoint, you should see the new `Country` property included in the response.
+Now, if you open the `/authors` endpoint, the response includes the `Country` property:
 
 ```bash
-curl http://localhost:5000/authors
+curl http://localhost:5086/authors
 ```
+
+Use the address that `dotnet run` prints if it differs from `http://localhost:5086`.
 
 ## Source code
 
@@ -90584,7 +90564,7 @@ You can find the source code for the application described in this guide on GitH
 
 ## Conclusion
 
-In this guide, we demonstrated how to set up an Entity Framework project with Lakebase Postgres, define data models, generate migrations, and run them. Entity Framework's migration system make it easy to interact with the database and manage schema evolution over time.
+In this guide, you set up an Entity Framework project with a Neon database, defined data models, generated migrations, and applied them. Each schema change lives in its own migration file, so the change history stays in your project.
 
 ## Resources
 
@@ -91047,11 +91027,11 @@ In this guide, we'll show you how to use Neon's branching feature to spin up a b
 
 - A flyway installation. See [Get started with Flyway and Neon](https://neon.com/docs/guides/flyway) for installation instructions.
 - A Neon account and project. See [Sign up](https://neon.com/docs/get-started/signing-up).
-- A database. This guide uses the ready-to-use `neondb` database on the `production` branch of your Neon project. You can create your own database if you like. See [Create a database](https://neon.com/docs/manage/databases#create-a-database) for instructions.
+- A database. This guide uses the ready-to-use `neondb` database on the `main` branch of your Neon project. You can create your own database if you like. See [Create a database](https://neon.com/docs/manage/databases#create-a-database) for instructions.
 
 ## Add a table to your database
 
-Set up a database to work with by adding a table to your `neondb` database on the `production` branch of your Neon project. If you completed [Get started with Flyway and Neon](https://neon.com/docs/guides/flyway), you might already have this `person` table created. We'll consider this your _production_ environment database.
+Set up a database to work with by adding a table to your `neondb` database on the `main` branch of your Neon project. If you completed [Get started with Flyway and Neon](https://neon.com/docs/guides/flyway), you might already have this `person` table created. We'll consider this your _production_ environment database.
 
 If you still need to create the `person` table, open the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor), and run the following statement:
 
@@ -91064,7 +91044,7 @@ create table person (
 
 ## Create databases for development and staging
 
-Using Neon's branching feature, create your _development_ and _staging_ databases. When you create a branch in Neon, you are creating a copy-on-write clone of the parent branch that incudes all databases and roles that exist on the parent, and each branch is an isolated Postgres instance with its own compute resources.
+Using Neon's branching feature, create your _development_ and _staging_ databases. When you create a branch in Neon, you are creating a copy-on-write clone of the parent branch that includes all databases and roles that exist on the parent, and each branch is an isolated Postgres instance with its own compute resources.
 
 Perform these steps twice, once for your _development_ branch and once for your _staging_ branch.
 
@@ -91098,7 +91078,7 @@ curl --request POST \
   },
   "endpoints": [
     {
-      "type": "read_only"
+      "type": "read_write"
     }
   ]
 }
@@ -91109,7 +91089,7 @@ When you are finished, you should have a _development_ branch and a _staging_ br
 
 ## Retrieve your Neon database connection strings
 
-In the Neon Console, click **Connect** to retrieve the connection string for each branch (`production`, `development`, and `staging`) from the **Connect to your branch** modal. Use the **Branch** drop-down menu to select each branch before copying the connection string.
+In the Neon Console, click **Connect** to retrieve the connection string for each branch (`main`, `development`, and `staging`) from the **Connect to your branch** modal. Use the **Branch** drop-down menu to select each branch before copying the connection string.
 
 Your connection strings should look something like the ones shown below. Note that the hostname differs for each (the part starting with `ep-` and ending with `aws.neon.tech`). That's because each branch is hosted on its own compute.
 
@@ -91139,7 +91119,7 @@ To enable Flyway to connect to multiple environments, we'll create a configurati
 
 **Note:** By default, Flyway loads its configuration from the default `conf/flyway.conf` file. This is true even if you specify another configuration file when running Flyway. You can take advantage of this behavior by defining non-environment specific configuration settings in the default `conf/flyway.conf` file, and placing your environment-specific settings in separate configuration files, as we'll do here.
 
-1. Switch to your Flyway `/conf` directory and create the following configuration files, one for each environment, by copying the default configuration file. For example:
+1. Switch to your Flyway `/conf` directory and create the following configuration files, one for each environment, by copying the default `flyway.conf` file. If you didn't create `conf/flyway.conf` in [Get started with Flyway and Neon](https://neon.com/docs/guides/flyway), create it first. For example:
 
    ```bash
    cd ~/flyway-x.y.z/conf
@@ -91148,7 +91128,7 @@ To enable Flyway to connect to multiple environments, we'll create a configurati
    cp flyway.conf env_prod.conf
    ```
 
-2. In each configuration file, update the following items with the correct connection details for that database environment. The `url` setting will differ for each environment (in `env_prod.conf`, the `url` will point to `production`). In this example, where you are the only user, the `user` and `password` settings should be the same for each of your three database environments.
+2. In each configuration file, update the following items with the correct connection details for that database environment. The `url` setting will differ for each environment (in `env_prod.conf`, the `url` will point to the `main` branch). In this example, where you are the only user, the `user` and `password` settings should be the same for each of your three database environments.
 
    ```bash
    flyway.url=jdbc:postgresql://ep-cool-darkness-123456.us-east-2.aws.neon.tech:5432/neondb
@@ -91200,15 +91180,14 @@ flyway migrate -configFiles="conf/env_prod.conf"
 A successful migration command returns output similar to the following:
 
 ```bash
-Database: jdbc:postgresql://ep-nameless-unit-49929920.us-east-2.aws.neon.tech/neondb (PostgreSQL 15.4)
+Database: jdbc:postgresql://ep-nameless-unit-49929920.us-east-2.aws.neon.tech/neondb (PostgreSQL 18.7)
 Schema history table "public"."flyway_schema_history" does not exist yet
-Successfully validated 1 migration (execution time 00:00.199s)
+Successfully validated 1 migration (execution time 00:00.192s)
 Creating Schema History table "public"."flyway_schema_history" with baseline ...
 Successfully baselined schema with version: 1
 Current version of schema "public": 1
 Migrating schema "public" to version "2 - Add people"
-Successfully applied 1 migration to schema "public", now at version v2 (execution time 00:00.410s)
-A Flyway report has been generated here: /home/alex/flyway-x.y.z/report.html
+Successfully applied 1 migration to schema "public", now at version v2 (execution time 00:00.793s)
 ```
 
 After you run the migration commands, your database should be consistent across all three environments. You can verify that the data was added to each database by viewing the branch and table on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
@@ -91220,7 +91199,7 @@ You've seen how you can instantly create new database environment with Neon's br
 ## References
 
 - [Flyway documentation](https://documentation.red-gate.com/fd/flyway-documentation-138346877.html)
-- [Flyway command-line tool](https://documentation.red-gate.com/fd/command-line-184127404.html)
+- [Flyway command-line tool](https://documentation.red-gate.com/fd/command-line-277579359.html)
 - [Flyway command-line quickstart](https://documentation.red-gate.com/fd/quickstart-command-line-184127576.html)
 - [A simple way to manage multi-environment deployments](https://flywaydb.org/blog/a-simple-way-to-manage-multi-environment-deployments)
 
@@ -91330,12 +91309,12 @@ flyway migrate
 If the command was successful, you'll see output similar to the following:
 
 ```bash
-Database: jdbc:sqlite:FlywayQuickStartCLI.db (SQLite 3.41)
-Successfully validated 1 migration (execution time 00:00.008s)
-Creating Schema History table: "PUBLIC"."flyway_schema_history"
-Current version of schema "PUBLIC": << Empty Schema >>
-Migrating schema "PUBLIC" to version 1 - Create person table
-Successfully applied 1 migration to schema "PUBLIC" (execution time 00:00.033s)
+Database: jdbc:postgresql://ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb (PostgreSQL 18.7)
+Successfully validated 1 migration (execution time 00:00.330s)
+Creating Schema History table "public"."flyway_schema_history" ...
+Current version of schema "public": << Empty Schema >>
+Migrating schema "public" to version "1 - Create person table"
+Successfully applied 1 migration to schema "public", now at version v1 (execution time 00:00.745s)
 ```
 
 To verify that the `person` table was created, you can view it on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
@@ -91359,12 +91338,11 @@ flyway migrate
 If the command was successful, you'll see output similar to the following:
 
 ```bash
-Database: jdbc:postgresql://ep-red-credit-85617375.us-east-2.aws.neon.tech/neondb (PostgreSQL 15.4)
-Successfully validated 2 migrations (execution time 00:00.225s)
+Database: jdbc:postgresql://ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb (PostgreSQL 18.7)
+Successfully validated 2 migrations (execution time 00:00.425s)
 Current version of schema "public": 1
 Migrating schema "public" to version "2 - Add people"
-Successfully applied 1 migration to schema "public", now at version v2 (execution time 00:00.388s)
-A Flyway report has been generated here: /home/alex/flyway-x.y.z/sql/report.html
+Successfully applied 1 migration to schema "public", now at version v2 (execution time 00:00.960s)
 ```
 
 You can verify that the data was added by viewing the table on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
@@ -91375,15 +91353,14 @@ When you run the `flyway migrate` command, Flyway registers the schema changes i
 
 ```bash
 flyway info
-Database: jdbc:postgresql://ep-red-credit-85617375.us-east-2.aws.neon.tech/neondb (PostgreSQL 15.4)
+Database: jdbc:postgresql://ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb (PostgreSQL 18.7)
 Schema version: 2
 +-----------+---------+---------------------+------+---------------------+---------+----------+
 | Category  | Version | Description         | Type | Installed On        | State   | Undoable |
 +-----------+---------+---------------------+------+---------------------+---------+----------+
-| Versioned | 1       | Create person table | SQL  | 2023-10-22 19:00:39 | Success | No       |
-| Versioned | 2       | Add people          | SQL  | 2023-10-22 19:04:42 | Success | No       |
+| Versioned | 1       | Create person table | SQL  | 2026-11-14 16:23:38 | Success | No       |
+| Versioned | 2       | Add people          | SQL  | 2026-11-14 16:24:00 | Success | No       |
 +-----------+---------+---------------------+------+---------------------+---------+----------+
-A Flyway report has been generated here: /home/alex/flyway-x.y.z/sql/report.html
 ```
 
 You can also view the table on the **Tables** page in the Neon Console. Select **Postgres database** > **Tables** from the sidebar and select your database.
@@ -91395,7 +91372,7 @@ Learn how you can use Flyway with multiple database environments. See [Use Flywa
 ## References
 
 - [Flyway documentation](https://documentation.red-gate.com/fd/flyway-documentation-138346877.html)
-- [Flyway command-line tool](https://documentation.red-gate.com/fd/command-line-184127404.html)
+- [Flyway command-line tool](https://documentation.red-gate.com/fd/command-line-277579359.html)
 - [Flyway command-line quickstart](https://documentation.red-gate.com/fd/quickstart-command-line-184127576.html)
 
 --- [Document source](https://neon.com/docs/guides/go.md) ---
@@ -96119,7 +96096,7 @@ For more advanced use cases, such as complex filters, joins, transactions, and s
 
 --- [Document source](https://neon.com/docs/guides/laravel-migrations.md) ---
 
-> Summary: Run Laravel schema migrations on Lakebase Postgres using the Eloquent ORM and `php artisan migrate`. Covers first-time setup and adding columns via new migration files. Neon requires a direct (non-pooled) connection string for migrations; pooled PgBouncer connections can cause migration errors.
+> Summary: Run Laravel schema migrations on Lakebase Postgres using the Eloquent ORM and `php artisan migrate`. Covers first-time setup and adding columns via new migration files. Use a direct (non-pooled) connection string for migrations, because pooled PgBouncer connections can cause migration errors.
 
 # Schema migration with Lakebase Postgres and Laravel
 
@@ -96127,7 +96104,7 @@ Set up a database on Neon and run migrations for your Laravel project
 
 Last updated: 2026-10-28
 
-[Laravel](https://laravel.com/) is a popular PHP web application framework that provides an expressive and elegant syntax for building web applications. It includes an ORM (Object-Relational Mapping) called Eloquent, which allows you to interact with databases using a fluent API. Laravel also provides a powerful migration system to manage database schema changes over time.
+[Laravel](https://laravel.com/) is a PHP web application framework. It includes an ORM (Object-Relational Mapping) called Eloquent, which lets you interact with databases using a fluent API. Laravel also includes a migration system to manage database schema changes over time.
 
 This guide demonstrates how to use Laravel with the Lakebase Postgres database. We'll create a simple Laravel application and walk through the process of setting up the database, defining models, and generating and running migrations to manage schema changes.
 
@@ -96136,7 +96113,7 @@ This guide demonstrates how to use Laravel with the Lakebase Postgres database. 
 To follow along with this guide, you will need:
 
 - A Neon account. If you do not have one, sign up at [Neon](https://neon.tech). Your Neon project comes with a ready-to-use Postgres database named `neondb`. We'll use this database in the following examples.
-- [PHP](https://www.php.net/) installed on your local machine. This guide uses PHP 8.1, but you can use any recent version compatible with Laravel.
+- [PHP](https://www.php.net/) 8.3 or later installed on your local machine. Laravel 13 requires PHP 8.3 or later.
 - [Composer](https://getcomposer.org/) installed on your local machine for managing PHP dependencies.
 
 ## Setting up your Neon database
@@ -96148,17 +96125,17 @@ To follow along with this guide, you will need:
 
 ### Retrieve your Neon database connection string
 
-Find your database connection string by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. It should look similar to this:
+Click the **Connect** button in the Console nav to open the **Connect to your branch** modal. The **Connection pooling** toggle is on by default, which shows a pooled connection string. Turn the toggle off to show the direct connection string. It should look similar to this:
 
 ```bash
 postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
 ```
 
-**Important: Always use a direction connection for migrations**
+**Important: Use a direct connection for migrations**
 
-Neon supports both direct and pooled database connection strings, which you can find by clicking the **Connect** button in the Console nav to open the **Connect to your branch** modal. A pooled connection string connects your application to the database via a PgBouncer connection pool, allowing for a higher number of concurrent connections. However, using a pooled connection string for migrations can be prone to errors. For this reason, we recommend using a direct (non-pooled) connection when performing migrations. For more information about direct and pooled connections, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
+Neon supports both direct and pooled connection strings. A pooled connection string routes your connections through a PgBouncer connection pool, which allows more concurrent connections. Migrations can run into errors through a connection pool, so this guide uses the direct (non-pooled) connection string for all steps. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
 
-Keep your connection string handy for later use.
+Keep your direct connection string handy for later use.
 
 ## Setting up the Laravel project
 
@@ -96172,17 +96149,16 @@ composer create-project --prefer-dist laravel/laravel guide-neon-laravel
 
 This command creates a new Laravel project named `guide-neon-laravel` in the current directory.
 
-### Set up the Database configuration
+### Set up the database configuration
 
 Open the `.env` file in the project root directory and update the following database connection variables:
 
 ```bash
 DB_CONNECTION=pgsql
-DB_PORT=5432
-DATABASE_URL=NEON_POSTGRES_CONNECTION_STRING
+DB_URL=NEON_POSTGRES_CONNECTION_STRING
 ```
 
-Replace `NEON_POSTGRES_CONNECTION_STRING` with the connection string you retrieved from the Neon Console earlier. The `DB_CONNECTION` should be set to `pgsql` to indicate that we are using a Postgres database.
+Replace `NEON_POSTGRES_CONNECTION_STRING` with the direct connection string you retrieved from the Neon Console earlier. The `DB_CONNECTION` should be set to `pgsql` to indicate that we are using a Postgres database. Laravel reads the connection string from `DB_URL`. The `.env` file that `composer create-project` generates sets `DB_CONNECTION=sqlite`, so change that value too.
 
 ## Defining data models and running migrations
 
@@ -96242,7 +96218,7 @@ These commands generate empty migration files in the `database/migrations` direc
 Open the `create_authors_table` migration file and update the `up` method to define the table schema:
 
 ```php
-public function up()
+public function up(): void
 {
     Schema::create('authors', function (Blueprint $table) {
         $table->id();
@@ -96256,7 +96232,7 @@ public function up()
 Similarly, open the `create_books_table` migration file and update the `up` method:
 
 ```php
-public function up()
+public function up(): void
 {
     Schema::create('books', function (Blueprint $table) {
         $table->id();
@@ -96442,10 +96418,10 @@ This command generates a new migration file in the `database/migrations` directo
 Open the generated migration file and update the `up` method to add the new `country` column:
 
 ```php
-public function up()
+public function up(): void
 {
     Schema::table('authors', function (Blueprint $table) {
-        $table->string('country')->nullable()->after('bio');
+        $table->string('country')->nullable();
     });
 }
 ```
@@ -96468,7 +96444,7 @@ Navigate to the url `http://localhost:8000/authors` to view the list of authors.
 
 ## Conclusion
 
-In this guide, we demonstrated how to set up a Laravel project with `Neon` Postgres, define database models using Eloquent, generate migrations, and run them. Laravel's Eloquent ORM and migration system make it easy to interact with the database and manage schema evolution over time.
+In this guide, you set up a Laravel project with a Neon database, defined models with Eloquent, generated migrations, and ran them. Each schema change lives in its own migration file, so the change history stays in your project.
 
 ## Source code
 
@@ -96639,10 +96615,10 @@ Now, let's prepare a development database in Neon by creating a development bran
 
 To create a branch:
 
-1. In the Neon Console, select **Branches** in the sidebar. You will see your `production` branch, where you just created your `blog` database and tables.
+1. In the Neon Console, select **Branches** in the sidebar. You will see your `main` branch, where you just created your `blog` database and tables.
 2. Click **New Branch** to open the branch creation dialog.
 3. Enter a name for the branch. Let's call it `feature/blog-schema`.
-4. Leave `production` selected as the parent branch. This is where you created the `blog` database.
+4. Leave `main` selected as the parent branch. This is where you created the `blog` database.
 5. Leave the remaining default settings. Creating a branch from **Head** creates a branch with the latest data, and a compute is required to connect to the database on the branch.
 6. Click **Create Branch** to create your branch.
 
@@ -96658,7 +96634,7 @@ From the [Neon Console](https://console.neon.tech/app/projects), retrieve connec
    postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/blog?sslmode=require&channel_binding=require
    ```
 
-2. Select the `production` branch, the `blog` database, and copy the connection string.
+2. Select the `main` branch, the `blog` database, and copy the connection string.
 
    ```bash
    postgresql://alex:AbC123dEf@ep-silent-hill-85675036.us-east-2.aws.neon.tech/blog?sslmode=require&channel_binding=require
@@ -96692,7 +96668,7 @@ The `liquibase.properties` file defines the location of the Liquibase changelog 
    liquibase.command.password: AbC123dEf
    ```
 
-4. Change the source database settings to the correct values for the `blog` database on your `production` branch. The username and password will be the same as your `feature/blog-schema` branch, but make sure to use the right hostname. Copy the snippet below and replace the hostname (`ep-silent-hill-85675036.us-east-2.aws.neon.tech`), username, and password for your own.
+4. Change the source database settings to the correct values for the `blog` database on your `main` branch. The username and password will be the same as your `feature/blog-schema` branch, but make sure to use the right hostname. Copy the snippet below and replace the hostname (`ep-silent-hill-85675036.us-east-2.aws.neon.tech`), username, and password for your own.
 
    ```bash
    liquibase.command.referenceUrl: jdbc:postgresql://ep-silent-hill-85675036.us-east-2.aws.neon.tech:5432/blog
@@ -96925,8 +96901,10 @@ Liquibase command 'updateSql' was executed successfully.
 You can also run a `diff` command to compare your source and target databases.
 
 ```bash
-liquibase --referenceUrl=jdbc:postgresql://ep-cool-darkness-123456.us-east-2.aws.neon.tech:5432/blog --referenceUsername alex --referencePassword IwMdnTs1R6kH diff
+liquibase --url=jdbc:postgresql://ep-silent-hill-85675036.us-east-2.aws.neon.tech:5432/blog --referenceUrl=jdbc:postgresql://ep-cool-darkness-123456.us-east-2.aws.neon.tech:5432/blog --referenceUsername=alex --referencePassword=AbC123dEf diff
 ```
+
+The `--url` flag sets the comparison database, which is your source database on `main`. The `--referenceUrl` flag sets the reference database, which is your target database on `feature/blog-schema`. Your `liquibase.properties` file sets `url` to the target database, so pass `--url` explicitly here. Otherwise, both sides of the comparison point to the same database.
 
 <details>
 
@@ -96949,26 +96927,26 @@ Product Version: EQUAL
 Missing Catalog(s): NONE
 Unexpected Catalog(s): NONE
 Changed Catalog(s): NONE
-Missing Column(s): NONE
-Unexpected Column(s):
+Missing Column(s):
      public.comments.author_id
      public.comments.comment
      public.comments.comment_id
      public.comments.commented_date
      public.comments.post_id
+Unexpected Column(s): NONE
 Changed Column(s): NONE
-Missing Foreign Key(s): NONE
-Unexpected Foreign Key(s):
+Missing Foreign Key(s):
      fk_comments_author_id(comments[author_id] -> authors[author_id])
      fk_comments_post_id(comments[post_id] -> posts[post_id])
+Unexpected Foreign Key(s): NONE
 Changed Foreign Key(s): NONE
-Missing Index(s): NONE
-Unexpected Index(s):
+Missing Index(s):
      comments_pkey UNIQUE  ON public.comments(comment_id)
+Unexpected Index(s): NONE
 Changed Index(s): NONE
-Missing Primary Key(s): NONE
-Unexpected Primary Key(s):
+Missing Primary Key(s):
      comments_pkey on public.comments(comment_id)
+Unexpected Primary Key(s): NONE
 Changed Primary Key(s): NONE
 Missing Schema(s): NONE
 Unexpected Schema(s): NONE
@@ -96976,9 +96954,9 @@ Changed Schema(s): NONE
 Missing Sequence(s): NONE
 Unexpected Sequence(s): NONE
 Changed Sequence(s): NONE
-Missing Table(s): NONE
-Unexpected Table(s):
+Missing Table(s):
      comments
+Unexpected Table(s): NONE
 Changed Table(s): NONE
 Missing Unique Constraint(s): NONE
 Unexpected Unique Constraint(s): NONE
@@ -96993,7 +96971,7 @@ Liquibase command 'diff' was executed successfully.
 
 ### Save your changelog to source control
 
-When you are satisfied with the changes that will be applied, save your changelog to source control, such as a GitHub repository where you or your team stores you changelog.
+When you are satisfied with the changes that will be applied, save your changelog to source control, such as a GitHub repository where you or your team stores your changelog.
 
 ### Apply the changeset to your source database
 
@@ -97028,7 +97006,7 @@ Liquibase command 'update' was executed successfully.
 
 </details>
 
-To ensure that all changes have been applied to the production database, you can rerun the `status`, `updatedSql`, and `diff` commands you ran above. After applying the change, there should be no differences. You can also check your databases in the **Tables** view in the Neon Console to verify that the source database now has a `comments` table.
+To ensure that all changes have been applied to the production database, you can rerun the `status`, `updateSQL`, and `diff` commands you ran above. After applying the change, there should be no differences. You can also check your databases in the **Tables** view in the Neon Console to verify that the source database now has a `comments` table.
 
 **Note:** When you run a changeset for the first time on the source database, you will find that Liquibase automatically creates the [databasechangelog](https://docs.liquibase.com/concepts/tracking-tables/databasechangelog-table.html) and [databasechangeloglock](https://docs.liquibase.com/concepts/tracking-tables/databasechangeloglock-table.html) tracking tables that were created in your development database. These tracking tables are created on any database where you apply changesets.
 
@@ -97281,10 +97259,10 @@ liquibase update
 If the command was successful, you'll see output similar to the following:
 
 ```bash
-Starting Liquibase at 07:33:53 (version 4.24.0 #14062 built at 2023-09-28 12:18+0000)
-Liquibase Version: 4.24.0
-Liquibase Open Source 4.24.0 by Liquibase
-Running Changeset: dbchangelog.xml::myIDNumber1234::AlexL
+Starting Liquibase at 07:33:53 (version 4.33.0 #8744 built at 2025-07-08 20:43+0000)
+Liquibase Version: 4.33.0
+Liquibase Open Source 4.33.0 by Liquibase
+Running Changeset: dbchangelog.xml::myIDNumber1234::alex
 
 UPDATE SUMMARY
 Run:                          1
@@ -97293,7 +97271,7 @@ Filtered out:                 0
 -------------------------------
 Total change sets:            1
 
-Liquibase: Update has been successful. Rows affected: 1
+Liquibase: Update has been successful. Rows affected: 0
 Liquibase command 'update' was executed successfully.
 ```
 
@@ -97323,10 +97301,10 @@ liquibase rollbackCount 1
 If the command was successful, you'll see output similar to the following:
 
 ```bash
-Starting Liquibase at 07:36:22 (version 4.24.0 #14062 built at 2023-09-28 12:18+0000)
-Liquibase Version: 4.24.0
-Liquibase Open Source 4.24.0 by Liquibase
-Rolling Back Changeset: dbchangelog.xml::myIDNumber1234::AlexL
+Starting Liquibase at 07:36:22 (version 4.33.0 #8744 built at 2025-07-08 20:43+0000)
+Liquibase Version: 4.33.0
+Liquibase Open Source 4.33.0 by Liquibase
+Rolling Back Changeset: dbchangelog.xml::myIDNumber1234::alex
 Liquibase command 'rollbackCount' was executed successfully.
 ```
 
@@ -101674,7 +101652,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 
 ## Prepare your source Neon database
 
-This section describes how to prepare your source Neon database (the publisher) for replicating data to your destination Neon database (the subscriber).
+This section describes how to prepare your source Neon database (the publisher) for replicating data to your destination database (the subscriber).
 
 ### Enable logical replication in the source Neon project
 
@@ -101704,10 +101682,10 @@ It is recommended that you create a dedicated Postgres role for replicating data
 
 **CLI**
 
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
+The following CLI command creates a role. Replace `{project_id}` with your project ID. Without `--project-id`, the CLI uses the project from your current context, which might not be the one you want. For more options, see the [roles CLI reference](https://neon.com/docs/cli/roles#create).
 
 ```bash
-neon roles create --name replication_user
+neon roles create --name replication_user --project-id {project_id}
 ```
 
 **Console**
@@ -101768,7 +101746,7 @@ To create a publication for multiple tables, provide a comma-separated list of t
 CREATE PUBLICATION my_publication FOR TABLE users, departments;
 ```
 
-For syntax details, see [CREATE PUBLICATION](https://www.postgresql.org/docs/current/sql-createpublication.html), in the PostgreSQL documentation.
+For syntax details, see [CREATE PUBLICATION](https://www.postgresql.org/docs/current/sql-createpublication.html), in the Postgres documentation.
 
 ## Prepare your destination database
 
@@ -101790,17 +101768,17 @@ After creating a publication on the source database, you need to create a subscr
 
 1. Use the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor), `psql`, or another SQL client to connect to your destination database.
 
-2. Create the subscription using the using a `CREATE SUBSCRIPTION` statement.
+2. Create the subscription using a `CREATE SUBSCRIPTION` statement.
 
    ```sql
    CREATE SUBSCRIPTION my_subscription
-   CONNECTION 'postgresql://neondb_owner:<password>@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
+   CONNECTION 'postgresql://replication_user:<password>@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
    PUBLICATION my_publication;
    ```
 
-   - `subscription_name`: A name you chose for the subscription.
-   - `connection_string`: The connection string for the source Neon database where you defined the publication.
-   - `publication_name`: The name of the publication you created on the source Neon database.
+   - `my_subscription`: A name you chose for the subscription.
+   - `CONNECTION`: The connection string for the replication role on the source Neon database.
+   - `PUBLICATION`: The name of the publication you created on the source Neon database.
 
 3. Verify the subscription was created by running the following command:
 
@@ -101828,7 +101806,7 @@ Testing your logical replication setup ensures that data is being replicated cor
 
    count
    -------
-   30
+   20
    (1 row)
    ```
 
@@ -109267,7 +109245,7 @@ PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 
 
 --- [Document source](https://neon.com/docs/guides/rails-migrations.md) ---
 
-> Summary: Ruby on Rails Active Record migrations against Lakebase Postgres require a direct (non-pooled) connection string in `DATABASE_URL` because PgBouncer pooled connections can cause migration errors. This guide walks through creating a Rails project, configuring `database.yml` to read `DATABASE_URL`, running `rails db:migrate` to create tables, and applying incremental schema changes such as adding a new column with a follow-on migration.
+> Summary: Ruby on Rails Active Record migrations against Lakebase Postgres use a direct (non-pooled) connection string in `DATABASE_URL`, because PgBouncer pooled connections can cause migration errors. This guide walks through creating a Rails project, configuring `database.yml` to read `DATABASE_URL`, running `rails db:migrate` to create tables, and applying incremental schema changes such as adding a new column with a follow-on migration.
 
 # Schema migration with Lakebase Postgres and Ruby on Rails
 
@@ -109275,7 +109253,7 @@ Set up a database on Neon and run migrations for your Rails project
 
 Last updated: 2026-10-28
 
-[Ruby on Rails](https://rubyonrails.org/) is a popular web application framework for Ruby developers. It provides an ORM (Object-Relational Mapping) layer called `Active Record`, that simplifies database interactions and schema management. Rails also includes a powerful migration system that allows you to define and manage database schema changes over time.
+[Ruby on Rails](https://rubyonrails.org/) is a web application framework for Ruby. It provides an ORM (Object-Relational Mapping) layer called `Active Record`, which handles database interactions and schema management. Rails also includes a migration system that lets you define and manage database schema changes over time.
 
 This guide demonstrates how to run schema migrations in your Ruby on Rails project backed by the Lakebase Postgres database. We'll create a simple Rails application and walk through the process of setting up the database, defining models, and generating and running migrations to manage schema changes.
 
@@ -109287,11 +109265,11 @@ To follow along with this guide, you will need:
 
 - [Ruby](https://www.ruby-lang.org/) installed on your local machine.
 
-  You can install Ruby using the instructions provided on the [official Ruby website](https://www.ruby-lang.org/en/documentation/installation/). We recommend using a newer version of Ruby, 3.0 or higher.
+  You can install Ruby using the instructions provided on the [official Ruby website](https://www.ruby-lang.org/en/documentation/installation/). Rails 8.1 requires Ruby 3.2 or later. This guide was tested with Ruby 4.0.
 
 - [Rails](https://rubyonrails.org/) installed on your local machine. You can install Rails by running `gem install rails`.
 
-  We recommend using Rails 6 or higher. This project uses `Rails 7.1.3.2`.
+  This guide uses `Rails 8.1`.
 
 ## Setting up your database
 
@@ -109302,15 +109280,17 @@ To follow along with this guide, you will need:
 
 ### Retrieve your database connection string
 
-You can find the connection string for your database by clicking the **Connect** button in the Console nav. It should look similar to this:
+Click the **Connect** button in the Console nav to open the **Connect to your branch** modal. The **Connection pooling** toggle is on by default, which shows a pooled connection string. Turn the toggle off to show the direct connection string. It should look similar to this:
 
 ```bash
 postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
 ```
 
-Keep your connection string handy for later use.
+**Important: Use a direct connection for migrations**
 
-**Note:** Neon supports both direct and pooled database connection strings. You can find a connection string for your database by clicking the **Connect** button in the Console nav. A pooled connection string connects your application to the database via a PgBouncer connection pool, allowing for a higher number of concurrent connections. However, using a pooled connection string for migrations can be prone to errors. For this reason, we recommend using a direct (non-pooled) connection when performing migrations. For more information about direct and pooled connections, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
+Neon supports both direct and pooled connection strings. A pooled connection string routes your connections through a PgBouncer connection pool, which allows more concurrent connections. Migrations can run into errors through a connection pool, so this guide uses the direct (non-pooled) connection string for all steps. For more information, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
+
+Keep your direct connection string handy for later use.
 
 ## Setting up the Rails project
 
@@ -109324,7 +109304,7 @@ rails new guide-neon-rails --database=postgresql
 
 This command creates a new Rails project named `guide-neon-rails` with Postgres as the default database. It will also generate the necessary project files and directories, and install the required dependencies.
 
-### Set up the Database configuration
+### Set up the database configuration
 
 Create a `.env` file in the project root directory and add the `DATABASE_URL` environment variable to it. Use the connection string that you obtained from the Neon Console earlier:
 
@@ -109352,7 +109332,7 @@ Finally, we open the `config/database.yml` file in your project directory and up
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   url: <%= ENV['DATABASE_URL'] %>
 
 development:
@@ -109364,6 +109344,8 @@ test:
 production:
   <<: *default
 ```
+
+This snippet replaces the Rails 8 `production` settings for Solid Cache, Solid Queue, and Solid Cable. This guide doesn't cover deploying to production.
 
 ## Defining data models and running migrations
 
@@ -109377,6 +109359,16 @@ rails generate model Book title:string author:references
 ```
 
 These commands generate model files and the corresponding migration files in the `app/models` and `db/migrate` directories, respectively.
+
+The generator doesn't add the association from `Author` to `Book`. Open `app/models/author.rb` and add the `has_many` line so that `author.books` works in the controllers later in this guide:
+
+```ruby
+# app/models/author.rb
+
+class Author < ApplicationRecord
+  has_many :books, dependent: :destroy
+end
+```
 
 ### Run the migrations
 
@@ -109619,7 +109611,7 @@ Navigate to the url `http://localhost:3000/authors` to view the list of authors.
 
 ## Conclusion
 
-In this guide, we demonstrated how to set up a Ruby on Rails project with Lakebase Postgres, define database models, generate migrations, and run them. Rails' Active Record ORM and migration system make it easy to interact with the database and manage schema evolution over time.
+In this guide, you set up a Ruby on Rails project with a Neon database, defined models with Active Record, generated migrations, and ran them. Each schema change lives in its own migration file, so the change history stays in your project.
 
 ## Source code
 
@@ -111957,7 +111949,7 @@ To delete your Neon project, follow the steps outlined in the Neon documentation
 
 Learn how to reset a branch from its parent
 
-Last updated: 2026-09-25
+Last updated: 2026-11-14
 
 Neon's **Reset from parent** feature lets you instantly reset all databases on a branch to the latest schema and data from its parent branch, helping you recover from issues, start on new feature development, or keep the different branches in your environment in sync.
 
@@ -111980,7 +111972,7 @@ When you reset a branch to its parent, the data and schema is completely replace
 - Object Storage is reset along with the database. The branch's buckets and objects return to the parent's current state, so any uploads, overwrites, and deletes you made on the branch are discarded. This is different from [Instant restore](https://neon.com/docs/postgres/backup-restore/branch-restore), which leaves Object Storage untouched. Functions are not part of the database timeline, so a reset does not affect them.
 - Existing connections will be temporarily interrupted during the reset. However, your connection details _do not change_. All connections are re-established as soon as the reset is done.
 - Root branches (like your project's `production` branch or schema-only branches) cannot be reset because they have no parent branch to reset to.
-- A branch with children can't be reset until the children are handled. In the Console, delete the children when prompted. The CLI and API return an error unless you pass a backup name with `--preserve-under-name` or `preserve_under_name`. Neon then creates the backup branch under that name and moves the children to it.
+- A branch with children can't be reset until the children are handled. In the Console, delete the children when prompted. The CLI and API return an error unless you pass a backup name with `--preserve-under-name` or `preserve_under_name`. Neon then creates the backup branch under that name and moves the children to it. The backup branch has no compute, so `neon connection-string` fails on it until you add one with `neon branches add-compute`.
 
 ### Branch expiration behavior
 
@@ -112090,6 +112082,7 @@ This ensures staging accurately reflects the current production database state f
 ## Limitations
 
 - **Reset from parent is unavailable for up to 24 hours after a parent is restored from a snapshot.** If a parent branch is restored from a snapshot, its child branches cannot be reset from that parent for up to 24 hours. If you need to update a child branch during this period, consider using [Instant restore](https://neon.com/docs/postgres/backup-restore/branch-restore) to restore the child branch from the parent directly.
+- **Errors when a reset is blocked.** With the CLI, resetting a root branch returns `Branch has no parent`. With the CLI or API, resetting a branch that has children without a backup name returns `Branch has children, preserve_under_name is required`; pass `--preserve-under-name` (CLI) or `preserve_under_name` (API) to keep the old branch under a new name.
 
 --- [Document source](https://neon.com/docs/guides/rls-drizzle.md) ---
 
@@ -114830,11 +114823,11 @@ For a step-by-step guide showing you how to compare two development branches usi
 
 --- [Document source](https://neon.com/docs/guides/sequelize.md) ---
 
-> Summary: Sequelize ORM integration with Lakebase Postgres walks through connecting a Node.js project, generating models with sequelize-cli, and running `npx sequelize db:migrate` to apply schema changes. Use this guide when you need to set up Sequelize migrations against a Lakebase Postgres database, including defining foreign key relationships and seeding data. A direct (non-pooled) connection string is required for migrations, as pooled connections via PgBouncer cause migration errors.
+> Summary: Sequelize ORM integration with Lakebase Postgres walks through connecting a Node.js project, generating models with sequelize-cli, and running `npx sequelize db:migrate` to apply schema changes. Use this guide when you need to set up Sequelize migrations against a Lakebase Postgres database, including defining foreign key relationships and seeding data. A direct (non-pooled) connection string is recommended for migrations.
 
 # Schema migration with Lakebase Postgres and Sequelize
 
-Set up a database on Neon and run migrations for your Javascript project using Sequelize ORM
+Set up a database on Neon and run migrations for your JavaScript project using Sequelize ORM
 
 Last updated: 2026-09-16
 
@@ -114868,7 +114861,7 @@ Keep your connection string handy for later use.
 
 **Note:** Neon supports both direct and pooled database connection strings. You can find the connection string for your database by clicking the **Connect** button in the Console nav. A pooled connection string connects your application to the database via a PgBouncer connection pool, allowing for a higher number of concurrent connections. However, using a pooled connection string for migrations can be prone to errors. For this reason, we recommend using a direct (non-pooled) connection when performing migrations. For more information about direct and pooled connections, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
 
-## Setting Up the Node application
+## Set up the Node application
 
 ### Create a new Node project
 
@@ -115156,7 +115149,7 @@ app.listen(port, () => {
 });
 ```
 
-This code sets up a simple API with two endpoints: `/authors` and `/books/:authorId`. The `/authors` endpoint returns a list of all the authors, and the `/books/:authorId` endpoint returns a list of books written by the specific author for the given `authorId`.
+This code sets up a simple API with two endpoints: `/authors` and `/books/:author_id`. The `/authors` endpoint returns a list of all the authors, and the `/books/:author_id` endpoint returns a list of books written by the specific author for the given `authorId`.
 
 Run the application using the following command:
 
@@ -115168,7 +115161,7 @@ This will start the server at `http://localhost:3000`. Navigate to `http://local
 
 ## Conclusion
 
-In this guide, we set up a new Javascript project using `Express.js` and the `Sequelize` ORM, and connected it to a `Neon` Postgres database. We created a schema for the database, generated and ran migrations, and implemented API endpoints to query the database.
+In this guide, we set up a new JavaScript project using `Express.js` and the `Sequelize` ORM, and connected it to a `Neon` Postgres database. We created a schema for the database, generated and ran migrations, and implemented API endpoints to query the database.
 
 ## Source code
 
@@ -115802,7 +115795,7 @@ Manage database migrations in your Python project with SQLAlchemy and Alembic
 
 Last updated: 2026-10-28
 
-[SQLAlchemy](https://www.sqlalchemy.org/) is a popular SQL toolkit and Object-Relational Mapping (ORM) library for Python. SQLAlchemy provides a powerful way to interact with databases and manage database schema changes using [Alembic](https://alembic.sqlalchemy.org/), a lightweight database migration tool.
+[SQLAlchemy](https://www.sqlalchemy.org/) is a popular SQL toolkit and Object-Relational Mapping (ORM) library for Python. SQLAlchemy provides a way to interact with databases and manage database schema changes using [Alembic](https://alembic.sqlalchemy.org/), a lightweight database migration tool.
 
 This guide demonstrates how to use SQLAlchemy/Alembic to manage schema migrations for a Lakebase Postgres database. We create a simple API using the [FastAPI](https://fastapi.tiangolo.com/) web framework and define database models using SQLAlchemy. We then generate and run migrations to manage schema changes over time.
 
@@ -115811,7 +115804,7 @@ This guide demonstrates how to use SQLAlchemy/Alembic to manage schema migration
 To follow along with this guide, you will need:
 
 - A Neon account. If you do not have one, sign up at [Neon](https://neon.tech). Your Neon project comes with a ready-to-use Postgres database named `neondb`. We'll use this database in the following examples.
-- [Python](https://www.python.org/) installed on your local machine. We recommend using a newer version of Python, 3.8 or higher.
+- [Python](https://www.python.org/) 3.11 or later installed on your local machine. SQLAlchemy 2.1 requires Python 3.11 or later.
 
 ## Setting up your database
 
@@ -115832,7 +115825,7 @@ Keep your connection string handy for later use.
 
 **Note:** Neon supports both direct and pooled database connection strings. You can find a connection string for your database by clicking the **Connect** button in the Console nav. A pooled connection string connects your application to the database via a PgBouncer connection pool, allowing for a higher number of concurrent connections. However, using a pooled connection string for migrations can be prone to errors. For this reason, we recommend using a direct (non-pooled) connection when performing migrations. For more information about direct and pooled connections, see [Connection pooling](https://neon.com/docs/connect/connection-pooling).
 
-## Setting up the Web application
+## Setting up the web application
 
 ### Set up the Python environment
 
@@ -115856,14 +115849,14 @@ With the virtual environment activated, we can create a new directory for our Fa
 
 ```bash
 mkdir guide-neon-sqlalchemy && cd guide-neon-sqlalchemy
-pip install sqlalchemy alembic "psycopg2-binary"
+pip install sqlalchemy alembic "psycopg[binary]"
 pip install fastapi uvicorn python-dotenv
 pip freeze > requirements.txt
 ```
 
-We installed SQLAlchemy, Alembic, and the `psycopg2-binary` package to connect to the Lakebase Postgres database. We then installed the `FastAPI` package to create the API endpoints and `uvicorn` as the web server. We then saved the installed packages to a `requirements.txt` file so the project can be easily recreated in another environment.
+We installed SQLAlchemy, Alembic, and psycopg (version 3) to connect to the Lakebase Postgres database. SQLAlchemy 2.1 uses psycopg 3 for `postgresql://` connection strings by default, so you don't need the older `psycopg2` driver. We then installed the `FastAPI` package to create the API endpoints and `uvicorn` as the web server. We then saved the installed packages to a `requirements.txt` file so you can recreate the project in another environment.
 
-### Set up the Database configuration
+### Set up the database configuration
 
 Create a `.env` file in the project root directory and add the `DATABASE_URL` environment variable to it. Use the connection string that you obtained from the Neon Console earlier:
 
@@ -115876,7 +115869,7 @@ We create an `app` directory at the project root to store the database models an
 
 ```bash
 mkdir app
-touch guide-neon-sqlalchemy/app/__init__.py
+touch app/__init__.py
 ```
 
 Next, create a new file named `database.py` in the `app` subdirectory and add the following code:
@@ -115888,8 +115881,7 @@ import os
 
 import dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 dotenv.load_dotenv()
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
@@ -115948,7 +115940,9 @@ To initialize Alembic for managing database migrations, run the following comman
 alembic init alembic
 ```
 
-This command creates a new directory named `alembic` with the necessary files for managing migrations. Open the `env.py` file in the `alembic` directory and update the `target_metadata` variable to include the models defined in the `models.py` file:
+This command creates a new directory named `alembic` with the necessary files for managing migrations. Open the `alembic/env.py` file and make two changes.
+
+First, add an import for the models and point `target_metadata` at their metadata. Add the import near the top of the file, and replace the `target_metadata = None` line:
 
 ```python
 # alembic/env.py
@@ -115958,17 +115952,17 @@ from app.models import Base
 target_metadata = Base.metadata
 ```
 
-We update the `alembic/env.py` file again to load the database URL from the `.env` file at project root and set it as the `sqlalchemy.url` configuration option.
+Second, load the database URL from the `.env` file at the project root and set it as the `sqlalchemy.url` configuration option. Add this code after the `config = context.config` line:
 
 ```python
 # alembic/env.py
 
-import dotenv
 import os
 
-dotenv.load_dotenv()
+import dotenv
 
-config.set_main_option('sqlalchemy.url', os.getenv('DATABASE_URL', ""))
+dotenv.load_dotenv()
+config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL", ""))
 ```
 
 ### Generate the initial migration
@@ -115998,8 +115992,8 @@ To seed the database with some initial data, create a new file named `seed.py` i
 ```python
 # seed.py
 
-from database import SessionLocal
-from models import Author, Book
+from app.database import SessionLocal
+from app.models import Author, Book
 
 def seed_data():
     db = SessionLocal()
@@ -116089,7 +116083,7 @@ if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
 ```
 
-This code defines endpoints for creating and retrieving authors and books. It uses SQLAlchemy's `Session` to interact with the database and Pydantic models (`schemas`) for request and response data validation and serialization.
+This code defines endpoints for creating and retrieving authors and books. It uses SQLAlchemy's `Session` to query the database. FastAPI serializes the returned SQLAlchemy objects to JSON.
 
 ### Run the FastAPI server
 
@@ -116151,7 +116145,7 @@ Navigate to `http://localhost:8000/authors` in your browser to view the list of 
 
 ## Conclusion
 
-In this guide, we demonstrated how to set up a FastAPI project with `Neon` Postgres, define database models using SQLAlchemy, generate migrations using Alembic, and run them. Alembic makes it easy to interact with the database and manage schema evolution over time.
+In this guide, we demonstrated how to set up a FastAPI project with Lakebase Postgres, define database models using SQLAlchemy, generate migrations using Alembic, and run them. Alembic records each change as a migration, so you can track how the schema evolves.
 
 ## Source code
 
@@ -123064,7 +123058,7 @@ Last updated: 2026-11-06
 
 Learn about using Neon to provision and manage databases for agentic platforms
 
-Last updated: 2026-08-25
+Last updated: 2026-11-14
 
 **What you will learn:**
 
@@ -123090,7 +123084,7 @@ Agent plan pricing and limits differ from the [Scale plan](https://neon.com/docs
 The lakebase architecture aligns with how agent platforms operate:
 
 - **Instant provisioning**: Serverless Postgres with separated compute and storage provisions databases in seconds
-- **Autoscaling and scale-to-zero**: Compute scales up and down automatically based on workload, and idle databases cost nothing while remaining instantly accessible
+- **Autoscaling and scale-to-zero**: Compute scales up and down automatically based on workload, and idle databases stop accruing compute charges while remaining instantly accessible
 - **API management**: Every capability, including provisioning, quotas, branching, instant restore, and snapshots, is exposed through the Neon API
 - **Database versioning**: Copy-on-write storage enables instant branching, snapshots, and point-in-time recovery for checkpoints and experimentation
 - **Integrated services**: Neon supports built-in Auth and a PostgREST-compatible Data API for complete, production-ready backends
@@ -128980,7 +128974,7 @@ Restore into a new, empty database, such as one in a new Neon project. To restor
 
 # Manage branches
 
-Last updated: 2026-10-09
+Last updated: 2026-11-14
 
 Data resides in a branch. Each Neon project is created with a [root branch](https://neon.com/docs/manage/branches#root-branch), which is also designated as your [default branch](https://neon.com/docs/manage/branches#default-branch). Projects created in the Neon Console have a root branch named `production`, while projects created via the API or CLI have a root branch named `main`. You can create child branches from your root branch or from previously created branches. A branch can contain multiple databases and roles. Neon's [plan allowances](https://neon.com/docs/introduction/plans) define the number of branches you can create.
 
@@ -129404,7 +129398,13 @@ To set a branch as protected:
 
 **CLI**
 
-No dedicated command sets protection, so use the [`neon api`](https://neon.com/docs/cli/api) passthrough, which sends the request with your CLI credentials:
+To protect a new branch, pass `--protected` when you create it:
+
+```bash
+neon branches create --name production --protected
+```
+
+No command changes protection on an existing branch, so use the [`neon api`](https://neon.com/docs/cli/api) passthrough, which sends the request with your CLI credentials:
 
 ```bash
 neon api /projects/dry-heart-13671059/branches/br-curly-wave-123456 -X PATCH -F branch.protected=true
@@ -129519,6 +129519,12 @@ You can use the Neon Console, CLI, or API. For more details, see [Instant restor
 ## Delete a branch
 
 Deleting a branch is a permanent action. Deleting a branch also deletes the databases and roles that belong to the branch as well as the compute associated with the branch. You cannot delete a branch that has child branches. The child branches must be deleted first.
+
+If a delete is blocked, the CLI and API return one of these errors:
+
+- `cannot delete branch that has children`: delete the child branches first.
+- `cannot delete default branch`: set another branch as the default first.
+- `cannot delete the root branch`: this root branch can't be deleted. See [Root branch](https://neon.com/docs/manage/branches#root-branch) for which root branches can be.
 
 **Console**
 
@@ -129644,7 +129650,7 @@ A root branch is a branch without a parent branch. Each Neon project starts with
 
 Neon also supports two other types of root branches that have no parent but _can_ be deleted:
 
-- [Backup branches](https://neon.com/docs/manage/branches#backup-branch), created by instant restore operations on other root branches.
+- [Backup branches](https://neon.com/docs/manage/branches#backup-branch), created by instant restore operations on other root branches. The exception: when you restore a root branch from another branch, its backup (the original root) can't be deleted. See [Deleting backup branches](https://neon.com/docs/postgres/backup-restore/branch-restore#deleting-backup-branches).
 - [Schema-only branches](https://neon.com/docs/manage/branches#schema-only-branch).
 
 The number of root branches allowed in a project depends on your Neon plan.
@@ -132850,7 +132856,7 @@ neon api /projects/$PROJECT_ID/members/$MEMBER_ID/role -X PUT -F role=editor
 
 Learn how to manage Neon projects from the Neon Console or the Neon API.
 
-Last updated: 2026-10-23
+Last updated: 2026-11-14
 
 In Neon, the project is your main workspace. Within a project, you create branches for different workflows, like environments, features, or previews. Each branch contains its own databases, roles, computes, and replicas. Your [Neon Plan](https://neon.com/docs/introduction/plans) determines how many projects you can create and the resource limits within those projects.
 
@@ -133866,6 +133872,10 @@ curl -X POST \
 ```
 
 The API returns a `200` status code with the restored project object.
+
+**MCP server**
+
+With the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server), ask your agent to recover the project. The `list_projects` tool takes `recoverable: true` to find projects that can still be recovered, and the `recover_project` tool recovers one by its `project_id`. [Project-scoped mode](https://neon.com/docs/ai/neon-mcp-server#project-scoped-mode) hides project management tools such as `list_projects`, so use an unscoped connection.
 
 --- [Document source](https://neon.com/docs/manage/roles.md) ---
 

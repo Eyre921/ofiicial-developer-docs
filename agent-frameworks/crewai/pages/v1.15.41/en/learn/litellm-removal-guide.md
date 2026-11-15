@@ -451,7 +451,7 @@ llm = LLM(
 >
 > Regardless of quarantine status, reducing your dependency surface is good security practice. If you only need providers that CrewAI supports natively, there's no reason to keep LiteLLM installed.
 
-> [accordion] What about environment variables like OPENAI\_API\_KEY?
+> [accordion] What about environment variables like OPENAI_API_KEY?
 >
 > Native providers use the same environment variables you're already familiar with. No changes needed for `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, etc.
 

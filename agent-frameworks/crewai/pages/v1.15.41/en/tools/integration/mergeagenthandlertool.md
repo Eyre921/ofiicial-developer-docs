@@ -165,20 +165,20 @@ result = crew.kickoff()
 
 | Argument | Type | Required | Default | Description |
 | :- | :- | :- | :- | :- |
-| **tool\_name** | `str` | Yes | None | Name of the specific tool to use (e.g., "linear\_\_create\_issue") |
-| **tool\_pack\_id** | `str` | Yes | None | UUID of your Agent Handler Tool Pack |
-| **registered\_user\_id** | `str` | Yes | None | UUID or origin\_id of the registered user |
-| **base\_url** | `str` | No | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API |
-| **session\_id** | `str` | No | Auto-generated | MCP session ID for maintaining context |
+| **tool_name** | `str` | Yes | None | Name of the specific tool to use (e.g., "linear__create_issue") |
+| **tool_pack_id** | `str` | Yes | None | UUID of your Agent Handler Tool Pack |
+| **registered_user_id** | `str` | Yes | None | UUID or origin_id of the registered user |
+| **base_url** | `str` | No | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API |
+| **session_id** | `str` | No | Auto-generated | MCP session ID for maintaining context |
 
 ### `from_tool_pack()` Method
 
 | Argument | Type | Required | Default | Description |
 | :- | :- | :- | :- | :- |
-| **tool\_pack\_id** | `str` | Yes | None | UUID of your Agent Handler Tool Pack |
-| **registered\_user\_id** | `str` | Yes | None | UUID or origin\_id of the registered user |
-| **tool\_names** | `list[str]` | No | None | Specific tool names to load. If None, loads all available tools |
-| **base\_url** | `str` | No | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API |
+| **tool_pack_id** | `str` | Yes | None | UUID of your Agent Handler Tool Pack |
+| **registered_user_id** | `str` | Yes | None | UUID or origin_id of the registered user |
+| **tool_names** | `list[str]` | No | None | Specific tool names to load. If None, loads all available tools |
+| **base_url** | `str` | No | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API |
 
 ## Environment Variables
 

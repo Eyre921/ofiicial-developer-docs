@@ -107,7 +107,7 @@ query_tool = LlamaIndexTool.from_query_engine(
 
 The `LlamaIndexTool` provides two main class methods for creating instances:
 
-### from\_tool
+### from_tool
 
 Creates a `LlamaIndexTool` from a LlamaIndex tool.
 
@@ -117,7 +117,7 @@ def from_tool(cls, tool: Any, **kwargs: Any) -> "LlamaIndexTool":
     # Implementation details
 ```
 
-### from\_query\_engine
+### from_query_engine
 
 Creates a `LlamaIndexTool` from a LlamaIndex query engine.
 
@@ -138,10 +138,10 @@ def from_query_engine(
 
 The `from_query_engine` method accepts the following parameters:
 
-* **query\_engine**: Required. The LlamaIndex query engine to wrap.
+* **query_engine**: Required. The LlamaIndex query engine to wrap.
 * **name**: Optional. The name of the tool.
 * **description**: Optional. The description of the tool.
-* **return\_direct**: Optional. Whether to return the response directly. Default is `False`.
+* **return_direct**: Optional. Whether to return the response directly. Default is `False`.
 
 ## Conclusion
 

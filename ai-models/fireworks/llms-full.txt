@@ -1046,7 +1046,7 @@ Create Fireworks service accounts with firectl, issue API keys on their behalf, 
 
 Service accounts in Fireworks allow applications, scripts, and automated systems to authenticate and perform actions securely—without relying on human credentials. They are ideal for CI/CD pipelines, backend services, and automated workflows. Service Accounts let you avoid shared credentials and easily distinguish between what automated systems did vs humans in audit logs.
 
-Service accounts can take actions using an API key, like creating deployments, running models or creating datasets (see [API reference](https://fireworks.ai/docs/api-reference/introduction)). Service accounts cannot login through the web interface or use OIDC tokens.
+Service accounts can take actions using an API key, like creating deployments, running models, or managing custom models (see [API reference](/api-reference/introduction)). Service accounts cannot login through the web interface or use OIDC tokens.
 
 > [!NOTE]
 >
@@ -1443,7 +1443,7 @@ The policy doesn't affect prompt caching, which holds KV caches only in memory, 
 | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs | Training | **Rejected** |
 | Training API: forward and backward passes, optimizer steps, sampling, and checkpoints | Training | **Rejected** |
 | Evaluators and evaluation jobs | Training | **Rejected** |
-| Dataset uploads | Training | **Rejected** |
+| Dataset uploads (retired platform-wide) | Training | **Rejected** |
 | Custom model uploads and imports | Inference or Training | **Rejected** |
 | Model quantization with `firectl model prepare` | Inference or Training | **Rejected** |
 
@@ -1565,12 +1565,6 @@ Source: https://docs.fireworks.ai/api-reference/create-batch-inference-job
 
 post /v1/accounts/{account_id}/batchInferenceJobs
 Create a batch inference job that runs a model over an input dataset and writes results to an output dataset, with an optional system prompt.
-
-# Create Dataset
-Source: https://docs.fireworks.ai/api-reference/create-dataset
-
-post /v1/accounts/{account_id}/datasets
-Create a dataset in your Fireworks account from a dataset object and datasetId, or derive one from an existing dataset with sourceDatasetId and a filter.
 
 # Load LoRA
 Source: https://docs.fireworks.ai/api-reference/create-deployed-model
@@ -1750,7 +1744,12 @@ Delete a batch inference job from your Fireworks account by sending a DELETE req
 Source: https://docs.fireworks.ai/api-reference/delete-dataset
 
 delete /v1/accounts/{account_id}/datasets/{dataset_id}
-Delete a dataset from your Fireworks account by sending a DELETE request with the account ID and dataset ID path parameters to the datasets endpoint.
+Delete an existing dataset from your Fireworks account by sending a DELETE request with the account ID and dataset ID path parameters.
+
+> [!NOTE]
+>
+> Dataset creation, uploads, updates, validation, and downloads are retired on Fireworks. Use `DeleteDataset` to permanently remove existing dataset records from your account.
+
 
 # Unload LoRA
 Source: https://docs.fireworks.ai/api-reference/delete-deployed-model
@@ -1830,16 +1829,12 @@ get /v1/accounts/{account_id}/billingUsage
 Source: https://docs.fireworks.ai/api-reference/get-dataset
 
 get /v1/accounts/{account_id}/datasets/{dataset_id}
+Retrieve metadata for an existing dataset in your Fireworks account.
 
-# Get Dataset Download Endpoint
-Source: https://docs.fireworks.ai/api-reference/get-dataset-download-endpoint
+> [!NOTE]
+>
+> Dataset creation, uploads, updates, validation, and downloads are retired on Fireworks. `GetDataset`, [List Datasets](/api-reference/list-datasets), and [Delete Dataset](/api-reference/delete-dataset) remain available to inspect metadata for and delete existing dataset records. For new training runs, load your data directly with the [Training API](/fine-tuning/training-api/introduction).
 
-get /v1/accounts/{account_id}/datasets/{dataset_id}:getDownloadEndpoint
-
-# Get Dataset Upload Endpoint
-Source: https://docs.fireworks.ai/api-reference/get-dataset-upload-endpoint
-
-post /v1/accounts/{account_id}/datasets/{dataset_id}:getUploadEndpoint
 
 # Get LoRA
 Source: https://docs.fireworks.ai/api-reference/get-deployed-model
@@ -2017,6 +2012,12 @@ get /v1/accounts/{account_id}/batchInferenceJobs
 Source: https://docs.fireworks.ai/api-reference/list-datasets
 
 get /v1/accounts/{account_id}/datasets
+List metadata for existing datasets in your Fireworks account.
+
+> [!NOTE]
+>
+> Dataset creation, uploads, updates, validation, and downloads are retired on Fireworks. `ListDatasets`, [Get Dataset](/api-reference/get-dataset), and [Delete Dataset](/api-reference/delete-dataset) remain available to inspect metadata for and delete existing dataset records. For new training runs, load your data directly with the [Training API](/fine-tuning/training-api/introduction).
+
 
 # List LoRAs
 Source: https://docs.fireworks.ai/api-reference/list-deployed-models
@@ -2917,11 +2918,6 @@ Source: https://docs.fireworks.ai/api-reference/undelete-deployment
 
 post /v1/accounts/{account_id}/deployments/{deployment_id}:undelete
 
-# Update Dataset
-Source: https://docs.fireworks.ai/api-reference/update-dataset
-
-patch /v1/accounts/{account_id}/datasets/{dataset_id}
-
 # Update LoRA
 Source: https://docs.fireworks.ai/api-reference/update-deployed-model
 
@@ -2983,18 +2979,6 @@ patch /v1/accounts/{account_id}/secrets/{secret_id}
 Source: https://docs.fireworks.ai/api-reference/update-user
 
 patch /v1/accounts/{account_id}/users/{user_id}
-
-# Upload Dataset Files
-Source: https://docs.fireworks.ai/api-reference/upload-dataset-files
-
-post /v1/accounts/{account_id}/datasets/{dataset_id}:upload
-Provides a streamlined way to upload a dataset file in a single API request. This path can handle file sizes up to 150Mb. For larger file sizes use [Get Dataset Upload Endpoint](get-dataset-upload-endpoint).
-
-
-# Validate Dataset Upload
-Source: https://docs.fireworks.ai/api-reference/validate-dataset-upload
-
-post /v1/accounts/{account_id}/datasets/{dataset_id}:validateUpload
 
 # Validate Model Upload
 Source: https://docs.fireworks.ai/api-reference/validate-model-upload
@@ -12251,7 +12235,7 @@ Users can specify a model to query for inference using the model name and deploy
 
 ### Dataset
 
-A dataset is an immutable set of training examples that can be used to train a model.
+A dataset resource represents an archived set of training or batch examples previously uploaded to or registered on Fireworks. Creating, uploading, updating, validating, and downloading datasets on Fireworks is retired — only listing, viewing metadata, and deleting existing dataset records remain supported ([List Datasets](/api-reference/list-datasets), [Get Dataset](/api-reference/get-dataset), [Delete Dataset](/api-reference/delete-dataset)). New [Training API](/fine-tuning/training-api/introduction) workflows load and tokenize training data directly in your own environment without storing dataset files on Fireworks.
 
 ### Training job
 
@@ -14188,7 +14172,9 @@ Not all models support the Batch API. Before submitting a batch job, verify your
 >
 > > [tab] HTTP API
 > >
-> > You need to make two separate HTTP requests. One for creating the dataset entry and one for uploading the dataset. Full reference here: [Create dataset](/api-reference/create-dataset).
+> > > [!NOTE]
+> > >
+> > > Dataset creation and file uploads (`POST /v1/accounts/{account_id}/datasets` and `:upload`) are retired and return `501 Not Implemented`. Keep your JSONL file locally and follow [Migrating Batch API workloads to preemptible deployments](/guides/batch-migration).
 > >
 > > ```bash theme={null}
 > > # Create Dataset Entry
@@ -19897,7 +19883,7 @@ For US-only inference residency, see [US-only Serverless](/serverless/us-only-se
 
 **Bring Your Own Bucket:** Customers may integrate their own cloud storage to retain governance and apply their own compliance frameworks.
 
-* Datasets: [Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob) (GCS, AWS S3, Azure)
+* Training data: Load directly from your local environment or cloud bucket via the [Training API](/fine-tuning/training-api/introduction) (legacy [BYOB dataset registration](/guides/security_compliance/secure_training/byob) is retired)
 * Models: [External AWS S3 Bucket Integration](/models/uploading-custom-models#uploading-your-model)
 
 **Bring Your Own Key:** Customers may integrate their own AWS KMS, Google Cloud KMS, or Azure Key Vault key to retain governance and apply their own encryption policies.
@@ -19987,350 +19973,70 @@ These certifications are maintained through continuous monitoring and annual aud
 # Secure Training
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training
 
-Pick the right Fireworks training surface for data-privacy needs across BYOB, CMEK, and secure RFT, and understand what Fireworks retains and how to delete it.
+Understand what the Training API processes and retains, and how Fireworks handles inference data.
 
-Fireworks lets you fine-tune models while keeping your data and sensitive components under your control. Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**.
+This page explains what the Training API processes and retains, why it retains it, and how Fireworks handles inference data.
 
-This page covers training. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default — prompts and generations are never written to persistent storage — so we focus here on the training lifecycle: where your data lives while you train, what Fireworks retains afterward (checkpoints and traces), and the controls you have to delete it.
+## Training API
 
-Use it to:
+With the [Training API](/fine-tuning/training-api/introduction), you run your training loop in your own environment and send batches to Fireworks for processing.
 
-* Understand how each training surface handles your data.
-* Choose the surface that fits your data-privacy requirements.
-* Know exactly what is retained, what is not, and how to delete it.
+### 1. What data leaves my environment?
 
-## Choosing a training surface
+You do not need to upload your source dataset as a Fireworks dataset. Fireworks receives the batches you send for training. Each `Datum` combines model inputs with numeric inputs used to calculate the training loss. Depending on your request, these can include text token IDs, images, and loss tensors.
 
-Fireworks offers three ways to train, differing mainly in **where your training data lives**:
+**Tokenization is not anonymization or encryption.** It represents text as numeric IDs that can be decoded with the matching tokenizer, although normalization can change the original formatting or bytes. Fireworks receives the training content in those batches and processes it to perform your training.
 
-| Surface | Where your training data lives | What Fireworks retains | Your deletion controls |
-| - | - | - | - |
-| **Managed Training** | Uploaded to Fireworks-managed storage (GCS); only a reference link is kept in our database | Dataset, checkpoints, and traces | Delete the dataset anytime after the job; request checkpoint/trace deletion |
-| **Managed Training + BYOB** | Stays in your own cloud bucket; Fireworks reads it in-place during training, with no copy persisted | Checkpoints and traces only | Revoke bucket access after the job; request checkpoint/trace deletion |
-| **Training API** | No dataset upload — you load and tokenize data locally; the trainer receives only transient tokenized batches, never a stored dataset file | Checkpoints and traces only | Request checkpoint/trace deletion |
+### 2. What is processed temporarily, and what is retained?
 
-> [!TIP]
->
-> For the strictest data governance, use [BYOB](/guides/security_compliance/secure_training/byob) (keep the dataset in your own bucket) or the [Training API](#training-api) (no dataset is ever uploaded to or stored on Fireworks).
+**Batches and results** pass through processing memory, queues, and retry buffers to run your training operations. Results can remain available for retrieval or retries after an operation completes; completion does not mean every copy is immediately deleted.
 
-## Data retention by surface
+**Checkpoints and adapters** preserve trained model state so you can resume training or use your trained model. Resumable checkpoints can also include optimizer state. These are sensitive learned artifacts, not anonymized copies of your dataset. Exported or promoted models have a separate lifecycle.
 
-When training runs on Fireworks-managed storage, training data is stored in Google Cloud Storage (GCS) with only a reference link retained in our database. Customers control deletion of their own datasets.
+### 3. What logs and metrics are retained, and why?
 
-### Managed Training
+* **Customer-visible training logs and numeric metrics** help you evaluate performance and debug runs: operation timing, token counts, throughput, queue activity, and checkpoint events.
+* **Internal error diagnostics** help investigate reliability issues. They can include request identifiers, storage paths, error messages, and stack traces. Error text can include information from a request.
+* **Optional performance profiles** help diagnose performance when profiling is enabled. These diagnostic artifacts and operational logs are distinct from traces of training examples or conversations.
+* **Security audit and billing records** support access auditing and accounting.
 
-Retention behavior depends on the job type:
+Standard storage for checkpoints and customer-visible training log and metrics files is configured with a **30-day object lifecycle**. This is not a 30-day limit for all operational records, profiles, exported models, or backups. Contact your Fireworks account team for the retention periods applicable to your setup and available artifact-deletion options.
 
-| Job Type | Data Generated | Retention / Deletion |
-| - | - | - |
-| SFT — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
-| DPO — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
-| RFT — Managed Training (removed) | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
-| Job chunks / artifacts | Intermediate checkpoints | Retained for 30 days, then deleted; deletable earlier on request. Kept so jobs can be retrieved or restarted |
-| Traces / logs | Request/response metadata | Retained for 30 days, then deleted; deletable earlier on request |
+### 4. Is my data used to train other models?
 
-### Training API
-
-The [Training API](/fine-tuning/training-api/introduction) works differently: you write the training loop in your own environment, load and tokenize data locally, and send tokenized `Datum` batches to Fireworks GPUs on each `forward_backward` call. What this means for your data:
-
-* **No dataset upload step and no dataset file stored on Fireworks' side.** Fireworks never receives your raw JSONL, and for RL or distillation the trainer never sees raw prompt text.
-* **The trainer does receive the training content** — as tokenized `Datum` batches on every `forward_backward` call. Those tokens are your data; they are processed transiently for the gradient step and are not retained as a dataset.
-
-What Fireworks does retain is minimal and deletable on request:
-
-* **Checkpoints** — retained for 30 days (deletable earlier on request) so you can restart jobs without losing work.
-* **Traces / logs** — retained for 30 days (deletable earlier on request) so you can evaluate job performance and improve your training.
-
-This barebones retention is by design: it keeps the product easy to use — retrieve checkpoints to restart jobs, and inspect traces to understand and improve training — while your training data is never uploaded or stored as a dataset on Fireworks.
-
-## How Fireworks accesses your cloud
-
-Both BYOB and CMEK work by granting a Fireworks identity least-privilege access to a resource in your account — a storage bucket for BYOB, a KMS key for CMEK. Fireworks authenticates as a Google-issued OIDC identity, and you configure your cloud's IAM to trust it. Three properties follow:
-
-* **No long-lived secrets.** Fireworks presents a short-lived, automatically rotated token on each call. There is no API key or client secret for you to store, rotate, or risk leaking.
-* **Nothing runs in your cloud.** Fireworks does not deploy software into your account — it calls your cloud's API from Fireworks infrastructure, as the identity you authorized.
-* **Scoped to your account.** The token carries your Fireworks account ID as its audience, and you configure your trust to accept only that audience. A token issued for any other Fireworks account is rejected by your own infrastructure, not just by Fireworks.
-
-Where federation applies, you pin trust on these values:
-
-| Value | Identifier |
-| - | - |
-| OIDC issuer | `https://accounts.google.com` |
-| Fireworks identity (subject) | Provided at onboarding |
-| Token audience | `<YOUR_FIREWORKS_ACCOUNT_ID>` |
-
-> [!NOTE]
->
-> BYOB and CMEK authenticate as **different** Fireworks service accounts, so their subject identifiers differ — don't reuse one for the other. Two cases don't use this pattern: **GCS BYOB** grants access to Fireworks service account emails directly, with no token audience to scope, and **Azure BYOB** uses the fixed `api://AzureADTokenExchange` audience. Each setup page states which applies.
-
-## Two independent controls
-
-BYOB and CMEK address different needs and can be used separately or together:
-
-| | What it controls | Use when |
-| - | - | - |
-| **[Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob)** | *Where the dataset lives* — it stays in your bucket and is read in place, never copied to Fireworks | You need the dataset itself to never leave your storage |
-| **[Customer-managed keys (CMEK)](/guides/security_compliance/secure_training/cmek)** | *Who holds the key* for data Fireworks does store — datasets and checkpoints on Fireworks-managed storage | You use managed storage but need to control encryption and revoke access |
-
-CMEK covers artifacts on Fireworks-managed storage, so it complements rather than replaces BYOB. For the strictest governance, combine BYOB with [secure RFT](/guides/security_compliance/secure_training/secure_rft), or use the [Training API](/fine-tuning/training-api/introduction), where no dataset is stored at all.
+**Fireworks does not use your training data to train Fireworks-owned or shared models.** Your requested fine-tuning updates the model you choose for your use.
 
 ## Inference
 
 Inference at Fireworks follows Zero Data Retention by default: prompts and generations exist only in volatile memory for the duration of the request and are never written to persistent storage or used to train any model. For full details, including the Response API storage exception and how to opt out, see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
 
-## Customer controls
 
-The following controls are available for training workloads:
-
-| Control | How to exercise it |
-| - | - |
-| Delete a fine-tuning dataset | Delete via the Fireworks console or API after the job completes. |
-| Request deletion of checkpoints, traces, or RFT rollout datasets | Contact your Fireworks account team to delete these retained artifacts. |
-| Keep data in your own bucket | Use [BYOB integration](/guides/security_compliance/secure_training/byob) to register an external dataset URL. |
-| Control encryption of managed data with your own key | Register a [CMEK](/guides/security_compliance/secure_training/cmek) key from your cloud KMS (AWS, Google Cloud, or Azure); revoke it anytime to cut off Fireworks' ability to decrypt. |
-| Avoid storing a dataset on Fireworks | Use the [Training API](#training-api): no dataset is uploaded or stored; the trainer only receives transient tokenized batches. |
-| Revoke Fireworks access post-training | Remove the IAM bindings from your bucket after the job completes. |
-
-For inference-side controls — disabling Response API storage (`store=False`) or deleting a specific response — see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
-
-## Related resources
-
-> [card] [Zero Data Retention](/guides/security_compliance/data_handling)
->
-> How Fireworks handles inference data by default
-
-> [card] [Customer-Managed Encryption Keys (CMEK)](/guides/security_compliance/secure_training/cmek)
->
-> Encrypt managed training data with your own KMS key
-
-> [card] [Data Security Overview](/guides/security_compliance/data_security)
->
-> Learn about our comprehensive security measures
-
-> [card] [Reinforcement Learning](/fine-tuning/training-api/cookbook/rl)
->
-> Reinforcement learning on the Training API
-
-> [card] [Training API](/fine-tuning/training-api/introduction)
->
-> Custom training loops that keep your data on your side
-
-
-# Bring Your Own Bucket (BYOB)
+# Bring your own bucket (BYOB)
 Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/byob
 
-Keep managed fine-tuning datasets in your own S3 or GCS bucket on Fireworks so training reads data in place, without persisting a copy in Fireworks storage.
-
-Bring Your Own Bucket (BYOB) is the recommended configuration for Managed Training under strict data-governance requirements. Your dataset stays in your own cloud storage: Fireworks reads it in-place during active training only, with no copy persisted on Fireworks-managed storage, and you retain full ownership and deletion authority. This applies to both Supervised Fine-Tuning (SFT) and Reinforcement Fine-Tuning (RFT) jobs.
-
-BYOB works with all three major cloud providers — bring a bucket from whichever you already use:
-
-* [Google Cloud Storage (GCS)](#gcs-bucket-integration)
-* [AWS S3](#aws-s3-bucket-integration)
-* [Azure Blob Storage](#azure-blob-storage-integration)
-
-> [!TIP]
->
-> Grant least-privilege IAM to only the bucket/path prefixes needed for training. Use server-side encryption and your KMS policies where required.
-
-## GCS Bucket Integration
-
-Use external Google Cloud Storage (GCS) buckets for fine-tuning while keeping your data private. Fireworks creates proxy datasets that reference your external buckets—data is only accessed during fine-tuning within a secure, isolated cluster.
-
-> [!NOTE]
->
-> Your data never leaves your GCS bucket except during fine-tuning, ensuring maximum privacy and security.
-
-### Required Permissions
-
-You need to grant access to three service accounts. Fireworks provides the control plane and inference service account emails during BYOB onboarding.
-
-**Fireworks Control Plane**
-
-* **Account**: Fireworks control plane service account (provided at onboarding)
-* **Required role**: Custom role with `storage.buckets.getIamPolicy` permission
-
-```bash theme={null}
-gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=serviceAccount:<FIREWORKS_CONTROL_PLANE_SA> \
-  --role=projects/<YOUR_PROJECT>/roles/<YOUR_CUSTOM_ROLE>
-```
-
-**Inference Service Account**
-
-* **Account**: Fireworks inference service account (provided at onboarding)
-* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`)
-
-```bash theme={null}
-gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=serviceAccount:<FIREWORKS_INFERENCE_SA> \
-  --role=roles/storage.objectViewer
-```
-
-**Your Fireworks Account Email**
-
-* **Account**: Your company's Fireworks account email (get it with `firectl account get`). Grant it as a `user:` principal, not a service account.
-* **Required role**: Storage Object Viewer (`roles/storage.objectViewer`), in the same role binding as the inference service account above
-
-```bash theme={null}
-gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
-  --member=user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
-  --role=roles/storage.objectViewer
-```
+Dataset creation and Managed Training are retired. Learn how the Training API reads data directly from your local machine or cloud bucket, and how to clean up existing BYOB dataset records.
 
 > [!WARNING]
 >
-> Dataset creation checks the bucket policy for a `roles/storage.objectViewer` binding that contains both `user:<YOUR_COMPANY_FW_ACCOUNT_EMAIL>` and the Fireworks inference service account. A `serviceAccount:` member for your account email fails this check.
+> **Dataset creation and Managed Training are retired.** Creating new datasets (including `--external-url` proxy datasets), uploading or downloading dataset files, and launching new Managed Training jobs are disabled. Train new models with the [Training API](/fine-tuning/training-api/introduction), which reads data directly in your environment without creating a dataset resource on Fireworks.
 
-> [!TIP]
->
-> After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.
+Bring Your Own Bucket (BYOB) previously let Managed Training jobs read a dataset in place from your own Google Cloud Storage, Amazon S3, or Azure Blob Storage bucket without persisting a copy on Fireworks-managed storage.
 
-> [!NOTE]
->
-> GCS access is granted directly to the Fireworks service account emails above rather than through token federation, so there is no token audience to scope to your account the way the [S3](#aws-s3-bucket-integration) trust policy does. Fireworks instead verifies at dataset creation that the bucket grants access to your own Fireworks account, which is what keeps another customer from referencing your bucket.
+## Keep training data in your bucket on the Training API
 
-### Usage
+With the [Training API](/fine-tuning/training-api/introduction), your training script runs in your own environment, loads and tokenizes your dataset locally, and sends only tokenized batches to Fireworks GPUs on each step. No dataset resource is created, uploaded, or stored on Fireworks.
 
-```bash theme={null}
-# Create dataset referencing your GCS bucket
-firectl dataset create {DATASET_NAME} --external-url gs://bucket-name/path/to/data.jsonl
+* Read a local JSONL file or stream directly from your Google Cloud Storage bucket (`gs://...`) using your own cloud credentials. See [Cookbook: Supervised Fine-Tuning](/fine-tuning/training-api/cookbook/sft#using-the-recipe) and [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
+* For data in Amazon S3 or Azure Blob Storage, read or sync it in your own training environment before tokenizing batches.
 
-# Use in fine-tuning job
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME}
-```
+## Existing BYOB datasets
 
-## AWS S3 Bucket Integration
+Existing BYOB dataset records still point at your bucket, and any IAM bindings or federated credentials you configured during onboarding remain active until you remove them. Once any in-flight jobs have finished:
 
-Use external AWS S3 buckets for fine-tuning while keeping your data private. Fireworks accesses your S3 data using GCP-to-AWS OIDC federation—no long-lived credentials are stored.
+1. Inspect or list remaining dataset records with `firectl dataset list` / `firectl dataset get <DATASET_ID>`, and delete records you no longer need with `firectl dataset delete <DATASET_ID>` (or [Delete Dataset](/api-reference/delete-dataset)).
+2. Remove the IAM policy bindings, AWS IAM role trust, or Azure federated credential you granted to Fireworks.
 
-> [!NOTE]
->
-> S3 bucket integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
-
-### IAM Role Setup
-
-Create an IAM role that Fireworks can assume via web identity federation. You do **not** need to register an OIDC identity provider — `accounts.google.com` is a built-in federated principal in AWS STS.
-
-Trust policy on the role, locked to the Fireworks identity and scoped to your account:
-
-```json theme={null}
-{
-  "Effect": "Allow",
-  "Principal": { "Federated": "accounts.google.com" },
-  "Action": "sts:AssumeRoleWithWebIdentity",
-  "Condition": {
-    "StringEquals": {
-      "accounts.google.com:sub": "<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>",
-      "accounts.google.com:oaud": "<YOUR_FIREWORKS_ACCOUNT_ID>"
-    }
-  }
-}
-```
-
-This is the standard trust model described in [How Fireworks accesses your cloud](/guides/security_compliance/secure_training#how-fireworks-accesses-your-cloud): `sub` locks assumption to the Fireworks identity, `oaud` pins the token's audience to your Fireworks account so a token issued for any other account is rejected by your own IAM. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) for the BYOB subject identifier; the audience is your own Fireworks account ID.
-
-Then attach a policy granting `s3:GetObject` and `s3:ListBucket` on your bucket.
-
-See the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html) for detailed steps on creating roles for OIDC federation.
-
-### Usage
-
-```bash theme={null}
-# Create dataset referencing your S3 bucket
-firectl dataset create {DATASET_NAME} --external-url s3://bucket-name/path/to/data.jsonl
-
-# Use in fine-tuning job with IAM role
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --aws-iam-role "arn:aws:iam::{AWS_ACCOUNT_ID}:role/{ROLE_NAME}"
-```
-
-### Alternative: Credentials secret
-
-Instead of IAM role federation, you can use static AWS access keys stored in a Fireworks secret:
-
-```bash theme={null}
-# Create secret
-firectl secret create --name aws-creds \
-  --aws-access-key-id "AKIA..." \
-  --aws-secret-access-key "..."
-
-# Use in fine-tuning job
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --aws-credentials-secret "accounts/{ACCOUNT}/secrets/aws-creds"
-```
-
-> [!WARNING]
->
-> IAM role federation is recommended for production. If using credentials, rotate them regularly.
-
-## Azure Blob Storage Integration
-
-Use external Azure Blob Storage containers for fine-tuning while keeping your data private. Fireworks accesses your Azure data using GCP-to-Azure Workload Identity Federation—no long-lived credentials are stored.
-
-> [!NOTE]
->
-> Azure Blob Storage integration is currently supported for **training datasets only** (SFT and RFT jobs). Evaluation datasets are not yet supported.
-
-### Federated Identity Setup
-
-Create an App Registration (or user-assigned Managed Identity) in your Azure AD tenant with a federated credential that trusts the Fireworks GCP service account. Fireworks provides the subject identifier during BYOB onboarding.
-
-* **Issuer:** `https://accounts.google.com`
-* **Subject identifier:** `<FIREWORKS_GCP_SERVICE_ACCOUNT_UNIQUE_ID>`
-* **Audience:** `api://AzureADTokenExchange`
-
-Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
-
-Then assign the **Storage Blob Data Reader** role on your storage account or container to the app registration.
-
-See the [Azure documentation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust) for detailed steps on configuring workload identity federation.
-
-### Usage
-
-```bash theme={null}
-# Create dataset referencing your Azure Blob container
-firectl dataset create {DATASET_NAME} \
-  --external-url https://{STORAGE_ACCOUNT}.blob.core.windows.net/{CONTAINER}/path/to/data.jsonl
-
-# Use in fine-tuning job with managed identity federation
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --azure-managed-identity-client-id "{MANAGED_IDENTITY_CLIENT_ID}" \
-  --azure-tenant-id "{AZURE_TENANT_ID}"
-```
-
-### Alternative: Credentials secret
-
-Instead of workload identity federation, you can store Azure credentials in a Fireworks secret. The secret value must be a JSON object containing one of: `connection_string`, `sas_token`, or `account_key`.
-
-```bash theme={null}
-# Create secret with Azure credentials
-firectl secret create --name azure-creds \
-  --value '{"sas_token": "sv=2023-01-03&ss=b&srt=o&sp=rl&se=..."}'
-
-# Use in fine-tuning job
-firectl sftj create \
-  --dataset "accounts/{ACCOUNT}/datasets/{DATASET_NAME}" \
-  --base-model "accounts/fireworks/models/{MODEL}" \
-  --output-model {TRAINED_MODEL_NAME} \
-  --azure-credentials-secret "accounts/{ACCOUNT}/secrets/azure-creds"
-```
-
-> [!WARNING]
->
-> Workload Identity Federation is recommended for production. If using credentials, rotate them regularly.
+See [Secure Training](/guides/security_compliance/secure_training) for what Fireworks retains from training jobs and how to request artifact deletion.
 
 
 # Customer-managed encryption keys (CMEK)
@@ -20526,7 +20232,11 @@ Once a key is registered and CMEK is enabled, encryption is automatic — your d
 
 ## Running a CMEK fine-tune
 
-Once your key is registered, fine-tuning works exactly as it does today — encryption and decryption are transparent.
+> [!WARNING]
+>
+> Dataset creation, dataset uploads, and new Managed Training jobs are retired. Existing CMEK-encrypted dataset records remain wrapped under your KMS key and can be removed at any time with `firectl dataset delete <DATASET_ID>` (or [Delete Dataset](/api-reference/delete-dataset)), and key rotation or revocation below continues to apply to existing artifacts.
+
+Previously, once your key was registered, managed fine-tuning encrypted uploads and job artifacts transparently:
 
 ```bash theme={null}
 # Upload a dataset (encrypted client-side with your key)
@@ -32519,6 +32229,18 @@ Fireworks documentation changelog: recent additions, updates, and clarifications
 
 All
 
+**2026-11-15**
+
+Training
+
+# Dataset creation, upload, and download APIs retired
+
+Fireworks no longer stores new datasets. Creating, updating, uploading, validating, previewing, splitting, and downloading datasets now return `501 Not Implemented` across the REST/gRPC API, `firectl`, and the Python SDK.
+
+* **What remains available:** [List Datasets](/api-reference/list-datasets), [Get Dataset](/api-reference/get-dataset), and [Delete Dataset](/api-reference/delete-dataset) (`firectl dataset list`, `firectl dataset get`, and `firectl dataset delete`) remain active so you can inspect metadata for and delete existing dataset records.
+* **Training:** Load and tokenize training data directly from local files or your own cloud storage with the [Training API](/fine-tuning/training-api/introduction) — no dataset resource is created or stored on Fireworks. See [Migrate from Managed Training](/fine-tuning/migrate-from-managed-training).
+* **Batch workloads:** Run bulk asynchronous workloads from local JSONL files on preemptible deployments. See [Migrate from Batch API](/guides/batch-migration).
+
 **2026-11-04**
 
 Training
@@ -33446,7 +33168,7 @@ New REST API endpoints are now available for managing Reinforcement Fine-Tuning 
 * [Scale Deployment](/api-reference/scale-deployment)
 * [List Deployment Shape Versions](/api-reference/list-deployment-shape-versions)
 * [Get Deployment Shape Version](/api-reference/get-deployment-shape-version)
-* [Get Dataset Download Endpoint](/api-reference/get-dataset-download-endpoint)
+* Get Dataset Download Endpoint
 
 > [accordion] Bug Fixes & Minor Improvements
 >

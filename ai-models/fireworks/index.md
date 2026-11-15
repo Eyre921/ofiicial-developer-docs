@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 380 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -27,7 +27,6 @@
 - `api-reference/anthropic-messages` — [Create a Message](pages/api-reference/anthropic-messages.md) · [原文](https://docs.fireworks.ai/api-reference/anthropic-messages)
 - `api-reference/create-api-key` — [Create API Key](pages/api-reference/create-api-key.md) · [原文](https://docs.fireworks.ai/api-reference/create-api-key)
 - `api-reference/create-batch-inference-job` — [Create Batch Inference Job](pages/api-reference/create-batch-inference-job.md) · [原文](https://docs.fireworks.ai/api-reference/create-batch-inference-job)
-- `api-reference/create-dataset` — [Create Dataset](pages/api-reference/create-dataset.md) · [原文](https://docs.fireworks.ai/api-reference/create-dataset)
 - `api-reference/create-deployed-model` — [Load LoRA](pages/api-reference/create-deployed-model.md) · [原文](https://docs.fireworks.ai/api-reference/create-deployed-model)
 - `api-reference/create-deployment` — [Create Deployment](pages/api-reference/create-deployment.md) · [原文](https://docs.fireworks.ai/api-reference/create-deployment)
 - `api-reference/create-dpo-job` — [Create DPO Job](pages/api-reference/create-dpo-job.md) · [原文](https://docs.fireworks.ai/api-reference/create-dpo-job)
@@ -55,8 +54,6 @@
 - `api-reference/get-billing-summary` — [Get billing summary information for an account](pages/api-reference/get-billing-summary.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-summary)
 - `api-reference/get-billing-usage` — [Get Account Usage](pages/api-reference/get-billing-usage.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-usage)
 - `api-reference/get-dataset` — [Get Dataset](pages/api-reference/get-dataset.md) · [原文](https://docs.fireworks.ai/api-reference/get-dataset)
-- `api-reference/get-dataset-download-endpoint` — [Get Dataset Download Endpoint](pages/api-reference/get-dataset-download-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-dataset-download-endpoint)
-- `api-reference/get-dataset-upload-endpoint` — [Get Dataset Upload Endpoint](pages/api-reference/get-dataset-upload-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-dataset-upload-endpoint)
 - `api-reference/get-deployed-model` — [Get LoRA](pages/api-reference/get-deployed-model.md) · [原文](https://docs.fireworks.ai/api-reference/get-deployed-model)
 - `api-reference/get-deployment` — [Get Deployment](pages/api-reference/get-deployment.md) · [原文](https://docs.fireworks.ai/api-reference/get-deployment)
 - `api-reference/get-deployment-shape` — [Get Deployment Shape](pages/api-reference/get-deployment-shape.md) · [原文](https://docs.fireworks.ai/api-reference/get-deployment-shape)
@@ -110,7 +107,6 @@
 - `api-reference/specialized-model-inference/overview` — [API overview](pages/api-reference/specialized-model-inference/overview.md) · [原文](https://docs.fireworks.ai/api-reference/specialized-model-inference/overview)
 - `api-reference/specialized-model-inference/unload` — [Unload an adapter](pages/api-reference/specialized-model-inference/unload.md) · [原文](https://docs.fireworks.ai/api-reference/specialized-model-inference/unload)
 - `api-reference/undelete-deployment` — [Undelete Deployment](pages/api-reference/undelete-deployment.md) · [原文](https://docs.fireworks.ai/api-reference/undelete-deployment)
-- `api-reference/update-dataset` — [Update Dataset](pages/api-reference/update-dataset.md) · [原文](https://docs.fireworks.ai/api-reference/update-dataset)
 - `api-reference/update-deployed-model` — [Update LoRA](pages/api-reference/update-deployed-model.md) · [原文](https://docs.fireworks.ai/api-reference/update-deployed-model)
 - `api-reference/update-deployment` — [Update Deployment](pages/api-reference/update-deployment.md) · [原文](https://docs.fireworks.ai/api-reference/update-deployment)
 - `api-reference/update-model` — [Update Model](pages/api-reference/update-model.md) · [原文](https://docs.fireworks.ai/api-reference/update-model)
@@ -119,8 +115,6 @@
 - `api-reference/update-router` — [Update Router](pages/api-reference/update-router.md) · [原文](https://docs.fireworks.ai/api-reference/update-router)
 - `api-reference/update-secret` — [Update secret](pages/api-reference/update-secret.md) · [原文](https://docs.fireworks.ai/api-reference/update-secret)
 - `api-reference/update-user` — [Update User](pages/api-reference/update-user.md) · [原文](https://docs.fireworks.ai/api-reference/update-user)
-- `api-reference/upload-dataset-files` — [Upload Dataset Files](pages/api-reference/upload-dataset-files.md) · [原文](https://docs.fireworks.ai/api-reference/upload-dataset-files)
-- `api-reference/validate-dataset-upload` — [Validate Dataset Upload](pages/api-reference/validate-dataset-upload.md) · [原文](https://docs.fireworks.ai/api-reference/validate-dataset-upload)
 - `api-reference/validate-model-upload` — [Validate Model Upload](pages/api-reference/validate-model-upload.md) · [原文](https://docs.fireworks.ai/api-reference/validate-model-upload)
 
 ## deployments
@@ -250,7 +244,7 @@
 - `guides/security_compliance/data_handling` — [Zero Data Retention](pages/guides/security_compliance/data_handling.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/data_handling)
 - `guides/security_compliance/data_security` — [Data security](pages/guides/security_compliance/data_security.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/data_security)
 - `guides/security_compliance/secure_training` — [Secure Training](pages/guides/security_compliance/secure_training.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training)
-- `guides/security_compliance/secure_training/byob` — [Bring Your Own Bucket (BYOB)](pages/guides/security_compliance/secure_training/byob.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/byob)
+- `guides/security_compliance/secure_training/byob` — [Bring your own bucket (BYOB)](pages/guides/security_compliance/secure_training/byob.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/byob)
 - `guides/security_compliance/secure_training/cmek` — [Customer-managed encryption keys (CMEK)](pages/guides/security_compliance/secure_training/cmek.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek)
 - `guides/security_compliance/secure_training/secure_rft` — [Secure reinforcement fine-tuning](pages/guides/security_compliance/secure_training/secure_rft.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft)
 - `guides/spot-serverless` — [Spot Serverless](pages/guides/spot-serverless.md) · [原文](https://docs.fireworks.ai/guides/spot-serverless)
