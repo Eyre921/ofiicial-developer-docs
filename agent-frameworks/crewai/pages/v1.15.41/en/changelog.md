@@ -5817,186 +5817,87 @@ All improvements from the v0.14.0rc.
 [View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.11.1)
 
 * It fixes a  bug on the tool usage logic that was early caching the result even if there was an error on the usage, preventing it from using the tool again.
-* It will also print any error message in red allowing the user to understand what was the problem with the tool.
+* It will also print any error message # CrewAI Documentation
+Source: https://docs.crewai.com/index
 
-**Feb 13, 2024**
+Build collaborative AI agents, crews, and flows — production ready from day one.
 
-## v0.11.0
+![CrewAI](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crew_only_logo.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=439ca5dc63a1768cad7196005ff5636f)
 
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.11.0)
+# Ship multi‑agent systems with confidence
 
-* Ability to set `function_calling_llm` on both the entire crew and individual agents
-* Some early attempts on cost reduction
-* Improving function calling for tools
-* Updates docs
+Design agents, orchestrate crews, and automate flows with guardrails, memory, knowledge, and observability baked in.
 
-**Feb 10, 2024**
+[Get started](/en/quickstart)
 
-## v0.10.0
+Copy agent setup prompt
 
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.10.0)
+[Coding-agent guide](/guides/coding-tools/build-with-ai)
 
-* Ability to get `full_ouput` from crew kickoff with all tasks outputs
-* Ability to set `step_callback` function for both Agents and Crews so you can get all intermediate steps
-* Remembering Agent of the expected format after certain number of tool usages.
-* New tool usage internals now using json, unlocking tools with multiple arguments
-* Refactoring overall delegation logic, now way more reliable
-* Fixed `max_inter` bug now properly forcing llm to answer as it gets to that
-* Rebuilt caching structure, making sure multiple agents can use the same cache
-* Refactoring Task repeated usage prevention logic
-* Removing now unnecessary `CrewAgentOutputParser`
-* Opt-in to share complete crew related data with the crewAI team
-* Overall Docs update
+[API Reference](/en/api-reference/introduction)
 
-**Feb 08, 2024**
+## Get started
 
-## v0.5.5
+> [card] [Introduction](/en/introduction)
+>
+> Overview of CrewAI concepts, architecture, and what you can build with agents, crews, and flows.
 
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.5.5)
+> [card] [Installation](/en/installation)
+>
+> Install via `uv`, configure API keys, and set up the CLI for local development.
 
-* Overall doc + readme improvements
-* Fixing RPM controller being set unnecessarily
-* Adding early stage anonymous telemetry for lib improvement
+> [card] [Quickstart](/en/quickstart)
+>
+> Spin up your first crew in minutes. Learn the core runtime, project layout, and dev loop.
 
-**Feb 07, 2024**
+## Build the basics
 
-## v0.5.3
+> [card] [Agents](/en/concepts/agents)
+>
+> Compose agents with tools, memory, knowledge, and structured outputs using Pydantic. Includes templates and best practices.
 
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.5.3)
+> [card] [Flows](/en/concepts/flows)
+>
+> Orchestrate start/listen/router steps, manage state, persist execution, and resume long-running workflows.
 
-* quick Fix for hierarchical manager
+> [card] [Tasks & Processes](/en/concepts/tasks)
+>
+> Define sequential, hierarchical, or hybrid processes with guardrails, callbacks, and human-in-the-loop triggers.
 
-**Feb 06, 2024**
+## Enterprise journey
 
-## v0.5.2
+> [card] [Deploy automations](https://docs-platform.crewai.com/platform/en/features/automations)
+>
+> Manage environments, redeploy safely, and monitor live runs directly from the Enterprise console.
 
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.5.2)
+> [card] [Triggers & Flows](https://docs-platform.crewai.com/platform/en/guides/automation-triggers)
+>
+> Connect Gmail, Slack, Salesforce, and more. Pass trigger payloads into crews and flows automatically.
 
-* Adding `manager_llm` for hierarchical process
-* Improving `max_inter` and `max_rpm` logic
-* Updating README and Docs
+> [card] [Team management](https://docs-platform.crewai.com/platform/en/guides/team-management)
+>
+> Invite teammates, configure RBAC, and control access to production automations.
 
-**Feb 04, 2024**
+## What’s new
 
-## v0.5.0
+> [card] [Triggers overview](https://docs-platform.crewai.com/platform/en/guides/automation-triggers)
+>
+> Unified overview for Gmail, Drive, Outlook, Teams, OneDrive, HubSpot, and more — now with sample payloads and crews.
 
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.5.0)
+> [card] [Integration tools](/en/tools/integration/overview)
+>
+> Call existing CrewAI automations or Amazon Bedrock Agents directly from your crews using the updated integration toolkit.
 
-This new version bring a lot of new features and improvements to the library.
+**Explore real-world patterns**
 
-## Features
+Browse the [examples and cookbooks](/en/examples/cookbooks) for end-to-end reference implementations across agents, flows, and enterprise automations.
 
-* Adding Task Callbacks.
-* Adding support for Hierarchical process.
-* Adding ability to references specific tasks in another task.
-* Adding ability to parallel task execution.
+## Stay connected
 
-## Improvements
+> [card] [Star us on GitHub](https://github.com/crewAIInc/crewAI)
+>
+> If CrewAI helps you ship faster, give us a star and share your builds with the community.
 
-* Revamping Max Iterations and Max Requests per Minute.
-* Developer experience improvements, docstrings and such.
-* Small improvements and TYPOs.
-* Fix static typing errors.
-* Updated README and Docs.
-
-**Jan 14, 2024**
-
-## v0.1.32
-
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.1.32)
-
-* Moving to LangChain 0.1.0
-* Improving Prompts
-* Adding ability to limit maximum number of iterations for an agent
-* Adding ability to Request Per Minute throttling for both Agents and Crews
-* Adding initial support for translations
-* Adding Greek translation
-* Improve code readability
-* Starting new documentation with mkdocs
-
-**Jan 07, 2024**
-
-## v0.1.23
-
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.1.23)
-
-* Many Reliability improvements
-* Prompt changes
-* Initial changes for supporting multiple languages
-* Fixing bug on task repeated execution
-* Better execution error handling
-* Updating READMe
-
-**Dec 30, 2023**
-
-## v0.1.14
-
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.1.14)
-
-* Adding tool caching a loop execution prevention. (@joaomdmoura)
-* Adding more guidelines for Agent delegation. (@joaomdmoura)
-* Updating to use new openai lib version. (@joaomdmoura)
-* Adding verbose levels to the logger. (@joaomdmoura)
-* Removing WIP code. (@joaomdmoura)
-* A lot of developer quality of life improvements (Special thanks to @greysonlalonde).
-* Updating to pydantic v2 (Special thanks to @greysonlalonde as well).
-
-**Nov 24, 2023**
-
-## v0.1.2
-
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.1.2)
-
-* Adding ability to use other LLMs, not OpenAI
-
-**Nov 19, 2023**
-
-## v0.1.1
-
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.1.1)
-
-# CrewAI v0.1.1 Release Notes
-
-## What's New
-
-* **Crew Verbose Mode**:  Now allowing you to inspect a the tasks are being executed.
-
-* **README and Docs Updates**: A series of minor updates on the docs
-
-**Nov 14, 2023**
-
-## v0.1.0
-
-[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/v0.1.0)
-
-# CrewAI v0.1.0 Release Notes
-
-We are thrilled to announce the initial release of CrewAI, version 0.1.0! CrewAI is a framework designed to facilitate the orchestration of autonomous AI agents capable of role-playing and collaboration to accomplish complex tasks more efficiently.
-
-## What's New
-
-* **Initial Launch**: CrewAI is now officially in the wild! This foundational release lays the groundwork for AI agents to work in tandem, each with its own specialized role and objectives.
-
-* **Role-Based Agent Design**: Define and customize agents with specific roles, goals, and the tools they need to succeed.
-
-* **Inter-Agent Delegation**: Agents are now equipped to autonomously delegate tasks, enabling dynamic distribution of workload among the team.
-
-* **Task Management**: Create and assign tasks dynamically with the flexibility to specify the tools needed for each task.
-
-* **Sequential Processes**: Set up your agents to tackle tasks one after the other, ensuring organized and predictable workflows.
-
-* **Documentation**: Start exploring CrewAI with our initial documentation that guides you through the setup and use of the framework.
-
-## Enhancements
-
-* Detailed API documentation for the `Agent`, `Task`, `Crew`, and `Process` classes.
-* Examples and tutorials to help you build your first CrewAI application.
-* Basic setup for collaborative and delegation mechanisms among agents.
-
-## Known Issues
-
-* As this is the first release, there may be undiscovered bugs and areas for optimization. We encourage the community to report any issues found during use.
-
-## Upcoming Features
-
-* **Advanced Process Management**: In future releases, we will introduce more complex processes for task management including consensual and hierarchical workflows.
+> [card] [Join the community](https://community.crewai.com)
+>
+> Ask questions, showcase workflows, and request features alongside other builders.
