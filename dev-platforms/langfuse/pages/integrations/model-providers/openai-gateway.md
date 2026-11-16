@@ -18,6 +18,10 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
+> **What is OpenAI?** [OpenAI](https://openai.com/) is an AI research and deployment company that develops the GPT family of models. Its API gives developers access to these models for text generation, reasoning, tool use, and more.
+
+> **What is Langfuse?** [Langfuse](https://langfuse.com/) is an open-source AI engineering platform. It helps teams trace agentic applications, debug issues, evaluate quality, and monitor costs in production. The [Langfuse AI Gateway](/docs/gateway/overview) is a central entry point for your AI traffic: it relays model calls to your providers, traces every call in Langfuse, and tracks its cost, without the Langfuse SDK. Use [Langfuse Cloud](/cloud) (hosted by Langfuse, free tier, no infrastructure to run) or [self-host](/self-hosting) it.
+
 Use the official [OpenAI SDKs](https://developers.openai.com/api/docs/libraries) for Python and TypeScript with the gateway by changing the base URL and the API key. Requests need an `OPENAI` provider connection in your organization.
 
   For tracing the OpenAI SDK without the gateway, see the [OpenAI (Python)](/integrations/model-providers/openai-py) and [OpenAI (JS/TS)](/integrations/model-providers/openai-js) integrations.

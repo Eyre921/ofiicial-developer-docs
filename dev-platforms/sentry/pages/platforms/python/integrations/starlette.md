@@ -12,7 +12,7 @@ url: https://docs.sentry.io/platforms/python/integrations/starlette/
 
 # Starlette for Python
 
-If you're using stream mode, this page's references to "transaction" should be applied to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
+In SDK `3.x`, and in stream mode in SDK `2.x`, this page's references to "transaction" apply to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/python/integrations/starlette.md#prerequisites)
 
@@ -109,7 +109,7 @@ To learn how to manually report issues, see [Capturing Errors](https://docs.sent
 
 Use `sentry_sdk.logger` to send structured logs at different levels. You can include searchable attributes with each message.
 
-To capture records from Python's standard-library `logging` module or Loguru, configure `capture_sentry_logs=True` on the corresponding integration. See the [standard logging](https://docs.sentry.io/platforms/python/integrations/logging.md) and [Loguru](https://docs.sentry.io/platforms/python/integrations/loguru.md) integration guides.
+To capture records from Python's standard-library `logging` module or Loguru as Sentry logs, add the corresponding integration to your `integrations`. See the [standard logging](https://docs.sentry.io/platforms/python/integrations/logging.md) and [Loguru](https://docs.sentry.io/platforms/python/integrations/loguru.md) integration guides.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/python/logs.md) for all available logging methods and formatting options.
 
@@ -164,7 +164,7 @@ Need help locating captured data in your Sentry project?
 
 ## [Options](https://docs.sentry.io/platforms/python/integrations/starlette.md#options)
 
-In stream mode, these options still work as described, but apply to service spans instead of transactions.
+In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
 
 Add `StarletteIntegration` to your `sentry_sdk.init()` call to set options for `StarletteIntegration` to change its behavior.
 
@@ -175,7 +175,6 @@ sentry_sdk.init(
     # ...
     integrations=[
         StarletteIntegration(
-            transaction_style="endpoint",
             failed_request_status_codes={403, *range(500, 599)},
             middleware_spans=False,
             http_methods_to_capture=("GET",),
@@ -191,6 +190,8 @@ You can pass the following keyword arguments to `StarletteIntegration()`:
 | Type    | `string` |
 | ------- | -------- |
 | Default | `"url"`  |
+
+Only available in SDK versions prior to `3.0`. In SDK `3.x`, service spans are always named after the route pattern, for example `/catalog/product/{product_id}`.
 
 How to name transactions that show up in Sentry tracing. The default is `"url"`.
 

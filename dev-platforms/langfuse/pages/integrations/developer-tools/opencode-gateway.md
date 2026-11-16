@@ -18,6 +18,10 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
+> **What is OpenCode?** [OpenCode](https://opencode.ai) is an open-source AI coding agent that runs in your terminal (with desktop and IDE clients too). It understands your codebase, edits code, runs commands, and works across different model providers.
+
+> **What is Langfuse?** [Langfuse](https://langfuse.com/) is an open-source AI engineering platform. It helps teams trace agentic applications, debug issues, evaluate quality, and monitor costs in production. The [Langfuse AI Gateway](/docs/gateway/overview) is a central entry point for your AI traffic: it relays model calls to your providers, traces every call in Langfuse, and tracks its cost, without the Langfuse SDK. Use [Langfuse Cloud](/cloud) (hosted by Langfuse, free tier, no infrastructure to run) or [self-host](/self-hosting) it.
+
 **Requires** OpenCode 2.0 or later and an `ANTHROPIC` and/or `OPENAI` provider connection. Verified with OpenCode 2.0.25.
 
   For tracing OpenCode without the gateway, see the [OpenCode integration](/integrations/developer-tools/opencode).

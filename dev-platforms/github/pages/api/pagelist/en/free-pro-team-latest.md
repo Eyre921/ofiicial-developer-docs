@@ -1754,6 +1754,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/security-governance-and-network-settings/network-settings
 /en/copilot/concepts/enterprise
 /en/copilot/concepts/enterprise/policies
+/en/copilot/concepts/enterprise/governance-controls
 /en/copilot/concepts/enterprise/default-availability
 /en/copilot/concepts/enterprise/fedramp-models
 /en/copilot/concepts/enterprise/learning-about-new-features-and-models

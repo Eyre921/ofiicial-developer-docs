@@ -14,19 +14,34 @@ url: https://docs.sentry.io/platforms/dotnet/guides/maui/
 
 Sentry has an integration for the [.NET Multi-platform App UI (MAUI)](https://dotnet.microsoft.com/apps/maui) through the [Sentry.Maui NuGet package](https://www.nuget.org/packages/Sentry.Maui).
 
-`Sentry.Maui` 6.x requires .NET MAUI 9 or later. For .NET MAUI 8, use a compatible 5.x SDK version.
-
 **Overview of the features**
 
 * Easy MAUI integration by calling `UseSentry` on your `MauiAppBuilder`
 * All the features of our main [.NET SDK](https://docs.sentry.io/platforms/dotnet.md), for your managed code
 * Native crash reporting for Android, leveraging our [Android SDK](https://docs.sentry.io/platforms/android.md)
 * Native crash reporting for iOS and Mac Catalyst, leveraging our [Cocoa SDK for iOS](https://docs.sentry.io/platforms/apple/guides/ios.md)
-* Managed crash reporting (unhandled exceptions), on all MAUI platforms (iOS, Android, Windows, Mac Catalyst, and Tizen)
+* Managed crash reporting (unhandled exceptions), on all MAUI platforms (iOS, Android, Windows, and Mac Catalyst)
 * Line numbers for your .NET stack traces when PDBs are uploaded to Sentry
 * Automatic breadcrumbs for MAUI app lifecycle and UI events
 * Detailed device and runtime information passed on every event
 * Automatic session tracking enabled, to support [release health](https://docs.sentry.io/product/releases.md)
+
+## [Supported Versions](https://docs.sentry.io/platforms/dotnet/guides/maui.md#supported-versions)
+
+`Sentry.Maui` supports .NET 10 and .NET 11. Set `SupportedOSPlatformVersion` in your project file to at least these platform versions:
+
+| Platform          | .NET 10                     | .NET 11                     |
+| ----------------- | --------------------------- | --------------------------- |
+| Android API level | 21                          | 24                          |
+| iOS               | 15.0                        | 15.0                        |
+| Mac Catalyst      | 15.0                        | 17.0                        |
+| Windows           | 10.0.17763.0 (version 1809) | 10.0.17763.0 (version 1809) |
+
+To build for iOS and Mac Catalyst, use the Xcode version that your .NET iOS and Mac Catalyst workloads require. The [.NET for iOS and Mac Catalyst release notes](https://github.com/dotnet/macios/releases) list it for each release.
+
+##### Changed in Version 7.0.0
+
+Version 6.x supports .NET 9 and .NET 10. See [Supported .NET Versions and Platforms](https://docs.sentry.io/platforms/dotnet/guides/maui/migration/v6-to-v7.md#supported-net-versions-and-platforms) in the migration guide.
 
 ## [Install](https://docs.sentry.io/platforms/dotnet/guides/maui.md#install)
 
@@ -211,6 +226,7 @@ At this point, you should have integrated Sentry into your .NET MAUI application
 - [Blazor Interactive SSR](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md)
 - [Blazor WebAssembly](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md)
 - [Entity Framework](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md)
+- [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md)
 - [Google Cloud Functions](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md)
 - [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md)
 - [Microsoft.Extensions.Logging](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md)

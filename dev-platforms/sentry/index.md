@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 237 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 238 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -119,6 +119,7 @@
 - `platforms/dotnet/guides/blazor-server` — [Blazor Interactive SSR](pages/platforms/dotnet/guides/blazor-server.md) · [原文](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md)
 - `platforms/dotnet/guides/blazor-webassembly` — [Blazor WebAssembly](pages/platforms/dotnet/guides/blazor-webassembly.md) · [原文](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md)
 - `platforms/dotnet/guides/entityframework` — [Entity Framework](pages/platforms/dotnet/guides/entityframework.md) · [原文](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md)
+- `platforms/dotnet/guides/extensions-hosting` — [Generic Host](pages/platforms/dotnet/guides/extensions-hosting.md) · [原文](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md)
 - `platforms/dotnet/guides/extensions-logging` — [Microsoft.Extensions.Logging](pages/platforms/dotnet/guides/extensions-logging.md) · [原文](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md)
 - `platforms/dotnet/guides/google-cloud-functions` — [Google Cloud Functions](pages/platforms/dotnet/guides/google-cloud-functions.md) · [原文](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md)
 - `platforms/dotnet/guides/log4net` — [log4net](pages/platforms/dotnet/guides/log4net.md) · [原文](https://docs.sentry.io/platforms/dotnet/guides/log4net.md)

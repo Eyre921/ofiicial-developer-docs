@@ -134036,7 +134036,7 @@ structlog>=24.1.0
 cloudpickle>=3.0.0
 truststore>=0.1
 protobuf>=6.32.1,<7.0.0
-grpcio>=1.85.0,<1.86.0
+grpcio>=1.81.0,<1.82.0
 grpcio-tools>=1.81.0,<1.82.0
 grpcio-health-checking>=1.81.0,<1.82.0
 opentelemetry-api>=0.0.1
@@ -134465,7 +134465,7 @@ structlog>=24.1.0
 cloudpickle>=3.0.0
 truststore>=0.1
 protobuf>=6.32.1,<7.0.0
-grpcio>=1.85.0,<1.86.0
+grpcio>=1.81.0,<1.82.0
 grpcio-tools>=1.81.0,<1.82.0
 grpcio-health-checking>=1.81.0,<1.82.0
 opentelemetry-api>=0.0.1
@@ -214611,6 +214611,7 @@ Middleware enables context engineering, harness customization, and runtime safet
 | Provider | Middleware available | Source | Downloads |
 | :- | :- | :- | :- |
 | [`AWS middleware`](/oss/javascript/integrations/middleware/aws) | Prompt caching | [`langchain-ai/langchain-aws`](https://github.com/langchain-ai/langchain-aws) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/aws) |
+| [`newmean-pii`](https://github.com/newmean-ai/pii/blob/main/js/README.md#langchainjs) | On-device PII masking for agent messages: a small multilingual model (54 languages) in WebAssembly masks what each model call receives. | [`newmean-ai/pii`](https://github.com/newmean-ai/pii/tree/main/js) | [  ![Downloads per month](https://img.shields.io/npm/dm/@newmean-ai/pii?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@newmean-ai/pii) |
 | [`RecallMiddleware`](https://recallmem.dev/guides/langchain) | Long-term memory for create_agent agents: adds what Recall learned about the user to the system prompt and records each exchange. | [`recallmem/recall`](https://github.com/recallmem/recall) | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/sdk?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/sdk) |
 | [`BrydgeMiddleware`](https://github.com/contactkontey-dotcom/langchain-brydge#readme) | Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted. | [`contactkontey-dotcom/langchain-brydge`](https://github.com/contactkontey-dotcom/langchain-brydge) | [  ![Downloads per month](https://img.shields.io/npm/dm/brydge-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/brydge-langchain) |
 | [`RecallChatMessageHistory`](https://recallmem.dev/guides/langchain) | Chat message history stored in a Recall session, so Recall also learns about the user from it. | [`recallmem/recall`](https://github.com/recallmem/recall) | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/langchain) |
@@ -215243,6 +215244,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Retrieve status and results of a research task using its request ID.
 
+> [card] [VerictoSqlToolkit](https://vericto.com/docs/langchain)
+>
+> Database guardrails for AI agents: checks each SQL statement against deterministic AST rules (such as DELETE without WHERE) before it runs.
+
 > [card] [viaSocket](https://github.com/Walkover-Web-Solution/viasocket-apps#langchain)
 >
 > viaSocket lets LangChain.js agents run actions in 2,300+ connected apps through each user's own connection.
@@ -215340,6 +215345,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > [card] [Nace](https://github.com/nace-ai/langchain-nace-js#readme)
 >
 > Drex decision models by Nace: typed answers with calibrated probabilities for routing, model selection and tool-call gating, from text and images.
+
+> [card] [newmean-pii](https://github.com/newmean-ai/pii/blob/main/js/README.md#langchainjs)
+>
+> On-device PII masking for agent messages: a small multilingual model (54 languages) in WebAssembly masks what each model call receives.
 
 > [card] [RecallChatMessageHistory](https://recallmem.dev/guides/langchain)
 >
@@ -217261,6 +217270,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Bilig WorkPaper`](https://proompteng.github.io/bilig/) | [  ![Downloads per month](https://img.shields.io/npm/dm/@bilig/workpaper?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@bilig/workpaper) |
 | [`viaSocket`](https://github.com/Walkover-Web-Solution/viasocket-apps#langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/viasocket-apps?style=flat-square\&label=%20&)](https://www.npmjs.com/package/viasocket-apps) |
 | [`PerplexitySearchResults`](/oss/javascript/integrations/tools/perplexity_search) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/perplexity?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/perplexity) |
+| [`VerictoSqlToolkit`](https://vericto.com/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@vericto/sdk?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@vericto/sdk) |
 | [`Serpex`](https://serpex.dev/docs) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-serpex-js?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-serpex-js) |
 | [`Decodo`](/oss/javascript/integrations/tools/decodo) | [  ![Downloads per month](https://img.shields.io/npm/dm/@decodo/langchain-ts?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@decodo/langchain-ts) |
 | [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/agentsvc?style=flat-square\&label=%20&)](https://www.npmjs.com/package/agentsvc) |
@@ -312018,6 +312028,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Data infrastructure for ML applications.
 
+> [card] [TensorustToolkit](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md)
+>
+> Tools for US company and home ownership, BDC private credit loan marks, contractor credit and OFAC and restricted-vendor screens from public records.
+
 > [card] [Teradata](https://github.com/Teradata/langchain-teradata)
 >
 > Autonomous AI platform with integrated vector search.
@@ -315193,6 +315207,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`EtfiqToolkit`](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-etfiq/month)](https://pypi.org/project/langchain-etfiq/) |
 | [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-channel3/month)](https://pypi.org/project/langchain-channel3/) |
 | [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
+| [`TensorustToolkit`](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tensorust/month)](https://pypi.org/project/langchain-tensorust/) |
 | [`ArcnmToolkit`](https://github.com/arcnm/langchain-arcnm#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arcnm/month)](https://pypi.org/project/langchain-arcnm/) |
 | [`OutcrawlSearchTool`](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outcrawl/month)](https://pypi.org/project/langchain-outcrawl/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |

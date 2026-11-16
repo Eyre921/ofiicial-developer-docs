@@ -17,6 +17,10 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
+> **What is Pi?** [Pi](https://pi.dev) is a minimal, extensible AI coding agent that runs in your terminal. It supports 15+ providers and hundreds of models, and adapts to your workflows through extensions, skills, prompt templates, and themes.
+
+> **What is Langfuse?** [Langfuse](https://langfuse.com/) is an open-source AI engineering platform. It helps teams trace agentic applications, debug issues, evaluate quality, and monitor costs in production. The [Langfuse AI Gateway](/docs/gateway/overview) is a central entry point for your AI traffic: it relays model calls to your providers, traces every call in Langfuse, and tracks its cost, without the Langfuse SDK. Use [Langfuse Cloud](/cloud) (hosted by Langfuse, free tier, no infrastructure to run) or [self-host](/self-hosting) it.
+
 **Requires** Pi 1.5.0 or later and an `ANTHROPIC` and/or `OPENAI` provider connection.
 
   For tracing Pi without the gateway, see the [Pi Agent integration](/integrations/developer-tools/pi-agent).

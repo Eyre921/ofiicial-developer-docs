@@ -59,6 +59,7 @@ Frameworks with their own setup guide:
 * [Hydrogen](https://docs.sentry.io/platforms/javascript/guides/react-router/hydrogen.md)
 * [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs/cloudflare.md)
 * [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt/cloudflare.md)
+* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router/cloudflare.md)
 * [Remix](https://docs.sentry.io/platforms/javascript/guides/remix/cloudflare.md)
 * [SvelteKit](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
 * [TanStack Start](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/cloudflare.md)
@@ -131,7 +132,7 @@ Since the SDK needs access to the `AsyncLocalStorage` API, you need to set the `
 ```jsonc
 {
   // Set this to today's date
-  "compatibility_date": "2026-11-14",
+  "compatibility_date": "2026-11-16",
   "compatibility_flags": ["nodejs_compat"],
 }
 ```

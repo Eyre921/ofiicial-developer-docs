@@ -96,7 +96,7 @@ public static IWebHost BuildWebHost(string[] args) =>
 
 ### [Additional configuration](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#additional-configuration)
 
-The framework takes configuration settings from `appsettings.json`, environment variables, or from code. These settings get applied to `Sentry.AspNetCore.SentryAspNetCoreOptions`, which extends `Sentry.Extensions.Logging.SentryLoggingOptions`, which in turn extends `Sentry.SentryOptions`. This means options for `Sentry.AspNetCore` as well as all the inner packages are available to be configured through the configuration system.
+The framework takes configuration settings from `appsettings.json`, environment variables, or from code. These settings get applied to `SentryAspNetCoreOptions`, which extends `SentryHostOptions`, which in turn extends `SentryOptions`. This means options for `Sentry.AspNetCore` as well as all the inner packages are available to be configured through the configuration system.
 
 ### [appsettings.json](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#appsettingsjson)
 
@@ -196,6 +196,21 @@ public void ConfigureServices(IServiceCollection services)
 ```
 
 *Other available variations of the above snippet: fsharp*
+
+### [Clearing Logger Providers](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#clearing-logger-providers)
+
+`ClearProviders()` removes every logger provider registered before it, including the ones `UseSentry` adds. Without them, `ILogger` entries don't reach Sentry. Call `UseSentry` after it:
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.WebHost.UseSentry();
+```
+
+If the app has to clear the providers after `UseSentry`, call `builder.Logging.AddSentry()` after `ClearProviders()`. It adds Sentry's providers back, with the options of `UseSentry`. Leave it out if NLog, Serilog, or log4net already sends your `ILogger` entries to Sentry, because each entry would then arrive twice.
+
+With `Debug` on, the SDK logs a warning through `ILogger` when the app starts if Sentry's providers were removed and not added back.
 
 ### [Options and Initialization](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#options-and-initialization)
 
@@ -366,6 +381,7 @@ At this point, you should have integrated Sentry into your ASP.NET Core applicat
 - [Blazor Interactive SSR](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md)
 - [Blazor WebAssembly](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md)
 - [Entity Framework](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md)
+- [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md)
 - [Google Cloud Functions](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md)
 - [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md)
 - [MAUI](https://docs.sentry.io/platforms/dotnet/guides/maui.md)

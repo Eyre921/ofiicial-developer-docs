@@ -565,6 +565,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`EtfiqToolkit`](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-etfiq/month)](https://pypi.org/project/langchain-etfiq/) |
 | [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-channel3/month)](https://pypi.org/project/langchain-channel3/) |
 | [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
+| [`TensorustToolkit`](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tensorust/month)](https://pypi.org/project/langchain-tensorust/) |
 | [`ArcnmToolkit`](https://github.com/arcnm/langchain-arcnm#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arcnm/month)](https://pypi.org/project/langchain-arcnm/) |
 | [`OutcrawlSearchTool`](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outcrawl/month)](https://pypi.org/project/langchain-outcrawl/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |

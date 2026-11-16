@@ -28,7 +28,7 @@ The default value to report a log entry as an event to Sentry is `Error`.
 
 This means that out of the box, any `LogError` call will create an `Event` which will include breadcrumbs for all prior log messages of level `Information`, `Warning`, `Error` and `Critical`.
 
-Additionally, when enabled, log messages are sent to Sentry as [Structured Logs](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging/logs.md). Filtering to control the minimum log level to capture should be done [via `Microsoft.Extensions.Logging` configuration](https://learn.microsoft.com/dotnet/core/extensions/logging/overview?tabs=command-line#how-filtering-rules-are-applied).
+Log messages are also sent to Sentry as [Structured Logs](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging/logs.md). Filtering to control the minimum log level to capture should be done [via `Microsoft.Extensions.Logging` configuration](https://learn.microsoft.com/dotnet/core/extensions/logging/overview?tabs=command-line#how-filtering-rules-are-applied).
 
 ## [Install](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#install)
 
@@ -40,105 +40,85 @@ Install-Package Sentry.Extensions.Logging -Version 7.0.0
 
 *Other available variations of the above snippet: .NET Core CLI*
 
+On .NET Framework, also install the `Microsoft.Extensions.Logging` package. The examples on this page need it.
+
 This package extends `Sentry` main SDK. That means that besides the logging related features, through this package you'll also get access to all API and features available in the main `Sentry` SDK.
+
+Generic host apps install the `Sentry.Extensions.Hosting` package instead, which depends on this one. See the [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md) guide.
 
 The integration excludes the Sentry SDK's own logger categories to avoid capturing its diagnostic messages as events. Application categories that happen to start with `Sentry` aren't excluded solely because of that prefix.
 
 ## [Configure](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#configure)
 
-Call `AddSentry` on an `ILoggingBuilder`, either through a generic host or `LoggerFactory.Create`. This registers the providers for error events, breadcrumbs, and structured logs.
+If your app uses one of these integrations, skip this setup. Call that integration's `UseSentry` instead, which initializes Sentry and adds this logging integration for you:
 
-The legacy `ILoggerFactory.AddSentry` extension registers only the error-event and breadcrumb provider. Use `LoggerFactory.Create` with `builder.AddSentry` to capture structured logs too. ASP.NET Core's `UseSentry` already registers the providers, so it doesn't need a separate `AddSentry` call.
+* [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md), for worker services, Windows services and console apps that call `Host.CreateApplicationBuilder` or `Host.CreateDefaultBuilder`. Before 7.0.0, these apps initialized Sentry with `builder.Logging.AddSentry(...)` from this page.
+* [ASP.NET Core](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md)
+* [MAUI](https://docs.sentry.io/platforms/dotnet/guides/maui.md)
 
-### [Example configuration](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#example-configuration)
+.NET Framework apps that call `Host.CreateApplicationBuilder()` can't use the Generic Host integration's `UseSentry`. See [.NET Framework](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md#net-framework) in the Generic Host guide.
 
-#### [Through `ILoggingBuilder`](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#through-iloggingbuilder)
-
-This example uses a generic host from the `Microsoft.Extensions.Hosting` package:
+Apps without a host initialize Sentry with `SentrySdk.Init`, then add the integration with `AddSentry()`:
 
 ```csharp
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-var builder = Host.CreateApplicationBuilder(args);
-// Lets Sentry read the top-level "Sentry" section of appsettings.json
-builder.Logging.AddConfiguration(builder.Configuration);
-builder.Logging.AddSentry();
+using var sentry = SentrySdk.Init(options =>
+{
+    options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
+});
 
-using var host = builder.Build();
-await host.RunAsync();
+using var loggerFactory = LoggerFactory.Create(builder => builder.AddSentry());
+var logger = loggerFactory.CreateLogger<Program>();
 ```
 
-The host loads `appsettings.json` and environment variables. Sentry reads its options from the `Sentry` configuration section.
+*Other available variations of the above snippet: ServiceCollection*
 
-With this approach, options like `Dsn`, `SendDefaultPii`, `MinimumBreadcrumbLevel`, to name a few, can be set in `appsettings.json`.
+Set other [SDK options](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging/configuration/options.md) in `SentrySdk.Init` too. Disposing the object it returns sends any pending events before your app exits.
 
-Example using `appsettings.json`:
+Every `ILogger` entry that passes your `Microsoft.Extensions.Logging` filters is also sent as a structured log. To send fewer, set `LogLevel` under `Logging:Sentry`, as shown in [Logging Configuration](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#logging-configuration), or return `null` from `SetBeforeSendLog`.
+
+`AddSentry()` doesn't register `IHub`, `ISentryClient` or `Func<IHub>`. If your services inject them, register them with `HubAdapter.Instance`. Otherwise resolving those services fails with `Unable to resolve service for type 'Sentry.IHub'`:
+
+```csharp
+using Sentry.Extensibility;
+
+services.AddSingleton<IHub>(HubAdapter.Instance);
+services.AddSingleton<ISentryClient>(HubAdapter.Instance);
+services.AddSingleton<Func<IHub>>(() => HubAdapter.Instance);
+```
+
+You only need the lines for the types your services inject.
+
+##### Changed in Version 7.0.0
+
+Prior to version 7.0.0, `AddSentry` could also initialize the SDK itself, registered `IHub` and `ISentryClient`, and only sent log entries as structured logs when `EnableLogs` was `true`. On those versions, set the DSN in `AddSentry(options => ...)` instead of calling `SentrySdk.Init`. To upgrade, see [Migrate from 6.x to 7.x](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging/migration/v6-to-v7.md).
+
+### [Logging Configuration](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#logging-configuration)
+
+If you add your configuration to the logging builder, for example with `builder.AddConfiguration(configuration.GetSection("Logging"))`, the integration reads its settings from the `Logging:Sentry` section:
 
 ```json
 {
   "Logging": {
-    "LogLevel": {
-      "Default": "Debug",
-      "Microsoft": "Warning"
+    "Sentry": {
+      "LogLevel": {
+        "Default": "Information"
+      },
+      "MinimumBreadcrumbLevel": "Debug",
+      "MinimumEventLevel": "Warning"
     }
-  },
-  "Sentry": {
-    "Dsn": "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-    "EnableLogs": true,
-    "SendDefaultPii": true,
-    "MinimumBreadcrumbLevel": "Debug",
-    "MinimumEventLevel": "Warning",
-    "MaxBreadcrumbs": 50
   }
 }
 ```
 
-Above we set the application wide minimum log level to `Debug` and we configure a minimum log level for Microsoft specific logs to `Warning`. Sentry specific settings are set under the `Sentry` property. Options are documented below.
+`LogLevel` controls which entries are sent as [structured logs](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging/logs.md). `MinimumBreadcrumbLevel` and `MinimumEventLevel` are described under [Options](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#options).
 
-#### [Through `ILoggerFactory`](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#through-iloggerfactory)
-
-```csharp
-using Microsoft.Extensions.Logging;
-
-using (var loggerFactory = LoggerFactory.Create(builder =>
-{
-    builder.SetMinimumLevel(LogLevel.Information);
-    builder.AddSentry(options =>
-    {
-        options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
-        options.EnableLogs = true;
-    });
-}))
-{
-    var logger = loggerFactory.CreateLogger("Example");
-    logger.LogInformation("Order processed {OrderId}", "order-123");
-}
-```
-
-This approach doesn't include any of the framework's configuration system. Since the DSN is being provided via parameter, the SDK will be initialized.
-
-More settings can be passed via the callback configuring the `SentryOptions`.
-
-## [Options and Initialization](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#options-and-initialization)
-
-In cases where `AddSentry` is called without arguments, it's worth noting that an overload exists where `SentryOptions` can be configured just like if `SentrySdk.Init` had been called.
-
-Initialize the SDK once. `ILoggingBuilder.AddSentry` initializes it by default and can resolve a DSN from configuration or `SENTRY_DSN`. If another integration or `SentrySdk.Init` owns initialization, set `InitializeSdk = false`. Omitting the DSN isn't a substitute for this flag: if no DSN is found, initialization throws. An explicitly empty DSN disables the SDK.
-
-For example:
-
-```csharp
-using (var loggerFactory = LoggerFactory.Create(builder =>
-    builder.AddSentry(options =>
-    {
-        options.InitializeSdk = false;
-        options.EnableLogs = true;
-    })))
-{ }
-```
+The `Logging:Sentry` section only accepts these three keys. Any other key, such as `Dsn` or `EnableLogs`, makes the app fail at startup. Set SDK options in `SentrySdk.Init`.
 
 ### [Options](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#options)
+
+Set these in `AddSentry(options => ...)`. You can also set the two levels in the `Logging:Sentry` configuration section.
 
 #### [MinimumBreadcrumbLevel](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#minimumbreadcrumblevel)
 
@@ -148,23 +128,30 @@ A `LogLevel` which indicates the minimum level a log message has to be included 
 
 A `LogLevel` which indicates the minimum level a log message has to be sent to Sentry as an event. By default this value is `Error`.
 
-#### [InitializeSdk](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#initializesdk)
+#### [Log Entry Filters](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#log-entry-filters)
 
-Whether or not this integration should initialize the SDK. If you intend to call `SentrySdk.Init` yourself, you should set this flag to `false`.
+Filters run before a log entry is processed. They get the entry's `Microsoft.Extensions.Logging` data, so you can drop the entry before it becomes a `Breadcrumb` or an `Event`. Return `true` to drop it:
 
-#### [Filters](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#filters)
+```csharp
+using Microsoft.Extensions.Logging;
+using Sentry.Extensions.Logging;
 
-A list of filters which are invoked before processing log messages. This allows you to inspect the details of the log entry before they become a `Breadcrumb` or an `Event` with full access to the `Microsoft.Extensions.Logging` data.
+using var loggerFactory = LoggerFactory.Create(builder => builder.AddSentry(options =>
+{
+    options.AddLogEntryFilter((category, level, eventId, exception) =>
+        level < LogLevel.Critical && exception is DivideByZeroException);
+}));
+```
+
+With a host integration, call `AddLogEntryFilter` on the options you pass to `UseSentry` instead.
 
 ##### Note
 
 These filters only apply to breadcrumbs and events. They don't control which logs will be captured as structured logs in Sentry. That can be controlled independently using the [filtering capabilities built into `Microsoft.Extensions.Logging`](https://learn.microsoft.com/dotnet/core/extensions/logging/overview?tabs=command-line#how-filtering-rules-are-applied).
 
-#### [TagFilters](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#tagfilters)
+### [TagFilters](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#tagfilters)
 
-A list of filters which are invoked before processing any log message to filter out undesired tags.
-
-For example, to remove all tags starting with `PROC_`, add a tag filter to your `SentryOptions` when initializing the SDK.
+`TagFilters` is an SDK option, so set it in `SentrySdk.Init`. It drops any tag set on the scope whose key contains one of its entries, including the tags this integration adds from `BeginScope` state. An entry can also be a `Regex`, such as `new Regex("^PROC_")` to match only keys that start with `PROC_`. For example, to drop tags whose key contains `PROC_`:
 
 ```csharp
 options.TagFilters.Add("PROC_");
@@ -179,12 +166,11 @@ logger.LogInformation("Sentry logging verification");
 logger.LogError("Sentry error-event verification");
 ```
 
-Check **Logs** for the informational log and **Issues** for the error event. Run this code before disposing the host or logger factory.
+Check **Logs** for the informational log and **Issues** for the error event. Run this code before disposing the logger factory or service provider.
 
 ## [Samples](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#samples)
 
 * A [simple example](https://github.com/getsentry/sentry-dotnet/tree/main/samples/Sentry.Samples.ME.Logging) using simply the `LoggerFactory`.
-* An [example](https://github.com/getsentry/sentry-dotnet/tree/main/samples/Sentry.Samples.GenericHost) using the *generic host*.
 
 ## [Next Steps](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md#next-steps)
 
@@ -201,6 +187,7 @@ Check **Logs** for the informational log and **Issues** for the error event. Run
 - [Blazor Interactive SSR](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md)
 - [Blazor WebAssembly](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md)
 - [Entity Framework](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md)
+- [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md)
 - [Google Cloud Functions](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md)
 - [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md)
 - [MAUI](https://docs.sentry.io/platforms/dotnet/guides/maui.md)

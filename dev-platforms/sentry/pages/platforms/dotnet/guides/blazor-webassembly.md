@@ -32,7 +32,7 @@ This package extends [Sentry.Extensions.Logging](https://docs.sentry.io/platform
 
 This guide also enables **Tracing**.
 
-Sentry integration with Blazor WebAssembly is done by calling `.UseSentry()` and specifying the options, for example:
+Sentry integration with Blazor WebAssembly is done by calling `.UseSentry()` and specifying the options. `UseSentry` also adds Sentry's `ILogger` integration, which captures `LogError` and higher as events.
 
 The snippet also turns on:
 
@@ -43,7 +43,6 @@ Don't need a feature? Remove its options from the snippet.
 
 ```csharp
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Logging;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.UseSentry(options =>
@@ -167,6 +166,7 @@ At this point, you should have integrated Sentry into your Blazor WebAssembly ap
 - [Azure Functions](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md)
 - [Blazor Interactive SSR](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md)
 - [Entity Framework](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md)
+- [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md)
 - [Google Cloud Functions](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md)
 - [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md)
 - [MAUI](https://docs.sentry.io/platforms/dotnet/guides/maui.md)

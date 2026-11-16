@@ -62,7 +62,7 @@ with OpenRouter(
 | `speed` | *Optional\[float]* | ➖ | Playback speed multiplier. Honored by models that support it (e.g. OpenAI TTS). Other providers either ignore it or return a 400 for a non-default value when the model has no speed control. | 1 |
 | `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{ "trace\_id": "trace-abc123", "trace\_name": "my-app-trace" } |
 | `user` | *Optional\[str]* | ➖ | A unique identifier representing your end-user. Forwarded to Broadcast and private logging as the end-user id; never sent to the provider. | user-1234 |
-| `voice` | *Optional\[str]* | ➖ | Voice identifier (provider-specific). | en\_paul\_neutral |
+| `voice` | *Optional\[str]* | ➖ | Voice identifier (provider-specific). Required by most providers; only Seed Audio, HeyGen, Fish Audio, AssemblyAI, Speechify accept requests without it. | en\_paul\_neutral |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response

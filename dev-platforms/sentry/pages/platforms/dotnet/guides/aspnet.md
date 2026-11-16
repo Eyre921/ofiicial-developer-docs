@@ -37,7 +37,6 @@ You configure the SDK in the `Global.asax.cs`:
 The snippet also turns on:
 
 * Tracing: via [`TracesSampleRate`](https://docs.sentry.io/platforms/dotnet/guides/aspnet/configuration/options.md#TracesSampleRate)
-* Logs from logging integrations: via [`EnableLogs`](https://docs.sentry.io/platforms/dotnet/guides/aspnet/logs.md#enablelogs)
 
 Don't need a feature? Remove its options from the snippet.
 
@@ -61,7 +60,6 @@ public class MvcApplication : HttpApplication
             options.Debug = true;
             // Adds request URL and headers, IP and name for users, etc.
             options.SendDefaultPii = true;
-            options.EnableLogs = true;
             // Enables Tracing.
             // Set to 1.0 to capture 100% of spans for tracing.
             // We recommend reducing this value in production.
@@ -118,9 +116,13 @@ options.AddAspNet(RequestSize.Always);
 
 ## [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/aspnet.md#send-logs)
 
-Use `SentrySdk.Logger` to send logs at different levels without an additional option. If you also send logs through an integration, set `EnableLogs = true` in the initialization snippet.
+Use `SentrySdk.Logger` to send logs at different levels without an additional option.
 
-If you use Serilog, NLog, or log4net, see the documented [Serilog](https://docs.sentry.io/platforms/dotnet/guides/serilog.md), [NLog](https://docs.sentry.io/platforms/dotnet/guides/nlog.md), and [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md) integrations.
+If you use Serilog, NLog, or log4net, see the documented [Serilog](https://docs.sentry.io/platforms/dotnet/guides/serilog.md), [NLog](https://docs.sentry.io/platforms/dotnet/guides/nlog.md), and [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md) integrations. They send logs as soon as you add them. To drop logs you don't want, return `null` from [`SetBeforeSendLog`](https://docs.sentry.io/platforms/dotnet/guides/aspnet/logs.md#setbeforesendlog).
+
+##### Changed in Version 7.0.0
+
+In earlier versions, the logging integrations only sent logs when `EnableLogs` was set to `true` in `SentrySdk.Init`.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/dotnet/guides/aspnet/logs.md) for all available logging methods and formatting options.
 
@@ -199,6 +201,7 @@ At this point, you should have integrated Sentry into your ASP.NET application. 
 - [Blazor Interactive SSR](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md)
 - [Blazor WebAssembly](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md)
 - [Entity Framework](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md)
+- [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md)
 - [Google Cloud Functions](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md)
 - [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md)
 - [MAUI](https://docs.sentry.io/platforms/dotnet/guides/maui.md)

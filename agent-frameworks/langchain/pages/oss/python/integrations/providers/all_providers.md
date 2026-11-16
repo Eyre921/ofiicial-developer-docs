@@ -2352,6 +2352,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Data infrastructure for ML applications.
 
+> [card] [TensorustToolkit](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md)
+>
+> Tools for US company and home ownership, BDC private credit loan marks, contractor credit and OFAC and restricted-vendor screens from public records.
+
 > [card] [Teradata](https://github.com/Teradata/langchain-teradata)
 >
 > Autonomous AI platform with integrated vector search.

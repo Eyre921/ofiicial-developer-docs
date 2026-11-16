@@ -14,7 +14,7 @@ url: https://docs.sentry.io/platforms/python/integrations/falcon/
 
 The Falcon integration adds support for the [Falcon web framework](https://falconframework.org/). The integration has been confirmed to work with Falcon 3.0 and later.
 
-If you're using stream mode, this page's references to "transaction" should be applied to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
+In SDK `3.x`, and in stream mode in SDK `2.x`, this page's references to "transaction" apply to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
 
 ## [Install](https://docs.sentry.io/platforms/python/integrations/falcon.md#install)
 
@@ -100,7 +100,9 @@ Note that automatic tracing on file-like responses when `offloading` is configur
 
 ## [Options](https://docs.sentry.io/platforms/python/integrations/falcon.md#options)
 
-In stream mode, these options still work as described, but apply to service spans instead of transactions.
+Only available in SDK versions prior to `3.0`. In SDK `3.x`, `FalconIntegration` doesn't accept any options, and service spans are always named after the route pattern, for example `/message/{message_id}`.
+
+In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
 
 By adding `FalconIntegration` to your `sentry_sdk.init()` call explicitly, you can set options for `FalconIntegration` to change its behavior:
 

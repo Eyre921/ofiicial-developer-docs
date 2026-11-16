@@ -18,6 +18,10 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
+> **What is the Vercel AI SDK?** The [Vercel AI SDK](https://ai-sdk.dev/docs/introduction) is a lightweight toolkit that lets developers call and stream responses from AI models (like OpenAI, Anthropic, or any compliant provider) directly in web apps with simple server/client functions.
+
+> **What is Langfuse?** [Langfuse](https://langfuse.com/) is an open-source AI engineering platform. It helps teams trace agentic applications, debug issues, evaluate quality, and monitor costs in production. The [Langfuse AI Gateway](/docs/gateway/overview) is a central entry point for your AI traffic: it relays model calls to your providers, traces every call in Langfuse, and tracks its cost, without the Langfuse SDK. Use [Langfuse Cloud](/cloud) (hosted by Langfuse, free tier, no infrastructure to run) or [self-host](/self-hosting) it.
+
 Use the [AI SDK](https://ai-sdk.dev/docs/introduction) by Vercel with the gateway by pointing its OpenAI or Anthropic provider at the gateway. Each provider needs the matching provider connection in your organization: `OPENAI` for OpenAI models, `ANTHROPIC` for Anthropic models.
 
   For tracing the Vercel AI SDK without the gateway, see the [Vercel AI SDK integration](/integrations/frameworks/vercel-ai-sdk).

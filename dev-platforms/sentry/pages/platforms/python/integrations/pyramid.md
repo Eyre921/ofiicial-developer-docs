@@ -14,7 +14,7 @@ url: https://docs.sentry.io/platforms/python/integrations/pyramid/
 
 The Pyramid integration adds support for the [Pyramid Web Framework](https://trypyramid.com/).
 
-If you're using stream mode, this page's references to "transaction" should be applied to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
+In SDK `3.x`, and in stream mode in SDK `2.x`, this page's references to "transaction" apply to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
 
 ## [Install](https://docs.sentry.io/platforms/python/integrations/pyramid.md#install)
 
@@ -107,7 +107,9 @@ Note that automatic tracing on file-like responses when `offloading` is configur
 
 ## [Options](https://docs.sentry.io/platforms/python/integrations/pyramid.md#options)
 
-In stream mode, these options still work as described, but apply to service spans instead of transactions.
+Only available in SDK versions prior to `3.0`. In SDK `3.x`, `PyramidIntegration` doesn't accept any options, and service spans are always named after the route pattern, for example `/myurl/{id}`.
+
+In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
 
 By adding `PyramidIntegration` to your `sentry_sdk.init()` call explicitly, you can set options for `PyramidIntegration` to change its behavior:
 

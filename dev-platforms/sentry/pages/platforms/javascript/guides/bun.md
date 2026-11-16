@@ -20,6 +20,7 @@ Frameworks with their own setup guide:
 
 * [Elysia](https://docs.sentry.io/platforms/javascript/guides/elysia.md)
 * [Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)
+* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router/bun.md)
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/bun.md#prerequisites)
 

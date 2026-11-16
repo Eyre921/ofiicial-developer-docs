@@ -6920,7 +6920,7 @@ This layer includes:
 
 * **Discovery**: Lets clients query a server's supported protocol versions, capabilities, and identity through the `server/discover` request
 * **Server features**: Enables servers to provide core functionality including tools for AI actions, resources for context data, and prompts for interaction templates from and to the client
-* **Client features**: Enables servers to elicit input from the user. Sampling is [deprecated](/specification/2026-07-28/deprecated) as of protocol version `2026-07-28`.
+* **Client features**: Enables servers to elicit input from the user.
 * **Utility features**: Supports additional capabilities like notifications for real-time updates and progress tracking for long-running operations
 
 #### Transport layer
@@ -6938,7 +6938,7 @@ The transport layer abstracts communication details from the protocol layer, ena
 
 A core part of MCP is defining the schema and semantics between MCP clients and MCP servers. Developers will likely find the data layer — in particular, the set of [primitives](#primitives) — to be the most interesting part of MCP. It is the part of MCP that defines the ways developers can share context from MCP servers to MCP clients.
 
-MCP uses [JSON-RPC 2.0](https://www.jsonrpc.org/) as its underlying RPC protocol. Client and servers send requests to each other and respond accordingly. Notifications can be used when no response is required.
+MCP uses [JSON-RPC 2.0](https://www.jsonrpc.org/) as its underlying RPC protocol. Clients send requests and servers respond to them. Servers can request input from the client through the [Multi Round-Trip Requests](/specification/2026-07-28/basic/patterns/mrtr) pattern. Notifications can be used when no response is required.
 
 #### Statelessness and discovery
 
@@ -6954,8 +6954,8 @@ MCP defines three core primitives that *servers* can expose:
 * **Resources**: Data sources that provide contextual information to AI applications (e.g., file contents, database records, API responses)
 * **Prompts**: Reusable templates that help structure interactions with language models (e.g., system prompts, few-shot examples)
 
-Each primitive type has associated methods for discovery (`*/list`), retrieval (`*/get`), and in some cases, execution (`tools/call`).
-MCP clients will use the `*/list` methods to discover available primitives. For example, a client can first list all available tools (`tools/list`) and then execute them. This design allows listings to be dynamic.
+Each primitive type has associated methods for discovery (`*/list`), and for either retrieval (`resources/read`, `prompts/get`) or execution (`tools/call`).
+MCP clients will use the `*/list` methods to discover available primitives. For example, a client can list the available tools (`tools/list`), provide them to a model, and execute the ones that the model calls (`tools/call`). This design allows listings to be dynamic.
 
 As a concrete example, consider an MCP server that provides context about a database. It can expose tools for querying the database, a resource that contains the schema of the database, and a prompt that includes few-shot examples for interacting with the tools.
 
@@ -6967,12 +6967,13 @@ MCP also defines primitives that *clients* can expose. These primitives allow MC
 
 Elicitation requests are delivered through the [Multi Round-Trip Requests](/specification/2026-07-28/basic/patterns/mrtr) pattern, explained in the [elicitation overview](/docs/2026-07-28/learn/client-concepts#elicitation).
 
-**Deprecated**: The following client primitives are deprecated as of protocol version `2026-07-28`.
-
-* **Sampling**: Allows servers to request language model completions from the client's AI application. This is useful when server authors want access to a language model, but want to stay model-independent and not include a language model SDK in their MCP server. Servers request completions with the `sampling/createMessage` method, also delivered through the Multi Round-Trip Requests pattern. New implementations should integrate directly with LLM provider APIs.
-* **Logging**: Enables servers to send log messages to clients for debugging and monitoring purposes. New implementations should log to `stderr` (stdio transport) or use OpenTelemetry.
-
 For more details about client primitives see [client concepts](./client-concepts).
+
+Roots and sampling, which are client features, and protocol logging, which is a server feature, are [deprecated](/specification/2026-07-28/deprecated) as of protocol version `2026-07-28`. New implementations should use the following alternatives:
+
+* **Roots**: Pass directories or files through tool parameters, resource URIs, or server configuration.
+* **Sampling**: Integrate directly with LLM provider APIs. The protocol does not define a replacement for requesting completions through the client.
+* **Logging**: [Log to `stderr`](/docs/2026-07-28/tools/debugging#implementing-logging) for stdio servers, or use [OpenTelemetry](https://opentelemetry.io/).
 
 Besides server and client primitives, the protocol supports optional [extensions](/extensions/overview) that build on the core protocol. For example, the [Tasks extension](/extensions/tasks/overview) lets servers return a durable handle for long-running requests, so clients can poll for status and retrieve the result later.
 
@@ -7139,7 +7140,13 @@ The client can discover available tools by sending a `tools/list` request. This 
       }
     ],
     "ttlMs": 300000,
-    "cacheScope": "public"
+    "cacheScope": "public",
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "example-server",
+        "version": "1.0.0"
+      }
+    }
   }
 }
 ```
@@ -7220,7 +7227,13 @@ The `tools/call` request follows a structured format that ensures type safety an
         "type": "text",
         "text": "Current weather in San Francisco: 68°F, partly cloudy with light winds from the west at 8 mph. Humidity: 65%"
       }
-    ]
+    ],
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "example-server",
+        "version": "1.0.0"
+      }
+    }
   }
 }
 ```
@@ -7245,11 +7258,11 @@ The response demonstrates MCP's flexible content system:
 
 1. **`content` Array**: Tool responses return an array of content objects, allowing for rich, multi-format responses (text, images, resources, etc.)
 
-2. **Content Types**: Each content object has a `type` field. In this example, `"type": "text"` indicates plain text content, but MCP supports various content types for different use cases.
+2. **Content Types**: Each content object has a `type` field. In this example, `"type": "text"` indicates [text content](/specification/2026-07-28/server/tools#text-content). Tool results can also contain [images](/specification/2026-07-28/server/tools#image-content) (`image`), [audio](/specification/2026-07-28/server/tools#audio-content) (`audio`), [resource links](/specification/2026-07-28/server/tools#resource-links) (`resource_link`), and [embedded resources](/specification/2026-07-28/server/tools#embedded-resources) (`resource`). Not every model accepts all of these types, so clients may need to handle content that their model does not support.
 
-3. **Structured Output**: The response provides actionable information that the AI application can use as context for language model interactions.
+3. **Structured Content** (optional): Tools can also return [structured content](/specification/2026-07-28/server/tools#structured-content), a JSON value in the `structuredContent` field of the result. The tool in this example returns only text.
 
-This execution pattern allows AI applications to dynamically invoke server functionality and receive structured responses that can be integrated into conversations with language models.
+This execution pattern allows AI applications to dynamically invoke server functionality and receive responses that can be integrated into conversations with language models.
 
 #### How This Works in AI Applications
 
@@ -7370,8 +7383,8 @@ Upon receiving this notification, the client typically reacts by requesting the 
 This notification system is crucial for several reasons:
 
 1. **Dynamic Environments**: Tools may come and go based on server state, external dependencies, or user permissions
-2. **Efficiency**: Clients don't need to poll for changes; they're notified when updates occur
-3. **Consistency**: Ensures clients always have accurate information about available server capabilities
+2. **Efficiency**: Clients are notified when updates occur, so they can poll less often
+3. **Consistency**: Helps clients keep their view of available server capabilities up to date
 4. **Real-time Collaboration**: Enables responsive AI applications that can adapt to changing contexts
 
 This notification pattern extends beyond tools to other MCP primitives, enabling comprehensive real-time synchronization between clients and servers.
@@ -7401,17 +7414,11 @@ Understanding the distinction is important: the *host* is the application users 
 
 ## Core Client Features
 
-In addition to making use of context provided by servers, clients may provide several features to servers. These client features allow server authors to build richer interactions.
-
-| Feature | Explanation | Example |
-| - | - | - |
-| **Elicitation** | Elicitation enables servers to request specific information from users during interactions, providing a structured way for servers to gather information on demand. | A server booking travel may ask for the user's preferences on airplane seats, room type or their contact number to finalize a booking. |
-| **Roots** | Roots allow clients to specify which directories servers should focus on, communicating intended scope through a coordination mechanism. Roots are [deprecated](/specification/2026-07-28/deprecated) as of protocol version `2026-07-28`. | A server for booking travel may be given access to a specific directory, from which it can read a user's calendar. |
-| **Sampling** | Sampling allows servers to request LLM completions through the client, enabling an agentic workflow. This approach puts the client in complete control of user permissions and security measures. Sampling is deprecated as of protocol version `2026-07-28`. | A server for booking travel may send a list of flights to an LLM and request that the LLM pick the best flight for the user. |
+In addition to making use of context provided by servers, clients can provide features to servers, such as [elicitation](/specification/2026-07-28/client/elicitation). These allow server authors to build richer interactions.
 
 ### Elicitation
 
-Elicitation enables servers to request specific information from users during interactions, creating more dynamic and responsive workflows.
+Elicitation enables servers to request specific information from users during interactions, creating more dynamic and responsive workflows. For example, a server booking travel may ask for the user's preferences on airplane seats, room type or their contact number to finalize a booking.
 
 #### Overview
 
@@ -7423,6 +7430,8 @@ Elicitation supports two modes:
 * **URL mode**: The server provides a URL for the user to open. The interaction happens out of band and its data never passes through the client, which makes this mode suitable for sensitive flows such as credential entry or third-party OAuth authorization.
 
 Elicitation follows the [Multi Round-Trip Requests](/specification/2026-07-28/basic/patterns/mrtr) (MRTR) pattern. When a server needs user input while processing a request such as `tools/call`, it responds with an `InputRequiredResult` whose `inputRequests` field carries one or more `elicitation/create` requests. The client gathers the input and retries the original request, attaching the collected `inputResponses` and echoing back any `requestState` the server included.
+
+Clients declare the modes they support in the `elicitation` capability of each request, and servers must not use any other mode. An empty object (`{}`) declares form mode only, while `{ "form": {}, "url": {} }` declares both.
 
 **Elicitation flow:**
 
@@ -7449,38 +7458,148 @@ sequenceDiagram
 
 The flow enables dynamic information gathering. Servers can request specific data when needed, users provide information through appropriate UI, and servers complete the retried request with the newly acquired context.
 
-**Elicitation request example (delivered inside `InputRequiredResult.inputRequests`):**
+**Elicitation example:**
 
-```typescript theme={null}
+The following messages continue building on the [travel planning scenario](/docs/2026-07-28/learn/server-concepts#the-complete-flow). The client calls the `bookVacation` tool:
+
+```json theme={null}
 {
-  method: "elicitation/create",
-  params: {
-    mode: "form",
-    message: "Please confirm your Barcelona vacation booking details:",
-    requestedSchema: {
-      type: "object",
-      properties: {
-        confirmBooking: {
-          type: "boolean",
-          description: "Confirm the booking (Flights + Hotel = $3,000)"
-        },
-        seatPreference: {
-          type: "string",
-          enum: ["window", "aisle", "no preference"],
-          description: "Preferred seat type for flights"
-        },
-        roomType: {
-          type: "string",
-          enum: ["sea view", "city view", "garden view"],
-          description: "Preferred room type at hotel"
-        },
-        travelInsurance: {
-          type: "boolean",
-          default: false,
-          description: "Add travel insurance ($150)"
-        }
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "bookVacation",
+    "arguments": {
+      "outboundFlight": "EX101",
+      "returnFlight": "EX102",
+      "hotelId": "beachfront-hotel"
+    },
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "example-client",
+        "version": "1.0.0"
       },
-      required: ["confirmBooking"]
+      "io.modelcontextprotocol/clientCapabilities": {
+        "elicitation": {}
+      }
+    }
+  }
+}
+```
+
+The server needs the user to confirm the booking, so it responds with an `InputRequiredResult`. Its `resultType` of `"input_required"` indicates that the client must provide additional input before the server can complete the request:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "resultType": "input_required",
+    "inputRequests": {
+      "bookingConfirmation": {
+        "method": "elicitation/create",
+        "params": {
+          "mode": "form",
+          "message": "Please confirm your Barcelona vacation booking: flights June 15-22, beachfront hotel, total $3,000.",
+          "requestedSchema": {
+            "type": "object",
+            "properties": {
+              "confirmBooking": {
+                "type": "boolean",
+                "description": "Confirm the booking (Flights + Hotel = $3,000)"
+              },
+              "seatPreference": {
+                "type": "string",
+                "enum": ["window", "aisle", "no preference"],
+                "description": "Preferred seat type for flights"
+              },
+              "roomType": {
+                "type": "string",
+                "enum": ["sea view", "city view", "garden view"],
+                "description": "Preferred room type at hotel"
+              },
+              "travelInsurance": {
+                "type": "boolean",
+                "default": false,
+                "description": "Add travel insurance ($150)"
+              }
+            },
+            "required": ["confirmBooking"]
+          }
+        }
+      }
+    },
+    "requestState": "opaque-string-from-the-server",
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "travel-server",
+        "version": "1.0.0"
+      }
+    }
+  }
+}
+```
+
+After the user fills in the form, the client retries the call with a new `id`. The retry carries the user's answers in `inputResponses`, under the same `bookingConfirmation` key as the server's request, and the exact `requestState` value from the result:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "bookVacation",
+    "arguments": {
+      "outboundFlight": "EX101",
+      "returnFlight": "EX102",
+      "hotelId": "beachfront-hotel"
+    },
+    "inputResponses": {
+      "bookingConfirmation": {
+        "action": "accept",
+        "content": {
+          "confirmBooking": true,
+          "seatPreference": "window",
+          "roomType": "sea view",
+          "travelInsurance": false
+        }
+      }
+    },
+    "requestState": "opaque-string-from-the-server",
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "example-client",
+        "version": "1.0.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": {
+        "elicitation": {}
+      }
+    }
+  }
+}
+```
+
+The server completes the booking and returns a `CallToolResult`. Its `resultType` of `"complete"` indicates that the request completed successfully:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "resultType": "complete",
+    "content": [
+      {
+        "type": "text",
+        "text": "Booked flights EX101 and EX102 and a sea view room at the beachfront hotel."
+      }
+    ],
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "travel-server",
+        "version": "1.0.0"
+      }
     }
   }
 }
@@ -7500,165 +7619,20 @@ Elicitation interactions are designed to be clear, contextual, and respectful of
 
 **Request presentation**: Clients display elicitation requests with clear context about which server is asking, why the information is needed, and how it will be used. The request message explains the purpose while the schema provides structure and validation.
 
-**Response options**: Users can provide the requested information through appropriate UI controls (text fields, dropdowns, checkboxes), decline to provide information with optional explanation, or cancel the entire operation. Clients validate responses against the provided schema before returning them to servers.
+**Response options**: Users can provide the requested information through appropriate UI controls (text fields, dropdowns, checkboxes), explicitly decline to provide it, or dismiss the request without making a choice. These map to the `accept`, `decline`, and `cancel` actions. Clients validate responses against the provided schema before returning them to servers.
 
 **URL handling**: For URL mode, clients show the full URL and gather explicit consent before opening it, and never fetch the URL automatically. The client only learns whether the user consented. The interaction itself stays between the user and the target site.
 
 **Privacy considerations**: Servers must not use form mode to request sensitive information such as passwords, API keys, access tokens, or payment credentials. Those interactions belong in URL mode, which keeps the data out of band so it never passes through the client or the LLM context. Clients warn about suspicious requests and let users review form data before sending.
 
-### Roots
+## Deprecated Features
 
 > [!WARNING]
 >
-> Roots are [deprecated](/specification/2026-07-28/deprecated) as of protocol
-> version `2026-07-28` and scheduled for removal. New implementations should
-> pass directories or files via tool parameters, resource URIs, or server
-> configuration instead.
-
-Roots define filesystem boundaries for server operations, allowing clients to specify which directories servers should focus on.
-
-#### Overview
-
-Roots are a mechanism for clients to communicate filesystem access boundaries to servers. They consist of file URIs that indicate directories where servers can operate, helping servers understand the scope of available files and folders. While roots communicate intended boundaries, they do not enforce security restrictions. Actual security must be enforced at the operating system level, via file permissions and/or sandboxing.
-
-**Root structure:**
-
-```json theme={null}
-{
-  "uri": "file:///Users/agent/travel-planning",
-  "name": "Travel Planning Workspace"
-}
-```
-
-Roots are exclusively filesystem paths and always use the `file://` URI scheme. They help servers understand project boundaries, workspace organization, and accessible directories. The roots list can change as users work with different projects or folders. Servers pick up the updated boundaries the next time they request the roots list.
-
-#### Example: Travel Planning Workspace
-
-A travel agent working with multiple client trips benefits from roots to organize filesystem access. Consider a workspace with different directories for various aspects of travel planning.
-
-The client provides filesystem roots to the travel planning server:
-
-* `file:///Users/agent/travel-planning` - Main workspace containing all travel files
-* `file:///Users/agent/travel-templates` - Reusable itinerary templates and resources
-* `file:///Users/agent/client-documents` - Client passports and travel documents
-
-When the agent creates a Barcelona itinerary, well-behaved servers respect these boundaries—accessing templates, saving the new itinerary, and referencing client documents within the specified roots. Servers typically access files within roots by using relative paths from the root directories or by utilizing file search tools that respect the root boundaries.
-
-If the agent opens an archive folder like `file:///Users/agent/archive/2023-trips`, the client adds it to the roots list, and the server sees the new boundary on its next `roots/list` request.
-
-For a complete implementation of a server that respects roots, see the [filesystem server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) in the official servers repository.
-
-#### Design Philosophy
-
-Roots serve as a coordination mechanism between clients and servers, not a security boundary. The specification requires that servers "SHOULD respect root boundaries," and not that they "MUST enforce" them, because servers run code the client cannot control.
-
-Roots work best when servers are trusted or vetted, users understand their advisory nature, and the goal is preventing accidents rather than stopping malicious behavior. They excel at context scoping (telling servers where to focus), accident prevention (helping well-behaved servers stay in bounds), and workflow organization (such as managing project boundaries automatically).
-
-#### User Interaction Model
-
-Roots are typically managed automatically by host applications based on user actions, though some applications may expose manual root management:
-
-**Automatic root detection**: When users open folders, clients automatically expose them as roots. Opening a travel workspace allows the client to expose that directory as a root, helping servers understand which itineraries and documents are in scope for the current work.
-
-**Manual root configuration**: Advanced users can specify roots through configuration. For example, adding `/travel-templates` for reusable resources while excluding directories with financial records.
-
-### Sampling
-
-> [!WARNING]
+> Roots and sampling are [deprecated](/specification/2026-07-28/deprecated) as of protocol version `2026-07-28` and scheduled for removal. New implementations should use the following alternatives:
 >
-> Sampling is [deprecated](/specification/2026-07-28/deprecated) as of protocol
-> version `2026-07-28` and scheduled for removal. New implementations should
-> integrate directly with LLM provider APIs instead.
-
-Sampling allows servers to request language model completions through the client, enabling agentic behaviors while maintaining security and user control.
-
-#### Overview
-
-Sampling enables servers to perform AI-dependent tasks without directly integrating with or paying for AI models. Instead, servers can request that the client—which already has AI model access—handle these tasks on their behalf. This approach puts the client in complete control of user permissions and security measures. Because sampling requests occur within the context of other operations—like a tool analyzing data—and are processed as separate model calls, they maintain clear boundaries between different contexts, allowing for more efficient use of the context window.
-
-Sampling follows the same [Multi Round-Trip Requests](/specification/2026-07-28/basic/patterns/mrtr) flow described under [elicitation](#elicitation), with the `InputRequiredResult` carrying a `sampling/createMessage` request.
-
-Servers can also request tool use during sampling by including a `tools` array and an optional `toolChoice` field in the request. The tool definitions are scoped to that sampling request and do not need to correspond to tools the server exposes. Clients declare support through the `sampling.tools` capability, and servers must not send tool-enabled sampling requests to clients that have not declared it. See [sampling](/specification/2026-07-28/client/sampling#tools-in-sampling) in the specification for details.
-
-**Sampling flow:**
-
-```mermaid theme={null}
-sequenceDiagram
-    participant LLM
-    participant User
-    participant Client
-    participant Server
-
-    Client->>Server: tools/call (id: 1)
-    Note over Server: Server needs an LLM completion
-    Server-->>Client: InputRequiredResult with sampling/createMessage request
-
-    Note over Client,User: Human-in-the-loop review
-    Client->>User: Present request for approval
-    User-->>Client: Review and approve/modify
-
-    Note over Client,LLM: Model interaction
-    Client->>LLM: Forward approved request
-    LLM-->>Client: Return generation
-
-    Note over Client,User: Response review
-    Client->>User: Present response for approval
-    User-->>Client: Review and approve/modify
-
-    Note over Client,Server: Retry request with approved response
-    Client->>Server: tools/call (id: 2, inputResponses)
-    Server-->>Client: Final result
-```
-
-The flow ensures security through multiple human-in-the-loop checkpoints. Users review and can modify both the initial request and the generated response before the client retries the original request with it.
-
-**Request parameters example:**
-
-```typescript theme={null}
-{
-  messages: [
-    {
-      role: "user",
-      content: {
-        type: "text",
-        text: "Analyze these flight options and recommend the best choice:\n" +
-              "[47 flights with prices, times, airlines, and layovers]\n" +
-              "User preferences: morning departure, max 1 layover"
-      }
-    }
-  ],
-  modelPreferences: {
-    hints: [{
-      name: "claude-sonnet" // Prefer Sonnet-class models
-    }],
-    costPriority: 0.3,      // Less concerned about API cost
-    speedPriority: 0.2,     // Can wait for thorough analysis
-    intelligencePriority: 0.9  // Need complex trade-off evaluation
-  },
-  systemPrompt: "You are a travel expert helping users find the best flights based on their preferences",
-  maxTokens: 1500
-}
-```
-
-#### Example: Flight Analysis Tool
-
-Consider a travel booking server with a tool called `findBestFlight` that uses sampling to analyze available flights and recommend the optimal choice. When a user asks "Book me the best flight to Barcelona next month," the tool needs AI assistance to evaluate complex trade-offs.
-
-The tool queries airline APIs and gathers 47 flight options. It then requests AI assistance to analyze these options: "Analyze these flight options and recommend the best choice: \[47 flights with prices, times, airlines, and layovers] User preferences: morning departure, max 1 layover."
-
-The client initiates the sampling request, allowing the AI to evaluate trade-offs—like cheaper red-eye flights versus convenient morning departures. The tool uses this analysis to present the top three recommendations.
-
-#### User Interaction Model
-
-While not a requirement, sampling is designed to allow human-in-the-loop control. Users can maintain oversight through several mechanisms:
-
-**Approval controls**: Sampling requests may require explicit user consent. Clients can show what the server wants to analyze and why. Users can approve, deny, or modify requests.
-
-**Transparency features**: Clients can display the exact prompt, model selection, and token limits, allowing users to review AI responses before they return to the server.
-
-**Configuration options**: Users can set model preferences, configure auto-approval for trusted operations, or require approval for everything. Clients may provide options to redact sensitive information.
-
-**Security considerations**: Both clients and servers must handle sensitive data appropriately during sampling. Clients should implement rate limiting and validate all message content. The human-in-the-loop design ensures that server-requested AI interactions cannot compromise security or access sensitive data without explicit user consent.
+> * **Roots**: Pass directories or files through tool parameters, resource URIs, or server configuration.
+> * **Sampling**: Integrate directly with LLM provider APIs. The protocol does not define a replacement for requesting completions through the client.
 
 
 # Understanding MCP servers
@@ -7678,7 +7652,9 @@ Servers provide functionality through three building blocks:
 | **Resources** | Passive data sources that provide read-only access to information for context, such as file contents, database schemas, or API documentation. | Retrieve documents Access knowledge bases Read calendars | Application |
 | **Prompts** | Pre-built instruction templates that tell the model to work with specific tools and resources. | Plan a vacation Summarize my meetings Draft an email | User |
 
-We will use a hypothetical scenario to demonstrate the role of each of these features, and show how they can work together.
+We will use a hypothetical scenario to demonstrate the role of each of these features, and show how they can work together. Examples with a `jsonrpc` field are complete messages, and the rest are excerpts.
+
+Every request carries the [protocol version and client capabilities](/docs/2026-07-28/learn/architecture#statelessness-and-discovery) in `_meta`, and every result has a [`resultType`](/specification/2026-07-28/basic/index#responses).
 
 ### Tools
 
@@ -7695,20 +7671,42 @@ Tools are schema-defined interfaces that LLMs can invoke. MCP uses JSON Schema f
 | `tools/list` | Discover available tools | Array of tool definitions with schemas |
 | `tools/call` | Execute a specific tool | Tool execution result |
 
-**Example tool definition:**
+**Example tool definition, as returned by `tools/list`:**
 
-```typescript theme={null}
+```json theme={null}
 {
-  name: "searchFlights",
-  description: "Search for available flights",
-  inputSchema: {
-    type: "object",
-    properties: {
-      origin: { type: "string", description: "Departure city" },
-      destination: { type: "string", description: "Arrival city" },
-      date: { type: "string", format: "date", description: "Travel date" }
+  "name": "searchFlights",
+  "title": "Search Flights",
+  "description": "Search for available flights",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "origin": { "type": "string", "description": "Departure city" },
+      "destination": { "type": "string", "description": "Arrival city" },
+      "date": {
+        "type": "string",
+        "format": "date",
+        "description": "Travel date"
+      }
     },
-    required: ["origin", "destination", "date"]
+    "required": ["origin", "destination", "date"]
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "flights": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "flightNumber": { "type": "string" },
+            "priceUsd": { "type": "number" }
+          },
+          "required": ["flightNumber", "priceUsd"]
+        }
+      }
+    },
+    "required": ["flights"]
   }
 }
 ```
@@ -7719,27 +7717,90 @@ Tools enable AI applications to perform actions on behalf of users. In a travel 
 
 **Flight Search**
 
-```
-searchFlights(origin: "NYC", destination: "Barcelona", date: "2024-06-15")
+Queries multiple airlines and returns structured flight options. The arguments in the `tools/call` request conform to the tool's `inputSchema`:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/call",
+  "params": {
+    "name": "searchFlights",
+    "arguments": {
+      "origin": "New York",
+      "destination": "Barcelona",
+      "date": "2027-06-15"
+    },
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "example-client",
+        "version": "1.0.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": { "elicitation": {} }
+    }
+  }
+}
 ```
 
-Queries multiple airlines and returns structured flight options.
+The result's `structuredContent` conforms to the tool's `outputSchema`. For backwards compatibility, the result also includes the serialized JSON as text:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "resultType": "complete",
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"flights\":[{\"flightNumber\":\"EX101\",\"priceUsd\":640}]}"
+      }
+    ],
+    "structuredContent": {
+      "flights": [{ "flightNumber": "EX101", "priceUsd": 640 }]
+    },
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "travel-server",
+        "version": "1.0.0"
+      }
+    }
+  }
+}
+```
+
+The other tools are called the same way, with their own `name` and `arguments`.
 
 **Calendar Blocking**
 
-```
-createCalendarEvent(title: "Barcelona Trip", startDate: "2024-06-15", endDate: "2024-06-22")
-```
-
 Marks the travel dates in the user's calendar.
+
+```json theme={null}
+{
+  "name": "createCalendarEvent",
+  "arguments": {
+    "title": "Barcelona Trip",
+    "startDate": "2027-06-15",
+    "endDate": "2027-06-22"
+  }
+}
+```
 
 **Email notification**
 
-```
-sendEmail(to: "team@work.com", subject: "Out of Office", body: "...")
-```
-
 Sends an automated out-of-office message to colleagues.
+
+```json theme={null}
+{
+  "name": "sendEmail",
+  "arguments": {
+    "to": "team@example.com",
+    "subject": "Out of Office",
+    "body": "I am out of the office from June 15 to June 22."
+  }
+}
+```
 
 #### User Interaction Model
 
@@ -7760,16 +7821,14 @@ Resources provide structured access to information that the AI application can r
 
 Resources expose data from files, APIs, databases, or any other source that an AI needs to understand context. Applications can access this information directly and decide how to use it - whether that's selecting relevant portions, searching with embeddings, or passing it all to the model.
 
-Each resource has a unique URI (e.g., `file:///path/to/document.md`) and declares its MIME type for appropriate content handling.
+Each resource has a unique URI (e.g., `file:///path/to/document.md`) and can declare its MIME type for appropriate content handling.
 
 Resources support two discovery patterns:
 
-* **Direct Resources** - fixed URIs that point to specific data. Example: `calendar://events/2024` - returns calendar availability for 2024
-* **Resource Templates** - dynamic URIs with parameters for flexible queries. Example:
-  * `travel://activities/{city}/{category}` - returns activities by city and category
-  * `travel://activities/barcelona/museums` - returns all museums in Barcelona
+* **Direct Resources** - fixed URIs that point to specific data. Example: `calendar://events/2027-06` - returns calendar availability for June 2027
+* **Resource Templates** - parameterized URIs for flexible queries. Example: `travel://activities/{city}/{category}` - returns activities by city and category. For example, `travel://activities/Barcelona/museums` returns all museums in Barcelona
 
-Resource Templates include metadata such as title, description, and expected MIME type, making them discoverable and self-documenting.
+Resource Templates can include metadata such as title, description, and expected MIME type, making them discoverable and self-documenting.
 
 **Protocol operations:**
 
@@ -7778,23 +7837,78 @@ Resource Templates include metadata such as title, description, and expected MIM
 | `resources/list` | List available direct resources | Array of resource descriptors |
 | `resources/templates/list` | Discover resource templates | Array of resource template definitions |
 | `resources/read` | Retrieve resource contents | Resource data with metadata |
+| `completion/complete` | Suggest parameter values | Array of suggested values |
 | `subscriptions/listen` | Monitor resource changes | Stream of update notifications |
 
-To watch specific resources for changes, a client sends a [`subscriptions/listen`](/specification/2026-07-28/basic/patterns/subscriptions) request with the resource URIs listed in the `resourceSubscriptions` filter. The server delivers `notifications/resources/updated` on the resulting stream whenever a watched resource changes.
+To watch specific resources for changes, a client sends a [`subscriptions/listen`](/specification/2026-07-28/basic/patterns/subscriptions) request with the resource URIs listed in the `resourceSubscriptions` filter. Servers that support update notifications for individual resources declare `"subscribe": true` in their `resources` capability. The server delivers `notifications/resources/updated` on the resulting stream whenever a watched resource changes.
 
 #### Example: Getting Travel Planning Context
 
 Continuing with the travel planning example, resources provide the AI application with access to relevant information:
 
-* **Calendar data** (`calendar://events/2024`) - Checks user availability
+* **Calendar data** (`calendar://events/2027-06`) - Checks user availability
 * **Travel documents** (`file:///Documents/Travel/passport.pdf`) - Accesses important documents
-* **Previous itineraries** (`trips://history/barcelona-2023`) - References past trips and preferences
+* **Travel preferences** (`travel://preferences/europe`) - Looks up preferred airlines and hotel types
+* **Previous itineraries** (`travel://past-trips/spain-2023`) - References past trips
+* **Weather forecast** (`weather://forecast/Barcelona/2027-06-15`) - Looks up the weather for a travel date
 
 The AI application retrieves these resources and decides how to process them, whether selecting a subset of data using embeddings or keyword search, or passing raw data directly to the model.
 
-In this case, it provides calendar data, weather information, and travel preferences to the model, enabling it to check availability, look up weather patterns, and reference past travel preferences.
+In this case, it provides calendar data, weather information, travel preferences, and past trips to the model, enabling it to check availability, look up weather patterns, and follow the user's preferences.
 
-**Resource Template Examples:**
+The AI application reads each resource with a `resources/read` request:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "resources/read",
+  "params": {
+    "uri": "calendar://events/2027-06",
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "example-client",
+        "version": "1.0.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": {
+        "elicitation": {}
+      }
+    }
+  }
+}
+```
+
+The result contains the resource contents and two [caching hints](/specification/2026-07-28/server/utilities/caching). `ttlMs` is how long the client may consider the result fresh, in milliseconds, and a `cacheScope` of `"private"` means that caches must not share it across authorization contexts:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "resultType": "complete",
+    "contents": [
+      {
+        "uri": "calendar://events/2027-06",
+        "mimeType": "application/json",
+        "text": "{\"busy\":[{\"startDate\":\"2027-06-03\",\"endDate\":\"2027-06-04\"}]}"
+      }
+    ],
+    "ttlMs": 60000,
+    "cacheScope": "private",
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "calendar-email-server",
+        "version": "1.0.0"
+      }
+    }
+  }
+}
+```
+
+**Resource template examples:**
+
+From a weather server:
 
 ```json theme={null}
 {
@@ -7804,24 +7918,84 @@ In this case, it provides calendar data, weather information, and travel prefere
   "description": "Get weather forecast for any city and date",
   "mimeType": "application/json"
 }
+```
 
+From a travel server:
+
+```json theme={null}
 {
   "uriTemplate": "travel://flights/{origin}/{destination}",
   "name": "flight-search",
   "title": "Flight Search",
-  "description": "Search available flights between cities",
+  "description": "Search available flights between two airports",
   "mimeType": "application/json"
 }
 ```
 
-These templates enable flexible queries. For weather data, users can access forecasts for any city/date combination. For flights, they can search routes between any two airports. When a user has input "NYC" as the `origin` airport and begins to input "Bar" as the `destination` airport, the system can suggest "Barcelona (BCN)" or "Barbados (BGI)".
+These templates enable flexible queries. For weather data, users can access forecasts for any city/date combination. For flights, they can search routes between any two airports.
 
 #### Parameter Completion
 
-Dynamic resources support parameter completion. For example:
+Servers that declare the `completions` capability can suggest values for template parameters. For example:
 
-* Typing "Par" as input for `weather://forecast/{city}` might suggest "Paris" or "Park City"
-* Typing "JFK" for `flights://search/{airport}` might suggest "JFK - John F. Kennedy International"
+* Typing "Par" for `city` in `weather://forecast/{city}/{date}` might suggest "Paris" or "Park City"
+* Typing "JF" for `origin` in `travel://flights/{origin}/{destination}` might suggest "JFK"
+
+When a template has multiple parameters, clients should include the values that are already resolved in `context.arguments`, so the server can narrow its suggestions. Here, the user has chosen `JFK` as the `origin` and typed "Bar" for the `destination`:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "completion/complete",
+  "params": {
+    "ref": {
+      "type": "ref/resource",
+      "uri": "travel://flights/{origin}/{destination}"
+    },
+    "argument": {
+      "name": "destination",
+      "value": "Bar"
+    },
+    "context": {
+      "arguments": {
+        "origin": "JFK"
+      }
+    },
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "example-client",
+        "version": "1.0.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": { "elicitation": {} }
+    }
+  }
+}
+```
+
+The server suggests the airport codes for Barcelona and Barbados, which both have flights from JFK:
+
+```json theme={null}
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "resultType": "complete",
+    "completion": {
+      "values": ["BCN", "BGI"],
+      "total": 2,
+      "hasMore": false
+    },
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "travel-server",
+        "version": "1.0.0"
+      }
+    }
+  }
+}
+```
 
 The system helps discover valid values without requiring exact format knowledge.
 
@@ -7848,14 +8022,15 @@ Prompts are structured templates that define expected inputs and interaction pat
 
 | Method | Purpose | Returns |
 | - | - | - |
-| `prompts/list` | Discover available prompts | Array of prompt descriptors |
-| `prompts/get` | Retrieve prompt details | Full prompt definition with arguments |
+| `prompts/list` | Discover available prompts | Array of prompt definitions, including the arguments each one accepts |
+| `prompts/get` | Retrieve a prompt | Array of prompt messages |
+| `completion/complete` | Suggest argument values | Array of suggested values |
 
 #### Example: Streamlined Workflows
 
 Prompts provide structured templates for common tasks. In the travel planning context:
 
-**"Plan a vacation" prompt:**
+**"Plan a vacation" prompt, as returned by `prompts/list`:**
 
 ```json theme={null}
 {
@@ -7863,18 +8038,50 @@ Prompts provide structured templates for common tasks. In the travel planning co
   "title": "Plan a vacation",
   "description": "Guide through vacation planning process",
   "arguments": [
-    { "name": "destination", "type": "string", "required": true },
-    { "name": "duration", "type": "number", "description": "days" },
-    { "name": "budget", "type": "number", "required": false },
-    { "name": "interests", "type": "array", "items": { "type": "string" } }
+    {
+      "name": "origin",
+      "description": "City to depart from",
+      "required": true
+    },
+    {
+      "name": "destination",
+      "description": "City to visit",
+      "required": true
+    },
+    {
+      "name": "departureDate",
+      "description": "First day of the trip, as YYYY-MM-DD",
+      "required": true
+    },
+    {
+      "name": "returnDate",
+      "description": "Last day of the trip, as YYYY-MM-DD",
+      "required": true
+    },
+    {
+      "name": "budget",
+      "description": "Total budget in USD",
+      "required": false
+    },
+    {
+      "name": "travelers",
+      "description": "Number of travelers",
+      "required": false
+    },
+    {
+      "name": "interests",
+      "description": "Comma-separated list of interests"
+    }
   ]
 }
 ```
 
+Prompt arguments don't have types. Every value is sent as a string, so use `description` to specify the expected format. Arguments are optional unless `required` is `true`.
+
 Rather than unstructured natural language input, the prompt system enables:
 
 1. Selection of the "Plan a vacation" template
-2. Structured input: Barcelona, 7 days, \$3000, \["beaches", "architecture", "food"]
+2. Structured input: New York to Barcelona, June 15-22, \$3000, 2 travelers, interested in beaches, architecture, and food
 3. Consistent workflow execution based on the template
 
 #### User Interaction Model
@@ -7909,42 +8116,88 @@ Consider a personalized AI travel planner application, with three connected serv
 
 1. **User invokes a prompt with parameters:**
 
+   The user picks "Plan a vacation" and fills in its arguments. The client sends a `prompts/get` request to the Travel Server:
+
    ```json theme={null}
    {
-     "prompt": "plan-vacation",
-     "arguments": {
-       "destination": "Barcelona",
-       "departure_date": "2024-06-15",
-       "return_date": "2024-06-22",
-       "budget": 3000,
-       "travelers": 2
+     "jsonrpc": "2.0",
+     "id": 4,
+     "method": "prompts/get",
+     "params": {
+       "name": "plan-vacation",
+       "arguments": {
+         "origin": "New York",
+         "destination": "Barcelona",
+         "departureDate": "2027-06-15",
+         "returnDate": "2027-06-22",
+         "budget": "3000",
+         "travelers": "2",
+         "interests": "beaches, architecture, food"
+       },
+       "_meta": {
+         "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+         "io.modelcontextprotocol/clientInfo": {
+           "name": "example-client",
+           "version": "1.0.0"
+         },
+         "io.modelcontextprotocol/clientCapabilities": { "elicitation": {} }
+       }
+     }
+   }
+   ```
+
+   The server returns messages that the AI application adds to the conversation:
+
+   ```json theme={null}
+   {
+     "jsonrpc": "2.0",
+     "id": 4,
+     "result": {
+       "resultType": "complete",
+       "description": "Guide through vacation planning process",
+       "messages": [
+         {
+           "role": "user",
+           "content": {
+             "type": "text",
+             "text": "Plan a vacation from New York to Barcelona for 2 travelers, from 2027-06-15 to 2027-06-22, with a total budget of $3000. Interests: beaches, architecture, food.\n\nUse the calendar, travel preferences, and past trips provided as context. Search for flights and hotels within the budget, and check the weather for the travel dates. Propose one package. After the user agrees, book it, add the trip to the calendar, and email a confirmation."
+           }
+         }
+       ],
+       "_meta": {
+         "io.modelcontextprotocol/serverInfo": {
+           "name": "travel-server",
+           "version": "1.0.0"
+         }
+       }
      }
    }
    ```
 
 2. **User selects resources to include:**
-   * `calendar://my-calendar/June-2024` (from Calendar Server)
+   * `calendar://events/2027-06` (from Calendar/Email Server)
    * `travel://preferences/europe` (from Travel Server)
-   * `travel://past-trips/Spain-2023` (from Travel Server)
+   * `travel://past-trips/spain-2023` (from Travel Server)
 
 3. **AI processes the request using tools:**
 
-   The AI first reads all selected resources to gather context - identifying available dates from the calendar, learning preferred airlines and hotel types from travel preferences, and discovering previously enjoyed locations from past trips.
+   The AI application first reads all selected resources to gather context for the model - identifying available dates from the calendar, learning preferred airlines and hotel types from travel preferences, and discovering previously enjoyed locations from past trips.
 
-   Using this context, the AI then executes the prompt provided by the AI application. In our example, the AI application exposes the weather tools from the connected MCP weather server to the model. Because weather can affect travel plans, the AI chooses to call `checkWeather()` when interpreting the prompt.
+   Using this context, the model then follows the prompt provided by the Travel Server. The AI application exposes the tools from all three servers to the model, so a prompt from the Travel Server can lead the model to call `checkWeather` on the Weather Server.
 
-   As a result the AI executes a series of tools:
+   As a result, the model calls a series of tools:
 
-   * `searchFlights()` - Queries airlines for NYC to Barcelona flights
-   * `checkWeather()` - Retrieves climate forecasts for travel dates
+   * `searchFlights` (from Travel Server) - Queries airlines for New York to Barcelona flights
+   * `searchHotels` (from Travel Server) - Finds hotels within the specified budget
+   * `checkWeather` (from Weather Server) - Retrieves climate forecasts for travel dates
 
-   The AI then uses this information to create the booking and following steps, requesting approval from the user where necessary:
+   The model then uses this information to create the booking and following steps, with the AI application requesting approval from the user where necessary:
 
-   * `bookHotel()` - Finds hotels within the specified budget
-   * `createCalendarEvent()` - Adds the trip to the user's calendar
-   * `sendEmail()` - Sends confirmation with trip details
+   * `bookVacation` (from Travel Server) - Books the flights and hotel. The server asks the user to confirm the booking through [elicitation](/docs/2026-07-28/learn/client-concepts#elicitation)
+   * `createCalendarEvent` (from Calendar/Email Server) - Adds the trip to the user's calendar
+   * `sendEmail` (from Calendar/Email Server) - Sends confirmation with trip details
 
-**The result:** Through multiple MCP servers, the user researched and booked a Barcelona trip tailored to their schedule. The "Plan a Vacation" prompt guided the AI to combine Resources (calendar availability and travel history) with Tools (searching flights, booking hotels, updating calendars) across different servers—gathering context and executing the booking. A task that could have taken hours was completed in minutes using MCP.
+**The result:** Through multiple MCP servers, the user researched and booked a Barcelona trip tailored to their schedule. The "Plan a vacation" prompt guided the AI to combine Resources (calendar availability and travel history) with Tools (searching flights and hotels, booking them, updating the calendar) across different servers—gathering context and executing the booking. A task that could have taken hours was completed in minutes using MCP.
 
 
 # Versioning
@@ -8081,8 +8334,8 @@ MCP provides several tools for debugging at different levels:
    notification stream. This should be your first stop.
 2. **Server logging**: structured logs to stderr (stdio transport) or via
    [OpenTelemetry](https://opentelemetry.io/) (all transports).
-   [Logging](/specification/2026-07-28/server/utilities/logging) over the protocol
-   (`notifications/message`) is deprecated as of protocol version `2026-07-28`.
+   Logging over the protocol (`notifications/message`) is
+   [deprecated](/specification/2026-07-28/deprecated) as of protocol version `2026-07-28`.
 3. **Client developer tools**: most MCP clients expose logs and connection
    state. See [Debugging in Claude Desktop](#debugging-in-claude-desktop)
    below for one example, or consult your client's documentation.
@@ -8108,13 +8361,8 @@ or [OpenTelemetry](https://opentelemetry.io/) for logs, and standard HTTP
 tooling (curl, browser DevTools Network panel) to inspect requests and SSE
 streams.
 
-> [!WARNING]
->
-> The `notifications/message` mechanism below is deprecated as of protocol
-> version `2026-07-28`. It remains available during the deprecation window.
-
 For all [transports](/specification/latest/basic/transports), record what the
-server is doing as it runs:
+server is doing as it runs. For example, to write to stderr:
 
 ```python Python theme={null}
 import logging
@@ -8134,19 +8382,25 @@ async def fetch_report(report_id: str) -> str:
 ```
 
 ```typescript TypeScript theme={null}
-await server.sendLoggingMessage({
-  level: "info",
-  data: "Server started successfully",
-});
-```
+import { McpServer } from "@modelcontextprotocol/server";
+import { z } from "zod";
 
-MCP defines eight
-[RFC 5424 severity levels](/specification/latest/server/utilities/logging#log-levels)
-(`debug` through `emergency`). Clients opt in to log messages per request by
-setting the
-[`io.modelcontextprotocol/logLevel`](/specification/2026-07-28/server/utilities/logging#per-request-log-level)
-field in the request's `_meta`. Servers must not send `notifications/message`
-for requests that omit this field.
+const server = new McpServer({ name: "reports", version: "1.0.0" });
+
+server.registerTool(
+  "fetch_report",
+  {
+    description: "Fetch a report by id.",
+    inputSchema: z.object({ reportId: z.string() }),
+  },
+  async ({ reportId }) => {
+    console.error(`Fetching report ${reportId}`);
+    return {
+      content: [{ type: "text", text: `Report ${reportId} is ready.` }],
+    };
+  },
+);
+```
 
 Important events to log:
 
@@ -8451,7 +8705,7 @@ The MCP Inspector web client after a tool call, with the monitoring sidebar pinn
 
 ## Quickstart
 
-The Inspector requires **Node 22.19.0 or newer** and runs directly through `npx`. No installation is required:
+The Inspector requires **Node.js 22.23.4+, 24.22.1+, or 26.12.1+** and runs directly through `npx`. No installation is required:
 
 > [tab] Web
 >
@@ -10597,7 +10851,7 @@ sequenceDiagram
     M-->>C: authorization_servers, scopes_supported
     C->>A: GET authorization server metadata
     A-->>C: Endpoints and capabilities
-    Note over C,A: Client identifies itself:<br/>pre-registered ID, metadata document, or DCR
+    Note over C,A: Client identifies itself:<br/>pre-registered ID or metadata document
     Note over C: Record the issuer
     C->>B: Open authorization URL<br/>(PKCE challenge, resource, scope)
     B->>A: User logs in and consents
@@ -10752,9 +11006,14 @@ The client should then start a [step-up authorization flow](/specification/2026-
 | - | - |
 | **Pre-registration** | The client already has credentials for this authorization server |
 | **Client ID Metadata Documents** | Client and server have no prior relationship (most common) |
-| **Dynamic Client Registration** | Deprecated. For authorization servers that don't support Client ID Metadata Documents |
 
-A client that supports all three should try them in that order. If none is available, it should ask the user to enter the client information. See [Client Registration](/specification/2026-07-28/basic/authorization/client-registration).
+A client that supports both should try them in that order. If neither is available, it should ask the user to enter the client ID, and the client secret if there is one, of a client registered with the authorization server. See [Client Registration](/specification/2026-07-28/basic/authorization/client-registration).
+
+> [!WARNING]
+>
+> Dynamic Client Registration (DCR) is [deprecated](/specification/2026-07-28/deprecated) as of protocol version `2026-07-28`. New implementations should use [Client ID Metadata Documents](#client-id-metadata-documents) (CIMD) instead.
+>
+> Existing clients can [fall back to DCR](/specification/2026-07-28/basic/authorization/client-registration#dynamic-client-registration) before asking the user for a client ID and secret. This is applicable if the authorization server doesn't support CIMD and allows clients to register at runtime through its `registration_endpoint`.
 
 ### Client ID Metadata Documents
 
@@ -10779,32 +11038,11 @@ Authorization servers advertise support with `"client_id_metadata_document_suppo
 
 The client ID is set up in advance, along with credentials if they're needed. They can be built into the client or entered by the user.
 
-### Dynamic Client Registration
-
-> [!WARNING]
->
-> Dynamic Client Registration (DCR) is deprecated. New implementations should
-> use Client ID Metadata Documents instead. DCR remains available for backwards
-> compatibility with authorization servers that don't support them.
-
-With [DCR](https://datatracker.ietf.org/doc/html/rfc7591), the client posts its metadata to the authorization server's `registration_endpoint` and receives a client ID. Clients must include an appropriate `application_type`:
-
-```json theme={null}
-{
-  "client_name": "Example MCP Client",
-  "redirect_uris": ["http://127.0.0.1:8090/callback"],
-  "grant_types": ["authorization_code", "refresh_token"],
-  "response_types": ["code"],
-  "token_endpoint_auth_method": "none",
-  "application_type": "native"
-}
-```
-
-Pre-registered and DCR credentials belong to the authorization server that issued them. Clients must store them by `issuer` and never use them with another one. See [Authorization Server Binding](/specification/2026-07-28/basic/authorization/client-registration#authorization-server-binding).
+Credentials belong to the authorization server that issued them. Clients must store them by `issuer` and never use them with another one. See [Authorization Server Binding](/specification/2026-07-28/basic/authorization/client-registration#authorization-server-binding).
 
 ## Choosing an Authorization Server
 
-Use an existing identity provider or authorization server product. Client registration happens between the client and the authorization server, so your MCP server needs no CIMD or DCR code.
+Use an existing identity provider or authorization server product. Client registration happens between the client and the authorization server, so your MCP server needs no registration code.
 
 Check these points before you choose one:
 
@@ -11288,7 +11526,7 @@ The first command should print a `401` with a `WWW-Authenticate` header. The sec
 
 Also open your `METADATA_URL` and check that it contains `code_challenge_methods_supported`. Some clients work without it and others refuse to connect.
 
-Then run the full flow with the [MCP Inspector](/docs/2026-07-28/tools/inspector/authorization), which needs Node.js 22.19 or later. The command below opens a browser for login and calls the tool:
+Then run the full flow with the [MCP Inspector](/docs/2026-07-28/tools/inspector/authorization), which needs Node.js 22.23.4+, 24.22.1+, or 26.12.1+. The command below runs the login flow and calls the tool:
 
 ```bash theme={null}
 npx @modelcontextprotocol/inspector --cli http://localhost:3000/mcp --transport http \
@@ -11299,7 +11537,7 @@ npx @modelcontextprotocol/inspector --cli http://localhost:3000/mcp --transport 
 
 `--protocol-era modern` makes the Inspector use the 2026-07-28 protocol.
 
-The Inspector's redirect URI is `http://127.0.0.1:6276/oauth/callback`. `--client-metadata-url` is the URL of a metadata document that you host, with this redirect URI in its `redirect_uris`. If your authorization server supports DCR and accepts registration from your machine, you can leave this option out. For a pre-registered client, register the redirect URI and use `--client-id` instead, with `--client-secret` if the client has a secret.
+By default, the Inspector's redirect URI is `http://127.0.0.1:6276/oauth/callback` (change it with `--callback-url`; it must be a loopback address). `--client-metadata-url` is the URL of a metadata document that you host, with this redirect URI in its `redirect_uris`. The authorization server must be able to fetch it. For a pre-registered client, register the redirect URI and use `--client-id` instead, with `--client-secret` if the client has a secret.
 
 You can also connect from a client such as [Visual Studio Code](https://code.visualstudio.com). Run **MCP: Add Server** from the Command Palette, choose HTTP, and enter `http://localhost:3000/mcp`.
 
@@ -11311,7 +11549,7 @@ You can also connect from a client such as [Visual Studio Code](https://code.vis
 > * **The metadata document is invalid.** Its `client_id` must be identical to its URL, including any trailing slash. The redirect URI in the request must be in `redirect_uris`. Authorization servers should accept any port for a loopback IP address, but some compare the port too.
 > * **The authorization server rejects the `resource` value.** Register your server's URL exactly as clients send it, including the path and any trailing slash. The error might be `invalid_target`.
 > * **The Inspector prints `auth_required` after a successful login.** Your server refused the new token. The command prints the same message for a `401` and a `403`. To see which one it is, send the token with `curl -i -X POST http://localhost:3000/mcp -H "Content-Type: application/json" -H "Authorization: Bearer <token>"`.
-> * **The Inspector still fails after you fix the configuration.** It keeps tokens and registered clients between runs. Add `--relogin` to discard them.
+> * **The Inspector still fails after you fix the configuration.** It keeps tokens and client details between runs. Add `--relogin` to discard them.
 > * **Every token gets a `401`.** Decode a test token. `iss` must be exactly the same as `ISSUER`, and `aud` must contain exactly the expected audience, `http://localhost:3000/mcp` in the examples. If the token isn't a JWT, see [Opaque Tokens](#opaque-tokens). Check too that the clocks of the two servers agree.
 > * **Every token gets a `403`.** If the response has an `insufficient_scope` error, the token's `scope` claim doesn't contain `mcp:tools`. Some authorization servers use a claim such as `scp`, or an array instead of a string. Change the code that reads the claim. If the token uses a shorter name than clients request, convert it to the full name there. If there is no such error, the `Host` or `Origin` header might have been refused. For a refused `Host`, the Python SDK answers `421` and ASP.NET Core answers `400`.
 > * **The client refuses to start the flow.** Check that the authorization server metadata has `code_challenge_methods_supported` and that its `issuer` matches the PRM document.
@@ -11335,7 +11573,7 @@ The list below covers other common mistakes in a protected server and its author
 * **Return `5xx` during an outage**. If your server can't reach the JWKS or introspection endpoint, return a `5xx` status, as the TypeScript and Python examples do. The C# example does this only until it has downloaded the keys once. A `401` makes users log in again, and that doesn't fix the problem.
 * **Separate client and server credentials**. Don't use your MCP server's introspection credentials in end-user flows.
 * **Don't log credentials**. Remove `Authorization` headers, tokens, authorization codes, and secrets from your logs. Return generic errors to clients and keep the details in your own logs.
-* **Restrict Dynamic Client Registration**. Anyone can register with an open `registration_endpoint`, so add controls such as trusted hosts and rate limits.
+* **Restrict Dynamic Client Registration**. If your authorization server supports [DCR](#client-registration-approaches) with an open `registration_endpoint`, anyone can register a client. Disable DCR if your clients don't depend on it. Otherwise, restrict registration with controls such as trusted hosts and rate limits.
 
 ## Related Standards and Documentation
 
@@ -11348,7 +11586,6 @@ MCP authorization builds on these specifications:
 * **[RFC 8707](https://datatracker.ietf.org/doc/html/rfc8707)**: Resource Indicators
 * **[RFC 9207](https://datatracker.ietf.org/doc/html/rfc9207)**: Authorization Server Issuer Identification
 * **[OAuth Client ID Metadata Document](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-client-id-metadata-document-00)**: Client IDs that are URLs
-* **[RFC 7591](https://datatracker.ietf.org/doc/html/rfc7591)**: Dynamic Client Registration
 * **[RFC 6750](https://datatracker.ietf.org/doc/html/rfc6750)**: Bearer Token Usage
 
 For more details, see:
@@ -11834,6 +12071,10 @@ vulnerabilities. This attack allows malicious clients to obtain
 authorization codes without proper user consent by exploiting the
 combination of static client IDs, dynamic client registration, and
 consent cookies.
+
+> [!NOTE]
+>
+> Dynamic Client Registration is [deprecated](/specification/2026-07-28/deprecated) as of protocol version `2026-07-28`. The attack still applies to MCP proxy servers that support it.
 
 #### Terminology
 
@@ -13734,9 +13975,29 @@ Note that authorization **MUST** be included in every HTTP request from client t
 Example request:
 
 ```http theme={null}
-GET /mcp HTTP/1.1
+POST /mcp HTTP/1.1
 Host: mcp.example.com
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+Content-Type: application/json
+Accept: application/json, text/event-stream
+MCP-Protocol-Version: 2026-07-28
+Mcp-Method: tools/list
+
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "tools/list",
+  "params": {
+    "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "ExampleClient",
+        "version": "1.0.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": {}
+    }
+  }
+}
 ```
 
 ### Token Handling
@@ -18145,8 +18406,10 @@ Clients may offer the following features to servers:
 
 Beyond the core protocol, MCP defines optional [extensions](/extensions/overview)
 that add modular, specialized, or experimental functionality. Extensions
-are always opt-in and require explicit support from both client and server, negotiated
-during initialization. Notable extensions include:
+are always opt-in and require explicit support from both client and server, [negotiated
+through capabilities](/extensions/overview#negotiation) that clients declare on each
+request and servers declare in their `server/discover` result.
+Notable extensions include:
 
 * **[Tasks](/extensions/tasks/overview)**: Asynchronous execution of long-running
   operations, with polling, mid-flight input, and durable handles
@@ -18468,7 +18731,7 @@ interface InvalidParamsError \{\
   [message](#invalidparamserror-message): string;\
   [data](#invalidparamserror-data)?: unknown;\
   [code](#invalidparamserror-code): -32602;\
-}A JSON-RPC error indicating that the method parameters are invalid or malformed. In MCP, this error is returned in various contexts when request parameters fail validation: <ul> <li>**Tools**: Unknown tool name or invalid tool arguments</li> <li>**Prompts**: Unknown prompt name or missing required arguments</li> <li>**Pagination**: Invalid or expired cursor values</li> <li>**Logging**: Invalid log level</li> <li>**Elicitation**: Server requests an elicitation mode not declared in client capabilities</li> <li>**Sampling**: Missing tool result or tool results mixed with other content</li> </ul>   See[JSON-RPC 2.0 Error Object](https://www.jsonrpc.org/specification#error_object)  <details> <summary>Example: Unknown tool[Permalink](#invalidparamserror-example-unknown-tool)</summary><pre>`{  "code": -32602,  "message": "Unknown tool: invalid_tool_name"} `Copy</pre> </details> <details> <summary>Example: Invalid tool arguments[Permalink](#invalidparamserror-example-invalid-tool-arguments)</summary><pre>`{  "code": -32602,  "message": "Invalid arguments for tool calculate: Missing required property 'expression'"} `Copy</pre> </details> <details> <summary>Example: Unknown prompt[Permalink](#invalidparamserror-example-unknown-prompt)</summary><pre>`{  "code": -32602,  "message": "Unknown prompt: invalid_prompt_name"} `Copy</pre> </details> <details> <summary>Example: Invalid cursor[Permalink](#invalidparamserror-example-invalid-cursor)</summary><pre>`{  "code": -32602,  "message": "Invalid cursor"} `Copy</pre> </details> message: string[Permalink](#invalidparamserror-message) A short description of the error. The message SHOULD be limited to a concise single sentence.  Inherited from [Error](#error).[message](#error-message) data?: unknown[Permalink](#invalidparamserror-data) Additional information about the error. The value of this member is defined by the sender (e.g. detailed error information, nested errors etc.).  Inherited from [Error](#error).[data](#error-data) code: -32602[Permalink](#invalidparamserror-code) The error type that occurred.  Overrides [Error](#error).[code](#error-code)
+}A JSON-RPC error indicating that the method parameters are invalid or malformed. In MCP, this error is returned in various contexts when request parameters fail validation: <ul> <li>**Tools**: Unknown tool name, or a request that does not satisfy the `CallToolRequest` schema. Invalid tool arguments are instead reported as tool execution errors, with `isError` set to true</li> <li>**Prompts**: Unknown prompt name or missing required arguments</li> <li>**Pagination**: Invalid or expired cursor values</li> <li>**Logging** (deprecated): Invalid log level</li> <li>**Elicitation**: Server requests an elicitation mode not declared in client capabilities</li> <li>**Sampling** (deprecated): Missing tool result or tool results mixed with other content</li> </ul>   See[JSON-RPC 2.0 Error Object](https://www.jsonrpc.org/specification#error_object)  <details> <summary>Example: Unknown tool[Permalink](#invalidparamserror-example-unknown-tool)</summary><pre>`{  "code": -32602,  "message": "Unknown tool: invalid_tool_name"} `Copy</pre> </details> <details> <summary>Example: Malformed tool call[Permalink](#invalidparamserror-example-malformed-tool-call)</summary><pre>`{  "code": -32602,  "message": "Invalid params for tools/call: 'arguments' must be an object"} `Copy</pre> </details> <details> <summary>Example: Unknown prompt[Permalink](#invalidparamserror-example-unknown-prompt)</summary><pre>`{  "code": -32602,  "message": "Unknown prompt: invalid_prompt_name"} `Copy</pre> </details> <details> <summary>Example: Invalid cursor[Permalink](#invalidparamserror-example-invalid-cursor)</summary><pre>`{  "code": -32602,  "message": "Invalid cursor"} `Copy</pre> </details> message: string[Permalink](#invalidparamserror-message) A short description of the error. The message SHOULD be limited to a concise single sentence.  Inherited from [Error](#error).[message](#error-message) data?: unknown[Permalink](#invalidparamserror-data) Additional information about the error. The value of this member is defined by the sender (e.g. detailed error information, nested errors etc.).  Inherited from [Error](#error).[data](#error-data) code: -32602[Permalink](#invalidparamserror-code) The error type that occurred.  Overrides [Error](#error).[code](#error-code)
 
 ### `InvalidRequestError`
 
@@ -19680,7 +19943,7 @@ interface CallToolResult \{\
   [structuredContent](#calltoolresult-structuredcontent)?: unknown;\
   [isError](#calltoolresult-iserror)?: boolean;\
   \[key: string]: unknown;\
-}The result returned by the server for a [tools/call](#calltoolrequest) request.  <details> <summary>Example: Result with unstructured text[Permalink](#calltoolresult-example-result-with-unstructured-text)</summary><pre>`{  "resultType": "complete",  "content": [    {      "type": "text",      "text": "Current weather in New York:\nTemperature: 72°F\nConditions: Partly cloudy"    }  ],  "isError": false} `Copy</pre> </details> <details> <summary>Example: Result with structured content[Permalink](#calltoolresult-example-result-with-structured-content)</summary><pre>`{  "resultType": "complete",  "content": [    {      "type": "text",      "text": "{\"temperature\": 22.5, \"conditions\": \"Partly cloudy\", \"humidity\": 65}"    }  ],  "structuredContent": {    "temperature": 22.5,    "conditions": "Partly cloudy",    "humidity": 65  }} `Copy</pre> </details> <details> <summary>Example: Invalid tool input error[Permalink](#calltoolresult-example-invalid-tool-input-error)</summary><pre>`{  "resultType": "complete",  "content": [    {      "type": "text",      "text": "Invalid departure date: must be in the future. Current date is 08/08/2025."    }  ],  "isError": true} `Copy</pre> </details> \_meta?: ResultMetaObject[Permalink](#calltoolresult-_meta)  Inherited from [Result](#result).[\_meta](#result-_meta) resultType: string[Permalink](#calltoolresult-resulttype) Indicates the type of the result, which allows the client to determine
+}The result returned by the server for a [tools/call](#calltoolrequest) request.  <details> <summary>Example: Result with unstructured text[Permalink](#calltoolresult-example-result-with-unstructured-text)</summary><pre>`{  "resultType": "complete",  "content": [    {      "type": "text",      "text": "Current weather in New York:\nTemperature: 72°F\nConditions: Partly cloudy"    }  ],  "isError": false} `Copy</pre> </details> <details> <summary>Example: Result with structured content[Permalink](#calltoolresult-example-result-with-structured-content)</summary><pre>`{  "resultType": "complete",  "content": [    {      "type": "text",      "text": "{\"temperature\": 22.5, \"conditions\": \"Partly cloudy\", \"humidity\": 65}"    }  ],  "structuredContent": {    "temperature": 22.5,    "conditions": "Partly cloudy",    "humidity": 65  }} `Copy</pre> </details> <details> <summary>Example: Invalid tool input error[Permalink](#calltoolresult-example-invalid-tool-input-error)</summary><pre>`{  "resultType": "complete",  "content": [    {      "type": "text",      "text": "Invalid departure date: must be in the future. Current date is 08/08/2025."    }  ],  "isError": true} `Copy</pre> </details> <details> <summary>Example: Missing required tool argument[Permalink](#calltoolresult-example-missing-required-tool-argument)</summary><pre>`{  "resultType": "complete",  "content": [    {      "type": "text",      "text": "Invalid arguments for tool calculate: Missing required property 'expression'"    }  ],  "isError": true} `Copy</pre> </details> \_meta?: ResultMetaObject[Permalink](#calltoolresult-_meta)  Inherited from [Result](#result).[\_meta](#result-_meta) resultType: string[Permalink](#calltoolresult-resulttype) Indicates the type of the result, which allows the client to determine
 how to parse the result object. Servers implementing this protocol version MUST include this field.
 For backward compatibility, when a client receives a result from a
 server implementing an earlier protocol version (which does not include `resultType`), the client MUST treat the absent field as `"complete"`.  Inherited from [Result](#result).[resultType](#result-resulttype) content: ContentBlock\[][Permalink](#calltoolresult-content) A list of content objects that represent the unstructured result of the tool call.  structuredContent?: unknown[Permalink](#calltoolresult-structuredcontent) An optional JSON value that represents the structured result of the tool call. This can be any JSON value (object, array, string, number, boolean, or null)
@@ -22955,7 +23218,14 @@ To support Enterprise-Managed Authorization, your client must:
 
 2. **Support SSO** — users should authenticate to the MCP Client using the enterprise IdP. Save the Identity Assertion (either an OpenID ID Token or SAML assertion) issued during login for later use.
 
-3. **Handle ID-JAGs** — when the server indicates that enterprise-managed auth is required, request an ID-JAG token from the enterprise IdP's authorization endpoint using the previously obtained Identity Assertion. Exchange this ID-JAG for an access token from the MCP Authorization Server. Do not redirect the user to the MCP Authorization Server's authorization endpoint.
+3. **Handle ID-JAGs** — when the server indicates that enterprise-managed auth is required, request an ID-JAG from the enterprise IdP's token endpoint using the previously obtained Identity Assertion. This is a Token Exchange ([RFC 8693](https://datatracker.ietf.org/doc/html/rfc8693)) request with these parameters:
+
+   * `requested_token_type`: `urn:ietf:params:oauth:token-type:id-jag`
+   * `subject_token` and `subject_token_type`: the Identity Assertion and its type. SAML clients can instead exchange the assertion for a Refresh Token and send that.
+   * `audience`: the issuer identifier of the MCP Authorization Server
+   * `resource`: the resource identifier of the MCP Server. This parameter is optional. If it is included, the access token issued for the ID-JAG is audience-restricted to that MCP Server. If it is omitted, the behavior depends on the authorization server. For example, the authorization server can use a default resource or reject the request with an [`invalid_target`](https://datatracker.ietf.org/doc/html/rfc8707#section-2) error.
+
+   Exchange this ID-JAG for an access token from the MCP Authorization Server's token endpoint, using the `urn:ietf:params:oauth:grant-type:jwt-bearer` grant. Do not redirect the user to the MCP Authorization Server's authorization endpoint.
 
 4. **Support organization configuration** — allow administrators to configure the enterprise IdP's endpoints, typically via organization-level settings rather than per-user settings.
 
@@ -23087,7 +23357,7 @@ sequenceDiagram
     participant AS as Authorization Server
     participant MCP as MCP Server
 
-    Client->>AS: POST /token<br/>grant_type=urn:ietf:params:<br/>oauth:grant-type:jwt-bearer<br/>assertion=<signed JWT>
+    Client->>AS: POST /token<br/>grant_type=client_credentials<br/>client_assertion_type=urn:ietf:params:<br/>oauth:client-assertion-type:jwt-bearer<br/>client_assertion=<signed JWT><br/>resource=<MCP server URI>
     AS-->>Client: access_token
     Client->>MCP: MCP request (Bearer token)
 ```
@@ -23096,7 +23366,7 @@ The JWT assertion typically includes:
 
 * `iss`: Client ID (the issuer)
 * `sub`: Client ID (subject being authenticated)
-* `aud`: Authorization server token endpoint URL
+* `aud`: Authorization server issuer identifier (the `issuer` value from its metadata), as the only value. [RFC 10070](https://www.rfc-editor.org/rfc/rfc10070.html) disallows the token endpoint URL, which RFC 7523 permitted
 * `exp`: Expiration time
 * `iat`: Issued-at time
 
@@ -23110,7 +23380,7 @@ sequenceDiagram
     participant AS as Authorization Server
     participant MCP as MCP Server
 
-    Client->>AS: POST /token<br/>grant_type=client_credentials<br/>client_id + client_secret
+    Client->>AS: POST /token<br/>grant_type=client_credentials<br/>client_id + client_secret<br/>resource=<MCP server URI>
     AS-->>Client: access_token
     Client->>MCP: MCP request (Bearer token)
 ```
@@ -23558,7 +23828,7 @@ This matrix shows which MCP clients support each [official extension](/extension
 
 > [!NOTE]
 >
-> Auth extension support (OAuth Client Credentials and Enterprise-Managed Authorization) is tracked separately from the core MCP authorization features (DCR, CIMD). Check each extension's specification and the [ext-auth repository](https://github.com/modelcontextprotocol/ext-auth) for the latest implementation status.
+> Auth extension support (OAuth Client Credentials and Enterprise-Managed Authorization) is tracked separately from the core MCP authorization features. Check each extension's specification and the [ext-auth repository](https://github.com/modelcontextprotocol/ext-auth) for the latest implementation status.
 
 ## Adding extension support to your client
 
@@ -23808,9 +24078,7 @@ Clients advertise extension support in the `initialize` request:
   "params": {
     "protocolVersion": "2025-11-25",
     "capabilities": {
-      "roots": {
-        "listChanged": true
-      },
+      "elicitation": {},
       "extensions": {
         "io.modelcontextprotocol/ui": {
           "mimeTypes": ["text/html;profile=mcp-app"]

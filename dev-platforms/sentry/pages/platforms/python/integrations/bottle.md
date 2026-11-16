@@ -14,7 +14,7 @@ url: https://docs.sentry.io/platforms/python/integrations/bottle/
 
 The Bottle integration adds support for the [Bottle web framework](https://bottlepy.org/).
 
-If you're using stream mode, this page's references to "transaction" should be applied to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
+In SDK `3.x`, and in stream mode in SDK `2.x`, this page's references to "transaction" apply to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
 
 ## [Install](https://docs.sentry.io/platforms/python/integrations/bottle.md#install)
 
@@ -98,7 +98,7 @@ Note that automatic tracing on file-like responses when `offloading` is configur
 
 ## [Options](https://docs.sentry.io/platforms/python/integrations/bottle.md#options)
 
-In stream mode, these options still work as described, but apply to service spans instead of transactions.
+In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
 
 If you add `BottleIntegration` explicitly to your `sentry_sdk.init()` call you can set options for `BottleIntegration` to change its behavior:
 
@@ -110,7 +110,6 @@ sentry_sdk.init(
     # same as above
     integrations=[
         BottleIntegration(
-            transaction_style="endpoint",
             failed_request_status_codes={*range(500, 600)},
         ),
     ],
@@ -120,6 +119,8 @@ sentry_sdk.init(
 Each of the following options are supported as keyword arguments to `BottleIntegration()`.
 
 ### [`transaction_style`](https://docs.sentry.io/platforms/python/integrations/bottle.md#transaction_style)
+
+Only available in SDK versions prior to `3.0`. In SDK `3.x`, service spans are always named after the route pattern, for example `/myurl/<foo>`.
 
 The `transaction_style` option specifies how the transaction name is generated. You can set the option to `"endpoint"` (the default) or `"url"`.
 

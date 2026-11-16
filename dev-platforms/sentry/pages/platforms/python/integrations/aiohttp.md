@@ -87,7 +87,7 @@ It takes a couple of moments for the data to appear in [sentry.io](https://sentr
 
 ## [Options](https://docs.sentry.io/platforms/python/integrations/aiohttp.md#options)
 
-In stream mode, these options still work as described, but apply to service spans instead of transactions.
+In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
 
 By adding `AioHttpIntegration` to your `sentry_sdk.init()` call explicitly, you can set options for `AioHttpIntegration` to change its behavior:
 
@@ -99,7 +99,6 @@ sentry_sdk.init(
     # same as above
     integrations=[
         AioHttpIntegration(
-            transaction_style="...",  # type: str
             failed_request_status_codes={...}  # type: collections.abc.Set[int]
         ),
     ],
@@ -109,6 +108,8 @@ sentry_sdk.init(
 You can pass the following keyword arguments to `AioHttpIntegration()`:
 
 ### [`transaction_style`](https://docs.sentry.io/platforms/python/integrations/aiohttp.md#transaction_style)
+
+Only available in SDK versions prior to `3.0`. In SDK `3.x`, service spans are always named after the route pattern, for example `/path/{id}`.
 
 Configure the way Sentry names transactions:
 

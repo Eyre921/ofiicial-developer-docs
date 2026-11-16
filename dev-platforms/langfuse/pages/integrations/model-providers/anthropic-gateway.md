@@ -18,6 +18,10 @@ category: Integrations
 
   **Beta.** The Langfuse AI Gateway is in public beta and can still change.
 
+> **What is Anthropic?** [Anthropic](https://www.anthropic.com/) is an AI safety company that develops Claude, a family of large language models designed to be helpful, harmless, and honest. Claude models excel at complex reasoning, analysis, and creative tasks.
+
+> **What is Langfuse?** [Langfuse](https://langfuse.com/) is an open-source AI engineering platform. It helps teams trace agentic applications, debug issues, evaluate quality, and monitor costs in production. The [Langfuse AI Gateway](/docs/gateway/overview) is a central entry point for your AI traffic: it relays model calls to your providers, traces every call in Langfuse, and tracks its cost, without the Langfuse SDK. Use [Langfuse Cloud](/cloud) (hosted by Langfuse, free tier, no infrastructure to run) or [self-host](/self-hosting) it.
+
 Use Anthropic's official [client SDKs](https://platform.claude.com/docs/en/cli-sdks-libraries/overview) for Python and TypeScript with the gateway by changing the base URL and the API key. Requests need an `ANTHROPIC` provider connection in your organization.
 
   For tracing the Anthropic SDK without the gateway, see the [Anthropic (Python)](/integrations/model-providers/anthropic) and [Anthropic (JS/TS)](/integrations/model-providers/anthropic-js) integrations.

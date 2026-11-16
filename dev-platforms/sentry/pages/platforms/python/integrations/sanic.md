@@ -14,7 +14,7 @@ url: https://docs.sentry.io/platforms/python/integrations/sanic/
 
 The Sanic integration adds support for the [Sanic Web Framework](https://sanic.dev/).
 
-If you're using stream mode, this page's references to "transaction" should be applied to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
+In SDK `3.x`, and in stream mode in SDK `2.x`, this page's references to "transaction" apply to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
 
 ## [Install](https://docs.sentry.io/platforms/python/integrations/sanic.md#install)
 
@@ -74,6 +74,8 @@ async def init_sentry(_):
 
 ### [Configuration options](https://docs.sentry.io/platforms/python/integrations/sanic.md#configuration-options)
 
+Only available in SDK versions prior to `3.0`. In SDK `3.x`, `SanicIntegration` doesn't accept `unsampled_statuses`, and the integration creates spans for requests with any HTTP status.
+
 If you're using tracing, you can configure the Sanic integration to not send transactions for requests that resulted in certain HTTP statuses using the `unsampled_statuses` option.
 
 By default, the Sanic integration generates transactions for all requests, except requests that result in a 404 HTTP status. To generate transactions for all HTTP statuses, including 404, or change which HTTP statuses don't generate transactions, you can manually instantiate the Sanic integration when initializing the Sentry SDK, like so:
@@ -99,7 +101,7 @@ async def init_sentry(_):
     )
 ```
 
-To specify a different set of HTTP statuses for which no transactions should be generated, set `unsampled_statuses` to a set containing the HTTP statuses that don't generate transactions. For example, if you wish to have no transactions for requests resulting in a 200 or 404 HTTP status, use `SanicIntegration(unsampled_statuses={200, 400})`.
+To specify a different set of HTTP statuses for which no transactions should be generated, set `unsampled_statuses` to a set containing the HTTP statuses that don't generate transactions. For example, if you wish to have no transactions for requests resulting in a 200 or 404 HTTP status, use `SanicIntegration(unsampled_statuses={200, 404})`.
 
 ## [Verify](https://docs.sentry.io/platforms/python/integrations/sanic.md#verify)
 

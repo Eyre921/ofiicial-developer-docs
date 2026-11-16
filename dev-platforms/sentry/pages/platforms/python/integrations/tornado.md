@@ -14,7 +14,7 @@ url: https://docs.sentry.io/platforms/python/integrations/tornado/
 
 The Tornado integration adds support for the [Tornado Web Framework](https://www.tornadoweb.org/).
 
-If you're using stream mode, this page's references to "transaction" should be applied to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
+In SDK `3.x`, and in stream mode in SDK `2.x`, this page's references to "transaction" apply to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
 
 ## [Install](https://docs.sentry.io/platforms/python/integrations/tornado.md#install)
 

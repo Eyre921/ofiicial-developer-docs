@@ -12,7 +12,7 @@ url: https://docs.sentry.io/platforms/python/integrations/django/
 
 # Django for Python
 
-If you're using stream mode, this page's references to "transaction" should be applied to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
+In SDK `3.x`, and in stream mode in SDK `2.x`, this page's references to "transaction" apply to service spans instead. See [Streamed Spans](https://docs.sentry.io/platforms/python/tracing/streamed-spans.md) for more information.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/python/integrations/django.md#prerequisites)
 
@@ -99,7 +99,7 @@ Sentry automatically captures errors and reports issues for you. You can also ex
 
 * If you use `django.contrib.auth`, and you've either enabled `user_info` in the [`data_collection` option](https://docs.sentry.io/platforms/python/configuration/options.md#data_collection) or set `send_default_pii=True` in your call to `init`, user data (such as current user ID, email address, username) will be attached to error events. `send_default_pii` will be removed in version 3.0 of the SDK.
 * Request data will be attached to all events: **HTTP method, URL, headers, form data, JSON payloads**. Sentry excludes raw bodies and multipart file uploads.
-* Logs emitted by any logger will be recorded as breadcrumbs by the [Logging](https://docs.sentry.io/platforms/python/integrations/logging.md) integration (this integration is enabled by default).
+* If you add the [Logging](https://docs.sentry.io/platforms/python/integrations/logging.md) integration, logs emitted by any logger will be recorded as breadcrumbs. In SDK versions prior to `3.0`, the Logging integration is enabled by default.
 
 To learn how to manually report issues, see [Capturing Errors](https://docs.sentry.io/platforms/python/usage.md).
 
@@ -127,7 +127,7 @@ You can also manually capture performance data – see [Custom Instrumentation](
 
 Use `sentry_sdk.logger` to send structured logs at different levels. You can include searchable attributes with each message.
 
-To capture records from Python's standard-library `logging` module or Loguru, configure `capture_sentry_logs=True` on the corresponding integration. See the [standard logging](https://docs.sentry.io/platforms/python/integrations/logging.md) and [Loguru](https://docs.sentry.io/platforms/python/integrations/loguru.md) integration guides.
+To capture records from Python's standard-library `logging` module or Loguru as Sentry logs, add the corresponding integration to your `integrations`. See the [standard logging](https://docs.sentry.io/platforms/python/integrations/logging.md) and [Loguru](https://docs.sentry.io/platforms/python/integrations/loguru.md) integration guides.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/python/logs.md) for all available logging methods and formatting options.
 
@@ -181,7 +181,7 @@ Need help locating captured data in your Sentry project?
 
 ## [Options](https://docs.sentry.io/platforms/python/integrations/django.md#options)
 
-In stream mode, these options still work as described, but apply to service spans instead of transactions.
+In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
 
 Add `DjangoIntegration` explicitly to your `sentry_sdk.init()` call to set options for `DjangoIntegration` to change its behavior:
 
@@ -195,7 +195,6 @@ sentry_sdk.init(
     # ...
     integrations=[
         DjangoIntegration(
-            transaction_style='url',
             middleware_spans=True,
             signals_spans=True,
             signals_denylist=[
@@ -216,6 +215,8 @@ You can pass the following keyword arguments to `DjangoIntegration()`:
 | Type    | `string` |
 | ------- | -------- |
 | Default | `"url"`  |
+
+Only available in SDK versions prior to `3.0`. In SDK `3.x`, service spans are always named after the route pattern, for example `/myproject/myview/<foo>`.
 
 How to name transactions that show up in Sentry tracing.
 
@@ -250,11 +251,11 @@ A list of signals to exclude from performance tracking. No spans will be created
 
 ### [cache\_spans](https://docs.sentry.io/platforms/python/integrations/django.md#cache_spans)
 
-| Type    | `bool`  |
-| ------- | ------- |
-| Default | `False` |
+| Type    | `bool` |
+| ------- | ------ |
+| Default | `True` |
 
-Create spans and track performance of all read operations to configured caches. The spans also include information if the cache access was a hit or a miss. Set to `True` to enable. The default is `False`.
+Create spans and track performance of all read operations to configured caches. The spans also include information if the cache access was a hit or a miss. Set to `False` to disable. The default is `True`. In SDK versions prior to `3.0`, the default is `False`.
 
 ### [http\_methods\_to\_capture](https://docs.sentry.io/platforms/python/integrations/django.md#http_methods_to_capture)
 

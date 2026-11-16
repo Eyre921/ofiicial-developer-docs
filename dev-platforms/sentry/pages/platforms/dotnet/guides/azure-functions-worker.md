@@ -12,14 +12,14 @@ url: https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker/
 
 # Sentry for Azure Functions (.NET)
 
-Sentry provides an integration with Azure Functions through the [Sentry.Extensions.Logging](https://www.nuget.org/packages/Sentry.Extensions.Logging) and [Sentry.OpenTelemetry.Exporter](https://www.nuget.org/packages/Sentry.OpenTelemetry.Exporter) NuGet packages.
+Sentry provides an integration with Azure Functions through the [Sentry.Extensions.Hosting](https://www.nuget.org/packages/Sentry.Extensions.Hosting) and [Sentry.OpenTelemetry.Exporter](https://www.nuget.org/packages/Sentry.OpenTelemetry.Exporter) NuGet packages.
 
 ## [Install](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md#install)
 
 Add the Sentry dependencies to your Azure Functions application:
 
 ```shell
-dotnet add package Sentry.Extensions.Logging -v 7.0.0
+dotnet add package Sentry.Extensions.Hosting -v 7.0.0
 dotnet add package Sentry.OpenTelemetry.Exporter -v 7.0.0
 dotnet add package OpenTelemetry.Extensions.Hosting
 dotnet add package OpenTelemetry.Instrumentation.Http
@@ -27,11 +27,13 @@ dotnet add package OpenTelemetry.Instrumentation.Http
 
 *Other available variations of the above snippet: Package Manager*
 
-The [Sentry.Extensions.Logging](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md) package also provides access to the `ILogger<T>` integration and the other core features available in the [Sentry](https://docs.sentry.io/platforms/dotnet.md) SDK.
+This package extends [Sentry.Extensions.Logging](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md). This means you also get the `ILogger<T>` integration and the other core features available in the [Sentry](https://docs.sentry.io/platforms/dotnet.md) SDK.
 
 ## [Configure](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md#configure)
 
-**Error Monitoring** starts working as soon as you initialize the SDK by calling `AddSentry` when configuring logging. **Logs** sent through `Microsoft.Extensions.Logging` need `EnableLogs = true`, and **Application Metrics** need no extra configuration. You'll learn how to send them in [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md#send-logs) and [Send Application Metrics](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md#send-application-metrics-).
+**Error Monitoring** starts working as soon as you call `UseSentry` on the host builder. **Logs** sent through `Microsoft.Extensions.Logging` need `EnableLogs = true`, and **Application Metrics** need no extra configuration. You'll learn how to send them in [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md#send-logs) and [Send Application Metrics](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md#send-application-metrics-).
+
+`UseSentry` starts Sentry when the host is built and closes it when the host stops. It also adds Sentry's `ILogger` integration, which captures `LogError` and higher as events. See the [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md) guide for its configuration options.
 
 This guide also enables **Tracing** through OpenTelemetry. Sentry's OTLP exporter is added to the OpenTelemetry `TracerProviderBuilder`, and `UseOtlp()` tells the Sentry SDK to use OpenTelemetry for tracing.
 
@@ -45,11 +47,17 @@ Don't need a feature? Remove its options from the snippet.
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using OpenTelemetry.Trace;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
+    .UseSentry(options =>
+    {
+        options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
+        options.EnableLogs = true;
+        options.UseOtlp(); // <-- Configure Sentry to use OpenTelemetry for tracing
+        options.Debug = true;
+    })
     .ConfigureServices(services =>
     {
         services.AddOpenTelemetry().WithTracing(builder =>
@@ -59,26 +67,22 @@ var host = new HostBuilder()
                 .AddHttpClientInstrumentation(); // From OpenTelemetry.Instrumentation.Http, instruments outgoing HTTP requests
         });
     })
-    .ConfigureLogging(logging =>
-    {
-        logging.AddSentry(options =>
-        {
-            options.Dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>";
-            options.EnableLogs = true;
-            options.UseOtlp(); // <-- Configure Sentry to use OpenTelemetry for tracing
-            options.Debug = true;
-        });
-    })
     .Build();
 
 await host.RunAsync();
 ```
 
+Apps that use the ASP.NET Core integration, with `ConfigureFunctionsWebApplication()` instead of `ConfigureFunctionsWorkerDefaults()`, call the same `UseSentry`, not the one from `Sentry.AspNetCore`.
+
+##### Changed in Version 7.0.0
+
+In earlier versions, there was no `Sentry.Extensions.Hosting` package. On those versions, install `Sentry.Extensions.Logging` and pass the same options to `logging.AddSentry(options => ...)` in `ConfigureLogging`, instead of calling `UseSentry`.
+
 ## [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker.md#send-logs)
 
-Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in your Sentry initialization.
+Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in the options you pass to `UseSentry`.
 
-See [Microsoft.Extensions.Logging](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md) for setup details.
+See [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md#send-logs) for setup details.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/dotnet/guides/azure-functions-worker/logs.md) for all available logging methods and formatting options.
 
@@ -165,6 +169,7 @@ At this point, you should have integrated Sentry into your Azure Functions appli
 - [Blazor Interactive SSR](https://docs.sentry.io/platforms/dotnet/guides/blazor-server.md)
 - [Blazor WebAssembly](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md)
 - [Entity Framework](https://docs.sentry.io/platforms/dotnet/guides/entityframework.md)
+- [Generic Host](https://docs.sentry.io/platforms/dotnet/guides/extensions-hosting.md)
 - [Google Cloud Functions](https://docs.sentry.io/platforms/dotnet/guides/google-cloud-functions.md)
 - [log4net](https://docs.sentry.io/platforms/dotnet/guides/log4net.md)
 - [MAUI](https://docs.sentry.io/platforms/dotnet/guides/maui.md)

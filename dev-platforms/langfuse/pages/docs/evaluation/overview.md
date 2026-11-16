@@ -16,7 +16,7 @@ Evals give you a repeatable check of your LLM application's behavior. You replac
 
 **Start with Langfuse** [Sign up](/cloud)
 
-  ![Score Analytics dashboard in Langfuse showing evaluation scores trended over time across multiple evaluators.](/images/docs/score-analytics-full-dashboard.png)
+  ![Langfuse experiment comparison showing scored results alongside an experiment item trace with its input and output.](/images/docs/experiment-comparison-peek-view.png)
 
 Evaluation runs across most of the [AI engineering loop](/academy/ai-engineering-loop): you score live traces in production, turn interesting examples into datasets, run experiments to compare changes, and judge the results with manual or automated evaluators. It happens both **online**, on live production traces, and **offline**, before you ship a change.
 

@@ -135,7 +135,7 @@ asyncio.run(main())
 
 The Sentry SDK automatically enables integrations for [many popular libraries](https://docs.sentry.io/platforms/python/tracing/instrumentation/automatic-instrumentation.md), so operations like HTTP requests or database queries made with supported libraries will be captured as spans automatically.
 
-However, spans are only created within an existing transaction. If you're not using a supported framework that creates transactions automatically, you'll need to create them manually using `sentry_sdk.start_transaction()`.
+In SDK versions prior to `3.0`, these spans are only created within an existing transaction. If you're not using a supported framework that starts transactions automatically, start one manually using `sentry_sdk.start_transaction()`.
 
 See [Custom Instrumentation](https://docs.sentry.io/platforms/python/tracing/instrumentation/custom-instrumentation.md) for more info.
 
@@ -143,7 +143,7 @@ See [Custom Instrumentation](https://docs.sentry.io/platforms/python/tracing/ins
 import sentry_sdk
 
 def some_function():
-    with sentry_sdk.start_transaction(op="task", name="Test Transaction"):
+    with sentry_sdk.start_span(name="Test Span", attributes={"sentry.op": "task"}):
         ...
 ```
 
@@ -151,7 +151,7 @@ def some_function():
 
 Use `sentry_sdk.logger` to send structured logs at different levels. You can include searchable attributes with each message.
 
-To capture records from Python's standard-library `logging` module or Loguru, configure `capture_sentry_logs=True` on the corresponding integration. See the [standard logging](https://docs.sentry.io/platforms/python/integrations/logging.md) and [Loguru](https://docs.sentry.io/platforms/python/integrations/loguru.md) integration guides.
+To capture records from Python's standard-library `logging` module or Loguru as Sentry logs, add the corresponding integration to your `integrations`. See the [standard logging](https://docs.sentry.io/platforms/python/integrations/logging.md) and [Loguru](https://docs.sentry.io/platforms/python/integrations/loguru.md) integration guides.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/python/logs.md) for all available logging methods and formatting options.
 
@@ -185,7 +185,8 @@ Run this code after `sentry_sdk.init()` to send a test error, along with a trace
 ```python
 import sentry_sdk
 
-with sentry_sdk.start_transaction(op="test", name="Verify Sentry setup"):
+# In SDK 2.x, use sentry_sdk.start_transaction(op="test", name="Verify Sentry setup") instead
+with sentry_sdk.start_span(name="Verify Sentry setup", attributes={"sentry.op": "test"}):
     sentry_sdk.logger.info("Sentry verification log")
     sentry_sdk.metrics.count("sentry.verification", 1)
     1 / 0
