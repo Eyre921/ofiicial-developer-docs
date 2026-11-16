@@ -99,7 +99,7 @@ and [training skill](https://github.com/fw-ai-external/cookbook/blob/main/skills
 * **DPO does not provision a deployment** — there are no rollout samples or deployment weight syncs in the recipe.
 * **Keep a versioned reference cache** tied to tokenizer + base model revision. If the base model changes, recompute reference logprobs.
 * **Monitor margin statistics**: increasing margins indicate the policy is learning preferences.
-* **Periodic checkpoints are disabled by default** (`dcp_save_interval=0`); successful runs save final state by default. Set a positive interval on `dpo_loop.Config` for recovery during a run.
+* **Periodic checkpoints are on by default**, as in SFT: LoRA runs save a resumable and promotable checkpoint at each epoch end and about every 30 minutes within an epoch. Full-parameter runs, the default (`lora_rank=0`), save a resumable checkpoint every 50 steps. See [checkpoint fields](/fine-tuning/training-api/cookbook/reference#checkpoint-&-weight-sync-fields).
 
 ## Common pitfalls
 

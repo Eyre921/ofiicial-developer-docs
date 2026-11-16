@@ -29,7 +29,7 @@ The maximum number of invoice items is 250. Creating an invoice adds up to 250 p
 ```curl
 curl https://api.stripe.com/v1/invoiceitems \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d amount=1000 \
   -d currency=cad
 ```
@@ -51,7 +51,7 @@ You must pass in the `currency` parameter when you issue a multi-currency invoic
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d collection_method=send_invoice \
   -d days_until_due=30 \
   -d pending_invoice_items_behavior=include \

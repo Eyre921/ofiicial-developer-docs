@@ -204,7 +204,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 \> | Parameter mode | LoRA only | LoRA or full-parameter |
 \> | Methods | SFT, DPO and RL | SFT, DPO, ORPO and RL |
 \> | Billing | Per token | Per GPU hour while the trainer runs |
-\> | Limits | 8 concurrent runs per account by default | Your account's \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
+\> | Limits | 32 concurrent runs per account by default. Some models allow fewer per account (\[details]\(/fine-tuning/training-api/serverless#capacity-and-rate-limits)) | Your account's \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
 \> | - | - |
 \> | LoRA on a serverless model | Serverless Training |
 \> | LoRA on any other model | Dedicated Training, LoRA |

@@ -81,7 +81,7 @@ You can create an account link by calling the [Account Links](https://docs.strip
 ```curl
 curl https://api.stripe.com/v1/account_links \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "account={{CONNECTEDACCOUNT_ID}}" \
+  -d "account={{CONNECTED_ACCOUNT_ID}}" \
   --data-urlencode "refresh_url=https://example.com/reauth" \
   --data-urlencode "return_url=https://example.com/return" \
   -d type=account_onboarding

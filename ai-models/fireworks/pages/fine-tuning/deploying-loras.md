@@ -12,7 +12,7 @@ To run training evals before production serving, see [Evaluating Trained Models]
 
 > [!NOTE]
 >
-> This page covers deploying trained LoRA models, whether created on the Fireworks platform or imported, to **on-demand (dedicated) deployments**. LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on **serverless** and billed per token, with no deployment to manage. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview).
+> This page covers deploying trained LoRA models, whether created on the Fireworks platform or imported, to **on-demand (dedicated) deployments**. LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on **serverless** and billed per token, with no deployment to manage. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview), which is in Preview and available on request.
 
 > [!NOTE]
 >

@@ -145,7 +145,7 @@ For the Payment Links API calls:
 ```curl
 curl https://api.stripe.com/v1/payment_links \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true"
@@ -167,11 +167,11 @@ curl https://api.stripe.com/v1/payment_links \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_creation[enabled]=true" \
   -d "invoice_creation[invoice_data][issuer][type]=account" \
-  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTEDACCOUNT_ID}}"
+  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 #### Separate charges and transfers
@@ -189,10 +189,10 @@ curl https://api.stripe.com/v1/payment_links \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_creation[enabled]=true" \
   -d "invoice_creation[invoice_data][issuer][type]=account" \
-  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTEDACCOUNT_ID}}"
+  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 For the Transfers API calls:
@@ -206,7 +206,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Payment Links for subscriptions
@@ -222,7 +222,7 @@ For the Payment Links API calls:
 ```curl
 curl https://api.stripe.com/v1/payment_links \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true"
@@ -244,10 +244,10 @@ curl https://api.stripe.com/v1/payment_links \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "subscription_data[invoice_settings][issuer][type]=account" \
-  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTEDACCOUNT_ID}}"
+  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 #### Separate charges and transfers
@@ -265,9 +265,9 @@ curl https://api.stripe.com/v1/payment_links \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d "subscription_data[invoice_settings][issuer][type]=account" \
-  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTEDACCOUNT_ID}}"
+  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 For the Transfers API calls:
@@ -281,7 +281,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Checkout
@@ -299,7 +299,7 @@ For the Checkout Sessions API calls:
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true" \
@@ -323,11 +323,11 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
-  -d "payment_intent_data[transfer_data][destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
+  -d "payment_intent_data[transfer_data][destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_creation[enabled]=true" \
   -d "invoice_creation[invoice_data][issuer][type]=account" \
-  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d mode=payment \
   --data-urlencode "success_url=https://example.com/success"
 ```
@@ -347,10 +347,10 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_creation[enabled]=true" \
   -d "invoice_creation[invoice_data][issuer][type]=account" \
-  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "invoice_creation[invoice_data][issuer][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d mode=payment \
   --data-urlencode "success_url=https://example.com/success"
 ```
@@ -366,7 +366,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Checkout Sessions for subscriptions
@@ -382,7 +382,7 @@ For the Checkout Sessions API calls:
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true" \
@@ -406,10 +406,10 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
-  -d "subscription_data[transfer_data][destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
+  -d "subscription_data[transfer_data][destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "subscription_data[invoice_settings][issuer][type]=account" \
-  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d mode=subscription \
   --data-urlencode "success_url=https://example.com/success"
 ```
@@ -429,9 +429,9 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d "subscription_data[invoice_settings][issuer][type]=account" \
-  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "subscription_data[invoice_settings][issuer][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d mode=subscription \
   --data-urlencode "success_url=https://example.com/success"
 ```
@@ -447,7 +447,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Billing
@@ -465,7 +465,7 @@ For the Subscriptions API calls:
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "items[0][price]={{PRICE_ID}}" \
   -d "items[0][quantity]=1" \
   -d "customer={{CUSTOMER_ID}}" \
@@ -489,10 +489,10 @@ curl https://api.stripe.com/v1/subscriptions \
   -d "customer={{CUSTOMER_ID}}" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_settings[issuer][type]=account" \
-  -d "invoice_settings[issuer][account]={{CONNECTEDACCOUNT_ID}}"
+  -d "invoice_settings[issuer][account]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 #### Separate charges and transfers
@@ -511,10 +511,10 @@ curl https://api.stripe.com/v1/subscriptions \
   -d "customer={{CUSTOMER_ID}}" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_settings[issuer][type]=account" \
-  -d "invoice_settings[issuer][account]={{CONNECTEDACCOUNT_ID}}" \
-  -d "on_behalf_of={{CONNECTEDACCOUNT_ID}}"
+  -d "invoice_settings[issuer][account]={{CONNECTED_ACCOUNT_ID}}" \
+  -d "on_behalf_of={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 For the Transfers API calls:
@@ -528,7 +528,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Invoicing
@@ -544,7 +544,7 @@ For the Invoices API calls:
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "customer={{CUSTOMER_ID}}" \
   -d "automatic_tax[enabled]=true"
 ```
@@ -564,10 +564,10 @@ curl https://api.stripe.com/v1/invoices \
   -d "customer={{CUSTOMER_ID}}" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "issuer[type]=account" \
-  -d "issuer[account]={{CONNECTEDACCOUNT_ID}}"
+  -d "issuer[account]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 #### Separate charges and transfers
@@ -584,9 +584,9 @@ curl https://api.stripe.com/v1/invoices \
   -d "customer={{CUSTOMER_ID}}" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=account" \
-  -d "automatic_tax[liability][account]={{CONNECTEDACCOUNT_ID}}" \
+  -d "automatic_tax[liability][account]={{CONNECTED_ACCOUNT_ID}}" \
   -d "issuer[type]=account" \
-  -d "issuer[account]={{CONNECTEDACCOUNT_ID}}"
+  -d "issuer[account]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 For the Transfers API calls:
@@ -600,7 +600,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Custom flows (Payment Intents, non-Stripe gateways) 
@@ -620,7 +620,7 @@ For the Tax Calculation API calls:
 ```curl
 curl https://api.stripe.com/v1/tax/calculations \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d currency=usd \
   -d "line_items[0][amount]=1000" \
   -d "line_items[0][reference]=L1" \
@@ -636,11 +636,11 @@ For the Payment Intents API calls:
 ```curl
 curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d amount=1000 \
   -d currency=usd \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "metadata[tax_calculation]={{TAXCALCULATION_ID}}"
+  -d "metadata[tax_calculation]={{CALCULATION_ID}}"
 ```
 
 #### Destination charges
@@ -652,7 +652,7 @@ For the Tax Calculation API calls:
 ```curl
 curl https://api.stripe.com/v1/tax/calculations \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d currency=usd \
   -d "line_items[0][amount]=1000" \
   -d "line_items[0][reference]=L1" \
@@ -672,8 +672,8 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=1000 \
   -d currency=usd \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "metadata[tax_calculation]={{TAXCALCULATION_ID}}" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}"
+  -d "metadata[tax_calculation]={{CALCULATION_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 In this scenario, the connected account is liable for tax on the transaction, even though the platform owns the `PaymentIntent`. Think of the platform as facilitating a transaction between the connected account and the account’s customer. When you call the tax calculation API, calculate tax for the connected account by including the `Stripe-Account` header with the connected account ID.
@@ -689,7 +689,7 @@ For the Tax Calculation API calls:
 ```curl
 curl https://api.stripe.com/v1/tax/calculations \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d currency=usd \
   -d "line_items[0][amount]=1000" \
   -d "line_items[0][reference]=L1" \
@@ -708,7 +708,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=1000 \
   -d currency=usd \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "metadata[tax_calculation]={{TAXCALCULATION_ID}}"
+  -d "metadata[tax_calculation]={{CALCULATION_ID}}"
 ```
 
 For the Transfers API calls:
@@ -722,7 +722,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 In this scenario, the connected account is liable for tax on the transaction, even though the platform owns the `PaymentIntent`. Think of the platform as facilitating a transaction between the connected account and the account’s customer. When you call the tax calculation API, calculate tax for the connected account by including the `Stripe-Account` header with the connected account ID.
@@ -738,7 +738,7 @@ Check how to integrate using [Stripe Tax API](https://docs.stripe.com/tax/standa
 ```curl
 curl https://api.stripe.com/v1/tax/calculations \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d currency=usd \
   -d "line_items[0][amount]=1000" \
   -d "line_items[0][reference]=L1" \

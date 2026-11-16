@@ -267,7 +267,7 @@ Opt-in to capture values from [System.Diagnostic.Activity](https://github.com/do
 
 ### [Tunnel](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#tunnel)
 
-If events are being logged to Sentry from the client-side, then you should use a [tunnel](https://docs.sentry.io/platforms/javascript/troubleshooting.md#using-the-tunnel-option).
+If events are being logged to Sentry from the client-side, then you should use a [tunnel](https://docs.sentry.io/platforms/javascript/configuration/tunneling.md).
 
 A tunnel is an HTTP endpoint that acts as a proxy between Sentry and your application. Because you control this server, there is no risk of any requests sent to it being blocked.
 

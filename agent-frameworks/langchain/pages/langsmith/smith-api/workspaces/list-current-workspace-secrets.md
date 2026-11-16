@@ -5,3 +5,4 @@ path: langsmith/smith-api/workspaces/list-current-workspace-secrets
 ---
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/workspaces/current/secrets
+List the current workspace's secret keys. Values are never returned.

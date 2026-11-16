@@ -8,7 +8,7 @@ Learn about how to use the tools available in the Trigger.dev MCP Server
 
 ## Documentation and Search Tools
 
-### search\_docs
+### search_docs
 
 Search the Trigger.dev documentation for guides, examples, and API references.
 
@@ -20,7 +20,7 @@ Search the Trigger.dev documentation for guides, examples, and API references.
 
 ## Project Management Tools
 
-### list\_orgs
+### list_orgs
 
 List all organizations you have access to.
 
@@ -29,7 +29,7 @@ List all organizations you have access to.
 * `"What organizations do I have?"`
 * `"Show me my orgs"`
 
-### list\_projects
+### list_projects
 
 List all projects in your Trigger.dev account.
 
@@ -38,7 +38,7 @@ List all projects in your Trigger.dev account.
 * `"What projects do I have?"`
 * `"List my Trigger.dev projects"`
 
-### create\_project\_in\_org
+### create_project_in_org
 
 Create a new project in an organization.
 
@@ -47,7 +47,7 @@ Create a new project in an organization.
 * `"Create a new project called 'my-app'"`
 * `"Set up a new Trigger.dev project"`
 
-### initialize\_project
+### initialize_project
 
 Initialize Trigger.dev in your project with automatic setup and configuration.
 
@@ -58,7 +58,7 @@ Initialize Trigger.dev in your project with automatic setup and configuration.
 
 ## Task Management Tools
 
-### get\_current\_worker
+### get_current_worker
 
 Get the current worker for a project, including the worker version, SDK version, and registered tasks with their payload schemas.
 
@@ -67,7 +67,7 @@ Get the current worker for a project, including the worker version, SDK version,
 * `"What tasks are available?"`
 * `"Show me the tasks in dev"`
 
-### trigger\_task
+### trigger_task
 
 Trigger a task to run with a specific payload. You can add a delay, set tags, configure retries, choose a machine size, pick a region, set a TTL, or use an idempotency key.
 
@@ -79,7 +79,7 @@ Trigger a task to run with a specific payload. You can add a delay, set tags, co
 
 ## Run Monitoring Tools
 
-### get\_run\_details
+### get_run_details
 
 Get detailed information about a specific task run, including logs and status. Enable debug mode to get the full trace with all logs and spans.
 
@@ -88,7 +88,7 @@ Get detailed information about a specific task run, including logs and status. E
 * `"Show me details for run run_abc123"`
 * `"Why did this run fail?"`
 
-### list\_runs
+### list_runs
 
 List runs for a project. Filter by status, task, tags, version, machine size, or time period.
 
@@ -98,7 +98,7 @@ List runs for a project. Filter by status, task, tags, version, machine size, or
 * `"List failed runs from the last 7 days"`
 * `"What runs are currently executing?"`
 
-### wait\_for\_run\_to\_complete
+### wait_for_run_to_complete
 
 Wait for a specific run to finish and return the result.
 
@@ -106,7 +106,7 @@ Wait for a specific run to finish and return the result.
 
 * `"Wait for run run_abc123 to complete"`
 
-### cancel\_run
+### cancel_run
 
 Cancel a running or queued run.
 
@@ -115,7 +115,7 @@ Cancel a running or queued run.
 * `"Cancel run run_abc123"`
 * `"Stop that task"`
 
-### replay\_run
+### replay_run
 
 Replay a run as a new run of the same task, in the same environment. The new run reuses the original run's payload, metadata, tags, queue, concurrency key, and machine unless you override them. See [Replaying](/docs/replaying) for how each option falls back.
 
@@ -142,7 +142,7 @@ Deploy your project to staging or production.
 * `"Deploy to production"`
 * `"Deploy to staging"`
 
-### list\_deploys
+### list_deploys
 
 List deployments for a project. Filter by status or time period.
 
@@ -151,7 +151,7 @@ List deployments for a project. Filter by status or time period.
 * `"Show me recent deployments"`
 * `"What's deployed to production?"`
 
-### list\_preview\_branches
+### list_preview_branches
 
 List all preview branches in the project.
 
@@ -171,7 +171,7 @@ Show the current authenticated user, active CLI profile, email, and API URL.
 * `"Who am I logged in as?"`
 * `"What profile am I using?"`
 
-### list\_profiles
+### list_profiles
 
 List all configured CLI profiles and which one is currently active.
 
@@ -180,7 +180,7 @@ List all configured CLI profiles and which one is currently active.
 * `"What profiles do I have?"`
 * `"Show me my Trigger.dev profiles"`
 
-### switch\_profile
+### switch_profile
 
 Switch the active CLI profile for this MCP session. This changes which Trigger.dev account and API URL are used for all subsequent tool calls.
 
@@ -191,7 +191,7 @@ Switch the active CLI profile for this MCP session. This changes which Trigger.d
 
 ## Query and Analytics Tools
 
-### get\_query\_schema
+### get_query_schema
 
 Get the schema for TRQL queries, including all available tables, their columns, data types, descriptions, and allowed values. Call this before using the query tool to understand what data is available.
 
@@ -210,7 +210,7 @@ Execute a TRQL query against your Trigger.dev data. TRQL is a SQL-style query la
 * `"Show me the top 10 most expensive tasks"`
 * `"Query the average execution duration by task"`
 
-### list\_dashboards
+### list_dashboards
 
 List the built-in dashboards and your organization's custom dashboards, with their widgets.
 
@@ -219,7 +219,7 @@ List the built-in dashboards and your organization's custom dashboards, with the
 * `"What dashboards are available?"`
 * `"Show me the dashboard widgets"`
 
-### run\_dashboard\_query
+### run_dashboard_query
 
 Execute a single widget query from a built-in or custom dashboard. Use `list_dashboards` first to see available dashboards and widget IDs.
 
@@ -228,7 +228,7 @@ Execute a single widget query from a built-in or custom dashboard. Use `list_das
 * `"Run the total runs widget from the overview dashboard"`
 * `"Show me the LLM cost over time from the AI dashboard"`
 
-### create\_dashboard
+### create_dashboard
 
 Create a custom dashboard, optionally with widgets. Each widget has a title, a TRQL query and a display: a table, a bar or line chart, a big number, or a section title. Queries are checked when the dashboard is saved.
 
@@ -237,7 +237,7 @@ Create a custom dashboard, optionally with widgets. Each widget has a title, a T
 * `"Make a dashboard for the email tasks with total runs, failures and runs per day"`
 * `"Create a dashboard that charts p95 duration by task"`
 
-### set\_dashboard\_widgets
+### set_dashboard_widgets
 
 Replace every widget on a custom dashboard, and optionally rename it.
 
@@ -246,7 +246,7 @@ Replace every widget on a custom dashboard, and optionally rename it.
 * `"Add a failed runs widget to the email dashboard"`
 * `"Change the runs per day chart to a line chart"`
 
-### get\_report
+### get_report
 
 Render an interpreted [health report](/docs/reports) — a deterministic verdict, not a raw panel — as text with sparklines. The `health` report answers whether work is flowing, whether the runs that start are healthy, and whether the telemetry is fresh, with a headline verdict and a suggested next action. Returns markdown by default, or ANSI when `color` is set. Read-only.
 
@@ -258,7 +258,7 @@ Render an interpreted [health report](/docs/reports) — a deterministic verdict
 
 ## Dev Server Tools
 
-### start\_dev\_server
+### start_dev_server
 
 Start the Trigger.dev dev server (`trigger dev`) in the background. Waits up to 30 seconds for the worker to be ready.
 
@@ -267,7 +267,7 @@ Start the Trigger.dev dev server (`trigger dev`) in the background. Waits up to 
 * `"Start the dev server"`
 * `"Run trigger dev"`
 
-### stop\_dev\_server
+### stop_dev_server
 
 Stop the running Trigger.dev dev server.
 
@@ -275,7 +275,7 @@ Stop the running Trigger.dev dev server.
 
 * `"Stop the dev server"`
 
-### dev\_server\_status
+### dev_server_status
 
 Check the status of the dev server and view recent output. Shows whether it is stopped, starting, ready, or has errors.
 
@@ -285,13 +285,13 @@ Check the status of the dev server and view recent output. Shows whether it is s
 * `"Show me the dev server logs"`
 * `"Are there any build errors?"`
 
-The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, replay\_run, create\_dashboard, and set\_dashboard\_widgets.
+The deploy and list_preview_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger_task, cancel_run, replay_run, create_dashboard, and set_dashboard_widgets.
 
 ## Agent Chat Tools
 
 These tools let you have conversations with [chat agents](/docs/ai-chat/overview) directly from your AI coding tool. See the [Agent MCP guide](/docs/ai-chat/mcp) for a walkthrough.
 
-### list\_agents
+### list_agents
 
 List all chat agents registered in the current worker. Agents are tasks created with `chat.agent()` or `chat.customAgent()`.
 
@@ -300,7 +300,7 @@ List all chat agents registered in the current worker. Agents are tasks created 
 * `"What agents are available?"`
 * `"List my chat agents"`
 
-### start\_agent\_chat
+### start_agent_chat
 
 Start a conversation with a chat agent. Returns a chat ID for use with `send_agent_message`. Optionally preloads the agent so it initializes before the first message.
 
@@ -316,7 +316,7 @@ Start a conversation with a chat agent. Returns a chat ID for use with `send_age
 * `"Start a chat with the support agent"`
 * `"Talk to the pr-review agent with userId abc"`
 
-### send\_agent\_message
+### send_agent_message
 
 Send a message to an active agent chat and get the full response back. The agent remembers full context from previous messages in the same chat.
 
@@ -330,7 +330,7 @@ Send a message to an active agent chat and get the full response back. The agent
 * `"Tell the agent to review the latest PR"`
 * `"Ask it what tools it has available"`
 
-### close\_agent\_chat
+### close_agent_chat
 
 Close an agent chat conversation. The agent exits its loop gracefully. Without this, the agent will close on its own when its idle timeout expires.
 
@@ -349,7 +349,7 @@ The `start_agent_chat`, `send_agent_message`, and `close_agent_chat` tools are w
 
 Read and write a session's realtime streams: a named [side channel](/docs/ai-chat/side-channels) or the reserved chat transcript pair. Use these to observe an agent's out-of-band output (a screencast, telemetry) or to send it control input.
 
-### read\_session\_channel
+### read_session_channel
 
 Read records from a session's realtime stream. By default it returns the records that exist right now after an optional cursor and closes, so it is a point-in-time drain, not a live subscription. Set `timeoutInSeconds` to wait for the next record when none exist yet.
 
@@ -367,7 +367,7 @@ Read records from a session's realtime stream. By default it returns the records
 * `"Read the latest frames on the screencast channel for this session"`
 * `"Wait for the next control message on the session's status channel"`
 
-### write\_session\_channel
+### write_session_channel
 
 Append one record to a named side channel's `in` stream. Sends control input to a running agent (e.g. a pause command) without waking or triggering a run. The reserved transcript and a channel's `out` side are not writable here; `out` is producer-only.
 
@@ -388,7 +388,7 @@ Append one record to a named side channel's `in` stream. Sends control input to 
 
 Set up and debug [hosted webhook endpoints](/docs/webhooks/overview). Endpoint ids start with `wh_` and delivery ids with `whd_`; endpoint tools also accept an endpoint's declared id. The same operations are on the [Webhooks API](/docs/management/webhooks/list-endpoints).
 
-### list\_webhook\_endpoints
+### list_webhook_endpoints
 
 List the environment's webhook endpoints: each one's id, declared id, source, status, URL and whether its signing secret is set.
 
@@ -396,7 +396,7 @@ List the environment's webhook endpoints: each one's id, declared id, source, st
 
 * `"Which webhook endpoints do I have in dev?"`
 
-### get\_webhook\_endpoint\_details
+### get_webhook_endpoint_details
 
 Get an endpoint's subscribers, with the filters that decide which events each accepts, and its setup prompt: the steps for registering the endpoint and its signing secret with the provider.
 
@@ -408,7 +408,7 @@ Get an endpoint's subscribers, with the filters that decide which events each ac
 
 * `"Connect my payments webhook to Stripe"`
 
-### list\_webhook\_deliveries
+### list_webhook_deliveries
 
 List recent deliveries, newest first.
 
@@ -425,7 +425,7 @@ List recent deliveries, newest first.
 * `"Did the Stripe checkout event arrive in the last hour?"`
 * `"Show me failed deliveries on the github endpoint"`
 
-### get\_webhook\_delivery
+### get_webhook_delivery
 
 Get one delivery: its status and error, each subscriber's result (the run or session it started, or why its filter skipped the event), how many waiting runs it resumed, and its event and headers.
 
@@ -437,7 +437,7 @@ Get one delivery: its status and error, each subscriber's result (the run or ses
 
 * `"Why didn't this webhook trigger my order task?"`
 
-### replay\_webhook\_delivery
+### replay_webhook_delivery
 
 Replay a delivery from its stored event. Without `targetId` it goes to every subscriber again, with their filters checked again. With `targetId` it goes to that subscriber even if its filter skipped the event.
 
@@ -450,7 +450,7 @@ Replay a delivery from its stored event. Without `targetId` it goes to every sub
 
 * `"Replay that delivery to the refunds task"`
 
-### generate\_webhook\_secret
+### generate_webhook_secret
 
 Generate a new signing secret for an endpoint and return it once, for providers where you choose the secret (such as GitHub). It replaces any existing secret.
 
@@ -463,7 +463,7 @@ Generate a new signing secret for an endpoint and return it once, for providers 
 
 * `"Rotate the GitHub endpoint's secret and keep the old one working for a day"`
 
-### set\_webhook\_secret
+### set_webhook_secret
 
 Store a signing secret or public key the provider issued, such as Stripe's `whsec_` secret. It replaces any existing secret.
 

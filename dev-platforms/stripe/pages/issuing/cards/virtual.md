@@ -27,7 +27,7 @@ For PCI-DSS compliance, we recommend limiting retrieval of virtual card informat
 You can retrieve both the full unredacted card number and CVC from the API. For security reasons, you can only use these fields with virtual cards in live mode, and we omit them unless you explicitly request them with the [expand](https://docs.stripe.com/api/expanding_objects.md) property. You can only retrieve these fields for physical cards in [sandboxes](https://docs.stripe.com/sandboxes.md). Additionally, you can only access them through the [Retrieve a card](https://docs.stripe.com/api/issuing/cards/retrieve.md) endpoint.
 
 ```curl
-curl -G https://api.stripe.com/v1/issuing/cards/{{ISSUINGCARD_ID}} \
+curl -G https://api.stripe.com/v1/issuing/cards/{{CARD_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "expand[]=number" \
   -d "expand[]=cvc"

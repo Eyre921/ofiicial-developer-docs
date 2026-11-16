@@ -126,7 +126,7 @@ Use the [Refresh API](https://docs.stripe.com/api/financial_connections/accounts
 Use the Financial Connections account ID to initiate a refresh. If you’re integrating through a payments flow, find the account ID [on the associated Payment Method](https://docs.stripe.com/financial-connections/ach-direct-debit-payments.md#finding-the-financial-connections-account-id). When using a Financial Connections Session, retrieve it [through the session](https://docs.stripe.com/financial-connections/other-data-powered-products.md?platform=web#collect-an-account).
 
 ```curl
-curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}}/refresh \
+curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}/refresh \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "features[]=ownership"
 ```
@@ -157,7 +157,7 @@ After an ownership refresh completes, Stripe sets the availability of future ref
 After the ownership refresh completes, retrieve the Financial Connections account from the API and expand the [ownership](https://docs.stripe.com/api/financial_connections/accounts/object.md#financial_connections_account_object-ownership) field to see ownership details.
 
 ```curl
-curl -G https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}} \
+curl -G https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "expand[]=ownership"
 ```

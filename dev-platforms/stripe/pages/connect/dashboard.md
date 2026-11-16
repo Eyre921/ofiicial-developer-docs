@@ -28,7 +28,9 @@ For individual connected accounts, some common tasks you can do in the Dashboard
 
 Status badges exclude local payment methods. See the [Capability settings](https://dashboard.stripe.com/settings/connect/capability-settings) in the Dashboard for the full list of local payment methods.
 
-Status badges provide a way to understand the status of an account. You can hover over the badges to view contextual information, and you can click the [status tabs](https://docs.stripe.com/connect/dashboard/viewing-all-accounts.md#tabs-workflows) to view accounts grouped by that status. Status badges include:
+Status badges provide a way to understand the status of an account. You can hover over the badges to view contextual information, and you can click the [status tabs](https://docs.stripe.com/connect/dashboard/viewing-all-accounts.md#tabs-workflows) to view accounts grouped by that status.
+
+Status badges include:
 
 | Status | Description |
 | --- | --- |

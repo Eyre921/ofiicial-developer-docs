@@ -19,7 +19,7 @@ If you set the value of [payments.payouts.schedule.interval](https://docs.stripe
 ```curl
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "payments[payouts][schedule][interval]=manual"
 ```
 
@@ -38,7 +38,7 @@ The following example sends 10 USD from a connected account’s Stripe balance t
 ```curl
 curl https://api.stripe.com/v1/payouts \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d amount=1000 \
   -d currency=usd
 ```
@@ -50,7 +50,7 @@ Stripe tracks balance contributions from different payment sources in separate b
 ```curl
 curl https://api.stripe.com/v1/payouts \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d amount=24784 \
   -d currency=usd \
   -d source_type=bank_account

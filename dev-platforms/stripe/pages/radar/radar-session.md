@@ -115,7 +115,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=1099 \
   -d currency=usd \
   -d "allowed_payment_method_types[]=card" \
-  -d "payment_method={{PAYMENTMETHOD_ID}}" \
+  -d "payment_method={{PAYMENT_METHOD_ID}}" \
   -d confirm=true \
   -d "radar_options[session]={{RADAR_SESSION_ID}}"
 ```
@@ -125,7 +125,7 @@ If you have an existing Payment Intent, you can attach a Radar Session to it whe
 ```curl
 curl https://api.stripe.com/v1/payment_intents/{{PAYMENT_INTENT_ID}}/confirm \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "payment_method={{PAYMENTMETHOD_ID}}" \
+  -d "payment_method={{PAYMENT_METHOD_ID}}" \
   -d "radar_options[session]={{RADAR_SESSION_ID}}"
 ```
 

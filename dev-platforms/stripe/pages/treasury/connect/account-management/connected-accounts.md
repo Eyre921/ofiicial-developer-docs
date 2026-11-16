@@ -257,7 +257,7 @@ The response includes the connected account ID.
 If you already have an eligible connected account, you can request to add `money_manager` capabilities:
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
   --json '{
@@ -358,7 +358,7 @@ Check for one of the following status results in the API or Dashboard:
 1. [Retrieve the connected account](https://docs.stripe.com/api/v2/core/accounts/retrieve.md?api-version=preview).
 
    ```curl
-   curl -G https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
+   curl -G https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-10-28.preview" \
      -d "include[0]=configuration.money_manager" \
@@ -416,7 +416,7 @@ Create a GB bank account and initiate Confirmation of Payee (CoP) using the [GB 
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "sort_code": "108800",
     "account_number": "00012345",
@@ -443,14 +443,14 @@ Check CoP status and acknowledge if needed.
 curl https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}}/acknowledge_confirmation_of_payee \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 #### US bank account
@@ -461,7 +461,7 @@ Create a US bank account for ACH using the [US Bank Accounts API](https://docs.s
 curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "routing_number": "110000000",
     "account_number": "000123456789",
@@ -483,10 +483,10 @@ curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts \
 Optionally, you can add a Fedwire routing number if you want to support wires.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANKACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANK_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "fedwire_routing_number": "110000000"
   }'
@@ -500,7 +500,7 @@ Create a payout method for a bank account in any of more than 50 countries using
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "payout_method_data": {
         "type": "bank_account",
@@ -577,7 +577,7 @@ You can list all payout methods for a connected account using the [Payout Method
 curl https://api.stripe.com/v2/money_management/payout_methods \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ## Webhooks

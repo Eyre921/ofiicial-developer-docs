@@ -4,7 +4,7 @@ source: https://docs.langchain.com/langsmith/configuration-cloud
 path: langsmith/configuration-cloud
 ---
 
-This page describes how to create, configure, and manage [assistants](/langsmith/assistants). Assistants allow you to customize your [deployed](/langsmith/deployment) graph's behavior through configuration—such as model selection, prompts, and tool availability—without changing the underlying graph code.
+This page describes how to create, configure, and manage [assistants](/langsmith/assistants). Assistants allow you to customize your [deployed](/langsmith/deploy-overview) graph's behavior through configuration—such as model selection, prompts, and tool availability—without changing the underlying graph code.
 
 You can work with the [SDK](https://reference.langchain.com/python/langsmith/deployment-sdk) or in the LangSmith UI.
 
@@ -396,7 +396,7 @@ You can set an earlier version of an assistant as active. All future runs that u
 
 Deleting an assistant permanently removes it and all of its versions. You cannot delete a single version. To stop using a version, [set a different version as active](#use-a-previous-assistant-version).
 
-It also deletes the assistant's cron jobs and interrupts any of its runs that are in progress. The deployment keeps running. To stop it, [delete the deployment](/langsmith/manage-deployment#delete-a-deployment).
+It also deletes the assistant's cron jobs and interrupts any of its runs that are in progress. The deployment keeps running. To stop it, [delete the deployment](/langsmith/manage-agent-server#delete-a-deployment).
 
 > [tab] SDK
 >

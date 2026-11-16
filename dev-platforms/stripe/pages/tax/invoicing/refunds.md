@@ -48,7 +48,7 @@ The following example applies a 50% refund to three line items with different ta
 ```curl
 curl https://api.stripe.com/v1/refunds \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "payment_intent={{PAYMENTINTENT_ID}}" \
+  -d "payment_intent={{PAYMENT_INTENT_ID}}" \
   -d amount=1000
 ```
 

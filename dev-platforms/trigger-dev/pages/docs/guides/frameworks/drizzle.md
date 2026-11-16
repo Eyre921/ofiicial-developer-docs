@@ -169,7 +169,7 @@ pnpm dlx trigger.dev@latest deploy
 yarn dlx trigger.dev@latest deploy
 ```
 
-**4. Adding your DATABASE\_URL environment variable to Trigger.dev**
+**4. Adding your DATABASE_URL environment variable to Trigger.dev**
 
 In your Trigger.dev dashboard sidebar click "Environment Variables" , and then the "Add new" button .
 

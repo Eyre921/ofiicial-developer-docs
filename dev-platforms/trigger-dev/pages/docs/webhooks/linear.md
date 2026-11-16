@@ -126,7 +126,7 @@ linear({
 })
 ```
 
-The user picks one and presses Continue; the choice shows in the session as "Approve createSubIssues \[call\_a]" (the tool and the call it applies to, so the decision always lands on the call whose input the card shows) and resumes the run with `{ approved: true | false }`, and the decision is recorded as a thought. Typing a free-text reply instead dismisses the options and runs as a normal turn, so the model can take the reply into account (and ask again) with the approval still pending.
+The user picks one and presses Continue; the choice shows in the session as "Approve createSubIssues \[call_a]" (the tool and the call it applies to, so the decision always lands on the call whose input the card shows) and resumes the run with `{ approved: true | false }`, and the decision is recorded as a thought. Typing a free-text reply instead dismisses the options and runs as a normal turn, so the model can take the reply into account (and ask again) with the approval still pending.
 
 `interactions` gives a tool its own choices instead of Approve and Deny. The card is a select of `options`, and the chosen option resolves the tool to `{ selected }`:
 
@@ -145,7 +145,7 @@ linear({
 })
 ```
 
-The choice shows in the session as "High \[choice:call\_a]", resumes the run with `{ selected: "High" }`, and is recorded as a thought.
+The choice shows in the session as "High \[choice:call_a]", resumes the run with `{ selected: "High" }`, and is recorded as a thought.
 
 ## Stopping
 

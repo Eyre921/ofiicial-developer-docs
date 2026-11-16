@@ -8,6 +8,10 @@ Serve your LoRA adapters on shared serverless GPUs, pay per token, and go from a
 
 Preview
 
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
+
 ## How it works
 
 Specialized Model Inference runs your LoRA adapters on Fireworks' shared serverless pool. You don't create or pay for a deployment. You load an adapter, call it like any serverless model, and pay per token at the base model's price.
@@ -37,7 +41,7 @@ Adapters load on this serverless base model:
 
 We plan to support more base models over time. Adapters trained on any other base model can't be loaded onto serverless - please use a [dedicated deployment](/fine-tuning/deploying-loras).
 
-Each account can load up to 3 LoRA adapters per base model at a time. Loading a fourth returns `ResourceExhausted`. Unload an adapter to free up a slot. If you need more slots, contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team.
+Each account can load up to 3 LoRA adapters per base model at a time. Loading a fourth returns `ResourceExhausted`. Unload an adapter to free up a slot. If you need more slots, contact [support@fireworks.ai](mailto:support@fireworks.ai) or your account team.
 
 ## Get started
 
@@ -347,6 +351,7 @@ You can see traffic split by LoRA adapter on the **Serverless** tab of the [Fire
 | - | - | - |
 | `404` on a call | The adapter is `READY` but not loaded, the key belongs to another account, or the ID is misspelled | `firectl model get <LORA_ID>` and look for **Deployed Model Refs**; load it if there are none |
 | `404` from another account | Only the owning account can call an adapter | Call it from the account that owns it |
+| Permission error on load | Your account doesn't have access to the Preview yet | Contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai) to request access |
 | `ResourceExhausted` or `429` on load | Your account already has 3 adapters loaded on that base model | Unload one, or ask for more slots |
 | `429` on a call | Adapter [rate limit](#rate-limits) for GLM 5.3 Flash | Retry with exponential backoff |
 | Client timeout on the first call | The first request downloads the adapter, which can take up to a minute | Raise the client timeout to 300 s and retry |

@@ -39,7 +39,7 @@ You can retrieve the mandate using the ID from the webhook event to review the a
 curl https://api.stripe.com/v2/money_management/spending_mandates/{{SPENDING_MANDATE_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
 The response includes information about the initiating party. If the third party initiates a debit associated with the mandate, you have one day to cancel the mandate before Stripe schedules the debit and sends the `v2.money_management.received_debit.scheduled` webhook event.
@@ -80,7 +80,7 @@ You can cancel a mandate to end debit authorization at any time. Canceling while
 curl -X POST https://api.stripe.com/v2/money_management/spending_mandates/{{SPENDING_MANDATE_ID}}/cancel \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
 The response confirms the mandate is `pending_cancellation`. After the cancellation completes, Stripe sends the `v2.money_management.spending_mandate.canceled` webhook event signaling the transition to `canceled`.
@@ -93,7 +93,7 @@ You can retrieve the set of mandates in place for a connected account. Use inlin
 curl https://api.stripe.com/v2/money_management/spending_mandates \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
 The result includes information about each mandate’s originator and when they created it, its status and type, and the financial account it applies to.
@@ -141,7 +141,7 @@ After you authorize a third party’s mandate to directly debit a financial acco
 curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ```json
@@ -190,7 +190,7 @@ curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT
 curl https://api.stripe.com/v2/money_management/received_debits \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ## Dispute a received debit
@@ -203,7 +203,7 @@ You can dispute a `ReceivedDebit` within the dispute window specified in `disput
 curl -X POST https://api.stripe.com/v2/money_management/debit_disputes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "received_debit": "{{RECEIVED_DEBIT_ID}}",
     "bank_transfer": {
@@ -220,7 +220,7 @@ curl -X POST https://api.stripe.com/v2/money_management/debit_disputes \
 curl https://api.stripe.com/v2/money_management/debit_disputes/{{DEBIT_DISPUTE_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ### List debit disputes
@@ -231,7 +231,7 @@ curl https://api.stripe.com/v2/money_management/debit_disputes/{{DEBIT_DISPUTE_I
 curl https://api.stripe.com/v2/money_management/debit_disputes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ## Test received debits 
@@ -246,7 +246,7 @@ If you simulate a Bacs GBP debit, the helper also creates a `SpendingMandate`. T
 curl -X POST https://api.stripe.com/v2/money_management/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/debit \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "amount": {
         "value": 1000,

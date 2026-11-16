@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 378 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -298,6 +298,7 @@
 - `docs/manual-setup` — [Manual setup](pages/docs/manual-setup.md) · [原文](https://trigger.dev/docs/manual-setup)
 - `docs/mcp-agent-rules` — [Agent rules](pages/docs/mcp-agent-rules.md) · [原文](https://trigger.dev/docs/mcp-agent-rules)
 - `docs/mcp-introduction` — [MCP Introduction](pages/docs/mcp-introduction.md) · [原文](https://trigger.dev/docs/mcp-introduction)
+- `docs/mcp-remote` — [Remote MCP server](pages/docs/mcp-remote.md) · [原文](https://trigger.dev/docs/mcp-remote)
 - `docs/mcp-tools` — [MCP Tools](pages/docs/mcp-tools.md) · [原文](https://trigger.dev/docs/mcp-tools)
 - `docs/migrating-from-v3` — [Migrating from v3](pages/docs/migrating-from-v3.md) · [原文](https://trigger.dev/docs/migrating-from-v3)
 - `docs/migration-mergent` — [Migrating from Mergent](pages/docs/migration-mergent.md) · [原文](https://trigger.dev/docs/migration-mergent)
@@ -307,8 +308,16 @@
 - `docs/oidc` — [OpenID Connect (OIDC)](pages/docs/oidc.md) · [原文](https://trigger.dev/docs/oidc)
 - `docs/oidc/anthropic` — [Connect to Anthropic](pages/docs/oidc/anthropic.md) · [原文](https://trigger.dev/docs/oidc/anthropic)
 - `docs/oidc/aws` — [Connect to AWS](pages/docs/oidc/aws.md) · [原文](https://trigger.dev/docs/oidc/aws)
+- `docs/oidc/azure` — [Connect to Microsoft Azure](pages/docs/oidc/azure.md) · [原文](https://trigger.dev/docs/oidc/azure)
 - `docs/oidc/custom` — [Custom OIDC integrations](pages/docs/oidc/custom.md) · [原文](https://trigger.dev/docs/oidc/custom)
+- `docs/oidc/databricks` — [Connect to Databricks](pages/docs/oidc/databricks.md) · [原文](https://trigger.dev/docs/oidc/databricks)
+- `docs/oidc/doppler` — [Connect to Doppler](pages/docs/oidc/doppler.md) · [原文](https://trigger.dev/docs/oidc/doppler)
+- `docs/oidc/gcp` — [Connect to Google Cloud](pages/docs/oidc/gcp.md) · [原文](https://trigger.dev/docs/oidc/gcp)
+- `docs/oidc/hugging-face` — [Connect to Hugging Face](pages/docs/oidc/hugging-face.md) · [原文](https://trigger.dev/docs/oidc/hugging-face)
 - `docs/oidc/infisical` — [Connect to Infisical](pages/docs/oidc/infisical.md) · [原文](https://trigger.dev/docs/oidc/infisical)
+- `docs/oidc/openrouter` — [Connect to OpenRouter](pages/docs/oidc/openrouter.md) · [原文](https://trigger.dev/docs/oidc/openrouter)
+- `docs/oidc/snowflake` — [Connect to Snowflake](pages/docs/oidc/snowflake.md) · [原文](https://trigger.dev/docs/oidc/snowflake)
+- `docs/oidc/vault` — [Connect to HashiCorp Vault](pages/docs/oidc/vault.md) · [原文](https://trigger.dev/docs/oidc/vault)
 - `docs/open-source-contributing` — [Contributing](pages/docs/open-source-contributing.md) · [原文](https://trigger.dev/docs/open-source-contributing)
 - `docs/private-networking/aws-console-setup` — [Setting up PrivateLink in the AWS Console](pages/docs/private-networking/aws-console-setup.md) · [原文](https://trigger.dev/docs/private-networking/aws-console-setup)
 - `docs/private-networking/overview` — [Private networking](pages/docs/private-networking/overview.md) · [原文](https://trigger.dev/docs/private-networking/overview)

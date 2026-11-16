@@ -14,9 +14,9 @@ When you create a dedicated read nodes index, Pinecone provisions resources base
 
 Dedicated read nodes support dense, sparse, hybrid, and [full-text search](/guides/search/full-text-search) indexes, giving you flexibility in your search and retrieval strategy. Because storage (shards) and compute (replicas) scale independently, you can optimize for your specific workload characteristics.
 
-![](https://mintcdn.com/pinecone/id0yJFEuv83Kq3F9/images/drn-read-path_light.png?fit=max\&auto=format\&n=id0yJFEuv83Kq3F9\&q=85\&s=d139d1364ec4349c0028f6036769a61a)
+This diagram shows the query router sending each query to the dedicated read nodes, whose shards keep the index data from object storage cached in memory and on local SSDs:
 
-Read path for dedicated read nodes
+![Read path diagram for dedicated read nodes. A client sends a query to the query router, which identifies and routes it to the relevant data. The router gets the freshest data from the memtable in the index builder and sends the query to the dedicated read nodes. The dedicated read nodes hold two replicas. Each replica is a complete copy of the index, split across shards 1 and 2, and each shard has memory and an SSD. Object storage holds the L0, L1, and L2 slabs for namespace 1 and feeds the dedicated read nodes. The router returns the results to the client.](https://mintcdn.com/pinecone/aWe8XxCdipSj7XaY/images/drn-read-path-light.svg?fit=max\&auto=format\&n=aWe8XxCdipSj7XaY\&q=85\&s=e72026b98d8a2b811982bd97766ab5ff)
 
 ## On-demand vs. dedicated read nodes
 

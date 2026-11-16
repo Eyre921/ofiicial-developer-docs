@@ -30,7 +30,7 @@ Use `training_shape_id` for explicit shape selection — this is the primary sha
 | `region` | `str \| None` | `None` | Region override (drives trainer + deployment colocation). |
 | `timeout_s` | `float` | `3600` | Timeout for trainer provisioning / readiness waits. |
 | `replica_count` | `int \| None` | `None` | Data-parallel HSDP replica count for policy trainer launches. This is a run-level knob, not part of the validated training shape; reference trainers are launched without it. |
-| `use_reservation` | `bool` | `True` | Use the account's matching reservation when one exists; the trainer then runs only on that reservation. Accounts without a matching reservation use shared capacity. Set to `False` to always use shared capacity. |
+| `use_reservation` | `bool` | `True` | Use the account's matching reservation when one exists; the trainer then runs only on that reservation. Accounts without a matching reservation use shared capacity. Set to `False` to always use shared capacity. If the reservation is full, the trainer waits for the reservation rather than using shared capacity. See [Training on a reservation](/deployments/reservations#training-on-a-reservation). |
 
 To request replicated HSDP for a run:
 
@@ -97,7 +97,7 @@ Adaptive inference-request settings used by sampling utilities. Async trajectory
 
 ## Checkpoint & weight-sync fields
 
-Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). Both RL loops sync before training and after each optimizer batch. The SFT, DPO, and RL recipes expose `dcp_save_interval`; SDFT uses its own `save_every` cadence:
+Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). Both RL loops sync before training and after each optimizer batch. The SFT, DPO, ORPO, RL, and distillation recipes expose `dcp_save_interval`; SDFT uses its own `save_every` cadence:
 
 ```python theme={null}
 cfg = Config(
@@ -109,11 +109,13 @@ cfg = Config(
 
 > [!WARNING]
 >
-> `dcp_save_interval=0` disables periodic saves, not the final checkpoint. Successful runs save final training state by default. Set a positive interval (e.g. `50`) for recovery from an interrupted run.
+> Set `dcp_save_interval=0` to turn periodic checkpoints off. In SFT and DPO, leave `checkpoint_interval_minutes` unset or set it to `0` as well. Successful runs still save a final checkpoint unless `save_final_checkpoint=False`.
 
 | Field | Recipes | Type | Default | Description |
 | - | - | - | - | - |
-| `dcp_save_interval` | SFT, DPO, RL | `int` | `0` | Save resumable DCP checkpoints every N steps. `0` disables periodic saves. Set a positive interval for recovery during a run. |
+| `dcp_save_interval` | SFT, DPO, ORPO, RL, distillation | `int` (`int \| None` in SFT, DPO) | SFT, DPO: unset · ORPO: `50` · RL, distillation: `0` | Save resumable checkpoints every N steps. `0` disables. In SFT and DPO, unset means every 50 steps, unless the run is on the timed schedule: a positive `checkpoint_interval_minutes`, or a LoRA run that leaves both fields unset. |
+| `checkpoint_interval_minutes` | SFT, DPO | `float \| None` | unset | Save a resumable and promotable checkpoint at each epoch end, and within an epoch every N minutes or every one-twentieth of the estimated run time, whichever is longer. Unset means 30 for LoRA runs that leave `dcp_save_interval` unset, and off otherwise. When this field and `dcp_save_interval` are both positive, this field wins. |
+| `sampler_save_interval` | SFT, DPO, ORPO | `int` | `0` | Save promotable checkpoints every N steps, so you can promote intermediate checkpoints. `0` disables. In a run on the timed schedule, including the LoRA default, this field sets the save points' step interval instead of the timer. |
 | `weight_sync_timeout` | RL family | `int` | `600` | Timeout for each weight sync (seconds). |
 
 > [!NOTE]

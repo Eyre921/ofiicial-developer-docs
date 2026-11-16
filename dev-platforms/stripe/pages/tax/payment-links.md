@@ -53,7 +53,7 @@ curl https://api.stripe.com/v1/payment_links \
 To update an existing payment link in the API, pass the `automatic_tax[enabled]` parameter to the [Payment Link API](https://docs.stripe.com/api/payment-link/update.md) endpoint:
 
 ```curl
-curl https://api.stripe.com/v1/payment_links/{{PAYMENTLINK_ID}} \
+curl https://api.stripe.com/v1/payment_links/{{PAYMENT_LINK_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "automatic_tax[enabled]=true"
 ```

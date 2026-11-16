@@ -49,10 +49,10 @@ Using an outbound transfer, you can move money between two financial accounts ow
 curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
@@ -79,9 +79,9 @@ Create a financial address when you need to receive funds into a financial accou
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
-    "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+    "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
     "type": "us_bank_account"
   }'
 ```
@@ -177,7 +177,7 @@ Create a GB bank account and initiate Confirmation of Payee (CoP) using the [GB 
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "sort_code": "108800",
     "account_number": "00012345",
@@ -204,14 +204,14 @@ Check CoP status and acknowledge if needed.
 curl https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}}/acknowledge_confirmation_of_payee \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 #### US bank account
@@ -222,7 +222,7 @@ Create a US bank account for ACH using the [US Bank Accounts API](https://docs.s
 curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "routing_number": "110000000",
     "account_number": "000123456789",
@@ -244,10 +244,10 @@ curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts \
 Optionally, you can add a Fedwire routing number if you want to support wires.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANKACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANK_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "fedwire_routing_number": "110000000"
   }'
@@ -261,7 +261,7 @@ Create a payout method for a bank account in any of more than 50 countries using
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "payout_method_data": {
         "type": "bank_account",
@@ -324,10 +324,10 @@ At this point, you have all the necessary pieces to transfer funds from the conn
 curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "gbp"
     },
     "to": {
@@ -350,7 +350,7 @@ If the account is in the EU, we need to use [Recipient Verifications](https://do
 curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "payout_method": "{{PAYOUT_METHOD_ID}}"
   }'
@@ -378,10 +378,10 @@ The response includes the recipient verification ID, expiration, and verificatio
 In case of a partial match or mismatch, you must acknowledge the recipient verification:
 
 ```curl
-curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications/{{RECIPIENTVERIFICATIONID_ID}}/acknowledge \
+curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications/{{RECIPIENT_VERIFICATION_ID}}/acknowledge \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 At this point, you have all the necessary pieces to transfer funds from the connected account’s financial account using the [Create an OutboundTransfer](https://docs.stripe.com/api/v2/money-management/outbound-transfers/create.md?api-version=preview) endpoint.
@@ -390,10 +390,10 @@ At this point, you have all the necessary pieces to transfer funds from the conn
 curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "eur"
     },
     "to": {
@@ -404,7 +404,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
         "value": 30000,
         "currency": "eur"
     },
-    "recipient_verification": "{{RECIPIENTVERIFICATIONID_ID}}",
+    "recipient_verification": "{{RECIPIENT_VERIFICATION_ID}}",
     "description": "Transfer to a connected account'\''s bank account"
   }'
 ```
@@ -421,10 +421,10 @@ Typically takes 2-3 business days
 curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
@@ -447,10 +447,10 @@ Typically completes the same business day
 curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {

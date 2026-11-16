@@ -49,6 +49,6 @@ curl https://api.stripe.com/v1/payment_links \
   -d "line_items[0][quantity]=1" \
   -d billing_address_collection=required \
   -d "shipping_address_collection[allowed_countries][0]=US" \
-  -d "shipping_options[0][shipping_rate]={{SHIPPINGRATE_ID}}"
+  -d "shipping_options[0][shipping_rate]={{SHIPPING_RATE_ID}}"
 ```
 

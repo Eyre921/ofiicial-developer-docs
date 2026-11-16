@@ -33,7 +33,7 @@ This guide shows you how to set up and deploy a simple Supabase edge function ex
 
 > [!NOTE]
 >
-> If you already have a Supabase project on your local machine you can skip this step.
+> &#x20;If you already have a Supabase project on your local machine you can skip this step.
 
 You can create a new project by running the following command in your terminal using the Supabase CLI:
 
@@ -52,7 +52,7 @@ If your project does not already have `package.json` file (e.g. if you are using
 
 > [!NOTE]
 >
-> If your project has a `package.json` file you can skip this step.
+> &#x20;If your project has a `package.json` file you can skip this step.
 
 This is required for the Trigger.dev SDK to work correctly.
 
@@ -66,7 +66,7 @@ This is required for the Trigger.dev SDK to work correctly.
 
 > [!NOTE]
 >
-> Update your Typescript version to the latest version available.
+> &#x20;Update your Typescript version to the latest version available.&#x20;
 
 **3. Run the CLI `init` command**
 

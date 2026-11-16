@@ -17,6 +17,8 @@ path: docs/api-reference/webhooks/llms.txt
 - [Create Workspace Webhook](https://elevenlabs.io/docs/api-reference/webhooks/create.md): Webhooks
 - [Delete Workspace Webhook](https://elevenlabs.io/docs/api-reference/webhooks/delete.md): Webhooks
 - [Update Workspace Webhook](https://elevenlabs.io/docs/api-reference/webhooks/update.md): Webhooks
+- [Send Test Webhook Event](https://elevenlabs.io/docs/api-reference/webhooks/test.md): Webhooks
+- [Redeliver Webhook Delivery](https://elevenlabs.io/docs/api-reference/webhooks/redeliver.md): Webhooks
 
 ## OpenAPI Specification
 

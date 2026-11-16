@@ -6,7 +6,7 @@ path: docs/github-actions
 
 Deploy your tasks from CI using trusted deploys or an environment API key.
 
-For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions. A Personal Access Token also [expires](/docs/management/authentication#pat-expiry) after the lifetime chosen when it was created, and a copied CLI login [expires after 7 days without use](/docs/cli-login-commands#login-expiry).
+For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions. A Personal Access Token also [expires](/docs/management/authentication#pat-expiry) on the date chosen when it was created, and a copied CLI login [expires after 7 days without use](/docs/cli-login-commands#login-expiry).
 
 > [!TIP]
 >
@@ -162,12 +162,12 @@ only** access.
 
 Create the key and copy its value. Trigger.dev shows the complete value only once.
 
-**4. Add the TRIGGER\_ACCESS\_TOKEN secret to GitHub**
+**4. Add the TRIGGER_ACCESS_TOKEN secret to GitHub**
 
 Open the repository's **Settings**, then select **Secrets and variables** → **Actions** → **New
 repository secret**. Add the name `TRIGGER_ACCESS_TOKEN` and paste the API key as its value.
 
-![Add TRIGGER\_ACCESS\_TOKEN in GitHub](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/github-access-token.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=6c516d32254c19937c0e7104753316a7)
+![Add TRIGGER_ACCESS_TOKEN in GitHub](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/github-access-token.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=6c516d32254c19937c0e7104753316a7)
 
 The API key must belong to the environment targeted by the deploy command. If the repository deploys to multiple environments, store each environment's key in a separate GitHub secret and map the appropriate secret to `TRIGGER_ACCESS_TOKEN` in each workflow.
 

@@ -320,6 +320,19 @@ training_client.optim_step(
 
 Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
 
+#### Trainer busy share
+
+`optim_step` results include `trainer_busy_walltime_pct:last`: the percentage (0 to 100) of the last 60 seconds that the trainer spent running `forward`, `forward_backward` and `optim_step` calls. Checkpoint saves and weight syncs count as idle time. In the first minute after a trainer starts, the window covers the time since the trainer started.
+
+```python theme={null}
+result = training_client.optim_step(AdamParams(learning_rate=1e-5)).result()
+print(result.metrics["trainer_busy_walltime_pct:last"])
+```
+
+* On Dedicated Training, a low value with long steps in your loop means the trainer is idle and waiting for your loop, often for rollouts.
+* On Serverless Training, the trainer is shared with other sessions, so the value includes the work of those sessions too.
+* The value measures wall time, not GPU utilization.
+
 ### `save_weights_for_sampler(name, checkpoint_type=None)`
 
 Save serving-compatible sampler weights and return a future. This is the normal Tinker-shaped API:

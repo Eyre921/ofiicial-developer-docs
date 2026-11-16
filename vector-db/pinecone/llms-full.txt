@@ -11598,7 +11598,7 @@ public class ConfigureIndexExample {
         HashMap<String, String> tags = new HashMap<>();
         tags.put("tag", "development");
 
-        pc.configureServerlessIndex("docs-example", "enabled", tags, null);
+        pc.configureServerlessIndex("docs-example", null, tags, null);
     }
 }
 ```
@@ -11699,7 +11699,7 @@ public class ConfigureIndexExample {
         HashMap<String, String> tags = new HashMap<>();
         tags.put("example", "");
 
-        pc.configureServerlessIndex("docs-example", "enabled", tags, null);
+        pc.configureServerlessIndex("docs-example", null, tags, null);
     }
 }
 ```
@@ -14756,11 +14756,11 @@ If you are using an older version of the Python, Node.js, Java, or Go SDK, you m
    <dependency>
      <groupId>io.pinecone</groupId>
      <artifactId>pinecone-client</artifactId>
-     <version>6.3.0</version>
+     <version>6.3.1</version>
    </dependency>
 
    # Gradle
-   implementation "io.pinecone:pinecone-client:6.3.0"
+   implementation "io.pinecone:pinecone-client:6.3.1"
    ```
 
    ```go Go theme={null}
@@ -24526,9 +24526,9 @@ When you create a dedicated read nodes index, Pinecone provisions resources base
 
 Dedicated read nodes support dense, sparse, hybrid, and [full-text search](/guides/search/full-text-search) indexes, giving you flexibility in your search and retrieval strategy. Because storage (shards) and compute (replicas) scale independently, you can optimize for your specific workload characteristics.
 
-![](https://mintcdn.com/pinecone/id0yJFEuv83Kq3F9/images/drn-read-path_light.png?fit=max\&auto=format\&n=id0yJFEuv83Kq3F9\&q=85\&s=d139d1364ec4349c0028f6036769a61a)
+This diagram shows the query router sending each query to the dedicated read nodes, whose shards keep the index data from object storage cached in memory and on local SSDs:
 
-Read path for dedicated read nodes
+![Read path diagram for dedicated read nodes. A client sends a query to the query router, which identifies and routes it to the relevant data. The router gets the freshest data from the memtable in the index builder and sends the query to the dedicated read nodes. The dedicated read nodes hold two replicas. Each replica is a complete copy of the index, split across shards 1 and 2, and each shard has memory and an SSD. Object storage holds the L0, L1, and L2 slabs for namespace 1 and feeds the dedicated read nodes. The router returns the results to the client.](https://mintcdn.com/pinecone/aWe8XxCdipSj7XaY/images/drn-read-path-light.svg?fit=max\&auto=format\&n=aWe8XxCdipSj7XaY\&q=85\&s=e72026b98d8a2b811982bd97766ab5ff)
 
 ## On-demand vs. dedicated read nodes
 
@@ -32880,7 +32880,7 @@ You can increase the pod size in the Pinecone console or using the API.
 > public class ConfigureIndexExample {
 >     public static void main(String[] args) {
 >         Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
->         pc.configurePodsIndex("docs-example", "s1.x2");
+>         pc.configurePodsIndex("docs-example", "s1.x2", null, null, null);
 >     }
 > }
 > ```
@@ -33090,7 +33090,7 @@ import io.pinecone.clients.Pinecone;
 public class ConfigureIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
-        pc.configurePodsIndex("docs-example", 4, "disabled");
+        pc.configurePodsIndex("docs-example", 4, null);
     }
 }
 ```
@@ -44816,8 +44816,10 @@ The following data plane operations are instrumented, for both synchronous (`Ind
 | `upsert` | Insert or update vectors |
 | `query` | Search for similar vectors |
 | `fetch` | Retrieve vectors by ID |
+| `fetchbymetadata` | Retrieve vectors by metadata filter (Java SDK v6.3.1 and later) |
 | `update` | Update vector metadata |
 | `delete` | Delete vectors |
+| `list` | List vector IDs |
 
 ### Available metadata
 
@@ -45161,14 +45163,14 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.1-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.1/pinecone-client-6.3.1-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
@@ -45183,11 +45185,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
 ## Initialize
@@ -50570,8 +50572,10 @@ The following data plane operations are instrumented, for both synchronous (`Ind
 | `upsert` | Insert or update vectors |
 | `query` | Search for similar vectors |
 | `fetch` | Retrieve vectors by ID |
+| `fetchbymetadata` | Retrieve vectors by metadata filter (Java SDK v6.3.1 and later) |
 | `update` | Update vector metadata |
 | `delete` | Delete vectors |
+| `list` | List vector IDs |
 
 ### Available metadata
 
@@ -50915,14 +50919,14 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.1-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.1/pinecone-client-6.3.1-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
@@ -50937,11 +50941,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
 ## Initialize
@@ -56324,8 +56328,10 @@ The following data plane operations are instrumented, for both synchronous (`Ind
 | `upsert` | Insert or update vectors |
 | `query` | Search for similar vectors |
 | `fetch` | Retrieve vectors by ID |
+| `fetchbymetadata` | Retrieve vectors by metadata filter (Java SDK v6.3.1 and later) |
 | `update` | Update vector metadata |
 | `delete` | Delete vectors |
+| `list` | List vector IDs |
 
 ### Available metadata
 
@@ -56669,14 +56675,14 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.1-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.1/pinecone-client-6.3.1-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
@@ -56691,11 +56697,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
 ## Initialize
@@ -62078,8 +62084,10 @@ The following data plane operations are instrumented, for both synchronous (`Ind
 | `upsert` | Insert or update vectors |
 | `query` | Search for similar vectors |
 | `fetch` | Retrieve vectors by ID |
+| `fetchbymetadata` | Retrieve vectors by metadata filter (Java SDK v6.3.1 and later) |
 | `update` | Update vector metadata |
 | `delete` | Delete vectors |
+| `list` | List vector IDs |
 
 ### Available metadata
 
@@ -62423,14 +62431,14 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.1-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.1/pinecone-client-6.3.1-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
@@ -62445,11 +62453,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
 ## Initialize
@@ -71815,8 +71823,10 @@ The following data plane operations are instrumented, for both synchronous (`Ind
 | `upsert` | Insert or update vectors |
 | `query` | Search for similar vectors |
 | `fetch` | Retrieve vectors by ID |
+| `fetchbymetadata` | Retrieve vectors by metadata filter (Java SDK v6.3.1 and later) |
 | `update` | Update vector metadata |
 | `delete` | Delete vectors |
+| `list` | List vector IDs |
 
 ### Available metadata
 
@@ -72160,14 +72170,14 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.1-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.1/pinecone-client-6.3.1-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
@@ -72182,11 +72192,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
 ## Initialize
@@ -87540,14 +87550,14 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >
 >    ```bash Linux theme={null}
 >    PG=17
->    tar xzf pg_pinecone-0.12.1-pg$PG-linux-x86_64.tar.gz
+>    tar xzf pg_pinecone-0.13.0-pg$PG-linux-x86_64.tar.gz
 >    sudo cp usr/lib/postgresql/$PG/lib/pg_pinecone.so "$(pg_config --pkglibdir)/"
 >    sudo cp usr/share/postgresql/$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
 >
 >    ```bash macOS theme={null}
 >    PG=17
->    tar xzf pg_pinecone-0.12.1-pg$PG-darwin-arm64.tar.gz
+>    tar xzf pg_pinecone-0.13.0-pg$PG-darwin-arm64.tar.gz
 >    cp opt/homebrew/lib/postgresql@$PG/pg_pinecone.dylib "$(pg_config --pkglibdir)/"
 >    cp opt/homebrew/share/postgresql@$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
@@ -87558,10 +87568,10 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >
 > The [`pineconeteam/pg_pinecone`](https://hub.docker.com/r/pineconeteam/pg_pinecone) image is the [`pgvector/pgvector`](https://hub.docker.com/r/pgvector/pgvector) image with pg_pinecone added, so it includes Postgres and pgvector. It runs on x86_64 and arm64 hosts. On x86_64, it needs a CPU that supports x86-64-v3, like the Linux x86_64 release archive.
 >
-> 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.12.1-pg18` tag here and in the next step instead:
+> 1. Pull the image. The image includes its own Postgres, so you don't need to match a server you already have. This command uses PostgreSQL 17, the more widely used of the two supported versions. For PostgreSQL 18, use the `0.13.0-pg18` tag here and in the next step instead:
 >
 >    ```bash theme={null}
->    docker pull pineconeteam/pg_pinecone:0.12.1-pg17
+>    docker pull pineconeteam/pg_pinecone:0.13.0-pg17
 >    ```
 >
 > 2. Start a container from the image:
@@ -87569,7 +87579,7 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    ```bash theme={null}
 >    docker run -d --name pg_pinecone \
 >      -e POSTGRES_PASSWORD=secret \
->      pineconeteam/pg_pinecone:0.12.1-pg17 \
+>      pineconeteam/pg_pinecone:0.13.0-pg17 \
 >      -c shared_preload_libraries=pg_pinecone
 >    ```
 >
@@ -87998,14 +88008,60 @@ When a table uses the `remote` engine, each committed write is queued in Postgre
 # pg_pinecone support
 Source: https://docs.pinecone.io/guides/pg-pinecone/support
 
-Ask questions about pg_pinecone in the Pinecone Discord community, and report bugs or request features in GitHub issues.
+Check a pg_pinecone install with pinecone.doctor(), ask questions in the Pinecone Discord community, and report bugs or request features in GitHub issues.
 
 * **Questions and feedback**: Ask in the [Pinecone Discord community](https://discord.gg/tJ8V62S3sH), where other users and the Pinecone team answer.
 * **Bugs and feature requests**: Open an issue in the [pg_pinecone repository](https://github.com/pinecone-io/pg_pinecone/issues). To propose a code change, open an issue first so the approach can be agreed on before any work starts.
 * **Security issues**: Don't open a public issue. Email [security@pinecone.io](mailto:security@pinecone.io), or follow the [security policy](https://github.com/pinecone-io/pg_pinecone/blob/main/SECURITY.md) to report it privately on GitHub.
 * **Your Pinecone account or index**: For a problem with the Pinecone index that the `remote` engine or full-text search uses, [contact Pinecone Support](/admin/support/contact-support).
 
-When you report a bug, include your pg_pinecone and Postgres versions, your operating system, the table's engine, and the full error message. To find the versions, run:
+## Check your install
+
+When something doesn't work, run `pinecone.doctor()` first. It checks your install and says how to fix each problem it finds.
+
+1. If you upgraded from a version earlier than 0.13.0, update the extension so `pinecone.doctor()` is available:
+
+   ```sql SQL theme={null}
+   ALTER EXTENSION pg_pinecone UPDATE;
+   ```
+
+2. Run the check. This query lists only the checks that need attention, so no rows means everything passed:
+
+   ```sql SQL theme={null}
+   SELECT check_name, status, detail, hint FROM pinecone.doctor() WHERE status <> 'ok';
+   ```
+
+3. For each row, the `hint` column says how to fix that check. Fix rows with a `status` of `fail` first. Some `warn` rows are expected. For example, without an API key, the `credentials` check reports `warn`, which is fine if you bring your own vectors and use only the `native` engine.
+
+On a server that can't reach Pinecone, run `pinecone.doctor(remote => false)` to skip the request to Pinecone.
+
+### Check reference
+
+| Check | What it looks at |
+| - | - |
+| `version` | Whether the loaded library matches the installed extension version |
+| `shared_preload_libraries` | Whether the setting includes `pg_pinecone` |
+| `pgvector` | Whether pgvector is installed in this database |
+| `credentials` | Which API key the session uses, without showing the key |
+| `control_plane_url` | Whether the URL that key goes to uses `https://`, or `http://` to `localhost` |
+| `reachability` | One request to Pinecone with that key. If it fails, `detail` starts with `network:` (no answer), `auth:` (key refused), or `plan or permission:` (not allowed) |
+| `outbox` | Whether queued writes are being delivered |
+| `failed_partitions` | Partitions that Pinecone refused |
+| `worker` | Whether the background worker is running |
+
+The function runs with your role's permissions. A check your role can't read reports `warn`, not `fail`.
+
+## Report a bug
+
+When you report a bug, include:
+
+* Your pg_pinecone and Postgres versions
+* Your operating system
+* The table's engine
+* The full error message
+* The output of `pinecone.doctor()`
+
+To find the versions, run:
 
 ```sql SQL theme={null}
 SELECT extversion FROM pg_extension WHERE extname = 'pg_pinecone';
@@ -89992,6 +90048,28 @@ Source: https://docs.pinecone.io/release-notes/2026
 Every change to Pinecone in 2026, including new features, API updates, deprecations, and pricing and plan changes.
 
 All Pinecone products share this changelog. Use the filters to narrow the list.
+
+**2026-11-15**
+
+### pg_pinecone requires HTTPS for the control-plane URL
+
+[pg_pinecone](/guides/pg-pinecone/overview) now requires an `https://` control-plane URL, so your API key is never sent unencrypted. Plain `http://` works only for a loopback address, such as `localhost`. If you stored a key with any other `http://` URL, remote calls fail as soon as the server restarts on the new version. To fix it, run `SELECT pinecone.set_api_key('YOUR_API_KEY', 'https://api.pinecone.io');`, then run `pinecone.outbox_retry()` on each affected table.
+
+This change is in [v0.13.0](https://github.com/pinecone-io/pg_pinecone/releases/tag/v0.13.0). To upgrade an existing install, see the [operator runbook](https://github.com/pinecone-io/pg_pinecone/blob/main/docs/runbook.md#upgrading-from-0100-and-later).
+
+**2026-11-15**
+
+### Check a pg_pinecone install with one call
+
+[pg_pinecone](/guides/pg-pinecone/overview) adds [`pinecone.doctor()`](/guides/pg-pinecone/support#check-your-install), which checks your setup and returns one row per check with a status of `ok`, `warn`, or `fail` and a hint for fixing it. It checks the server settings, pgvector, which API key applies, the connection to Pinecone, and the background worker. To skip the request to Pinecone, run `pinecone.doctor(remote => false)`. It's available in [v0.13.0](https://github.com/pinecone-io/pg_pinecone/releases/tag/v0.13.0).
+
+**2026-11-14**
+
+### Java SDK no longer writes malformed API keys to logs
+
+Before [v6.3.1](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.3.1), the [Java SDK](/reference/sdks/java/overview) accepted an API key with stray whitespace or control characters, such as a trailing newline from a file or Kubernetes secret. It then wrote the full key into exception messages and logs. Version 6.3.1 trims the key and rejects one it can't send, without echoing it.
+
+If you use the Java SDK, upgrade to v6.3.1. If your key ever had such characters, search your logs and error tracker for it and rotate it. For everything else in this version, see the [release notes](https://github.com/pinecone-io/pinecone-java-client/releases/tag/v6.3.1).
 
 **2026-11-13**
 

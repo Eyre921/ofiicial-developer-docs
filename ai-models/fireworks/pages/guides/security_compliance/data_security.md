@@ -54,7 +54,7 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 
 > [!TIP]
 >
-> For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
+> For guidance on secure training and using your own cloud storage, see [Secure Training](/guides/security_compliance/secure_training).
 
 ## Technical safeguards
 

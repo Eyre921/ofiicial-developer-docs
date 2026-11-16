@@ -147,7 +147,7 @@ Learn how to [access sensitive verification results](https://docs.stripe.com/ide
 You can cancel a VerificationSession at any point before it’s `processing` or `verified`. This invalidates the VerificationSession for future submission attempts, and can’t be undone. The session will have a `canceled` status.
 
 ```curl
-curl -X POST https://api.stripe.com/v1/identity/verification_sessions/{{IDENTITYVERIFICATIONSESSION_ID}}/cancel \
+curl -X POST https://api.stripe.com/v1/identity/verification_sessions/{{VERIFICATION_SESSION_ID}}/cancel \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 
@@ -156,7 +156,7 @@ curl -X POST https://api.stripe.com/v1/identity/verification_sessions/{{IDENTITY
 One reason that you might want to redact a verification session is if you receive a data deletion request from your user. You can redact a session to make sure Stripe deletes personal information. After we delete the personal information, it’s no longer returned by the Stripe API or visible in the Dashboard. You can still [retrieve](https://docs.stripe.com/api/identity/verification_sessions/retrieve.md) redacted sessions with the API, but you can’t update them. You can redact sessions in the Dashboard or with the API:
 
 ```curl
-curl -X POST https://api.stripe.com/v1/identity/verification_sessions/{{IDENTITYVERIFICATIONSESSION_ID}}/redact \
+curl -X POST https://api.stripe.com/v1/identity/verification_sessions/{{VERIFICATION_SESSION_ID}}/redact \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

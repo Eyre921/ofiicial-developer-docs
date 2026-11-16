@@ -113,7 +113,7 @@ Set the [collection_method](https://docs.stripe.com/api/invoices/object.md#invoi
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d collection_method=send_invoice \
   -d days_until_due=30
 ```
@@ -137,7 +137,7 @@ The maximum number of invoice items is 250.
 ```curl
 curl https://api.stripe.com/v1/invoiceitems \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "pricing[price]={{PRICE_ID}}" \
   -d "invoice={{INVOICE_ID}}"
 ```
@@ -587,7 +587,7 @@ Here’s an example of creating an invoice with a PO Number and value-added tax 
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "custom_fields[0][name]=PO number" \
   -d "custom_fields[0][value]=12345" \
   -d "custom_fields[1][name]=VAT" \

@@ -195,6 +195,7 @@
 - [Exception Reporting](/production/integrations/exception-reporting.md): Configure exception reporting integrations for your Convex deployment
 - [Log Streams](/production/integrations/log-streams.md): Configure logging integrations for your Convex deployment
 - [(Legacy) Event schema](/production/integrations/log-streams/legacy-event-schema.md): Log streams configured before May 23, 2024 will use the legacy format
+- [S3 Export](/production/integrations/s3-export.md): Continuously stream changes to your Convex tables into Apache Iceberg tables in your own S3 bucket
 - [Streaming Data in and out of Convex](/production/integrations/streaming-import-export.md): Streaming Data in and out of Convex
 - [Working with Multiple Deployments](/production/multiple-deployments.md): Creating multiple deployments in a single project
 - [Multiple Repositories](/production/multiple-repos.md): Use Convex in multiple repositories
@@ -492,7 +493,7 @@
 - [Get integration](/deployment-api/get-integration.md): Get the config for a specific integration by id.
 - [List active data syncs](/deployment-api/list-active-syncs.md): :::info[Requires a Convex Pro plan]
 - [List audit log events](/deployment-api/list-audit-log-events.md): List a deployment's audit log events on or after a timestamp, from least to
-- [List environment variables](/deployment-api/list-environment-variables.md): Get all environment variables in a deployment.
+- [List environment variables](/deployment-api/list-environment-variables.md): Get the environment variables in a deployment that aren't secrets.
 - [List integrations](/deployment-api/list-integrations.md): List configs for all existing integrations in a deployment.
 - [List usage limits](/deployment-api/list-usage-limits.md): Get all usage limit configs for a deployment.
 - [Deployment API](/deployment-api/overview.md): Deployment API
@@ -5963,7 +5964,7 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-11-13.
+ZDR endpoint catalog checked: 2026-11-16.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
@@ -6136,7 +6137,6 @@ ZDR endpoint catalog checked: 2026-11-13.
 * `x-ai/grok-imagine-video`
 * `x-ai/grok-imagine-video-1.5`
 * `x-ai/grok-imagine-video-1.5-lite`
-* `x-ai/grok-stt-1.0`
 * `x-ai/grok-stt-2.0`
 * `x-ai/grok-voice-tts-1.0`
 * `~x-ai/grok-latest`
@@ -6267,7 +6267,6 @@ ZDR endpoint catalog checked: 2026-11-13.
 * `qwen/qwen3-reranker-8b` · ZDR
 * `qwen/qwen3-vl-235b-a22b-instruct` · ZDR
 * `qwen/qwen3-vl-30b-a3b-instruct` · ZDR
-* `qwen/qwen3-vl-30b-a3b-thinking` · ZDR
 * `qwen/qwen3-vl-8b-instruct` · ZDR
 * `qwen/qwen3.5-122b-a10b` · ZDR
 * `qwen/qwen3.5-27b` · ZDR
@@ -6290,6 +6289,7 @@ ZDR endpoint catalog checked: 2026-11-13.
 * `qwen/qwen3.8-max-0902`
 * `qwen/qwen3.8-max-prime`
 * `qwen/qwen3.8-omni-flash`
+* `qwen/qwen4-max`
 
 ## Z.AI[​](#zai "Direct link to Z.AI")
 
@@ -6329,7 +6329,6 @@ ZDR endpoint catalog checked: 2026-11-13.
 
 ## NVIDIA[​](#nvidia "Direct link to NVIDIA")
 
-* `nvidia/llama-nemotron-embed-vl-1b-v2:free`
 * `nvidia/llama-nemotron-rerank-vl-1b-v2:free`
 * `nvidia/nemotron-3-embed-1b:free`
 * `nvidia/nemotron-3-nano-30b-a3b` · ZDR
@@ -6397,14 +6396,15 @@ ZDR endpoint catalog checked: 2026-11-13.
 
 ## Tencent[​](#tencent "Direct link to Tencent")
 
-* `tencent/hunyuan-a13b-instruct` · ZDR
 * `tencent/hy-image-v3.5-preview` · ZDR
 * `tencent/hy-mt2-1.8b` · ZDR
 * `tencent/hy-mt2-30b-a3b` · ZDR
 * `tencent/hy-mt2-7b` · ZDR
+* `tencent/hy-world-2.1-panorama` · ZDR
 * `tencent/hy3` · ZDR
 * `tencent/hy3-preview`
 * `tencent/hy4` · ZDR
+* `tencent/hy4-flash` · ZDR
 * `tencent/hy4-preview` · ZDR
 
 ## Baidu[​](#baidu "Direct link to Baidu")
@@ -6485,6 +6485,7 @@ ZDR endpoint catalog checked: 2026-11-13.
 * `inclusionai/ling-3.0-flash-vl` · ZDR
 * `inclusionai/ling-3.0-tiny` · ZDR
 * `inclusionai/ling-3.1-flash` · ZDR
+* `inclusionai/ling-3.2-flash:free` · ZDR
 
 ## Inference.net[​](#inferencenet "Direct link to Inference.net")
 
@@ -6557,7 +6558,6 @@ ZDR endpoint catalog checked: 2026-11-13.
 
 ## StepFun[​](#stepfun "Direct link to StepFun")
 
-* `stepfun/step-3.5-flash` · ZDR
 * `stepfun/step-3.7-flash` · ZDR
 * `stepfun/step-5-preview` · ZDR
 
@@ -6755,7 +6755,7 @@ ZDR endpoint catalog checked: 2026-11-13.
 
 ## parallel[​](#parallel "Direct link to parallel")
 
-* `parallel/decisions-fast:free`
+* `parallel/decisions-fast`
 
 ## particle-ai[​](#particle-ai "Direct link to particle-ai")
 
@@ -6775,6 +6775,8 @@ ZDR endpoint catalog checked: 2026-11-13.
 * `recraft/recraft-v4-vector`
 * `recraft/recraft-v4.1`
 * `recraft/recraft-v4.1-flash`
+* `recraft/recraft-v4.1-flash-v2`
+* `recraft/recraft-v4.1-flash-v2:free`
 * `recraft/recraft-v4.1-pro`
 * `recraft/recraft-v4.1-pro-vector`
 * `recraft/recraft-v4.1-utility`
@@ -41205,6 +41207,10 @@ npx convex deployment create [options] [reference]
 
   Deployment region
 
+* `--class <class>`
+
+  Deployment class (e.g. `s16` or `s256`). Defaults to the team's default class.
+
 * `--select`
 
   Select the new deployment. This will update the Convex environment variables in .env.local. Subsequent `npx convex` commands will run against this deployment.
@@ -60934,7 +60940,7 @@ The [backup & restore page](https://dashboard.convex.dev/deployment/settings/bac
 
 ## Integrations[​](#integrations "Direct link to Integrations")
 
-The integrations page allows you to configure [log streaming](/production/integrations/.md), [exception reporting](/production/integrations/.md), and [streaming export](/production/integrations/streaming-import-export.md) integrations.
+The integrations page allows you to configure [log streaming](/production/integrations/.md), [exception reporting](/production/integrations/.md), [S3 export](/production/integrations/s3-export.md) (beta), and [streaming export](/production/integrations/streaming-import-export.md) integrations.
 
 
 ---
@@ -62168,7 +62174,7 @@ If you're bootstrapping your app from existing data, Convex provides three ways 
 You can export data from Convex in two ways.
 
 * Download a backup as a zip from the [dashboard](/database/backup-restore.md).
-* For advanced use cases, stream data in a continuous export via [Fivetran](/production/integrations/streaming-import-export.md)
+* For advanced use cases, stream data in a continuous export to [your own S3 bucket](/production/integrations/s3-export.md) (beta) or via [Fivetran](/production/integrations/streaming-import-export.md)
 
 Data Import & Export is in beta
 
@@ -62201,7 +62207,7 @@ npx convex export --path ~/Downloads
 
 ## Streaming Export[​](#streaming-export "Direct link to Streaming Export")
 
-You can programmatically do a paginated streaming export by using the [Data Sync API](https://docs.convex.dev/deployment-api/data-sync) or with an [integration with a third party provider](https://docs.convex.dev/production/integrations/streaming-import-export).
+You can programmatically do a paginated streaming export by using the [Data Sync API](https://docs.convex.dev/deployment-api/data-sync) or with an [integration with a third party provider](https://docs.convex.dev/production/integrations/streaming-import-export). To stream your tables into your own S3 bucket as Apache Iceberg tables, see [S3 Export](/production/integrations/s3-export.md) (beta).
 
 
 ---
@@ -65515,7 +65521,7 @@ GET
 /list_environment_variables
 ```
 
-Get all environment variables in a deployment. In the future this might not include "secret" environment variables.
+Get the environment variables in a deployment that aren't secrets.
 
 ## Responses[​](#responses "Direct link to Responses")
 
@@ -65680,7 +65686,7 @@ PATCH
 /integrations/:id
 ```
 
-Update an existing integration for the deployment. Omit a field to keep the existing value, and use `null` to unset a field.
+Update an existing integration for the deployment. Omit a field to keep the existing value, and use `null` to unset a field. For S3 exports, `null` keeps the existing value too.
 
 ## Request[​](#request "Direct link to request")
 
@@ -73833,10 +73839,11 @@ Production deployments will work exactly the same as before.
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
-Convex integrates with a variety of supported third party tools for log streaming and exception reporting.
+Convex integrates with a variety of supported third party tools for log streaming, exception reporting, and exporting your data.
 
 * [Log Streams](/production/integrations/log-streams/.md) enable streaming of log events from your Convex deployment to supported destinations, such as Axiom, Datadog, PostHog, or a custom webhook.
 * [Exception Reporting](/production/integrations/exception-reporting.md) gives visibility into errors in your Convex function executions.
+* [S3 Export](/production/integrations/s3-export.md) (beta) continuously streams changes to your tables into Apache Iceberg tables in your own S3 bucket.
 
 ## Configuring an Integration[​](#configuring-an-integration "Direct link to Configuring an Integration")
 
@@ -73846,7 +73853,7 @@ To configure an integration, navigate to the [Deployment Settings](https://dashb
 
 ## Deleting an Integration[​](#deleting-an-integration "Direct link to Deleting an Integration")
 
-To remove an integration and stop further events from being piped out to the configured destination, select the menu icon in the upper-right corner of a configured panel and select "Delete integration". After confirming, the integration will stop running within a few seconds.
+To remove an integration and stop further events from being piped out to the configured destination, select the menu icon in the upper-right corner of a configured panel and select "Delete". After confirming, the integration will stop running within a few seconds.
 
 ## Feedback[​](#feedback "Direct link to Feedback")
 
@@ -73854,7 +73861,7 @@ Please reach out with any questions, comments, or suggestions [on Discord](https
 
 ## Integration Components[​](#integration-components "Direct link to Integration Components")
 
-Beyond integrations for logs and exceptions, [Convex Components](/components/overview.md) make it easier to work with third party services. See the full list of components on the [Convex Components Directory](https://convex.dev/components).
+Beyond these integrations, [Convex Components](/components/overview.md) make it easier to work with third party services. See the full list of components on the [Convex Components Directory](https://convex.dev/components).
 
 [Convex Component](https://www.convex.dev/components/cloudflare-r2)
 
@@ -74350,7 +74357,7 @@ Log events have a well-defined JSON schema that allow building complex, type-saf
 
 All events will have the following three fields:
 
-* `topic`: string, categorizes a log event, one of `["verification", "console", "function_execution", "audit_log", "concurrency_stats", "scheduler_stats", "current_storage_usage", "storage_api_bandwidth", "ai_gateway_usage"]`
+* `topic`: string, categorizes a log event, one of `["verification", "console", "function_execution", "audit_log", "concurrency_stats", "scheduler_stats", "current_storage_usage", "storage_api_bandwidth", "ai_gateway_usage", "s3_export_stats"]`
 * `timestamp`: number, Unix epoch timestamp in milliseconds as an integer
 * `convex`: An object containing metadata related to your Convex deployment, including `deployment_name`, `deployment_type`, `project_name`, and `project_slug`.
 
@@ -74779,6 +74786,49 @@ Example event:
 }
 ```
 
+### `s3_export_stats` events[​](#s3_export_stats-events "Direct link to s3_export_stats-events")
+
+These events report the status of your deployment's [S3 export](/production/integrations/s3-export.md). One is sent whenever the status changes, and about once a minute while it stays the same.
+
+To catch an export that's falling behind, alert on `lag_seconds`. To catch one that has stopped working, alert when `status` stays `"failed"` for a few minutes, since a single failure is usually followed by a successful retry.
+
+Schema:
+
+* `topic`: `"s3_export_stats"`
+
+* `timestamp`: Unix epoch timestamp in milliseconds
+
+* `status`: string, one of:
+
+  <!-- -->
+
+  * `"snapshotting"`: the first sync is running, copying the existing documents of each table. This also happens after you add a table.
+  * `"catching_up"`: the export is behind your deployment's latest writes and is working through them.
+  * `"up_to_date"`: S3 has every change to the tables in the export.
+  * `"failed"`: the export hit an error. Convex keeps retrying.
+
+* `lag_seconds`: number or `null`, how far the data in S3 is behind your deployment's most recent write, in seconds. It grows while the export is failing and your deployment keeps getting writes, and stays flat if nothing new is written. It's `null` until the first sync finishes, and while a newly added table is being copied.
+
+* `last_error`: string or `null`, why the export is failing. It's `null` unless the status is `"failed"`.
+
+Example event:
+
+```
+{
+
+  "topic": "s3_export_stats",
+
+  "timestamp": 1715973841548,
+
+  "status": "up_to_date",
+
+  "lag_seconds": 3,
+
+  "last_error": null
+
+}
+```
+
 ### `audit_log` events[​](#audit_log-events "Direct link to audit_log-events")
 
 These events represent changes to your deployment, which also show up in the [History tab](https://dashboard.convex.dev/deployment/history) in the dashboard.
@@ -75005,13 +75055,429 @@ Schema
 
 ---
 
+# S3 Export
+
+> For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
+
+S3 export is in beta
+
+S3 export<!-- --> <!-- -->is<!-- --> currently a [beta feature](/production/state/.md#beta-features). If you have feedback or feature requests, [let us know on Discord](https://convex.dev/community)!
+
+S3 export continuously streams changes to your deployment's tables into an Amazon S3 bucket that you own. Each table is written as an [Apache Iceberg](https://iceberg.apache.org) table and registered in the [AWS Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html), so you can query your data from Amazon Athena, Snowflake, Databricks, Spark, DuckDB, or any other engine that reads Iceberg.
+
+The first sync copies every document in the tables you choose. After that, Convex appends each insert, update, and delete within seconds. Exported tables hold every version of each document, so see [Changes and deletes](#changes-and-deletes) to query your current data.
+
+Convex writes your data to your bucket and registers the tables in Glue, through an IAM role in your AWS account that you can delete at any time. Your data stays in the bucket if you delete the export or your Convex project.
+
+S3 export requires a Convex Pro plan.
+
+S3 export<!-- --> <!-- -->requires<!-- --> a Convex Pro plan. [Learn more](https://convex.dev/pricing) about our plans or [upgrade](https://dashboard.convex.dev/team/settings/billing).
+
+## Setting up an S3 export[​](#setting-up-an-s3-export "Direct link to Setting up an S3 export")
+
+Each deployment can have one S3 export.
+
+### 1. Choose a bucket[​](#1-choose-a-bucket "Direct link to 1. Choose a bucket")
+
+1. Open the [Integrations](https://dashboard.convex.dev/deployment/settings/integrations) tab in your deployment's settings in the Dashboard.
+2. Click **+** on the **AWS S3** card.
+3. Choose **Create a new bucket** or **Use an existing bucket**. New buckets are named `convex-export-<deployment-name>` by default, and the region defaults to your deployment's region.
+4. Optionally, enter a **Prefix** to put the export in a folder within the bucket.
+5. Click **Continue**. This creates the export and its External ID, but nothing syncs until you click **Save** in step 3.
+
+![The Bucket step of the S3 export setup](/screenshots/storybook/pages_project_deployment_settings_integrations_configure_s3_export_light.webp)
+
+Convex writes the export to `s3://<bucket>/<prefix>/<deployment-name>/data-lake/` (or `s3://<bucket>/<deployment-name>/data-lake/` if you don't set a prefix). The tables are registered in a Glue database named after your deployment, with hyphens replaced by underscores. For example, `musical-otter-456` becomes `musical_otter_456`.
+
+note
+
+The bucket, region, and prefix can't be changed once the export is created. To change them, delete the export and create a new one, which copies all of your tables again. The old export's files stay in S3.
+
+### 2. Connect AWS[​](#2-connect-aws "Direct link to 2. Connect AWS")
+
+Next, create the IAM role Convex uses to write to your bucket. You can do this from the AWS console or with Terraform. Both create the same role, and the Dashboard fills in every value for you.
+
+![The Connect AWS step, with an AWS account ID entered](/screenshots/storybook/pages_project_deployment_settings_integrations_configure_s3_export_connect_aws_light.webp)
+
+**Using the AWS console**
+
+1. Click **Open in AWS**. This opens a CloudFormation quick-create page with every parameter already filled in.
+2. Check the IAM acknowledgement box and click **Create stack**. The stack usually takes a minute or two to create.
+3. Back in the Dashboard, enter your 12-digit **AWS account ID** (you can also paste the stack's ARN). Your account ID is in the account menu in the top right of the AWS console.
+
+**Using Terraform**
+
+1. Open the **Terraform** tab and click **Copy Terraform**.
+2. Add the snippet to your Terraform configuration and run `terraform apply`. Set your AWS provider to the export's region. The snippet creates the bucket there (if you checked **Create the bucket**) and grants Glue access in that region.
+3. Back in the Dashboard, enter your **AWS account ID**.
+
+![The Terraform tab of the Connect AWS step](/screenshots/storybook/pages_project_deployment_settings_integrations_configure_s3_export_terraform_light.webp)
+
+Click **Next: sync settings**.
+
+### 3. Choose tables and save[​](#3-choose-tables-and-save "Direct link to 3. Choose tables and save")
+
+By default, Convex exports every table, including tables that belong to [components](/components/overview.md) like aggregates and workpools. Uncheck **Include component tables** to export only your app's own tables, or open **Choose specific tables** to pick individual tables. You can also choose whether tables you add later are exported automatically.
+
+![The Sync settings step of the S3 export setup](/screenshots/storybook/pages_project_deployment_settings_integrations_configure_s3_export_sync_settings_light.webp)
+
+Click **Save** to start the first sync. The integration card shows **Starting first sync**, followed by its progress. Once the export has caught up with your deployment, the card shows **Active** along with the time of the last sync.
+
+![An S3 export integration card that is active and up to date](/screenshots/storybook/pages_project_deployment_settings_integrations_s3_export_active_light.webp)
+
+You can change which tables are exported at any time. Tables you're already exporting keep their progress, newly added tables sync from the beginning, and removed tables stay in S3 but stop updating.
+
+If you click **Finish later** before saving, the export stays pending. To pick up where you left off, open the **⋮** menu on the card and click **Configure**, or click **Discard export** to delete it.
+
+## Permissions[​](#permissions "Direct link to Permissions")
+
+The role created by CloudFormation or Terraform can only write the export's files and register its tables in Glue:
+
+| Permission                                                                                                    | Scope                                                 |
+| ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `s3:GetBucketLocation`                                                                                        | The bucket                                            |
+| `s3:ListBucket`                                                                                               | `<prefix>/<deployment-name>/data-lake/`               |
+| `s3:GetObject`<br />`s3:PutObject`<br />`s3:DeleteObject`<br />`s3:AbortMultipartUpload`                      | Objects under `<prefix>/<deployment-name>/data-lake/` |
+| `glue:GetDatabase`<br />`glue:CreateDatabase`                                                                 | The catalog and the deployment's Glue database        |
+| `glue:GetTable`<br />`glue:GetTables`<br />`glue:CreateTable`<br />`glue:UpdateTable`<br />`glue:DeleteTable` | Tables in the deployment's Glue database              |
+
+The role's trust policy only allows Convex's export role to assume it, and only with your export's External ID.
+
+If the stack or Terraform creates the bucket for you, it blocks all public access, encrypts objects with SSE-S3 (AES-256), and cleans up incomplete multipart uploads after seven days.
+
+Example Terraform
+
+The Dashboard generates this snippet with your bucket, deployment name, and External ID. This example is for the deployment `musical-otter-456` with a new bucket.
+
+```
+# Bucket for the export. Keep it if you remove Convex: it holds your data.
+
+resource "aws_s3_bucket" "convex_export" {
+
+  bucket = "convex-export-musical-otter-456"
+
+}
+
+
+
+resource "aws_s3_bucket_public_access_block" "convex_export" {
+
+  bucket                  = aws_s3_bucket.convex_export.id
+
+  block_public_acls       = true
+
+  block_public_policy     = true
+
+  ignore_public_acls      = true
+
+  restrict_public_buckets = true
+
+}
+
+
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "convex_export" {
+
+  bucket = aws_s3_bucket.convex_export.id
+
+  rule {
+
+    apply_server_side_encryption_by_default { sse_algorithm = "AES256" }
+
+  }
+
+}
+
+
+
+resource "aws_s3_bucket_lifecycle_configuration" "convex_export" {
+
+  bucket = aws_s3_bucket.convex_export.id
+
+  rule {
+
+    id     = "abort-incomplete-uploads"
+
+    status = "Enabled"
+
+    filter {}
+
+    abort_incomplete_multipart_upload { days_after_initiation = 7 }
+
+  }
+
+}
+
+
+
+# Role Convex assumes to write this deployment's data lake export.
+
+resource "aws_iam_role" "convex_export" {
+
+  name = "ConvexIntegrations-<external-id>"
+
+  path = "/convex/"
+
+  assume_role_policy = jsonencode({
+
+    Version = "2012-10-17"
+
+    Statement = [{
+
+      Effect    = "Allow"
+
+      Action    = "sts:AssumeRole"
+
+      Principal = { AWS = "arn:aws:iam::715951115348:root" }
+
+      Condition = {
+
+        StringEquals = { "sts:ExternalId" = "<external-id>" }
+
+        ArnEquals    = { "aws:PrincipalArn" = "arn:aws:iam::715951115348:role/convex-s3-export-prod" }
+
+      }
+
+    }]
+
+  })
+
+}
+
+
+
+resource "aws_iam_role_policy" "convex_export" {
+
+  role = aws_iam_role.convex_export.id
+
+  name = "data-lake"
+
+  policy = jsonencode({
+
+    Version = "2012-10-17"
+
+    Statement = [
+
+      {
+
+        Effect   = "Allow"
+
+        Action   = "s3:GetBucketLocation"
+
+        Resource = "arn:aws:s3:::convex-export-musical-otter-456"
+
+      },
+
+      {
+
+        Effect    = "Allow"
+
+        Action    = "s3:ListBucket"
+
+        Resource  = "arn:aws:s3:::convex-export-musical-otter-456"
+
+        Condition = { StringLike = { "s3:prefix" = ["musical-otter-456/data-lake/*", "musical-otter-456/data-lake"] } }
+
+      },
+
+      {
+
+        Effect   = "Allow"
+
+        Action   = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:AbortMultipartUpload"]
+
+        Resource = "arn:aws:s3:::convex-export-musical-otter-456/musical-otter-456/data-lake/*"
+
+      },
+
+      {
+
+        Effect = "Allow"
+
+        Action = [
+
+          "glue:GetDatabase", "glue:CreateDatabase", "glue:GetTable", "glue:GetTables",
+
+          "glue:CreateTable", "glue:UpdateTable", "glue:DeleteTable",
+
+        ]
+
+        Resource = [
+
+          "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:catalog",
+
+          "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:database/musical_otter_456",
+
+          "arn:aws:glue:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:table/musical_otter_456/*",
+
+        ]
+
+      },
+
+    ]
+
+  })
+
+}
+
+
+
+data "aws_region" "current" {}
+
+data "aws_caller_identity" "current" {}
+
+
+
+# Paste this, or your AWS account ID, into the Convex dashboard.
+
+output "convex_export_role_arn" {
+
+  value = aws_iam_role.convex_export.arn
+
+}
+```
+
+## Table format[​](#table-format "Direct link to Table format")
+
+### Table names[​](#table-names "Direct link to Table names")
+
+Each Convex table becomes an Iceberg table in your deployment's Glue database, named like this:
+
+```
+<component>__<table>__<table-id>
+```
+
+* `<component>` is `app` for your app's own tables. For a component's tables, it's the component path with each `/` replaced by `__`.
+* `<table>` is the table name in lowercase.
+* `<table-id>` is a fixed-length ID that keeps names unique. For example, it keeps tables named `Users` and `users` apart, since Glue names are always lowercase.
+
+For example, your app's `messages` table becomes something like `app__messages__<table-id>`. To find the exact names, run `SHOW TABLES` in Athena or browse the database in the Glue console. Convex won't touch other tables you create in the same Glue database.
+
+The `<table-id>` changes when a table is replaced, for example by `npx convex import --replace` or by deleting and recreating the table. When that happens, the export writes to a new Iceberg table with a new name and the old one stops updating, so update any queries that refer to the table by name.
+
+### Columns[​](#columns "Direct link to Columns")
+
+Every table starts with these columns, followed by a column for each top-level field in your documents, up to 1,024 field columns per table:
+
+| Column            | Type          | Description                                                                                 |
+| ----------------- | ------------- | ------------------------------------------------------------------------------------------- |
+| `_id`             | `string`      | The document's ID                                                                           |
+| `_ts`             | `long`        | When this version of the document was committed, in nanoseconds since the Unix epoch        |
+| `_convex_deleted` | `boolean`     | `true` if this row records that the document was deleted                                    |
+| `_creationTime`   | `timestamptz` | The document's [`_creationTime`](/database/types.md#system-fields). Empty for deletes       |
+| `_convex_rescued` | `string`      | Fields that don't fit their column, as a JSON object. See [Rescued fields](#rescued-fields) |
+
+Document fields map to Iceberg types as follows:
+
+| Convex type                      | Iceberg type             |
+| -------------------------------- | ------------------------ |
+| `string`, `Id`                   | `string`                 |
+| `float64`                        | `double`                 |
+| `int64`                          | `long`                   |
+| `boolean`                        | `boolean`                |
+| `bytes`                          | `binary`                 |
+| `array`, `object`, `record`      | `string` containing JSON |
+| `any`                            | `string` containing JSON |
+| A union of more than one type    | `string` containing JSON |
+| A union of `int64` and `float64` | `double`                 |
+
+Unions only count their non-null types, so `v.optional(v.string())` and `v.union(v.string(), v.null())` both get a `string` column, as does a union of string literals. A `null` value is stored as `NULL` in the field's column, or in `_convex_rescued` if the field doesn't have a column yet.
+
+JSON values use the same encoding as [snapshot exports](/database/import-export/export.md): an `int64` is a JSON number, and `bytes` is `{"$bytes": "<base64>"}`.
+
+If a table has a [schema](/database/schemas.md) with validation turned on, Convex creates its columns from the schema when the table first syncs. Otherwise, it uses the types of the documents already in the table. New fields get a column the first time a document containing them syncs.
+
+Once a column is created, its type doesn't change. If you later change a field's type in your schema, new values for that field are written to `_convex_rescued`.
+
+### Rescued fields[​](#rescued-fields "Direct link to Rescued fields")
+
+The export never fails because of the shape of your data. If a value doesn't fit its column, Convex writes it to `_convex_rescued` instead. This happens when:
+
+* The value's type doesn't match the column, like a `string` in a `long` column. A `double` column does accept an `int64` it can store exactly.
+* The field name isn't a valid column name, or differs from an existing column only by case.
+* The field name is reserved by Iceberg or by the export.
+* The table already has 1,024 field columns.
+
+### Changes and deletes[​](#changes-and-deletes "Direct link to Changes and deletes")
+
+Each exported table is an append-only log. Every insert, update, and delete adds a row with the full document as of that change, so one document can have many rows. Deletes are a row with `_convex_deleted = true` and no field values.
+
+important
+
+Querying an exported table directly returns every version of every document, including deleted ones. To get your current data, keep the row with the highest `_ts` for each `_id` and skip rows where `_convex_deleted` is `true`. Retried syncs can write the same row twice, so treat `(_id, _ts)` as the unique key.
+
+For example, in Athena:
+
+```
+SELECT *
+
+FROM (
+
+  SELECT
+
+    *,
+
+    row_number() OVER (PARTITION BY _id ORDER BY _ts DESC) AS version
+
+  FROM "musical_otter_456"."app__messages__<table-id>"
+
+)
+
+WHERE version = 1 AND NOT _convex_deleted;
+```
+
+To reuse this query, save it as a view.
+
+Convex keeps the last 10 Iceberg snapshots of each table, so time travel only goes back a few syncs. To read changes incrementally, filter on `_ts` instead. Tables that change often build up many small files, which slows queries. Don't compact them yourself: an `OPTIMIZE` breaks the export (see [Monitoring and errors](#monitoring-and-errors)).
+
+## Monitoring and errors[​](#monitoring-and-errors "Direct link to Monitoring and errors")
+
+The integration card on the Integrations tab shows the export's status:
+
+* **Finish AWS setup**: The export doesn't have a role yet. Open it and finish [connecting AWS](#2-connect-aws).
+* **Starting first sync**: Convex is connecting to your bucket.
+* **Syncing**: The first sync is running, or the export is catching up with your deployment. Open the card to see its progress.
+* **Active**: The export is up to date. Open the card to see the bucket path, the Glue database, and when it last synced.
+* **Failed**: Convex can't write to your bucket, or the last ten syncs failed. Open the card to see why.
+
+To get alerted when an export fails or falls behind, subscribe a [log stream](/production/integrations/log-streams/.md#s3_export_stats-events) to the `s3_export_stats` topic.
+
+Common reasons an export fails:
+
+* The CloudFormation stack is still being created, or failed to create.
+* The account ID is wrong, or the role was deleted.
+* The bucket doesn't exist, or it's in a different region than the export.
+* A policy in your account, such as a service control policy, blocks an S3 or Glue action.
+* Something other than Convex modified the export's Iceberg tables, like an Athena `OPTIMIZE`. The export's tables should be treated as read-only.
+
+Convex keeps retrying a failed export. Once you fix the problem, the next successful sync marks the export **Active** again, with no need to save it again. If the tables were modified outside Convex, delete the export and create a new one.
+
+caution
+
+An export can only catch up on changes your deployment still has in its history, which is about two weeks. If an export stays failed for longer than that, it can't resume, and you'll need to delete it and create a new one.
+
+## Deleting an S3 export[​](#deleting-an-s3-export "Direct link to Deleting an S3 export")
+
+To stop the export, open the **⋮** menu on the integration card, click **Delete**, and confirm. Convex stops writing to your bucket within a few seconds. Your files stay in your bucket. The Glue tables stay until you create a new export, which replaces them.
+
+To fully remove Convex's access, delete the CloudFormation stack or remove the role from your Terraform configuration. Deleting the stack keeps the bucket and its files. Terraform can't delete a bucket that still contains files, so empty it first or remove the bucket from your configuration.
+
+## Feedback[​](#feedback "Direct link to Feedback")
+
+Please reach out with any questions, comments, or suggestions [on Discord](https://convex.dev/community).
+
+
+---
+
 # Streaming Data in and out of Convex
 
 > For AI agents: see [llms.txt](/llms.txt) for the complete documentation index. Markdown versions are available by adding .md to a page URL or requesting Accept: text/markdown.
 
 Convex provides a [Data Sync API](https://docs.convex.dev/deployment-api/data-sync) for streaming data out of Convex, and a [Data Import CLI](https://docs.convex.dev/database/import-export/import).
 
-You can use the APIs directly or opt to use data integration platforms like [Fivetran](https://www.fivetran.com) and [Airbyte](https://airbyte.com) to automate and smooth the process of syncing your Convex data with other databases.
+To stream your tables into your own S3 bucket as Apache Iceberg tables, see [S3 Export](/production/integrations/s3-export.md) (beta).
+
+You can also use the APIs directly or opt to use data integration platforms like [Fivetran](https://www.fivetran.com) and [Airbyte](https://airbyte.com) to automate and smooth the process of syncing your Convex data with other databases.
 
 Fivetran enables streaming export from Convex to any of their [supported destinations](https://fivetran.com/docs/destinations). The Convex team maintains a Convex source connector for streaming export. Streaming import into Convex via Fivetran is not supported.
 
@@ -75639,7 +76105,7 @@ Convex will eventually have methods to publish deployment data in formats that c
 
 Convex is designed to primarily service all your app's realtime implementation (OLTP) needs. It is less suited to be a good solution for the kinds of complex queries and huge table scans that are necessary to address the requirements of analytics (OLAP) use cases.
 
-For periodic OLAP analyses, [download a backup](/database/backup-restore.md) as a zip file. For advanced use cases, where you need to continuously stream data, Convex exposes a [Fivetran connector](/production/integrations/streaming-import-export.md) to export Convex data to external analytics systems.
+For periodic OLAP analyses, [download a backup](/database/backup-restore.md) as a zip file. For advanced use cases, where you need to continuously stream data, Convex can [stream changes to your tables into your own S3 bucket](/production/integrations/s3-export.md) (beta) as Apache Iceberg tables, or you can use the [Fivetran connector](/production/integrations/streaming-import-export.md) to export Convex data to external analytics systems.
 
 ### Browser support[​](#browser-support "Direct link to Browser support")
 

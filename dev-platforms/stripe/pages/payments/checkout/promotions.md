@@ -18,3 +18,19 @@ Boost sales with discounts and offers.
 
 [Let customers complete orders for free](https://docs.stripe.com/payments/checkout/no-cost-orders.md): Accept orders for no-cost line items, and apply 100% off discounts in payment mode.
 
+## Run pricing experiments 
+
+Test two prices for a product to see which one earns more revenue in Checkout. Pricing experiments are in [private preview](https://docs.stripe.com/release-phases.md).
+
+### Join the pricing experiments waitlist
+
+Enter your email to request early access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/payments/checkout/promotions" \
+  -d '{"email": "EMAIL", "preview": "pricing_experiments_preview"}'
+```
+

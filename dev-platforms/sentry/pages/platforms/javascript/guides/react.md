@@ -356,7 +356,7 @@ Need help locating captured data in your Sentry project?
 At this point, you should have integrated Sentry into your React application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/react/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers from blocking Sentry events
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/react/configuration/tunneling.md) to avoid ad blockers from blocking Sentry events
 * Explore [React-specific features](https://docs.sentry.io/platforms/javascript/guides/react/features.md)
 
 Are you having problems setting up the SDK?

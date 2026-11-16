@@ -45,7 +45,7 @@ curl https://api.stripe.com/v1/payouts \
   -H "Stripe-Version: 2026-06-24.preview" \
   -d amount=978 \
   -d currency=usd \
-  -d "payout_method={{FINANCIALACCOUNTID_ID}}"
+  -d "payout_method={{FINANCIAL_ACCOUNT_ID}}"
 ```
 
 To move money from your connected account’s payments balance, pass the `Stripe-Account` to identify the connected account as the target of the request:
@@ -54,10 +54,10 @@ To move money from your connected account’s payments balance, pass the `Stripe
 curl https://api.stripe.com/v1/payouts \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d amount=78 \
   -d currency=usd \
-  -d "payout_method={{FINANCIALACCOUNTID_ID}}"
+  -d "payout_method={{FINANCIAL_ACCOUNT_ID}}"
 ```
 
 ## Send funds from an external bank account 
@@ -74,9 +74,9 @@ Create a financial address when you need to receive funds into a financial accou
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
-    "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+    "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
     "type": "us_bank_account"
   }'
 ```
@@ -164,7 +164,7 @@ You can use the [Get FinancialAddress](https://docs.stripe.com/api/v2/money-mana
 curl -G https://api.stripe.com/v2/money_management/financial_addresses/{{FINANCIAL_ADDRESS_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   -d "include[0]=credentials.us_bank_account.account_number"
 ```
 
@@ -178,7 +178,7 @@ The following example request lists all financial addresses for the account:
 curl https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 In the US, connected accounts can fund USD financial accounts by sending ACH, RTP, or wire transfers to the financial address credentials. RTP funds are typically available within minutes.
@@ -254,7 +254,7 @@ After acceptance, create a mandate for the connected account’s GB Bank Account
 curl -X POST https://api.stripe.com/v2/money_management/inbound_transfer_mandates \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "credential": "gbba_…",
     "type": "bacs",
@@ -329,7 +329,7 @@ You can render the [financial_accounts](https://docs.stripe.com/treasury/connect
    curl https://api.stripe.com/v2/money_management/payout_methods \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-06-24.preview" \
-     -H "Stripe-Context: {{CONTEXT_ID}}"
+     -H "Stripe-Context: {{CONTEXT}}"
    ```
 Make sure the `usage_status.transfers` parameter for the credential is `eligible`.
 2. Provide the `usba_*` credential ID as the value of the `from` parameter in the InboundTransfer request.
@@ -337,13 +337,13 @@ Make sure the `usage_status.transfers` parameter for the credential is `eligible
    curl -X POST https://api.stripe.com/v2/money_management/inbound_transfers \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-06-24.preview" \
-     -H "Stripe-Context: {{CONTEXT_ID}}" \
+     -H "Stripe-Context: {{CONTEXT}}" \
      --json '{
        "from": {
            "payment_method": "usba_123456"
        },
        "to": {
-           "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+           "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
            "currency": "usd"
        },
        "amount": {
@@ -363,7 +363,7 @@ You must have an active mandate in place before requesting an inbound transfer u
    curl https://api.stripe.com/v2/money_management/payout_methods \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-06-24.preview" \
-     -H "Stripe-Context: {{CONTEXT_ID}}"
+     -H "Stripe-Context: {{CONTEXT}}"
    ```
 Make sure the `usage_status.transfers` parameter for the credential is `eligible`.
 2. Provide the `gbba_*` credential ID as the value of the `from` parameter in the `InboundTransfer` request.
@@ -371,13 +371,13 @@ Make sure the `usage_status.transfers` parameter for the credential is `eligible
    curl -X POST https://api.stripe.com/v2/money_management/inbound_transfers \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-06-24.preview" \
-     -H "Stripe-Context: {{CONTEXT_ID}}" \
+     -H "Stripe-Context: {{CONTEXT}}" \
      --json '{
        "from": {
            "payment_method": "gbba_123456"
        },
        "to": {
-           "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+           "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
            "currency": "gbp"
        },
        "amount": {
@@ -412,7 +412,7 @@ Platforms in the US can use Check Scan to fund their connected accounts’ finan
 Your connected account must have the `money_manager` configuration and the `merchant` configuration with an active `us_paper_check_payments` capability.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
   --json '{
@@ -452,7 +452,7 @@ For USD financial accounts in the US, funds can arrive through ACH, RTP, or wire
 curl https://api.stripe.com/v2/money_management/received_credits \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ### Get a received credit
@@ -465,7 +465,7 @@ curl https://api.stripe.com/v2/money_management/received_credits \
 curl https://api.stripe.com/v2/money_management/received_credits/{{RECEIVED_CREDIT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ```json
@@ -504,7 +504,7 @@ curl https://api.stripe.com/v2/money_management/received_credits/{{RECEIVED_CRED
 curl -X POST https://api.stripe.com/v2/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/credit \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "amount": {
         "value": 250,
@@ -519,10 +519,10 @@ Set `network` to a [supported value](https://docs.stripe.com/api/v2/money-manage
 The response indicates if the simulation was successful, and you can check the balance of the financial account to confirm the increase.
 
 ```curl
-curl https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIALACCOUNTID_ID}} \
+curl https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIAL_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ## Set up automatic transfer rules 
@@ -549,7 +549,7 @@ Automatic payouts is disabled if `payments.payouts.schedule.interval` is set to 
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "payments[payouts][schedule][interval]=daily"
 ```
 
@@ -561,8 +561,8 @@ Transfer up to a specific amount to a financial account, with the remaining bala
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][payout_method]={{FINANCIAL_ACCOUNT_ID}}" \
   -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][type]=transfer_up_to_amount" \
   -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][transfer_up_to_amount]=1500000"
 ```
@@ -575,8 +575,8 @@ Transfer all available funds to a financial account. When you use `transfer_all`
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
+  -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][payout_method]={{FINANCIAL_ACCOUNT_ID}}" \
   -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][type]=transfer_all"
 ```
 
@@ -588,8 +588,8 @@ Update a rule by submitting the complete configuration for the currency:
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
-  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
+  -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][payout_method]={{FINANCIAL_ACCOUNT_ID}}" \
   -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][type]=transfer_up_to_amount" \
   -d "payments[payouts][automatic_transfer_rules_by_currency][usd][0][transfer_up_to_amount]=2000000"
 ```
@@ -602,7 +602,7 @@ Remove the automatic transfer rule for a currency:
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d "payments[payouts][automatic_transfer_rules_by_currency][gbp]="
 ```
 
@@ -614,6 +614,6 @@ Retrieve the current automatic transfer rules:
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 

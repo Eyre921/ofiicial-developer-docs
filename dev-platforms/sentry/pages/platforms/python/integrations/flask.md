@@ -102,7 +102,7 @@ To further customize your setup, review the [Options section](https://docs.sentr
 
 Sentry automatically captures errors and reports issues for you. You can also expect the following for your Flask app:
 
-* If you use `flask-login`, and you've either enabled `user_info` in the [`data_collection` option](https://docs.sentry.io/platforms/python/configuration/options.md#data_collection) or set `send_default_pii=True` in your call to `init`, user data (such as current user ID, email address, username) will be attached to error events. `send_default_pii` will be removed in version 3.0 of the SDK.
+* If you use `flask-login`, user data (such as current user ID, email address, username) will be attached to error events. Turn this off by setting `user_info` to `False` in the [`data_collection` option](https://docs.sentry.io/platforms/python/configuration/options.md#data_collection). In SDK versions prior to `3.0`, user data is only attached if you enable `user_info` in `data_collection` or set `send_default_pii=True`.
 * Request data will be attached to all events: HTTP method, URL, headers, form data, JSON payloads. Sentry excludes raw bodies and multipart file uploads.
 * If you add the [Logging](https://docs.sentry.io/platforms/python/integrations/logging.md) integration, logs emitted by any `app.logger` or *any* logger will be recorded by it. In SDK versions prior to `3.0`, the Logging integration is enabled by default.
 

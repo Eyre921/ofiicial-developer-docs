@@ -25,7 +25,7 @@ LangSmith
 
 > [card] [Test](/langsmith/evaluation)
 
-> [card] [Deploy](/langsmith/deployment)
+> [card] [Deploy](/langsmith/deploy-overview)
 
 > [card] [Monitor](/langsmith/observability)
 

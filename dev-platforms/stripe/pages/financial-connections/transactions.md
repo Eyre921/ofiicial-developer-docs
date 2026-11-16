@@ -111,7 +111,7 @@ To get the Financial Connections Account ID you want to subscribe to transaction
 Subscribe to transaction data by calling the [subscribe API](https://docs.stripe.com/api/financial_connections/accounts/subscribe.md):
 
 ```curl
-curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}}/subscribe \
+curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}/subscribe \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "features[]=transactions"
 ```
@@ -154,7 +154,7 @@ After Stripe successfully refreshes transactions on the account, you can retriev
 ```curl
 curl -G https://api.stripe.com/v1/financial_connections/transactions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "account={{FINANCIALCONNECTIONSACCOUNT_ID}}"
+  -d "account={{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}"
 ```
 
 Stripe returns a [paginated](https://docs.stripe.com/api/pagination.md) list of up to the last 180 days of transaction history on an account, depending on the account’s financial institution.
@@ -199,7 +199,7 @@ To retrieve only new or updated transaction data since your last refresh, pass t
 ```curl
 curl -G https://api.stripe.com/v1/financial_connections/transactions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "account={{FINANCIALCONNECTIONSACCOUNT_ID}}" \
+  -d "account={{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}" \
   -d "transaction_refresh[after]=fctxnref_1LXp8WGxLVUXRs6Hkc5PNUXf"
 ```
 
@@ -251,7 +251,7 @@ def sync_transactions(account_id, current_refresh):
 You can start, cancel, and resume a subscription at any point. To cancel a subscription, call the [unsubscribe API](https://docs.stripe.com/api/financial_connections/accounts/unsubscribe.md):
 
 ```curl
-curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}}/unsubscribe \
+curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}/unsubscribe \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "features[]=transactions"
 ```
@@ -284,7 +284,7 @@ After initiating a transaction refresh using `prefetch`, [wait for it to complet
 Use the [Refresh API](https://docs.stripe.com/api/financial_connections/accounts/refresh.md) to initiate on-demand transaction refreshes *after* account collection, and fetch transaction information for a specific account at your convenience, allowing you to defer the decision until a later time.
 
 ```curl
-curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}}/refresh \
+curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}/refresh \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "features[]=transactions"
 ```

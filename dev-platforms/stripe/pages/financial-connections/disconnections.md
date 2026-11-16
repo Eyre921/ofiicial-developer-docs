@@ -19,7 +19,7 @@ To regain access to new account data, your user needs to re-authenticate their a
 To disconnect an account, use the [disconnect API](https://docs.stripe.com/api/financial_connections/accounts/disconnect.md):
 
 ```curl
-curl -X POST https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}}/disconnect \
+curl -X POST https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}/disconnect \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

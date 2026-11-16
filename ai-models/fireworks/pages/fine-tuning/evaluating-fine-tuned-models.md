@@ -10,7 +10,7 @@ After training, evaluate your model before you serve it in production. Choose an
 
 > [!WARNING]
 >
-> Serverless checkpoint sampling and preemptible deployments are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras). LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview).
+> Serverless checkpoint sampling and preemptible deployments are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras). LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview) (in Preview, available on request).
 
 ## Which approach to use
 
@@ -69,6 +69,12 @@ You do not need a training client to sample a checkpoint: open a sampler from a 
 > Promote checkpoints you want to keep long term or serve through the chat completions API, then evaluate the promoted model on [serverless](#serverless-lora-inference) if its base model is supported, or with a [preemptible deployment](#preemptible-deployment).
 
 ## Serverless LoRA inference
+
+Preview
+
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
 
 If your promoted LoRA was trained on a [supported base model](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can load it onto Fireworks' shared serverless pool and call it through the Chat Completions API like any serverless model. You don't create a deployment, and you pay per token at the base model's price.
 
@@ -163,13 +169,17 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
+> [!TIP]
+>
+> For a large eval set, use the [Batch migration script](/guides/batch-migration#step-3-run-your-batch-file). The script reads a JSONL file in the OpenAI batch format (`custom_id` plus `body`), sends the rows to your deployment with a concurrency limit, retries requests that fail while a replica is preempted, and skips rows that already have a result in the output file when you rerun the same command.
+
 When the evaluation is finished, delete the deployment to release the borrowed capacity:
 
 ```bash theme={null}
 firectl deployment delete <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
 ```
 
-For more on preemptible capacity and guarantees, see [Preemptible deployments](/guides/ondemand-deployments#preemptible-deployments-eval-batch) in the on-demand deployments guide.
+For more on preemptible capacity and guarantees, see [Preemptible deployments](/guides/ondemand-deployments#preemptible-deployments-eval-/-batch) in the on-demand deployments guide.
 
 ## Next steps
 

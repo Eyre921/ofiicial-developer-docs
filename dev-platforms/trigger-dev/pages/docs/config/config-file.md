@@ -495,7 +495,7 @@ When set to `false`, the current working directory will be set to the build dire
 
 ## CA certificates
 
-CA Cert file to be added to NODE\_EXTRA\_CA\_CERT environment variable, useful in use with self signed cert in the trigger.dev environment.
+CA Cert file to be added to NODE_EXTRA_CA_CERT environment variable, useful in use with self signed cert in the trigger.dev environment.
 
 ```ts trigger.config.ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";

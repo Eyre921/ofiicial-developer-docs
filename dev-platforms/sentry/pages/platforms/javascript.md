@@ -265,7 +265,7 @@ At this point, you should have integrated Sentry into your JavaScript applicatio
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * Extend Sentry to your backend using one of our [SDKs](https://docs.sentry.io/.md)
-* [Set up tunneling](https://docs.sentry.io/platforms/javascript/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers from blocking Sentry events
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/configuration/tunneling.md) to avoid ad blockers from blocking Sentry events
 
 Are you having problems setting up the SDK?
 

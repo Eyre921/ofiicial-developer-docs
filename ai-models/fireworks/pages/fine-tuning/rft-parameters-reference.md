@@ -17,10 +17,10 @@ Controls how often full training state (weights **and** optimizer) is checkpoint
 | Property | Value |
 | - | - |
 | **Type** | `integer` |
-| **Default** | `0` (disabled) |
+| **Default** | `0` in RL recipes. For SFT, DPO, and ORPO defaults, see [checkpoint fields](/fine-tuning/training-api/cookbook/reference#checkpoint-&-weight-sync-fields) |
 | **Typical config — SFT / RL / DPO cookbooks** | `Config(dcp_save_interval=N)` (see [Cookbook: RL](/fine-tuning/training-api/cookbook/rl) and [Checkpoints](/fine-tuning/training-api/cookbook/reference#checkpoints)) |
 
-When set to `0` (the default), no periodic DCP checkpoints are written for resume. A successful run still saves final resumable training state by default. Sampler snapshots alone preserve weights but not optimizer state.
+When set to `0`, no periodic DCP checkpoints are written for resume. A successful run still saves final resumable training state by default. Sampler snapshots alone preserve weights but not optimizer state.
 
 When set to a positive integer `N`, a full DCP checkpoint is written every `N` steps.
 

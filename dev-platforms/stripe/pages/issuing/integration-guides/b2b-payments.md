@@ -65,7 +65,7 @@ curl https://api.stripe.com/v1/issuing/cards \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d currency=usd \
   -d type=virtual \
-  -d "cardholder={{ISSUINGCARDHOLDER_ID}}"
+  -d "cardholder={{CARDHOLDER_ID}}"
 ```
 
 Stripe returns a `Card` object on creation, and sends the `issuing_card.created` webhook event:
@@ -84,7 +84,7 @@ Stripe returns a `Card` object on creation, and sends the `issuing_card.created`
 You need to activate the card before a user can use it. While you can activate virtual cards in the same API call you used to create it, you must activate physical cards separately. When ready, activate the card by marking the `status` as `active`:
 
 ```curl
-curl https://api.stripe.com/v1/issuing/cards/{{ISSUINGCARD_ID}} \
+curl https://api.stripe.com/v1/issuing/cards/{{CARD_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d status=active
 ```
@@ -118,7 +118,7 @@ To observe the impact of card activity on the associated balance, generate a tes
 ```curl
 curl https://api.stripe.com/v1/test_helpers/issuing/authorizations \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "card={{ISSUINGCARD_ID}}" \
+  -d "card={{CARD_ID}}" \
   -d amount=1000 \
   -d authorization_method=chip \
   -d "merchant_data[category]=taxicabs_limousines" \
@@ -148,7 +148,7 @@ After approval, Stripe creates an `Authorization` in a `pending` state while it 
 Capture the funds using the following code:
 
 ```curl
-curl -X POST https://api.stripe.com/v1/test_helpers/issuing/authorizations/{{ISSUINGAUTHORIZATION_ID}}/capture \
+curl -X POST https://api.stripe.com/v1/test_helpers/issuing/authorizations/{{AUTHORIZATION_ID}}/capture \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

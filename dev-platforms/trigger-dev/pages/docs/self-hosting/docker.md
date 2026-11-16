@@ -367,6 +367,8 @@ We patch the latest released version line only, so keep an eye on new releases t
 
 You can also lock the versions of the bundled services, for example with `CLICKHOUSE_IMAGE_TAG`. If you do, or if you bring your own ClickHouse via `CLICKHOUSE_URL`, note that Trigger.dev requires ClickHouse 25.8 or newer.
 
+The optional `LOGS_SEARCH_INSERT_ASYNC` setting defaults to `false` and requires ClickHouse 26.2 or newer when enabled. Leave it disabled on ClickHouse 25.8.
+
 > [!NOTE]
 >
 > The bundled ClickHouse uses the official `clickhouse/clickhouse-server` image, and your existing
@@ -396,7 +398,7 @@ This only affects new runs; existing runs continue to read from wherever their e
 
 The legacy `clickhouse` store (the `task_events_v1` table) is retired. If you set `EVENT_REPOSITORY_DEFAULT_STORE=clickhouse`, your webapp now writes and reads `clickhouse_v2` instead and logs a warning at startup. Events recorded in `task_events_v1` stay there but no longer show in the dashboard until you copy them over.
 
-#### 1. Switch to clickhouse\_v2
+#### 1. Switch to clickhouse_v2
 
 Switch the store in your `.env` and restart the webapp:
 

@@ -250,7 +250,7 @@ To find a payment method to charge, list the payment methods associated with you
 ```curl
 curl -G https://api.stripe.com/v1/payment_methods \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d type=card
 ```
 
@@ -278,7 +278,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=1099 \
   -d currency=usd \
   -d "automatic_payment_methods[enabled]=true" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d payment_method={{PAYMENT_METHOD_ID}} \
   --data-urlencode "return_url=https://example.com/order/123/complete" \
   -d off_session=true \

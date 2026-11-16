@@ -86,7 +86,7 @@ You can increase the pod size in the Pinecone console or using the API.
 > public class ConfigureIndexExample {
 >     public static void main(String[] args) {
 >         Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
->         pc.configurePodsIndex("docs-example", "s1.x2");
+>         pc.configurePodsIndex("docs-example", "s1.x2", null, null, null);
 >     }
 > }
 > ```
@@ -296,7 +296,7 @@ import io.pinecone.clients.Pinecone;
 public class ConfigureIndexExample {
     public static void main(String[] args) {
         Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
-        pc.configurePodsIndex("docs-example", 4, "disabled");
+        pc.configurePodsIndex("docs-example", 4, null);
     }
 }
 ```

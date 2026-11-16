@@ -109,7 +109,7 @@ To create a Product with `tax_code` using the API:
 curl https://api.stripe.com/v1/products \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "name=Test Product" \
-  -d "tax_code={{TAXCODE_ID}}"
+  -d "tax_code=txcd_10000000"
 ```
 
 In some cases, you might want to use a custom product that hasn’t been pre-configured. You can pass in `product_data` instead of a product ID. For example, accepting a one time payment for a custom product with the [hosted version of Checkout](https://docs.stripe.com/checkout/quickstart.md) looks like this:
@@ -121,7 +121,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][price_data][unit_amount]=10000" \
   -d "line_items[0][price_data][tax_behavior]=exclusive" \
   -d "line_items[0][price_data][product_data][name]=Test Product" \
-  -d "line_items[0][price_data][product_data][tax_code]={{TAXCODE_ID}}" \
+  -d "line_items[0][price_data][product_data][tax_code]=txcd_10000000" \
   -d "line_items[0][quantity]=2" \
   -d mode=payment \
   --data-urlencode "success_url=https://example.com/success"
@@ -139,7 +139,7 @@ curl https://api.stripe.com/v1/shipping_rates \
   -d "fixed_amount[amount]=500" \
   -d "fixed_amount[currency]=usd" \
   -d tax_behavior=inclusive \
-  -d "tax_code={{TAXCODE_ID}}"
+  -d "tax_code=txcd_10000000"
 ```
 
 ## See also

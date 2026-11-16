@@ -167,7 +167,7 @@ This is an example of creating an invoice with A4 as the PDF page size.
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "rendering[pdf][page_size]=a4"
 ```
 

@@ -61,7 +61,7 @@ With the API, you can apply a template to invoices in the following ways:
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d collection_method=send_invoice \
   -d days_until_due=30 \
   -d "rendering[template]=inrtem_xxx"

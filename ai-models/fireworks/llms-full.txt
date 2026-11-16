@@ -2571,6 +2571,10 @@ Check one loaded adapter's state, for example to see whether it's ready for traf
 
 Preview
 
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
+
 ```bash theme={null}
 curl "https://api.fireworks.ai/v1/accounts/$ACCOUNT_ID/deployedModels/$DEPLOYED_MODEL_ID" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY"
@@ -2612,6 +2616,10 @@ GET https://api.fireworks.ai/v1/accounts/{account_id}/deployedModels
 List every loaded copy of your adapters, on serverless and dedicated deployments.
 
 Preview
+
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
 
 ```bash theme={null}
 curl "https://api.fireworks.ai/v1/accounts/$ACCOUNT_ID/deployedModels" \
@@ -2686,6 +2694,10 @@ Load a LoRA adapter onto serverless with Specialized Model Inference.
 
 Preview
 
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
+
 Loads a LoRA adapter onto the shared serverless pool. Loading takes about 2 to 5 minutes. You're billed per token only when you call the adapter.
 
 ```bash theme={null}
@@ -2752,7 +2764,7 @@ Returns the [deployed model](/api-reference/specialized-model-inference/overview
 * **One serverless copy per adapter.** Loading the same adapter onto serverless again fails while the first copy exists.
 * **The first request is slower.** The first request after loading a LoRA adapter can take up to a minute. Later requests have much lower latency.
 * **The bare model name.** The first copy of an adapter you load becomes its default and answers `accounts/<ACCOUNT_ID>/models/<LORA_ID>`. If another copy already holds that name, this copy loads with `default: false`. Call it with `accounts/<ACCOUNT_ID>/deployedModels/<DEPLOYED_MODEL_ID>`. There is no `#serverless` suffix. See [Which model string to use](/serverless/specialized-model-inference/overview#which-model-string-to-use).
-* **Adapter limit.** You can load up to 3 adapters per base model on serverless at a time. Going over it returns `429 RESOURCE_EXHAUSTED`. Unload an adapter to free up a slot. For more slots, contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team. See [Supported models and limits](/serverless/specialized-model-inference/overview#supported-models-and-limits).
+* **Adapter limit.** You can load up to 3 adapters per base model on serverless at a time. Going over it returns `429 RESOURCE_EXHAUSTED`. Unload an adapter to free up a slot. For more slots, contact [support@fireworks.ai](mailto:support@fireworks.ai) or your account team. See [Supported models and limits](/serverless/specialized-model-inference/overview#supported-models-and-limits).
 
 ## Errors
 
@@ -2781,6 +2793,10 @@ Source: https://docs.fireworks.ai/api-reference/specialized-model-inference/over
 REST endpoints and the deployed model object for Specialized Model Inference on Serverless.
 
 Preview
+
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
 
 A loaded adapter is a **deployed model**: a record that ties an adapter in your account to where it serves. For an adapter on serverless, that record has `serverless: true`. You load and unload adapters with the control-plane API and call them with the inference API.
 
@@ -2872,6 +2888,10 @@ DELETE https://api.fireworks.ai/v1/accounts/{account_id}/deployedModels/{deploye
 Remove an adapter from serverless and free one of your adapter slots.
 
 Preview
+
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
 
 ```bash theme={null}
 curl -X DELETE "https://api.fireworks.ai/v1/accounts/$ACCOUNT_ID/deployedModels/$DEPLOYED_MODEL_ID" \
@@ -3798,6 +3818,20 @@ Reservations are invoiced separately from your on-demand usage, at a frequency d
 >
 > Reserved capacity will always be billed until the reservation ends, regardless of whether the reservation is
 > actively used.
+
+## Training on a reservation
+
+Trainers created with the Training SDK or the cookbook use a matching reservation on your account by default (`use_reservation=True`). A matching reservation is an active reservation for the trainer's GPU type.
+
+* **No matching reservation:** the trainer uses shared capacity.
+* **Reservation is full:** the trainer waits for reserved GPUs and doesn't fall back to shared capacity.
+* **Shared capacity instead:** set `use_reservation=False`.
+* **Placement limit:** a trainer that can't be placed within 48 hours fails, on a reservation or on shared capacity.
+* **Quota:** trainers on a reservation still count against your [training GPU quota](/guides/quotas_usage/account-quotas#training-gpu-quota). A trainer that would go over quota fails when you create the trainer.
+
+### Sharing a reservation with inference
+
+By default, inference deployments on your account use reserved GPUs first and overflow to on-demand capacity. Trainers can't move standard (non-preemptible) inference deployments off a reservation, so if standard deployments fill the reservation, new trainers wait. Leave enough reserved GPUs free for the trainers you plan to run.
 
 ## Purchasing or renewing a reservation
 
@@ -5465,7 +5499,7 @@ Source: https://docs.fireworks.ai/faq-new/models-inference/what-is-the-differenc
 
 Serverless is pay-per-token inference on shared Fireworks capacity. On-demand is a deployment on GPUs reserved for your account.
 
-**Serverless** is shared inference. You send a request to `api.fireworks.ai` and pay per token. You do not choose the GPU or the replica count. Use it for models Fireworks already hosts, and for LoRA adapters on [select base models](/serverless/specialized-model-inference/overview).
+**Serverless** is shared inference. You send a request to `api.fireworks.ai` and pay per token. You do not choose the GPU or the replica count. Use it for models Fireworks already hosts, and for LoRA adapters on [select base models](/serverless/specialized-model-inference/overview) with Specialized Model Inference (in Preview, available on request).
 
 **On-demand** is a deployment on GPUs reserved for your account. You pay for GPU time, and you choose the model, hardware, and scaling. Use it for a custom model, a LoRA adapter on a base model Serverless does not support, or a latency target Serverless does not meet. Docs also call this a dedicated deployment.
 
@@ -5685,7 +5719,7 @@ To run training evals before production serving, see [Evaluating Trained Models]
 
 > [!NOTE]
 >
-> This page covers deploying trained LoRA models, whether created on the Fireworks platform or imported, to **on-demand (dedicated) deployments**. LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on **serverless** and billed per token, with no deployment to manage. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview).
+> This page covers deploying trained LoRA models, whether created on the Fireworks platform or imported, to **on-demand (dedicated) deployments**. LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on **serverless** and billed per token, with no deployment to manage. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview), which is in Preview and available on request.
 
 > [!NOTE]
 >
@@ -6103,7 +6137,7 @@ After training, evaluate your model before you serve it in production. Choose an
 
 > [!WARNING]
 >
-> Serverless checkpoint sampling and preemptible deployments are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras). LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview).
+> Serverless checkpoint sampling and preemptible deployments are for **training evals and other non-production workloads only**. Do not send production or latency-sensitive traffic through them. For production serving after eval, create an on-demand deployment. See [Deploying Trained Models](/fine-tuning/deploying-loras). LoRAs trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview) (in Preview, available on request).
 
 ## Which approach to use
 
@@ -6162,6 +6196,12 @@ You do not need a training client to sample a checkpoint: open a sampler from a 
 > Promote checkpoints you want to keep long term or serve through the chat completions API, then evaluate the promoted model on [serverless](#serverless-lora-inference) if its base model is supported, or with a [preemptible deployment](#preemptible-deployment).
 
 ## Serverless LoRA inference
+
+Preview
+
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
 
 If your promoted LoRA was trained on a [supported base model](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can load it onto Fireworks' shared serverless pool and call it through the Chat Completions API like any serverless model. You don't create a deployment, and you pay per token at the base model's price.
 
@@ -6256,13 +6296,17 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   }'
 ```
 
+> [!TIP]
+>
+> For a large eval set, use the [Batch migration script](/guides/batch-migration#step-3-run-your-batch-file). The script reads a JSONL file in the OpenAI batch format (`custom_id` plus `body`), sends the rows to your deployment with a concurrency limit, retries requests that fail while a replica is preempted, and skips rows that already have a result in the output file when you rerun the same command.
+
 When the evaluation is finished, delete the deployment to release the borrowed capacity:
 
 ```bash theme={null}
 firectl deployment delete <YOUR_DEPLOYMENT_ID> -a <ACCOUNT_ID>
 ```
 
-For more on preemptible capacity and guarantees, see [Preemptible deployments](/guides/ondemand-deployments#preemptible-deployments-eval-batch) in the on-demand deployments guide.
+For more on preemptible capacity and guarantees, see [Preemptible deployments](/guides/ondemand-deployments#preemptible-deployments-eval-/-batch) in the on-demand deployments guide.
 
 ## Next steps
 
@@ -6561,7 +6605,7 @@ For managed SFT, DPO and ORPO jobs created before November 9, 2026:
 \> | Parameter mode | LoRA only | LoRA or full-parameter |
 \> | Methods | SFT, DPO and RL | SFT, DPO, ORPO and RL |
 \> | Billing | Per token | Per GPU hour while the trainer runs |
-\> | Limits | 8 concurrent runs per account by default | Your account's \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
+\> | Limits | 32 concurrent runs per account by default. Some models allow fewer per account (\[details]\(/fine-tuning/training-api/serverless#capacity-and-rate-limits)) | Your account's \[training GPU quota]\(/guides/quotas_usage/account-quotas#training-gpu-quota) |Pick by what your managed job used:| Your managed job | Train it on |
 \> | - | - |
 \> | LoRA on a serverless model | Serverless Training |
 \> | LoRA on any other model | Dedicated Training, LoRA |
@@ -6687,7 +6731,7 @@ Serverless and Dedicated Training draw from the same base model catalog. Availab
 
 ## Model availability
 
-Pick a model to see the surfaces and methods it is enabled for, plus any training shapes that back it. Switch to **All models** for the full matrix.
+Use **Compare models** to see every model in one table, or select a row to see that model's details. **Model details** shows where you can train the model, which methods the model supports, and which training shapes back the model. The filters apply to both views.
 
 ## Vision and multimodal support
 
@@ -6986,10 +7030,10 @@ Controls how often full training state (weights **and** optimizer) is checkpoint
 | Property | Value |
 | - | - |
 | **Type** | `integer` |
-| **Default** | `0` (disabled) |
+| **Default** | `0` in RL recipes. For SFT, DPO, and ORPO defaults, see [checkpoint fields](/fine-tuning/training-api/cookbook/reference#checkpoint-&-weight-sync-fields) |
 | **Typical config — SFT / RL / DPO cookbooks** | `Config(dcp_save_interval=N)` (see [Cookbook: RL](/fine-tuning/training-api/cookbook/rl) and [Checkpoints](/fine-tuning/training-api/cookbook/reference#checkpoints)) |
 
-When set to `0` (the default), no periodic DCP checkpoints are written for resume. A successful run still saves final resumable training state by default. Sampler snapshots alone preserve weights but not optimizer state.
+When set to `0`, no periodic DCP checkpoints are written for resume. A successful run still saves final resumable training state by default. Sampler snapshots alone preserve weights but not optimizer state.
 
 When set to a positive integer `N`, a full DCP checkpoint is written every `N` steps.
 
@@ -8037,7 +8081,7 @@ and [training skill](https://github.com/fw-ai-external/cookbook/blob/main/skills
 * **DPO does not provision a deployment** — there are no rollout samples or deployment weight syncs in the recipe.
 * **Keep a versioned reference cache** tied to tokenizer + base model revision. If the base model changes, recompute reference logprobs.
 * **Monitor margin statistics**: increasing margins indicate the policy is learning preferences.
-* **Periodic checkpoints are disabled by default** (`dcp_save_interval=0`); successful runs save final state by default. Set a positive interval on `dpo_loop.Config` for recovery during a run.
+* **Periodic checkpoints are on by default**, as in SFT: LoRA runs save a resumable and promotable checkpoint at each epoch end and about every 30 minutes within an epoch. Full-parameter runs, the default (`lora_rank=0`), save a resumable checkpoint every 50 steps. See [checkpoint fields](/fine-tuning/training-api/cookbook/reference#checkpoint-&-weight-sync-fields).
 
 ## Common pitfalls
 
@@ -8765,7 +8809,7 @@ Use `training_shape_id` for explicit shape selection — this is the primary sha
 | `region` | `str \| None` | `None` | Region override (drives trainer + deployment colocation). |
 | `timeout_s` | `float` | `3600` | Timeout for trainer provisioning / readiness waits. |
 | `replica_count` | `int \| None` | `None` | Data-parallel HSDP replica count for policy trainer launches. This is a run-level knob, not part of the validated training shape; reference trainers are launched without it. |
-| `use_reservation` | `bool` | `True` | Use the account's matching reservation when one exists; the trainer then runs only on that reservation. Accounts without a matching reservation use shared capacity. Set to `False` to always use shared capacity. |
+| `use_reservation` | `bool` | `True` | Use the account's matching reservation when one exists; the trainer then runs only on that reservation. Accounts without a matching reservation use shared capacity. Set to `False` to always use shared capacity. If the reservation is full, the trainer waits for the reservation rather than using shared capacity. See [Training on a reservation](/deployments/reservations#training-on-a-reservation). |
 
 To request replicated HSDP for a run:
 
@@ -8832,7 +8876,7 @@ Adaptive inference-request settings used by sampling utilities. Async trajectory
 
 ## Checkpoint & weight-sync fields
 
-Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). Both RL loops sync before training and after each optimizer batch. The SFT, DPO, and RL recipes expose `dcp_save_interval`; SDFT uses its own `save_every` cadence:
+Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). Both RL loops sync before training and after each optimizer batch. The SFT, DPO, ORPO, RL, and distillation recipes expose `dcp_save_interval`; SDFT uses its own `save_every` cadence:
 
 ```python theme={null}
 cfg = Config(
@@ -8844,11 +8888,13 @@ cfg = Config(
 
 > [!WARNING]
 >
-> `dcp_save_interval=0` disables periodic saves, not the final checkpoint. Successful runs save final training state by default. Set a positive interval (e.g. `50`) for recovery from an interrupted run.
+> Set `dcp_save_interval=0` to turn periodic checkpoints off. In SFT and DPO, leave `checkpoint_interval_minutes` unset or set it to `0` as well. Successful runs still save a final checkpoint unless `save_final_checkpoint=False`.
 
 | Field | Recipes | Type | Default | Description |
 | - | - | - | - | - |
-| `dcp_save_interval` | SFT, DPO, RL | `int` | `0` | Save resumable DCP checkpoints every N steps. `0` disables periodic saves. Set a positive interval for recovery during a run. |
+| `dcp_save_interval` | SFT, DPO, ORPO, RL, distillation | `int` (`int \| None` in SFT, DPO) | SFT, DPO: unset · ORPO: `50` · RL, distillation: `0` | Save resumable checkpoints every N steps. `0` disables. In SFT and DPO, unset means every 50 steps, unless the run is on the timed schedule: a positive `checkpoint_interval_minutes`, or a LoRA run that leaves both fields unset. |
+| `checkpoint_interval_minutes` | SFT, DPO | `float \| None` | unset | Save a resumable and promotable checkpoint at each epoch end, and within an epoch every N minutes or every one-twentieth of the estimated run time, whichever is longer. Unset means 30 for LoRA runs that leave `dcp_save_interval` unset, and off otherwise. When this field and `dcp_save_interval` are both positive, this field wins. |
+| `sampler_save_interval` | SFT, DPO, ORPO | `int` | `0` | Save promotable checkpoints every N steps, so you can promote intermediate checkpoints. `0` disables. In a run on the timed schedule, including the LoRA default, this field sets the save points' step interval instead of the timer. |
 | `weight_sync_timeout` | RL family | `int` | `600` | Timeout for each weight sync (seconds). |
 
 > [!NOTE]
@@ -9309,7 +9355,7 @@ Neither accepts `cross_job://` references, URIs, or absolute paths in `init_from
 * **No sampling deployment is required by default** — optional generation evaluation uses the SDK-managed sampler.
 * **Use `batch_size`** to control the number of examples per optimizer step.
 * **Resume**: Attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`; the recipe restores the saved training state and data cursor. See [checkpoints](/fine-tuning/training-api/cookbook/reference#checkpoints).
-* **Periodic checkpoints are disabled by default** (`dcp_save_interval=0`); successful runs save final state by default. Set a positive interval (e.g., `50`) to recover progress from an interrupted run.
+* **Periodic checkpoints are on by default.** LoRA runs save a resumable and promotable checkpoint at each epoch end and about every 30 minutes within an epoch. Full-parameter runs (Dedicated only) save a resumable checkpoint every 50 steps. An explicit `dcp_save_interval`, as in the serverless SFT example, switches a LoRA run's periodic saves to resumable-only saves every N steps; the final checkpoint is still promotable. To promote intermediate checkpoints, also set `sampler_save_interval`. See [checkpoint fields](/fine-tuning/training-api/cookbook/reference#checkpoint-&-weight-sync-fields).
 
 ## Check tokenization
 
@@ -9402,6 +9448,10 @@ The trainer and inference deployment are separate resources with separate billin
 >
 > Use the Tinker-compatible training client directly when a maintained recipe does not express the required behavior.
 
+> [!NOTE]
+>
+> On Kimi K3.1 Pro, a dedicated LoRA trains the attention layers, the shared expert, and the routed experts.
+
 ## Dedicated training quickstart
 
 ### Step 1: Install the SDK and cookbook
@@ -9441,6 +9491,10 @@ Choose a shape from [Models](/fine-tuning/models). Pass the full shared shape ID
 ### Step 4–10: Train, checkpoint, promote, deploy, tear down
 
 Follow the forked recipe. Record trainer and deployment IDs, checkpoint cadence, and cleanup flags before launch.
+
+## Capacity and reservations
+
+Dedicated trainers run on shared capacity, unless your account has a matching reservation. With a matching reservation, trainers run on the reservation by default. If the reservation is full, the trainer waits instead of falling back to shared capacity. Standard inference deployments on the same reservation can fill the reservation. A trainer that can't be placed within 48 hours fails. See [Training on a reservation](/deployments/reservations#training-on-a-reservation).
 
 ## Training and sampling lifecycle
 
@@ -11009,6 +11063,19 @@ training_client.optim_step(
 
 Advanced callers may pass `grad_accumulation_normalization` to control how accumulated gradients are normalized. The default `None` leaves gradients unchanged. Pass `GradAccNormalization.NUM_LOSS_TOKENS`, `GradAccNormalization.NUM_SEQUENCES`, or `GradAccNormalization.NONE` rather than raw strings. See the [cookbook skill reference](https://github.com/fw-ai-external/cookbook/blob/main/skills/fireworks-training/references/rl-gradient-accumulation.md) for operational guidance.
 
+#### Trainer busy share
+
+`optim_step` results include `trainer_busy_walltime_pct:last`: the percentage (0 to 100) of the last 60 seconds that the trainer spent running `forward`, `forward_backward` and `optim_step` calls. Checkpoint saves and weight syncs count as idle time. In the first minute after a trainer starts, the window covers the time since the trainer started.
+
+```python theme={null}
+result = training_client.optim_step(AdamParams(learning_rate=1e-5)).result()
+print(result.metrics["trainer_busy_walltime_pct:last"])
+```
+
+* On Dedicated Training, a low value with long steps in your loop means the trainer is idle and waiting for your loop, often for rollouts.
+* On Serverless Training, the trainer is shared with other sessions, so the value includes the work of those sessions too.
+* The value measures wall time, not GPU utilization.
+
 ### `save_weights_for_sampler(name, checkpoint_type=None)`
 
 Save serving-compatible sampler weights and return a future. This is the normal Tinker-shaped API:
@@ -11565,7 +11632,9 @@ curl -X DELETE \
 ```To write your own loop instead of running the example, see [Write your own training loop](#write-your-own-training-loop).## Supported modelsServerless supports these base models. For dedicated and managed options, see the [Models catalog](/fine-tuning/models).&#xA;&#xA;\<table>\<thead>\<tr>\<th>Base model\</th>
 &#x20;             \<th>Model ID\</th>
 &#x20;             \<th>Max context\</th>\</tr>\</thead>
-&#x20;         \<tbody />\</table>&#xA;&#xA;## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the lower cached prefill rate.
+&#x20;         \<tbody />\</table>&#xA;&#xA;> [!NOTE]
+>
+> On Kimi K3 and Kimi K3.1 Pro, a serverless LoRA trains the attention layers and the shared expert in each MoE layer. The routed experts and the router stay frozen.## PricingServerless training is billed per token, across three meters:- **Prefill:** prompt tokens the sampler reads. Repeated prefixes bill at the lower cached prefill rate.
 - **Sample:** tokens the sampler generates.
 - **Train:** tokens you train on (passed through `forward_backward`).Rates are USD per 1 million tokens. Available models and rates can change, so verify current availability in the [Models catalog](/fine-tuning/models) and the [pricing page](https://fireworks.ai/pricing) before launch.| Base model | Context | Prefill | Cached prefill | Sample | Train |
 | - | - | - | - | - | - |
@@ -11693,7 +11762,7 @@ response = client.chat.completions.create(
     model="accounts/<account-id>/models/my-serverless-lora",
     messages=[{"role": "user", "content": "Hello!"}],
 )
-```For deployment configuration, performance, and troubleshooting, see [Deploying trained models](/fine-tuning/deploying-loras).If the base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can skip the deployment and serve the promoted model on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview), paying per token.## Sampling without a training clientSample from a checkpoint during or after a run to evaluate it. The sampler is not a chat endpoint for your adapter: to evaluate through the chat completions API, promote the checkpoint and evaluate it on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview) if its base model is supported, or on a preemptible deployment. Serverless sampling does not work for adapters produced by dedicated training. See [Evaluating trained models](/fine-tuning/evaluating-fine-tuned-models).Sampling does not need `create_lora_training_client`. A fresh `FiretitanServiceClient` can sample a base model in the serverless pool, or any sampler checkpoint your account saved with `save_weights_for_sampler`, including checkpoints from a run that has already ended. These samplers create no training run and do not use a [concurrent-run](#capacity-and-rate-limits) slot, so evaluation workers can open and close them freely. Sampled tokens are billed per token like other serverless training sampling.> [!NOTE]
+```For deployment configuration, performance, and troubleshooting, see [Deploying trained models](/fine-tuning/deploying-loras).If the base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can skip the deployment and serve the promoted model on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview) (in Preview, available on request), paying per token.## Sampling without a training clientSample from a checkpoint during or after a run to evaluate it. The sampler is not a chat endpoint for your adapter: to evaluate through the chat completions API, promote the checkpoint and evaluate it on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview) if its base model is supported, or on a preemptible deployment. Specialized Model Inference is in Preview and available on request. Serverless sampling does not work for adapters produced by dedicated training. See [Evaluating trained models](/fine-tuning/evaluating-fine-tuned-models).Sampling does not need `create_lora_training_client`. A fresh `FiretitanServiceClient` can sample a base model in the serverless pool, or any sampler checkpoint your account saved with `save_weights_for_sampler`, including checkpoints from a run that has already ended. These samplers create no training run and do not use a [concurrent-run](#capacity-and-rate-limits) slot, so evaluation workers can open and close them freely. Sampled tokens are billed per token like other serverless training sampling.> [!NOTE]
 >
 > Requires SDK version 1.2.29 or later: `pip install --upgrade "fireworks-ai[training]>=1.2.29"`.### Sample a base model```python theme=\{null}
 import os
@@ -11759,14 +11828,14 @@ sampler = service.create_sampling_client(model_path=path, tokenizer=tokenizer)
 >
 > Keep `FiretitanServiceClient` and training clients in the main process. Only sampling clients are meant to cross process boundaries.> [accordion] Prompt caching for RL rollouts
 >
-> For RL rollouts, pass a stable trajectory ID so repeated prompts reuse the KV cache. This requires SDK 1.2.9 or later: versions 1.2.0 through 1.2.8 replaced per-request session values with one derived from the checkpoint. Upgrade with `pip install --upgrade "fireworks-ai[training]>=1.2.9"` and restart the client process. See [Inference for RL rollouts](/guides/rollout-inference) and [`DeploymentSampler` RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling).## Capacity and rate limits- **Concurrent runs:** The default is 8 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model, and managed fine-tuning jobs on the same model count toward it. Over either limit, new runs fail with HTTP 429 (`RATE_LIMIT_EXCEEDED`) and a message such as `maximum concurrent serverless training runs for base model <MODEL> exceeded: in use 1, limit 1`. A run holds its slot until its session is deleted or expires. [Sampling without a training client](#sampling-without-a-training-client) uses no slot.
+> For RL rollouts, pass a stable trajectory ID so repeated prompts reuse the KV cache. This requires SDK 1.2.9 or later: versions 1.2.0 through 1.2.8 replaced per-request session values with one derived from the checkpoint. Upgrade with `pip install --upgrade "fireworks-ai[training]>=1.2.9"` and restart the client process. See [Inference for RL rollouts](/guides/rollout-inference) and [`DeploymentSampler` RL rollout sampling](/fine-tuning/training-api/reference/deployment-sampler#rl-rollout-sampling).## Capacity and rate limits- **Concurrent runs:** The default is 32 active runs per account, although account overrides may differ. Some pool models also limit active runs per account on that base model. Over either limit, new runs fail with HTTP 429 (`RATE_LIMIT_EXCEEDED`) and a message such as `maximum concurrent serverless training runs for base model <MODEL> exceeded: in use 1, limit 1`. A run holds its slot until its session is deleted or expires. [Sampling without a training client](#sampling-without-a-training-client) uses no slot.
 - **Free a slot now:** Closing the client does not end the session. Promote any checkpoint you need, then delete the session as in [Step 3: Clean up](#step-3-clean-up).
 - **Request and token limits:** Contact Fireworks for the current limits on your account.
 - **Shared-pool capacity:** if the pool is full, `create_lora_training_client` returns an out-of-capacity error. Retry, or switch to the dedicated path.
 - **Sampling speed:** serverless sampling runs on a pool shared with other customers, so the time each training step spends sampling varies with overall load. For predictable rollout throughput, use [Dedicated Training](/fine-tuning/training-api/dedicated).## Troubleshooting| Symptom | Cause | Fix |
 | - | - | - |
 | `create_lora_training_client` fails with `out of capacity` | The shared pool for that base model is full. | Retry shortly, or use [Dedicated Training](/fine-tuning/training-api/dedicated). |
-| A new run fails with HTTP 429: `maximum concurrent serverless training runs … exceeded` | Your account is at its concurrent-run limit, overall or for that base model. Finished runs keep their slot until you delete their session. Managed fine-tuning jobs on the same model count toward it. | Promote any checkpoint you need, then delete finished sessions as in [Step 3: Clean up](#step-3-clean-up). |
+| A new run fails with HTTP 429: `maximum concurrent serverless training runs … exceeded` | Your account is at its concurrent-run limit, overall or for that base model. Finished runs keep their slot until you delete their session. | Promote any checkpoint you need, then delete finished sessions as in [Step 3: Clean up](#step-3-clean-up). |
 | Creating the training client fails on rank | Serverless is LoRA only, and rank 0 means full-parameter training. | Pass a positive `rank`, such as `rank=8`. For full-parameter training, use [Dedicated Training](/fine-tuning/training-api/dedicated). |
 | Sampling fails right after you connect | `base_url` does not end in `/training/v1/serverless`. | Set `base_url="https://api.fireworks.ai/training/v1/serverless"`. A working session ID starts with `ts-`. |
 | The loop runs, but nothing changes and no error appears | A remote call's result was never read, so its failure was never raised. | Call `.result()` on every `forward_backward`, `optim_step`, save, and sample call. |
@@ -12210,7 +12279,7 @@ A model is a set of model weights and metadata associated with the model. Each m
 * Fireworks has a library of common base models that can be used for [**serverless inference**](/models/overview#serverless-inference) as well as [**dedicated deployments**](/models/overview#dedicated-deployments). Model IDs for these models are pre-populated. For example, `llama-v3p1-70b-instruct` is the model ID for the Llama 3.1 70B model that Fireworks provides. The ID for each model can be found on its page ([**example**](https://app.fireworks.ai/models/fireworks/qwen3-coder-480b-a35b-instruct))
 * Users can also [upload their own](/models/uploading-custom-models) custom base models and specify model IDs.
 
-**LoRA (low-rank adaptation) addons:** A LoRA addon is a small, trained model that significantly reduces the amount of memory required to deploy compared to a fully trained model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-trained-models), and [**serving**](/fine-tuning/deploying-loras) LoRA addons. LoRA addons are served on a dedicated deployment of their base model, or, for [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits), on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview). Model IDs for LoRAs can be either auto-generated or user-specified.
+**LoRA (low-rank adaptation) addons:** A LoRA addon is a small, trained model that significantly reduces the amount of memory required to deploy compared to a fully trained model. Fireworks supports [**training**](/fine-tuning/finetuning-intro), [**uploading**](/models/uploading-custom-models#importing-trained-models), and [**serving**](/fine-tuning/deploying-loras) LoRA addons. LoRA addons are served on a dedicated deployment of their base model, or, for [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits), on serverless with [Specialized Model Inference](/serverless/specialized-model-inference/overview) (in Preview, available on request). Model IDs for LoRAs can be either auto-generated or user-specified.
 
 #### A note on API model metadata
 
@@ -19913,7 +19982,7 @@ Fireworks enables secure model training, including fine-tuning and reinforcement
 
 > [!TIP]
 >
-> For detailed guidance on secure reinforcement fine-tuning and using your own cloud storage, see [Training security](/guides/security_compliance/secure_training).
+> For guidance on secure training and using your own cloud storage, see [Secure Training](/guides/security_compliance/secure_training).
 
 ## Technical safeguards
 
@@ -20289,103 +20358,6 @@ Every `Encrypt` and `Decrypt` call Fireworks makes against your key is recorded 
 > [card] [Data Security Overview](/guides/security_compliance/data_security)
 >
 > Learn about our comprehensive security measures
-
-
-# Secure reinforcement fine-tuning
-Source: https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft
-
-Run RFT end to end on Fireworks with your dataset, reward pipeline, and rollout infrastructure under your own control for data-sensitive training workloads.
-
-Use reinforcement fine-tuning while keeping sensitive components and data under your control. This composes [BYOB](/guides/security_compliance/secure_training/byob) storage with a reward pipeline and rollout infrastructure that stay in your environment.
-
-**1. Configure storage (BYOB)**
-
-Set up your dataset storage using [GCS](/guides/security_compliance/secure_training/byob#gcs-bucket-integration), [AWS S3](/guides/security_compliance/secure_training/byob#aws-s3-bucket-integration), or [Azure Blob Storage](/guides/security_compliance/secure_training/byob#azure-blob-storage-integration) on the BYOB page.
-
-For models, you can optionally use [External AWS S3 Bucket Integration](/models/uploading-custom-models#uploading-your-model).
-
-**2. Prepare your reward pipeline and rollouts**
-
-Keep your reward functions, rollout servers, and training metrics under your control. Generate rewards from your environment and write them to examples in your dataset (or export a dataset that contains per-example rewards).
-
-* Reward functions and reward models remain proprietary and never need to be shared
-* Rollouts and evaluation infrastructure run in your environment
-* Model checkpoints can be registered to your storage registry if desired
-
-**3. Create a dataset that includes rewards**
-
-Create or point a `Dataset` at your BYOB storage. Ensure each example contains the information required by your reward pipeline (for example, prompts, outputs/trajectories, and numeric rewards).
-
-> [!NOTE]
->
-> You can reuse existing supervised data by attaching reward signals produced by your pipeline, or export a fresh dataset into your bucket for consumption by RFT.
-
-**4. Run reinforcement fine-tuning step from Python**
-
-Use the Python SDK to create a reinforcement fine-tuning step that reads from your BYOB dataset and produces a new checkpoint.
-
-```python theme={null}
-from fireworks import Fireworks
-
-client = Fireworks()
-
-# Create a reinforcement fine-tuning step
-step = client.reinforcement_fine_tuning_steps.create(
-    rlor_trainer_job_id="my-rft-job-001",
-    display_name="Secure RFT Training Step",
-    training_config={
-        "base_model": "accounts/fireworks/models/{BASE_MODEL}",
-        "learning_rate": 1e-5,
-        "lora_rank": 8,
-        "max_context_length": 4096,
-        "batch_size_samples": 32,
-    },
-    dataset="accounts/{ACCOUNT}/datasets/{DATASET_NAME}",  # Your BYOB dataset with rewards
-    output_model="accounts/{ACCOUNT}/models/my-improved-model-v1",
-    reward_weights=["score"],  # Field name for rewards in your dataset
-)
-
-# Poll for completion
-import time
-timeout = 3600  # 1 hour timeout
-start_time = time.time()
-while True:
-    if time.time() - start_time > timeout:
-        raise TimeoutError(f"Job polling timed out after {timeout} seconds")
-    job = client.reinforcement_fine_tuning_steps.get(
-        rlor_trainer_job_id="my-rft-job-001"
-    )
-    if job.state == "JOB_STATE_COMPLETED":
-        print("Training complete!")
-        break
-    elif job.state in ("JOB_STATE_FAILED", "JOB_STATE_CANCELLED"):
-        raise RuntimeError(f"Training failed: {job.state}")
-    time.sleep(10)
-```
-
-See the [Create Reinforcement Fine-tuning Step API reference](/api-reference/create-reinforcement-fine-tuning-step) for full parameters and options.
-
-> [!TIP]
->
-> For a complete iterative RL workflow example using the [Python SDK](/tools-sdks/python-sdk), including rollout generation, reward computation, and hot-reloading LoRA adapters, see the [iterative RL workflow example on GitHub](https://github.com/fw-ai-external/python-sdk/tree/main/examples/iterative_rl_workflow).
-
-> [!NOTE]
->
-> When continuing from a LoRA checkpoint, training parameters such as `lora_rank`, `learning_rate`, `max_context_length`, and `batch_size_samples` must match the original LoRA training.
-
-**5. Verify outputs and enforce controls**
-
-* Validate the new checkpoint functions as expected in your environment
-* If exporting models to your storage, apply your registry policies and access reviews
-* Review audit logs and rotate any temporary credentials used for the run
-
-> [!WARNING]
->
-> Do not store long-lived credentials in code. Use short-lived tokens, workload identity, or scoped service accounts when granting Fireworks access to your buckets.
-
-> [!TIP]
->
-> You now have an end-to-end secure RFT workflow with BYOB datasets, proprietary reward pipelines, and isolated training jobs that generate new checkpoints.
 
 
 # Spot Serverless
@@ -21433,7 +21405,7 @@ In addition to models you train on the Fireworks platform, you can also upload y
 
 > [!NOTE]
 >
-> Uploaded LoRA adapters can be deployed to on-demand (dedicated) deployments. Adapters trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview).
+> Uploaded LoRA adapters can be deployed to on-demand (dedicated) deployments. Adapters trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview), which is in Preview and available on request.
 
 ### Requirements
 
@@ -21529,7 +21501,7 @@ To upload a LoRA addon, run the following command. The MODEL_ID is an arbitrary 
 firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks/models/<BASE_MODEL_ID>"
 ```
 
-Once the adapter is uploaded, deploy it with [live merge or multi-LoRA](/fine-tuning/deploying-loras) on an on-demand deployment. If its base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can instead load it with [Specialized Model Inference](/serverless/specialized-model-inference/overview) and pay per token.
+Once the adapter is uploaded, deploy it with [live merge or multi-LoRA](/fine-tuning/deploying-loras) on an on-demand deployment. If its base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can instead load it with [Specialized Model Inference](/serverless/specialized-model-inference/overview) (in Preview, available on request) and pay per token.
 
 ## Next steps
 
@@ -25995,7 +25967,7 @@ For production workloads requiring long-term model stability, we recommend [on-d
 | When Serverless fits | When On-demand fits |
 | - | - |
 | Pay per token, only for what you use | Pay per GPU-hour for dedicated capacity |
-| You're using popular base models that Fireworks already hosts, or LoRAs on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) | You're running custom base models, or LoRAs on base models that serverless doesn't support |
+| You're using popular base models that Fireworks already hosts, or LoRAs on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) with [Specialized Model Inference](/serverless/specialized-model-inference/overview) (in Preview, available on request) | You're running custom base models, or LoRAs on base models that serverless doesn't support |
 | You don't want to manage scaling, replicas, or hardware sizing | You have custom latency requirements and want control over hardware and replicas |
 
 For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deployments).
@@ -26540,6 +26512,10 @@ Serve your LoRA adapters on shared serverless GPUs, pay per token, and go from a
 
 Preview
 
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
+
 ## How it works
 
 Specialized Model Inference runs your LoRA adapters on Fireworks' shared serverless pool. You don't create or pay for a deployment. You load an adapter, call it like any serverless model, and pay per token at the base model's price.
@@ -26569,7 +26545,7 @@ Adapters load on this serverless base model:
 
 We plan to support more base models over time. Adapters trained on any other base model can't be loaded onto serverless - please use a [dedicated deployment](/fine-tuning/deploying-loras).
 
-Each account can load up to 3 LoRA adapters per base model at a time. Loading a fourth returns `ResourceExhausted`. Unload an adapter to free up a slot. If you need more slots, contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team.
+Each account can load up to 3 LoRA adapters per base model at a time. Loading a fourth returns `ResourceExhausted`. Unload an adapter to free up a slot. If you need more slots, contact [support@fireworks.ai](mailto:support@fireworks.ai) or your account team.
 
 ## Get started
 
@@ -26879,6 +26855,7 @@ You can see traffic split by LoRA adapter on the **Serverless** tab of the [Fire
 | - | - | - |
 | `404` on a call | The adapter is `READY` but not loaded, the key belongs to another account, or the ID is misspelled | `firectl model get <LORA_ID>` and look for **Deployed Model Refs**; load it if there are none |
 | `404` from another account | Only the owning account can call an adapter | Call it from the account that owns it |
+| Permission error on load | Your account doesn't have access to the Preview yet | Contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai) to request access |
 | `ResourceExhausted` or `429` on load | Your account already has 3 adapters loaded on that base model | Unload one, or ask for more slots |
 | `429` on a call | Adapter [rate limit](#rate-limits) for GLM 5.3 Flash | Retry with exponential backoff |
 | Client timeout on the first call | The first request downloads the adapter, which can take up to a minute | Raise the client timeout to 300 s and retry |

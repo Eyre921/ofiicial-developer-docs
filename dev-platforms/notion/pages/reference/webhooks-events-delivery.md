@@ -6,9 +6,9 @@ path: reference/webhooks-events-delivery
 
 Learn about the different event types and how they are delivered to your connection.
 
-Webhooks currently notify you about changes to pages and databases — such as when a new page is created, a title is updated, or someone changes a database schema. The events themselves do not contain the full content that changed. Instead, the webhook acts as a signal that something changed, and it’s up to your connection to follow up with a call to the Notion API to retrieve the latest content.
+Notion sends webhook events for changes to pages, databases, data sources, views, comments, and file uploads. Many events don't include the full content that changed. Use the event as a signal, then call the Notion API to retrieve the latest content.
 
-For example, let’s say a user updates the title of a page. You’ll receive a `page.content_updated` webhook event with the ID of the page that changed. From there, your connection can use the [retrieve a page endpoint](/reference/retrieve-a-page) to fetch the latest page content — including the new title.
+For example, when someone updates a page title, you receive a `page.properties_updated` event. Use the [retrieve a page endpoint](/reference/retrieve-a-page) to fetch the page's latest properties, including its title.
 
 > [!NOTE]
 >
@@ -18,25 +18,27 @@ For example, let’s say a user updates the title of a page. You’ll receive a 
 
 ### Event properties
 
-**All webhook event types share the following shape of properties:**
+**Webhook events share these properties.** `accessible_by` is optional and only present for public integrations. `data` appears on event types that define it.
 
 | **Field** | **Type** | **Description** |
 | :- | :- | :- |
 | `id` | UUID | The unique ID of the webhook event |
 | `timestamp` | String | ISO 8601 formatted time at which the event occurred. This field can be used to order events on your side |
-| `workspace_id` | UUID | The workspace ID where the event originated from |
+| `workspace_id` | UUID | The ID of the workspace where the event originated |
+| `workspace_name` | String | The name of the workspace where the event originated |
 | `subscription_id` | UUID | The ID of the webhook subscription |
 | `integration_id` | UUID | Associated connection ID the subscription is set up with |
 | `type` | String | Type of the event, e.g. `page.created` |
-| `authors` | Array | Array of objects with the ID (`id`) and type (`type`) of the author who performed the action. `type` can be `"person"`, `"bot"`, or `"agent"`. Typically an array of length 1; can be more for aggregated events. See [bot](/reference/user#bots) or [person](/reference/user#people) for details retrievable by ID in the [Users API](/reference/get-user). |
-| `accessible_by` | Array | Array of objects with the ID (`id`) and type (`type`) of each accessible bot and user who owns the bot connection to the `integration_id` and has access to the webhook's `entity`. Only for public connections. `type` can be `"person"` or `"bot"`. |
+| `authors` | Array | Array of objects with the ID (`id`) and type (`type`) of the author who performed the action. `type` can be `"person"` or `"bot"`. Typically an array of length 1; can be longer for aggregated events. See [bot](/reference/user#bots) or [person](/reference/user#people) for details retrievable by ID in the [Users API](/reference/get-user). |
+| `accessible_by` | Optional array | Array of objects with the ID (`id`) and type (`type`) of each accessible bot and user who owns the bot connection to the `integration_id` and has access to the webhook's `entity`. `type` can be `"person"` or `"bot"`. |
 | `attempt_number` | number | Attempt number (1-8) of the current event delivery |
-| `entity` | Object | ID (`id`) and type (`type`) of the object that triggered the event. `type` can be `"page"`, `"block"`, or `"database"`. |
-| `data` | Object | Additional, event-specific data. |
+| `api_version` | String | The API version used to render the webhook event |
+| `entity` | Object | ID (`id`) and type (`type`) of the object that triggered the event. `type` can be `"page"`, `"block"`, `"database"`, `"data_source"`, `"view"`, `"comment"`, or `"file_upload"`. For linked databases, the type is `"block"`. |
+| `data` | Optional object | Additional, event-specific data. |
 
 ### Supported webhook event types
 
-Notion currently supports the following webhook event types. Each event represents a meaningful change to content in a workspace — such as the creation of a page, a schema update, or a new comment.
+Notion currently supports the following webhook event types. Each event represents a change in a workspace, such as a page creation, a schema update, or a new comment.
 
 > [!NOTE]
 >
@@ -58,6 +60,7 @@ Below, you’ll find the list of available type values, a short description of w
 | `page.properties_updated` | Triggered when a page's property is updated. | After the first edit. See [Event aggregation](#event-aggregation). |
 | `page.undeleted` | Triggered when a page is restored from the trash. | Yes |
 | `page.unlocked` | Triggered when a page is unlocked | No |
+| `page.transcription_block.transcript_deleted` | Triggered when a transcript is deleted from a page's transcription block. | No |
 | `database.content_updated` | Triggered when a database's content is updated— for example, adding or removing a child page.  **Deprecated** in 2025-09-03 API version. | Yes |
 | `database.created` | Triggered when a new database is created. | Yes |
 | `database.deleted` | Triggered when a database is moved to the trash. | Yes |
@@ -73,6 +76,13 @@ Below, you’ll find the list of available type values, a short description of w
 | `comment.created` | Triggered when a new comment or suggested edit is added to a page or block | No |
 | `comment.deleted` | Triggered when a comment is deleted. | No |
 | `comment.updated` | Triggered when a comment is edited, or when a file attached to the comment in the Notion app finishes uploading. | No |
+| `view.created` | Triggered when a database view is created.  **New** in 2025-09-03 API version. | Yes |
+| `view.updated` | Triggered when a database view is updated.  **New** in 2025-09-03 API version. | Yes |
+| `view.deleted` | Triggered when a database view is deleted.  **New** in 2025-09-03 API version. | No |
+| `file_upload.created` | Triggered when a file upload is created. | No |
+| `file_upload.completed` | Triggered when a file upload completes. | No |
+| `file_upload.expired` | Triggered when a file upload expires. | No |
+| `file_upload.upload_failed` | Triggered when a file upload fails. | No |
 
 > [!NOTE]
 >
@@ -104,7 +114,7 @@ We aim for at-most-once event delivery. If your webhook endpoint fails to acknow
 
 ## Sample event payloads
 
-Notion currently supports the following event `type`s. We've added an example payload to describe the shape of each event.
+These examples show common webhook payloads. See the [Webhook events](/reference/webhooks/page-created) API reference for schemas for every event type.
 
 ### page.created
 
@@ -116,6 +126,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.created",
   "authors": [
     {
@@ -157,6 +168,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.properties_updated",
   "authors": [
     {
@@ -199,6 +211,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.content_updated",
   "authors": [
     {
@@ -246,6 +259,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.moved",
   "authors": [
     {
@@ -287,6 +301,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.deleted",
   "authors": [
     {
@@ -328,6 +343,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.undeleted",
   "authors": [
     {
@@ -369,6 +385,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.locked",
   "authors": [
     {
@@ -410,6 +427,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "page.unlocked",
   "authors": [
     {
@@ -459,6 +477,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "database.created",
   "authors": [
     {
@@ -504,6 +523,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "database.content_updated",
   "authors": [
     {
@@ -555,6 +575,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "database.moved",
   "authors": [
     {
@@ -596,6 +617,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "database.deleted",
   "authors": [
     {
@@ -637,6 +659,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "database.undeleted",
   "authors": [
     {
@@ -682,6 +705,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "database.schema_updated",
   "authors": [
     {
@@ -725,7 +749,7 @@ Notion currently supports the following event `type`s. We've added an example pa
         "name": "Description",
         "action": "deleted"
       }
-    ],
+    ]
   }
 }
 ```
@@ -744,6 +768,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2025-09-03",
   "type": "data_source.content_updated",
   "authors": [
     {
@@ -907,6 +932,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2025-09-03",
   "type": "data_source.schema_updated",
   "authors": [
     {
@@ -950,7 +976,7 @@ Notion currently supports the following event `type`s. We've added an example pa
         "name": "Description",
         "action": "deleted"
       }
-    ],
+    ]
   }
 }
 ```
@@ -1003,6 +1029,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "comment.created",
   "authors": [
     {
@@ -1026,6 +1053,7 @@ Notion currently supports the following event `type`s. We've added an example pa
     "type": "comment"
   },
   "data": {
+    "discussion_id": "9d6d26bd-2b1f-4a81-a62f-71e13cbdb99b",
     "page_id": "0ef104cd-477e-80e1-8571-cfd10e92339a",
     "parent": {
       "id": "0ef104cd-477e-80e1-8571-cfd10e92339a",
@@ -1045,6 +1073,7 @@ Notion currently supports the following event `type`s. We've added an example pa
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "comment.created",
   "authors": [
     {
@@ -1068,6 +1097,7 @@ Notion currently supports the following event `type`s. We've added an example pa
     "type": "comment"
   },
   "data": {
+    "discussion_id": "9d6d26bd-2b1f-4a81-a62f-71e13cbdb99b",
     "page_id": "0ef104cd-477e-80e1-8571-cfd10e92339a",
     "parent": {
       "id": "153104cd-477e-803a-88dc-caececf26478",
@@ -1089,6 +1119,7 @@ For a comment on a database page property, comment events also include `data.pro
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "comment.updated",
   "authors": [
     {
@@ -1112,6 +1143,7 @@ For a comment on a database page property, comment events also include `data.pro
     "type": "comment"
   },
   "data": {
+    "discussion_id": "9d6d26bd-2b1f-4a81-a62f-71e13cbdb99b",
     "page_id": "0ef104cd-477e-80e1-8571-cfd10e92339a",
     "parent": {
       "id": "0ef104cd-477e-80e1-8571-cfd10e92339a",
@@ -1131,6 +1163,7 @@ For a comment on a database page property, comment events also include `data.pro
   "workspace_name": "Quantify Labs",
   "subscription_id": "29d75c0d-5546-4414-8459-7b7a92f1fc4b",
   "integration_id": "0ef2e755-4912-8096-91c1-00376a88a5ca",
+  "api_version": "2022-06-28",
   "type": "comment.deleted",
   "authors": [
     {
@@ -1154,6 +1187,7 @@ For a comment on a database page property, comment events also include `data.pro
     "type": "comment"
   },
   "data": {
+    "discussion_id": "9d6d26bd-2b1f-4a81-a62f-71e13cbdb99b",
     "page_id": "0ef104cd-477e-80e1-8571-cfd10e92339a",
     "parent": {
       "id": "153104cd-477e-803a-88dc-caececf26478",

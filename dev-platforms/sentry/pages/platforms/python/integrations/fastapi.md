@@ -101,7 +101,7 @@ Sentry automatically captures errors and reports issues for you. You can also ex
 
 * By default, all exceptions leading to an Internal Server Error are captured and reported. The HTTP status codes to report on are configurable via the `failed_request_status_codes` [option](https://docs.sentry.io/platforms/python/integrations/fastapi.md#options).
 * Request data will be attached to all events: HTTP method, URL, headers, form data, JSON payloads. Sentry excludes raw bodies and multipart file uploads.
-* Sentry also excludes personally identifiable information (such as user ids, usernames, cookies, authorization headers, IP addresses) unless you configure which categories to collect with the [`data_collection` option](https://docs.sentry.io/platforms/python/configuration/options.md#data_collection) or set `send_default_pii` to `True`. `send_default_pii` will be removed in version 3.0 of the SDK.
+* Personally identifiable information (such as user IDs, usernames, cookies, and IP addresses) is also attached, with sensitive values like authorization headers scrubbed. Use the [`data_collection` option](https://docs.sentry.io/platforms/python/configuration/options.md#data_collection) to configure which categories to collect. In SDK versions prior to `3.0`, Sentry excludes this information unless you use `data_collection` or set `send_default_pii` to `True`.
 
 To learn how to manually report issues, see [Capturing Errors](https://docs.sentry.io/platforms/python/usage.md).
 

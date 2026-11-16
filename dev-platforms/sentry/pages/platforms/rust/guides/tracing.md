@@ -27,7 +27,7 @@ To add Sentry with the `tracing` integration to your Rust project, add the neces
 [dependencies]
 tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
-sentry = { version = "0.49.5", features = [
+sentry = { version = "0.49.6", features = [
   "tracing"
 ] }
 tokio = { version = "1.45.0", features = ["full"] }

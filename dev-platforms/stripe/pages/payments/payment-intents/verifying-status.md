@@ -195,6 +195,6 @@ To view all of the charges associated with a PaymentIntent, including any unsucc
 ```curl
 curl -G https://api.stripe.com/v1/charges \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "payment_intent={{PAYMENTINTENT_ID}}"
+  -d "payment_intent={{PAYMENT_INTENT_ID}}"
 ```
 

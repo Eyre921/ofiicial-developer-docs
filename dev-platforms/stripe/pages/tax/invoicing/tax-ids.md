@@ -56,7 +56,7 @@ curl https://api.stripe.com/v1/tax_ids \
 The following example deletes a tax ID:
 
 ```curl
-curl -X DELETE https://api.stripe.com/v1/tax_ids/{{TAXID_ID}} \
+curl -X DELETE https://api.stripe.com/v1/tax_ids/{{TAX_ID}} \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 
@@ -119,7 +119,7 @@ The following example sets `account_tax_ids` during invoice creation:
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "account_tax_ids[0]=txi_123" \
   -d "account_tax_ids[1]=txi_456"
 ```
@@ -423,7 +423,7 @@ curl https://api.stripe.com/v1/tax_ids \
   -d type=eu_vat \
   -d value=DE123456789 \
   -d "owner[type]=customer" \
-  -d "owner[customer_account]={{CUSTOMERACCOUNT_ID}}"
+  -d "owner[customer_account]={{CUSTOMER_ACCOUNT_ID}}"
 ```
 
 #### Customers v1
@@ -442,7 +442,7 @@ curl https://api.stripe.com/v1/tax_ids \
 The following example [deletes a tax ID](https://docs.stripe.com/api/tax_ids/delete.md):
 
 ```curl
-curl -X DELETE https://api.stripe.com/v1/tax_ids/{{TAXID_ID}} \
+curl -X DELETE https://api.stripe.com/v1/tax_ids/{{TAX_ID}} \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

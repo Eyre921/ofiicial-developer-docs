@@ -73,6 +73,7 @@ The software on the Stripe Reader M2 consists of a firmware version, configurati
 
 | Version | Release Date | Description |
 | --- | --- | --- |
+| `2.01.08.00` | `2026-11-16` | - General bug fixes and improvements. |
 | `2.01.07.01` | `2026-10-21` | - General bug fixes and improvements. |
 | `2.01.06.00` | `2026-09-08` | - General bug fixes and improvements. |
 | `2.01.05.00` | `2026-08-03` | - General bug fixes and improvements. |

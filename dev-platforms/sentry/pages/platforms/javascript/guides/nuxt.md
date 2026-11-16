@@ -75,16 +75,25 @@ To configure Sentry manually, follow the [Manual Setup](https://docs.sentry.io/p
 
 ## [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#avoid-ad-blockers-with-tunneling-optional)
 
-You can prevent ad blockers from blocking Sentry events using tunneling. Use the `tunnel` option in `Sentry.init` to add an API endpoint in your application that forwards Sentry events to Sentry servers.
+To keep ad blockers from dropping Sentry events, send them through a tunnel on your own origin. The SDK serves the tunnel and forwards the events to Sentry.
 
-This will send all events to the `tunnel` endpoint. However, the events need to be parsed and redirected to Sentry, so you'll need to do additional configuration on the server. The endpoint must forward only the request body to Sentry and accept only your own DSN. You can find a detailed explanation on how to do this on our [Troubleshooting page](https://docs.sentry.io/platforms/javascript/guides/nuxt/troubleshooting.md#using-the-tunnel-option).
+Set `tunnel: true` in your client `Sentry.init`, and add `serveTunnelIntegration` to your server `Sentry.init`:
 
 ```javascript
 Sentry.init({
   dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  tunnel: "/tunnel",
+  tunnel: true,
 });
 ```
+
+```javascript
+Sentry.init({
+  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  integrations: [Sentry.serveTunnelIntegration()],
+});
+```
+
+Learn more about the options in [`serveTunnelIntegration`](https://docs.sentry.io/platforms/javascript/guides/nuxt/configuration/integrations/servetunnel.md). To set up your own tunnel endpoint instead, see the [Tunneling page](https://docs.sentry.io/platforms/javascript/guides/nuxt/configuration/tunneling.md#setting-up-the-tunnel-manually).
 
 ## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#control-the-data-you-send-to-sentry-optional)
 

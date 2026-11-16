@@ -377,7 +377,7 @@ At this point, you should have integrated Sentry into your Next.js application. 
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/nextjs/agent-tracing.md) to monitor agents built with the Vercel AI SDK, LangChain, and more
-* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/nextjs/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers blocking Sentry events, if you didn't enable it in the wizard
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/tunneling.md) to avoid ad blockers blocking Sentry events, if you didn't enable it in the wizard
 
 Are you having problems setting up the SDK?
 

@@ -54,7 +54,7 @@ Create a Checkout Session with an existing [v2 Account](https://docs.stripe.com/
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=1" \
   -d "tax_id_collection[enabled]=true" \

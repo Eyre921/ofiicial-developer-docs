@@ -205,7 +205,7 @@ You can provide an existing customer-configured [Account](https://docs.stripe.co
 ```curl
 curl https://api.stripe.com/v1/customer_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "components[pricing_table][enabled]=true"
 ```
 

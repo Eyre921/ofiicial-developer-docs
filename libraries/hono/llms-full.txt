@@ -763,6 +763,23 @@ app.get(
 )
 ```
 
+## Returning 304 for cached responses
+
+A cache hit returns the stored response as it is. A request with `If-None-Match` gets a `200` with the full body, even if the ETag matches. To return `304 Not Modified` instead, register [ETag Middleware](/docs/middleware/builtin/etag) before the Cache middleware.
+
+```ts
+import { etag } from 'hono/etag'
+
+app.use(etag())
+app.get(
+  '*',
+  cache({
+    cacheName: 'my-app',
+    cacheControl: 'max-age=3600',
+  })
+)
+```
+
 ## Caching QUERY requests
 
 The Cache middleware also caches responses to [QUERY](https://www.rfc-editor.org/rfc/rfc10008.html) requests. As required by RFC 10008, the cache key for a QUERY request incorporates a digest of the request content and its representation metadata, so requests with different bodies are cached separately.
@@ -1949,6 +1966,10 @@ The `iat` (issued at) claim will be verified if present and this is set to `true
 
 The `exp` (expiration time) claim will be verified if present and this is set to `true`. The default is `true`.
 
+#### <Badge type="info" text="optional" /> VerifyOptions.typ: `string | string[]`
+
+The expected `typ` header of the token, for example `at+jwt` for OAuth 2.0 access tokens ([RFC 9068](https://www.rfc-editor.org/rfc/rfc9068)). If this is set, the token must have one of these values, and a token without `typ` is rejected. If this is not set, only `JWT` or no `typ` is accepted, so one kind of token is not taken for another.
+
 
 # JWT Auth Middleware
 
@@ -2099,6 +2120,10 @@ The `iat` (issued at) claim will be verified if present and this is set to `true
 #### <Badge type="info" text="optional" /> VerifyOptions.exp: `boolean`
 
 The `exp` (expiration time) claim will be verified if present and this is set to `true`. The default is `true`.
+
+#### <Badge type="info" text="optional" /> VerifyOptions.typ: `string | string[]`
+
+The expected `typ` header of the token, for example `at+jwt` for OAuth 2.0 access tokens ([RFC 9068](https://www.rfc-editor.org/rfc/rfc9068)). If this is set, the token must have one of these values, and a token without `typ` is rejected. If this is not set, only `JWT` or no `typ` is accepted, so one kind of token is not taken for another.
 
 
 # Language Middleware
@@ -2874,6 +2899,22 @@ Each option corresponds to the following Header Key-Value pairs.
 | xPermittedCrossDomainPolicies   | [X-Permitted-Cross-Domain-Policies](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Permitted-Cross-Domain-Policies)               | none                                                                       | True       |
 | xXssProtection                  | [X-XSS-Protection](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection)                                                 | 0                                                                          | True       |
 | permissionsPolicy               | [Permissions-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy)                                             | Usage: [Setting Permission-Policy](#setting-permission-policy)             | No Setting |
+
+## Keeping headers set by a handler
+
+The middleware sets its headers after the handler runs, so a header that the handler set itself is replaced. To keep it, set `overwrite` to `false`. Headers that the handler did not set are still added.
+
+```ts
+app.use(secureHeaders({ overwrite: false }))
+
+app.get('/uploads', (c) => {
+  // This stricter policy is kept
+  c.header('Content-Security-Policy', "default-src 'none'")
+  return c.html('<p>user content</p>')
+})
+```
+
+The default is `true`.
 
 ## Middleware Conflict
 
@@ -4567,6 +4608,7 @@ verify(
   alg: 'HS256';
   issuer?: string | RegExp;
   aud?: string | string[] | RegExp;
+  typ?: string | string[];
 ): Promise<any>;
 
 ```
@@ -4606,6 +4648,10 @@ The expected issuer used for JWT verification.
 #### <Badge type="info" text="optional" /> aud: `string | string[] | RegExp`
 
 The expected audience used for JWT verification. If this is set, the token must include an `aud` claim and at least one audience value must match.
+
+#### <Badge type="info" text="optional" /> typ: `string | string[]`
+
+The expected `typ` header of the token, for example `at+jwt` for OAuth 2.0 access tokens. If this is set, the token must have one of these values. If this is not set, only `JWT` or no `typ` is accepted.
 
 ## `decode()`
 

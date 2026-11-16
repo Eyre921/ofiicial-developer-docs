@@ -1168,20 +1168,6 @@ In this case, `update-end`.
 Handle an Elements update-end event
 ```
 
-## Fetch Server Updates
-
-`elements.fetchUpdates()`
-
-Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
-
-This method fetches updates from the associated [PaymentIntent](https://docs.stripe.com/api/payment_intents.md) or [SetupIntent](https://docs.stripe.com/api/setup_intents.md) on an existing instance of `Elements`, and reflects these updates in the Payment Element.
-
-### Example
-
-```title
-Fetch Server Updates
-```
-
 ## Submit 
 
 `elements.submit()`

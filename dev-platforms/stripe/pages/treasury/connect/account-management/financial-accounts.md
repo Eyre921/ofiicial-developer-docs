@@ -78,7 +78,7 @@ You can retrieve a connected account’s financial accounts using the `type: "pa
 curl -G https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   -d type=payments
 ```
 
@@ -164,10 +164,10 @@ You can permanently [close a financial account](https://docs.stripe.com/api/v2/m
 - Its balance is zero, or you specify [forwarding settings](https://docs.stripe.com/api/v2/money-management/financial-accounts/close.md?api-version=preview#v2_close_financial_accounts-forwarding_settings) to redirect any incoming transactions after closing.
 
 ```curl
-curl -X POST https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIALACCOUNTID_ID}}/close \
+curl -X POST https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIAL_ACCOUNT_ID}}/close \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "forwarding_settings": {
         "payout_method": "{{ALTERNATIVE_FINANCIAL_ACCOUNT_ID}}",

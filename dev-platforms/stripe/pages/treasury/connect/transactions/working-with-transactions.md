@@ -10,7 +10,9 @@ Use transactions to track money movement on financial accounts.
 
 Every movement of funds into or out of a financial account creates a [Transaction](https://docs.stripe.com/api/v2/money-management/transactions.md?api-version=preview) object. Transactions are the ledger entries for your financial accounts. They record what happened, how it affected the balance, and which resource caused the movement.
 
-Use transactions to build account activity feeds, reconcile against your internal systems, and track money movement through your platform. You can’t create transactions directly. Stripe creates them automatically when flows such as [OutboundPayments](https://docs.stripe.com/api/v2/money-management/outbound-payments.md?api-version=preview), [OutboundTransfers](https://docs.stripe.com/api/v2/money-management/outbound-transfers.md?api-version=preview), [ReceivedCredits](https://docs.stripe.com/api/v2/money-management/received-credits.md?api-version=preview), and [ReceivedDebits](https://docs.stripe.com/api/v2/money-management/received-debits.md?api-version=preview) move money.
+Use transactions to build account activity feeds, reconcile against your internal systems, and track money movement through your platform. You can’t create transactions directly.
+
+Stripe creates them automatically when flows such as [OutboundPayments](https://docs.stripe.com/api/v2/money-management/outbound-payments.md?api-version=preview), [OutboundTransfers](https://docs.stripe.com/api/v2/money-management/outbound-transfers.md?api-version=preview), [ReceivedCredits](https://docs.stripe.com/api/v2/money-management/received-credits.md?api-version=preview), and [ReceivedDebits](https://docs.stripe.com/api/v2/money-management/received-debits.md?api-version=preview) move money.
 
 ## Listen for transaction webhooks
 
@@ -34,7 +36,7 @@ Use the `related_object.url` from the event to retrieve the full transaction.
 curl https://api.stripe.com/v2/money_management/transactions/trxn_7X8Y9Z0A1B2C3D4E \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 The response includes the transaction amount, balance impact, status, and flow that created the transaction. For the response schema and example, see [Retrieve a Transaction](https://docs.stripe.com/api/v2/money-management/transactions/retrieve.md?api-version=preview).
@@ -51,7 +53,7 @@ Retrieve the OutboundPayment to get the full details of the flow that created th
 curl https://api.stripe.com/v2/money_management/outbound_payments/obp_3E4F5G6H7I8J9K0L \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ## Transaction statuses
@@ -65,4 +67,25 @@ A transaction progresses through the following statuses:
 | `void` | The transaction was canceled or reversed before posting. This is a terminal state. | All balance impact values are zero. |
 
 Stripe doesn’t add more entries to a transaction after it reaches `posted` or `void`.
+
+## Regulatory receipts
+
+Some transaction types are considered *regulated* under Stripe’s money transmission licenses and require special treatment. You, the platform, must offer a transaction receipt and present disclosures to customers of your connected accounts who participate in regulated transactions.
+
+Stripe includes the `hosted_regulatory_receipt_url` attribute in each of the following money movement objects:
+
+- [InboundTransfer](https://docs.stripe.com/api/treasury/inbound_transfers/object.md#inbound_transfer_object-hosted_regulatory_receipt_url)
+- [ReceivedCredit](https://docs.stripe.com/api/treasury/received_credits/object.md#received_credit_object-hosted_regulatory_receipt_url)
+- [ReceivedDebit](https://docs.stripe.com/api/treasury/received_debits/object.md#received_debit_object-hosted_regulatory_receipt_url)
+- [CreditReversal](https://docs.stripe.com/api/treasury/credit_reversals/object.md#credit_reversal_object-hosted_regulatory_receipt_url)
+- [DebitReversal](https://docs.stripe.com/api/treasury/debit_reversals/object.md#debit_reversal_object-hosted_regulatory_receipt_url)
+- [OutboundTransfer](https://docs.stripe.com/api/treasury/outbound_transfers/object.md#outbound_transfer_object-hosted_regulatory_receipt_url)
+- [OutboundPayment](https://docs.stripe.com/api/treasury/outbound_payments/object.md#outbound_payment_object-hosted_regulatory_receipt_url)
+
+The URL value is a hosted receipt that includes a description of the transaction, amount, timing information, and relevant disclosures.
+
+You must provide this URL to your connected accounts with no Dashboard access so they can retrieve the receipt from within your product. Don’t store it, because these URLs are subject to change and are only valid for 60 days.
+![Hosted receipt of an outbound payment showing transaction ID, amount sent, date posted, description of transaction, and a regulatory disclosure message.](https://b.stripecdn.com/docs-statics-srv/assets/receipt.4490fc802089baf86a8ee4bf9b98118a.png)
+
+Regulatory receipt
 

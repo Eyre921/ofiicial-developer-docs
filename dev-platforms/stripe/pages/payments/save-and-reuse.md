@@ -97,7 +97,7 @@ You can manage payment methods from the [Dashboard](https://dashboard.stripe.com
 ```curl
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "automatic_payment_methods[enabled]=true"
 ```
 
@@ -119,7 +119,7 @@ Create a SetupIntent on your server with a list of [payment methods](https://doc
 ```curl
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "allowed_payment_method_types[]=bancontact" \
   -d "allowed_payment_method_types[]=card" \
   -d "allowed_payment_method_types[]=ideal"
@@ -809,7 +809,7 @@ To find a payment method to charge, list the payment methods associated with you
 ```curl
 curl -G https://api.stripe.com/v1/payment_methods \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d type=card
 ```
 
@@ -837,7 +837,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=1099 \
   -d currency=usd \
   -d "automatic_payment_methods[enabled]=true" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d payment_method={{PAYMENT_METHOD_ID}} \
   --data-urlencode "return_url=https://example.com/order/123/complete" \
   -d off_session=true \

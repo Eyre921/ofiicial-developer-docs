@@ -88,7 +88,7 @@ The CSV file includes a Boolean column named **Tax Location Recognized** that yo
 To check an account’s tax location status using the API, retrieve the [v2 Account object](https://docs.stripe.com/api/v2/core/accounts/object.md) and [include](https://docs.stripe.com/api/include_dependent_response_values.md) the customer configuration by adding `include[0]=configuration.customer` to your request. You must use `include` because the default response doesn’t include the customer configuration.
 
 ```curl
-curl -G https://api.stripe.com/v2/core/accounts/{{CUSTOMERACCOUNT_ID}} \
+curl -G https://api.stripe.com/v2/core/accounts/{{CUSTOMER_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
   -d "include[0]=configuration.customer"
@@ -139,7 +139,7 @@ If the status is `restricted`, review the [status_details](https://docs.stripe.c
 To update the account’s address, use the [v2 Account](https://docs.stripe.com/api/v2/core/accounts/update.md) API:
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CUSTOMERACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CUSTOMER_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
   --json '{
@@ -280,7 +280,7 @@ Here’s how to update a product with a `tax_code` using the API:
 ```curl
 curl https://api.stripe.com/v1/products/{{PRODUCT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "tax_code={{TAXCODE_ID}}"
+  -d "tax_code=txcd_10000000"
 ```
 
 ### Update prices
@@ -380,14 +380,14 @@ If you need to collect tax, and any of your subscriptions include a subscription
 When you update a subscription schedule, you need to pass in all current and future phases. To do this, verify the set parameters, then enable Stripe Tax in the subscription schedule.
 
 ```curl
-curl https://api.stripe.com/v1/subscription_schedules/{{SUBSCRIPTIONSCHEDULE_ID}} \
+curl https://api.stripe.com/v1/subscription_schedules/{{SUBSCRIPTION_SCHEDULE_ID}} \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 
 To update the subscription schedule after you obtain it, remove the `automatic_tax[enabled]=false` parameter, and pass down the other phases and parameters:
 
 ```curl
-curl https://api.stripe.com/v1/subscription_schedules/{{SUBSCRIPTIONSCHEDULE_ID}} \
+curl https://api.stripe.com/v1/subscription_schedules/{{SUBSCRIPTION_SCHEDULE_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "phases[0][items][0][price]={{PRICE_ID}}" \
   -d "phases[0][items][0][quantity]=1" \

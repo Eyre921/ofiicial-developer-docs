@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 373 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -246,7 +246,6 @@
 - `guides/security_compliance/secure_training` — [Secure Training](pages/guides/security_compliance/secure_training.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training)
 - `guides/security_compliance/secure_training/byob` — [Bring your own bucket (BYOB)](pages/guides/security_compliance/secure_training/byob.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/byob)
 - `guides/security_compliance/secure_training/cmek` — [Customer-managed encryption keys (CMEK)](pages/guides/security_compliance/secure_training/cmek.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/cmek)
-- `guides/security_compliance/secure_training/secure_rft` — [Secure reinforcement fine-tuning](pages/guides/security_compliance/secure_training/secure_rft.md) · [原文](https://docs.fireworks.ai/guides/security_compliance/secure_training/secure_rft)
 - `guides/spot-serverless` — [Spot Serverless](pages/guides/spot-serverless.md) · [原文](https://docs.fireworks.ai/guides/spot-serverless)
 - `guides/video-audio-inputs` — [Video & audio inputs](pages/guides/video-audio-inputs.md) · [原文](https://docs.fireworks.ai/guides/video-audio-inputs)
 

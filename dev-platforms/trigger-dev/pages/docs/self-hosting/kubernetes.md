@@ -321,6 +321,8 @@ Migration from the old Bitnami subchart to the official `clickhouse/clickhouse-s
 > Trigger.dev requires ClickHouse 25.8 or newer. The bundled ClickHouse is single-node — run
 > ClickHouse externally for a clustered or replicated setup.
 
+The optional `LOGS_SEARCH_INSERT_ASYNC` setting defaults to `false` and requires ClickHouse 26.2 or newer when enabled. Leave it disabled on ClickHouse 25.8.
+
 **Direct configuration:**
 
 ```yaml theme={"theme":"css-variables"}

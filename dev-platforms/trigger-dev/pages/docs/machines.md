@@ -63,7 +63,7 @@ This is useful when you know that a certain payload will require more memory tha
 
 Sometimes you might see one of your runs fail with an "Out Of Memory" error.
 
-> TASK\_PROCESS\_OOM\_KILLED. Your run was terminated due to exceeding the machine's memory limit. Try increasing the machine preset in your task options or replay using a larger machine.
+> TASK_PROCESS_OOM_KILLED. Your run was terminated due to exceeding the machine's memory limit. Try increasing the machine preset in your task options or replay using a larger machine.
 
 We automatically detect common Out Of Memory errors:
 

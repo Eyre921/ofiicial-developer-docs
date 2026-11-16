@@ -76,15 +76,15 @@ Use the `Stripe-Context` header to submit requests on behalf of your connected a
 curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "payout_method_options": {
             "bank_account": {
                 "preferred_networks": [
@@ -112,15 +112,15 @@ If you set ACH as a preferred network, you can also set the following ACH option
 curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "payout_method_options": {
             "bank_account": {
                 "preferred_networks": [
@@ -173,7 +173,7 @@ For a recipient of a connected account, set the `Stripe-Context` header to `{{CO
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "payout_method_data": {
         "type": "check_send",
@@ -206,14 +206,14 @@ For a connected account’s payment, set `Stripe-Context` to the connected accou
 curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
         "payout_method": "chksend_...",
         "payout_method_options": {
             "check_send": {
@@ -253,14 +253,14 @@ Pass the returned file ID in `to.payout_method_options.check_send.attachment_fil
 curl -X POST https://api.stripe.com/v2/money_management/payout_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
         "payout_method": "chksend_...",
         "payout_method_options": {
             "check_send": {
@@ -297,7 +297,7 @@ When you’re ready to send the funds, [confirm the PayoutIntent](https://docs.s
 curl -X POST https://api.stripe.com/v2/money_management/payout_intents/poi_1234/confirm \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ### Handle expired exchange rates 
@@ -308,7 +308,7 @@ If the exchange rate lock expires before you confirm, the request fails with `pa
 curl -X POST https://api.stripe.com/v2/money_management/payout_intents/poi_1234/refresh_fx_quote \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ## Handle payouts that require action 
@@ -341,7 +341,7 @@ If a scheduled payout fails, create a new PayoutIntent instead of retrying it.
 curl -X POST https://api.stripe.com/v2/money_management/payout_intents/poi_1234/cancel \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ## Inspect payout status 
@@ -352,7 +352,7 @@ curl -X POST https://api.stripe.com/v2/money_management/payout_intents/poi_1234/
 curl https://api.stripe.com/v2/money_management/payout_intents/poi_1234 \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 Learn more about [managing payouts](https://docs.stripe.com/global-payouts/manage-payouts.md).
@@ -403,7 +403,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Stripe-Version: 2026-10-28.preview" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
@@ -431,10 +431,10 @@ This example creates an outbound payment between financial accounts belonging to
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
@@ -469,15 +469,15 @@ The following outbound payment example is for a standard payment to a third-part
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "currency": "usd"
     },
     "amount": {
@@ -498,15 +498,15 @@ The following sample sets `delivery_options` to `bank_account.wire` to request a
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "currency": "usd"
     },
     "amount": {
@@ -529,7 +529,7 @@ Push-to-card sends funds to a recipient’s eligible US debit card through Visa 
 1. Request the `cards` capability on the recipient account:
 
    ```curl
-   curl -X POST https://api.stripe.com/v2/core/accounts/{{RECIPIENTACCOUNTID_ID}} \
+   curl -X POST https://api.stripe.com/v2/core/accounts/{{RECIPIENT_ACCOUNT_ID}} \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-10-28.preview" \
      --json '{
@@ -551,14 +551,14 @@ Push-to-card sends funds to a recipient’s eligible US debit card through Visa 
    curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-10-28.preview" \
-     -H "Stripe-Context: {{CONTEXT_ID}}" \
+     -H "Stripe-Context: {{CONTEXT}}" \
      --json '{
        "from": {
-           "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+           "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
            "currency": "usd"
        },
        "to": {
-           "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+           "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
            "payout_method": "{{CARD_PAYOUT_METHOD_ID}}",
            "currency": "usd"
        },
@@ -579,10 +579,10 @@ Contact [treasury-support@stripe.com](mailto:treasury-support@stripe.com) to req
 Real-Time Payments (RTP) sends funds instantly through The Clearing House network and is available for domestic US bank accounts only. Not all banks support RTP. Check eligibility by inspecting the recipient’s payout method for `"instant"` in `available_payout_speeds` before sending.
 
 ```curl
-curl https://api.stripe.com/v2/money_management/payout_methods/{{RECIPIENTPAYOUTMETHODID_ID}} \
+curl https://api.stripe.com/v2/money_management/payout_methods/{{RECIPIENT_PAYOUT_METHOD_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 If `available_payout_speeds` includes `"instant"`, the bank account supports RTP. Create the payment with `delivery_options.speed: "instant"`:
@@ -591,15 +591,15 @@ If `available_payout_speeds` includes `"instant"`, the bank account supports RTP
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "currency": "usd"
     },
     "amount": {
@@ -630,15 +630,15 @@ Create an [OutboundPaymentQuote](https://docs.stripe.com/api/v2/money-management
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payment_quotes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "currency": "eur"
     },
     "amount": {
@@ -723,22 +723,22 @@ Create an [OutboundPayment](https://docs.stripe.com/api/v2/money-management/outb
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "gbp"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "currency": "eur"
     },
     "amount": {
         "value": 30000,
         "currency": "gbp"
     },
-    "outbound_payment_quote": "{{OUTBOUNDPAYMENTQUOTEID_ID}}"
+    "outbound_payment_quote": "{{OUTBOUND_PAYMENT_QUOTE_ID}}"
   }'
 ```
 
@@ -750,10 +750,10 @@ To make an intra-EU payout, you must use [Recipient Verifications](https://docs.
 curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
-    "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-    "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}"
+    "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+    "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}"
   }'
 ```
 
@@ -779,10 +779,10 @@ The response includes the recipient verification ID, expiration, and verificatio
 In case of a partial match or mismatch, you must acknowledge the recipient verification:
 
 ```curl
-curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications/{{RECIPIENTVERIFICATIONID_ID}}/acknowledge \
+curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications/{{RECIPIENT_VERIFICATION_ID}}/acknowledge \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 At this point, you can [create an OutboundPayment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview).
@@ -793,23 +793,23 @@ See [Global payments testing](https://docs.stripe.com/global-payouts/testing.md#
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "eur"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "currency": "eur"
     },
     "amount": {
         "value": 30000,
         "currency": "eur"
     },
-    "recipient_verification": "{{RECIPIENTVERIFICATIONID_ID}}",
-    "outbound_payment_quote": "{{OUTBOUNDPAYMENTQUOTEID_ID}}"
+    "recipient_verification": "{{RECIPIENT_VERIFICATION_ID}}",
+    "outbound_payment_quote": "{{OUTBOUND_PAYMENT_QUOTE_ID}}"
   }'
 ```
 
@@ -834,7 +834,7 @@ For a recipient of a connected account, set the `Stripe-Context` header to `{{CO
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "payout_method_data": {
         "type": "check_send",
@@ -867,14 +867,14 @@ For a connected account’s payment, set `Stripe-Context` to the connected accou
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
         "payout_method": "chksend_...",
         "payout_method_options": {
             "check_send": {
@@ -912,14 +912,14 @@ Pass the returned file ID in `to.payout_method_options.check_send.attachment_fil
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
         "payout_method": "chksend_...",
         "payout_method_options": {
             "check_send": {

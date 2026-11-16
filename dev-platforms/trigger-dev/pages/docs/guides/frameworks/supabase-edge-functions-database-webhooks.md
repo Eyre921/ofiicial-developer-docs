@@ -40,7 +40,7 @@ Supabase and Trigger.dev can be used together to create powerful workflows trigg
 
 > [!NOTE]
 >
-> If you already have a Supabase project on your local machine you can skip this step.
+> &#x20;If you already have a Supabase project on your local machine you can skip this step.
 
 You can create a new project by running the following command in your terminal using the Supabase CLI:
 
@@ -59,7 +59,7 @@ If your project does not already have `package.json` file (e.g. if you are using
 
 > [!NOTE]
 >
-> If your project has a `package.json` file you can skip this step.
+> &#x20;If your project has a `package.json` file you can skip this step.
 
 This is required for the Trigger.dev SDK to work correctly.
 
@@ -73,7 +73,7 @@ This is required for the Trigger.dev SDK to work correctly.
 
 > [!NOTE]
 >
-> Update your Typescript version to the latest version available.
+> &#x20;Update your Typescript version to the latest version available.&#x20;
 
 **3. Run the CLI `init` command**
 
@@ -128,7 +128,7 @@ supabase gen types --lang=typescript --project-id <project-ref> --schema public 
 
 > [!NOTE]
 >
-> Replace `<project-ref>` with your Supabase project reference ID. This can be found in your Supabase project settings under 'General'.
+> &#x20;Replace `<project-ref>` with your Supabase project reference ID. This can be found in your Supabase project settings under 'General'.&#x20;
 
 ### Create the transcription task
 

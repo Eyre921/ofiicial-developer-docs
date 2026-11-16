@@ -212,7 +212,7 @@ After specifying a tax behavior and tax code, you can add the price to the accou
 ```curl
 curl https://api.stripe.com/v1/invoiceitems \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "pricing[price]={{PRICE_ID}}"
 ```
 
@@ -221,7 +221,7 @@ In the API, pass the `automatic_tax` parameter to enable or disable automatic ta
 ```curl
 curl https://api.stripe.com/v1/invoices \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "automatic_tax[enabled]=true"
 ```
 

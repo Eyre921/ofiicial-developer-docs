@@ -58,7 +58,7 @@ You can see from the comments that the payload has several useful properties:
 
 * `timestamp` - the time the task was scheduled to run, as a UTC date.
 * `lastTimestamp` - the time the task was last run, as a UTC date.
-* `timezone` - the timezone the schedule was registered with, defaults to "UTC". In IANA format, e.g. "America/New\_York".
+* `timezone` - the timezone the schedule was registered with, defaults to "UTC". In IANA format, e.g. "America/New_York".
 * `scheduleId` - the id of the schedule that triggered the task
 * `externalId` - the external id you (optionally) provided when creating the schedule
 * `upcoming` - the next 10 times the task is scheduled to run

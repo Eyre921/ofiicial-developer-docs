@@ -144,7 +144,7 @@ The platform creates a [US storage financial account](https://docs.stripe.com/ap
 curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "type": "storage",
     "storage": {
@@ -188,7 +188,7 @@ The platform creates a second US storage financial account dedicated to tips.
 curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "type": "storage",
     "storage": {
@@ -232,9 +232,9 @@ To allow the restaurant to add funds through bank transfers, the platform [creat
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
-    "financial_account": "{{OPERATIONSFINANCIALACCOUNTID_ID}}",
+    "financial_account": "fa_12345",
     "type": "us_bank_account"
   }'
 ```
@@ -268,7 +268,7 @@ The platform simulates receiving funds through the financial address using the [
 curl -X POST https://api.stripe.com/v2/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/credit \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "amount": {
         "value": 5000,
@@ -296,14 +296,14 @@ The platform [creates an outbound transfer](https://docs.stripe.com/api/v2/money
 curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{OPERATIONSFINANCIALACCOUNTID_ID}}",
+        "financial_account": "fa_12345",
         "currency": "usd"
     },
     "to": {
-        "payout_method": "{{TIPSFINANCIALACCOUNTID_ID}}",
+        "payout_method": "fa_67890",
         "currency": "usd"
     },
     "amount": {
@@ -349,7 +349,7 @@ To verify balances after the transfer, the platform [lists the connected account
 curl https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ```json

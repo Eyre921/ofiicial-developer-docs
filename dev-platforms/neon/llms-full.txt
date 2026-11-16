@@ -11,7 +11,7 @@
 
 Use the Anthropic SDK with Neon AI Gateway
 
-Last updated: 2026-10-31
+Last updated: 2026-11-10
 
 The Anthropic Messages endpoint exposes the [Anthropic Messages API](https://docs.anthropic.com/en/api/messages) through Neon AI Gateway. Use it when you need extended thinking or prompt caching, which require the native Anthropic SDK. For standard completions, the [chat completions](https://neon.com/docs/ai-gateway/chat-completions) endpoint works with all Anthropic models and doesn't require the Anthropic SDK.
 
@@ -34,10 +34,10 @@ NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aw
 
 This endpoint accepts Anthropic models only. See the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models) for the full list. Supported models:
 
-- `claude-opus-5-5`, `claude-opus-5`, `claude-sonnet-5`, `claude-fable-5`, `claude-fable-5-1`
+- `claude-opus-5-5`, `claude-opus-5`, `claude-sonnet-5-5`, `claude-sonnet-5`, `claude-fable-5`, `claude-fable-5-1`
 - `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`, `claude-opus-4-1`
 - `claude-sonnet-4-6`, `claude-sonnet-4-5`
-- `claude-haiku-4-5`
+- `claude-haiku-5-5`, `claude-haiku-4-5`
 
 Sending a non-Anthropic model ID returns `400 model "<model-id>" is not available on the anthropic_messages endpoint`, naming whichever model you sent. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you need to call multiple providers from the same code.
 
@@ -239,7 +239,7 @@ For authentication, quota, and upstream errors, see [Troubleshooting](https://ne
 
 How Neon credentials work with AI Gateway
 
-Last updated: 2026-10-09
+Last updated: 2026-11-10
 
 AI Gateway uses Neon bearer credentials, the same scoped-credential system as [Object Storage](https://neon.com/docs/storage/authentication): one credential API mints branch-scoped tokens that differ by scope (AI Gateway uses `ai_gateway:invoke`). No provider API keys are needed.
 
@@ -1292,7 +1292,7 @@ For an end-to-end example that stores AI Gateway embeddings in Postgres and sear
 
 Use the Google Gemini API with Neon AI Gateway
 
-Last updated: 2026-10-23
+Last updated: 2026-11-15
 
 The Gemini endpoint exposes the [Google Gemini API](https://ai.google.dev/api/generate-content) through Neon AI Gateway. Use it when you're already working with the `google-genai` SDK and want to keep your existing code. For most use cases, the [chat completions](https://neon.com/docs/ai-gateway/chat-completions) endpoint is simpler to set up and works with Gemini models via the OpenAI SDK.
 
@@ -1335,6 +1335,8 @@ Sending a non-Google model ID returns `400 model "<model-id>" is not available o
 
 **Note:** The `google-genai` SDK's `apiKey` option sends an `x-goog-api-key` header, but Neon AI Gateway expects `Authorization: Bearer <token>`. Set your credential as an explicit header instead, and pass any non-empty string as `apiKey` since the SDK requires the field even though the gateway ignores it.
 
+The gateway serves the Gemini API at `v1beta`. `google-genai` 3.x defaults to `v1`, so set the API version explicitly in `httpOptions` (`apiVersion` in TypeScript, `api_version` in Python) as shown in the examples. Without it, the SDK calls `/gemini/v1/models/...` and the gateway returns `404 page not found`.
+
 **TypeScript (google-genai)**
 
 ```typescript
@@ -1343,6 +1345,7 @@ import { GoogleGenAI } from '@google/genai';
 const client = new GoogleGenAI({
   apiKey: 'placeholder',
   httpOptions: {
+    apiVersion: 'v1beta',
     baseUrl: `${process.env.NEON_AI_GATEWAY_BASE_URL}/gemini`,
     headers: {
       Authorization: `Bearer ${process.env.NEON_AI_GATEWAY_TOKEN}`,
@@ -1368,6 +1371,7 @@ import os
 client = genai.Client(
     api_key='placeholder',
     http_options=types.HttpOptions(
+        api_version='v1beta',
         base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/gemini",
         headers={'Authorization': f"Bearer {os.environ['NEON_AI_GATEWAY_TOKEN']}"},
     ),
@@ -1418,14 +1422,168 @@ for chunk in client.models.generate_content_stream(
     print(chunk.text, end='', flush=True)
 ```
 
+## Google Search grounding
+
+The Gemini API supports the [Google Search grounding tool](https://ai.google.dev/gemini-api/docs/google-search). Add `{"google_search": {}}` to the request's `tools`, and the model can search Google on its own and ground its answer in the results. The search runs on Google's side, inside the model call. The gateway forwards the tool and returns the `groundingMetadata` that comes back, including the queries the model ran and the sources it cited.
+
+The search is authenticated by your [Neon AI Gateway credential](https://neon.com/docs/ai-gateway/authentication), the same as any other request, so you don't need a separate Google API key, a Custom Search JSON API key, or a Google Cloud project.
+
+**TypeScript (google-genai)**
+
+```typescript
+import { GoogleGenAI } from '@google/genai';
+
+const client = new GoogleGenAI({
+  apiKey: 'placeholder',
+  httpOptions: {
+    apiVersion: 'v1beta',
+    baseUrl: `${process.env.NEON_AI_GATEWAY_BASE_URL}/gemini`,
+    headers: {
+      Authorization: `Bearer ${process.env.NEON_AI_GATEWAY_TOKEN}`,
+    },
+  },
+});
+
+const response = await client.models.generateContent({
+  model: 'gemini-3-flash',
+  contents: [{ role: 'user', parts: [{ text: 'Who won the 2026 Nobel Prize in Physics?' }] }],
+  config: {
+    tools: [{ googleSearch: {} }],
+  },
+});
+
+console.log(response.text);
+
+const metadata = response.candidates?.[0]?.groundingMetadata;
+for (const chunk of metadata?.groundingChunks ?? []) {
+  console.log(chunk.web?.domain, chunk.web?.uri);
+}
+```
+
+**Python (google-genai)**
+
+```python
+from google import genai
+from google.genai import types
+import os
+
+client = genai.Client(
+    api_key='placeholder',
+    http_options=types.HttpOptions(
+        api_version='v1beta',
+        base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/gemini",
+        headers={'Authorization': f"Bearer {os.environ['NEON_AI_GATEWAY_TOKEN']}"},
+    ),
+)
+
+response = client.models.generate_content(
+    model='gemini-3-flash',
+    contents='Who won the 2026 Nobel Prize in Physics?',
+    config=types.GenerateContentConfig(
+        tools=[types.Tool(google_search=types.GoogleSearch())]
+    ),
+)
+
+print(response.text)
+
+metadata = response.candidates[0].grounding_metadata
+print(metadata.web_search_queries)
+for chunk in metadata.grounding_chunks or []:
+    print(chunk.web.domain, chunk.web.uri)
+```
+
+**cURL**
+
+```bash
+curl -X POST \
+  "$NEON_AI_GATEWAY_BASE_URL/gemini/v1beta/models/gemini-3-flash:generateContent" \
+  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [{"role": "user", "parts": [{"text": "Who won the 2026 Nobel Prize in Physics?"}]}],
+    "tools": [{"google_search": {}}]
+  }'
+```
+
+The response includes the model's text plus a `groundingMetadata` object:
+
+```json
+{
+  "candidates": [
+    {
+      "content": { "role": "model", "parts": [{ "text": "..." }] },
+      "groundingMetadata": {
+        "webSearchQueries": [
+          "2026 Nobel Prize in Physics winner",
+          "who won the 2026 Nobel Prize in Physics?",
+          "Nobel Prize in Physics 2026 announcement date"
+        ],
+        "groundingChunks": [
+          {
+            "web": {
+              "uri": "https://...",
+              "title": "forbes.com",
+              "domain": "forbes.com"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+The model decides whether to search. There's no way to invoke a search directly or force one, so a request that doesn't need current information may come back with no grounding at all. Check for `groundingMetadata` before treating an answer as sourced.
+
+**Note:** `groundingChunks[].web.uri` is a Google redirect URL, not the site's URL directly. Use `web.domain` for the source domain, and fetch the URI server-side to resolve it, or render it as a citation link.
+
+### Using this with ADK
+
+Use the `google.adk.models.Gemini` class to create a Gemini model instance with the Neon AI Gateway base URL and your AI Gateway token:
+
+```python
+import os
+
+from google.adk.agents import Agent
+from google.adk.models import Gemini
+from google.adk.tools import google_search
+from google.adk.apps.app import App
+
+model = Gemini(
+    model="gemini-3-flash",
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/gemini",
+    client_kwargs={
+        "api_key": os.environ["NEON_AI_GATEWAY_TOKEN"],
+        "http_options": {
+            "api_version": "v1beta",
+            "headers": {
+                "Authorization": f"Bearer {os.environ['NEON_AI_GATEWAY_TOKEN']}"
+            },
+        },
+    },
+)
+
+root_agent = Agent(
+    name="FactChecker",
+    model=model,
+    instruction="Verify claims using web search.",
+    tools=[google_search],
+)
+
+app = App(name="fact_checker", root_agent=root_agent)
+```
+
+The code above implements a simple fact-checking agent using Google ADK, leveraging the `google_search` tool to ground its responses in relevant web search results.
+
 ## URL structure
 
-The gateway uses the model ID and action directly in the URL path. The `google-genai` SDK constructs this automatically from the base URL and model parameter:
+The gateway uses the model ID and action directly in the URL path. The `google-genai` SDK constructs this from the base URL, API version, and model parameter:
 
 ```
-base_url: https://<branch-host>/gemini
-model:    gemini-3-flash
-action:   generateContent or streamGenerateContent
+base_url:    https://<branch-host>/gemini
+api_version: v1beta
+model:       gemini-3-flash
+action:      generateContent or streamGenerateContent
 
 → https://<branch-host>/gemini/v1beta/models/gemini-3-flash:generateContent
 → https://<branch-host>/gemini/v1beta/models/gemini-3-flash:streamGenerateContent
@@ -1699,7 +1857,7 @@ For TypeScript apps and agents, use [`@neon/ai-sdk-provider`](https://www.npmjs.
 
 How to call models through AI Gateway, with the endpoints, limits, and rules that apply
 
-Last updated: 2026-11-04
+Last updated: 2026-11-15
 
 This page covers how to call models through Neon AI Gateway and the rules that apply. For the full list of models you can call, see the [model catalog](https://neon.com/ai-gateway#models).
 
@@ -1769,7 +1927,7 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 | OpenAI (most models)                    | `/v1/chat/completions`   | Use `/openai/v1/responses` for Responses API features                                                                    |
 | OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`) | `/openai/v1/responses`   | These models require the Responses API and don't work with chat/completions                                              |
 | Anthropic Claude                        | `/v1/chat/completions`   | Use `/anthropic/v1/messages` with the Anthropic SDK for extended thinking and prompt caching                             |
-| Google Gemini                           | `/v1/chat/completions`   | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK                                            |
+| Google Gemini                           | `/v1/chat/completions`   | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK and set `apiVersion` to `v1beta`           |
 | Google Gemma 3 12B                      | `/v1/chat/completions`   | Chat completions only. Doesn't support the Gemini SDK endpoint                                                           |
 | Meta, Zhipu AI, Moonshot AI             | `/v1/chat/completions`   | Chat completions only                                                                                                    |
 | Alibaba (chat models)                   | `/v1/chat/completions`   | Chat completions only                                                                                                    |
@@ -14082,7 +14240,7 @@ $0.042
 
 Use the OpenAI Responses API with Neon AI Gateway
 
-Last updated: 2026-10-23
+Last updated: 2026-11-10
 
 The OpenAI Responses endpoint exposes the [OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses) through Neon AI Gateway. Use it with the OpenAI SDK's `responses.create()` method by changing only the `baseURL`.
 
@@ -14110,6 +14268,9 @@ This endpoint accepts OpenAI models only:
 | Model ID        | Notes                  |
 | --------------- | ---------------------- |
 | `gpt-6-astra`   |                        |
+| `gpt-6-1-sol`   |                        |
+| `gpt-6-sol`     |                        |
+| `gpt-6-luna`    |                        |
 | `gpt-5-6-sol`   |                        |
 | `gpt-5-6-terra` |                        |
 | `gpt-5-6-luna`  |                        |
@@ -14705,7 +14866,7 @@ Requests are blocked once you reach your per-minute token limit or daily spend c
 
 Common errors and how to fix them
 
-Last updated: 2026-11-10
+Last updated: 2026-11-15
 
 ## Authentication errors
 
@@ -14779,6 +14940,12 @@ Only organization admins can add a card or buy credits. After you buy credits, m
 ---
 
 ## Gemini-specific errors
+
+### `404 page not found`
+
+The request didn't reach a gateway route. The Gemini endpoint is served at `/gemini/v1beta/...`, but `google-genai` 3.x defaults to the `v1` API version, so a client configured with only the base URL calls `/gemini/v1/models/...`.
+
+**Fix:** Set `httpOptions.apiVersion` (TypeScript) or `http_options.api_version` (Python) to `v1beta` when you configure the SDK. See [Gemini API](https://neon.com/docs/ai-gateway/gemini#basic-request).
 
 ### `404 unsupported gemini action`
 
@@ -29324,7 +29491,7 @@ neon data-api delete --database neondb
 
 List, create, and delete databases in a Neon project
 
-Last updated: 2026-11-05
+Last updated: 2026-11-09
 
 The `databases` command lists, creates, and deletes databases in a Neon project from the terminal. It's also available as [`neon postgres databases`](https://neon.com/docs/cli/postgres#databases). For information about databases in Neon, see [Manage databases](https://neon.com/docs/manage/databases). If `--project-id` is omitted, the CLI resolves it from your [context file](https://neon.com/docs/cli/link), auto-selects when your account has only one project, and otherwise asks you to pass `--project-id`.
 
@@ -29357,7 +29524,7 @@ The table is titled with the branch the databases belong to. Pass `--branch <id-
 
 ## neon databases create
 
-Creates a database. If you don't specify `--owner-name`, the current user becomes the database owner.
+Creates a database. If you don't specify `--owner-name`, the branch's only role becomes the database owner. If the branch has more than one role, the command fails unless you pass `--owner-name`. If it has no roles, the command fails.
 
 ```bash
 neon databases create [options]
@@ -30355,7 +30522,7 @@ The JSON and YAML output always include the `incidents`, `maintenance`, and `aff
 
 Set up the current directory for Neon with agent tooling, a linked project, and an optional neon.ts config
 
-Last updated: 2026-11-05
+Last updated: 2026-11-09
 
 The `init` command sets up the current directory to use Neon with your AI coding assistant. It's a thin wrapper that runs Neon's other setup commands for you: it installs agent tooling, [links a Neon project](https://neon.com/docs/cli/link), and can write a [`neon.ts` config](https://neon.com/docs/cli/config). It sets up the current directory in place.
 
@@ -30447,7 +30614,7 @@ Pass `-y` (alias `--yes`) to run each step with its defaults instead of promptin
 
 Pass `--agent` (alias `-a`) to name the coding agents to set up, which skips both detection and the picker. It's repeatable (`neon init --agent cursor --agent claude-code`) and works with `-y`. Without skill or MCP flags, it installs the plugin, plus skills and MCP for any agent the plugin can't cover. Run `neon init --help` to see which agents each family supports. Passing `--agent` with no value returns an error.
 
-Pass `--claimable` to create a [claimable project](https://neon.com/docs/reference/claimable-neon) that expires in 72 hours unless it's claimed. This selects the custom setup. The project goes in `aws-us-east-2` unless you add `--region-id`. `--claimable` can't be combined with `--no-link`, `--org-id`, `--project-id`, `--project-name`, or `--branch`.
+Pass `--claimable` to create a [claimable project](https://neon.com/docs/reference/claimable-neon) that expires in 72 hours unless it's claimed. This selects the custom setup. The project goes in `aws-us-east-2` unless you add `--region-id`. `--claimable` can't be combined with `--no-link`, `--org-id`, `--project-id`, or `--branch`. Add `--project-name` to name the project.
 
 ## Run it non-interactively
 
@@ -76409,7 +76576,7 @@ Chat with your Lakebase Postgres database without writing SQL
 
 Last updated: 2026-07-31
 
-AskYourDatabase is the ChatGPT for SQL databases, enabling you to interact with your SQL databases using natural language. You can use it for data management, business intelligence, schema design & migration, data visualization, and more. To learn more, see [AskYourDatabase](https://www.askyourdatabase.com/).
+AskYourDatabase lets you work with SQL databases using natural language. You can use it for data management, business intelligence, schema design and migration, data visualization, and more. To learn more, see [AskYourDatabase](https://www.askyourdatabase.com/).
 
 This guide shows how to connect from AskYourDatabase to Lakebase Postgres.
 
@@ -76420,7 +76587,7 @@ This guide shows how to connect from AskYourDatabase to Lakebase Postgres.
 
 ## Connect to Neon from AskYourDatabase
 
-1. Get the Neon URL by navigating to the Neon Console and copying the connection string. The URL will look something like this:
+1. In the Neon Console, copy your connection string. It looks something like this:
 
    ```text
    postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
@@ -76443,7 +76610,7 @@ Within the chat session, you can start asking your database questions.
 
 For example, suppose you have a `user` table with a column named `dbType` that indicates the type of database.
 
-If you want to know what the four most popular databases are and visualize the distribution in a pie chart, you can quickly and easily do so with a natural language question, as shown below:
+If you want to know what the four most popular databases are and visualize the distribution in a pie chart, you can do so with a natural language question, as shown below:
 
 ![Chat with Neon](https://neon.com/docs/guides/askyourdatabase_ask_neon.png)
 
@@ -76733,7 +76900,7 @@ Last updated: 2026-09-16
 
 Neon provides [Managed Better Auth](https://neon.com/docs/auth/overview), a managed authentication service built on Better Auth that stores users, sessions, and auth configuration directly in your Neon database. Auth state **branches with your data**, so preview and CI environments get isolated users and sessions.
 
-User authentication is an essential part of most web applications. Modern apps often require features like social login, multi-factor authentication, and secure user data management that complies with privacy regulations.
+Most web applications need user authentication. Users often expect social login and multi-factor authentication, and you need to protect personal data under privacy regulations.
 
 [Auth0](https://auth0.com/) is an authentication and authorization platform that provides these features out of the box. It offers SDKs for popular web frameworks, making it straightforward to integrate with your application backed by a Lakebase Postgres database.
 
@@ -76920,6 +77087,8 @@ This will create a `drizzle` folder at the project root with the migration files
 ```bash
 npx drizzle-kit push
 ```
+
+The config sets `strict: true`, so `drizzle-kit push` lists the changes and asks you to confirm before it runs them.
 
 The `user_messages` table will now be visible in the console.
 
@@ -77306,10 +77475,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
 
 This file sets up Auth.js with the Lakebase Postgres adapter (`@auth/neon-adapter`) and configures the Email provider for magic link authentication.
 
-Additionally, `Auth.js` also requires setting up an `AUTH_SECRET` environment variable, which is used to encrypt cookies and magic tokens. You can use the `Auth.js` CLI to generate one:
+Additionally, `Auth.js` also requires setting up an `AUTH_SECRET` environment variable, which is used to encrypt cookies and magic tokens. Generate one with OpenSSL:
 
 ```bash
-npx auth secret
+openssl rand -base64 32
 ```
 
 Add the generated secret to your `.env` file:
@@ -77331,9 +77500,9 @@ import { handlers } from '@/auth';
 export const { GET, POST } = handlers;
 ```
 
-This route file imports the authentication handlers from the `auth.ts` file that handle all auth-related requests — sign-in, sign-out, and redirect after authentication.
+This route file imports the authentication handlers from the `auth.ts` file that handle all auth-related requests, including sign-in, sign-out, and the redirect after authentication.
 
-The `auth` object exported from `./auth.ts` is the universal method we can use to interact with the authentication state in the application. For example, we add a message above the main app layout that indicates the current user's name and a sign-out button at the bottom.
+The `auth` object exported from `./auth.ts` is the universal method we can use to interact with the authentication state in the application. For example, the home page shows the current user's name and a sign-out link.
 
 ## Implementing the application
 
@@ -77479,6 +77648,8 @@ export default function TodoList({ initialTodos }: { initialTodos: Todo[] }) {
 Replace the contents of `app/page.tsx` with:
 
 ```tsx
+import { Suspense } from 'react';
+import { connection } from 'next/server';
 import { auth } from '@/auth';
 import TodoList from '@/app/TodoList';
 import { Pool } from '@neondatabase/serverless';
@@ -77496,12 +77667,24 @@ type Todo = {
   completed: boolean;
 };
 
-export default async function Home() {
-  const session = await auth();
-
+export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-md text-center">
+        <Suspense fallback={<p>Loading...</p>}>
+          <HomeContent />
+        </Suspense>
+      </div>
+    </div>
+  );
+}
+
+async function HomeContent() {
+  await connection();
+  const session = await auth();
+
+  return (
+    <>
         {!session ? (
           <>
             <h1 className="mb-4 text-2xl">Welcome to the Todo App</h1>
@@ -77519,8 +77702,7 @@ export default async function Home() {
             </a>
           </>
         )}
-      </div>
-    </div>
+    </>
   );
 }
 ```
@@ -77536,7 +77718,7 @@ import { Pool } from '@neondatabase/serverless';
 
 export async function POST(req: Request) {
   const session = await auth();
-  if (!session) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -77563,21 +77745,22 @@ Create another file `app/api/todos/[id]/route.ts`:
 
 ```typescript
 import { NextResponse } from 'next/server';
-import { auth } from '../../auth/[...nextauth]/route';
+import { auth } from '@/auth';
 import { Pool } from '@neondatabase/serverless';
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
-  if (!session) {
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const { id } = await params;
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
   try {
     const { rows } = await pool.query(
       'UPDATE todos SET completed = NOT completed WHERE id = $1 AND user_id = $2 RETURNING *',
-      [params.id, session.user.id]
+      [id, session.user.id]
     );
     if (rows.length === 0) {
       return NextResponse.json({ error: 'Todo not found' }, { status: 404 });
@@ -77642,7 +77825,7 @@ Last updated: 2026-09-23
 
 Neon provides [Managed Better Auth](https://neon.com/docs/auth/overview), a managed authentication service built on Better Auth that stores users, sessions, and auth configuration directly in your Neon database. Auth state **branches with your data**, so preview and CI environments get isolated users and sessions.
 
-User authentication is a critical requirement for web applications. Modern applications require advanced features like social login and multi-factor authentication besides the regular login flow. Additionally, managing personally identifiable information (PII) requires a secure solution compliant with data protection regulations.
+User authentication is a core requirement for web applications. Users expect more than a basic login form, such as social login and multi-factor authentication. Additionally, managing personally identifiable information (PII) requires a secure solution compliant with data protection regulations.
 
 **Note:** Looking to manage **authorization** along with authentication? The [Neon Data API](https://neon.com/docs/data-api/custom-authentication-providers) validates Clerk JWTs and enforces Row-Level Security (RLS) policies directly in Postgres, so you can manage access at the database level.
 
@@ -77675,11 +77858,11 @@ Now, navigate to the project directory and install the required dependencies:
 
 ```bash
 npm install @neondatabase/serverless drizzle-orm
-npm install -D drizzle-kit dotenv
+npm install -D drizzle-kit
 npm install @clerk/nextjs
 ```
 
-We use the `@neondatabase/serverless` package as the Postgres client, and `drizzle-orm`, a lightweight typescript ORM, to interact with the database. `@clerk/nextjs` is the Clerk SDK for Next.js applications. We also use `dotenv` to manage environment variables and the `drizzle-kit` CLI tool for generating database migrations.
+We use the `@neondatabase/serverless` package as the Postgres client, and `drizzle-orm`, a lightweight typescript ORM, to interact with the database. `@clerk/nextjs` is the Clerk SDK for Next.js applications. We also use the `drizzle-kit` CLI tool for generating and applying database migrations. It reads the `.env` file in your project, so you don't need `dotenv`.
 
 Also, add a `.env` file to the root of your project, which we'll use to store Neon/Clerk connection parameters:
 
@@ -77798,7 +77981,7 @@ npx drizzle-kit generate
 This will create a `drizzle` folder at the project root with the migration files. To apply the migration to the database, run:
 
 ```bash
-npx drizzle-kit push:pg
+npx drizzle-kit push
 ```
 
 The `user_messages` table will now be visible in the console.
@@ -77988,7 +78171,7 @@ In this guide, we walked through setting up a simple Next.js application with us
 
 Next, we can add more routes and features to the application. The Clerk proxy ensures that only authenticated users can access any app routes, and the `ClerkProvider` component provides the user context to each of them.
 
-To view and manage the users who authenticated with your application, you can navigate to the [Clerk Dashboard](https://dashboard.clerk.dev/).
+To view and manage the users who authenticated with your application, you can navigate to the [Clerk Dashboard](https://dashboard.clerk.com/).
 
 ## Source code
 
@@ -78007,7 +78190,7 @@ For more information on the tools used in this guide, refer to the following doc
 
 --- [Document source](https://neon.com/docs/guides/auth-okta.md) ---
 
-> Summary: Okta Workforce Identity Cloud SSO integration for a Next.js app backed by Lakebase Postgres, wiring Auth.js (next-auth v5) with the built-in Okta OIDC provider and Drizzle ORM migrations to store per-user data keyed by the Okta sub claim. Choose this guide for organization-internal SSO login rather than Auth0 or Managed Better Auth. The tutorial covers creating an Okta OIDC web application, setting issuer URI and client credentials, defining a user_messages schema, and running drizzle-kit push:pg migrations against a Lakebase database.
+> Summary: Okta Workforce Identity Cloud SSO integration for a Next.js app backed by Lakebase Postgres, wiring Auth.js (next-auth v5) with the built-in Okta OIDC provider and Drizzle ORM migrations to store per-user data keyed by the Okta sub claim. Choose this guide for organization-internal SSO login rather than Auth0 or Managed Better Auth. The tutorial covers creating an Okta OIDC web application, setting issuer URI and client credentials, defining a user_messages schema, and running drizzle-kit push migrations against a Lakebase database.
 
 # Authenticate Lakebase Postgres application users with Okta
 
@@ -78112,10 +78295,10 @@ AUTH_OKTA_SECRET=YOUR_CLIENT_SECRET
 AUTH_SECRET=YOUR_SECRET
 ```
 
-The last variable, `AUTH_SECRET`, is a random string used by `Auth.js` to encrypt tokens. Run the following command to generate one and add it to your `.env.local` file:
+The last variable, `AUTH_SECRET`, is a random string used by `Auth.js` to encrypt tokens. Generate one with OpenSSL and add it to your `.env.local` file:
 
 ```bash
-npx auth secret
+openssl rand -base64 32
 ```
 
 **Note:** If you set up an Okta organization account specifically for this guide, you might need to assign yourself to the created Okta application to test the authentication flow. Visit **Applications > Applications** from the sidebar and select the application you created. In the **Assignments** tab, click **Assign** and select your own user account.
@@ -78181,9 +78364,9 @@ if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL not found in enviro
 export default {
   schema: './app/db/schema.ts',
   out: './drizzle',
-  driver: 'pg',
+  dialect: 'postgresql',
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL,
   },
   strict: true,
 } satisfies Config;
@@ -78192,14 +78375,16 @@ export default {
 Now, generate the migration files by running the following command:
 
 ```bash
-npx drizzle-kit generate:pg
+npx drizzle-kit generate
 ```
 
 This will create a `drizzle` folder at the project root with the migration files. To apply the migration to the database, run:
 
 ```bash
-npx drizzle-kit push:pg
+npx drizzle-kit push
 ```
+
+Because the config sets `strict: true`, `drizzle-kit push` lists the changes and asks you to confirm before it runs them.
 
 The `user_messages` table will now be visible in the console.
 
@@ -78236,7 +78421,7 @@ import { handlers } from '@/auth';
 export const { GET, POST } = handlers;
 ```
 
-This route file imports the authentication handlers from the `auth.ts` file that handle all auth-related requests — sign-in, sign-out, and redirect after authentication.
+This route file imports the authentication handlers from the `auth.ts` file that handle all auth-related requests, including sign-in, sign-out, and the redirect after authentication.
 
 The `auth` object exported from `./auth.ts` is the universal method we can use to interact with the authentication state in the application. For example, we add a **User information** bar to the app layout that indicates the current user's name and provides a sign-out button.
 
@@ -78244,6 +78429,7 @@ Replace the contents of the `app/layout.tsx` file with the following:
 
 ```tsx
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { auth } from '@/auth';
@@ -78281,8 +78467,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <UserInfoBar />
-        {children}
+        <Suspense fallback={null}>
+          <UserInfoBar />
+          {children}
+        </Suspense>
       </body>
     </html>
   );
@@ -78657,7 +78845,7 @@ This guide describes how to set up a Neon database and connect to it from an AWS
 
 - A Neon account. If you do not have one, see [Sign up](https://neon.com/docs/get-started/signing-up/) for instructions.
 - An AWS account. You can create a free AWS account at [AWS Free plan](https://aws.amazon.com/free/). An [IAM User and Access Key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html) are required to programmatically interact with your AWS account. You must provide these credentials when deploying the Serverless Framework project.
-- A Service Framework account. You can sign up at [Serverless Framework](https://www.serverless.com/).
+- A Serverless Framework account. You can sign up at [Serverless Framework](https://www.serverless.com/).
 
 ## Create a Neon project
 
@@ -78700,7 +78888,7 @@ Create the Lambda function using the [Serverless Framework](https://www.serverle
    npm install -g serverless
    ```
 
-2. Create a `my-lambda` project directory and navigate to it.
+2. Create a `neon-lambda` project directory and navigate to it.
 
    ```bash
    mkdir neon-lambda
@@ -78776,7 +78964,7 @@ Create the Lambda function using the [Serverless Framework](https://www.serverle
    ```json
    {
      "dependencies": {
-       "pg": "^8.13.1"
+       "pg": "^8.23.1"
      }
    }
    ```
@@ -78793,10 +78981,16 @@ Create the Lambda function using the [Serverless Framework](https://www.serverle
      if (!client) {
        console.log('Initializing new database client');
        client = new Client({ connectionString: process.env.DATABASE_URL });
+       // Without a listener, a dropped connection crashes the process.
+       client.on('error', (error) => {
+         console.error('Database connection error:', error);
+         client = undefined;
+       });
        try {
          await client.connect();
        } catch (error) {
          console.error('Error connecting to the database:', error);
+         client = undefined;
          return {
            statusCode: 500,
            body: JSON.stringify({
@@ -78816,6 +79010,7 @@ Create the Lambda function using the [Serverless Framework](https://www.serverle
        };
      } catch (error) {
        console.error('Error executing query:', error);
+       client = undefined;
        return {
          statusCode: 500,
          body: JSON.stringify({
@@ -78830,20 +79025,22 @@ Create the Lambda function using the [Serverless Framework](https://www.serverle
 
    This function uses the `pg` library to connect to the Neon database. It creates a new `Client` instance and passes the database connection string, which is defined in the `DATABASE_URL` environment variable. It then calls `connect()` to establish a connection to the database. Finally, it uses the `query()` method to execute a `SELECT` statement that retrieves all rows from the `users` table.
 
+   The `error` listener and the `client = undefined` resets handle a dropped connection. Without them, an idle connection that Neon closes crashes the function's process. With them, the next invocation opens a new connection.
+
    The query method returns a `Promise` that resolves to an object containing the rows retrieved by the `SELECT` statement, which the function parses to retrieve the `rows` property. Finally, the function returns an `HTTP` response with a status code of 200 and a body that contains a `JSON` object with a single `data` property, which is set to the value of the rows variable.
 
 6. Add the `DATABASE_URL` environment variable and the function definition to the `serverless.yml` file, which is located in your `aws-node-project` directory.
 
    **Note:** Environment variables can also be added to a `.env` file and loaded automatically with the help of the [dotenv](https://www.npmjs.com/package/dotenv) package. For more information, see [Resolution of environment variables](https://www.serverless.com/framework/docs/environment-variables).
 
-   You can find your database connection details by clicking the **Connect** button in the Console nav. Add the `DATABASE_URL` under `environment`, and add `sslmode=require&channel_binding=require` to the end of the connection string to enable SSL. The `sslmode=require` option tells Postgres to use SSL encryption and verify the server's certificate.
+   You can find your database connection details by clicking the **Connect** button in the Console nav. Add the `DATABASE_URL` under `environment`, and replace `sslmode=require` in the connection string with `sslmode=verify-full`. This enables SSL and verifies the server's certificate. The `sslmode=require` option triggers a security warning in node-postgres 8.23 and later.
 
    ```yaml
    provider:
      name: aws
-     runtime: nodejs14.x
+     runtime: nodejs24.x
      environment:
-       DATABASE_URL: postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require
+       DATABASE_URL: postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=verify-full&channel_binding=require
 
    functions:
      getAllUsers:
@@ -78879,7 +79076,7 @@ Create the Lambda function using the [Serverless Framework](https://www.serverle
 8. Test the generated endpoint by running a cURL command. For example:
 
    ```bash
-   curl https://eg3onb0jkl.execute-api.us-east-1.amazonaws.com/users | jq
+   curl https://ge3onb0klj.execute-api.us-east-1.amazonaws.com/users | jq
    ```
 
    The response returns the following data:
@@ -78953,7 +79150,7 @@ Last updated: 2026-09-16
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -79107,6 +79304,8 @@ const S3_BUCKET = process.env.S3_BUCKET_NAME;
 const AWS_REGION = process.env.AWS_REGION;
 const s3 = new S3Client({
   region: AWS_REGION,
+  // Stops the SDK from adding a checksum of an empty body to presigned URLs.
+  requestChecksumCalculation: 'WHEN_REQUIRED',
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -79208,6 +79407,7 @@ import uuid
 
 import boto3
 import psycopg2
+from botocore.config import Config
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
@@ -79221,6 +79421,8 @@ s3_client = boto3.client(
     region_name=AWS_REGION,
     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
     aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    # Use SigV4 so presigned URLs don't fall back to SigV2 for us-east-1.
+    config=Config(signature_version="s3v4"),
 )
 
 app = Flask(__name__)
@@ -79320,12 +79522,12 @@ if __name__ == "__main__":
 
 **Explanation**
 
-1. **Setup:** Initializes Flask, the PostgreSQL client (`psycopg2`), and the AWS S3 client (`boto3`) using environment variables for credentials and configuration.
+1. **Setup:** Initializes Flask, the Postgres client (`psycopg2`), and the AWS S3 client (`boto3`) using environment variables for credentials and configuration.
 2. **Authentication:** A placeholder `get_authenticated_user_id` function is included. **Replace this with real authentication logic.**
 3. **Upload endpoints:**
    - **`/presign-upload`:** Generates a temporary secure URL (`presignedUrl`) using `boto3` that allows uploading a file directly to S3. It returns the URL, `objectKey`, and the standard public S3 URL.
    - **`/save-metadata`:** Called by the client _after_ successful upload. Saves the `objectKey`, `file_url`, and `userId` into the `s3_files` table in Neon using `psycopg2`.
-4. In production, you should use a global PostgreSQL connection instead of creating a new one for each request. This is important for performance and resource management.
+4. In production, you should use a global Postgres connection instead of creating a new one for each request. This is important for performance and resource management.
 
 ## Testing the upload workflow
 
@@ -79437,7 +79639,7 @@ Last updated: 2026-10-28
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -79647,7 +79849,7 @@ We'll use [Flask](https://flask.palletsprojects.com/en/stable/), [`azure-storage
 First, install the necessary dependencies:
 
 ```bash
-pip install Flask azure-storage-blob psycopg2-binary python-dotenv python-dateutil
+pip install Flask azure-storage-blob psycopg2-binary python-dotenv
 ```
 
 Create a `.env` file:
@@ -79795,7 +79997,7 @@ if __name__ == "__main__":
 3. **Upload endpoints:**
    - **`/generate-upload-sas`:** Creates a unique `blobName`, gets the base `fileUrl`, and generates a SAS token using `generate_blob_sas` with write permissions and a short expiry. Returns the full `sasUrl`, `blobName`, and base `fileUrl`.
    - **`/save-metadata`:** Called by the client _after_ successful upload. Saves the `blobName`, base `fileUrl`, and `userId` into the `azure_files` table using `psycopg2`.
-4. In production, you should use a global PostgreSQL connection instead of creating a new one for each request. This is important for performance and resource management.
+4. In production, you should use a global Postgres connection instead of creating a new one for each request. This is important for performance and resource management.
 
 ## Testing the upload workflow
 
@@ -80005,7 +80207,7 @@ Last updated: 2026-10-28
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -80127,6 +80329,8 @@ const region = endpointUrl.hostname.split('.')[1];
 const s3 = new S3Client({
   endpoint: B2_ENDPOINT,
   region: region,
+  // Stops the SDK from adding a checksum of an empty body to presigned URLs.
+  requestChecksumCalculation: 'WHEN_REQUIRED',
   credentials: {
     accessKeyId: process.env.B2_APPLICATION_KEY_ID,
     secretAccessKey: process.env.B2_APPLICATION_KEY,
@@ -80309,8 +80513,8 @@ def save_b2_metadata_route():
         data = request.get_json()
         object_key = data.get("objectKey")
         public_file_url = data.get("publicFileUrl")
-        if not object_key or not public_file_url:
-            raise ValueError("objectKey and publicFileUrl required in JSON body")
+        if not object_key:
+            raise ValueError("objectKey required in JSON body")
 
         conn = get_db_connection()
         cursor = conn.cursor()
@@ -80345,8 +80549,8 @@ if __name__ == "__main__":
 2. **Authentication:** Placeholder `get_authenticated_user_id` needs replacing.
 3. **Upload endpoints:**
    - **`/presign-b2-upload`:** Generates `object_key` and optional `public_file_url`. Uses `boto3`'s `generate_presigned_url` for `'put_object'` to get a temporary upload URL.
-   - **`/save-b2-metadata`:** Called after client upload. Saves `object_key`, `public_file_url` (can be `None`), and `userId` to the `b2_files` table. Includes basic error handling for duplicates.
-4. In production, use a global PostgreSQL connection pool.
+   - **`/save-b2-metadata`:** Called after client upload. Saves `object_key`, `public_file_url` (can be `None`), and `userId` to the `b2_files` table. Returns an error response if the insert fails, for example, for a duplicate `object_key`.
+4. In production, use a global Postgres connection pool.
 
 ## Testing the upload workflow
 
@@ -83692,13 +83896,13 @@ This guide demonstrates how to configure a Hyperdrive service to connect to your
 
 ## Prerequisites
 
-To follow along with this guide, you require:
+To follow along with this guide, you need:
 
 - A Neon account. If you do not have one, sign up at [Neon](https://neon.tech). Your Neon project comes with a ready-to-use Postgres database named `neondb`. We'll use this database in the following examples.
 
 - A Cloudflare account. If you do not have one, sign up for [Cloudflare Workers](https://workers.cloudflare.com/) to get started.
 
-  **NOTE**: You need to be on Cloudflare Workers' paid subscription plan to use Hyperdrive.
+  **NOTE**: Hyperdrive is included in both the Workers Free and Paid plans. The Free plan has a daily limit on Hyperdrive database queries. The Paid plan has no query limit.
 
 - [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed on your local machine. We'll use Node.js to build and deploy our Workers application.
 
@@ -83733,7 +83937,9 @@ To follow along with this guide, you require:
 
 ### Retrieve your Neon database connection string
 
-In the Neon Console, click **Connect** in the nav to open the **Connect to your branch** modal and find your database connection string. It should look similar to this:
+In the Neon Console, click **Connect** in the nav to open the **Connect to your branch** modal and find your database connection string.
+
+Turn **Connection pooling** off. Hyperdrive manages connection pooling, so you need the direct connection string. Your connection string should look similar to this:
 
 ```bash
 postgresql://neondb_owner:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
@@ -83755,25 +83961,30 @@ This initiates an interactive CLI prompt to generate a new project. To follow al
 
 ```bash
 ├ In which directory do you want to create your application?
-│ dir ./neon-hyperdrive-guide
+│ type neon-hyperdrive-guide
 │
-├ What type of application do you want to create?
-│ type "Hello World" Worker
+├ What would you like to start with?
+│ select "Hello World example"
 │
-├ Do you want to use TypeScript?
-│ Yes typescript
+├ Which template would you like to use?
+│ select "Worker only"
+│
+├ Which language do you want to use?
+│ select "TypeScript"
 ```
 
 When asked if you want to deploy your application, select `no`. We'll develop and test the application locally before deploying it to the Cloudflare Workers platform.
 
-The `create-cloudflare` CLI also installs the `Wrangler` tool to manage the full workflow of testing and managing your Worker applications. To emulate the Node environment in the Workers runtime, we need to add the following entry to the `wrangler.toml` file.
+The `create-cloudflare` CLI also installs the `Wrangler` tool to manage the full workflow of testing and managing your Worker applications. To emulate the Node environment in the Workers runtime, update the `wrangler.jsonc` file that the CLI creates so it looks like this:
 
-```toml
-#:schema node_modules/wrangler/config-schema.json
-name = "with-hyperdrive"
-main = "src/index.ts"
-compatibility_date = "2024-12-05"
-compatibility_flags = ["nodejs_compat"]
+```jsonc filename="wrangler.jsonc"
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "with-hyperdrive",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-12-05",
+  "compatibility_flags": ["nodejs_compat"]
+}
 ```
 
 ### Implement the Worker script
@@ -83793,7 +84004,7 @@ npm install -D @types/pg
 npm install postgres
 ```
 
-Now, you can update the `src/index.js` file in the project directory with the following code:
+Now, you can update the `src/index.ts` file in the project directory with the following code:
 
 **node-postgres**
 
@@ -83836,6 +84047,8 @@ First, you need to configure the `DATABASE_URL` environment variable to point to
 DATABASE_URL=YOUR_NEON_CONNECTION_STRING
 ```
 
+**Note:** If you use Postgres.js 4, remove `channel_binding=require` from `DATABASE_URL` in `.dev.vars`. Keep `sslmode=require`. With the parameter in place, `wrangler dev` fails with `CONNECTION_CLOSED`. node-postgres works with the full string.
+
 Now, to test the worker application locally, you can use the `wrangler` CLI which comes with the Cloudflare project setup.
 
 ```bash
@@ -83853,7 +84066,7 @@ With our Workers application able to query the database, we will now set up Clou
 You can use the `Wrangler` CLI to create a new Hyperdrive service, using your Neon database connection string from earlier:
 
 ```bash
-npx wrangler hyperdrive create neon-guide-drive --connection-string=$NEON_DATABASE_CONNECTION_STRING
+npx wrangler hyperdrive create neon-guide-drive --connection-string="$NEON_DATABASE_CONNECTION_STRING"
 ```
 
 This command creates a new Hyperdrive service named `neon-guide-drive` and outputs its configuration details. Copy the `id` field from the output, which we will use next.
@@ -83862,17 +84075,22 @@ This command creates a new Hyperdrive service named `neon-guide-drive` and outpu
 
 Cloudflare workers uses `Bindings` to interact with other resources on the Cloudflare platform. We will update the `wrangler.toml` file in the project directory to bind our Worker project to the Hyperdrive service.
 
-Add the following lines to the `wrangler.toml` file. This lets us access the Hyperdrive service from our Worker application using the `HYPERDRIVE` binding.
+Add the following to the `hyperdrive` array in the `wrangler.jsonc` file. This lets us access the Hyperdrive service from our Worker application using the `HYPERDRIVE` binding. Replace the `id` value with the ID from the previous step.
 
-```toml
-[[hyperdrive]]
-binding = "HYPERDRIVE"
-id = $id-from-previous-step
+```jsonc filename="wrangler.jsonc"
+"hyperdrive": [
+  {
+    "binding": "HYPERDRIVE",
+    "id": "<your-hyperdrive-id>"
+  }
+]
 ```
+
+**Note:** After you add the binding, `wrangler dev` needs a local connection string for the binding. Add `localConnectionString` to the `hyperdrive` entry, using your Neon connection string with `sslmode=require`. You can also set the `CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE` environment variable instead. Without one of these, `wrangler dev` stops with an error about a local Postgres connection string.
 
 ### Update the Worker script to use Hyperdrive
 
-Now, you can update the `src/index.js` file in the project directory to query the database, through the Hyperdrive service.
+Now, you can update the `src/index.ts` file in the project directory to query the database, through the Hyperdrive service.
 
 **node-postgres**
 
@@ -83909,18 +84127,20 @@ export default {
 
 By default, Workers run in the data center closest to where the request was received. If your Worker makes multiple round trips to your database, you can reduce latency by placing the Worker closer to your database instead.
 
-You can specify the cloud region where your database is hosted by adding a placement in your `wrangler.toml`. For example, if your database is in AWS US East 1:
+You can specify the cloud region where your database is hosted by adding a `placement` property to your `wrangler.jsonc`. For example, if your database is in AWS US East 1:
 
-```toml
-[placement]
-region = "aws:us-east-1"
+```jsonc filename="wrangler.jsonc"
+"placement": {
+  "region": "aws:us-east-1"
+}
 ```
 
 Or if your database is in Azure Germany West Central:
 
-```toml
-[placement]
-region = "azure:germanywestcentral"
+```jsonc filename="wrangler.jsonc"
+"placement": {
+  "region": "azure:germanywestcentral"
+}
 ```
 
 ### Deploy the updated Worker
@@ -83966,7 +84186,7 @@ Hyperdrive → Neon Database (SSL enabled)
 
 This setup works in production. But for local development, libraries like Postgres.js may still reject the connection due to the local `sslmode=disable`.
 
-✅ **To avoid this issue locally**, use `wrangler dev --remote`. This runs your Worker in Cloudflare's infrastructure, where the connection string works as expected.
+For local development, keep `sslmode=require` in the local connection string, as shown in the local test steps above. You can also run `wrangler dev --remote` to test against your deployed Hyperdrive configuration in Cloudflare's network.
 
 ## Resources
 
@@ -83987,7 +84207,7 @@ Last updated: 2026-10-09
 
 **Note:** Cloudflare recommends Workers for new projects. To build a new app, see [Use Neon with Cloudflare Workers](https://neon.com/docs/guides/cloudflare-workers). This guide still applies to existing Cloudflare Pages projects.
 
-`Cloudflare Pages` is a modern web application hosting platform that allows you to build, deploy, and scale your web applications. While it is typically used to host static websites, you can also use it to host interactive web applications by leveraging `functions` to run server-side code. Internally, Cloudflare functions are powered by `Cloudflare Workers`, a serverless platform that allows you to run JavaScript code on Cloudflare's edge network.
+`Cloudflare Pages` is a web application hosting platform that allows you to build, deploy, and scale your web applications. While it is typically used to host static websites, you can also use it to host interactive web applications by using `functions` to run server-side code. Internally, Cloudflare functions are powered by `Cloudflare Workers`, a serverless platform that allows you to run JavaScript code on Cloudflare's edge network.
 
 This guide demonstrates how to connect to a Lakebase Postgres database from your Cloudflare Pages application. We'll create a simple web application using `React` that tracks our reading list using the database and provides a form to add new books to it.
 
@@ -84057,7 +84277,7 @@ This initiates an interactive CLI prompt to generate a new project. To follow al
 ✔ Select a framework: ' React
 ✔ Select a variant: ' JavaScript
 
-Scaffolding project in /Users/ishananand/repos/javascript/my-neon-page...
+Scaffolding project in /path/to/my-neon-page...
 
 Done. Now run:
 
@@ -84338,7 +84558,7 @@ Last updated: 2026-09-16
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -84371,16 +84591,17 @@ If your application involves uploading files **directly from a web browser** usi
 
 Follow Cloudflare's guide to [Configure CORS](https://developers.cloudflare.com/r2/buckets/cors/) for your bucket. You can add rules via R2 Bucket settings in the Cloudflare dashboard.
 
-Here's an example CORS configuration allowing `PUT` uploads and `GET` requests from your deployed frontend application and your local development environment:
+Here's an example CORS configuration allowing `PUT` uploads and `GET` requests from your deployed frontend application and your local development environment. Replace `https://your-production-app.com` with your frontend domain. `AllowedHeaders` must include `Content-Type`, because the browser sends it with the upload.
 
 ```json
 [
   {
     "AllowedOrigins": [
-      "https://your-production-app.com", // Replace with your actual frontend domain
-      "http://localhost:3000" // For local development
+      "https://your-production-app.com",
+      "http://localhost:3000"
     ],
-    "AllowedMethods": ["PUT", "GET"]
+    "AllowedMethods": ["PUT", "GET"],
+    "AllowedHeaders": ["Content-Type"]
   }
 ]
 ```
@@ -84463,6 +84684,8 @@ const s3 = new S3Client({
     accessKeyId: process.env.R2_ACCESS_KEY_ID,
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
   },
+  // Stops the SDK from adding a checksum of an empty body to presigned URLs.
+  requestChecksumCalculation: 'WHEN_REQUIRED',
 });
 
 const sql = neon(process.env.DATABASE_URL);
@@ -84664,12 +84887,12 @@ if __name__ == "__main__":
 
 **Explanation**
 
-1. **Setup:** Initializes the Flask web framework, the R2 client (`s3_client` using `boto3`), and the PostgreSQL client (`psycopg2`) using environment variables.
+1. **Setup:** Initializes the Flask web framework, the R2 client (`s3_client` using `boto3`), and the Postgres client (`psycopg2`) using environment variables.
 2. **Authentication:** A placeholder `get_authenticated_user_id` function is included. **Replace this with real authentication logic.**
 3. **Upload endpoints**:
    - **`/presign-upload`:** Generates a temporary secure URL (`presignedUrl`) that allows uploading a file with a specific `objectKey` and `contentType` directly to R2 using `boto3`. It returns the URL, key, and public URL.
    - **`/save-metadata`:** Called by the client _after_ it successfully uploads the file to R2. It saves the `objectKey`, the final `file_url`, and the `userId` into the `r2_files` table in Neon using `psycopg2`.
-4. In production, you should use a global PostgreSQL connection instead of creating a new one for each request. This is important for performance and resource management.
+4. In production, you should use a global Postgres connection instead of creating a new one for each request. This is important for performance and resource management.
 
 ## Testing the upload workflow
 
@@ -84781,10 +85004,10 @@ Last updated: 2026-10-09
 
 This guide demonstrates how to connect to a Lakebase Postgres database from your Cloudflare Workers application using two approaches:
 
-- **[Hyperdrive](https://developers.cloudflare.com/hyperdrive/)** (recommended): Cloudflare's connection pooling service that provides the lowest possible latencies by performing database connection setup and connection pooling across Cloudflare's network. Hyperdrive is included in all Workers plans and supports native PostgreSQL drivers like [node-postgres](https://node-postgres.com/).
+- **[Hyperdrive](https://developers.cloudflare.com/hyperdrive/)** (recommended): Cloudflare's connection pooling service that reduces connection latency by handling database connection setup and connection pooling across Cloudflare's network. Hyperdrive is included in all Workers plans and supports native Postgres drivers like [node-postgres](https://node-postgres.com/).
 - **[Neon serverless driver](https://neon.com/docs/serverless/serverless-driver)**: A low-latency Postgres driver designed for serverless environments that connects over HTTP or WebSockets.
 
-**Note:** Hyperdrive is the recommended approach as it provides optimized connection pooling and fast query routing by connecting directly to your database. When using Hyperdrive with Neon, use native PostgreSQL drivers like node-postgres or Postgres.js instead of the Neon serverless driver.
+**Note:** Hyperdrive is the recommended approach as it provides optimized connection pooling and fast query routing by connecting directly to your database. When using Hyperdrive with Neon, use native Postgres drivers like node-postgres or Postgres.js instead of the Neon serverless driver.
 
 ## Prerequisites
 
@@ -84845,7 +85068,7 @@ To use Hyperdrive with Neon, you'll need to create a dedicated database role for
 4. Copy the connection string, which should look like this:
 
    ```bash
-   postgres://hyperdrive-user:PASSWORD@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname
+   postgresql://hyperdrive-user:PASSWORD@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
    ```
 
 ### Create a new Worker project
@@ -84899,14 +85122,14 @@ This command will open a browser window and prompt you to log into your Cloudfla
 Now, create a Hyperdrive configuration with your Neon connection string:
 
 ```bash
-npx wrangler hyperdrive create my-neon-hyperdrive --connection-string="postgres://USERNAME:PASSWORD@HOSTNAME:PORT/DATABASE"
+npx wrangler hyperdrive create my-neon-hyperdrive --connection-string="postgresql://USERNAME:PASSWORD@HOSTNAME/DATABASE?sslmode=require&channel_binding=require"
 ```
 
 Replace the placeholder values with your actual connection details from the previous step. You will then be prompted with "Would you like Wrangler to add it on your behalf?". Enter **Y**, and continue with the default name. This will add the required Hyperdrive configuration (bindings) to your project.
 
 ### Install the node-postgres driver
 
-For Hyperdrive, we'll use the native PostgreSQL driver [node-postgres](https://node-postgres.com/):
+For Hyperdrive, we'll use the native Postgres driver [node-postgres](https://node-postgres.com/):
 
 ```bash
 npm install pg
@@ -84938,7 +85161,7 @@ Update your `wrangler.jsonc` to add the **compatibility_flags** binding. We will
     {
       "binding": "HYPERDRIVE",
       "id": "<your-hyperdrive-id-here>",
-      "localConnectionString": "postgres://USERNAME:PASSWORD@HOSTNAME:PORT/DATABASE"
+      "localConnectionString": "postgresql://USERNAME:PASSWORD@HOSTNAME/DATABASE?sslmode=require&channel_binding=require"
     }
   ]
 }
@@ -84946,7 +85169,7 @@ Update your `wrangler.jsonc` to add the **compatibility_flags** binding. We will
 
 Replace the following placeholders:
 
-- `localConnectionString` with your Neon connection string (the same one you used to create the Hyperdrive configuration). This is required for local development with `wrangler dev`.
+- `localConnectionString` with your Neon connection string (the same one you used to create the Hyperdrive configuration). This is required for local development with `wrangler dev`. Keep `sslmode=require` in the string. Without it, the local connection fails with `connection is insecure`.
 
 ### Implement the Worker script
 
@@ -84974,7 +85197,7 @@ export default {
 
 The `fetch` handler uses the Hyperdrive binding to connect to your Neon database through Cloudflare's optimized connection pooling service.
 
-**Important:** When using Hyperdrive with Neon, always use native PostgreSQL drivers like node-postgres (pg) or Postgres.js instead of the Neon serverless driver. Hyperdrive already provides optimized connection pooling and query routing for Workers.
+**Important:** When using Hyperdrive with Neon, always use native Postgres drivers like node-postgres (pg) or Postgres.js instead of the Neon serverless driver. Hyperdrive already provides optimized connection pooling and query routing for Workers.
 
 ### Test the worker application locally
 
@@ -85075,6 +85298,7 @@ export default {
     const client = new Client(env.DATABASE_URL);
     await client.connect();
     const { rows } = await client.query('SELECT * FROM books_to_read;');
+    ctx.waitUntil(client.end());
     return new Response(JSON.stringify(rows));
   },
 } satisfies ExportedHandler<Env>;
@@ -85100,7 +85324,7 @@ This command starts a local server and simulates the Cloudflare Workers environm
 
 ```bash
 ❯ npm run dev
- ⛅️ wrangler 3.28.1
+ ⛅️ wrangler 4.61.0
 -------------------
 Using vars defined in .dev.vars
 Your worker has access to the following bindings:
@@ -85154,7 +85378,7 @@ The Wrangler CLI will output the URL of your Worker hosted on the Cloudflare pla
 
 ```text
 ❯ npm run deploy
- ⛅️ wrangler 3.28.1
+ ⛅️ wrangler 4.61.0
 -------------------
 Total Upload: 189.98 KiB / gzip: 49.94 KiB
 Uploaded my-neon-worker (4.03 sec)
@@ -85190,7 +85414,7 @@ To delete your Neon project, follow the steps outlined in the Neon documentation
 
 # Media storage with Cloudinary
 
-Store files via Cloudinary and track metadata in Lakebase
+Store files via Cloudinary and track metadata in Lakebase Postgres
 
 Last updated: 2026-10-28
 
@@ -85198,7 +85422,7 @@ Last updated: 2026-10-28
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -90971,11 +91195,11 @@ Run `node index.js` and open [localhost:4242](http://localhost:4242). The respon
 
 --- [Document source](https://neon.com/docs/guides/file-storage.md) ---
 
-> Summary: File storage in Neon uses a split-storage pattern where files go to an external object storage or file management service and file URLs, keys, and metadata are stored in a Lakebase Postgres database. Supported providers include AWS S3, Cloudflare R2, Azure Blob, Backblaze B2, Cloudinary, ImageKit, and Uploadcare. Choose this approach when your app needs file uploads and you want a relational store for querying and filtering metadata without building a native file store.
+> Summary: File storage in Neon uses a split-storage pattern where files go to an external object storage or file management service and file URLs, keys, and metadata are stored in a Lakebase Postgres database. Supported providers include AWS S3, Cloudflare R2, Azure Blob, Backblaze B2, Cloudinary, ImageKit, and Uploadcare. Choose this approach when you want a specialized file service and a relational store for querying and filtering metadata. To keep files in your Neon project instead, use Neon Object Storage.
 
 # File storage
 
-Store files in external object storage and file management services and track metadata in Lakebase
+Store files in external object storage and file management services and track metadata in Lakebase Postgres
 
 Last updated: 2026-09-16
 
@@ -90983,7 +91207,7 @@ Applications often need to handle file uploads and storage, from user avatars an
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -92700,7 +92924,7 @@ Learn how to connect a Hasura Cloud project to a new or existing Neon database
 
 Last updated: 2026-09-16
 
-Hasura Cloud is an open source GraphQL engine that provides a scalable, highly available, globally distributed, secure GraphQL API for your data sources.
+Hasura Cloud is a hosted service for the open source Hasura GraphQL Engine. It provides a scalable, highly available, globally distributed, secure GraphQL API for your data sources.
 
 This guide covers Hasura v2 on Hasura Cloud. Hasura DDN, Hasura's newer product, uses a different engine and setup, and moving to it is optional. For supported v2 versions and end-of-life dates, see the [Hasura v2 support policy](https://hasura.io/legal/support-policy-hasura-v2).
 
@@ -92789,11 +93013,11 @@ If you are migrating from Hasura with Heroku Postgres to Neon, refer to the [Imp
 
 ## Maximum connections configuration
 
-In Neon, the maximum number of concurrent connections is defined according to the size of your compute. For example, a 0.25 CU compute in Neon supports 112 connections. The connection limit is higher with larger compute sizes (see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute)). You can also enable connection pooling in Neon to support up to 10,000 concurrent connections. However, it is important to note that Hasura has a `HASURA_GRAPHQL_PG_CONNECTIONS` setting that limits Postgres connections to `50` by default. If you start encountering errors related to "max connections", try increasing the value of this setting as a first step, staying within the connection limit for your Neon compute. For information about the Hasura connection limit setting, refer to the [Hasura Postgres configuration documentation](https://hasura.io/docs/latest/deployment/performance-tuning/#postgres-configuration).
+In Neon, the maximum number of concurrent connections is defined according to the size of your compute. For example, a 0.25 CU compute in Neon supports 112 connections. The connection limit is higher with larger compute sizes (see [How to size your compute](https://neon.com/docs/manage/computes#how-to-size-your-compute)). You can also enable connection pooling in Neon to support up to 10,000 concurrent connections. However, Hasura also limits how many connections it opens to each data source, and those connections count against your Neon compute's limit. If you see "too many connections" or "max connections" errors, reduce the pool size for the data source in Hasura or use a larger compute. If requests stall while they wait for a connection, raise the pool size, and stay within the connection limit for your Neon compute. The `HASURA_GRAPHQL_PG_CONNECTIONS` environment variable applies only to the metadata database in Hasura v2.0.0 and later. For details, see the [Hasura flags reference](https://hasura.io/docs/latest/deployment/graphql-engine-flags/reference/).
 
 ## Scale to zero considerations
 
-Neon suspends a compute after five minutes (300 seconds) of inactivity. This behavior can be adjusted on Neon's paid plans. For more information, refer to [Configuring Scale to zero for Neon computes](https://neon.com/docs/guides/scale-to-zero-guide).
+Neon suspends a compute after five minutes (300 seconds) of inactivity. On the Launch plan, you can turn scale to zero off. On the Scale plan, you can change the timeout. For more information, refer to [Configuring Scale to zero for Neon computes](https://neon.com/docs/guides/scale-to-zero-guide).
 
 If you rely on Neon's scale to zero feature to minimize database usage, note that certain Hasura configuration options can keep your Neon compute in an active state:
 
@@ -92815,7 +93039,7 @@ A step-by-step guide to deploying a Node application with a Lakebase Postgres da
 
 Last updated: 2026-10-28
 
-[Heroku](https://heroku.com) is a popular platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud. It simplifies the deployment process, making it a favorite among developers for its ease of use and integration capabilities.
+[Heroku](https://heroku.com) is a popular platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud. It simplifies the deployment process.
 
 This guide walks you through deploying a simple Node.js application connected to a Lakebase Postgres database, on Heroku.
 
@@ -92934,8 +93158,6 @@ We will use the `Heroku CLI` to deploy our application to Heroku manually. You c
 
 ```bash
 ❯ heroku login
- '   Warning: Our terms of service have changed:
- '   https://dashboard.heroku.com/terms-of-service
 heroku: Press any key to open up the browser to login or q to exit:
 Opening browser to https://cli-auth.heroku.com/auth/cli/browser/...
 ```
@@ -92975,10 +93197,7 @@ remote: -----> Launching...
 remote:        Released v4
 remote:        https://neon-heroku-example-fda03f6acbbe.herokuapp.com/ deployed to Heroku
 remote:
-remote: Verifying deploy... done.
-remote: 2024/02/21 07:26:49 Rollbar error: empty token
 To https://git.heroku.com/neon-heroku-example.git
-remote: Verifying deploy... done.
 ```
 
 Once the deployment is complete, you should see a message with the URL of your deployed application. Navigate to this URL in your browser to see your application live on Heroku.
@@ -93200,7 +93419,7 @@ Last updated: 2026-09-16
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -93255,8 +93474,7 @@ This requires two backend endpoints:
 
 **JavaScript**
 
-We'll use [Hono](https://hono.dev/) for the server, [`imagekit
-`](https://www.npmjs.com/package/imagekit) for ImageKit interaction, and [`@neondatabase/serverless`](https://www.npmjs.com/package/@neondatabase/serverless) for Neon.
+We'll use [Hono](https://hono.dev/) for the server, [`imagekit`](https://www.npmjs.com/package/imagekit) for ImageKit interaction, and [`@neondatabase/serverless`](https://www.npmjs.com/package/@neondatabase/serverless) for Neon.
 
 First, install the necessary dependencies:
 
@@ -93383,14 +93601,12 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request
-from imagekitio.client import ImageKit
+from imagekitio import ImageKit
 
 load_dotenv()
 
 imagekit = ImageKit(
-    public_key=os.getenv("IMAGEKIT_PUBLIC_KEY"),
     private_key=os.getenv("IMAGEKIT_PRIVATE_KEY"),
-    url_endpoint=os.getenv("IMAGEKIT_URL_ENDPOINT"),
 )
 
 app = Flask(__name__)
@@ -93416,7 +93632,7 @@ def generate_auth_params_route():
             return jsonify({"success": False, "error": "Unauthorized"}), 401
 
         # Generate token, expire timestamp, and signature
-        auth_params = imagekit.get_authentication_parameters()
+        auth_params = imagekit.helper.get_authentication_parameters()
         return jsonify(
             {
                 "success": True,
@@ -93487,10 +93703,10 @@ if __name__ == "__main__":
 
 **Explanation**
 
-1. **Setup:** Initializes the Flask web framework (`app`), the PostgreSQL client function (`get_db_connection`) for Lakebase Postgres, and the ImageKit Python SDK (`imagekit`) using environment variables.
+1. **Setup:** Initializes the Flask web framework (`app`), the Postgres client function (`get_db_connection`) for Lakebase Postgres, and the ImageKit Python SDK (`imagekit`) using environment variables.
 2. **Authentication:** Includes a placeholder `get_authenticated_user_id` function. **Replace this with your actual user authentication logic.**
 3. **API endpoints:**
-   - **`/generate-auth-params` (GET):** Uses the ImageKit SDK's `get_authentication_parameters()` method to create `token`, `expire`, and `signature`. These are returned to the client, usually as JSON.
+   - **`/generate-auth-params` (GET):** Uses the ImageKit SDK's `helper.get_authentication_parameters()` method to create `token`, `expire`, and `signature`. These are returned to the client, usually as JSON.
    - **`/save-metadata` (POST):** Called by the client _after_ it has successfully uploaded a file directly to ImageKit. The client provides the metadata returned by ImageKit. The backend validates the required fields and inserts the data along with the `userId` into the `imagekit_files` table in Lakebase Postgres using `psycopg2`.
 4. **Database Connection:** The example shows creating a new connection per request. In production, use a global connection pool for better performance.
 
@@ -95555,12 +95771,14 @@ Last updated: 2026-08-04
 
 [Koyeb](https://www.koyeb.com/) is a developer-friendly, serverless platform designed to easily deploy reliable and scalable applications globally. Koyeb offers native autoscaling, automatic HTTPS (SSL), auto-healing, and global load-balancing across their edge network with zero configuration.
 
-This guide describes how connect a Lakebase Postgres database to an application deployed with Koyeb. To follow the instructions in this guide, you require:
+This guide describes how to connect a Lakebase Postgres database to an application deployed with Koyeb. To follow the instructions in this guide, you need:
 
-- A [Koyeb account](https://app.koyeb.com/) to deploy the application. Alternatively, you can install the [Koyeb CLI](https://www.koyeb.com/docs/quickstart/koyeb-cli) if you prefer to deploy the application from your terminal.
+- A [Koyeb account](https://app.koyeb.com/) on a paid plan (Pro, Scale, or Enterprise) to deploy the application. Koyeb no longer offers the Starter plan to new users. Alternatively, you can install the [Koyeb CLI](https://www.koyeb.com/docs/quickstart/koyeb-cli) if you prefer to deploy the application from your terminal.
 - A Neon account to deploy the Postgres database. If you do not have one, see [Sign up](https://neon.com/docs/get-started/signing-up).
 
 The example application connects to your database using [Prisma](https://www.prisma.io/) as an ORM. Prisma synchronizes the database schema with the Prisma schema included with the application and seeds the database.
+
+**Warning:** The build command `npm run postgres:init` runs `prisma db push --force-reset`. Every build drops and recreates the tables, which deletes any data you added after the initial seed. Use this command for the example only. Remove it from the build command before you store your own data.
 
 ## Create a Neon project
 
@@ -95626,14 +95844,14 @@ To deploy the example application, run the following command in your terminal. M
 
 ```bash
 koyeb apps init express-neon \
---instance-type free \
+--instance-type nano \
 --git github.com/koyeb/example-express-prisma \
 --git-branch main \
---git-build-command "npm run postgres:init" \
+--git-buildpack-build-command "npm run postgres:init" \
 --ports 8080:http \
 --routes /:8080 \
 --env PORT=8080 \
---env DATABASE_URL="{}"
+--env DATABASE_URL="NEON_DATABASE_CONNECTION_STRING"
 ```
 
 #### Access Koyeb deployment logs
@@ -95641,7 +95859,7 @@ koyeb apps init express-neon \
 To track the app deployment and visualize build logs, execute the following command:
 
 ```bash
-koyeb service logs express-neon/express-neon -t build
+koyeb services logs express-neon --app express-neon -t build
 ```
 
 #### Access your app
@@ -97342,7 +97560,7 @@ Neon's logical replication feature allows you to replicate data from your Lakeba
 
 ## Prerequisites
 
-- A source [Neon project](https://neon.com/docs/manage/projects#create-a-project) with a database containing the data you want to replicate. If you're just testing this out and need some data to play with, you run the following statements from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or an SQL client such as [psql](https://neon.com/docs/connect/query-with-psql-editor) to create a table with sample data:
+- A source [Neon project](https://neon.com/docs/manage/projects#create-a-project) with a database containing the data you want to replicate. If you're just testing this out and need some data to play with, you can run the following statements from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or an SQL client such as [psql](https://neon.com/docs/connect/query-with-psql-editor) to create a table with sample data:
 
   ```sql
   CREATE TABLE IF NOT EXISTS playing_with_neon(id SERIAL PRIMARY KEY, name TEXT NOT NULL, value REAL);
@@ -97390,10 +97608,10 @@ It's recommended that you create a dedicated Postgres role for replicating data.
 
 **CLI**
 
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
+The following CLI command creates a role. Replace `$PROJECT_ID` with your project ID. You can find it with `neon projects list`. To view the CLI documentation for this command, see [Neon CLI commands: roles](https://neon.com/docs/cli/roles)
 
 ```bash
-neon roles create --name replication_user
+neon roles create --name replication_user --project-id $PROJECT_ID
 ```
 
 **Console**
@@ -97468,6 +97686,8 @@ Perform the following steps for each table you want to replicate data from:
 
 2. Create the Postgres publication. Include all tables you want to replicate as part of the publication:
 
+   Run this as the database owner, such as `neondb_owner`, not the replication role.
+
    ```sql
    CREATE PUBLICATION airbyte_publication FOR TABLE <tbl1, tbl2, tbl3>;
    ```
@@ -97519,7 +97739,7 @@ To complete your source setup, click **Set up source** in the Airbyte UI. Airbyt
 
 To complete your data integration setup, you can now add Snowflake as your destination.
 
-### Prerequisites
+### Snowflake prerequisites
 
 - A Snowflake account with the `ACCOUNTADMIN` role. If you're using a company account, you may need to contact your Snowflake administrator to set one up for you.
 
@@ -97629,7 +97849,7 @@ When you're finished filling in the required fields, click **Set up destination*
 
 In this step, you'll set up a connection between your Lakebase Postgres source and your Snowflake destination.
 
-To set up a new destination:
+To set up a new connection:
 
 1. Navigate to Airbyte.
 2. Select **New connection**.
@@ -97714,10 +97934,10 @@ It's recommended that you create a dedicated Postgres role for replicating data.
 
 **CLI**
 
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
+The following CLI command creates a role. Replace `$PROJECT_ID` with your project ID. You can find it with `neon projects list`. To view the CLI documentation for this command, see [Neon CLI commands: roles](https://neon.com/docs/cli/roles)
 
 ```bash
-neon roles create --name replication_user
+neon roles create --name replication_user --project-id $PROJECT_ID
 ```
 
 **Console**
@@ -97791,6 +98011,8 @@ Perform the following steps for each table you want to replicate data from:
    ```
 
 2. Create the Postgres publication. Include all tables you want to replicate as part of the publication:
+
+   Run this as the database owner, such as `neondb_owner`, not the replication role.
 
    ```sql
    CREATE PUBLICATION airbyte_publication FOR TABLE <tbl1, tbl2, tbl3>;
@@ -98284,6 +98506,8 @@ Create a Postgres publication that includes the tables you want to replicate. It
 
 To create a publication named `clickpipes_pub` for specific tables, run the following command:
 
+Run this as the database owner, such as `neondb_owner`, not the replication role.
+
 ```sql
 CREATE PUBLICATION clickpipes_pub FOR TABLE tb1, tb2;
 ```
@@ -98633,9 +98857,6 @@ Terraform will create the ClickHouse Cloud service and set up the ClickPipe to r
 - [ClickHouse Cloud API documentation](https://clickhouse.com/docs/cloud/manage/api/swagger)
 - [ClickHouse Terraform provider documentation](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs)
 
-```
-```
-
 --- [Document source](https://neon.com/docs/guides/logical-replication-cloud-sql.md) ---
 
 > Summary: Replicate data from Google Cloud SQL Postgres to Neon using logical replication. Setup involves enabling the `cloudsql.logical_decoding` flag, allowlisting Neon's NAT gateway IPs, and creating a publication on the source with a matching `CREATE SUBSCRIPTION` on the Lakebase Postgres destination. Use this guide when migrating or continuously syncing from Cloud SQL to Neon rather than a one-time pg_dump import. Covers replication role creation, schema preparation, subscription verification, and application cutover.
@@ -98982,7 +99203,7 @@ On the subscriber side, WAL receivers receive the replication stream (the decode
 
 --- [Document source](https://neon.com/docs/guides/logical-replication-databricks.md) ---
 
-> Summary: Replicate data from Lakebase Postgres to Databricks Lakehouse Delta tables using Lakeflow Connect's PostgreSQL connector and logical replication with the pgoutput plugin. Use this guide for continuous, low-latency ingestion from Neon into Unity Catalog, covering publication setup, replication slot creation, Unity Catalog connection, and pipeline configuration. The connector requires PostgreSQL 13 or later on the Neon primary; read replicas are not supported.
+> Summary: Replicate data from Lakebase Postgres to Databricks Lakehouse Delta tables using Lakeflow Connect's PostgreSQL connector and logical replication with the pgoutput plugin. Use this guide for continuous, low-latency ingestion from Neon into Unity Catalog, covering publication setup, replication slot creation, Unity Catalog connection, and pipeline configuration. The connector requires Postgres 13 or later on the Neon primary; read replicas are not supported.
 
 # Replicate data to Databricks with Lakeflow Connect
 
@@ -98996,7 +99217,7 @@ The PostgreSQL connector for Lakeflow Connect is a managed ingestion connector t
 
 - Connects to PostgreSQL over TLS using a Unity Catalog connection
 - Uses logical replication with the `pgoutput` plugin for change data capture (CDC)
-- Requires PostgreSQL 13+ on the primary instance (not a read replica)
+- Requires Postgres 13+ on the primary instance (not a read replica)
 - Extracts snapshot and change data through an ingestion gateway and loads it into Delta tables via an ingestion pipeline
 
 **Important: Public Preview**
@@ -99027,7 +99248,7 @@ You need:
 
 - **Network connectivity**: Neon must accept inbound connections from your Databricks workspace (or via VPN/PrivateLink, depending on setup). If you use [IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow) in Neon, add the Databricks egress addresses to your allowlist. See [Subscriber access](https://neon.com/docs/guides/logical-replication-neon#subscriber-access)
 
-- **PostgreSQL**: Lakebase Postgres running v13 or later with logical replication enabled on the primary. The connector does not support logical replication from a read replica
+- **Postgres**: Lakebase Postgres running v13 or later with logical replication enabled on the primary. The connector does not support logical replication from a read replica
 
 Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin.
 
@@ -99062,8 +99283,10 @@ Databricks recommends a dedicated database user for ingestion. Create a role in 
 
 **CLI**
 
+Replace `$PROJECT_ID` with your project ID. You can find it with `neon projects list`.
+
 ```bash
-neon roles create --name databricks_replication
+neon roles create --name databricks_replication --project-id $PROJECT_ID
 ```
 
 **API**
@@ -99112,6 +99335,8 @@ Repeat for each table you plan to replicate.
 ### Create a publication
 
 Create a logical replication publication that includes all tables you want to ingest. One publication per database.
+
+Run this as the database owner, such as `neondb_owner`, not the replication role.
 
 ```sql
 -- Option 1: Explicit list
@@ -99247,7 +99472,7 @@ Replace `workspace` with your Unity Catalog name, `public` with the destination 
 - **Replication slots**: The gateway must run continuously to prevent WAL bloat. Replication slots are not removed when you delete a pipeline; drop them explicitly in Neon.
 - **Replica identity**: Each replicated table must have `REPLICA IDENTITY` set to `DEFAULT` or `FULL` as appropriate.
 - **Scale**: Keep each pipeline to about 250 tables or fewer for best performance; there is no hard row or column limit per table.
-- **Neon compatibility**: The connector supports PostgreSQL 13+ on various managed and self-hosted sources. Neon is a managed Postgres service that exposes a standard primary with logical replication; validate in a non-production environment and coordinate with Databricks Support for mission-critical use.
+- **Neon compatibility**: The connector supports Postgres 13+ on various managed and self-hosted sources. Neon is a managed Postgres service that exposes a standard primary with logical replication; validate in a non-production environment and coordinate with Databricks Support for mission-critical use.
 
 For adding tables, monitoring lag, and cleaning up slots, see Databricks' [Maintain PostgreSQL ingestion pipelines](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-maintenance) documentation and [Logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon).
 
@@ -99255,10 +99480,10 @@ For adding tables, monitoring lag, and cleaning up slots, see Databricks' [Maint
 
 **Databricks**
 
-- [Configure PostgreSQL for ingestion into Databricks](https://docs.databricks.com/en/ingestion/lakeflow-connect/postgresql/configure-postgresql.html) (Lakeflow Connect)
-- [Ingest data from PostgreSQL](https://docs.databricks.com/en/ingestion/lakeflow-connect/postgresql/ingest-postgresql.html) (Lakeflow Connect PostgreSQL pipeline)
-- [PostgreSQL connector FAQs](https://docs.databricks.com/en/ingestion/lakeflow-connect/postgresql/faq.html)
-- [PostgreSQL connector limitations](https://docs.databricks.com/en/ingestion/lakeflow-connect/postgresql/limitations.html)
+- [Configure PostgreSQL for ingestion into Databricks](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-source-setup) (Lakeflow Connect)
+- [Ingest data from PostgreSQL](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-pipeline) (Lakeflow Connect PostgreSQL pipeline)
+- [PostgreSQL connector FAQs](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql-faq)
+- [PostgreSQL connector overview and limitations](https://docs.databricks.com/aws/en/ingestion/lakeflow-connect/postgresql)
 
 **Neon**
 
@@ -99296,7 +99521,7 @@ In this guide, you will learn how to configure a Postgres source connector in Es
 
 Replication keeps compute active (no [scale to zero](https://neon.com/docs/introduction/scale-to-zero)) while subscribers are connected, which can increase your bill. See [Important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices).
 
-## Enable Logical Replication in Neon
+## Enable logical replication in Neon
 
 **Important:** Enabling logical replication modifies the Postgres `wal_level` configuration parameter, changing it from `replica` to `logical` for all databases in your Neon project. Once the `wal_level` setting is changed to `logical`, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, meaning active connections will be dropped and have to reconnect.
 
@@ -99316,16 +99541,16 @@ SHOW wal_level;
  logical
 ```
 
-## Create a Postgres Role for Replication
+## Create a Postgres role for replication
 
 It is recommended that you create a dedicated Postgres role for replicating data. The role must have the `REPLICATION` privilege. The default Postgres role created with your Neon project and roles created using the Neon Console, CLI, or API are granted membership in the [neon_superuser](https://neon.com/docs/manage/roles#the-neonsuperuser-role) role, which has the required `REPLICATION` privilege.
 
 **CLI**
 
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
+The following CLI command creates a role. Replace `$PROJECT_ID` with your project ID. You can find it with `neon projects list`. To view the CLI documentation for this command, see [Neon CLI commands: roles](https://neon.com/docs/cli/roles)
 
 ```bash
-neon roles create --name cdc_role
+neon roles create --name cdc_role --project-id $PROJECT_ID
 ```
 
 **Console**
@@ -99358,7 +99583,7 @@ curl 'https://console.neon.tech/api/v2/projects/{project_id}/branches/{branch_id
 
 > Replace `{project_id}` and `{branch_id}` with your actual Neon project and branch IDs, and set the `NEON_API_KEY` environment variable with your Neon API key.
 
-## Grant Schema Access to Your Postgres Role
+## Grant schema access to your Postgres role
 
 If your replication role does not own the schemas and tables you are replicating from, make sure to grant access. Run these commands for each schema:
 
@@ -99370,9 +99595,11 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO cdc_role;
 
 Granting `SELECT ON ALL TABLES IN SCHEMA` instead of naming the specific tables avoids having to add privileges later if you add tables to your publication.
 
-## Create a Publication
+## Create a publication
 
 Create a [publication](https://www.postgresql.org/docs/current/sql-createpublication.html) with the name `estuary_publication`. Include all the tables you would like to ingest into Estuary.
+
+Run this as the database owner, such as `neondb_owner`, not the replication role.
 
 ```sql
 CREATE PUBLICATION estuary_publication FOR TABLE <tbl1, tbl2, tbl3>;
@@ -99382,13 +99609,13 @@ Refer to the [Postgres docs](https://www.postgresql.org/docs/current/sql-alterpu
 
 Upon startup, the Estuary connector for Postgres will automatically create the [replication slot](https://www.postgresql.org/docs/current/logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS) required for ingesting data change events from Postgres. The slot's name will be prefixed with `estuary_`, followed by a unique identifier.
 
-## Allow Inbound Traffic
+## Allow inbound traffic
 
 If you are using Neon's **IP Allow** feature to limit the IP addresses that can connect to Neon, you will need to allow inbound traffic from Estuary's IP addresses.
 Refer to the [Estuary documentation](https://docs.estuary.dev/reference/allow-ip-addresses/#ip-addresses-to-allowlist) for the list of IPs that need to be allowlisted for the Estuary region of your account.
 For information about configuring allowed IPs in Neon, see [Configure IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow).
 
-## Create a Postgres Source Connector in Estuary
+## Create a Postgres source connector in Estuary
 
 1. In the Estuary web UI, select **Sources** from the left navigation bar and click **New Capture**.
 
@@ -99401,14 +99628,14 @@ For information about configuring allowed IPs in Neon, see [Configure IP Allow](
    Your connection string will look like this:
 
    ```bash
-   postgres://cdc_role:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
+   postgresql://cdc_role:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname?sslmode=require&channel_binding=require
    ```
 
    ![Creating a Neon capture connector in Estuary](https://neon.com/docs/guides/estuary_flow_create_neon_capture.png)
 
    Enter the details for **your connection string** into the source connector fields. Based on the sample connection string above, the values would be specified as shown below. Your values will differ.
 
-   - **Name:**: Name of the Capture connector
+   - **Name**: Name of the capture connector
    - **Server Address**: ep-cool-darkness-123456.us-east-2.aws.neon.tech:5432
    - **User**: cdc_role
    - **Password**: Click **Add a new secret...**, then specify a name for that secret and `AbC123dEf` as its value
@@ -99423,9 +99650,9 @@ For information about configuring allowed IPs in Neon, see [Configure IP Allow](
 
 5. Click **Save and Publish** to provision the connector and kick off the automated backfill process.
 
-## Previewing the Data
+## Preview the data
 
-Once the connector is up and running state, navigate to the Collections page in the Estuary dashboard and click on the collection being filled by your capture.
+Once the connector is up and running, navigate to the Collections page in the Estuary dashboard and click on the collection being filled by your capture.
 
 ![Preview data in Estuary](https://neon.com/docs/guides/estuary_flow_preview_collections.png)
 
@@ -99481,10 +99708,10 @@ It is recommended that you create a dedicated Postgres role for replicating data
 
 **CLI**
 
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
+The following CLI command creates a role. Replace `$PROJECT_ID` with your project ID. You can find it with `neon projects list`. To view the CLI documentation for this command, see [Neon CLI commands: roles](https://neon.com/docs/cli/roles)
 
 ```bash
-neon roles create --name replication_user
+neon roles create --name replication_user --project-id $PROJECT_ID
 ```
 
 **Console**
@@ -99533,6 +99760,8 @@ Granting `SELECT ON ALL TABLES IN SCHEMA` instead of naming the specific tables 
 
 Create the Postgres publication. Include all tables you want to replicate as part of the publication:
 
+Run this as the database owner, such as `neondb_owner`, not the replication role.
+
 ```sql
 CREATE PUBLICATION fivetran_pub FOR TABLE <tbl1, tbl2, tbl3>;
 ```
@@ -99543,7 +99772,7 @@ The publication name is customizable. Refer to the [Postgres docs](https://www.p
 
 Fivetran requires a dedicated replication slot. Only one source should be configured to use this replication slot.
 
-Fivetran uses the `pgoutput` plugin in Postgres for decoding WAL changes into a logical replication stream. To create a replication slot called `fivetran_slot` that uses the `pgoutput` plugin, run the following command on your database using your replication role:
+Fivetran uses the `pgoutput` plugin in Postgres for decoding WAL changes into a logical replication stream. To create a replication slot called `fivetran_pgoutput_slot` that uses the `pgoutput` plugin, run the following command on your database using your replication role:
 
 ```sql
 SELECT pg_create_logical_replication_slot('fivetran_pgoutput_slot', 'pgoutput');
@@ -99690,13 +99919,13 @@ Last updated: 2026-09-16
 
 Neon's logical replication feature allows you to replicate data from your Lakebase Postgres database to external destinations.
 
-[Inngest](https://www.inngest.com?utm_source=neon\&utm_medium=logical-replication-guide) is a durable workflow platform that allows you to trigger workflow based on Neon database changes. With its native Neon integration, it is the easiest way to set up data replication with custom transformations or 3rd party API destinations (ex, Neon to Amplitude, Neon to S3).
+[Inngest](https://www.inngest.com?utm_source=neon\&utm_medium=logical-replication-guide) is a durable workflow platform that allows you to trigger workflows based on Neon database changes. With its native Neon integration, it is the easiest way to set up data replication with custom transformations or 3rd party API destinations (for example, Neon to Amplitude or Neon to S3).
 
 In this guide, you will learn how to configure your Inngest account for ingesting changes from your Neon database, enabling you to replicate data from Lakebase Postgres to Inngest workflows.
 
 ## Prerequisites
 
-- A [Inngest account](https://www.inngest.com?utm_source=neon\&utm_medium=logical-replication-guide)
+- An [Inngest account](https://www.inngest.com?utm_source=neon\&utm_medium=logical-replication-guide)
 - A [Neon account](https://console.neon.tech/)
 - Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin
 
@@ -99704,11 +99933,11 @@ In this guide, you will learn how to configure your Inngest account for ingestin
 
 Replication keeps compute active (no [scale to zero](https://neon.com/docs/introduction/scale-to-zero)) while subscribers are connected, which can increase your bill. See [Important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices).
 
-## Enabling Logical Replication on your database
+## Enable logical replication on your database
 
-The Inngest Integration relies on Neon's Logical Replication feature to get notified upon database changes.
+The Inngest integration relies on Neon's logical replication feature to get notified upon database changes.
 
-Navigate to your Neon Project using the Neon Console and open the **Settings** > **Postgres** page. From here, follow the instructions to enable Logical Replication:
+Navigate to your Neon Project using the Neon Console and open the **Settings** > **Postgres** page. From here, follow the instructions to enable logical replication:
 
 ![Neon dashboard settings with option to enable logical replication](https://neon.com/docs/guides/neon-console-settings-logical-replication.png)
 
@@ -99716,7 +99945,7 @@ Navigate to your Neon Project using the Neon Console and open the **Settings** >
 
 Your Neon database is now ready to work with Inngest.
 
-To configure the Inngest Neon Integration, navigate to the Inngest Platform, open the [Integrations page](https://app.inngest.com/settings/integrations?utm_source=neon\&utm_medium=trigger-serverless-functions-guide), and follow the instructions of the [Neon Integration installation wizard](https://app.inngest.com/settings/integrations/neon/connect?utm_source=neon\&utm_medium=trigger-serverless-functions-guide):
+To configure the Inngest Neon Integration, navigate to the Inngest Platform, open the [Integrations page](https://app.inngest.com/settings/integrations?utm_source=neon\&utm_medium=logical-replication-guide), and follow the instructions of the [Neon Integration installation wizard](https://app.inngest.com/settings/integrations/neon/connect?utm_source=neon\&utm_medium=logical-replication-guide):
 
 ![Neon integration card inside the Inngest integrations page](https://neon.com/docs/guides/inngest-integrations-page.png)
 
@@ -99728,7 +99957,7 @@ You can find your admin Neon database connection credentials by clicking the **C
 
 ## Example: Replicating data to Amplitude
 
-The below example demonstrates how to replicate new `users` table rows to Amplitude using Amplitude's API.
+The following example shows how to replicate new `users` table rows to Amplitude using Amplitude's API.
 
 Once the Inngest integration is installed, a flow of `"db/*"` events will be created when updates are made to your database.
 
@@ -99764,7 +99993,7 @@ Such events can be used to trigger Inngest functions to transform and replicate 
 
 ```typescript
 // inngest/functions/users-replication.ts
-import { inngest } from './client';
+import { inngest } from '../client';
 
 export const updateAmplitudeUserMapping = inngest.createFunction(
   { id: 'update-amplitude-user-mapping' },
@@ -99822,7 +100051,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 
 ## Enable logical replication in Neon
 
-**Important:** Enabling logical replication modifies the PostgreSQL `wal_level` configuration parameter, changing it from `replica` to `logical` for all databases in your Neon project. Once the `wal_level` setting is changed to `logical`, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, which means that active connections will be dropped and have to reconnect.
+**Important:** Enabling logical replication modifies the Postgres `wal_level` configuration parameter, changing it from `replica` to `logical` for all databases in your Neon project. Once the `wal_level` setting is changed to `logical`, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, which means that active connections will be dropped and have to reconnect.
 
 To enable logical replication in Neon:
 
@@ -99856,6 +100085,8 @@ In this example, we'll create a publication for a `users` table in the `public` 
 
 2. Create a publication for the `users` table:
 
+   Run this as the database owner, such as `neondb_owner`, not the replication role.
+
    ```sql
    CREATE PUBLICATION users_publication FOR TABLE users;
    ```
@@ -99868,10 +100099,10 @@ It is recommended that you create a dedicated Postgres role for replicating data
 
 **CLI**
 
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
+The following CLI command creates a role. Replace `$PROJECT_ID` with your project ID. You can find it with `neon projects list`. To view the CLI documentation for this command, see [Neon CLI commands: roles](https://neon.com/docs/cli/roles)
 
 ```bash
-neon roles create --name replication_user
+neon roles create --name replication_user --project-id $PROJECT_ID
 ```
 
 **Console**
@@ -99977,13 +100208,13 @@ To set up a Postgres CDC source connector for Confluent Cloud:
 
    - **SSL mode**: `require`
 
-   - **Database hostname** `ep-cool-darkness-123456.us-east-2.aws.neon.tech` (this example shows the portion of a Neon connection string forms the database hostname)
+   - **Database hostname**: `ep-cool-darkness-123456.us-east-2.aws.neon.tech` (the host portion of your Neon connection string)
 
    - **Database port**: `5432` (Neon uses port `5432`)
 
    - **Database username**: `alex`
 
-   - **Database Password** `AbC123dEf`
+   - **Database Password**: `AbC123dEf`
 
    - If you use Neon's **IP Allow** feature to limit IP addresses that can connect to Neon, you will need to add the Confluent cluster static IP addresses to your allowlist. For information about configuring allowed IPs in Neon, see [Configure IP Allow](https://neon.com/docs/manage/projects#configure-ip-allow). If you do not use Neon's **IP Allow** feature, you can skip this step.
 
@@ -100023,7 +100254,7 @@ To set up a Postgres CDC source connector for Confluent Cloud:
      "database.server.name": "neon_server",
      "database.sslmode": "require",
      "publication.name": "users_publication",
-     "publication.autocreate.mode": "all_tables",
+     "publication.autocreate.mode": "disabled",
      "snapshot.mode": "initial",
      "tombstones.on.delete": "true",
      "plugin.name": "pgoutput",
@@ -100054,7 +100285,7 @@ To set up a Postgres CDC source connector for Confluent Cloud:
 
 To verify that events are now being published to a Kafka stream in Confluent:
 
-1. Insert a row into your `users` table from the Neon SQL Editor or a `psql` client connect to your Neon database. For example:
+1. Insert a row into your `users` table from the Neon SQL Editor, or connect to your Neon database with a `psql` client. For example:
 
    ```sql
    -- Insert a new user
@@ -100526,7 +100757,7 @@ In this guide, you will learn how to stream data from your Lakebase Postgres dat
 
 - A [Materialize account](https://materialize.com/register/).
 - A [Neon account](https://console.neon.tech/).
-- Optionally, you can install the [psql](https://www.postgresql.org/docs/current/logical-replication.html) command line utility for running commands in both Neon and Materialize. Alternatively, you can run commands from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) and Materialize **SQL Shell**, which require no installation or setup.
+- Optionally, you can install the [psql](https://www.postgresql.org/docs/current/app-psql.html) command line utility for running commands in both Neon and Materialize. Alternatively, you can run commands from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) and Materialize **SQL Shell**, which require no installation or setup.
 - Read the [important notices about logical replication in Neon](https://neon.com/docs/guides/logical-replication-neon#important-notices) before you begin.
 
 **Important: Compute and billing**
@@ -100535,7 +100766,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 
 ## Enable logical replication
 
-**Important:** Enabling logical replication modifies the PostgreSQL `wal_level` configuration parameter, changing it from `replica` to `logical` for all databases in your Neon project. Once the `wal_level` setting is changed to `logical`, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, meaning that active connections will be dropped and have to reconnect.
+**Important:** Enabling logical replication modifies the Postgres `wal_level` configuration parameter, changing it from `replica` to `logical` for all databases in your Neon project. Once the `wal_level` setting is changed to `logical`, it cannot be reverted. Enabling logical replication also restarts all computes in your Neon project, meaning that active connections will be dropped and have to reconnect.
 
 To enable logical replication in Neon:
 
@@ -100569,6 +100800,8 @@ After logical replication is enabled in Neon, the next step is to create a publi
 
    For specific tables:
 
+   Run this as the database owner, such as `neondb_owner`, not the replication role.
+
    ```sql
    CREATE PUBLICATION mz_source FOR TABLE <tbl1, tbl2, tbl3>;
    ```
@@ -100583,7 +100816,7 @@ It is recommended that you create a dedicated Postgres role for replicating data
 
 **CLI**
 
-The following CLI command creates a role. To view the CLI documentation for this command, see [Neon CLI commands — roles](https://neon.com/docs/reference/api/branches/create-project-branch-role)
+The following CLI command creates a role. Replace `$PROJECT_ID` with your project ID. You can find it with `neon projects list`. To view the CLI documentation for this command, see [Neon CLI commands: roles](https://neon.com/docs/cli/roles)
 
 ```bash
 neon roles create --name replication_user
@@ -100765,7 +100998,7 @@ In this step, you'll verify that the source is running and then check the status
    (1 row)
    ```
 
-   Once `snapshot_commited` is `t`, move on to the next step. Snapshotting can take between a few minutes to several hours, depending on the size of your dataset and the size of the cluster replica you chose for your `ingest_postgres` cluster.
+   Once `snapshot_committed` is `t`, move on to the next step. Snapshotting can take from a few minutes to several hours, depending on the size of your dataset and the size of the cluster replica you chose for your `ingest_postgres` cluster.
 
 ## Right-size the cluster
 
@@ -103627,7 +103860,7 @@ Connect Lakebase Postgres on Neon to a GitHub repository and build GitHub Action
 
 Last updated: 2026-08-04
 
-The Neon GitHub integration connects your Neon project to a GitHub repository, streamlining database development within your overall application development workflow. For instance, you can configure GitHub Actions to create a database branch for each pull request and automatically apply schema changes to that database branch. To help you get started, we provide a [sample GitHub Actions workflow](https://neon.com/docs/guides/neon-github-integration#add-the-github-actions-workflow-to-your-repository).
+The Neon GitHub integration connects your Neon project to a GitHub repository, so you can manage database changes alongside your application code. For instance, you can configure GitHub Actions to create a database branch for each pull request and automatically apply schema changes to that database branch. To help you get started, we provide a [sample GitHub Actions workflow](https://neon.com/docs/guides/neon-github-integration#add-the-github-actions-workflow-to-your-repository).
 
 ## How it works
 
@@ -103656,20 +103889,20 @@ To get started:
 3. On the **GitHub** drawer, click **Install GitHub App**.
 4. If you have more than one GitHub account, select the account where you want to install the GitHub app.
 5. Select whether to install and authorize the GitHub app for **All repositories** in your GitHub account or **Only select repositories**.
-   - Selecting **All repositories** authorizes the app on all repositories in your GitHub account, meaning that you can to connect your Neon project to any of them.
+   - Selecting **All repositories** authorizes the app on all repositories in your GitHub account, meaning that you can connect your Neon project to any of them.
    - Selecting **Only select repositories** authorizes the app on one or more repositories, meaning that you can only connect your Neon project to the selected repositories (you can authorize additional repositories later if you need to).
 6. If you authorized the app on **All repositories** or multiple repositories, select a GitHub repository to connect to the current Neon project, and click **Connect**. If you authorized the GitHub app on a single GitHub repository, you have already completed this step.
 
-   You are directed to the **Actions** tab on the final page of the setup, where a sample GitHub Actions workflow is provided. You can copy this workflow to your GitHub repository to establish a basic database branching process. For instructions, see [Add the GitHub Actions workflow to your repository](https://neon.com/docs/guides/neon-github-integration#add-the-github-actions-workflow-to-your-repository).
+   The final step of the setup opens a new workflow file in your repository, prefilled with a sample GitHub Actions workflow in GitHub's file editor. You can commit this file to establish a basic database branching process. For instructions, see [Add the GitHub Actions workflow to your repository](https://neon.com/docs/guides/neon-github-integration#add-the-github-actions-workflow-to-your-repository).
 
 ## Add the GitHub Actions workflow to your repository
 
 The sample GitHub Actions workflow includes:
 
-- A [Create branch action](https://neon.com/docs/guides/branching-github-actions#create-branch-action) that creates a new Neon branch in your Neon project when you open or reopen a pull request in the connected GitHub repository.
+- A [Create branch action](https://neon.com/docs/guides/branching-github-actions#available-actions) that creates a new Neon branch in your Neon project when you open, reopen, or push new commits to a pull request in the connected GitHub repository.
 - Code that you can uncomment to add a database migration command to your workflow.
-- Code that you can uncomment to add a [Schema diff action](https://neon.com/docs/guides/branching-github-actions#schema-diff-action) that diffs database schemas and posts the diff as a comment in your pull request.
-- A [Delete branch action](https://neon.com/docs/guides/branching-github-actions#delete-branch-action) that deletes the Neon branch from your Neon project when you close the pull request.
+- Code that you can uncomment to add a [Schema diff action](https://neon.com/docs/guides/branching-github-actions#available-actions) that diffs database schemas and posts the diff as a comment in your pull request.
+- A [Delete branch action](https://neon.com/docs/guides/branching-github-actions#available-actions) that deletes the Neon branch from your Neon project when you close the pull request.
 
 ```yaml
 name: Create/Delete Branch for Pull Request
@@ -103694,13 +103927,13 @@ jobs:
     steps:
       - name: Get branch name
         id: branch_name
-        uses: tj-actions/branch-names@v8
+        uses: tj-actions/branch-names@v9
 
   create_neon_branch:
     name: Create Neon Branch
     outputs:
-      db_url: ${{ steps.create_neon_branch_encode.outputs.db_url }}
-      db_url_with_pooler: ${{ steps.create_neon_branch_encode.outputs.db_url_with_pooler }}
+      db_url: ${{ steps.create_neon_branch.outputs.db_url }}
+      db_url_pooled: ${{ steps.create_neon_branch.outputs.db_url_pooled }}
     needs: setup
     if: |
       github.event_name == 'pull_request' && (
@@ -103711,7 +103944,7 @@ jobs:
     steps:
       - name: Create Neon Branch
         id: create_neon_branch
-        uses: neondatabase/create-branch-action@v5
+        uses: neondatabase/create-branch-action@v6
         with:
           project_id: ${{ vars.NEON_PROJECT_ID }}
           branch_name: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
@@ -103721,7 +103954,7 @@ jobs:
   # You may want to do something with the new branch, such as run migrations, run tests
   # on it, or send the connection details to a hosting platform environment.
   # The branch DATABASE_URL is available to you via:
-  # "${{ steps.create_neon_branch.outputs.db_url_with_pooler }}".
+  # "${{ steps.create_neon_branch.outputs.db_url_pooled }}".
   # It's important you don't log the DATABASE_URL as output as it contains a username and
   # password for your database.
   #
@@ -103729,7 +103962,7 @@ jobs:
   #      - name: Run Migrations
   #        run: npm run db:migrate
   #        env:
-  #          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url_with_pooler }}"
+  #          DATABASE_URL: "${{ steps.create_neon_branch.outputs.db_url_pooled }}"
   #
   # You can also add a Schema Diff action to compare the database schema on the new
   # branch with the base branch. This action automatically writes the schema differences
@@ -103751,9 +103984,9 @@ jobs:
   #      - name: Post Schema Diff Comment to PR
   #        uses: neondatabase/schema-diff-action@v1
   #        with:
-  #          project_id: \${{ vars.NEON_PROJECT_ID }}
-  #          compare_branch: preview/pr-\${{ github.event.number }}-\${{ needs.setup.outputs.branch }}
-  #          api_key: \${{ secrets.NEON_API_KEY }}
+  #          project_id: ${{ vars.NEON_PROJECT_ID }}
+  #          compare_branch: preview/pr-${{ github.event.number }}-${{ needs.setup.outputs.branch }}
+  #          api_key: ${{ secrets.NEON_API_KEY }}
 
   delete_neon_branch:
     name: Delete Neon Branch
@@ -103836,7 +104069,7 @@ If you're new to GitHub Actions and workflows, GitHub's [Quickstart for GitHub A
 
 The following example applications use GitHub Actions workflows to create and delete branches in Neon. These examples can serve as references when building your own workflows.
 
-**Note:** The Neon GitHub integration configures a `NEON_API_KEY` secret and a `PROJECT_ID` variable in your GitHub repository. Depending on the specific example application, additional or different variables and secrets may have been used. As you develop your workflows, you might also need to incorporate various other variables and secrets.
+**Note:** The Neon GitHub integration configures a `NEON_API_KEY` secret and a `NEON_PROJECT_ID` variable in your GitHub repository. Depending on the specific example application, additional or different variables and secrets may have been used. As you develop your workflows, you might also need to incorporate various other variables and secrets.
 
 - [Automated Database Branching with GitHub Actions](https://neon.com/guides/neon-github-actions-authomated-branching): Learn how to automate database branching for your application using Neon and GitHub Actions
 - [Preview branches with Cloudflare Pages](https://github.com/neondatabase/preview-branches-with-cloudflare): Demonstrates using GitHub Actions workflows to create a Neon branch for every Cloudflare Pages preview deployment
@@ -103860,7 +104093,7 @@ To connect another Neon project to a GitHub repository:
 
 When connecting a Neon project to a GitHub repository, the GitHub integration performs the following actions:
 
-- Generates a Neon API key for your Neon account
+- Generates a Neon API key. The key belongs to your Neon account, or to your organization if the project is in one.
 - Creates a `NEON_API_KEY` secret in your GitHub repository
 - Adds a `NEON_PROJECT_ID` variable to your GitHub repository
 
@@ -103880,7 +104113,7 @@ To view the Neon API key created by the integration:
 2. Select **Settings** (under **Account**).
 3. Select **API keys**.
 
-The API key created by the integration should be listed with a name similar to the following: **API key for GitHub (cool-darkness-12345678)**. You cannot view the key itself, only the name it was given, the time it was created, and when the key was last used.
+The API key created by the integration is named after the GitHub repository and the Neon project. The name follows this pattern: **GitHub repo example-owner/example-repo (project ID cool-darkness-12345678)**. You cannot view the key itself, only the name it was given, the time it was created, and when the key was last used.
 
 ### Neon project ID variable and Neon API key secret
 
@@ -105260,7 +105493,7 @@ Connect a Lakebase Postgres database to your Netlify Functions application
 
 Last updated: 2026-10-09
 
-[Netlify Functions](https://www.netlify.com/products/functions/) provide a serverless execution environment for building and deploying backend functionality without managing server infrastructure. It's integrated with Netlify's ecosystem, making it ideal for augmenting web applications with server-side logic, API integrations, and data processing tasks in a scalable way.
+[Netlify Functions](https://www.netlify.com/platform/functions/) provide a serverless execution environment for building and deploying backend functionality without managing server infrastructure. It's integrated with Netlify's ecosystem, making it ideal for augmenting web applications with server-side logic, API integrations, and data processing tasks in a scalable way.
 
 This guide will show you how to connect to a Lakebase Postgres database from your Netlify Functions project. We'll use the [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver) to connect to the database and make queries.
 
@@ -105341,7 +105574,7 @@ You will be prompted to select a team and site name. Choose a unique name for yo
 
 ```
 ❯ netlify sites:create
-? Team: Ishan Anand's team
+? Team: Example team
 ? Site name (leave blank for a random name; you can change it later): neon-netlify-example
 
 Site Created
@@ -105364,17 +105597,16 @@ We'll create a new function to fetch the coffee blends from the database. To set
 ? Select the language of your function JavaScript
 ? Pick a template javascript-hello-world
 ◈ Creating function get_coffee_blends
-◈ Created ./netlify/functions/get_coffee_blends/get_coffee_blends.js
+◈ Created ./netlify/functions/get_coffee_blends/get_coffee_blends.mjs
 
 Function created!
 ```
 
-This command creates a new directory `netlify/functions/get_coffee_blends` with a `get_coffee_blends.js` file inside it. We are using the ES6 `import` syntax to implement the request handler, so we will change the script extension to `.mjs` for the runtime to recognize it.
+This command creates a new directory `netlify/functions/get_coffee_blends` with a `get_coffee_blends.mjs` file inside it. The `.mjs` extension tells the runtime to treat the file as an ES module, so the request handler can use the `import` syntax.
 
 We also install the `Neon serverless` driver as a dependency to connect to the database and fetch the data.
 
 ```bash
-mv netlify/functions/get_coffee_blends/get_coffee_blends.js netlify/functions/get_coffee_blends/get_coffee_blends.mjs
 npm install @neondatabase/serverless
 ```
 
@@ -105416,7 +105648,7 @@ Create a new file `index.html` at the root of your project with the following co
     <title>Coffee Blends</title>
   </head>
   <body>
-    <h1>My favourite coffee blends</h1>
+    <h1>My favorite coffee blends</h1>
     <ul id="blends"></ul>
     <script>
       (async () => {
@@ -105478,8 +105710,8 @@ To remove your Neon project, follow the deletion steps in Neon's documentation u
 
 ## Resources
 
-- [Netlify Functions](https://www.netlify.com/products/functions/)
-- [Netlify CLI](https://docs.netlify.com/cli/get-started/)
+- [Netlify Functions](https://www.netlify.com/platform/functions/)
+- [Netlify CLI](https://docs.netlify.com/api-and-cli-guides/cli-guides/get-started-with-cli/)
 - [Neon](https://neon.tech)
 
 --- [Document source](https://neon.com/docs/guides/nextjs.md) ---
@@ -106165,109 +106397,159 @@ getPgVersion();
 
 --- [Document source](https://neon.com/docs/guides/nuxt.md) ---
 
-> Summary: Connect Nuxt (Vue meta-framework) to serverless Postgres on Neon: use the Neon CLI to create the project and pull DATABASE_URL into your .env, then run SQL from a Nitro server route with the Neon serverless driver. Choose this guide when building a full-stack Nuxt app that needs server-side Postgres queries, covering CLI setup, driver selection (Neon serverless driver, node-postgres, or postgres.js), and reading the connection string in server code.
+> Summary: Connect a Nuxt app to Lakebase Postgres on Neon: optionally add Neon's agent skills, create a Neon project (Neon CLI, API, or Console), link it with the Neon CLI to pull DATABASE_URL into .env, which nuxt dev reads, optionally develop on a Neon branch, and query it with the Neon serverless driver, postgres.js, or node-postgres from a Nitro server route that the page fetches with useFetch. Covers Nuxt 4, with a note for Nuxt 3, plus deployment, troubleshooting, and Neon's other backend services from Nuxt.
 
-# Connect Nuxt to Postgres on Neon
+# Connect a Nuxt application to Neon
 
-Learn how to make server-side queries to Postgres using Nitro API routes
+Connect a Nuxt app to Lakebase Postgres on Neon, query it from a Nitro server route, develop on a branch, deploy, and add the rest of your backend
 
-Last updated: 2026-10-08
+Last updated: 2026-11-16
 
-Pre-built prompt for connecting Nuxt applications to Neon. [View prompt](https://neon.com/prompts/nuxt-neon-prompt.md)
+This prompt is for pasting into an AI coding agent. If it brought you to this page, you are already following it, so continue with the rest of the page.
 
-[Nuxt](https://nuxt.com/) is an open-source full-stack meta framework that enables Vue-based web applications. This topic describes how to connect a Nuxt application to a Postgres database on Neon.
+```text
+Connect my Nuxt app to Neon.
 
-To create a Neon project and access it from a Nuxt.js application:
+- Fetch https://neon.com/prompts/agent-setup.md and follow it.
+
+- Look up Nuxt docs with Nuxt's official MCP server, https://nuxt.com/mcp, if it's connected, or with https://nuxt.com/llms.txt if it isn't.
+- Offer to connect the MCP server for later sessions, as https://nuxt.com/docs/4.x/guide/ai/mcp shows for my agent.
+
+- Fetch Neon's Nuxt guide, https://neon.com/docs/guides/nuxt.md, and follow it.
+- Ask me before you pick or create a Neon project.
+- Finish by showing me the Postgres version from the running app.
+- If my app needs sign-in, file uploads, long-running or scheduled work, LLM calls, or live updates, suggest the matching service from the guide's "Add more of your backend" section.
+```
+
+## Create a Nuxt app
+
+Create a Nuxt project if you don't have one, then change into its directory. For other options, see [Installation](https://nuxt.com/docs/getting-started/installation) in the Nuxt docs.
+
+```bash filename="Terminal"
+npm create nuxt@latest my-app -- --template minimal --packageManager npm --no-gitInit --no-modules
+cd my-app
+```
+
+In a non-interactive shell, such as an AI agent's, keep `--template`, `--packageManager`, and `--no-gitInit`: if one is missing, the command exits with code 2 and can leave a partial `my-app`, so delete it before you retry.
+
+Nuxt 4 supports Node.js 22.22.3, 24.15, or 26 or later. On another version, npm prints an `EBADENGINE` warning but still installs.
+
+## Add Neon's agent skills (optional)
+
+If your AI coding agent doesn't have Neon's [agent skills](https://neon.com/docs/ai/agent-skills) yet, add them to this project. The prompt above installs them, so skip this step if you used it. From your project directory, run:
+
+```bash filename="Terminal"
+npx neon@latest skills
+```
+
+To also connect the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server), run `npx neon@latest mcp`.
+
+Nuxt runs its own [MCP server](https://nuxt.com/docs/4.x/guide/ai/mcp) for its docs. The prompt above has your agent use it and offer to connect it.
 
 ## Create a Neon project
 
-Create a Neon project with the [Neon CLI](https://neon.com/docs/cli/install) or the Console.
+Skip this step if you already have a Neon project you want to use.
+
+Consider picking a region that supports all Neon backend services: US East (Ohio), US East (N. Virginia), Europe (Frankfurt), or Asia Pacific (Singapore). Postgres and Managed Better Auth run in every region, while Object Storage, Neon Functions, the AI Gateway, and Realtime run in those four, with support expanding toward [all regions](https://neon.com/docs/introduction/regions#product-availability).
 
 **Neon CLI**
 
-Install the CLI (`npm i -g neon`), then sign in and create the project:
+Install the [Neon CLI](https://neon.com/docs/cli/install), sign in, and create the project:
 
 ```bash filename="Terminal"
+npm i -g neon@latest
 neon login
-neon projects create --name my-app
+neon projects create --name my-app --region-id aws-us-east-2 --no-secrets
 ```
 
-If you belong to more than one organization, the CLI prompts you to choose one. To skip the prompt, pass `--org-id <id>` (find it with `neon orgs list`).
+`--region-id` sets the region; pass a different one to pick another of the regions above. `--no-secrets` keeps the connection string out of the output, since the next step pulls it into your env file. Pass `--org-id` to choose the organization (find IDs with `neon orgs list`).
 
-You'll link this project and pull its credentials in a later step.
+**API**
+
+Create an [API key](https://console.neon.tech/app/settings/api-keys), export it, then create the project in your organization:
+
+```bash filename="Terminal"
+export NEON_API_KEY=neon_...
+
+curl -X POST https://console.neon.tech/api/v2/projects \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"project": {"name": "my-app", "region_id": "aws-us-east-2", "org_id": "<org-id>"}}'
+```
+
+The response includes the project's connection string in `connection_uris[0].connection_uri`. See [Create a project](https://neon.com/docs/manage/projects#create-a-project) for the other options.
 
 **Console**
 
-1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
-2. Click **New Project**.
-3. Specify your project settings and click **Create Project**.
+Go to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console, click **New Project**, and pick one of the regions above.
 
-## Create a Nuxt project and add dependencies
+## Connect your app to the project
 
-1. Create a Nuxt project if you do not have one, then change into its directory. The scaffolder is interactive (it asks about the template, package manager, git, and modules); for CI or an AI agent, pass those as flags to run non-interactively. See [Create a Nuxt Project](https://nuxt.com/docs/getting-started/installation#new-project) for details. The CLI commands in the next step run from this directory.
-
-   ```bash filename="Terminal"
-   # Interactive (human):
-   npm create nuxt@latest my-app && cd my-app
-
-   # Non-interactive (CI / AI agents):
-   npm create nuxt@latest my-app -- --template minimal --packageManager npm --no-gitInit --modules "" && cd my-app
-   ```
-
-2. Add a Postgres driver. This guide's examples use the Neon serverless driver, which suits serverless and edge deployments; for long-lived servers, `pg` or `postgres.js` are recommended. See [Choosing your connection method](https://neon.com/docs/connect/choose-connection).
-
-   **Neon serverless driver**
-
-   ```shell
-   npm install @neondatabase/serverless
-   ```
-
-   **postgres.js**
-
-   ```shell
-   npm install postgres
-   ```
-
-   **node-postgres**
-
-   ```shell
-   npm install pg
-   npm install -D @types/pg
-   ```
-
-## Store your Neon credentials
-
-Get your `DATABASE_URL` into a `.env` file the app can read.
+Get a `DATABASE_URL` into `.env`, which Nuxt loads into `process.env` in development.
 
 **Neon CLI**
 
-From your project directory, link the app to your Neon project and pull its connection string:
+From your app's directory, create an empty `.env`, then link it to the Neon project (install the [Neon CLI](https://neon.com/docs/cli/install) and run `neon login` first if you haven't):
 
 ```bash filename="Terminal"
-neon link                    # connects this directory to your project (writes .neon)
-neon env pull --file .env    # writes DATABASE_URL from your default branch into .env
+touch .env
+neon link
 ```
 
-Notes:
+The Neon CLI writes to `.env` only when it exists, and otherwise to `.env.local`, which Nuxt doesn't load. `neon link` prompts you to pick an organization and a project, or to create a new project. It writes a `.neon` file with the project context, pins a branch (pass `--branch` to choose one), and pulls that branch's `DATABASE_URL` into `.env`. It also offers to create a [`neon.ts`](https://neon.com/docs/reference/neon-ts) file; that's optional and covered in [Add more of your backend](https://neon.com/docs/guides/nuxt#add-more-of-your-backend).
 
-- Not signed in yet? Run `neon login` first.
-- `neon link` prompts for an org and project. To skip the prompts, pass `--org-id <id>` and `--project-id <id>` (find IDs with `neon orgs list` and `neon projects list`), plus `--branch <name>` to pin a branch, or `-y` to pin the default branch.
-- For Nuxt, pass in `--file .env` to `neon env pull` as it writes to `.env.local` by default, and `nuxt dev` only reads `.env` by default.
-- Which branch? `neon env pull` uses your project's default branch: `main` for CLI-created projects, `production` for Console-created ones (`neon branches list` shows yours). To use a different branch, run `neon checkout <branch>` first; it re-pins the branch in `.neon` so the next `env pull` reads from it.
+To skip the prompts, pass `-y` with `--org-id` and `--project-id`. Find IDs with `neon orgs list` and `neon projects list`.
 
-**Console**
+**Without the CLI**
 
-Add a `.env` file and paste your connection string, which you can copy from the **Connect** button in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+Copy the connection string from **Connect** in the Console nav, or from the API response, and add it to a `.env` file in your project directory. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
 
 ```shell filename=".env"
 DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
 ```
 
-## Configure the Postgres client
+The optional development branch step and [Add more of your backend](https://neon.com/docs/guides/nuxt#add-more-of-your-backend) use the Neon CLI. To use them, run `neon link` in this directory.
 
-The connection string is a server-side secret, so query it from Nitro server code, which reads `process.env.DATABASE_URL` directly (no `runtimeConfig` needed).
+The scaffolded `.gitignore` already excludes `.env`, so the connection string stays out of git.
 
-Create a server utility that holds the database client. Use the tab for the driver you installed:
+## Work on a development branch (optional)
+
+If you linked your project's default branch, your app uses the branch where production data usually lives. That's `main` for projects created with the CLI or API, and `production` for projects created in the Console. Create a [branch](https://neon.com/docs/introduction/branching) for local development instead. A branch starts from its parent's data and schema with copy-on-write, so you can change it freely:
+
+```bash filename="Terminal"
+neon checkout dev --create
+```
+
+This creates the `dev` branch, pins it in `.neon`, and pulls its `DATABASE_URL` into `.env`, so your app now uses the branch. To switch back, run `neon checkout main` (or `production`).
+
+## Install a Postgres driver
+
+Install one of these drivers. The [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver) queries over HTTP, which suits serverless and edge hosts. On a long-running Node.js server, postgres.js or node-postgres work well too. See [Choosing your connection method](https://neon.com/docs/connect/choose-connection).
+
+**Neon serverless driver**
+
+```bash
+npm install @neondatabase/serverless
+```
+
+**postgres.js**
+
+```bash
+npm install postgres
+```
+
+**node-postgres**
+
+```bash
+npm install pg
+npm install -D @types/pg
+```
+
+If you use node-postgres, `pg` 8.23 and later print a `SECURITY WARNING` for `sslmode=require`. Change it to `sslmode=verify-full` in `.env` to keep the same behavior without the warning. `neon link`, `neon env pull`, and `neon checkout` write `sslmode=require` again, so repeat the change after you run them.
+
+## Create the database client
+
+Create the client in `server/utils/`, which Nuxt auto-imports into server code. Use the tab for the driver you installed:
 
 **Neon serverless driver**
 
@@ -106282,7 +106564,7 @@ export const sql = neon(process.env.DATABASE_URL!);
 ```typescript filename="server/utils/db.ts"
 import postgres from 'postgres';
 
-export const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
+export const sql = postgres(process.env.DATABASE_URL!);
 ```
 
 **node-postgres**
@@ -106293,14 +106575,20 @@ import pg from 'pg';
 export const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 ```
 
-Then use it in a server API route. Files in `server/utils/` are auto-imported, so `sql` (or `pool`) is available without an import:
+Read `DATABASE_URL` from `process.env`, not `runtimeConfig`: at runtime, `runtimeConfig` only picks up `NUXT_`-prefixed variables. Don't put it in `runtimeConfig.public` or return it from a route.
+
+Code in `app/` also runs in the browser, and Nuxt doesn't stop it from importing `server/utils/`. Import the client only in server code, and fetch data from a server route.
+
+## Query the database in a server route
+
+Create `server/api/version.get.ts`. If you're adding Neon to an existing app, name it `server/api/neon-version.get.ts` instead. `sql` (or `pool`) is available without an import:
 
 **Neon serverless driver**
 
 ```typescript filename="server/api/version.get.ts"
 export default defineEventHandler(async () => {
   const [row] = await sql`SELECT version()`;
-  return row;
+  return { version: row?.version as string };
 });
 ```
 
@@ -106309,7 +106597,7 @@ export default defineEventHandler(async () => {
 ```typescript filename="server/api/version.get.ts"
 export default defineEventHandler(async () => {
   const [row] = await sql`SELECT version()`;
-  return row;
+  return { version: row?.version as string };
 });
 ```
 
@@ -106318,39 +106606,119 @@ export default defineEventHandler(async () => {
 ```typescript filename="server/api/version.get.ts"
 export default defineEventHandler(async () => {
   const { rows } = await pool.query('SELECT version()');
-  return rows[0];
+  return { version: rows[0]?.version as string };
 });
 ```
 
-To type-check the server code with `npx nuxt typecheck`, install `typescript`, `vue-tsc`, and `@types/node` as dev dependencies (`npm install -D typescript vue-tsc @types/node`).
+In a new app, replace `app/app.vue` to fetch the route and display the result. In an existing app, leave your pages as they are and open `/api/neon-version` to check the route. `useFetch` calls the route on the server during the first render:
 
-If you use node-postgres, `pg` 8.23 and later print a `SECURITY WARNING` for `sslmode=require`. Change it to `sslmode=verify-full` in `.env` to keep the same behavior without the warning.
+```vue filename="app/app.vue"
+<script setup lang="ts">
+const { data } = await useFetch('/api/version');
+</script>
 
-**Note:** Keep the database client in `server/` only. Never import `server/utils/db.ts` from a Vue component or `app/` code; the connection string must stay server-side.
+<template>
+  <h1>Database version</h1>
+  <p>{{ data?.version }}</p>
+</template>
+```
+
+To type-check your code with `npx nuxt typecheck`, install `typescript`, `vue-tsc`, and `@types/node` as dev dependencies: `npm install -D typescript vue-tsc @types/node`.
+
+**Note: Using Nuxt 3?**
+
+Nuxt 3 has no `app/` directory, so put `app.vue` at the project root. The rest of this guide is the same. To create a Nuxt 3 app, use `-t v3` instead of `--template minimal`. Nuxt 3 needs Node.js 20.19, or 22.12 or later. Nuxt 3 reached [end of life](https://nuxt.com/docs/4.x/community/roadmap) on July 31, 2026.
 
 ## Run the app
-
-Start the dev server:
 
 ```bash filename="Terminal"
 npm run dev
 ```
 
-Then open `localhost:3000/api/version`. The route returns your Postgres version, confirming the connection:
+Open the URL `npm run dev` prints, usually [localhost:3000](http://localhost:3000). The dev server can listen on IPv6 only (`[::1]`), so `127.0.0.1` may not connect. The page shows your Postgres version, confirming the connection:
 
-```json
-{ "version": "PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc ..." }
+```text
+Database version
+PostgreSQL 18.7 (a21afb5) on aarch64-unknown-linux-gnu, compiled by gcc ...
 ```
 
-`nuxt dev` loads `.env`, but the production server doesn't. After `npm run build`, start it with the variable in its environment, for example `node --env-file=.env .output/server/index.mjs`.
+## Deploy
+
+Set `DATABASE_URL`, and any other variable your server code reads, where your app runs. The build doesn't need it and doesn't include it in the output, and the built server doesn't read `.env`.
+
+- Use your default branch for production. Get its connection string with `neon connection-string main --pooled` (or `production`), or from **Connect** in the Console.
+- The default `node-server` preset builds a Node.js server. Pass the variable when you start it, for example `node --env-file=.env .output/server/index.mjs`. For other hosts, see [Deployment](https://nuxt.com/docs/getting-started/deployment) in the Nuxt docs.
+- On Vercel, the [Neon integration](https://neon.com/docs/guides/vercel-overview) sets `DATABASE_URL` for you and can create a Neon branch for each preview deployment.
+
+## Add more of your backend
+
+Neon's other backend services branch with your database. Object Storage, Neon Functions, the AI Gateway, and Realtime need a project in a [supported region](https://neon.com/docs/guides/nuxt#create-a-neon-project). Add a service with [`neon config add`](https://neon.com/docs/cli/config#add), then provision it with [`neon deploy`](https://neon.com/docs/cli/deploy). For example, to add an Object Storage bucket:
+
+```bash filename="Terminal"
+neon config add bucket uploads
+neon deploy
+```
+
+`neon config add` creates a [`neon.ts`](https://neon.com/docs/reference/neon-ts) file at your project root if you don't have one, installs `@neon/config` and `@neon/env`, and declares the service. `neon deploy` provisions it and writes its variables to `.env`. Read them from `process.env` in server code, and set them on your host too.
+
+Managed Better Auth
+: Sign-up, sign-in, and sessions stored in your database.
+: Add it with `neon config add auth`. In Nuxt route middleware, check the session with `useRequestFetch()` rather than `$fetch`, which doesn't forward the browser's cookies during server rendering. See [Managed Better Auth](https://neon.com/docs/auth/overview).
+
+Object Storage
+: S3-compatible buckets for uploads and files.
+: Add a bucket with `neon config add bucket <name>`. In Nuxt, use it from server routes in `server/api/`. The AWS SDK reads the bucket's credentials from `process.env`, so `new S3Client({ forcePathStyle: true, requestChecksumCalculation: 'WHEN_REQUIRED' })` needs no keys in code. See [Object Storage](https://neon.com/docs/storage/overview).
+
+AI Gateway
+: One credential for models from Anthropic, OpenAI, Google, and more.
+: Add it with `neon config add ai-gateway`. In Nuxt, call models from a server route. [`@neon/ai-sdk-provider`](https://www.npmjs.com/package/@neon/ai-sdk-provider) reads the gateway's variables from `process.env`, so `neon('gpt-5-mini')` works with the AI SDK as is. See [AI Gateway](https://neon.com/docs/ai-gateway/overview).
+
+Neon Functions
+: Long-running Node.js compute next to your database.
+: Add one with `neon config add function <slug>`, which also creates its handler file in `functions/`. Use a function for work that outlasts a request on your Nuxt host, such as agents and webhooks, and call it with `fetch`. See [Neon Functions](https://neon.com/docs/compute/functions/overview).
+
+Realtime (beta)
+: Live SQL query subscriptions.
+: Add it with `neon config add realtime`. In Nuxt, seal live queries in a server route with `NEON_REALTIME_SECRET`, and return the sealed query with `NEON_REALTIME_URL`. Then subscribe from the browser, in `onMounted`, with that URL. Keep the secret on the server. See [Realtime](https://neon.com/docs/realtime/overview).
+
+To declare several services at once before you have a `neon.ts`, run `neon config init --services auth,functions,realtime`, or edit the file directly. With every service declared, it looks like this. The comments list the variables each service adds:
+
+```typescript filename="neon.ts"
+import { defineConfig } from '@neon/config/v1';
+
+export default defineConfig({
+  auth: true, // NEON_AUTH_BASE_URL, NEON_AUTH_JWKS_URL
+  buckets: {
+    uploads: {}, // AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ENDPOINT_URL_S3, AWS_REGION
+  },
+  aiGateway: true, // NEON_AI_GATEWAY_TOKEN, NEON_AI_GATEWAY_BASE_URL
+  functions: {
+    jobs: { name: 'Jobs', source: './functions/jobs.ts' }, // NEON_FUNCTION_JOBS_BASE_URL
+  },
+  preview: {
+    realtime: true, // NEON_REALTIME_URL, NEON_REALTIME_SECRET
+  },
+});
+```
+
+To skip `neon.ts`, use each service's own CLI commands, such as [`neon buckets create`](https://neon.com/docs/cli/buckets) or [`neon realtime enable`](https://neon.com/docs/cli/realtime).
+
+## Troubleshooting
+
+`NeonDbError (500): Wrong URL scheme or missing user, host or database in connection parameters` in `npm run dev`
+: With the Neon serverless driver, `DATABASE_URL` isn't in `.env`. If `neon link` wrote it to `.env.local`, move the variables to `.env`, or create an empty `.env` and run `neon env pull`.
+
+`AggregateError [ECONNREFUSED]` in `npm run dev`
+: With postgres.js or node-postgres, `DATABASE_URL` isn't set, so the driver tries a local Postgres server on port 5432. Check that `.env` has `DATABASE_URL`, or create an empty `.env` and run `neon env pull`.
+
+The built server returns `500` and logs `NeonDbError: Wrong URL scheme` or `AggregateError [ECONNREFUSED]`
+: The built server doesn't read `.env`. Set `DATABASE_URL` in your host's environment, or start the server with `node --env-file=.env .output/server/index.mjs`.
 
 ## Next steps
 
-- [Set up Managed Better Auth](https://neon.com/docs/auth/overview): Add managed authentication that branches with your database
-- [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
-- [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
-- [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-- [Realtime](https://neon.com/docs/realtime/quickstart): Build realtime apps with end-to-end reactivity »
+- **Create your first table:** run `neon psql` in your project directory to open a SQL shell on your linked branch, or use an ORM such as [Drizzle](https://neon.com/docs/guides/drizzle) or [Prisma](https://neon.com/docs/guides/prisma) to manage your schema with migrations.
+- [Build a full backend](https://neon.com/docs/get-started/full-backend-quickstart): Postgres, Object Storage, and a Neon Function declared in one `neon.ts`.
+- [Branching](https://neon.com/docs/introduction/branching): Give each preview deployment or pull request its own copy of your database.
 
 --- [Document source](https://neon.com/docs/guides/oauth-integration.md) ---
 
@@ -107196,18 +107564,18 @@ Last updated: 2026-10-09
 
 **Related resources**
 
-- [PostgREST Documentation](https://docs.postgrest.org/en/v12/)
-- [PostgREST Tutorials](https://postgrest.org/en/v12/tutorials/tut0.html)
+- [PostgREST Documentation](https://docs.postgrest.org/en/stable/)
+- [PostgREST Tutorials](https://postgrest.org/en/stable/tutorials/tut0.html)
 
 **Source code**
 
 - [PostgREST GitHub Repository](https://github.com/PostgREST/postgrest)
 
-**Note:** Neon also provides a built-in [Data API](https://neon.com/docs/data-api/overview) that automatically creates REST endpoints for the database without requiring PostgREST or any additional setup. The Data API is fully managed and includes built-in authentication support.
+**Note:** Neon also offers the [Neon Data API](https://neon.com/docs/data-api/overview), a managed REST interface that's compatible with PostgREST. You enable it per branch in the Console or with the API, and it uses its own JWT setup. This guide runs PostgREST yourself.
 
 ## What is PostgREST?
 
-PostgREST is a standalone web server that automatically turns your PostgreSQL database schema into a RESTful API. It uses the database's structure, constraints, and permissions to create API endpoints without requiring you to write any backend code. The API follows REST conventions and supports full CRUD operations, filtering, pagination, and even complex joins.
+PostgREST is a standalone web server that automatically turns your Postgres database schema into a RESTful API. It uses the database's structure, constraints, and permissions to create API endpoints without requiring you to write any backend code. The API follows REST conventions and supports full CRUD operations, filtering, pagination, and even complex joins.
 
 This guide shows you how to set up PostgREST with a Lakebase Postgres database using Docker for local development. You'll learn how to configure basic read access, add authenticated endpoints with JWT tokens, and implement row-level security for fine-grained access control.
 
@@ -107245,9 +107613,11 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA api GRANT SELECT ON TABLES TO anonymous;
 
 **Tip:** While this example uses SERIAL for simplicity, consider using UUID as a primary key in production systems, especially in distributed environments, when exposing identifiers in URLs, or when avoiding predictable sequences is important.
 
+**Note:** This guide creates an `anonymous` role in the database. The managed Neon Data API creates its own `anonymous` role, so enabling it fails with `anonymous role already exists` on a database that has this role. If you plan to use the Data API, use a separate database for this guide.
+
 ## Copy your database connection string
 
-Retrieve an unpooled database connection string. PostgREST requires a direct connection to your database.
+Retrieve an unpooled database connection string. We recommend a direct connection for PostgREST.
 
 1. Open your project in the Neon Console.
 2. Click the **Connect** button to open the **Connect to your branch** modal.
@@ -107310,7 +107680,7 @@ GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA api TO authenticated;
 
 ## Run PostgREST with a JWT secret
 
-Run PostgREST again, this time with a JWT secret that will be used by PostgREST to verify the JWT that we will attach to our requests in a later step.
+Run PostgREST again, this time with a JWT secret that will be used by PostgREST to verify the JWT that we will attach to our requests in a later step. The secret must be at least 32 characters long.
 
 **Linux**
 
@@ -107421,14 +107791,13 @@ In a real application, you would want to:
 - Include user-specific claims in the JWT (most likely, a "sub" field which corresponds to users' IDs)
 - Implement a proper authentication server/service (or use a third-party managed auth provider)
 
-Now let's test this with a JWT that includes a user ID. We'll create a new JWT with a payload that includes a user ID in the "sub" claim:
+Next, create a JWT that has the following payload, with the student ID in the `sub` claim. Sign it with the same JWT secret from above:
 
-Now, let's generate a new JWT that has the following payload defining the student ID (and sign it with the same JWT secret from above):
-
-```
+```json
 {
   "role": "authenticated",
   "sub": "1"
+}
 ```
 
 Here's the new token:
@@ -107448,17 +107817,17 @@ Because the `students` table has a RLS policy attached to the student's ID, the 
 
 ## Summary
 
-The examples shown above are simple, but they illustrate how PostgREST works. With Neon and PostgREST, you can instantly turn your Postgres database into a REST API; no backend code required. This setup is ideal for rapid prototyping, internal tools, or even production workloads where you want to focus on your data and business logic rather than boilerplate API code.
+The examples shown above are simple, but they illustrate how PostgREST works. With Neon and PostgREST, you can turn a Postgres database into a REST API without writing backend code. This setup is ideal for rapid prototyping, internal tools, or even production workloads where you want to focus on your data and business logic rather than boilerplate API code.
 
 ## Next steps
 
 Now that you have a basic PostgREST API running with Neon, here are some things you can try next:
 
-- **Explore advanced querying**: Implement [filtering](https://docs.postgrest.org/en/v12/api.html#horizontal-filtering-rows), [ordering](https://docs.postgrest.org/en/v12/api.html#ordering), and [pagination](https://docs.postgrest.org/en/v12/api.html#limits-and-pagination) in your API requests
-- **Add resource embedding**: Use [resource embedding](https://docs.postgrest.org/en/v12/api.html#resource-embedding) to fetch related data in a single request
-- **Implement stored procedures**: Expose [PostgreSQL functions](https://docs.postgrest.org/en/v12/api.html#stored-procedures) as API endpoints for complex operations
-- **Example applications**: Explore [example applications](https://docs.postgrest.org/en/v12/ecosystem.html#example-apps) built with PostgREST to get inspiration for your own projects
-- **Try out templates**: These [templates](https://docs.postgrest.org/en/v12/ecosystem.html#templates) combine PostgREST with various frontend technologies
+- **Explore advanced querying**: Implement [filtering](https://docs.postgrest.org/en/stable/api.html#horizontal-filtering-rows), [ordering](https://docs.postgrest.org/en/stable/api.html#ordering), and [pagination](https://docs.postgrest.org/en/stable/api.html#limits-and-pagination) in your API requests
+- **Add resource embedding**: Use [resource embedding](https://docs.postgrest.org/en/stable/api.html#resource-embedding) to fetch related data in a single request
+- **Implement stored procedures**: Expose [Postgres functions](https://docs.postgrest.org/en/stable/api.html#stored-procedures) as API endpoints for complex operations
+- **Example applications**: Explore [example applications](https://docs.postgrest.org/en/stable/ecosystem.html#example-apps) built with PostgREST to get inspiration for your own projects
+- **Try out templates**: These [templates](https://docs.postgrest.org/en/stable/ecosystem.html#templates) combine PostgREST with various frontend technologies
 
 --- [Document source](https://neon.com/docs/guides/prisma-migrations.md) ---
 
@@ -109644,7 +110013,7 @@ Connect a Lakebase Postgres database to your Node application deployed with Rail
 
 Last updated: 2026-10-09
 
-[Railway](https://railway.com?utm_medium=integration\&utm_source=button\&utm_campaign=neon) is a cloud deployment platform that allows users to deploy anything, anywhere, seamlessly. On Railway, develop locally, connect to a repository or image, and have infrastructure provisioned automatically. Railway integrates with GitHub for continuous deployment and supports a variety of programming languages and frameworks.
+[Railway](https://railway.com?utm_medium=integration\&utm_source=button\&utm_campaign=neon) is a cloud deployment platform that allows users to deploy anything, anywhere. On Railway, develop locally, connect to a repository or image, and have infrastructure provisioned automatically. Railway integrates with GitHub for continuous deployment and supports a variety of programming languages and frameworks.
 
 This guide shows how to deploy a simple Node.js application connected to a Lakebase Postgres database on Railway.
 
@@ -111793,7 +112162,7 @@ Connect a Lakebase Postgres database to your Node application deployed with Rend
 
 Last updated: 2026-10-09
 
-[Render](https://render.com) is a comprehensive cloud service that provides hosting for web applications and static sites, with PR previews, zero-downtime deployments, and more. Render supports full-stack applications, offering both web services and background workers.
+[Render](https://render.com) hosts web applications and static sites, with PR previews and zero-downtime deployments. Render supports full-stack applications, offering both web services and background workers.
 
 This guide shows how to deploy a simple Node.js application connected to a Lakebase Postgres database on Render.
 
@@ -111925,7 +112294,7 @@ You can visit the GitHub repository to verify that your code has been pushed suc
 
 ### Create a New Web Service on Render
 
-Log in to your Render account and navigate to the dashboard. Click on the `New +` button and select "Web Service". Pick the option to `build and deploy` from a Git repository.
+Log in to your Render account and navigate to the dashboard. Click **New** > **Web Service**. Pick the option to `build and deploy` from a Git repository.
 
 Next, choose the GitHub repository hosting the Node.js application we created above. Configure your web service as follows: - **Environment**: Select "Node". - **Build Command**: Enter `npm install`. - **Start Command**: Enter `node index.js`. - **Environment Variables**: Add your Neon database connection string from earlier as an environment variable: - Name: `DATABASE_URL` - Value: `{NEON_DATABASE_CONNECTION_STRING}`
 
@@ -116283,172 +116652,239 @@ For schema migration with SQLAlchemy, see:
 
 --- [Document source](https://neon.com/docs/guides/sveltekit.md) ---
 
-> Summary: SvelteKit integration with Lakebase Postgres connects a SvelteKit app to a serverless Postgres database through a secure server-side route using node-postgres, postgres.js, or the Neon serverless driver. Use this guide when setting up a new SvelteKit project that needs a Postgres backend, covering project creation, db.server.ts configuration, and a +page.server.ts load function. Requires a DATABASE_URL connection string with sslmode=require and channel_binding=require.
+> Summary: Connect a SvelteKit app to Lakebase Postgres on Neon: optionally add Neon's agent skills, create a Neon project (Neon CLI, API, or Console), link it with the Neon CLI to pull DATABASE_URL into .env.local, optionally develop on a Neon branch, declare DATABASE_URL in src/env.ts, and query it with node-postgres, postgres.js, or the Neon serverless driver from a server-only module and a +page.server.ts load function. Covers SvelteKit 3, with a note for SvelteKit 2, plus deployment, troubleshooting, and Neon's other backend services from SvelteKit.
 
-# Connect a Sveltekit application to Neon
+# Connect a SvelteKit application to Neon
 
-Set up a project on Neon in seconds and connect from a Sveltekit application
+Connect a SvelteKit app to Lakebase Postgres on Neon, query it from a server load function, develop on a branch, deploy, and add the rest of your backend
 
-Last updated: 2026-10-08
+Last updated: 2026-11-16
 
-Pre-built prompt for connecting SvelteKit applications to Lakebase Postgres. [View prompt](https://neon.com/prompts/sveltekit-prompt.md)
+This prompt is for pasting into an AI coding agent. If it brought you to this page, you are already following it, so continue with the rest of the page.
 
-SvelteKit is the application framework for Svelte. This guide explains how to connect a SvelteKit app to Neon and query your database in a server-side `load` function. It uses SvelteKit 3, which reads environment variables through `$app/env/private` and requires Svelte 5 runes in components.
+```text
+Connect my SvelteKit app to Neon.
 
-To create a project on Neon and access it from a SvelteKit application:
+- Fetch https://neon.com/prompts/agent-setup.md and follow it.
+
+- Read Svelte's official skills and follow them while you work: https://raw.githubusercontent.com/sveltejs/ai-tools/main/tools/skills/svelte-core-bestpractices/SKILL.md and https://raw.githubusercontent.com/sveltejs/ai-tools/main/tools/skills/svelte-code-writer/SKILL.md
+- Offer to install them in this project for later sessions: `npx skills add sveltejs/ai-tools --skill svelte-core-bestpractices --skill svelte-code-writer -a <your agent id> -y`.
+
+- Fetch Neon's SvelteKit guide, https://neon.com/docs/guides/sveltekit.md, and follow it.
+- Ask me before you pick or create a Neon project.
+- Finish by showing me the Postgres version on the running page.
+- If my app needs sign-in, file uploads, long-running or scheduled work, LLM calls, or live updates, suggest the matching service from the guide's "Add more of your backend" section.
+```
+
+## Create a SvelteKit app
+
+Create a SvelteKit project if you don't have one, then change into its directory. For other options, see [Creating a project](https://svelte.dev/docs/kit/creating-a-project) in the SvelteKit docs.
+
+```bash filename="Terminal"
+npx sv create my-app --template minimal --types ts --no-add-ons --install npm
+cd my-app
+```
+
+SvelteKit 3 needs Node.js 22.17 or later. Keep `--no-add-ons`: without it, `sv` asks which add-ons to install. In a non-interactive shell, it then exits without creating the project.
+
+## Add Neon's agent skills (optional)
+
+If your AI coding agent doesn't have Neon's [agent skills](https://neon.com/docs/ai/agent-skills) yet, add them to this project. The prompt above installs them, so skip this step if you used it. From your project directory, run:
+
+```bash filename="Terminal"
+npx neon@latest skills
+```
+
+To also connect the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server), run `npx neon@latest mcp`.
+
+Svelte publishes its own [agent skills](https://svelte.dev/docs/ai/skills) for writing Svelte code. The prompt above has your agent follow two of them and offer to install them.
 
 ## Create a Neon project
 
-If you do not have one already, create a Neon project. Save your connection details including your password. They are required when defining connection settings.
+Skip this step if you already have a Neon project you want to use.
 
-1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
-2. Click **New Project**.
-3. Specify your project settings and click **Create Project**.
+Consider picking a region that supports all Neon backend services: US East (Ohio), US East (N. Virginia), Europe (Frankfurt), or Asia Pacific (Singapore). Postgres and Managed Better Auth run in every region, while Object Storage, Neon Functions, the AI Gateway, and Realtime run in those four, with support expanding toward [all regions](https://neon.com/docs/introduction/regions#product-availability).
 
-## Create a SvelteKit project and add dependencies
+**Neon CLI**
 
-1. Create a SvelteKit project using the following commands:
+Install the [Neon CLI](https://neon.com/docs/cli/install), sign in, and create the project:
 
-   ```shell
-   npx sv create my-app --template minimal --no-add-ons --types ts
-   cd my-app
-   ```
+```bash filename="Terminal"
+npm i -g neon@latest
+neon login
+neon projects create --name my-app --region-id aws-us-east-2 --no-secrets
+```
 
-2. Add project dependencies using one of the following commands:
+`--region-id` sets the region; pass a different one to pick another of the regions above. `--no-secrets` keeps the connection string out of the output, since the next step pulls it into your env file. Pass `--org-id` to choose the organization (find IDs with `neon orgs list`).
 
-   **node-postgres**
+**API**
 
-   ```shell
-   npm install pg
-   npm install -D @types/pg
-   ```
+Create an [API key](https://console.neon.tech/app/settings/api-keys), export it, then create the project in your organization:
 
-   **postgres.js**
+```bash filename="Terminal"
+export NEON_API_KEY=napi_...
 
-   ```shell
-   npm install postgres
-   ```
+curl -X POST https://console.neon.tech/api/v2/projects \
+  -H "Authorization: Bearer $NEON_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"project": {"name": "my-app", "region_id": "aws-us-east-2", "org_id": "<org-id>"}}'
+```
 
-   **Neon serverless driver**
+The response includes the project's connection string in `connection_uris[0].connection_uri`. See [Create a project with the API](https://neon.com/docs/manage/projects#create-a-project-with-the-api) for the other options.
 
-   ```shell
-   npm install @neondatabase/serverless
-   ```
+**Console**
 
-## Store your Neon credentials
+Go to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console, click **New Project**, and pick one of the regions above.
 
-Add a `.env` file to your project directory and add your Neon connection string to it. You can find the connection string for your database by clicking the **Connect** button in the Console nav. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+## Connect your app to the project
 
-```shell
+Get a `DATABASE_URL` into an env file. In development, SvelteKit reads `.env` and `.env.local` (which overrides `.env`) and exposes declared variables through `$app/env/private`.
+
+**Neon CLI**
+
+From your app's directory, link it to the Neon project (install the [Neon CLI](https://neon.com/docs/cli/install) and run `neon login` first if you haven't):
+
+```bash filename="Terminal"
+neon link
+```
+
+`neon link` prompts you to pick an organization and a project, or to create a new project. It writes a `.neon` file with the project context, pins a branch (pass `--branch` to choose one), and pulls that branch's `DATABASE_URL` into `.env.local`, or into `.env` if your project already has one. It also offers to create a [`neon.ts`](https://neon.com/docs/reference/neon-ts) file; that's optional and covered in [Add more of your backend](https://neon.com/docs/guides/sveltekit#add-more-of-your-backend).
+
+To skip the prompts, pass `-y` with `--org-id` and `--project-id`, or with `--org-id`, `--project-name`, and `--region-id` to create a project. Find IDs with `neon orgs list` and `neon projects list --org-id <org-id>`.
+
+**Without the CLI**
+
+Copy the connection string from **Connect** in the Console nav, or from the API response, and add it to a `.env.local` file in your project directory. For more information, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app).
+
+```shell filename=".env.local"
 DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
 ```
 
-If you use node-postgres, `pg` 8.23 and later print a `SECURITY WARNING` for `sslmode=require`. Change it to `sslmode=verify-full` to keep the same behavior without the warning.
+The optional development branch step and [Add more of your backend](https://neon.com/docs/guides/sveltekit#add-more-of-your-backend) use the Neon CLI. To use them, run `neon link` in this directory.
 
-Then declare the variable in `src/env.ts`. SvelteKit loads `.env` in development and reads declared variables from the environment when the app starts, so your password isn't built into the app:
+The scaffolded `.gitignore` already excludes `.env` and `.env.local`, so the connection string stays out of git. Keep `DATABASE_URL` in only one of them: if both have it, `.env.local` wins.
+
+## Work on a development branch (optional)
+
+If you linked your project's default branch, your app uses the branch where production data usually lives. That's `main` for projects created with the CLI or API, and `production` for projects created in the Console. Create a [branch](https://neon.com/docs/introduction/branching) for local development instead. A branch starts from its parent's data and schema with copy-on-write, so you can change it freely:
+
+```bash filename="Terminal"
+neon checkout dev --create
+```
+
+This creates the `dev` branch, pins it in `.neon`, and pulls its `DATABASE_URL` into the same env file, so your app now uses the branch. To switch back, run `neon checkout main` (or `production`).
+
+## Install a Postgres driver
+
+Install one of these drivers. The [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver) queries over HTTP, which suits serverless and edge hosts. On a long-running Node.js server, node-postgres or postgres.js work well too. See [Choosing your connection method](https://neon.com/docs/connect/choose-connection).
+
+**node-postgres**
+
+```bash
+npm install pg
+npm install -D @types/pg
+```
+
+**postgres.js**
+
+```bash
+npm install postgres
+```
+
+**Neon serverless driver**
+
+```bash
+npm install @neondatabase/serverless
+```
+
+If you use node-postgres, `pg` 8.23 and later print a `SECURITY WARNING` for `sslmode=require`. Change it to `sslmode=verify-full` in your env file to keep the same behavior without the warning. `neon env pull` and `neon checkout` write `sslmode=require` again, so repeat the change after you run them.
+
+## Declare the connection string
+
+SvelteKit only exposes environment variables that you declare. Create `src/env.ts` and declare `DATABASE_URL`, or add it to `variables` if the file already exists. Variables are private by default, so SvelteKit keeps this one out of browser code. Don't declare it with `public: true` or return it in page data.
 
 ```typescript filename="src/env.ts"
 import { defineEnvVars } from '@sveltejs/kit/env';
 
 export const variables = defineEnvVars({
-  DATABASE_URL: {
-    description: 'Neon connection string',
-  },
+  DATABASE_URL: {},
 });
 ```
 
-## Configure the Postgres client
+A declared variable is required: the build and the running app both fail if it isn't set. See [Deploy](https://neon.com/docs/guides/sveltekit#deploy).
 
-There are two parts to connecting a SvelteKit application to Neon. The first is `db.server.ts`, which contains the database configuration. The second is the server-side route where the connection to the database will be used.
+## Create the database client
 
-### Database module
-
-Create a `db.server.ts` file at the root of your `src` directory and add the following code to connect to your Neon database. The `.server` suffix keeps the module, and your connection string, out of client-side code.
+Create the client in `src/lib/server/`. SvelteKit refuses to build if code that runs in the browser imports from this directory, so the client and the connection string stay on the server.
 
 **node-postgres**
 
-```typescript filename="src/db.server.ts"
+```typescript filename="src/lib/server/db.ts"
 import pg from 'pg';
 import { DATABASE_URL } from '$app/env/private';
 
-export const pool = new pg.Pool({
-  connectionString: DATABASE_URL,
-  ssl: true,
-});
+export const pool = new pg.Pool({ connectionString: DATABASE_URL });
 ```
 
 **postgres.js**
 
-```typescript filename="src/db.server.ts"
+```typescript filename="src/lib/server/db.ts"
 import postgres from 'postgres';
 import { DATABASE_URL } from '$app/env/private';
 
-export const sql = postgres(DATABASE_URL, { ssl: 'require' });
+export const sql = postgres(DATABASE_URL);
 ```
 
 **Neon serverless driver**
 
-```typescript filename="src/db.server.ts"
+```typescript filename="src/lib/server/db.ts"
 import { neon } from '@neondatabase/serverless';
 import { DATABASE_URL } from '$app/env/private';
 
 export const sql = neon(DATABASE_URL);
 ```
 
-### Server load function
+## Query the database in a load function
 
-Create a `src/routes/+page.server.ts` file and import the database configuration:
+Create `src/routes/+page.server.ts`. If `src/routes/+page.svelte` is still SvelteKit's starter page, replace it. Otherwise, use a new route such as `src/routes/neon/` so you don't replace one of your pages. Its `load` function runs on the server and passes the result to the page. The `#lib` import is a subpath import that new SvelteKit 3 projects define in `package.json`:
 
 **node-postgres**
 
-```typescript
-import { pool } from '../db.server';
+```typescript filename="src/routes/+page.server.ts"
+import { pool } from '#lib/server/db.ts';
+import type { PageServerLoad } from './$types';
 
-export async function load() {
-  const client = await pool.connect();
-  try {
-    const { rows } = await client.query('SELECT version()');
-    const { version } = rows[0];
-    return {
-      version,
-    };
-  } finally {
-    client.release();
-  }
-}
+export const load: PageServerLoad = async () => {
+  const { rows } = await pool.query('SELECT version()');
+  return { version: rows[0].version as string };
+};
 ```
 
 **postgres.js**
 
-```typescript
-import { sql } from '../db.server';
+```typescript filename="src/routes/+page.server.ts"
+import { sql } from '#lib/server/db.ts';
+import type { PageServerLoad } from './$types';
 
-export async function load() {
-  const response = await sql`SELECT version()`;
-  const { version } = response[0];
-  return {
-    version,
-  };
-}
+export const load: PageServerLoad = async () => {
+  const [row] = await sql`SELECT version()`;
+  return { version: row.version as string };
+};
 ```
 
 **Neon serverless driver**
 
-```typescript
-import { sql } from '../db.server';
+```typescript filename="src/routes/+page.server.ts"
+import { sql } from '#lib/server/db.ts';
+import type { PageServerLoad } from './$types';
 
-export async function load() {
-  const response = await sql`SELECT version()`;
-  const { version } = response[0];
-  return {
-    version,
-  };
-}
+export const load: PageServerLoad = async () => {
+  const [row] = await sql`SELECT version()`;
+  return { version: row.version as string };
+};
 ```
 
-### Page component
-
-Replace the contents of `src/routes/+page.svelte` to display the data. SvelteKit 3 uses Svelte 5 runes, so read `data` with `$props()` (`export let data` fails with `Cannot use export let in runes mode`):
+Replace `src/routes/+page.svelte` to display it. New SvelteKit 3 projects turn on Svelte 5 runes mode in `vite.config.ts`, so read `data` with `$props()`. `export let data` fails with ``Cannot use `export let` in runes mode — use `$props()` instead``:
 
 ```svelte filename="src/routes/+page.svelte"
 <script lang="ts">
@@ -116457,28 +116893,115 @@ Replace the contents of `src/routes/+page.svelte` to display the data. SvelteKit
   let { data }: PageProps = $props();
 </script>
 
-<h1>Database Version</h1>
+<h1>Database version</h1>
 <p>{data.version}</p>
 ```
 
+**Note: Using SvelteKit 2?**
+
+SvelteKit 2 reads `src/env.ts` and `$app/env/private` only with the experimental `explicitEnvironmentVariables` option, which is off by default, and its projects import from `$lib`. Skip the `src/env.ts` step. In `src/lib/server/db.ts`, import `env` with `import { env } from '$env/dynamic/private';` and pass `env.DATABASE_URL` to your driver instead of `DATABASE_URL`. Import the client from `'$lib/server/db'`. The build doesn't need `DATABASE_URL`, but the running app does, and nothing checks it at startup.
+
 ## Run the app
 
-When you run `npm run dev` you can expect to see the following on [localhost:5173](http://localhost:5173):
+Check types, then start the dev server:
 
-```shell
-Database Version
-PostgreSQL 18.6 (ac70818) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, 64-bit
+```bash filename="Terminal"
+npm run check
+npm run dev
 ```
 
-To run a production build on Node.js, switch the adapter in `vite.config.ts` from `@sveltejs/adapter-auto` to [`@sveltejs/adapter-node`](https://svelte.dev/docs/kit/adapter-node) (`npm install -D @sveltejs/adapter-node`), run `npm run build`, and start the server with `DATABASE_URL` in its environment, for example `node --env-file=.env build`.
+Open the URL `npm run dev` prints, usually [localhost:5173](http://localhost:5173). Vite picks the next free port if 5173 is taken. The page shows your Postgres version, confirming the connection:
+
+```text
+Database version
+PostgreSQL 18.6 (fd34222) on aarch64-unknown-linux-gnu, compiled by gcc ...
+```
+
+## Deploy
+
+Set `DATABASE_URL`, and any other variable you declare in `src/env.ts`, everywhere your app builds or runs, including CI jobs that run the build. SvelteKit checks declared variables during the build, and the app reads the value when it starts.
+
+- Use your default branch for production. Get its connection string with `neon connection-string main --pooled` (or `production`), or from **Connect** in the Console.
+- The default `adapter-auto` supports Vercel, Netlify, Cloudflare Pages, and a few other hosts. For a Node.js server, install [`@sveltejs/adapter-node`](https://svelte.dev/docs/kit/adapter-node), change the adapter import in `vite.config.ts`, and pass the variable when you start the server, for example `DATABASE_URL=... node build`.
+- On Vercel, the [Neon integration](https://neon.com/docs/guides/vercel-overview) sets `DATABASE_URL` for you and can create a Neon branch for each preview deployment.
+
+## Add more of your backend
+
+Neon's other backend services branch with your database. Object Storage, Neon Functions, the AI Gateway, and Realtime need a project in a [supported region](https://neon.com/docs/guides/sveltekit#create-a-neon-project). Add a service with [`neon config add`](https://neon.com/docs/cli/config#add), then provision it with [`neon deploy`](https://neon.com/docs/cli/deploy). For example, to add an Object Storage bucket:
+
+```bash filename="Terminal"
+neon config add bucket uploads
+neon deploy
+```
+
+`neon config add` creates a [`neon.ts`](https://neon.com/docs/reference/neon-ts) file at your project root if you don't have one, installs `@neon/config` and `@neon/env`, and declares the service. `neon deploy` provisions it and writes its variables to `.env.local`. To read a variable in SvelteKit, declare it in `src/env.ts` as you did `DATABASE_URL`, and set it on your host too.
+
+SvelteKit doesn't load `.env` or `.env.local` into `process.env`, so pass values from `$app/env/private` to SDKs instead of letting them read `process.env`.
+
+Managed Better Auth
+: Sign-up, sign-in, and sessions stored in your database.
+: Add it with `neon config add auth`. Neon doesn't have a SvelteKit quick start for Auth yet. Start from [Managed Better Auth](https://neon.com/docs/auth/overview).
+
+Object Storage
+: S3-compatible buckets for uploads and files.
+: Add a bucket with `neon config add bucket <name>`. In SvelteKit, use it from server code, such as form actions and `+server.ts` endpoints. See [Object Storage](https://neon.com/docs/storage/overview).
+
+AI Gateway
+: One credential for models from Anthropic, OpenAI, Google, and more.
+: Add it with `neon config add ai-gateway`. In SvelteKit, call models from server code, such as a `+server.ts` endpoint. See [AI Gateway](https://neon.com/docs/ai-gateway/overview).
+
+Neon Functions
+: Long-running Node.js compute next to your database.
+: Add one with `neon config add function <slug>`, which also creates its handler file in `functions/`. Use a function for work that outlasts a request on your SvelteKit host, such as agents and webhooks, and call it with `fetch`. See [Neon Functions](https://neon.com/docs/compute/functions/overview).
+
+Realtime (beta)
+: Live SQL query subscriptions.
+: Add it with `neon config add realtime`. In SvelteKit, seal live queries in server code, such as a `load` function, with `NEON_REALTIME_SECRET`, then subscribe from the browser with `NEON_REALTIME_URL`. Declare the URL with `public: true` in `src/env.ts` and import it from `$app/env/public`. Keep the secret private. See [Realtime](https://neon.com/docs/realtime/overview).
+
+To declare several services at once before you have a `neon.ts`, run `neon config init --services auth,functions,realtime`, or edit the file directly. With every service declared, it looks like this. The comments list the variables each service adds:
+
+```typescript filename="neon.ts"
+import { defineConfig } from '@neon/config/v1';
+
+export default defineConfig({
+  auth: true, // NEON_AUTH_BASE_URL, NEON_AUTH_JWKS_URL
+  buckets: {
+    uploads: {}, // AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ENDPOINT_URL_S3, AWS_REGION
+  },
+  aiGateway: true, // NEON_AI_GATEWAY_TOKEN, NEON_AI_GATEWAY_BASE_URL
+  functions: {
+    jobs: { name: 'Jobs', source: './functions/jobs.ts' }, // NEON_FUNCTION_HOST_SUFFIX
+  },
+  preview: {
+    realtime: true, // NEON_REALTIME_URL, NEON_REALTIME_SECRET
+  },
+});
+```
+
+To skip `neon.ts`, use each service's own CLI commands, such as [`neon buckets create`](https://neon.com/docs/cli/buckets) or [`neon realtime enable`](https://neon.com/docs/cli/realtime).
+
+## Troubleshooting
+
+`"DATABASE_URL" is not exported by "node_modules/@sveltejs/kit/src/runtime/app/env/private/index.js"`
+: `DATABASE_URL` isn't declared in `src/env.ts`. Declare it as shown in [Declare the connection string](https://neon.com/docs/guides/sveltekit#declare-the-connection-string). In `npm run dev`, the same mistake shows `Internal Error`. With the Neon serverless driver, the terminal also logs `NeonDbError: Wrong URL scheme`.
+
+`NeonDbError: Database connection string provided to neon() is not a valid URL`
+: With the Neon serverless driver, `DATABASE_URL` is declared but empty. Check the value in your env file, or run `neon env pull`.
+
+`env_invalid` error for `DATABASE_URL`: `Value is missing`
+: The build or the running app doesn't have `DATABASE_URL` set. Set it in your host or CI environment. Locally, check that your env file has it, or run `neon env pull`.
+
+`Cannot import #lib/server/db.ts into code that runs in the browser, as this could leak sensitive information`
+: A component or other browser code imports the database client. Load data in `+page.server.ts` and pass it to the page as `data`. `npm run build` fails with this error. In `npm run dev`, the server still renders the page, but the browser's request for the module fails with `server_only_import`, and the terminal logs the same error.
+
+`Cannot find module './$types'` from `svelte-check`
+: SvelteKit generates these types. Run `npm run check`, which runs `svelte-kit sync` first, or start `npm run dev` once.
 
 ## Next steps
 
-- [Set up Managed Better Auth](https://neon.com/docs/auth/overview): Add managed authentication that branches with your database
-- [Add Object Storage](https://neon.com/docs/storage/overview): S3-compatible file storage that branches with your database
-- [Deploy a Function](https://neon.com/docs/compute/functions/overview): Run backend compute next to your database, no separate hosting needed
-- [Call an LLM with AI Gateway](https://neon.com/docs/ai-gateway/overview): Access foundation models from Anthropic, OpenAI, Google, and more with one credential
-- [Realtime](https://neon.com/docs/realtime/quickstart): Build realtime apps with end-to-end reactivity »
+- **Create your first table:** run `neon psql` in your project directory to open a SQL shell on your linked branch, or use an ORM such as [Drizzle](https://neon.com/docs/guides/drizzle) or [Prisma](https://neon.com/docs/guides/prisma) to manage your schema with migrations.
+- [Build a full backend](https://neon.com/docs/get-started/full-backend-quickstart): Postgres, Object Storage, and a Neon Function declared in one `neon.ts`.
+- [Branching](https://neon.com/docs/introduction/branching): Give each preview deployment or pull request its own copy of your database.
 
 --- [Document source](https://neon.com/docs/guides/symfony.md) ---
 
@@ -117632,7 +118155,7 @@ Last updated: 2026-09-16
 
 **Neon now offers native storage:**
 
-Neon Object Storage is S3-compatible object storage built into the Neon backend. Object storage branches with your database: each branch gets its own isolated namespace, so you can test file uploads in preview branches without touching production. No separate cloud account needed. Use any S3-compatible SDK with your existing Neon credential.
+Neon Object Storage is S3-compatible object storage built into your Neon project. Files branch with your database, so you can test uploads in a preview branch without touching production files. No separate cloud account needed. Point an S3 SDK at your branch endpoint with your Neon credential.
 
 For more information, see [Neon Object Storage](https://neon.com/docs/storage/overview).
 
@@ -117688,7 +118211,7 @@ For this example, we'll build a simple Node.js server using [Hono](https://hono.
 First, install the necessary dependencies:
 
 ```bash
-npm install @uploadcare/upload-client @neondatabase/serverless @hono/node-server hono
+npm install @uploadcare/upload-client @neondatabase/serverless @hono/node-server hono dotenv
 ```
 
 Create a `.env` file in your project root and add your Uploadcare and Neon connection details which you obtained in the previous steps:
@@ -117854,7 +118377,7 @@ if __name__ == "__main__":
 
 **Explanation**
 
-1. **Setup:** Initializes the Flask web framework, Uploadcare client, and the PostgreSQL client (`psycopg2`) using environment variables.
+1. **Setup:** Initializes the Flask web framework, Uploadcare client, and the Postgres client (`psycopg2`) using environment variables.
 2. **Authentication:** A placeholder `get_authenticated_user_id` function is included. **Replace this with real authentication logic.**
 3. **Upload Endpoint (`/upload`):**
    - It expects a `POST` request with `multipart/form-data`.
@@ -117864,7 +118387,7 @@ if __name__ == "__main__":
    - Upon successful upload, Uploadcare returns details including a unique `uuid` and a `cdnUrl`.
    - It executes an `INSERT` statement using `psycopg2` to save the `uuid`, `cdnUrl`, and the `userId` into a `uploadcare_files` table in your database.
    - It sends a JSON response back to the client containing the `fileUrl` from Uploadcare.
-4. In production, you should use a global PostgreSQL connection instead of creating a new one for each request. This is important for performance and resource management.
+4. In production, you should use a global Postgres connection instead of creating a new one for each request. This is important for performance and resource management.
 
 ## Testing the upload endpoint
 
@@ -150140,7 +150663,7 @@ Some generated type names changed (for example, `DataAPI*` → `DataApi*`). Endp
 
 Configuration as code for your Neon project.
 
-Last updated: 2026-10-15
+Last updated: 2026-11-09
 
 `neon.ts` is a TypeScript config file you commit to your repository. It declares which Neon services exist on your project and how each branch is configured.
 
@@ -150486,7 +151009,7 @@ When `neon checkout` creates a new branch, the closure runs with `branch.exists 
 
 | Field                                            | Type                        | Description                                                                                                                                                      |
 | ------------------------------------------------ | --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `parent`                                         | `string`                    | Parent branch name or ID                                                                                                                                         |
+| `parent`                                         | `string`                    | Parent branch name                                                                                                                                               |
 | `protected`                                      | `boolean`                   | Mark the branch as protected                                                                                                                                     |
 | `ttl`                                            | `string \| number`          | Branch lifetime: `"7d"`, `"2h"`, or seconds as a number. Maximum 30 days. Validated at deploy time, not by TypeScript                                            |
 | `postgres.computeSettings.autoscalingLimitMinCu` | `ComputeUnit`               | Minimum compute units. Any size Neon offers: 0.25, 0.5, every integer 1 to 16, and even sizes 18 to 56                                                           |
@@ -153608,7 +154131,7 @@ The GitHub repository and [changelog](https://github.com/neondatabase/serverless
 
 How Neon credentials map to S3 access keys
 
-Last updated: 2026-10-21
+Last updated: 2026-11-10
 
 Neon Object Storage uses the same scoped-credential system as [AI Gateway](https://neon.com/docs/ai-gateway/authentication): one credential API mints branch-scoped tokens that differ by scope (Object Storage uses `storage:read` and `storage:write`). You create a scoped credential via the Neon API, and it maps directly to the S3 Access Key ID and Secret Access Key your SDK expects. No AWS account or IAM configuration required.
 

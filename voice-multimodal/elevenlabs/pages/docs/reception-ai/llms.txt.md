@@ -154,4 +154,8 @@ path: docs/reception-ai/llms.txt
 - [Plans and pricing](https://elevenlabs.io/docs/reception-ai/billing/plans-and-pricing.md): Choose the right plan for your business.
 - [Usage and limits](https://elevenlabs.io/docs/reception-ai/billing/usage-and-limits.md): How credits, overage, and resource limits work.
 - [Referral program](https://elevenlabs.io/docs/reception-ai/billing/referral-program.md): Give a friend their first month free and earn a month of credit.
+- [Reception API](https://elevenlabs.io/docs/reception-ai/reception-api/overview.md): Create and manage your customers' Reception.ai workspaces from your own systems.
+- [Reception API quickstart](https://elevenlabs.io/docs/reception-ai/reception-api/quickstart.md): Create a customer's workspace, sell it a plan, and put its receptionist on a phone number.
+- [Provisioning and onboarding](https://elevenlabs.io/docs/reception-ai/reception-api/provisioning-and-onboarding.md): Examples for creating customer workspaces and filling in what their receptionist knows.
+- [Subscriptions and billing](https://elevenlabs.io/docs/reception-ai/reception-api/subscriptions-and-billing.md): Sell, change and end your customers' plans, and follow what your card is charged.
 

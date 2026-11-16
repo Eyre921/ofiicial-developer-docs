@@ -174,7 +174,7 @@
 - `agent-sdk/sessions` — [Work with sessions](pages/agent-sdk/sessions.md) · [原文](https://code.claude.com/docs/en/agent-sdk/sessions)
 - `agent-sdk/skills` — [Extend agents with skills](pages/agent-sdk/skills.md) · [原文](https://code.claude.com/docs/en/agent-sdk/skills)
 - `agent-sdk/streaming-output` — [Stream responses in real-time](pages/agent-sdk/streaming-output.md) · [原文](https://code.claude.com/docs/en/agent-sdk/streaming-output)
-- `agent-sdk/streaming-vs-single-mode` — [Streaming Input](pages/agent-sdk/streaming-vs-single-mode.md) · [原文](https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode)
+- `agent-sdk/streaming-vs-single-mode` — [Send messages to a running agent](pages/agent-sdk/streaming-vs-single-mode.md) · [原文](https://code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode)
 - `agent-sdk/structured-outputs` — [Get structured output from agents](pages/agent-sdk/structured-outputs.md) · [原文](https://code.claude.com/docs/en/agent-sdk/structured-outputs)
 - `agent-sdk/subagents` — [Subagents in the SDK](pages/agent-sdk/subagents.md) · [原文](https://code.claude.com/docs/en/agent-sdk/subagents)
 - `agent-sdk/todo-tracking` — [Track todos](pages/agent-sdk/todo-tracking.md) · [原文](https://code.claude.com/docs/en/agent-sdk/todo-tracking)

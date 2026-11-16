@@ -72,8 +72,82 @@ cause runs to fail that are expecting variables to be set.
 
 **2. Press delete**
 
-This will immediately delete the variable. ![Environment variables
+Confirm in the dialog to delete the variable's value from that environment. This can't be
+undone. ![Environment variables
 page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-delete-popover.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=642350946bd75c3c508065a198aaa005)
+
+#### Deleting several values at once
+
+Each row on the Environment Variables page is one value: a key in one environment or preview branch. You can select up to 100 values and delete them in one step.
+
+**1. Tick the values to delete**
+
+Tick the checkbox on each row, or tick the checkbox in the table header to select the values on
+the current page. Shift-click selects a range. A bar at the bottom of the list shows how many
+values are selected.
+
+**2. Press Delete in the bar**
+
+The confirmation lists every selected value and counts them per environment.
+
+**3. Type the confirmation words and press Delete**
+
+The selected values are deleted together. If any of them can't be deleted, none are.
+
+The selection applies to the current view of the list, so it clears when you change the filter, search, sort or page. A row has no checkbox when you don't have permission to delete its value. Deleting a preview branch's override makes that branch use the Preview value again.
+
+### Comparing two environments
+
+The compare view lists the keys that differ between two environments, so you don't have to read both lists side by side. Press **Compare** on the Environment Variables page to open it with the current environment on the left. Each side can be your Dev environment, Staging, Prod, Preview or one preview branch: pick them in the column headers. The two sides are in the URL, so you can share a comparison.
+
+The filters narrow the list:
+
+| Filter | Lists the keys that |
+| - | - |
+| All | differ in any way (every key except the ones that are the same) |
+| Different | are set on both sides with different values |
+| Missing | are set on one side only (one filter for each side) |
+| Empty | are empty on one side only |
+| Same | have the same value on both sides |
+
+Secrets are compared on the server: the view says whether two secrets are the same or different, and never shows either value. A secret is never compared with a plain value, because the plain value on the page would reveal the secret; such keys are listed under All and say they weren't compared. A side you don't have permission to read shows "Permission denied" and is never compared.
+
+Comparing a preview branch with Preview lists the branch's own overrides. To compare only some keys, tick them on the Environment Variables page and press **Compare** in the bar. Up to 1,000 keys can be compared at once; above that, search to narrow them down or compare ticked keys.
+
+#### Copying values across
+
+You can copy values from one side of the comparison to the other, in either direction.
+
+**1. Choose the values**
+
+Hover a row and press **Copy to** with the target environment's name, or tick up to 100 rows and
+press **Copy to** in the bar at the bottom of the list.
+
+**2. Confirm**
+
+The dialog says which keys are added to the target and which existing values are replaced, and
+which ticked keys are skipped (not set or not readable on the source side, already the same, or
+empty when your organization doesn't allow empty values). Copying several values asks you to type
+two words to confirm.
+
+The values are copied together: if any of them can't be copied, none are. A copied secret stays a secret, and a value copied onto a secret stays a secret. You need permission to read the source environment and to change the target. Copying replaces values in the target environment, so runs that start afterwards use the new values.
+
+### Values that need attention
+
+The Needs attention page lists the keys in one environment that are probably wrong or worth a second look. Press **Needs attention** on the Environment Variables page to open it; the button shows how many keys need attention in the current environment, leaving out empty values. Pick the environment (your Dev environment, Staging, Prod or Preview) in the value column's header.
+
+| Tab | Lists the keys that |
+| - | - |
+| All | need attention for any reason, grouped by the most pressing one |
+| Missing here | are set in another of Dev, Staging and Prod but not in this environment |
+| Empty | are set to an empty string, secrets included |
+| Replace with OIDC | hold credentials that [OIDC](/docs/oidc) could replace, in deployed environments when your organization has OIDC |
+| Changed recently | were saved in the last 24 hours, newest first |
+| Ignored | have a reason your team ignored |
+
+A Missing here row offers **Copy from** to copy the value from an environment where it's set, through the same confirmation as [copying values across](#copying-values-across), or **Set** to enter a new one.
+
+Ignore a reason when it's expected, such as a key that is only meant to exist in Prod. An ignore applies to one key, in one environment, for one reason, and is shared with everyone on the project, who see who ignored it and when. Ignored reasons move to the Ignored tab until someone presses **Stop ignoring**. An ignored empty value stops being ignored the next time the value is saved. Changed recently can't be ignored: a key leaves that tab a day after it was saved.
 
 ## Local development
 
@@ -212,7 +286,7 @@ If your secrets live in [Infisical](https://infisical.com), sync them natively, 
 
 Set it up in Infisical in two steps:
 
-1. Add a **Trigger.dev App Connection** using a Trigger.dev Personal Access Token from your account settings. Self-hosted instances are supported. The token [expires](/docs/management/authentication#pat-expiry) after the lifetime you choose, so replace it in the App Connection before then to keep the sync running.
+1. Add a **Trigger.dev App Connection** using a Trigger.dev Personal Access Token from your account settings. Self-hosted instances are supported. The token [expires](/docs/management/authentication#pat-expiry) on the date you choose, so replace it in the App Connection before then to keep the sync running.
 2. Create a **Secret Sync**: choose the connection, pick the target organization, project and environment (Production, Staging, Development, or Preview), and set the secret path to sync.
 
 Follow the [Trigger.dev Secret Sync guide](https://infisical.com/docs/integrations/secret-syncs/trigger-dev) in the Infisical docs for the full walkthrough.

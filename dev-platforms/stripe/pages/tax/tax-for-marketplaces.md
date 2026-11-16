@@ -87,7 +87,7 @@ curl https://api.stripe.com/v1/payment_links \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=self" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_creation[enabled]=true" \
   -d "invoice_creation[invoice_data][issuer][type]=self"
 ```
@@ -122,7 +122,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Payment Links for subscriptions
@@ -149,7 +149,7 @@ curl https://api.stripe.com/v1/payment_links \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=self" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "subscription_data[invoice_settings][issuer][type]=self"
 ```
 
@@ -182,7 +182,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Checkout
@@ -211,7 +211,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][quantity]=2" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=self" \
-  -d "payment_intent_data[transfer_data][destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "payment_intent_data[transfer_data][destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_creation[enabled]=true" \
   -d "invoice_creation[invoice_data][issuer][type]=self" \
   -d mode=payment \
@@ -250,7 +250,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Checkout Sessions for subscriptions
@@ -277,7 +277,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][quantity]=1" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=self" \
-  -d "subscription_data[transfer_data][destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "subscription_data[transfer_data][destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "subscription_data[invoice_settings][issuer][type]=self" \
   -d mode=subscription \
   --data-urlencode "success_url=https://example.com/success"
@@ -314,7 +314,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Billing
@@ -344,7 +344,7 @@ curl https://api.stripe.com/v1/subscriptions \
   -d "customer={{CUSTOMER_ID}}" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=self" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "invoice_settings[issuer][type]=self"
 ```
 
@@ -365,7 +365,7 @@ curl https://api.stripe.com/v1/subscriptions \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=self" \
   -d "invoice_settings[issuer][type]=self" \
-  -d "on_behalf_of={{CONNECTEDACCOUNT_ID}}"
+  -d "on_behalf_of={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 For the Transfers API calls:
@@ -379,7 +379,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Invoicing
@@ -405,7 +405,7 @@ curl https://api.stripe.com/v1/invoices \
   -d "customer={{CUSTOMER_ID}}" \
   -d "automatic_tax[enabled]=true" \
   -d "automatic_tax[liability][type]=self" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "issuer[type]=self"
 ```
 
@@ -437,7 +437,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 ### Custom flows using the Stripe Tax API
@@ -476,8 +476,8 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=1000 \
   -d currency=usd \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "metadata[tax_calculation]={{TAXCALCULATION_ID}}" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}"
+  -d "metadata[tax_calculation]={{CALCULATION_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 You must also [create tax transactions](https://docs.stripe.com/tax/payment-intent/custom.md#tax-transaction) to record the tax you collect from customers and [account for refunds](https://docs.stripe.com/tax/payment-intent/custom.md#reversals).
@@ -507,7 +507,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d amount=1000 \
   -d currency=usd \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "metadata[tax_calculation]={{TAXCALCULATION_ID}}"
+  -d "metadata[tax_calculation]={{CALCULATION_ID}}"
 ```
 
 For the Transfers API calls:
@@ -521,7 +521,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 You must also [create tax transactions](https://docs.stripe.com/tax/payment-intent/custom.md#tax-transaction) to record the tax you collect from customers and [account for refunds](https://docs.stripe.com/tax/payment-intent/custom.md#reversals).
@@ -587,7 +587,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 Learn more about [separate charges and transfers for Checkout Sessions](https://docs.stripe.com/connect/separate-charges-and-transfers.md?platform=web&ui=stripe-hosted).
@@ -609,7 +609,7 @@ For the Invoice Update API call, include [transfer_data[amount]](https://docs.st
 ```curl
 curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "transfer_data[amount]=1000"
 ```
 
@@ -655,7 +655,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 Related guide: [Separate Charges and Transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md).
@@ -676,7 +676,7 @@ For the Subscription Create API call, include [transfer_data[amount_percent]](ht
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "transfer_data[amount_percent]=65"
 ```
 
@@ -685,7 +685,7 @@ For the subsequent billing cycles, you can create a [webhook](https://docs.strip
 ```curl
 curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "transfer_data[amount]=1000"
 ```
 
@@ -740,7 +740,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 See [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md).
@@ -762,7 +762,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=10000 \
   -d currency=usd \
-  -d "transfer_data[destination]={{CONNECTEDACCOUNT_ID}}" \
+  -d "transfer_data[destination]={{CONNECTED_ACCOUNT_ID}}" \
   -d "transfer_data[amount]=1000"
 ```
 
@@ -808,7 +808,7 @@ curl https://api.stripe.com/v1/transfers \
   -d amount=1000 \
   -d currency=usd \
   -d "source_transaction={{CHARGE_ID}}" \
-  -d "destination={{CONNECTEDACCOUNT_ID}}"
+  -d "destination={{CONNECTED_ACCOUNT_ID}}"
 ```
 
 See [separate charges and transfers](https://docs.stripe.com/connect/separate-charges-and-transfers.md).

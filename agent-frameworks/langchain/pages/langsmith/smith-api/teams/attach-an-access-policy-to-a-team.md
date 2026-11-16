@@ -5,6 +5,7 @@ path: langsmith/smith-api/teams/attach-an-access-policy-to-a-team
 ---
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/platform/orgs/current/teams/{team_id}/access-policies
+Deprecated: use the corresponding /user-groups endpoint.
 Attaches an existing access policy in the organization to a team. A workspace
 scoped team's policy applies in its workspace. An organization-wide team's policy applies
 in the workspace_id given, or in every workspace the team has access to when it is

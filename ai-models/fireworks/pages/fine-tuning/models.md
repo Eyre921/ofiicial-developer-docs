@@ -15,7 +15,7 @@ Serverless and Dedicated Training draw from the same base model catalog. Availab
 
 ## Model availability
 
-Pick a model to see the surfaces and methods it is enabled for, plus any training shapes that back it. Switch to **All models** for the full matrix.
+Use **Compare models** to see every model in one table, or select a row to see that model's details. **Model details** shows where you can train the model, which methods the model supports, and which training shapes back the model. The filters apply to both views.
 
 ## Vision and multimodal support
 

@@ -6,7 +6,7 @@ path: faq-new/models-inference/what-is-the-difference-between-serverless-and-on-
 
 Serverless is pay-per-token inference on shared Fireworks capacity. On-demand is a deployment on GPUs reserved for your account.
 
-**Serverless** is shared inference. You send a request to `api.fireworks.ai` and pay per token. You do not choose the GPU or the replica count. Use it for models Fireworks already hosts, and for LoRA adapters on [select base models](/serverless/specialized-model-inference/overview).
+**Serverless** is shared inference. You send a request to `api.fireworks.ai` and pay per token. You do not choose the GPU or the replica count. Use it for models Fireworks already hosts, and for LoRA adapters on [select base models](/serverless/specialized-model-inference/overview) with Specialized Model Inference (in Preview, available on request).
 
 **On-demand** is a deployment on GPUs reserved for your account. You pay for GPU time, and you choose the model, hardware, and scaling. Use it for a custom model, a LoRA adapter on a base model Serverless does not support, or a latency target Serverless does not meet. Docs also call this a dedicated deployment.
 

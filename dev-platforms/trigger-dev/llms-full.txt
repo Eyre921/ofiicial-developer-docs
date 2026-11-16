@@ -1855,7 +1855,7 @@ See [Recovery boot](/docs/ai-chat/patterns/recovery-boot) for the full guide.
 
 Long-lived chats were accumulating `session.out` records forever (every turn appends; nothing trimmed). The Sessions dashboard re-streamed the entire history from `seq_num=0` on every page load, and OOM-retry boot scanned the whole stream to find the last turn-complete.
 
-After this release `session.out` stays roughly **one turn long forever** at steady state. After each `turn-complete`, the agent appends an S2 `trim` command record pointing back to the previous turn-complete's seq\_num. Full conversation history continues to live in the durable S3 snapshot, not on the stream. Resume across a single turn boundary still works (the previous `turn-complete` is still on the stream and S2's eventually-consistent trim window gives 10-60s of grace); resume across multiple turns of inactivity falls back to the snapshot.
+After this release `session.out` stays roughly **one turn long forever** at steady state. After each `turn-complete`, the agent appends an S2 `trim` command record pointing back to the previous turn-complete's seq_num. Full conversation history continues to live in the durable S3 snapshot, not on the stream. Resume across a single turn boundary still works (the previous `turn-complete` is still on the stream and S2's eventually-consistent trim window gives 10-60s of grace); resume across multiple turns of inactivity falls back to the snapshot.
 
 ### What changed on the wire
 
@@ -2657,7 +2657,7 @@ sequenceDiagram
 
 > [!NOTE]
 >
-> **Stream lifetime.** `session.out` is bounded. After each turn-complete control record, the agent appends an S2 `trim` command record back to the previous turn-complete's seq\_num — the stream stays roughly one turn long forever at steady state. Full conversation history lives in a durable S3 snapshot, not on the stream. The transport's `lastEventId` bookmark plus S2's eventually-consistent trim window (10-60s) keeps single-turn-boundary resume working; multi-turn-away resume falls back to the snapshot. See [Resuming a stream](#resuming-a-stream) and [How history is rebuilt](#how-history-is-rebuilt).
+> **Stream lifetime.** `session.out` is bounded. After each turn-complete control record, the agent appends an S2 `trim` command record back to the previous turn-complete's seq_num — the stream stays roughly one turn long forever at steady state. Full conversation history lives in a durable S3 snapshot, not on the stream. The transport's `lastEventId` bookmark plus S2's eventually-consistent trim window (10-60s) keeps single-turn-boundary resume working; multi-turn-away resume falls back to the snapshot. See [Resuming a stream](#resuming-a-stream) and [How history is rebuilt](#how-history-is-rebuilt).
 
 > [!NOTE]
 >
@@ -17069,11 +17069,12 @@ The key must belong to the target environment. Use a Production key with `--env 
 
 Give a key a list of allowed IP addresses to limit where it can be used. Requests using the key from any other address are rejected, so a leaked key is useless outside your network. They get the same `Invalid API key` error as a key that doesn't exist, so the response never confirms the key is real. If a working key suddenly returns that error, check its allowed IP addresses.
 
-* Enter one IPv4 or IPv6 address or CIDR range per line, for example `203.0.113.9` or `203.0.113.0/24`. A key can have up to 50 ranges.
+* Add IPv4 or IPv6 addresses or CIDR ranges, for example `203.0.113.9` or `203.0.113.0/24`. Press Enter, comma or space after each one, or paste a list. A key can have up to 50 ranges.
 * Leave the list empty to allow any IP address.
 * Private and reserved ranges, such as `10.0.0.0/8` or `192.168.0.0/16`, are not accepted. Use the public addresses your requests come from.
 * Set the list when you create the key, or change it later with **Edit allowed IPs** in the key's menu. Changes take effect immediately.
 * The API keys page shows the IP address each key was last used from, so you can check it before saving a list.
+* **Test an IP**, beside the list, checks whether an address would be allowed before you save.
 * [Public Access Tokens](/docs/realtime/auth) created with the key are not IP-restricted, since they are meant for browsers. Creating one still requires an allowed IP address.
 
 > [!TIP]
@@ -19507,6 +19508,46 @@ export const processWebhook = task({
 await processWebhook.trigger(payload, { concurrencyKey: tenantId });
 ```
 
+## A different key for each limit
+
+A string `concurrencyKey` keys every `perKey` bound the run holds. When two limits need different keys, for example a cap per session and a cap per organization on the same run, pass an object. `default` is the run's own key, and every other entry is a named limit and the key to use for it:
+
+```ts /trigger/subagent.ts theme={"theme":"css-variables"}
+import { concurrencyLimit, task } from "@trigger.dev/sdk";
+
+// each organization runs at most 20 sub-agents at once
+export const orgLimit = concurrencyLimit({ name: "org-subagents", perKey: 20 });
+
+export const subagent = task({
+  id: "subagent",
+  // 3 per session, 200 in total, plus the organization limit
+  concurrency: [{ perKey: 3, total: 200 }, orgLimit],
+  run: async (payload) => {
+    //...
+  },
+});
+```
+
+```ts app/api/subagent/route.ts theme={"theme":"css-variables"}
+import { orgLimit, subagent } from "~/trigger/subagent";
+
+await subagent.trigger(payload, {
+  concurrencyKey: {
+    default: sessionId,
+    [orgLimit.name]: orgId,
+  },
+});
+```
+
+The run starts only when the session has fewer than 3 running, the organization has fewer than 20, and fewer than 200 are running in total.
+
+* **A limit uses its own entry if it has one, otherwise `default`.** A string is shorthand for `{ default: "..." }`.
+* **`default` is required.** Runs are queued and scheduled fairly per default key, so pick the key you want fairness across.
+* **A limit's own key is 1-128 characters.**
+* **An entry for a limit the task doesn't declare adds that limit to the run.** If the limit is declared in the same environment, by another task or by a deploy that is still rolling out, the run counts towards it, so triggers keep working during the deploy.
+* **A name that matches no declared limit caps nothing**, and the limit you meant falls back to `default`. Use `[limit.name]` rather than a string literal.
+* **`default` always means the default key**, so a limit that is itself named `default` can't be given its own key.
+
 ## A global cap for a shared resource
 
 To cap something global, like total traffic to an external API, across many tasks and all tenants: declare a limit with only a `total` and share it. It counts every run holding it, whether or not the run has a `concurrencyKey`:
@@ -20216,7 +20257,7 @@ When set to `false`, the current working directory will be set to the build dire
 
 ## CA certificates
 
-CA Cert file to be added to NODE\_EXTRA\_CA\_CERT environment variable, useful in use with self signed cert in the trigger.dev environment.
+CA Cert file to be added to NODE_EXTRA_CA_CERT environment variable, useful in use with self signed cert in the trigger.dev environment.
 
 ```ts trigger.config.ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -23506,8 +23547,82 @@ cause runs to fail that are expecting variables to be set.
 
 **2. Press delete**
 
-This will immediately delete the variable. ![Environment variables
+Confirm in the dialog to delete the variable's value from that environment. This can't be
+undone. ![Environment variables
 page](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/environment-variables-delete-popover.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=642350946bd75c3c508065a198aaa005)
+
+#### Deleting several values at once
+
+Each row on the Environment Variables page is one value: a key in one environment or preview branch. You can select up to 100 values and delete them in one step.
+
+**1. Tick the values to delete**
+
+Tick the checkbox on each row, or tick the checkbox in the table header to select the values on
+the current page. Shift-click selects a range. A bar at the bottom of the list shows how many
+values are selected.
+
+**2. Press Delete in the bar**
+
+The confirmation lists every selected value and counts them per environment.
+
+**3. Type the confirmation words and press Delete**
+
+The selected values are deleted together. If any of them can't be deleted, none are.
+
+The selection applies to the current view of the list, so it clears when you change the filter, search, sort or page. A row has no checkbox when you don't have permission to delete its value. Deleting a preview branch's override makes that branch use the Preview value again.
+
+### Comparing two environments
+
+The compare view lists the keys that differ between two environments, so you don't have to read both lists side by side. Press **Compare** on the Environment Variables page to open it with the current environment on the left. Each side can be your Dev environment, Staging, Prod, Preview or one preview branch: pick them in the column headers. The two sides are in the URL, so you can share a comparison.
+
+The filters narrow the list:
+
+| Filter | Lists the keys that |
+| - | - |
+| All | differ in any way (every key except the ones that are the same) |
+| Different | are set on both sides with different values |
+| Missing | are set on one side only (one filter for each side) |
+| Empty | are empty on one side only |
+| Same | have the same value on both sides |
+
+Secrets are compared on the server: the view says whether two secrets are the same or different, and never shows either value. A secret is never compared with a plain value, because the plain value on the page would reveal the secret; such keys are listed under All and say they weren't compared. A side you don't have permission to read shows "Permission denied" and is never compared.
+
+Comparing a preview branch with Preview lists the branch's own overrides. To compare only some keys, tick them on the Environment Variables page and press **Compare** in the bar. Up to 1,000 keys can be compared at once; above that, search to narrow them down or compare ticked keys.
+
+#### Copying values across
+
+You can copy values from one side of the comparison to the other, in either direction.
+
+**1. Choose the values**
+
+Hover a row and press **Copy to** with the target environment's name, or tick up to 100 rows and
+press **Copy to** in the bar at the bottom of the list.
+
+**2. Confirm**
+
+The dialog says which keys are added to the target and which existing values are replaced, and
+which ticked keys are skipped (not set or not readable on the source side, already the same, or
+empty when your organization doesn't allow empty values). Copying several values asks you to type
+two words to confirm.
+
+The values are copied together: if any of them can't be copied, none are. A copied secret stays a secret, and a value copied onto a secret stays a secret. You need permission to read the source environment and to change the target. Copying replaces values in the target environment, so runs that start afterwards use the new values.
+
+### Values that need attention
+
+The Needs attention page lists the keys in one environment that are probably wrong or worth a second look. Press **Needs attention** on the Environment Variables page to open it; the button shows how many keys need attention in the current environment, leaving out empty values. Pick the environment (your Dev environment, Staging, Prod or Preview) in the value column's header.
+
+| Tab | Lists the keys that |
+| - | - |
+| All | need attention for any reason, grouped by the most pressing one |
+| Missing here | are set in another of Dev, Staging and Prod but not in this environment |
+| Empty | are set to an empty string, secrets included |
+| Replace with OIDC | hold credentials that [OIDC](/docs/oidc) could replace, in deployed environments when your organization has OIDC |
+| Changed recently | were saved in the last 24 hours, newest first |
+| Ignored | have a reason your team ignored |
+
+A Missing here row offers **Copy from** to copy the value from an environment where it's set, through the same confirmation as [copying values across](#copying-values-across), or **Set** to enter a new one.
+
+Ignore a reason when it's expected, such as a key that is only meant to exist in Prod. An ignore applies to one key, in one environment, for one reason, and is shared with everyone on the project, who see who ignored it and when. Ignored reasons move to the Ignored tab until someone presses **Stop ignoring**. An ignored empty value stops being ignored the next time the value is saved. Changed recently can't be ignored: a key leaves that tab a day after it was saved.
 
 ## Local development
 
@@ -23646,7 +23761,7 @@ If your secrets live in [Infisical](https://infisical.com), sync them natively, 
 
 Set it up in Infisical in two steps:
 
-1. Add a **Trigger.dev App Connection** using a Trigger.dev Personal Access Token from your account settings. Self-hosted instances are supported. The token [expires](/docs/management/authentication#pat-expiry) after the lifetime you choose, so replace it in the App Connection before then to keep the sync running.
+1. Add a **Trigger.dev App Connection** using a Trigger.dev Personal Access Token from your account settings. Self-hosted instances are supported. The token [expires](/docs/management/authentication#pat-expiry) on the date you choose, so replace it in the App Connection before then to keep the sync running.
 2. Create a **Secret Sync**: choose the connection, pick the target organization, project and environment (Production, Staging, Development, or Preview), and set the secret path to sync.
 
 Follow the [Trigger.dev Secret Sync guide](https://infisical.com/docs/integrations/secret-syncs/trigger-dev) in the Infisical docs for the full walkthrough.
@@ -25502,7 +25617,7 @@ Source: https://trigger.dev/docs/github-actions
 
 Deploy your tasks from CI using trusted deploys or an environment API key.
 
-For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions. A Personal Access Token also [expires](/docs/management/authentication#pat-expiry) after the lifetime chosen when it was created, and a copied CLI login [expires after 7 days without use](/docs/cli-login-commands#login-expiry).
+For GitHub Actions without stored credentials, use [Trusted publishing](/docs/deployment/trusted-publishing) with OIDC. The API-key instructions below also apply to other CI systems. Use an environment API key rather than a Personal Access Token so deployments are not tied to an individual team member's account or permissions. A Personal Access Token also [expires](/docs/management/authentication#pat-expiry) on the date chosen when it was created, and a copied CLI login [expires after 7 days without use](/docs/cli-login-commands#login-expiry).
 
 > [!TIP]
 >
@@ -25658,12 +25773,12 @@ only** access.
 
 Create the key and copy its value. Trigger.dev shows the complete value only once.
 
-**4. Add the TRIGGER\_ACCESS\_TOKEN secret to GitHub**
+**4. Add the TRIGGER_ACCESS_TOKEN secret to GitHub**
 
 Open the repository's **Settings**, then select **Secrets and variables** → **Actions** → **New
 repository secret**. Add the name `TRIGGER_ACCESS_TOKEN` and paste the API key as its value.
 
-![Add TRIGGER\_ACCESS\_TOKEN in GitHub](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/github-access-token.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=6c516d32254c19937c0e7104753316a7)
+![Add TRIGGER_ACCESS_TOKEN in GitHub](https://mintcdn.com/trigger/uys6iMwf9B_ojh8r/images/github-access-token.png?fit=max\&auto=format\&n=uys6iMwf9B_ojh8r\&q=85\&s=6c516d32254c19937c0e7104753316a7)
 
 The API key must belong to the environment targeted by the deploy command. If the repository deploys to multiple environments, store each environment's key in a separate GitHub secret and map the appropriate secret to `TRIGGER_ACCESS_TOKEN` in each workflow.
 
@@ -25816,6 +25931,27 @@ The name of the preview branch matches the branch name of the pull request.
 > [!NOTE]
 >
 > Preview branch deployments require the preview environment to be enabled on your project. Learn more about [preview branches](/docs/deployment/preview-branches).
+
+## Ignored branches
+
+Ignored branches stop pull requests from matching branches from getting a preview deployment, for example Dependabot updates.
+
+Open **Integrations** in your project settings and add the patterns in the git settings panel, one per line. Use **Test a branch** to check which pattern, if any, matches a branch.
+
+```text theme={"theme":"css-variables"}
+dependabot/**
+skip-preview/**
+```
+
+* Patterns match the whole branch name. `*` stays within one part of the name and `**` also crosses `/`, so `skip-preview/**` matches `skip-preview/login` and `skip-preview` itself.
+* Negation (`!`), braces (`{a,b}`) and extglob groups like `@(a|b)` aren't supported. A pattern can use `**` at most twice and `*` at most twice more, and you can add up to 100 patterns of up to 256 characters each.
+* Only previews are affected: pushes to your production and staging branches always deploy, and a preview deployed before you added a pattern is archived as usual.
+
+When a preview is skipped, the pull request's Trigger.dev check is marked as skipped with the matching pattern. Re-run that check from GitHub to deploy the preview anyway.
+
+> [!WARNING]
+>
+> If your project is connected to Vercel, ignore the same branches in both places. A Vercel preview of a branch that Trigger.dev ignores has no task deployment for its commit, so with [version skew protection](/docs/vercel-integration#version-skew-protection) its runs wait for one and [expire after an hour](/docs/deployment/atomic-deployment#waiting-and-expiry).
 
 ## Ignored paths
 
@@ -32389,7 +32525,7 @@ This example demonstrates how to use Trigger.dev to generate a PDF using [react-
 
 > [!NOTE]
 >
-> This example must be a .tsx file to use React components.
+> &#x20;This example must be a .tsx file to use React components.
 
 ```ts trigger/generateResumePDF.tsx theme={"theme":"css-variables"}
 import { logger, task } from "@trigger.dev/sdk";
@@ -34138,6 +34274,32 @@ Node.js yourself with a build extension before moving those projects off `bun`.
 * [Create a Trigger.dev account](https://cloud.trigger.dev)
 * Create a new Trigger.dev project
 
+## Bytecode compilation
+
+On `bun-1.4`, deploys compile the run worker and your task files into a Bun executable with
+bytecode, so runs start faster. `trigger dev` isn't affected. Packages you mark as `external`
+still load from `node_modules`.
+
+`import.meta.url`, `import.meta.dirname` and `__dirname` point at your bundled files under `/app`,
+as they do without compilation. The executable only holds your code, so files you read next to it
+(e.g. with `new URL("./data.json", import.meta.url)`) still have to be in the image, for example
+with the [additionalFiles](/docs/config/extensions/additionalFiles) extension. A
+`new Worker(new URL("./worker.mjs", import.meta.url))` loads the worker file from disk too.
+
+If your code still doesn't work compiled, set `bunBytecode` to `false` to turn compilation off:
+
+```ts trigger.config.ts theme={"theme":"css-variables"}
+import { defineConfig } from "@trigger.dev/sdk";
+
+export default defineConfig({
+  project: "<project ref>",
+  runtime: "bun-1.4",
+  build: {
+    bunBytecode: false,
+  },
+});
+```
+
 ## Known issues
 
 * Certain OpenTelemetry instrumentation will not work with Bun, because Bun does not support Node's `register` hook. This means that some libraries that rely on this hook will not work with Bun.
@@ -34406,7 +34568,7 @@ pnpm dlx trigger.dev@latest deploy
 yarn dlx trigger.dev@latest deploy
 ```
 
-**4. Adding your DATABASE\_URL environment variable to Trigger.dev**
+**4. Adding your DATABASE_URL environment variable to Trigger.dev**
 
 In your Trigger.dev dashboard sidebar click "Environment Variables" , and then the "Add new" button .
 
@@ -35297,7 +35459,7 @@ You can test your revalidation task in the Trigger.dev dashboard on the testing 
 
 ### Next.js build failing due to missing API key in GitHub CI
 
-This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER\_SECRET\_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
+This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER_SECRET_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
 
 ```ts theme={"theme":"css-variables"}
 export const dynamic = "force-dynamic";
@@ -35843,7 +36005,7 @@ pnpm dlx trigger.dev@latest deploy
 yarn dlx trigger.dev@latest deploy
 ```
 
-**5. Adding your DATABASE\_URL environment variable to Trigger.dev**
+**5. Adding your DATABASE_URL environment variable to Trigger.dev**
 
 In your Trigger.dev dashboard sidebar click "Environment Variables" , and then the "Add new" button .
 
@@ -36762,7 +36924,7 @@ This guide shows you how to set up and deploy a simple Supabase edge function ex
 
 > [!NOTE]
 >
-> If you already have a Supabase project on your local machine you can skip this step.
+> &#x20;If you already have a Supabase project on your local machine you can skip this step.
 
 You can create a new project by running the following command in your terminal using the Supabase CLI:
 
@@ -36781,7 +36943,7 @@ If your project does not already have `package.json` file (e.g. if you are using
 
 > [!NOTE]
 >
-> If your project has a `package.json` file you can skip this step.
+> &#x20;If your project has a `package.json` file you can skip this step.
 
 This is required for the Trigger.dev SDK to work correctly.
 
@@ -36795,7 +36957,7 @@ This is required for the Trigger.dev SDK to work correctly.
 
 > [!NOTE]
 >
-> Update your Typescript version to the latest version available.
+> &#x20;Update your Typescript version to the latest version available.&#x20;
 
 **3. Run the CLI `init` command**
 
@@ -37081,7 +37243,7 @@ Supabase and Trigger.dev can be used together to create powerful workflows trigg
 
 > [!NOTE]
 >
-> If you already have a Supabase project on your local machine you can skip this step.
+> &#x20;If you already have a Supabase project on your local machine you can skip this step.
 
 You can create a new project by running the following command in your terminal using the Supabase CLI:
 
@@ -37100,7 +37262,7 @@ If your project does not already have `package.json` file (e.g. if you are using
 
 > [!NOTE]
 >
-> If your project has a `package.json` file you can skip this step.
+> &#x20;If your project has a `package.json` file you can skip this step.
 
 This is required for the Trigger.dev SDK to work correctly.
 
@@ -37114,7 +37276,7 @@ This is required for the Trigger.dev SDK to work correctly.
 
 > [!NOTE]
 >
-> Update your Typescript version to the latest version available.
+> &#x20;Update your Typescript version to the latest version available.&#x20;
 
 **3. Run the CLI `init` command**
 
@@ -37169,7 +37331,7 @@ supabase gen types --lang=typescript --project-id <project-ref> --schema public 
 
 > [!NOTE]
 >
-> Replace `<project-ref>` with your Supabase project reference ID. This can be found in your Supabase project settings under 'General'.
+> &#x20;Replace `<project-ref>` with your Supabase project reference ID. This can be found in your Supabase project settings under 'General'.&#x20;
 
 ### Create the transcription task
 
@@ -41572,7 +41734,7 @@ This is useful when you know that a certain payload will require more memory tha
 
 Sometimes you might see one of your runs fail with an "Out Of Memory" error.
 
-> TASK\_PROCESS\_OOM\_KILLED. Your run was terminated due to exceeding the machine's memory limit. Try increasing the machine preset in your task options or replay using a larger machine.
+> TASK_PROCESS_OOM_KILLED. Your run was terminated due to exceeding the machine's memory limit. Try increasing the machine preset in your task options or replay using a larger machine.
 
 We automatically detect common Out Of Memory errors:
 
@@ -42716,7 +42878,7 @@ await envvars.upload("proj_1234", "dev", {
 
 #### PAT expiry
 
-A PAT you create on the [Personal Access Tokens](https://cloud.trigger.dev/account/tokens) page expires after the lifetime you choose when you create it: 30 days, 90 days, or 1 year. Every new dashboard token has an expiry. Tokens created before expiry was introduced (in 4.8.4 for self-hosted instances) don't expire.
+A PAT you create on the [Personal Access Tokens](https://cloud.trigger.dev/account/tokens) page expires on the date you choose when you create it: 30 days, 90 days or 1 year from today, or any other day up to a year away. It stops working at the end of that day (UTC). Every new dashboard token has an expiry. Tokens created before expiry was introduced (in 4.8.4 for self-hosted instances) don't expire.
 
 The tokens page shows when each token expires. A token that expires within 7 days is flagged, and an expired one is marked as expired. We also email you twice about each token that expires, naming it and linking to the tokens page: once 7 days before it expires, and again when it has. On a self-hosted instance, the emails are only sent when `EMAIL_TRANSPORT` is set.
 
@@ -42735,7 +42897,7 @@ To keep an integration running, create a new token before the old one expires an
 
 A user-actor token from `trigger.dev mint-token`, or an environment JWT exchanged from a PAT, expires no later than the PAT.
 
-If you self-host, you can change the PAT lifetimes and turn the expiry emails off. See the [webapp environment variables](/docs/self-hosting/env/webapp).
+If you self-host, you can change the offered PAT lifetimes, the longest of which is also the latest date you can pick, and turn the expiry emails off. See the [webapp environment variables](/docs/self-hosting/env/webapp).
 
 ### Preview branch targeting
 
@@ -44538,6 +44700,10 @@ The Trigger.dev MCP (Model Context Protocol) Server enables AI assistants to int
 * Monitor run details and list runs with filtering options
 * Query your data with TRQL and run built-in dashboard metrics
 
+> [!NOTE]
+>
+> This page covers the CLI MCP server, which runs locally and can deploy and run your dev server. To connect over HTTP without installing anything, use the [remote MCP server](/docs/mcp-remote).
+
 ## Installation
 
 The quickest way to get set up is the interactive installer:
@@ -44920,6 +45086,97 @@ Once installed, you can start using the MCP server by asking your AI assistant q
 > Portable instruction sets that teach AI assistants Trigger.dev patterns.
 
 
+# Remote MCP server
+Source: https://trigger.dev/docs/mcp-remote
+
+Connect AI assistants to your Trigger.dev projects over HTTP with OAuth, with no local install.
+
+**The remote MCP server exposes Trigger.dev tools over HTTP at `https://mcp.trigger.dev/mcp`, so an assistant can read runs, trigger tasks, and manage resources without running the CLI.**
+
+You sign in with OAuth. Tools that change state need your approval in the dashboard before they run.
+
+## Remote vs. CLI
+
+The [CLI MCP server](/docs/mcp-introduction) runs on your machine through `npx trigger.dev@latest mcp`. The remote server runs on Trigger.dev and has no access to your local files or processes.
+
+Use the remote server when your client supports HTTP MCP servers, or when you cannot install the CLI. Keep the CLI server for anything that touches your machine. These tools exist only in the CLI server:
+
+* `deploy`
+* `start_dev_server`, `stop_dev_server`, `dev_server_status`
+* `whoami`, `list_profiles`, `switch_profile`
+* `initialize_project`
+
+Every other tool on the [tools page](/docs/mcp-tools) is available remotely. The endpoint accepts POST only. Other methods return `405`.
+
+## Connect with OAuth
+
+OAuth is the default. Your client opens a browser, you approve access on a consent page, and the client stores the tokens.
+
+> [tab] Claude Code
+>
+> ```bash theme={"theme":"css-variables"}
+> claude mcp add --transport http trigger https://mcp.trigger.dev/mcp
+> ```
+>
+> Run `/mcp` in Claude Code and choose **Authenticate** for `trigger`.
+
+> [tab] Cursor
+>
+> ```json .cursor/mcp.json theme={"theme":"css-variables"}
+> {
+>   "mcpServers": {
+>     "trigger": {
+>       "url": "https://mcp.trigger.dev/mcp"
+>     }
+>   }
+> }
+> ```
+
+> [tab] claude.ai
+>
+> Open **Settings**, then **Connectors**, and add a custom connector with the URL `https://mcp.trigger.dev/mcp`.
+
+The server publishes its protected resource metadata at `/.well-known/oauth-protected-resource`. Clients find the authorization server from there. It supports dynamic client registration, client ID metadata documents, and PKCE with `S256`. Composio and similar platforms connect the same way as any other client, through dynamic client registration.
+
+An OAuth grant stops working after 30 days without use, and 90 days after it was created. Self-hosters can change both limits (see [self-hosting](#self-hosting)). When a grant expires, the client prompts you to sign in again.
+
+## Scopes
+
+Each OAuth grant carries a list of scopes. A tool call is denied if the scopes or your role in the organization don't allow it.
+
+| Kind | Scopes |
+| - | - |
+| Read | `read:alerts`, `read:branches`, `read:deployments`, `read:organizations`, `read:projects`, `read:prompts`, `read:query`, `read:runs`, `read:sessions`, `read:webhooks` |
+| Write | `trigger:tasks`, `update:prompts`, `write:alerts`, `write:projects`, `write:query`, `write:runs`, `write:sessions`, `write:webhooks` |
+
+## Write confirmation
+
+Every tool that changes state asks you to approve the exact call first, such as `trigger_task`, `cancel_run`, `replay_run`, or `create_alert`. Read tools never ask.
+
+1. The assistant calls the tool. The server doesn't run it and returns a confirmation link instead.
+2. Open the link and sign in to the dashboard. The page shows the tool, the organization, project, and environment, and the arguments. Values under keys like `secret`, `token`, or `password` are hidden.
+3. Select **Approve**.
+4. Tell the assistant to retry. It calls the same tool with identical arguments, and the call runs once.
+
+An approval expires after 10 minutes. It only applies to the same user, token, tool, and arguments, so changing an argument asks again.
+
+By default the link comes back as a URL elicitation error, which clients that support it show as a prompt. With `MCP_CONFIRMATION_ERROR_MODE=tool-error` it comes back as a normal tool error with the link in the message.
+
+## Self-hosting
+
+The remote server is off by default. Set these environment variables on the webapp:
+
+| Variable | Meaning |
+| - | - |
+| `MCP_SERVER_ENABLED` | Turns on the `/mcp` endpoint and the OAuth server. Default `false`. |
+| `MCP_ORIGIN` | Origin the MCP server is reached on. Defaults to `APP_ORIGIN`. |
+| `MCP_CONFIRMATION_ERROR_MODE` | How a pending confirmation is reported: `rpc-error` (default) or `tool-error`. |
+| `OAUTH_GRANT_IDLE_DAYS` | Days without use before an OAuth grant stops working. Default `30`. |
+| `OAUTH_GRANT_ABSOLUTE_DAYS` | Maximum lifetime in days of an OAuth grant. Default `90`. |
+
+Confirmations are stored in the cache Redis, so the webapp needs the `CACHE_REDIS_*` variables.
+
+
 # MCP Tools
 Source: https://trigger.dev/docs/mcp-tools
 
@@ -44927,7 +45184,7 @@ Learn about how to use the tools available in the Trigger.dev MCP Server
 
 ## Documentation and Search Tools
 
-### search\_docs
+### search_docs
 
 Search the Trigger.dev documentation for guides, examples, and API references.
 
@@ -44939,7 +45196,7 @@ Search the Trigger.dev documentation for guides, examples, and API references.
 
 ## Project Management Tools
 
-### list\_orgs
+### list_orgs
 
 List all organizations you have access to.
 
@@ -44948,7 +45205,7 @@ List all organizations you have access to.
 * `"What organizations do I have?"`
 * `"Show me my orgs"`
 
-### list\_projects
+### list_projects
 
 List all projects in your Trigger.dev account.
 
@@ -44957,7 +45214,7 @@ List all projects in your Trigger.dev account.
 * `"What projects do I have?"`
 * `"List my Trigger.dev projects"`
 
-### create\_project\_in\_org
+### create_project_in_org
 
 Create a new project in an organization.
 
@@ -44966,7 +45223,7 @@ Create a new project in an organization.
 * `"Create a new project called 'my-app'"`
 * `"Set up a new Trigger.dev project"`
 
-### initialize\_project
+### initialize_project
 
 Initialize Trigger.dev in your project with automatic setup and configuration.
 
@@ -44977,7 +45234,7 @@ Initialize Trigger.dev in your project with automatic setup and configuration.
 
 ## Task Management Tools
 
-### get\_current\_worker
+### get_current_worker
 
 Get the current worker for a project, including the worker version, SDK version, and registered tasks with their payload schemas.
 
@@ -44986,7 +45243,7 @@ Get the current worker for a project, including the worker version, SDK version,
 * `"What tasks are available?"`
 * `"Show me the tasks in dev"`
 
-### trigger\_task
+### trigger_task
 
 Trigger a task to run with a specific payload. You can add a delay, set tags, configure retries, choose a machine size, pick a region, set a TTL, or use an idempotency key.
 
@@ -44998,7 +45255,7 @@ Trigger a task to run with a specific payload. You can add a delay, set tags, co
 
 ## Run Monitoring Tools
 
-### get\_run\_details
+### get_run_details
 
 Get detailed information about a specific task run, including logs and status. Enable debug mode to get the full trace with all logs and spans.
 
@@ -45007,7 +45264,7 @@ Get detailed information about a specific task run, including logs and status. E
 * `"Show me details for run run_abc123"`
 * `"Why did this run fail?"`
 
-### list\_runs
+### list_runs
 
 List runs for a project. Filter by status, task, tags, version, machine size, or time period.
 
@@ -45017,7 +45274,7 @@ List runs for a project. Filter by status, task, tags, version, machine size, or
 * `"List failed runs from the last 7 days"`
 * `"What runs are currently executing?"`
 
-### wait\_for\_run\_to\_complete
+### wait_for_run_to_complete
 
 Wait for a specific run to finish and return the result.
 
@@ -45025,7 +45282,7 @@ Wait for a specific run to finish and return the result.
 
 * `"Wait for run run_abc123 to complete"`
 
-### cancel\_run
+### cancel_run
 
 Cancel a running or queued run.
 
@@ -45034,7 +45291,7 @@ Cancel a running or queued run.
 * `"Cancel run run_abc123"`
 * `"Stop that task"`
 
-### replay\_run
+### replay_run
 
 Replay a run as a new run of the same task, in the same environment. The new run reuses the original run's payload, metadata, tags, queue, concurrency key, and machine unless you override them. See [Replaying](/docs/replaying) for how each option falls back.
 
@@ -45061,7 +45318,7 @@ Deploy your project to staging or production.
 * `"Deploy to production"`
 * `"Deploy to staging"`
 
-### list\_deploys
+### list_deploys
 
 List deployments for a project. Filter by status or time period.
 
@@ -45070,7 +45327,7 @@ List deployments for a project. Filter by status or time period.
 * `"Show me recent deployments"`
 * `"What's deployed to production?"`
 
-### list\_preview\_branches
+### list_preview_branches
 
 List all preview branches in the project.
 
@@ -45090,7 +45347,7 @@ Show the current authenticated user, active CLI profile, email, and API URL.
 * `"Who am I logged in as?"`
 * `"What profile am I using?"`
 
-### list\_profiles
+### list_profiles
 
 List all configured CLI profiles and which one is currently active.
 
@@ -45099,7 +45356,7 @@ List all configured CLI profiles and which one is currently active.
 * `"What profiles do I have?"`
 * `"Show me my Trigger.dev profiles"`
 
-### switch\_profile
+### switch_profile
 
 Switch the active CLI profile for this MCP session. This changes which Trigger.dev account and API URL are used for all subsequent tool calls.
 
@@ -45110,7 +45367,7 @@ Switch the active CLI profile for this MCP session. This changes which Trigger.d
 
 ## Query and Analytics Tools
 
-### get\_query\_schema
+### get_query_schema
 
 Get the schema for TRQL queries, including all available tables, their columns, data types, descriptions, and allowed values. Call this before using the query tool to understand what data is available.
 
@@ -45129,7 +45386,7 @@ Execute a TRQL query against your Trigger.dev data. TRQL is a SQL-style query la
 * `"Show me the top 10 most expensive tasks"`
 * `"Query the average execution duration by task"`
 
-### list\_dashboards
+### list_dashboards
 
 List the built-in dashboards and your organization's custom dashboards, with their widgets.
 
@@ -45138,7 +45395,7 @@ List the built-in dashboards and your organization's custom dashboards, with the
 * `"What dashboards are available?"`
 * `"Show me the dashboard widgets"`
 
-### run\_dashboard\_query
+### run_dashboard_query
 
 Execute a single widget query from a built-in or custom dashboard. Use `list_dashboards` first to see available dashboards and widget IDs.
 
@@ -45147,7 +45404,7 @@ Execute a single widget query from a built-in or custom dashboard. Use `list_das
 * `"Run the total runs widget from the overview dashboard"`
 * `"Show me the LLM cost over time from the AI dashboard"`
 
-### create\_dashboard
+### create_dashboard
 
 Create a custom dashboard, optionally with widgets. Each widget has a title, a TRQL query and a display: a table, a bar or line chart, a big number, or a section title. Queries are checked when the dashboard is saved.
 
@@ -45156,7 +45413,7 @@ Create a custom dashboard, optionally with widgets. Each widget has a title, a T
 * `"Make a dashboard for the email tasks with total runs, failures and runs per day"`
 * `"Create a dashboard that charts p95 duration by task"`
 
-### set\_dashboard\_widgets
+### set_dashboard_widgets
 
 Replace every widget on a custom dashboard, and optionally rename it.
 
@@ -45165,7 +45422,7 @@ Replace every widget on a custom dashboard, and optionally rename it.
 * `"Add a failed runs widget to the email dashboard"`
 * `"Change the runs per day chart to a line chart"`
 
-### get\_report
+### get_report
 
 Render an interpreted [health report](/docs/reports) — a deterministic verdict, not a raw panel — as text with sparklines. The `health` report answers whether work is flowing, whether the runs that start are healthy, and whether the telemetry is fresh, with a headline verdict and a suggested next action. Returns markdown by default, or ANSI when `color` is set. Read-only.
 
@@ -45177,7 +45434,7 @@ Render an interpreted [health report](/docs/reports) — a deterministic verdict
 
 ## Dev Server Tools
 
-### start\_dev\_server
+### start_dev_server
 
 Start the Trigger.dev dev server (`trigger dev`) in the background. Waits up to 30 seconds for the worker to be ready.
 
@@ -45186,7 +45443,7 @@ Start the Trigger.dev dev server (`trigger dev`) in the background. Waits up to 
 * `"Start the dev server"`
 * `"Run trigger dev"`
 
-### stop\_dev\_server
+### stop_dev_server
 
 Stop the running Trigger.dev dev server.
 
@@ -45194,7 +45451,7 @@ Stop the running Trigger.dev dev server.
 
 * `"Stop the dev server"`
 
-### dev\_server\_status
+### dev_server_status
 
 Check the status of the dev server and view recent output. Shows whether it is stopped, starting, ready, or has errors.
 
@@ -45204,13 +45461,13 @@ Check the status of the dev server and view recent output. Shows whether it is s
 * `"Show me the dev server logs"`
 * `"Are there any build errors?"`
 
-The deploy and list\_preview\_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger\_task, cancel\_run, replay\_run, create\_dashboard, and set\_dashboard\_widgets.
+The deploy and list_preview_branches tools are not available when the MCP server is running with the `--dev-only` flag. The `--readonly` flag hides deploy, trigger_task, cancel_run, replay_run, create_dashboard, and set_dashboard_widgets.
 
 ## Agent Chat Tools
 
 These tools let you have conversations with [chat agents](/docs/ai-chat/overview) directly from your AI coding tool. See the [Agent MCP guide](/docs/ai-chat/mcp) for a walkthrough.
 
-### list\_agents
+### list_agents
 
 List all chat agents registered in the current worker. Agents are tasks created with `chat.agent()` or `chat.customAgent()`.
 
@@ -45219,7 +45476,7 @@ List all chat agents registered in the current worker. Agents are tasks created 
 * `"What agents are available?"`
 * `"List my chat agents"`
 
-### start\_agent\_chat
+### start_agent_chat
 
 Start a conversation with a chat agent. Returns a chat ID for use with `send_agent_message`. Optionally preloads the agent so it initializes before the first message.
 
@@ -45235,7 +45492,7 @@ Start a conversation with a chat agent. Returns a chat ID for use with `send_age
 * `"Start a chat with the support agent"`
 * `"Talk to the pr-review agent with userId abc"`
 
-### send\_agent\_message
+### send_agent_message
 
 Send a message to an active agent chat and get the full response back. The agent remembers full context from previous messages in the same chat.
 
@@ -45249,7 +45506,7 @@ Send a message to an active agent chat and get the full response back. The agent
 * `"Tell the agent to review the latest PR"`
 * `"Ask it what tools it has available"`
 
-### close\_agent\_chat
+### close_agent_chat
 
 Close an agent chat conversation. The agent exits its loop gracefully. Without this, the agent will close on its own when its idle timeout expires.
 
@@ -45268,7 +45525,7 @@ The `start_agent_chat`, `send_agent_message`, and `close_agent_chat` tools are w
 
 Read and write a session's realtime streams: a named [side channel](/docs/ai-chat/side-channels) or the reserved chat transcript pair. Use these to observe an agent's out-of-band output (a screencast, telemetry) or to send it control input.
 
-### read\_session\_channel
+### read_session_channel
 
 Read records from a session's realtime stream. By default it returns the records that exist right now after an optional cursor and closes, so it is a point-in-time drain, not a live subscription. Set `timeoutInSeconds` to wait for the next record when none exist yet.
 
@@ -45286,7 +45543,7 @@ Read records from a session's realtime stream. By default it returns the records
 * `"Read the latest frames on the screencast channel for this session"`
 * `"Wait for the next control message on the session's status channel"`
 
-### write\_session\_channel
+### write_session_channel
 
 Append one record to a named side channel's `in` stream. Sends control input to a running agent (e.g. a pause command) without waking or triggering a run. The reserved transcript and a channel's `out` side are not writable here; `out` is producer-only.
 
@@ -45307,7 +45564,7 @@ Append one record to a named side channel's `in` stream. Sends control input to 
 
 Set up and debug [hosted webhook endpoints](/docs/webhooks/overview). Endpoint ids start with `wh_` and delivery ids with `whd_`; endpoint tools also accept an endpoint's declared id. The same operations are on the [Webhooks API](/docs/management/webhooks/list-endpoints).
 
-### list\_webhook\_endpoints
+### list_webhook_endpoints
 
 List the environment's webhook endpoints: each one's id, declared id, source, status, URL and whether its signing secret is set.
 
@@ -45315,7 +45572,7 @@ List the environment's webhook endpoints: each one's id, declared id, source, st
 
 * `"Which webhook endpoints do I have in dev?"`
 
-### get\_webhook\_endpoint\_details
+### get_webhook_endpoint_details
 
 Get an endpoint's subscribers, with the filters that decide which events each accepts, and its setup prompt: the steps for registering the endpoint and its signing secret with the provider.
 
@@ -45327,7 +45584,7 @@ Get an endpoint's subscribers, with the filters that decide which events each ac
 
 * `"Connect my payments webhook to Stripe"`
 
-### list\_webhook\_deliveries
+### list_webhook_deliveries
 
 List recent deliveries, newest first.
 
@@ -45344,7 +45601,7 @@ List recent deliveries, newest first.
 * `"Did the Stripe checkout event arrive in the last hour?"`
 * `"Show me failed deliveries on the github endpoint"`
 
-### get\_webhook\_delivery
+### get_webhook_delivery
 
 Get one delivery: its status and error, each subscriber's result (the run or session it started, or why its filter skipped the event), how many waiting runs it resumed, and its event and headers.
 
@@ -45356,7 +45613,7 @@ Get one delivery: its status and error, each subscriber's result (the run or ses
 
 * `"Why didn't this webhook trigger my order task?"`
 
-### replay\_webhook\_delivery
+### replay_webhook_delivery
 
 Replay a delivery from its stored event. Without `targetId` it goes to every subscriber again, with their filters checked again. With `targetId` it goes to that subscriber even if its filter skipped the event.
 
@@ -45369,7 +45626,7 @@ Replay a delivery from its stored event. Without `targetId` it goes to every sub
 
 * `"Replay that delivery to the refunds task"`
 
-### generate\_webhook\_secret
+### generate_webhook_secret
 
 Generate a new signing secret for an endpoint and return it once, for providers where you choose the secret (such as GitHub). It replaces any existing secret.
 
@@ -45382,7 +45639,7 @@ Generate a new signing secret for an endpoint and return it once, for providers 
 
 * `"Rotate the GitHub endpoint's secret and keep the old one working for a day"`
 
-### set\_webhook\_secret
+### set_webhook_secret
 
 Store a signing secret or public key the provider issued, such as Stripe's `whsec_` secret. It replaces any existing secret.
 
@@ -47274,6 +47531,8 @@ Choose an official integration, or connect a service that supports external OIDC
 
 For other services, follow [Custom integrations](/docs/oidc/custom) to request a token and implement the service's authentication flow.
 
+The OIDC page in the dashboard lists the environment variables in your project that hold credentials OIDC could replace, such as `AWS_ACCESS_KEY_ID` or `ANTHROPIC_API_KEY`, grouped by service with a link to each service's guide. The same keys are listed under **Replace with OIDC** on the environment variables [Needs attention page](/docs/deploy-environment-variables#values-that-need-attention).
+
 ## Prerequisites
 
 * Use `@trigger.dev/sdk` and the Trigger.dev CLI (`trigger.dev`) **4.8.3 or later**, including the CLI used in CI.
@@ -47720,6 +47979,85 @@ For a task-restricted Preview role, keep `sts:TagSession` in `Action` and add th
 Keep the organization ID, project reference, `PREVIEW` environment type, and audience fixed. This deliberately grants access to anyone allowed to deploy a Preview branch in that project. Never wildcard the organization or project, or use this policy for a role intended only for Production or Staging.
 
 
+# Connect to Microsoft Azure
+Source: https://trigger.dev/docs/oidc/azure
+
+Authenticate to Azure from your tasks with a federated identity credential instead of a client secret or certificate.
+
+Use Microsoft Entra [workload identity federation](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation) to exchange a Trigger.dev OIDC token for an Entra access token. Your tasks authenticate as an app registration with no `AZURE_CLIENT_SECRET` or client certificate stored anywhere.
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure Azure
+
+1. [Register an app](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app) in Microsoft Entra ID, or reuse one, and grant it access to the Azure resources your task uses (for the example below, the **Storage Blob Data Reader** role on a storage account).
+
+2. In the app registration, open **Certificates & secrets**, select the **Federated credentials** tab, select **Add credential**, and choose the **Other issuer** scenario. Fill in the [federated identity credential](https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust):
+
+   | Azure field | Value |
+   | - | - |
+   | **Issuer** | Your issuer URL, `https://oidc.trigger.dev/YOUR_ORG_SLUG`. |
+   | **Subject identifier** | The **complete subject copied from the dashboard**. |
+   | **Audience** | `api://AzureADTokenExchange`, Microsoft's recommended value. |
+   | **Name** | A name for the credential, for example `trigger-production`. |
+
+3. Copy the app's **Application (client) ID** and **Directory (tenant) ID** from its **Overview** page.
+
+Azure compares the issuer and subject exactly and doesn't support wildcards, so each environment needs its own federated credential. An app registration holds at most 20 federated credentials, so use one app per group of environments rather than one credential per Preview branch.
+
+## Use the credential in your task
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/sdk@latest @azure/identity @azure/storage-blob
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest @azure/identity @azure/storage-blob
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest @azure/identity @azure/storage-blob
+```
+
+`ClientAssertionCredential` from `@azure/identity` calls your function whenever it needs a new Entra token. Return a fresh Trigger.dev OIDC token from it:
+
+```ts /trigger/read-from-azure.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+import { ClientAssertionCredential } from "@azure/identity";
+import { BlobServiceClient } from "@azure/storage-blob";
+
+export const readFromAzure = task({
+  id: "read-from-azure",
+  run: async () => {
+    const credential = new ClientAssertionCredential(
+      "YOUR_TENANT_ID",
+      "YOUR_CLIENT_ID",
+      async () => (await auth.getOIDCToken({ audience: "api://AzureADTokenExchange" })).token
+    );
+
+    const blobs = new BlobServiceClient(
+      "https://YOUR_STORAGE_ACCOUNT.blob.core.windows.net",
+      credential
+    );
+    const blob = blobs.getContainerClient("YOUR_CONTAINER").getBlobClient("example.txt");
+    const contents = await blob.downloadToBuffer();
+
+    return { contents: contents.toString() };
+  },
+});
+```
+
+The tenant and client IDs aren't secrets. Keep them in `AZURE_TENANT_ID` and `AZURE_CLIENT_ID` if you prefer.
+
+Create the credential inside `run` so one run's tokens are never reused by another. Redeploy and start a new run on that deployment.
+
+## Remove the old credential
+
+Once runs in every deployed environment authenticate this way, delete `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_CERTIFICATE_PATH`, and `AZURE_CLIENT_CERTIFICATE_PASSWORD` from those environments on the Environment Variables page, then delete the secret or certificate from the app registration.
+
+Local Development runs can't mint OIDC tokens. Use your own Azure sign-in there, such as `DefaultAzureCredential` with the Azure CLI, when `ctx.environment.type === "DEVELOPMENT"`.
+
+
 # Custom OIDC integrations
 Source: https://trigger.dev/docs/oidc/custom
 
@@ -47767,6 +48105,357 @@ export const federatedTask = task({
 Most services exchange the token for service-specific credentials. Follow their documentation for the endpoint, request format, and credential refresh behavior. Send the OIDC token directly as a bearer token only if the service explicitly supports that flow.
 
 Keep tokens and credentials within the executing run and refresh before expiry. Redeploy with the updated CLI and SDK, then start a new run. For local Development runs, use the service's own development credentials instead.
+
+
+# Connect to Databricks
+Source: https://trigger.dev/docs/oidc/databricks
+
+Authenticate to Databricks from your tasks with a federation policy instead of a personal access token or client secret.
+
+Use Databricks [workload identity federation](https://docs.databricks.com/aws/dev-tools/auth/oauth-federation-policy) to exchange a Trigger.dev OIDC token for a Databricks OAuth token. Your tasks run queries as a service principal with no `DATABRICKS_TOKEN` or `DATABRICKS_CLIENT_SECRET` stored anywhere.
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure Databricks
+
+Create a service principal (or reuse one), grant it access to the warehouse and data your task uses, and add a federation policy with the Databricks CLI. Replace the numeric service principal ID, your organization slug, account ID, and the subject:
+
+```bash theme={"theme":"css-variables"}
+databricks account service-principal-federation-policy create YOUR_SERVICE_PRINCIPAL_NUMERIC_ID --json '{
+  "oidc_policy": {
+    "issuer": "https://oidc.trigger.dev/YOUR_ORG_SLUG",
+    "audiences": ["YOUR_DATABRICKS_ACCOUNT_ID"],
+    "subject": "YOUR_ENVIRONMENT_SUBJECT"
+  }
+}'
+```
+
+Use the **complete subject copied from the dashboard**. The audience shown is Databricks' default; any value works if the task requests the same one. A service principal holds at most 20 federation policies.
+
+## Query Databricks in your task
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/sdk@latest @databricks/sql
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest @databricks/sql
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest @databricks/sql
+```
+
+Exchange the OIDC token at your workspace's [token endpoint](https://docs.databricks.com/aws/en/dev-tools/auth/oauth-federation-exchange), then pass the access token to the SQL driver:
+
+```ts /trigger/query-databricks.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+import { DBSQLClient } from "@databricks/sql";
+
+const host = "YOUR_WORKSPACE.cloud.databricks.com";
+
+export const queryDatabricks = task({
+  id: "query-databricks",
+  run: async () => {
+    const { token: subjectToken } = await auth.getOIDCToken({
+      audience: "YOUR_DATABRICKS_ACCOUNT_ID",
+    });
+
+    const exchange = await fetch(`https://${host}/oidc/v1/token`, {
+      method: "POST",
+      body: new URLSearchParams({
+        client_id: "YOUR_SERVICE_PRINCIPAL_UUID",
+        subject_token: subjectToken,
+        subject_token_type: "urn:ietf:params:oauth:token-type:jwt",
+        grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+        scope: "all-apis",
+      }),
+    });
+    if (!exchange.ok) throw new Error(`Databricks exchange failed: ${exchange.status}`);
+    const { access_token } = await exchange.json();
+
+    const client = new DBSQLClient();
+    await client.connect({ host, path: "/sql/1.0/warehouses/YOUR_WAREHOUSE_ID", token: access_token });
+    const session = await client.openSession();
+    const operation = await session.executeStatement("SELECT current_user()");
+    const rows = await operation.fetchAll();
+    await operation.close();
+    await session.close();
+    await client.close();
+
+    return { rows };
+  },
+});
+```
+
+`client_id` is the service principal's UUID (its application ID), not the numeric ID used in the CLI command.
+
+> [!NOTE]
+>
+> The Databricks access token expires when the OIDC token it was exchanged for does, which is five
+> minutes for Trigger.dev tokens, and there's no refresh token. For longer work, request a new OIDC
+> token and exchange it again.
+
+## Remove the old credential
+
+Once runs in every deployed environment authenticate this way, delete `DATABRICKS_TOKEN` and `DATABRICKS_CLIENT_SECRET` from those environments on the Environment Variables page, then revoke the token or OAuth secret in Databricks.
+
+Local Development runs can't mint OIDC tokens. Use your own Databricks login there when `ctx.environment.type === "DEVELOPMENT"`.
+
+
+# Connect to Doppler
+Source: https://trigger.dev/docs/oidc/doppler
+
+Fetch secrets from Doppler in your tasks with a service account identity instead of a stored Doppler token.
+
+Use a Doppler [service account identity](https://docs.doppler.com/docs/service-account-identities) to exchange a Trigger.dev OIDC token for a short-lived Doppler API token. Your tasks fetch secrets with no `DOPPLER_TOKEN` stored anywhere. Service account identities are available on Doppler's Team and Enterprise plans.
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure Doppler
+
+1. In Doppler, create a service account (or reuse one) and give it read access to the project and config your task needs.
+
+2. On the service account, add an **Identity** of type OIDC with a custom discovery URL:
+
+   | Doppler field | Value |
+   | - | - |
+   | **Discovery URL** | Your issuer URL, `https://oidc.trigger.dev/YOUR_ORG_SLUG`. |
+   | **Audience** (`aud`) | A value your task requests, for example `https://api.doppler.com`. |
+   | **Subject** (`sub`) | The **complete subject copied from the dashboard**. |
+
+   Doppler requires both the audience and subject claim rules. Use exact values.
+
+3. Copy the **Identity ID**. It's a configuration value, not a secret.
+
+## Fetch secrets in your task
+
+```ts /trigger/read-from-doppler.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+
+export const readFromDoppler = task({
+  id: "read-from-doppler",
+  run: async () => {
+    const { token: oidcToken } = await auth.getOIDCToken({ audience: "https://api.doppler.com" });
+
+    const exchange = await fetch("https://api.doppler.com/v3/auth/oidc", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identity: "YOUR_IDENTITY_ID", token: oidcToken }),
+    });
+    if (!exchange.ok) throw new Error(`Doppler exchange failed: ${exchange.status}`);
+    const { token } = await exchange.json();
+
+    const response = await fetch(
+      "https://api.doppler.com/v3/configs/config/secrets/download?project=YOUR_PROJECT&config=prd&format=json",
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const secrets = await response.json();
+    // Use secrets.API_KEY here. Never log or return it.
+  },
+});
+```
+
+The exchange returns a short-lived API `token` and its `expires_at`. The second request uses Doppler's [download secrets](https://docs.doppler.com/reference/secrets-download) endpoint. Exchange inside `run`, and exchange again if the run outlives `expires_at`.
+
+## Remove the old credential
+
+Once runs in every deployed environment fetch secrets this way, delete `DOPPLER_TOKEN` from those environments on the Environment Variables page and revoke the old service token in Doppler.
+
+Local Development runs can't mint OIDC tokens. Use the Doppler CLI or your own token there when `ctx.environment.type === "DEVELOPMENT"`.
+
+
+# Connect to Google Cloud
+Source: https://trigger.dev/docs/oidc/gcp
+
+Authenticate to Google Cloud from your tasks with workload identity federation instead of a service account key.
+
+Use Google Cloud [workload identity federation](https://docs.cloud.google.com/iam/docs/workload-identity-federation-with-other-providers) to exchange a Trigger.dev OIDC token for a short-lived Google access token. Your tasks call Google Cloud APIs with no service account key in `GOOGLE_APPLICATION_CREDENTIALS` or `GOOGLE_CREDENTIALS`.
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure Google Cloud
+
+### Create a pool and provider
+
+Create a workload identity pool, then an OIDC provider in it. Replace the IDs, your organization slug, and your project number:
+
+```bash theme={"theme":"css-variables"}
+gcloud iam workload-identity-pools create trigger-dev \
+  --location="global" \
+  --display-name="Trigger.dev"
+
+gcloud iam workload-identity-pools providers create-oidc trigger-dev \
+  --location="global" \
+  --workload-identity-pool="trigger-dev" \
+  --issuer-uri="https://oidc.trigger.dev/YOUR_ORG_SLUG" \
+  --allowed-audiences="https://iam.googleapis.com/projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/trigger-dev/providers/trigger-dev" \
+  --attribute-mapping="google.subject=assertion.sub"
+```
+
+The allowed audience is the provider's own resource URL, which your task requests below. The mapping makes each Trigger.dev environment subject a distinct Google principal.
+
+> [!WARNING]
+>
+> Google limits `google.subject` to [127 characters](https://docs.cloud.google.com/iam/docs/workload-identity-federation).
+> Production and Staging subjects are well under that. A Preview subject ends with the branch's
+> slug, so a long branch name can push it over the limit and Google rejects the token. Check the
+> length of the subject you copy before using it for a Preview environment.
+
+### Grant access to the subject
+
+Grant roles to the principal for the **complete subject copied from the dashboard**. For the example below, allow reading objects in a bucket:
+
+```bash theme={"theme":"css-variables"}
+gcloud storage buckets add-iam-policy-binding gs://YOUR_BUCKET \
+  --role="roles/storage.objectViewer" \
+  --member="principal://iam.googleapis.com/projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/trigger-dev/subject/YOUR_ENVIRONMENT_SUBJECT"
+```
+
+Some Google APIs don't accept federated principals directly. For those, grant the principal `roles/iam.workloadIdentityUser` on a service account and impersonate it (see `service_account_impersonation_url` below).
+
+## Use the identity in your task
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/sdk@latest google-auth-library @google-cloud/storage
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest google-auth-library @google-cloud/storage
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest google-auth-library @google-cloud/storage
+```
+
+`IdentityPoolClient` from `google-auth-library` asks a [subject token supplier](https://github.com/googleapis/google-auth-library-nodejs#accessing-resources-from-an-oidc-or-saml20-identity-provider-using-a-custom-supplier) for a token whenever it needs a new Google access token. Return a fresh Trigger.dev OIDC token from it:
+
+```ts /trigger/read-from-gcs.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+import { IdentityPoolClient } from "google-auth-library";
+import { Storage } from "@google-cloud/storage";
+
+const providerUrl =
+  "//iam.googleapis.com/projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/trigger-dev/providers/trigger-dev";
+
+export const readFromGcs = task({
+  id: "read-from-gcs",
+  run: async () => {
+    const authClient = new IdentityPoolClient({
+      audience: providerUrl,
+      subject_token_type: "urn:ietf:params:oauth:token-type:jwt",
+      subject_token_supplier: {
+        getSubjectToken: async () =>
+          (await auth.getOIDCToken({ audience: `https:${providerUrl}` })).token,
+      },
+      // To impersonate a service account instead of using the principal directly:
+      // service_account_impersonation_url: "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/YOUR_SA_EMAIL:generateAccessToken",
+    });
+
+    const storage = new Storage({ projectId: "YOUR_PROJECT_ID", authClient });
+    const [contents] = await storage.bucket("YOUR_BUCKET").file("example.txt").download();
+
+    return { contents: contents.toString() };
+  },
+});
+```
+
+The STS `audience` is the provider URL without a scheme; the OIDC token's audience is the same URL with `https:`, matching `--allowed-audiences`.
+
+Create the client inside `run` so one run's tokens are never reused by another. Redeploy and start a new run on that deployment.
+
+## Remove the old credential
+
+Once runs in every deployed environment authenticate this way, delete `GOOGLE_APPLICATION_CREDENTIALS` and `GOOGLE_CREDENTIALS` from those environments on the Environment Variables page, then [delete the service account key](https://docs.cloud.google.com/iam/docs/keys-create-delete#deleting) in Google Cloud.
+
+Local Development runs can't mint OIDC tokens. Use your own credentials there, such as `gcloud auth application-default login`, when `ctx.environment.type === "DEVELOPMENT"`.
+
+
+# Connect to Hugging Face
+Source: https://trigger.dev/docs/oidc/hugging-face
+
+Exchange a Trigger.dev OIDC token for a short-lived Hugging Face token to run inference, download gated models or read one repo, without storing an HF_TOKEN.
+
+Use Hugging Face [Trusted Publishers](https://huggingface.co/docs/hub/trusted-publishers) to exchange a Trigger.dev OIDC token for a Hugging Face token that lasts one hour. Your tasks call Inference Providers, download gated models, or read and write one repo with no `HF_TOKEN` stored anywhere.
+
+The exchanged token covers less than a user access token. Pick the flavor that matches what your task does:
+
+| Configure | On | The token can |
+| - | - | - |
+| CI/CD identity | Your account's [Authentication settings](https://huggingface.co/settings/authentication#ci-cd-access), CI/CD Access | Read gated repos you have access to, and call Inference Providers if you tick **Allow Inference Providers calls** (billed to your account) |
+| Repo trusted publisher | A repo's **Settings**, Trusted Publishers | Write to that one repo, or only read it if you tick **Read-only** |
+
+A CI/CD identity token can't read your private repos or write anything; use a repo publisher for those ([security model](https://huggingface.co/docs/hub/trusted-publishers#security-model)).
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure Hugging Face
+
+Add a CI/CD identity or a repo trusted publisher, as in the table above. The settings list presets for CI providers, but [any OIDC-compliant provider works](https://huggingface.co/docs/hub/trusted-publishers#supported-ci-providers):
+
+* **Issuer**: the issuer URL copied from the dashboard.
+* **Claims**: `sub` set to the **complete subject copied from the dashboard**. Hugging Face matches claims exactly, so each environment needs its own identity or publisher.
+
+The audience is fixed: Hugging Face only accepts tokens whose `aud` is `https://huggingface.co`.
+
+## Call Hugging Face in your task
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/sdk@latest @huggingface/inference
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest @huggingface/inference
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest @huggingface/inference
+```
+
+Exchange the OIDC token at Hugging Face's [token endpoint](https://huggingface.co/docs/hub/trusted-publishers#api-reference), then use the access token wherever you used `HF_TOKEN`. `resource` is your Hugging Face username for a CI/CD identity, or the repo (`namespace/name`, `datasets/namespace/name`) for a repo publisher:
+
+```ts /trigger/hugging-face-inference.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+import { InferenceClient } from "@huggingface/inference";
+
+export const huggingFaceInference = task({
+  id: "hugging-face-inference",
+  run: async (payload: { prompt: string }) => {
+    const { token: subjectToken } = await auth.getOIDCToken({
+      audience: "https://huggingface.co",
+    });
+
+    const exchange = await fetch("https://huggingface.co/oauth/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+        subject_token_type: "urn:ietf:params:oauth:token-type:id_token",
+        subject_token: subjectToken,
+        resource: "YOUR_HF_USERNAME",
+      }),
+    });
+    if (!exchange.ok) throw new Error(`Hugging Face exchange failed: ${exchange.status}`);
+    const { access_token } = await exchange.json();
+
+    const client = new InferenceClient(access_token);
+    const result = await client.chatCompletion({
+      model: "meta-llama/Llama-3.1-8B-Instruct",
+      messages: [{ role: "user", content: payload.prompt }],
+    });
+
+    return { reply: result.choices[0].message.content };
+  },
+});
+```
+
+A failed exchange returns `400` with `invalid_grant` when the issuer, subject or audience doesn't match the identity or publisher. The token lasts 60 minutes with no refresh token, so exchange again for longer work.
+
+## Remove the old credential
+
+Once runs in every deployed environment authenticate this way, delete `HF_TOKEN`, `HUGGING_FACE_HUB_TOKEN` and `HUGGINGFACEHUB_API_TOKEN` from those environments on the Environment Variables page, then revoke the access token in your Hugging Face [token settings](https://huggingface.co/settings/tokens).
+
+Local Development runs can't mint OIDC tokens. Use your own Hugging Face token there when `ctx.environment.type === "DEVELOPMENT"`.
 
 
 # Connect to Infisical
@@ -47828,6 +48517,254 @@ export const useSecret = task({
 `siteUrl` defaults to `https://us.infisical.com`. Set it to `https://eu.infisical.com` for EU, or your self-hosted instance's URL. The audience defaults to `siteUrl` without a trailing slash; pass `audience` if your identity expects a different value. Optional `organizationSlug` scopes the session to an **Infisical** organization the identity can access.
 
 The helper returns `{ accessToken, tokenType, expiresAt }` and does not cache tokens. Authenticate inside `run`, and call it again before `expiresAt` if your task needs access for longer than the configured token lifetime.
+
+
+# Connect to OpenRouter
+Source: https://trigger.dev/docs/oidc/openrouter
+
+Exchange a Trigger.dev OIDC token for a short-lived OpenRouter access token, so your tasks call models without an OPENROUTER_API_KEY.
+
+Use OpenRouter [workload identity federation](https://openrouter.ai/docs/guides/overview/auth/workload-identity-federation) to exchange a Trigger.dev OIDC token for an OpenRouter access token. Your tasks call models with no `OPENROUTER_API_KEY` stored anywhere, and usage is billed to the API key the federation policy acts as, as if that key made the request.
+
+> [!NOTE]
+>
+> Workload identity federation is available on OpenRouter's Business and Enterprise plans, under
+> **Settings**, Workload identity.
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure OpenRouter
+
+An organization admin sets this up under **Settings**, Workload identity ([set up trust](https://openrouter.ai/docs/guides/overview/auth/workload-identity-federation#set-up-trust)):
+
+1. **Add an issuer.** Set **Issuer URL** to the issuer URL copied from the dashboard and leave **JWKS URL** empty: OpenRouter reads the keys from the issuer's discovery document.
+2. **Add a policy** for that issuer:
+   * **Subject**: the **complete subject copied from the dashboard**. It must match exactly.
+   * **Audience**: any value, for example `https://openrouter.ai`. It's required, and your task must request the same one.
+   * **Acts as API key**: the workspace API key your tasks use today. A workspace key grants the `inference` scope.
+
+Copy the policy's id, shown under its name. Your task sends it with every exchange.
+
+## Call OpenRouter in your task
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/sdk@latest openai
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest openai
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest openai
+```
+
+Exchange the OIDC token at OpenRouter's [token endpoint](https://openrouter.ai/docs/api/api-reference/oauth/exchange-a-workload-identity-token), then pass the access token as the API key to the OpenAI SDK pointed at [OpenRouter's base URL](https://openrouter.ai/docs/quickstart):
+
+```ts /trigger/openrouter-chat.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+import OpenAI from "openai";
+
+export const openrouterChat = task({
+  id: "openrouter-chat",
+  run: async (payload: { prompt: string }) => {
+    const { token: subjectToken } = await auth.getOIDCToken({
+      audience: "https://openrouter.ai",
+    });
+
+    const exchange = await fetch("https://openrouter.ai/api/v1/oauth/token", {
+      method: "POST",
+      body: new URLSearchParams({
+        grant_type: "urn:ietf:params:oauth:grant-type:token-exchange",
+        subject_token_type: "urn:ietf:params:oauth:token-type:jwt",
+        subject_token: subjectToken,
+        federation_policy_id: "YOUR_FEDERATION_POLICY_ID",
+      }),
+    });
+    if (!exchange.ok) throw new Error(`OpenRouter exchange failed: ${exchange.status}`);
+    const { access_token } = await exchange.json();
+
+    const openrouter = new OpenAI({
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey: access_token,
+    });
+    const completion = await openrouter.chat.completions.create({
+      model: "openai/gpt-4o-mini",
+      messages: [{ role: "user", content: payload.prompt }],
+    });
+
+    return { reply: completion.choices[0].message.content };
+  },
+});
+```
+
+The access token never outlives the OIDC token it was exchanged for, which is five minutes for Trigger.dev tokens. For longer work, request a new OIDC token and exchange it again. A rejected exchange returns `400` with `invalid_grant` whichever claim failed, so compare the issuer, subject and audience with the policy when it does.
+
+## Remove the old credential
+
+Once runs in every deployed environment authenticate this way, delete `OPENROUTER_API_KEY` from those environments on the Environment Variables page. The key itself stays: the policy acts as it. To stop anyone using it directly, create a new workspace key for the policy and delete the old one in OpenRouter.
+
+Local Development runs can't mint OIDC tokens. Use your own OpenRouter API key there when `ctx.environment.type === "DEVELOPMENT"`.
+
+
+# Connect to Snowflake
+Source: https://trigger.dev/docs/oidc/snowflake
+
+Connect to Snowflake from your tasks with workload identity federation instead of a password or private key.
+
+Use Snowflake [workload identity federation](https://docs.snowflake.com/en/user-guide/workload-identity-federation) to connect as a service user that trusts your Trigger.dev environment. The Snowflake driver sends the OIDC token itself, so there's no exchange step and no `SNOWFLAKE_PASSWORD` or private key stored anywhere.
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure Snowflake
+
+Create a service user for each environment. Replace the issuer and subject with the values from the dashboard:
+
+```sql theme={"theme":"css-variables"}
+CREATE USER trigger_production
+  WORKLOAD_IDENTITY = (
+    TYPE = OIDC
+    ISSUER = 'https://oidc.trigger.dev/YOUR_ORG_SLUG'
+    SUBJECT = 'YOUR_ENVIRONMENT_SUBJECT'
+  )
+  TYPE = SERVICE
+  DEFAULT_ROLE = analytics_reader;
+
+GRANT ROLE analytics_reader TO USER trigger_production;
+```
+
+With no `OIDC_AUDIENCE_LIST`, Snowflake expects the audience `snowflakecomputing.com`, which the task requests below. `SUBJECT` can be up to 255 characters, which fits every Trigger.dev subject in practice.
+
+## Connect in your task
+
+Workload identity needs the Snowflake Node.js driver with `WORKLOAD_IDENTITY` support:
+
+```bash npm theme={"theme":"css-variables"}
+npm i @trigger.dev/sdk@latest snowflake-sdk@latest
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm add @trigger.dev/sdk@latest snowflake-sdk@latest
+```
+
+```bash bun theme={"theme":"css-variables"}
+bun add @trigger.dev/sdk@latest snowflake-sdk@latest
+```
+
+Set the [authentication options](https://docs.snowflake.com/en/developer-guide/node-js/nodejs-driver-authenticate) `authenticator`, `workloadIdentityProvider`, and `token`:
+
+```ts /trigger/query-snowflake.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+import snowflake from "snowflake-sdk";
+
+export const querySnowflake = task({
+  id: "query-snowflake",
+  run: async () => {
+    const { token } = await auth.getOIDCToken({ audience: "snowflakecomputing.com" });
+
+    const connection = snowflake.createConnection({
+      account: "YOUR_ACCOUNT_IDENTIFIER",
+      authenticator: "WORKLOAD_IDENTITY",
+      workloadIdentityProvider: "OIDC",
+      token,
+    });
+    // connect reports a failed login through its callback, so reject on it
+    await new Promise((resolve, reject) =>
+      connection.connect((err, conn) => (err ? reject(err) : resolve(conn)))
+    );
+
+    const rows = await new Promise((resolve, reject) =>
+      connection.execute({
+        sqlText: "SELECT CURRENT_USER()",
+        complete: (err, _stmt, rows) => (err ? reject(err) : resolve(rows)),
+      })
+    );
+
+    await new Promise((resolve) => connection.destroy(resolve));
+    return { rows };
+  },
+});
+```
+
+The token is only used to open the connection, so request it right before connecting. Open the connection inside `run` and close it before the run ends.
+
+## Remove the old credential
+
+Once runs in every deployed environment connect this way, delete `SNOWFLAKE_PASSWORD`, `SNOWFLAKE_PRIVATE_KEY`, `SNOWFLAKE_PRIVATE_KEY_PATH`, and `SNOWFLAKE_PRIVATE_KEY_PASSPHRASE` from those environments on the Environment Variables page, then remove the password or key from the old Snowflake user. `SNOWFLAKE_ACCOUNT` isn't a secret and can stay.
+
+Local Development runs can't mint OIDC tokens. Use your own Snowflake login there when `ctx.environment.type === "DEVELOPMENT"`.
+
+
+# Connect to HashiCorp Vault
+Source: https://trigger.dev/docs/oidc/vault
+
+Log in to Vault from your tasks with JWT auth instead of a long-lived Vault token.
+
+Use Vault's [JWT auth method](https://developer.hashicorp.com/vault/docs/auth/jwt) to exchange a Trigger.dev OIDC token for a short-lived Vault token. Your tasks read secrets with no `VAULT_TOKEN` stored anywhere. This works with self-managed Vault and HCP Vault.
+
+Follow the [OIDC prerequisites](/docs/oidc#prerequisites), then go to the [OIDC](https://cloud.trigger.dev/_/oidc) page for your environment and copy the issuer URL and subject.
+
+## Configure Vault
+
+Enable the JWT auth method and point it at your issuer's discovery document:
+
+```bash theme={"theme":"css-variables"}
+vault auth enable -path=trigger jwt
+
+vault write auth/trigger/config \
+  oidc_discovery_url="https://oidc.trigger.dev/YOUR_ORG_SLUG" \
+  bound_issuer="https://oidc.trigger.dev/YOUR_ORG_SLUG"
+```
+
+Create a role for each environment. Replace the subject with the **complete subject copied from the dashboard**, and the policy with one that allows only the paths your task reads:
+
+```bash theme={"theme":"css-variables"}
+vault write auth/trigger/role/trigger-production \
+  role_type="jwt" \
+  bound_audiences="vault" \
+  bound_subject="YOUR_ENVIRONMENT_SUBJECT" \
+  user_claim="sub" \
+  token_policies="trigger-production" \
+  token_ttl="15m"
+```
+
+`bound_audiences` is the audience your task requests; `vault` is an example, any value works if both sides match. See the [JWT auth API](https://developer.hashicorp.com/vault/api-docs/auth/jwt#create-update-role) for every role option.
+
+## Read a secret in your task
+
+```ts /trigger/read-from-vault.ts theme={"theme":"css-variables"}
+import { auth, task } from "@trigger.dev/sdk";
+
+const vaultAddr = "https://vault.example.com:8200";
+
+export const readFromVault = task({
+  id: "read-from-vault",
+  run: async () => {
+    const { token: jwt } = await auth.getOIDCToken({ audience: "vault" });
+
+    const login = await fetch(`${vaultAddr}/v1/auth/trigger/login`, {
+      method: "POST",
+      body: JSON.stringify({ role: "trigger-production", jwt }),
+    });
+    if (!login.ok) throw new Error(`Vault login failed: ${login.status}`);
+    const { auth: vaultAuth } = await login.json();
+
+    const secret = await fetch(`${vaultAddr}/v1/secret/data/my-app`, {
+      headers: { "X-Vault-Token": vaultAuth.client_token },
+    });
+    const { data } = await secret.json();
+    // Use data.data here. Never log or return it.
+  },
+});
+```
+
+The login response holds the Vault token at `auth.client_token`. On HCP Vault or Vault Enterprise, add an `X-Vault-Namespace` header to both requests. Log in inside `run`, and log in again if the run outlives `token_ttl`.
+
+## Remove the old credential
+
+Once runs in every deployed environment log in this way, delete `VAULT_TOKEN` from those environments on the Environment Variables page and revoke the old token with `vault token revoke`.
+
+Local Development runs can't mint OIDC tokens. Use your own Vault login there when `ctx.environment.type === "DEVELOPMENT"`.
 
 
 # Contributing
@@ -54504,6 +55441,8 @@ We patch the latest released version line only, so keep an eye on new releases t
 
 You can also lock the versions of the bundled services, for example with `CLICKHOUSE_IMAGE_TAG`. If you do, or if you bring your own ClickHouse via `CLICKHOUSE_URL`, note that Trigger.dev requires ClickHouse 25.8 or newer.
 
+The optional `LOGS_SEARCH_INSERT_ASYNC` setting defaults to `false` and requires ClickHouse 26.2 or newer when enabled. Leave it disabled on ClickHouse 25.8.
+
 > [!NOTE]
 >
 > The bundled ClickHouse uses the official `clickhouse/clickhouse-server` image, and your existing
@@ -54533,7 +55472,7 @@ This only affects new runs; existing runs continue to read from wherever their e
 
 The legacy `clickhouse` store (the `task_events_v1` table) is retired. If you set `EVENT_REPOSITORY_DEFAULT_STORE=clickhouse`, your webapp now writes and reads `clickhouse_v2` instead and logs a warning at startup. Events recorded in `task_events_v1` stay there but no longer show in the dashboard until you copy them over.
 
-#### 1. Switch to clickhouse\_v2
+#### 1. Switch to clickhouse_v2
 
 Switch the store in your `.env` and restart the webapp:
 
@@ -54809,6 +55748,8 @@ Environment variables for the webapp container.
 | `SESSION_SECRET` | Yes | — | Session encryption secret. Run: `openssl rand -hex 16` |
 | `MAGIC_LINK_SECRET` | Yes | — | Magic link encryption secret. Run: `openssl rand -hex 16` |
 | `ENCRYPTION_KEY` | Yes | — | Secret store encryption key. Run: `openssl rand -hex 16` |
+| `ENVIRONMENT_ENCRYPTION_ENABLED` | No | false | Master gate for automatic per-environment encryption enrollment. Also requires `environmentEncryptionEnabled` in organization feature flags or the global feature flag (organization overrides global; unset is false). Enable only after all instances have been upgraded. Existing encrypted environments continue using their keys if any rollout gate is later disabled. |
+| `ENVIRONMENT_ENCRYPTION_KMS_KEY_ARN` | No | unset | Resolved symmetric AWS KMS key ARN for wrapping new environments' keys. Unset uses `ENCRYPTION_KEYRING` (or the legacy `ENCRYPTION_KEY`) locally, without AWS access. Changing this does not alter existing environment-key versions. |
 | `MANAGED_WORKER_SECRET` | Yes | — | Managed worker secret. Must be set and match supervisor. Run: `openssl rand -hex 32` |
 | `PUBLIC_TOKEN_SUBJECT_SECRET` | No | `ENCRYPTION_KEY` | Key that encrypts the environment id inside public access tokens. Set it to keep this separate from the secret store key. Run: `openssl rand -hex 32` |
 | `PUBLIC_TOKEN_SEALED_SUBJECT_ENABLED` | No | false | Encrypt the environment id inside newly minted public access tokens. Turn on only once every webapp instance runs a version that can read them. |
@@ -54845,7 +55786,7 @@ Environment variables for the webapp container.
 | `BLOCKED_EMAIL_DOMAINS` | No | — | Comma-separated email domains that can't sign in or sign up, including their subdomains. |
 | `LOGIN_RATE_LIMITS_ENABLED` | No | true | Enable rate limiting on magic-link login. |
 | `MAGIC_LINK_SAME_BROWSER_REQUIRED` | No | true | Only accept a magic link opened in the browser that requested it. Set to false to allow opening it on another device. |
-| `PERSONAL_ACCESS_TOKEN_EXPIRY_DAYS` | No | 30,90,365 | Lifetimes, in days (1 to 3650), offered when creating a personal access token on the dashboard. Comma-separated. |
+| `PERSONAL_ACCESS_TOKEN_EXPIRY_DAYS` | No | 30,90,365 | Lifetimes, in days (1 to 3650), offered when creating a personal access token on the dashboard. Comma-separated. The longest is also the furthest a custom expiry date can be. |
 | `PERSONAL_ACCESS_TOKEN_DEFAULT_EXPIRY_DAYS` | No | 90 | The lifetime preselected when creating a personal access token. If it isn't one of the offered lifetimes, the shortest is preselected. |
 | `CLI_LOGIN_IDLE_TIMEOUT_DAYS` | No | 7 | A token minted by a CLI or MCP login stops working after this many days without use. Set to 0 to turn this off. Each token keeps the value it was minted with. |
 | `PERSONAL_ACCESS_TOKEN_EXPIRY_EMAILS_ENABLED` | No | true | Email the owner 7 days before a dashboard-created personal access token expires, and again when it has. Only runs when `EMAIL_TRANSPORT` is set. |
@@ -54966,6 +55907,7 @@ Environment variables for the webapp container.
 | `STREAMING_BATCH_MAX_ITEMS` | No | 1000 | Max items in streaming batch (v3 API, requires SDK 4.3.1+). |
 | `STREAMING_BATCH_ITEM_MAXIMUM_SIZE` | No | 3145728 (3MB) | Max size per item in streaming batch. |
 | `STREAMING_BATCH_INGEST_CONCURRENCY` | No | 10 | Items ingested concurrently per streaming batch request. Peak memory ≈ this × item size. Set to 1 for sequential. |
+| `ENVIRONMENT_VARIABLES_COMPARE_MAX_KEYS` | No | 1000 | Most keys one environment variables comparison compares, and most values the Needs attention page checks for empty ones. Above it the dashboard asks to search or pick fewer keys. |
 | **OTel limits** | | | |
 | `TRIGGER_OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT` | No | 1024 | OTel span attribute count limit. |
 | `TRIGGER_OTEL_LOG_ATTRIBUTE_COUNT_LIMIT` | No | 1024 | OTel log attribute count limit. |
@@ -55462,6 +56404,8 @@ Migration from the old Bitnami subchart to the official `clickhouse/clickhouse-s
 >
 > Trigger.dev requires ClickHouse 25.8 or newer. The bundled ClickHouse is single-node — run
 > ClickHouse externally for a clustered or replicated setup.
+
+The optional `LOGS_SEARCH_INSERT_ASYNC` setting defaults to `false` and requires ClickHouse 26.2 or newer when enabled. Leave it disabled on ClickHouse 25.8.
 
 **Direct configuration:**
 
@@ -57063,7 +58007,7 @@ You can see from the comments that the payload has several useful properties:
 
 * `timestamp` - the time the task was scheduled to run, as a UTC date.
 * `lastTimestamp` - the time the task was last run, as a UTC date.
-* `timezone` - the timezone the schedule was registered with, defaults to "UTC". In IANA format, e.g. "America/New\_York".
+* `timezone` - the timezone the schedule was registered with, defaults to "UTC". In IANA format, e.g. "America/New_York".
 * `scheduleId` - the id of the schedule that triggered the task
 * `externalId` - the external id you (optionally) provided when creating the schedule
 * `upcoming` - the next 10 times the task is scheduled to run
@@ -60162,7 +61106,7 @@ If you see "Connection error" when running `trigger login` (or "Failed to create
 
 If a request fails with `401` and one of these codes, the token has expired:
 
-* **`personal_access_token_expired`**: a personal access token from the dashboard reached the end of the lifetime chosen when it was created. Create a new one on the [Personal Access Tokens](https://cloud.trigger.dev/account/tokens) page and replace the old one wherever it's stored. See [PAT expiry](/docs/management/authentication#pat-expiry).
+* **`personal_access_token_expired`**: a personal access token from the dashboard reached the expiry date chosen when it was created. Create a new one on the [Personal Access Tokens](https://cloud.trigger.dev/account/tokens) page and replace the old one wherever it's stored. See [PAT expiry](/docs/management/authentication#pat-expiry).
 * **`cli_login_expired`**: a CLI or MCP login went unused for 7 days. Run `npx trigger.dev@latest login`. With a CLI version before 4.8.4, `login` can't replace an expired login, so run `trigger.dev logout` first. See [CLI login expiry](/docs/cli-login-commands#login-expiry).
 
 ### Runs never dequeue in dev
@@ -60525,7 +61469,7 @@ Or change the tsconfig jsx setting:
 
 ### Next.js build failing due to missing API key in GitHub CI
 
-This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER\_SECRET\_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
+This issue occurs during the Next.js app build process on GitHub CI where the Trigger.dev SDK is expecting the TRIGGER_SECRET_KEY environment variable to be set at build time. Next.js attempts to compile routes and creates static pages, which can cause issues with SDKs that require runtime environment variables. The solution is to mark the relevant pages as dynamic to prevent Next.js from trying to make them static. You can do this by adding the following line to the route file:
 
 ```ts theme={"theme":"css-variables"}
 export const dynamic = "force-dynamic";
@@ -63246,7 +64190,7 @@ linear({
 })
 ```
 
-The user picks one and presses Continue; the choice shows in the session as "Approve createSubIssues \[call\_a]" (the tool and the call it applies to, so the decision always lands on the call whose input the card shows) and resumes the run with `{ approved: true | false }`, and the decision is recorded as a thought. Typing a free-text reply instead dismisses the options and runs as a normal turn, so the model can take the reply into account (and ask again) with the approval still pending.
+The user picks one and presses Continue; the choice shows in the session as "Approve createSubIssues \[call_a]" (the tool and the call it applies to, so the decision always lands on the call whose input the card shows) and resumes the run with `{ approved: true | false }`, and the decision is recorded as a thought. Typing a free-text reply instead dismisses the options and runs as a normal turn, so the model can take the reply into account (and ask again) with the approval still pending.
 
 `interactions` gives a tool its own choices instead of Approve and Deny. The card is a select of `options`, and the chosen option resolves the tool to `{ selected }`:
 
@@ -63265,7 +64209,7 @@ linear({
 })
 ```
 
-The choice shows in the session as "High \[choice:call\_a]", resumes the run with `{ selected: "High" }`, and is recorded as a thought.
+The choice shows in the session as "High \[choice:call_a]", resumes the run with `{ selected: "High" }`, and is recorded as a thought.
 
 ## Stopping
 
@@ -64094,14 +65038,14 @@ export const svixEvents = webhook({
 });
 ```
 
-```ts /trigger/composio.ts theme={"theme":"css-variables"}
+```ts /trigger/standard-webhooks.ts theme={"theme":"css-variables"}
 import { webhook, webhooks } from "@trigger.dev/sdk";
 
-export const composio = webhooks.endpoint.define({ id: "composio", source: webhooks.standardWebhooks() });
+export const orders = webhooks.endpoint.define({ id: "orders", source: webhooks.standardWebhooks() });
 
-export const composioEvents = webhook({
-  id: "composio-events",
-  endpoint: composio,
+export const orderEvents = webhook({
+  id: "order-events",
+  endpoint: orders,
   onEvent: async ({ event }) => {
     console.log(event);
   },
@@ -64127,8 +65071,9 @@ Each function below returns a source with its provider's verification configurat
 
 | Verification | Source functions |
 | - | - |
-| Svix | `clerk()`, `resend()`, `brex()`, `autumn()` |
-| Standard Webhooks | `openai()`, `replicate()`, `recallai()`, `composio()`, `loops()`, `granola()` |
+| Svix | `clerk()`, `resend()`, `autumn()` |
+| Standard Webhooks | `openai()`, `replicate()`, `recallai()`, `loops()`, `granola()`, `brex()` |
+| Standard Webhooks headers, keyed with the secret's raw text | `composio()` |
 | HMAC-SHA256 with `X-Hub-Signature-256` | `whatsapp()` |
 | Shared secret in `X-Gitlab-Token` | `gitlab()` |
 | Shared secret as `Authorization: Bearer` | `supabase()` |
@@ -64179,6 +65124,8 @@ Some sources also define a response for the provider's endpoint-validation reque
 `discord()` answers a verified `{ type: 0 }` PING with HTTP `204` and no body. It also returns `204` for accepted events and `401` for invalid signatures. Set the Discord application's public key as the endpoint's verification credential.
 
 Slack's `url_verification` challenge is handled the same way by `@trigger.dev/slack`.
+
+`notion()` handles Notion's verification request, which is not signed: when you create a subscription, Notion sends a `verification_token` that it then uses to sign every later delivery. While the endpoint has no signing secret, the endpoint answers that request with `200` and stores the token as its signing secret. The endpoint page shows the token so you can paste it into Notion's Verify dialog. If the token doesn't arrive, select **Resend token** in that dialog. Deploy the endpoint and leave its signing secret unset before you create the subscription. Once a secret is set, a later verification request is rejected like any unsigned delivery. Before you re-create the subscription or resend its token, select **Clear signing secret** on the endpoint page so the endpoint stores the new token.
 
 `whatsapp()` answers Meta's GET verification request when `hub.mode` is `subscribe` and `hub.verify_token` matches the endpoint's verify token. It returns `hub.challenge` as text. The verify token is separate from the App Secret used to verify event signatures; see [Verify a WhatsApp endpoint URL](/docs/webhooks/connect#verify-a-whatsapp-endpoint-url). Endpoints without GET verification return `405` to GET requests.
 

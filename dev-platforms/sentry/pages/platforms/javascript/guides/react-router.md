@@ -202,7 +202,7 @@ Need help locating captured data in your Sentry project?
 At this point, you should have integrated Sentry into your React Router Framework application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/react-router/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers blocking Sentry events
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/react-router/configuration/tunneling.md) to avoid ad blockers blocking Sentry events
 * Read the [manual setup guide](https://docs.sentry.io/platforms/javascript/guides/react-router/manual-setup.md) for advanced configuration
 
 Are you having problems setting up the SDK?

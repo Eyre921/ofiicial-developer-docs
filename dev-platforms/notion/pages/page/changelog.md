@@ -22,6 +22,10 @@ With the [View sessions and interact with agents](/reference/capabilities#agent-
 
 When you read a mention or assignment, the [bot user object](/reference/user#bots) gives you the agent ID in `agent_id` and the bot user ID in `id`.
 
+### Small session credit usage
+
+`credits_used` in [Retrieve a session](/reference/notion-agent-apis/retrieve-session) and [Query sessions](/reference/notion-agent-apis/query-sessions) no longer reads as `0` for sessions that used less than 0.01 credits. Below 0.01, it has at most two significant figures, so 0.004567 credits reads as `0.0045`. From 0.01 up, it still has at most two decimal places. Both rules round down.
+
 **November 9, 2026**
 
 ### Custom Agents in people properties

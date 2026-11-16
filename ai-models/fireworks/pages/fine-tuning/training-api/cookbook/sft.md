@@ -140,7 +140,7 @@ Neither accepts `cross_job://` references, URIs, or absolute paths in `init_from
 * **No sampling deployment is required by default** — optional generation evaluation uses the SDK-managed sampler.
 * **Use `batch_size`** to control the number of examples per optimizer step.
 * **Resume**: Attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`; the recipe restores the saved training state and data cursor. See [checkpoints](/fine-tuning/training-api/cookbook/reference#checkpoints).
-* **Periodic checkpoints are disabled by default** (`dcp_save_interval=0`); successful runs save final state by default. Set a positive interval (e.g., `50`) to recover progress from an interrupted run.
+* **Periodic checkpoints are on by default.** LoRA runs save a resumable and promotable checkpoint at each epoch end and about every 30 minutes within an epoch. Full-parameter runs (Dedicated only) save a resumable checkpoint every 50 steps. An explicit `dcp_save_interval`, as in the serverless SFT example, switches a LoRA run's periodic saves to resumable-only saves every N steps; the final checkpoint is still promotable. To promote intermediate checkpoints, also set `sampler_save_interval`. See [checkpoint fields](/fine-tuning/training-api/cookbook/reference#checkpoint-&-weight-sync-fields).
 
 ## Check tokenization
 

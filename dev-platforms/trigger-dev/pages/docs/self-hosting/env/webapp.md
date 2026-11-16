@@ -12,6 +12,8 @@ Environment variables for the webapp container.
 | `SESSION_SECRET` | Yes | — | Session encryption secret. Run: `openssl rand -hex 16` |
 | `MAGIC_LINK_SECRET` | Yes | — | Magic link encryption secret. Run: `openssl rand -hex 16` |
 | `ENCRYPTION_KEY` | Yes | — | Secret store encryption key. Run: `openssl rand -hex 16` |
+| `ENVIRONMENT_ENCRYPTION_ENABLED` | No | false | Master gate for automatic per-environment encryption enrollment. Also requires `environmentEncryptionEnabled` in organization feature flags or the global feature flag (organization overrides global; unset is false). Enable only after all instances have been upgraded. Existing encrypted environments continue using their keys if any rollout gate is later disabled. |
+| `ENVIRONMENT_ENCRYPTION_KMS_KEY_ARN` | No | unset | Resolved symmetric AWS KMS key ARN for wrapping new environments' keys. Unset uses `ENCRYPTION_KEYRING` (or the legacy `ENCRYPTION_KEY`) locally, without AWS access. Changing this does not alter existing environment-key versions. |
 | `MANAGED_WORKER_SECRET` | Yes | — | Managed worker secret. Must be set and match supervisor. Run: `openssl rand -hex 32` |
 | `PUBLIC_TOKEN_SUBJECT_SECRET` | No | `ENCRYPTION_KEY` | Key that encrypts the environment id inside public access tokens. Set it to keep this separate from the secret store key. Run: `openssl rand -hex 32` |
 | `PUBLIC_TOKEN_SEALED_SUBJECT_ENABLED` | No | false | Encrypt the environment id inside newly minted public access tokens. Turn on only once every webapp instance runs a version that can read them. |
@@ -48,7 +50,7 @@ Environment variables for the webapp container.
 | `BLOCKED_EMAIL_DOMAINS` | No | — | Comma-separated email domains that can't sign in or sign up, including their subdomains. |
 | `LOGIN_RATE_LIMITS_ENABLED` | No | true | Enable rate limiting on magic-link login. |
 | `MAGIC_LINK_SAME_BROWSER_REQUIRED` | No | true | Only accept a magic link opened in the browser that requested it. Set to false to allow opening it on another device. |
-| `PERSONAL_ACCESS_TOKEN_EXPIRY_DAYS` | No | 30,90,365 | Lifetimes, in days (1 to 3650), offered when creating a personal access token on the dashboard. Comma-separated. |
+| `PERSONAL_ACCESS_TOKEN_EXPIRY_DAYS` | No | 30,90,365 | Lifetimes, in days (1 to 3650), offered when creating a personal access token on the dashboard. Comma-separated. The longest is also the furthest a custom expiry date can be. |
 | `PERSONAL_ACCESS_TOKEN_DEFAULT_EXPIRY_DAYS` | No | 90 | The lifetime preselected when creating a personal access token. If it isn't one of the offered lifetimes, the shortest is preselected. |
 | `CLI_LOGIN_IDLE_TIMEOUT_DAYS` | No | 7 | A token minted by a CLI or MCP login stops working after this many days without use. Set to 0 to turn this off. Each token keeps the value it was minted with. |
 | `PERSONAL_ACCESS_TOKEN_EXPIRY_EMAILS_ENABLED` | No | true | Email the owner 7 days before a dashboard-created personal access token expires, and again when it has. Only runs when `EMAIL_TRANSPORT` is set. |
@@ -169,6 +171,7 @@ Environment variables for the webapp container.
 | `STREAMING_BATCH_MAX_ITEMS` | No | 1000 | Max items in streaming batch (v3 API, requires SDK 4.3.1+). |
 | `STREAMING_BATCH_ITEM_MAXIMUM_SIZE` | No | 3145728 (3MB) | Max size per item in streaming batch. |
 | `STREAMING_BATCH_INGEST_CONCURRENCY` | No | 10 | Items ingested concurrently per streaming batch request. Peak memory ≈ this × item size. Set to 1 for sequential. |
+| `ENVIRONMENT_VARIABLES_COMPARE_MAX_KEYS` | No | 1000 | Most keys one environment variables comparison compares, and most values the Needs attention page checks for empty ones. Above it the dashboard asks to search or pick fewer keys. |
 | **OTel limits** | | | |
 | `TRIGGER_OTEL_SPAN_ATTRIBUTE_COUNT_LIMIT` | No | 1024 | OTel span attribute count limit. |
 | `TRIGGER_OTEL_LOG_ATTRIBUTE_COUNT_LIMIT` | No | 1024 | OTel log attribute count limit. |

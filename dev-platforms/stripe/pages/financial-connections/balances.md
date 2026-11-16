@@ -125,7 +125,7 @@ Use the [Refresh API](https://docs.stripe.com/api/financial_connections/accounts
 Use the Financial Connections account ID to initiate a refresh. If you’re integrating through a payments flow, find the account ID [on the associated Payment Method](https://docs.stripe.com/financial-connections/ach-direct-debit-payments.md#finding-the-financial-connections-account-id). When using a Financial Connections Session, retrieve it [through the session](https://docs.stripe.com/financial-connections/other-data-powered-products.md?platform=web#collect-an-account).
 
 ```curl
-curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}}/refresh \
+curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}}/refresh \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "features[]=balance"
 ```
@@ -156,7 +156,7 @@ After a balance refresh completes, Stripe sets the availability of future refres
 After the balance refresh has completed, retrieve the Financial Connections Account from the body of the [financial_connections.account.refreshed_balance](https://docs.stripe.com/api/events/types.md#event_types-financial_connections.account.refreshed_balance) event or through the API.
 
 ```curl
-curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIALCONNECTIONSACCOUNT_ID}} \
+curl https://api.stripe.com/v1/financial_connections/accounts/{{FINANCIAL_CONNECTIONS_ACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

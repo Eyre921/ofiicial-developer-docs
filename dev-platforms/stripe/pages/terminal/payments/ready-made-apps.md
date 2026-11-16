@@ -40,7 +40,7 @@ Standalone mode is available for [Stripe Reader S700/S710](https://docs.stripe.c
 
 The Stripe Terminal app is available for iOS and Android devices that support [Tap to Pay](https://docs.stripe.com/terminal/payments/setup-reader/tap-to-pay.md).
 
-1. To request access, email [terminal-ready-made-apps@stripe.com](mailto:terminal-ready-made-apps@stripe.com).
+1. Download the Stripe Terminal app for [iOS](https://testflight.apple.com/join/SDcYxUu2) or [Android](https://play.google.com/store/apps/details?id=com.stripe.standalonepos.android).
 2. Open the app and log in with your Stripe account.
 3. Select the account and location where you want to accept payments.
 4. Enter an amount.
@@ -98,7 +98,7 @@ To refund a standalone mode payment using the API, create a [Refund](https://doc
 ```curl
 curl https://api.stripe.com/v1/refunds \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "payment_intent={{PAYMENTINTENT_ID}}"
+  -d "payment_intent={{PAYMENT_INTENT_ID}}"
 ```
 
 ## Next steps

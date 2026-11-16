@@ -55,17 +55,25 @@ In addition to chained filters, data sources can be queried with single filters.
 
 ### Archived pages
 
-By default, this endpoint returns non-archived pages. To query archived pages instead, set the top-level `is_archived` body parameter to `true`:
+Page objects use `is_archived` to indicate whether a page is archived.
+Use the top-level `archive_status` body parameter to select active pages, archived pages, or both.
+
+| Value | Results |
+| - | - |
+| `active` | Non-archived pages. This is the default. |
+| `archived` | Archived pages only. |
+| `all` | Both active and archived pages. |
 
 ```json theme={null}
 {
-  "is_archived": true
+  "archive_status": "all"
 }
 ```
 
-Set `is_archived` to `false`, or omit it, to query non-archived pages. The archive selector is applied before property filters and sorts, so filters only match rows in the selected archive partition.
+The archive selector applies before property filters, sorts, limits, and pagination.
+Use the same selector on every request in a paginated query.
 
-`is_archived` is separate from `in_trash`. Page objects include `is_archived` to indicate whether a page is archived, while `in_trash` indicates trash status and is used by page/block/data source update APIs. `in_trash` is not a supported query body parameter for this endpoint.
+Archive selection does not include pages in Trash or broaden permissions.
 
 ### Sorting
 

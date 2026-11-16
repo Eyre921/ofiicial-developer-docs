@@ -60,6 +60,10 @@ The trainer and inference deployment are separate resources with separate billin
 >
 > Use the Tinker-compatible training client directly when a maintained recipe does not express the required behavior.
 
+> [!NOTE]
+>
+> On Kimi K3.1 Pro, a dedicated LoRA trains the attention layers, the shared expert, and the routed experts.
+
 ## Dedicated training quickstart
 
 ### Step 1: Install the SDK and cookbook
@@ -99,6 +103,10 @@ Choose a shape from [Models](/fine-tuning/models). Pass the full shared shape ID
 ### Step 4–10: Train, checkpoint, promote, deploy, tear down
 
 Follow the forked recipe. Record trainer and deployment IDs, checkpoint cadence, and cleanup flags before launch.
+
+## Capacity and reservations
+
+Dedicated trainers run on shared capacity, unless your account has a matching reservation. With a matching reservation, trainers run on the reservation by default. If the reservation is full, the trainer waits instead of falling back to shared capacity. Standard inference deployments on the same reservation can fill the reservation. A trainer that can't be placed within 48 hours fails. See [Training on a reservation](/deployments/reservations#training-on-a-reservation).
 
 ## Training and sampling lifecycle
 

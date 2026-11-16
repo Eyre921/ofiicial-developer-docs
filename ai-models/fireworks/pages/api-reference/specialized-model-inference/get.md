@@ -9,6 +9,10 @@ Check one loaded adapter's state, for example to see whether it's ready for traf
 
 Preview
 
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
+
 ```bash theme={null}
 curl "https://api.fireworks.ai/v1/accounts/$ACCOUNT_ID/deployedModels/$DEPLOYED_MODEL_ID" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY"

@@ -8,6 +8,10 @@ REST endpoints and the deployed model object for Specialized Model Inference on 
 
 Preview
 
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
+
 A loaded adapter is a **deployed model**: a record that ties an adapter in your account to where it serves. For an adapter on serverless, that record has `serverless: true`. You load and unload adapters with the control-plane API and call them with the inference API.
 
 | Base URL | Use |

@@ -1246,7 +1246,7 @@ public class ConfigureIndexExample {
         HashMap<String, String> tags = new HashMap<>();
         tags.put("tag", "development");
 
-        pc.configureServerlessIndex("docs-example", "enabled", tags, null);
+        pc.configureServerlessIndex("docs-example", null, tags, null);
     }
 }
 ```
@@ -1347,7 +1347,7 @@ public class ConfigureIndexExample {
         HashMap<String, String> tags = new HashMap<>();
         tags.put("example", "");
 
-        pc.configureServerlessIndex("docs-example", "enabled", tags, null);
+        pc.configureServerlessIndex("docs-example", null, tags, null);
     }
 }
 ```

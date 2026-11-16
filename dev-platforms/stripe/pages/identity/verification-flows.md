@@ -49,7 +49,7 @@ To use flows in your API integration, copy the flow ID from the details page and
 ```curl
 curl https://api.stripe.com/v1/identity/verification_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "verification_flow={{IDENTITYVERIFICATIONFLOW_ID}}"
+  -d "verification_flow={{VERIFICATION_FLOW_ID}}"
 ```
 
 ### Include user-specific details
@@ -61,7 +61,7 @@ For example, here’s how you can attach a user-specific phone number, email add
 ```curl
 curl https://api.stripe.com/v1/identity/verification_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "verification_flow={{IDENTITYVERIFICATIONFLOW_ID}}" \
+  -d "verification_flow={{VERIFICATION_FLOW_ID}}" \
   -d "provided_details[phone]=5555551212" \
   --data-urlencode "provided_details[email]=user@domain.com" \
   -d client_reference_id=reference-token

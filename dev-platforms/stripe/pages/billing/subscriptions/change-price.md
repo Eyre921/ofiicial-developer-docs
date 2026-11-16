@@ -98,7 +98,7 @@ curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
 Use this option if you don’t need to make any other changes at the subscription level.
 
 ```curl
-curl https://api.stripe.com/v1/subscription_items/{{SUBSCRIPTIONITEM_ID}} \
+curl https://api.stripe.com/v1/subscription_items/{{SUBSCRIPTION_ITEM_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d price={{NEW_PRICE_ID}}
 ```

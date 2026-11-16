@@ -9,6 +9,10 @@ Load a LoRA adapter onto serverless with Specialized Model Inference.
 
 Preview
 
+> [!NOTE]
+>
+> Specialized Model Inference is in Preview and available on request. To request access, contact your account team or [support@fireworks.ai](mailto:support@fireworks.ai). You can try the [public adapter](/serverless/specialized-model-inference/overview#try-a-public-adapter) without access.
+
 Loads a LoRA adapter onto the shared serverless pool. Loading takes about 2 to 5 minutes. You're billed per token only when you call the adapter.
 
 ```bash theme={null}
@@ -75,7 +79,7 @@ Returns the [deployed model](/api-reference/specialized-model-inference/overview
 * **One serverless copy per adapter.** Loading the same adapter onto serverless again fails while the first copy exists.
 * **The first request is slower.** The first request after loading a LoRA adapter can take up to a minute. Later requests have much lower latency.
 * **The bare model name.** The first copy of an adapter you load becomes its default and answers `accounts/<ACCOUNT_ID>/models/<LORA_ID>`. If another copy already holds that name, this copy loads with `default: false`. Call it with `accounts/<ACCOUNT_ID>/deployedModels/<DEPLOYED_MODEL_ID>`. There is no `#serverless` suffix. See [Which model string to use](/serverless/specialized-model-inference/overview#which-model-string-to-use).
-* **Adapter limit.** You can load up to 3 adapters per base model on serverless at a time. Going over it returns `429 RESOURCE_EXHAUSTED`. Unload an adapter to free up a slot. For more slots, contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team. See [Supported models and limits](/serverless/specialized-model-inference/overview#supported-models-and-limits).
+* **Adapter limit.** You can load up to 3 adapters per base model on serverless at a time. Going over it returns `429 RESOURCE_EXHAUSTED`. Unload an adapter to free up a slot. For more slots, contact [support@fireworks.ai](mailto:support@fireworks.ai) or your account team. See [Supported models and limits](/serverless/specialized-model-inference/overview#supported-models-and-limits).
 
 ## Errors
 

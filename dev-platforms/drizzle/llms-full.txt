@@ -11799,6 +11799,23 @@ select "id", lower("name") from "users";
 ```
 </Section>
 
+To select all columns of a table and add more fields, spread `getColumns(table)` into the selection object.
+In v1, `getTableColumns` is deprecated. Use `getColumns` instead:
+
+<Section>
+```typescript
+import { getColumns, sql } from 'drizzle-orm';
+
+const result = await db.select({
+  ...getColumns(users),
+  lowerName: sql<string>`lower(${users.name})`,
+}).from(users);
+```
+```sql
+select "id", "name", "age", lower("name") from "users";
+```
+</Section>
+
 <Callout type="warning">
 By specifying `sql<string>`, you are telling Drizzle that the **expected** type of the field is `string`.<br />
 If you specify it incorrectly (e.g. use `sql<number>` for a field that will be returned as a string), the runtime value won't match the expected type.
@@ -39989,6 +40006,23 @@ select [id], lower([name]) from [users];
 ```
 </Section>
 
+To select all columns of a table and add more fields, spread `getColumns(table)` into the selection object.
+In v1, `getTableColumns` is deprecated. Use `getColumns` instead:
+
+<Section>
+```typescript
+import { getColumns, sql } from 'drizzle-orm';
+
+const result = await db.select({
+  ...getColumns(users),
+  lowerName: sql<string>`lower(${users.name})`,
+}).from(users);
+```
+```sql
+select [id], [name], [age], lower([name]) from [users];
+```
+</Section>
+
 <Callout type="warning">
 By specifying `sql<string>`, you are telling Drizzle that the **expected** type of the field is `string`.<br />
 If you specify it incorrectly (e.g. use `sql<number>` for a field that will be returned as a string), the runtime value won't match the expected type.
@@ -51142,7 +51176,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -52582,7 +52619,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -52625,7 +52665,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -52662,7 +52705,7 @@ Having `{ ...relations, ...part }` will result in
 }
 ```
 
-and having `{ ...relations, ...part }` will result in
+and having `{ ...part, ...relations }` will result in
 ```json
 {
   "users": {"invitee": {...}, "posts": {...}},
@@ -53886,7 +53929,10 @@ await db.query.posts.findMany({
 Relational query API lets you add custom additional fields. 
 It's useful when you need to retrieve data and apply additional functions to it.
 <Callout type="warning" emoji="⚠️">
-	As of now aggregations are not supported in `extras`, please use **[`core queries`](/docs/mysql/select)** for that.
+	Aggregate functions over the rows of the queried table, such as `count(*)` or `sum(...)`, are not supported in `extras`.
+	Relational queries do not add a `GROUP BY` clause.
+	To count or sum related rows, use a subquery in `extras`, for example `db.$count(...)`. See [Include subqueries](#include-subqueries).
+	For grouped results, use **[`core queries`](/docs/mysql/select)**.
 </Callout>
 
 <Section>
@@ -56453,6 +56499,23 @@ const result = await db.select({
 ```
 ```sql
 select `id`, lower(`name`) from `users`;
+```
+</Section>
+
+To select all columns of a table and add more fields, spread `getColumns(table)` into the selection object.
+In v1, `getTableColumns` is deprecated. Use `getColumns` instead:
+
+<Section>
+```typescript
+import { getColumns, sql } from 'drizzle-orm';
+
+const result = await db.select({
+  ...getColumns(users),
+  lowerName: sql<string>`lower(${users.name})`,
+}).from(users);
+```
+```sql
+select `id`, `name`, `age`, lower(`name`) from `users`;
 ```
 </Section>
 
@@ -72252,7 +72315,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -73698,7 +73764,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -73741,7 +73810,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -73778,7 +73850,7 @@ Having `{ ...relations, ...part }` will result in
 }
 ```
 
-and having `{ ...relations, ...part }` will result in
+and having `{ ...part, ...relations }` will result in
 ```json
 {
   "users": {"invitee": {...}, "posts": {...}},
@@ -74217,23 +74289,38 @@ In Drizzle, we have specific predefined RLS roles and functions for RLS with bot
 
 ## Enable RLS
 
-If you just want to enable RLS on a table without adding policies, you can use `pgTable.withRLS(...)`
+To enable RLS on a table, define the table with `pgTable.withRLS(...)`. Use it for tables with policies and for tables without policies.
+
+<Callout type="warning">
+In v1, the `.enableRLS()` table method is deprecated. Use `pgTable.withRLS(...)` instead.
+</Callout>
+
+```ts
+import { sql } from 'drizzle-orm';
+import { integer, pgPolicy, pgTable } from 'drizzle-orm/pg-core';
+
+// RLS without policies
+export const users = pgTable.withRLS('users', {
+	id: integer(),
+});
+
+// RLS with policies
+export const posts = pgTable.withRLS('posts', {
+	id: integer(),
+}, () => [
+	pgPolicy('read posts', { for: 'select', to: 'public', using: sql`true` }),
+]);
+```
 
 As mentioned in the PostgreSQL documentation:
 
 > If no policy exists for the table, a default-deny policy is used, meaning that no rows are visible or can be modified. 
 Operations that apply to the whole table, such as TRUNCATE and REFERENCES, are not subject to row security.
 
-```ts
-import { integer, pgTable } from 'drizzle-orm/pg-core';
-
-export const users = pgTable.withRLS('users', {
-	id: integer(),
-});
-```
-
 <Callout title='important'>
-If you add a policy to a table, RLS will be enabled automatically. So, there's no need to explicitly enable RLS when adding policies to a table.
+If a table has policies but you define it with `pgTable(...)`, drizzle-kit still enables RLS on that table.
+If you then remove the last policy, drizzle-kit also disables RLS on that table.
+With `pgTable.withRLS(...)`, RLS stays enabled when the table has no policies.
 </Callout>
 
 ## Roles
@@ -75543,7 +75630,10 @@ await db.query.posts.findMany({
 Relational query API lets you add custom additional fields. 
 It's useful when you need to retrieve data and apply additional functions to it.
 <Callout type="warning" emoji="⚠️">
-	As of now aggregations are not supported in `extras`, please use **[`core queries`](/docs/select)** for that.
+	Aggregate functions over the rows of the queried table, such as `count(*)` or `sum(...)`, are not supported in `extras`.
+	Relational queries do not add a `GROUP BY` clause.
+	To count or sum related rows, use a subquery in `extras`, for example `db.$count(...)`. See [Include subqueries](#include-subqueries).
+	For grouped results, use **[`core queries`](/docs/select)**.
 </Callout>
 
 <Section>
@@ -76816,6 +76906,23 @@ const result = await db.select({
 ```
 ```sql
 select "id", lower("name") from "users";
+```
+</Section>
+
+To select all columns of a table and add more fields, spread `getColumns(table)` into the selection object.
+In v1, `getTableColumns` is deprecated. Use `getColumns` instead:
+
+<Section>
+```typescript
+import { getColumns, sql } from 'drizzle-orm';
+
+const result = await db.select({
+  ...getColumns(users),
+  lowerName: sql<string>`lower(${users.name})`,
+}).from(users);
+```
+```sql
+select "id", "name", "age", lower("name") from "users";
 ```
 </Section>
 
@@ -89244,7 +89351,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -90676,7 +90786,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -90719,7 +90832,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -90756,7 +90872,7 @@ Having `{ ...relations, ...part }` will result in
 }
 ```
 
-and having `{ ...relations, ...part }` will result in
+and having `{ ...part, ...relations }` will result in
 ```json
 {
   "users": {"invitee": {...}, "posts": {...}},
@@ -91884,7 +92000,10 @@ await db.query.posts.findMany({
 Relational query API lets you add custom additional fields. 
 It's useful when you need to retrieve data and apply additional functions to it.
 <Callout type="warning" emoji="⚠️">
-	As of now aggregations are not supported in `extras`, please use **[`core queries`](/docs/singlestore/select)** for that.
+	Aggregate functions over the rows of the queried table, such as `count(*)` or `sum(...)`, are not supported in `extras`.
+	Relational queries do not add a `GROUP BY` clause.
+	To count or sum related rows, use a subquery in `extras`, for example `db.$count(...)`. See [Include subqueries](#include-subqueries).
+	For grouped results, use **[`core queries`](/docs/singlestore/select)**.
 </Callout>
 
 <Section>
@@ -94830,6 +94949,23 @@ const result = await db.select({
 ```
 ```sql
 select `id`, lower(`name`) from `users`;
+```
+</Section>
+
+To select all columns of a table and add more fields, spread `getColumns(table)` into the selection object.
+In v1, `getTableColumns` is deprecated. Use `getColumns` instead:
+
+<Section>
+```typescript
+import { getColumns, sql } from 'drizzle-orm';
+
+const result = await db.select({
+  ...getColumns(users),
+  lowerName: sql<string>`lower(${users.name})`,
+}).from(users);
+```
+```sql
+select `id`, `name`, `age`, lower(`name`) from `users`;
 ```
 </Section>
 
@@ -106338,7 +106474,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -107762,7 +107901,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -107805,7 +107947,10 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.invitedBy,
       to: r.users.id,
     }),
-    posts: r.many.posts(),
+    posts: r.many.posts({
+      from: r.users.id,
+      to: r.posts.authorId,
+    }),
   }
 }));
 
@@ -107842,7 +107987,7 @@ Having `{ ...relations, ...part }` will result in
 }
 ```
 
-and having `{ ...relations, ...part }` will result in
+and having `{ ...part, ...relations }` will result in
 ```json
 {
   "users": {"invitee": {...}, "posts": {...}},
@@ -109073,7 +109218,10 @@ await db.query.posts.findMany({
 Relational query API lets you add custom additional fields. 
 It's useful when you need to retrieve data and apply additional functions to it.
 <Callout type="warning" emoji="⚠️">
-	As of now aggregations are not supported in `extras`, please use **[`core queries`](/docs/sqlite/select)** for that.
+	Aggregate functions over the rows of the queried table, such as `count(*)` or `sum(...)`, are not supported in `extras`.
+	Relational queries do not add a `GROUP BY` clause.
+	To count or sum related rows, use a subquery in `extras`, for example `db.$count(...)`. See [Include subqueries](#include-subqueries).
+	For grouped results, use **[`core queries`](/docs/sqlite/select)**.
 </Callout>
 
 <Section>
@@ -111441,6 +111589,23 @@ const result = await db.select({
 ```
 ```sql
 select "id", lower("name") from "users";
+```
+</Section>
+
+To select all columns of a table and add more fields, spread `getColumns(table)` into the selection object.
+In v1, `getTableColumns` is deprecated. Use `getColumns` instead:
+
+<Section>
+```typescript
+import { getColumns, sql } from 'drizzle-orm';
+
+const result = await db.select({
+  ...getColumns(users),
+  lowerName: sql<string>`lower(${users.name})`,
+}).from(users);
+```
+```sql
+select "id", "name", "age", lower("name") from "users";
 ```
 </Section>
 

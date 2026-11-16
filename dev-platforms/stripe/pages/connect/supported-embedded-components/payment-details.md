@@ -25,7 +25,7 @@ When [creating an Account Session](https://docs.stripe.com/api/account_sessions/
 ```curl
 curl https://api.stripe.com/v1/account_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "account={{CONNECTEDACCOUNT_ID}}" \
+  -d "account={{CONNECTED_ACCOUNT_ID}}" \
   -d "components[payment_details][enabled]=true" \
   -d "components[payment_details][features][refund_management]=true" \
   -d "components[payment_details][features][dispute_management]=true" \

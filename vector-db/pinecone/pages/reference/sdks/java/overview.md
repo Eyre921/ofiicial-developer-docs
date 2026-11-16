@@ -40,14 +40,14 @@ To install the latest version of the [Java SDK](https://github.com/pinecone-io/p
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
-Alternatively, you can download the standalone uberjar [pinecone-client-6.3.0-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.0/pinecone-client-6.3.0-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
+Alternatively, you can download the standalone uberjar [pinecone-client-6.3.1-all.jar](https://repo1.maven.org/maven2/io/pinecone/pinecone-client/6.3.1/pinecone-client-6.3.1-all.jar), which bundles the Pinecone SDK and all dependencies together. You can include this in your classpath like you do with any third-party JAR without having to obtain the `pinecone-client` dependencies separately.
 
 ## Upgrade
 
@@ -62,11 +62,11 @@ If you are already using the Java SDK, upgrade the dependency in the current mod
 <dependency>
   <groupId>io.pinecone</groupId>
   <artifactId>pinecone-client</artifactId>
-  <version>6.3.0</version>
+  <version>6.3.1</version>
 </dependency>
 
 # Gradle
-implementation "io.pinecone:pinecone-client:6.3.0"
+implementation "io.pinecone:pinecone-client:6.3.1"
 ```
 
 ## Initialize

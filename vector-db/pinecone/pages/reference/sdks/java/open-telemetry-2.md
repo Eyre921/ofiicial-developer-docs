@@ -47,8 +47,10 @@ The following data plane operations are instrumented, for both synchronous (`Ind
 | `upsert` | Insert or update vectors |
 | `query` | Search for similar vectors |
 | `fetch` | Retrieve vectors by ID |
+| `fetchbymetadata` | Retrieve vectors by metadata filter (Java SDK v6.3.1 and later) |
 | `update` | Update vector metadata |
 | `delete` | Delete vectors |
+| `list` | List vector IDs |
 
 ### Available metadata
 

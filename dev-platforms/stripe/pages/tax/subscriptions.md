@@ -221,7 +221,7 @@ If you haven’t already created an Account object (for example, when your custo
 #### Update account
 
 ```curl
-curl -X POST https://api.stripe.com/v2/core/accounts/{{CUSTOMERACCOUNT_ID}} \
+curl -X POST https://api.stripe.com/v2/core/accounts/{{CUSTOMER_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2025-11-17.preview" \
   --json '{
@@ -340,7 +340,7 @@ curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
   -H "Stripe-Version: 2025-04-30.preview" \
   -d "automatic_tax[enabled]=true" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "items[0][price]={{PRICE_ID}}" \
   -d "payment_settings[save_default_payment_method]=on_subscription" \
   -d "expand[0]=latest_invoice.confirmation_secret"

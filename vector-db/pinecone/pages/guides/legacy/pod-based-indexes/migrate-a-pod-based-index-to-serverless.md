@@ -266,11 +266,11 @@ If you are using an older version of the Python, Node.js, Java, or Go SDK, you m
    <dependency>
      <groupId>io.pinecone</groupId>
      <artifactId>pinecone-client</artifactId>
-     <version>6.3.0</version>
+     <version>6.3.1</version>
    </dependency>
 
    # Gradle
-   implementation "io.pinecone:pinecone-client:6.3.0"
+   implementation "io.pinecone:pinecone-client:6.3.1"
    ```
 
    ```go Go theme={null}

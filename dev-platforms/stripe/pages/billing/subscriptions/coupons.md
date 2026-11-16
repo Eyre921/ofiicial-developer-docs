@@ -140,7 +140,7 @@ After you’ve created coupons, create a discount by applying them to a subscrip
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "items[0][price]={{PRICE_ID}}" \
   -d "discounts[0][coupon]=free-period"
 ```
@@ -273,7 +273,7 @@ curl https://api.stripe.com/v1/promotion_codes \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "coupon={{COUPON_ID}}" \
   -d code=ALICE20 \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}"
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}"
 ```
 
 #### Customers v1
@@ -409,9 +409,9 @@ After you create a promotion code, redeem a discount by applying the promotion c
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "items[0][price]={{PRICE_ID}}" \
-  -d "discounts[0][promotion_code]={{PROMOTIONCODE_ID}}"
+  -d "discounts[0][promotion_code]={{PROMOTION_CODE_ID}}"
 ```
 
 #### Customers v1
@@ -421,7 +421,7 @@ curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
   -d "items[0][price]={{PRICE_ID}}" \
-  -d "discounts[0][promotion_code]={{PROMOTIONCODE_ID}}"
+  -d "discounts[0][promotion_code]={{PROMOTION_CODE_ID}}"
 ```
 
 ### Add promotion codes to Checkout
@@ -459,7 +459,7 @@ When you create a subscription with stackable discounts, each discount applies t
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "items[0][price]={{PRICE_ID}}" \
   -d "items[0][discounts][0][coupon]=item-coupon" \
   -d "items[0][discounts][1][promotion_code]=item-promo" \

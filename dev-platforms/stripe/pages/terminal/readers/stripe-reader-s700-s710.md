@@ -109,18 +109,25 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 
 | Countries | Reader | Firmware | Configuration | ROM |
 | --- | --- | --- | --- | --- |
-| US | `2.46.4.0` | `1.00.08.01` | `szzz_us_v11` | `2.2.24.1002` |
-| CA | `2.46.4.0` | `1.00.08.01` | `szzz_ca_v4` | `2.2.24.1002` |
-| MX | `2.46.4.0` | `1.00.08.01` | `szzz_mx_off_v1` | `2.2.24.1002` |
-| AU | `2.46.4.0` | `1.00.08.01` | `szzz_prod_au_v11` | `2.2.24.1002` |
-| MYNZ | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24.1002` |
-| SG | `2.46.4.0` | `1.00.08.01` | `szzz_prod_apac_on_v5` | `2.2.24.1002` |
-| HK | `2.46.4.0` | `1.00.08.01` | `szzz_hk_v1` | `2.2.24.1002` |
-| GBIEFI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_off_v3` | `2.2.24.1002` |
-| ATBEDKFRITDENLESSECZLUPTCHNO | `2.46.4.0` | `1.00.08.01` | `szzz_prod_eu_on_v5` | `2.2.24.1002` |
-| BGHRCYEEHULVLILTMTROSKSI | `2.46.4.0` | `1.00.08.01` | `szzz_prod_roeu_on_v2` | `2.2.24.1002` |
+| US | `2.47.2.0` | `1.00.09.00` | `szzz_us_v11` | `2.2.24.1002` |
+| CA | `2.47.2.0` | `1.00.09.00` | `szzz_ca_v4` | `2.2.24.1002` |
+| MX | `2.47.2.0` | `1.00.09.00` | `szzz_mx_off_v1` | `2.2.24.1002` |
+| AU | `2.47.2.0` | `1.00.09.00` | `szzz_prod_au_v11` | `2.2.24.1002` |
+| MYNZ | `2.47.2.0` | `1.00.09.00` | `szzz_prod_apac_on_v5` | `2.2.24.1002` |
+| SG | `2.47.2.0` | `1.00.09.00` | `szzz_prod_apac_on_v5` | `2.2.24.1002` |
+| HK | `2.47.2.0` | `1.00.09.00` | `szzz_hk_v1` | `2.2.24.1002` |
+| GBIEFI | `2.47.2.0` | `1.00.09.00` | `szzz_prod_eu_off_v3` | `2.2.24.1002` |
+| ATBEDKFRITDENLESSECZLUPTCHNO | `2.47.2.0` | `1.00.09.00` | `szzz_prod_eu_on_v5` | `2.2.24.1002` |
+| BGHRCYEEHULVLILTMTROSKSI | `2.47.2.0` | `1.00.09.00` | `szzz_prod_roeu_on_v2` | `2.2.24.1002` |
 
 ### Changelog 
+
+#### 2026-11-16 (version 2.47.2.0)
+
+- UI Fix: Long payment amounts now shrink to fit the screen instead of wrapping across lines.
+- UI Fix: Updated the progress bar to correctly reflect completion progress during the transition from `Verifying updates` to `Applying updates`.
+- Fix: Addressed a splash-screen loading error that could crash the Reader app.
+- General bug fixes and improvements.
 
 #### 2026-10-20 (version 2.46.4.0)
 

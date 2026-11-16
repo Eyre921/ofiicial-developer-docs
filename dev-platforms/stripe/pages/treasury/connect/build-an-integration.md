@@ -246,7 +246,7 @@ Treasury for platforms uses [FinancialAccount](https://docs.stripe.com/api/v2/mo
 curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "type": "storage",
     "storage": {
@@ -313,9 +313,9 @@ Create a financial address when you need to receive funds into a financial accou
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
-    "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+    "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
     "type": "us_bank_account"
   }'
 ```
@@ -405,7 +405,7 @@ Simulate receiving funds through the financial address using the [test helper](h
 curl -X POST https://api.stripe.com/v2/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/credit \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "amount": {
         "value": 25000,
@@ -428,10 +428,10 @@ The response indicates if the simulation was successful:
 This creates a [ReceivedCredit](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#monitor-received-credits) object, which represents incoming money movements into a financial account. Use the [Retrieve Financial Account](https://docs.stripe.com/api/v2/money-management/financial-accounts/retrieve.md?api-version=preview) endpoint to verify that funds have landed in the financial account.
 
 ```curl
-curl https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIALACCOUNTID_ID}} \
+curl https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIAL_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 The response includes different types of [balances](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md#balances). The available balance shows the 250 USD you added to the 78 USD that was in the account previously.
@@ -484,7 +484,7 @@ To make an outbound payment to a third party from a connected account, create a 
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "contact_email": "jenny.rosen@stripe.com",
     "display_name": "Jenny Rosen",
@@ -560,7 +560,7 @@ Create a payout method for the recipient using an [OutboundSetupIntent](https://
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "payout_method_data": {
         "type": "bank_account",
@@ -601,7 +601,7 @@ The Stripe-Context header in this request is the path `{{CONNECTED_ACCOUNT_ID}}/
 curl https://api.stripe.com/v2/money_management/payout_methods \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}"
+  -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 [Create an Outbound Payment](https://docs.stripe.com/api/v2/money-management/outbound-payments/create.md?api-version=preview) to move the money from your financial account to the recipient’s payout method banking account. The Stripe-Context header for this request identifies just your account (`{{CONNECTED_ACCOUNT_ID}}`) to request the funds from your financial account.
@@ -610,15 +610,15 @@ curl https://api.stripe.com/v2/money_management/payout_methods \
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-06-24.preview" \
-  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "from": {
-        "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+        "financial_account": "{{FINANCIAL_ACCOUNT_ID}}",
         "currency": "usd"
     },
     "to": {
-        "recipient": "{{RECIPIENTACCOUNTID_ID}}",
-        "payout_method": "{{RECIPIENTPAYOUTMETHODID_ID}}",
+        "recipient": "{{RECIPIENT_ACCOUNT_ID}}",
+        "payout_method": "{{RECIPIENT_PAYOUT_METHOD_ID}}",
         "currency": "usd"
     },
     "amount": {

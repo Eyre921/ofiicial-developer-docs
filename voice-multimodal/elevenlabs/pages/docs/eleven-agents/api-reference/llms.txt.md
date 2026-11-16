@@ -50,6 +50,7 @@ path: docs/eleven-agents/api-reference/llms.txt
 - [Update agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/update.md): API Reference > Agents
 - [Delete agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/delete.md): API Reference > Agents
 - [Duplicate agent](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/duplicate.md): API Reference > Agents
+- [Get agent subagent dependents](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-dependents.md): API Reference > Agents
 - [Get link](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link.md): API Reference > Agents
 - [Simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation.md): API Reference > Agents
 - [Stream simulate conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/simulate-conversation-stream.md): API Reference > Agents
@@ -83,6 +84,7 @@ path: docs/eleven-agents/api-reference/llms.txt
 - [Add tag to conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/assign.md): API Reference > Conversations > Tags
 - [Remove tag from conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/tags/unassign.md): API Reference > Conversations > Tags
 - [List conversations](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/list.md): API Reference > Conversations
+- [Create conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create.md): API Reference > Conversations
 - [Get conversation details](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get.md): API Reference > Conversations
 - [Get conversation summary](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-summary.md): API Reference > Conversations
 - [Delete conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete.md): API Reference > Conversations
@@ -90,12 +92,15 @@ path: docs/eleven-agents/api-reference/llms.txt
 - [Get signed URL](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-signed-url.md): API Reference > Conversations
 - [Get conversation token](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-webrtc-token.md): API Reference > Conversations
 - [Create realtime client secret](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create-client-secret.md): API Reference > Conversations
-- [Send conversation feedback](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/create.md): API Reference > Conversations
 - [Upload conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file.md): API Reference > Conversations
 - [Get conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-file.md): API Reference > Conversations
 - [Delete conversation file](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/delete-file.md): API Reference > Conversations
 - [Get SIP messages for a conversation](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-sip-messages.md): API Reference > Conversations
 - [Resolve conversation reference](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/resolve.md): API Reference > Conversations
+- [Send conversation message](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/send-message.md): API Reference > Conversations
+- [Stream conversation message](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/send-message-stream.md): API Reference > Conversations
+- [Get conversation turn](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/get-turn.md): API Reference > Conversations
+- [Stream conversation turn events](https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/stream-turn-events.md): API Reference > Conversations
 - [List workspace tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md): API Reference > Triage Tickets
 - [Create conversation ticket](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create.md): API Reference > Triage Tickets
 - [List tickets](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list.md): API Reference > Triage Tickets
@@ -125,6 +130,8 @@ path: docs/eleven-agents/api-reference/llms.txt
 - [Create knowledge base document from file](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/create-from-file.md): API Reference > Knowledge Base > Documents
 - [Get document content](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-content.md): API Reference > Knowledge Base > Documents
 - [Get document chunk](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunk.md): API Reference > Knowledge Base > Documents
+- [Get chunking override](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunking-override.md): API Reference > Knowledge Base > Documents
+- [Update chunking override](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/update-chunking-override.md): API Reference > Knowledge Base > Documents
 - [Get source file URL](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-source-file-url.md): API Reference > Knowledge Base > Documents
 - [Refresh knowledge base document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/refresh.md): API Reference > Knowledge Base > Documents
 - [Get RAG chunks for a document](https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base/get-chunks.md): API Reference > Knowledge Base > Documents

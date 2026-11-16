@@ -35,7 +35,7 @@ When [creating an Account Session](https://docs.stripe.com/api/account_sessions/
 ```curl
 curl https://api.stripe.com/v1/account_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "account={{CONNECTEDACCOUNT_ID}}" \
+  -d "account={{CONNECTED_ACCOUNT_ID}}" \
   -d "components[tax_settings][enabled]=true"
 ```
 

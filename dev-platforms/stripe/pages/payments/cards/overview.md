@@ -41,7 +41,7 @@ To change a customer’s default payment method for invoices and subscriptions, 
 ```curl
 curl https://api.stripe.com/v1/customers/{{CUSTOMER_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "invoice_settings[default_payment_method]={{PAYMENTMETHOD_ID}}"
+  -d "invoice_settings[default_payment_method]={{PAYMENT_METHOD_ID}}"
 ```
 
 For information on how Checkout handles saved payment methods, see [Create a Checkout Session](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer). To consider default payment methods in other scenarios, use custom code.

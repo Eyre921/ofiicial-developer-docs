@@ -368,7 +368,7 @@ See [Recovery boot](/docs/ai-chat/patterns/recovery-boot) for the full guide.
 
 Long-lived chats were accumulating `session.out` records forever (every turn appends; nothing trimmed). The Sessions dashboard re-streamed the entire history from `seq_num=0` on every page load, and OOM-retry boot scanned the whole stream to find the last turn-complete.
 
-After this release `session.out` stays roughly **one turn long forever** at steady state. After each `turn-complete`, the agent appends an S2 `trim` command record pointing back to the previous turn-complete's seq\_num. Full conversation history continues to live in the durable S3 snapshot, not on the stream. Resume across a single turn boundary still works (the previous `turn-complete` is still on the stream and S2's eventually-consistent trim window gives 10-60s of grace); resume across multiple turns of inactivity falls back to the snapshot.
+After this release `session.out` stays roughly **one turn long forever** at steady state. After each `turn-complete`, the agent appends an S2 `trim` command record pointing back to the previous turn-complete's seq_num. Full conversation history continues to live in the durable S3 snapshot, not on the stream. Resume across a single turn boundary still works (the previous `turn-complete` is still on the stream and S2's eventually-consistent trim window gives 10-60s of grace); resume across multiple turns of inactivity falls back to the snapshot.
 
 ### What changed on the wire
 

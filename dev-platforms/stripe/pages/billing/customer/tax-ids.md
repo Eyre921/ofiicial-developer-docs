@@ -275,7 +275,7 @@ curl https://api.stripe.com/v1/tax_ids \
   -d type=eu_vat \
   -d value=DE123456789 \
   -d "owner[type]=customer" \
-  -d "owner[customer_account]={{CUSTOMERACCOUNT_ID}}"
+  -d "owner[customer_account]={{CUSTOMER_ACCOUNT_ID}}"
 ```
 
 #### Customers v1
@@ -292,7 +292,7 @@ curl https://api.stripe.com/v1/tax_ids \
 To [delete a tax ID](https://docs.stripe.com/api/tax_ids/delete.md):
 
 ```curl
-curl -X DELETE https://api.stripe.com/v1/tax_ids/{{TAXID_ID}} \
+curl -X DELETE https://api.stripe.com/v1/tax_ids/{{TAX_ID}} \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

@@ -24,7 +24,7 @@ To make server-side API calls for connected accounts, use the `Stripe-Account` h
 ```curl
 curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d amount=1000 \
   -d currency=usd
 ```
@@ -34,7 +34,7 @@ curl https://api.stripe.com/v1/payment_intents \
 ```curl
 curl https://api.stripe.com/v1/balance \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
 #### List Products
@@ -42,7 +42,7 @@ curl https://api.stripe.com/v1/balance \
 ```curl
 curl -G https://api.stripe.com/v1/products \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d limit=5
 ```
 
@@ -51,7 +51,7 @@ curl -G https://api.stripe.com/v1/products \
 ```curl
 curl -X DELETE https://api.stripe.com/v1/customers/{{CUSTOMER_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}"
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
 The `Stripe-Account` header approach is implied in any API request that includes the `Account` ID in the URL. This example shows how to [Retrieve an Account](https://docs.stripe.com/api/v2/core/accounts/retrieve.md) by including its ID in the request URL.
@@ -59,7 +59,7 @@ The `Stripe-Account` header approach is implied in any API request that includes
 > Stripe recommends using the [Accounts v2 API](https://docs.stripe.com/connect/accounts-v2.md) when retrieving connected accounts.
 
 ```curl
-curl https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
+curl https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
   -H "Stripe-Version: 2026-10-28.preview"
 ```
@@ -69,7 +69,7 @@ All of Stripe’s server-side libraries support this approach on a per-request b
 ```curl
 curl https://api.stripe.com/v1/customers \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   --data-urlencode "email=person@example.com"
 ```
 

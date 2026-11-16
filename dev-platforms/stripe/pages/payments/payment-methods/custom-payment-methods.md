@@ -83,7 +83,7 @@ Your platform account can create custom payment methods in its connected account
 ```curl
 curl https://api.stripe.com/v1/payment_methods \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
+  -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}" \
   -d type=custom \
   -d "custom[type]={{CUSTOM_PAYMENT_METHOD_TYPE_ID}}"
 ```

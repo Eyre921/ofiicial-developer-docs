@@ -40,7 +40,7 @@ sequenceDiagram
 
 > [!NOTE]
 >
-> **Stream lifetime.** `session.out` is bounded. After each turn-complete control record, the agent appends an S2 `trim` command record back to the previous turn-complete's seq\_num — the stream stays roughly one turn long forever at steady state. Full conversation history lives in a durable S3 snapshot, not on the stream. The transport's `lastEventId` bookmark plus S2's eventually-consistent trim window (10-60s) keeps single-turn-boundary resume working; multi-turn-away resume falls back to the snapshot. See [Resuming a stream](#resuming-a-stream) and [How history is rebuilt](#how-history-is-rebuilt).
+> **Stream lifetime.** `session.out` is bounded. After each turn-complete control record, the agent appends an S2 `trim` command record back to the previous turn-complete's seq_num — the stream stays roughly one turn long forever at steady state. Full conversation history lives in a durable S3 snapshot, not on the stream. The transport's `lastEventId` bookmark plus S2's eventually-consistent trim window (10-60s) keeps single-turn-boundary resume working; multi-turn-away resume falls back to the snapshot. See [Resuming a stream](#resuming-a-stream) and [How history is rebuilt](#how-history-is-rebuilt).
 
 > [!NOTE]
 >

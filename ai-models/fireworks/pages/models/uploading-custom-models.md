@@ -254,7 +254,7 @@ In addition to models you train on the Fireworks platform, you can also upload y
 
 > [!NOTE]
 >
-> Uploaded LoRA adapters can be deployed to on-demand (dedicated) deployments. Adapters trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview).
+> Uploaded LoRA adapters can be deployed to on-demand (dedicated) deployments. Adapters trained on [select base models](/serverless/specialized-model-inference/overview#supported-models-and-limits) can also be served on serverless. See [Specialized Model Inference on Serverless](/serverless/specialized-model-inference/overview), which is in Preview and available on request.
 
 ### Requirements
 
@@ -350,7 +350,7 @@ To upload a LoRA addon, run the following command. The MODEL_ID is an arbitrary 
 firectl model create <MODEL_ID> /path/to/files/ --base-model "accounts/fireworks/models/<BASE_MODEL_ID>"
 ```
 
-Once the adapter is uploaded, deploy it with [live merge or multi-LoRA](/fine-tuning/deploying-loras) on an on-demand deployment. If its base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can instead load it with [Specialized Model Inference](/serverless/specialized-model-inference/overview) and pay per token.
+Once the adapter is uploaded, deploy it with [live merge or multi-LoRA](/fine-tuning/deploying-loras) on an on-demand deployment. If its base model is [supported on serverless](/serverless/specialized-model-inference/overview#supported-models-and-limits), you can instead load it with [Specialized Model Inference](/serverless/specialized-model-inference/overview) (in Preview, available on request) and pay per token.
 
 ## Next steps
 

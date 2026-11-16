@@ -55,16 +55,16 @@ What does the installation wizard change inside your application?
 
 ## [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript/guides/angular.md#avoid-ad-blockers-with-tunneling-optional)
 
-You can prevent ad blockers from blocking Sentry events using tunneling. Use the `tunnel` option in `Sentry.init` to add an API endpoint in your application that forwards Sentry events to Sentry servers.
-
-This will send all events to the `tunnel` endpoint. However, the events need to be parsed and redirected to Sentry, so you'll need to do additional configuration on the server. The endpoint must forward only the request body to Sentry and accept only your own DSN. You can find a detailed explanation on how to do this on our [Troubleshooting page](https://docs.sentry.io/platforms/javascript/guides/angular/troubleshooting.md#using-the-tunnel-option).
+To keep ad blockers from dropping Sentry events, send them through a tunnel on your own origin. Set `tunnel: true` in `Sentry.init`, and your server forwards the events to Sentry:
 
 ```javascript
 Sentry.init({
   dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  tunnel: "/tunnel",
+  tunnel: true,
 });
 ```
+
+Learn how to serve the tunnel on your server, or how to write your own tunnel endpoint, on the [Tunneling page](https://docs.sentry.io/platforms/javascript/guides/angular/configuration/tunneling.md).
 
 ## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/angular.md#control-the-data-you-send-to-sentry-optional)
 

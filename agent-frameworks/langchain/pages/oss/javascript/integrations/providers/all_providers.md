@@ -454,6 +454,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and more) to LangChain agents as tools with OAuth.
 
+> [card] [CULT+MATH](https://github.com/letsbuild-math/cultmath-agent-tools)
+>
+> LangChain tools that search CULT+MATH decision research and run paid measurements on SEC filings, federal data and AI answers, paid per run over x402.
+
 > [card] [DALL-E](/oss/javascript/integrations/tools/dalle)
 >
 > Generate images using OpenAI's DALL-E models.

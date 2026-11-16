@@ -99,7 +99,7 @@ Call [create subscription](https://docs.stripe.com/api.md#create_subscription), 
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "customer_account={{CUSTOMERACCOUNT_ID}}" \
+  -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
   -d "items[0][price]={{PRICE_ID}}" \
   -d billing_cycle_anchor=1611008505
 ```

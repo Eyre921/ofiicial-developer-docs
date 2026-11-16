@@ -512,6 +512,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/site-policy/github-terms/github-terms-of-service
 /en/site-policy/github-terms/github-corporate-terms-of-service
 /en/site-policy/github-terms/github-terms-for-additional-products-and-features
+/en/site-policy/github-terms/github-partner-success-offering-terms
 /en/site-policy/github-terms/github-community-guidelines
 /en/site-policy/github-terms/github-community-code-of-conduct
 /en/site-policy/github-terms/github-pre-release-license-terms
@@ -1349,6 +1350,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/issues/tracking-your-work-with-issues/using-issues/managing-issue-types
 /en/issues/tracking-your-work-with-issues/using-issues/managing-issue-fields
 /en/issues/tracking-your-work-with-issues/using-issues/adding-and-managing-issue-fields
+/en/issues/tracking-your-work-with-issues/using-issues/issue-status-webhooks-and-workflows
 /en/issues/tracking-your-work-with-issues/administering-issues
 /en/issues/tracking-your-work-with-issues/administering-issues/triaging-an-issue-with-ai
 /en/issues/tracking-your-work-with-issues/administering-issues/pinning-an-issue-to-your-repository
