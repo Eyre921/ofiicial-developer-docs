@@ -61,7 +61,7 @@ path: docs/_llms/api-reference.txt
 #### OAuth
 
 - [Exchange authorization code for API key](https://openrouter.ai/docs/api/api-reference/oauth/exchange-authorization-code-for-api-key.md): Exchange an authorization code from the PKCE flow for a user-controlled API key
-- [Create authorization code](https://openrouter.ai/docs/api/api-reference/oauth/create-authorization-code.md): Create an authorization code for the PKCE flow to generate a user-controlled API key
+- [Create authorization code](https://openrouter.ai/docs/api/api-reference/oauth/create-authorization-code.md): Create an authorization code for the PKCE flow to generate a user-controlled API key. Requires a Clerk session that completed reverification recently (Clerk `lax` level); otherwise the response is `403` with `error.metadata.reverification` set to `lax`, and the caller must reverify the session befor…
 - [OpenRouter access token signing keys](https://openrouter.ai/docs/api/api-reference/oauth/openrouter-access-token-signing-keys.md): RFC 7517 JWK Set containing the public keys OpenRouter signs access tokens with.
 - [Exchange a workload identity token](https://openrouter.ai/docs/api/api-reference/oauth/exchange-a-workload-identity-token.md): RFC 8693 token exchange. Presents a JWT from an issuer your organization trusts (Settings → Workload identity) and receives a short-lived OpenRouter access token that acts as the API key the matching federation policy targets.
 

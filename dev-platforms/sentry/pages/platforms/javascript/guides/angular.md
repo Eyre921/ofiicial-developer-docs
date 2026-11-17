@@ -6,7 +6,7 @@ path: platforms/javascript/guides/angular
 
 ---
 title: "Angular"
-description: "Learn how to set up Sentry in your Angular application and capture your first errors."
+description: "Learn how to set up Sentry in your Angular application and capture your first events."
 url: https://docs.sentry.io/platforms/javascript/guides/angular/
 ---
 
@@ -26,7 +26,7 @@ If you're using Angular 16 or older, install and [Set Up the SDK Manually](https
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/angular.md#install)
 
-Run the Sentry wizard to automatically configure Sentry in your Angular application. It will then guide you through the setup process, asking you to enable additional (optional) Sentry features for your application beyond error monitoring.
+Run the Sentry wizard to automatically configure Sentry in your Angular application. It will then guide you through the setup process, asking you to enable additional (optional) Sentry features for your application beyond error monitoring. **Logs** and **Application Metrics** need no extra configuration, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/javascript/guides/angular.md#send-logs) and [#4](https://docs.sentry.io/platforms/javascript/guides/angular.md#send-application-metrics-).
 
 ```bash
 npx @sentry/wizard@latest -i angular
@@ -53,20 +53,7 @@ What does the installation wizard change inside your application?
 * Walks you through enabling source maps upload when making a production build, locally as well as in CI
 * Adds an example component to your application to help verify your Sentry setup
 
-## [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript/guides/angular.md#avoid-ad-blockers-with-tunneling-optional)
-
-To keep ad blockers from dropping Sentry events, send them through a tunnel on your own origin. Set `tunnel: true` in `Sentry.init`, and your server forwards the events to Sentry:
-
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  tunnel: true,
-});
-```
-
-Learn how to serve the tunnel on your server, or how to write your own tunnel endpoint, on the [Tunneling page](https://docs.sentry.io/platforms/javascript/guides/angular/configuration/tunneling.md).
-
-## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/angular.md#control-the-data-you-send-to-sentry-optional)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/angular.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -84,6 +71,41 @@ Sentry.init({
 });
 ```
 
+## [Send Logs](https://docs.sentry.io/platforms/javascript/guides/angular.md#send-logs)
+
+Use `Sentry.logger` to send logs at different levels, such as `info`, `warn`, or `error`. You can pass any attributes you want and search or filter by them later. See [Set Up Logs](https://docs.sentry.io/platforms/javascript/guides/angular/logs.md) for all available logging methods and the syntax for formatting messages.
+
+```javascript
+Sentry.logger.info("User example action completed");
+
+Sentry.logger.warn("Slow operation detected", {
+  operation: "data_fetch",
+  duration: 3500,
+});
+
+Sentry.logger.error("Validation failed", {
+  form_field: "email",
+  reason: "Invalid email",
+});
+```
+
+If you're already logging with `console` or Consola, you can capture those logs with [our console integrations](https://docs.sentry.io/platforms/javascript/guides/angular/logs.md#console-integration).
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript/guides/angular.md#send-application-metrics-)
+
+Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/guides/angular/metrics.md) for all available metric types and configuration options.
+
+```javascript
+Sentry.metrics.count("checkout.failed", 1);
+
+Sentry.metrics.gauge("time_since_refresh", 4, { unit: "hour" });
+
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+  attributes: { endpoint: "/api/orders" },
+});
+```
+
 ## [Verify](https://docs.sentry.io/platforms/javascript/guides/angular.md#verify)
 
 If you haven't tested your Sentry configuration yet, let's do it now. You can confirm that the Sentry SDK is sending data to your Sentry project by using the example component created by the installation wizard:
@@ -96,34 +118,6 @@ Sentry captures this error for you. Additionally, the button click starts a trac
 ##### Tip
 
 Don't forget to explore the example component's code in your project to understand what's happening after your button click.
-
-### [Verify Additional Features](https://docs.sentry.io/platforms/javascript/guides/angular.md#verify-additional-features)
-
-**Logs** (enabled by default)
-
-See structured log entries from your application. You can send logs from anywhere:
-
-```typescript
-Sentry.logger.info("User action", { userId: "123" });
-Sentry.logger.warn("Slow response", { duration: 5000 });
-Sentry.logger.error("Operation failed", { reason: "timeout" });
-```
-
-Learn more about [Logs configuration](https://docs.sentry.io/platforms/javascript/guides/angular/logs.md).
-
-**Application Metrics** (enabled by default) NEW
-
-Track and analyze custom application metrics to understand trends and patterns in your app's performance and behavior over time:
-
-```typescript
-Sentry.metrics.count("checkout.failed", 1);
-Sentry.metrics.gauge("queue.depth", 42);
-Sentry.metrics.distribution("api_latency", 187, {
-  unit: "millisecond",
-});
-```
-
-Learn more about [Application Metrics](https://docs.sentry.io/platforms/javascript/guides/angular/metrics.md).
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/angular.md#view-captured-data-in-sentry)
 
@@ -144,15 +138,11 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/angular.md#next-steps)
 
-At this point, you should have integrated Sentry into Angular application and should already be sending error and tracing data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your Angular application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Extend Sentry to your backend using one of our [SDKs](https://docs.sentry.io/.md)
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/guides/angular/configuration.md)
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/angular/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers from blocking Sentry events
 * Make use of [Angular-specific features](https://docs.sentry.io/platforms/javascript/guides/angular/features.md)
-* Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/guides/angular/usage.md)
 
 Are you having problems setting up the SDK?
 

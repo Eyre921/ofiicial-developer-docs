@@ -85,6 +85,8 @@ curl -X POST https://api.stripe.com/v2/money_management/spending_mandates/{{SPEN
 
 The response confirms the mandate is `pending_cancellation`. After the cancellation completes, Stripe sends the `v2.money_management.spending_mandate.canceled` webhook event signaling the transition to `canceled`.
 
+If a capability required for received debits becomes inactive or is unrequested, Stripe delays automatic mandate cancellation for 30 days. After the delay, Stripe only cancels the mandates if the capability remains inactive.
+
 ### List mandates
 
 You can retrieve the set of mandates in place for a connected account. Use inline parameters, such as `statuses=active`, to filter the results.
@@ -241,6 +243,8 @@ curl https://api.stripe.com/v2/money_management/debit_disputes \
 Use the [debit test helper](https://docs.stripe.com/api/v2/money-management/financial-addresses/debit.md?api-version=preview) to simulate a `ReceivedDebit` in a sandbox so you can verify that your integration handles incoming debits correctly. You can trigger a failed debit by making sure the financial account has an insufficient balance for the test payment.
 
 If you simulate a Bacs GBP debit, the helper also creates a `SpendingMandate`. The simulated debit remains `scheduled` for approximately five minutes before transitioning to `succeeded`. While it’s `scheduled`, its `settles_at` field indicates the expected settlement time.
+
+In a sandbox, cancellation due to inactive or unrequested capabilities uses a five-minute delay instead of 30 days.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/debit \

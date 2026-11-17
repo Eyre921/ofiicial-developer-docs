@@ -170,6 +170,8 @@ export default createMiddleware({
 
 Add the Sentry plugin to your build config and register the middleware you just created. On SolidStart 2, add `sentrySolidStart` to `vite.config.ts`. On SolidStart 1, wrap your `app.config.ts` with `withSentry` so that the instrumentation file gets included in your build output.
 
+SDK versions 11.11.0 and later export `withSentry` from `@sentry/solidstart/vite`. On older versions, import it from `@sentry/solidstart`. The root export still works, but it's deprecated and will be removed in the next major version.
+
 **\[SolidStart 2] vite.config.ts**
 
 ```typescript
@@ -192,7 +194,7 @@ export default defineConfig({
 **\[SolidStart 1] app.config.ts**
 
 ```javascript
-import { withSentry } from "@sentry/solidstart";
+import { withSentry } from "@sentry/solidstart/vite";
 import { defineConfig } from "@solidjs/start/config";
 
 export default defineConfig(
@@ -317,7 +319,7 @@ export default defineConfig({
 **\[SolidStart 1] app.config.ts**
 
 ```TypeScript
-import { withSentry } from '@sentry/solidstart';
+import { withSentry } from '@sentry/solidstart/vite';
 import { defineConfig } from '@solidjs/start/config';
 
 export default defineConfig(

@@ -14,12 +14,12 @@ url: https://docs.sentry.io/platforms/javascript/guides/deno/
 
 Agent frameworks:
 
-* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable/deno.md)
+* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable/manual-setup/deno.md)
 
 Frameworks with their own setup guide:
 
 * [Hono](https://docs.sentry.io/platforms/javascript/guides/hono.md)
-* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router/deno.md)
+* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router/manual-setup/deno.md)
 
 This SDK is currently in **beta**. Beta features are still in progress and may have bugs. Please reach out on [GitHub](https://github.com/getsentry/sentry-javascript/issues/new/choose) if you have any feedback or concerns
 

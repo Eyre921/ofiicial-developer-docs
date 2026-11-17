@@ -6,127 +6,51 @@ path: platforms/javascript/guides/pi-durable
 
 ---
 title: "Pi Durable"
-description: "Learn how to send Pi Durable agent runs, model requests, tool calls, and errors to Sentry with the Sentry SDK."
+description: "Learn how to send Pi Durable agent runs, model requests, tool calls, and errors to Sentry using the Sentry CLI."
 url: https://docs.sentry.io/platforms/javascript/guides/pi-durable/
 ---
 
 # Sentry for Pi Durable
 
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md)
-* [Deno](https://docs.sentry.io/platforms/javascript/guides/pi-durable/deno.md)
-* [Bun](https://docs.sentry.io/platforms/javascript/guides/pi-durable/bun.md)
-
-[Pi Durable](https://earendil.com/posts/pi-durable/) is Earendil's durable agent harness, built on the same foundations as the Pi coding agent. It runs many conversations at once and survives crashes, picking each run up from its last checkpoint. This guide sets up the Sentry SDK in a Pi Durable app so agent runs, model requests, tool calls, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
+[Pi Durable](https://earendil.com/posts/pi-durable/) is Earendil's durable agent harness, built on the same foundations as the Pi coding agent. It runs many conversations at once and survives crashes, picking each run up from its last checkpoint. This guide uses the Sentry CLI to set up the Sentry SDK in a Pi Durable app so agent runs, model requests, tool calls, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
 
 Pi Durable is experimental, and its API can change between releases. The Sentry integration supports `@earendil-works/pi-durable` `>=1.0.0 <2.0.0` and requires JavaScript SDK version `11.6.0` or later.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#prerequisites)
 
-Before you begin, you need:
+You need:
 
-* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md). The project's DSN tells the SDK where to send data.
+* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
 * A Node.js application using `@earendil-works/pi-durable` version `1.0.0` or later.
-* `@sentry/node` version `11.6.0` or later. Browser runtimes are not supported.
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#install)
 
-Choose the features you want to configure, and this guide will show you how:
+The AI-powered `sentry init` flow is currently experimental. If you run into any issues, check out the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/pi-durable/manual-setup.md) guide.
 
-Error Monitoring\[ ]Tracing\[ ]Profiling
+Run the Sentry init command in your project directory to automatically configure Sentry in your Pi Durable application.
 
-Install the Sentry Node SDK:
-
-```bash
-npm install @sentry/node@^11.6.0
-```
-
-*Other available variations of the above snippet: yarn, pnpm*
+The command guides you through setup and asks which optional Sentry features you want to enable beyond error monitoring.
 
 ```bash
-npm install @sentry/node@^11.6.0 @sentry/profiling-node@^11.6.0
+npx sentry@latest init
 ```
 
-*Other available variations of the above snippet: yarn, pnpm*
+When the command asks which features to enable, include **Agent Tracing** so your agent runs show up in Sentry.
 
-## [Configure](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#configure)
+How does sentry init work?
 
-Create an instrument file that calls `Sentry.init()`. The Pi Durable integration is enabled by default, so you don't add it to `integrations`:
+The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
 
-```javascript
-import * as Sentry from "@sentry/node";
-// ___PRODUCT_OPTION_START___ profiling
-import { nodeProfilingIntegration } from "@sentry/profiling-node";
-// ___PRODUCT_OPTION_END___ profiling
+* **Analyzes your project** — reads project files and manifests to understand your Pi Durable app structure, including monorepos. It also respects AI instruction files such as `CLAUDE.md`, `AGENTS.md`, and `.cursorrules`.
+* **Detects your framework** — identifies Pi Durable and selects the `@sentry/node` SDK.
+* **Fetches official Sentry docs** — uses the current Sentry documentation as the source of truth when generating integration code.
+* **Installs dependencies** — adds `@sentry/node` using your project's package manager.
+* **Creates and modifies files** — sets up initialization with agent tracing for your Pi Durable conversations, and other selected features based on your existing project structure.
+* **Verifies the integration** — re-reads modified files after writing to confirm Sentry was integrated.
 
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  // ___PRODUCT_OPTION_START___ profiling
+For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/pi-durable/manual-setup.md) guide.
 
-  integrations: [
-    // Add our Profiling integration
-    nodeProfilingIntegration(),
-  ],
-  // ___PRODUCT_OPTION_END___ profiling
-  // ___PRODUCT_OPTION_START___ performance
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of spans for tracing.
-  // We recommend adjusting this value in production.
-  // Learn more at
-  // https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/#tracesSampleRate
-  tracesSampleRate: 1.0,
-  // ___PRODUCT_OPTION_END___ performance
-  // ___PRODUCT_OPTION_START___ profiling
-
-  // Set profileSessionSampleRate to 1.0 to profile every session.
-  // Learn more at
-  // https://docs.sentry.io/platforms/javascript/configuration/options/#profileSessionSampleRate
-  profileSessionSampleRate: 1.0,
-  // ___PRODUCT_OPTION_END___ profiling
-});
-```
-
-Preload the instrument file with the `--import` flag when you start your app:
-
-```json
-{
-  "scripts": {
-    "start": "node --import ./instrument.mjs server.mjs"
-  }
-}
-```
-
-The SDK instruments `Harness.open()` while Node.js loads `@earendil-works/pi-durable`, so Sentry has to start before your app imports it. If you import the instrument file from your app instead of preloading it, the SDK can't instrument Pi Durable. If you bundle your server and can't pass `--import`, use the [bundler plugin](https://docs.sentry.io/platforms/javascript/guides/pi-durable/install/bundler.md) instead.
-
-Your Pi Durable code doesn't change. Every Harness your app opens is traced, whichever storage and execution environment it uses:
-
-```javascript
-import { BACKGROUND_CONTEXT } from "@earendil-works/chord/context";
-import { createModels } from "@earendil-works/pi-ai/models";
-import { openaiProvider } from "@earendil-works/pi-ai/providers/openai";
-import { createRegistry, Harness } from "@earendil-works/pi-durable";
-import { openNodeSqliteStorage } from "@earendil-works/pi-durable/storage/sqlite/node";
-
-const context = BACKGROUND_CONTEXT;
-const models = createModels();
-models.setProvider(openaiProvider());
-
-const harness = await Harness.open(
-  await openNodeSqliteStorage("./agent.sqlite"),
-  { models, registry: createRegistry() },
-  context,
-);
-harness.resume();
-```
-
-With this setup, Sentry captures errors thrown by your tools and extensions, and AI spans for every run (agent runs, model requests, tool calls, token usage, and latency). Manual spans you start inside a tool nest under that tool's span. Prompts and model outputs are recorded on your AI spans by default.
-
-To review what's captured and turn recording of prompts and responses off, see [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#control-the-data-you-send-to-sentry-optional) below.
-
-### [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#control-the-data-you-send-to-sentry-optional)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -144,28 +68,6 @@ Sentry.init({
 });
 ```
 
-To change recording for Pi Durable only, pass `recordInputs` and `recordOutputs` to the integration. They take precedence over `dataCollection`:
-
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  integrations: [
-    Sentry.piDurableIntegration({
-      recordInputs: false,
-      recordOutputs: false,
-    }),
-  ],
-});
-```
-
-### [Link Conversations](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#link-conversations)
-
-Sentry groups the runs of a Pi Durable conversation into a single [Conversation](https://docs.sentry.io/product/agents/conversations.md) automatically — there's no Sentry-specific setup. The SDK sets `gen_ai.conversation.id` on the agent, model, and tool spans of every run to `<harness id>:<conversation id>`.
-
-Pi Durable numbers conversations per storage, starting from 1, so the SDK prefixes a random id for each opened Harness to keep root conversations from different storages apart. This id changes when the Harness reopens, for example after a process restart or after a Durable Object restarts. Runs from before and after a restart then show up as separate conversations in Sentry.
-
-A subagent runs in a conversation of its own. Its first run nests under the tool call that created it, so the subagent shows up inside the parent's trace.
-
 ## [Verify](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#verify)
 
 Submit a message to one of your conversations, ideally one that calls a tool. Then open [**Explore → Agents**](https://sentry.io/orgredirect/organizations/:orgslug/explore/agents/) in Sentry. Select the conversation to open its detail. The timeline shows the agent run, model requests, tool calls, token usage, latency, and any errors your tools threw.
@@ -176,50 +78,19 @@ If no data appears, confirm that:
 * `tracesSampleRate` is greater than `0`.
 * Your app completed at least one run after you added the setup.
 
-## [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#troubleshooting)
-
-* **No AI spans at all.** Confirm the instrument file is preloaded with `--import`, or that your bundle is built with the Sentry bundler plugin. Importing it at the top of your entry file runs too late, because `@earendil-works/pi-durable` is already loaded by then.
-* **OpenAI, Anthropic, or Google Gen AI calls outside Pi Durable stopped showing up.** Once a Pi Durable run starts, the SDK turns off these provider integrations for the whole process, so Pi Durable's model requests aren't counted twice. See *What gets captured?* below.
-
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#next-steps)
 
 * [Track AI agent spend with dashboards and alerts](https://sentry.io/cookbook/monitor-ai-agent-spend-with-dashboards-and-alerts/): build a dashboard for cost, tokens, models, and conversations.
 * [Pi Durable's README](https://github.com/earendil-works/pi/tree/main/packages/durable): conversations, tasks, extensions, and storage, from the Pi side.
 * Use the appropriate [JavaScript framework guide](https://docs.sentry.io/platforms/javascript.md) for application monitoring in a separate frontend or service.
 
-What gets captured?
+To learn what each file does and how to configure Sentry yourself, read the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/pi-durable/manual-setup.md) guide.
 
-Sentry's Pi Durable integration maps Pi Durable's runtime operations to Sentry operations for the Agents dashboards:
+Are you having problems setting up the SDK?
 
-| Pi Durable Operation            | Sentry Operation      |
-| ------------------------------- | --------------------- |
-| Run of a conversation           | `gen_ai.invoke_agent` |
-| Model request (`pi.generation`) | `gen_ai.chat`         |
-| Tool call (`pi.tool`)           | `gen_ai.execute_tool` |
-
-Spans are tagged with `sentry.origin: auto.ai.pi_durable` and carry the model, token usage, and finish reasons for each request. Each run starts a trace of its own, separate from the request that submitted it, so concurrent runs never end up in each other's traces.
-
-**Crash recovery.** When the process dies during a run, the spans that were open in that process are lost. Once a new process resumes the run, its spans arrive in a new trace that starts with the resumed step, such as the rerun of a tool call.
-
-**Tool results.** A tool span records the result the model receives, including output streamed with `api.output()` and results an `afterTool` hook rewrote.
-
-**Errors.** A tool that throws is captured as an error, and its span is marked failed. Pi Durable hands the throw back to the model as a tool result, so your app never sees it.
-
-The built-in coding tools (`bash`, `read`, `edit`, `write`) are the exception: they throw to report expected failures, such as a command that exits with a non-zero code, so their span is marked failed but no error is captured.
-
-Failures Pi Durable only passes to `onReport`, such as a hook or system prompt section that throws, are captured too. A failed model request isn't captured as an error; its `chat` span carries the error status.
-
-**Provider SDKs.** Pi Durable sends model requests through `@earendil-works/pi-ai`, which calls the `openai`, `@anthropic-ai/sdk`, and `@google/genai` clients, or the Workers AI binding. From the first run on, the SDK turns off its OpenAI, Anthropic, Google Gen AI, and Workers AI integrations for the whole process, so these requests aren't counted twice. Calls your app makes with those clients outside Pi Durable aren't traced either. Amazon Bedrock requests are still reported a second time by the AWS integration.
-
-**Not captured yet.** Tool calls that Pi Durable answers without running the tool, custom tasks you define with `defineTask`, agent names (Pi Durable has none), a link between a run and the request that submitted it, and a marker for compaction requests.
-
-## [Supported Versions](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md#supported-versions)
-
-* `@sentry/node`: `>=11.6.0`
-* `@sentry/cloudflare`: `>=11.6.0`
-* `@sentry/deno`: `>=11.6.0`
-* `@sentry/bun`: `>=11.6.0`
-* `@earendil-works/pi-durable`: `>=1.0.0 <2.0.0`
+* If you encountered issues with `sentry init`, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/pi-durable/manual-setup.md)
+* Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/pi-durable/troubleshooting.md)
+* [Get support](https://www.sentry.help/en/)
 
 ## Other JavaScript Frameworks
 
@@ -265,10 +136,8 @@ Failures Pi Durable only passes to `onReport`, such as a hook or system prompt s
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md)
-- [Quick Start (Deno)](https://docs.sentry.io/platforms/javascript/guides/pi-durable/deno.md)
-- [Quick Start (Bun)](https://docs.sentry.io/platforms/javascript/guides/pi-durable/bun.md)
 - [Installation Methods](https://docs.sentry.io/platforms/javascript/guides/pi-durable/install.md)
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/pi-durable/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/pi-durable/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/pi-durable/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/pi-durable/logs.md)

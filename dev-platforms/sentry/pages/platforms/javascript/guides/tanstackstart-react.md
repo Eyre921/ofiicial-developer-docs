@@ -6,16 +6,11 @@ path: platforms/javascript/guides/tanstackstart-react
 
 ---
 title: "TanStack Start React"
-description: "Learn how to set up and configure Sentry in your TanStack Start React application using the installation wizard, capture your first errors, logs and traces and view them in Sentry."
+description: "Learn how to set up and configure Sentry in your TanStack Start React application using the installation wizard and capture your first events in Sentry."
 url: https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/
 ---
 
 # Sentry for TanStack Start React
-
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/cloudflare.md)
 
 ##### Beta
 
@@ -70,6 +65,8 @@ The command guides you through setup and asks which optional Sentry features you
 npx sentry@latest init
 ```
 
+**Logs** and **Application Metrics** need no extra configuration, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#send-logs) and [#4](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#send-application-metrics-).
+
 How does sentry init work?
 
 The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
@@ -83,7 +80,7 @@ The `sentry init` command is AI-powered. It analyzes your project and generates 
 
 For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/manual-setup.md) guide.
 
-## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#control-the-data-you-send-to-sentry-optional)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -101,17 +98,51 @@ Sentry.init({
 });
 ```
 
+## [Send Logs](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#send-logs)
+
+Use `Sentry.logger` to send logs at different levels, such as `info`, `warn`, or `error`. You can pass any attributes you want and search or filter by them later. See [Set Up Logs](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/logs.md) for all available logging methods and the syntax for formatting messages.
+
+```javascript
+Sentry.logger.info("User example action completed");
+
+Sentry.logger.warn("Slow operation detected", {
+  operation: "data_fetch",
+  duration: 3500,
+});
+
+Sentry.logger.error("Validation failed", {
+  form_field: "email",
+  reason: "Invalid email",
+});
+```
+
+If you already use `console`, capture those calls as Sentry Logs with [`consoleLoggingIntegration`](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/logs.md#console-integration). We also provide integrations for:
+
+* [Consola](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/logs.md#console-integration)
+* [Pino](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/configuration/integrations/pino.md)
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#send-application-metrics-)
+
+Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/metrics.md) for all available metric types and configuration options.
+
+```javascript
+Sentry.metrics.count("checkout.failed", 1);
+
+Sentry.metrics.gauge("time_since_refresh", 4, { unit: "hour" });
+
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+  attributes: { endpoint: "/api/orders" },
+});
+```
+
+On Node.js, [`nodeRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/configuration/integrations/noderuntimemetrics.md) also collects runtime health metrics automatically.
+
 ## [Verify Your Setup](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#verify-your-setup)
 
-The wizard will have prompted you to select which features to enable. Select the same options here to see the relevant verification steps:
+Let's test your setup and confirm that Sentry is working correctly and sending data to your Sentry project.
 
-Error Monitoring\[ ]Tracing\[ ]Session Replay\[ ]User Feedback
-
-##### Important
-
-Errors triggered from within your browser's developer tools (like the browser console) are sandboxed, so they will not trigger Sentry's error monitoring.
-
-Add a test button to one of your pages to trigger an error:
+Add this button to a page in your app and click it to send a test error:
 
 ```tsx
 <button
@@ -126,60 +157,36 @@ Add a test button to one of your pages to trigger an error:
 
 Start your dev server and click the button.
 
-### [Check Your Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#check-your-data-in-sentry)
+##### Important
 
-**Errors** — [Open Issues](https://sentry.io/orgredirect/organizations/:orgslug/issues/)
+Errors triggered from within your browser's developer tools (like the browser console) are sandboxed, so they will not trigger Sentry's error monitoring.
 
-You should see "Sentry Test Error" with a full stack trace pointing to your source code.
+### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#view-captured-data-in-sentry)
 
-**Tracing** — [Open Traces](https://sentry.io/orgredirect/organizations/:orgslug/explore/traces/)
+Now, head over to your project on [Sentry.io](https://sentry.io) to view the collected data (it takes a couple of moments for the data to appear).
 
-You should see page load and navigation traces. Learn more about [custom spans](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/tracing/instrumentation/custom-instrumentation.md).
+Need help locating captured data in your Sentry project?
 
-**Session Replay** — [Open Replays](https://sentry.io/orgredirect/organizations/:orgslug/replays/)
-
-Watch a video-like recording of your session, including the moment the error occurred. Learn more about [Session Replay configuration](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/session-replay.md).
-
-**Logs** — [Open Logs](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/)
-
-See structured log entries from your application. You can send logs from anywhere:
-
-```typescript
-Sentry.logger.info("User action", { userId: "123" });
-Sentry.logger.warn("Slow response", { duration: 5000 });
-Sentry.logger.error("Operation failed", { reason: "timeout" });
-```
-
-Learn more about [Logs configuration](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/logs.md).
-
-**Application Metrics** — [Open Metrics](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics/) NEW
-
-Track and analyze custom application metrics to understand trends and patterns in your app's performance and behavior over time:
-
-```typescript
-Sentry.metrics.count("checkout.failed", 1);
-Sentry.metrics.gauge("queue.depth", 42);
-Sentry.metrics.distribution("api_latency", 187, {
-  unit: "millisecond",
-});
-```
-
-Learn more about [Application Metrics](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/metrics.md).
-
-Are you having problems setting up the SDK?
-
-* If you encountered issues with the installation wizard, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/manual-setup.md)
-* Check [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/troubleshooting.md) for common issues
-* [Get support](https://www.sentry.help/en/)
+* Open the [**Issues**](https://sentry.io/orgredirect/organizations/:orgslug/issues/) page and select an error from the issues list to view the full details and context of this error. For more details, see the [Issue Details documentation](https://docs.sentry.io/product/issues/issue-details.md).
+* Open the [**Traces**](https://sentry.io/orgredirect/organizations/:orgslug/explore/traces/) page and select a trace to reveal more information about each span, its duration, and any errors. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/sentry-basics/getting-started-tutorial/generate-first-error.md#ui-walkthrough).
+* Open the [**Replays**](https://sentry.io/orgredirect/organizations/:orgslug/replays/) page and select an entry from the list to get a detailed view where you can replay the interaction and get more information to help you troubleshoot.
+* Open the [**Logs**](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/) page and filter by service, environment, or search keywords to view log entries from your application. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/logs.md#overview).
+* Open the [**Application Metrics**](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics) page to view and analyze your metrics. For more details, see this [interactive walkthrough](https://docs.sentry.io/product/metrics.md#overview).
+* Open the [**User Feedback**](https://sentry.io/orgredirect/organizations/:orgslug/feedback/) page and click on individual feedback to see more details all in one view. For more information, click [here](https://docs.sentry.io/product/user-feedback.md).
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#next-steps)
 
 You've successfully integrated Sentry into your TanStack Start React application! Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/usage.md)
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/configuration.md)
-* Get familiar with [Sentry's product features](https://docs.sentry.io/product.md) like tracing, insights, and alerts
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/agent-tracing.md) to monitor your AI systems
+* Explore [TanStack Start React-specific features](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/features.md)
+
+Are you having problems setting up the SDK?
+
+* If you encountered issues with the installation wizard, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/manual-setup.md)
+* Check [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/troubleshooting.md) for common issues
+* [Get support](https://www.sentry.help/en/)
 
 ## Other JavaScript Frameworks
 
@@ -225,7 +232,6 @@ You've successfully integrated Sentry into your TanStack Start React application
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/sourcemaps.md)

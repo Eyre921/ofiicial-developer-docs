@@ -234,7 +234,7 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/node.md#next-steps)
 
-At this point, you should have integrated Sentry into your Nest.js application. Here's what to explore next:
+At this point, you should have integrated Sentry into your application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * Extend Sentry to your frontend using one of our [frontend SDKs](https://docs.sentry.io/.md)

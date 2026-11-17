@@ -150,9 +150,9 @@ An endpoint without its secret shows "Needs secret" on the Webhooks page.
 >
 > Pause a run until an external event completes a token.
 
-> [card] [Webhook sources](/docs/webhooks/sources)
+> [card] [Resend webhooks](/docs/webhooks/providers/resend)
 >
-> Every built-in source, including `resend()`, and how each is verified.
+> Register the endpoint in Resend and set its signing secret.
 
 > [card] [Slack](/docs/webhooks/slack)
 >

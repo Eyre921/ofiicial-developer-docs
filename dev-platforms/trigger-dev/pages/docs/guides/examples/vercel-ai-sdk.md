@@ -62,7 +62,7 @@ To test this task in the dashboard, you can use the following payload:
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
+> [card] [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 

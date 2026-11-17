@@ -48,21 +48,21 @@ If you're using a framework, select it to open its setup instructions:
 
 Agent frameworks:
 
-* [Flue](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md)
-* [Mastra](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md)
-* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable/cloudflare.md)
+* [Flue](https://docs.sentry.io/platforms/javascript/guides/flue/manual-setup/cloudflare.md)
+* [Mastra](https://docs.sentry.io/platforms/javascript/guides/mastra/manual-setup/cloudflare.md)
+* [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable/manual-setup/cloudflare.md)
 
 Frameworks with their own setup guide:
 
-* [Astro](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md)
-* [Hono](https://docs.sentry.io/platforms/javascript/guides/hono/cloudflare.md)
+* [Astro](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/cloudflare.md)
+* [Hono](https://docs.sentry.io/platforms/javascript/guides/hono/manual-setup/cloudflare.md)
 * [Hydrogen](https://docs.sentry.io/platforms/javascript/guides/react-router/hydrogen.md)
-* [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs/cloudflare.md)
-* [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt/cloudflare.md)
-* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router/cloudflare.md)
-* [Remix](https://docs.sentry.io/platforms/javascript/guides/remix/cloudflare.md)
-* [SvelteKit](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
-* [TanStack Start](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/cloudflare.md)
+* [Next.js](https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/cloudflare.md)
+* [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt/manual-setup/cloudflare.md)
+* [React Router](https://docs.sentry.io/platforms/javascript/guides/react-router/manual-setup/cloudflare.md)
+* [Remix](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup/cloudflare.md)
+* [SvelteKit](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup/cloudflare.md)
+* [TanStack Start](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/manual-setup/cloudflare.md)
 
 ##### Cloudflare Workers limitations
 
@@ -132,7 +132,7 @@ Since the SDK needs access to the `AsyncLocalStorage` API, you need to set the `
 ```jsonc
 {
   // Set this to today's date
-  "compatibility_date": "2026-11-16",
+  "compatibility_date": "2026-11-17",
   "compatibility_flags": ["nodejs_compat"],
 }
 ```

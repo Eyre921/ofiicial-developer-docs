@@ -309,7 +309,7 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 
 ## Additional resources for Remix
 
-> [card] [Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)
+> [card] [Custom webhook handler with Remix](/docs/guides/frameworks/remix-webhooks)
 >
 > How to create a webhook handler in a Remix app, and trigger a task from it.
 

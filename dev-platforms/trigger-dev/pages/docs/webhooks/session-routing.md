@@ -6,7 +6,7 @@ path: docs/webhooks/session-routing
 
 Route verified webhook deliveries to a durable per-key session instead of a fresh run.
 
-A plain [`webhook()`](/docs/webhooks/overview) runs a fresh, stateless run for every delivery. Sometimes you want the opposite: deliveries that share a key (a customer, an installation, an issue) should land on **one durable [session](/docs/ai-chat/sessions)** and be handled in order, with state carried across them. That is what session routing does.
+**Session routing sends deliveries that share a key (a customer, an installation, an issue) to one durable [session](/docs/ai-chat/sessions), handled one at a time with state carried across them.** A plain [`webhook()`](/docs/webhooks/overview) starts a fresh, stateless run for every delivery instead.
 
 Instead of a handler, you declare a `chat.event` on an [endpoint](/docs/webhooks/overview) and list it on an agent. The verified delivery is routed to a find-or-created session and arrives as an [action](/docs/ai-chat/actions).
 
@@ -38,12 +38,12 @@ The endpoint's other subscribers, such as a `webhook()` task, still get the same
 The `key` is what makes routing durable: two deliveries that resolve to the same key reach the same session; a different key gets its own. It is a template string, evaluated server-side at ingest, whose `{...}` placeholders read three namespaces:
 
 * `{event.*}`: the parsed event body.
-* `{webhook.*}`: endpoint metadata (`externalRef`, `tenantId`, `id`, `source`, `deliveryId`).
+* `{webhook.*}`: endpoint metadata (`externalRef`, `tenantId`, `id`, `source`, `deliveryId`). Here `deliveryId` is the provider's event ID, not the `whd_` id.
 * `{header.name}`: an inbound header.
 
 These are the same namespaces [filter](/docs/webhooks/filters) expressions use. Every placeholder names one: a bare `{customer}` is an error.
 
-`{a || b}` falls back to `b` when `a` is missing or empty. Compose several placeholders into one key: `"{webhook.externalRef}-{event.issue.id}"`. Each placeholder is checked against the event type at build time, so a bad field is a red squiggle on the `key` line, not a runtime surprise.
+`{a || b}` falls back to `b` when `a` is missing or empty. Compose several placeholders into one key: `"{webhook.externalRef}-{event.issue.id}"`. Each placeholder is checked against the event type at build time, so a bad field is a type error at build time.
 
 ### The `type` label
 
@@ -76,7 +76,7 @@ export const orderAgent = chat.agent({
 
 `action.type` is a closed union of the `type` labels of the events you listed, and each arm narrows `action.event` to that event's payload type. The full envelope is `{ type, event, source, headers, deliveryId, externalDeliveryId, endpoint }`. `deliveryId` is the delivery's `whd_` id, as in the dashboard and the [deliveries API](/docs/webhooks/deliveries): a [replay](/docs/webhooks/deliveries#replay) gets a new one. `externalDeliveryId` is the provider's id for the delivery (Stripe's `evt_` id, for example), the same across replays. `endpoint` is the endpoint the delivery arrived on.
 
-Because it is an [action](/docs/ai-chat/actions), the handler is not a turn by default: it can read the event, mutate session state with `chat.history`, and return nothing. To have the agent answer, return `chat.turn()`: the edit is saved, then a full turn runs on the session's history exactly as a message turn does. Webhook actions bypass your `actionSchema` (their shape is fixed and already verified by the source), so `action.type` and `action.event` are typed from the descriptor, not the schema.
+Because it is an [action](/docs/ai-chat/actions), the handler is not a turn by default: it can read the event, mutate session state with `chat.history`, and return nothing. To have the agent answer, return `chat.turn()`: the edit is saved, then a full turn runs on the session's history as a message turn does. Webhook actions bypass your `actionSchema` (their shape is fixed and already verified by the source), so `action.type` and `action.event` are typed from the descriptor, not the schema.
 
 ## Answering into a channel
 
@@ -130,7 +130,7 @@ An exported `chat.event` that no agent lists routes nothing. `trigger dev` warns
 
 ## Filtering
 
-A [`filter`](/docs/webhooks/filters) works here exactly as on a `webhook()` task: a delivery that doesn't match never reaches the session, and the delivery records the reason.
+A [`filter`](/docs/webhooks/filters) works here as on a `webhook()` task: a delivery that doesn't match never reaches the session, and the delivery records the reason.
 
 ```ts theme={"theme":"css-variables"}
 export const orderEvents = chat.event({

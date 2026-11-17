@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 285 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 287 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -172,6 +172,7 @@
 - `reference/create-database` — [Create a database](pages/reference/create-database.md) · [原文](https://developers.notion.com/reference/create-database)
 - `reference/create-file` — [Create a file upload](pages/reference/create-file.md) · [原文](https://developers.notion.com/reference/create-file)
 - `reference/create-meeting-note` — [Create a meeting note](pages/reference/create-meeting-note.md) · [原文](https://developers.notion.com/reference/create-meeting-note)
+- `reference/create-meeting-note-page` — [Create a full-page meeting note](pages/reference/create-meeting-note-page.md) · [原文](https://developers.notion.com/reference/create-meeting-note-page)
 - `reference/create-view` — [Create a view](pages/reference/create-view.md) · [原文](https://developers.notion.com/reference/create-view)
 - `reference/create-view-query` — [Create a view query](pages/reference/create-view-query.md) · [原文](https://developers.notion.com/reference/create-view-query)
 - `reference/data-source` — [Data source](pages/reference/data-source.md) · [原文](https://developers.notion.com/reference/data-source)
@@ -253,6 +254,7 @@
 - `reference/update-a-view` — [Update a view](pages/reference/update-a-view.md) · [原文](https://developers.notion.com/reference/update-a-view)
 - `reference/update-data-source-properties` — [Update data source properties](pages/reference/update-data-source-properties.md) · [原文](https://developers.notion.com/reference/update-data-source-properties)
 - `reference/update-database` — [Update a database](pages/reference/update-database.md) · [原文](https://developers.notion.com/reference/update-database)
+- `reference/update-meeting-note-page` — [Link a full-page meeting note to a calendar event](pages/reference/update-meeting-note-page.md) · [原文](https://developers.notion.com/reference/update-meeting-note-page)
 - `reference/update-page-markdown` — [Update a page's content as markdown](pages/reference/update-page-markdown.md) · [原文](https://developers.notion.com/reference/update-page-markdown)
 - `reference/update-property-schema-object` — [Update database properties (legacy)](pages/reference/update-property-schema-object.md) · [原文](https://developers.notion.com/reference/update-property-schema-object)
 - `reference/upload-file` — [Send a file upload](pages/reference/upload-file.md) · [原文](https://developers.notion.com/reference/upload-file)

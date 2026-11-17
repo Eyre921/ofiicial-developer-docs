@@ -12423,6 +12423,12 @@ Find parameters for Notion MCP databases, data sources, views, and queries, incl
 
 Creates a new Notion database, initial data source, and initial view with the specified properties.
 
+## Convert a database to a Meetings database
+
+`notion-convert-to-meetings-database`
+
+Turns a regular database into a Meetings database, so its rows can be meeting notes. Existing rows stay as they are. Pass `dateProperty` or `attendeesProperty` to reuse an existing property. Otherwise the tool reuses a single matching property or creates a missing one.
+
 ## Update a data source
 
 `notion-update-data-source`
@@ -12755,6 +12761,20 @@ When the tool repairs a property before it writes a page, the page is still crea
   ]
 }
 ```
+
+## Create a meeting note
+
+`notion-create-meeting-note`
+
+Creates a full-page meeting note. `content` goes in the meeting note's Notes tab. Without `parent`, the meeting note goes where the user's meeting notes go by default. If `parent` is a regular database, the tool tells the MCP client to ask the user whether to convert it with [`notion-convert-to-meetings-database`](/guides/mcp/tools-databases-reference#convert-a-database-to-a-meetings-database) first.
+
+For a scheduled meeting, find the event with the [calendar tools](/guides/mcp/tools-calendars-reference) and pass `calendarEvent` without `parent`, `title`, or `content`. The tool returns the event's existing meeting note with status `existing`, or creates one filed and titled like the event's other meeting notes.
+
+## Link a meeting note to a calendar event
+
+`notion-link-meeting-note-to-calendar-event`
+
+Links an existing full-page meeting note to a calendar event found with the [calendar tools](/guides/mcp/tools-calendars-reference). A meeting note embedded in a page appears as a `<meeting-notes>` tag. Pass the URL from that tag, not the URL of the page around it. If the event already has other meeting notes, the result lists them in `otherMeetingNoteUrls`.
 
 ## Update a page
 
@@ -18160,6 +18180,20 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 # Changelog
 Source: https://developers.notion.com/page/changelog
 
+**November 16, 2026**
+
+### Create full-page meeting notes
+
+[`POST /v1/meeting_notes`](/reference/create-meeting-note-page) creates a full-page meeting note. With `calendar_event`, it returns the event's existing meeting note or creates one. [`PATCH /v1/meeting_notes/:meeting_note_id`](/reference/update-meeting-note-page) links a full-page meeting note to a calendar event. Both endpoints accept personal access tokens and Workers with a connected calendar. See [Using Notion API from a worker](/workers/guides/api-client#create-a-meeting-note-for-a-calendar-event) for the Worker flow.
+
+### Full-page meeting notes in block responses
+
+The block endpoints return full-page meeting notes as [`meeting_notes` blocks](/reference/block#meeting-notes). Meeting notes blocks now include `is_full_page`, and `calendar_event` includes the event's `event_id`.
+
+### Meeting note tools in Notion MCP
+
+`notion-create-meeting-note` creates a full-page meeting note, optionally for a calendar event. `notion-link-meeting-note-to-calendar-event` links an existing meeting note to an event, and `notion-convert-to-meetings-database` turns a regular database into a Meetings database. See [Create a meeting note](/guides/mcp/tools-pages-reference#create-a-meeting-note).
+
 **November 11, 2026**
 
 ### Faster page webhooks
@@ -21475,19 +21509,22 @@ Meeting notes block objects represent [AI meeting notes](https://www.notion.com/
 
 > [!NOTE]
 >
-> Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media. Use the child block IDs returned in the `children` field to fetch each section with the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
+> Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media, or [Create a full-page meeting note](/reference/create-meeting-note-page) to create a full-page meeting note. Use the child block IDs returned in the `children` field to fetch each section with the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
+
+Full-page meeting notes are also returned as meeting notes blocks, with `is_full_page` set to `true`.
 
 Meeting notes block objects contain the following information within the `meeting_notes` (or `transcription` in older API versions) property:
 
 | Field | Type | Description |
 | :- | :- | :- |
+| `is_full_page` | `boolean` | Whether the meeting note is a full-page meeting note rather than a block inside a page. |
 | `title` | `array` of [rich text objects](/reference/rich-text) | The display name of the meeting notes session. |
 | `status` | `string` (enum) | The lifecycle status of the transcription. Possible values are: `"transcription_not_started"`, `"transcription_paused"`, `"transcription_in_progress"`, `"transcription_failed"`, `"summary_in_progress"`, `"notes_ready"`. |
 | `children` | `object` | Pointers to the related content blocks. Contains `summary_block_id`, `notes_block_id`, and `transcript_block_id` (each an optional UUID string). |
-| `calendar_event` | `object` | Calendar metadata for the meeting. Contains `start_time` and `end_time` (ISO 8601 timestamps) and `attendees` (an optional array of user IDs). |
+| `calendar_event` | `object` | Calendar metadata for the meeting. Contains `start_time` and `end_time` (ISO 8601 timestamps), `attendees` (an optional array of user IDs), and `event_id` (the optional ID of the calendar event). |
 | `recording` | `object` | The recording time window. Contains `start_time` and `end_time` (ISO 8601 timestamps). |
 
-All top-level fields are optional and only present when the corresponding data is available.
+All top-level fields except `is_full_page` are optional and only present when the corresponding data is available.
 
 ```json Example Meeting notes block object (2026-03-11) expandable theme={null}
 {
@@ -21496,6 +21533,7 @@ All top-level fields are optional and only present when the corresponding data i
   "type": "meeting_notes",
   //...other keys excluded
   "meeting_notes": {
+    "is_full_page": false,
     "title": [
       {
         "type": "text",
@@ -22719,6 +22757,49 @@ The user associated with the integration must also have access to AI meeting not
 ### Errors
 
 Returns a 400 HTTP response if AI meeting notes are not available to the integration's user or if the request contains an invalid source, parent, or processing option.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) for more information.
+
+
+# Create a full-page meeting note
+Source: https://developers.notion.com/reference/create-meeting-note-page
+
+post /v1/meeting_notes
+Creates a full-page meeting note, or gets or creates the meeting note for a calendar event.
+
+Creates a full-page meeting note and returns it in `meeting_note` as a [meeting notes block](/reference/block#meeting-notes) with `is_full_page` set to `true`. To create AI meeting notes from an uploaded recording instead, use [Create a meeting note](/reference/create-meeting-note).
+
+| Body parameters | Behavior |
+| - | - |
+| `parent` | Creates the meeting note in the parent page or data source. In a data source that isn't a meetings database, Notion adds a page and puts the meeting note inside it. |
+| No `parent` and no `calendar_event` | Creates the meeting note in the user's meeting notes database. Notion creates that database if the user doesn't have one. |
+| `calendar_event` | Returns the event's existing meeting note, or creates one. Notion files and titles it like the event's other meeting notes. |
+
+`markdown` sets the content of the meeting note's Notes tab. You can't pass `parent`, `title`, or `markdown` with `calendar_event`. The API can't add content to the meeting note after this call.
+
+To find an event's IDs for `calendar_event`, see [Link a full-page meeting note to a calendar event](/reference/update-meeting-note-page).
+
+The response's `created` field is `true` when Notion created a new meeting note and `false` when it returned an existing one. Without `calendar_event`, every call creates a new meeting note.
+
+When an event has a meeting note that the user can't read, Notion creates a new one. The event then has two meeting notes.
+
+With `calendar_event`, the existing meeting note can be a meeting notes block inside a page, with `is_full_page` set to `false`.
+
+### Workers
+
+A [Notion Worker](/workers/get-started/overview) calling this endpoint needs a connected calendar. It acts as itself: the parent must be shared with the Worker, and the Worker is recorded as the meeting note's creator. A Worker must pass `parent` and can't pass `calendar_event`. To link its meeting note to an event, call [Link a full-page meeting note to a calendar event](/reference/update-meeting-note-page) next.
+
+### Requirements
+
+This endpoint accepts personal access tokens and Workers. The integration must have the **Read content** and **Insert content** capabilities. See the [capabilities guide](/reference/capabilities).
+
+### Errors
+
+Returns a 400 HTTP response if the request combines `calendar_event` with `parent`, `title`, or `markdown`, or if a Worker passes `calendar_event` or omits `parent`. Also returns a 400 if a Worker has no working calendar connection.
+
+Returns a 403 HTTP response if the token isn't a personal access token or a Worker, or if the user can't edit the parent.
+
+Returns a 404 HTTP response if the parent doesn't exist or the integration can't access it.
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) for more information.
 
@@ -32167,6 +32248,43 @@ For an overview of how to use the REST API with databases, refer to the [Working
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
 
+# Link a full-page meeting note to a calendar event
+Source: https://developers.notion.com/reference/update-meeting-note-page
+
+patch /v1/meeting_notes/{meeting_note_id}
+Links an existing full-page meeting note to a calendar event.
+
+Links a full-page meeting note to a calendar event and returns the meeting note in `meeting_note` as a [meeting notes block](/reference/block#meeting-notes). The link replaces any event the meeting note is already linked to.
+
+The REST API has no calendar endpoint yet. To find an event's IDs, use [`notion-calendar-list-events`](/guides/mcp/tools-calendars-reference#list-calendar-events) in Notion MCP. Pass its `calendar.accountId`, `calendar.calendarId`, and `eventId` as `calendar.account_id`, `calendar.calendar_id`, and `event_id`.
+
+By default, this endpoint doesn't link a meeting note to an event that already has other meeting notes. It returns a 409 with their IDs in `additional_data.other_meeting_note_ids`. Pass `allow_other_meeting_notes: true` to link anyway.
+
+On success, `other_meeting_note_ids` lists the other meeting notes you can read that are linked to the same event. For a meeting note inside a page, the ID is the page's. Notion checks at most 50 meeting notes, so the list may be incomplete.
+
+### Workers
+
+A [Notion Worker](/workers/get-started/overview) calling this endpoint needs a connected calendar, and the event's calendar must be one the Worker can read. The Worker acts as itself, so the meeting note must be shared with it.
+
+If this endpoint returns a 409, delete the meeting note the Worker created or pass `allow_other_meeting_notes: true`.
+
+### Requirements
+
+This endpoint accepts personal access tokens and Workers. The integration must have the **Read content** and **Update content** capabilities. See the [capabilities guide](/reference/capabilities).
+
+### Errors
+
+Returns a 400 HTTP response if the block isn't a full-page meeting note, or if a Worker has no working calendar connection.
+
+Returns a 403 HTTP response if the token isn't a personal access token or a Worker, if the user can't edit the meeting note, or if a Worker can't read the event's calendar.
+
+Returns a 404 HTTP response if the meeting note doesn't exist or the integration can't access it.
+
+Returns a 409 HTTP response if the event has other meeting notes and `allow_other_meeting_notes` isn't `true`.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) for more information.
+
+
 # Update a page's content as markdown
 Source: https://developers.notion.com/reference/update-page-markdown
 
@@ -34891,6 +35009,34 @@ const blocks = await notion.blocks.children.list({
   block_id: pageId,
 });
 ```
+
+### Create a meeting note for a calendar event
+
+A worker with a connected calendar can create a [full-page meeting note](/reference/create-meeting-note-page) and [link it to an event](/reference/update-meeting-note-page). The worker must pass `parent`, which should be a meetings database shared with the worker. To find an event's IDs, see [Link a full-page meeting note to a calendar event](/reference/update-meeting-note-page). This works with the token Notion provides to the worker, or with a personal access token. An internal connection API token returns a 403.
+
+```typescript theme={null}
+const created = await notion.request<{ meeting_note: { id: string } }>({
+  path: "meeting_notes",
+  method: "post",
+  body: {
+    parent: { type: "data_source_id", data_source_id: "..." },
+    title: "Weekly sync",
+  },
+});
+
+await notion.request({
+  path: `meeting_notes/${created.meeting_note.id}`,
+  method: "patch",
+  body: {
+    calendar_event: {
+      calendar: { account_id: "...", calendar_id: "..." },
+      event_id: "...",
+    },
+  },
+});
+```
+
+If the event already has other meeting notes, the link request returns a 409. Delete the meeting note you created, or pass `allow_other_meeting_notes: true` to link anyway.
 
 ## Permissions
 

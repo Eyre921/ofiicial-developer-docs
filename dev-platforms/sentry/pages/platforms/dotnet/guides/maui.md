@@ -48,7 +48,7 @@ Version 6.x supports .NET 9 and .NET 10. See [Supported .NET Versions and Platfo
 Add the Sentry dependency to your .NET MAUI application:
 
 ```shell
-dotnet add package Sentry.Maui -v 7.0.0
+dotnet add package Sentry.Maui -v 7.0.1
 ```
 
 *Other available variations of the above snippet: Package Manager*

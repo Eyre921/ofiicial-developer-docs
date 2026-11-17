@@ -38,12 +38,11 @@ Get set up fast using our detailed walk-through guides.
 | [Python PDF form extractor](/docs/guides/python/python-pdf-form-extractor) | Use Python, PyMuPDF and Trigger.dev to extract data from a PDF form |
 | [Python web crawler](/docs/guides/python/python-crawl4ai) | Use Python, Crawl4AI and Playwright to create a headless web crawler |
 | [Sequin database triggers](/docs/guides/frameworks/sequin) | Trigger tasks from database changes using Sequin |
-| [Stripe webhooks](/docs/guides/examples/stripe-webhook) | Trigger tasks from incoming Stripe webhook events |
-| [Hookdeck webhooks](/docs/guides/examples/hookdeck-webhook) | Use Hookdeck to receive webhooks and forward them to Trigger.dev tasks |
+| [Receiving webhooks](/docs/webhooks/providers) | Receive webhooks from more than 40 providers, including Stripe and GitHub |
 | [Supabase database webhooks](/docs/guides/frameworks/supabase-edge-functions-database-webhooks) | Trigger tasks using Supabase database webhooks |
 | [Supabase edge function hello world](/docs/guides/frameworks/supabase-edge-functions-basic) | Trigger tasks from Supabase edge function |
-| [Using webhooks in Next.js](/docs/guides/frameworks/nextjs-webhooks) | Trigger tasks from a webhook in Next.js |
-| [Using webhooks in Remix](/docs/guides/frameworks/remix-webhooks) | Trigger tasks from a webhook in Remix |
+| [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks) | Trigger tasks from a webhook in Next.js |
+| [Custom webhook handler with Remix](/docs/guides/frameworks/remix-webhooks) | Trigger tasks from a webhook in Remix |
 
 ## Featured use cases
 

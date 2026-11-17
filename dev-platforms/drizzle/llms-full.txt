@@ -59366,50 +59366,103 @@ update `users` set `verified` = true order by `users`.`name` asc, `users`.`name2
 
 Source: https://orm.drizzle.team/docs/mysql/upgrade-v1
 
+import AgentSetupPrompt from "@components/AgentSetupPrompt.astro";
+import Callout from "@mdx/Callout.astro";
 import Npm from "@mdx/Npm.astro";
 import Npx from "@mdx/Npx.astro";
-import Prerequisites from "@mdx/Prerequisites.astro";
 
 # Upgrading to Drizzle v1
 
+Upgrade from Drizzle 0.x or an earlier v1 beta or RC to `drizzle-orm@rc` and `drizzle-kit@rc`.
+
+## Upgrade with an AI agent
+
+Let your coding agent prepare the upgrade without applying database changes.
+
+<AgentSetupPrompt
+  prompt="Upgrade this project to Drizzle v1 using drizzle-orm@rc and drizzle-kit@rc. Fetch and follow the instructions at https://orm.drizzle.team/agent-upgrade/v1/prompt.md"
+  instructionsHref="/agent-upgrade/v1/prompt.md"
+  instructionsLabel="Read upgrade instructions"
+  promptLabel="Agent upgrade prompt"
+/>
+
+## 1. Update your packages
+
+Back up your database and migration files before converting the history.
+
+Update both packages:
+
 <Npm>
- drizzle-orm@rc
- -D drizzle-kit@rc
+drizzle-orm@rc
+-D drizzle-kit@rc
 </Npm>
 
-#### Step 1 - Run `drizzle-kit up`
-
-> v3 migration folder discussion: https://github.com/drizzle-team/drizzle-orm/discussions/2832  
-
-We've updated the migrations folder structure by:
-- removing `journal.json`
-- grouping SQL files and snapshots into separate migration folders
-- removing the `drizzle-kit drop` command
-
-These changes eliminate potential Git conflicts with the journal file and simplify the process of dropping or fixing conflicted migrations
-
-The drizzle-kit has been architecturally redesigned:
-- Migrated from database snapshots to DDL snapshots
-
-Commutativity checks were added:
-- Detecting non-commutative migrations across branches
-> Commutativity discussion: https://github.com/drizzle-team/drizzle-orm/discussions/5005
-
-To migrate from old structure to a new one you would need to run
+## 2. Convert your migration files
 
 <Npx>
 drizzle-kit up
 </Npx>
 
-#### Step 2 - Review breaking changes
+`up` converts local files without changing the database. Each migration gets its own folder, named from the old journal's timestamp and migration name:
 
-You can find out the full list of breaking changes [here](/docs/mysql/v0-v1-changes#breaking-changes) and make sure to update your code accordingly
+```plaintext
+# Before: Drizzle 0.x
+ drizzle/
+ ├ 0000_create_users.sql
+ └ meta/
+   ├ 0000_snapshot.json
+   └ _journal.json
 
-If you were using Relational Queries, you need to upgrade to v2:
-- [How to migrate relations definition from v1 to v2](/docs/mysql/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2)
-- [How to migrate queries from v1 to v2](/docs/mysql/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2)
+# After: Drizzle v1
+ drizzle/
+ └ 20260101120000_create_users/
+   ├ migration.sql
+   └ snapshot.json
+```
 
-#### Step 3 - Done ✅
+The SQL is preserved, snapshots move to a DDL-based format and `meta/_journal.json` is removed. Removing the shared journal avoids Git conflicts in that file and makes migration conflicts easier to resolve. `drizzle-kit drop` has been removed.
+
+See the [v3 migration folder discussion](https://github.com/drizzle-team/drizzle-orm/discussions/2832) for the design and background.
+
+If conversion reports missing SQL files or snapshots, restore them from Git instead of deleting applied migrations.
+
+## 3. Update your application code
+
+Review the [breaking changes](/docs/mysql/v0-v1-changes#breaking-changes) for your dialect and update the affected code.
+
+If you use Relational Queries, migrate your [relation definitions](/docs/mysql/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2) and [queries](/docs/mysql/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2) to v2.
+
+## 4. Check the converted history
+
+<Npx>
+drizzle-kit check
+</Npx>
+
+Review the Git diff: every previous migration should have its converted folder, with unchanged SQL. `check` validates the local history and detects non-commutative migrations across branches, such as one branch renaming a table that another alters. It does not verify the applied history in your database.
+
+See the [commutativity discussion](https://github.com/drizzle-team/drizzle-orm/discussions/5005) for the reasoning behind these checks.
+
+Resolve reported conflicts before migrating. Deleting or regenerating an already-applied migration can require resetting the database that ran it.
+
+## 5. Run your migrations
+
+Run your migrations as usual, using your application's `migrate()` function or the Kit CLI:
+
+<Npx>
+drizzle-kit migrate
+</Npx>
+
+On the first run after upgrading, the migrator updates the existing migration history table. It adds `name` and `applied_at` and associates previously applied migrations with their converted folders. `applied_at` remains `NULL` for older migrations because their execution date was not recorded.
+
+Previously applied migrations are marked as applied in the updated history. Their SQL is not executed a second time. Any pending migrations are then applied.
+
+<Callout type="warning" title="This also applies pending migrations">
+After upgrading the history, the migrator applies every local migration whose full folder name is missing from the database, even if its timestamp is older than the latest applied migration. Keep folder names stable after this upgrade.
+</Callout>
+
+If a database history entry cannot be matched, the upgrade stops. Restore the corresponding local migration rather than deleting the database history or creating a new initial migration.
+
+Verify that previously applied migrations were not rerun and only expected pending migrations ran.
 
 
 Source: https://orm.drizzle.team/docs/mysql/v0-v1-changes
@@ -79687,50 +79740,105 @@ returning "users"."id", "cities"."name"
 
 Source: https://orm.drizzle.team/docs/pg/upgrade-v1
 
+import AgentSetupPrompt from "@components/AgentSetupPrompt.astro";
+import Callout from "@mdx/Callout.astro";
 import Npm from "@mdx/Npm.astro";
 import Npx from "@mdx/Npx.astro";
-import Prerequisites from "@mdx/Prerequisites.astro";
 
 # Upgrading to Drizzle v1
 
+Upgrade from Drizzle 0.x or an earlier v1 beta or RC to `drizzle-orm@rc` and `drizzle-kit@rc`.
+
+## Upgrade with an AI agent
+
+Let your coding agent prepare the upgrade without applying database changes.
+
+<AgentSetupPrompt
+  prompt="Upgrade this project to Drizzle v1 using drizzle-orm@rc and drizzle-kit@rc. Fetch and follow the instructions at https://orm.drizzle.team/agent-upgrade/v1/prompt.md"
+  instructionsHref="/agent-upgrade/v1/prompt.md"
+  instructionsLabel="Read upgrade instructions"
+  promptLabel="Agent upgrade prompt"
+/>
+
+## 1. Update your packages
+
+Back up your database and migration files before converting the history.
+
+Update both packages:
+
 <Npm>
- drizzle-orm@rc
- -D drizzle-kit@rc
+drizzle-orm@rc
+-D drizzle-kit@rc
 </Npm>
 
-#### Step 1 - Run `drizzle-kit up`
-
-> v3 migration folder discussion: https://github.com/drizzle-team/drizzle-orm/discussions/2832  
-
-We've updated the migrations folder structure by:
-- removing `journal.json`
-- grouping SQL files and snapshots into separate migration folders
-- removing the `drizzle-kit drop` command
-
-These changes eliminate potential Git conflicts with the journal file and simplify the process of dropping or fixing conflicted migrations
-
-The drizzle-kit has been architecturally redesigned:
-- Migrated from database snapshots to DDL snapshots
-
-Commutativity checks were added:
-- Detecting non-commutative migrations across branches
-> Commutativity discussion: https://github.com/drizzle-team/drizzle-orm/discussions/5005
-
-To migrate from old structure to a new one you would need to run
+## 2. Convert your migration files
 
 <Npx>
 drizzle-kit up
 </Npx>
 
-#### Step 2 - Review breaking changes
+`up` converts local files without changing the database. Each migration gets its own folder, named from the old journal's timestamp and migration name:
 
-You can find out the full list of breaking changes [here](/docs/v0-v1-changes#breaking-changes) and make sure to update your code accordingly
+```plaintext
+# Before: Drizzle 0.x
+ drizzle/
+ ├ 0000_create_users.sql
+ └ meta/
+   ├ 0000_snapshot.json
+   └ _journal.json
 
-If you were using Relational Queries, you need to upgrade to v2:
-- [How to migrate relations definition from v1 to v2](/docs/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2)
-- [How to migrate queries from v1 to v2](/docs/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2)
+# After: Drizzle v1
+ drizzle/
+ └ 20260101120000_create_users/
+   ├ migration.sql
+   └ snapshot.json
+```
 
-#### Step 3 - Done ✅
+The SQL is preserved, snapshots move to a DDL-based format and `meta/_journal.json` is removed. Removing the shared journal avoids Git conflicts in that file and makes migration conflicts easier to resolve. `drizzle-kit drop` has been removed.
+
+See the [v3 migration folder discussion](https://github.com/drizzle-team/drizzle-orm/discussions/2832) for the design and background.
+
+For PostgreSQL, `up` also converts older snapshots to format 9. The first snapshot contains the full schema and later snapshots store diffs. Keep the entire snapshot chain.
+
+If conversion reports missing SQL files or snapshots, restore them from Git instead of deleting applied migrations.
+
+## 3. Update your application code
+
+Review the [breaking changes](/docs/v0-v1-changes#breaking-changes) for your dialect and update the affected code.
+
+If you use Relational Queries, migrate your [relation definitions](/docs/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2) and [queries](/docs/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2) to v2.
+
+## 4. Check the converted history
+
+<Npx>
+drizzle-kit check
+</Npx>
+
+Review the Git diff: every previous migration should have its converted folder, with unchanged SQL. `check` validates the local history and detects non-commutative migrations across branches, such as one branch renaming a table that another alters. It does not verify the applied history in your database.
+
+See the [commutativity discussion](https://github.com/drizzle-team/drizzle-orm/discussions/5005) for the reasoning behind these checks.
+
+Resolve reported conflicts before migrating. Deleting or regenerating an already-applied migration can require resetting the database that ran it.
+
+## 5. Run your migrations
+
+Run your migrations as usual, using your application's `migrate()` function or the Kit CLI:
+
+<Npx>
+drizzle-kit migrate
+</Npx>
+
+On the first run after upgrading, the migrator updates the existing migration history table. It adds `name` and `applied_at` and associates previously applied migrations with their converted folders. `applied_at` remains `NULL` for older migrations because their execution date was not recorded.
+
+Previously applied migrations are marked as applied in the updated history. Their SQL is not executed a second time. Any pending migrations are then applied.
+
+<Callout type="warning" title="This also applies pending migrations">
+After upgrading the history, the migrator applies every local migration whose full folder name is missing from the database, even if its timestamp is older than the latest applied migration. Keep folder names stable after this upgrade.
+</Callout>
+
+If a database history entry cannot be matched, the upgrade stops. Restore the corresponding local migration rather than deleting the database history or creating a new initial migration.
+
+Verify that previously applied migrations were not rerun and only expected pending migrations ran.
 
 
 Source: https://orm.drizzle.team/docs/pg/v0-v1-changes
@@ -113976,50 +114084,103 @@ returning "users"."id", "cities"."name"
 
 Source: https://orm.drizzle.team/docs/sqlite/upgrade-v1
 
+import AgentSetupPrompt from "@components/AgentSetupPrompt.astro";
+import Callout from "@mdx/Callout.astro";
 import Npm from "@mdx/Npm.astro";
 import Npx from "@mdx/Npx.astro";
-import Prerequisites from "@mdx/Prerequisites.astro";
 
 # Upgrading to Drizzle v1
 
+Upgrade from Drizzle 0.x or an earlier v1 beta or RC to `drizzle-orm@rc` and `drizzle-kit@rc`.
+
+## Upgrade with an AI agent
+
+Let your coding agent prepare the upgrade without applying database changes.
+
+<AgentSetupPrompt
+  prompt="Upgrade this project to Drizzle v1 using drizzle-orm@rc and drizzle-kit@rc. Fetch and follow the instructions at https://orm.drizzle.team/agent-upgrade/v1/prompt.md"
+  instructionsHref="/agent-upgrade/v1/prompt.md"
+  instructionsLabel="Read upgrade instructions"
+  promptLabel="Agent upgrade prompt"
+/>
+
+## 1. Update your packages
+
+Back up your database and migration files before converting the history.
+
+Update both packages:
+
 <Npm>
- drizzle-orm@rc
- -D drizzle-kit@rc
+drizzle-orm@rc
+-D drizzle-kit@rc
 </Npm>
 
-#### Step 1 - Run `drizzle-kit up`
-
-> v3 migration folder discussion: https://github.com/drizzle-team/drizzle-orm/discussions/2832  
-
-We've updated the migrations folder structure by:
-- removing `journal.json`
-- grouping SQL files and snapshots into separate migration folders
-- removing the `drizzle-kit drop` command
-
-These changes eliminate potential Git conflicts with the journal file and simplify the process of dropping or fixing conflicted migrations
-
-The drizzle-kit has been architecturally redesigned:
-- Migrated from database snapshots to DDL snapshots
-
-Commutativity checks were added:
-- Detecting non-commutative migrations across branches
-> Commutativity discussion: https://github.com/drizzle-team/drizzle-orm/discussions/5005
-
-To migrate from old structure to a new one you would need to run
+## 2. Convert your migration files
 
 <Npx>
 drizzle-kit up
 </Npx>
 
-#### Step 2 - Review breaking changes
+`up` converts local files without changing the database. Each migration gets its own folder, named from the old journal's timestamp and migration name:
 
-You can find out the full list of breaking changes [here](/docs/sqlite/v0-v1-changes#breaking-changes) and make sure to update your code accordingly
+```plaintext
+# Before: Drizzle 0.x
+ drizzle/
+ ├ 0000_create_users.sql
+ └ meta/
+   ├ 0000_snapshot.json
+   └ _journal.json
 
-If you were using Relational Queries, you need to upgrade to v2:
-- [How to migrate relations definition from v1 to v2](/docs/sqlite/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2)
-- [How to migrate queries from v1 to v2](/docs/sqlite/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2)
+# After: Drizzle v1
+ drizzle/
+ └ 20260101120000_create_users/
+   ├ migration.sql
+   └ snapshot.json
+```
 
-#### Step 3 - Done ✅
+The SQL is preserved, snapshots move to a DDL-based format and `meta/_journal.json` is removed. Removing the shared journal avoids Git conflicts in that file and makes migration conflicts easier to resolve. `drizzle-kit drop` has been removed.
+
+See the [v3 migration folder discussion](https://github.com/drizzle-team/drizzle-orm/discussions/2832) for the design and background.
+
+If conversion reports missing SQL files or snapshots, restore them from Git instead of deleting applied migrations.
+
+## 3. Update your application code
+
+Review the [breaking changes](/docs/sqlite/v0-v1-changes#breaking-changes) for your dialect and update the affected code.
+
+If you use Relational Queries, migrate your [relation definitions](/docs/sqlite/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2) and [queries](/docs/sqlite/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2) to v2.
+
+## 4. Check the converted history
+
+<Npx>
+drizzle-kit check
+</Npx>
+
+Review the Git diff: every previous migration should have its converted folder, with unchanged SQL. `check` validates the local history and detects non-commutative migrations across branches, such as one branch renaming a table that another alters. It does not verify the applied history in your database.
+
+See the [commutativity discussion](https://github.com/drizzle-team/drizzle-orm/discussions/5005) for the reasoning behind these checks.
+
+Resolve reported conflicts before migrating. Deleting or regenerating an already-applied migration can require resetting the database that ran it.
+
+## 5. Run your migrations
+
+Run your migrations as usual, using your application's `migrate()` function or the Kit CLI:
+
+<Npx>
+drizzle-kit migrate
+</Npx>
+
+On the first run after upgrading, the migrator updates the existing migration history table. It adds `name` and `applied_at` and associates previously applied migrations with their converted folders. `applied_at` remains `NULL` for older migrations because their execution date was not recorded.
+
+Previously applied migrations are marked as applied in the updated history. Their SQL is not executed a second time. Any pending migrations are then applied.
+
+<Callout type="warning" title="This also applies pending migrations">
+After upgrading the history, the migrator applies every local migration whose full folder name is missing from the database, even if its timestamp is older than the latest applied migration. Keep folder names stable after this upgrade.
+</Callout>
+
+If a database history entry cannot be matched, the upgrade stops. Restore the corresponding local migration rather than deleting the database history or creating a new initial migration.
+
+Verify that previously applied migrations were not rerun and only expected pending migrations ran.
 
 
 Source: https://orm.drizzle.team/docs/sqlite/v0-v1-changes
@@ -115391,13 +115552,13 @@ Generate migrations:
 bunx drizzle-kit generate
 ```
 
-The `generate` command only creates migration SQL files based on your schema — it does **not** apply any changes to the database. These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+The `generate` command only creates migration SQL files based on your schema — it does **not** apply any changes to the database. These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
 CREATE TABLE "posts" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" serial PRIMARY KEY,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
 	"userId" integer NOT NULL,
@@ -115406,14 +115567,13 @@ CREATE TABLE "posts" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"age" integer NOT NULL,
-	"email" text NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	"email" text NOT NULL UNIQUE
 );
 --> statement-breakpoint
-ALTER TABLE "posts" ADD CONSTRAINT "posts_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "posts" ADD CONSTRAINT "posts_userId_users_id_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE;
 ```
 
 Apply the generated migrations to the database:
@@ -115454,10 +115614,9 @@ This is the basic file structure of the project. In the `src` directory, we have
  │  ├ 📜 schema.ts
  │  └ 📜 index.ts
  ├ 📂 migrations
- │  ├ 📂 meta
- │  │  ├ 📜 _journal.json
- │  │  └ 📜 0000_snapshot.json
- │  └ 📜 0000_whole_nomad.sql
+ │  └ 📂 20261116104358_slimy_goliath
+ │     ├ 📜 migration.sql
+ │     └ 📜 snapshot.json
  ├ 📜 .env
  ├ 📜 drizzle.config.ts
  ├ 📜 package.json
@@ -115808,13 +115967,13 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle/migrations`  directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
-CREATE TABLE IF NOT EXISTS "todo" (
-	"id" integer PRIMARY KEY NOT NULL,
+CREATE TABLE "todo" (
+	"id" integer PRIMARY KEY,
 	"text" text NOT NULL,
 	"done" boolean DEFAULT false NOT NULL
 );
@@ -116188,8 +116347,9 @@ This guide uses the following file structure:
 ```text
 📦 <project root>
  ├ 📂 migrations
- │  ├ 📂 meta
- │  └ 📜 0000_heavy_doctor_doom.sql
+ │  └ 📂 20261116104358_foamy_micromax
+ │     ├ 📜 migration.sql
+ │     └ 📜 snapshot.json
  ├ 📂 public
  ├ 📂 src
  │  ├ 📂 actions
@@ -116526,13 +116686,13 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle/migrations`  directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
-CREATE TABLE IF NOT EXISTS "posts_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "posts_table" (
+	"id" serial PRIMARY KEY,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
 	"user_id" integer NOT NULL,
@@ -116540,19 +116700,14 @@ CREATE TABLE IF NOT EXISTS "posts_table" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "users_table" (
+	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"age" integer NOT NULL,
-	"email" text NOT NULL,
-	CONSTRAINT "users_table_email_unique" UNIQUE("email")
+	"email" text NOT NULL UNIQUE
 );
 --> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "posts_table" ADD CONSTRAINT "posts_table_user_id_users_table_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users_table"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ALTER TABLE "posts_table" ADD CONSTRAINT "posts_table_user_id_users_table_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users_table"("id") ON DELETE CASCADE;
 ```
 
 Run migrations:
@@ -116573,7 +116728,7 @@ npx drizzle-kit push
 
 ### Basic file structure
 
-This is the basic file structure of the project. In the `src/db` directory, we have database-related files including connection in `db.ts`, schema definitions in `schema.ts`, and a migration script in `migrate.ts` file which is responsible for applying migrations that stored in the `migrations` directory.
+This is the basic file structure of the project. The `src` directory contains the database connection in `db.ts` and schema definitions in `schema.ts`. Drizzle Kit generates migrations in the `migrations` directory and applies them with `drizzle-kit migrate`.
 
 ```plaintext
 📦 <project root>
@@ -116581,10 +116736,9 @@ This is the basic file structure of the project. In the `src/db` directory, we h
  │  ├ 📜 db.ts
  │  └ 📜 schema.ts
  ├ 📂 migrations
- │  ├ 📂 meta
- │  │  ├ 📜 _journal.json
- │  │  └ 📜 0000_snapshot.json
- │  └ 📜 0000_dry_richard_fisk.sql
+ │  └ 📂 20261116103058_sweet_lockheed
+ │     ├ 📜 migration.sql
+ │     └ 📜 snapshot.json
  ├ 📜 .env
  ├ 📜 drizzle.config.ts
  ├ 📜 package.json
@@ -117551,12 +117705,21 @@ import Callout from '@mdx/Callout.astro';
 
 This tutorial demonstrates how to use Drizzle ORM with [Supabase Edge Functions](https://supabase.com/docs/guides/functions).
 
+<Callout type="info">
+Upgrading an existing Drizzle project? Follow the [upgrade guide](/docs/upgrade-v1) before continuing with this tutorial.
+</Callout>
+
 <Prerequisites>
 - You should have the latest version of [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started#installing-the-supabase-cli) installed.
-- You should have installed Drizzle ORM and [Drizzle kit](https://orm.drizzle.team/kit-docs/overview). You can do this by running the following command:
+- You should have installed Drizzle ORM and [Drizzle kit](/docs/kit-overview). You can do this by running the following command:
 <Npm>
   drizzle-orm@rc
   -D drizzle-kit@rc
+</Npm>
+- Install `dotenv` for the Drizzle config and `postgres` for the database connection:
+<Npm>
+  dotenv
+  postgres
 </Npm>
 - You should have installed Docker Desktop. It is a prerequisite for local development. Follow the official [docs](https://docs.docker.com/desktop) to install.
 </Prerequisites>
@@ -117582,17 +117745,21 @@ This file will be used to generate migrations for your database.
 
 #### Setup Drizzle config file
 
-**Drizzle config** - a configuration file that is used by [Drizzle Kit](https://orm.drizzle.team/kit-docs/overview) and contains all the information about your database connection, migration folder and schema files.
+**Drizzle config** - a configuration file that is used by [Drizzle Kit](/docs/kit-overview) and contains all the information about your database connection, migration folder and schema files.
 
 Create a `drizzle.config.ts` file in the root of your project and add the following content:
 
 ```typescript copy filename="drizzle.config.ts"
+import "dotenv/config";
 import { defineConfig } from "drizzle-kit";
 
 export default defineConfig({
   schema: "./src/schema.ts",
-  out: "./supabase/migrations",
+  out: "./drizzle",
   dialect: "postgresql",
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,
+  },
 });
 ```
 
@@ -117623,7 +117790,7 @@ Run the `drizzle-kit generate` command to generate migrations:
 npx drizzle-kit generate
 ```
 
-It will create a new migration file in the `supabase/migrations` directory:
+These migrations are stored in the `drizzle` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 #### Apply migrations
 
@@ -117633,17 +117800,25 @@ To start the Supabase local development stack, run the following command:
 supabase start
 ```
 
-To apply migrations, run the following command:
+Copy the local database connection string from `supabase status` into a `.env` file in your project root:
 
-```bash copy
-supabase migration up
+```text copy filename=".env"
+DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:54322/postgres
 ```
 
-You can read more about Supabase migrations in the [documentation](https://supabase.com/docs/guides/deployment/database-migrations).
+This example uses the default local port. Use the URL printed by your CLI if your configuration differs.
+
+Apply the generated migrations with Drizzle Kit:
+
+```bash copy
+npx drizzle-kit migrate
+```
+
+Drizzle Kit manages this tutorial's application tables. Supabase CLI manages the local services and Edge Functions. Keep Drizzle's migration folders in `drizzle`. If you prefer Supabase-managed migrations, follow the [optional Supabase CLI workflow](/docs/tutorials/drizzle-with-supabase#optional-manage-migrations-with-supabase-cli) instead of the Kit migration commands in this tutorial, including the hosted migration step below.
 
 <Callout type="warning">Don't forget to run Docker</Callout>
 
-Alternatively, you can apply migrations using the `drizzle-kit migrate` command. Learn more about this migration process in the [documentation](https://orm.drizzle.team/docs/migrations).
+Learn more about the [Drizzle migration process](/docs/migrations).
 
 #### Create a new Edge Function
 
@@ -117673,11 +117848,13 @@ Add the following imports to the `deno.json` file in the `supabase/functions/dri
 ```json copy filename="supabase/functions/drizzle-tutorial/deno.json"
 {
   "imports": {
-    "drizzle-orm/": "npm:/drizzle-orm/",
-    "postgres": "npm:postgres"
+    "drizzle-orm": "npm:drizzle-orm@1.0.0-rc.5",
+    "postgres": "npm:postgres@3.4.7"
   }
 }
 ```
+
+Keep the ORM version in `deno.json` aligned with the version installed in your project. This example uses `drizzle-orm@1.0.0-rc.5`.
 
 You can read more about managing dependencies [here](https://supabase.com/docs/guides/functions/dependencies#managing-dependencies).
 
@@ -117734,7 +117911,7 @@ const usersTable = pgTable('users_table', {
 Deno.serve(async () => {
   const connectionString = Deno.env.get("SUPABASE_DB_URL")!;
 
-  // Disable prefetch as it is not supported for "Transaction" pool mode
+  // Disable prepared statements for transaction pooling
   const client = postgres(connectionString, { prepare: false });
   const db = drizzle({ client });
 
@@ -117782,11 +117959,15 @@ Copy the `Reference ID` from project settings and use it to link your local deve
 supabase link --project-ref=<REFERENCE_ID>
 ```
 
-Push your schema changes to the hosted Supabase project by running the following command:
+Click **Connect** in the hosted project's dashboard and copy the **Direct connection** URI, or the **Session pooler** URI for an IPv4-only network. Update `DATABASE_URL` in your local `.env` file with that hosted database URI, replacing the password placeholder.
+
+Apply the same Drizzle migrations to the hosted database:
 
 ```bash copy
-supabase db push
+npx drizzle-kit migrate
 ```
+
+The `.env` file is used by Drizzle Kit on your machine. Configure the deployed function's connection separately in the next step.
 
 #### Setup environment variables
 
@@ -117836,6 +118017,10 @@ import Callout from '@mdx/Callout.astro';
 
 This tutorial demonstrates how to use Drizzle ORM with [Supabase Database](https://supabase.com/docs/guides/database/overview). Every Supabase project comes with a full [Postgres](https://www.postgresql.org/docs) database.
 
+<Callout type="info">
+Upgrading an existing Drizzle project? Follow the [upgrade guide](/docs/upgrade-v1) before continuing with this tutorial.
+</Callout>
+
 <Prerequisites>
 - You should have installed Drizzle ORM and [Drizzle kit](/docs/kit-overview). You can do this by running the following command:
 <Npm>
@@ -117852,7 +118037,6 @@ This tutorial demonstrates how to use Drizzle ORM with [Supabase Database](https
   postgres
 </Npm>
 
-- You should have the latest version of [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started#installing-the-supabase-cli) installed (Only if you want to use the Supabase CLI for migrations)
 </Prerequisites>
 
 Check [Supabase documentation](https://supabase.com/docs/guides/database/connecting-to-postgres#connecting-with-drizzle) to learn how to connect to the database with Drizzle ORM.
@@ -117866,7 +118050,7 @@ You can create new Supabase project in the [dashboard](https://supabase.com/dash
 
 #### Setup connection string variable
 
-Navigate to [Database Settings](https://supabase.com/dashboard/project/_/settings/database) and copy the URI from the `Connection String` section. Make sure to use `connection pooling`. Remember to replace the password placeholder with your actual database password.
+Click **Connect** in your Supabase project dashboard and copy the **Direct connection** URI. If your network only supports IPv4, use the **Session pooler** URI instead. This connection is used by both Drizzle ORM and Drizzle Kit migrations. Replace the password placeholder with your database password.
 
 Add `DATABASE_URL` variable to your `.env` or `.env.local` file.
 
@@ -117939,7 +118123,7 @@ config({ path: '.env' });
 
 export default defineConfig({
   schema: './src/db/schema.ts',
-  out: './supabase/migrations',
+  out: './drizzle',
   dialect: 'postgresql',
   dbCredentials: {
     url: process.env.DATABASE_URL!,
@@ -117957,13 +118141,13 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `supabase/migrations`  directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `drizzle` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
-CREATE TABLE IF NOT EXISTS "posts_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "posts_table" (
+	"id" serial PRIMARY KEY,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
 	"user_id" integer NOT NULL,
@@ -117971,19 +118155,14 @@ CREATE TABLE IF NOT EXISTS "posts_table" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "users_table" (
+	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"age" integer NOT NULL,
-	"email" text NOT NULL,
-	CONSTRAINT "users_table_email_unique" UNIQUE("email")
+	"email" text NOT NULL UNIQUE
 );
 --> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "posts_table" ADD CONSTRAINT "posts_table_user_id_users_table_id_fk" FOREIGN KEY ("user_id") REFERENCES "users_table"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ALTER TABLE "posts_table" ADD CONSTRAINT "posts_table_user_id_users_table_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users_table"("id") ON DELETE CASCADE;
 ```
 
 Run migrations:
@@ -117992,8 +118171,7 @@ Run migrations:
 npx drizzle-kit migrate
 ```
 
-Learn more about [migration process](/docs/migrations). You can also apply migrations using [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started):
-- For tables that already exist, manually review the generated migration files from `npx drizzle-kit generate` and comment out or adjust any unsafe pure create statements (e.g., `CREATE SCHEMA "auth";`) while ensuring safe conditional creates (e.g., `CREATE TABLE IF NOT EXISTS "auth"."users"`) are properly handled.
+Learn more about the [migration process](/docs/migrations). Drizzle Kit manages the migrations in this tutorial. To use Supabase as your migration runner instead, follow the [optional Supabase CLI workflow](#optional-manage-migrations-with-supabase-cli).
 
 Alternatively, you can push changes directly to the database using [Drizzle kit push command](/docs/kit-overview#prototyping-with-db-push):
 
@@ -118003,32 +118181,49 @@ npx drizzle-kit push
 
 <Callout type="warning">Push command is good for situations where you need to quickly test new schema designs or changes in a local development environment, allowing for fast iterations without the overhead of managing migration files.</Callout>
 
-To apply migrations using the Supabase CLI you should follow these steps:
- 
-Generate migrations using Drizzle Kit:
+</Steps>
 
-```bash copy
-npx drizzle-kit generate
-```
+## Optional: manage migrations with Supabase CLI
 
-Initialize the local Supabase project:
+If you want Supabase to apply migrations, keep Drizzle Kit for generating SQL and use Supabase CLI as the migration runner. Choose this workflow before applying your first migration. The commands below use [Supabase CLI 3.x](https://supabase.com/docs/guides/cli/getting-started).
+
+Initialize a local Supabase project if you have not already done so:
 
 ```bash copy
 supabase init
 ```
 
-Link it to your remote project:
+Generate a migration from your Drizzle schema:
 
 ```bash copy
-supabase link
+npx drizzle-kit generate
 ```
 
-Push changes to the database:
+Drizzle Kit creates a folder containing `migration.sql` and `snapshot.json`. Supabase expects flat `<timestamp>_<name>.sql` files in `supabase/migrations` and skips subdirectories. Create a Supabase migration using the generated SQL:
 
 ```bash copy
-supabase db push
+supabase migration new create_tables < drizzle/20261116131610_moaning_turbo/migration.sql
 ```
-</Steps>
+
+Replace the example folder with the one produced by `drizzle-kit generate`. Repeat this export once for each new migration, in generation order. Keep both directories in version control: Drizzle uses its snapshots to generate subsequent changes; Supabase uses its SQL files and migration history to apply them.
+
+Start your local Supabase stack with Docker running, then apply pending migrations:
+
+```bash copy
+supabase start
+supabase migration up
+```
+
+To deploy to a hosted project with Supabase CLI 3.x, link the project and explicitly select the remote target:
+
+```bash copy
+supabase link --project-ref=<REFERENCE_ID>
+supabase db push --remote
+```
+
+<Callout type="info">
+In this workflow, Supabase applies the SQL and owns the migration history. Use `drizzle-kit generate` for schema changes and export each new SQL file; use Supabase CLI to apply it. Do not also run `drizzle-kit migrate` or `drizzle-kit push` against the same database. If you have already applied migrations with Drizzle Kit, reconcile the existing schema and migration history before switching runners rather than replaying those migrations.
+</Callout>
 
 ## Basic file structure
 
@@ -118040,13 +118235,10 @@ This is the basic file structure of the project. In the `src/db` directory, we h
  │   ├ 📂 db
  │   │  ├ 📜 index.ts
  │   │  └ 📜 schema.ts
- ├ 📂 supabase
- │   ├ 📂 migrations
- │   │  ├ 📂 meta
- │   │  │  ├ 📜 _journal.json
- │   │  │  └ 📜 0000_snapshot.json
- │   │  └ 📜 0000_watery_spencer_smythe.sql
- │   └ 📜 config.toml
+ ├ 📂 drizzle
+ │   └ 📂 20261116131610_moaning_turbo
+ │      ├ 📜 migration.sql
+ │      └ 📜 snapshot.json
  ├ 📜 .env
  ├ 📜 drizzle.config.ts
  ├ 📜 package.json
@@ -118078,11 +118270,6 @@ export async function createPost(data: InsertPost) {
 
 Read more about select query in the [documentation](/docs/select).
 
-<Callout type='warning'>
-`getColumns` available starting from `drizzle-orm@1.0.0-beta.2`(read more [here](/docs/upgrade-v1))
-
-If you are on pre-1 version(like `0.45.1`) then use `getTableColumns`
-</Callout>
 
 ```typescript copy filename="src/db/queries/select.ts" {5, 16, 41}
 import { asc, between, count, eq, getColumns, sql } from 'drizzle-orm';
@@ -118346,29 +118533,27 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `migrations`  directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
 CREATE TABLE `posts` (
-	`id` integer PRIMARY KEY NOT NULL,
+	`id` integer PRIMARY KEY,
 	`title` text NOT NULL,
 	`content` text NOT NULL,
 	`user_id` integer NOT NULL,
 	`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
 	`updated_at` integer,
-	FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON UPDATE no action ON DELETE cascade
+	CONSTRAINT `fk_posts_user_id_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 );
 --> statement-breakpoint
 CREATE TABLE `users` (
-	`id` integer PRIMARY KEY NOT NULL,
+	`id` integer PRIMARY KEY,
 	`name` text NOT NULL,
 	`age` integer NOT NULL,
-	`email` text NOT NULL
+	`email` text NOT NULL UNIQUE
 );
---> statement-breakpoint
-CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);
 ```
 
 Run migrations:
@@ -118397,10 +118582,9 @@ This is the basic file structure of the project. In the `src/db` directory, we h
  │   │  ├ 📜 index.ts
  │   │  └ 📜 schema.ts
  ├ 📂 migrations
- │  ├ 📂 meta
- │  │  ├ 📜 _journal.json
- │  │  └ 📜 0000_snapshot.json
- │  └ 📜 0000_watery_spencer_smythe.sql
+ │  └ 📂 20261116103058_powerful_hercules
+ │     ├ 📜 migration.sql
+ │     └ 📜 snapshot.json
  ├ 📜 .env
  ├ 📜 drizzle.config.ts
  ├ 📜 package.json
@@ -118645,17 +118829,16 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `drizzle` directory by default. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
-CREATE TABLE IF NOT EXISTS "users_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "users_table" (
+	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"age" text NOT NULL,
-	"email" text NOT NULL,
-	CONSTRAINT "users_table_email_unique" UNIQUE("email")
+	"email" text NOT NULL UNIQUE
 );
 ```
 
@@ -118805,17 +118988,16 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `drizzle` directory by default. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
-CREATE TABLE IF NOT EXISTS "users_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "users_table" (
+	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"age" text NOT NULL,
-	"email" text NOT NULL,
-	CONSTRAINT "users_table_email_unique" UNIQUE("email")
+	"email" text NOT NULL UNIQUE
 );
 ```
 
@@ -118921,13 +119103,13 @@ Install the `@planetscale/database` driver:
 Create a `schema.ts` file in the `src/db` directory and declare a table schema:
 
 ```typescript copy filename="src/db/schema.ts"
-import { mysqlTable, serial, text } from "drizzle-orm/mysql-core";
+import { mysqlTable, serial, text, varchar } from "drizzle-orm/mysql-core";
 
 export const usersTable = mysqlTable('users_table', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
   age: text('age').notNull(),
-  email: text('email').notNull().unique(),
+  email: varchar('email', { length: 255 }).notNull().unique(),
 })
 ```
 
@@ -118965,18 +119147,17 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `drizzle` directory by default. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
 CREATE TABLE `users_table` (
-	`id` serial AUTO_INCREMENT NOT NULL,
+	`id` serial PRIMARY KEY,
 	`name` text NOT NULL,
 	`age` text NOT NULL,
-	`email` text NOT NULL,
-	CONSTRAINT `users_table_id` PRIMARY KEY(`id`),
-	CONSTRAINT `users_table_email_unique` UNIQUE(`email`)
+	`email` varchar(255) NOT NULL,
+	CONSTRAINT `email_unique` UNIQUE INDEX(`email`)
 );
 ```
 
@@ -119127,19 +119308,17 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `drizzle` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `drizzle` directory by default. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
 CREATE TABLE `users_table` (
-	`id` integer PRIMARY KEY NOT NULL,
+	`id` integer PRIMARY KEY,
 	`name` text NOT NULL,
 	`age` text NOT NULL,
-	`email` text NOT NULL
+	`email` text NOT NULL UNIQUE
 );
---> statement-breakpoint
-CREATE UNIQUE INDEX `users_table_email_unique` ON `users_table` (`email`);
 ```
 
 Run migrations:
@@ -119705,13 +119884,13 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
-CREATE TABLE IF NOT EXISTS "posts_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "posts_table" (
+	"id" serial PRIMARY KEY,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
 	"user_id" integer NOT NULL,
@@ -119719,19 +119898,14 @@ CREATE TABLE IF NOT EXISTS "posts_table" (
 	"updated_at" timestamp NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users_table" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE "users_table" (
+	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"age" integer NOT NULL,
-	"email" text NOT NULL,
-	CONSTRAINT "users_table_email_unique" UNIQUE("email")
+	"email" text NOT NULL UNIQUE
 );
 --> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "posts_table" ADD CONSTRAINT "posts_table_user_id_users_table_id_fk" FOREIGN KEY ("user_id") REFERENCES "users_table"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
+ALTER TABLE "posts_table" ADD CONSTRAINT "posts_table_user_id_users_table_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users_table"("id") ON DELETE CASCADE;
 ```
 
 Run migrations:
@@ -119766,10 +119940,9 @@ This is the basic file structure of the project. In the `src/db` directory, we h
  │   │  ├ 📜 index.ts
  │   │  └ 📜 schema.ts
  ├ 📂 migrations
- │   ├ 📂 meta
- │   │  ├ 📜 _journal.json
- │   │  └ 📜 0000_snapshot.json
- │   └ 📜 0000_watery_spencer_smythe.sql
+ │   └ 📂 20261116104358_clumsy_randall_flagg
+ │      ├ 📜 migration.sql
+ │      └ 📜 snapshot.json
  ├ 📜 .env
  ├ 📜 drizzle.config.ts
  ├ 📜 package.json
@@ -120072,13 +120245,13 @@ Generate migrations:
 npx drizzle-kit generate
 ```
 
-The `generate` command only creates migration SQL files based on your schema — it does **not** apply any changes to the database. These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. This directory will contain the SQL files necessary to update your database schema and a `meta` folder for storing snapshots of the schema at different migration stages.
+The `generate` command only creates migration SQL files based on your schema — it does **not** apply any changes to the database. These migrations are stored in the `migrations` directory, as specified in your `drizzle.config.ts`. Each migration has its own timestamped folder containing a `migration.sql` file and a `snapshot.json` file.
 
 Example of a generated migration:
 
 ```sql
 CREATE TABLE "posts" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" serial PRIMARY KEY,
 	"title" text NOT NULL,
 	"content" text NOT NULL,
 	"userId" integer NOT NULL,
@@ -120087,14 +120260,13 @@ CREATE TABLE "posts" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"age" integer NOT NULL,
-	"email" text NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	"email" text NOT NULL UNIQUE
 );
 --> statement-breakpoint
-ALTER TABLE "posts" ADD CONSTRAINT "posts_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ALTER TABLE "posts" ADD CONSTRAINT "posts_userId_users_id_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE;
 ```
 
 Apply the generated migrations to the database:
@@ -120135,10 +120307,9 @@ This is the basic file structure of the project. In the `src` directory, we have
  │  ├ 📜 schema.ts
  │  └ 📜 index.ts
  ├ 📂 migrations
- │  ├ 📂 meta
- │  │  ├ 📜 _journal.json
- │  │  └ 📜 0000_snapshot.json
- │  └ 📜 0000_optimal_the_fury.sql
+ │  └ 📂 20261116104358_clever_rocket_racer
+ │     ├ 📜 migration.sql
+ │     └ 📜 snapshot.json
  ├ 📜 .env
  ├ 📜 drizzle.config.ts
  ├ 📜 package.json
@@ -122959,50 +123130,105 @@ export default defineConfig({
 
 Source: https://orm.drizzle.team/docs/upgrade-v1
 
+import AgentSetupPrompt from "@components/AgentSetupPrompt.astro";
+import Callout from "@mdx/Callout.astro";
 import Npm from "@mdx/Npm.astro";
 import Npx from "@mdx/Npx.astro";
-import Prerequisites from "@mdx/Prerequisites.astro";
 
 # Upgrading to Drizzle v1
 
+Upgrade from Drizzle 0.x or an earlier v1 beta or RC to `drizzle-orm@rc` and `drizzle-kit@rc`.
+
+## Upgrade with an AI agent
+
+Let your coding agent prepare the upgrade without applying database changes.
+
+<AgentSetupPrompt
+  prompt="Upgrade this project to Drizzle v1 using drizzle-orm@rc and drizzle-kit@rc. Fetch and follow the instructions at https://orm.drizzle.team/agent-upgrade/v1/prompt.md"
+  instructionsHref="/agent-upgrade/v1/prompt.md"
+  instructionsLabel="Read upgrade instructions"
+  promptLabel="Agent upgrade prompt"
+/>
+
+## 1. Update your packages
+
+Back up your database and migration files before converting the history.
+
+Update both packages:
+
 <Npm>
- drizzle-orm@rc
- -D drizzle-kit@rc
+drizzle-orm@rc
+-D drizzle-kit@rc
 </Npm>
 
-#### Step 1 - Run `drizzle-kit up`
-
-> v3 migration folder discussion: https://github.com/drizzle-team/drizzle-orm/discussions/2832  
-
-We've updated the migrations folder structure by:
-- removing `journal.json`
-- grouping SQL files and snapshots into separate migration folders
-- removing the `drizzle-kit drop` command
-
-These changes eliminate potential Git conflicts with the journal file and simplify the process of dropping or fixing conflicted migrations
-
-The drizzle-kit has been architecturally redesigned:
-- Migrated from database snapshots to DDL snapshots
-
-Commutativity checks were added:
-- Detecting non-commutative migrations across branches
-> Commutativity discussion: https://github.com/drizzle-team/drizzle-orm/discussions/5005
-
-To migrate from old structure to a new one you would need to run
+## 2. Convert your migration files
 
 <Npx>
 drizzle-kit up
 </Npx>
 
-#### Step 2 - Review breaking changes
+`up` converts local files without changing the database. Each migration gets its own folder, named from the old journal's timestamp and migration name:
 
-You can find out the full list of breaking changes [here](/docs/v0-v1-changes#breaking-changes) and make sure to update your code accordingly
+```plaintext
+# Before: Drizzle 0.x
+ drizzle/
+ ├ 0000_create_users.sql
+ └ meta/
+   ├ 0000_snapshot.json
+   └ _journal.json
 
-If you were using Relational Queries, you need to upgrade to v2:
-- [How to migrate relations definition from v1 to v2](/docs/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2)
-- [How to migrate queries from v1 to v2](/docs/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2)
+# After: Drizzle v1
+ drizzle/
+ └ 20260101120000_create_users/
+   ├ migration.sql
+   └ snapshot.json
+```
 
-#### Step 3 - Done ✅
+The SQL is preserved, snapshots move to a DDL-based format and `meta/_journal.json` is removed. Removing the shared journal avoids Git conflicts in that file and makes migration conflicts easier to resolve. `drizzle-kit drop` has been removed.
+
+See the [v3 migration folder discussion](https://github.com/drizzle-team/drizzle-orm/discussions/2832) for the design and background.
+
+For PostgreSQL, `up` also converts older snapshots to format 9. The first snapshot contains the full schema and later snapshots store diffs. Keep the entire snapshot chain.
+
+If conversion reports missing SQL files or snapshots, restore them from Git instead of deleting applied migrations.
+
+## 3. Update your application code
+
+Review the [breaking changes](/docs/v0-v1-changes#breaking-changes) for your dialect and update the affected code.
+
+If you use Relational Queries, migrate your [relation definitions](/docs/relations-v1-v2#how-to-migrate-relations-schema-definition-from-v1-to-v2) and [queries](/docs/relations-v1-v2#how-to-migrate-queries-from-v1-to-v2) to v2.
+
+## 4. Check the converted history
+
+<Npx>
+drizzle-kit check
+</Npx>
+
+Review the Git diff: every previous migration should have its converted folder, with unchanged SQL. `check` validates the local history and detects non-commutative migrations across branches, such as one branch renaming a table that another alters. It does not verify the applied history in your database.
+
+See the [commutativity discussion](https://github.com/drizzle-team/drizzle-orm/discussions/5005) for the reasoning behind these checks.
+
+Resolve reported conflicts before migrating. Deleting or regenerating an already-applied migration can require resetting the database that ran it.
+
+## 5. Run your migrations
+
+Run your migrations as usual, using your application's `migrate()` function or the Kit CLI:
+
+<Npx>
+drizzle-kit migrate
+</Npx>
+
+On the first run after upgrading, the migrator updates the existing migration history table. It adds `name` and `applied_at` and associates previously applied migrations with their converted folders. `applied_at` remains `NULL` for older migrations because their execution date was not recorded.
+
+Previously applied migrations are marked as applied in the updated history. Their SQL is not executed a second time. Any pending migrations are then applied.
+
+<Callout type="warning" title="This also applies pending migrations">
+After upgrading the history, the migrator applies every local migration whose full folder name is missing from the database, even if its timestamp is older than the latest applied migration. Keep folder names stable after this upgrade.
+</Callout>
+
+If a database history entry cannot be matched, the upgrade stops. Restore the corresponding local migration rather than deleting the database history or creating a new initial migration.
+
+Verify that previously applied migrations were not rerun and only expected pending migrations ran.
 
 
 Source: https://orm.drizzle.team/docs/valibot

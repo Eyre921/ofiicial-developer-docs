@@ -35,7 +35,7 @@ Log messages at `Info` or higher are also sent to Sentry as [Structured Logs](ht
 Add the Sentry dependency:
 
 ```powershell
-Install-Package Sentry.NLog -Version 7.0.0
+Install-Package Sentry.NLog -Version 7.0.1
 ```
 
 *Other available variations of the above snippet: .NET Core CLI*

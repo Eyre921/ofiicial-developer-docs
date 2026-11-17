@@ -75,7 +75,7 @@ For enterprise issuers serving large multinational companies, we support Visa’
 
 ### Stablecoin cards (Public preview)
 
-Stablecoin-backed card programs let platforms issue prepaid or debit cards backed by stablecoin balances in more than 60 countries across the US, Latin America, the Caribbean, Africa, and Asia. See [supported assets and networks](https://docs.stripe.com/stablecoins/availability.md#issuing) for the stablecoins and networks each program can use. Platforms can enter additional markets with a single integration, without launching separate local card programs in each country.
+Stablecoin-backed card programs let platforms issue prepaid or debit cards backed by stablecoin balances in more than 60 countries across Africa, Asia, the Caribbean, Latin America, and the US. See [supported assets and networks](https://docs.stripe.com/stablecoins/availability.md?product=issuing) for the stablecoins and networks available to each program. With a single integration, platforms can expand into additional markets without launching a separate local card program in each country.
 
 > Stablecoin-backed cards are in [public preview](https://docs.stripe.com/release-phases.md). To get access, [contact Stripe sales](https://stripe.com/contact/embedded-finance).
 

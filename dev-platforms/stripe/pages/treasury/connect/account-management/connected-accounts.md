@@ -389,7 +389,7 @@ After you create an account, [onboard its seller or service provider](https://do
 
 1. Retrieving the requirements populated at account creation.
 2. Providing a form to collect the information required from your connected account.
-3. Updating the `Account` with the collected information.
+3. Updating the `Account` with the collected information using your platform’s API key. For your platform’s direct connected accounts, specify the connected account ID as `{id}` in `/v2/core/accounts/{id}` and omit the `Stripe-Context` header. These requests run in your platform’s context.
 
 Alternatively, create an [account link](https://docs.stripe.com/connect/hosted-onboarding.md?accounts-namespace=v2&lang=curl#create-account-link) for the connected account with `use_case.type` set to `account_onboarding`. Send the returned URL to your connected account so they can provide the required information in a Stripe-hosted interface.
 

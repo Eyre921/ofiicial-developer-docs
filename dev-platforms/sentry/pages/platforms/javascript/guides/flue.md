@@ -6,135 +6,67 @@ path: platforms/javascript/guides/flue
 
 ---
 title: "Flue"
-description: "Learn how to send Flue agent traces, model calls, tool executions, and errors to Sentry with the Sentry SDK."
+description: "Learn how to send Flue agent traces, model calls, tool executions, and errors to Sentry using the Sentry CLI."
 url: https://docs.sentry.io/platforms/javascript/guides/flue/
 ---
 
 # Sentry for Flue
 
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/flue.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md)
-
-[Flue](https://flueframework.com/) is an open TypeScript framework for building AI agents, made by the Astro team. This guide sets up the Sentry SDK in a Flue app so agent turns, model calls, tool executions, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
+[Flue](https://flueframework.com/) is an open TypeScript framework for building AI agents, made by the Astro team. This guide uses the Sentry CLI to set up the Sentry SDK in a Flue app so agent turns, model calls, tool executions, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
 
 This guide covers the Sentry SDK-based setup, which replaces the `flue add tooling sentry` blueprint. If you previously ran the blueprint, remove its `createOpenTelemetryInstrumentation` call — otherwise, you will get duplicate spans.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/flue.md#prerequisites)
 
-Before you begin, you need:
+You need:
 
-* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md). The project's DSN tells the SDK where to send data.
+* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
 * A Flue application using `@flue/runtime` version `2.0.0` or later. Flue requires Node.js `22.19` or later.
-* `@sentry/node` or `@sentry/cloudflare` version `11.0.0` or later. Browser runtimes are not supported.
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/flue.md#install)
 
-Choose the features you want to configure, and this guide will show you how:
+The AI-powered `sentry init` flow is currently experimental. If you run into any issues, check out the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/flue/manual-setup.md) guide.
 
-Error Monitoring\[ ]Tracing\[ ]Profiling
+Run the Sentry init command in your project directory to automatically configure Sentry in your Flue application.
 
-Install the Sentry Node SDK:
-
-```bash
-npm install @sentry/node@^11.0.0
-```
-
-*Other available variations of the above snippet: yarn, pnpm*
+The command guides you through setup and asks which optional Sentry features you want to enable beyond error monitoring.
 
 ```bash
-npm install @sentry/node@^11.0.0 @sentry/profiling-node@^11.0.0
+npx sentry@latest init
 ```
 
-*Other available variations of the above snippet: yarn, pnpm*
+When the command asks which features to enable, include **Agent Tracing** so your agent runs show up in Sentry.
 
-## [Configure](https://docs.sentry.io/platforms/javascript/guides/flue.md#configure)
+How does sentry init work?
 
-Create a file that calls `Sentry.init()` and registers the Flue instrumentation. Flue is instrumented by registering with it rather than by patching, so this `instrument()` call is what connects the two:
+The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
 
-```typescript
-import { instrument } from "@flue/runtime";
-import * as Sentry from "@sentry/node";
-// ___PRODUCT_OPTION_START___ profiling
-import { nodeProfilingIntegration } from "@sentry/profiling-node";
-// ___PRODUCT_OPTION_END___ profiling
+* **Analyzes your project** — reads project files and manifests to understand your Flue app structure, including monorepos. It also respects AI instruction files such as `CLAUDE.md`, `AGENTS.md`, and `.cursorrules`.
+* **Detects your framework** — identifies Flue and selects the `@sentry/node` SDK.
+* **Fetches official Sentry docs** — uses the current Sentry documentation as the source of truth when generating integration code.
+* **Installs dependencies** — adds `@sentry/node` using your project's package manager.
+* **Creates and modifies files** — sets up initialization with agent tracing for your Flue agents, and other selected features based on your existing project structure.
+* **Verifies the integration** — re-reads modified files after writing to confirm Sentry was integrated.
 
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  // ___PRODUCT_OPTION_START___ profiling
+For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/flue/manual-setup.md) guide.
 
-  integrations: [
-    // Add our Profiling integration
-    nodeProfilingIntegration(),
-  ],
-  // ___PRODUCT_OPTION_END___ profiling
-  // ___PRODUCT_OPTION_START___ performance
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/flue.md#control-the-data-you-send-to-sentry)
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of spans for tracing.
-  // We recommend adjusting this value in production.
-  tracesSampleRate: 1.0,
-  // ___PRODUCT_OPTION_END___ performance
-  // ___PRODUCT_OPTION_START___ profiling
+By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
-  // Set profileSessionSampleRate to 1.0 to profile every session.
-  // Learn more at
-  // https://docs.sentry.io/platforms/javascript/configuration/options/#profileSessionSampleRate
-  profileSessionSampleRate: 1.0,
-  // ___PRODUCT_OPTION_END___ profiling
-});
+The SDK always filters sensitive values whose keys match a built-in denylist, such as `auth` or `password`, and sends `[Filtered]` instead.
 
-instrument(Sentry.createFlueInstrumentation());
-```
+To send less data, turn off the categories you don't need in the `dataCollection` option. For the full list of categories and their defaults, [see the `dataCollection` options](https://docs.sentry.io/platforms/javascript/guides/flue/configuration/options.md#dataCollection).
 
-Import it at the top of your app entry, so it runs before your agents take a turn:
-
-```typescript
-import "./instrument.ts";
-```
-
-Call `instrument()` once, at module scope. On Cloudflare the Vite plugin registers the instrumentation at build time instead; on Node there's no equivalent, so this call is what installs it.
-
-### [Run With the Sentry Loader](https://docs.sentry.io/platforms/javascript/guides/flue.md#run-with-the-sentry-loader)
-
-Libraries like database drivers, caches, and `dataloader` are instrumented by a module transform that has to be installed before your app loads them. A Flue build imports your dependencies before `src/instrument.ts` runs, so start the server with the Sentry loader to catch them:
-
-```json
-{
-  "scripts": {
-    "dev": "NODE_OPTIONS='--import=@sentry/node/import' vite dev",
-    "start": "NODE_OPTIONS='--import=@sentry/node/import' node dist/server.mjs"
-  }
-}
-```
-
-Agent, model, and tool spans arrive without this, as do outgoing HTTP requests. Everything instrumented through the module transform needs it.
-
-With this setup, Sentry captures errors thrown by your agents and tools, and AI spans for every run (agent turns, model calls, tool executions, token usage, and latency). Manual spans you start inside a tool nest under that tool's span.
-
-To review what's captured and turn recording of prompts and responses off, see [Privacy Controls](https://docs.sentry.io/platforms/javascript/guides/flue.md#privacy-controls) below.
-
-### [Privacy Controls](https://docs.sentry.io/platforms/javascript/guides/flue.md#privacy-controls)
-
-The SDK will record generative AI inputs and outputs (the prompts your agent sends and the model responses it receives) by default. To turn recording off, set `genAI.inputs` and `genAI.outputs` to `false` in `dataCollection`:
-
-```typescript
+```javascript
 Sentry.init({
   dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
   dataCollection: {
-    genAI: { inputs: false, outputs: false },
+    userInfo: false,
+    // other categories
   },
 });
 ```
-
-See [`dataCollection` documentation](https://docs.sentry.io/platforms/javascript/guides/flue/configuration/options.md#dataCollection) for details on privacy control options.
-
-### [Link Conversations](https://docs.sentry.io/platforms/javascript/guides/flue.md#link-conversations)
-
-Sentry groups a multi-turn chat into a single [Conversation](https://docs.sentry.io/product/agents/conversations.md) automatically — there's no Sentry-specific setup. Flue already tracks a conversation id per conversation, and the SDK maps it to `gen_ai.conversation.id` on the agent, model, and tool spans of every turn.
-
-The agent span also carries `gen_ai.agent.name`, so you can tell a lead agent's runs from its subagents'.
 
 ## [Verify](https://docs.sentry.io/platforms/javascript/guides/flue.md#verify)
 
@@ -146,11 +78,6 @@ If no data appears, confirm that:
 * `tracesSampleRate` is greater than `0`.
 * Your agent completed at least one turn after you added the setup.
 
-## [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/flue.md#troubleshooting)
-
-* **Token and cost values are doubled.** Remove the `createOpenTelemetryInstrumentation` call left over from the `flue add tooling sentry` blueprint. Flue emits its own model spans through it, so both it and the SDK count the same turn.
-* **No AI spans at all.** Confirm `instrument(Sentry.createFlueInstrumentation())` actually runs. Importing `src/instrument.ts` at the top of `src/app.ts` runs it during app startup, before any agent takes a turn.
-
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/flue.md#next-steps)
 
 * [Name your agents](https://docs.sentry.io/product/agents/naming.md) so you can identify them in the Agents Dashboard.
@@ -158,27 +85,13 @@ If no data appears, confirm that:
 * [Flue's observability guide](https://flueframework.com/docs/guide/observability/): the event model behind the spans, from the Flue side.
 * Use the appropriate [JavaScript framework guide](https://docs.sentry.io/platforms/javascript.md) for application monitoring in a separate frontend or service.
 
-What gets captured?
+To learn what each file does and how to configure Sentry yourself, read the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/flue/manual-setup.md) guide.
 
-Sentry's Flue integration maps Flue's runtime operations to Sentry operations for the Agents dashboards:
+Are you having problems setting up the SDK?
 
-| Flue Operation   | Sentry Operation      |
-| ---------------- | --------------------- |
-| Agent submission | `gen_ai.invoke_agent` |
-| Model turn       | `gen_ai.chat`         |
-| Tool execution   | `gen_ai.execute_tool` |
-
-Spans are tagged with `sentry.origin: auto.ai.flue` and carry the model, token usage, and finish reasons for the turn.
-
-A `chat` span also carries `flue.turn.purpose`, which is how you tell a context-compaction turn from a user-facing one. There's no conventional attribute for that distinction.
-
-A tool that throws is captured as an error and its span is marked failed. Flue catches the throw and hands it back to the model as a tool result, so the error is reported as handled.
-
-## [Supported Versions](https://docs.sentry.io/platforms/javascript/guides/flue.md#supported-versions)
-
-* `@sentry/node`: `>=11.0.0`
-* `@sentry/cloudflare`: `>=11.0.0`
-* `@flue/runtime`: `>=2.0.0 <3.0.0`
+* If you encountered issues with `sentry init`, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/flue/manual-setup.md)
+* Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/flue/troubleshooting.md)
+* [Get support](https://www.sentry.help/en/)
 
 ## Other JavaScript Frameworks
 
@@ -224,7 +137,7 @@ A tool that throws is captured as an error and its span is marked failed. Flue c
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/flue/cloudflare.md)
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/flue/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/flue/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/flue/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/flue/logs.md)

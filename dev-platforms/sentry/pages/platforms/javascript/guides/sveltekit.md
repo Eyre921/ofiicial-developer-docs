@@ -6,16 +6,11 @@ path: platforms/javascript/guides/sveltekit
 
 ---
 title: "SvelteKit"
-description: "Learn how to set up and configure Sentry in your SvelteKit application using the installation wizard, capture your first errors, and view them in Sentry."
+description: "Learn how to set up and configure Sentry in your SvelteKit application using the installation wizard and capture your events."
 url: https://docs.sentry.io/platforms/javascript/guides/sveltekit/
 ---
 
 # Sentry for SvelteKit
-
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
 
 ## Set up with Sentry CLI
 
@@ -78,7 +73,7 @@ The SvelteKit Sentry SDK is designed to work out of the box with several SvelteK
   * [Adapter-node](https://kit.svelte.dev/docs/adapter-node)
 
 * **Supported non-Node.js runtimes**
-  * [Adapter-cloudflare](https://kit.svelte.dev/docs/adapter-cloudflare) requires [additional setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
+  * [Adapter-cloudflare](https://kit.svelte.dev/docs/adapter-cloudflare) requires [additional setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup/cloudflare.md)
 
 * **Currently not supported**
   * Non-Node.js server runtimes, such as Vercel's edge runtime, are not yet supported.
@@ -97,6 +92,8 @@ The command guides you through setup and asks which optional Sentry features you
 ```bash
 npx sentry@latest init
 ```
+
+**Logs** and **Application Metrics** need no extra configuration, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#send-logs) and [#4](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#send-application-metrics-).
 
 How does sentry init work?
 
@@ -121,29 +118,7 @@ npx @sentry/wizard@latest -i sveltekit
 
 To configure Sentry manually, follow the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md) guide.
 
-## [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#avoid-ad-blockers-with-tunneling-optional)
-
-To keep ad blockers from dropping Sentry events, send them through a tunnel on your own origin. The SDK serves the tunnel and forwards the events to Sentry.
-
-Set `tunnel: true` in your client `Sentry.init`, and add `serveTunnelIntegration` to your server `Sentry.init`:
-
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  tunnel: true,
-});
-```
-
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  integrations: [Sentry.serveTunnelIntegration()],
-});
-```
-
-Learn more about the options in [`serveTunnelIntegration`](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration/integrations/servetunnel.md). To set up your own tunnel endpoint instead, see the [Tunneling page](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration/tunneling.md#setting-up-the-tunnel-manually).
-
-## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#control-the-data-you-send-to-sentry-optional)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -160,6 +135,46 @@ Sentry.init({
   },
 });
 ```
+
+## [Send Logs](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#send-logs)
+
+Use `Sentry.logger` to send logs at different levels, such as `info`, `warn`, or `error`. You can pass any attributes you want and search or filter by them later. See [Set Up Logs](https://docs.sentry.io/platforms/javascript/guides/sveltekit/logs.md) for all available logging methods and the syntax for formatting messages.
+
+```javascript
+Sentry.logger.info("User example action completed");
+
+Sentry.logger.warn("Slow operation detected", {
+  operation: "data_fetch",
+  duration: 3500,
+});
+
+Sentry.logger.error("Validation failed", {
+  form_field: "email",
+  reason: "Invalid email",
+});
+```
+
+If you already use `console`, capture those calls as Sentry Logs with [`consoleLoggingIntegration`](https://docs.sentry.io/platforms/javascript/guides/sveltekit/logs.md#console-integration). We also provide integrations for:
+
+* [Consola](https://docs.sentry.io/platforms/javascript/guides/sveltekit/logs.md#console-integration)
+* [Pino](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration/integrations/pino.md)
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#send-application-metrics-)
+
+Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/guides/sveltekit/metrics.md) for all available metric types and configuration options.
+
+```javascript
+Sentry.metrics.count("checkout.failed", 1);
+
+Sentry.metrics.gauge("time_since_refresh", 4, { unit: "hour" });
+
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+  attributes: { endpoint: "/api/orders" },
+});
+```
+
+On Node.js, [`nodeRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration/integrations/noderuntimemetrics.md) also collects runtime health metrics automatically.
 
 ## [Verify Your Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#verify-your-setup)
 
@@ -180,34 +195,6 @@ Sentry captures both of these errors for you. Additionally, the button click sta
 
 If you used the SvelteKit installation wizard, explore the example files' code in your project to understand what's happening after your button click.
 
-### [Verify Additional Features](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#verify-additional-features)
-
-**Logs** (enabled by default)
-
-See structured log entries from your application. You can send logs from anywhere:
-
-```typescript
-Sentry.logger.info("User action", { userId: "123" });
-Sentry.logger.warn("Slow response", { duration: 5000 });
-Sentry.logger.error("Operation failed", { reason: "timeout" });
-```
-
-Learn more about [Logs configuration](https://docs.sentry.io/platforms/javascript/guides/sveltekit/logs.md).
-
-**Application Metrics** (enabled by default) NEW
-
-Track and analyze custom application metrics to understand trends and patterns in your app's performance and behavior over time:
-
-```typescript
-Sentry.metrics.count("checkout.failed", 1);
-Sentry.metrics.gauge("queue.depth", 42);
-Sentry.metrics.distribution("api_latency", 187, {
-  unit: "millisecond",
-});
-```
-
-Learn more about [Application Metrics](https://docs.sentry.io/platforms/javascript/guides/sveltekit/metrics.md).
-
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#view-captured-data-in-sentry)
 
 Now, head over to your project on [Sentry.io](https://sentry.io) to view the collected data (it takes a couple of moments for the data to appear).
@@ -227,16 +214,12 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/sveltekit.md#next-steps)
 
-At this point, you should have integrated Sentry into your SvelteKit application and should already be sending error and performance data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your SvelteKit application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/guides/sveltekit/usage.md)
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/guides/sveltekit/configuration.md)
 * Learn how to [manually instrument](https://docs.sentry.io/platforms/javascript/guides/sveltekit/apis.md#load-function-instrumentation) SvelteKit-specific features
-* Learn more about [deploying SvelteKit apps to Cloudflare Pages](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
-* Get familiar with [Sentry's product features](https://docs.sentry.io/product.md) like tracing, insights, and alerts
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/sveltekit/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers blocking Sentry events
+* Learn more about [deploying SvelteKit apps to Cloudflare Pages](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup/cloudflare.md)
 
 Are you having problems setting up the SDK?
 
@@ -288,7 +271,6 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/sveltekit/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup__v10.7.0.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/sveltekit/manual-setup__v8.x.md)

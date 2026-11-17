@@ -676,19 +676,22 @@ Meeting notes block objects represent [AI meeting notes](https://www.notion.com/
 
 > [!NOTE]
 >
-> Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media. Use the child block IDs returned in the `children` field to fetch each section with the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
+> Meeting notes blocks cannot be created or updated with the general block endpoints. Use [Create a meeting note](/reference/create-meeting-note) to create one from uploaded media, or [Create a full-page meeting note](/reference/create-meeting-note-page) to create a full-page meeting note. Use the child block IDs returned in the `children` field to fetch each section with the [Retrieve a block](/reference/retrieve-a-block) or [Retrieve block children](/reference/get-block-children) endpoints.
+
+Full-page meeting notes are also returned as meeting notes blocks, with `is_full_page` set to `true`.
 
 Meeting notes block objects contain the following information within the `meeting_notes` (or `transcription` in older API versions) property:
 
 | Field | Type | Description |
 | :- | :- | :- |
+| `is_full_page` | `boolean` | Whether the meeting note is a full-page meeting note rather than a block inside a page. |
 | `title` | `array` of [rich text objects](/reference/rich-text) | The display name of the meeting notes session. |
 | `status` | `string` (enum) | The lifecycle status of the transcription. Possible values are: `"transcription_not_started"`, `"transcription_paused"`, `"transcription_in_progress"`, `"transcription_failed"`, `"summary_in_progress"`, `"notes_ready"`. |
 | `children` | `object` | Pointers to the related content blocks. Contains `summary_block_id`, `notes_block_id`, and `transcript_block_id` (each an optional UUID string). |
-| `calendar_event` | `object` | Calendar metadata for the meeting. Contains `start_time` and `end_time` (ISO 8601 timestamps) and `attendees` (an optional array of user IDs). |
+| `calendar_event` | `object` | Calendar metadata for the meeting. Contains `start_time` and `end_time` (ISO 8601 timestamps), `attendees` (an optional array of user IDs), and `event_id` (the optional ID of the calendar event). |
 | `recording` | `object` | The recording time window. Contains `start_time` and `end_time` (ISO 8601 timestamps). |
 
-All top-level fields are optional and only present when the corresponding data is available.
+All top-level fields except `is_full_page` are optional and only present when the corresponding data is available.
 
 ```json Example Meeting notes block object (2026-03-11) expandable theme={null}
 {
@@ -697,6 +700,7 @@ All top-level fields are optional and only present when the corresponding data i
   "type": "meeting_notes",
   //...other keys excluded
   "meeting_notes": {
+    "is_full_page": false,
     "title": [
       {
         "type": "text",

@@ -6,16 +6,11 @@ path: platforms/javascript/guides/remix
 
 ---
 title: "Remix"
-description: "Learn how to set up and configure Sentry in your Remix application using the installation wizard, capture your first errors, and view them in Sentry."
+description: "Learn how to set up and configure Sentry in your Remix application using the Sentry CLI and capture your events."
 url: https://docs.sentry.io/platforms/javascript/guides/remix/
 ---
 
 # Sentry for Remix
-
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/remix.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/remix/cloudflare.md)
 
 ##### Using Remix 3?
 
@@ -31,13 +26,17 @@ You need:
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/remix.md#install)
 
-To install Sentry using the installation wizard, run the following command within your project:
+The AI-powered `sentry init` flow is currently experimental. To use the existing framework-specific setup instead, see the option below, or check out the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md) guide.
 
-The wizard then guides you through the setup process, asking you to enable additional (optional) Sentry features for your application beyond error monitoring.
+Run the Sentry init command in your project directory to automatically configure Sentry in your Remix application.
+
+The command guides you through setup and asks which optional Sentry features you want to enable beyond error monitoring.
 
 ```bash
-npx @sentry/wizard@latest -i remix
+npx sentry@latest init
 ```
+
+**Logs** and **Application Metrics** need no extra configuration, and you'll learn how to send them in steps [#4](https://docs.sentry.io/platforms/javascript/guides/remix.md#send-logs) and [#5](https://docs.sentry.io/platforms/javascript/guides/remix.md#send-application-metrics-).
 
 Want to learn more about these features?
 
@@ -49,15 +48,28 @@ Want to learn more about these features?
 * [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
 * [**User Feedback**](https://docs.sentry.io/product/user-feedback.md): Collect feedback directly from users when they encounter errors, allowing them to describe what happened and provide context that helps you understand and resolve issues faster.
 
-This guide assumes that you enable all features and allow the wizard to create an example page. You can add or remove features at any time, but setting them up now will save you the effort of configuring them manually later.
+How does sentry init work?
 
-What does the installation wizard change inside your application?
+The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
 
-* Creates or updates `entry.(client|server).tsx` to initialize the SDK
-* Creates `.env.sentry-build-plugin` with an auth token to upload source maps (this file is automatically added to `.gitignore`)
-* Updates your build script or Vite configuration to automatically upload source maps to Sentry
-* Instruments your application to support Remix v2 features if you use [Remix future flags](https://remix.run/docs/en/main/pages/api-development-strategy#current-future-flags)
-* Adds an example page to your application to help verify your Sentry setup
+* **Analyzes your project** — reads project files and manifests to understand your Remix app structure, including monorepos. It also respects AI instruction files such as `CLAUDE.md`, `AGENTS.md`, and `.cursorrules`.
+* **Detects your framework** — identifies Remix and selects the `@sentry/remix` SDK.
+* **Fetches official Sentry docs** — uses the current Sentry documentation as the source of truth when generating integration code.
+* **Installs dependencies** — adds `@sentry/remix` using your project's package manager.
+* **Creates and modifies files** — sets up client-side and server-side initialization, error capture, source map upload, and other selected features based on your existing project structure.
+* **Verifies the integration** — re-reads modified files after writing to confirm Sentry was integrated.
+
+For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md) guide.
+
+Prefer the existing Remix wizard?
+
+If you don't want to use the experimental AI-powered flow, run the framework-specific installation wizard instead:
+
+```bash
+npx @sentry/wizard@latest -i remix
+```
+
+To configure Sentry manually, follow the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md) guide.
 
 ## [Configure Server-Side Performance Monitoring](https://docs.sentry.io/platforms/javascript/guides/remix.md#configure-server-side-performance-monitoring)
 
@@ -95,20 +107,7 @@ function App() {
 export default withSentry(App);
 ```
 
-## [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript/guides/remix.md#avoid-ad-blockers-with-tunneling-optional)
-
-To keep ad blockers from dropping Sentry events, send them through a tunnel on your own origin. Set `tunnel: true` in `Sentry.init`, and your server forwards the events to Sentry:
-
-```javascript
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  tunnel: true,
-});
-```
-
-Learn how to serve the tunnel on your server, or how to write your own tunnel endpoint, on the [Tunneling page](https://docs.sentry.io/platforms/javascript/guides/remix/configuration/tunneling.md).
-
-## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/remix.md#control-the-data-you-send-to-sentry-optional)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/remix.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -126,9 +125,66 @@ Sentry.init({
 });
 ```
 
+## [Send Logs](https://docs.sentry.io/platforms/javascript/guides/remix.md#send-logs)
+
+Use `Sentry.logger` to send logs at different levels, such as `info`, `warn`, or `error`. You can pass any attributes you want and search or filter by them later. See [Set Up Logs](https://docs.sentry.io/platforms/javascript/guides/remix/logs.md) for all available logging methods and the syntax for formatting messages.
+
+```javascript
+Sentry.logger.info("User example action completed");
+
+Sentry.logger.warn("Slow operation detected", {
+  operation: "data_fetch",
+  duration: 3500,
+});
+
+Sentry.logger.error("Validation failed", {
+  form_field: "email",
+  reason: "Invalid email",
+});
+```
+
+If you already use `console`, capture those calls as Sentry Logs with [`consoleLoggingIntegration`](https://docs.sentry.io/platforms/javascript/guides/remix/logs.md#console-integration). We also provide integrations for:
+
+* [Consola](https://docs.sentry.io/platforms/javascript/guides/remix/logs.md#console-integration)
+* [Pino](https://docs.sentry.io/platforms/javascript/guides/remix/configuration/integrations/pino.md)
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript/guides/remix.md#send-application-metrics-)
+
+Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/guides/remix/metrics.md) for all available metric types and configuration options.
+
+```javascript
+Sentry.metrics.count("checkout.failed", 1);
+
+Sentry.metrics.gauge("time_since_refresh", 4, { unit: "hour" });
+
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+  attributes: { endpoint: "/api/orders" },
+});
+```
+
+On Node.js, [`nodeRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/remix/configuration/integrations/noderuntimemetrics.md) also collects runtime health metrics automatically.
+
 ## [Verify Your Setup](https://docs.sentry.io/platforms/javascript/guides/remix.md#verify-your-setup)
 
-If you haven't tested your Sentry configuration yet, let's do it now. You can confirm that Sentry is working properly and sending data to your Sentry project by using the example page created by the installation wizard:
+The `sentry init` command checks the integration files it creates or modifies before it finishes. To confirm runtime events are reaching Sentry, add a test button to one of your routes. Clicking it will trigger an error for Sentry to capture.
+
+```tsx
+export default function SentryTest() {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        throw new Error("Sentry Test Error");
+      }}
+    >
+      Test Sentry Error
+    </button>
+  );
+}
+```
+
+If you used the Remix wizard instead, you can also use the example page it created:
 
 1. Open the example page `/sentry-example-page` in your browser. For most Remix applications, this will be at localhost.
 2. Click the "Throw Sample Error" button to trigger a frontend error and trace.
@@ -136,34 +192,6 @@ If you haven't tested your Sentry configuration yet, let's do it now. You can co
 ##### Tip
 
 Don't forget to explore the example page's code in your project to understand what's happening after your button click.
-
-### [Verify Additional Features](https://docs.sentry.io/platforms/javascript/guides/remix.md#verify-additional-features)
-
-**Logs** (enabled by default)
-
-See structured log entries from your application. You can send logs from anywhere:
-
-```typescript
-Sentry.logger.info("User action", { userId: "123" });
-Sentry.logger.warn("Slow response", { duration: 5000 });
-Sentry.logger.error("Operation failed", { reason: "timeout" });
-```
-
-Learn more about [Logs configuration](https://docs.sentry.io/platforms/javascript/guides/remix/logs.md).
-
-**Application Metrics** (enabled by default) NEW
-
-Track and analyze custom application metrics to understand trends and patterns in your app's performance and behavior over time:
-
-```typescript
-Sentry.metrics.count("checkout.failed", 1);
-Sentry.metrics.gauge("queue.depth", 42);
-Sentry.metrics.distribution("api_latency", 187, {
-  unit: "millisecond",
-});
-```
-
-Learn more about [Application Metrics](https://docs.sentry.io/platforms/javascript/guides/remix/metrics.md).
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/remix.md#view-captured-data-in-sentry)
 
@@ -185,18 +213,15 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/remix.md#next-steps)
 
-At this point, you should have integrated Sentry into your Remix application and should already be sending error and performance data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/guides/remix/usage.md)
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/guides/remix/configuration.md)
-* Get familiar with [Sentry's product features](https://docs.sentry.io/product.md) like tracing, insights, and alerts
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/remix/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers blocking Sentry events
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/remix/agent-tracing.md) to monitor your AI systems
 
 Are you having problems setting up the SDK?
 
-* If you encountered issues with our installation wizard, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md)
+* If you encountered issues with `sentry init` or the installation wizard, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md)
 * Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/remix/troubleshooting.md)
 * [Get support](https://www.sentry.help/en/)
 
@@ -244,7 +269,6 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/remix/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup__v8.x.md)
 - [Hydrogen (Legacy)](https://docs.sentry.io/platforms/javascript/guides/remix/hydrogen.md)

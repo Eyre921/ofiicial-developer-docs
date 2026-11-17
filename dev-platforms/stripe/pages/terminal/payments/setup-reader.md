@@ -90,7 +90,7 @@ This table compares the key capabilities across all readers.
 | JavaScript SDK | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | ✓ Supported |
 | Mobile SDKs (iOS, Android, React Native) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
 | Standalone mode | Coming soon | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | V660p only |
-| Stripe Terminal mobile app (Private preview) | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | ✓ Supported | - Unsupported |
+| Stripe Terminal app (Public preview) | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | ✓ Supported | - Unsupported |
 | Offline payments1 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | iPhone only (Private preview) | ✓ Supported |
 | On-reader tipping | ✓ Supported | ✓ Supported | ✓ Supported | Receipt tipping only | ✓ Supported | In-app | ✓ Supported |
 | On-screen input collection | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | In-app | ✓ Supported |

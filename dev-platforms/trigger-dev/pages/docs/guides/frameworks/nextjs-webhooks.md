@@ -1,10 +1,15 @@
 ---
-title: "Triggering tasks with webhooks in Next.js"
+title: "Custom webhook handler with Next.js"
 source: https://trigger.dev/docs/guides/frameworks/nextjs-webhooks
 path: docs/guides/frameworks/nextjs-webhooks
 ---
 
-Learn how to trigger a task from a webhook in a Next.js app.
+Handle a webhook in your own Next.js API route and trigger a task from it.
+
+> [!NOTE]
+>
+> Trigger.dev has built-in webhook endpoints that verify and route events for you. See
+> [Webhooks](/docs/webhooks/overview). This guide is for when you want to handle webhooks in your own app and trigger tasks yourself.
 
 ## Prerequisites
 
@@ -135,7 +140,7 @@ If you now go to your [Trigger.dev dashboard](https://cloud.trigger.dev), you sh
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
+> [card] [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 

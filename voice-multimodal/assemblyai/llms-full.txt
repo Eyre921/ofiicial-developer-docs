@@ -22,6 +22,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Content repurposing](#content-repurposing-docs-getting-started-end-to-end-examples-content-repurposing-mdx)
 - [Real-time meeting assistant](#real-time-meeting-assistant-docs-getting-started-end-to-end-examples-real-time-meeting-assistant-mdx)
 - [Real-time live captioner](#real-time-live-captioner-docs-getting-started-end-to-end-examples-real-time-live-captioner-mdx)
+- [Speech model versions and deprecations](#speech-model-versions-and-deprecations-docs-getting-started-model-versions-and-deprecations-mdx)
 - [Account Management](#account-management-docs-account-management-mdx)
 - [Temporary tokens](#temporary-tokens-docs-temporary-tokens-mdx)
 - [Single Sign-On (SSO)](#single-sign-on-sso-docs-sso-mdx)
@@ -32,7 +33,8 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Data retention and model training](#data-retention-and-model-training-docs-data-retention-and-model-training-mdx)
 - [Quickstart](#quickstart-docs-pre-recorded-audio-getting-started-transcribe-an-audio-file-mdx)
 - [Model selection](#model-selection-docs-pre-recorded-audio-select-the-speech-model-mdx)
-- [Prompting and Keyterms](#prompting-and-keyterms-docs-pre-recorded-audio-universal-3-5-pro-prompting-mdx)
+- [assemblyai-stt-3-7 migration guide](#assemblyai-stt-3-7-migration-guide-docs-pre-recorded-audio-assemblyai-stt-3-7-migration-guide-mdx)
+- [Prompting and Keyterms](#prompting-and-keyterms-docs-pre-recorded-audio-prompting-mdx)
 - [Medical Mode](#medical-mode-docs-pre-recorded-audio-medical-mode-mdx)
 - [Veterinary Mode (beta)](#veterinary-mode-beta-docs-pre-recorded-audio-veterinary-mode-mdx)
 - [Speaker Diarization](#speaker-diarization-docs-pre-recorded-audio-label-speakers-mdx)
@@ -43,7 +45,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Supported Languages](#supported-languages-docs-pre-recorded-audio-supported-languages-mdx)
 - [Custom Spelling](#custom-spelling-docs-pre-recorded-audio-correct-spelling-of-terms-mdx)
 - [Formatting](#formatting-docs-pre-recorded-audio-formatting-mdx)
-- [Filler Words](#filler-words-docs-pre-recorded-audio-include-filler-words-mdx)
+- [Verbatim](#verbatim-docs-pre-recorded-audio-include-filler-words-mdx)
 - [Word Search](#word-search-docs-pre-recorded-audio-search-for-words-in-transcript-mdx)
 - [Set the Start and End of the Transcript](#set-the-start-and-end-of-the-transcript-docs-pre-recorded-audio-set-the-start-and-end-of-the-transcript-mdx)
 - [Transcript Status](#transcript-status-docs-pre-recorded-audio-check-transcript-status-mdx)
@@ -374,7 +376,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Select The EU Region for EU Data Residency](#select-the-eu-region-for-eu-data-residency-docs-pre-recorded-audio-guides-how-to-use-the-eu-endpoint-mdx)
 - [Identifying speakers in audio recordings](#identifying-speakers-in-audio-recordings-docs-pre-recorded-audio-guides-identifying-speakers-in-audio-recordings-mdx)
 - [Streaming v2 (Legacy)](#streaming-v2-legacy-docs-pre-recorded-audio-legacy-streaming-mdx)
-- [Universal-3.5 Pro](#universal-3-5-pro-docs-pre-recorded-audio-universal-3-5-pro-mdx)
 - [Sample audio files](#sample-audio-files-docs-samples-mdx)
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
@@ -577,12 +578,12 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 4. **Prefer the official SDKs.** Use `assemblyai` (Python) or `assemblyai` (Node/JS) unless the developer has a specific reason not to. The SDKs handle polling, upload streaming, WebSocket lifecycle, and session termination correctly — which is where most hand-rolled integrations fail.
 5. **Never expose the API key in client-side code.** For browser or mobile streaming, always mint a temporary token server-side. For pre-recorded, proxy uploads and submissions through your server.
 6. **Authorization header is the raw key — no `Bearer` prefix.** This trips up everyone.
-7. **`speech_models` is optional on pre-recorded requests.** If omitted, the request defaults to `["universal-3-5-pro", "universal-2"]`. You can still set it explicitly — see Section 5 for semantics.
+7. **`speech_models` is optional on pre-recorded requests.** For new accounts created on or after November 17, 2026, leaving it out defaults to `["assemblyai-stt-3-7"]`. Existing accounts may default to an older model; see the [assemblyai-stt-3-7 migration guide](/pre-recorded-audio/assemblyai-stt-3-7-migration-guide). You can still set it explicitly — see Section 5 for semantics.
 8. **Always terminate streaming sessions explicitly.** An abandoned WebSocket keeps accruing charges until the 3-hour cap.
 9. **Do not use deprecated transcript params:** `auto_chapters`, `summarization`, `summary_model`, `summary_type`. Use LLM Gateway instead (Section 8).
 10. **If the developer's answers are inconsistent, stop and surface the conflict.** Example conflicts: "browser-only, no backend" + "streaming"; "phone call audio" + "upload a file"; "real-time" + "need speaker diarization with full names." Don't paper over these — ask.
 11. **Be flexible.** If something the developer says doesn't match the shape of the API (e.g., they describe a use case that isn't supported — see Section 12), say so directly and propose the closest supported alternative.
-12. **Verify parameters against live docs before recommending.** This file is a snapshot — features move between beta and GA, model-specific behaviors change, and new knobs ship regularly. Before posting the Section 2 recommendation, confirm each parameter you plan to use is supported for the chosen **mode** (pre-recorded vs streaming) *and* **model** (Universal-3.5 Pro, Universal-2, AssemblyAI-STT-3.7-Realtime-Agent, AssemblyAI-STT-3.7-Realtime). Do not assume a pre-recorded flag works on streaming, or that a parameter supported on U2 still behaves the same on U3 Pro. Pull the current reference rather than memorizing. Primary sources, in order of preference:
+12. **Verify parameters against live docs before recommending.** This file is a snapshot — features move between beta and GA, model-specific behaviors change, and new knobs ship regularly. Before posting the Section 2 recommendation, confirm each parameter you plan to use is supported for the chosen **mode** (pre-recorded vs streaming) *and* **model** (AssemblyAI-STT-3.7, Universal-2, AssemblyAI-STT-3.7-Realtime-Agent, AssemblyAI-STT-3.7-Realtime). Do not assume a pre-recorded flag works on streaming, or that a parameter supported on U2 still behaves the same on AssemblyAI-STT-3.7. Pull the current reference rather than memorizing. Primary sources, in order of preference:
     - `https://www.assemblyai.com/docs/llms.txt` — the machine-readable index; fetch the section files it links (each under 100 KB) for full content
     - Per-mode docs: `/docs/pre-recorded-audio/*` (pre-recorded) and `/docs/streaming/*` (streaming), including the model-specific overview page (e.g., `/docs/streaming/getting-started/transcribe-streaming-audio` and `/docs/streaming/select-the-speech-model`) which lists *exactly* which parameters are honored/ignored by that model
     - The OpenAPI-backed API reference at `/docs/api-reference/*` for request/response schemas
@@ -672,8 +673,8 @@ Use this to build the recommendation. Do not dump it on the user.
 | Speaker diarization | `speaker_labels: true` (pre-recorded, and streaming — streaming adds a `speaker_label` to each Turn event) |
 | Automatic language detection | `language_detection: true` (pre-recorded; on streaming, adds `language_code` + `language_confidence` to Turn events. It only reports the language; it doesn't change transcription.) |
 | Specific language | `language_code: "es"` etc. on pre-recorded; on streaming, `language_codes: ["es"]` steers the model toward the languages you list |
-| Multilingual / code-switching | `speech_models: ["universal-3-5-pro"]` + `prompt` parameter — see [U3 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) |
-| Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with U3 Pro / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
+| Multilingual / code-switching | `speech_models: ["assemblyai-stt-3-7"]` + `prompt` parameter — see [prompting guide](/pre-recorded-audio/prompting) |
+| Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with AssemblyAI-STT-3.7 / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
 | Medical domain | `domain: "medical-v1"` (pre-recorded *and* streaming; supported languages: en, es, de, fr) |
 | Veterinary domain (beta) | `domain: "veterinary-v1"` (pre-recorded *and* streaming) |
 | PII redaction in text | `redact_pii: true` + `redact_pii_policies: [...]` + optional `redact_pii_sub: "hash" \| "entity_name"` |
@@ -712,9 +713,13 @@ Streaming:
 
 ## 5. `speech_models` semantics
 
-`speech_models` on pre-recorded requests is an **ordered fallback list**, not parallel execution. The first model in the array is tried; if it's unavailable (e.g., not yet rolled out to the account, or temporarily unhealthy), the next is used. A single transcript is produced by exactly one model.
+`speech_models` on pre-recorded requests is a list of candidate models, not parallel execution. A single transcript is produced by exactly one model.
 
-Recommended default: `["universal-3-5-pro", "universal-2"]` — tries the latest model first, falls back to the stable predecessor.
+- **If the list includes `assemblyai-stt-3-7`**, the request goes to AssemblyAI-STT-3.7 for any language it supports (set by `language_code` or detected), wherever it appears in the list. Other models are used only for languages AssemblyAI-STT-3.7 doesn't support. If you set a `language_code` that AssemblyAI-STT-3.7 doesn't support, the request falls back to Universal-2 even if `universal-2` isn't in the list.
+- **If the list doesn't include `assemblyai-stt-3-7`**, the first model in the list, from left to right, that supports the language is used.
+- **`disfluencies` defaults to `true`** whenever the list includes `assemblyai-stt-3-7` (or `speech_models` is omitted and the request uses `assemblyai-stt-3-7` by default), even if another model is first or transcribes the audio. Set `disfluencies: false` to remove filler words.
+
+The recommended setup is `["assemblyai-stt-3-7"]`.
 
 On streaming, the parameter is **singular** (`speech_model=assemblyai-stt-3-7-realtime-agent`) — there is no fallback list. Easy to mix up.
 
@@ -733,7 +738,7 @@ import os
 aai.settings.api_key = os.environ["ASSEMBLYAI_API_KEY"]
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],  # fallback handled by SDK
+    speech_models=["assemblyai-stt-3-7"],
     speaker_labels=True,
 )
 
@@ -756,7 +761,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 const transcript = await client.transcripts.transcribe({
   audio: 'https://assembly.ai/wildfires.mp3', // or a local file path / Buffer / stream
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7"],
   speaker_labels: true,
 });
 
@@ -787,7 +792,7 @@ submit = requests.post(
     headers=headers,
     json={
         "audio_url": "https://assembly.ai/wildfires.mp3",
-        "speech_models": ["universal-3-5-pro", "universal-2"],
+        "speech_models": ["assemblyai-stt-3-7"],
         "speaker_labels": True,
     },
 )
@@ -1054,7 +1059,7 @@ export async function POST(request) {
     },
     body: JSON.stringify({
       audio_url: upload_url,
-      speech_models: ['universal-3-5-pro', 'universal-2'],
+      speech_models: ['assemblyai-stt-3-7'],
     }),
   });
   return Response.json(await submit.json());
@@ -1152,7 +1157,7 @@ For the most common errors across all APIs, with fixes, and links to each produc
 ## 14. Quick-reference gotchas
 
 - No `Bearer` prefix on the Authorization header.
-- `speech_models` is **optional** on pre-recorded submits — it defaults to `["universal-3-5-pro", "universal-2"]` and is an **ordered fallback list** when provided.
+- `speech_models` is **optional** on pre-recorded submits — for new accounts created on or after November 17, 2026 it defaults to `["assemblyai-stt-3-7"]`, and when provided, `assemblyai-stt-3-7` takes priority wherever it appears in the list (see section 5).
 - `/v2/upload` takes **raw binary**, not multipart.
 - Webhook handlers must return 2xx in ≤10 seconds.
 - Local webhook development needs a public tunnel (ngrok, Cloudflare Tunnel).
@@ -1164,7 +1169,7 @@ For the most common errors across all APIs, with fixes, and links to each produc
 - LLM Gateway model IDs are exact and versioned (e.g., `claude-sonnet-4-6`, `gpt-5.2`, `gemini-2.5-pro`). Shorthand like `claude-sonnet-4` is invalid.
 - Phone audio stays at native 8 kHz mu-law (`encoding=pcm_mulaw`) — don't upsample.
 - EU customers use `api.eu.assemblyai.com`, `streaming.eu.assemblyai.com`, and `llm-gateway.eu.assemblyai.com`. The default streaming host (`streaming.assemblyai.com`) is **Edge Routing**, not US-pinned — use `streaming.us.assemblyai.com` if you need data residency guarantees on the US side.
-- Speech-model values are **raw strings** in the SDKs (`"universal-3-5-pro"`, `"universal-2"`). Enum aliases like `aai.SpeechModel.universal_3_pro` do **not** exist — agents that hallucinate them produce code that imports cleanly and fails at runtime.
+- Speech-model values are **raw strings** in the SDKs (`"assemblyai-stt-3-7"`, `"universal-2"`). Enum aliases like `aai.SpeechModel.universal_3_pro` do **not** exist — agents that hallucinate them produce code that imports cleanly and fails at runtime.
 - LeMUR has fully sunset (2026-03-31). Don't generate code that calls LeMUR endpoints or passes `transcript_ids` to a chat-completions API — use LLM Gateway with the transcript text in `messages` instead.
 `````
 
@@ -1213,7 +1218,7 @@ The CLI asks which agents to install it for. Run `npx skills check` later to see
 ## Tips for best results
 
 - **Be specific about the SDK** — say "use the AssemblyAI Python SDK" or "use the JavaScript SDK" rather than "use AssemblyAI".
-- **Reference the model** — specify `universal-3-5-pro` for pre-recorded or `assemblyai-stt-3-7-realtime-agent` for streaming to avoid outdated model names.
+- **Reference the model** — specify `assemblyai-stt-3-7` for pre-recorded or `assemblyai-stt-3-7-realtime-agent` for streaming to avoid outdated model names.
 - **Set your API key as an environment variable** — `export ASSEMBLYAI_API_KEY=your_key` so the agent can reference it naturally.
 
 ---
@@ -1531,8 +1536,8 @@ Pair [AssemblyAI-TTS-1](/tts/getting-started/quickstart) with AssemblyAI-STT-3.7
 
   
     <ul>
-      <li>Highest accuracy, fastest model</li>
-      <li>Supports 18 languages</li>
+      <li>Our flagship pre-recorded model</li>
+      <li>Supports 32 languages</li>
       <li>Native code switching</li>
       <li>Contextual prompting capabilities</li>
       <li>Keyterms prompting up to 1,000 words</li>
@@ -1540,14 +1545,14 @@ Pair [AssemblyAI-TTS-1](/tts/getting-started/quickstart) with AssemblyAI-STT-3.7
   
   
     <ul>
-      <li>High accuracy, low latency</li>
+      <li>Good balance of accuracy and cost-effectiveness</li>
       <li>Support across 99 languages</li>
       <li>Keyterms prompting up to 200 words</li>
       <li>Code switching</li>
     </ul>
   
 
-We recommend [Universal-3.5 Pro](/pre-recorded-audio/universal-3-5-pro) for pre-recorded audio transcription. It delivers the highest accuracy and fastest transcription out of the box, with optional contextual prompting support. Universal-3.5 Pro supports 18 languages, for anything outside that set, the system automatically falls back to Universal-2, giving you coverage across 99 languages total without any extra configuration.
+We recommend [AssemblyAI-STT-3.7](/pre-recorded-audio/select-the-speech-model) for pre-recorded audio transcription. It's our flagship pre-recorded model, with 32 languages, native code switching, and contextual prompting. To cover the rest of the 99 languages Universal-2 supports, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`. See [Transcribe all 99 languages by combining speech models](/pre-recorded-audio/select-the-speech-model#transcribe-all-99-languages-by-combining-speech-models).
 
 ## Streaming Speech to Text
 
@@ -1602,7 +1607,7 @@ Add-on models enhance transcription accuracy for specialized domains. They work 
 Medical Mode (`domain: "medical-v1"`) is an add-on that enhances transcription accuracy for medication names, including both generic and brand-name medications. It corrects medication names that other models frequently get wrong.
 
 **Supported models:**
-- Pre-recorded: Universal-3.5 Pro, Universal-2
+- Pre-recorded: AssemblyAI-STT-3.7, Universal-2
 - Streaming: AssemblyAI-STT-3.7-Realtime-Agent, AssemblyAI-STT-3.7-Realtime, Universal-3.6 Pro Realtime
 
 **Supported languages:** English, Spanish, German, French
@@ -1616,7 +1621,7 @@ Learn more: [Medical Mode for pre-recorded audio](/pre-recorded-audio/medical-mo
 Veterinary Mode (`domain: "veterinary-v1"`) is an add-on that enhances transcription accuracy for veterinary terminology, such as animal medication names, procedures, and conditions.
 
 **Supported models:**
-- Pre-recorded: Universal-3.5 Pro, Universal-2
+- Pre-recorded: AssemblyAI-STT-3.7, Universal-2
 - Streaming: AssemblyAI-STT-3.7-Realtime-Agent, AssemblyAI-STT-3.7-Realtime, Universal-3.6 Pro Realtime
 
 Veterinary Mode is billed as a separate add-on at the same list price as Medical Mode. See the [pricing page](https://www.assemblyai.com/pricing) for details.
@@ -1648,9 +1653,9 @@ The text-to-speech API takes the full English name of the language, such as `spa
 
 ### Pre-recorded Speech to Text
 
-#### Universal-3.5 Pro
+#### AssemblyAI-STT-3.7
 
-Universal-3.5 Pro is our most powerful Voice AI model, designed to capture the "hard stuff" that traditional ASR models struggle with. It delivers state-of-the-art accuracy for entities, rare words, and domain-specific terminology out of the box, with code switching and optional prompting for more control. It's also our fastest model, so you get the best accuracy without sacrificing speed.
+AssemblyAI-STT-3.7 is our flagship pre-recorded Voice AI model, designed to capture the "hard stuff" that traditional ASR models struggle with. It delivers state-of-the-art accuracy for entities, rare words, and domain-specific terminology out of the box, with native code switching across 32 languages and optional prompting for more control. The previous flagship, Universal-3.5 Pro (`universal-3-5-pro`), covers 18 languages and is deprecated. Its retirement date will be announced.
 
 **Best for:**
 - Applications requiring highest-accuracy transcription
@@ -1663,19 +1668,17 @@ Universal-3.5 Pro is our most powerful Voice AI model, designed to capture the "
 
   **Regional dialects**
 
-Universal-3.5 Pro also supports regional dialects and local speech variants out of the box — no special configuration needed. See the full list of [supported dialects](/pre-recorded-audio/supported-languages#regional-dialects-and-variants).
+AssemblyAI-STT-3.7 also supports regional dialects and local speech variants out of the box — no special configuration needed. See the full list of [supported dialects](/pre-recorded-audio/supported-languages#regional-dialects-and-variants).
 
-[Try Universal-3.5 Pro here](/pre-recorded-audio/universal-3-5-pro)
+[Set up AssemblyAI-STT-3.7](/pre-recorded-audio/select-the-speech-model)
 
 #### Universal-2
 
-Universal-2 offers accurate, cost-effective transcription across 99 languages with low latency. It supports code switching and optional keyterms prompting for domain-specific vocabulary (up to 200 words). Universal-2 is the go-to choice when you need reliable transcription across diverse languages.
+Universal-2 offers a good balance of accuracy and cost, available across 99 languages. It supports code switching and optional keyterms prompting for domain-specific vocabulary (up to 200 words).
 
 **Best for:**
-- High accuracy at lower cost with broad language support
-- High-volume, price-sensitive batch transcription
+- Good balance of accuracy and cost-effectiveness
 - Support for over 99 languages
-- Recommended fallback when a requested language isn't supported by Universal-3.5 Pro
 
   
   <br />
@@ -1750,7 +1753,7 @@ Text-to-speech is billed per character of input text, not per second of audio.
 
 | Model           | Price per Hour | Volume discounts |
 | --------------- | -------------- | ---------------- |
-| Universal-3.5 Pro | $0.21/hr       | Available        |
+| AssemblyAI-STT-3.7 | $0.21/hr       | Available        |
 | Universal-2     | $0.15/hr       | Available        |
 
 ### Streaming Speech to Text
@@ -1768,7 +1771,7 @@ For volume discounts, please reach out to sales@assemblyai.com.
 ## Next steps
 
 - Explore [Speech Understanding](/speech-understanding) features like summarization, sentiment analysis, and more
-- Learn about prompting: [Universal-3.5 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) | [Streaming prompting guide](/streaming/prompting-and-keyterms)
+- Learn about prompting: [Prompting guide](/pre-recorded-audio/prompting) | [Streaming prompting guide](/streaming/prompting-and-keyterms)
 - Give your application a voice with the [text-to-speech quickstart](/tts/getting-started/quickstart)
 
 ---
@@ -1881,7 +1884,7 @@ Transcribe a meeting recording with speaker labels and automatic language detect
 
 **Products used:** [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file) + [speaker diarization](/pre-recorded-audio/label-speakers) + [Speaker Identification](/speech-understanding/speaker-identification) + [language detection](/pre-recorded-audio/language-detection) + [LLM Gateway](/llm-gateway/quickstart)
 
-**Model selection:** This example uses both `universal-3-5-pro` and `universal-2` for broad language coverage across 99 languages. If your meetings are English-only, you can use `universal-3-5-pro` alone for the highest accuracy.
+**Model selection:** This example uses both `assemblyai-stt-3-7` and `universal-2` for broad language coverage across 99 languages. If your meetings are English-only, you can use `assemblyai-stt-3-7` alone for the highest accuracy.
 
 ```python expandable
 import requests
@@ -1896,6 +1899,7 @@ audio_url = "https://assembly.ai/wildfires.mp3"
 # ── Step 1: Transcribe with speaker labels + language detection ──
 data = {
     "audio_url": audio_url,
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
     "speaker_labels": True,
 }
@@ -1978,6 +1982,7 @@ let res = await fetch(`${baseUrl}/v2/transcript`, {
   headers,
   body: JSON.stringify({
     audio_url: audioUrl,
+    speech_models: ["assemblyai-stt-3-7", "universal-2"],
     language_detection: true,
     speaker_labels: true,
   }),
@@ -2089,7 +2094,7 @@ Transcribe a sales call with speaker labels and sentiment analysis, identify spe
 
 **Products used:** [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file) + [speaker diarization](/pre-recorded-audio/label-speakers) + [Speaker Identification](/speech-understanding/speaker-identification) + [sentiment analysis](/speech-understanding/sentiment-analysis) + [LLM Gateway](/llm-gateway/quickstart)
 
-**Model selection:** Uses `universal-3-5-pro` for the highest English accuracy. For multilingual sales teams, add `universal-2` as a fallback.
+**Model selection:** Uses `assemblyai-stt-3-7` for the highest English accuracy. For multilingual sales teams, add `universal-2` as a fallback.
 
 ```python expandable
 import requests
@@ -2105,6 +2110,7 @@ audio_url = "https://assembly.ai/wildfires.mp3"
 # ── Step 1: Transcribe with speaker labels + sentiment analysis ──
 data = {
     "audio_url": audio_url,
+    "speech_models": ["assemblyai-stt-3-7"],
     "speaker_labels": True,
     "sentiment_analysis": True,
 }
@@ -2218,6 +2224,7 @@ let res = await fetch(`${baseUrl}/v2/transcript`, {
   headers,
   body: JSON.stringify({
     audio_url: audioUrl,
+    speech_models: ["assemblyai-stt-3-7"],
     speaker_labels: true,
     sentiment_analysis: true,
   }),
@@ -2362,7 +2369,7 @@ Transcribe a clinical encounter using Medical Mode with speaker labels and entit
 
 **Products used:** [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file) + [Medical Mode](/pre-recorded-audio/medical-mode) + [speaker diarization](/pre-recorded-audio/label-speakers) + [Speaker Identification](/speech-understanding/speaker-identification) + [entity detection](/speech-understanding/entity-detection) + [LLM Gateway](/llm-gateway/quickstart)
 
-**Model selection:** Uses `universal-3-5-pro` with `"domain": "medical-v1"` for purpose-built accuracy on medical terminology, drug names, and clinical language.
+**Model selection:** Uses `assemblyai-stt-3-7` with `"domain": "medical-v1"` for purpose-built accuracy on medical terminology, drug names, and clinical language.
 
 ```python expandable
 import requests
@@ -2377,6 +2384,7 @@ audio_url = "https://assembly.ai/wildfires.mp3"  # Replace with your clinical au
 # ── Step 1: Transcribe with Medical Mode + speaker labels + entity detection ──
 data = {
     "audio_url": audio_url,
+    "speech_models": ["assemblyai-stt-3-7"],
     "domain": "medical-v1",
     "speaker_labels": True,
     "entity_detection": True,
@@ -2468,6 +2476,7 @@ audio_url = "https://assembly.ai/wildfires.mp3"  # Replace with your clinical au
 
 # ── Step 1: Transcribe with Medical Mode + speaker labels + entity detection ──
 config = aai.TranscriptionConfig(
+    speech_models=["assemblyai-stt-3-7"],
     domain="medical-v1",
     speaker_labels=True,
     entity_detection=True,
@@ -2554,6 +2563,7 @@ let res = await fetch(`${baseUrl}/v2/transcript`, {
   headers,
   body: JSON.stringify({
     audio_url: audioUrl,
+    speech_models: ["assemblyai-stt-3-7"],
     domain: "medical-v1",
     speaker_labels: true,
     entity_detection: true,
@@ -2652,6 +2662,7 @@ const audioUrl = "https://assembly.ai/wildfires.mp3"; // Replace with your clini
 // Step 1: Transcribe with Medical Mode + speaker labels + entity detection
 const transcript = await client.transcripts.transcribe({
   audio: audioUrl,
+  speech_models: ["assemblyai-stt-3-7"],
   domain: "medical-v1",
   speaker_labels: true,
   entity_detection: true,
@@ -2774,7 +2785,7 @@ Transcribe a podcast or webinar, extract key phrases, then use LLM Gateway to ge
 
 **Products used:** [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file) + [key phrases](/speech-understanding/key-phrases) + [LLM Gateway](/llm-gateway/quickstart)
 
-**Model selection:** Uses `universal-3-5-pro` with `universal-2` fallback for multilingual content. If your content is English-only, `universal-3-5-pro` alone gives the best results.
+**Model selection:** Uses `assemblyai-stt-3-7` with `universal-2` fallback for multilingual content. If your content is English-only, `assemblyai-stt-3-7` alone gives the best results.
 
 ```python expandable
 import requests
@@ -2789,6 +2800,7 @@ audio_url = "https://assembly.ai/wildfires.mp3"
 # ── Step 1: Transcribe with key phrases enabled ──
 data = {
     "audio_url": audio_url,
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
     "auto_highlights": True,
 }
@@ -2858,6 +2870,7 @@ let res = await fetch(`${baseUrl}/v2/transcript`, {
   headers,
   body: JSON.stringify({
     audio_url: audioUrl,
+    speech_models: ["assemblyai-stt-3-7", "universal-2"],
     language_detection: true,
     auto_highlights: true,
   }),
@@ -3410,6 +3423,96 @@ Session ended — 3 captions, 24s of audio
 ---
 
 See the [End-to-end examples overview](/getting-started/end-to-end-examples) for all available pipelines.
+
+---
+
+<a id="speech-model-versions-and-deprecations-docs-getting-started-model-versions-and-deprecations-mdx"></a>
+
+# Speech model versions and deprecations
+
+URL: https://www.assemblyai.com/docs/getting-started/model-versions-and-deprecations
+Source: docs/getting-started/model-versions-and-deprecations.mdx
+Navigation: Overview > Build & Evaluate
+Description: Learn how AssemblyAI releases, versions, and deprecates speech models, and how requests to older models are handled.
+
+AssemblyAI regularly releases new speech models with better accuracy, lower latency, and broader language support. As newer models become generally available, older models are deprecated and eventually retired.
+
+This page covers AssemblyAI speech models only: speech-to-text and text-to-speech. It explains the model lifecycle, what happens when a model is retired, and the current status of each speech model.
+
+## Model lifecycle
+
+Every AssemblyAI speech model moves through the following stages.
+
+| Stage | Description |
+| --- | --- |
+| **Preview** | The model is available for early testing and evaluation. Behavior, pricing, and supported features may change before general availability. |
+| **Generally available (GA)** | The model is fully supported and recommended for production use. |
+| **Deprecated** | A newer model has reached GA and replaces this one. The model still works as before, but you should plan your migration. A retirement date is announced. |
+| **Retired** | The model is no longer served directly. Requests that specify a model past its retirement date are automatically routed to its replacement model. |
+
+## Model status
+
+### Pre-recorded models
+
+| Model ID | Status | Deprecated | Tentative retirement date | Replacement |
+| --- | --- | --- | --- | --- |
+| `assemblyai-stt-3-7` | GA | N/A | — | — |
+| `universal-3-5-pro` | Deprecated | November 17, 2026 | To be announced | `assemblyai-stt-3-7` |
+| `universal-3-pro` | Deprecated | November 17, 2026 | To be announced | `assemblyai-stt-3-7` |
+| `universal-2` | GA | N/A | — | — |
+
+  **Default model change:** For new accounts created on or after November 17, 2026, requests that don't set `speech_models` use `assemblyai-stt-3-7`. Starting December 8, 2026, existing accounts that don't set `speech_models` and currently use `universal-3-5-pro` or `universal-3-pro` by default will automatically use `assemblyai-stt-3-7`. This is a change to the default model, not the retirement of `universal-3-5-pro` or `universal-3-pro`. Existing accounts that use `universal-2` by default aren't upgraded automatically. See the [assemblyai-stt-3-7 migration guide](/pre-recorded-audio/assemblyai-stt-3-7-migration-guide).
+
+### Real-time models
+
+| Model ID | Status | Deprecated | Tentative retirement date | Replacement |
+| --- | --- | --- | --- | --- |
+| `assemblyai-stt-3-7-realtime` | GA | N/A | — | — |
+| `assemblyai-stt-3-7-realtime-agent` | GA | N/A | — | — |
+| `universal-3-6-pro` | GA | N/A | — | — |
+| `universal-3-5-pro` | Deprecated | November 17, 2026 | February 1, 2027 | `assemblyai-stt-3-7-realtime-agent` |
+| `universal-streaming-english` | Deprecated | November 17, 2026 | February 1, 2027 | `assemblyai-stt-3-7-realtime` |
+| `universal-streaming-multilingual` | Deprecated | November 17, 2026 | February 1, 2027 | `assemblyai-stt-3-7-realtime` |
+
+### Sync models
+
+| Model ID | Status | Deprecated | Tentative retirement date | Replacement |
+| --- | --- | --- | --- | --- |
+| `universal-3-6-pro` | GA | N/A | — | — |
+
+### Text-to-speech models
+
+| Model ID | Status | Deprecated | Tentative retirement date | Replacement |
+| --- | --- | --- | --- | --- |
+| `assemblyai-tts-1` | GA | N/A | — | — |
+
+## Retired models
+
+Retired models are listed below, with the most recent retirements first.
+
+| Product | Model ID | Status | Routed to |
+| --- | --- | --- | --- |
+| Sync | `universal-3-5-pro` | Retired | `universal-3-6-pro` |
+| Real-time | `u3-rt-pro` | Retired | `universal-3-6-pro` |
+
+## Model deprecation and retirement
+
+### Notification
+
+AssemblyAI gives you at least 90 days' notice before retiring a model.
+
+### What happens when a model is retired
+
+When a model is retired, AssemblyAI routes any request that specifies it to its replacement model if available.
+
+We recommend that you evaluate the replacement model and test it on your own audio before the retirement date.
+
+### Auditing model usage
+
+To find out whether you're using a deprecated model, review your usage in the AssemblyAI dashboard:
+
+1. Open the [**Usage**](https://www.assemblyai.com/dashboard/usage) page.
+2. Break down your usage by model to see which models your requests use.
 
 ---
 
@@ -5052,36 +5155,31 @@ If you get stuck, or have any other questions, we'd love to help you out. Contac
 
 URL: https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model
 Source: docs/pre-recorded-audio/select-the-speech-model.mdx
-Navigation: Pre-recorded STT > Getting started
+Navigation: Pre-recorded STT > Getting started > Model selection
 Description: Model selection documentation.
 
-The `speech_models` parameter lets you specify which model(s) to use for transcription. If omitted, it defaults to `["universal-3-5-pro", "universal-2"]`. With this default, `universal-3-5-pro` handles its 18 supported languages; for all other languages, the request will automatically fall back to `universal-2`.
+The `speech_models` parameter lets you specify which model(s) to use for transcription. For new accounts created on or after November 17, 2026, leaving out `speech_models` defaults to `["assemblyai-stt-3-7"]`. For existing accounts, see the [assemblyai-stt-3-7 migration guide](/pre-recorded-audio/assemblyai-stt-3-7-migration-guide).
 
 ## Available models
 
 | Name                | Parameter                           | Description                                                                          | Best for                                                                                                          |
 | ------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| **Universal-3.5 Pro** <span class="recommended-pill">Recommended</span> | `speech_models=['universal-3-5-pro']` | Our highest accuracy, fastest model with 18-language support, native code switching, and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
-| **Universal-3.6 Pro Preview** <span class="preview-pill">Preview</span> | `speech_models=['universal-3-6-pro-preview']` | Our next-generation pre-recorded model, currently in preview. Supports [32 languages](/pre-recorded-audio/supported-languages). | Early access to the next-generation pre-recorded model. |
-| **Universal-2**     | `speech_models=['universal-2']`     | Our accurate, cost-effective model with support across 99 languages.      | High-volume batch transcription, 99-language coverage, price-sensitive workloads, fallback for unsupported U3 Pro languages |
+| **AssemblyAI-STT-3.7** <span class="recommended-pill">Recommended</span> | `speech_models=['assemblyai-stt-3-7']` | Our flagship pre-recorded STT model. 32 languages with native code-switching and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
+| **Universal-2**     | `speech_models=['universal-2']`     | A multilingual transcription model offering a good balance of speed and cost-effectiveness. | Cost-effective fallback model for language support outside of AssemblyAI-STT-3.7 |
 
 | Name                | Parameter                            | Description                                                                          | Best for                                                                                                          |
 | ------------------- | ------------------------------------ | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| **Universal-3.5 Pro** <span class="recommended-pill">Recommended</span> | `speech_models: ['universal-3-5-pro']` | Our highest accuracy, fastest model with 18-language support, native code switching, and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
-| **Universal-3.6 Pro Preview** <span class="preview-pill">Preview</span> | `speech_models: ['universal-3-6-pro-preview']` | Our next-generation pre-recorded model, currently in preview. Supports [32 languages](/pre-recorded-audio/supported-languages). | Early access to the next-generation pre-recorded model. |
-| **Universal-2**     | `speech_models: ['universal-2']`     | Our accurate, cost-effective model with support across 99 languages.      | High-volume batch transcription, 99-language coverage, price-sensitive workloads, fallback for unsupported U3 Pro languages |
+| **AssemblyAI-STT-3.7** <span class="recommended-pill">Recommended</span> | `speech_models: ['assemblyai-stt-3-7']` | Our flagship pre-recorded STT model. 32 languages with native code-switching and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
+| **Universal-2**     | `speech_models: ['universal-2']`     | A multilingual transcription model offering a good balance of speed and cost-effectiveness. | Cost-effective fallback model for language support outside of AssemblyAI-STT-3.7 |
 
 | Name                | API Parameter                          | Description                                                                          | Best for                                                                                                          |
 | ------------------- | -------------------------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| **Universal-3.5 Pro** <span class="recommended-pill">Recommended</span> | `"speech_models": ["universal-3-5-pro"]` | Our highest accuracy, fastest model with 18-language support, native code switching, and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
-| **Universal-3.6 Pro Preview** <span class="preview-pill">Preview</span> | `"speech_models": ["universal-3-6-pro-preview"]` | Our next-generation pre-recorded model, currently in preview. Supports [32 languages](/pre-recorded-audio/supported-languages). | Early access to the next-generation pre-recorded model. |
-| **Universal-2**     | `"speech_models":["universal-2"]`      | Our accurate, cost-effective model with support across 99 languages.      | High-volume batch transcription, 99-language coverage, price-sensitive workloads, fallback for unsupported U3 Pro languages |
+| **AssemblyAI-STT-3.7** <span class="recommended-pill">Recommended</span> | `"speech_models": ["assemblyai-stt-3-7"]` | Our flagship pre-recorded STT model. 32 languages with native code-switching and contextual prompting. | Highest-accuracy transcription, post-call analytics, meeting notetakers, medical transcription, domain-specific accuracy via prompting |
+| **Universal-2**     | `"speech_models":["universal-2"]`      | A multilingual transcription model offering a good balance of speed and cost-effectiveness. | Cost-effective fallback model for language support outside of AssemblyAI-STT-3.7 |
 
-**Preview models are subject to change.** Preview models are for early testing and evaluation. Before a model becomes stable and generally available, its behavior, output quality, supported features, and API parameters may change without notice.
+  Universal-3.5 Pro (`universal-3-5-pro`) and Universal-3 Pro (`universal-3-pro`) are deprecated. The retirement date will be announced. After retirement, if no action is taken, your requests to these models will automatically route to `assemblyai-stt-3-7`. See [Model versions and deprecations](/getting-started/model-versions-and-deprecations).
 
-**Known limitations of `universal-3-6-pro-preview`:** Punctuation could be less frequent for some European languages (e.g., Danish), and accuracy may drop on complex code-switching audio where the language changes frequently at the word or sentence level. We're actively working on improvements to both.
-
-**Universal-3.6 Pro Preview keeps filler words by default.** When `universal-3-6-pro-preview` is the first model in `speech_models` and you don't set `disfluencies`, the transcript keeps filler words such as "um" and "uh". To remove them, set `disfluencies` to `false`. Universal-3.5 Pro and Universal-2 remove filler words unless you set `disfluencies` to `true`. See [Filler Words](/pre-recorded-audio/include-filler-words).
+  If you would like to migrate to the latest model now, see the [`assemblyai-stt-3-7` migration guide](/pre-recorded-audio/assemblyai-stt-3-7-migration-guide).
 
 ## Set the model
 
@@ -5099,7 +5197,7 @@ headers = {
 
 data = {
     "audio_url": "https://assembly.ai/wildfires.mp3",
-    "speech_models": ["universal-3-5-pro"],
+    "speech_models": ["assemblyai-stt-3-7"],
     "language_detection": True
 }
 
@@ -5133,7 +5231,7 @@ from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
 audio_file = "https://assembly.ai/wildfires.mp3"
 
 config = TranscriptionConfig(
-    speech_models=["universal-3-5-pro"],
+    speech_models=["assemblyai-stt-3-7"],
     language_detection=True
 )
 transcript = Transcriber(api_key="<YOUR_API_KEY>", config=config).transcribe(audio_file)
@@ -5155,7 +5253,7 @@ const headers = {
 
 const data = {
   audio_url: "https://assembly.ai/wildfires.mp3",
-  speech_models: ["universal-3-5-pro"],
+  speech_models: ["assemblyai-stt-3-7"],
   language_detection: true,
 };
 
@@ -5200,7 +5298,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 
 const params = {
   audio: audioFile,
-  speech_models: ["universal-3-5-pro"],
+  speech_models: ["assemblyai-stt-3-7"],
   language_detection: true,
 };
 
@@ -5219,14 +5317,22 @@ run();
 
 ## Transcribe all 99 languages by combining speech models
 
-By default, `speech_models` is set to `["universal-3-5-pro", "universal-2"]`. AssemblyAI uses the first model in the list that supports the audio's language, whether detected or set with `language_code`.
+When you set `speech_models` to `["assemblyai-stt-3-7"]`, whether AssemblyAI falls back to another model depends on how you set the language:
 
-- If the language is one of the [18 languages supported by Universal-3.5 Pro](/pre-recorded-audio/supported-languages#universal-35-pro), the audio is transcribed with `universal-3-5-pro`.
-- Otherwise, AssemblyAI falls back to `universal-2`.
+- **`language_detection: true`**: AssemblyAI always transcribes with AssemblyAI-STT-3.7 and never falls back to another model. To fall back to Universal-2 for detected languages that AssemblyAI-STT-3.7 doesn't support, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`.
+- **`language_code`**: If you set a language code that AssemblyAI-STT-3.7 doesn't support, AssemblyAI falls back to Universal-2, even if `universal-2` isn't in the list.
+
+### AssemblyAI-STT-3.7 takes priority in the list
+
+If you list multiple models alongside `assemblyai-stt-3-7` via `speech_models`, AssemblyAI uses AssemblyAI-STT-3.7 for every language it supports, regardless of its position in the list. Other models in the list are used only for languages AssemblyAI-STT-3.7 doesn't support. This applies whether you set `language_code` or use `language_detection`.
+
+If `speech_models` is set and doesn't include `assemblyai-stt-3-7`, AssemblyAI uses the first model in the list, from left to right, that supports the language. This behavior hasn't changed.
+
+See [Supported languages](/pre-recorded-audio/supported-languages) for the languages each model supports.
 
 ## Identify the model used
 
-After transcription completes, you can check which model was actually used to process your request by reading the `speech_model_used` field. This is useful when you provide multiple models in the `speech_models` array, as the system may fall back to a different model depending on language support.
+After transcription completes, you can check which model was actually used to process your request by reading the `speech_model_used` field. This is useful because the model used may differ from the first model in your list. AssemblyAI-STT-3.7 takes priority when it's in the list, and the system may fall back to a different model depending on language support.
 
 ```python  expandable
 import requests
@@ -5240,7 +5346,7 @@ headers = {
 
 data = {
     "audio_url": "https://assembly.ai/wildfires.mp3",
-    "speech_models": ["universal-3-5-pro"],
+    "speech_models": ["assemblyai-stt-3-7"],
     "language_detection": True
 }
 
@@ -5272,7 +5378,7 @@ from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
 audio_file = "https://assembly.ai/wildfires.mp3"
 
 config = TranscriptionConfig(
-    speech_models=["universal-3-5-pro"],
+    speech_models=["assemblyai-stt-3-7"],
     language_detection=True
 )
 transcript = Transcriber(api_key="<YOUR_API_KEY>", config=config).transcribe(audio_file)
@@ -5293,7 +5399,7 @@ const headers = {
 
 const data = {
   audio_url: "https://assembly.ai/wildfires.mp3",
-  speech_models: ["universal-3-5-pro"],
+  speech_models: ["assemblyai-stt-3-7"],
   language_detection: true,
 };
 
@@ -5337,7 +5443,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 
 const params = {
   audio: audioFile,
-  speech_models: ["universal-3-5-pro"],
+  speech_models: ["assemblyai-stt-3-7"],
   language_detection: true,
 };
 
@@ -5368,7 +5474,7 @@ headers = {"authorization": "<YOUR_API_KEY>"}
 
 data = {
     "audio_url": "https://assembly.ai/wildfires.mp3",
-    "speech_models": ["universal-3-5-pro"],
+    "speech_models": ["assemblyai-stt-3-7"],
     "language_detection": True
 }
 
@@ -5401,7 +5507,7 @@ from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
 audio_file = "https://assembly.ai/wildfires.mp3"
 
 config = TranscriptionConfig(
-    speech_models=["universal-3-5-pro"],
+    speech_models=["assemblyai-stt-3-7"],
     language_detection=True,
 )
 
@@ -5426,7 +5532,7 @@ async function transcribe() {
 
   const data = {
     audio_url: audioFile,
-    speech_models: ["universal-3-5-pro"],
+    speech_models: ["assemblyai-stt-3-7"],
     language_detection: true,
   };
 
@@ -5471,7 +5577,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 
 const params = {
   audio: audioFile,
-  speech_models: ["universal-3-5-pro"],
+  speech_models: ["assemblyai-stt-3-7"],
   language_detection: true,
 };
 
@@ -5491,16 +5597,129 @@ run();
 
 ---
 
-<a id="prompting-and-keyterms-docs-pre-recorded-audio-universal-3-5-pro-prompting-mdx"></a>
+<a id="assemblyai-stt-3-7-migration-guide-docs-pre-recorded-audio-assemblyai-stt-3-7-migration-guide-mdx"></a>
+
+# assemblyai-stt-3-7 migration guide
+
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/assemblyai-stt-3-7-migration-guide
+Source: docs/pre-recorded-audio/assemblyai-stt-3-7-migration-guide.mdx
+Navigation: Pre-recorded STT > Getting started > Model selection
+Description: Migrate pre-recorded transcription from universal-3-pro, universal-3-5-pro, or universal-2 to assemblyai-stt-3-7.
+
+Follow this guide to move from `universal-3-pro`, `universal-3-5-pro`, or `universal-2` to `assemblyai-stt-3-7`.
+
+## Update your speech_models
+
+**If you don't set `speech_models`**
+
+Your default model may change. Check which model your requests use on the [usage page](https://www.assemblyai.com/dashboard/usage), or send a test request and check which model processed it, as described in [Identify the model used](/pre-recorded-audio/select-the-speech-model#identify-the-model-used). Then:
+
+- **`universal-3-5-pro` or `universal-3-pro`:** your requests will automatically use `assemblyai-stt-3-7` starting December 8, 2026. This is a change to the default model, not the retirement of `universal-3-5-pro` or `universal-3-pro`. See [Behavioral changes](#behavioral-changes).
+- **`universal-2`:** you won't be upgraded automatically. To upgrade, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`. If all your audio is in [languages AssemblyAI-STT-3.7 supports](/pre-recorded-audio/supported-languages#assemblyai-stt-37), `["assemblyai-stt-3-7"]` is enough.
+
+**If you set `speech_models`**
+
+You won't be upgraded to the latest model until that model is retired. To migrate now, change the model in `speech_models` to `assemblyai-stt-3-7`:
+
+| Before | After |
+| --- | --- |
+| `"speech_models": ["universal-3-5-pro", "universal-2"]` | `"speech_models": ["assemblyai-stt-3-7", "universal-2"]` |
+| `"speech_models": ["universal-3-pro", "universal-2"]` | `"speech_models": ["assemblyai-stt-3-7", "universal-2"]` |
+| `"speech_models": ["universal-3-5-pro"]` | `"speech_models": ["assemblyai-stt-3-7"]` |
+| `"speech_models": ["universal-3-pro"]` | `"speech_models": ["assemblyai-stt-3-7"]` |
+| `"speech_models": ["universal-2"]` | `"speech_models": ["assemblyai-stt-3-7", "universal-2"]` |
+
+Keep `universal-2` in the list if you need languages AssemblyAI-STT-3.7 doesn't support. If all your audio is in [languages AssemblyAI-STT-3.7 supports](/pre-recorded-audio/supported-languages#assemblyai-stt-37), `["assemblyai-stt-3-7"]` is enough.
+
+```json After
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["assemblyai-stt-3-7", "universal-2"],
+  "language_detection": true
+}
+```
+
+```json Before
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["universal-3-5-pro", "universal-2"],
+  "language_detection": true
+}
+```
+
+## Behavioral changes
+
+### Model fallback
+
+Previously, AssemblyAI fell back to another model by default. For example, if you used automatic language detection and set `speech_models` to `["universal-3-pro"]` or `["universal-3-5-pro"]`, and AssemblyAI detected a language that the model doesn't support, it automatically transcribed with `universal-2` instead.
+
+Now, when you set `speech_models` to `["assemblyai-stt-3-7"]`, whether AssemblyAI falls back to another model depends on how you set the language:
+
+- **`language_detection: true`**: AssemblyAI always transcribes with AssemblyAI-STT-3.7 and never falls back to another model. To fall back to Universal-2 for detected languages that AssemblyAI-STT-3.7 doesn't support, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`.
+- **`language_code`**: If you set a language code that AssemblyAI-STT-3.7 doesn't support, AssemblyAI falls back to Universal-2.
+
+To keep the previous fallback behavior, explicitly set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`:
+
+```json
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["assemblyai-stt-3-7", "universal-2"],
+  "language_detection": true
+}
+```
+
+AssemblyAI-STT-3.7 takes priority wherever it appears in `speech_models`. For example, if you add it after an existing model, as in `["universal-2", "assemblyai-stt-3-7"]`, AssemblyAI-STT-3.7 transcribes every language it supports, and Universal-2 handles the rest. If `speech_models` doesn't include `assemblyai-stt-3-7`, the first model in the list, from left to right, that supports the language is used, as before.
+
+See [Transcribe all 99 languages by combining speech models](/pre-recorded-audio/select-the-speech-model#transcribe-all-99-languages-by-combining-speech-models) for details.
+
+### Disfluencies
+
+The disfluencies default depends on the speech model. AssemblyAI-STT-3.7 keeps disfluencies by default. Universal-3.5 Pro, Universal-3 Pro, and Universal-2 remove them by default. To get the same behavior on every model, set `disfluencies` explicitly. See [Verbatim](/pre-recorded-audio/include-filler-words).
+
+  On AssemblyAI-STT-3.7, `disfluencies: true` keeps more than filler words. It also preserves repetitions, stutters, false starts, and informal contractions such as "gonna" and "kinda". On Universal-2, it keeps filler words only. If you process transcript text downstream, check your audio with the new output before you migrate.
+
+When `speech_models` includes `assemblyai-stt-3-7` in any position, `disfluencies` defaults to `true` for the whole request. This includes lists such as `["assemblyai-stt-3-7", "universal-2"]` and `["universal-2", "assemblyai-stt-3-7"]`, even when Universal-2 transcribes the audio.
+
+To keep the default you had on `universal-3-pro` or `universal-3-5-pro` and remove disfluencies, set `disfluencies` to `false`:
+
+```json
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["assemblyai-stt-3-7"],
+  "disfluencies": false
+}
+```
+
+### Code switching
+
+AssemblyAI-STT-3.7 handles code switching natively, so you don't need to turn it on. The `code_switching` and `code_switching_confidence_threshold` options in `language_detection_options` apply only to Universal-2. If your requests set them, they have no effect when AssemblyAI-STT-3.7 transcribes the audio. Keep them only if Universal-2 is in your list and handles some of your languages. See [Code switching](/pre-recorded-audio/code-switching).
+
+### Restrict the languages
+
+To limit transcription to a known set of languages on AssemblyAI-STT-3.7, use `language_codes` instead of `language_detection_options.expected_languages`:
+
+```json
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["assemblyai-stt-3-7"],
+  "language_codes": ["en", "es", "pt"]
+}
+```
+
+On AssemblyAI-STT-3.7, `language_codes` accepts any number of supported languages, and English isn't required. A one-element list such as `["es"]` behaves like setting `language_code` to `"es"`. On Universal-2, `language_codes` accepts at most two languages, and one of them must be `"en"`. `language_codes` can't be combined with `language_code` or `language_detection`. See [Constrain the language set](/pre-recorded-audio/code-switching#constrain-the-language-set).
+
+---
+
+<a id="prompting-and-keyterms-docs-pre-recorded-audio-prompting-mdx"></a>
 
 # Prompting and Keyterms
 
-URL: https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-5-pro/prompting
-Source: docs/pre-recorded-audio/universal-3-5-pro/prompting.mdx
+URL: https://www.assemblyai.com/docs/pre-recorded-audio/prompting
+Source: docs/pre-recorded-audio/prompting.mdx
 Navigation: Pre-recorded STT > Features
 Description: Prompting and Keyterms documentation.
 
-Universal-3.5 Pro is highly accurate out of the box, but for challenging audio like short clips with limited context, noisy environments, or audio with niche references, you can give the model information about your audio to improve transcription accuracy.
+AssemblyAI-STT-3.7 is highly accurate out of the box, but for challenging audio like short clips with limited context, noisy environments, or audio with niche references, you can give the model information about your audio to improve transcription accuracy.
 
 There are two ways to give the model information about your audio:
 
@@ -5972,7 +6191,7 @@ Medical Mode is designed for healthcare AI applications where accurate medicatio
 Medical Mode works alongside other transcription features. You can combine it with:
 
 - [Speaker Diarization](/pre-recorded-audio/label-speakers) to identify who said what in clinical conversations
-- [Keyterms Prompting](/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting) to further boost accuracy for specific medical terms unique to your use case
+- [Keyterms Prompting](/pre-recorded-audio/prompting#keyterms-prompting) to further boost accuracy for specific medical terms unique to your use case
 - [PII Redaction](/guardrails/redact-pii-from-transcripts) to redact sensitive patient information from transcripts
 
 ```python
@@ -6184,7 +6403,7 @@ Veterinary Mode is designed for veterinary AI applications where accurate clinic
 Veterinary Mode works alongside other transcription features. You can combine it with:
 
 - [Speaker Diarization](/pre-recorded-audio/label-speakers) to identify who said what in consultations
-- [Keyterms Prompting](/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting) to further boost accuracy for specific terms unique to your practice
+- [Keyterms Prompting](/pre-recorded-audio/prompting#keyterms-prompting) to further boost accuracy for specific terms unique to your practice
 
 ```python
 data = {
@@ -6992,11 +7211,11 @@ Description: Code Switching documentation.
 
 Transcribe audio containing multiple languages with code switching detection. This feature enables accurate transcription of conversations where speakers naturally switch between languages during conversations.
 
-## Universal-3.5 Pro (Recommended)
+## AssemblyAI-STT-3.7 (Recommended)
 
-Universal-3.5 Pro natively handles code switching across 18 languages. Set `language_detection` as `True` and the model follows speakers as they shift mid-sentence between languages like English and Spanish, French, Hindi or Mandarin, preserving exactly what was said without translating everything into a single language.
+AssemblyAI-STT-3.7 natively handles code switching across 32 languages. Set `language_detection` as `True` and the model follows speakers as they shift mid-sentence between languages like English and Spanish, French, Hindi or Mandarin, preserving exactly what was said without translating everything into a single language.
 
-See Universal-3.5 Pro code switching in action.
+See AssemblyAI-STT-3.7 code switching in action.
 
 **English \<\> French**
 
@@ -7142,14 +7361,14 @@ while (true) {
 
 ### Constrain the language set
 
-By default, Universal-3.5 Pro auto-detects and code-switches across all [18 supported languages](#support-for-99-languages). When you already know which languages a file contains, pass the `language_codes` parameter to constrain the model to that set.
+By default, AssemblyAI-STT-3.7 auto-detects and code-switches across all [32 supported languages](#support-for-99-languages). When you already know which languages a file contains, pass the `language_codes` parameter to constrain the model to that set.
 
-On Universal-3.5 Pro, `language_codes` accepts any number of languages, and English is **not** required:
+On AssemblyAI-STT-3.7, `language_codes` accepts any number of languages, and English is **not** required:
 
 - **Multiple languages** — for example `["en", "es", "pt"]` or `["es", "fr"]`. The model code-switches only among the languages you list.
 - **A single language** — a one-element list such as `["es"]` pins transcription to that language, exactly like [`language_code`](/pre-recorded-audio/set-language-manually).
 - The `language_code` returned in the response also honors your list, since the language set is passed to language identification.
-- If your list includes a language Universal-3.5 Pro doesn't support, the request runs automatic language detection. If the detected language falls outside Universal-3.5 Pro's [supported set](#support-for-99-languages), the job falls through to the next model in `speech_models` (typically `universal-2`); otherwise Universal-3.5 Pro transcribes it with code switching.
+- If your list includes a language AssemblyAI-STT-3.7 doesn't support, the request runs automatic language detection. If the detected language falls outside AssemblyAI-STT-3.7's [supported set](#support-for-99-languages), the job falls through to the next model in `speech_models`, such as `universal-2`. Otherwise, AssemblyAI-STT-3.7 transcribes it with code switching.
 
   `language_codes` is mutually exclusive with `language_code` and `language_detection`. Set only one of the three on a request.
 
@@ -7160,7 +7379,7 @@ from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
 audio_file = "https://assembly.ai/wildfires.mp3"
 
 config = TranscriptionConfig(
-    speech_models=["universal-3-5-pro"],
+    speech_models=["assemblyai-stt-3-7"],
     language_codes=["en", "es", "pt"],  # Constrain to English, Spanish, Portuguese
 )
 
@@ -7181,7 +7400,7 @@ headers = {"authorization": "<YOUR_API_KEY>"}
 
 data = {
     "audio_url": "https://assembly.ai/wildfires.mp3",
-    "speech_models": ["universal-3-5-pro"],
+    "speech_models": ["assemblyai-stt-3-7"],
     "language_codes": ["en", "es", "pt"],  # Constrain to English, Spanish, Portuguese
 }
 
@@ -7220,7 +7439,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 
 const params = {
   audio: audioFile,
-  speech_models: ["universal-3-5-pro"],
+  speech_models: ["assemblyai-stt-3-7"],
   language_codes: ["en", "es", "pt"], // Constrain to English, Spanish, Portuguese
 };
 
@@ -7246,7 +7465,7 @@ const headers = {
 
 const data = {
   audio_url: "https://assembly.ai/wildfires.mp3",
-  speech_models: ["universal-3-5-pro"],
+  speech_models: ["assemblyai-stt-3-7"],
   language_codes: ["en", "es", "pt"], // Constrain to English, Spanish, Portuguese
 };
 
@@ -7280,7 +7499,7 @@ while (true) {
 
 ## Universal-2 (Legacy)
 
-While Universal-2 supports code switching, we recommend upgrading to Universal-3.5 Pro for best results.
+While Universal-2 supports code switching, we recommend upgrading to AssemblyAI-STT-3.7 for best results.
 
 To enable code switching on Universal-2, set `speech_models` to `universal-2`, `language_detection` to `true`, and `code_switching` to `true` inside the `language_detection_options` parameter.
 
@@ -7455,7 +7674,7 @@ while (true) {
 
 On Universal-2, you can use the `language_codes` parameter to set the languages manually. A maximum of two language codes can be set, and one of them must be `"en"`. For example, if your file contains both English and Spanish, it would be `"language_codes": ["en", "es"]`.
 
-  These two-code, English-required limits apply to Universal-2 only. On Universal-3.5 Pro, `language_codes` accepts any number of languages and English is not required — see [Constrain the language set](#constrain-the-language-set) above.
+  These two-code, English-required limits apply to Universal-2 only. On AssemblyAI-STT-3.7, `language_codes` accepts any number of languages and English is not required — see [Constrain the language set](#constrain-the-language-set) above.
 
 ```python title="Python SDK" {8} 
 from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
@@ -7794,11 +8013,11 @@ while (true) {
 
 ## Support for 99 languages
 
-Universal-3.5 Pro supports 18 languages, and for anything outside that set, the system automatically falls back to Universal-2, giving you coverage across 99 languages total without any extra configuration.
+AssemblyAI-STT-3.7 supports 32 languages. To cover the rest of the 99 languages Universal-2 supports, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]` when you use `language_detection`. If you set a `language_code` that AssemblyAI-STT-3.7 doesn't support, AssemblyAI falls back to Universal-2 automatically. See [Transcribe all 99 languages by combining speech models](/pre-recorded-audio/select-the-speech-model#transcribe-all-99-languages-by-combining-speech-models).
 
 | Model | Supported languages |
 | --- | --- |
-| `universal-3-5-pro` | Global English, Australian English, British English, US English, Spanish, French, German, Italian, Portuguese, Arabic, Danish, Dutch, Finnish, Hebrew, Hindi, Japanese, Mandarin, Norwegian, Swedish, Turkish, Vietnamese |
+| `assemblyai-stt-3-7` | Global English, Australian English, British English, US English, Spanish, French, German, Italian, Portuguese, Afrikaans, Arabic, Cantonese, Catalan, Danish, Dutch, Estonian, Finnish, Galician, Hebrew, Hindi, Japanese, Korean, Mandarin, Marathi, Norwegian, Norwegian Nynorsk, Persian, Romanian, Russian, Swedish, Turkish, Urdu, Vietnamese, Xhosa, Zulu |
 | `universal-2` | Global English, Australian English, British English, US English, Spanish, French, German, Italian, Portuguese, Dutch, Hindi, Japanese, Chinese, Finnish, Korean, Polish, Russian, Turkish, Ukrainian, Vietnamese, Afrikaans, Albanian, Amharic, Arabic, Armenian, Assamese, Azerbaijani, Bashkir, Basque, Belarusian, Bengali, Bosnian, Breton, Bulgarian, Burmese, Catalan, Croatian, Czech, Danish, Estonian, Faroese, Galician, Georgian, Greek, Gujarati, Haitian, Hausa, Hawaiian, Hebrew, Hungarian, Icelandic, Indonesian, Javanese, Kannada, Kazakh, Khmer, Lao, Latin, Latvian, Lingala, Lithuanian, Luxembourgish, Macedonian, Malagasy, Malay, Malayalam, Maltese, Maori, Marathi, Mongolian, Nepali, Norwegian, Norwegian Nynorsk, Occitan, Panjabi, Pashto, Persian, Romanian, Sanskrit, Serbian, Shona, Sindhi, Sinhala, Slovak, Slovenian, Somali, Sundanese, Swahili, Swedish, Swiss German, Tagalog, Tajik, Tamil, Tatar, Telugu, Thai, Tibetan, Turkmen, Urdu, Uzbek, Welsh |
 
 ---
@@ -7960,9 +8179,27 @@ while (true) {
 
 ## Set a list of expected languages
 
-If you're confident the audio is in one of a few languages, provide that list via `language_detection_options.expected_languages`. These language candidates guide the model toward choosing the language(s) it's most likely to detect, which can reduce cases where Automatic Language Detection selects an unexpected language for transcription.
+How you limit detection to a known set of languages depends on the speech model.
 
-Note that `expected_languages` is a hint, not a strict filter. The model may still transcribe the audio in a language outside your provided list if it detects that language with high confidence. This ensures the model doesn't force a transcription into an incorrect language just because it wasn't in the expected list.
+### AssemblyAI-STT-3.7
+
+If your audio spans a known set of languages rather than a single dominant one, AssemblyAI-STT-3.7 accepts the `language_codes` parameter (plural). Transcription is constrained to the languages you list while still code-switching among them.
+
+Note that the model may still transcribe the audio in a language outside your provided list if it detects that language with high confidence. This ensures the model doesn't force a transcription into an incorrect language just because it wasn't in the expected list.
+
+```json
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["assemblyai-stt-3-7"],
+  "language_codes": ["en", "es", "pt"]
+}
+```
+
+A one-element list such as `["es"]` behaves exactly like setting `language_code` to `"es"`. `language_codes` is mutually exclusive with `language_code` and `language_detection`, so set only one of the three. For the full behavior, supported languages, and fallback rules, see [Code switching](/pre-recorded-audio/code-switching#constrain-the-language-set).
+
+### Universal-2
+
+If you're confident the audio is in one of a few languages, provide that list via `language_detection_options.expected_languages`. These language candidates guide the model toward choosing the language(s) it's most likely to detect, which can reduce cases where Automatic Language Detection selects an unexpected language for transcription.
 
 - If `expected_languages` is not specified, it defaults to `["all"]`.
 
@@ -7980,6 +8217,7 @@ options = LanguageDetectionOptions(
 
 config = TranscriptionConfig(
     language_detection=True,
+    speech_models=["universal-2"],
     language_detection_options=options
 )
 
@@ -7989,7 +8227,7 @@ print(transcript.text)
 print(transcript.json_response["language_code"])
 ```
 
-```python title="Python" for="python" highlight={22}  expandable
+```python title="Python" for="python" highlight={23}  expandable
 import requests
 import time
 
@@ -8009,6 +8247,7 @@ upload_url = response.json()["upload_url"]
 data = {
     "audio_url": upload_url, # You can also use a URL to an audio or video file on the web
     "language_detection": True,
+    "speech_models": ["universal-2"],
     "language_detection_options": {
       "expected_languages": ["en", "es", "fr", "de"],
       "fallback_language": "auto"
@@ -8038,7 +8277,7 @@ while True:
 
 ```
 
-```javascript title="JavaScript SDK" for="javascript-sdk" highlight={15}  expandable
+```javascript title="JavaScript SDK" for="javascript-sdk" highlight={16}  expandable
 import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({
@@ -8051,6 +8290,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 const params = {
   audio: audioFile,
   language_detection: true,
+  speech_models: ["universal-2"],
   language_detection_options: {
     expected_languages: ["en", "es", "fr", "de"],
     fallback_language: "auto",
@@ -8090,6 +8330,7 @@ const uploadUrl = uploadResponse.upload_url;
 const data = {
   audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
   language_detection: true,
+  speech_models: ["universal-2"],
   language_detection_options: {
     expected_languages: ["en", "es", "fr", "de"],
     fallback_language: "auto",
@@ -8125,7 +8366,7 @@ while (true) {
 }
 ```
 
-## Choose a fallback language
+**Choose a fallback language**
 
 Control what language transcription should fall back to when detection cannot confidently select a language from the `expected_languages` list.
 
@@ -8133,7 +8374,7 @@ Control what language transcription should fall back to when detection cannot co
 - `fallback_language` must be one of the language codes in `expected_languages` or `"auto"`.
 - When `fallback_language` is unspecified, it is set to `"auto"` by default. This tells our model to choose the fallback language from `expected_languages` with the highest confidence score.
 
-```python title="Python SDK" for="python-sdk" highlight={14}  expandable
+```python title="Python SDK" for="python-sdk" highlight={15}  expandable
 from assemblyai import LanguageDetectionOptions
 from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
 
@@ -8147,6 +8388,7 @@ options = LanguageDetectionOptions(
 
 config = TranscriptionConfig(
     language_detection=True,
+    speech_models=["universal-2"],
     language_detection_options=options
 )
 
@@ -8156,7 +8398,7 @@ print(transcript.text)
 print(transcript.json_response["language_code"])
 ```
 
-```python title="Python" for="python" highlight={22}  expandable
+```python title="Python" for="python" highlight={23}  expandable
 import requests
 import time
 
@@ -8176,6 +8418,7 @@ upload_url = response.json()["upload_url"]
 data = {
     "audio_url": upload_url, # You can also use a URL to an audio or video file on the web
     "language_detection": True,
+    "speech_models": ["universal-2"],
     "language_detection_options": {
       "expected_languages": ["en", "es", "fr", "de"],
       "fallback_language": "auto"
@@ -8205,7 +8448,7 @@ while True:
 
 ```
 
-```javascript title="JavaScript SDK" for="javascript-sdk" highlight={15}  expandable
+```javascript title="JavaScript SDK" for="javascript-sdk" highlight={16}  expandable
 import { AssemblyAI } from "assemblyai";
 
 const client = new AssemblyAI({
@@ -8218,6 +8461,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 const params = {
   audio: audioFile,
   language_detection: true,
+  speech_models: ["universal-2"],
   language_detection_options: {
     expected_languages: ["en", "es", "fr", "de"],
     fallback_language: "auto",
@@ -8257,6 +8501,7 @@ const uploadUrl = uploadResponse.upload_url;
 const data = {
   audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
   language_detection: true,
+  speech_models: ["universal-2"],
   language_detection_options: {
     expected_languages: ["en", "es", "fr", "de"],
     fallback_language: "auto",
@@ -9027,12 +9272,12 @@ while (true) {
 
 ## Set multiple languages
 
-If your audio spans a known set of languages rather than a single dominant one, Universal-3.5 Pro accepts the `language_codes` parameter (plural). Transcription is constrained to the languages you list while still code-switching among them:
+If your audio spans a known set of languages rather than a single dominant one, AssemblyAI-STT-3.7 accepts the `language_codes` parameter (plural). Transcription is constrained to the languages you list while still code-switching among them:
 
 ```json
 {
   "audio_url": "https://assembly.ai/wildfires.mp3",
-  "speech_models": ["universal-3-5-pro"],
+  "speech_models": ["assemblyai-stt-3-7"],
   "language_codes": ["en", "es", "pt"]
 }
 ```
@@ -9054,19 +9299,26 @@ Description: Supported languages for pre-recorded audio speech-to-text models.
 
 AssemblyAI supports a wide range of languages across our speech-to-text models for pre-recorded audio. The available languages vary by model. Check out the [Models](/getting-started/models) page to learn more about our different models and how to choose the best one for your use case. See our [Model selection](/pre-recorded-audio/select-the-speech-model) page for more details on specifying a model in your request.
 
-## Universal-3.5 Pro
+  Universal-3.5 Pro (`universal-3-5-pro`) and Universal-3 Pro (`universal-3-pro`) are deprecated. The retirement date will be announced. After retirement, if no action is taken, your requests to these models will automatically route to `assemblyai-stt-3-7`. See [Model versions and deprecations](/getting-started/model-versions-and-deprecations).
 
-Universal-3.5 Pro supports the following 18 languages. To automatically fall back to Universal-2 for anything outside this set, set `speech_models` to `["universal-3-5-pro", "universal-2"]` and set `language_detection` to `true`.
+## AssemblyAI-STT-3.7
 
-[Universal-3.6 Pro Preview](/pre-recorded-audio/select-the-speech-model) supports 32 languages. In addition to the Universal-3.5 Pro languages above, it supports Urdu (`ur`), Russian (`ru`), Korean (`ko`), Catalan (`ca`), Galician (`gl`), Romanian (`ro`), Estonian (`et`), Persian (`fa`), Cantonese (`yue`), Afrikaans (`af`), Marathi (`mr`), Zulu (`zu`), Xhosa (`xh`), and Norwegian Nynorsk (`nn`).
+AssemblyAI-STT-3.7 supports the following 32 languages.
 
-### Regional dialects and variants
+How AssemblyAI handles languages outside this set depends on how you set the language:
 
-Universal-3.5 Pro goes beyond standard language support with deep understanding of regional dialects and local variants. Whether your audio features Quebecois French, Mexican Spanish, or Brazilian Portuguese, the model accurately captures speech as it's naturally spoken — including colloquial expressions, local vocabulary, and accent-specific pronunciation patterns.
+- **`language_detection: true`**: AssemblyAI doesn't fall back to another model unless you ask it to. To fall back to Universal-2 for anything outside this set, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`.
+- **`language_code`**: If you set a language code that AssemblyAI-STT-3.7 doesn't support, AssemblyAI falls back to Universal-2.
+
+See [Transcribe all 99 languages by combining speech models](/pre-recorded-audio/select-the-speech-model#transcribe-all-99-languages-by-combining-speech-models) for details.
+
+## Regional dialects and variants
+
+AssemblyAI-STT-3.7 goes beyond standard language support with deep understanding of regional dialects and local variants. Whether your audio features Quebecois French, Mexican Spanish, or Brazilian Portuguese, the model accurately captures speech as it's naturally spoken — including colloquial expressions, local vocabulary, and accent-specific pronunciation patterns.
 
   **Dialect support**
 
-You do not need to specify a dialect code to get accurate dialect transcription. Universal-3.5 Pro automatically recognizes regional speech patterns when using the base language code (e.g., `fr` for all French dialects, `es` for all Spanish dialects).
+You do not need to specify a dialect code to get accurate dialect transcription. AssemblyAI-STT-3.7 automatically recognizes regional speech patterns when using the base language code (e.g., `fr` for all French dialects, `es` for all Spanish dialects).
 
 | Dialect / Variant | Description |
 | --- | --- |
@@ -9492,39 +9744,45 @@ Unformatted output (`format_text: false`) is supported in the following language
 
 | Model | Supported languages |
 |-------|---------------------|
-| Universal-3.5 Pro | English, Spanish, German, French, Portuguese, Italian |
+| AssemblyAI-STT-3.7 | All [32 supported languages](/pre-recorded-audio/supported-languages#assemblyai-stt-37): English, Spanish, German, French, Portuguese, Italian, Afrikaans, Arabic, Cantonese, Catalan, Danish, Dutch, Estonian, Finnish, Galician, Hebrew, Hindi, Japanese, Korean, Mandarin, Marathi, Norwegian, Norwegian Nynorsk, Persian, Romanian, Russian, Swedish, Turkish, Urdu, Vietnamese, Xhosa, Zulu |
 | Universal-2 | English, Spanish, German |
 
 ---
 
-<a id="filler-words-docs-pre-recorded-audio-include-filler-words-mdx"></a>
+<a id="verbatim-docs-pre-recorded-audio-include-filler-words-mdx"></a>
 
-# Filler Words
+# Verbatim
 
 URL: https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words
 Source: docs/pre-recorded-audio/include-filler-words.mdx
 Navigation: Pre-recorded STT > Features
-Description: Filler Words documentation.
+Description: Preserve filler words and other verbatim speech in pre-recorded audio transcripts.
 
-Filler words help you capture interruptions and hesitations in your audio, like "uh" and "um," so the transcript reflects exactly what was said. The `disfluencies` parameter controls whether they're kept.
+Verbatim transcription captures speech exactly as it was said, including hesitations and other natural speech patterns.
+
+The `disfluencies` parameter controls whether this speech is kept in the transcript.
 
 ## Defaults by model
 
-The filler word default depends on the speech model. Universal-3.6 Pro Preview keeps filler words by default. Universal-3.5 Pro and Universal-2 remove them by default. To get the same behavior on every model, set `disfluencies` explicitly.
+The filler word default depends on the speech model. AssemblyAI-STT-3.7 keeps filler words by default. Universal-3.5 Pro, Universal-3 Pro, and Universal-2 remove them by default. To get the same behavior on every model, set `disfluencies` explicitly.
 
-| Model | Default when `disfluencies` isn't set | Filler word languages |
-|-------|---------------------------------------|-----------------------|
-| Universal-3.6 Pro Preview (`universal-3-6-pro-preview`) | **Kept** (`true`) | Most supported languages, with varying effectiveness. Strongest for English, Spanish, German, French, Portuguese, and Italian |
-| Universal-3.5 Pro (`universal-3-5-pro`) | **Removed** (`false`) | English, Spanish, German, French, Portuguese, Italian |
-| Universal-2 (`universal-2`) | **Removed** (`false`) | English only |
+| Model | Default when `disfluencies` isn't set |
+|-------|---------------------------------------|
+| AssemblyAI-STT-3.7 (`assemblyai-stt-3-7`) | **Kept** (`true`) |
+| Universal-2 (`universal-2`) | **Removed** (`false`) |
 
-### When you list more than one model
+If `speech_models` includes `assemblyai-stt-3-7` in any position, `disfluencies` defaults to `true` for the whole request, even when another model is listed first or transcribes the audio. For example, `["universal-2", "assemblyai-stt-3-7"]` defaults to `true`. If `speech_models` doesn't include `assemblyai-stt-3-7`, the default comes from the first model in the list.
 
-If `speech_models` contains more than one model, the default comes from the first model in the list.
+## Include verbatim speech
 
-## Include filler words
+Set `disfluencies` to `true` in your transcription config to keep verbatim speech. You need to set it when `speech_models` doesn't include `assemblyai-stt-3-7`, for example `["universal-2"]`.
 
-On Universal-3.5 Pro and Universal-2, set `disfluencies` to `true` in your transcription config to keep filler words.
+What `disfluencies: true` preserves depends on the model:
+
+| Model | What's preserved |
+|-------|------------------|
+| AssemblyAI-STT-3.7 | Filler words (such as "um" and "uh"), repetitions, stutters, false starts, and informal contractions (such as "gonna" and "kinda") |
+| Universal-2 | Filler words only |
 
 ```python title="Python SDK" highlight={6} 
 from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
@@ -9669,17 +9927,26 @@ while (true) {
 }
 ```
 
-## Remove filler words on Universal-3.6 Pro Preview
+## Remove filler words on AssemblyAI-STT-3.7
 
-Universal-3.6 Pro Preview keeps filler words unless you turn them off. Set `disfluencies` to `false` to remove them:
+AssemblyAI-STT-3.7 keeps filler words unless you turn them off. Set `disfluencies` to `false` to remove them:
 
 ```json
 {
   "audio_url": "https://assembly.ai/wildfires.mp3",
-  "speech_models": ["universal-3-6-pro-preview"],
+  "speech_models": ["assemblyai-stt-3-7"],
   "disfluencies": false
 }
 ```
+
+## Supported languages
+
+Verbatim output (`disfluencies: true`) is supported in the following languages:
+
+| Model | Supported languages |
+|-------|---------------------|
+| AssemblyAI-STT-3.7 | All [32 supported languages](/pre-recorded-audio/supported-languages#assemblyai-stt-37): English, Spanish, German, French, Portuguese, Italian, Afrikaans, Arabic, Cantonese, Catalan, Danish, Dutch, Estonian, Finnish, Galician, Hebrew, Hindi, Japanese, Korean, Mandarin, Marathi, Norwegian, Norwegian Nynorsk, Persian, Romanian, Russian, Swedish, Turkish, Urdu, Vietnamese, Xhosa, Zulu |
+| Universal-2 | English only |
 
 ---
 
@@ -11798,7 +12065,7 @@ Description: Evaluating Pre-recorded STT models documentation.
 
 The high level objective of a pre-recorded STT model evaluation is to answer the question: _Which Speech-to-text model is the best for my product?_
 
-This guide provides a step-by-step framework for evaluating and benchmarking pre-recorded Speech-to-text models, with specific guidance for evaluating Universal-3.5 Pro and its prompting capabilities.
+This guide provides a step-by-step framework for evaluating and benchmarking pre-recorded Speech-to-text models, with specific guidance for evaluating AssemblyAI-STT-3.7 and its prompting capabilities.
 
   Need help with evaluations or prompt optimization? [Contact our Sales
   team](https://www.assemblyai.com/contact/sales) — we can help you design an
@@ -11862,9 +12129,9 @@ Fundamentally, MER is a negative recall rate computed for specified target entit
 
 For a simpler approach when evaluating high-stakes entities (such as credit card numbers, names, or dosages), consider a binary pass/fail metric per file: score each file as 1 if the model captured the target entity correctly, or 0 if it did not. Run this across 100 or more files for statistical reliability. This is especially useful when you need a quick signal on entity accuracy at scale without computing full MER breakdowns.
 
-### Metrics for Universal-3.5 Pro
+### Metrics for AssemblyAI-STT-3.7
 
-Universal-3.5 Pro is significantly more capable than prior models, and traditional WER alone may not fully capture its performance. The following metrics provide a more complete picture.
+AssemblyAI-STT-3.7 is significantly more capable than prior models, and traditional WER alone may not fully capture its performance. The following metrics provide a more complete picture.
 
 #### Semantic WER
 
@@ -11890,7 +12157,7 @@ For cases where simple rules can't capture the nuance—was an omission meaningf
 - **Minor penalty**: Single-character misspellings, minor grammatical markers
 - **Major penalty**: Incorrect substitutions, meaning-altering errors, significant omissions or additions of content words
 
-These approaches are particularly valuable for Universal-3.5 Pro because the model often transcribes audio more accurately than human transcribers, producing differences that are correct but would be penalized by traditional WER. For an implementation of Semantic WER using Bayesian optimization, see [prompt-seeker](https://github.com/AssemblyAI-Solutions/prompt-seeker).
+These approaches are particularly valuable for AssemblyAI-STT-3.7 because the model often transcribes audio more accurately than human transcribers, producing differences that are correct but would be penalized by traditional WER. For an implementation of Semantic WER using Bayesian optimization, see [prompt-seeker](https://github.com/AssemblyAI-Solutions/prompt-seeker).
 
 #### LASER score (LLM-based ASR Evaluation Rubric)
 
@@ -11910,11 +12177,11 @@ LASER provides structured per-error feedback alongside the score. This makes it 
 
 ### Why new metrics matter
 
-Traditional WER treats every difference between the model output and human transcription as an error. Universal-3.5 Pro’s contextual awareness means it will often transcribe words that human transcribers missed entirely. In traditional WER, these show up as **insertions** (penalized errors), even though the model is correct. This makes WER an unreliable metric when used alone — your evaluation is only as good as your ground truth labels.
+Traditional WER treats every difference between the model output and human transcription as an error. AssemblyAI-STT-3.7’s contextual awareness means it will often transcribe words that human transcribers missed entirely. In traditional WER, these show up as **insertions** (penalized errors), even though the model is correct. This makes WER an unreliable metric when used alone — your evaluation is only as good as your ground truth labels.
 
-WER is only as good as your ground truth labels. Human transcriptions contain systematic errors — missed filler words, incorrect proper nouns, simplified speech patterns, and translated code-switching. When Universal-3.5 Pro transcribes audio more accurately than the human label, those improvements show up as WER _errors_.
+WER is only as good as your ground truth labels. Human transcriptions contain systematic errors — missed filler words, incorrect proper nouns, simplified speech patterns, and translated code-switching. When AssemblyAI-STT-3.7 transcribes audio more accurately than the human label, those improvements show up as WER _errors_.
 
-Before reporting WER, manually audit at least 20 insertions to determine what percentage are true errors versus ground truth omissions. In our testing, the majority of insertions were cases where Universal-3.5 Pro correctly transcribed audio that the human transcriber missed.
+Before reporting WER, manually audit at least 20 insertions to determine what percentage are true errors versus ground truth omissions. In our testing, the majority of insertions were cases where the model correctly transcribed audio that the human transcriber missed.
 
 This is why [Artificial Analysis](https://artificialanalysis.ai/speech-to-text), an independent AI benchmarking organization, had to create proprietary evaluation datasets with manually corrected ground truths when building their [Speech-to-Text leaderboard](https://artificialanalysis.ai/speech-to-text). Existing public datasets contain systematic human transcription errors that penalize models which are actually more accurate.
 
@@ -11934,7 +12201,7 @@ Then, gather human-labeled data to act as your source of ground truth. Ground tr
 
 #### Ground truth quality
 
-The quality of your ground truth data directly affects the reliability of your evaluation. With Universal-3.5 Pro, this is more important than ever because the model frequently outperforms human transcribers.
+The quality of your ground truth data directly affects the reliability of your evaluation. With AssemblyAI-STT-3.7, this is more important than ever because the model frequently outperforms human transcribers.
 
 Common issues with ground truth data:
 
@@ -11961,13 +12228,13 @@ A prompt that performs well overall may underperform on specific audio types. In
 
 ### Step 2: Establish a baseline
 
-Before optimizing prompts, measure your baseline performance by transcribing your evaluation set with Universal-3.5 Pro and **no custom prompt**. The built-in default is already applied when `prompt` is omitted, and it outperforms most custom prompts. Record both WER and Semantic WER so you can track improvements as you layer instructions on top.
+Before optimizing prompts, measure your baseline performance by transcribing your evaluation set with AssemblyAI-STT-3.7 and **no custom prompt**. The built-in default is already applied when `prompt` is omitted, and it outperforms most custom prompts. Record both WER and Semantic WER so you can track improvements as you layer instructions on top.
 
 ### Step 3: Transcribe and evaluate with prompts
 
-Transcribe your files using [AssemblyAI’s API](/pre-recorded-audio/getting-started/transcribe-an-audio-file) with Universal-3.5 Pro and your candidate prompts.
+Transcribe your files using [AssemblyAI’s API](/pre-recorded-audio/getting-started/transcribe-an-audio-file) with AssemblyAI-STT-3.7 and your candidate prompts.
 
-When crafting evaluation prompts, use the [prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) as a reference. Key principles:
+When crafting evaluation prompts, use the [prompting guide](/pre-recorded-audio/prompting) as a reference. Key principles:
 
 - **Use authoritative language**: The model responds better to `Mandatory:`, `Required:`, and `Always:` than soft language like `try to` or `please`
 - **Be specific about speech patterns**: Enumerate what you want preserved (disfluencies, filler words, hesitations, repetitions, stutters, false starts, colloquialisms)
@@ -11987,7 +12254,7 @@ This accounts for differences in:
 
 Normalization can be done with a library like [Whisper Normalizer](https://pypi.org/project/whisper-normalizer/).
 
-  If you are prompting Universal-3.5 Pro to include `[unclear]` or `[masked]` tags
+  If you are prompting AssemblyAI-STT-3.7 to include `[unclear]` or `[masked]` tags
   for uncertain audio, ensure your normalizer strips these tags before computing
   WER. Otherwise, they will be counted as insertions.
 
@@ -12030,7 +12297,7 @@ Finding the optimal prompt for your use case is an iterative process. There are 
 
 ### Manual iteration
 
-1. Start with the [default system prompt](/pre-recorded-audio/universal-3-5-pro/prompting#best-all-around-default) or one of the reference prompts below
+1. Start with the [default system prompt](/pre-recorded-audio/prompting#best-all-around-default) or one of the reference prompts below
 2. Transcribe a representative sample of your audio
 3. Review the output against your ground truth, focusing on the types of errors that matter most for your use case
 4. Adjust the prompt to address specific error patterns
@@ -12042,11 +12309,11 @@ For large-scale prompt optimization, consider using one of the open-source tools
 
 ### Reference prompts for evaluation
 
-Use these prompts directly from the [prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting#recommended-prompts) as your evaluation prompts.
+Use these prompts directly from the [prompting guide](/pre-recorded-audio/prompting#recommended-prompts) as your evaluation prompts.
 
 #### Evaluation prompt
 
-Start with the built-in default ([Best all around](/pre-recorded-audio/universal-3-5-pro/prompting#best-all-around-default)). Omit the `prompt` parameter to use it — you don’t need to set it explicitly:
+Start with the built-in default ([Best all around](/pre-recorded-audio/prompting#best-all-around-default)). Omit the `prompt` parameter to use it — you don’t need to set it explicitly:
 
 ```text
 Transcribe with context and proper nouns preserved, where speech is
@@ -12054,11 +12321,11 @@ present in the audio. Each language as spoken. English as English.
 Non-native speakers.
 ```
 
-For maximum verbatim capture and multilingual code-switching, use the [Verbatim with multilingual support](/pre-recorded-audio/universal-3-5-pro/prompting#verbatim-with-multilingual-support) prompt instead. The trade-off is that the model may occasionally hallucinate disfluencies or language switches that don’t exist in the audio.
+For maximum verbatim capture and multilingual code-switching, use the [Verbatim with multilingual support](/pre-recorded-audio/prompting#verbatim-with-multilingual-support) prompt instead. The trade-off is that the model may occasionally hallucinate disfluencies or language switches that don’t exist in the audio.
 
 #### Comparison prompt (for identifying model uncertainty)
 
-This is the [Handling unclear audio with `[unclear]`](/pre-recorded-audio/universal-3-5-pro/prompting#handling-unclear-audio-with-unclear) prompt. Run it alongside the evaluation prompt on the same audio and diff the outputs to find where the model is guessing:
+This is the [Handling unclear audio with `[unclear]`](/pre-recorded-audio/prompting#handling-unclear-audio-with-unclear) prompt. Run it alongside the evaluation prompt on the same audio and diff the outputs to find where the model is guessing:
 
 ```text
 Always: Transcribe speech exactly as heard. If uncertain or audio is
@@ -12077,7 +12344,7 @@ By comparing the two outputs, you can identify exactly which segments the model 
 
 ### What works and what doesn’t
 
-The authoritative list lives in the prompting guide — see [What works / what to avoid](/pre-recorded-audio/universal-3-5-pro/prompting#what-works--what-to-avoid). The same rules apply when building evaluation prompts: lead with `Transcribe…`, use authoritative language (`Required:`, `Mandatory:`, `Always:`), describe the _pattern_ to watch for, and add instructions one at a time.
+The authoritative list lives in the prompting guide — see [What works / what to avoid](/pre-recorded-audio/prompting#what-works--what-to-avoid). The same rules apply when building evaluation prompts: lead with `Transcribe…`, use authoritative language (`Required:`, `Mandatory:`, `Always:`), describe the _pattern_ to watch for, and add instructions one at a time.
 
   Listing specific word examples in your prompt causes hallucinations. The model
   becomes over-eager to insert those exact words into the transcript, even when
@@ -12086,10 +12353,10 @@ The authoritative list lives in the prompting guide — see [What works / what t
   to hallucinate those drug names. Instead, describe the _pattern_ of entities
   to prioritize: `Pharmaceutical accuracy required across all medications and
   drug names`. If you already know the specific terms, use [keyterms
-  prompting](/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting) instead — it’s
+  prompting](/pre-recorded-audio/prompting#keyterms-prompting) instead — it’s
   optimized for term boosting and more reliable than describing terms in a
   free-form prompt. See the [prompting
-  guide](/pre-recorded-audio/universal-3-5-pro/prompting#entity-accuracy-and-spelling) for
+  guide](/pre-recorded-audio/prompting#entity-accuracy-and-spelling) for
   more details.
 
 ## Open-source tools
@@ -12134,7 +12401,7 @@ Both tools require ground truth transcriptions for scoring. If you don’t have 
 
 ## Conclusion
 
-Evaluating Universal-3.5 Pro requires going beyond traditional WER. The model’s contextual awareness and prompting capabilities mean that evaluation is as much about finding the right prompt as it is about measuring accuracy. Use Semantic WER or LASER alongside traditional WER, audit your ground truth data carefully, and iterate on prompts systematically to find the best configuration for your audio.
+Evaluating AssemblyAI-STT-3.7 requires going beyond traditional WER. The model’s contextual awareness and prompting capabilities mean that evaluation is as much about finding the right prompt as it is about measuring accuracy. Use Semantic WER or LASER alongside traditional WER, audit your ground truth data carefully, and iterate on prompts systematically to find the best configuration for your audio.
 
 ---
 
@@ -12209,7 +12476,7 @@ from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
 audio_file = "https://assembly.ai/wildfires.mp3"
 
 config = TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
 )
 
@@ -12241,7 +12508,7 @@ upload_url = response.json()["upload_url"]
 
 data = {
     "audio_url": upload_url, # You can also use a URL to an audio or video file on the web
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True
 }
 
@@ -12279,7 +12546,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 
 const params = {
   audio: audioFile,
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7", "universal-2"],
   language_detection: true,
 };
 
@@ -12314,7 +12581,7 @@ const uploadUrl = uploadResponse.upload_url;
 
 const data = {
   audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7", "universal-2"],
   language_detection: true,
 };
 
@@ -12361,7 +12628,7 @@ client = Client(
 audio_file = "https://assembly.ai/wildfires.mp3"
 
 config = TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
 )
 
@@ -12393,7 +12660,7 @@ upload_url = response.json()["upload_url"]
 
 data = {
     "audio_url": upload_url, # You can also use a URL to an audio or video file on the web
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True
 }
 
@@ -12431,7 +12698,7 @@ const audioFile = "https://assembly.ai/wildfires.mp3";
 
 const params = {
   audio: audioFile,
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7", "universal-2"],
   language_detection: true,
 };
 
@@ -12466,7 +12733,7 @@ const uploadUrl = uploadResponse.upload_url;
 
 const data = {
   audio_url: uploadUrl, // You can also use a URL to an audio or video file on the web
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7", "universal-2"],
   language_detection: true,
 };
 
@@ -12632,7 +12899,7 @@ transcriber = aai.Transcriber()
 audio_file = "./example.wav"
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True,
 )
@@ -12694,7 +12961,7 @@ audio_file = (
 )
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True,
 )
@@ -12714,7 +12981,7 @@ Here are helpful things to know about our `transcribe` method:
 
 - The SDK handles polling under the hood
 - Transcript is directly accessible via `transcript.text`
-- English is the default language. We recommend specifying `speech_models=["universal-3-5-pro", "universal-2"]` for the highest accuracy
+- English is the default language. We recommend specifying `speech_models=["assemblyai-stt-3-7", "universal-2"]` for the highest accuracy
 - We have a [cookbook for error handling common errors](/pre-recorded-audio/guides/common_errors_and_solutions) when using our API.
 
 ## Installation
@@ -12826,7 +13093,7 @@ response = deepgram.listen.prerecorded.v("1").transcribe_url(AUDIO_URL, options)
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True, # Speaker diarization
     auto_chapters=True, # Auto chapter detection
@@ -12892,7 +13159,7 @@ transcriber = aai.Transcriber()
 audio_file = "./example.wav"
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
 )
 transcript = transcriber.transcribe(audio_file, config)
@@ -12908,7 +13175,7 @@ Here are helpful things to know about our `transcribe` method:
 
 - The SDK handles polling under the hood
 - Transcript is directly accessible via `transcript.text`
-- English is the default language. We recommend specifying `speech_models=["universal-3-5-pro", "universal-2"]` for the highest accuracy
+- English is the default language. We recommend specifying `speech_models=["assemblyai-stt-3-7", "universal-2"]` for the highest accuracy
 - We have a [cookbook for error handling common errors](/pre-recorded-audio/guides/common_errors_and_solutions) when using our API.
 
 ## Installation
@@ -12988,7 +13255,7 @@ print(transcript.words)
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels = True, # Speaker diarization
     sentiment_analysis=True, # Sentiment Analysis
@@ -13093,7 +13360,7 @@ audio_file = (
 )
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True,
 )
@@ -13213,7 +13480,7 @@ Here are helpful things to know about our `transcribe` method:
 
 - The SDK handles polling under the hood
 - Transcript is directly accessible via `transcript.text`
-- English is the default language. We recommend specifying `speech_models=["universal-3-5-pro", "universal-2"]` for the highest accuracy
+- English is the default language. We recommend specifying `speech_models=["assemblyai-stt-3-7", "universal-2"]` for the highest accuracy
 - We have a [cookbook for error handling common errors](/pre-recorded-audio/guides/common_errors_and_solutions) when using our API.
 
 ## Adding Features
@@ -13231,7 +13498,7 @@ transcribe_client.start_transcription_job(
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True,           # Speaker diarization
     auto_chapters=True,           # Auto chapter detection
@@ -13316,7 +13583,7 @@ audio_file = (
 )
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
 )
 transcript = transcriber.transcribe(audio_file, config)
@@ -13408,7 +13675,7 @@ for i, result in enumerate(response.results):
 transcriber = aai.Transcriber()
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
 )
 transcript = transcriber.transcribe(audio_file, config)
@@ -13423,7 +13690,7 @@ Here are helpful things to know about our `transcribe` method:
 
 - The SDK handles polling under the hood.
 - The full transcript is directly accessible via `transcript.text`.
-- English is the default language. We recommend specifying `speech_models=["universal-3-5-pro", "universal-2"]` for the highest accuracy.
+- English is the default language. We recommend specifying `speech_models=["assemblyai-stt-3-7", "universal-2"]` for the highest accuracy.
 - We have a [cookbook for error handling common errors](/pre-recorded-audio/guides/common_errors_and_solutions) when using our API.
 
 ## Adding Features
@@ -13441,7 +13708,7 @@ config = speech.RecognitionConfig(
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True,  # Speaker diarization
     filter_profanity=True,  # Remove profanity from transcript
@@ -13552,7 +13819,7 @@ upload_url = response.json()["upload_url"]
 
 data = {
     "audio_url": upload_url, # You can also use a URL to an audio or video file on the web
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
 }
 
@@ -13649,7 +13916,7 @@ upload_url = response.json()["upload_url"]
 
 data = {
     "audio_url": upload_url,
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
 }
 
@@ -13658,7 +13925,7 @@ audio_file = "https://assembly.ai/sports_injuries.mp3"
 
 data = {
     "audio_url": audio_file,
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
 }
 ```
@@ -13758,7 +14025,7 @@ for entity in transcript['result']['named_entity_recognition']['results']:
 ```python expandable
 data = {
     "audio_url": upload_url,
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
     "speaker_labels": True,     # Speaker diarization
     "auto_chapters": True,      # Auto chapter detection
@@ -19429,7 +19696,7 @@ Source: docs/pre-recorded-audio/guides/automatic-language-detection-separate.mdx
 Navigation: Pre-recorded STT > Guides > Tutorials > Automatic Language Detection
 Description: Use Automatic Language Detection as a Separate Step From Transcription documentation.
 
-In this guide, we'll show you how to perform automatic language detection separately from the transcription process. For the transcription, the file then gets then routed to either our [Universal-3.5 Pro or Universal-2](/pre-recorded-audio/select-the-speech-model) model class, depending on the supported language.
+In this guide, we'll show you how to perform automatic language detection separately from the transcription process. For the transcription, the file then gets then routed to either our [AssemblyAI-STT-3.7 or Universal-2](/pre-recorded-audio/select-the-speech-model) model class, depending on the supported language.
 
 This workflow is designed to be cost-effective, slicing the first 60 seconds of audio and running it through Universal-2 ALD, which detects 99 languages, at a cost of $0.002 per transcript for this language detection workflow (not including the total transcription cost).
 
@@ -19488,7 +19755,7 @@ transcriber = aai.Transcriber()
 Define two helper functions:
 
 - `detect_language()` performs language detection on the [first 60 seconds](/api-reference/transcripts/submit#request.body.audio_end_at) of the audio and returns the language code.
-- `transcribe_file()` performs the transcription. For this, the identified language is applied and either Universal-3.5 Pro or Universal-2 is used depending on the supported language.
+- `transcribe_file()` performs the transcription. For this, the identified language is applied and either AssemblyAI-STT-3.7 or Universal-2 is used depending on the supported language.
 
 ```python
 def detect_language(audio_url):
@@ -19504,7 +19771,7 @@ def transcribe_file(audio_url, language_code):
     config = aai.TranscriptionConfig(
         language_code=language_code,
         speech_models=(
-            ["universal-3-5-pro", "universal-2"]
+            ["assemblyai-stt-3-7", "universal-2"]
             if language_code in supported_languages_for_universal
             else ["universal-2"]
         ),
@@ -19597,7 +19864,7 @@ const params = {
   audio: audioUrl,
   language_detection: true,
   language_confidence_threshold: 0.8,
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7", "universal-2"],
   // Add any other params
 };
 ```
@@ -19605,7 +19872,7 @@ const params = {
 ```python
 transcriber = aai.Transcriber()
 audio_url = ("https://example.org/audio.mp3")
-config = aai.TranscriptionConfig(language_detection=True, language_confidence_threshold=0.8, speech_models=["universal-3-5-pro", "universal-2"])
+config = aai.TranscriptionConfig(language_detection=True, language_confidence_threshold=0.8, speech_models=["assemblyai-stt-3-7", "universal-2"])
 transcript = transcriber.transcribe(audio_url, config)
 ```
 
@@ -19670,7 +19937,7 @@ run(params);
 if transcript.error:
     if "below the requested confidence threshold value" in transcript.error:
         print(f"{transcript.error}. Running transcript again with language set to '{default_language}'.")
-        new_config = aai.TranscriptionConfig(language_code=default_language, speech_models=["universal-3-5-pro", "universal-2"])
+        new_config = aai.TranscriptionConfig(language_code=default_language, speech_models=["assemblyai-stt-3-7", "universal-2"])
         transcript = transcriber.transcribe(audio_url, new_config)
         print(f"Transcript ID: {transcript.id}")
         print(transcript.text)
@@ -20516,21 +20783,19 @@ The `language_code` value you submitted isn't recognized.
 
 The `speech_models` parameter must be a non-empty list of supported model names.
 
-Accounts on a feature flag for dated `universal-3-5-pro` variants may see additional model names in the list.
-
-- **Solution**: Pass a non-empty list, for example `["universal-3-5-pro", "universal-2"]`. See [Select the speech model](/pre-recorded-audio/select-the-speech-model) for guidance.
+- **Solution**: Pass a non-empty list, for example `["assemblyai-stt-3-7", "universal-2"]`. See [Select the speech model](/pre-recorded-audio/select-the-speech-model) for guidance.
 
 ### Deprecated `speech_model` (singular) parameter on async `/v2/transcript`
 
 On the **async pre-recorded API**, `speech_model` no longer selects a model. Use **`speech_models`** (plural) instead.
 
-- Passing a current model name (`universal-2`, `universal-3-5-pro`) to `speech_model` returns a **400 error** — deprecated.
+- Passing a current model name (`universal-2`, `assemblyai-stt-3-7`) to `speech_model` returns a **400 error** — deprecated.
 - Passing a legacy name (`best`, `universal`) to `speech_model` returns **200**, but always routes to the default model.
 - Omitting both `speech_model` and `speech_models` also routes to the default model.
 
 This default-routing behavior is intentional — it keeps requests without an explicit current-model selection on the best model available, rather than pinned to an outdated one.
 
-**Default model:** `speech_model` currently defaults to `universal-2`, the default will be updated to `universal-3-5-pro` on August 7. If you would like to explicitly pin a model, set the `speech_models` parameter. See [model selection](/pre-recorded-audio/select-the-speech-model) to compare models.
+**Default model:** For new accounts created on or after November 17, 2026, leaving out `speech_models` defaults to `["assemblyai-stt-3-7"]`. For existing accounts, see the [assemblyai-stt-3-7 migration guide](/pre-recorded-audio/assemblyai-stt-3-7-migration-guide). To pin a model explicitly, set the `speech_models` parameter. See [model selection](/pre-recorded-audio/select-the-speech-model) to compare models.
 
 This entry applies to the async pre-recorded API (`POST /v2/transcript`) only. The Streaming API is a separate system that uses its own singular `speech_model` field with values such as `assemblyai-stt-3-7-realtime-agent` — see [Streaming model selection](/streaming/select-the-speech-model). Don't treat the singular `speech_model` field as universally deprecated.
 
@@ -23321,7 +23586,7 @@ See [Updating configuration mid-stream](/streaming/updating-configuration-mid-st
 
 ## Looking for async prompting?
 
-Prompting behavior differs between streaming and async (pre-recorded) use cases. This guide covers prompting for **streaming (real-time audio)**. If you're working with pre-recorded audio, see the [Prompting Guide (Async)](/pre-recorded-audio/universal-3-5-pro/prompting) and [Keyterms prompting (Async)](/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting).
+Prompting behavior differs between streaming and async (pre-recorded) use cases. This guide covers prompting for **streaming (real-time audio)**. If you're working with pre-recorded audio, see the [Prompting Guide (Async)](/pre-recorded-audio/prompting) and [Keyterms prompting (Async)](/pre-recorded-audio/prompting#keyterms-prompting).
 
 ---
 
@@ -44063,7 +44328,7 @@ Beyond the model, the call above needs no extra configuration. Pass a config to 
 
 ### Select a model
 
-`model` selects the sync speech model. Set it to `universal-3-6-pro`: the SDKs currently default to `universal-3-5-pro`, which remains available.
+`model` selects the sync speech model. Set it to `universal-3-6-pro`. The SDKs currently default to `universal-3-5-pro`, which is retired, so requests that use it are routed to `universal-3-6-pro`. See [Speech model versions and deprecations](/getting-started/model-versions-and-deprecations).
 
 ```python
 from assemblyai.sync.v1 import SyncTranscriptionConfig
@@ -45035,7 +45300,7 @@ curl -X POST https://sync.assemblyai.com/v1/transcribe \
 
 ## Looking for streaming or async prompting?
 
-This guide covers prompting for **Sync STT (short pre-recorded clips)**. For live audio, see [Prompting and keyterms (Real-time)](/streaming/prompting-and-keyterms). For longer pre-recorded audio, see the [Prompting Guide (Async)](/pre-recorded-audio/universal-3-5-pro/prompting).
+This guide covers prompting for **Sync STT (short pre-recorded clips)**. For live audio, see [Prompting and keyterms (Real-time)](/streaming/prompting-and-keyterms). For longer pre-recorded audio, see the [Prompting Guide (Async)](/pre-recorded-audio/prompting).
 
 ---
 
@@ -46287,7 +46552,8 @@ Transcription runs off the audio path: segments are queued and transcribed in or
 Set these inside `AssemblyAISyncSTTService.Settings(...)`.
 
   The speech model, sent as the `X-AAI-Model` header. Set it to
-  `universal-3-6-pro` to use our latest model.
+  `universal-3-6-pro`. The default, `universal-3-5-pro`, is retired, so
+  requests that use it are routed to `universal-3-6-pro`.
 
   The transcription language. Superseded by `language_codes` when both are set.
 
@@ -75833,7 +76099,7 @@ Description: How can I make certain words more likely to be transcribed? documen
 
 Our speech recognition models support a feature called **keyterms prompting**, which lets you provide a list of words or phrases that you want the model to be more likely to transcribe accurately. How this feature works varies slightly by model, so see these specific sections of our documentation for more details:
 
-- [Pre-recorded (Universal-3.5 Pro and Universal-2)](/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting)
+- [Pre-recorded (AssemblyAI-STT-3.7 and Universal-2)](/pre-recorded-audio/prompting#keyterms-prompting)
 - [Streaming (AssemblyAI-STT-3.7-Realtime-Agent)](/streaming/prompting-and-keyterms)
 
 ---
@@ -76893,12 +77159,12 @@ This is a public API. The developer creates their own key at [assemblyai.com/das
 4. **Prefer the official SDKs.** Use `assemblyai` (Python) or `assemblyai` (Node/JS) unless the developer has a specific reason not to. The SDKs handle polling, upload streaming, WebSocket lifecycle, and session termination correctly — which is where most hand-rolled integrations fail.
 5. **Never expose the API key in client-side code.** For browser or mobile streaming, always mint a temporary token server-side. For pre-recorded, proxy uploads and submissions through your server.
 6. **Authorization header is the raw key — no `Bearer` prefix.** This trips up everyone.
-7. **`speech_models` is optional on pre-recorded requests.** If omitted, the request defaults to `["universal-3-5-pro", "universal-2"]`. You can still set it explicitly — see Section 5 for semantics.
+7. **`speech_models` is optional on pre-recorded requests.** For new accounts created on or after November 17, 2026, leaving it out defaults to `["assemblyai-stt-3-7"]`. Existing accounts may default to an older model; see the [assemblyai-stt-3-7 migration guide](/pre-recorded-audio/assemblyai-stt-3-7-migration-guide). You can still set it explicitly — see Section 5 for semantics.
 8. **Always terminate streaming sessions explicitly.** An abandoned WebSocket keeps accruing charges until the 3-hour cap.
 9. **Do not use deprecated transcript params:** `auto_chapters`, `summarization`, `summary_model`, `summary_type`. Use LLM Gateway instead (Section 8).
 10. **If the developer's answers are inconsistent, stop and surface the conflict.** Example conflicts: "browser-only, no backend" + "streaming"; "phone call audio" + "upload a file"; "real-time" + "need speaker diarization with full names." Don't paper over these — ask.
 11. **Be flexible.** If something the developer says doesn't match the shape of the API (e.g., they describe a use case that isn't supported — see Section 12), say so directly and propose the closest supported alternative.
-12. **Verify parameters against live docs before recommending.** This file is a snapshot — features move between beta and GA, model-specific behaviors change, and new knobs ship regularly. Before posting the Section 2 recommendation, confirm each parameter you plan to use is supported for the chosen **mode** (pre-recorded vs streaming) *and* **model** (Universal-3.5 Pro, Universal-2, AssemblyAI-STT-3.7-Realtime-Agent, AssemblyAI-STT-3.7-Realtime). Do not assume a pre-recorded flag works on streaming, or that a parameter supported on U2 still behaves the same on U3 Pro. Pull the current reference rather than memorizing. Primary sources, in order of preference:
+12. **Verify parameters against live docs before recommending.** This file is a snapshot — features move between beta and GA, model-specific behaviors change, and new knobs ship regularly. Before posting the Section 2 recommendation, confirm each parameter you plan to use is supported for the chosen **mode** (pre-recorded vs streaming) *and* **model** (AssemblyAI-STT-3.7, Universal-2, AssemblyAI-STT-3.7-Realtime-Agent, AssemblyAI-STT-3.7-Realtime). Do not assume a pre-recorded flag works on streaming, or that a parameter supported on U2 still behaves the same on AssemblyAI-STT-3.7. Pull the current reference rather than memorizing. Primary sources, in order of preference:
     - `https://www.assemblyai.com/docs/llms.txt` — the machine-readable index; fetch the section files it links (each under 100 KB) for full content
     - Per-mode docs: `/docs/pre-recorded-audio/*` (pre-recorded) and `/docs/streaming/*` (streaming), including the model-specific overview page (e.g., `/docs/streaming/getting-started/transcribe-streaming-audio` and `/docs/streaming/select-the-speech-model`) which lists *exactly* which parameters are honored/ignored by that model
     - The OpenAPI-backed API reference at `/docs/api-reference/*` for request/response schemas
@@ -76988,8 +77254,8 @@ Use this to build the recommendation. Do not dump it on the user.
 | Speaker diarization | `speaker_labels: true` (pre-recorded, and streaming — streaming adds a `speaker_label` to each Turn event) |
 | Automatic language detection | `language_detection: true` (pre-recorded; on streaming, it adds `language_code` + `language_confidence` to Turn events. It only reports the language; it doesn't change transcription.) |
 | Specific language | `language_code: "es"` etc. on pre-recorded; on streaming, `language_codes: ["es"]` steers the model toward the languages you list |
-| Multilingual / code-switching | `speech_models: ["universal-3-5-pro"]` + `prompt` parameter — see [U3 Pro prompting guide](/pre-recorded-audio/universal-3-5-pro/prompting) |
-| Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with U3 Pro / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
+| Multilingual / code-switching | `speech_models: ["assemblyai-stt-3-7"]` + `prompt` parameter — see [prompting guide](/pre-recorded-audio/prompting) |
+| Domain-specific vocabulary | `keyterms_prompt: [...]` (pre-recorded: up to 1,000 terms with AssemblyAI-STT-3.7 / 200 with U2; streaming: up to 100 terms, each ≤50 chars) |
 | Medical domain | `domain: "medical-v1"` (pre-recorded *and* streaming; supported languages: en, es, de, fr) |
 | Veterinary domain (beta) | `domain: "veterinary-v1"` (pre-recorded *and* streaming) |
 | PII redaction in text | `redact_pii: true` + `redact_pii_policies: [...]` + optional `redact_pii_sub: "hash" \| "entity_name"` |
@@ -77031,9 +77297,13 @@ Streaming:
 
 ## 5. `speech_models` semantics
 
-`speech_models` on pre-recorded requests is an **ordered fallback list**, not parallel execution. The first model in the array is tried; if it's unavailable (e.g., not yet rolled out to the account, or temporarily unhealthy), the next is used. A single transcript is produced by exactly one model.
+`speech_models` on pre-recorded requests is a list of candidate models, not parallel execution. A single transcript is produced by exactly one model.
 
-Recommended default: `["universal-3-5-pro", "universal-2"]` — tries the latest model first, falls back to the stable predecessor.
+- **If the list includes `assemblyai-stt-3-7`**, the request goes to AssemblyAI-STT-3.7 for any language it supports (set by `language_code` or detected), wherever it appears in the list. Other models are used only for languages AssemblyAI-STT-3.7 doesn't support. If you set a `language_code` that AssemblyAI-STT-3.7 doesn't support, the request falls back to Universal-2 even if `universal-2` isn't in the list.
+- **If the list doesn't include `assemblyai-stt-3-7`**, the first model in the list, from left to right, that supports the language is used.
+- **`disfluencies` defaults to `true`** whenever the list includes `assemblyai-stt-3-7` (or `speech_models` is omitted and the request uses `assemblyai-stt-3-7` by default), even if another model is first or transcribes the audio. Set `disfluencies: false` to remove filler words.
+
+The recommended setup is `["assemblyai-stt-3-7"]`.
 
 On streaming, the parameter is **singular** (`speech_model=assemblyai-stt-3-7-realtime-agent`) — there is no fallback list. Easy to mix up.
 
@@ -77052,7 +77322,7 @@ import os
 aai.settings.api_key = os.environ["ASSEMBLYAI_API_KEY"]
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],  # fallback handled by SDK
+    speech_models=["assemblyai-stt-3-7"],
     speaker_labels=True,
 )
 
@@ -77075,7 +77345,7 @@ const client = new AssemblyAI({ apiKey: process.env.ASSEMBLYAI_API_KEY });
 
 const transcript = await client.transcripts.transcribe({
   audio: 'https://assembly.ai/wildfires.mp3', // or a local file path / Buffer / stream
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7"],
   speaker_labels: true,
 });
 
@@ -77106,7 +77376,7 @@ submit = requests.post(
     headers=headers,
     json={
         "audio_url": "https://assembly.ai/wildfires.mp3",
-        "speech_models": ["universal-3-5-pro", "universal-2"],
+        "speech_models": ["assemblyai-stt-3-7"],
         "speaker_labels": True,
     },
 )
@@ -77373,7 +77643,7 @@ export async function POST(request) {
     },
     body: JSON.stringify({
       audio_url: upload_url,
-      speech_models: ['universal-3-5-pro', 'universal-2'],
+      speech_models: ['assemblyai-stt-3-7'],
     }),
   });
   return Response.json(await submit.json());
@@ -77471,7 +77741,7 @@ For the most common errors across all APIs, with fixes, and links to each produc
 ## 14. Quick-reference gotchas
 
 - No `Bearer` prefix on the Authorization header.
-- `speech_models` is **optional** on pre-recorded submits — it defaults to `["universal-3-5-pro", "universal-2"]` and is an **ordered fallback list** when provided.
+- `speech_models` is **optional** on pre-recorded submits — for new accounts created on or after November 17, 2026 it defaults to `["assemblyai-stt-3-7"]`, and when provided, `assemblyai-stt-3-7` takes priority wherever it appears in the list (see section 5).
 - `/v2/upload` takes **raw binary**, not multipart.
 - Webhook handlers must return 2xx in ≤10 seconds.
 - Local webhook development needs a public tunnel (ngrok, Cloudflare Tunnel).
@@ -77483,7 +77753,7 @@ For the most common errors across all APIs, with fixes, and links to each produc
 - LLM Gateway model IDs are exact and versioned (e.g., `claude-sonnet-4-6`, `gpt-5.2`, `gemini-2.5-pro`). Shorthand like `claude-sonnet-4` is invalid.
 - Phone audio stays at native 8 kHz mu-law (`encoding=pcm_mulaw`) — don't upsample.
 - EU customers use `api.eu.assemblyai.com`, `streaming.eu.assemblyai.com`, and `llm-gateway.eu.assemblyai.com`. The default streaming host (`streaming.assemblyai.com`) is **Edge Routing**, not US-pinned — use `streaming.us.assemblyai.com` if you need data residency guarantees on the US side.
-- Speech-model values are **raw strings** in the SDKs (`"universal-3-5-pro"`, `"universal-2"`). Enum aliases like `aai.SpeechModel.universal_3_pro` do **not** exist — agents that hallucinate them produce code that imports cleanly and fails at runtime.
+- Speech-model values are **raw strings** in the SDKs (`"assemblyai-stt-3-7"`, `"universal-2"`). Enum aliases like `aai.SpeechModel.universal_3_pro` do **not** exist — agents that hallucinate them produce code that imports cleanly and fails at runtime.
 - LeMUR has fully sunset (2026-03-31). Don't generate code that calls LeMUR endpoints or passes `transcript_ids` to a chat-completions API — use LLM Gateway with the transcript text in `messages` instead.
 
 ---
@@ -78743,513 +79013,6 @@ To learn about using Streaming Speech-to-Text, see the following resources:
 
 ---
 
-<a id="universal-3-5-pro-docs-pre-recorded-audio-universal-3-5-pro-mdx"></a>
-
-# Universal-3.5 Pro
-
-URL: https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-5-pro
-Source: docs/pre-recorded-audio/universal-3-5-pro.mdx
-Navigation: Additional pages
-Description: Set up and configure Universal-3.5 Pro for pre-recorded audio transcription.
-
-Universal-3.5 Pro is our latest Voice AI model. It delivers:
-
-- State-of-the-art transcription accuracy across [18 languages](/pre-recorded-audio/universal-3-5-pro#support-for-99-languages)
-- Strong performance on accented English and seamless [code-switching](/pre-recorded-audio/universal-3-5-pro#code-switching) between supported languages
-- A more intelligent [contextual prompting](/pre-recorded-audio/universal-3-5-pro#contextual-prompting) that reliably follows the context you provide — from a single topic label to a full description of your audio
-
-## Quickstart
-
-Get started with Universal-3.5 Pro using the code below. This example transcribes a pre-recorded audio file and prints the transcript text to your terminal.
-
-    
-    Install the required library
-
-    ```bash
-    pip install requests
-    ```
-
-    
-    
-    Create a new file `main.py` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `python main.py`.
-    
-
-```python  expandable
-import requests
-import time
-
-base_url = "https://api.assemblyai.com"
-headers = {"authorization": "<YOUR_API_KEY>"}
-
-data = {
-    "audio_url": "https://assembly.ai/new-approved-medication",
-    "language_detection": True,
-    "speech_models": ["universal-3-5-pro"]
-}
-
-response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
-
-if response.status_code != 200:
-    print(f"Error: {response.status_code}, Response: {response.text}")
-    response.raise_for_status()
-
-transcript_response = response.json()
-transcript_id = transcript_response["id"]
-polling_endpoint = f"{base_url}/v2/transcript/{transcript_id}"
-
-while True:
-    transcript = requests.get(polling_endpoint, headers=headers).json()
-    if transcript["status"] == "completed":
-        print(transcript["text"])
-        break
-    elif transcript["status"] == "error":
-        raise RuntimeError(f"Transcription failed: {transcript['error']}")
-    else:
-        time.sleep(3)
-```
-
-    
-    Install the required library
-
-    ```bash
-    pip install assemblyai
-    ```
-
-    
-    
-    Create a new file `main.py` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `python main.py`.
-    
-
-```python 
-import assemblyai as aai
-
-aai.settings.api_key = "<YOUR_API_KEY>"
-
-audio_file = "https://assembly.ai/new-approved-medication"
-
-config = aai.TranscriptionConfig(
-  speech_models=["universal-3-5-pro"],
-  language_detection=True,
-)
-
-transcript = aai.Transcriber().transcribe(audio_file, config)
-
-print(transcript.text)
-```
-
-    
-    Create a new file `index.mjs` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `node index.mjs`.
-    
-
-```javascript  expandable
-const baseUrl = "https://api.assemblyai.com";
-const headers = {
-  authorization: "<YOUR_API_KEY>",
-};
-
-const data = {
-  audio_url: "https://assembly.ai/new-approved-medication",
-  language_detection: true,
-  speech_models: ["universal-3-5-pro"],
-};
-
-const url = `${baseUrl}/v2/transcript`;
-let res = await fetch(url, {
-  method: "POST",
-  headers: { ...headers, "Content-Type": "application/json" },
-  body: JSON.stringify(data),
-});
-if (!res.ok) throw new Error(`Error: ${res.status}`);
-const response = await res.json();
-
-const transcriptId = response.id;
-const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
-
-while (true) {
-  res = await fetch(pollingEndpoint, { headers });
-  if (!res.ok) throw new Error(`Error: ${res.status}`);
-  const transcriptionResult = await res.json();
-
-  if (transcriptionResult.status === "completed") {
-    console.log(transcriptionResult.text);
-    break;
-  } else if (transcriptionResult.status === "error") {
-    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
-  } else {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-  }
-}
-```
-
-    
-    Install the required library
-
-    ```bash
-    npm install assemblyai
-    ```
-
-    
-    
-    Create a new file `index.mjs` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `node index.mjs`.
-    
-
-```javascript 
-import { AssemblyAI } from "assemblyai";
-
-const client = new AssemblyAI({
-  apiKey: "<YOUR_API_KEY>",
-});
-
-const audioFile = "https://assembly.ai/new-approved-medication";
-
-const params = {
-  audio: audioFile,
-  speech_models: ["universal-3-5-pro"],
-  language_detection: true,
-};
-
-const run = async () => {
-  const transcript = await client.transcripts.transcribe(params);
-  console.log(transcript.text);
-};
-
-run();
-```
-
-## Code switching
-
-Universal-3.5 Pro natively handles code switching across 18 languages — _no prompt configuration needed_. When speakers shift mid-sentence between languages like English and Spanish, French, Hindi or Mandarin, the model follows seamlessly, preserving exactly what was said without translating everything into a single language.
-
-See Universal-3.5 Pro code switching in action.
-
-### **English \<\> French**
-
-```txt
-I said something like, j'ai dit à mes étudiants que it's time to really pay attention to what the idea of code-switching is.
-```
-
-### **English \<\> Hindi**
-
-```txt
-मेरा रुकने का तो बहुत मन है, but I have an exam to give tomorrow.
-```
-
-### **English \<\> Mandarin**
-
-```txt
-But this sentence, 我父母不工作了, you can see the 了 at the end of the sentence indicates that the situation now, my parents don't work, is different from what it was before.
-```
-
-## Contextual prompting
-
-Universal-3.5 Pro is highly accurate out of the box, but for challenging audio like short clips with limited context, noisy environments, or audio with very niche references, providing a brief description in the `prompt` parameter can meaningfully improve accuracy.
-
-For example, this is a 2-second clip from a League of Legends pro interview:
-
-Without prompt:
-
-```txt
-And so look who I've been a dear.
-```
-
-With prompt:
-
-```txt
-In solo queue, I ban Azir.
-```
-
-```python {11} expandable
-import requests
-import time
-
-base_url = "https://api.assemblyai.com"
-headers = {"authorization": "<YOUR_API_KEY>"}
-
-data = {
-    "audio_url": "https://assembly.ai/prompt-8",
-    "language_detection": True,
-    "speech_models": ["universal-3-5-pro"],
-    "prompt": "League of Legend roles"
-}
-
-response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
-
-if response.status_code != 200:
-    print(f"Error: {response.status_code}, Response: {response.text}")
-    response.raise_for_status()
-
-transcript_response = response.json()
-transcript_id = transcript_response["id"]
-polling_endpoint = f"{base_url}/v2/transcript/{transcript_id}"
-
-while True:
-    transcript = requests.get(polling_endpoint, headers=headers).json()
-    if transcript["status"] == "completed":
-        print(transcript["text"])
-        break
-    elif transcript["status"] == "error":
-        raise RuntimeError(f"Transcription failed: {transcript['error']}")
-    else:
-        time.sleep(3)
-```
-
-```python {10} expandable
-import assemblyai as aai
-
-aai.settings.api_key = "<YOUR_API_KEY>"
-
-audio_file = "https://assembly.ai/prompt-8"
-
-config = aai.TranscriptionConfig(
-  speech_models=["universal-3-5-pro"],
-  language_detection=True,
-  prompt="League of Legend roles",
-)
-
-transcript = aai.Transcriber().transcribe(audio_file, config)
-
-print(transcript.text)
-```
-
-```javascript {10} expandable
-const baseUrl = "https://api.assemblyai.com";
-const headers = {
-  authorization: "<YOUR_API_KEY>",
-};
-
-const data = {
-  audio_url: "https://assembly.ai/prompt-8",
-  language_detection: true,
-  speech_models: ["universal-3-5-pro"],
-  prompt: "League of Legend roles",
-};
-
-const url = `${baseUrl}/v2/transcript`;
-let res = await fetch(url, {
-  method: "POST",
-  headers: { ...headers, "Content-Type": "application/json" },
-  body: JSON.stringify(data),
-});
-if (!res.ok) throw new Error(`Error: ${res.status}`);
-const response = await res.json();
-
-const transcriptId = response.id;
-const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
-
-while (true) {
-  res = await fetch(pollingEndpoint, { headers });
-  if (!res.ok) throw new Error(`Error: ${res.status}`);
-  const transcriptionResult = await res.json();
-
-  if (transcriptionResult.status === "completed") {
-    console.log(transcriptionResult.text);
-    break;
-  } else if (transcriptionResult.status === "error") {
-    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
-  } else {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-  }
-}
-```
-
-```javascript {13} expandable
-import { AssemblyAI } from "assemblyai";
-
-const client = new AssemblyAI({
-  apiKey: "<YOUR_API_KEY>",
-});
-
-const audioFile = "https://assembly.ai/prompt-8";
-
-const params = {
-  audio: audioFile,
-  speech_models: ["universal-3-5-pro"],
-  language_detection: true,
-  prompt: "League of Legend roles",
-};
-
-const run = async () => {
-  const transcript = await client.transcripts.transcribe(params);
-  console.log(transcript.text);
-};
-
-run();
-```
-
-### Prompting guide
-
-Contextual prompts work at three levels of specificity. Use the least specific level that covers your use case, and add detail when your audio contains uncommon names or terms the model can't otherwise know.
-
-| Level | Length | What it contains | Example |
-| --- | --- | --- | --- |
-| **Domain** | 2–5 words | The domain only | `Medical consultation call.` |
-| **Scenario** | 5–15 words | What the conversation is about | `Cardiology consultation about chest pain symptoms.` |
-| **Detailed** | 20–50 words | Full description, including names, products, or identifiers | `Cardiology consultation between Dr. Smith and an elderly patient regarding recurring chest pain, ECG results, and medication adjustment for hypertension.` |
-
-Guidelines for writing contextual prompts:
-
-- Write plain, complete sentences that describe the audio
-- Keep it to one short block of text. Don't pack lists of keywords into the contextual prompt
-
-## Keyterms prompting
-
-Universal-3.5 Pro has strong out-of-the-box vocabulary coverage, so in many cases you won't need keyterms prompting at all. But when you're dealing with highly specific names, brands, acronyms, or niche industry jargon, the `keyterms_prompt` parameter gives you an extra layer of control. You can pass up to 1,000 words or phrases (max 6 words per phrase) to boost recognition for those terms and contextually similar variations.
-
-See keyterms prompt in action:
-
-Without keyterms prompting:
-
-```txt
-Hi, this is Kelly Byrne Donahue
-```
-
-With keyterms prompting:
-
-```txt
-Hi, this is Kelly Byrne-Donoghue
-```
-
-```python {11} expandable
-import requests
-import time
-
-base_url = "https://api.assemblyai.com"
-headers = {"authorization": "<YOUR_API_KEY>"}
-
-data = {
-    "audio_url": "https://assemblyaiassets.com/audios/keyterms_prompting.wav",
-    "language_detection": True,
-    "speech_models": ["universal-3-5-pro"],
-    "keyterms_prompt": ["Kelly Byrne-Donoghue"]
-}
-
-response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
-
-if response.status_code != 200:
-    print(f"Error: {response.status_code}, Response: {response.text}")
-    response.raise_for_status()
-
-transcript_response = response.json()
-transcript_id = transcript_response["id"]
-polling_endpoint = f"{base_url}/v2/transcript/{transcript_id}"
-
-while True:
-    transcript = requests.get(polling_endpoint, headers=headers).json()
-    if transcript["status"] == "completed":
-        print(transcript["text"])
-        break
-    elif transcript["status"] == "error":
-        raise RuntimeError(f"Transcription failed: {transcript['error']}")
-    else:
-        time.sleep(3)
-```
-
-```python {10}
-import assemblyai as aai
-
-aai.settings.api_key = "<YOUR_API_KEY>"
-
-audio_file = "https://assemblyaiassets.com/audios/keyterms_prompting.wav"
-
-config = aai.TranscriptionConfig(
-  speech_models=["universal-3-5-pro"],
-  language_detection=True,
-  keyterms_prompt=["Kelly Byrne-Donoghue"],
-)
-
-transcript = aai.Transcriber().transcribe(audio_file, config)
-
-print(transcript.text)
-```
-
-```javascript {12} expandable
-const baseUrl = "https://api.assemblyai.com";
-const headers = {
-  authorization: "<YOUR_API_KEY>",
-};
-
-const data = {
-  audio_url: "https://assemblyaiassets.com/audios/keyterms_prompting.wav",
-  language_detection: true,
-  speech_models: ["universal-3-5-pro"],
-  keyterms_prompt: ["Kelly Byrne-Donoghue"],
-};
-
-const url = `${baseUrl}/v2/transcript`;
-let res = await fetch(url, {
-  method: "POST",
-  headers: { ...headers, "Content-Type": "application/json" },
-  body: JSON.stringify(data),
-});
-if (!res.ok) throw new Error(`Error: ${res.status}`);
-const response = await res.json();
-
-const transcriptId = response.id;
-const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
-
-while (true) {
-  res = await fetch(pollingEndpoint, { headers });
-  if (!res.ok) throw new Error(`Error: ${res.status}`);
-  const transcriptionResult = await res.json();
-
-  if (transcriptionResult.status === "completed") {
-    console.log(transcriptionResult.text);
-    break;
-  } else if (transcriptionResult.status === "error") {
-    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
-  } else {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-  }
-}
-```
-
-```javascript {13} expandable
-import { AssemblyAI } from "assemblyai";
-
-const client = new AssemblyAI({
-  apiKey: "<YOUR_API_KEY>",
-});
-
-const audioFile = "https://assemblyaiassets.com/audios/keyterms_prompting.wav";
-
-const params = {
-  audio: audioFile,
-  speech_models: ["universal-3-5-pro"],
-  language_detection: true,
-  keyterms_prompt: ["Kelly Byrne-Donoghue"],
-};
-
-const run = async () => {
-  const transcript = await client.transcripts.transcribe(params);
-  console.log(transcript.text);
-};
-
-run();
-```
-
-## Support for 99 languages
-
-Universal-3.5 Pro supports 18 languages, and for anything outside that set, the system automatically falls back to Universal-2, giving you coverage across 99 languages total without any extra configuration.
-
-| Model | Supported languages |
-| --- | --- |
-| `universal-3-5-pro` | Global English, Australian English, British English, US English, Spanish, French, German, Italian, Portuguese, Arabic, Danish, Dutch, Finnish, Hebrew, Hindi, Japanese, Mandarin, Norwegian, Swedish, Turkish, Vietnamese |
-| `universal-2` | Global English, Australian English, British English, US English, Spanish, French, German, Italian, Portuguese, Dutch, Hindi, Japanese, Chinese, Finnish, Korean, Polish, Russian, Turkish, Ukrainian, Vietnamese, Afrikaans, Albanian, Amharic, Arabic, Armenian, Assamese, Azerbaijani, Bashkir, Basque, Belarusian, Bengali, Bosnian, Breton, Bulgarian, Burmese, Catalan, Croatian, Czech, Danish, Estonian, Faroese, Galician, Georgian, Greek, Gujarati, Haitian, Hausa, Hawaiian, Hebrew, Hungarian, Icelandic, Indonesian, Javanese, Kannada, Kazakh, Khmer, Lao, Latin, Latvian, Lingala, Lithuanian, Luxembourgish, Macedonian, Malagasy, Malay, Malayalam, Maltese, Maori, Marathi, Mongolian, Nepali, Norwegian, Norwegian Nynorsk, Occitan, Panjabi, Pashto, Persian, Romanian, Sanskrit, Serbian, Shona, Sindhi, Sinhala, Slovak, Slovenian, Somali, Sundanese, Swahili, Swedish, Swiss German, Tagalog, Tajik, Tamil, Tatar, Telugu, Thai, Tibetan, Turkmen, Urdu, Uzbek, Welsh |
-
----
-
 <a id="sample-audio-files-docs-samples-mdx"></a>
 
 # Sample audio files
@@ -80192,13 +79955,12 @@ paths:
                 speech_threshold: null
                 speech_model: null
                 speech_models:
-                  - universal-3-pro
-                  - universal-2
-                speech_model_used: null
+                  - assemblyai-stt-3-7
+                speech_model_used: assemblyai-stt-3-7
                 temperature: null
                 remove_audio_tags: all
                 chapters: null
-                disfluencies: false
+                disfluencies: true
                 entity_detection: true
                 sentiment_analysis: true
                 sentiment_analysis_results: null
@@ -81536,7 +81298,7 @@ components:
 
         disfluencies:
           x-label: Disfluencies
-          description: Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on Universal-3.6 Pro Preview, Universal-3.5 Pro and Universal-2. Defaults to true when the first `speech_models` entry is `universal-3-6-pro-preview`, and to false otherwise.
+          description: Transcribe [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", in your media file; can be true or false. Supported on AssemblyAI-STT-3.7 and Universal-2. Defaults to true when `speech_models` includes `assemblyai-stt-3-7` in any position, or is omitted and the request uses `assemblyai-stt-3-7` by default, and to false otherwise.
           type: boolean
 
         domain:
@@ -81568,7 +81330,7 @@ components:
 
         format_text:
           x-label: Format text
-          description: Enable [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false
+          description: Enable [Text Formatting](https://www.assemblyai.com/docs/pre-recorded-audio/formatting), can be true or false
           type: boolean
           default: true
 
@@ -81581,7 +81343,7 @@ components:
         keyterms_prompt:
           x-label: Keyterms prompt
           description: |
-            Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3.5 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting) for more details.
+            Improve accuracy with up to 200 (for Universal-2) or 1000 (for AssemblyAI-STT-3.7) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/prompting#keyterms-prompting) for more details.
           type: array
           items:
             x-label: Keyterm
@@ -81591,7 +81353,7 @@ components:
           x-label: Language code
           description: |
             The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages).
-            If you don't specify a language, it's detected automatically. Cannot be used together with `language_detection`.
+            If you don't specify a language, it's detected automatically. Can be used with `language_detection` set to `false`, but not with `language_detection` set to `true`.
           oneOf:
             - anyOf:
                 - $ref: "#/components/schemas/TranscriptLanguageCode"
@@ -81602,8 +81364,7 @@ components:
 
         language_codes:
           description: |
-            The language codes of your audio file. Used for [Code switching](/speech-to-text/pre-recorded-audio/code-switching)
-            One of the values specified must be `en`.
+            The language codes of your audio file. Used for [Code switching](https://www.assemblyai.com/docs/pre-recorded-audio/code-switching). On AssemblyAI-STT-3.7, accepts any number of supported languages, and English isn't required. On Universal-2, accepts at most two languages, and one of them must be `en`. Can't be used together with `language_code` or `language_detection`.
           type: [array, "null"]
           items:
             x-label: Language code
@@ -81624,7 +81385,7 @@ components:
         language_detection:
           x-label: Language detection
           description: |
-            [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) identifies the spoken language and routes the request to the best model. It's applied automatically when you don't specify a `language_code`. Set to `false` only together with a `language_code`; disabling it without specifying a language returns an error.
+            [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) identifies the spoken language. See [Model selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model#transcribe-all-99-languages-by-combining-speech-models) for how requests are routed to a speech model. It's applied automatically when you don't specify a `language_code`. Set to `false` only together with a `language_code`; disabling it without specifying a language returns an error.
           type: boolean
 
         language_detection_options:
@@ -81643,19 +81404,19 @@ components:
             fallback_language:
               x-label: Fallback language
               description: |
-                If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `["auto"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+                If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `"auto"` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
               type: string
               default: "auto"
             code_switching:
               x-label: Code switching
               description: |
-                Whether [code switching](/speech-to-text/pre-recorded-audio/code-switching) should be detected.
+                Whether [code switching](https://www.assemblyai.com/docs/pre-recorded-audio/code-switching) should be detected. Only supported on Universal-2. AssemblyAI-STT-3.7 code-switches natively, so this option doesn't apply to it.
               type: boolean
               default: false
             code_switching_confidence_threshold:
               x-label: Code switching confidence threshold
               description: |
-                The confidence threshold for [code switching](/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.
+                The confidence threshold for [code switching](https://www.assemblyai.com/docs/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.
               type: number
               minimum: 0
               maximum: 1
@@ -81693,12 +81454,12 @@ components:
           description: |
             Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.
 
-            Note: This parameter is only supported for the Universal-3.5 Pro model.
+            Note: This parameter is only supported for the AssemblyAI-STT-3.7 model.
           type: string
 
         punctuate:
           x-label: Punctuate
-          description: Enable [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio), can be true or false
+          description: Enable [Automatic Punctuation](https://www.assemblyai.com/docs/pre-recorded-audio/formatting), can be true or false
           type: boolean
           default: true
 
@@ -81801,7 +81562,7 @@ components:
               x-label: Maximum speakers expected
               description: |
                 <Warning>Setting this parameter too high may hurt model accuracy</Warning>
-                A hard upper limit on the number of speaker labels. If more people speak than this value, the additional speakers are merged into existing labels. Setting it higher than the true number of speakers can cause the model to over-split and return more speakers than are actually present. The default depends on audio duration: no limit for 0-2 minutes, 10 for 2-10 minutes, and 30 for 10+ minutes. See [Set a range of possible speakers](https://www.assemblyai.com/docs/pre-recorded-audio/label-speakers#set-a-range-of-possible-speakers) for more details.
+                A hard upper limit on the number of speaker labels. If more people speak than this value, the additional speakers are merged into existing labels. Setting it higher than the true number of speakers can cause the model to over-split and return more speakers than are actually present.
               type: integer
             include_speaker_confidence:
               x-label: Include speaker confidence
@@ -81818,14 +81579,13 @@ components:
         speech_models:
           x-label: Speech models
           description: |
-            Optional. Supported values: `universal-3-5-pro`, `universal-2`. If omitted, defaults to `["universal-3-5-pro", "universal-2"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
+            Optional. List one or more speech models. For new accounts created on or after November 17, 2026, if omitted, defaults to `["assemblyai-stt-3-7"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
           type: array
           items:
             x-label: Speech model
             $ref: "#/components/schemas/SpeechModel"
           default:
-            - universal-3-5-pro
-            - universal-2
+            - assemblyai-stt-3-7
 
         speech_threshold:
           x-label: Speech threshold
@@ -81880,9 +81640,9 @@ components:
         remove_audio_tags:
           x-label: Remove audio tags
           description: |
-            Universal-3.5 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations. By default, all inline annotations are removed.
+            AssemblyAI-STT-3.7 generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations. By default, all inline annotations are removed.
 
-            Note: This parameter is only supported for the Universal-3.5 Pro model.
+            Note: This parameter is only supported for the AssemblyAI-STT-3.7 model.
           oneOf:
             - type: string
               enum:
@@ -81896,7 +81656,7 @@ components:
           description: |
             Control the amount of randomness injected into the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.
 
-            Note: This parameter only takes effect on the Universal-3.5 Pro model.
+            Note: This parameter only takes effect on the AssemblyAI-STT-3.7 model.
           type: number
           minimum: 0.0
           maximum: 1.0
@@ -81932,9 +81692,7 @@ components:
           x-label: Speech model
           description: |
             This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
-          oneOf:
-            - $ref: "#/components/schemas/SpeechModel"
-            - type: "null"
+          type: [string, "null"]
           deprecated: True
 
         topics:
@@ -82666,9 +82424,8 @@ components:
     SpeechModel:
       x-label: Speech model
       type: string
-      description: The speech model to use for the transcription. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models.
       enum:
-        - universal-3-5-pro
+        - assemblyai-stt-3-7
         - universal-2
       x-fern-sdk-group-name: transcripts
 
@@ -82706,6 +82463,7 @@ components:
         - my
         - ca
         - zh
+        - yue
         - hr
         - cs
         - da
@@ -82745,7 +82503,7 @@ components:
         - mr
         - mn
         - ne
-        - no
+        - "no"
         - nn
         - oc
         - pa
@@ -82781,6 +82539,8 @@ components:
         - cy
         - yi
         - yo
+        - xh
+        - zu
       x-aai-enum:
         en:
           label: English (global)
@@ -82914,7 +82674,7 @@ components:
           label: Mongolian
         ne:
           label: Nepali
-        no:
+        "no":
           label: Norwegian
         nn:
           label: Norwegian Nynorsk
@@ -82986,6 +82746,12 @@ components:
           label: Yiddish
         yo:
           label: Yoruba
+        yue:
+          label: Cantonese
+        xh:
+          label: Xhosa
+        zu:
+          label: Zulu
 
     TranscriptStatus:
       x-label: Status
@@ -83131,7 +82897,7 @@ components:
 
         disfluencies:
           x-label: Disfluencies
-          description: Whether [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", are transcribed; either true or false. This is the value that was applied to the transcript, which is the value from the request or, when the request did not set it, the default for the first `speech_models` entry (true for `universal-3-6-pro-preview`, false otherwise).
+          description: Whether [Filler Words](https://www.assemblyai.com/docs/pre-recorded-audio/include-filler-words), like "umm", are transcribed; either true or false. This is the value that was applied to the transcript, which is the value from the request or, when the request did not set it, the request's default (true when `speech_models` includes `assemblyai-stt-3-7`, false otherwise).
           type: [boolean, "null"]
 
         domain:
@@ -83193,7 +82959,7 @@ components:
         keyterms_prompt:
           x-label: Keyterms prompt
           description: |
-            Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3.5 Pro) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/universal-3-5-pro/prompting#keyterms-prompting) for more details.
+            Improve accuracy with up to 200 (for Universal-2) or 1000 (for AssemblyAI-STT-3.7) domain-specific words or phrases (maximum 6 words per phrase). See [Keyterms Prompting](https://www.assemblyai.com/docs/pre-recorded-audio/prompting#keyterms-prompting) for more details.
           type: array
           items:
             x-label: Keyterm
@@ -83212,8 +82978,7 @@ components:
 
         language_codes:
           description: |
-            The language codes of your audio file. Used for [Code switching](/speech-to-text/pre-recorded-audio/code-switching)
-            One of the values specified must be `en`.
+            The language codes of your audio file. Used for [Code switching](https://www.assemblyai.com/docs/pre-recorded-audio/code-switching). On AssemblyAI-STT-3.7, accepts any number of supported languages, and English isn't required. On Universal-2, accepts at most two languages, and one of them must be `en`. Can't be used together with `language_code` or `language_detection`.
           type: [array, "null"]
           items:
             x-label: Language code
@@ -83240,7 +83005,7 @@ components:
 
         language_detection:
           x-label: Language detection
-          description: Whether [Automatic language detection](/pre-recorded-audio/automatic-language-detection) is enabled, either true or false
+          description: Whether [Automatic language detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) is enabled, either true or false
           type: [boolean, "null"]
 
         language_detection_options:
@@ -83259,19 +83024,19 @@ components:
             fallback_language:
               x-label: Fallback language
               description: |
-                If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `["auto"]` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
+                If the detected language of the audio file is not in the list of expected languages, the `fallback_language` is used. Specify `"auto"` to let our model choose the fallback language from `expected_languages` with the highest confidence score. See [Automatic Language Detection](https://www.assemblyai.com/docs/pre-recorded-audio/language-detection) for more details.
               type: string
               default: "auto"
             code_switching:
               x-label: Code switching
               description: |
-                Whether [code switching](/speech-to-text/pre-recorded-audio/code-switching) should be detected.
+                Whether [code switching](https://www.assemblyai.com/docs/pre-recorded-audio/code-switching) should be detected. Only supported on Universal-2. AssemblyAI-STT-3.7 code-switches natively, so this option doesn't apply to it.
               type: boolean
               default: false
             code_switching_confidence_threshold:
               x-label: Code switching confidence threshold
               description: |
-                The confidence threshold for [code switching](/speech-to-text/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.
+                The confidence threshold for [code switching](https://www.assemblyai.com/docs/pre-recorded-audio/code-switching) detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.
               type: number
               minimum: 0
               maximum: 1
@@ -83327,7 +83092,7 @@ components:
           description: |
             Provide natural language prompting of up to 1,500 words of contextual information to the model. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for best practices.
 
-            Note: This parameter is only supported for the Universal-3.5 Pro model.
+            Note: This parameter is only supported for the AssemblyAI-STT-3.7 model.
           type: string
 
         punctuate:
@@ -83431,7 +83196,7 @@ components:
         speech_models:
           x-label: Speech models
           description: |
-            List of speech models that were used (in priority order) to transcribe the audio. If not specified in the request, this defaults to `["universal-3-5-pro", "universal-2"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
+            List of speech models from the request that were considered to transcribe the audio. For new accounts created on or after November 17, 2026, if not specified in the request, this defaults to `["assemblyai-stt-3-7"]`. See [Model Selection](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model) for available models and routing behavior.
           type: [array, "null"]
           items:
             x-label: Speech model
@@ -83505,9 +83270,9 @@ components:
         remove_audio_tags:
           x-label: Remove audio tags
           description: |
-            Universal-3.5 Pro generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations. By default, all inline annotations are removed.
+            AssemblyAI-STT-3.7 generates rich transcripts that can include inline annotations such as audio event markers and speaker cues. Set to `"all"` to remove all inline annotations, or `"speaker"` to remove only speaker cues while keeping other annotations. By default, all inline annotations are removed.
 
-            Note: This parameter is only supported for the Universal-3.5 Pro model.
+            Note: This parameter is only supported for the AssemblyAI-STT-3.7 model.
           oneOf:
             - type: string
               enum:
@@ -83520,7 +83285,7 @@ components:
           description: |
             The temperature that was used for the model's response. See the [Prompting Guide](https://www.assemblyai.com/docs/pre-recorded-audio/prompting) for more details.
 
-            Note: This parameter only takes effect on the Universal-3.5 Pro model.
+            Note: This parameter only takes effect on the AssemblyAI-STT-3.7 model.
           type: [number, "null"]
           minimum: 0.0
           maximum: 1.0
@@ -83622,9 +83387,7 @@ components:
           x-label: Speech model
           description: |
             This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
-          oneOf:
-            - $ref: "#/components/schemas/SpeechModel"
-            - type: "null"
+          type: [string, "null"]
           deprecated: True
 
         speed_boost:
@@ -83669,6 +83432,7 @@ components:
         {
           id: "9ea68fd3-f953-42c1-9742-976c447fb463",
           speech_model: null,
+          speech_model_used: "assemblyai-stt-3-7",
           language_model: "assemblyai_default",
           acoustic_model: "assemblyai_default",
           language_code: "en_us",
@@ -84175,7 +83939,7 @@ components:
           speech_threshold: 0.5,
           remove_audio_tags: null,
           domain: null,
-          disfluencies: false,
+          disfluencies: true,
           sentiment_analysis: true,
           sentiment_analysis_results: null,
           entity_detection: true,

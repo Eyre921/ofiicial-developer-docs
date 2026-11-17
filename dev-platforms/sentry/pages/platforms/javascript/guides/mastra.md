@@ -6,108 +6,51 @@ path: platforms/javascript/guides/mastra
 
 ---
 title: "Mastra"
-description: "Learn how to send Mastra agent traces, model calls, tool executions, and errors to Sentry with the Sentry SDK."
+description: "Learn how to send Mastra agent traces, model calls, tool executions, and errors to Sentry using the Sentry CLI."
 url: https://docs.sentry.io/platforms/javascript/guides/mastra/
 ---
 
 # Sentry for Mastra
 
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/mastra.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md)
-
-[Mastra](https://mastra.ai/) is a TypeScript framework for building AI applications and agents. This guide sets up the Sentry SDK in a Mastra app so agent runs, model generations, tool calls, workflows, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
+[Mastra](https://mastra.ai/) is a TypeScript framework for building AI applications and agents. This guide uses the Sentry CLI to set up the Sentry SDK in a Mastra app so agent runs, model generations, tool calls, workflows, and errors flow into [Sentry Agent Tracing](https://docs.sentry.io/product/agents.md).
 
 This guide covers the Sentry SDK-based setup, which replaces the earlier `@mastra/sentry` exporter. It requires JavaScript SDK version `11.0.0` or later. If you previously used the `@mastra/sentry` exporter, remove it from your Mastra `exporters` — it calls `Sentry.init()` itself and conflicts with the built-in integration.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/mastra.md#prerequisites)
 
-Before you begin, you need:
+You need:
 
-* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md). The project's DSN tells the SDK where to send data.
+* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
 * A Mastra application using `@mastra/core` version `1.63.2` or later.
-* `@mastra/observability`. Sentry's Mastra integration needs it to attach to Mastra's telemetry pipeline.
-* `@sentry/node` version `11.0.0` or later, or [`@sentry/cloudflare@^11.0.0` when running on Cloudflare](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md). Browser runtimes are not supported.
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/mastra.md#install)
 
-Choose the features you want to configure, and this guide will show you how:
+The AI-powered `sentry init` flow is currently experimental. If you run into any issues, check out the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/mastra/manual-setup.md) guide.
 
-Error Monitoring\[ ]Tracing\[ ]Profiling
+Run the Sentry init command in your project directory to automatically configure Sentry in your Mastra application.
 
-Install the Sentry Node SDK and Mastra's observability package:
-
-```bash
-npm install @sentry/node@^11.0.0 @mastra/observability@latest
-```
-
-*Other available variations of the above snippet: yarn, pnpm*
+The command guides you through setup and asks which optional Sentry features you want to enable beyond error monitoring.
 
 ```bash
-npm install @sentry/node@^11.0.0 @sentry/profiling-node@^11.0.0 @mastra/observability@latest
+npx sentry@latest init
 ```
 
-*Other available variations of the above snippet: yarn, pnpm*
+When the command asks which features to enable, include **Agent Tracing** so your agent runs show up in Sentry.
 
-If Mastra can't load `@mastra/observability`, the integration warns and creates no spans.
+How does sentry init work?
 
-## [Configure](https://docs.sentry.io/platforms/javascript/guides/mastra.md#configure)
+The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
 
-Create an instrument file that calls `Sentry.init()`, and preload it so Sentry starts before Mastra and the AI SDK load.
+* **Analyzes your project** — reads project files and manifests to understand your Mastra app structure, including monorepos. It also respects AI instruction files such as `CLAUDE.md`, `AGENTS.md`, and `.cursorrules`.
+* **Detects your framework** — identifies Mastra and selects the `@sentry/node` SDK.
+* **Fetches official Sentry docs** — uses the current Sentry documentation as the source of truth when generating integration code.
+* **Installs dependencies** — adds `@sentry/node` and Mastra's `@mastra/observability` package using your project's package manager.
+* **Creates and modifies files** — sets up initialization with agent tracing for your Mastra agents, and other selected features based on your existing project structure.
+* **Verifies the integration** — re-reads modified files after writing to confirm Sentry was integrated.
 
-Place the file in your Mastra `public/` directory. `mastra build` and `mastra dev` copy `public/` into the build output, so the file lands next to the compiled server as `instrument.mjs`, where `--import=./instrument.mjs` can resolve it:
+For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/mastra/manual-setup.md) guide.
 
-```javascript
-import * as Sentry from "@sentry/node";
-// ___PRODUCT_OPTION_START___ profiling
-import { nodeProfilingIntegration } from "@sentry/profiling-node";
-// ___PRODUCT_OPTION_END___ profiling
-
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  // ___PRODUCT_OPTION_START___ profiling
-
-  integrations: [
-    // Add our Profiling integration
-    nodeProfilingIntegration(),
-  ],
-  // ___PRODUCT_OPTION_END___ profiling
-  // ___PRODUCT_OPTION_START___ performance
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of spans for tracing.
-  // We recommend adjusting this value in production.
-  // Learn more at
-  // https://docs.sentry.io/platforms/javascript/guides/node/configuration/options/#tracesSampleRate
-  tracesSampleRate: 1.0,
-  // ___PRODUCT_OPTION_END___ performance
-  // ___PRODUCT_OPTION_START___ profiling
-
-  // Set profileSessionSampleRate to 1.0 to profile every session.
-  // Learn more at
-  // https://docs.sentry.io/platforms/javascript/configuration/options/#profileSessionSampleRate
-  profileSessionSampleRate: 1.0,
-  // ___PRODUCT_OPTION_END___ profiling
-});
-```
-
-Preload the instrument file when you start Mastra by passing it through `--custom-args`:
-
-```json
-{
-  "scripts": {
-    "dev": "mastra dev --custom-args=\"--import=./instrument.mjs\"",
-    "start": "mastra start --custom-args=\"--import=./instrument.mjs\""
-  }
-}
-```
-
-With this setup, Sentry captures errors thrown by your agents and AI spans for every run (agent runs, model generations, tool calls, workflows, token usage, and latency) along with outgoing HTTP and `fetch` requests. Prompts and model outputs are recorded on your AI spans by default.
-
-To review what's captured and turn recording of prompts and responses off, see [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/mastra.md#control-the-data-you-send-to-sentry-optional) below.
-
-### [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/mastra.md#control-the-data-you-send-to-sentry-optional)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/mastra.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends the inputs and outputs of your LLM and tool calls, such as prompts, responses, and tool arguments. This will give you rich debugging context. Review the data your agent handles before you deploy to production.
 
@@ -123,23 +66,6 @@ Sentry.init({
   },
 });
 ```
-
-### [Link Conversations](https://docs.sentry.io/platforms/javascript/guides/mastra.md#link-conversations)
-
-Sentry groups a multi-turn chat into a single [Conversation](https://docs.sentry.io/product/agents/conversations.md) automatically — there's no Sentry-specific setup. Mastra maps its memory thread id to `gen_ai.conversation.id`, so agent runs that share a thread id are grouped into one conversation.
-
-Threads come from Mastra's own memory feature. If your app already passes a thread when it calls an agent — as multi-turn chat apps do — Sentry picks it up as the conversation id with no extra work:
-
-```typescript
-const result = await agent.generate(message, {
-  memory: {
-    thread: "session-123",
-    resource: "user-456",
-  },
-});
-```
-
-Your agent needs a storage provider configured before Mastra accepts the `memory` option. Reuse the same thread id across the messages in a session.
 
 ## [Verify](https://docs.sentry.io/platforms/javascript/guides/mastra.md#verify)
 
@@ -158,30 +84,13 @@ If no data appears, confirm that:
 * [Track AI agent spend with dashboards and alerts](https://sentry.io/cookbook/monitor-ai-agent-spend-with-dashboards-and-alerts/): build a dashboard for cost, tokens, models, and conversations.
 * Use the appropriate [JavaScript framework guide](https://docs.sentry.io/platforms/javascript.md) for application monitoring in a separate frontend or service.
 
-What gets captured?
+To learn what each file does and how to configure Sentry yourself, read the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/mastra/manual-setup.md) guide.
 
-Sentry's Mastra integration maps Mastra's span types to Sentry operations for the Agents dashboards:
+Are you having problems setting up the SDK?
 
-| Mastra Span Type        | Sentry Operation      |
-| ----------------------- | --------------------- |
-| `AGENT_RUN`             | `gen_ai.invoke_agent` |
-| `WORKFLOW_RUN`          | `gen_ai.invoke_agent` |
-| `MODEL_GENERATION`      | `gen_ai.chat`         |
-| `TOOL_CALL`             | `gen_ai.execute_tool` |
-| `MCP_TOOL_CALL`         | `gen_ai.execute_tool` |
-| `PROVIDER_TOOL_CALL`    | `gen_ai.execute_tool` |
-| `CLIENT_TOOL_CALL`      | `gen_ai.execute_tool` |
-| `RAG_EMBEDDING`         | `gen_ai.embeddings`   |
-| `CLASSIFIER_EVALUATION` | `gen_ai.decide`       |
-
-Spans are tagged with `sentry.origin: auto.ai.mastra`.
-
-## [Supported Versions](https://docs.sentry.io/platforms/javascript/guides/mastra.md#supported-versions)
-
-* `@sentry/node`: `>=11.0.0`
-* `@sentry/cloudflare`: `>=11.0.0`
-* `@mastra/core`: `>=1.63.2`
-* `@mastra/observability`: required for the integration to create spans
+* If you encountered issues with `sentry init`, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/mastra/manual-setup.md)
+* Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/mastra/troubleshooting.md)
+* [Get support](https://www.sentry.help/en/)
 
 ## Other JavaScript Frameworks
 
@@ -227,7 +136,7 @@ Spans are tagged with `sentry.origin: auto.ai.mastra`.
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/mastra/cloudflare.md)
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/mastra/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/mastra/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/mastra/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/mastra/logs.md)

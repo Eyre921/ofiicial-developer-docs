@@ -12,6 +12,12 @@ Find parameters for Notion MCP databases, data sources, views, and queries, incl
 
 Creates a new Notion database, initial data source, and initial view with the specified properties.
 
+## Convert a database to a Meetings database
+
+`notion-convert-to-meetings-database`
+
+Turns a regular database into a Meetings database, so its rows can be meeting notes. Existing rows stay as they are. Pass `dateProperty` or `attendeesProperty` to reuse an existing property. Otherwise the tool reuses a single matching property or creates a missing one.
+
 ## Update a data source
 
 `notion-update-data-source`

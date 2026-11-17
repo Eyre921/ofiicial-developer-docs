@@ -77,7 +77,7 @@ export async function mintChatAccessToken(chatId: string) {
 
 `requireChatOwner` is your application helper: authenticate the request, load the chat by ID and owner, and throw if it doesn't belong to that user. Create the chat record on your server before rendering the frontend, and pass its ID into `Chat`. Check ownership in both actions, including token refresh.
 
-Set `TRIGGER_SECRET_KEY` and your model provider key in the server and worker environments. Keep both keys out of the browser.
+Set `TRIGGER_SECRET_KEY` on your server and your model provider key in the worker environment. Keep both keys out of the browser.
 
 **3. Use in the frontend**
 

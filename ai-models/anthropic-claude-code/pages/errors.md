@@ -484,6 +484,7 @@ Match the message you see to a section below.
 | `Unable to read managed policy settings` | [Configuration warnings](#unable-to-read-managed-policy-settings) |
 | `Managed settings contain invalid entries, including PreToolUse/PermissionRequest hooks that are NOT loaded; fix or remove each entry:` | [Configuration warnings](#managed-settings-hooks-not-loaded) |
 | `otelHeadersHelper failed; telemetry is not being exported. See /status: ...` | [Configuration warnings](#otelheadershelper-failed) |
+| `apply_flag_settings: nothing in this request was applied and earlier settings stay in force. Fix or remove these invalid settings and send it again` | [`applyFlagSettings()`](/docs/en/agent-sdk/typescript#applyflagsettings) |
 | `"crossSessionInbound" must be one of "accept", "hold", "refuse"` | [Configuration warnings](#crosssessioninbound-must-be-one-of-accept-hold-refuse) |
 | `API Error: ANTHROPIC_FOUNDRY_RESOURCE must be a Foundry resource name` | [Configuration warnings](#anthropic-foundry-resource-must-be-a-foundry-resource-name) |
 | `headersHelper not run — this workspace has no persisted trust` | [Configuration warnings](#headershelper-not-run) |
@@ -5445,10 +5446,7 @@ Claude Code is unable to fetch from example.com
 
 Claude Code didn't contact the host, because the check runs before the request.
 
-**What to do:**
-
-* To report a hostname you think shouldn't be blocked, run `/feedback` in your session, and see [Report an error](#report-an-error) for where that report goes in your environment.
-* For what the check sends, see [WebFetch domain safety check](/docs/en/data-usage#webfetch-domain-safety-check).
+For what the check sends, see [WebFetch domain safety check](/docs/en/data-usage#webfetch-domain-safety-check).
 
 ### WebFetch domain safety check failed
 

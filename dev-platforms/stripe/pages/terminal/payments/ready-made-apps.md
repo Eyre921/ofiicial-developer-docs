@@ -8,12 +8,12 @@ path: terminal/payments/ready-made-apps
 
 Collect payments in person without writing code.
 
-Terminal ready-made apps let you accept in-person payments without writing code — no custom app, SDK integration, or POS system required. There are two options. Standalone mode is a no-code point-of-sale (POS) application built into supported Stripe Terminal smart readers (Stripe Reader S700/S710 and Verifone V660p), which you enable through a [Configuration](https://docs.stripe.com/api/terminal/configuration.md) object. The Stripe Terminal app runs on a supported iPhone or Android device that supports [Tap to Pay](https://docs.stripe.com/terminal/payments/setup-reader/tap-to-pay.md). Both options require an internet connection and don’t support offline payments. Supported features include card payments, additional payment methods (Affirm, WeChat Pay, PayNow), refunds, incremental and extended authorizations, and transaction history. Standalone mode additionally supports on-reader tipping and P2PE encryption.
+Terminal ready-made apps let you accept in-person payments without writing code — no custom app, SDK integration, or POS system required. There are two options. Standalone mode is a no-code point-of-sale (POS) application built into supported Stripe Terminal smart readers (Stripe Reader S700/S710 and Verifone V660p), which you enable through a [Configuration](https://docs.stripe.com/api/terminal/configuration.md) object. The Stripe Terminal app runs on a supported iPhone or Android device that supports [Tap to Pay](https://docs.stripe.com/terminal/payments/setup-reader/tap-to-pay.md); the Android app is publicly available and the iOS app is in private preview. Both options require an internet connection and don’t support offline payments. Supported features include card payments, additional payment methods (Affirm, WeChat Pay, PayNow), refunds, incremental and extended authorizations, and transaction history. Standalone mode additionally supports on-reader tipping and P2PE encryption.
 
 Stripe offers two ways to accept in-person payments without building your own point-of-sale (POS):
 
-- **Standalone mode** (Public preview): Accept payments on a compatible Stripe Terminal reader.
-- **Stripe Terminal app** (Private preview): Accept payments on a supported iPhone or Android device.
+- **Standalone mode**: Accept payments on a compatible Stripe Terminal reader.
+- **Stripe Terminal app**: Accept payments on a supported iPhone or Android device. The iOS app is in private preview.
 
 Both options require an internet connection and don’t support offline payments.
 
@@ -40,7 +40,7 @@ Standalone mode is available for [Stripe Reader S700/S710](https://docs.stripe.c
 
 The Stripe Terminal app is available for iOS and Android devices that support [Tap to Pay](https://docs.stripe.com/terminal/payments/setup-reader/tap-to-pay.md).
 
-1. Download the Stripe Terminal app for [iOS](https://testflight.apple.com/join/SDcYxUu2) or [Android](https://play.google.com/store/apps/details?id=com.stripe.standalonepos.android).
+1. Download the Stripe Terminal app for [Android](https://play.google.com/store/apps/details?id=com.stripe.standalonepos.android). The iOS app is in private preview. To request access, email [terminal-ready-made-apps@stripe.com](mailto:terminal-ready-made-apps@stripe.com).
 2. Open the app and log in with your Stripe account.
 3. Select the account and location where you want to accept payments.
 4. Enter an amount.

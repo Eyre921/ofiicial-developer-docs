@@ -4,9 +4,9 @@ source: https://docs.stripe.com/get-started/data-migrations/overview.md
 path: get-started/data-migrations/overview
 ---
 
-# Overview
+# Migrate to Stripe
 
-Successfully migrate your customers and their payments data to Stripe.
+Transfer your existing customer and payment data from another provider to Stripe.
 
 Migrating your customer and payments data to Stripe is a multi-step process. After you read through this guide, you’ll:
 

@@ -6,16 +6,11 @@ path: platforms/javascript/guides/nuxt
 
 ---
 title: "Nuxt"
-description: "Learn how to set up and configure Sentry in your Nuxt application using the installation wizard, capture your first errors, and view them in Sentry."
+description: "Learn how to set up and configure Sentry in your Nuxt application using the installation wizard and capture your first events."
 url: https://docs.sentry.io/platforms/javascript/guides/nuxt/
 ---
 
 # Sentry for Nuxt
-
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/nuxt.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/nuxt/cloudflare.md)
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#prerequisites)
 
@@ -73,7 +68,7 @@ npx @sentry/wizard@latest -i nuxt
 
 To configure Sentry manually, follow the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nuxt/manual-setup.md) guide.
 
-## [Avoid Ad Blockers With Tunneling (Optional)](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#avoid-ad-blockers-with-tunneling-optional)
+## [Avoid Ad Blockers With Tunneling](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#avoid-ad-blockers-with-tunneling)
 
 To keep ad blockers from dropping Sentry events, send them through a tunnel on your own origin. The SDK serves the tunnel and forwards the events to Sentry.
 
@@ -95,7 +90,7 @@ Sentry.init({
 
 Learn more about the options in [`serveTunnelIntegration`](https://docs.sentry.io/platforms/javascript/guides/nuxt/configuration/integrations/servetunnel.md). To set up your own tunnel endpoint instead, see the [Tunneling page](https://docs.sentry.io/platforms/javascript/guides/nuxt/configuration/tunneling.md#setting-up-the-tunnel-manually).
 
-## [Control the Data You Send to Sentry (Optional)](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#control-the-data-you-send-to-sentry-optional)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -112,6 +107,47 @@ Sentry.init({
   },
 });
 ```
+
+## [Send Logs](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#send-logs)
+
+Use `Sentry.logger` to send logs at different levels, such as `info`, `warn`, or `error`. You can pass any attributes you want and search or filter by them later. See [Set Up Logs](https://docs.sentry.io/platforms/javascript/guides/nuxt/logs.md) for all available logging methods and the syntax for formatting messages.
+
+```javascript
+Sentry.logger.info("User example action completed");
+
+Sentry.logger.warn("Slow operation detected", {
+  operation: "data_fetch",
+  duration: 3500,
+});
+
+Sentry.logger.error("Validation failed", {
+  form_field: "email",
+  reason: "Invalid email",
+});
+```
+
+If you're already logging with another library, use an integration to capture those logs as Sentry Logs automatically:
+
+* [`consoleLoggingIntegration`](https://docs.sentry.io/platforms/javascript/guides/nuxt/logs.md#console-integration) for `console` calls
+* [Consola](https://docs.sentry.io/platforms/javascript/guides/nuxt/logs.md#console-integration)
+* [Pino](https://docs.sentry.io/platforms/javascript/guides/nuxt/configuration/integrations/pino.md)
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#send-application-metrics-)
+
+Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/guides/nuxt/metrics.md) for all available metric types and configuration options.
+
+```javascript
+Sentry.metrics.count("checkout.failed", 1);
+
+Sentry.metrics.gauge("time_since_refresh", 4, { unit: "hour" });
+
+Sentry.metrics.distribution("api_latency", 187, {
+  unit: "millisecond",
+  attributes: { endpoint: "/api/orders" },
+});
+```
+
+In the Node.js runtime, [`nodeRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/nuxt/configuration/integrations/noderuntimemetrics.md) also collects runtime health metrics automatically.
 
 ## [Verify Your Setup](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#verify-your-setup)
 
@@ -162,34 +198,6 @@ If you used the Nuxt installation wizard, after building and running your projec
 
 Sentry captures both of these errors for you. Additionally, the button click starts a performance trace to measure the time it takes for the API request to complete.
 
-### [Verify Additional Features](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#verify-additional-features)
-
-**Logs** (enabled by default)
-
-See structured log entries from your application. You can send logs from anywhere:
-
-```typescript
-Sentry.logger.info("User action", { userId: "123" });
-Sentry.logger.warn("Slow response", { duration: 5000 });
-Sentry.logger.error("Operation failed", { reason: "timeout" });
-```
-
-Learn more about [Logs configuration](https://docs.sentry.io/platforms/javascript/guides/nuxt/logs.md).
-
-**Application Metrics** (enabled by default) NEW
-
-Track and analyze custom application metrics to understand trends and patterns in your app's performance and behavior over time:
-
-```typescript
-Sentry.metrics.count("checkout.failed", 1);
-Sentry.metrics.gauge("queue.depth", 42);
-Sentry.metrics.distribution("api_latency", 187, {
-  unit: "millisecond",
-});
-```
-
-Learn more about [Application Metrics](https://docs.sentry.io/platforms/javascript/guides/nuxt/metrics.md).
-
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#view-captured-data-in-sentry)
 
 Now, head over to your project on [Sentry.io](https://sentry.io/) to view the collected data (it takes a couple of moments for the data to appear).
@@ -209,14 +217,9 @@ Need help locating captured data in your Sentry project?
 
 ## [Next Steps](https://docs.sentry.io/platforms/javascript/guides/nuxt.md#next-steps)
 
-At this point, you should have integrated Sentry into your Nuxt application and should already be sending error and performance data to your Sentry project.
-
-Now's a good time to customize your setup and look into more advanced topics. Our next recommended steps for you are:
+At this point, you should have integrated Sentry into your application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* Learn how to [manually capture errors](https://docs.sentry.io/platforms/javascript/guides/nuxt/usage.md)
-* Continue to [customize your configuration](https://docs.sentry.io/platforms/javascript/guides/nuxt/configuration.md)
-* Get familiar with [Sentry's product features](https://docs.sentry.io/product.md) like tracing, insights, and alerts
 * Learn how to [track your Vue components or your Pinia store](https://docs.sentry.io/platforms/javascript/guides/nuxt/features.md)
 * Learn how to [add support for different Nitro deployment presets](https://docs.sentry.io/platforms/javascript/guides/nuxt/features/nitro-deployment-presets.md) (like Cloudflare)
 
@@ -269,7 +272,6 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/nuxt/cloudflare.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nuxt/manual-setup.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/nuxt/manual-setup__v10.x.md)
 - [Installation Methods](https://docs.sentry.io/platforms/javascript/guides/nuxt/install__v10.x.md)

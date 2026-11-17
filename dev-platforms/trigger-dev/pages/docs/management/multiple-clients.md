@@ -73,7 +73,7 @@ That isolation also means a call from inside a task does not automatically inher
 
 ```ts theme={"theme":"css-variables"}
 const sameProject = new TriggerClient({
-  accessToken: process.env.TRIGGER_SECRET_KEY,
+  accessToken: process.env.TRIGGER_PROJECT_API_KEY, // a named API key you add to the task's environment variables
   inheritContext: true,
 });
 ```

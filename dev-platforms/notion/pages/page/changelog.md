@@ -4,6 +4,20 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+**November 16, 2026**
+
+### Create full-page meeting notes
+
+[`POST /v1/meeting_notes`](/reference/create-meeting-note-page) creates a full-page meeting note. With `calendar_event`, it returns the event's existing meeting note or creates one. [`PATCH /v1/meeting_notes/:meeting_note_id`](/reference/update-meeting-note-page) links a full-page meeting note to a calendar event. Both endpoints accept personal access tokens and Workers with a connected calendar. See [Using Notion API from a worker](/workers/guides/api-client#create-a-meeting-note-for-a-calendar-event) for the Worker flow.
+
+### Full-page meeting notes in block responses
+
+The block endpoints return full-page meeting notes as [`meeting_notes` blocks](/reference/block#meeting-notes). Meeting notes blocks now include `is_full_page`, and `calendar_event` includes the event's `event_id`.
+
+### Meeting note tools in Notion MCP
+
+`notion-create-meeting-note` creates a full-page meeting note, optionally for a calendar event. `notion-link-meeting-note-to-calendar-event` links an existing meeting note to an event, and `notion-convert-to-meetings-database` turns a regular database into a Meetings database. See [Create a meeting note](/guides/mcp/tools-pages-reference#create-a-meeting-note).
+
 **November 11, 2026**
 
 ### Faster page webhooks

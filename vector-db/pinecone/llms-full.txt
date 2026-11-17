@@ -87562,7 +87562,39 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    cp opt/homebrew/share/postgresql@$PG/extension/pg_pinecone* "$(pg_config --sharedir)/extension/"
 >    ```
 >
-> On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86_64 CPUs, [build from source](https://github.com/pinecone-io/pg_pinecone#readme).
+> On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86_64 CPUs, use the PGXN tab, which builds from source, or [build from source](https://github.com/pinecone-io/pg_pinecone#readme) yourself.
+
+> [tab] PGXN
+>
+> `pgxn install` downloads the [pg_pinecone release on PGXN](https://pgxn.org/dist/pg_pinecone/) and builds it from source for your Postgres server. The build takes a few minutes.
+>
+> 1. If your server doesn't have pgvector, install it. Run `sudo apt install postgresql-17-pgvector` (or `postgresql-18-pgvector`) on Debian or Ubuntu, `brew install pgvector` on macOS, or see the [pgvector installation guide](https://github.com/pgvector/pgvector#installation).
+>
+> 2. Install the build dependencies and the [PGXN client](https://pgxn.github.io/pgxnclient/). For PostgreSQL 18, change `17` to `18` in the Postgres package name:
+>
+>    ```bash Debian or Ubuntu theme={null}
+>    sudo apt install build-essential pkg-config libssl-dev postgresql-server-dev-17 pgxnclient
+>    ```
+>
+>    ```bash RHEL theme={null}
+>    sudo dnf install gcc make pkgconf-pkg-config openssl-devel postgresql17-devel pgxnclient
+>    ```
+>
+>    On Red Hat Enterprise Linux (RHEL), `postgresql17-devel` and `pgxnclient` come from the [PostgreSQL Yum repository](https://www.postgresql.org/download/linux/redhat/), and `postgresql17-devel` needs the CodeReady Builder (CRB) repository enabled. On macOS, you need only the Xcode Command Line Tools (`xcode-select --install`) and the PGXN client (`brew install pgxnclient`). On other platforms, install the equivalent packages.
+>
+> 3. Install [Rust](https://www.rust-lang.org/tools/install), then cargo-pgrx 0.19.2, the version pg_pinecone builds with:
+>
+>    ```bash theme={null}
+>    cargo install cargo-pgrx --version 0.19.2 --locked
+>    ```
+>
+> 4. Build and install pg_pinecone:
+>
+>    ```bash theme={null}
+>    pgxn install pg_pinecone
+>    ```
+>
+>    The build targets the Postgres that the first `pg_config` on your `PATH` belongs to. If more than one Postgres version is installed, put the `pg_config` of the server you're installing into first on your `PATH`. On RHEL, `pg_config` isn't on your `PATH` by default, so run `export PATH=/usr/pgsql-17/bin:$PATH` first.
 
 > [tab] Docker
 >

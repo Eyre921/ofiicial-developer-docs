@@ -6,16 +6,11 @@ path: platforms/javascript/guides/astro
 
 ---
 title: "Astro"
-description: "Learn how to manually set up Sentry in your Astro app and capture your first events."
+description: "Learn how to set up Sentry in your Astro app using the Sentry CLI, capture your first errors, logs, and traces, and view them in Sentry."
 url: https://docs.sentry.io/platforms/javascript/guides/astro/
 ---
 
 # Sentry for Astro
-
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/astro.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md)
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/astro.md#prerequisites)
 
@@ -28,24 +23,19 @@ You need:
 
 ##### What runtime do you use?
 
-This SDK currently only works on Node runtimes, such as Node adapter or Vercel with Lambda functions. If you use Cloudflare Workers or Cloudflare Pages, refer to our [Astro on Cloudflare guide](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md). Other non-Node runtimes, like Vercel's Edge runtime, are currently **not supported**.
+This SDK currently only works on Node runtimes, such as Node adapter or Vercel with Lambda functions. If you use Cloudflare Workers or Cloudflare Pages, refer to our [Astro on Cloudflare guide](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup/cloudflare.md). Other non-Node runtimes, like Vercel's Edge runtime, are currently **not supported**.
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/astro.md#install)
 
-### [Install the Sentry SDK](https://docs.sentry.io/platforms/javascript/guides/astro.md#install-the-sentry-sdk)
+The AI-powered `sentry init` flow is currently experimental. If you run into any issues, check out the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup.md) guide.
 
-Install the Sentry integration using the `astro` CLI, then install the Profiling package using your preferred package manager:
+Run the Sentry init command in your project directory to automatically configure Sentry in your Astro application.
+
+The command guides you through setup and asks which optional Sentry features you want to enable beyond error monitoring.
 
 ```bash
-npx astro add @sentry/astro
-npm install @sentry/profiling-node
+npx sentry@latest init
 ```
-
-*Other available variations of the above snippet: yarn, pnpm*
-
-## [Configure](https://docs.sentry.io/platforms/javascript/guides/astro.md#configure)
-
-**Error Monitoring** starts working as soon as you call `Sentry.init()`. **Logs** and **Application Metrics** need no extra configuration, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/javascript/guides/astro.md#send-logs) and [#4](https://docs.sentry.io/platforms/javascript/guides/astro.md#send-application-metrics-). This guide also enables **Tracing**, **Profiling**, **Session Replay**, and **User Feedback**.
 
 Want to learn more about these features?
 
@@ -57,111 +47,20 @@ Want to learn more about these features?
 * [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
 * [**User Feedback**](https://docs.sentry.io/product/user-feedback.md): Collect feedback directly from users when they encounter errors, allowing them to describe what happened and provide context that helps you understand and resolve issues faster.
 
-### [Initialize the SDK](https://docs.sentry.io/platforms/javascript/guides/astro.md#initialize-the-sdk)
+How does sentry init work?
 
-To configure Sentry on your app's client-side and server-side, create a `sentry.client.config.(ts|js)` and `sentry.server.config.(ts|js)` file in the root of your project. Use the tabs in the code box below to view the client and server configuration snippets.
+The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
 
-The snippets also turn on:
+* **Analyzes your project** — reads project files and manifests to understand your Astro app structure, including monorepos. It also respects AI instruction files such as `CLAUDE.md`, `AGENTS.md`, and `.cursorrules`.
+* **Detects your framework** — identifies Astro and selects the `@sentry/astro` SDK.
+* **Fetches official Sentry docs** — uses the current Sentry documentation as the source of truth when generating integration code.
+* **Installs dependencies** — adds `@sentry/astro` using your project's package manager.
+* **Creates and modifies files** — registers the Sentry integration in your Astro config, sets up client-side and server-side initialization, and other selected features based on your existing project structure.
+* **Verifies the integration** — re-reads modified files after writing to confirm Sentry was integrated.
 
-* Tracing: via [`tracesSampleRate`](https://docs.sentry.io/platforms/javascript/guides/astro/configuration/options.md#tracesSampleRate)
-* Profiling: via `nodeProfilingIntegration()` and [`profileSessionSampleRate`](https://docs.sentry.io/platforms/javascript/guides/astro/configuration/options.md#profileSessionSampleRate)
-* Session Replay: via `replayIntegration()`, sampled with [`replaysSessionSampleRate`](https://docs.sentry.io/platforms/javascript/guides/astro/configuration/options.md#replaysSessionSampleRate) and [`replaysOnErrorSampleRate`](https://docs.sentry.io/platforms/javascript/guides/astro/configuration/options.md#replaysOnErrorSampleRate)
-* User Feedback: via [`feedbackIntegration()`](https://docs.sentry.io/platforms/javascript/guides/astro/user-feedback/configuration.md)
+For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup.md) guide.
 
-Don't need a feature? Remove its integration and options from the snippets.
-
-```typescript
-import * as Sentry from "@sentry/astro";
-
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  integrations: [
-    // enables automatic instrumentation
-    Sentry.browserTracingIntegration(),
-    // enables Session Replay
-    Sentry.replayIntegration(),
-    // enables User Feedback
-    Sentry.feedbackIntegration({ colorScheme: "system" }),
-  ],
-
-  // Enables Tracing.
-  // Set to 1.0 to capture 100% of spans for tracing.
-  // We recommend reducing this value in production.
-  tracesSampleRate: 1.0,
-
-  // Capture replays for 10% of all sessions,
-  // plus for 100% of sessions with an error
-  // Requires Sentry.replayIntegration()
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1.0,
-});
-```
-
-*Other available variations of the above snippet: Server config*
-
-### [Register the Sentry Integration](https://docs.sentry.io/platforms/javascript/guides/astro.md#register-the-sentry-integration)
-
-Add the Sentry integration to your `astro.config.mjs`:
-
-```javascript
-import { defineConfig } from "astro/config";
-import sentry from "@sentry/astro";
-
-export default defineConfig({
-  integrations: [sentry()],
-});
-```
-
-### [Add Readable Stack Traces With Source Maps](https://docs.sentry.io/platforms/javascript/guides/astro.md#add-readable-stack-traces-with-source-maps)
-
-To upload source maps for clear error stack traces, add your Sentry auth token, organization, and project slugs in the `sentry` options inside `astro.config.mjs`:
-
-```javascript
-import { defineConfig } from "astro/config";
-import sentry from "@sentry/astro";
-
-export default defineConfig({
-  integrations: [
-    sentry({
-      org: "<your-org-slug>",
-      project: "<your-project-slug>",
-      // store your auth token in an environment variable
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-    }),
-  ],
-});
-```
-
-To keep your auth token secure, set the `SENTRY_AUTH_TOKEN` environment variable in your build environment:
-
-```bash
-SENTRY_AUTH_TOKEN=<your-sentry-auth-token>
-```
-
-Using environment variables in Vite configs
-
-Vite doesn't automatically load `.env` files into `process.env` when evaluating the config file. If you store your auth token in a `.env` file and want to access it via `process.env.SENTRY_AUTH_TOKEN`, use Vite's [`loadEnv`](https://vite.dev/guide/api-javascript#loadenv) helper.
-
-Alternatively, use a `.env.sentry-build-plugin` file, which the Sentry plugin reads automatically.
-
-```javascript
-import { defineConfig, loadEnv } from "vite";
-
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), "");
-
-  return {
-    plugins: [
-      sentryVitePlugin({
-        authToken: env.SENTRY_AUTH_TOKEN,
-        // ...
-      }),
-    ],
-  };
-});
-```
-
-### [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/astro.md#control-the-data-you-send-to-sentry)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/astro.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -197,11 +96,6 @@ Sentry.logger.error("Validation failed", {
 });
 ```
 
-If you already use `console`, capture those calls as Sentry Logs with [`consoleLoggingIntegration`](https://docs.sentry.io/platforms/javascript/guides/astro/logs.md#console-integration). We also provide integrations for:
-
-* [Consola](https://docs.sentry.io/platforms/javascript/guides/astro/logs.md#console-integration)
-* [Pino](https://docs.sentry.io/platforms/javascript/guides/astro/configuration/integrations/pino.md)
-
 ## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript/guides/astro.md#send-application-metrics-)
 
 Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/guides/astro/metrics.md) for all available metric types and configuration options.
@@ -217,13 +111,9 @@ Sentry.metrics.distribution("api_latency", 187, {
 });
 ```
 
-On Node.js, [`nodeRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/astro/configuration/integrations/noderuntimemetrics.md) also collects runtime health metrics automatically.
-
 ## [Verify Your Setup](https://docs.sentry.io/platforms/javascript/guides/astro.md#verify-your-setup)
 
-Let's test your setup and confirm that Sentry is working correctly and sending data to your Sentry project.
-
-Add this button to a page in your Astro app and click it to send a test error:
+The `sentry init` command checks the integration files it creates or modifies before it finishes. To confirm runtime events are reaching Sentry, add this button to a page in your Astro app and click it to send a test error:
 
 ```astro
 <button id="test-error" type="button">Test Sentry Error</button>
@@ -235,9 +125,13 @@ Add this button to a page in your Astro app and click it to send a test error:
 </script>
 ```
 
+##### Important
+
+Errors triggered from within your browser's developer tools (like the browser console) are sandboxed, so they will not trigger Sentry's error monitoring.
+
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/javascript/guides/astro.md#view-captured-data-in-sentry)
 
-Now, head over to your project on [Sentry.io](https://sentry.io) to view the collected data (it takes a couple of moments for the data to appear).
+Now, head over to your project on [Sentry.io](https://sentry.io/) to view the collected data (it takes a couple of moments for the data to appear).
 
 Need help locating captured data in your Sentry project?
 
@@ -255,10 +149,12 @@ At this point, you should have integrated Sentry into your Astro application. He
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/astro/agent-tracing.md) to monitor your AI systems
-* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/astro/configuration/tunneling.md) to avoid ad blockers blocking Sentry events
+* [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/astro/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers blocking Sentry events
+* Read the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup.md) guide to learn what each file does and how to configure Sentry yourself
 
 Are you having problems setting up the SDK?
 
+* If you encountered issues with `sentry init`, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup.md)
 * Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/astro/troubleshooting.md)
 * [Get support](https://www.sentry.help/en/)
 
@@ -306,7 +202,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/astro/cloudflare.md)
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/astro/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/astro/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/astro/logs.md)

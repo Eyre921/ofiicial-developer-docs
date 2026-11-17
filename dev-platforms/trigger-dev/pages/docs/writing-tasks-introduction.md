@@ -36,17 +36,17 @@ Before digging deeper into the details of writing tasks, you should read the [fu
 > [card] [Walkthrough guides](/docs/guides/introduction)
 >
 > Detailed guides for setting up Trigger.dev with popular frameworks and services, including
-> Next.js, Remix, Supabase, Stripe and more.
+> Next.js, Remix, Supabase and more.
 
 > [card] [Example tasks](/docs/guides/introduction#example-tasks)
 >
 > Task code you can copy and paste to use in your own projects, including OpenAI, Vercel AI SDK,
-> Deepgram, FFmpeg, Puppeteer, Stripe, Supabase and more.
+> Deepgram, FFmpeg, Puppeteer, Supabase and more.
 
-> [card] [Webhook guides](/docs/guides/frameworks/webhooks-guides-overview)
+> [card] [Receiving webhooks](/docs/webhooks/providers)
 >
-> Learn how to trigger tasks from webhooks, including Next.js, Remix, Supabase and Stripe and
-> more.
+> Receive webhooks from more than 40 providers, including Stripe, GitHub, Firecrawl and Supabase,
+> on hosted endpoints.
 
 > [card] [Example projects](/docs/guides/introduction#example-projects)
 >

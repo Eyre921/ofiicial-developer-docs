@@ -45,6 +45,20 @@ When the tool repairs a property before it writes a page, the page is still crea
 }
 ```
 
+## Create a meeting note
+
+`notion-create-meeting-note`
+
+Creates a full-page meeting note. `content` goes in the meeting note's Notes tab. Without `parent`, the meeting note goes where the user's meeting notes go by default. If `parent` is a regular database, the tool tells the MCP client to ask the user whether to convert it with [`notion-convert-to-meetings-database`](/guides/mcp/tools-databases-reference#convert-a-database-to-a-meetings-database) first.
+
+For a scheduled meeting, find the event with the [calendar tools](/guides/mcp/tools-calendars-reference) and pass `calendarEvent` without `parent`, `title`, or `content`. The tool returns the event's existing meeting note with status `existing`, or creates one filed and titled like the event's other meeting notes.
+
+## Link a meeting note to a calendar event
+
+`notion-link-meeting-note-to-calendar-event`
+
+Links an existing full-page meeting note to a calendar event found with the [calendar tools](/guides/mcp/tools-calendars-reference). A meeting note embedded in a page appears as a `<meeting-notes>` tag. Pass the URL from that tag, not the URL of the page around it. If the event already has other meeting notes, the result lists them in `otherMeetingNoteUrls`.
+
 ## Update a page
 
 `notion-update-page`

@@ -6,6 +6,11 @@ path: docs/guides/frameworks/supabase-edge-functions-database-webhooks
 
 This guide shows you how to trigger a transcribing task when a row is added to a table in a Supabase database, using a Database Webhook and Edge Function.
 
+> [!NOTE]
+>
+> Trigger.dev has built-in webhook endpoints that verify and route events for you. See
+> [Webhooks](/docs/webhooks/overview), including a [Supabase provider](/docs/webhooks/providers/supabase) for database webhooks. This guide is for when you want to handle webhooks in your own app and trigger tasks yourself.
+
 ## Overview
 
 Supabase and Trigger.dev can be used together to create powerful workflows triggered by real-time changes in your database tables:

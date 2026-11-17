@@ -6,21 +6,13 @@ path: platforms/javascript/guides/hono
 
 ---
 title: "Hono"
-description: "Learn how to set up Sentry in your Hono app and capture your first events."
+description: "Learn how to set up Sentry in your Hono app using the Sentry CLI, capture your first errors, logs, and traces, and view them in Sentry."
 url: https://docs.sentry.io/platforms/javascript/guides/hono/
 ---
 
 # Sentry for Hono
 
 The `@sentry/hono` SDK supports Hono 4+ across multiple runtimes: Cloudflare Workers, Node.js, Bun, and Deno. It works as Hono middleware, so you can drop it into your existing app with minimal setup.
-
-Are you using @hono/sentry?
-
-The community middleware `@hono/sentry` has been deprecated in favor of `@sentry/hono`, which provides better performance and more features. To migrate:
-
-1. Uninstall `@hono/sentry` and `toucan-js`
-2. Follow the install and configure steps below for your runtime
-3. Replace the old middleware with the new `sentry()` middleware
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/hono.md#prerequisites)
 
@@ -32,57 +24,15 @@ You need:
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/hono.md#install)
 
-### [Install the Sentry SDK](https://docs.sentry.io/platforms/javascript/guides/hono.md#install-the-sentry-sdk)
+The AI-powered `sentry init` flow is currently experimental. If you run into any issues, check out the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/hono/manual-setup.md) guide.
 
-Install the `@sentry/hono` package:
+Run the Sentry init command in your project directory to automatically configure Sentry in your Hono application.
 
-```bash
-npm install @sentry/hono
-```
-
-*Other available variations of the above snippet: yarn, pnpm*
-
-### [Install the Peer Dependency for Your Runtime](https://docs.sentry.io/platforms/javascript/guides/hono.md#install-the-peer-dependency-for-your-runtime)
-
-The SDK needs a runtime-specific peer dependency. Install the one that matches your environment and keep its version in sync with `@sentry/hono`. You won't import it directly, but it must be present in your project.
-
-**Cloudflare Workers**
+The command guides you through setup and asks which optional Sentry features you want to enable beyond error monitoring.
 
 ```bash
-npm install @sentry/cloudflare
+npx sentry@latest init
 ```
-
-**Node.js**
-
-```bash
-npm install @sentry/node
-```
-
-**Bun**
-
-```bash
-npm install @sentry/bun
-```
-
-**Deno**
-
-```bash
-deno add npm:@sentry/deno
-```
-
-### [Install the Profiling Package (Node.js Only)](https://docs.sentry.io/platforms/javascript/guides/hono.md#install-the-profiling-package-nodejs-only)
-
-Profiling is only available for the Node.js runtime. Install the `@sentry/profiling-node` package:
-
-```bash
-npm install @sentry/profiling-node --save
-```
-
-*Other available variations of the above snippet: yarn, pnpm*
-
-## [Configure](https://docs.sentry.io/platforms/javascript/guides/hono.md#configure)
-
-**Error Monitoring** starts working as soon as you configure the `sentry()` middleware or call `Sentry.init()` for Node.js. **Logs** and **Application Metrics** need no extra configuration, and you'll learn how to send them in steps [#3](https://docs.sentry.io/platforms/javascript/guides/hono.md#send-logs) and [#4](https://docs.sentry.io/platforms/javascript/guides/hono.md#send-application-metrics-). This guide also enables **Tracing** and **Profiling**. Profiling is available only when you use the Node.js runtime.
 
 Want to learn more about these features?
 
@@ -92,193 +42,20 @@ Want to learn more about these features?
 * [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
 * [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
 
-Cloudflare Workers: Enable Node.js Compatibility
+How does sentry init work?
 
-If you're deploying to Cloudflare Workers, set the `nodejs_compat` compatibility flag. The SDK needs `AsyncLocalStorage`, which requires this flag.
+The `sentry init` command is AI-powered. It analyzes your project and generates a tailored integration, rather than applying a fixed template. Here's what it does:
 
-```jsonc
-{
-  "compatibility_flags": ["nodejs_compat"],
-}
-```
+* **Analyzes your project** — reads project files and manifests to understand your Hono app structure and the runtime it runs on, including monorepos. It also respects AI instruction files such as `CLAUDE.md`, `AGENTS.md`, and `.cursorrules`.
+* **Detects your framework** — identifies Hono and selects the `@sentry/hono` SDK.
+* **Fetches official Sentry docs** — uses the current Sentry documentation as the source of truth when generating integration code.
+* **Installs dependencies** — adds `@sentry/hono` and the peer dependency for your runtime using your project's package manager.
+* **Creates and modifies files** — sets up initialization and the Sentry middleware for your runtime, and other selected features based on your existing project structure.
+* **Verifies the integration** — re-reads modified files after writing to confirm Sentry was integrated.
 
-*Other available variations of the above snippet: Toml*
+For full details on what each file does, see the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/hono/manual-setup.md) guide.
 
-Node.js: Initialize Sentry Before Your App
-
-Node.js requires Sentry to initialize before your application loads so it can instrument third-party libraries (like database clients). Create a separate initialization file:
-
-The snippet also turns on:
-
-* Tracing: via [`tracesSampleRate`](https://docs.sentry.io/platforms/javascript/guides/hono/configuration/options.md#tracesSampleRate)
-* Profiling: via [`profileSessionSampleRate`](https://docs.sentry.io/platforms/javascript/guides/hono/configuration/options.md#profileSessionSampleRate), [`profileLifecycle`](https://docs.sentry.io/platforms/javascript/guides/hono/configuration/options.md#profileLifecycle), and `nodeProfilingIntegration()`
-
-Don't need a feature? Remove its integration and options from the snippet.
-
-```typescript
-// IMPORTANT: import from `@sentry/hono/node`, not `@sentry/node`
-import * as Sentry from "@sentry/hono/node";
-import { nodeProfilingIntegration } from "@sentry/profiling-node";
-
-Sentry.init({
-  dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-  integrations: [
-    // enables Profiling
-    nodeProfilingIntegration(),
-  ],
-
-  // Enables Tracing.
-  // Set to 1.0 to capture 100% of spans for tracing.
-  // We recommend reducing this value in production.
-  tracesSampleRate: 1.0,
-
-  // Enables Profiling for every session.
-  profileSessionSampleRate: 1.0,
-  profileLifecycle: "trace",
-});
-```
-
-Load this file with the `--import` flag when starting your app. You can also set this as an environment variable instead:
-
-```bash
-node --import ./instrument.mjs app.js
-```
-
-*Other available variations of the above snippet: ENV Variable*
-
-### [Add the Sentry Middleware](https://docs.sentry.io/platforms/javascript/guides/hono.md#add-the-sentry-middleware)
-
-Add the `sentry()` middleware as early as possible in your Hono app.
-
-Before continuing, make sure you've completed the runtime-specific steps above: **Cloudflare Workers** users need to enable Node.js compatibility, and **Node.js** users need to create the instrument file. Since Node.js initializes Sentry in that file, the middleware doesn't take any options.
-
-For Cloudflare Workers, Bun, and Deno, the snippet also turns on:
-
-* Tracing: via [`tracesSampleRate`](https://docs.sentry.io/platforms/javascript/guides/hono/configuration/options.md#tracesSampleRate)
-
-**\[Cloudflare Workers] index.ts**
-
-```typescript
-import { Hono } from "hono";
-import { sentry } from "@sentry/hono/cloudflare";
-
-const app = new Hono();
-
-app.use(
-  sentry(app, {
-    dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-    // Enables Tracing.
-    // Set to 1.0 to capture 100% of spans for tracing.
-    // We recommend reducing this value in production.
-    tracesSampleRate: 1.0,
-  }),
-);
-
-// Your routes here
-
-export default app;
-```
-
-**\[Node.js] app.ts**
-
-```typescript
-import { Hono } from "hono";
-import { serve } from "@hono/node-server";
-import { sentry } from "@sentry/hono/node";
-
-const app = new Hono();
-
-app.use(sentry(app));
-
-// Your routes here
-
-serve(app);
-```
-
-**\[Bun] index.ts**
-
-```typescript
-import { Hono } from "hono";
-import { sentry } from "@sentry/hono/bun";
-
-const app = new Hono();
-
-app.use(
-  sentry(app, {
-    dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-    // Enables Tracing.
-    // Set to 1.0 to capture 100% of spans for tracing.
-    // We recommend reducing this value in production.
-    tracesSampleRate: 1.0,
-  }),
-);
-
-// Your routes here
-
-export default app;
-```
-
-**\[Deno] index.ts**
-
-```typescript
-import { Hono } from "hono";
-import { sentry } from "@sentry/hono/deno";
-
-const app = new Hono();
-
-app.use(
-  sentry(app, {
-    dsn: "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-
-    // Enables Tracing.
-    // Set to 1.0 to capture 100% of spans for tracing.
-    // We recommend reducing this value in production.
-    tracesSampleRate: 1.0,
-  }),
-);
-
-// Your routes here
-
-Deno.serve(app.fetch);
-```
-
-Cloudflare Workers: Accessing env from Worker Bindings
-
-To access environment variables from your Cloudflare Worker bindings (for example, to store the DSN as a secret), pass a callback instead of a plain options object. The function receives the Worker `env`:
-
-```typescript
-import { Hono } from "hono";
-import { sentry } from "@sentry/hono/cloudflare";
-
-type Bindings = { SENTRY_DSN: string };
-
-const app = new Hono<{ Bindings: Bindings }>();
-
-app.use(sentry(app, (env) => ({ dsn: env.SENTRY_DSN })));
-
-export default app;
-```
-
-### [Report Unhandled Exceptions](https://docs.sentry.io/platforms/javascript/guides/hono.md#report-unhandled-exceptions)
-
-By default, Sentry captures exceptions from Hono's `onError` handler, excluding errors with 3xx or 4xx status codes. No additional configuration is needed for this.
-
-To control which errors are captured, use the [`shouldHandleError`](https://docs.sentry.io/platforms/javascript/guides/hono/features/error-handler.md) option.
-
-### [Add Readable Stack Traces With Source Maps](https://docs.sentry.io/platforms/javascript/guides/hono.md#add-readable-stack-traces-with-source-maps)
-
-The stack traces in your Sentry errors probably won't look like your actual code without unminifying them. To fix this, upload your source maps to Sentry. The easiest way to do this is by using the Sentry Wizard.
-
-Alternatively, take a look at our [Uploading Source Maps](https://docs.sentry.io/platforms/javascript/guides/hono/sourcemaps/uploading.md) documentation.
-
-```bash
-npx @sentry/wizard@latest -i sourcemaps
-```
-
-### [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/hono.md#control-the-data-you-send-to-sentry)
+## [Control the Data You Send to Sentry](https://docs.sentry.io/platforms/javascript/guides/hono.md#control-the-data-you-send-to-sentry)
 
 By default, the SDK sends user identity data (IP address, ID, and similar) and other data like HTTP bodies and URL query parameters. This will give you rich debugging context.
 
@@ -314,11 +91,6 @@ Sentry.logger.error("Validation failed", {
 });
 ```
 
-If you're already logging with another library, use an integration to capture those logs as Sentry Logs automatically:
-
-* Node.js and Bun: [`consoleLoggingIntegration`](https://docs.sentry.io/platforms/javascript/guides/hono/logs.md#console-integration) for `console` calls, [Consola](https://docs.sentry.io/platforms/javascript/guides/hono/logs.md#console-integration), and [Pino](https://docs.sentry.io/platforms/javascript/guides/hono/configuration/integrations/pino.md)
-* Deno and Cloudflare Workers: [`consoleLoggingIntegration`](https://docs.sentry.io/platforms/javascript/guides/hono/logs.md#console-integration) for `console` calls
-
 ## [Send Application Metrics NEW](https://docs.sentry.io/platforms/javascript/guides/hono.md#send-application-metrics-)
 
 Use `Sentry.metrics` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later. See [Set Up Metrics](https://docs.sentry.io/platforms/javascript/guides/hono/metrics.md) for all available metric types and configuration options.
@@ -334,17 +106,9 @@ Sentry.metrics.distribution("api_latency", 187, {
 });
 ```
 
-You can also collect runtime health metrics automatically with the following integrations:
-
-* Node.js: [`nodeRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/hono/configuration/integrations/noderuntimemetrics.md)
-* Bun: [`bunRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/bun/configuration/integrations/bunruntimemetrics.md)
-* Deno: [`denoRuntimeMetricsIntegration`](https://docs.sentry.io/platforms/javascript/guides/deno/configuration/integrations/denoruntimemetrics.md)
-
 ## [Verify Your Setup](https://docs.sentry.io/platforms/javascript/guides/hono.md#verify-your-setup)
 
-Let's test your setup and confirm that Sentry is working correctly and sending data to your Sentry project.
-
-Add a test route to your Hono app that throws an error, then request `/debug-sentry` to trigger it:
+The `sentry init` command checks the integration files it creates or modifies before it finishes. To confirm runtime events are reaching Sentry, add a test route to your Hono app that throws an error, then request `/debug-sentry` to trigger it:
 
 ```typescript
 app.get("/debug-sentry", () => {
@@ -371,9 +135,11 @@ At this point, you should have integrated Sentry into your Hono application. Her
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/hono/agent-tracing.md) to monitor your AI systems
 * Explore [Hono-specific features](https://docs.sentry.io/platforms/javascript/guides/hono/features.md) like custom error filtering
+* Read the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/hono/manual-setup.md) guide to learn what each file does and how to configure Sentry yourself
 
 Are you having problems setting up the SDK?
 
+* If you encountered issues with `sentry init`, try [setting up Sentry manually](https://docs.sentry.io/platforms/javascript/guides/hono/manual-setup.md)
 * Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/javascript/guides/hono/troubleshooting.md)
 * [Get support](https://www.sentry.help/en/)
 
@@ -421,8 +187,8 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/hono/cloudflare.md)
 - [Installation Methods](https://docs.sentry.io/platforms/javascript/guides/hono/install.md)
+- [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/hono/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/hono/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/hono/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/hono/logs.md)

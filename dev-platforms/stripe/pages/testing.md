@@ -216,7 +216,7 @@ To simulate successful payments from specific countries, use test cards from the
 | United Kingdom (GB) | 4000058260000005 | Visa (debit) |
 | United Kingdom (GB) | 5555558265554449 | Mastercard |
 | **ASIA PACIFIC**  
-> To test subscriptions that require mandates and pre-debit notifications, see [India recurring payments](https://docs.stripe.com/india-recurring-payments.md?integration=paymentIntents-setupIntents#testing). |
+> To test subscriptions that require mandates and pre-debit notifications, see [India off-session payments](https://docs.stripe.com/india-recurring-payments.md?integration=paymentIntents-setupIntents#testing). |
 | Australia (AU) | 4000000360000006 | Visa |
 | China (CN) | 4000001560000002 | Visa |
 | Hong Kong (HK) | 4000003440000004 | Visa |
@@ -288,7 +288,7 @@ To simulate successful payments from specific countries, use test cards from the
 | United Kingdom (GB) | `pm_card_gb_debit` | Visa (debit) |
 | United Kingdom (GB) | `pm_card_gb_mastercard` | Mastercard |
 | **ASIA PACIFIC** 2  
-> To test subscriptions that require mandates and pre-debit notifications, see [India recurring payments](https://docs.stripe.com/india-recurring-payments.md?integration=paymentIntents-setupIntents#testing). |
+> To test subscriptions that require mandates and pre-debit notifications, see [India off-session payments](https://docs.stripe.com/india-recurring-payments.md?integration=paymentIntents-setupIntents#testing). |
 | Australia (AU) | `pm_card_au` | Visa |
 | China (CN) | `pm_card_cn` | Visa |
 | Hong Kong (HK) | `pm_card_hk` | Visa |
@@ -361,7 +361,7 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 | United Kingdom (GB) | `tok_gb_debit` | Visa (debit) |
 | United Kingdom (GB) | `tok_gb_mastercard` | Mastercard |
 | **ASIA PACIFIC**  
-> To test subscriptions that require mandates and pre-debit notifications, see [India recurring payments](https://docs.stripe.com/india-recurring-payments.md?integration=paymentIntents-setupIntents#testing). |
+> To test subscriptions that require mandates and pre-debit notifications, see [India off-session payments](https://docs.stripe.com/india-recurring-payments.md?integration=paymentIntents-setupIntents#testing). |
 | Australia (AU) | `tok_au` | Visa |
 | China (CN) | `tok_cn` | Visa |
 | Hong Kong (HK) | `tok_hk` | Visa |

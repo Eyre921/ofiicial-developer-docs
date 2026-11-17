@@ -1,12 +1,12 @@
 ---
-title: "Human-in-the-loop"
+title: "Human-in-the-loop over a channel"
 source: https://trigger.dev/docs/webhooks/human-in-the-loop
 path: docs/webhooks/human-in-the-loop
 ---
 
 Pause an agent mid-turn to get a human decision from the channel (Slack approve/deny), then resume with the answer.
 
-**An agent on a [channel](/docs/webhooks/channels) can pause a turn to get a human decision, then resume once someone answers in the thread.** It posts controls into the conversation and picks up where it left off once someone clicks, with the decision merged into the turn. This is the channel counterpart of browser [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop): the same no-`execute` tool, but the controls live in Slack (or your own surface) instead of a React component. The [`slack()`](/docs/webhooks/slack) connector ships Approve and Deny buttons out of the box.
+**An agent on a [channel](/docs/webhooks/channels) can pause a turn to get a human decision, then resume once someone answers in the thread.** It posts controls into the conversation and picks up where it left off once someone clicks, with the decision merged into the turn. The click arrives as a webhook on the same endpoint as the conversation's messages, and that delivery resumes the paused run. To pause a run until any other webhook arrives, use a [waiter](/docs/webhooks/waiters). This is the channel counterpart of browser [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop): the same no-`execute` tool, but the controls live in Slack (or your own surface) instead of a React component. The [`slack()`](/docs/webhooks/slack) connector includes Approve and Deny buttons.
 
 ## How it works
 

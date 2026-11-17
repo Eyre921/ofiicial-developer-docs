@@ -128,6 +128,34 @@ const blocks = await notion.blocks.children.list({
 });
 ```
 
+### Create a meeting note for a calendar event
+
+A worker with a connected calendar can create a [full-page meeting note](/reference/create-meeting-note-page) and [link it to an event](/reference/update-meeting-note-page). The worker must pass `parent`, which should be a meetings database shared with the worker. To find an event's IDs, see [Link a full-page meeting note to a calendar event](/reference/update-meeting-note-page). This works with the token Notion provides to the worker, or with a personal access token. An internal connection API token returns a 403.
+
+```typescript theme={null}
+const created = await notion.request<{ meeting_note: { id: string } }>({
+  path: "meeting_notes",
+  method: "post",
+  body: {
+    parent: { type: "data_source_id", data_source_id: "..." },
+    title: "Weekly sync",
+  },
+});
+
+await notion.request({
+  path: `meeting_notes/${created.meeting_note.id}`,
+  method: "patch",
+  body: {
+    calendar_event: {
+      calendar: { account_id: "...", calendar_id: "..." },
+      event_id: "...",
+    },
+  },
+});
+```
+
+If the event already has other meeting notes, the link request returns a 409. Delete the meeting note you created, or pass `allow_other_meeting_notes: true` to link anyway.
+
 ## Permissions
 
 What the client can access depends on the token type:

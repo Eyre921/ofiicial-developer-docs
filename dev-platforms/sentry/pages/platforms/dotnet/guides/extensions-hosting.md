@@ -23,7 +23,7 @@ In earlier versions, generic host apps initialized Sentry with `builder.Logging.
 Add the Sentry dependency:
 
 ```shell
-dotnet add package Sentry.Extensions.Hosting -v 7.0.0
+dotnet add package Sentry.Extensions.Hosting -v 7.0.1
 ```
 
 *Other available variations of the above snippet: Package Manager*

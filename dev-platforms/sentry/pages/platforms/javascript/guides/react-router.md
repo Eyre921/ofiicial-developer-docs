@@ -12,13 +12,6 @@ url: https://docs.sentry.io/platforms/javascript/guides/react-router/
 
 # Sentry for React Router Framework
 
-Runtime
-
-* [Node.js (current page)](https://docs.sentry.io/platforms/javascript/guides/react-router.md)
-* [Cloudflare](https://docs.sentry.io/platforms/javascript/guides/react-router/cloudflare.md)
-* [Deno](https://docs.sentry.io/platforms/javascript/guides/react-router/deno.md)
-* [Bun](https://docs.sentry.io/platforms/javascript/guides/react-router/bun.md)
-
 ## Set up with Sentry CLI
 
 Set up the Sentry React Router SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
@@ -255,10 +248,7 @@ Are you having problems setting up the SDK?
 
 ## Topics
 
-- [Quick Start (Cloudflare)](https://docs.sentry.io/platforms/javascript/guides/react-router/cloudflare.md)
 - [Quick Start (Hydrogen)](https://docs.sentry.io/platforms/javascript/guides/react-router/hydrogen.md)
-- [Quick Start (Deno)](https://docs.sentry.io/platforms/javascript/guides/react-router/deno.md)
-- [Quick Start (Bun)](https://docs.sentry.io/platforms/javascript/guides/react-router/bun.md)
 - [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/react-router/manual-setup.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/react-router/usage.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/react-router/sourcemaps.md)

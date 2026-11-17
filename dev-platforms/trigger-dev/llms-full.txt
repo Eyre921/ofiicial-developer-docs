@@ -12508,7 +12508,7 @@ export async function mintChatAccessToken(chatId: string) {
 
 `requireChatOwner` is your application helper: authenticate the request, load the chat by ID and owner, and throw if it doesn't belong to that user. Create the chat record on your server before rendering the frontend, and pass its ID into `Chat`. Check ownership in both actions, including token refresh.
 
-Set `TRIGGER_SECRET_KEY` and your model provider key in the server and worker environments. Keep both keys out of the browser.
+Set `TRIGGER_SECRET_KEY` on your server and your model provider key in the worker environment. Keep both keys out of the browser.
 
 **3. Use in the frontend**
 
@@ -29502,9 +29502,9 @@ An endpoint without its secret shows "Needs secret" on the Webhooks page.
 >
 > Pause a run until an external event completes a token.
 
-> [card] [Webhook sources](/docs/webhooks/sources)
+> [card] [Resend webhooks](/docs/webhooks/providers/resend)
 >
-> Every built-in source, including `resend()`, and how each is verified.
+> Register the endpoint in Resend and set its signing secret.
 
 > [card] [Slack](/docs/webhooks/slack)
 >
@@ -30761,109 +30761,6 @@ You can test your task by triggering it from the Trigger.dev dashboard.
 ```json theme={"theme":"css-variables"}
 "url": "<url-to-scrape>" // Replace with the URL you want to scrape
 ```
-
-
-# Trigger tasks from Hookdeck webhooks
-Source: https://trigger.dev/docs/guides/examples/hookdeck-webhook
-
-Forward webhooks from a Hookdeck connection to a hosted Trigger.dev endpoint, verified with the Hookdeck project's signing secret, and run a task for each event.
-
-[Hookdeck](https://hookdeck.com) receives webhooks from external services, then queues, logs and forwards them to a destination. Point a Hookdeck connection at a hosted webhook endpoint and Trigger.dev verifies each forwarded request with the Hookdeck project's signing secret, deduplicates Hookdeck's retries, and runs your task with the original provider's payload.
-
-## Task code
-
-Declare the endpoint with `webhooks.hookdeck()` and subscribe a task to it. Hookdeck forwards the original provider's body unchanged, so pass that provider's event type. This example relays Stripe events:
-
-```ts /trigger/stripe-via-hookdeck.ts theme={"theme":"css-variables"}
-import type Stripe from "stripe";
-import { webhook, webhooks } from "@trigger.dev/sdk";
-
-export const stripeViaHookdeck = webhooks.endpoint.define({
-  id: "stripe-via-hookdeck",
-  source: webhooks.hookdeck<Stripe.Event>(),
-});
-
-export const paymentSucceeded = webhook({
-  id: "payment-succeeded",
-  endpoint: stripeViaHookdeck,
-  filter: "event.type == 'payment_intent.succeeded'",
-  onEvent: async ({ event }) => {
-    console.log("Payment succeeded", event.id);
-  },
-});
-```
-
-Run `trigger dev` or deploy, then copy the endpoint's URL from the Webhooks page in the dashboard.
-
-## Set up Hookdeck
-
-**1. Create a connection**
-
-In the [Hookdeck dashboard](https://dashboard.hookdeck.com), create a [connection](https://hookdeck.com/docs/connections) from your source (for example a Stripe source) to an HTTP destination whose URL is the endpoint's URL. Keep the destination's authentication on **Hookdeck Signature**, the default for new destinations: Hookdeck only signs forwarded requests with it set.
-
-**2. Store the signing secret**
-
-Copy the signing secret from **Settings > Secrets** in Hookdeck and set it as the endpoint's signing secret in the Trigger.dev dashboard. It's one secret for the whole Hookdeck project.
-
-## Test it
-
-Send a webhook to your Hookdeck source URL, or trigger a real event in the upstream provider. In Hookdeck, the event shows a `200` response from the destination. In Trigger.dev, the endpoint shows a succeeded delivery and the `payment-succeeded` task has a completed run with the Stripe event as its payload.
-
-A request signed with a different secret gets a `400`, which Hookdeck reports as a failed attempt.
-
-## Rotate the signing secret
-
-Roll the signing secret under **Settings > Secrets** in Hookdeck with an expiry instead of expiring it immediately. Until the old secret expires, Hookdeck signs each request with both secrets, sending the previous secret's signature in `X-Hookdeck-Signature-2`. The endpoint accepts either, so deliveries keep verifying while you copy the new secret to Trigger.dev. Set a grace period when you store it to keep accepting the old secret for a while.
-
-## Deduplication
-
-Hookdeck retries and manual replays of the same event carry the same `X-Hookdeck-Eventid`, and the endpoint uses it as the [deduplication](/docs/webhooks/deliveries#deduplication) key, so a retried event runs your task once.
-
-If you changed the header prefix in the Hookdeck project's settings, the event id arrives under the new prefix. Pass the prefix so deduplication keeps working:
-
-```ts /trigger/stripe-via-hookdeck.ts theme={"theme":"css-variables"}
-import type Stripe from "stripe";
-import { webhooks } from "@trigger.dev/sdk";
-
-export const stripeViaHookdeck = webhooks.endpoint.define({
-  id: "stripe-via-hookdeck",
-  source: webhooks.hookdeck<Stripe.Event>({ headerPrefix: "x-acme" }),
-});
-```
-
-The signature headers keep the `X-Hookdeck-` name whatever the prefix.
-
-## Trigger a task through the API instead
-
-You can also point a Hookdeck destination at the [trigger task API](/docs/management/tasks/trigger) without a hosted endpoint. Hookdeck authenticates with your API key instead of a signature, and a transformation wraps the body in the `payload` field the API expects.
-
-1. Create a destination with the URL `https://api.trigger.dev/api/v1/tasks/<task-id>/trigger`, method `POST`, and **Bearer token** authentication using a **Trigger only** environment API key.
-
-2. Add a [transformation](https://hookdeck.com/docs/transformations):
-
-   ```javascript theme={"theme":"css-variables"}
-   addHandler("transform", (request, context) => {
-     request.body = { payload: { ...request.body } };
-     return request;
-   });
-   ```
-
-3. Create a connection from your source to that destination and transformation.
-
-```ts /trigger/webhook-handler.ts theme={"theme":"css-variables"}
-import { task } from "@trigger.dev/sdk";
-
-export const webhookHandler = task({
-  id: "webhook-handler",
-  run: async (payload: Record<string, unknown>) => {
-    console.log("Received webhook:", payload);
-  },
-});
-```
-
-This path has no deduplication of Hookdeck retries; each forwarded request triggers a run.
-
-For more on Hookdeck, see the [Hookdeck documentation](https://hookdeck.com/docs).
 
 
 # Convert documents to PDF using LibreOffice
@@ -32697,10 +32594,9 @@ export const generateImageAndUploadToR2 = task({
 
 ## Environment variables
 
-Create a named **Trigger only** API key in the Trigger.dev environment your app uses, then set the following environment variables:
+Set the following environment variables in your Trigger.dev environment. The task authenticates its `wait` calls automatically, so it doesn't need a Trigger.dev API key:
 
 ```
-TRIGGER_SECRET_KEY=<your-trigger-secret-key>
 REPLICATE_API_TOKEN=<your-replicate-api-token>
 R2_ENDPOINT=<your-r2-endpoint>
 R2_ACCESS_KEY_ID=<your-r2-access-key-id>
@@ -33478,154 +33374,6 @@ To test this task in the dashboard, you can use the following payload:
 To test this example task locally, be sure to install any packages from the build extensions you added to your `trigger.config.ts` file to your local machine. In this case, you need to install the Sharp image processing library.
 
 
-# Trigger a task from Stripe webhook events
-Source: https://trigger.dev/docs/guides/examples/stripe-webhook
-
-This example demonstrates how to handle Stripe webhook events using Trigger.dev.
-
-## Overview
-
-This example shows how to set up a webhook handler in your existing app for incoming Stripe events. The handler triggers a task when a `checkout.session.completed` event is received. This is easily customisable to handle other Stripe events.
-
-## Key features
-
-* Shows how to create a Stripe webhook handler in your app
-* Triggers a task from your backend when a `checkout.session.completed` event is received
-
-## Environment variables
-
-You'll need to configure the following environment variables for this example to work:
-
-* `STRIPE_WEBHOOK_SECRET` The secret key used to verify the Stripe webhook signature.
-* `TRIGGER_API_URL` Your Trigger.dev API url: `https://api.trigger.dev`
-* `TRIGGER_SECRET_KEY` A named **Trigger only** API key from the Trigger.dev environment your app uses
-
-## Setting up the Stripe webhook handler
-
-First you'll need to create a [Stripe webhook](https://stripe.com/docs/webhooks) handler route that listens for POST requests and verifies the Stripe signature.
-
-Here are examples of how you can set up a handler using different frameworks:
-
-```ts Next.js theme={"theme":"css-variables"}
-// app/api/stripe-webhook/route.ts
-import { NextResponse } from "next/server";
-import { tasks } from "@trigger.dev/sdk";
-import Stripe from "stripe";
-import type { stripeCheckoutCompleted } from "@/trigger/stripe-checkout-completed";
-//     👆 **type-only** import
-
-export async function POST(request: Request) {
-  const signature = request.headers.get("stripe-signature");
-  const payload = await request.text();
-
-  if (!signature || !payload) {
-    return NextResponse.json(
-      { error: "Invalid Stripe payload/signature" },
-      {
-        status: 400,
-      }
-    );
-  }
-
-  const event = Stripe.webhooks.constructEvent(
-    payload,
-    signature,
-    process.env.STRIPE_WEBHOOK_SECRET as string
-  );
-
-  // Perform the check based on the event type
-  switch (event.type) {
-    case "checkout.session.completed": {
-      // Trigger the task only if the event type is "checkout.session.completed"
-      const { id } = await tasks.trigger<typeof stripeCheckoutCompleted>(
-        "stripe-checkout-completed",
-        event.data.object
-      );
-      return NextResponse.json({ runId: id });
-    }
-    default: {
-      // Return a response indicating that the event is not handled
-      return NextResponse.json(
-        { message: "Event not handled" },
-        {
-          status: 200,
-        }
-      );
-    }
-  }
-}
-```
-
-```ts Remix theme={"theme":"css-variables"}
-// app/webhooks.stripe.ts
-import { type ActionFunctionArgs, json } from "@remix-run/node";
-import type { stripeCheckoutCompleted } from "src/trigger/stripe-webhook";
-//     👆 **type-only** import
-import { tasks } from "@trigger.dev/sdk";
-import Stripe from "stripe";
-
-export async function action({ request }: ActionFunctionArgs) {
-  // Validate the Stripe webhook payload
-  const signature = request.headers.get("stripe-signature");
-  const payload = await request.text();
-
-  if (!signature || !payload) {
-    return json({ error: "Invalid Stripe payload/signature" }, { status: 400 });
-  }
-
-  const event = Stripe.webhooks.constructEvent(
-    payload,
-    signature,
-    process.env.STRIPE_WEBHOOK_SECRET as string
-  );
-
-  // Perform the check based on the event type
-  switch (event.type) {
-    case "checkout.session.completed": {
-      // Trigger the task only if the event type is "checkout.session.completed"
-      const { id } = await tasks.trigger<typeof stripeCheckoutCompleted>(
-        "stripe-checkout-completed",
-        event.data.object
-      );
-      return json({ runId: id });
-    }
-    default: {
-      // Return a response indicating that the event is not handled
-      return json({ message: "Event not handled" }, { status: 200 });
-    }
-  }
-}
-```
-
-## Task code
-
-This task is triggered when a `checkout.session.completed` event is received from Stripe.
-
-```ts trigger/stripe-checkout-completed.ts theme={"theme":"css-variables"}
-import { task } from "@trigger.dev/sdk";
-import type stripe from "stripe";
-
-export const stripeCheckoutCompleted = task({
-  id: "stripe-checkout-completed",
-  run: async (payload: stripe.Checkout.Session) => {
-    // Add your custom logic for handling the checkout.session.completed event here
-  },
-});
-```
-
-## Testing your task locally
-
-To test everything is working you can use the Stripe CLI to send test events to your endpoint:
-
-1. Install the [Stripe CLI](https://stripe.com/docs/stripe-cli#install), and login
-2. Follow the instructions to [test your handler](https://docs.stripe.com/webhooks#test-webhook). This will include a temporary `STRIPE_WEBHOOK_SECRET` that you can use for testing.
-3. When triggering the event, use the `checkout.session.completed` event type. With the Stripe CLI: `stripe trigger checkout.session.completed`
-4. If your endpoint is set up correctly, you should see the Stripe events logged in your console with a status of `200`.
-5. Then, check the [Trigger.dev](https://cloud.trigger.dev) dashboard and you should see the successful run of the `stripe-webhook` task.
-
-For more information on setting up and testing Stripe webhooks, refer to the [Stripe Webhook Documentation](https://stripe.com/docs/webhooks).
-
-
 # Supabase database operations using Trigger.dev
 Source: https://trigger.dev/docs/guides/examples/supabase-database-operations
 
@@ -34104,7 +33852,7 @@ To test this task in the dashboard, you can use the following payload:
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
+> [card] [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
@@ -34213,7 +33961,7 @@ npx trigger.dev@latest deploy
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
+> [card] [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
@@ -35501,7 +35249,7 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
+> [card] [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
@@ -35543,10 +35291,15 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 > Learn how to deploy your task using GitHub actions
 
 
-# Triggering tasks with webhooks in Next.js
+# Custom webhook handler with Next.js
 Source: https://trigger.dev/docs/guides/frameworks/nextjs-webhooks
 
-Learn how to trigger a task from a webhook in a Next.js app.
+Handle a webhook in your own Next.js API route and trigger a task from it.
+
+> [!NOTE]
+>
+> Trigger.dev has built-in webhook endpoints that verify and route events for you. See
+> [Webhooks](/docs/webhooks/overview). This guide is for when you want to handle webhooks in your own app and trigger tasks yourself.
 
 ## Prerequisites
 
@@ -35677,7 +35430,7 @@ If you now go to your [Trigger.dev dashboard](https://cloud.trigger.dev), you sh
 >
 > Learn how to setup Trigger.dev with Next.js, using either the pages or app router.
 
-> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
+> [card] [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks)
 >
 > Learn how to create a webhook handler for incoming webhooks in a Next.js app, and trigger a task from it.
 
@@ -36355,7 +36108,7 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 
 ## Additional resources for Remix
 
-> [card] [Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)
+> [card] [Custom webhook handler with Remix](/docs/guides/frameworks/remix-webhooks)
 >
 > How to create a webhook handler in a Remix app, and trigger a task from it.
 
@@ -36378,10 +36131,15 @@ The `@trigger.dev/react-hooks` package lets you subscribe to task runs from your
 > Learn how to deploy your task using GitHub actions
 
 
-# Triggering tasks with webhooks in Remix
+# Custom webhook handler with Remix
 Source: https://trigger.dev/docs/guides/frameworks/remix-webhooks
 
-Learn how to trigger a task from a webhook in a Remix app.
+Handle a webhook in your own Remix action and trigger a task from it.
+
+> [!NOTE]
+>
+> Trigger.dev has built-in webhook endpoints that verify and route events for you. See
+> [Webhooks](/docs/webhooks/overview). This guide is for when you want to handle webhooks in your own app and trigger tasks yourself.
 
 ## Prerequisites
 
@@ -37049,8 +36807,7 @@ Replace the placeholder code in your `edge-function-trigger/index.ts` file with 
 ```ts functions/edge-function-trigger/index.ts theme={"theme":"css-variables"}
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-// Import the Trigger.dev SDK - replace "<your-sdk-version>" with the version of the SDK you are using, e.g. "3.0.0". You can find this in your package.json file.
-import { tasks } from "npm:@trigger.dev/sdk@3.0.0";
+import { tasks } from "npm:@trigger.dev/sdk@latest";
 // Import your task type from your /trigger folder
 import type { helloWorldTask } from "../../../src/trigger/example.ts";
 //     👆 **type-only** import
@@ -37208,6 +36965,11 @@ See [Trigger task via API](/docs/management/tasks/trigger) for full request/resp
 Source: https://trigger.dev/docs/guides/frameworks/supabase-edge-functions-database-webhooks
 
 This guide shows you how to trigger a transcribing task when a row is added to a table in a Supabase database, using a Database Webhook and Edge Function.
+
+> [!NOTE]
+>
+> Trigger.dev has built-in webhook endpoints that verify and route events for you. See
+> [Webhooks](/docs/webhooks/overview), including a [Supabase provider](/docs/webhooks/providers/supabase) for database webhooks. This guide is for when you want to handle webhooks in your own app and trigger tasks yourself.
 
 ## Overview
 
@@ -37711,42 +37473,6 @@ Guides and examples for using Supabase with Trigger.dev.
 > Download a video from a URL and upload it to Supabase Storage using S3.
 
 
-# Using webhooks with Trigger.dev
-Source: https://trigger.dev/docs/guides/frameworks/webhooks-guides-overview
-
-Guides for using webhooks with Trigger.dev.
-
-## Overview
-
-Webhooks are a way to send and receive events from external services. Triggering tasks using webhooks allow you to add real-time, event driven functionality to your app.
-
-A webhook handler is code that executes in response to an event. They can be endpoints in your framework's routing which can be triggered by an external service.
-
-## Webhook guides
-
-> [card] [Next.js - triggering tasks using webhooks](/docs/guides/frameworks/nextjs-webhooks)
->
-> How to create a webhook handler in a Next.js app, and trigger a task from it.
-
-> [card] [Remix - triggering tasks using webhooks](/docs/guides/frameworks/remix-webhooks)
->
-> How to create a webhook handler in a Remix app, and trigger a task from it.
-
-> [card] [Stripe webhooks](/docs/guides/examples/stripe-webhook)
->
-> How to create a Stripe webhook handler and trigger a task when a 'checkout session completed'
-> event is received.
-
-> [card] [Hookdeck webhooks](/docs/guides/examples/hookdeck-webhook)
->
-> Use Hookdeck to receive webhooks and forward them to Trigger.dev tasks with logging and replay
-> capabilities.
-
-> [card] [Supabase database webhooks guide](/docs/guides/frameworks/supabase-edge-functions-database-webhooks)
->
-> Learn how to trigger a task from a Supabase edge function when an event occurs in your database.
-
-
 # Frameworks, guides and examples
 Source: https://trigger.dev/docs/guides/introduction
 
@@ -37784,12 +37510,11 @@ Get set up fast using our detailed walk-through guides.
 | [Python PDF form extractor](/docs/guides/python/python-pdf-form-extractor) | Use Python, PyMuPDF and Trigger.dev to extract data from a PDF form |
 | [Python web crawler](/docs/guides/python/python-crawl4ai) | Use Python, Crawl4AI and Playwright to create a headless web crawler |
 | [Sequin database triggers](/docs/guides/frameworks/sequin) | Trigger tasks from database changes using Sequin |
-| [Stripe webhooks](/docs/guides/examples/stripe-webhook) | Trigger tasks from incoming Stripe webhook events |
-| [Hookdeck webhooks](/docs/guides/examples/hookdeck-webhook) | Use Hookdeck to receive webhooks and forward them to Trigger.dev tasks |
+| [Receiving webhooks](/docs/webhooks/providers) | Receive webhooks from more than 40 providers, including Stripe and GitHub |
 | [Supabase database webhooks](/docs/guides/frameworks/supabase-edge-functions-database-webhooks) | Trigger tasks using Supabase database webhooks |
 | [Supabase edge function hello world](/docs/guides/frameworks/supabase-edge-functions-basic) | Trigger tasks from Supabase edge function |
-| [Using webhooks in Next.js](/docs/guides/frameworks/nextjs-webhooks) | Trigger tasks from a webhook in Next.js |
-| [Using webhooks in Remix](/docs/guides/frameworks/remix-webhooks) | Trigger tasks from a webhook in Remix |
+| [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks) | Trigger tasks from a webhook in Next.js |
+| [Custom webhook handler with Remix](/docs/guides/frameworks/remix-webhooks) | Trigger tasks from a webhook in Remix |
 
 ## Featured use cases
 
@@ -39742,11 +39467,13 @@ export const notificationTask = task({
 # How Trigger.dev works
 Source: https://trigger.dev/docs/how-it-works
 
-Understand how Trigger.dev works and how it can help you.
+Understand how Trigger.dev runs durable AI agents and workflows.
 
 ## Introduction
 
-Trigger.dev allows you to integrate long-running async tasks into your application and run them in the background. This allows you to offload tasks that take a long time to complete, such as sending multi-day email campaigns, processing videos, or running long chains of AI tasks.
+Trigger.dev is the open source platform for building and running durable AI agents and workflows in TypeScript. You write tasks and agents in your existing codebase, and they run on Trigger.dev with retries, queues, waits, full tracing, and elastic scaling. There's no execution timeout, so you can offload work that takes a long time to complete, such as AI agents with human-in-the-loop approvals, processing videos, or sending multi-day email campaigns.
+
+To build durable chat agents, see [AI Agents](/docs/ai-chat/overview).
 
 For example, the below task processes a video with `ffmpeg` and sends the results to an s3 bucket, then updates a database with the results and sends an email to the user.
 
@@ -43398,7 +43125,7 @@ That isolation also means a call from inside a task does not automatically inher
 
 ```ts theme={"theme":"css-variables"}
 const sameProject = new TriggerClient({
-  accessToken: process.env.TRIGGER_SECRET_KEY,
+  accessToken: process.env.TRIGGER_PROJECT_API_KEY, // a named API key you add to the task's environment variables
   inheritContext: true,
 });
 ```
@@ -63401,7 +63128,7 @@ Source: https://trigger.dev/docs/webhooks/channels
 
 Point Slack (or any chat surface) at an agent: messages become turns and replies post back.
 
-A [session route](/docs/webhooks/session-routing) delivers a verified event to an agent as an [action](/docs/ai-chat/actions): the agent reacts, and the response is a side effect. A **channel** is the other half: the webhook IS the chat surface. Inbound messages become **turns** (the normal `run()` loop), and the agent's reply is posted **back** to the surface. A Slack thread becomes a real conversation with the agent, exactly like the browser chat, just a different frontend.
+A [session route](/docs/webhooks/session-routing) delivers a verified event to an agent as an [action](/docs/ai-chat/actions): the agent reacts, and the response is a side effect. A **channel** makes the webhook the chat surface: inbound messages become **turns** (the normal `run()` loop), and the agent's reply is posted **back** to the surface. A Slack thread works like the browser chat, with Slack as the frontend.
 
 List channels on a [`chat.agent`](/docs/ai-chat/overview) alongside (or instead of) `events`:
 
@@ -63428,7 +63155,7 @@ export const supportAgent = chat.agent({
 });
 ```
 
-The `run()` loop is unchanged: the agent does not know or care that it is talking to Slack. One verified Slack message in a thread is routed to a durable [session](/docs/ai-chat/sessions) keyed to that thread, run as a turn, and the reply is posted into the thread.
+The `run()` loop is the same as for the browser chat. One verified Slack message in a thread is routed to a durable [session](/docs/ai-chat/sessions) keyed to that thread, run as a turn, and the reply is posted into the thread.
 
 ## Slack
 
@@ -63495,7 +63222,7 @@ slack({
 
 ## Stopping a turn from the channel
 
-A connector can map an event to a control with `onControl`. Returning `{ kind: "stop" }` while a turn is running aborts it through the run's `stopSignal`, exactly like the browser's stop button: the partial reply posts with `stopped: true` and the event is consumed instead of running as a turn. `linear()` and `slack()` map their stop buttons this way; a custom connector might map a `/stop` command:
+A connector can map an event to a control with `onControl`. Returning `{ kind: "stop" }` while a turn is running aborts it through the run's `stopSignal`, as the browser's stop button does: the partial reply posts with `stopped: true` and the event is consumed instead of running as a turn. `linear()` and `slack()` map their stop buttons this way; a custom connector might map a `/stop` command:
 
 ```ts theme={"theme":"css-variables"}
 chat.channels.custom({
@@ -63536,7 +63263,7 @@ chat.channels.custom({
 
 ## Files, buttons and steering
 
-Three more hooks cover what a chat surface carries besides text:
+These hooks cover what a chat surface carries besides text:
 
 * `download(url, { handle })` fetches files only the surface's credentials can read. Have `inbound` return file parts on the surface's URLs, and the `streamText` passed to `run()` asks each connector's `download` for every file URL in the prompt (return null for URLs it doesn't own). Downloads are cached for the run and the transcript keeps the URL. A file `download` throws on becomes a short note in that turn's messages, and the turn still runs.
 * `toAction(event)` maps a click on a control the agent posted to an action. It reaches `onAction`, validated against `actionSchema`, with the click itself as `channel.event`. Returning `chat.turn(message)` answers in the bound thread. Return null for anything else, such as a click answering a pending tool call, which `onInteraction` handles.
@@ -63554,54 +63281,11 @@ Both are inbound surfaces on a `chat.agent`, and an agent can list both:
 # Connect a webhook provider
 Source: https://trigger.dev/docs/webhooks/connect
 
-Register an endpoint's URL and signing secret with the provider, by hand or with an AI coding agent, then check that events arrive.
+Register an endpoint's URL and signing credential with the provider, by hand or with an AI coding agent, then check that events arrive.
 
-Connect a provider to an [endpoint](/docs/webhooks/overview) by registering the endpoint's URL with the provider and giving Trigger.dev the credential that verifies its requests.
+Connect a provider to an [endpoint](/docs/webhooks/overview) by registering the endpoint's URL with the provider and giving Trigger.dev the credential that verifies its requests. Each [provider page](/docs/webhooks/providers) shows where that provider keeps its webhook settings; for a provider that isn't listed, define a [custom provider](/docs/webhooks/custom-providers) first.
 
 Deploy the project or start `trigger dev` first. Once the CLI finds the endpoint, it appears on the environment's **Webhooks** page. The **Signing secret** column shows **Ready** when the endpoint can verify deliveries and **Needs secret** until then. Every delivery is rejected while an endpoint needs its secret.
-
-## Set it up with an AI agent
-
-Each endpoint has a setup prompt: the URL, the events its subscribers filter on, the provider's own setup steps, and how to generate or store the signing secret. Choose **Copy setup prompt** on the Webhooks page or the endpoint's page, and paste it into an AI coding agent such as Claude Code.
-
-The prompt tells the agent to use the Trigger.dev MCP server (`npx trigger.dev@latest install-mcp`), which has these tools:
-
-| Tool | What it does |
-| - | - |
-| `list_webhook_endpoints` | Lists the environment's endpoints, with their URL and whether a secret is set. |
-| `get_webhook_endpoint_details` | Reads one endpoint: URL, subscribers and their filters, secret state, and the setup prompt. |
-| `generate_webhook_secret` | Generates a signing secret and returns it once, for providers where you choose the secret. Optionally keeps accepting the old secret (`previousSecretTtlSeconds`). |
-| `set_webhook_secret` | Stores a secret the provider issued. Optionally keeps accepting the old secret (`previousSecretTtlSeconds`). |
-
-### Keep the secret out of the agent's context
-
-A secret passed to `set_webhook_secret`, or returned by `generate_webhook_secret`, becomes part of the agent's conversation. The [CLI webhooks commands](/docs/cli-webhooks-commands) store the secret without printing it, and the MCP tool descriptions point agents that can run shell commands to them:
-
-```bash theme={"theme":"css-variables"}
-# Store a secret the provider issued, from an env file or a pipe
-npx trigger.dev@latest webhooks set-secret stripe --env prod --from-env STRIPE_WEBHOOK_SECRET
-
-# Generate one and save it to .env.local for the agent to pass to the provider by name
-npx trigger.dev@latest webhooks generate-secret github --env prod --to-env GITHUB_WEBHOOK_SECRET
-```
-
-Without the MCP server, the same operations are available on the REST API with the environment's secret key:
-
-| Request | What it does |
-| - | - |
-| [`GET /api/v1/webhooks/endpoints`](/docs/management/webhooks/list-endpoints) | Lists the environment's endpoints, with their URL and whether a secret is set. |
-| [`GET /api/v1/webhooks/endpoints/{endpointId}`](/docs/management/webhooks/retrieve-endpoint) | Reads the endpoint, including `subscribers` and `setupPrompt`. |
-| [`POST /api/v1/webhooks/endpoints/{endpointId}/rotate-secret`](/docs/management/webhooks/generate-secret) | Generates a secret and returns it once. |
-| [`PUT /api/v1/webhooks/endpoints/{endpointId}/secret`](/docs/management/webhooks/set-secret) | Stores a secret, sent as `{ "secret": "..." }`. |
-
-`endpointId` is the endpoint's declared id (the `id` passed to `webhooks.endpoint.define`) or its `wh_` id, shown on its page and returned by `list_webhook_endpoints`:
-
-```bash theme={"theme":"css-variables"}
-curl -X PUT "https://api.trigger.dev/api/v1/webhooks/endpoints/stripe/secret" \
-  -H "Authorization: Bearer $TRIGGER_SECRET_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"secret": "whsec_..."}'
-```
 
 ## Set it up by hand
 
@@ -63611,13 +63295,11 @@ Open the endpoint from the Webhooks page and copy the **Webhook URL**.
 
 **2. Configure the provider**
 
-Add the URL as the webhook destination in your provider's dashboard and select the events your subscribers need. The provider's setup determines where the verification credential comes from:
+Add the URL as the webhook destination in your provider's dashboard and select the events your subscribers need.
 
-| Provider setup | Action |
-| - | - |
-| The provider supplies a signing secret, as Stripe and Svix do | Copy the secret from the provider, then choose **Set signing secret** on the endpoint. |
-| The provider accepts a secret you choose, as GitHub does | Choose **Generate secret** on the endpoint, then paste the value into the provider's webhook configuration. |
-| The provider uses an asymmetric signature, as Discord does | Copy the application's public key from the provider and choose **Set public key** on the endpoint. |
+**3. Set the credential**
+
+Choose **Set signing secret** and paste the secret the provider issues, choose **Generate secret** and paste the value into the provider, or choose **Set public key** for a provider that signs with a key pair. The [provider page](/docs/webhooks/providers) says which one it needs; see [Signing secrets](/docs/webhooks/signing-secrets#set-the-credential).
 
 Set the credential before sending a test event or asking the provider to validate the URL.
 
@@ -63627,31 +63309,97 @@ Send a test event from your provider, or use the endpoint's **Test** tab. The ev
 
 If no delivery appears, check that the provider uses the copied URL and that both sides have the same signing secret or public key.
 
-## Verify a WhatsApp endpoint URL
+## Set it up with an AI agent
 
-`webhooks.whatsapp()` also needs a verify token for Meta's URL check. On the endpoint, choose **Generate verify token** and paste the value into Meta's **Verify Token** field. Set Meta's App Secret as the signing secret, then validate the URL in Meta's dashboard.
+Each endpoint has a setup prompt: the URL, the events its subscribers filter on, the provider's own setup steps, and how to generate or store the signing secret. Choose **Copy setup prompt** on the Webhooks page or the endpoint's page, and paste it into an AI coding agent such as Claude Code.
 
-The verify token answers the URL check. The signing secret verifies event deliveries. See [Sources and verification](/docs/webhooks/sources#endpoint-validation) for the response behavior.
+The prompt tells the agent to use the Trigger.dev MCP server (`npx trigger.dev@latest install-mcp`), which reads the endpoint and stores or generates its secret. See [Signing secrets](/docs/webhooks/signing-secrets) for the MCP tools, CLI commands and REST API.
 
-## Rotate a credential
 
-Choose **Rotate signing secret** to replace a provider-supplied secret. For a secret you generate, choose **Regenerate secret**, copy the new value, and update the provider's configuration. Use **Rotate public key** when replacing an asymmetric provider's key.
+# Custom webhook providers
+Source: https://trigger.dev/docs/webhooks/custom-providers
 
-Both dialogs ask how long to keep accepting the old secret: **Stop immediately**, 1 hour, 24 hours (the default) or 7 days. Until then, deliveries signed with either secret verify, so you can update the provider without failing any. Choose **Stop immediately** if the old secret leaked.
+Verify webhooks from a provider that isn't built in by passing your own HMAC, shared-secret, URL-secret or public-key configuration to webhooks.custom().
 
-Through the MCP tools or the REST API, pass `previousSecretTtlSeconds` (at most 604800, 7 days). The response's `previousSecretExpiresAt` says when the old secret stops working. Without it, the old secret stops working straight away:
+**`webhooks.custom()` verifies any provider that signs or authenticates its webhooks with one of four supported schemes.** Use it when the provider isn't in the [built-in providers](/docs/webhooks/providers). Subscribers, filters, deliveries and the [setup prompt](/docs/webhooks/connect#set-it-up-with-an-ai-agent) work the same as with a built-in provider.
 
-```bash theme={"theme":"css-variables"}
-curl -X POST "https://api.trigger.dev/api/v1/webhooks/endpoints/github/rotate-secret" \
-  -H "Authorization: Bearer $TRIGGER_SECRET_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"previousSecretTtlSeconds": 3600}'
+## Define a custom provider
+
+Pass the verification configuration to `webhooks.custom()`. This source verifies an HMAC-SHA256 signature over the raw body in `x-webhook-signature` and uses the event's `id` for deduplication:
+
+```ts /trigger/internal.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const internal = webhooks.endpoint.define({
+  id: "internal",
+  source: webhooks.custom<{ id: string; message: string }>(
+    {
+      scheme: "hmac",
+      algorithm: "sha256",
+      encoding: "hex",
+      signatureHeader: "x-webhook-signature",
+      signingString: "raw",
+      idempotencyField: { from: "body", name: "id" },
+    },
+    { setupPrompt: "Add the URL under Settings > Webhooks in the admin app and paste the secret there." }
+  ),
+});
+
+export const internalEvents = webhook({
+  id: "internal-events",
+  endpoint: internal,
+  onEvent: async ({ event }) => {
+    console.log(event.message);
+  },
+});
 ```
+
+To accept a signature from more than one header, list the extra headers in `additionalSignatureHeaders` (up to 4). Trigger.dev parses each one like `signatureHeader` and accepts a match in any of them. Use this when a provider sends a second signature, for example one signed with the previous secret during a rotation. `signatureHeader` is still required. The built-in [`hookdeck()`](/docs/webhooks/providers/hookdeck) source already checks `X-Hookdeck-Signature-2` this way.
+
+The optional `setupPrompt` is the provider-specific part of the endpoint's [setup prompt](/docs/webhooks/connect#set-it-up-with-an-ai-agent): where the provider's webhook settings are and how to register a URL there. Trigger.dev adds the URL, the subscribers' filters and the signing secret steps around it.
+
+## Form-encoded bodies
+
+A verified body sent as `application/x-www-form-urlencoded` reaches subscribers as an object of its fields, so filters, `chat.event` keys and waiter `match` paths read form fields the way they read JSON fields. A repeated field becomes an array of its values. Slack slash commands and other providers that post forms work this way.
+
+By default an accepted request gets a `200` with a small JSON receipt. Some providers show the response body to the user who triggered the request, so pass `response: { acceptedBody: "empty" }` to answer with an empty `200` instead:
+
+```ts /trigger/forms.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const forms = webhooks.endpoint.define({
+  id: "forms",
+  source: webhooks.custom<{ command: string; text: string; user_id: string }>(
+    { scheme: "url-secret", placement: "query", paramName: "token" },
+    { response: { acceptedBody: "empty" } }
+  ),
+});
+
+export const commands = webhook({
+  id: "commands",
+  endpoint: forms,
+  filter: "event.command == '/deploy'",
+  onEvent: async ({ event }) => {
+    console.log(event.user_id, event.text);
+  },
+});
+```
+
+## Verification schemes
+
+`webhooks.custom()` supports these schemes:
+
+| Scheme | Verification |
+| - | - |
+| `hmac` | Computes an HMAC over the raw body or a signing template and compares it with a request header. |
+| `shared-secret` | Compares a static token supplied in a header, bearer token, basic authentication, or request body. |
+| `url-secret` | Compares a token in a URL query parameter. Hosted endpoints don't support path placement. |
+| `asymmetric` | Verifies an Ed25519, ECDSA (P-256 with SHA-256, P-384 with SHA-384), or RSA-SHA256 signature using the provider's public key. Set `prehash: "sha256"` when the provider signs a SHA-256 digest of the signing string instead of the string itself. |
 
 > [!WARNING]
 >
-> Trigger.dev stores credentials encrypted and doesn't display saved values. Copy a generated secret
-> before closing the dialog.
+> Query parameters can appear in access logs, proxies, and traces. Prefer a header-based scheme when
+> the provider supports one.
 
 
 # Deliveries and endpoints
@@ -63713,7 +63461,7 @@ curl -X POST "https://api.trigger.dev/api/v1/webhooks/deliveries/whd_1234/replay
   -H "Authorization: Bearer $TRIGGER_SECRET_KEY"
 ```
 
-Add `?targetId=` to send it to one subscriber regardless of its filter. `targetId` is the subscriber id: a `webhook()` task's id, or `agentId:eventId` for an agent's `chat.event` or channel. A replay never resumes waiting runs.
+Add `?targetId=` to send it to one subscriber regardless of its filter. `targetId` is the subscriber id: a `webhook()` task's id, `agentId:eventId` for an agent's `chat.event`, or `agentId:connectorId` for a channel. A replay never resumes waiting runs.
 
 ## From an agent or the API
 
@@ -63736,20 +63484,20 @@ Trigger.dev uses the endpoint and idempotency key to deduplicate incoming events
 | What is deduplicated | Window |
 | - | - |
 | Delivery records | Six hours by default. |
-| Task runs | Three days for Stripe; one day for other sources. |
+| Task runs | Three days for Stripe; one day for other providers. |
 
 A retry after the delivery window expires can create another delivery record. If the task-run idempotency window is still active, routing returns the existing run instead of starting another one.
 
 When the source maps a provider event ID, that ID becomes the key, so the provider's own retries of an event are recognised as duplicates:
 
-| Key | Sources |
+| Key | Providers |
 | - | - |
-| A header | GitHub (`X-GitHub-Delivery`), Svix and Autumn (`svix-id`), Standard Webhooks, Loops and Granola (`webhook-id`), Linear (`Linear-Delivery`), PagerDuty (`X-Webhook-Id`), Jira (`X-Atlassian-Webhook-Identifier`), Zendesk (`X-Zendesk-Webhook-Invocation-Id`), Attio (`Idempotency-Key`), Shopify (`X-Shopify-Webhook-Id`), Hookdeck (`X-Hookdeck-Eventid`, or `<prefix>-eventid` with a custom header prefix) |
-| A body field | Stripe, Notion, Vercel, Intercom, WorkOS, Metronome, Mux, Langfuse and Plain (`id`), Square, Slack and Typeform (`event_id`), Firecrawl (`webhookId`) |
+| A header | GitHub (`X-GitHub-Delivery`); Svix, Clerk, Resend and Autumn (`svix-id`); Standard Webhooks, OpenAI, Replicate, Recall.ai, Loops and Granola (`webhook-id`); Linear (`Linear-Delivery`); PagerDuty (`X-Webhook-Id`); Jira (`X-Atlassian-Webhook-Identifier`); Zendesk (`X-Zendesk-Webhook-Invocation-Id`); Attio (`Idempotency-Key`); Shopify (`X-Shopify-Webhook-Id`); Hookdeck (`X-Hookdeck-Eventid`, or `<prefix>-eventid` with a custom header prefix) |
+| A body field | Stripe, Vercel, WorkOS, Metronome, Mux, Langfuse and Plain (`id`); Square, Slack and Typeform (`event_id`); Firecrawl (`webhookId`) |
 
-The other named sources (Zoom, Calendly, Sentry, DocuSign, ElevenLabs, Vapi, Retell, Tailscale, Infisical, PlanetScale, Supabase, Discord) use the fallback below.
+The other built-in providers (Calendly, Cal.com, Sentry, DocuSign, ElevenLabs, Vapi, Retell, Tailscale, Infisical, PlanetScale, Supabase, Discord, GitLab and WhatsApp) use the fallback below.
 
-If the source doesn't map an event ID, the key is derived from the raw body, timestamp, and signature. A retry with a different timestamp or signature can therefore produce a different key. For a [custom source](/docs/webhooks/sources#custom-providers), set `idempotencyField` to a stable event identifier when the provider supplies one.
+If the source doesn't map an event ID, the key is derived from the raw body, timestamp, and signature. A retry with a different timestamp or signature can therefore produce a different key. For a [custom provider](/docs/webhooks/custom-providers), set `idempotencyField` to a stable event identifier when the provider supplies one.
 
 ## Verification and recording
 
@@ -63786,7 +63534,7 @@ export const largePayments = webhook({
 
 The same `filter` works on a [`chat.event`](/docs/webhooks/session-routing#filtering), a channel connector, and a [waiter](/docs/webhooks/waiters), where it is checked after the waiter's `match`.
 
-The filter is checked against the [endpoint's event type](/docs/webhooks/sources#typing-the-event). Concrete types catch missing fields and incompatible literals. Fields typed as `unknown`, including values in Stripe's default `data.object`, allow arbitrary non-empty field paths. Operator literals and path structure are still checked. A filter built at runtime (typed as `string` rather than a string literal) skips the compile-time check, and is validated when the endpoint is deployed.
+The filter is checked against the [endpoint's event type](/docs/webhooks/verification#typing-the-event). Concrete types catch missing fields and incompatible literals. Fields typed as `unknown`, including values in Stripe's default `data.object`, allow arbitrary non-empty field paths. Operator literals and path structure are still checked. A filter built at runtime (typed as `string` rather than a string literal) skips the compile-time check, and is validated when the endpoint is deployed.
 
 ## Narrow a union event
 
@@ -63836,7 +63584,7 @@ A path reads from one of three namespaces:
 
 * `event.*`: the verified, parsed request body, for example `event.data.object.amount`.
 * `header.*`: an inbound request header, matched case-insensitively, for example `header.x-github-event`.
-* `webhook.*`: endpoint and delivery metadata: `source`, `id`, `deliveryId`, `externalRef`, and `tenantId`. The last two depend on the endpoint configuration.
+* `webhook.*`: endpoint and delivery metadata: `source`, `id`, `deliveryId`, `externalRef`, and `tenantId`. The last two depend on the endpoint configuration. `deliveryId` is the provider's event ID, or a hash of the request when the provider sends none; it isn't the `whd_` delivery id.
 
 Paths must have non-empty segments. `event.data.amount` is valid; `event.`, `event..amount`, and `event.amount.` are rejected.
 
@@ -63905,12 +63653,71 @@ export const onIssuesAndPullRequests = webhook({
 A `filter` works the same way on [`chat.event`](/docs/webhooks/session-routing): a delivery that doesn't match never reaches the session.
 
 
-# Human-in-the-loop
+# How webhooks work
+Source: https://trigger.dev/docs/webhooks/how-it-works
+
+Trigger.dev verifies, deduplicates and stores every webhook before answering the provider, then routes it to tasks, waiting runs and agents.
+
+**Trigger.dev stores every webhook before it answers the provider, then routes it to the tasks, waiting runs and agents subscribed to the endpoint.**
+
+A webhook is an HTTP request a provider such as Stripe or GitHub sends to your URL when something happens. Providers expect a fast `2xx` response and retry until they get one, so the same event can arrive more than once. A handler that does slow work before answering, or answers before saving the event, can time out, run twice or lose the event.
+
+## What happens to a request
+
+```mermaid theme={"theme":"css-variables"}
+sequenceDiagram
+  participant P as Provider
+  participant T as Trigger.dev
+  participant S as Subscribers
+  P->>T: POST to the endpoint URL
+  Note over T: Verify, deduplicate, store
+  T-->>P: 200 OK
+  T->>S: Start runs, resume waiting runs, message agents
+```
+
+1. **Verify.** The endpoint checks the provider's signature or secret with the endpoint's [credential](/docs/webhooks/signing-secrets). A request that fails is rejected and never reaches a subscriber. Provider handshakes, such as Slack's URL check, are answered here and create no delivery.
+2. **Deduplicate.** A retry of an event that already arrived is answered as a duplicate. Most [built-in providers](/docs/webhooks/providers) dedupe on the provider's event ID.
+3. **Store, then answer.** The delivery is durably stored before the provider gets its `200`. Once the provider has its answer it stops retrying, and Trigger.dev is responsible for the event from then on.
+4. **Route.** Each subscriber's [filter](/docs/webhooks/filters) is checked. Matching tasks start a run, matching [waiters](/docs/webhooks/waiters) resume their paused runs, and agent sessions receive the event as a message.
+
+Each endpoint and environment has a rate limit. Over it, the endpoint answers `429` with `Retry-After`, so the provider sends the event again later instead of dropping it. See [Limits](/docs/limits#webhook-ingest-rate-limits).
+
+## Endpoints are declared in code
+
+You declare an endpoint next to your tasks with `webhooks.endpoint.define()`. When you run `trigger dev` or deploy, the CLI sends the endpoints it finds to Trigger.dev, and the environment is synced to match: new endpoints are created, and removed ones are deactivated but keep their URL and secret, so adding one back restores it.
+
+Each environment gets its own URL for each endpoint. Your dev environment has its own URL too, so you don't need a tunnel for local development. A delivery that arrives while `trigger dev` isn't running waits for it like any other dev run.
+
+## One endpoint, many subscribers
+
+A provider account usually needs one URL, so every subscriber shares the endpoint. One delivery can start task runs, resume [waiting runs](/docs/webhooks/waiters) and reach agent sessions at the same time. See [What can subscribe](/docs/webhooks/overview#what-can-subscribe).
+
+A delivery that no filter matches is recorded as `FILTERED` and starts no run, so it costs nothing. See [Pricing and limits](/docs/webhooks/pricing-and-limits).
+
+## Retries and duplicates
+
+Duplicates are caught in two places:
+
+* **When the webhook arrives.** A retry with the same event ID is answered as a duplicate and isn't stored again.
+* **When the run starts.** Each delivery triggers its task with an [idempotency key](/docs/idempotency) built from the endpoint and the event, kept for the provider's retry window. A retry that gets past the first check finds the existing run instead of starting a second one.
+
+A waiter completes once, and an agent session skips an event it has already received. A resend after the retry window, such as resending an event from the provider's dashboard a week later, starts a new run, so keep side effects in your handler idempotent.
+
+See [Deduplication](/docs/webhooks/deliveries#deduplication) for the windows and the key each provider uses.
+
+## Every delivery is recorded
+
+Each delivery keeps its headers, body and the result for every subscriber, with links to the runs it started. A filtered delivery shows which clause failed and with what value. You can replay a delivery from the dashboard, the REST API or the MCP server. See [Deliveries and endpoints](/docs/webhooks/deliveries).
+
+For the design choices and infrastructure behind this, read [How we built webhooks](https://trigger.dev/blog/how-we-built-webhooks).
+
+
+# Human-in-the-loop over a channel
 Source: https://trigger.dev/docs/webhooks/human-in-the-loop
 
 Pause an agent mid-turn to get a human decision from the channel (Slack approve/deny), then resume with the answer.
 
-**An agent on a [channel](/docs/webhooks/channels) can pause a turn to get a human decision, then resume once someone answers in the thread.** It posts controls into the conversation and picks up where it left off once someone clicks, with the decision merged into the turn. This is the channel counterpart of browser [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop): the same no-`execute` tool, but the controls live in Slack (or your own surface) instead of a React component. The [`slack()`](/docs/webhooks/slack) connector ships Approve and Deny buttons out of the box.
+**An agent on a [channel](/docs/webhooks/channels) can pause a turn to get a human decision, then resume once someone answers in the thread.** It posts controls into the conversation and picks up where it left off once someone clicks, with the decision merged into the turn. The click arrives as a webhook on the same endpoint as the conversation's messages, and that delivery resumes the paused run. To pause a run until any other webhook arrives, use a [waiter](/docs/webhooks/waiters). This is the channel counterpart of browser [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop): the same no-`execute` tool, but the controls live in Slack (or your own surface) instead of a React component. The [`slack()`](/docs/webhooks/slack) connector includes Approve and Deny buttons.
 
 ## How it works
 
@@ -64072,6 +63879,8 @@ Turn a chat.agent into a Linear agent: assign it an issue or @mention it, and it
 
 Linear opens an **agent session** when someone @mentions your app in an issue or delegates (assigns) an issue to it. `linear()` from `@trigger.dev/linear` is a [channel](/docs/webhooks/channels) connector for those sessions: each one becomes a durable Trigger.dev [session](/docs/ai-chat/sessions), the user's prompt runs as a turn, and the agent's work shows up in Linear as thoughts, actions, a plan, an approval card when it needs a decision, and a response when it is done.
 
+Linear is one of our deep integrations: as well as delivering [webhook events](/docs/webhooks/providers/linear), the connector handles Linear's agent session UI for you.
+
 ```ts theme={"theme":"css-variables"}
 import { webhooks } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
@@ -64113,7 +63922,7 @@ Open an issue and assign it to the app, or write a comment that @mentions it. Li
 
 On the first turn of a session the connector frames Linear's payload for the model: who summoned it and on which issue, the workspace **guidance** rules for agents, Linear's formatted **issue context** (title, description, labels, project, comments), and the comment that mentioned it. An assignment with no comment reads as "assigned ENG-412 to you". Prior comments on the issue are seeded as transcript messages, so the agent can answer with the context a reader of the issue has.
 
-A follow-up prompt on the session is just the message. If the user hits **Stop** in Linear, see [Stopping](#stopping).
+A follow-up prompt on the session is the message itself. If the user hits **Stop** in Linear, see [Stopping](#stopping).
 
 Images and PDFs uploaded to Linear reach the model as files: screenshots in the prompt, in the comment that mentioned the agent, or in the issue description. The transcript keeps the upload link, and the `streamText` passed to `run()` downloads the file with the app's token when the model reads it, at most ten per message. A file that can't be downloaded reaches the model as a short note. A custom `inbound` keeps this by adding `linearFileParts(markdown)` to its message parts.
 
@@ -64174,7 +63983,7 @@ For manual control, `chat.surface<LinearRunSurface>()` returns the current turn'
 
 ## Approvals and choices
 
-A tool with no `execute` pauses the turn for a human decision, exactly as on [any channel](/docs/webhooks/human-in-the-loop). On Linear the connector posts an elicitation card with Approve and Deny options. The card lays the tool input out as markdown: a list of proposed items becomes a numbered list with a bold title per item, a flat object becomes key and value bullets, and only shapes it cannot lay out fall back to JSON. For a card written for the tool, pass a renderer per tool name:
+A tool with no `execute` pauses the turn for a human decision, as on [any channel](/docs/webhooks/human-in-the-loop). On Linear the connector posts an elicitation card with Approve and Deny options. The card lays the tool input out as markdown: a list of proposed items becomes a numbered list with a bold title per item, a flat object becomes key and value bullets, and only shapes it cannot lay out fall back to JSON. For a card written for the tool, pass a renderer per tool name:
 
 ```ts theme={"theme":"css-variables"}
 linear({
@@ -64258,7 +64067,18 @@ Source: https://trigger.dev/docs/webhooks/overview
 
 Receive provider webhooks on hosted, verified endpoints and route each event to tasks, agents, and waiting runs.
 
-**A webhook endpoint is one hosted URL that you register with a provider.** Trigger.dev verifies every request against the endpoint's [source](/docs/webhooks/sources), records it as a [delivery](/docs/webhooks/deliveries), and hands the event to everything subscribed to the endpoint.
+**A webhook endpoint is one hosted URL that you register with a provider.** Trigger.dev [verifies](/docs/webhooks/verification) every request from the provider, records it as a [delivery](/docs/webhooks/deliveries), and hands the event to everything subscribed to the endpoint.
+
+Webhooks can start, resume or message your AI agents.
+
+> [!NOTE]
+>
+> Webhooks are in public beta for every organization, in `@trigger.dev/sdk` 4.8.1 and later. The API
+> may change before general availability; we announce changes in the
+> [changelog](https://trigger.dev/changelog). Send bugs and feedback to
+> [eric@trigger.dev](mailto:eric@trigger.dev) with the delivery id (`whd_...`) or run id.
+
+There are more than 40 [built-in providers](/docs/webhooks/providers), including Stripe, GitHub, Firecrawl and Linear. For any other provider, define a [custom provider](/docs/webhooks/custom-providers). If you prefer to handle webhooks in your own app, you can [trigger tasks from your own handler](/docs/webhooks/own-handler). To set one up from scratch, follow the [quick start](/docs/webhooks/quick-start).
 
 Declare the endpoint once, then subscribe to it:
 
@@ -64300,103 +64120,2062 @@ Stripe gets one URL. A checkout event runs `fulfill-order`, a refund runs `recor
 | Chat frontend | a [channel connector](/docs/webhooks/channels) such as `chat.channels.custom({ endpoint })` | Runs a turn on the conversation's session and posts the reply back. |
 | Waiting run | [`webhooks.waiter.create(endpoint, { match })`](/docs/webhooks/waiters) | Resumes a run that is waiting for this event. |
 
-Each subscriber has its own [filter](/docs/webhooks/filters), so one delivery can reach several subscribers and skip the rest. An endpoint can have up to 25 subscribers. An endpoint with no subscribers still gets a URL, so you can register it with the provider before writing the handlers.
+Each subscriber has its own [filter](/docs/webhooks/filters), so one delivery can reach several subscribers and skip the rest. An endpoint can have up to 25 tasks, agent sessions and channels subscribed; waiting runs don't count toward that limit. An endpoint with no subscribers still gets a URL, so you can register it with the provider before writing the handlers. See [Webhook tasks](/docs/webhooks/webhook-tasks) for what a handler receives and the options it takes.
 
-## The handler
+> [card] [Quick start](/docs/webhooks/quick-start)
+>
+> Declare an endpoint and receive your first event.
 
-`onEvent` receives:
+> [card] [Providers](/docs/webhooks/providers)
+>
+> Set up more than 40 providers, including Stripe, GitHub and Firecrawl.
 
-| Argument | Value |
+> [card] [How it works](/docs/webhooks/how-it-works)
+>
+> What happens to a request, from verification to runs.
+
+
+# Use your own webhook handler
+Source: https://trigger.dev/docs/webhooks/own-handler
+
+Receive webhooks in a route in your own app and trigger tasks from it with tasks.trigger().
+
+**Trigger.dev has built-in webhook endpoints, and we recommend them for most projects.** They verify each provider's signature, drop duplicate retries, record every delivery, and route events to tasks, agents and waiting runs. See [Webhooks](/docs/webhooks/overview).
+
+If you prefer to handle webhooks yourself, receive them in a route in your own app and trigger runs from there with `tasks.trigger()`, the same way any backend code does.
+
+## When to use your own handler
+
+| Use a hosted endpoint | Use your own handler |
 | - | - |
-| `event` | The verified request body, parsed as JSON. Its TypeScript type comes from the [source](/docs/webhooks/sources#typing-the-event). |
-| `headers` | Request headers as a Web `Headers` object, with case-insensitive `get()` and `has()` methods. Credentials such as signatures are removed. |
-| `endpoint` | The endpoint the delivery arrived on: `id`, `declaredId`, `tenantId`, `externalRef`, and the `metadata` you declared. |
-| `ctx` | The same [run context](/docs/context) that regular tasks receive. |
+| You want Trigger.dev to verify signatures, deduplicate retries and record deliveries. | You already have a handler in production and only want to move the work into a task. |
+| One event should reach several tasks, agents or waiting runs. | The provider needs a response body that your code computes from the request. |
+| You want to replay deliveries and see which runs each one started. | The request must pass through your app first, for example to look up a tenant before triggering. |
 
-`webhook()` also takes the options a [task](/docs/tasks/overview) does, such as `queue`, `concurrency`, `machine`, `retry`, `maxDuration` and the lifecycle hooks. For example, to handle one delivery at a time:
+## Trigger a task from your route
 
-```ts theme={"theme":"css-variables"}
-export const orders = webhook({
-  id: "stripe-orders",
-  endpoint: stripe,
-  queue: { concurrencyLimit: 1 },
-  retry: { maxAttempts: 5 },
+Verify the request with the provider's SDK, then trigger the task. This Next.js route uses Stripe's SDK; import the task as a type so the route doesn't bundle the task code.
+
+```ts app/api/webhooks/stripe/route.ts theme={"theme":"css-variables"}
+import Stripe from "stripe";
+import { tasks } from "@trigger.dev/sdk";
+import type { handleStripeEvent } from "@/trigger/handle-stripe-event";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+
+export async function POST(request: Request) {
+  const body = await request.text();
+
+  // Verify the signature before trusting the body
+  const event = stripe.webhooks.constructEvent(
+    body,
+    request.headers.get("stripe-signature")!,
+    process.env.STRIPE_WEBHOOK_SECRET!
+  );
+
+  await tasks.trigger<typeof handleStripeEvent>("handle-stripe-event", event, {
+    // Retries of the same event start one run
+    idempotencyKey: event.id,
+  });
+
+  return Response.json({ received: true });
+}
+```
+
+Return quickly: the task runs in the background, so the provider gets its response before the work starts.
+
+Set `TRIGGER_SECRET_KEY` in your app to a named [**Trigger only**](/docs/apikeys) API key from the Trigger.dev environment the app uses, so the route can trigger tasks but do nothing else.
+
+## Framework guides
+
+> [card] [Custom webhook handler with Next.js](/docs/guides/frameworks/nextjs-webhooks)
+>
+> Handle a webhook in a Next.js API route and trigger a task.
+
+> [card] [Custom webhook handler with Remix](/docs/guides/frameworks/remix-webhooks)
+>
+> Handle a webhook in a Remix action and trigger a task.
+
+
+# Webhooks pricing and limits
+Source: https://trigger.dev/docs/webhooks/pricing-and-limits
+
+What webhooks cost on Trigger.dev Cloud, which plan limits apply, and how to run them self-hosted.
+
+Webhooks have no separate charge on Trigger.dev Cloud. Receiving, verifying, filtering and recording deliveries is included in every plan. The runs a delivery starts or resumes are billed like any other run: a per-run invocation cost plus compute time. See [pricing](https://trigger.dev/pricing).
+
+A delivery that no subscriber's filter matches starts no run, so it adds no run cost. A run already [waiting](/docs/webhooks/waiters) for that webhook still resumes and is billed like any other run. A run [waiting](/docs/webhooks/waiters) for a webhook is suspended, so it uses no compute until the webhook arrives.
+
+Each plan sets limits on the ingest rate, waiting runs, processing concurrency and how long deliveries are kept. See [Limits](/docs/limits#webhook-ingest-rate-limits).
+
+Webhooks are open source, so they also work self-hosted. See [Self-hosting webhooks](/docs/self-hosting/env/webapp#webhooks) to turn them on.
+
+
+# Webhook providers
+Source: https://trigger.dev/docs/webhooks/providers
+
+Every built-in webhook provider, with its SDK function, the credential it verifies with, and a setup page for each provider.
+
+**Each built-in provider has a source function that verifies its signature scheme, so you declare the endpoint with one function call and set one credential.** Every provider below has a page with the source, where to register the URL, and how to set the credential.
+
+| Provider | Source | Credential |
+| - | - | - |
+| [Attio](/docs/webhooks/providers/attio) | `webhooks.attio()` | Issued by the provider |
+| [Autumn](/docs/webhooks/providers/autumn) | `webhooks.autumn()` | Issued by the provider |
+| [Cal.com](/docs/webhooks/providers/cal-com) | `webhooks.calCom()` | You generate it |
+| [Calendly](/docs/webhooks/providers/calendly) | `webhooks.calendly()` | You choose it (OAuth apps: issued by the provider) |
+| [Clerk](/docs/webhooks/providers/clerk) | `webhooks.clerk()` | Issued by the provider |
+| [Discord](/docs/webhooks/providers/discord) | `webhooks.discord()` | Provider's public key |
+| [DocuSign](/docs/webhooks/providers/docusign) | `webhooks.docusign()` | Issued by the provider |
+| [ElevenLabs](/docs/webhooks/providers/elevenlabs) | `webhooks.elevenlabs()` | Issued by the provider |
+| [Firecrawl](/docs/webhooks/providers/firecrawl) | `webhooks.firecrawl()` | Issued by the provider |
+| [GitHub](/docs/webhooks/providers/github) | `webhooks.github()` | You generate it |
+| [GitLab](/docs/webhooks/providers/gitlab) | `webhooks.gitlab()` | You generate it |
+| [Granola](/docs/webhooks/providers/granola) | `webhooks.granola()` | Issued by the provider |
+| [Hookdeck](/docs/webhooks/providers/hookdeck) | `webhooks.hookdeck()` | Issued by the provider |
+| [Infisical](/docs/webhooks/providers/infisical) | `webhooks.infisical()` | You generate it |
+| [Jira](/docs/webhooks/providers/jira) | `webhooks.jira()` | You generate it |
+| [Langfuse](/docs/webhooks/providers/langfuse) | `webhooks.langfuse()` | Issued by the provider |
+| [Linear](/docs/webhooks/providers/linear) | `webhooks.linear()` | Issued by the provider |
+| [Loops](/docs/webhooks/providers/loops) | `webhooks.loops()` | Issued by the provider |
+| [Metronome](/docs/webhooks/providers/metronome) | `webhooks.metronome()` | Issued by the provider |
+| [Mux](/docs/webhooks/providers/mux) | `webhooks.mux()` | Issued by the provider |
+| [OpenAI](/docs/webhooks/providers/openai) | `webhooks.openai()` | Issued by the provider |
+| [PagerDuty](/docs/webhooks/providers/pagerduty) | `webhooks.pagerduty()` | Issued by the provider |
+| [Plain](/docs/webhooks/providers/plain) | `webhooks.plain()` | Issued by the provider |
+| [PlanetScale](/docs/webhooks/providers/planetscale) | `webhooks.planetscale()` | Issued by the provider |
+| [Recall.ai](/docs/webhooks/providers/recall-ai) | `webhooks.recallai()` | Issued by the provider |
+| [Replicate](/docs/webhooks/providers/replicate) | `webhooks.replicate()` | Issued by the provider |
+| [Resend](/docs/webhooks/providers/resend) | `webhooks.resend()` | Issued by the provider |
+| [Retell AI](/docs/webhooks/providers/retell) | `webhooks.retell()` | Your API key with the webhook badge |
+| [Sentry](/docs/webhooks/providers/sentry) | `webhooks.sentry()` | Issued by the provider |
+| [Shopify](/docs/webhooks/providers/shopify) | `webhooks.shopify()` | Issued by the provider |
+| [Slack](/docs/webhooks/providers/slack) | `webhookSource()` (`@trigger.dev/slack`) | Issued by the provider |
+| [Square](/docs/webhooks/providers/square) | `webhooks.square()` | Issued by the provider |
+| [Stripe](/docs/webhooks/providers/stripe) | `webhooks.stripe()` | Issued by the provider |
+| [Supabase](/docs/webhooks/providers/supabase) | `webhooks.supabase()` | You generate it |
+| [Tailscale](/docs/webhooks/providers/tailscale) | `webhooks.tailscale()` | Issued by the provider |
+| [Typeform](/docs/webhooks/providers/typeform) | `webhooks.typeform()` | You generate it |
+| [Vapi](/docs/webhooks/providers/vapi) | `webhooks.vapi()` | You generate it |
+| [Vercel](/docs/webhooks/providers/vercel) | `webhooks.vercel()` | Issued by the provider |
+| [WhatsApp](/docs/webhooks/providers/whatsapp) | `webhooks.whatsapp()` | Issued by the provider |
+| [WorkOS](/docs/webhooks/providers/workos) | `webhooks.workos()` | Issued by the provider |
+| [Zendesk](/docs/webhooks/providers/zendesk) | `webhooks.zendesk()` | Issued by the provider |
+
+For a provider that isn't listed, define a [custom provider](/docs/webhooks/custom-providers). For providers that sign with Svix or Standard Webhooks, `webhooks.svix()` and `webhooks.standardWebhooks()` also work; see [Verification](/docs/webhooks/verification#svix-and-standard-webhooks).
+
+
+# Attio webhooks
+Source: https://trigger.dev/docs/webhooks/providers/attio
+
+Receive and verify Attio webhooks with Trigger.dev. Check the HMAC-SHA256 signature in attio-signature and run a task for each Attio event.
+
+**`webhooks.attio()` verifies the HMAC-SHA256 signature Attio sends in `attio-signature` on every request.**
+
+```ts /trigger/attio.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const attio = webhooks.endpoint.define({
+  id: "attio",
+  source: webhooks.attio(),
+});
+
+export const attioEvents = webhook({
+  id: "attio-events",
+  endpoint: attio,
   onEvent: async ({ event }) => {
-    // ...
+    console.log(event);
   },
 });
 ```
 
-The limit covers every delivery the task handles. To process each customer's events in order while different customers run in parallel, route them to an agent with [session routing](/docs/webhooks/session-routing): deliveries with the same key land in one session and are handled one after another.
+| Setting | Value |
+| - | - |
+| Source | `webhooks.attio()` |
+| Verification | HMAC-SHA256 in `attio-signature` |
+| Credential | Signing secret issued by Attio |
+| Attio docs | [Attio webhook docs](https://docs.attio.com/rest-api/guides/webhooks) |
 
-`webhooks.endpoint.define` also takes a `description` and `metadata`. The metadata is passed to every subscriber as `endpoint.metadata`. The endpoint `id` can't start with `wh_`, which is reserved for the ids Trigger.dev generates.
+## Set up Attio
 
-## How it works
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Attio's developer settings, open your integration and add a webhook with the webhook URL and the events your subscribers need. You can also create it with Attio's webhooks API.
+3. Attio generates the signing secret and returns it when the webhook is created; it's also shown in the developer settings. Copy it, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Attio, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
 
-The CLI finds your endpoints and subscribers during `trigger dev` and deployment, and each environment gets one endpoint per declared id. The endpoint holds the URL and the credential used to verify requests.
 
-A request must pass verification before anything else happens. Provider handshakes are answered directly and create no delivery. A verified request is checked for duplicates, recorded, and then routed: each subscriber's filter is checked, matching subscribers run, and waiting runs whose match fits the event are resumed. The delivery records a result per subscriber.
+# Autumn webhooks
+Source: https://trigger.dev/docs/webhooks/providers/autumn
 
-## Pricing and limits
+Receive and verify Autumn webhooks with Trigger.dev. Check the Svix signature and run a task for each Autumn event, filtered on event.type.
 
-Webhooks have no separate charge on Trigger.dev Cloud. Receiving, verifying, filtering and recording deliveries is included in every plan. The runs a delivery starts or resumes are billed like any other run: a per-run invocation cost plus compute time. See [pricing](https://trigger.dev/pricing).
+**`webhooks.autumn()` verifies the Svix signature Autumn sends in the `svix-*` headers on every request.**
 
-A delivery that no subscriber's filter matches starts no run for any subscriber, so it costs nothing. A run already waiting for that webhook still resumes. A run [waiting](/docs/webhooks/waiters) for a webhook is suspended, so it uses no compute until the webhook arrives.
+```ts /trigger/autumn.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
 
-Each plan sets limits on the ingest rate, waiting runs, processing concurrency and how long deliveries are kept. See [Limits](/docs/limits#webhook-ingest-rate-limits).
+export const autumn = webhooks.endpoint.define({
+  id: "autumn",
+  source: webhooks.autumn(),
+});
 
-## Connect it
+export const autumnEvents = webhook({
+  id: "autumn-events",
+  endpoint: autumn,
+  filter: "event.type == 'billing.updated'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
 
-Every endpoint can produce a setup prompt for an AI coding agent. It holds the URL, the events your subscribers filter on, and the steps for registering the endpoint and its signing secret with the provider. Copy it from the endpoints list or the endpoint's page, or read it with the MCP server's `get_webhook_endpoint_details` tool. See [Connect a provider](/docs/webhooks/connect).
+| Setting | Value |
+| - | - |
+| Source | `webhooks.autumn()` |
+| Verification | Svix (`svix-id`, `svix-timestamp`, `svix-signature`) |
+| Credential | Signing secret issued by Autumn |
+| Event type | `event.type` |
+| Autumn docs | [Autumn webhook docs](https://docs.useautumn.com/documentation/webhooks) |
 
-> [card] [Connect a provider](/docs/webhooks/connect)
->
-> Register the URL and signing secret, then send a test event.
+## Set up Autumn
 
-> [card] [Sources and verification](/docs/webhooks/sources)
->
-> Choose a provider source or define a custom verification scheme.
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In the Autumn dashboard, open **Developer** and select the **Webhooks** tab. Choose **Add Endpoint**, enter the webhook URL and select the events your subscribers need.
+3. Copy the endpoint's signing secret (it starts with `whsec_`), then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Choose **Send Test Event** in Autumn, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Cal.com webhooks
+Source: https://trigger.dev/docs/webhooks/providers/cal-com
+
+Receive and verify Cal.com webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-cal-signature-256 and run a task for each Cal.com event, filtered on event.triggerEvent.
+
+**`webhooks.calCom()` verifies the HMAC-SHA256 signature Cal.com sends in `x-cal-signature-256` on every request.**
+
+```ts /trigger/cal-com.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const calCom = webhooks.endpoint.define({
+  id: "cal-com",
+  source: webhooks.calCom(),
+});
+
+export const calComEvents = webhook({
+  id: "cal-com-events",
+  endpoint: calCom,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.triggerEvent`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.calCom()` |
+| Verification | HMAC-SHA256 in `x-cal-signature-256` |
+| Credential | Secret you generate on Trigger.dev |
+| Event type | `event.triggerEvent` |
+| Cal.com docs | [Cal.com webhook docs](https://cal.com/docs/developing/guides/automation/webhooks) |
+
+## Set up Cal.com
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value.
+3. In Cal.com, open **Settings > Developer > Webhooks** and add a webhook with the webhook URL and the events your subscribers need. Paste the secret into its secret field. The secret is optional in Cal.com but required here: without it, Cal.com doesn't sign deliveries and every one is rejected. Cal.com hides the secret after you save.
+4. Send a test event from Cal.com, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Calendly webhooks
+Source: https://trigger.dev/docs/webhooks/providers/calendly
+
+Receive and verify Calendly webhooks with Trigger.dev. Check the HMAC-SHA256 signature in calendly-webhook-signature and run a task for each Calendly event, filtered on event.event.
+
+**`webhooks.calendly()` verifies the HMAC-SHA256 signature Calendly sends in `calendly-webhook-signature` on every request.**
+
+```ts /trigger/calendly.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const calendly = webhooks.endpoint.define({
+  id: "calendly",
+  source: webhooks.calendly(),
+});
+
+export const calendlyEvents = webhook({
+  id: "calendly-events",
+  endpoint: calendly,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.calendly()` |
+| Verification | HMAC-SHA256 in `calendly-webhook-signature` |
+| Credential | The `signing_key` you set on the subscription |
+| Event type | `event.event` |
+| Calendly docs | [Calendly webhook docs](https://developer.calendly.com/api-docs/overview/webhooks/webhook-signatures) |
+
+## Set up Calendly
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Calendly webhooks are created through the API, on a paid plan. Choose a signing key (for example, the output of `openssl rand -hex 32`), then create the subscription with `POST https://api.calendly.com/webhook_subscriptions`, passing `url` (the webhook URL), `events`, `organization`, `scope` and `signing_key`. If you create the subscription from an OAuth app, Calendly generates the signing key instead.
+3. Choose **Set signing secret** on the Trigger.dev endpoint and paste the signing key.
+4. Send a test event from Calendly, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Clerk webhooks
+Source: https://trigger.dev/docs/webhooks/providers/clerk
+
+Receive and verify Clerk webhooks with Trigger.dev. Check the Svix signature and run a task for each Clerk event, filtered on event.type.
+
+**`webhooks.clerk()` verifies the Svix signature Clerk sends in the `svix-*` headers on every request.**
+
+```ts /trigger/clerk.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const clerk = webhooks.endpoint.define({
+  id: "clerk",
+  source: webhooks.clerk(),
+});
+
+export const clerkEvents = webhook({
+  id: "clerk-events",
+  endpoint: clerk,
+  filter: "event.type == 'user.created'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.clerk()` |
+| Verification | Svix (`svix-id`, `svix-timestamp`, `svix-signature`) |
+| Credential | Signing secret issued by Clerk |
+| Event type | `event.type` |
+| Clerk docs | [Clerk webhook docs](https://clerk.com/docs/guides/development/webhooks/overview) |
+
+## Set up Clerk
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Add the webhook URL as an endpoint in Clerk's webhook settings and subscribe it to the event types your subscribers need.
+3. Copy the endpoint's signing secret (it starts with `whsec_`), then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Clerk, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Discord webhooks
+Source: https://trigger.dev/docs/webhooks/providers/discord
+
+Receive and verify Discord webhooks with Trigger.dev. Check the Ed25519 signature in x-signature-ed25519 and run a task for each Discord event, filtered on event.event.type.
+
+**`webhooks.discord()` verifies the Ed25519 signature Discord sends in `x-signature-ed25519` on every request.**
+
+```ts /trigger/discord.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const discord = webhooks.endpoint.define({
+  id: "discord",
+  source: webhooks.discord(),
+});
+
+export const discordEvents = webhook({
+  id: "discord-events",
+  endpoint: discord,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event.type`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.discord()` |
+| Verification | Ed25519 signature in `x-signature-ed25519` |
+| Credential | Discord's public key |
+| Event type | `event.event.type` |
+| Discord docs | [Discord webhook docs](https://docs.discord.com/developers/events/webhook-events) |
+
+## Set up Discord
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In the [Discord Developer Portal](https://discord.com/developers/applications), open the application and copy the **Public Key** from its **General Information** page. Choose **Set public key** on the Trigger.dev endpoint and paste it.
+3. Open the application's **Webhooks** page. Set the **Endpoint URL** to the webhook URL, turn **Events** on, and select the event types your subscribers need. Discord sends a PING when you save, and the endpoint can only answer it once the public key is set.
+4. Send a test event from Discord, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Endpoint validation
+
+The endpoint answers Discord's verified PING with an empty `204`, so the PING creates no delivery or run.
+
+
+# DocuSign webhooks
+Source: https://trigger.dev/docs/webhooks/providers/docusign
+
+Receive and verify DocuSign webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-docusign-signature-1 and run a task for each DocuSign event, filtered on event.event.
+
+**`webhooks.docusign()` verifies the HMAC-SHA256 signature DocuSign sends in `x-docusign-signature-1` on every request.**
+
+```ts /trigger/docusign.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const docusign = webhooks.endpoint.define({
+  id: "docusign",
+  source: webhooks.docusign(),
+});
+
+export const docusignEvents = webhook({
+  id: "docusign-events",
+  endpoint: docusign,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.docusign()` |
+| Verification | HMAC-SHA256 in `x-docusign-signature-1` |
+| Credential | Connect secret key issued by DocuSign |
+| Event type | `event.event` |
+| DocuSign docs | [DocuSign webhook docs](https://developers.docusign.com/platform/webhooks/connect/) |
+
+## Set up DocuSign
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In DocuSign eSignature Admin, open **Connect > Connect Keys** and choose **Add Secret Key**. Copy the key: DocuSign shows it in full only once. Choose **Set signing secret** on the Trigger.dev endpoint and paste it.
+3. Add a Connect configuration with the webhook URL, select the events your subscribers need, and tick **Include HMAC Signature**. Without it, DocuSign doesn't sign deliveries and every one is rejected.
+4. Send a test event from DocuSign, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# ElevenLabs webhooks
+Source: https://trigger.dev/docs/webhooks/providers/elevenlabs
+
+Receive and verify ElevenLabs webhooks with Trigger.dev. Check the HMAC-SHA256 signature in elevenlabs-signature and run a task for each ElevenLabs event, filtered on event.type.
+
+**`webhooks.elevenlabs()` verifies the HMAC-SHA256 signature ElevenLabs sends in `elevenlabs-signature` on every request.**
+
+```ts /trigger/elevenlabs.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const elevenlabs = webhooks.endpoint.define({
+  id: "elevenlabs",
+  source: webhooks.elevenlabs(),
+});
+
+export const elevenlabsEvents = webhook({
+  id: "elevenlabs-events",
+  endpoint: elevenlabs,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.type`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.elevenlabs()` |
+| Verification | HMAC-SHA256 in `elevenlabs-signature` |
+| Credential | Signing secret issued by ElevenLabs |
+| Event type | `event.type` |
+| ElevenLabs docs | [ElevenLabs webhook docs](https://elevenlabs.io/docs/eleven-agents/workflows/post-call-webhooks) |
+
+## Set up ElevenLabs
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Add the webhook URL as a webhook in ElevenLabs and select the events your subscribers need. See ElevenLabs's [webhook docs](https://elevenlabs.io/docs/eleven-agents/workflows/post-call-webhooks) for where its webhook settings are.
+3. Copy the signing secret ElevenLabs shows for the webhook, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from ElevenLabs, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Firecrawl webhooks
+Source: https://trigger.dev/docs/webhooks/providers/firecrawl
+
+Receive and verify Firecrawl webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-firecrawl-signature and run a task for each Firecrawl event, filtered on event.type.
+
+**`webhooks.firecrawl()` verifies the HMAC-SHA256 signature Firecrawl sends in `x-firecrawl-signature` on every request.**
+
+```ts /trigger/firecrawl.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const firecrawl = webhooks.endpoint.define({
+  id: "firecrawl",
+  source: webhooks.firecrawl(),
+});
+
+export const firecrawlEvents = webhook({
+  id: "firecrawl-events",
+  endpoint: firecrawl,
+  filter: "event.type == 'crawl.completed'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.firecrawl()` |
+| Verification | HMAC-SHA256 in `x-firecrawl-signature` |
+| Credential | Signing secret issued by Firecrawl |
+| Event type | `event.type` |
+| Firecrawl docs | [Firecrawl webhook docs](https://docs.firecrawl.dev/webhooks/overview) |
+
+## Set up Firecrawl
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Copy the webhook secret from the **Advanced** tab of your Firecrawl account settings. It is one secret for the whole account.
+3. Choose **Set signing secret** on the Trigger.dev endpoint and paste it.
+4. Firecrawl has no webhook settings page. Pass a `webhook` object with the URL and events on each crawl, batch scrape, extract or agent request instead:
+
+   ```ts Your crawl code theme={"theme":"css-variables"}
+   await firecrawl.crawl("https://example.com", {
+     webhook: {
+       url: "<webhook URL>",
+       events: ["started", "page", "completed"],
+     },
+   });
+   ```
+5. Start a crawl with the `webhook` object, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Example task
+
+The [Firecrawl URL crawl example](/docs/guides/examples/firecrawl-url-crawl) crawls a site from a task. Add the `webhook` object above to receive each page as a delivery.
+
+
+# GitHub webhooks
+Source: https://trigger.dev/docs/webhooks/providers/github
+
+Receive and verify GitHub webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-hub-signature-256 and run a task for each GitHub event, filtered on header.x-github-event.
+
+**`webhooks.github()` verifies the HMAC-SHA256 signature GitHub sends in `x-hub-signature-256` on every request.**
+
+```ts /trigger/github.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const github = webhooks.endpoint.define({
+  id: "github",
+  source: webhooks.github(),
+});
+
+export const githubEvents = webhook({
+  id: "github-events",
+  endpoint: github,
+  filter: "header.x-github-event == 'issues'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.github()` |
+| Verification | HMAC-SHA256 in `x-hub-signature-256` |
+| Credential | Secret you generate on Trigger.dev |
+| Event type | `header.x-github-event` |
+| GitHub docs | [GitHub webhook docs](https://docs.github.com/en/webhooks/using-webhooks/validating-webhook-deliveries) |
+
+## Set up GitHub
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value. GitHub accepts a secret you choose.
+3. Create the webhook. For a repository webhook with the `gh` CLI:
+
+   ```bash theme={"theme":"css-variables"}
+   gh api repos/OWNER/REPO/hooks -f name=web -f "config[url]=<webhook URL>" -f "config[content_type]=json" -f "config[secret]=<secret>" -f "events[]=issues" -F active=true
+   ```
+
+   Use `orgs/ORG/hooks` for an organization webhook. For a GitHub App, set the webhook URL and secret in the app's settings. Set the content type to `json`.
+4. Trigger an event in the repository, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# GitLab webhooks
+Source: https://trigger.dev/docs/webhooks/providers/gitlab
+
+Receive and verify GitLab webhooks with Trigger.dev. Check the secret token in x-gitlab-token and run a task for each GitLab event.
+
+**`webhooks.gitlab()` checks the secret token GitLab sends in `x-gitlab-token` on every request.**
+
+```ts /trigger/gitlab.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const gitlab = webhooks.endpoint.define({
+  id: "gitlab",
+  source: webhooks.gitlab(),
+});
+
+export const gitlabEvents = webhook({
+  id: "gitlab-events",
+  endpoint: gitlab,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `header.x-gitlab-event`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.gitlab()` |
+| Verification | Shared secret in `x-gitlab-token` |
+| Credential | Secret you generate on Trigger.dev |
+| Event type | `header.x-gitlab-event` |
+| GitLab docs | [GitLab webhook docs](https://docs.gitlab.com/user/project/integrations/webhooks/) |
+
+## Set up GitLab
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value.
+3. In the GitLab project or group, go to **Settings > Webhooks** and add a webhook with the webhook URL. Paste the secret into **Secret token** and select the triggers your subscribers need. GitLab sends the event name in the `x-gitlab-event` header.
+4. Send a test event from GitLab, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Granola webhooks
+Source: https://trigger.dev/docs/webhooks/providers/granola
+
+Receive and verify Granola webhooks with Trigger.dev. Check the Standard Webhooks signature and run a task for each Granola event, filtered on event.event_type.
+
+**`webhooks.granola()` verifies the Standard Webhooks signature Granola sends in the `webhook-*` headers on every request.**
+
+```ts /trigger/granola.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const granola = webhooks.endpoint.define({
+  id: "granola",
+  source: webhooks.granola(),
+});
+
+export const granolaEvents = webhook({
+  id: "granola-events",
+  endpoint: granola,
+  filter: "event.event_type == 'note.generated'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.granola()` |
+| Verification | Standard Webhooks (`webhook-id`, `webhook-timestamp`, `webhook-signature`) |
+| Credential | Signing secret issued by Granola |
+| Event type | `event.event_type` |
+| Granola docs | [Granola webhook docs](https://docs.granola.ai/webhooks) |
+
+## Set up Granola
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Create the endpoint in Granola under **Settings > Connectors > Webhooks**, or under a folder's **Integrations > Webhooks** to limit it to that folder. Granola webhooks need a Business or Enterprise plan.
+3. Granola shows the signing secret (it starts with `whsec_`) once, when the endpoint is created. Choose **Set signing secret** on the Trigger.dev endpoint and paste it.
+4. Send a test event from Granola, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Fetching the note
+
+Deliveries carry the note id but not its content. Fetch the note with Granola's API inside `onEvent`.
+
+
+# Hookdeck webhooks
+Source: https://trigger.dev/docs/webhooks/providers/hookdeck
+
+Receive webhooks that Hookdeck forwards from any provider. Check the HMAC-SHA256 signature in x-hookdeck-signature and run a Trigger.dev task for each event.
+
+**`webhooks.hookdeck()` verifies requests that a Hookdeck connection forwards, so you can put Hookdeck in front of any provider.**
+
+```ts /trigger/hookdeck.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const hookdeck = webhooks.endpoint.define({
+  id: "hookdeck",
+  source: webhooks.hookdeck(),
+});
+
+export const hookdeckEvents = webhook({
+  id: "hookdeck-events",
+  endpoint: hookdeck,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.hookdeck()` |
+| Verification | HMAC-SHA256 in `x-hookdeck-signature` |
+| Credential | Signing secret issued by Hookdeck |
+| Event type | The original provider's field, for example `event.type` for Stripe |
+| Hookdeck docs | [Hookdeck webhook docs](https://hookdeck.com/docs/authentication) |
+
+## Set up Hookdeck
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Hookdeck, create a connection whose destination is an HTTP destination with the webhook URL. Keep the destination's authentication on **Hookdeck Signature** (the default); Hookdeck only signs requests with it set.
+3. Copy the project's signing secret from [**Settings > Secrets**](https://dashboard.hookdeck.com/settings/project/secrets), then choose **Set signing secret** on the Trigger.dev endpoint. It is one secret for the whole project.
+4. Send a test event from Hookdeck, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Typing the event
+
+Hookdeck forwards the original provider's body unchanged, so pass that provider's event type:
+
+```ts /trigger/stripe-via-hookdeck.ts theme={"theme":"css-variables"}
+import type Stripe from "stripe";
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripeViaHookdeck = webhooks.endpoint.define({
+  id: "stripe-via-hookdeck",
+  source: webhooks.hookdeck<Stripe.Event>(),
+});
+
+export const paymentSucceeded = webhook({
+  id: "payment-succeeded",
+  endpoint: stripeViaHookdeck,
+  filter: "event.type == 'payment_intent.succeeded'",
+  onEvent: async ({ event }) => {
+    console.log(event.id);
+  },
+});
+```
+
+## Rotation, deduplication and header prefix
+
+* **Secret rotation:** when you roll the signing secret in Hookdeck with an expiry, Hookdeck also signs each request with the previous secret in `X-Hookdeck-Signature-2`, so deliveries keep verifying until you store the new secret.
+* **Deduplication:** retries dedupe on `X-Hookdeck-Eventid`, which is the same on every attempt of a Hookdeck event.
+* **Custom header prefix:** if you changed the header prefix in the Hookdeck project's settings, pass it with `webhooks.hookdeck({ headerPrefix: "x-acme" })`. The prefix renames the event id header; the signature headers keep the `X-Hookdeck-` name.
+
+## Trigger a task through the API instead
+
+You can also point a Hookdeck destination at the [trigger task API](/docs/management/tasks/trigger) without a hosted endpoint. Hookdeck authenticates with your API key instead of a signature, and a transformation wraps the body in the `payload` field the API expects.
+
+1. Create a destination with the URL `https://api.trigger.dev/api/v1/tasks/<task-id>/trigger`, method `POST`, and **Bearer token** authentication using a [**Trigger only**](/docs/apikeys) environment API key.
+
+2. Add a [transformation](https://hookdeck.com/docs/transformations):
+
+   ```javascript theme={"theme":"css-variables"}
+   addHandler("transform", (request, context) => {
+     request.body = { payload: request.body };
+     request.headers["content-type"] = "application/json";
+     return request;
+   });
+   ```
+
+3. Create a connection from your source to that destination and transformation. Turn on authentication for the Hookdeck source, such as the provider's signature verification: the destination's API key only authenticates Hookdeck to Trigger.dev, so an unauthenticated source would forward anyone's requests.
+
+```ts /trigger/webhook-handler.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+
+export const webhookHandler = task({
+  id: "webhook-handler",
+  run: async (payload: unknown) => {
+    console.log("Received webhook:", payload);
+  },
+});
+```
+
+This path doesn't deduplicate Hookdeck retries, so each forwarded request starts a run, and the delivery isn't recorded on a Trigger.dev endpoint.
+
+
+# Infisical webhooks
+Source: https://trigger.dev/docs/webhooks/providers/infisical
+
+Receive and verify Infisical webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-infisical-signature and run a task for each Infisical event, filtered on event.event.
+
+**`webhooks.infisical()` verifies the HMAC-SHA256 signature Infisical sends in `x-infisical-signature` on every request.**
+
+```ts /trigger/infisical.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const infisical = webhooks.endpoint.define({
+  id: "infisical",
+  source: webhooks.infisical(),
+});
+
+export const infisicalEvents = webhook({
+  id: "infisical-events",
+  endpoint: infisical,
+  filter: "event.event == 'secrets.modified'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.infisical()` |
+| Verification | HMAC-SHA256 in `x-infisical-signature` |
+| Credential | Secret you generate on Trigger.dev |
+| Event type | `event.event` |
+| Infisical docs | [Infisical webhook docs](https://infisical.com/docs/documentation/platform/webhooks) |
+
+## Set up Infisical
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value.
+3. In Infisical, go to **Project Settings > Webhooks** and create a **General** webhook with the webhook URL. Optionally limit it to an environment and secret path.
+4. Paste the secret into the webhook's secret key field. The secret is required: Infisical only signs webhooks that have one, and the endpoint rejects unsigned deliveries.
+5. Send a test event from Infisical, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Jira webhooks
+Source: https://trigger.dev/docs/webhooks/providers/jira
+
+Receive and verify Jira webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-hub-signature and run a task for each Jira event, filtered on event.webhookEvent.
+
+**`webhooks.jira()` verifies the HMAC-SHA256 signature Jira sends in `x-hub-signature` on every request.**
+
+```ts /trigger/jira.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const jira = webhooks.endpoint.define({
+  id: "jira",
+  source: webhooks.jira(),
+});
+
+export const jiraEvents = webhook({
+  id: "jira-events",
+  endpoint: jira,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.webhookEvent`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.jira()` |
+| Verification | HMAC-SHA256 in `x-hub-signature` |
+| Credential | Secret you generate on Trigger.dev |
+| Event type | `event.webhookEvent` |
+| Jira docs | [Jira webhook docs](https://developer.atlassian.com/cloud/jira/platform/webhooks/) |
+
+## Set up Jira
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value.
+3. As a Jira admin, open **System > WebHooks** and choose **Create a WebHook**. Enter the webhook URL, select the events your subscribers need, and paste the secret into **Secret**. Only webhooks an admin registers here are signed; webhooks registered by Connect or OAuth apps aren't, so the endpoint rejects them.
+4. Send a test event from Jira, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Langfuse webhooks
+Source: https://trigger.dev/docs/webhooks/providers/langfuse
+
+Receive and verify Langfuse webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-langfuse-signature and run a task for each Langfuse event, filtered on event.type.
+
+**`webhooks.langfuse()` verifies the HMAC-SHA256 signature Langfuse sends in `x-langfuse-signature` on every request.**
+
+```ts /trigger/langfuse.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const langfuse = webhooks.endpoint.define({
+  id: "langfuse",
+  source: webhooks.langfuse(),
+});
+
+export const langfuseEvents = webhook({
+  id: "langfuse-events",
+  endpoint: langfuse,
+  filter: "event.type == 'prompt-version' && event.action == 'created'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.langfuse()` |
+| Verification | HMAC-SHA256 in `x-langfuse-signature` |
+| Credential | Signing secret issued by Langfuse |
+| Event type | `event.type` |
+| Langfuse docs | [Langfuse webhook docs](https://langfuse.com/docs/prompt-management/features/webhooks-slack-integrations) |
+
+## Set up Langfuse
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In the Langfuse project, go to **Prompts > Automations > Create Automation**. Choose the prompt version event and the actions (created, updated, deleted) your subscribers need, and set the request URL to the webhook URL.
+3. Copy the signing secret Langfuse shows (it starts with `lf-whsec_`), then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Langfuse, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Linear webhooks
+Source: https://trigger.dev/docs/webhooks/providers/linear
+
+Receive and verify Linear webhooks with Trigger.dev. Check the HMAC-SHA256 signature in linear-signature and run a task for each Linear event, filtered on event.type.
+
+**`webhooks.linear()` verifies the HMAC-SHA256 signature Linear sends in `linear-signature` on every request.**
+
+```ts /trigger/linear.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const linear = webhooks.endpoint.define({
+  id: "linear",
+  source: webhooks.linear(),
+});
+
+export const linearEvents = webhook({
+  id: "linear-events",
+  endpoint: linear,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.type`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.linear()` |
+| Verification | HMAC-SHA256 in `linear-signature` |
+| Credential | Signing secret issued by Linear |
+| Event type | `event.type` |
+| Linear docs | [Linear webhook docs](https://linear.app/developers/webhooks) |
+
+## Set up Linear
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Linear, open **Settings > API** and choose **New webhook**. Enter the webhook URL and select the resource types your subscribers need.
+3. Linear generates the signing secret and shows it on the webhook's page. Copy it, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Linear, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Build a Linear agent
+
+To work issues inside Linear's agent session UI, use the `linear()` connector from `@trigger.dev/linear`. See [Linear agents](/docs/webhooks/linear).
+
+
+# Loops webhooks
+Source: https://trigger.dev/docs/webhooks/providers/loops
+
+Receive and verify Loops webhooks with Trigger.dev. Check the Standard Webhooks signature and run a task for each Loops event, filtered on event.eventName.
+
+**`webhooks.loops()` verifies the Standard Webhooks signature Loops sends in the `webhook-*` headers on every request.**
+
+```ts /trigger/loops.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const loops = webhooks.endpoint.define({
+  id: "loops",
+  source: webhooks.loops(),
+});
+
+export const loopsEvents = webhook({
+  id: "loops-events",
+  endpoint: loops,
+  filter: "event.eventName == 'email.delivered'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.loops()` |
+| Verification | Standard Webhooks (`webhook-id`, `webhook-timestamp`, `webhook-signature`) |
+| Credential | Signing secret issued by Loops |
+| Event type | `event.eventName` |
+| Loops docs | [Loops webhook docs](https://loops.so/docs/webhooks) |
+
+## Set up Loops
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Loops, go to **Settings > Webhooks**, add the webhook URL as the endpoint, and select the events your subscribers need.
+3. Copy the endpoint's signing secret (it starts with `whsec_`), then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a `testing.testEvent` from the Loops settings page, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Metronome webhooks
+Source: https://trigger.dev/docs/webhooks/providers/metronome
+
+Receive and verify Metronome webhooks with Trigger.dev. Check the HMAC-SHA256 signature in metronome-webhook-signature and run a task for each Metronome event, filtered on event.type.
+
+**`webhooks.metronome()` verifies the HMAC-SHA256 signature Metronome sends in `metronome-webhook-signature` on every request.**
+
+```ts /trigger/metronome.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const metronome = webhooks.endpoint.define({
+  id: "metronome",
+  source: webhooks.metronome(),
+});
+
+export const metronomeEvents = webhook({
+  id: "metronome-events",
+  endpoint: metronome,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.type`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.metronome()` |
+| Verification | HMAC-SHA256 in `metronome-webhook-signature` |
+| Credential | Signing secret issued by Metronome |
+| Event type | `event.type` |
+| Metronome docs | [Metronome webhook docs](https://docs.metronome.com/guides/platform-configuration/setup-webhooks) |
+
+## Set up Metronome
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In the Metronome app, go to **Developer > Notifications > Webhooks > Add** and enter the webhook URL.
+3. Copy the webhook's secret key, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Create the notifications your subscribers need, such as a low credit balance alert, under **Developer > Notifications > Create Notification**.
+5. Send a test event from Metronome, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Mux webhooks
+Source: https://trigger.dev/docs/webhooks/providers/mux
+
+Receive and verify Mux webhooks with Trigger.dev. Check the HMAC-SHA256 signature in mux-signature and run a task for each Mux event, filtered on event.type.
+
+**`webhooks.mux()` verifies the HMAC-SHA256 signature Mux sends in `mux-signature` on every request.**
+
+```ts /trigger/mux.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const mux = webhooks.endpoint.define({
+  id: "mux",
+  source: webhooks.mux(),
+});
+
+export const muxEvents = webhook({
+  id: "mux-events",
+  endpoint: mux,
+  filter: "event.type == 'video.asset.ready'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.mux()` |
+| Verification | HMAC-SHA256 in `mux-signature` |
+| Credential | Signing secret issued by Mux |
+| Event type | `event.type` |
+| Mux docs | [Mux webhook docs](https://www.mux.com/docs/core/verify-webhook-signatures) |
+
+## Set up Mux
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In the [Mux webhook settings](https://dashboard.mux.com/settings/webhooks), select the environment your app uses and add the webhook URL. Mux sends every event in that environment.
+3. Copy that webhook's signing secret, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Mux, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# OpenAI webhooks
+Source: https://trigger.dev/docs/webhooks/providers/openai
+
+Receive and verify OpenAI webhooks with Trigger.dev. Check the Standard Webhooks signature and run a task for each OpenAI event, filtered on event.type.
+
+**`webhooks.openai()` verifies the Standard Webhooks signature OpenAI sends in the `webhook-*` headers on every request.**
+
+```ts /trigger/openai.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const openai = webhooks.endpoint.define({
+  id: "openai",
+  source: webhooks.openai(),
+});
+
+export const openaiEvents = webhook({
+  id: "openai-events",
+  endpoint: openai,
+  filter: "event.type == 'batch.completed'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.openai()` |
+| Verification | Standard Webhooks (`webhook-id`, `webhook-timestamp`, `webhook-signature`) |
+| Credential | Signing secret issued by OpenAI |
+| Event type | `event.type` |
+| OpenAI docs | [OpenAI webhook docs](https://developers.openai.com/api/docs/guides/webhooks) |
+
+## Set up OpenAI
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Add the webhook URL as an endpoint in OpenAI's webhook settings and subscribe it to the event types your subscribers need.
+3. Copy the endpoint's signing secret (it starts with `whsec_`), then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from OpenAI, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# PagerDuty webhooks
+Source: https://trigger.dev/docs/webhooks/providers/pagerduty
+
+Receive and verify PagerDuty webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-pagerduty-signature and run a task for each PagerDuty event, filtered on event.event.event_type.
+
+**`webhooks.pagerduty()` verifies the HMAC-SHA256 signature PagerDuty sends in `x-pagerduty-signature` on every request.**
+
+```ts /trigger/pagerduty.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const pagerduty = webhooks.endpoint.define({
+  id: "pagerduty",
+  source: webhooks.pagerduty(),
+});
+
+export const pagerdutyEvents = webhook({
+  id: "pagerduty-events",
+  endpoint: pagerduty,
+  filter: "event.event.event_type == 'incident.triggered'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.pagerduty()` |
+| Verification | HMAC-SHA256 in `x-pagerduty-signature` |
+| Credential | Signing secret issued by PagerDuty |
+| Event type | `event.event.event_type` |
+| PagerDuty docs | [PagerDuty webhook docs](https://docs.pagerduty.com/developer/verifying-webhook-signatures) |
+
+## Set up PagerDuty
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In PagerDuty, open **Integrations > Generic Webhooks (v3)** and choose **New Webhook**. Enter the webhook URL and select the event types your subscribers need.
+3. PagerDuty shows the webhook's signing secret once, when the webhook is created. Copy it then, and choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from PagerDuty, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Plain webhooks
+Source: https://trigger.dev/docs/webhooks/providers/plain
+
+Receive and verify Plain webhooks with Trigger.dev. Check the HMAC-SHA256 signature in plain-request-signature and run a task for each Plain event, filtered on event.type.
+
+**`webhooks.plain()` verifies the HMAC-SHA256 signature Plain sends in `plain-request-signature` on every request.**
+
+```ts /trigger/plain.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const plain = webhooks.endpoint.define({
+  id: "plain",
+  source: webhooks.plain(),
+});
+
+export const plainEvents = webhook({
+  id: "plain-events",
+  endpoint: plain,
+  filter: "event.type == 'thread.thread_created'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.plain()` |
+| Verification | HMAC-SHA256 in `plain-request-signature` |
+| Credential | Signing secret issued by Plain |
+| Event type | `event.type` |
+| Plain docs | [Plain webhook docs](https://www.plain.com/docs/webhooks) |
+
+## Set up Plain
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. As a workspace admin, view or generate the request signing secret under **Settings > Request signing**. It is one secret for the whole workspace, so read the existing one if other webhook targets use it.
+3. Choose **Set signing secret** on the Trigger.dev endpoint and paste it.
+4. Add the target under **Settings > Webhooks > Add webhook target**, with the webhook URL and the events your subscribers need.
+5. Send a test event from Plain, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# PlanetScale webhooks
+Source: https://trigger.dev/docs/webhooks/providers/planetscale
+
+Receive and verify PlanetScale webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-planetscale-signature and run a task for each PlanetScale event, filtered on event.event.
+
+**`webhooks.planetscale()` verifies the HMAC-SHA256 signature PlanetScale sends in `x-planetscale-signature` on every request.**
+
+```ts /trigger/planetscale.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const planetscale = webhooks.endpoint.define({
+  id: "planetscale",
+  source: webhooks.planetscale(),
+});
+
+export const planetscaleEvents = webhook({
+  id: "planetscale-events",
+  endpoint: planetscale,
+  filter: "event.event == 'branch.ready'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.planetscale()` |
+| Verification | HMAC-SHA256 in `x-planetscale-signature` |
+| Credential | Signing secret issued by PlanetScale |
+| Event type | `event.event` |
+| PlanetScale docs | [PlanetScale webhook docs](https://planetscale.com/docs/api/webhooks) |
+
+## Set up PlanetScale
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Select the database in PlanetScale, then **Settings > Webhooks > Add webhook**. Enter the webhook URL and select the events your subscribers need. This needs the database administrator role.
+3. In the webhook's menu, choose **Show secret**, copy it, and choose **Set signing secret** on the Trigger.dev endpoint.
+4. Choose **Test webhook** in the same menu to send a `webhook.test` event, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Recall.ai webhooks
+Source: https://trigger.dev/docs/webhooks/providers/recall-ai
+
+Receive and verify Recall.ai webhooks with Trigger.dev. Check the Standard Webhooks signature and run a task for each Recall.ai event, filtered on event.event.
+
+**`webhooks.recallai()` verifies the Standard Webhooks signature Recall.ai sends in the `webhook-*` headers on every request.**
+
+```ts /trigger/recall-ai.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const recallai = webhooks.endpoint.define({
+  id: "recall-ai",
+  source: webhooks.recallai(),
+});
+
+export const recallaiEvents = webhook({
+  id: "recall-ai-events",
+  endpoint: recallai,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.recallai()` |
+| Verification | Standard Webhooks (`webhook-id`, `webhook-timestamp`, `webhook-signature`) |
+| Credential | Workspace verification secret issued by Recall.ai |
+| Event type | `event.event` |
+| Recall.ai docs | [Recall.ai webhook docs](https://docs.recall.ai/docs/authenticating-requests-from-recallai) |
+
+## Set up Recall.ai
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Add the webhook URL as an endpoint on Recall.ai's webhooks dashboard and subscribe it to the event types your subscribers need.
+3. Create a workspace verification secret under **Developers > API Keys & Secrets > Create Workspace Secret**, then choose **Set signing secret** on the Trigger.dev endpoint and paste it. Recall.ai sends no signature headers until a workspace secret exists.
+4. Send a test event from Recall.ai, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Accounts created before 15 December 2025
+
+Older Recall.ai accounts sign webhooks-dashboard deliveries with `svix-*` headers and a separate secret for each endpoint. For those accounts, declare the endpoint with `webhooks.svix()` instead, and set the endpoint's signing secret from the Recall.ai webhooks dashboard:
+
+```ts /trigger/recall.ts theme={"theme":"css-variables"}
+import { webhooks } from "@trigger.dev/sdk";
+
+export const recall = webhooks.endpoint.define({
+  id: "recall",
+  source: webhooks.svix(),
+});
+```
+
+
+# Replicate webhooks
+Source: https://trigger.dev/docs/webhooks/providers/replicate
+
+Receive and verify Replicate webhooks with Trigger.dev. Check the Standard Webhooks signature and run a task for each Replicate event, filtered on event.status.
+
+**`webhooks.replicate()` verifies the Standard Webhooks signature Replicate sends in the `webhook-*` headers on every request.**
+
+```ts /trigger/replicate.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const replicate = webhooks.endpoint.define({
+  id: "replicate",
+  source: webhooks.replicate(),
+});
+
+export const replicateEvents = webhook({
+  id: "replicate-events",
+  endpoint: replicate,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.status`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.replicate()` |
+| Verification | Standard Webhooks (`webhook-id`, `webhook-timestamp`, `webhook-signature`) |
+| Credential | Signing secret issued by Replicate |
+| Event type | `event.status` |
+| Replicate docs | [Replicate webhook docs](https://replicate.com/docs/topics/webhooks/verify-webhook) |
+
+## Set up Replicate
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Replicate has no webhook settings page. Pass the webhook URL as `webhook` when you create a prediction, with `webhook_events_filter` set to the events you want (`start`, `output`, `logs`, `completed`).
+3. Get your signing secret from `GET https://api.replicate.com/v1/webhooks/default/secret`. It starts with `whsec_` and is the same for every webhook on your user or organization. Choose **Set signing secret** on the Trigger.dev endpoint and paste it.
+4. Create a prediction with the webhook set, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Resend webhooks
+Source: https://trigger.dev/docs/webhooks/providers/resend
+
+Receive and verify Resend webhooks with Trigger.dev. Check the Svix signature and run a task for each Resend event, filtered on event.type.
+
+**`webhooks.resend()` verifies the Svix signature Resend sends in the `svix-*` headers on every request.**
+
+```ts /trigger/resend.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const resend = webhooks.endpoint.define({
+  id: "resend",
+  source: webhooks.resend(),
+});
+
+export const resendEvents = webhook({
+  id: "resend-events",
+  endpoint: resend,
+  filter: "event.type == 'email.delivered'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.resend()` |
+| Verification | Svix (`svix-id`, `svix-timestamp`, `svix-signature`) |
+| Credential | Signing secret issued by Resend |
+| Event type | `event.type` |
+| Resend docs | [Resend webhook docs](https://resend.com/docs/webhooks/introduction) |
+
+## Set up Resend
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Add the webhook URL as an endpoint in Resend's webhook settings and subscribe it to the event types your subscribers need.
+3. Copy the endpoint's signing secret (it starts with `whsec_`), then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Resend, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Example project
+
+The [Resend email agent example](/docs/guides/example-projects/resend-email-agent) drafts replies to a Resend inbox from these webhooks and waits for approval in Slack before sending.
+
+
+# Retell AI webhooks
+Source: https://trigger.dev/docs/webhooks/providers/retell
+
+Receive and verify Retell AI webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-retell-signature and run a task for each Retell AI event, filtered on event.event.
+
+**`webhooks.retell()` verifies the HMAC-SHA256 signature Retell AI sends in `x-retell-signature` on every request.**
+
+```ts /trigger/retell.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const retell = webhooks.endpoint.define({
+  id: "retell",
+  source: webhooks.retell(),
+});
+
+export const retellEvents = webhook({
+  id: "retell-events",
+  endpoint: retell,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.retell()` |
+| Verification | HMAC-SHA256 in `x-retell-signature` |
+| Credential | The Retell AI API key with the webhook badge |
+| Event type | `event.event` |
+| Retell AI docs | [Retell AI webhook docs](https://docs.retellai.com/features/secure-webhook) |
+
+## Set up Retell AI
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Retell AI, set the webhook URL as the account-level webhook in the system settings' **Webhooks** tab, or as an agent's **Agent Level Webhook URL** under **Webhook settings** in the agent editor. An agent-level URL replaces the account-level one for that agent.
+3. Retell AI signs with an API key, not a per-webhook secret. Copy the API key that has the webhook badge next to it, then choose **Set signing secret** on the Trigger.dev endpoint and paste it.
+4. Send a test event from Retell AI, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Sentry webhooks
+Source: https://trigger.dev/docs/webhooks/providers/sentry
+
+Receive and verify Sentry webhooks with Trigger.dev. Check the HMAC-SHA256 signature in sentry-hook-signature and run a task for each Sentry event, filtered on header.sentry-hook-resource.
+
+**`webhooks.sentry()` verifies the HMAC-SHA256 signature Sentry sends in `sentry-hook-signature` on every request.**
+
+```ts /trigger/sentry.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const sentry = webhooks.endpoint.define({
+  id: "sentry",
+  source: webhooks.sentry(),
+});
+
+export const sentryEvents = webhook({
+  id: "sentry-events",
+  endpoint: sentry,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `header.sentry-hook-resource`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.sentry()` |
+| Verification | HMAC-SHA256 in `sentry-hook-signature` |
+| Credential | The integration's Client Secret, issued by Sentry |
+| Event type | `header.sentry-hook-resource` |
+| Sentry docs | [Sentry webhook docs](https://docs.sentry.io/integrations/integration-platform/webhooks/) |
+
+## Set up Sentry
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Sentry, open **Settings > Developer Settings > Custom Integrations** and create an internal integration. Set its **Webhook URL** to the webhook URL, turn on alert rule action if you want alerts, and enable the resource types (such as issue, error or comment) your subscribers need.
+3. Sentry signs webhooks with the integration's **Client Secret**. Copy it from the integration's page, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Sentry, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Shopify webhooks
+Source: https://trigger.dev/docs/webhooks/providers/shopify
+
+Receive and verify Shopify webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-shopify-hmac-sha256 and run a task for each Shopify event, filtered on header.x-shopify-topic.
+
+**`webhooks.shopify()` verifies the HMAC-SHA256 signature Shopify sends in `x-shopify-hmac-sha256` on every request.**
+
+```ts /trigger/shopify.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const shopify = webhooks.endpoint.define({
+  id: "shopify",
+  source: webhooks.shopify(),
+});
+
+export const shopifyEvents = webhook({
+  id: "shopify-events",
+  endpoint: shopify,
+  filter: "header.x-shopify-topic == 'orders/create'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.shopify()` |
+| Verification | HMAC-SHA256 in `x-shopify-hmac-sha256` |
+| Credential | Signing secret issued by Shopify |
+| Event type | `header.x-shopify-topic` |
+| Shopify docs | [Shopify webhook docs](https://shopify.dev/docs/apps/build/webhooks/verify-deliveries) |
+
+## Set up Shopify
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. For an app, add a subscription to `shopify.app.toml` and run `shopify app deploy`:
+
+   ```toml shopify.app.toml theme={"theme":"css-variables"}
+   [[webhooks.subscriptions]]
+   topics = ["orders/create"]
+   uri = "<webhook URL>"
+   ```
+
+   Or create it with the Admin API's `webhookSubscriptionCreate` mutation. Use the JSON format.
+3. Shopify signs app webhooks with the app's client secret, which is in the app's settings in the Shopify Dev Dashboard. Choose **Set signing secret** on the Trigger.dev endpoint and paste it.
+4. For a store without an app, add the webhook under **Settings > Notifications > Webhooks** in the store admin, and use the signing key shown on that page instead.
+5. Send a test event from Shopify, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Slack webhooks
+Source: https://trigger.dev/docs/webhooks/providers/slack
+
+Receive and verify Slack webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-slack-signature and run a task for each Slack event, filtered on event.event.type.
+
+**`webhookSource()` from `@trigger.dev/slack` verifies the HMAC-SHA256 signature Slack sends in `x-slack-signature` on every request.**
+
+```ts /trigger/slack.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+import { webhookSource } from "@trigger.dev/slack";
+
+export const slack = webhooks.endpoint.define({
+  id: "slack",
+  source: webhookSource(),
+});
+
+export const slackEvents = webhook({
+  id: "slack-events",
+  endpoint: slack,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event.type`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhookSource()` from `@trigger.dev/slack` |
+| Verification | HMAC-SHA256 in `x-slack-signature`, with a timestamp tolerance |
+| Credential | Signing secret issued by Slack |
+| Event type | `event.event.type` |
+| Slack docs | [Slack webhook docs](https://docs.slack.dev/authentication/verifying-requests-from-slack/) |
+
+## Set up Slack
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In your Slack app's settings, set the **Event Subscriptions** request URL to the webhook URL and subscribe to the bot events your subscribers need.
+3. Copy the app's **Signing Secret** from **Basic Information > App Credentials**, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Back on the Event Subscriptions page, choose **Retry**. Slack's `url_verification` challenge is answered by the endpoint once the secret is set.
+5. Install the app to your workspace, or reinstall it if the bot events need new scopes. Slack only delivers events the workspace has authorized.
+6. Send a test event from Slack, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Build a Slack agent
+
+To answer messages in Slack with a `chat.agent`, use the `slack()` connector on the same endpoint. It handles streaming replies, status updates and approvals. See [Slack agents](/docs/webhooks/slack).
+
+
+# Square webhooks
+Source: https://trigger.dev/docs/webhooks/providers/square
+
+Receive and verify Square webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-square-hmacsha256-signature and run a task for each Square event, filtered on event.type.
+
+**`webhooks.square()` verifies the HMAC-SHA256 signature Square sends in `x-square-hmacsha256-signature` on every request.**
+
+```ts /trigger/square.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const square = webhooks.endpoint.define({
+  id: "square",
+  source: webhooks.square(),
+});
+
+export const squareEvents = webhook({
+  id: "square-events",
+  endpoint: square,
+  filter: "event.type == 'payment.created'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.square()` |
+| Verification | HMAC-SHA256 in `x-square-hmacsha256-signature` |
+| Credential | Signing secret issued by Square |
+| Event type | `event.type` |
+| Square docs | [Square webhook docs](https://developer.squareup.com/docs/webhooks/step3validate) |
+
+## Set up Square
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Add the webhook URL as a webhook in Square and select the events your subscribers need. See Square's [webhook docs](https://developer.squareup.com/docs/webhooks/step3validate) for where its webhook settings are.
+3. Copy the signing secret Square shows for the webhook, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Square, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Receive and verify Stripe webhooks
+Source: https://trigger.dev/docs/webhooks/providers/stripe
+
+Verify Stripe's webhook signature and run a Trigger.dev task for each Stripe event, such as checkout.session.completed. Register the endpoint in Stripe, set the whsec_ signing secret, and filter by event type.
+
+**`webhooks.stripe()` verifies the HMAC-SHA256 signature Stripe sends in `stripe-signature` on every request.**
+
+```ts /trigger/stripe.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripe = webhooks.endpoint.define({
+  id: "stripe",
+  source: webhooks.stripe(),
+});
+
+export const fulfillCheckout = webhook({
+  id: "fulfill-checkout",
+  endpoint: stripe,
+  filter: "event.type == 'checkout.session.completed'",
+  onEvent: async ({ event }) => {
+    console.log("Checkout completed", event.data.object.id);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.stripe()` |
+| Verification | HMAC-SHA256 in `stripe-signature`, with a timestamp tolerance |
+| Credential | Signing secret issued by Stripe (starts with `whsec_`) |
+| Event type | `event.type` |
+| Stripe docs | [Stripe webhook docs](https://docs.stripe.com/webhooks) |
+
+## Set up Stripe
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In the Stripe Dashboard, open the **Webhooks** tab in Workbench and choose **Create an event destination**. Choose the **Snapshot** payload format, select the events you want, choose **Webhook endpoint** and paste the Webhook URL.
+3. On the destination's settings page, choose **Reveal secret** and copy the signing secret.
+4. Choose **Set signing secret** on the Trigger.dev endpoint and paste the secret.
+5. Use a test mode destination for dev and staging environments and a live mode destination for production. Each has its own signing secret.
+
+To create the destination from the Stripe CLI instead, the response's `secret` field is the signing secret:
+
+```bash theme={"theme":"css-variables"}
+stripe webhook_endpoints create -d url="<webhook URL>" -d "enabled_events[]=checkout.session.completed"
+```
+
+## Test locally
+
+Your dev environment has its own Webhook URL, so you don't need `stripe listen` or a tunnel. With `trigger dev` running and a test mode destination pointing at the dev URL, send a test event with the Stripe CLI:
+
+```bash theme={"theme":"css-variables"}
+stripe trigger checkout.session.completed
+```
+
+The delivery appears on the endpoint's **Deliveries** tab with a link to the run it started. You can also send a sample event from the endpoint's **Test** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Typing the event
+
+`webhooks.stripe()` provides a default event shape. For the full Stripe types, install the `stripe` package and pass `Stripe.Event`:
+
+```ts /trigger/stripe.ts theme={"theme":"css-variables"}
+import type Stripe from "stripe";
+import { webhooks } from "@trigger.dev/sdk";
+
+export const stripe = webhooks.endpoint.define({
+  id: "stripe",
+  source: webhooks.stripe<Stripe.Event>(),
+});
+```
+
+## Handle Stripe webhooks in your own route
+
+If you already receive Stripe webhooks in your app, verify them with `stripe.webhooks.constructEvent()` and trigger a task from the route with `tasks.trigger()`. See [Use your own webhook handler](/docs/webhooks/own-handler) for a Next.js example.
+
+## Next steps
 
 > [card] [Filters](/docs/webhooks/filters)
 >
-> Choose which events reach each subscriber.
+> Run each subscriber only for the Stripe events it handles.
 
 > [card] [Waiters](/docs/webhooks/waiters)
 >
-> Pause a run until a matching webhook arrives.
-
-> [card] [Deliveries and endpoints](/docs/webhooks/deliveries)
->
-> Inspect received events and where each one went.
-
-> [card] [Session routing](/docs/webhooks/session-routing)
->
-> Route deliveries to a durable per-key agent session.
-
-> [card] [Channels](/docs/webhooks/channels)
->
-> Turn a webhook into a chat frontend for an agent.
-
-> [card] [Human-in-the-loop](/docs/webhooks/human-in-the-loop)
->
-> Approvals and interactive controls over a channel.
+> Pause a run until a matching Stripe event arrives.
 
 
-# Webhooks public beta
-Source: https://trigger.dev/docs/webhooks/public-beta
+# Supabase webhooks
+Source: https://trigger.dev/docs/webhooks/providers/supabase
 
-Webhooks are available to every organization in the normal Trigger.dev release. Install the packages, see what may change before general availability, and send feedback.
+Receive Supabase database webhooks with Trigger.dev. Check a shared bearer secret and run a task for each insert, update or delete.
 
-**Webhooks are in public beta: every organization can use them, and they ship in the normal Trigger.dev release.** Endpoints you declare sync when you deploy or run `trigger dev`, and they show up on each environment's **Webhooks** page.
+**`webhooks.supabase()` checks a shared secret on every request, because Supabase database webhooks aren't signed.**
 
-## What public beta means
+```ts /trigger/supabase.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
 
-* The API may still change before general availability. We announce changes in the [changelog](https://trigger.dev/changelog).
-* Webhooks are open source, so they work self-hosted too. See [Self-hosting webhooks](/docs/self-hosting/env/webapp#webhooks) to turn them on.
+export const supabase = webhooks.endpoint.define({
+  id: "supabase",
+  source: webhooks.supabase(),
+});
 
-## Install the packages
+export const supabaseEvents = webhook({
+  id: "supabase-events",
+  endpoint: supabase,
+  filter: "event.type == 'INSERT' && event.table == 'orders'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
 
-Webhooks are in `@trigger.dev/sdk` 4.8.1 and later. Install the SDK and the CLI from `@latest`:
+| Setting | Value |
+| - | - |
+| Source | `webhooks.supabase()` |
+| Verification | Shared secret as `Authorization: Bearer` |
+| Credential | Secret you generate on Trigger.dev |
+| Event type | `event.type` |
+| Supabase docs | [Supabase webhook docs](https://supabase.com/docs/guides/database/webhooks) |
+
+## Set up Supabase
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value. Supabase database webhooks aren't signed, so the endpoint checks this shared secret instead.
+3. On the **Database Webhooks** page of the Supabase dashboard, create a webhook on the table and events (`INSERT`, `UPDATE`, `DELETE`) your subscribers need, with type **HTTP Request**, method `POST`, and the webhook URL.
+4. Under **HTTP Headers**, add `Authorization` with the value `Bearer <secret>`.
+5. Insert a row into the table, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Tailscale webhooks
+Source: https://trigger.dev/docs/webhooks/providers/tailscale
+
+Receive and verify Tailscale webhooks with Trigger.dev. Check the HMAC-SHA256 signature in tailscale-webhook-signature and run a task for each Tailscale event.
+
+**`webhooks.tailscale()` verifies the HMAC-SHA256 signature Tailscale sends in `tailscale-webhook-signature` on every request.**
+
+```ts /trigger/tailscale.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const tailscale = webhooks.endpoint.define({
+  id: "tailscale",
+  source: webhooks.tailscale(),
+});
+
+export const tailscaleEvents = webhook({
+  id: "tailscale-events",
+  endpoint: tailscale,
+  filter: "event any ( type == 'nodeCreated' )",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.tailscale()` |
+| Verification | HMAC-SHA256 in `tailscale-webhook-signature` |
+| Credential | Signing secret issued by Tailscale |
+| Tailscale docs | [Tailscale webhook docs](https://tailscale.com/docs/features/webhooks) |
+
+## Set up Tailscale
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. On the **Webhooks** page of the Tailscale admin console, select **Add endpoint**, enter the webhook URL, and choose the events your subscribers need. This needs the Owner, Admin, Network admin or IT admin role.
+3. Tailscale shows the webhook secret once, right after the endpoint is added. Copy it then, and choose **Set signing secret** on the Trigger.dev endpoint.
+4. Use the Tailscale endpoint's menu, **Test endpoint > Send test event**, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Batched events
+
+Each request body is a JSON array of events, and Tailscale can batch several into one request. Filters match an event anywhere in the array with `event any ( ... )`, and a handler should process every event in the array.
+
+
+# Typeform webhooks
+Source: https://trigger.dev/docs/webhooks/providers/typeform
+
+Receive and verify Typeform webhooks with Trigger.dev. Check the HMAC-SHA256 signature in typeform-signature and run a task for each Typeform event, filtered on event.event_type.
+
+**`webhooks.typeform()` verifies the HMAC-SHA256 signature Typeform sends in `typeform-signature` on every request.**
+
+```ts /trigger/typeform.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const typeform = webhooks.endpoint.define({
+  id: "typeform",
+  source: webhooks.typeform(),
+});
+
+export const typeformEvents = webhook({
+  id: "typeform-events",
+  endpoint: typeform,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event_type`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.typeform()` |
+| Verification | HMAC-SHA256 in `typeform-signature` |
+| Credential | Secret you generate on Trigger.dev |
+| Event type | `event.event_type` |
+| Typeform docs | [Typeform webhook docs](https://www.typeform.com/developers/webhooks/secure-your-webhooks/) |
+
+## Set up Typeform
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value.
+3. In Typeform, open the form's **Connect > Webhooks** and add a webhook with the webhook URL. Edit it and paste the secret into **Secret**. You can also set `secret` when you create the webhook with Typeform's API.
+4. Turn the webhook **On**. Typeform creates dashboard webhooks switched off.
+5. Send a test event from Typeform, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Vapi webhooks
+Source: https://trigger.dev/docs/webhooks/providers/vapi
+
+Receive and verify Vapi webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-vapi-signature and run a task for each Vapi event, filtered on event.message.type.
+
+**`webhooks.vapi()` verifies the HMAC-SHA256 signature Vapi sends in `x-vapi-signature` on every request.**
+
+```ts /trigger/vapi.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const vapi = webhooks.endpoint.define({
+  id: "vapi",
+  source: webhooks.vapi(),
+});
+
+export const vapiEvents = webhook({
+  id: "vapi-events",
+  endpoint: vapi,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.message.type`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.vapi()` |
+| Verification | HMAC-SHA256 in `x-vapi-signature` |
+| Credential | Secret you generate on Trigger.dev and add to a Vapi HMAC credential |
+| Event type | `event.message.type` |
+| Vapi docs | [Vapi webhook docs](https://docs.vapi.ai/server-url/server-authentication) |
+
+## Set up Vapi
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Choose **Generate secret** on the Trigger.dev endpoint and copy the value.
+3. In the Vapi Dashboard, open **Integrations > Server Configuration** and choose **Add Custom Credential**. Choose **HMAC** and set:
+   * **Secret Key**: the secret you generated
+   * **Algorithm**: SHA256
+   * **Signature Header**: `x-vapi-signature`
+   * **Timestamp Header**: leave empty
+   * **Payload Format**: the request body only, with no timestamp
+4. Set the webhook URL as the server URL on your assistant, phone number or Server Configuration, and attach the credential by its `credentialId`. Vapi only sends the credential when the server URL comes from your saved configuration, not from an API request.
+5. Send a test event from Vapi, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Vercel webhooks
+Source: https://trigger.dev/docs/webhooks/providers/vercel
+
+Receive and verify Vercel webhooks with Trigger.dev. Check the HMAC-SHA1 signature in x-vercel-signature and run a task for each Vercel event, filtered on event.type.
+
+**`webhooks.vercel()` verifies the HMAC-SHA1 signature Vercel sends in `x-vercel-signature` on every request.**
+
+```ts /trigger/vercel.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const vercel = webhooks.endpoint.define({
+  id: "vercel",
+  source: webhooks.vercel(),
+});
+
+export const vercelEvents = webhook({
+  id: "vercel-events",
+  endpoint: vercel,
+  filter: "event.type == 'deployment.succeeded'",
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.vercel()` |
+| Verification | HMAC-SHA1 in `x-vercel-signature` |
+| Credential | Signing secret issued by Vercel |
+| Event type | `event.type` |
+| Vercel docs | [Vercel webhook docs](https://vercel.com/docs/webhooks) |
+
+## Set up Vercel
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Vercel, open your team's **Settings > Webhooks** (Pro and Enterprise plans) and create a webhook with the webhook URL and the events your subscribers need.
+3. Vercel shows the webhook's secret once, in the dialog after the webhook is created. Copy it then, and choose **Set signing secret** on the Trigger.dev endpoint. Webhooks from a Vercel integration are signed with the integration's Client Secret instead.
+4. Send a test event from Vercel, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# WhatsApp webhooks
+Source: https://trigger.dev/docs/webhooks/providers/whatsapp
+
+Receive and verify WhatsApp webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-hub-signature-256 and run a task for each WhatsApp event.
+
+**`webhooks.whatsapp()` verifies the HMAC-SHA256 signature WhatsApp sends in `x-hub-signature-256`, keyed by the App Secret on every request.**
+
+```ts /trigger/whatsapp.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const whatsapp = webhooks.endpoint.define({
+  id: "whatsapp",
+  source: webhooks.whatsapp(),
+});
+
+export const whatsappEvents = webhook({
+  id: "whatsapp-events",
+  endpoint: whatsapp,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.whatsapp()` |
+| Verification | HMAC-SHA256 in `x-hub-signature-256`, keyed by the App Secret |
+| Credential | Signing secret issued by WhatsApp |
+| WhatsApp docs | [WhatsApp webhook docs](https://developers.facebook.com/docs/whatsapp/cloud-api/guides/set-up-webhooks/) |
+
+## Set up WhatsApp
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In the Meta app dashboard, set the WhatsApp webhook's callback URL to the webhook URL. Meta checks the URL with a GET request that needs a verify token; see [Verify the callback URL](#verify-the-callback-url).
+3. Copy the app's **App Secret**, then choose **Set signing secret** on the Trigger.dev endpoint. Meta signs event deliveries with it.
+4. Subscribe the webhook to the fields your subscribers need, such as `messages`.
+5. Send a test event from WhatsApp, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+## Verify the callback URL
+
+`webhooks.whatsapp()` also needs a verify token for Meta's URL check. On the endpoint, choose **Generate verify token** and paste the value into Meta's **Verify Token** field. Set Meta's App Secret as the signing secret, then validate the URL in Meta's dashboard.
+
+The verify token answers the URL check. The signing secret verifies event deliveries. See [Verification](/docs/webhooks/verification#endpoint-validation) for the response behavior.
+
+
+# WorkOS webhooks
+Source: https://trigger.dev/docs/webhooks/providers/workos
+
+Receive and verify WorkOS webhooks with Trigger.dev. Check the HMAC-SHA256 signature in workos-signature and run a task for each WorkOS event, filtered on event.event.
+
+**`webhooks.workos()` verifies the HMAC-SHA256 signature WorkOS sends in `workos-signature` on every request.**
+
+```ts /trigger/workos.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const workos = webhooks.endpoint.define({
+  id: "workos",
+  source: webhooks.workos(),
+});
+
+export const workosEvents = webhook({
+  id: "workos-events",
+  endpoint: workos,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.event`.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.workos()` |
+| Verification | HMAC-SHA256 in `workos-signature` |
+| Credential | Signing secret issued by WorkOS |
+| Event type | `event.event` |
+| WorkOS docs | [WorkOS webhook docs](https://workos.com/docs/events/data-syncing/webhooks) |
+
+## Set up WorkOS
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. Add the webhook URL as a webhook in WorkOS and select the events your subscribers need. See WorkOS's [webhook docs](https://workos.com/docs/events/data-syncing/webhooks) for where its webhook settings are.
+3. Copy the signing secret WorkOS shows for the webhook, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from WorkOS, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Zendesk webhooks
+Source: https://trigger.dev/docs/webhooks/providers/zendesk
+
+Receive and verify Zendesk webhooks with Trigger.dev. Check the HMAC-SHA256 signature in x-zendesk-webhook-signature and run a task for each Zendesk event, filtered on its event type.
+
+**`webhooks.zendesk()` verifies the HMAC-SHA256 signature Zendesk sends in `x-zendesk-webhook-signature` on every request.**
+
+```ts /trigger/zendesk.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const zendesk = webhooks.endpoint.define({
+  id: "zendesk",
+  source: webhooks.zendesk(),
+});
+
+export const zendeskEvents = webhook({
+  id: "zendesk-events",
+  endpoint: zendesk,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+To run a subscriber only for some events, add a [filter](/docs/webhooks/filters) on `event.type` for Zendesk event subscriptions. For trigger and automation webhooks, you write the JSON body, so filter on a field your template sends.
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.zendesk()` |
+| Verification | HMAC-SHA256 in `x-zendesk-webhook-signature` |
+| Credential | Signing secret issued by Zendesk |
+| Event type | `event.type` for event subscriptions; a field from your template for triggers and automations |
+| Zendesk docs | [Zendesk webhook docs](https://developer.zendesk.com/documentation/webhooks/verifying/) |
+
+## Set up Zendesk
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Zendesk Admin Center, open **Apps and integrations > Webhooks** and create a webhook with the webhook URL. Subscribe it to Zendesk events, or connect it to a trigger or automation.
+3. Zendesk generates the signing secret. On the webhook's details, choose **Reveal secret**, copy it, and choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Zendesk, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.
+
+
+# Webhooks quick start
+Source: https://trigger.dev/docs/webhooks/quick-start
+
+Declare a hosted webhook endpoint, run it in dev, and see your first verified delivery start a task run in under 5 minutes.
+
+Install the SDK, declare an endpoint with a subscriber, and send it a test event. By the end, a verified delivery starts a run of your task.
+
+This guide uses the [GitHub provider](/docs/webhooks/providers/github) because you generate its signing secret on Trigger.dev, so you don't need a GitHub account to finish it. The steps are the same for every [provider](/docs/webhooks/providers).
+
+**1. Add Trigger.dev to your project**
+
+Skip this step if your project already uses Trigger.dev 4.8.1 or later.
+
+```bash npm theme={"theme":"css-variables"}
+npx trigger.dev@latest init
+```
+
+```bash pnpm theme={"theme":"css-variables"}
+pnpm dlx trigger.dev@latest init
+```
+
+```bash bun theme={"theme":"css-variables"}
+bunx trigger.dev@latest init
+```
+
+To upgrade an existing project, install the SDK and CLI from `@latest`:
 
 ```bash npm theme={"theme":"css-variables"}
 npm i @trigger.dev/sdk@latest
@@ -64413,36 +66192,67 @@ bun add @trigger.dev/sdk@latest
 bun add -D trigger.dev@latest
 ```
 
-Add the connector packages if you're building Slack or Linear agents:
+**2. Declare the endpoint and a subscriber**
+
+Create a file in your `/trigger` directory. The endpoint is the hosted URL; the subscriber is the task that runs for each event.
+
+```ts /trigger/github.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const github = webhooks.endpoint.define({
+  id: "github",
+  source: webhooks.github(),
+});
+
+export const githubEvents = webhook({
+  id: "github-events",
+  endpoint: github,
+  onEvent: async ({ event, headers }) => {
+    // GitHub sends the event name in a header
+    console.log("Received", headers.get("x-github-event"), event);
+  },
+});
+```
+
+**3. Run the dev server**
 
 ```bash npm theme={"theme":"css-variables"}
-npm i @trigger.dev/slack@latest @trigger.dev/linear@latest
+npx trigger.dev@latest dev
 ```
 
 ```bash pnpm theme={"theme":"css-variables"}
-pnpm add @trigger.dev/slack@latest @trigger.dev/linear@latest
+pnpm dlx trigger.dev@latest dev
 ```
 
 ```bash bun theme={"theme":"css-variables"}
-bun add @trigger.dev/slack@latest @trigger.dev/linear@latest
+bunx trigger.dev@latest dev
 ```
 
-The webhook tools in the [MCP server](/docs/mcp-introduction) come with the CLI, so a current `trigger.dev` install has them.
+The CLI registers the `github` endpoint you declared in your **Development** environment.
 
-## Moving from a private beta build
+**4. Generate the signing secret**
 
-If you installed from the `webhooks` npm tag, switch every Trigger.dev package to `@latest`, including `@trigger.dev/build` if your project has it. Versions like `4.8.0-webhooks.20261020092920` are older than 4.8.1. You can also remove any minimum release age exemption you added for the beta builds, and reinstall the MCP server without `--tag webhooks`.
+In the [Trigger.dev dashboard](https://cloud.trigger.dev), open your project, make sure the **Development** environment is selected, and choose **Webhooks** in the side menu. The `github` endpoint is listed with its **Signing secret** column set to **Needs secret**. Every delivery is rejected until an endpoint has its secret.
 
-## Get started
+Open the `github` endpoint, choose **Generate secret** and confirm. The secret is shown once: copy it if you'll connect GitHub later. Back on the **Webhooks** page, the column now says **Ready**.
 
-* [Overview](/docs/webhooks/overview): endpoints, sources, and what can subscribe.
-* [Connect a provider](/docs/webhooks/connect): register the URL and signing secret, then check that events arrive.
-* [Slack agents](/docs/webhooks/slack) and [Linear agents](/docs/webhooks/linear): turn a `chat.agent` into an agent that lives in Slack or Linear.
-* [Deliveries and endpoints](/docs/webhooks/deliveries): inspect payloads, replay deliveries, and see the runs each one started.
+**5. Send a test event**
 
-## Feedback
+On the `github` endpoint's page, open the **Test** tab. It starts with a sample body. Under **Headers**, add `x-github-event` with a value such as `push` so the handler logs an event name, then choose **Send event**. The test is signed with the endpoint's secret and runs the full delivery pipeline. Sending the same body again is deduplicated to the first delivery, so change the body to send another.
 
-Send bugs, questions and ideas to [eric@trigger.dev](mailto:eric@trigger.dev). Delivery ids (`whd_...`) and run ids help us find what happened.
+The delivery appears on the **Deliveries** tab. Open it and check **Targets** to see that it reached the `github-events` subscriber, then follow the link to the run to see the logged event.
+
+## Connect the real provider
+
+To receive real events, register the endpoint's **Webhook URL** and the same secret with the provider. Each [provider page](/docs/webhooks/providers) lists where to add them.
+
+> [card] [Connect a provider](/docs/webhooks/connect)
+>
+> Register the URL and secret by hand or with an AI coding agent.
+
+> [card] [Filters](/docs/webhooks/filters)
+>
+> Run a subscriber only for the events it handles.
 
 
 # Routing to a session
@@ -64450,7 +66260,7 @@ Source: https://trigger.dev/docs/webhooks/session-routing
 
 Route verified webhook deliveries to a durable per-key session instead of a fresh run.
 
-A plain [`webhook()`](/docs/webhooks/overview) runs a fresh, stateless run for every delivery. Sometimes you want the opposite: deliveries that share a key (a customer, an installation, an issue) should land on **one durable [session](/docs/ai-chat/sessions)** and be handled in order, with state carried across them. That is what session routing does.
+**Session routing sends deliveries that share a key (a customer, an installation, an issue) to one durable [session](/docs/ai-chat/sessions), handled one at a time with state carried across them.** A plain [`webhook()`](/docs/webhooks/overview) starts a fresh, stateless run for every delivery instead.
 
 Instead of a handler, you declare a `chat.event` on an [endpoint](/docs/webhooks/overview) and list it on an agent. The verified delivery is routed to a find-or-created session and arrives as an [action](/docs/ai-chat/actions).
 
@@ -64482,12 +66292,12 @@ The endpoint's other subscribers, such as a `webhook()` task, still get the same
 The `key` is what makes routing durable: two deliveries that resolve to the same key reach the same session; a different key gets its own. It is a template string, evaluated server-side at ingest, whose `{...}` placeholders read three namespaces:
 
 * `{event.*}`: the parsed event body.
-* `{webhook.*}`: endpoint metadata (`externalRef`, `tenantId`, `id`, `source`, `deliveryId`).
+* `{webhook.*}`: endpoint metadata (`externalRef`, `tenantId`, `id`, `source`, `deliveryId`). Here `deliveryId` is the provider's event ID, not the `whd_` id.
 * `{header.name}`: an inbound header.
 
 These are the same namespaces [filter](/docs/webhooks/filters) expressions use. Every placeholder names one: a bare `{customer}` is an error.
 
-`{a || b}` falls back to `b` when `a` is missing or empty. Compose several placeholders into one key: `"{webhook.externalRef}-{event.issue.id}"`. Each placeholder is checked against the event type at build time, so a bad field is a red squiggle on the `key` line, not a runtime surprise.
+`{a || b}` falls back to `b` when `a` is missing or empty. Compose several placeholders into one key: `"{webhook.externalRef}-{event.issue.id}"`. Each placeholder is checked against the event type at build time, so a bad field is a type error at build time.
 
 ### The `type` label
 
@@ -64520,7 +66330,7 @@ export const orderAgent = chat.agent({
 
 `action.type` is a closed union of the `type` labels of the events you listed, and each arm narrows `action.event` to that event's payload type. The full envelope is `{ type, event, source, headers, deliveryId, externalDeliveryId, endpoint }`. `deliveryId` is the delivery's `whd_` id, as in the dashboard and the [deliveries API](/docs/webhooks/deliveries): a [replay](/docs/webhooks/deliveries#replay) gets a new one. `externalDeliveryId` is the provider's id for the delivery (Stripe's `evt_` id, for example), the same across replays. `endpoint` is the endpoint the delivery arrived on.
 
-Because it is an [action](/docs/ai-chat/actions), the handler is not a turn by default: it can read the event, mutate session state with `chat.history`, and return nothing. To have the agent answer, return `chat.turn()`: the edit is saved, then a full turn runs on the session's history exactly as a message turn does. Webhook actions bypass your `actionSchema` (their shape is fixed and already verified by the source), so `action.type` and `action.event` are typed from the descriptor, not the schema.
+Because it is an [action](/docs/ai-chat/actions), the handler is not a turn by default: it can read the event, mutate session state with `chat.history`, and return nothing. To have the agent answer, return `chat.turn()`: the edit is saved, then a full turn runs on the session's history as a message turn does. Webhook actions bypass your `actionSchema` (their shape is fixed and already verified by the source), so `action.type` and `action.event` are typed from the descriptor, not the schema.
 
 ## Answering into a channel
 
@@ -64574,7 +66384,7 @@ An exported `chat.event` that no agent lists routes nothing. `trigger dev` warns
 
 ## Filtering
 
-A [`filter`](/docs/webhooks/filters) works here exactly as on a `webhook()` task: a delivery that doesn't match never reaches the session, and the delivery records the reason.
+A [`filter`](/docs/webhooks/filters) works here as on a `webhook()` task: a delivery that doesn't match never reaches the session, and the delivery records the reason.
 
 ```ts theme={"theme":"css-variables"}
 export const orderEvents = chat.event({
@@ -64587,12 +66397,95 @@ export const orderEvents = chat.event({
 ```
 
 
+# Webhook signing secrets
+Source: https://trigger.dev/docs/webhooks/signing-secrets
+
+Set, generate and rotate the credential an endpoint verifies deliveries with, from the dashboard, the CLI, the MCP server or the REST API.
+
+**Each endpoint verifies deliveries with one credential: a signing secret, or a public key for providers that sign with a key pair.** Every delivery is rejected until the credential is set.
+
+## Set the credential
+
+| Action | Use it when |
+| - | - |
+| **Set signing secret** | The provider issues the secret, as Stripe and Svix do. |
+| **Generate secret** | The provider accepts a secret you choose, as GitHub does. Trigger.dev shows it once. |
+| **Set public key** | The provider signs with a key pair, as Discord does. |
+
+Each [provider page](/docs/webhooks/providers) says which one that provider needs.
+
+## Rotate a credential
+
+Choose **Rotate signing secret** to replace a provider-supplied secret. For a secret you generate, choose **Regenerate secret**, copy the new value, and update the provider's configuration. Use **Rotate public key** when replacing an asymmetric provider's key.
+
+Both dialogs ask how long to keep accepting the old secret: **Stop immediately**, 1 hour, 24 hours (the default) or 7 days. Until then, deliveries signed with either secret verify, so you can update the provider without failing any. Choose **Stop immediately** if the old secret leaked.
+
+Through the MCP tools or the REST API, pass `previousSecretTtlSeconds` (at most 604800, 7 days). The response's `previousSecretExpiresAt` says when the old secret stops working. Without it, the old secret stops working straight away:
+
+```bash theme={"theme":"css-variables"}
+curl -X POST "https://api.trigger.dev/api/v1/webhooks/endpoints/github/rotate-secret" \
+  -H "Authorization: Bearer $TRIGGER_SECRET_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"previousSecretTtlSeconds": 3600}'
+```
+
+> [!WARNING]
+>
+> Trigger.dev stores credentials encrypted and doesn't display saved values. Copy a generated secret
+> before closing the dialog.
+
+## Store secrets from the CLI
+
+The [CLI webhooks commands](/docs/cli-webhooks-commands) store a secret without printing it. Use them with AI agents that can run shell commands: a secret passed to `set_webhook_secret`, or returned by `generate_webhook_secret`, becomes part of the agent's conversation, and the MCP tool descriptions point agents to the CLI instead.
+
+```bash theme={"theme":"css-variables"}
+# Store a secret the provider issued, from an env file or a pipe
+npx trigger.dev@latest webhooks set-secret stripe --env prod --from-env STRIPE_WEBHOOK_SECRET
+
+# Generate one and save it to .env.local for the agent to pass to the provider by name
+npx trigger.dev@latest webhooks generate-secret github --env prod --to-env GITHUB_WEBHOOK_SECRET
+```
+
+## MCP tools
+
+The Trigger.dev MCP server (`npx trigger.dev@latest install-mcp`) has these webhook tools:
+
+| Tool | What it does |
+| - | - |
+| `list_webhook_endpoints` | Lists the environment's endpoints, with their URL and whether a secret is set. |
+| `get_webhook_endpoint_details` | Reads one endpoint: URL, subscribers and their filters, secret state, and the setup prompt. |
+| `generate_webhook_secret` | Generates a signing secret and returns it once, for providers where you choose the secret. Optionally keeps accepting the old secret (`previousSecretTtlSeconds`). |
+| `set_webhook_secret` | Stores a secret the provider issued. Optionally keeps accepting the old secret (`previousSecretTtlSeconds`). |
+
+## REST API
+
+The same operations are available on the REST API with the environment's secret key:
+
+| Request | What it does |
+| - | - |
+| [`GET /api/v1/webhooks/endpoints`](/docs/management/webhooks/list-endpoints) | Lists the environment's endpoints, with their URL and whether a secret is set. |
+| [`GET /api/v1/webhooks/endpoints/{endpointId}`](/docs/management/webhooks/retrieve-endpoint) | Reads the endpoint, including `subscribers` and `setupPrompt`. |
+| [`POST /api/v1/webhooks/endpoints/{endpointId}/rotate-secret`](/docs/management/webhooks/generate-secret) | Generates a secret and returns it once. |
+| [`PUT /api/v1/webhooks/endpoints/{endpointId}/secret`](/docs/management/webhooks/set-secret) | Stores a secret, sent as `{ "secret": "..." }`. |
+
+`endpointId` is the endpoint's declared id (the `id` passed to `webhooks.endpoint.define`) or its `wh_` id, shown on its page and returned by `list_webhook_endpoints`:
+
+```bash theme={"theme":"css-variables"}
+curl -X PUT "https://api.trigger.dev/api/v1/webhooks/endpoints/stripe/secret" \
+  -H "Authorization: Bearer $TRIGGER_SECRET_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"secret": "whsec_..."}'
+```
+
+
 # Slack agents
 Source: https://trigger.dev/docs/webhooks/slack
 
 Turn a chat.agent into a Slack agent: users message it in Slack, it shows its status while it works, streams its reply with its tool calls as a plan, asks for approvals, and stops on Slack's stop button.
 
 **`slack()` from `@trigger.dev/slack` turns a `chat.agent` into a native Slack agent.** Each Slack agent session (a conversation with the agent, or a thread in a channel) becomes a durable Trigger.dev [session](/docs/ai-chat/sessions). A message runs as a turn, the session shows the agent working, the reply streams into the thread as the model writes it, and Slack's stop button stops the turn.
+
+Slack is one of our deep integrations: as well as delivering [webhook events](/docs/webhooks/providers/slack), the connector handles Slack's agent features for you.
 
 ```ts /trigger/support.ts theme={"theme":"css-variables"}
 import { webhooks } from "@trigger.dev/sdk";
@@ -64834,7 +66727,7 @@ Only buttons built with `button()` or `slackButton()` reach the agent. Buttons y
 
 ## Stopping
 
-Slack shows a stop button while the agent is working. It aborts the running turn through the run's `signal`, exactly like a browser chat's stop: the model call and any tool that honours the signal stop, the partial reply stays in the thread, and the status goes back to active. The next message continues the conversation.
+Slack shows a stop button while the agent is working. It aborts the running turn through the run's `signal`, as a browser chat's stop does: the model call and any tool that honors the signal stop, the partial reply stays in the thread, and the status goes back to active. The next message continues the conversation.
 
 * A stop pressed while nothing is running does nothing, and a repeated or delayed stop never stops a later turn.
 * A stop that reaches a session waiting on an approval cancels it: the buttons are replaced with "Stopped", the pending tool call is recorded as stopped so the model sees that on the next turn, and a later click resumes nothing.
@@ -64982,12 +66875,12 @@ slack({
 | `apiBaseUrl` | `string` | Override the Slack Web API base, for testing against a mock. |
 
 
-# Sources and verification
-Source: https://trigger.dev/docs/webhooks/sources
+# Webhook verification
+Source: https://trigger.dev/docs/webhooks/verification
 
-Choose an endpoint's source, configure verification, and type the event its subscribers receive.
+How an endpoint verifies each provider's requests, answers provider handshakes, and types the event its subscribers receive.
 
-An endpoint's `source` defines how Trigger.dev verifies requests and types the event every subscriber receives. Choose a named provider source or supply a verification configuration with `webhooks.custom()`.
+**An endpoint's `source` tells Trigger.dev how to verify a provider's requests and what type the event has.** Use a [built-in provider](/docs/webhooks/providers), such as `webhooks.stripe()` or `webhooks.firecrawl()`, or describe the provider's scheme with [`webhooks.custom()`](/docs/webhooks/custom-providers).
 
 ## Presets
 
@@ -65038,14 +66931,14 @@ export const svixEvents = webhook({
 });
 ```
 
-```ts /trigger/standard-webhooks.ts theme={"theme":"css-variables"}
+```ts /trigger/my-provider.ts theme={"theme":"css-variables"}
 import { webhook, webhooks } from "@trigger.dev/sdk";
 
-export const orders = webhooks.endpoint.define({ id: "orders", source: webhooks.standardWebhooks() });
+export const myProvider = webhooks.endpoint.define({ id: "my-provider", source: webhooks.standardWebhooks() });
 
-export const orderEvents = webhook({
-  id: "order-events",
-  endpoint: orders,
+export const myProviderEvents = webhook({
+  id: "my-provider-events",
+  endpoint: myProvider,
   onEvent: async ({ event }) => {
     console.log(event);
   },
@@ -65063,59 +66956,15 @@ The available presets are `stripe()`, `github()`, `svix()`, `standardWebhooks()`
 | `svix()` | `svix-id`, `svix-timestamp`, `svix-signature` |
 | `standardWebhooks()` | `webhook-id`, `webhook-timestamp`, `webhook-signature` |
 
-Named sources such as `webhooks.clerk()` and `webhooks.composio()` select the corresponding configuration.
+Named sources such as `webhooks.clerk()` and `webhooks.openai()` select the corresponding configuration.
 
 ## Named providers
 
-Each function below returns a source with its provider's verification configuration. Call it through `webhooks`, for example `webhooks.calCom()`.
+More than 40 named providers, such as `webhooks.firecrawl()`, `webhooks.linear()` and `webhooks.hookdeck()`, build on the same verifiers. [Providers](/docs/webhooks/providers) lists every one, with where to register the URL and set the signing secret.
 
-| Verification | Source functions |
-| - | - |
-| Svix | `clerk()`, `resend()`, `autumn()` |
-| Standard Webhooks | `openai()`, `replicate()`, `recallai()`, `loops()`, `granola()`, `brex()` |
-| Standard Webhooks headers, keyed with the secret's raw text | `composio()` |
-| HMAC-SHA256 with `X-Hub-Signature-256` | `whatsapp()` |
-| Shared secret in `X-Gitlab-Token` | `gitlab()` |
-| Shared secret as `Authorization: Bearer` | `supabase()` |
-| Hookdeck relay (HMAC-SHA256 with `X-Hookdeck-Signature`) | `hookdeck()` |
-| Provider-specific HMAC | `calendly()`, `calCom()`, `sentry()`, `pagerduty()`, `vercel()`, `linear()`, `notion()`, `typeform()`, `docusign()`, `jira()`, `intercom()`, `zendesk()`, `attio()`, `workos()`, `elevenlabs()`, `vapi()`, `retell()`, `shopify()`, `metronome()`, `mux()`, `tailscale()`, `langfuse()`, `infisical()`, `planetscale()`, `plain()`, `firecrawl()` |
+## Custom providers
 
-Provider IDs containing a hyphen use a camel case function name: the `cal-com` provider is `webhooks.calCom()`.
-
-Supabase database webhooks aren't signed, so `supabase()` checks a shared secret instead. Generate the endpoint's secret on Trigger.dev, then add an `Authorization` header with the value `Bearer <secret>` under the webhook's HTTP Headers in Supabase.
-
-Slack also ships as a chat channel in `@trigger.dev/slack`.
-
-For a complete project built on `resend()`, see the [Resend email agent example](https://github.com/triggerdotdev/examples/tree/main/resend-slack-email-agent). It drafts replies to a Resend inbox and waits for your approval in Slack before sending them.
-
-### Hookdeck
-
-`hookdeck()` verifies requests that a [Hookdeck](https://hookdeck.com) connection forwards to the endpoint. Hookdeck forwards the original provider's body unchanged, so pass that provider's event type:
-
-```ts /trigger/stripe-via-hookdeck.ts theme={"theme":"css-variables"}
-import type Stripe from "stripe";
-import { webhook, webhooks } from "@trigger.dev/sdk";
-
-export const stripeViaHookdeck = webhooks.endpoint.define({
-  id: "stripe-via-hookdeck",
-  source: webhooks.hookdeck<Stripe.Event>(),
-});
-
-export const paymentSucceeded = webhook({
-  id: "payment-succeeded",
-  endpoint: stripeViaHookdeck,
-  filter: "event.type == 'payment_intent.succeeded'",
-  onEvent: async ({ event }) => {
-    console.log(event.id);
-  },
-});
-```
-
-Use the endpoint URL as the connection's HTTP destination, keep the destination's authentication on Hookdeck Signature (the default for new destinations), and store the Hookdeck project's signing secret from **Settings > Secrets** as the endpoint's signing secret.
-
-* **Secret rotation:** when you roll the signing secret in Hookdeck with an expiry, Hookdeck also signs each request with the previous secret in `X-Hookdeck-Signature-2`, so deliveries keep verifying until you store the new secret.
-* **Deduplication:** retries dedupe on `X-Hookdeck-Eventid`, which is the same on every attempt of a Hookdeck event.
-* **Custom header prefix:** if you changed the header prefix in the Hookdeck project's settings, pass it with `webhooks.hookdeck({ headerPrefix: "x-acme" })`. The prefix renames the event id header; the signature headers keep the `X-Hookdeck-` name.
+For a provider without a built-in source, describe its signature scheme with `webhooks.custom()`. See [Custom providers](/docs/webhooks/custom-providers) for the verification schemes and options.
 
 ## Endpoint validation
 
@@ -65127,67 +66976,7 @@ Slack's `url_verification` challenge is handled the same way by `@trigger.dev/sl
 
 `notion()` handles Notion's verification request, which is not signed: when you create a subscription, Notion sends a `verification_token` that it then uses to sign every later delivery. While the endpoint has no signing secret, the endpoint answers that request with `200` and stores the token as its signing secret. The endpoint page shows the token so you can paste it into Notion's Verify dialog. If the token doesn't arrive, select **Resend token** in that dialog. Deploy the endpoint and leave its signing secret unset before you create the subscription. Once a secret is set, a later verification request is rejected like any unsigned delivery. Before you re-create the subscription or resend its token, select **Clear signing secret** on the endpoint page so the endpoint stores the new token.
 
-`whatsapp()` answers Meta's GET verification request when `hub.mode` is `subscribe` and `hub.verify_token` matches the endpoint's verify token. It returns `hub.challenge` as text. The verify token is separate from the App Secret used to verify event signatures; see [Verify a WhatsApp endpoint URL](/docs/webhooks/connect#verify-a-whatsapp-endpoint-url). Endpoints without GET verification return `405` to GET requests.
-
-## Custom providers
-
-`webhooks.custom()` accepts a verification configuration. This source verifies an HMAC-SHA256 signature over the raw body in `x-webhook-signature` and uses the event's `id` for deduplication:
-
-```ts /trigger/internal.ts theme={"theme":"css-variables"}
-import { webhook, webhooks } from "@trigger.dev/sdk";
-
-export const internal = webhooks.endpoint.define({
-  id: "internal",
-  source: webhooks.custom<{ id: string; message: string }>(
-    {
-      scheme: "hmac",
-      algorithm: "sha256",
-      encoding: "hex",
-      signatureHeader: "x-webhook-signature",
-      signingString: "raw",
-      idempotencyField: { from: "body", name: "id" },
-    },
-    { setupPrompt: "Add the URL under Settings > Webhooks in the admin app and paste the secret there." }
-  ),
-});
-
-export const internalEvents = webhook({
-  id: "internal-events",
-  endpoint: internal,
-  onEvent: async ({ event }) => {
-    console.log(event.message);
-  },
-});
-```
-
-The optional `setupPrompt` is the provider-specific part of the endpoint's [setup prompt](/docs/webhooks/connect#set-it-up-with-an-ai-agent): where the provider's webhook settings are and how to register a URL there. Trigger.dev adds the URL, the subscribers' filters and the signing secret steps around it.
-
-### Form-encoded bodies
-
-A verified body sent as `application/x-www-form-urlencoded` reaches subscribers as an object of its fields, so filters, `chat.event` keys and waiter `match` paths read form fields the way they read JSON fields. A repeated field becomes an array of its values. Slack slash commands and other providers that post forms work this way.
-
-By default an accepted request gets a `200` with a small JSON receipt. Some providers show the response body to the user who triggered the request, so pass `response: { acceptedBody: "empty" }` to answer with an empty `200` instead:
-
-```ts /trigger/forms.ts theme={"theme":"css-variables"}
-import { webhook, webhooks } from "@trigger.dev/sdk";
-
-export const forms = webhooks.endpoint.define({
-  id: "forms",
-  source: webhooks.custom<{ command: string; text: string; user_id: string }>(
-    { scheme: "url-secret", placement: "query", paramName: "token" },
-    { response: { acceptedBody: "empty" } }
-  ),
-});
-
-export const commands = webhook({
-  id: "commands",
-  endpoint: forms,
-  filter: "event.command == '/deploy'",
-  onEvent: async ({ event }) => {
-    console.log(event.user_id, event.text);
-  },
-});
-```
+`whatsapp()` answers Meta's GET verification request when `hub.mode` is `subscribe` and `hub.verify_token` matches the endpoint's verify token. It returns `hub.challenge` as text. The verify token is separate from the App Secret used to verify event signatures; see [Verify a WhatsApp endpoint URL](/docs/webhooks/providers/whatsapp#verify-the-callback-url). Endpoints without GET verification return `405` to GET requests.
 
 ## Typing the event
 
@@ -65215,23 +67004,11 @@ For `webhooks.custom<T>()`, pass your own event type as `T`. The endpoint's even
 > Event types are compile-time annotations. Signature verification doesn't validate the body against
 > a TypeScript type. Validate `event` inside `onEvent` if your handler needs runtime schema checks.
 
-## Verification schemes
+## How verification works
 
 Requests must pass verification before they reach any subscriber. Sources can check a signature or credential, enforce a timestamp tolerance, and derive an idempotency key for [deduplication](/docs/webhooks/deliveries#deduplication). Verification failures return the source's rejected HTTP status (`400` by default).
 
-Custom sources support these schemes:
-
-| Scheme | Verification |
-| - | - |
-| `hmac` | Computes an HMAC over the raw body or a signing template and compares it with a request header. |
-| `shared-secret` | Compares a static token supplied in a header, bearer token, basic authentication, or request body. |
-| `url-secret` | Compares a token in a URL query parameter. Hosted endpoints don't support path placement. |
-| `asymmetric` | Verifies an Ed25519, ECDSA (P-256 with SHA-256, P-384 with SHA-384), or RSA-SHA256 signature using the provider's public key. Set `prehash: "sha256"` when the provider signs a SHA-256 digest of the signing string instead of the string itself. |
-
-> [!WARNING]
->
-> Query parameters can appear in access logs, proxies, and traces. Prefer a header-based scheme when
-> the provider supports one.
+To verify a provider that isn't built in, choose a scheme for a [custom provider](/docs/webhooks/custom-providers#verification-schemes).
 
 
 # Waiting for a webhook
@@ -65302,7 +67079,7 @@ Match on values you control, such as your own order id in the provider object's 
 | - | - |
 | `event.*` | The verified event body, for example `event.data.object.id`. |
 | `header.*` | A request header, matched case-insensitively, for example `header.x-shop-domain`. |
-| `webhook.*` | The endpoint: `id`, `source`, `externalRef`, `tenantId`, or `deliveryId`. |
+| `webhook.*` | The endpoint: `id`, `source`, `externalRef`, `tenantId`, or `deliveryId` (the provider's event ID, or a hash of the request when the provider sends none; not the `whd_` id). |
 
 A waiter can match up to five paths, and each value is a string, number or boolean. Paths are checked against the endpoint's event type at build time: an unknown field on a typed event, a path to an object, or a path without a namespace is a type error. The API refuses the same paths at create time.
 
@@ -65331,7 +67108,7 @@ if (result.ok) {
 | Output field | Value |
 | - | - |
 | `event` | The verified event body, typed by the endpoint's source. |
-| `headers` | The request headers, with credentials such as signatures removed. |
+| `headers` | The request headers, without `authorization`, cookie or shared-secret headers. Headers your `match` uses are always kept; the rest are capped at 4 KB. |
 | `deliveryId` | The delivery that resumed the run (`whd_...`). |
 | `endpoint` | The endpoint the delivery arrived on. |
 
@@ -65425,6 +67202,53 @@ On Trigger.dev Cloud the per-endpoint and per-environment limits depend on your 
 A delivery that resumes waiters shows one **Waiting runs** row on its [delivery page](/docs/webhooks/deliveries#where-a-delivery-went) with how many matched, resumed and failed. A delivery that arrives while runs are waiting but matches none of them, and no subscriber takes, is `UNMATCHED`.
 
 
+# Webhook tasks
+Source: https://trigger.dev/docs/webhooks/webhook-tasks
+
+What a webhook() handler receives, the task options it takes, how to group deliveries per customer, and the options an endpoint takes.
+
+**A webhook task is a [task](/docs/tasks/overview) with an endpoint attached: `webhook()` starts a task run for each delivery that passes its [filter](/docs/webhooks/filters).** If an attempt fails, the run retries and calls `onEvent` again, so keep its side effects safe to repeat.
+
+## Handler arguments
+
+`onEvent` receives:
+
+| Argument | Value |
+| - | - |
+| `event` | The verified request body, parsed as JSON. Its TypeScript type comes from the [source](/docs/webhooks/verification#typing-the-event). |
+| `headers` | Request headers as a Web `Headers` object, with case-insensitive `get()` and `has()` methods. `authorization`, `proxy-authorization`, `cookie`, `set-cookie` and shared-secret headers are removed; other headers, including signature headers such as `stripe-signature`, share a 4 KB budget, so a large set of headers can drop some. Headers a live waiter matches on are always kept. |
+| `endpoint` | The endpoint the delivery arrived on: `id`, `declaredId`, `tenantId`, `externalRef`, and the `metadata` you declared. |
+| `ctx` | The same [run context](/docs/context) that regular tasks receive. |
+
+## Task options
+
+`webhook()` also takes the options a [task](/docs/tasks/overview) does, such as `queue`, `concurrency`, `machine`, `retry`, `maxDuration` and the lifecycle hooks. For example, to handle one delivery at a time:
+
+```ts /trigger/stripe-orders.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const stripe = webhooks.endpoint.define({ id: "stripe", source: webhooks.stripe() });
+
+export const orders = webhook({
+  id: "stripe-orders",
+  endpoint: stripe,
+  queue: { concurrencyLimit: 1 },
+  retry: { maxAttempts: 5 },
+  onEvent: async ({ event }) => {
+    // ...
+  },
+});
+```
+
+## Group deliveries per customer
+
+The limit covers every delivery the task handles. To group each customer's events while different customers run in parallel, route them to an agent with [session routing](/docs/webhooks/session-routing): deliveries with the same key land in one session and are handled one at a time. A retried delivery can reach the session after a later one, so don't rely on arrival order.
+
+## Endpoint options
+
+`webhooks.endpoint.define` also takes a `description` and `metadata`. The metadata is passed to every subscriber as `endpoint.metadata`. The endpoint `id` can't start with `wh_`, which is reserved for the ids Trigger.dev generates.
+
+
 # Writing tasks: Overview
 Source: https://trigger.dev/docs/writing-tasks-introduction
 
@@ -65460,17 +67284,17 @@ Before digging deeper into the details of writing tasks, you should read the [fu
 > [card] [Walkthrough guides](/docs/guides/introduction)
 >
 > Detailed guides for setting up Trigger.dev with popular frameworks and services, including
-> Next.js, Remix, Supabase, Stripe and more.
+> Next.js, Remix, Supabase and more.
 
 > [card] [Example tasks](/docs/guides/introduction#example-tasks)
 >
 > Task code you can copy and paste to use in your own projects, including OpenAI, Vercel AI SDK,
-> Deepgram, FFmpeg, Puppeteer, Stripe, Supabase and more.
+> Deepgram, FFmpeg, Puppeteer, Supabase and more.
 
-> [card] [Webhook guides](/docs/guides/frameworks/webhooks-guides-overview)
+> [card] [Receiving webhooks](/docs/webhooks/providers)
 >
-> Learn how to trigger tasks from webhooks, including Next.js, Remix, Supabase and Stripe and
-> more.
+> Receive webhooks from more than 40 providers, including Stripe, GitHub, Firecrawl and Supabase,
+> on hosted endpoints.
 
 > [card] [Example projects](/docs/guides/introduction#example-projects)
 >

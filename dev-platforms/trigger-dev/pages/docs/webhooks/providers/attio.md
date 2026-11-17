@@ -1,0 +1,40 @@
+---
+title: "Attio webhooks"
+source: https://trigger.dev/docs/webhooks/providers/attio
+path: docs/webhooks/providers/attio
+---
+
+Receive and verify Attio webhooks with Trigger.dev. Check the HMAC-SHA256 signature in attio-signature and run a task for each Attio event.
+
+**`webhooks.attio()` verifies the HMAC-SHA256 signature Attio sends in `attio-signature` on every request.**
+
+```ts /trigger/attio.ts theme={"theme":"css-variables"}
+import { webhook, webhooks } from "@trigger.dev/sdk";
+
+export const attio = webhooks.endpoint.define({
+  id: "attio",
+  source: webhooks.attio(),
+});
+
+export const attioEvents = webhook({
+  id: "attio-events",
+  endpoint: attio,
+  onEvent: async ({ event }) => {
+    console.log(event);
+  },
+});
+```
+
+| Setting | Value |
+| - | - |
+| Source | `webhooks.attio()` |
+| Verification | HMAC-SHA256 in `attio-signature` |
+| Credential | Signing secret issued by Attio |
+| Attio docs | [Attio webhook docs](https://docs.attio.com/rest-api/guides/webhooks) |
+
+## Set up Attio
+
+1. Start `trigger dev` or deploy, then copy the endpoint's **Webhook URL** from the **Webhooks** page.
+2. In Attio's developer settings, open your integration and add a webhook with the webhook URL and the events your subscribers need. You can also create it with Attio's webhooks API.
+3. Attio generates the signing secret and returns it when the webhook is created; it's also shown in the developer settings. Copy it, then choose **Set signing secret** on the Trigger.dev endpoint.
+4. Send a test event from Attio, or use the endpoint's **Test** tab, and check the endpoint's **Deliveries** tab. See [Verify the connection](/docs/webhooks/connect#verify-the-connection) if nothing arrives.

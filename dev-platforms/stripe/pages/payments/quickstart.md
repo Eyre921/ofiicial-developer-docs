@@ -1472,7 +1472,7 @@ The client code is in `public/checkout.html` and `public/checkout.js` (the payme
 The client is a React app in `src/`: `App.jsx` sets up Stripe and routing, `CheckoutForm.jsx` is the payment form, and `Complete.jsx` is the return page.
 \## Set Price ID
 
-In the server code, replace `{{PRICE_ID}}` with the Price ID (`price_xxx`) of the product you created in the quickstart guide. Find it in your [Stripe test Dashboard under Products](https://dashboard.stripe.com/test/products).
+In the server code, replace `{{PRICE_ID}}` with the Price ID (`price_xxx`) of the product you created in the [quickstart guide](https://docs.stripe.com/payments/quickstart#line-items). Find it in your [Stripe test Dashboard under Products](https://dashboard.stripe.com/test/products).
 
 1. Build the server
 
