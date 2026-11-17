@@ -72,6 +72,7 @@ After you visit the `/_sentry-test` page, you can view and resolve the recorded 
 ## Other PHP Frameworks
 
 - [Laravel](https://docs.sentry.io/platforms/php/guides/laravel.md)
+- [Bref](https://docs.sentry.io/platforms/php/guides/bref.md)
 
 ## Topics
 

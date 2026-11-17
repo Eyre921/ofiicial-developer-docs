@@ -16,6 +16,7 @@
 - `directory` — [Stripe Directory](pages/directory.md) · [原文](https://docs.stripe.com/directory.md)
 - `js` — [Stripe.js](pages/js.md) · [原文](https://docs.stripe.com/js.md)
 - `payouts` — [Receive payouts](pages/payouts.md) · [原文](https://docs.stripe.com/payouts.md)
+- `products-prices` — [Overview](pages/products-prices.md) · [原文](https://docs.stripe.com/products-prices.md)
 - `projects` — [Stripe Projects CLI](pages/projects.md) · [原文](https://docs.stripe.com/projects.md)
 - `radar` — [Stripe Radar](pages/radar.md) · [原文](https://docs.stripe.com/radar.md)
 - `refunds` — [Refund and cancel payments](pages/refunds.md) · [原文](https://docs.stripe.com/refunds.md)
@@ -427,7 +428,6 @@
 
 ## products-prices
 
-- `products-prices/overview` — [Overview](pages/products-prices/overview.md) · [原文](https://docs.stripe.com/products-prices/overview.md)
 - `products-prices/pricing-models` — [Recurring pricing models](pages/products-prices/pricing-models.md) · [原文](https://docs.stripe.com/products-prices/pricing-models.md)
 
 ## radar

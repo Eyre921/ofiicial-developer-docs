@@ -34,7 +34,7 @@ To install the Kotlin Multiplatform SDK in your Compose Multiplatform project, y
 
 ```kotlin
 plugins {
-  id("io.sentry.kotlin.multiplatform.gradle") version "0.29.0"
+  id("io.sentry.kotlin.multiplatform.gradle") version "0.30.0"
 }
 ```
 

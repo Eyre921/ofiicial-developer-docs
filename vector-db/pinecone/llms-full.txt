@@ -1,3 +1,9 @@
+# Pinecone Docs
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://docs.pinecone.io/llms.txt instead.
+
+> Official documentation for Pinecone's trusted AI knowledge platform, including Pinecone Database, Pinecone Assistant, and Pinecone Nexus.
+
 # Build a knowledge retrieval agent
 Source: https://docs.pinecone.io/guides/agents/build-a-knowledge-agent
 
@@ -85235,6 +85241,40 @@ Source: https://docs.pinecone.io/api-reference/tasks/list-tasks-project-wide-pag
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks
 Task records across the project, newest first. Filter by workflow, state, or context, and page with `limit` plus `page` or `offset`.
 
+# Nexus architecture
+Source: https://docs.pinecone.io/guides/nexus/architecture
+
+Pinecone Nexus curates your sources into typed artifacts, then answers queries by writing code against a retrieval SDK.
+
+Pinecone Nexus curates your sources into artifacts before any query runs, so the information an answer needs is already organized. At query time, the model answers by writing Python against a retrieval SDK.
+
+## Data flow
+
+Your data flows through connectors into contexts. Tasks curate each context into knowledge, and agents query it through a single KnowQL interface.
+
+![The Pinecone Nexus architecture from top to bottom. Your data (docs and wikis, databases, APIs and SaaS, object storage, event streams, code repos) flows through connectors such as Google Drive, Box, Slack, GitHub, Notion, Confluence, and S3 into the Nexus knowledge engine. Inside a workspace, each dataset becomes a context of sources, a manifest, and knowledge, maintained by sandboxed tasks (import, curate, explore, optimize, search). A single KnowQL interface queries it to serve your AI application, from chatbots and Q\&A to search, agents, recommendations, and reporting.](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/nexus-architecture-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=968e4074b4b6b479bab6ebae47fecf73)
+
+## Curated artifacts
+
+In raw chunks, the same fact is scattered across pages, counting anything means reading everything, and relationships between documents are implicit. Curation reorganizes the corpus into artifacts, which are condensed, typed units of knowledge.
+
+![Raw chunks reorganized into curated artifacts](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/how-it-works-1-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=eef0fc626b3d0ce21845757867d5381f)
+
+* **Typed knowledge:** Curation produces summaries, topics, entities, events, glossaries, and per-document and per-page artifacts. Each one is small and describes itself, which makes it easier to retrieve.
+* **Structured tables:** Structured artifact types become queryable tables, so "how many" and "list every" questions get exact answers rather than estimates from prose.
+* **Relationships:** Typed edges connect artifacts, such as a document to the entities it mentions, so the model can walk the knowledge as a graph.
+
+## Answering with code
+
+At query time, the model [writes Python against a retrieval SDK](/guides/nexus/queries) to gather the evidence it needs, then answers from that evidence.
+
+![Question to generated retrieval code over artifacts to evidence to answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
+
+* **Combined operations:** One turn can read artifacts from disk, run semantic and keyword search, walk the graph, and query tables, rather than run a single top-k lookup.
+* **Selected evidence:** Search results stay in the sandbox as Python variables, and only what the code prints reaches the model. Every claim in the answer traces to a source.
+* **Iteration:** If the first pass doesn't find enough, the model refines its code and searches again, so a hard question gets more steps.
+
+
 # Deploy Nexus BYOC
 Source: https://docs.pinecone.io/guides/nexus/byoc/deploy
 
@@ -86138,7 +86178,7 @@ Source: https://docs.pinecone.io/guides/nexus/concepts
 
 Learn the key Pinecone Nexus terms, from sources and contexts to artifacts, sessions, and queries, and how they connect.
 
-Pinecone Nexus compiles your data into queryable knowledge that AI agents reach through a single interface. This page defines the key terms and how they fit together, from the sources you bring in to the answers agents get back. For a high-level diagram of how they connect, see [Nexus architecture](/guides/nexus/how-it-works).
+Pinecone Nexus compiles your data into queryable knowledge that AI agents reach through a single interface. This page defines the key terms and how they fit together, from the sources you bring in to the answers agents get back. For a high-level diagram of how they connect, see [Nexus architecture](/guides/nexus/architecture).
 
 ## Sources
 
@@ -86651,44 +86691,6 @@ When a run finishes, the context has everything a query needs, on disk, in the i
 * **The curation ledger:** Every processed source is recorded, so the next run computes its delta against it instead of starting over.
 
 
-# Nexus architecture
-Source: https://docs.pinecone.io/guides/nexus/how-it-works
-
-Pinecone Nexus distills curated artifacts for retrieval, then answers with code over a retrieval SDK.
-
-Most RAG systems chop documents into chunks and hope the right ones surface at query time. Pinecone Nexus does the hard work *up front*: it distills your sources into curated artifacts so the information an answer needs is already organized and easy to find, then answers questions by writing code over a retrieval SDK.
-
-## Data flow
-
-At a high level, your data flows through connectors into contexts, tasks curate each context into knowledge, and agents query it through a single KnowQL interface:
-
-![The Pinecone Nexus architecture from top to bottom. Your data (docs and wikis, databases, APIs and SaaS, object storage, event streams, code repos) flows through connectors such as Google Drive, Box, Slack, GitHub, Notion, Confluence, and S3 into the Nexus knowledge engine. Inside a workspace, each dataset becomes a context of sources, a manifest, and knowledge, maintained by sandboxed tasks (import, curate, explore, optimize, search). A single KnowQL interface queries it to serve your AI application, from chatbots and Q\&A to search, agents, recommendations, and reporting.](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/nexus-architecture-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=968e4074b4b6b479bab6ebae47fecf73)
-
-## Curated artifacts
-
-Raw chunks are noisy. The same fact is scattered across pages, counts require reading everything, and relationships are implicit. Curation reorganizes the corpus into artifacts, which are condensed, typed units of knowledge, so retrieval gets a head start.
-
-![Raw chunks reorganized into curated artifacts](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/how-it-works-1-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=eef0fc626b3d0ce21845757867d5381f)
-
-* **Pre-computed, typed knowledge.** Curation produces artifacts by kind: summaries, topics, entities, events, per-doc and per-page units. Each is small, focused, and describes itself, so the right one is easy to retrieve.
-* **Structure for exact answers.** Structured artifact types become queryable tables, so "how many" and "list every…" questions get exact answers instead of a guess from prose.
-* **Relationships made explicit.** Edge types connect artifacts (who mentions what, what happened when), turning a flat pile of text into a graph you can walk.
-
-## Answering with code
-
-Curated artifacts are only half the story. At query time the model doesn't just stuff chunks into a prompt. It writes Python against a retrieval SDK to gather exactly the evidence it needs, then answers from that.
-
-![Question to generated retrieval code over artifacts to evidence to answer](https://mintcdn.com/pinecone/EWF4J3kPxqsT4ELV/images/nexus/queries-light.svg?fit=max\&auto=format\&n=EWF4J3kPxqsT4ELV\&q=85\&s=fbb7818dc5c26a7ede110869e776d556)
-
-* **The model orchestrates retrieval.** One turn can read artifacts off disk, run semantic and keyword search, walk the relationship graph, and query structured tables, composing several operations instead of a single top-k lookup.
-* **Only evidence enters the prompt.** Raw tool output stays in the code sandbox. Just the distilled evidence the agent selected reaches the model. That keeps context small and answers grounded, and every claim traces to a source.
-* **It can iterate.** If the first pass isn't enough, the agent refines its code and searches again, so hard questions get more work, not a worse answer.
-
-## Benefits
-
-Distilling artifacts up front plus writing retrieval code at query time means higher-quality answers on large, messy corpora: exact counts, real relationships, and citations you can trust, without dumping everything into the model's context.
-
-
 # Connect an MCP client to Pinecone Nexus
 Source: https://docs.pinecone.io/guides/nexus/mcp-server
 
@@ -86734,7 +86736,7 @@ Source: https://docs.pinecone.io/guides/nexus/models
 
 Learn how Pinecone Nexus uses models for generation, curation, and retrieval, and how to choose the right one.
 
-Pinecone Nexus uses models at several points, and you choose them based on your deployment. You bring your own models in BYOC, or use a Pinecone-managed catalog during the invite-only trial. Everything on this page applies to both.
+Pinecone Nexus uses models at several points, and you choose them based on your deployment. You bring your own models in BYOC, or use a Pinecone-managed catalog during a [Nexus trial](https://www.pinecone.io/lp/nexus-public-preview). Everything on this page applies to both.
 
 ## Model roles
 
@@ -86756,11 +86758,13 @@ A call that doesn't name a model runs on its work area's default, so generation 
 
 > [!NOTE]
 >
-> In the invite-only Nexus trial, Pinecone sets the defaults from its managed catalog:
+> In a [Nexus trial](https://www.pinecone.io/lp/nexus-public-preview), Pinecone sets the defaults from its managed catalog:
 >
-> * **Query**: Claude Sonnet 5
-> * **Curation**: Gemini 3.5 Flash Lite
-> * **System**: Claude Sonnet 5
+> * **Query**: Claude Sonnet 5.5
+> * **Curation**: Gemini 3.8 Flash
+> * **System**: Claude Sonnet 5.5
+>
+> Rerank defaults to [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast) if your Pinecone plan includes it, and to [`bge-reranker-v2-m3`](/models/bge-reranker-v2-m3) otherwise. Starter and Builder plans don't include `cohere-rerank-4-fast` (see [rate limits](/reference/api/database-limits/rate-limits)).
 
 ## Choose a model per query
 
@@ -86809,7 +86813,7 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
 >
 > Contexts, manifests, artifacts, sessions, and the Query API
 
-> [card] [Architecture](/guides/nexus/how-it-works)
+> [card] [Architecture](/guides/nexus/architecture)
 >
 > Curated artifacts for retrieval, then answers composed over a retrieval SDK
 
@@ -86884,7 +86888,7 @@ A query is a single turn that takes a question and returns a grounded answer, an
 
 Two common ways to answer over a corpus have drawbacks. Agentic retrieval-augmented generation (RAG) issues many retrieval calls and spends tokens stitching the results together. A coding agent that greps and parses raw files is flexible, but it's slow and expensive, and its results are unreliable.
 
-A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Raw tool output never enters the model's context.
+A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Only what its code prints reaches the model.
 
 ## Query runtime
 
@@ -86897,16 +86901,18 @@ The Nexus runtime runs each query. It's a single generic Python image that the o
 
 ## Agent loop
 
-The model's primary tool is `run_python`, a persistent REPL. Variables carry over between calls, so in one block the model can find an artifact, read it, filter its sources, and pull a verbatim quote. It processes results in code and prints only what it needs.
+The model's primary tool is `run_python`, a persistent REPL. Variables carry over between calls, so in one block the model can find an artifact, read it, filter its sources, and pull a verbatim quote. It picks the hits it needs in code, then reads each one whole, so a clause, figure, or table row later in a passage isn't lost.
 
-For example, this block finds a summary artifact about acquisition terms, reads it, and searches that artifact's sources for the purchase price:
+For example, this block finds a summary artifact about acquisition terms, reads it, searches that artifact's sources for the purchase price, and prints the hits:
 
 ```python Python theme={null}
 art = await search_knowledge("acquisition terms", kind="summary")
 srcs = read_artifact(art[0].fields["artifact_name"]).sources
-for h in await search_in_sources(srcs, "purchase price"):
-    print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
+hits = await search_in_sources(srcs, "purchase price")
+show(hits)
 ```
+
+`show()` drops duplicate hits and prints each one's score, source path, page number, and full text. Each `run_python` result holds up to 25,000 characters. When the hits don't all fit, `show()` prints as many as it can and ends with the call that prints the rest. Code that slices a hit's `chunk_text` is blocked before it runs.
 
 If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
 
@@ -86947,6 +86953,7 @@ The Composable Retriever, the Nexus component that serves artifacts to queries, 
 The model writes the answer at the end of the agent loop. These rules shape what the answer draws on and how it cites sources.
 
 * **Evidence:** The model answers from the evidence its code surfaced rather than from whole documents, so it reasons over a small, relevant context.
+* **Tables and lists:** When you ask for a table or list, the model is prompted to write out every row the source has. If the table or list is too long to write out, it's prompted to say how many rows it left out.
 * **Citations:** Each citation names its source file, plus the pages and sections of the passages it drew on when they're available.
 * **Duplicate sources:** When several sources contain the same content and the answer draws on one of them, the model is prompted to say which one it used and why. It's also prompted to name each of the others by its full file name, so they're cited too. If your question names the source, the answer uses it without listing the others. With more than five other copies, the answer gives their count instead.
 * **Earlier-turn citations:** In a session, a follow-up answer can cite a file that an earlier turn retrieved, if the answer names it. These citations are file-level, so they include the `source` but no pages or sections. Their `grounding` is `carried` because the current turn didn't retrieve the file itself.

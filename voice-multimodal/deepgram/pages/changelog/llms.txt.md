@@ -11,12 +11,14 @@ path: changelog/llms.txt
 
 ## Entries
 
+- [November 17, 2026](https://developers.deepgram.com/changelog/2026/11/17.md)
 - [November 16, 2026](https://developers.deepgram.com/changelog/2026/11/16.md)
-- [November 12, 2026](https://developers.deepgram.com/changelog/2026/11/12.md)
+- [Deepgram CLI 0.5.0: dg speak gets --out-file, dg init needs --yes outside a terminal](https://developers.deepgram.com/changelog/2026/11/13.md): Changes how dg speak saves audio, how dg init confirms setup outside a terminal, and what dg listen -o prints.
+- [Deepgram CLI 0.4.1: npm install, dg mcp drops SSE](https://developers.deepgram.com/changelog/2026/11/12.md): Adds an npm install path, drops the dg mcp SSE transport, and narrows what a project config file can set.
 - [November 10, 2026](https://developers.deepgram.com/changelog/2026/11/10.md): Deepgram Self-Hosted release 261110 rejects unsupported language hints on Nova-3 Multilingual and Flux STT, changes how to verify callbacks, speeds up preloaded models, and improves Flux TTS shutdown and Portuguese formatting.
 - [October 27, 2026](https://developers.deepgram.com/changelog/2026/10/27.md)
 - [October 23, 2026](https://developers.deepgram.com/changelog/2026/10/23.md)
-- [October 20, 2026](https://developers.deepgram.com/changelog/2026/10/20.md): Deepgram Self-Hosted release 261020 moves Flux STT to a new Engine runtime that requires new Flux model files, adds mid-stream keyterm updates for Nova-3, makes Flux Force End Turn always available, and improves formatting and media handling.
+- [Deepgram CLI 0.4.0: Browser Login Stores an Expiring Credential](https://developers.deepgram.com/changelog/2026/10/20.md): Browser login now stores a time-limited credential, a breaking change for anyone who signed in before this release.
 - [October 19, 2026](https://developers.deepgram.com/changelog/2026/10/19.md)
 - [Update Nova-3 Keyterms Mid-Stream from the SDKs, Play Audio from the CLI, and Deepgram Skills v1.7.0](https://developers.deepgram.com/changelog/2026/10/12.md)
 - [October 8, 2026](https://developers.deepgram.com/changelog/2026/10/8.md)

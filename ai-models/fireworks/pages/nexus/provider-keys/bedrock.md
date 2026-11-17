@@ -28,16 +28,18 @@ Bedrock usage and charges stay in your AWS account.
 | GPT-6.1 Sol | `global.openai.gpt-6.1-sol` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html#model-card-openai-gpt-6-1-sol-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html#model-card-openai-gpt-6-1-sol-regional-availability) |
 | GPT-6 Astra | `global.openai.gpt-6-astra` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-regional-availability) |
 
-* Copy the Bedrock model ID exactly from AWS. Any geo or global profile, or ARN, that AWS lists for the model also works if your region can invoke it, unless your account uses US data residency (below).
+* Copy the Bedrock model ID exactly from AWS. Any geo or global profile, or ARN, that AWS lists for the model also works if your region can invoke it. Under US data residency the route's own region is what matters (below).
 * Supported regions: `us-east-1`, `us-east-2`, `us-west-1`, and `us-west-2`.
 
 ### US data residency
 
-If your Fireworks account enforces [US data residency](/accounts/data-residency), each route must keep requests in the US:
+If your Fireworks account enforces [US data residency](/accounts/data-residency), each route must be received in the US. The inference profile is yours to choose:
 
-* Use a `us.` inference profile, such as `us.anthropic.claude-opus-5-5`, or an in-Region model ID with no geo prefix.
-* `global.` profiles are rejected, even in a US region, because AWS can serve them from any region. Requests to that model return `403` with `reason_code: residency`.
-* A model with only a `global.` profile on Bedrock, such as GPT-6 Sol, can't be served on Bedrock for your account.
+* The route's **AWS region** must be a US region, such as `us-east-1`. AWS treats the endpoint region as where the request is received.
+* `us.` profiles and in-Region model IDs are served from US regions.
+* Your own `global.` profiles are also allowed. AWS can serve a `global.` profile from any region, so a request on one may be processed outside the US. To keep Bedrock in the US, use a `us.` or in-Region profile. Fireworks never selects a `global.` profile for you.
+* Other-geo profiles, such as `eu.`, `ca.`, and `us-gov.`, and any route whose region sits outside the US, are rejected. Requests that name that model return `403` with error code `region_unavailable`.
+* A Messages API request that sends `inference_geo: "us"` is not served on a `global.` route. Nexus Auto picks another model instead, and a request that names that Bedrock model returns `400` with error code `invalid_request`.
 
 Served model IDs (the ID in the response `model` field, and `routes[].nexus_model_id` in `firectl`):
 
@@ -315,7 +317,7 @@ Unbind and delete work the same as other providers. See [Delete a key](/nexus/pr
 
 * **AssumeRole is denied (IAM role):** the trust policy needs the exact Fireworks principal ARN and your Fireworks account ID as `sts:ExternalId`. The role name must start with `FireworksBedrock` and use the default IAM path.
 * **Model not found or region unavailable:** copy the exact model or profile ID from AWS, and confirm the region can invoke it.
-* **`403` with `reason_code: residency`:** your account uses US data residency and the route uses a `global.` or non-US profile. Switch it to a `us.` profile. See [US data residency](#us-data-residency).
+* **`403` with error code `region_unavailable`:** your account uses US data residency and the route uses an other-geo profile (`eu.`, `ca.`, `us-gov.`) or an endpoint outside the US. Use a `us-*` endpoint with a `us.`, in-Region, or `global.` profile. See [US data residency](#us-data-residency).
 * **Connected but traffic doesn't reach Bedrock:** make sure the route list isn't empty and requests use a route containing one of the configured served model IDs.
 
 - IAM changes can take a few seconds to apply.

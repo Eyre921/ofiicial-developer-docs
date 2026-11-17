@@ -120,7 +120,7 @@ The following parameters and fields are handled differently or are not supported
 * **`anthropic-version` header**: Not required. Fireworks ignores this header.
 * **`usage` field**: Included in both non-streaming and streaming responses. See [Token usage](#token-usage) for details.
 * **`service_tier`**: Supported. Set `service_tier: "priority"` to opt into [Priority tier](/serverless/serverless-modes).
-* **`inference_geo`**: Deprecated in favor of [data residency](/accounts/data-residency). Remove it from request bodies and headers.
+* **`inference_geo`**: Supported. Send `"us"` to serve one request only from US deployments of that model. If the model has none, the request returns `404` with an `inference_geo` error. For an account-wide rule, use [data residency](/accounts/data-residency) instead.
 
 ### Reasoning
 

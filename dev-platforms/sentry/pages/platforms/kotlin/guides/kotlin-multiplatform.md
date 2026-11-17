@@ -31,7 +31,7 @@ To install the Kotlin Multiplatform SDK, you need to add the following to your `
 
 ```kotlin
 plugins {
-  id("io.sentry.kotlin.multiplatform.gradle") version "0.29.0"
+  id("io.sentry.kotlin.multiplatform.gradle") version "0.30.0"
 }
 ```
 

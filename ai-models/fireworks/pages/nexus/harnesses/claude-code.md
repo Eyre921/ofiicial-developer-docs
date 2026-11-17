@@ -20,13 +20,13 @@ Plan access: Pro and Team don't include general access to open models. They use 
 
 **1. Install and sign in**
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 nexus login
 ```
 
@@ -72,6 +72,7 @@ To restore your original settings, run `nexus claude off`.
 - Nexus CLI never sends an Anthropic key saved with `nexus auto` to Claude Code. The Claude login covers Anthropic model turns.
 - Nexus Auto is supported on the Messages API. See [which models `auto` can use](/nexus/auto#which-models-auto-can-use).
 - Manual setup sends `x-anthropic-api-key` and `x-openai-api-key` headers itself. See [Manual setup (advanced)](#manual-setup-advanced).
+- The Claude login works with US [data residency](/accounts/data-residency#third-party-providers). Its Anthropic model turns follow Anthropic's own policies and your settings there, and may be processed outside the US. Fireworks model turns stay in the US.
 
 ## MCP and tools
 

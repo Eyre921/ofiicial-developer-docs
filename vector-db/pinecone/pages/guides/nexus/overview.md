@@ -18,7 +18,7 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
 >
 > Contexts, manifests, artifacts, sessions, and the Query API
 
-> [card] [Architecture](/guides/nexus/how-it-works)
+> [card] [Architecture](/guides/nexus/architecture)
 >
 > Curated artifacts for retrieval, then answers composed over a retrieval SDK
 

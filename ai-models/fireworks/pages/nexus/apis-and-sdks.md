@@ -59,7 +59,7 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 
 ## Limitations
 
-* With US [data residency](/accounts/data-residency), send Nexus Auto requests to `us.api.fireworks.ai`. Open-model turns run on [US-only Serverless](/serverless/us-only-serverless). Other regions must pin a model served in that region.
+* With US [data residency](/accounts/data-residency), send requests to `us.api.fireworks.ai`. Send `auto`, which is mapped to a US twin for you, or name a [US-only model ID](/serverless/us-only-serverless#available-models) such as `glm-5p3-us`. Other Fireworks model IDs are rejected. Anthropic, OpenAI, and Amazon Bedrock calls follow the region you configured with that provider, not this setting. US is the only region Nexus supports; other regions must pin a model served in that region.
 * Without an [Anthropic or OpenAI credential](/nexus/auto#provide-anthropic-and-openai-credentials), `auto` uses Fireworks open models.
 
 ## Troubleshooting
@@ -71,6 +71,8 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 | Response | Cause | Fix |
 | - | - | - |
 | Request rejected for data residency | The account's region isn't US, or the request didn't use the region's endpoint | Use `us.api.fireworks.ai` for US. For other regions, pin a model served in that region |
+| `403` `region_unavailable` | Nexus can't serve the model you named within the account's residency region, such as a Bedrock model whose route is outside the US | Send `auto`, or move the Bedrock route to a `us-*` endpoint |
+| `400` `invalid_request` mentioning `inference_geo` | The request's own `inference_geo: "us"` rules out the model you named | Remove `inference_geo`, set it to `"global"`, or choose a model with US serving |
 | Upstream provider authentication failure | The provider credential is wrong, revoked, or lacks permission | Check the Anthropic, OpenAI, or Amazon Bedrock credential and its permissions. The status and message come from that provider |
 
 ## See also

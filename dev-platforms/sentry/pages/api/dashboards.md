@@ -16,6 +16,7 @@ url: https://docs.sentry.io/api/dashboards/
 * #### [Edit an Organization's Custom Dashboard](https://docs.sentry.io/api/dashboards/edit-an-organizations-custom-dashboard.md)
 * #### [List a Custom Dashboard's Revisions](https://docs.sentry.io/api/dashboards/list-a-custom-dashboards-revisions.md)
 * #### [List an Organization's Custom Dashboards](https://docs.sentry.io/api/dashboards/list-an-organizations-custom-dashboards.md)
+* #### [List an Organization's Starred Custom Dashboards](https://docs.sentry.io/api/dashboards/list-an-organizations-starred-custom-dashboards.md)
 * #### [Restore a Custom Dashboard Revision](https://docs.sentry.io/api/dashboards/restore-a-custom-dashboard-revision.md)
 * #### [Retrieve an Organization's Custom Dashboard](https://docs.sentry.io/api/dashboards/retrieve-an-organizations-custom-dashboard.md)
 
@@ -26,6 +27,7 @@ url: https://docs.sentry.io/api/dashboards/
 - [Edit an Organization's Custom Dashboard](https://docs.sentry.io/api/dashboards/edit-an-organizations-custom-dashboard.md)
 - [List a Custom Dashboard's Revisions](https://docs.sentry.io/api/dashboards/list-a-custom-dashboards-revisions.md)
 - [List an Organization's Custom Dashboards](https://docs.sentry.io/api/dashboards/list-an-organizations-custom-dashboards.md)
+- [List an Organization's Starred Custom Dashboards](https://docs.sentry.io/api/dashboards/list-an-organizations-starred-custom-dashboards.md)
 - [Restore a Custom Dashboard Revision](https://docs.sentry.io/api/dashboards/restore-a-custom-dashboard-revision.md)
 - [Retrieve an Organization's Custom Dashboard](https://docs.sentry.io/api/dashboards/retrieve-an-organizations-custom-dashboard.md)
 

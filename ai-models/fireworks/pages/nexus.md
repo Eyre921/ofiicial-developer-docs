@@ -13,7 +13,7 @@ Use Nexus Auto in Claude Code, ChatGPT, Codex, and the tools you already use. Ev
 ## Who Nexus is for
 
 * **Developers:** a Nexus CLI command adds Nexus Auto to your tool's model picker next to the models you use today. A second command restores your original settings.
-* **Team admins:** connect an Anthropic, OpenAI, or Amazon Bedrock account once for the whole team, and view usage by model and by user. On Enterprise, admins can also cap each person's spend on Fireworks models.
+* **Team admins:** connect an Anthropic, OpenAI, or Amazon Bedrock account once for the whole team, and view usage by model and by user. On Enterprise, admins can also cap each person's spend on Fireworks models, and keep Fireworks inference in the US with [data residency](/nexus/enterprise-controls#data-residency).
 
 Nexus has its own app at [nexus.fireworks.ai](https://nexus.fireworks.ai), with Pro, Team, and Enterprise [plans](/nexus/plans). A Nexus account is separate from a Fireworks platform account.
 
@@ -43,3 +43,4 @@ Nexus components:
 * [Harness support](/nexus/harnesses): setup steps and answers for Claude Code, ChatGPT, Codex, Claude Desktop, Cursor IDE, VS Code, OpenCode, Pi, Copilot, and DeepSeek Harness.
 * [Model providers](/nexus/provider-keys): store Anthropic, OpenAI, or Amazon Bedrock credentials once, so developers only need a Fireworks key.
 * [Spend limits](/nexus/usage-limits): set an account default, group limits, and per-user caps on Fireworks serverless spend.
+* [Enterprise Controls](/nexus/enterprise-controls): SSO, SCIM, roles, model access, and data residency. Residency covers models Fireworks serves, `auto` included, and supports US only; Anthropic, OpenAI, and Amazon Bedrock calls run on your own provider account, in the region you configured with them.

@@ -15,6 +15,8 @@ Deploying Deepgram on Amazon Web Services (AWS) requires some preparation. In th
 
 Make sure you've completed the requirements in the [Self-Hosted Introduction](/docs/self-hosted-introduction).
 
+The sample `ClusterConfig` runs the Engine on `g6.2xlarge` instances, which have one NVIDIA L4 GPU. Before you choose a different instance type, check [Model and GPU Compatibility](/docs/self-hosted-deployment-environments#model-and-gpu-compatibility) to see which Deepgram models run on which NVIDIA GPUs. For example, Flux STT doesn't run on the T4 GPUs in `g4dn` instances. Every supported GPU requires NVIDIA driver `>=580` with the **open** kernel modules. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms).
+
 ## `kubectl`
 
 The Kubernetes command-line tool, `kubectl`, allows you to run commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.
@@ -295,7 +297,7 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
              fileSystemId: fs-xxxxxxxxxxxxxxxx # Replace with your EFS ID
    ```
 
-5. Your Deepgram Account Representative will have provided you with a list of links to models for inference (file extension `.dg`). In your `values.yaml` file, insert each of these model links in the `engine.modelManager.models.links` list.
+5. Your Deepgram Account Representative will have provided you with a list of links to models for inference (file extension `.dg`). In your `values.yaml` file, insert each of these model links in the `engine.modelManager.models.add` list.
 
    **`yaml`**
 
@@ -303,12 +305,16 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    engine:
      modelManager:
        models:
-         links:
+         add:
            - https://link-to-model-1.dg # Replace these links with those provided to you
            - https://link-to-model-2.dg #   by your Deepgram Account Representative.
            - https://link-to-model-3.dg
            - ...
    ```
+
+   > **Info**
+   >
+   > The earlier `engine.modelManager.models.links` field is deprecated. Use `models.add` instead.
 
 6. In your `values.yaml` file, insert the AWS Role ARN to be used by the Cluster Autoscaler. If needed, adjust the cluster name and region as well.
 
@@ -339,6 +345,10 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
      # Replace if needed
      awsRegion: "us-west-2"
    ```
+
+   > **Info**
+   >
+   > The sample `values.yaml` turns off the NVIDIA GPU Operator's driver and toolkit installation (`gpu-operator.driver.enabled: false` and `gpu-operator.toolkit.enabled: false`), because the Amazon Linux 2023 accelerated AMI used by the Engine node group bundles them. Confirm that the AMI's NVIDIA driver is version `>=580` with the open kernel modules. If you use a different AMI, such as Ubuntu, remove those two settings so the GPU Operator installs a compliant driver.
 
 7. Install the Helm Chart with your `values.yaml` file.
 

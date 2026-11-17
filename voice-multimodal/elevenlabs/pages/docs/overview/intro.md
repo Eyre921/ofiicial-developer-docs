@@ -316,6 +316,20 @@ Same accuracy on everyday speech as Scribe v2
 
 Same features, languages, pricing, and API as Scribe v2
 
+#### [Scribe v3 Live Medical](/docs/overview/models#scribe-v3-live-medical)
+
+Real-time speech recognition for healthcare voice agents (early access)
+
+Available in ElevenAgents only
+
+Built for patient, member and provider calls
+
+Support for 90+ languages
+
+Turn prediction from conversation context
+
+ASR keywords for provider, clinic and drug names
+
 [Explore all](/docs/overview/models)
 
 † Median, excluding application & network latency. See [how latency is measured](/docs/eleven-api/concepts/latency-methodology).

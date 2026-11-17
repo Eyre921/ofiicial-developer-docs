@@ -9,7 +9,11 @@ path: developer-tools/cli/text-intelligence
 
 # Text Intelligence commands
 
+> Deepgram CLI Text Intelligence: analyze text for sentiment, topics, summaries, and intents with dg read.
+
 ## Basic analysis
+
+With no feature flag, `dg read` runs all four analyses: summary, sentiment, topics, and intents.
 
 ```shell
 dg read "Customer called about a billing issue."
@@ -28,6 +32,14 @@ cat transcript.txt | dg read
 echo "Your text here" | dg read
 ```
 
+## Language
+
+`-l` (`--language`) sets the text's language; it defaults to `en`.
+
+```shell
+dg read --file document.txt --language en
+```
+
 ## Available features
 
 ### Sentiment analysis
@@ -36,7 +48,7 @@ echo "Your text here" | dg read
 dg read --file document.txt --sentiment
 ```
 
-Output includes overall document sentiment and its score.
+Returns overall document sentiment and its score.
 
 ### Topic detection
 
@@ -71,20 +83,26 @@ dg read --file document.txt --sentiment --topics --summarize --intents
 ## Output format
 
 ```shell
-dg -o json read --file document.txt    # JSON
-dg -o yaml read --file document.txt    # YAML
-dg -o table read --file document.txt   # Formatted terminal table
-dg -o csv read --file document.txt     # CSV
+# JSON
+dg -o json read --file document.txt
+# YAML
+dg -o yaml read --file document.txt
+# Formatted terminal table
+dg -o table read --file document.txt
+# CSV
+dg -o csv read --file document.txt
 ```
 
-`-o` belongs to `dg` itself, so it goes before the subcommand name. Without it, `dg read` prints human-readable output.
+Without `-o`, `dg read` prints human-readable output. `-o` works before the subcommand (`dg -o json read ...`) or after it on most commands (`dg read ... -o json`). On `dg speak`, `-o`/`--output` after the subcommand still sets the output file path but is deprecated; use `--out-file` instead. On `dg plugin` and `dg skills` subcommands, put `-o` before the subcommand.
 
 ## Use cases
 
 ### Summarize transcripts
 
+Pipe the transcript text, extracted from the JSON payload, into `dg read`:
+
 ```shell
-dg listen meeting.mp3 | dg read --summarize
+dg -o json listen meeting.mp3 2>/dev/null | jq -r '.results.channels[0].alternatives[0].transcript' | dg read --summarize
 ```
 
 ### Analyze customer feedback

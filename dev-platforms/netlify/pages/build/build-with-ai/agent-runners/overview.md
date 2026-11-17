@@ -21,6 +21,8 @@ Agent Runners offer agents unique advantages on Netlify's platform with the foll
    - [create a new project](/start/quickstarts/create-new-project-with-ai-agent/) with an AI agent from your own prompt or a starter prompt 
    - no technical background needed to run the most powerful agents for building
    - access to your Netlify project's context, environment variables, build settings, and deployment pipeline
+   - help checking your domains, deploys, forms, Netlify Identity users, and logs
+   - [Connectors](/build/build-with-ai/agent-runners/build-with-connectors/) that bring in context and services you already use, such as Linear, Notion, and Stripe, without local setup
    - no additional setup or extra accounts needed
    - quick access from your mobile phone
    - staging environments to preview changes
@@ -42,12 +44,17 @@ Agent Runners are optimized for the following use cases:
    - Jumpstart platform primitives with automated setup
    - Jumpstart customizable features with code, such as Netlify forms
    - Quick new pages, such as landing pages, maintenance pages, 404 pages, etc.
+   - Changes built from requirements, data, and services in tools you already use, such as a Linear issue, a Notion spec, or a Snowflake dataset
 
 Get more ideas for use cases and practical guidance from our [prompt examples](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners).
 
 You can use Agent Runners to make changes to projects you published using the Netlify drag and drop publisher. Learn more about [iterating on projects published with Netlify Drop](/start/quickstarts/netlify-drop-quickstart/).
 
 > **Video**: [Watch video](https://www.youtube.com/embed/v774j5xLPtA?si)
+
+## Connect the services you already use
+
+With Connectors, your agent can work with third-party services such as Linear, Notion, Stripe, and Snowflake. Ask your agent to use a service, and it prompts you to connect your own account. Then it uses that service as it builds, so you don't need to copy context into your prompt or set up API keys before you can test. Learn more in [Build with connectors](/build/build-with-ai/agent-runners/build-with-connectors/).
 
 ## Supported AI agents
 
@@ -107,6 +114,26 @@ Both modes are available for all supported AI agents.
 In both modes, your agent can pause and ask you a question when your prompt leaves open a decision that would change the result. Learn more about [answering questions from your agent](/build/build-with-ai/agent-runners/make-changes-with-agent-runners#2-respond-to-any-questions-from-your-agent).
 
 Learn more about starting a run in each mode in [Make changes with Agent Runners](/build/build-with-ai/agent-runners/make-changes-with-agent-runners/#1-start-an-agent-run).
+
+## Project details available to agents
+
+Agent Runners give every agent access to more of your project's configuration and activity on Netlify, so an agent can help you check your setup and troubleshoot issues beyond your code. There's nothing to set up. Your next agent run can use these capabilities right away.
+
+Every agent run can help with the following:
+
+   - **Domains**: Find your team's domains and check whether DNS changes have taken effect. Learn more about [checking DNS propagation](/manage/domains/troubleshooting/check-dns-propagation/).
+   - **Deploys**: Find failed deploys and investigate what went wrong. Learn more about [fixing a failed deploy](/resources/troubleshooting/fix-a-failed-deploy/).
+   - **Forms**: Read form submissions and review form usage. Learn more about [form submissions](/manage/forms/submissions/).
+   - **Netlify Identity users**: Look up a user in your project, for example, to check whether a recovery email went out. Learn more about [managing Identity users](/manage/security/secure-access-to-sites/identity/manage-existing-users/).
+   - **Logs**: Review [function and edge function logs](/manage/monitoring/logs/) to troubleshoot issues.
+
+For example, try asking one of the following:
+
+> Why did my last deploy fail?
+
+> Have the changes to my domain taken effect yet?
+
+For more prompt ideas, check out [Ask about your project's configuration and activity](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners/#ask-about-your-projects-configuration-and-activity).
 
 ## Requirements
 

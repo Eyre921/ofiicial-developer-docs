@@ -5964,7 +5964,7 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-11-16.
+ZDR endpoint catalog checked: 2026-11-17.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
@@ -6329,7 +6329,6 @@ ZDR endpoint catalog checked: 2026-11-16.
 
 ## NVIDIA[​](#nvidia "Direct link to NVIDIA")
 
-* `nvidia/llama-nemotron-rerank-vl-1b-v2:free`
 * `nvidia/nemotron-3-embed-1b:free`
 * `nvidia/nemotron-3-nano-30b-a3b` · ZDR
 * `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`
@@ -6426,6 +6425,7 @@ ZDR endpoint catalog checked: 2026-11-16.
 * `bytedance/seedance-2.0-fast`
 * `bytedance/seedance-2.0-mini`
 * `bytedance/seedance-2.5`
+* `bytedance/seedance-2.5-flash`
 * `bytedance/ui-tars-1.5-7b` · ZDR
 
 ## IBM Granite[​](#ibm-granite "Direct link to IBM Granite")
@@ -6497,6 +6497,8 @@ ZDR endpoint catalog checked: 2026-11-16.
 * `liquid/d1` · ZDR
 * `liquid/d1-ultra` · ZDR
 * `liquid/d1.1` · ZDR
+* `liquid/d1.2` · ZDR
+* `liquid/d1.2-ultra` · ZDR
 * `liquid/lfm-2.5-24b-a2b` · ZDR
 * `liquid/lfm-3-1.7b` · ZDR
 * `liquid/lfm-3-1.7b:free`
@@ -7522,7 +7524,7 @@ Skills are installed into `.agents/skills/` in your project and are automaticall
 | [`/convex-add`](https://github.com/convex/agent-skills/blob/main/skills/convex-add/SKILL.md)                                     | Add a capability to the CURRENT Convex app — consults the served Convex capability catalog for always-current procedures (billing, crons, auth, agent, search, …); falls back to built-in hosting or @convex-dev component search.                                                             |
 | [`/convex-advisor`](https://github.com/convex/agent-skills/blob/main/skills/convex-advisor/SKILL.md)                             | Read the Convex deployment's 72h insights (read limits, OCC contention), root-cause each event in code, report evidence-backed perf/cost findings with fixes.                                                                                                                                  |
 | [`/convex-agent`](https://github.com/convex/agent-skills/blob/main/skills/convex-agent/SKILL.md)                                 | Add an AI agent / RAG backend (@convex-dev/agent) to the Convex app.                                                                                                                                                                                                                           |
-| [`/convex-auth`](https://github.com/convex/agent-skills/blob/main/skills/convex-auth/SKILL.md)                                   | Add authentication (passkeys/OAuth) to the current Convex app, including the auth.config.ts wiring.                                                                                                                                                                                            |
+| [`/convex-auth`](https://github.com/convex/agent-skills/blob/main/skills/convex-auth/SKILL.md)                                   | Add Convex Auth sign-in (passkeys by default, other methods on request) to a new or existing Convex app, including auth.config.ts.                                                                                                                                                             |
 | [`/convex-authz`](https://github.com/convex/agent-skills/blob/main/skills/convex-authz/SKILL.md)                                 | Audit and harden a Convex app's authorization: identity-from-arg impersonation, missing per-document ownership checks, public queries leaking data by a client-supplied id, and writes into a parent/container the caller doesn't own.                                                         |
 | [`/convex-backup`](https://github.com/convex/agent-skills/blob/main/skills/convex-backup/SKILL.md)                               | Set up Convex backups and run a restore DRILL that proves recovery — snapshot, restore into a throwaway preview, assert the data came back — plus a schedule matched to your RPO and a gated recovery runbook.                                                                                 |
 | [`/convex-billing`](https://github.com/convex/agent-skills/blob/main/skills/convex-billing/SKILL.md)                             | Add Stripe billing/payments to the Convex app via @convex-dev/stripe (checkout + webhook + gating).                                                                                                                                                                                            |
@@ -23476,7 +23478,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-20 "Direct link to Defined in")
 
-[server/components/index.ts:46](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L46)
+[server/components/index.ts:48](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L48)
 
 ***
 
@@ -23496,7 +23498,7 @@ A [FunctionHandle](/api/modules/server.md#functionhandle) with the type semantic
 
 #### Defined in[​](#defined-in-21 "Direct link to Defined in")
 
-[server/components/index.ts:57](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L57)
+[server/components/index.ts:59](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L59)
 
 ***
 
@@ -23526,7 +23528,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[server/components/index.ts:103](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L103)
+[server/components/index.ts:105](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L105)
 
 ***
 
@@ -23562,7 +23564,7 @@ const app = defineApp({
 
 #### Defined in[​](#defined-in-23 "Direct link to Defined in")
 
-[server/components/index.ts:235](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L235)
+[server/components/index.ts:395](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L395)
 
 ***
 
@@ -23582,7 +23584,7 @@ Required entries get the validator's inferred string type; optional entries are 
 
 #### Defined in[​](#defined-in-24 "Direct link to Defined in")
 
-[server/components/index.ts:248](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L248)
+[server/components/index.ts:408](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L408)
 
 ***
 
@@ -23600,7 +23602,7 @@ Extract the typed environment from an [AppDefinition](/api/modules/server.md#app
 
 #### Defined in[​](#defined-in-25 "Direct link to Defined in")
 
-[server/components/index.ts:285](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L285)
+[server/components/index.ts:445](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L445)
 
 ***
 
@@ -23628,7 +23630,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-26 "Direct link to Defined in")
 
-[server/components/index.ts:297](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L297)
+[server/components/index.ts:457](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L457)
 
 ***
 
@@ -23638,7 +23640,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-27 "Direct link to Defined in")
 
-[server/components/index.ts:789](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L789)
+[server/components/index.ts:1004](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1004)
 
 ***
 
@@ -23648,7 +23650,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-28 "Direct link to Defined in")
 
-[server/components/index.ts:829](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L829)
+[server/components/index.ts:1044](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1044)
 
 ***
 
@@ -25522,7 +25524,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-113 "Direct link to Defined in")
 
-[server/components/index.ts:76](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L76)
+[server/components/index.ts:78](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L78)
 
 ***
 
@@ -25555,7 +25557,7 @@ Optionally define typed environment variables that will be available via the `en
 
 #### Defined in[​](#defined-in-114 "Direct link to Defined in")
 
-[server/components/index.ts:686](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L686)
+[server/components/index.ts:860](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L860)
 
 ***
 
@@ -25613,7 +25615,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-115 "Direct link to Defined in")
 
-[server/components/index.ts:749](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L749)
+[server/components/index.ts:964](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L964)
 
 ***
 
@@ -25627,7 +25629,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-116 "Direct link to Defined in")
 
-[server/components/index.ts:827](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L827)
+[server/components/index.ts:1042](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1042)
 
 ***
 
@@ -49655,6 +49657,38 @@ Note: This configuration is not supported when running the self-hosted Convex ba
 
 When pushing a new Node.js version to the server, the new code for your functions may be executed in the old Node.js version for up a few minutes.
 
+## Configuring Node.js action memory (beta)[​](#configuring-nodejs-action-memory "Direct link to Configuring Node.js action memory (beta)")
+
+Configurable Node.js action memory is in beta
+
+Configurable Node.js action memory<!-- --> <!-- -->is<!-- --> currently a [beta feature](/production/state/.md#beta-features). If you have feedback or feature requests, [let us know on Discord](https://convex.dev/community)!
+
+Node actions run with 512 MiB of memory by default. To give them more, set `node.defaultMemoryMb` to `2048`. The setting applies to every Node action in the deployment, including those in components, and they bill [action compute](/production/state/limits.md) at that size. Convex runtime actions keep their own limits.
+
+Convex version requirement
+
+To set the memory size, you must use the `convex` NPM package version 1.51.0-alpha.0 or later.
+
+convex.json
+
+```
+{
+
+  "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
+  "node": {
+
+    "defaultMemoryMb": 2048
+
+  }
+
+}
+```
+
+Note: The self-hosted Convex backend only supports `512`.
+
+For a few minutes after you push a new memory size, Node actions may run with more memory than you set.
+
 ## Using static code generation (beta)[​](#using-static-code-generation-beta "Direct link to Using static code generation (beta)")
 
 Convex's code generation heavily relies on TypeScript's type inference. This makes updates snappy and jump-to-definition work for the `api` and `internal` objects, but it often slows down with large codebases.
@@ -61996,6 +62030,10 @@ On the Free/Starter plan, up to two backups can stored per deployment at a time.
 ### How are they priced?[​](#how-are-they-priced "Direct link to How are they priced?")
 
 Backups uses database bandwidth to read all documents, and file bandwidth to include user files. The generation and storage of the backup itself is billed with the same bandwidth and storage pricing as user file storage. You can observe this bandwidth and storage cost in the [usage dashboard](https://dashboard.convex.dev/team/settings/usage). Check the [limits docs](/production/state/limits.md#database) for pricing details.
+
+### Where are cloud backups stored?[​](#where-are-cloud-backups-stored "Direct link to Where are cloud backups stored?")
+
+Cloud backups are stored in the same [region](/production/regions.md) as your deployment.
 
 ### What does the backup not contain?[​](#what-does-the-backup-not-contain "Direct link to What does the backup not contain?")
 
@@ -76183,19 +76221,19 @@ Applied to every [Convex value](/database/types.md), including values in documen
 
 ## Functions[​](#functions "Direct link to Functions")
 
-|                                                                  | Free/Starter                                                                                            | Professional                                                | Business                                                                   | Enterprise                                                                 | Notes                                                                                                         |
-| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Function calls                                                   | Free: 1,000,000/month total<br />Starter: 1,000,000/month included;<br />$2.20 per additional 1,000,000 | 25,000,000/month included;<br />$2 per additional 1,000,000 | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Explicit client calls, scheduled executions, subscription updates, and file accesses count as function calls. |
-| Query / mutation compute                                         | Free                                                                                                    | Free                                                        | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Query and mutation compute is only billed on dedicated deployments.                                           |
-| Action compute                                                   | Free: 20 GB-hours/month total<br />Starter: 20 GB-hours/month included;<br />$0.33/GB-hour additional   | 250 GB-hours included;<br />$0.30/GB-hour additional        | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: 64 MiB RAM.<br />Node.js runtime: 512 MiB RAM.                                                |
-| Code size                                                        | 230 MB                                                                                                  | 230 MB                                                      | 230 MB                                                                     | 230 MB                                                                     | Per deployment. See [bundling limits](/functions/bundling.md#code-size-limits).                               |
-| Function argument size                                           | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     | Node actions only support arguments up to 5MiB.                                                               |
-| Function return value size                                       | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     |                                                                                                               |
-| HTTP action response size                                        | 100 MiB                                                                                                 | 100 MiB                                                     | 100 MiB                                                                    | 100 MiB                                                                    | There is no specific limit on request size                                                                    |
-| Length of a console.log line                                     | 32 KiB                                                                                                  | 32 KiB                                                      | 32 KiB                                                                     | 32 KiB                                                                     |                                                                                                               |
-| Log lines per query / mutation                                   | 256                                                                                                     | 256                                                         | 256                                                                        | 256                                                                        | Additional logs will be dropped.                                                                              |
-| Log lines per action                                             | 1024                                                                                                    | 1024                                                        | 1024                                                                       | 1024                                                                       | Additional logs will be dropped.                                                                              |
-| [Log streaming](/production/integrations/log-streams/.md) limits | 4096 logs, flushed every 5 seconds                                                                      | 4096 logs, flushed every 5 seconds                          | 4096 logs, flushed every 5 seconds                                         | 4096 logs, flushed every 5 seconds                                         | How many logs can be buffered when streaming                                                                  |
+|                                                                  | Free/Starter                                                                                            | Professional                                                | Business                                                                   | Enterprise                                                                 | Notes                                                                                                                                                              |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Function calls                                                   | Free: 1,000,000/month total<br />Starter: 1,000,000/month included;<br />$2.20 per additional 1,000,000 | 25,000,000/month included;<br />$2 per additional 1,000,000 | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Explicit client calls, scheduled executions, subscription updates, and file accesses count as function calls.                                                      |
+| Query / mutation compute                                         | Free                                                                                                    | Free                                                        | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Query and mutation compute is only billed on dedicated deployments.                                                                                                |
+| Action compute                                                   | Free: 20 GB-hours/month total<br />Starter: 20 GB-hours/month included;<br />$0.33/GB-hour additional   | 250 GB-hours included;<br />$0.30/GB-hour additional        | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: 64 MiB RAM.<br />Node.js runtime: 512 MiB RAM, or 2048 MiB with [`node.defaultMemoryMb`](/config/convex.json.md#configuring-nodejs-action-memory). |
+| Code size                                                        | 230 MB                                                                                                  | 230 MB                                                      | 230 MB                                                                     | 230 MB                                                                     | Per deployment. See [bundling limits](/functions/bundling.md#code-size-limits).                                                                                    |
+| Function argument size                                           | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     | Node actions only support arguments up to 5MiB.                                                                                                                    |
+| Function return value size                                       | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     |                                                                                                                                                                    |
+| HTTP action response size                                        | 100 MiB                                                                                                 | 100 MiB                                                     | 100 MiB                                                                    | 100 MiB                                                                    | There is no specific limit on request size                                                                                                                         |
+| Length of a console.log line                                     | 32 KiB                                                                                                  | 32 KiB                                                      | 32 KiB                                                                     | 32 KiB                                                                     |                                                                                                                                                                    |
+| Log lines per query / mutation                                   | 256                                                                                                     | 256                                                         | 256                                                                        | 256                                                                        | Additional logs will be dropped.                                                                                                                                   |
+| Log lines per action                                             | 1024                                                                                                    | 1024                                                        | 1024                                                                       | 1024                                                                       | Additional logs will be dropped.                                                                                                                                   |
+| [Log streaming](/production/integrations/log-streams/.md) limits | 4096 logs, flushed every 5 seconds                                                                      | 4096 logs, flushed every 5 seconds                          | 4096 logs, flushed every 5 seconds                                         | 4096 logs, flushed every 5 seconds                                         | How many logs can be buffered when streaming                                                                                                                       |
 
 ## Deployment Classes[​](#deployment-classes "Direct link to Deployment Classes")
 

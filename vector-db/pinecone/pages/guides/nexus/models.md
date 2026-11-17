@@ -6,7 +6,7 @@ path: guides/nexus/models
 
 Learn how Pinecone Nexus uses models for generation, curation, and retrieval, and how to choose the right one.
 
-Pinecone Nexus uses models at several points, and you choose them based on your deployment. You bring your own models in BYOC, or use a Pinecone-managed catalog during the invite-only trial. Everything on this page applies to both.
+Pinecone Nexus uses models at several points, and you choose them based on your deployment. You bring your own models in BYOC, or use a Pinecone-managed catalog during a [Nexus trial](https://www.pinecone.io/lp/nexus-public-preview). Everything on this page applies to both.
 
 ## Model roles
 
@@ -28,11 +28,13 @@ A call that doesn't name a model runs on its work area's default, so generation 
 
 > [!NOTE]
 >
-> In the invite-only Nexus trial, Pinecone sets the defaults from its managed catalog:
+> In a [Nexus trial](https://www.pinecone.io/lp/nexus-public-preview), Pinecone sets the defaults from its managed catalog:
 >
-> * **Query**: Claude Sonnet 5
-> * **Curation**: Gemini 3.5 Flash Lite
-> * **System**: Claude Sonnet 5
+> * **Query**: Claude Sonnet 5.5
+> * **Curation**: Gemini 3.8 Flash
+> * **System**: Claude Sonnet 5.5
+>
+> Rerank defaults to [`cohere-rerank-4-fast`](/models/cohere-rerank-4-fast) if your Pinecone plan includes it, and to [`bge-reranker-v2-m3`](/models/bge-reranker-v2-m3) otherwise. Starter and Builder plans don't include `cohere-rerank-4-fast` (see [rate limits](/reference/api/database-limits/rate-limits)).
 
 ## Choose a model per query
 

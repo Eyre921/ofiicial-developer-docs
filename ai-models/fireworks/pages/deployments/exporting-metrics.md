@@ -144,5 +144,5 @@ These gauge metrics show average resource usage:
 * `generator_kv_blocks_fraction:avg_by_deployment`: Average fraction of KV cache blocks in use
 * `generator_kv_slots_fraction:avg_by_deployment`: Average fraction of KV cache slots in use
 * `generator_model_forward_time:avg_by_deployment`: Average time spent in model forward pass
-* `requests_coordinator_concurrent_count:avg_by_deployment`: Average number of concurrent requests
+* `requests_coordinator_concurrent_count:avg_by_deployment`: Average number of concurrent requests. On deployments served by vLLM or SGLang, this counts requests the engine is actively running and does not include requests queued inside the engine
 * `prefiller_prompt_cache_ttl:avg_by_deployment`: Average prompt cache time-to-live

@@ -109,16 +109,14 @@ Don’t send an Account Link URL directly in an offer email because the Account 
 
 This way, the connected account always receives a fresh, valid Account Link regardless of when they open the email.
 
-#### curl
-
-```bash
+```curl
+# refresh_url: Stripe redirects the connected account to this URL if the Account Link is expired, already visited, or otherwise invalid
+# return_url: Stripe redirects the connected account to this URL after it completes the linked flow
 curl https://api.stripe.com/v1/account_links \
-  -u <<YOUR_SECRET_KEY>>: \
+  -u "<<YOUR_SECRET_KEY>>:" \
   -d account=acct_123 \
-  # The URL the connected account will be redirected to if the account link is expired, has been previously-visited, or is otherwise invalid.
-  -d refresh_url="https://example.com/reauth" \
-  # The URL the connected account will be redirected to after completing the linked flow.
-  -d return_url="https://example.com/thanks" \
+  --data-urlencode "refresh_url=https://example.com/reauth" \
+  --data-urlencode "return_url=https://example.com/thanks" \
   -d type=capital_financing_offer
 ```
 

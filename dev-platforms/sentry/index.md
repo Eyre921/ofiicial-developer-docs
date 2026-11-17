@@ -1,6 +1,6 @@
 # dev-platforms/sentry 文档索引
 
-> 共 238 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 239 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -202,6 +202,7 @@
 - `platforms/native/guides/wasm` — [WebAssembly](pages/platforms/native/guides/wasm.md) · [原文](https://docs.sentry.io/platforms/native/guides/wasm.md)
 - `platforms/nintendo-switch` — [Nintendo Switch](pages/platforms/nintendo-switch.md) · [原文](https://docs.sentry.io/platforms/nintendo-switch.md)
 - `platforms/php` — [PHP](pages/platforms/php.md) · [原文](https://docs.sentry.io/platforms/php.md)
+- `platforms/php/guides/bref` — [Bref](pages/platforms/php/guides/bref.md) · [原文](https://docs.sentry.io/platforms/php/guides/bref.md)
 - `platforms/php/guides/laravel` — [Laravel](pages/platforms/php/guides/laravel.md) · [原文](https://docs.sentry.io/platforms/php/guides/laravel.md)
 - `platforms/php/guides/symfony` — [Symfony](pages/platforms/php/guides/symfony.md) · [原文](https://docs.sentry.io/platforms/php/guides/symfony.md)
 - `platforms/playstation` — [PlayStation](pages/platforms/playstation.md) · [原文](https://docs.sentry.io/platforms/playstation.md)

@@ -1,4 +1,7 @@
 # Data residency
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://docs.fireworks.ai/llms.txt instead.
+
 Source: https://docs.fireworks.ai/accounts/data-residency
 
 Restrict inference and dedicated training for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
@@ -17,6 +20,32 @@ It does not change how your requests are routed. Turning it on will not move exi
 
 Residency applies **account-wide**: every API key on the account is restricted to the selected region.
 
+## What residency covers
+
+Residency sets where Fireworks serves. For a model that runs on a third-party provider, Fireworks follows the region you have already configured with that provider.
+
+| Traffic | Covered | Governed by |
+| :- | :- | :- |
+| Fireworks Serverless | Yes | The selected region |
+| Fireworks dedicated deployments | Yes | Placement in the selected region |
+| Dedicated training jobs | Yes | The selected region |
+| [Nexus](/nexus) calls to a Fireworks open model, [`auto`](/nexus/auto) included | Yes | The region's Serverless |
+| Anthropic, OpenAI, and Amazon Bedrock on your own [provider account](/nexus/provider-keys) | Follows your provider setting | Your own configuration with that provider |
+
+### Third-party providers
+
+Fireworks picks no region for a third-party provider. It follows the setting on your own account with them, which differs by provider:
+
+| Provider | How the region is decided |
+| :- | :- |
+| Anthropic | Fireworks sends no region, so Anthropic applies your workspace default |
+| OpenAI | OpenAI has no default, and a key only works on its project's host, so Fireworks detects it: it tries the global host first, resends to `us.api.openai.com` if OpenAI answers that the key belongs there, and remembers the host for that key |
+| Amazon Bedrock | The inference profile on each route, your own `global.` profiles included. The route's AWS region must still be inside the residency region, so a US-residency account is served from `us-*` endpoints only. A `global.` profile may process the request outside the US. See [Amazon Bedrock](/nexus/provider-keys/bedrock#us-data-residency) |
+
+A Claude subscription login or a ChatGPT sign-in also works with residency on. Its Anthropic or OpenAI turns follow that provider's own policies and settings, and may be processed outside the US.
+
+Providers may charge more to serve from the US. That premium applies only to calls actually served in the provider's US region, because your request sent `inference_geo: "us"`, your provider settings chose the US, your OpenAI key belongs to a US project, or Fireworks has set your account to pin provider calls to the US.
+
 ## Available regional restrictions
 
 | Regional restrictions | API endpoint | Serverless | Dedicated deployments |
@@ -34,9 +63,9 @@ A residency change takes effect as soon as you save it, and anything that does n
 
 Point your clients at the region's API endpoint and change every request to use a model from that region. See [US-only Serverless](/serverless/us-only-serverless) for the US endpoint and model IDs.
 
-> [!WARNING]
+> [!NOTE]
 >
-> **`inference_geo` is deprecated** in favor of data residency. As you switch over, remove the `inference_geo` field from your request bodies and the `Fireworks-Inference-Geo` header from your requests.
+> **`inference_geo` is honored, not overridden.** Send `"us"` to serve one request only from US deployments of that model. If the model has none, the request returns `404` with an `inference_geo` error. For an account-wide rule, use data residency instead.
 
 ### Dedicated deployments
 
@@ -111,7 +140,8 @@ Regional models are priced at a premium over the base serverless price for the s
 The following are not supported while a region is set: calls are rejected, and stay rejected until you clear the setting.
 
 * **Serverless training.** [Serverless Training](/fine-tuning/training-api/serverless) sessions, runs, and their samplers are blocked. Support is coming soon. [Dedicated training](#dedicated-training) is supported.
-* **Nexus Auto outside the US.** With US residency, `auto` works and serves open-model turns from US-only Serverless. Anthropic and OpenAI turns run on your own provider account, where that provider's data policies apply. With other regions, `auto` is rejected. See [Enterprise Controls](/nexus/enterprise-controls#control-models-and-regions).
+* **[Nexus](/nexus) outside the US.** US is the only region Nexus supports. Any other region rejects `auto`, and the Anthropic, OpenAI, and Amazon Bedrock models that route through it. See [Enterprise Controls](/nexus/enterprise-controls#data-residency).
+* **The third-party model catalog API.** `ListThirdPartyModels` and `GetThirdPartyModel` are denied while a region is set, so `GET /v1/accounts/*/thirdPartyModels` and `firectl third-party-model list` return `PERMISSION_DENIED`. The [Model Providers](/nexus/provider-keys) page does not use that API and keeps working.
 * **BYOC.** [BYOC](/ecosystem/integrations/byoc/overview) deployments run in your own cloud account, so Fireworks cannot enforce where they run.
 
 ## Related
@@ -3018,8 +3048,8 @@ Control how your deployment scales based on traffic and load.
 | - | - | - | - |
 | `--min-replica-count` | Integer | 0 | Minimum number of replicas. Set to 0 for scale-to-zero |
 | `--max-replica-count` | Integer | 1 | Maximum number of replicas |
-| `--scale-up-window` | Duration | 30s | Wait time before scaling up |
-| `--scale-down-window` | Duration | 10m | Wait time before scaling down |
+| `--scale-up-window` | Duration | 30s | How long a higher replica count must be recommended before it applies. See [How scaling decisions work](#how-scaling-decisions-work) |
+| `--scale-down-window` | Duration | 10m | How long a lower replica count must be recommended before it applies |
 | `--scale-to-zero-window` | Duration | 1h | Idle time before scaling to zero (min: 5m) |
 | `--load-targets` | Key-value | `default=0.8` | Scaling thresholds. See options below |
 
@@ -3032,6 +3062,30 @@ Control how your deployment scales based on traffic and load.
 * `concurrent_requests=<Number>` - Desired concurrent requests per replica
 
 When multiple targets are specified, the maximum replica count across all is used.
+
+When you create a deployment, `default=0.8` is added if you don't set `default` yourself. `firectl deployment update --load-targets` replaces all existing load targets, so include `default` in the list if you want to keep it:
+
+```bash theme={null}
+firectl deployment update <DEPLOYMENT_ID> --load-targets default=0.8,concurrent_requests=10
+```
+
+The console sets one load target at a time, and saving a change there replaces all existing load targets. To combine targets, such as `default` and `concurrent_requests`, use `firectl`.
+
+> [!NOTE]
+>
+> On deployments served by vLLM or SGLang, `concurrent_requests` counts the requests the engine is actively running. Requests queued inside the engine are not included.
+
+## How scaling decisions work
+
+The autoscaler regularly works out, for each load target, how many replicas would bring the load to that target, and uses the largest of those numbers, between your minimum and maximum replica counts.
+
+**Scale-up window.** The autoscaler applies the lowest replica count recommended during the last `--scale-up-window`. A higher count takes effect only after it has been recommended for the whole window. New replicas then need time to start before they serve traffic, which depends on model size, so extra capacity arrives roughly one window plus the start-up time after load rises. A shorter window reacts faster; a longer one ignores brief spikes.
+
+**Scale-down window.** The autoscaler applies the highest replica count recommended during the last `--scale-down-window`, so a lower count takes effect only after load has stayed lower for the whole window.
+
+**How far one step can go.** `default` tracks how busy each replica is, using measures such as KV-cache usage, compute utilization, or the share of requests waiting, depending on the serving engine. These measures top out at 100% of a replica, so with only `default` set, one scaling step can raise the replica count to at most about `1 / target` times the replicas serving traffic: about 25% more (and at least one more replica) at the default `0.8`. Under a sudden traffic spike the deployment therefore grows in several steps. Per-replica targets such as `concurrent_requests` or `requests_per_second` are not limited to 100%, so a large backlog can add several replicas in one step.
+
+To absorb sharp traffic increases, combine these with a `--min-replica-count` sized for your expected baseline traffic.
 
 ## Common patterns
 
@@ -3706,7 +3760,7 @@ These gauge metrics show average resource usage:
 * `generator_kv_blocks_fraction:avg_by_deployment`: Average fraction of KV cache blocks in use
 * `generator_kv_slots_fraction:avg_by_deployment`: Average fraction of KV cache slots in use
 * `generator_model_forward_time:avg_by_deployment`: Average time spent in model forward pass
-* `requests_coordinator_concurrent_count:avg_by_deployment`: Average number of concurrent requests
+* `requests_coordinator_concurrent_count:avg_by_deployment`: Average number of concurrent requests. On deployments served by vLLM or SGLang, this counts requests the engine is actively running and does not include requests queued inside the engine
 * `prefiller_prompt_cache_ttl:avg_by_deployment`: Average prompt cache time-to-live
 
 
@@ -21662,7 +21716,7 @@ Use Nexus Auto in Claude Code, ChatGPT, Codex, and the tools you already use. Ev
 ## Who Nexus is for
 
 * **Developers:** a Nexus CLI command adds Nexus Auto to your tool's model picker next to the models you use today. A second command restores your original settings.
-* **Team admins:** connect an Anthropic, OpenAI, or Amazon Bedrock account once for the whole team, and view usage by model and by user. On Enterprise, admins can also cap each person's spend on Fireworks models.
+* **Team admins:** connect an Anthropic, OpenAI, or Amazon Bedrock account once for the whole team, and view usage by model and by user. On Enterprise, admins can also cap each person's spend on Fireworks models, and keep Fireworks inference in the US with [data residency](/nexus/enterprise-controls#data-residency).
 
 Nexus has its own app at [nexus.fireworks.ai](https://nexus.fireworks.ai), with Pro, Team, and Enterprise [plans](/nexus/plans). A Nexus account is separate from a Fireworks platform account.
 
@@ -21692,6 +21746,7 @@ Nexus components:
 * [Harness support](/nexus/harnesses): setup steps and answers for Claude Code, ChatGPT, Codex, Claude Desktop, Cursor IDE, VS Code, OpenCode, Pi, Copilot, and DeepSeek Harness.
 * [Model providers](/nexus/provider-keys): store Anthropic, OpenAI, or Amazon Bedrock credentials once, so developers only need a Fireworks key.
 * [Spend limits](/nexus/usage-limits): set an account default, group limits, and per-user caps on Fireworks serverless spend.
+* [Enterprise Controls](/nexus/enterprise-controls): SSO, SCIM, roles, model access, and data residency. Residency covers models Fireworks serves, `auto` included, and supports US only; Anthropic, OpenAI, and Amazon Bedrock calls run on your own provider account, in the region you configured with them.
 
 
 # APIs and SDKs
@@ -21752,7 +21807,7 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 
 ## Limitations
 
-* With US [data residency](/accounts/data-residency), send Nexus Auto requests to `us.api.fireworks.ai`. Open-model turns run on [US-only Serverless](/serverless/us-only-serverless). Other regions must pin a model served in that region.
+* With US [data residency](/accounts/data-residency), send requests to `us.api.fireworks.ai`. Send `auto`, which is mapped to a US twin for you, or name a [US-only model ID](/serverless/us-only-serverless#available-models) such as `glm-5p3-us`. Other Fireworks model IDs are rejected. Anthropic, OpenAI, and Amazon Bedrock calls follow the region you configured with that provider, not this setting. US is the only region Nexus supports; other regions must pin a model served in that region.
 * Without an [Anthropic or OpenAI credential](/nexus/auto#provide-anthropic-and-openai-credentials), `auto` uses Fireworks open models.
 
 ## Troubleshooting
@@ -21764,6 +21819,8 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 | Response | Cause | Fix |
 | - | - | - |
 | Request rejected for data residency | The account's region isn't US, or the request didn't use the region's endpoint | Use `us.api.fireworks.ai` for US. For other regions, pin a model served in that region |
+| `403` `region_unavailable` | Nexus can't serve the model you named within the account's residency region, such as a Bedrock model whose route is outside the US | Send `auto`, or move the Bedrock route to a `us-*` endpoint |
+| `400` `invalid_request` mentioning `inference_geo` | The request's own `inference_geo: "us"` rules out the model you named | Remove `inference_geo`, set it to `"global"`, or choose a model with US serving |
 | Upstream provider authentication failure | The provider credential is wrong, revoked, or lacks permission | Check the Anthropic, OpenAI, or Amazon Bedrock credential and its permissions. The status and message come from that provider |
 
 ## See also
@@ -22016,8 +22073,8 @@ Upgrading from the retired MCP: versions before 0.9.7 installed the `fireworks-w
 
 ### Data residency
 
-* With US [data residency](/accounts/data-residency), Nexus Auto serves open-model turns from [US-only Serverless](/serverless/us-only-serverless). Send requests to `us.api.fireworks.ai`. Anthropic and OpenAI turns still run on your own provider account, where that provider's data policies apply. See [Enterprise Controls](/nexus/enterprise-controls#control-models-and-regions).
-* A request to Nexus Auto from an account set to a region other than US is rejected for data residency. Pin a model served in that region.
+* With US [data residency](/accounts/data-residency), `auto` is mapped to a [US-only Serverless](/serverless/us-only-serverless) twin for you. Send requests to `us.api.fireworks.ai`. A request that names a model instead must use a US-only model ID; other Fireworks IDs are rejected. Anthropic and OpenAI calls still run on your own provider account, in the region you configured with them. See [Enterprise Controls](/nexus/enterprise-controls#data-residency).
+* US is the only region Nexus supports. A request to Nexus Auto from an account set to any other region is rejected for data residency. Pin a model served in that region.
 
 ## Troubleshooting
 
@@ -22391,6 +22448,7 @@ Service metadata does not include prompts, responses, system prompts, or the con
 * **Open models** run on Fireworks under the same [Zero Data Retention](/guides/security_compliance/data_handling) policy.
 * **Subprocessors.** Fireworks may send data to its [registered subprocessors](https://trust.fireworks.ai/subprocessors) to serve a request. These subprocessors are held to Zero Data Retention as well.
 * **Your own provider accounts.** When Nexus Auto sends a turn to Anthropic, OpenAI, or Amazon Bedrock on your own account, that provider's data policies apply. The same is true for MCP servers you connect.
+* **Data residency.** On Enterprise, [data residency](/accounts/data-residency) pins the Fireworks side to one region. With US residency, every call a Fireworks model serves runs on [US-only Serverless](/serverless/us-only-serverless), reached by sending `auto` or a US-only model ID. US is the only region Nexus supports. Calls that go to Anthropic, OpenAI, or Amazon Bedrock run on your own account with that provider, in the region you configured with them. See [Enterprise Controls](/nexus/enterprise-controls#data-residency).
 
 ## How Nexus protects your data
 
@@ -22465,7 +22523,7 @@ Security and admin controls for Nexus Enterprise: Zero Data Retention, custom SS
 | [Roles](#roles) | Keep members, Model Providers, and Spend Limits with account admins | Team and Enterprise |
 | [Model Providers](/nexus/provider-keys) | Store Anthropic, OpenAI, or Amazon Bedrock credentials once for the whole team | Every plan |
 | [Model access](#control-models-and-regions) | Choose which Fireworks open models people and Nexus Auto can use | Enterprise |
-| [Data residency](#control-models-and-regions) | Keep inference in one region, such as the US | Enterprise |
+| [Data residency](#data-residency) | Keep Fireworks inference in the US. Closed-model calls follow the region you configured with that provider | Enterprise |
 | [Spend Limits](/nexus/usage-limits) | Cap spend with an account default, group limits, and per-user overrides | Enterprise |
 | [Audit & Access Logs](/guides/security_compliance/audit_logs) | Review account activity for investigations and compliance reporting | Enterprise |
 
@@ -22499,11 +22557,37 @@ For Amazon Bedrock, connect an [IAM role](/nexus/provider-keys/bedrock) instead 
 In the Nexus app, open **Settings → Governances**.
 
 * **Model access** limits the account to the Fireworks open models you allow. Nexus Auto only picks from allowed models. The policy applies to everyone on the account and does not yet cover Anthropic or OpenAI models.
-* **Data residency** keeps inference in one region. With US residency, Nexus Auto runs open-model turns on US-only Serverless through `us.api.fireworks.ai`. Other regions can't use Nexus Auto.
+* **Data residency** keeps Fireworks inference in one region. See [Data residency](#data-residency).
 
 - Governances uses the platform [Model Access Policy](/accounts/model-access-policy) and [Data Residency](/accounts/data-residency). In the Nexus app, enabling a model allows both standard and Fast serverless inference for it.
 - Pro and Team accounts don't have the Governances page.
 - There are no per-user or per-group model rules.
+
+## Data residency
+
+[Data residency](/accounts/data-residency) sets where Fireworks serves. For a model that runs on a third-party provider, Fireworks follows the region you have already configured with that provider.
+
+| Call | Where it runs with residency on |
+| :- | :- |
+| A [US-only Fireworks model](/serverless/us-only-serverless#available-models) you named | [US-only Serverless](/serverless/us-only-serverless), through `us.api.fireworks.ai` |
+| A [Nexus Auto](/nexus/auto) call routed to a Fireworks open model | US-only Serverless, through `us.api.fireworks.ai` |
+| A call routed to Anthropic or OpenAI | Sent through `us.api.fireworks.ai`, then that provider, on your own account, in the region you configured with them |
+| A call routed to Amazon Bedrock | Sent through `us.api.fireworks.ai`, then your own AWS account, on the route's own inference profile, from a US endpoint |
+
+Three things to know before you turn it on:
+
+* **US is the only region Nexus supports.** Set any other region and `auto` is rejected, along with Anthropic, OpenAI, and Amazon Bedrock models.
+* **It covers every Fireworks model, not just `auto`.** A call naming an open model must use a [US-only model ID](/serverless/us-only-serverless#available-models), such as `glm-5p3-us`, on `us.api.fireworks.ai`. Other model IDs are rejected, and only `auto` is mapped to a US twin for you.
+* **Closed-model calls follow your own provider setting.** Fireworks picks no region: Anthropic applies your workspace default, OpenAI is detected from your key's project host, and Amazon Bedrock uses each route's own inference profile from a US endpoint. See [Third-party providers](/accounts/data-residency#third-party-providers).
+
+Admins set residency in the Nexus app at **Settings → Governances → Data Residency**.
+
+* Residency is enforced at the API gateway, on the endpoint the request used, the ingress PoP, and the Fireworks route it resolved to. The endpoint and PoP checks apply to provider-key traffic too, since `externalBackendMiddleware` runs them before dispatch; only the resolved-route check has nothing to match. Bedrock's profile and region filtering happens in FireRouter's `bedrock_routes.within`, not at the gateway: a route outside the residency region is dropped, and a request that names its model returns `403` with error code `region_unavailable` (`reason_code: residency` is internal and not in the response). Your own `global.` profiles on a `us-*` endpoint are kept, except for an account Fireworks has set to pin provider calls to the US, and for a request that sends `inference_geo: "us"`, where naming that Bedrock model returns `400` `invalid_request`.
+* Claude subscription and ChatGPT or Codex logins work under US residency. Both used to be refused, because the US region was forced onto the leg.
+* OpenAI host detection applies to OpenAI API keys, client or Provider Key, on every account. It does not apply to a ChatGPT or Codex login, a deployment with its own endpoint, or an account Fireworks has set to pin provider calls to the US, whose calls go straight to `us.api.openai.com`. Any 401 other than `incorrect_hostname` is not resent.
+* Through Nexus on the Messages API, a request whose own `inference_geo: "us"` rules out every model returns `400` `invalid_request`. When the account's residency rules it out, the request returns `403` `region_unavailable`. On Fireworks Serverless outside Nexus, `inference_geo` for a model with no deployment in that region returns `404`.
+* While a region is set, the third-party model catalog API is denied: `ListThirdPartyModels` and `GetThirdPartyModel` (`GET /v1/accounts/*/thirdPartyModels`, `firectl third-party-model list`). The Model Providers page does not call it, so it keeps working.
+* Zero Data Retention covers what Fireworks handles, whatever the residency setting. What a provider keeps on your own account follows your agreement and settings with them, and some models require retention to be enabled there. See [Data Security & Privacy](/nexus/data-security).
 
 ## Compliance
 
@@ -22760,13 +22844,13 @@ Plan access: Pro and Team don't include general access to open models. They use 
 
 **1. Install and sign in**
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 nexus login
 ```
 
@@ -22812,6 +22896,7 @@ To restore your original settings, run `nexus claude off`.
 - Nexus CLI never sends an Anthropic key saved with `nexus auto` to Claude Code. The Claude login covers Anthropic model turns.
 - Nexus Auto is supported on the Messages API. See [which models `auto` can use](/nexus/auto#which-models-auto-can-use).
 - Manual setup sends `x-anthropic-api-key` and `x-openai-api-key` headers itself. See [Manual setup (advanced)](#manual-setup-advanced).
+- The Claude login works with US [data residency](/accounts/data-residency#third-party-providers). Its Anthropic model turns follow Anthropic's own policies and your settings there, and may be processed outside the US. Fireworks model turns stay in the US.
 
 ## MCP and tools
 
@@ -23071,13 +23156,13 @@ Support summary:
 
 **1. Install and sign in**
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 nexus login
 ```
 
@@ -23118,6 +23203,7 @@ To restore your original settings, run `nexus codex off`.
 - Instead of an Anthropic Provider Key, save your own key with `nexus auto --anthropic-api-key` (it prompts for the key) and run `nexus codex` again. Nexus CLI adds the saved key to Codex's `http_headers`.
 - Nexus CLI never sends an OpenAI key you saved with `nexus auto` to Codex. Your Codex sign-in covers OpenAI model turns.
 - With [manual setup](#manual-setup-advanced), Codex can send `x-anthropic-api-key` and `x-openai-api-key` headers.
+- A ChatGPT sign-in works with US [data residency](/accounts/data-residency#third-party-providers). Its OpenAI model turns follow OpenAI's own policies and your settings there, and may be processed outside the US. Fireworks model turns stay in the US.
 
 ### Who pays for OpenAI model turns
 
@@ -24864,16 +24950,18 @@ Bedrock usage and charges stay in your AWS account.
 | GPT-6.1 Sol | `global.openai.gpt-6.1-sol` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html#model-card-openai-gpt-6-1-sol-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-1-sol.html#model-card-openai-gpt-6-1-sol-regional-availability) |
 | GPT-6 Astra | `global.openai.gpt-6-astra` | [Model ID](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-programmatic-access) · [Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-openai-gpt-6-astra.html#model-card-openai-gpt-6-astra-regional-availability) |
 
-* Copy the Bedrock model ID exactly from AWS. Any geo or global profile, or ARN, that AWS lists for the model also works if your region can invoke it, unless your account uses US data residency (below).
+* Copy the Bedrock model ID exactly from AWS. Any geo or global profile, or ARN, that AWS lists for the model also works if your region can invoke it. Under US data residency the route's own region is what matters (below).
 * Supported regions: `us-east-1`, `us-east-2`, `us-west-1`, and `us-west-2`.
 
 ### US data residency
 
-If your Fireworks account enforces [US data residency](/accounts/data-residency), each route must keep requests in the US:
+If your Fireworks account enforces [US data residency](/accounts/data-residency), each route must be received in the US. The inference profile is yours to choose:
 
-* Use a `us.` inference profile, such as `us.anthropic.claude-opus-5-5`, or an in-Region model ID with no geo prefix.
-* `global.` profiles are rejected, even in a US region, because AWS can serve them from any region. Requests to that model return `403` with `reason_code: residency`.
-* A model with only a `global.` profile on Bedrock, such as GPT-6 Sol, can't be served on Bedrock for your account.
+* The route's **AWS region** must be a US region, such as `us-east-1`. AWS treats the endpoint region as where the request is received.
+* `us.` profiles and in-Region model IDs are served from US regions.
+* Your own `global.` profiles are also allowed. AWS can serve a `global.` profile from any region, so a request on one may be processed outside the US. To keep Bedrock in the US, use a `us.` or in-Region profile. Fireworks never selects a `global.` profile for you.
+* Other-geo profiles, such as `eu.`, `ca.`, and `us-gov.`, and any route whose region sits outside the US, are rejected. Requests that name that model return `403` with error code `region_unavailable`.
+* A Messages API request that sends `inference_geo: "us"` is not served on a `global.` route. Nexus Auto picks another model instead, and a request that names that Bedrock model returns `400` with error code `invalid_request`.
 
 Served model IDs (the ID in the response `model` field, and `routes[].nexus_model_id` in `firectl`):
 
@@ -25151,7 +25239,7 @@ Unbind and delete work the same as other providers. See [Delete a key](/nexus/pr
 
 * **AssumeRole is denied (IAM role):** the trust policy needs the exact Fireworks principal ARN and your Fireworks account ID as `sts:ExternalId`. The role name must start with `FireworksBedrock` and use the default IAM path.
 * **Model not found or region unavailable:** copy the exact model or profile ID from AWS, and confirm the region can invoke it.
-* **`403` with `reason_code: residency`:** your account uses US data residency and the route uses a `global.` or non-US profile. Switch it to a `us.` profile. See [US data residency](#us-data-residency).
+* **`403` with error code `region_unavailable`:** your account uses US data residency and the route uses an other-geo profile (`eu.`, `ca.`, `us-gov.`) or an endpoint outside the US. Use a `us-*` endpoint with a `us.`, in-Region, or `global.` profile. See [US data residency](#us-data-residency).
 * **Connected but traffic doesn't reach Bedrock:** make sure the route list isn't empty and requests use a route containing one of the configured served model IDs.
 
 - IAM changes can take a few seconds to apply.
@@ -27318,7 +27406,7 @@ The following parameters and fields are handled differently or are not supported
 * **`anthropic-version` header**: Not required. Fireworks ignores this header.
 * **`usage` field**: Included in both non-streaming and streaming responses. See [Token usage](#token-usage) for details.
 * **`service_tier`**: Supported. Set `service_tier: "priority"` to opt into [Priority tier](/serverless/serverless-modes).
-* **`inference_geo`**: Deprecated in favor of [data residency](/accounts/data-residency). Remove it from request bodies and headers.
+* **`inference_geo`**: Supported. Send `"us"` to serve one request only from US deployments of that model. If the model has none, the request returns `404` with an `inference_geo` error. For an account-wide rule, use [data residency](/accounts/data-residency) instead.
 
 ### Reasoning
 

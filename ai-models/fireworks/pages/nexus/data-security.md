@@ -38,6 +38,7 @@ Service metadata does not include prompts, responses, system prompts, or the con
 * **Open models** run on Fireworks under the same [Zero Data Retention](/guides/security_compliance/data_handling) policy.
 * **Subprocessors.** Fireworks may send data to its [registered subprocessors](https://trust.fireworks.ai/subprocessors) to serve a request. These subprocessors are held to Zero Data Retention as well.
 * **Your own provider accounts.** When Nexus Auto sends a turn to Anthropic, OpenAI, or Amazon Bedrock on your own account, that provider's data policies apply. The same is true for MCP servers you connect.
+* **Data residency.** On Enterprise, [data residency](/accounts/data-residency) pins the Fireworks side to one region. With US residency, every call a Fireworks model serves runs on [US-only Serverless](/serverless/us-only-serverless), reached by sending `auto` or a US-only model ID. US is the only region Nexus supports. Calls that go to Anthropic, OpenAI, or Amazon Bedrock run on your own account with that provider, in the region you configured with them. See [Enterprise Controls](/nexus/enterprise-controls#data-residency).
 
 ## How Nexus protects your data
 

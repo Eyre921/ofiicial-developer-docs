@@ -551,23 +551,55 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
 }
 ```
 
-### Test Confirmation of Payee (UK only) 
+### Test Confirmation of Payee 
 
-In a sandbox, Confirmation of Payee (CoP) checks for UK bank accounts return simulated results instead of contacting the recipient’s bank. Use sort code `108800` with the following account numbers to test each result. For account number `00012345`, the result depends on the name and business type that you check against the bank account. Names must match exactly, including capitalization.
+In a sandbox, Confirmation of Payee (CoP) checks return simulated results instead of contacting the recipient’s bank. The result depends on the name and business type that you check against the bank account. Names must match exactly, including capitalization and spacing. Select the recipient’s country to see its test bank account details and results.
 
-| Account number | Name and business type | Result |
-| --- | --- | --- |
-| `00012345` | `Jenny Rosen`, personal (individual) | Match. |
-| `00012345` | `Best Cookie Co`, business (company) | Match. |
-| `00012345` | `Jennifer Rosen`, personal (individual) | Partial match. The name is close to the bank’s records, which return `Jenny Rosen` as the matched name. |
-| `00012345` | `Jenny Rosen`, business (company) | Partial match. The name matches, but the business type doesn’t. |
-| `00012345` | `Best Cookie Co`, personal (individual) | Partial match. The name matches, but the business type doesn’t. |
-| `00012345` | Any other name or business type | No match. |
-| `90012345`, `33333335`, `93333335`, `22222227`, or `92222227` | Any | Unavailable. Stripe couldn’t complete the check with the recipient’s bank. |
+#### Recipient country - United Kingdom
 
-Any other sort code and account number combination returns a match, except account number `55555559` with sort code `108800`. That combination simulates an internal error, so don’t use it to test CoP results.
+Use the following test details with sort code `108800` to simulate the corresponding result:
 
-A [RecipientVerification](https://docs.stripe.com/api/v2/money-management/recipient-verifications/object.md) reports these results in `match_result` as `match`, `close_match`, `no_match`, and `unavailable`. A [GB bank account](https://docs.stripe.com/api/v2/core/vault/gb-bank-accounts/object.md?api-version=preview) reports them in `confirmation_of_payee.result.match_result` as `match`, `partial_match`, `mismatch`, and `unavailable`. Some test bank account numbers that simulate payout failures, such as `22222227` and `33333335`, also return an unavailable CoP result. Acknowledge the result before you send a payout to these bank accounts.
+| Test type | Account number | Name and business type | Result |
+| --- | --- | --- | --- |
+| Successful check | `00012345` | - `Jenny Rosen`
+- `individual` | Match |
+| - `Best Cookie Co`
+- `company` | Match |
+| - `Jennifer Rosen`
+- `individual` | Partial match: the name is close to the bank’s records, which return `Jenny Rosen` as the matched name. |
+| - `Jenny Rosen`
+- `company` | Partial match: the name matches, but the business type doesn’t. |
+| - `Best Cookie Co`
+- `individual` | Partial match: the name matches, but the business type doesn’t. |
+| Any other name | No match |
+| Unsuccessful check | - `90012345`
+- `33333335`
+- `93333335`
+- `22222227`
+- `92222227` | Any name | Unavailable: Stripe couldn’t complete the check with the recipient’s bank. |
+| Generic match | Any unlisted sort code and account number | Any name | Match |
+| Error (don’t use) | `55555559` | Any name | Internal error |
+
+A [GB bank account](https://docs.stripe.com/api/v2/core/vault/gb-bank-accounts/object.md?api-version=preview) reports the results in `confirmation_of_payee.result.match_result` as `match`, `partial_match`, `mismatch`, and `unavailable`. Some test bank account numbers that simulate payout failures, such as `22222227` and `33333335`, also return an unavailable CoP result. Acknowledge the result before you send a payout to these bank accounts.
+
+#### Recipient country - Australia
+
+Use any valid Australian bank account details, such as BSB `110000` and account number `000123456`. The BSB and account number don’t change the result.
+
+| Name and business type | Result |
+| --- | --- |
+| - `Jenny Rosen`
+- `individual` | Match |
+| - `Best Cookie Co`
+- `company` | Match |
+| - `Jennifer Rosen`
+- `individual` | Close match: the matched name is `Jenny Rosen`. |
+| `Verification Unavailable`, individual or company | Unavailable: for an individual, enter `Verification` as the first name and `Unavailable` as the last name. |
+| Any other name, including `Jenny Rosen` for a company or `Best Cookie Co` for an individual | No match |
+
+The Australian test bank account numbers that simulate payout failures don’t affect the CoP result.
+
+A [RecipientVerification](https://docs.stripe.com/api/v2/money-management/recipient-verifications/object.md) reports these results in `match_result` as `match`, `close_match`, `no_match`, and `unavailable`. To create a RecipientVerification with a specific `match_result`, use the [test helper](https://docs.stripe.com/api/v2/money-management/recipient-verifications/test-helper-create.md).
 
 ### List payout methods
 

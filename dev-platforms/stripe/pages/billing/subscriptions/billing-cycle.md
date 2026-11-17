@@ -12,7 +12,7 @@ If your integration uses [customer-configured Accounts](https://docs.stripe.com/
 
 A subscription’s billing period depends on two factors:
 
-- The recurring interval of its [price](https://docs.stripe.com/products-prices/overview.md) or prices, such as monthly, yearly, weekly, and so on.
+- The recurring interval of its [price](https://docs.stripe.com/products-prices.md) or prices, such as monthly, yearly, weekly, and so on.
 - The [billing cycle anchor](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-billing_cycle_anchor) is the reference point that aligns future billing period dates. It sets the day of week for `week` intervals, the day of month for `month` and `year` intervals, and the month of year for `year` intervals. The default value is either the subscription creation date or the trial end date (if you’re using a trial period). You can also explicitly set this value at the time you create the subscription.
 
 > Billing cycle anchors are UNIX timestamps in seconds from the current epoch.

@@ -243,8 +243,8 @@ Upgrading from the retired MCP: versions before 0.9.7 installed the `fireworks-w
 
 ### Data residency
 
-* With US [data residency](/accounts/data-residency), Nexus Auto serves open-model turns from [US-only Serverless](/serverless/us-only-serverless). Send requests to `us.api.fireworks.ai`. Anthropic and OpenAI turns still run on your own provider account, where that provider's data policies apply. See [Enterprise Controls](/nexus/enterprise-controls#control-models-and-regions).
-* A request to Nexus Auto from an account set to a region other than US is rejected for data residency. Pin a model served in that region.
+* With US [data residency](/accounts/data-residency), `auto` is mapped to a [US-only Serverless](/serverless/us-only-serverless) twin for you. Send requests to `us.api.fireworks.ai`. A request that names a model instead must use a US-only model ID; other Fireworks IDs are rejected. Anthropic and OpenAI calls still run on your own provider account, in the region you configured with them. See [Enterprise Controls](/nexus/enterprise-controls#data-residency).
+* US is the only region Nexus supports. A request to Nexus Auto from an account set to any other region is rejected for data residency. Pin a model served in that region.
 
 ## Troubleshooting
 

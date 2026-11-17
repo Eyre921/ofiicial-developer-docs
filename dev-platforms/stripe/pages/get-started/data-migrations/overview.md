@@ -69,6 +69,6 @@ For each type of data migration, we can only assist you if your request includes
 - [The Customer object](https://docs.stripe.com/api/customers/object.md)
 - [The Subscription object](https://docs.stripe.com/api/subscriptions/object.md)
 - [Default payment source](https://docs.stripe.com/api/customers/object.md#customer_object-default_source)
-- [Products and prices](https://docs.stripe.com/products-prices/overview.md)
+- [Products and prices](https://docs.stripe.com/products-prices.md)
 - [Billing cycle anchor](https://docs.stripe.com/api/subscriptions/create.md#create_subscription-billing_cycle_anchor)
 

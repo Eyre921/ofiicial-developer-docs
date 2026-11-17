@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 373 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 372 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -11,7 +11,6 @@
 
 ## accounts
 
-- `accounts/data-residency` — [Data residency](pages/accounts/data-residency.md) · [原文](https://docs.fireworks.ai/accounts/data-residency)
 - `accounts/enterprise-features` — [Enterprise features](pages/accounts/enterprise-features.md) · [原文](https://docs.fireworks.ai/accounts/enterprise-features)
 - `accounts/exporting-billing-metrics` — [Exporting billing metrics](pages/accounts/exporting-billing-metrics.md) · [原文](https://docs.fireworks.ai/accounts/exporting-billing-metrics)
 - `accounts/exporting-usage-and-costs` — [Usage & cost breakdown](pages/accounts/exporting-usage-and-costs.md) · [原文](https://docs.fireworks.ai/accounts/exporting-usage-and-costs)

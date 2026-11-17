@@ -12,6 +12,7 @@ url: https://docs.sentry.io/api/organizations/
 # Organizations | Sentry Docs
 
 * #### [Add a Member to an Organization](https://docs.sentry.io/api/organizations/add-a-member-to-an-organization.md)
+* #### [Claim an Agent Handoff](https://docs.sentry.io/api/organizations/claim-an-agent-handoff.md)
 * #### [Create an Org Auth Token](https://docs.sentry.io/api/organizations/create-an-org-auth-token.md)
 * #### [Delete an Organization Member](https://docs.sentry.io/api/organizations/delete-an-organization-member.md)
 * #### [List a Repository's Commits](https://docs.sentry.io/api/organizations/list-a-repositorys-commits.md)
@@ -36,6 +37,7 @@ url: https://docs.sentry.io/api/organizations/
 ## Pages in this section
 
 - [Add a Member to an Organization](https://docs.sentry.io/api/organizations/add-a-member-to-an-organization.md)
+- [Claim an Agent Handoff](https://docs.sentry.io/api/organizations/claim-an-agent-handoff.md)
 - [Create an Org Auth Token](https://docs.sentry.io/api/organizations/create-an-org-auth-token.md)
 - [Delete an Organization Member](https://docs.sentry.io/api/organizations/delete-an-organization-member.md)
 - [List a Repository's Commits](https://docs.sentry.io/api/organizations/list-a-repositorys-commits.md)

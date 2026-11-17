@@ -14,7 +14,7 @@ A query is a single turn that takes a question and returns a grounded answer, an
 
 Two common ways to answer over a corpus have drawbacks. Agentic retrieval-augmented generation (RAG) issues many retrieval calls and spends tokens stitching the results together. A coding agent that greps and parses raw files is flexible, but it's slow and expensive, and its results are unreliable.
 
-A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Raw tool output never enters the model's context.
+A query turn does the hard retrieval work in one place. The model writes Python that reads artifacts, runs search, walks the graph, and queries structured tables, then answers from only the evidence it surfaced. Only what its code prints reaches the model.
 
 ## Query runtime
 
@@ -27,16 +27,18 @@ The Nexus runtime runs each query. It's a single generic Python image that the o
 
 ## Agent loop
 
-The model's primary tool is `run_python`, a persistent REPL. Variables carry over between calls, so in one block the model can find an artifact, read it, filter its sources, and pull a verbatim quote. It processes results in code and prints only what it needs.
+The model's primary tool is `run_python`, a persistent REPL. Variables carry over between calls, so in one block the model can find an artifact, read it, filter its sources, and pull a verbatim quote. It picks the hits it needs in code, then reads each one whole, so a clause, figure, or table row later in a passage isn't lost.
 
-For example, this block finds a summary artifact about acquisition terms, reads it, and searches that artifact's sources for the purchase price:
+For example, this block finds a summary artifact about acquisition terms, reads it, searches that artifact's sources for the purchase price, and prints the hits:
 
 ```python Python theme={null}
 art = await search_knowledge("acquisition terms", kind="summary")
 srcs = read_artifact(art[0].fields["artifact_name"]).sources
-for h in await search_in_sources(srcs, "purchase price"):
-    print(h.fields["source_path"], "::", h.fields["chunk_text"][:160])
+hits = await search_in_sources(srcs, "purchase price")
+show(hits)
 ```
+
+`show()` drops duplicate hits and prints each one's score, source path, page number, and full text. Each `run_python` result holds up to 25,000 characters. When the hits don't all fit, `show()` prints as many as it can and ends with the call that prints the rest. Code that slices a hit's `chunk_text` is blocked before it runs.
 
 If the first pass misses, the model refines its code and searches again, so a hard question gets more steps. The loop stops as soon as the model can answer.
 
@@ -77,6 +79,7 @@ The Composable Retriever, the Nexus component that serves artifacts to queries, 
 The model writes the answer at the end of the agent loop. These rules shape what the answer draws on and how it cites sources.
 
 * **Evidence:** The model answers from the evidence its code surfaced rather than from whole documents, so it reasons over a small, relevant context.
+* **Tables and lists:** When you ask for a table or list, the model is prompted to write out every row the source has. If the table or list is too long to write out, it's prompted to say how many rows it left out.
 * **Citations:** Each citation names its source file, plus the pages and sections of the passages it drew on when they're available.
 * **Duplicate sources:** When several sources contain the same content and the answer draws on one of them, the model is prompted to say which one it used and why. It's also prompted to name each of the others by its full file name, so they're cited too. If your question names the source, the answer uses it without listing the others. With more than five other copies, the answer gives their count instead.
 * **Earlier-turn citations:** In a session, a follow-up answer can cite a file that an earlier turn retrieved, if the answer names it. These citations are file-level, so they include the `source` but no pages or sections. Their `grounding` is `carried` because the current turn didn't retrieve the file itself.

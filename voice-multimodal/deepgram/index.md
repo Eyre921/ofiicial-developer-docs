@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 404 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 408 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -19,17 +19,20 @@
 
 ## developer-tools
 
-- `developer-tools/agentic-tools` — [Agentic developer tools](pages/developer-tools/agentic-tools.md) · [原文](https://developers.deepgram.com/developer-tools/agentic-tools.md)
+- `developer-tools/agentic-tools` — [Agentic Developer Tools](pages/developer-tools/agentic-tools.md) · [原文](https://developers.deepgram.com/developer-tools/agentic-tools.md)
 - `developer-tools/cli/account-management` — [Account management commands](pages/developer-tools/cli/account-management.md) · [原文](https://developers.deepgram.com/developer-tools/cli/account-management.md)
-- `developer-tools/cli/authentication` — [CLI authentication](pages/developer-tools/cli/authentication.md) · [原文](https://developers.deepgram.com/developer-tools/cli/authentication.md)
-- `developer-tools/cli/getting-started` — [Deepgram CLI — Getting started](pages/developer-tools/cli/getting-started.md) · [原文](https://developers.deepgram.com/developer-tools/cli/getting-started.md)
+- `developer-tools/cli/authentication` — [Authentication](pages/developer-tools/cli/authentication.md) · [原文](https://developers.deepgram.com/developer-tools/cli/authentication.md)
+- `developer-tools/cli/configuration` — [Configuration & environment](pages/developer-tools/cli/configuration.md) · [原文](https://developers.deepgram.com/developer-tools/cli/configuration.md)
+- `developer-tools/cli/getting-started` — [Getting started](pages/developer-tools/cli/getting-started.md) · [原文](https://developers.deepgram.com/developer-tools/cli/getting-started.md)
 - `developer-tools/cli/installation` — [CLI installation](pages/developer-tools/cli/installation.md) · [原文](https://developers.deepgram.com/developer-tools/cli/installation.md)
 - `developer-tools/cli/mcp-server` — [MCP server](pages/developer-tools/cli/mcp-server.md) · [原文](https://developers.deepgram.com/developer-tools/cli/mcp-server.md)
 - `developer-tools/cli/plugins` — [Plugin system](pages/developer-tools/cli/plugins.md) · [原文](https://developers.deepgram.com/developer-tools/cli/plugins.md)
 - `developer-tools/cli/shell-completion` — [Shell completion](pages/developer-tools/cli/shell-completion.md) · [原文](https://developers.deepgram.com/developer-tools/cli/shell-completion.md)
+- `developer-tools/cli/skills` — [Skills](pages/developer-tools/cli/skills.md) · [原文](https://developers.deepgram.com/developer-tools/cli/skills.md)
 - `developer-tools/cli/speech-to-text` — [Speech-to-text commands](pages/developer-tools/cli/speech-to-text.md) · [原文](https://developers.deepgram.com/developer-tools/cli/speech-to-text.md)
 - `developer-tools/cli/text-intelligence` — [Text Intelligence commands](pages/developer-tools/cli/text-intelligence.md) · [原文](https://developers.deepgram.com/developer-tools/cli/text-intelligence.md)
 - `developer-tools/cli/text-to-speech` — [Text-to-speech commands](pages/developer-tools/cli/text-to-speech.md) · [原文](https://developers.deepgram.com/developer-tools/cli/text-to-speech.md)
+- `developer-tools/cli/troubleshooting` — [Troubleshooting](pages/developer-tools/cli/troubleshooting.md) · [原文](https://developers.deepgram.com/developer-tools/cli/troubleshooting.md)
 
 ## docs
 
@@ -47,6 +50,7 @@
 - `docs/aws-docker-podman` — [Amazon Web Services](pages/docs/aws-docker-podman.md) · [原文](https://developers.deepgram.com/docs/aws-docker-podman.md)
 - `docs/aws-k8s` — [Amazon Web Services](pages/docs/aws-k8s.md) · [原文](https://developers.deepgram.com/docs/aws-k8s.md)
 - `docs/azure-docker-podman` — [Microsoft Azure](pages/docs/azure-docker-podman.md) · [原文](https://developers.deepgram.com/docs/azure-docker-podman.md)
+- `docs/azure-k8s` — [Microsoft Azure](pages/docs/azure-k8s.md) · [原文](https://developers.deepgram.com/docs/azure-k8s.md)
 - `docs/bare-metal` — [Bare-metal servers](pages/docs/bare-metal.md) · [原文](https://developers.deepgram.com/docs/bare-metal.md)
 - `docs/blue-green-deployment` — [Blue-green deployment](pages/docs/blue-green-deployment.md) · [原文](https://developers.deepgram.com/docs/blue-green-deployment.md)
 - `docs/browser-agent-javascript` — [JavaScript SDK](pages/docs/browser-agent-javascript.md) · [原文](https://developers.deepgram.com/docs/browser-agent-javascript.md)

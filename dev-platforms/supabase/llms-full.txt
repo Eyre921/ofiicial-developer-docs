@@ -1762,11 +1762,11 @@ Alternatively, choose your AI coding agent and follow the installation steps:
 
 The best vector database is the database you already have.
 
-Supabase provides an open source toolkit for developing AI applications using Postgres and pgvector. Use the Supabase client libraries to store, index, and query your vector embeddings at scale.
+Supabase provides an open-source toolkit for developing AI applications using Postgres and pgvector. Use the Supabase client libraries to store, index, and query your vector embeddings at scale.
 
 The toolkit includes:
 
-- A [vector store](https://supabase.com/docs/guides/ai/vector-columns) and embeddings support using Postgres and pgvector.
+- A [vector store](https://supabase.com/docs/guides/ai/vector-columns) and embeddings support using Postgres and [pgvector](https://supabase.com/docs/guides/database/extensions/pgvector).
 - A [Python client](https://supabase.com/docs/guides/ai/vecs-python-client) for managing unstructured embeddings.
 - An [embedding generation](https://supabase.com/docs/guides/ai/quickstarts/generate-text-embeddings) process using open source models directly in Edge Functions.
 - [Database migrations](https://supabase.com/docs/guides/ai/examples/headless-vector-search#prepare-your-database) for managing structured embeddings.
@@ -3759,7 +3759,7 @@ Learn how to build a ChatGPT-style doc search powered by Next.js, OpenAI, and Su
 While our [Headless Vector search](https://supabase.com/docs/guides/ai/examples/headless-vector-search) provides a toolkit for generative Q\&A, in this tutorial we'll go more in-depth, build a custom ChatGPT-like search experience from the ground-up using Next.js. You will:
 
 1. Convert your markdown into embeddings using OpenAI.
-2. Store you embeddings in Postgres using pgvector.
+2. Store you embeddings in Postgres using [pgvector](https://supabase.com/docs/guides/database/extensions/pgvector).
 3. Deploy a function for answering your users' questions.
 
 You can read our [Supabase Clippy](https://supabase.com/blog/chatgpt-supabase-docs) blog post for a full example.
@@ -3867,7 +3867,7 @@ create policy "Allow public read access to nods_page_section"
 
 4. **Create similarity search database function**
 
-Anytime the user sends a query, we want to find the content that's relevant to their questions. We can do this using pgvector's similarity search.
+Anytime the user sends a query, we want to find the content that's relevant to their questions. We can do this using [pgvector](https://supabase.com/docs/guides/database/extensions/pgvector)'s similarity search.
 
 For complex SQL operations, wrap them in database functions that you can call from the frontend using [RPC](https://supabase.com/docs/reference/javascript/rpc).
 
@@ -4302,7 +4302,7 @@ When creating your project, make sure to note down your database password as you
 You can find your database connection string on your project dashboard, click [Connect](https://supabase.com/dashboard/project/_?showConnect=true). Use the Session [pooler](https://supabase.com/docs/guides/database/connecting-to-postgres/pooling-and-limits) connection string which looks like this:
 
 ```txt
-postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres
+postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres
 ```
 
 ## Install the dependencies
@@ -4331,7 +4331,7 @@ from matplotlib import pyplot as plt
 from matplotlib import image as mpimg
 from typing import Optional
 
-DB_CONNECTION = "postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"
+DB_CONNECTION = "postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"
 ```
 
 Next, get the [credentials to your AWS account](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html) and instantiate the `boto3` client:
@@ -21933,6 +21933,9 @@ Users often expect to sign in to your site with a password. Supabase Auth helps 
 
 Users can associate a password with their identity using their [email address](#with-email) or a [phone number](#with-phone).
 
+Warning: Looking for a database password? See [Reset database
+password](https://supabase.com/kb/troubleshooting/how-do-i-reset-my-supabase-database-password-oTs5sB).
+
 ## With email
 
 ### Enabling email and password-based authentication
@@ -37671,9 +37674,9 @@ Caution: Invitation links expire after the duration configured in [Email OTP Exp
 
 # Cron
 
-Schedule Recurring Jobs with Cron Syntax in Postgres
+Schedule Recurring Cron Jobs in Postgres
 
-Supabase Cron is a Postgres Module that simplifies scheduling recurring Jobs with cron syntax and monitoring Job runs inside Postgres.
+Supabase Cron is a Postgres Module that simplifies scheduling recurring Cron Jobs and monitoring Job runs inside Postgres.
 
 Cron Jobs can be created via SQL or the [Integrations -> Cron](https://supabase.com/dashboard/project/_/integrations) interface inside the Dashboard, and can run anywhere from every second to once a year depending on your use case.
 
@@ -38251,7 +38254,7 @@ For every Postgres connection mode, the string comes from the same place:
 1. Open your project in the [Supabase Dashboard](https://supabase.com/dashboard/project/_).
 2. Click **Connect** at the top of the page.
 3. Choose the connection method you picked above.
-4. Copy the string and replace `[YOUR-PASSWORD]` with your database password. [Percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space.
+4. Copy the string and replace `[YOUR-DATABASE-PASSWORD]` with your database password. [Percent-encode](https://en.wikipedia.org/wiki/Percent-encoding) any reserved characters it contains, such as `&`, `#`, `?`, or a space.
 
 The sections below show what each string looks like and when to use it. Take the host, port, and username from the string you copied rather than typing the bracketed placeholders literally. The pooler host in particular can't be composed from your region, and pooled connections use a different username from direct connections. Both are covered under [Endpoints and IP versions](#endpoints-and-ip-versions).
 
@@ -38262,7 +38265,7 @@ The direct connection string connects directly to your Postgres instance. Use it
 Caution: Direct connections are on IPv6, or on IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address). If your network is IPv4-only and you don't have the add-on, use [session mode](#pooler-session-mode) instead.
 
 ```txt
-postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
 ```
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true).
@@ -38272,7 +38275,7 @@ Get this string from the Supabase Dashboard by clicking [Connect](https://supaba
 The session mode connection string connects to your Postgres instance through the shared pooler ([Supavisor](https://supabase.github.io/supavisor/)). Use it as an alternative to a direct connection when you connect from an IPv4-only network.
 
 ```txt
-postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres
+postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@[POOLER-HOST]:5432/postgres
 ```
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) and choosing **Session pooler**.
@@ -38286,7 +38289,7 @@ Caution: The shared pooler doesn't support [prepared statements](https://postgre
 Caution: Transaction mode does not support [query pipelining](https://www.postgresql.org/docs/current/libpq-pipeline-mode.html). See [Transaction mode limitations](#transaction-mode-limitations) for mode details.
 
 ```txt
-postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres
+postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@[POOLER-HOST]:6543/postgres
 ```
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) and choosing **Transaction pooler**.
@@ -38296,7 +38299,7 @@ Get this string from the Supabase Dashboard by clicking [Connect](https://supaba
 On the Pro Plan and above, Supabase provisions a dedicated pooler (PgBouncer) that runs alongside your Postgres database. Use it for high-load applications. The dedicated pooler runs in transaction mode only. For session mode, use the [shared pooler](#pooler-session-mode). Unlike the shared pooler, it supports prepared statements on PgBouncer 1.21 and later. It is reachable over IPv6, or over IPv4 if the project has the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address).
 
 ```txt
-postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:6543/postgres
+postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.[PROJECT-REF].supabase.co:6543/postgres
 ```
 
 Get this string from the Supabase Dashboard by clicking [Connect](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction).
@@ -38572,7 +38575,7 @@ Choose one of these Vercel Deploy Templates. They use the [Vercel Deploy Integra
 4. Save the result as the `POSTGRES_URL` environment variable.
 
 ```dotenv .env.local
-POSTGRES_URL="postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres?workaround=supabase-pooler.vercel"
+POSTGRES_URL="postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@[POOLER-HOST]:6543/postgres?workaround=supabase-pooler.vercel"
 ```
 
 **Drizzle**
@@ -72771,7 +72774,9 @@ You can still change your configuration through the dashboard. However, making c
 
 Run TypeScript functions globally at the edge.
 
-Edge Functions are server-side TypeScript functions, distributed globally at the edge—close to your users. They can be used for listening to webhooks or integrating your Supabase project with third-parties [like Stripe](https://github.com/supabase/supabase/tree/master/examples/edge-functions/supabase/functions/stripe-webhooks). Edge Functions are developed using [Deno](https://deno.com), which offers a few benefits to you as a developer:
+Run TypeScript functions globally at the edge with serverless computing.
+
+Edge Functions are serverless TypeScript functions, distributed globally at the edge—close to your users. They can be used for listening to webhooks or integrating your Supabase project with third-parties [like Stripe](https://github.com/supabase/supabase/tree/master/examples/edge-functions/supabase/functions/stripe-webhooks). Edge Functions are developed using [Deno](https://deno.com), which offers a few benefits to you as a developer:
 
 - It is open source.
 - It is portable. Supabase Edge Functions run locally, and on any other Deno-compatible platform (including self-hosted infrastructure).
@@ -83528,7 +83533,7 @@ The connection strings below show the format only. Take the host, port, and user
 
 ```bash name=.env
 DB_CONNECTION=pgsql
-DB_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres
+DB_URL=postgres://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@[POOLER-HOST]:5432/postgres
 ```
 
 Laravel sets `sslmode` as an explicit `config/database.php` option rather than a URL parameter. The next step covers this.
@@ -84266,10 +84271,10 @@ In your `.env` file, add the following environment variables for your database c
 
 ```bash name=.env
 # Transaction mode connection string for Prisma Client app queries
-DATABASE_URL="postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:6543/postgres?pgbouncer=true&connection_limit=1"
+DATABASE_URL="postgres://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@[POOLER-HOST]:6543/postgres?pgbouncer=true&connection_limit=1"
 
 # Direct connection string for Prisma Migrate
-DIRECT_URL="postgres://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres"
+DIRECT_URL="postgres://postgres:[YOUR-DATABASE-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres"
 ```
 
 ## 6. Update your Prisma schema
@@ -84925,7 +84930,7 @@ The connection strings below show the format only. Take the host, port, and user
 Set the connection string as an environment variable. Rails reads `DATABASE_URL` from the environment and connects with it, so you don't need to edit `config/database.yml`. The export applies to the current shell session, so run it in the same shell as the Rails commands in the following steps.
 
 ```bash
-export DATABASE_URL=postgres://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@[POOLER-HOST]:5432/postgres?sslmode=require
+export DATABASE_URL=postgres://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@[POOLER-HOST]:5432/postgres?sslmode=require
 ```
 
 ## 5. Create and run a database migration
@@ -85258,7 +85263,7 @@ Select the **JDBC** tab to copy the connection string in the right format for Sp
 The connection string contains your database password, and `application.properties` is committed with your project. Set the string as an environment variable instead, and set it the same way on whatever platform you deploy to.
 
 ```bash
-export SUPABASE_DB_URL='jdbc:postgresql://[POOLER-HOST]:5432/postgres?user=postgres.[PROJECT-REF]&password=[YOUR-PASSWORD]&sslmode=require'
+export SUPABASE_DB_URL='jdbc:postgresql://[POOLER-HOST]:5432/postgres?user=postgres.[PROJECT-REF]&password=[YOUR-DATABASE-PASSWORD]&sslmode=require'
 ```
 
 Then reference the variable, along with the driver, in `src/main/resources/application.properties`.
@@ -111995,7 +112000,7 @@ IPv6 unless IPv4 Add-On is enabled
 
 ```sh
 # Example direct connection string
-postgresql://postgres:[YOUR-PASSWORD]@db.ajrbwkcuthywfihaarmflo.supabase.co:5432/postgres
+postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.ajrbwkcuthywfihaarmflo.supabase.co:5432/postgres
 ```
 
 ### Dedicated pooler (port 6543)
@@ -112004,7 +112009,7 @@ IPv6 unless IPv4 Add-On is enabled
 
 ```sh
 # Example dedicated pooler string
-postgresql://postgres:[YOUR-PASSWORD]@db.ajrbwkcuthywfihaarmflo.supabase.co:6543/postgres
+postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.ajrbwkcuthywfihaarmflo.supabase.co:6543/postgres
 ```
 
 ### Shared pooler, transaction mode (port 6543)
@@ -112013,7 +112018,7 @@ Always uses an IPv4 address
 
 ```sh
 # Example transaction string
-postgresql://postgres.ajrbwkcuthywddfihrmflo:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres
+postgresql://postgres.ajrbwkcuthywddfihrmflo:[YOUR-DATABASE-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres
 ```
 
 ### Shared pooler, session mode (port 5432)
@@ -112022,7 +112027,7 @@ Always uses an IPv4 address
 
 ```sh
 # Example session string
-postgresql://postgres.ajrbwkcuthywfddihrmflo:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
+postgresql://postgres.ajrbwkcuthywfddihrmflo:[YOUR-DATABASE-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 ```
 
 ## Pricing
@@ -114631,20 +114636,20 @@ Note: Use the direct connection string. If your network doesn't support [IPv6](h
 Session pooler connection string:
 
 ```bash
-  postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
+  postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 ```
 
 Direct connection string:
 
 ```bash
-  postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+  postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
 ```
 
 4. **Get the database password**
 
 Reset the password in the [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
 
-Replace `[YOUR-PASSWORD]` in the connection string with the database password.
+Replace `[YOUR-DATABASE-PASSWORD]` in the connection string with the database password.
 
 5. **Backup database**
 
@@ -114758,18 +114763,18 @@ Note: Use the direct connection string. If your ISP doesn't [support IPv6](https
 Session pooler connection string:
 
 ```bash
-  postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
+  postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 ```
 
 Direct connection string:
 
 ```bash
-  postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+  postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
 ```
 
 4. **Get the database password**
 
-Replace `[YOUR-PASSWORD]` in the connection string with the database password. If you do not remember your password, you can reset it on [the **Database >  Settings**](https://supabase.com/dashboard/project/_/database/settings) page of the Dashboard.
+Replace `[YOUR-DATABASE-PASSWORD]` in the connection string with the database password. If you do not remember your password, you can reset it on [the **Database >  Settings**](https://supabase.com/dashboard/project/_/database/settings) page of the Dashboard.
 
 5. **Restore your Project with PSQL**
 
@@ -115495,13 +115500,13 @@ Note: Use the direct connection string. If your ISP doesn't support IPv6 and you
 Session pooler connection string:
 
 ```bash
-  postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
+  postgresql://postgres.[PROJECT-REF]:[YOUR-DATABASE-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:5432/postgres
 ```
 
 Direct connection string:
 
 ```bash
-  postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
+  postgresql://postgres:[YOUR-DATABASE-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
 ```
 
 2. **Get the database password**
@@ -115510,7 +115515,7 @@ Caution: It can take a few minutes for the database password reset to take effec
 
 Reset the password in the [Database Settings](https://supabase.com/dashboard/project/_/database/settings).
 
-Replace `[YOUR-PASSWORD]` in the connection string with the database password.
+Replace `[YOUR-DATABASE-PASSWORD]` in the connection string with the database password.
 
 3. **Get the backup file path**
 

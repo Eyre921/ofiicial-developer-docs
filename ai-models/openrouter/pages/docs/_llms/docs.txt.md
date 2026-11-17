@@ -165,7 +165,7 @@ path: docs/_llms/docs.txt
 
 - [OAuth PKCE](https://openrouter.ai/docs/guides/overview/auth/oauth.md): Let users bring their own OpenRouter API key and pay for their own inference
 - [Workload Identity Federation](https://openrouter.ai/docs/guides/overview/auth/workload-identity-federation.md): Call OpenRouter from workloads signed in with your own identity provider, without long-lived API keys
-- [Management API Keys](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md): Manage API keys programmatically
+- [Management API Keys](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md): Manage API keys, members, budgets, guardrails, and more programmatically
 - [Security settings](https://openrouter.ai/docs/guides/overview/auth/security-settings.md): Review and manage API key security settings
 - [BYOK](https://openrouter.ai/docs/guides/overview/auth/byok.md): Bring your own provider API keys
 - [Single Sign-On (SSO)](https://openrouter.ai/docs/guides/features/sso.md): Let your team sign in to OpenRouter through your identity provider
@@ -211,7 +211,6 @@ path: docs/_llms/docs.txt
 ### Providers
 
 - [Provider Integration](https://openrouter.ai/docs/guides/providers/integration.md)
-- [How OpenRouter Routes Traffic Between Providers](https://openrouter.ai/docs/guides/providers/traffic-routing.md): How routing splits a model's traffic between provider endpoints, and the inputs that decide your share
 
 ### Community
 

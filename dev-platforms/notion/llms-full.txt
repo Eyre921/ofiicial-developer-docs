@@ -1,3 +1,7 @@
+# Notion Docs
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://developers.notion.com/llms.txt instead.
+
 # Authentication
 Source: https://developers.notion.com/cli/get-started/authentication
 

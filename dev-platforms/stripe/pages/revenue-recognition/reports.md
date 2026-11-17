@@ -16,7 +16,7 @@ Stripe Revenue Recognition automatically generates reports that you can view in 
 
 Stripe Revenue Recognition requires specific configuration of your Stripe account:
 
-- Model subscriptions using [products and prices](https://docs.stripe.com/products-prices/overview.md), and [customers](https://docs.stripe.com/billing/customer.md).
+- Model subscriptions using [products and prices](https://docs.stripe.com/products-prices.md), and [customers](https://docs.stripe.com/billing/customer.md).
 - Set taxes using the [default_tax_rates](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-default_tax_rates) attribute, not as line items.
 - Set discounts using the [discount](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-discount) object, not as *invoice* (Invoices are statements of amounts owed by a customer. They track the status of payments from draft through paid or otherwise finalized. Subscriptions automatically generate invoices, or you can manually create a one-off invoice) items.
 

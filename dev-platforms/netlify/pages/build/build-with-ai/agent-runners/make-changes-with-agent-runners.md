@@ -15,6 +15,10 @@ Learn how to make changes and iterate on an existing project with your preferred
 
 If you want to create a new project with an AI agent, check out our [Agent Runners quickstart for new projects](/start/quickstarts/create-new-project-with-ai-agent/).
 
+### Tip - Build with connectors
+
+Want your agent to work from a Linear issue, Notion spec, or Snowflake dataset? Connectors let you link third-party services to an agent run so your agent can read and act on data you already have. For details, see [Build with connectors](/build/build-with-ai/agent-runners/build-with-connectors/).
+
 ## Prerequisites
 
 Before you begin, you must have the following: 
@@ -52,6 +56,24 @@ Ask mode is read-only: the agent can read your whole project but can't edit file
   > How would you architect a system for configuring MCP servers that works across multiple AI agents?
 - **Ask questions about your database:**
   > Which data fields are required to add a new entry to the users list?
+- **Check DNS propagation:**
+  > My domain still shows my old website. Is DNS still propagating, or are my records wrong?
+- **Summarize form submissions:**
+  > Summarize the messages people sent through my contact form this week.
+- **Find out why something broke:**
+  > My newsletter signup button shows an error. Find out why and fix it.
+- **Help a user who can't log in:**
+  > A customer with the email [jane@example.com](mailto:jane@example.com) says she never got her password reset email. Find out why.
+- **Look back at an earlier agent run:**
+  > What did the agent change in my last run, and why did it stop?
+- **Ask about your database schema:**
+  > What information do I store about each customer, and which details are required to add a new one?
+- **Check AI usage:**
+  > How many credits did my site's AI features use this week?
+- **Check on a domain change:**
+  > Have the changes to my domain taken effect yet?
+
+For a list of the Netlify project details your agent can check, such as domains, deploys, forms, Netlify Identity users, and logs, see [Project context available to agents](/build/build-with-ai/agent-runners/overview/#project-context-available-to-agents).
 
 ## How to use Agent Runners
 
@@ -59,12 +81,13 @@ Ask mode is read-only: the agent can read your whole project but can't edit file
 
 To start an agent run to make changes to your project, follow these steps:
 
-1. Go to your Netlify project dashboard. Under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Antigravity, Meta Muse, OpenAI Codex, or OpenCode. To set the model and reasoning effort the agent runs with, choose **Configure...** in the same dropdown. For details, see [Agent configuration](/build/build-with-ai/agent-runners/overview/#agent-configuration).
+1. Go to your Netlify project dashboard. Under **Build with an AI agent**, select your preferred AI agent, such as Claude Code, Google Antigravity, Meta Muse, OpenAI Codex, or OpenCode. To set the model and reasoning effort the agent runs with, choose **Configure...** in the same dropdown. For details, see [Agent configuration](/build/build-with-ai/agent-runners/overview/#choose-ai-models-for-your-own-agent-runs).
   ![Empty prompt field on Project overview page](/images/build-with-an-ai-agent-from-project-overview.png)
-2. Add your prompt. For examples of prompts, check out our [prompt examples](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners). You can optionally add more context as a file or image. Or you can add project context that applies to all agent runs, such as project-specific prompt guidelines or a link to a publicly available design system or style guide. 
+2. Add your prompt. For examples of prompts, check out our [prompt examples](/build/build-with-ai/agent-runners/prompt-examples-for-agent-runners). You can optionally add more context as a file or image. Or you can add project context that applies to all agent runs, such as project-specific prompt guidelines or a link to a publicly available design system or style guide. Your prompt can also reference a third-party service, such as `Read Linear issue WEB-142 and build the landing page it describes`. Your agent will prompt you to connect the service if you haven't already. For details, see [Build with connectors](/build/build-with-ai/agent-runners/build-with-connectors/).
 3. Select a mode from the mode dropdown. To make changes, use the default **Build** mode so your agent can make code or file changes. To get answers or make plans without changing your project, use  **Ask** mode. For details, see [Agent run modes](#agent-run-modes).
 4. Choose **Run task**. 
-5. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks. If your agent needs a decision from you before it can continue, it will pause and ask you a question. For details, see [Respond to any questions from your agent](#2-respond-to-any-questions-from-your-agent). 
+5. If your prompt asks your agent to use a third-party service, such as reading a Linear issue or a Notion spec, your agent prompts you to connect your account with that service if you haven't already. For details, see [Build with connectors](/build/build-with-ai/agent-runners/build-with-connectors/).
+6. Your chosen AI agent will complete the task asynchronously and notify you when it's done. At this point, you can wait or take care of other tasks. If your agent needs a decision from you before it can continue, it will pause and ask you a question. For details, see [Respond to any questions from your agent](#2-respond-to-any-questions-from-your-agent). 
 
 ### Note - Completely new project?
 
@@ -113,6 +136,14 @@ If your project is connected to a GitHub repository, then you can optionally ope
 To ship your agent run updates, you have two options: 
    - **For projects using Git & GitHub:** Open a pull request or update an existing pull request with your updates from your agent run. When you merge your pull request into your production branch, Netlify publishes your changes to your production site for you.
    - **For projects without Git:** If you have publishing permission, you'll find a **Publish** button on your Netlify project's Agent Runs dashboard. Select **Publish** to make your agent run updates go live in the latest production version of your project.
+
+## Review pull requests from Agent Runners
+
+When you open a GitHub pull request from an agent run, Netlify sets up the pull request to make reviewing it easier for you and your team. There's nothing to set up.
+
+- **Generated pull request description:** The pull request includes a description of the changes from your agent run. If your repository has a [pull request template](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository), the description follows that template.
+- **Co-author credit:** If you've [connected your GitHub account to your Netlify user](/manage/accounts-and-billing/user-settings/#connect-your-git-provider-accounts), you're credited as a co-author on the commits. This shows reviewers that you helped make the changes, so they know who to ask about them.
+- **Up-to-date description:** When you continue an agent run and push the new commits to its open pull request with **Update pull request**, Netlify updates the pull request description to reflect the latest changes.
 
 ## Statuses for agent runs
 
@@ -173,6 +204,10 @@ netlify agents:stop <run-id>
 ```
 
 The run moves to the `cancelled` state, the same as stopping it from the dashboard.
+
+## Troubleshooting
+
+Find solutions for common issues when you start or continue agent runs. For more help, check out [Troubleshoot Agent Runners](/build/build-with-ai/agent-runners/troubleshoot-agent-runners/).
 
 ### Why you may not be able to start a new run
 

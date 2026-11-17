@@ -1,10 +1,10 @@
 ---
 title: "Overview"
-source: https://docs.stripe.com/products-prices/overview.md
-path: products-prices/overview
+source: https://docs.stripe.com/products-prices.md
+path: products-prices
 ---
 
-# Overview
+# Products and price
 
 Model your business on Stripe with products and prices.
 

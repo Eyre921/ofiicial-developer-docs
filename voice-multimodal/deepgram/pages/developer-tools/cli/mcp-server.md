@@ -9,7 +9,9 @@ path: developer-tools/cli/mcp-server
 
 # MCP server
 
-The `dg` CLI includes a built-in MCP (Model Context Protocol) server that gives AI coding tools direct access to Deepgram APIs.
+`dg mcp` runs a local stdio bridge to Deepgram's hosted docs MCP server at `https://api.dx.deepgram.com/kapa/mcp`, authenticated with your `dg` credentials. It exposes one tool, `search_deepgram_knowledge_sources`. Use `dg mcp` when your editor runs only stdio MCP servers; otherwise add the hosted server directly from [Agentic Developer Tools](/developer-tools/agentic-tools). Add one of the two.
+
+`dg mcp` bridges an editor to Deepgram's docs-search MCP server over `stdio`, the only transport it supports, and exposes one tool, `search_deepgram_knowledge_sources`. To call the Deepgram APIs from an agent, use `dg listen`, `dg speak`, `dg read`, or the SDKs.
 
 ## Start the MCP server
 
@@ -17,21 +19,25 @@ The `dg` CLI includes a built-in MCP (Model Context Protocol) server that gives 
 dg mcp
 ```
 
-Starts a server using stdio transport (default).
+Starts the bridge over stdio, the only transport `dg mcp` supports.
 
-## HTTP/SSE transport
+## Transport
 
-For HTTP-based MCP clients:
+`dg mcp` runs only over stdio. `--transport`, `--host`, and `-p`/`--port` still exist as flags, kept for compatibility with older MCP client configs, but they're ignored except for `--transport stdio`; passing `--transport sse` (or anything other than `stdio`) now fails outright:
 
 ```shell
-dg mcp --transport sse --port 8000
+$ dg mcp --transport sse
+ERROR: dg mcp supports only the stdio transport, not sse. Nothing was started.
+HINT: Use stdio: remove --transport from your MCP config and let your editor start dg mcp.
 ```
+
+`--base-url` still sets the Deepgram developer API host (default `https://api.dx.deepgram.com`), and `--debug` still turns on debug logging.
 
 ## Configuration
 
 ### Claude Code
 
-Add to your project's `.claude/mcp.json`:
+Add to your project's `.mcp.json`:
 
 ```json
 {
@@ -48,7 +54,45 @@ Add to your project's `.claude/mcp.json`:
 Or add globally:
 
 ```shell
-claude mcp add deepgram --scope user --command dg --args mcp
+claude mcp add deepgram --scope user -- dg mcp
+```
+
+### OpenAI Codex
+
+Add the server from the terminal:
+
+```shell
+codex mcp add deepgram -- dg mcp
+```
+
+Or add it to `~/.codex/config.toml`, which the Codex CLI, IDE extension, and desktop app share:
+
+```toml
+[mcp_servers.deepgram]
+command = "dg"
+args = ["mcp"]
+```
+
+### Gemini CLI
+
+```shell
+gemini mcp add deepgram dg mcp
+```
+
+### VS Code and GitHub Copilot
+
+Add to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "deepgram": {
+      "type": "stdio",
+      "command": "dg",
+      "args": ["mcp"]
+    }
+  }
+}
 ```
 
 ### Cursor
@@ -67,9 +111,9 @@ Add to `.cursor/mcp.json`:
 }
 ```
 
-### Windsurf
+### Other MCP clients
 
-Add to `.windsurf/mcp.json`:
+Any client that runs stdio MCP servers reads the same entry. Add it to the client's MCP configuration file:
 
 ```json
 {
@@ -85,14 +129,14 @@ Add to `.windsurf/mcp.json`:
 
 ## Available tools
 
-`dg mcp` proxies the tools exposed by the Deepgram developer API to your editor. The remote service owns the available tool list, so inspect the connected MCP client for the current tools and their schemas.
+`dg mcp` exposes one tool, `search_deepgram_knowledge_sources`. The server answers questions from the Deepgram documentation.
 
 ## Authentication
 
-The MCP server uses your stored credentials (`dg login`) automatically.
+The bridge uses the credentials stored by `dg login`. With no stored `dg login` credential and no `DEEPGRAM_API_KEY`, `dg mcp` still starts and completes the stdio handshake; the credential check only runs on the first `search_deepgram_knowledge_sources` call, which fails with `dg mcp can't start the documentation search: No API key is set. Run dg login or set DEEPGRAM_API_KEY, then restart the MCP server.` Your editor shows the server as connected even though every tool call will fail until a credential is set and the server is restarted.
 
 For CI environments:
 
 ```shell
-DEEPGRAM_API_KEY=sk_xxx dg mcp
+DEEPGRAM_API_KEY=YOUR_API_KEY dg mcp
 ```

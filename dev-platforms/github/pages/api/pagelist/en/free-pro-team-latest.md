@@ -1194,6 +1194,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/reference/security-incident-response/investigation-tools
 /en/code-security/reference/security-incident-response/investigation-areas
 /en/code-security/tutorials
+/en/code-security/tutorials/secure-code-from-commit-to-production
 /en/code-security/tutorials/secret-protection-adoption-path
 /en/code-security/tutorials/code-quality-adoption-path
 /en/code-security/tutorials/trialing-github-advanced-security
@@ -1707,6 +1708,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/about-remote-control
 /en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/autopilot
 /en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/tool-search
+/en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/browser-use
 /en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/computer-use
 /en/copilot/concepts/agent-capabilities/agent-powered-workflows-and-operations/image-generation
 /en/copilot/concepts/prompting-and-context
@@ -1845,6 +1847,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-plan-mode
 /en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-subagents
 /en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-custom-agents
+/en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/browser-use
 /en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-cloud-agent-in-your-ide
 /en/copilot/how-tos/copilot-cli
 /en/copilot/how-tos/copilot-cli/cli-best-practices
@@ -1860,6 +1863,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/use-autopilot-mode
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/voice-input
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/choose-a-model
+/en/copilot/how-tos/copilot-cli/use-copilot-cli/browser-use
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/computer-use
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/connecting-vs-code
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/delegate-tasks-to-cca
@@ -1903,10 +1907,12 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/github-copilot-app/agent-sessions
 /en/copilot/how-tos/github-copilot-app/choose-a-model
 /en/copilot/how-tos/github-copilot-app/working-with-projects
+/en/copilot/how-tos/github-copilot-app/browser-use
 /en/copilot/how-tos/github-copilot-app/computer-use
 /en/copilot/how-tos/github-copilot-app/working-with-canvas-extensions
 /en/copilot/how-tos/github-copilot-app/view-and-fix-security-alerts
 /en/copilot/how-tos/github-copilot-app/managing-issues-and-pull-requests
+/en/copilot/how-tos/github-copilot-app/manage-azure-devops-work
 /en/copilot/how-tos/github-copilot-app/using-automations
 /en/copilot/how-tos/github-copilot-app/add-llm-models
 /en/copilot/how-tos/github-copilot-app/open-with-deep-links
@@ -2057,6 +2063,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage/restrict-based-on-registry
 /en/copilot/how-tos/administer-copilot/download-activity-report
 /en/copilot/how-tos/administer-copilot/view-usage-and-adoption
+/en/copilot/how-tos/administer-copilot/view-repository-insights
 /en/copilot/how-tos/administer-copilot/view-code-generation
 /en/copilot/how-tos/administer-copilot/view-impact-dashboard
 /en/copilot/how-tos/troubleshoot-copilot
@@ -2110,6 +2117,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/reference/copilot-usage-metrics/usage-metrics-coverage
 /en/copilot/reference/copilot-usage-metrics/industry-comparisons
 /en/copilot/reference/copilot-usage-metrics/interpret-copilot-metrics
+/en/copilot/reference/copilot-usage-metrics/repository-insights-metrics
 /en/copilot/reference/copilot-usage-metrics/reconciling-usage-metrics
 /en/copilot/reference/copilot-usage-metrics/lines-of-code-metrics
 /en/copilot/reference/copilot-usage-metrics/team-level-metrics
@@ -2344,6 +2352,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/integrations/how-tos/teams/use-github-in-teams
 /en/integrations/how-tos/teams/customize-notifications
 /en/integrations/how-tos/teams/schedule-reminders
+/en/integrations/how-tos/using-github-event-streams
 /en/integrations/reference
 /en/integrations/reference/slack-permissions
 /en/integrations/reference/teams-permissions
@@ -2846,6 +2855,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/repos/custom-properties
 /en/rest/repos/forks
 /en/rest/repos/issue-types
+/en/rest/repos/planning-statuses
 /en/rest/repos/repos
 /en/rest/repos/rule-suites
 /en/rest/repos/rules
@@ -3244,4 +3254,5 @@ path: api/pagelist/en/free-pro-team-latest
 /en/nonprofit/troubleshooting/frequently-asked-questions
 /en/nonprofit/troubleshooting/cannot-find-my-organization-on-github-for-nonprofits
 /en/mos-diner
+/en/ignite26
 

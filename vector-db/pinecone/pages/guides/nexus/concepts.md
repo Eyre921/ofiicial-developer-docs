@@ -6,7 +6,7 @@ path: guides/nexus/concepts
 
 Learn the key Pinecone Nexus terms, from sources and contexts to artifacts, sessions, and queries, and how they connect.
 
-Pinecone Nexus compiles your data into queryable knowledge that AI agents reach through a single interface. This page defines the key terms and how they fit together, from the sources you bring in to the answers agents get back. For a high-level diagram of how they connect, see [Nexus architecture](/guides/nexus/how-it-works).
+Pinecone Nexus compiles your data into queryable knowledge that AI agents reach through a single interface. This page defines the key terms and how they fit together, from the sources you bring in to the answers agents get back. For a high-level diagram of how they connect, see [Nexus architecture](/guides/nexus/architecture).
 
 ## Sources
 

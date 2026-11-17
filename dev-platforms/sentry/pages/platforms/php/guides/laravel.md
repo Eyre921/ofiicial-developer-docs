@@ -130,6 +130,7 @@ If you're using Laravel's Forge platform to provision and deploy your PHP applic
 ## Other PHP Frameworks
 
 - [Symfony](https://docs.sentry.io/platforms/php/guides/symfony.md)
+- [Bref](https://docs.sentry.io/platforms/php/guides/bref.md)
 
 ## Topics
 

@@ -1106,6 +1106,7 @@ The method name and endpoint are unchanged. Only the session (project) ID requir
 > | Before | After | Notes |
 > | - | - | - |
 > | `session_id` (optional) | `session_id` (**required**) | UUID of the project that owns the run; resolve it with `client.read_project()` if you do not already have it |
+> | `start_time` (optional) | `start_time` (optional) | Run's start time, timezone-aware (for example `run.start_time`). Required for SmithDB-only self-hosted below v0.18 |
 
 > [tab] TypeScript
 >
@@ -1116,6 +1117,7 @@ The method name and endpoint are unchanged. Only the session (project) ID requir
 > | Before | After | Notes |
 > | - | - | - |
 > | `sessionId` (optional) | `sessionId` (**required**) | UUID of the project that owns the run; resolve it with `client.readProject()` if you do not already have it |
+> | `startTime` (optional) | `startTime` (optional) | Run's start time. Required for SmithDB-only self-hosted below v0.18 |
 
 > [tab] Java
 >
@@ -1126,6 +1128,7 @@ The method name and endpoint are unchanged. Only the session (project) ID requir
 > | Before | After | Notes |
 > | - | - | - |
 > | `sessionId()` (optional) | `sessionId()` (**required**) | UUID of the project that owns the run; resolve it with `client.sessions().list()` if you do not already have it |
+> | `startTime()` (optional) | `startTime()` (optional) | Run's start time. Required for SmithDB-only self-hosted below v0.18 |
 
 > [tab] Go
 >
@@ -1136,6 +1139,7 @@ The method name and endpoint are unchanged. Only the session (project) ID requir
 > | Before | After | Notes |
 > | - | - | - |
 > | `SessionID` (optional) | `SessionID` (**required**) | UUID of the project that owns the run; resolve it with `client.Sessions.List()` if you do not already have it |
+> | `StartTime` (optional) | `StartTime` (optional) | Run's start time. Required for SmithDB-only self-hosted below v0.18 |
 
 > [tab] cURL
 >
@@ -1146,10 +1150,17 @@ The method name and endpoint are unchanged. Only the session (project) ID requir
 > | Before | After | Notes |
 > | - | - | - |
 > | `session_id` (optional) | `session_id` (**required**) | UUID of the project that owns the run; resolve it with `GET /api/v1/sessions` if you do not already have it |
+> | `start_time` (optional) | `start_time` (optional) | Run's start time (RFC3339). Required for SmithDB-only self-hosted below v0.18 |
+
+> [!NOTE]
+>
+> **SmithDB-only self-hosted below v0.18:** also pass the run's start time. Without it, feedback on a run that started more than a few hours ago (6 hours with the default Helm chart settings) can fail or be dropped.
 
 ### Examples
 
 #### Provide `session_id` when creating feedback
+
+On SmithDB-only self-hosted below v0.18, also pass the run's start time, as described in the preceding note.
 
 > [tab] Python
 >

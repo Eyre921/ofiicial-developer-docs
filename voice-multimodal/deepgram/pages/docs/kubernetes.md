@@ -27,4 +27,5 @@ If you'll deploy with Kubernetes, choose where you'll deploy your infrastructure
 
 * [Amazon Web Services](/docs/aws-k8s)
 * [Google Cloud Platform](/docs/gcp-k8s)
+* [Microsoft Azure](/docs/azure-k8s)
 * [Self-managed Kubernetes](/docs/self-managed-kubernetes)

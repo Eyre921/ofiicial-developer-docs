@@ -17,6 +17,8 @@ Make sure you've completed the requirements in the [Self-Hosted Introduction](/d
 
 GPU availability has been extremely limited across cloud providers, including GCP. You may need to [request a GPU quota](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus#request_quota) if you are not able to provision spot GPU instances in your node pools.
 
+This guide runs the Engine on `g2-standard-8` machines with one NVIDIA L4 GPU. Before you choose a different machine type or GPU, check [Model and GPU Compatibility](/docs/self-hosted-deployment-environments#model-and-gpu-compatibility) to see which Deepgram models run on which NVIDIA GPUs. For example, Flux STT doesn't run on the NVIDIA T4. Every supported GPU requires NVIDIA driver `>=580` with the **open** kernel modules. See [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms).
+
 ## `kubectl`
 
 The Kubernetes command-line tool, `kubectl`, allows you to run commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.
@@ -102,7 +104,7 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
 
    gcloud container node-pools create engine-pool \
        --cluster $CLUSTER_NAME \
-       --region $CLUSTER_LOCATION \
+       --location $CLUSTER_LOCATION \
        --node-locations $ENGINE_NP_ZONE \
        --num-nodes 1 \
        --enable-autoscaling \
@@ -120,6 +122,12 @@ Google Kubernetes Engine (GKE) is a managed Kubernetes service to run Kubernetes
        --machine-type n1-standard-2 \
        --node-labels k8s.deepgram.com/node-type=license-proxy
    ```
+
+   > **Warning**
+   >
+   > ## Confirm the GPU driver version
+   >
+   > `gpu-driver-version=latest` installs the newest driver available for your GKE version, and a GKE upgrade can change it. Deepgram requires NVIDIA driver `>=580` with the open kernel modules. Check the driver GKE installs for your cluster version in Google's [GPU driver documentation](https://docs.cloud.google.com/kubernetes-engine/docs/how-to/gpus#installing_drivers), and contact [Support](https://deepgram.com/contact-us/) if it doesn't meet this requirement.
 
 3. Create a dedicated namespace for Deepgram resources.
 
@@ -344,11 +352,11 @@ Deepgram maintains the official `deepgram-self-hosted` Helm Chart. You can refer
    helm repo update
    ```
 
-2. Download a `values.yaml` template for Deepgram's self-hosted Helm chart [from here](https://github.com/deepgram/self-hosted-resources/blob/main/charts/deepgram-self-hosted/values.yaml).
+2. Download a `values.yaml` template from Deepgram's [self-hosted resources](https://github.com/deepgram/self-hosted-resources/tree/main/charts/deepgram-self-hosted/samples/). For example, [here](https://github.com/deepgram/self-hosted-resources/blob/main/charts/deepgram-self-hosted/samples/02-basic-setup-gcp.yaml) is a template for a basic setup on GCP. It pins each component to the node pools you created and turns off the NVIDIA GPU Operator (`gpu-operator.enabled: false`), because GKE manages the GPU driver and toolkit.
 
 3. Modify the `values.yaml` file:
 
-   * Update the `scaling.static.{api,engine,licenseProxy}.replicas` values to match your node pool sizes.
+   * Update the `scaling.replicas.{api,engine}` values to match your node pool sizes.
 
    * Configure the `engine.modelManager.volumes.gcp.gpd` values to use the Google Persistent Disk you created earlier.
 
@@ -441,8 +449,6 @@ Test your environment and container setup with a local file.
    > If needed, adjust pieces of the above command:
    >
    > * the query parameters to match the directions from your Deepgram Account Representative
-   > * the service name `deepgram-api-external`
-   > * the namespace `dg-self-hosted`
 
 You should receive a JSON response with the transcript and associated metadata. Congratulations - your self-hosted setup is working.
 

@@ -20,13 +20,13 @@ Support summary:
 
 **1. Install and sign in**
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null}
 nexus login
 ```
 
@@ -67,6 +67,7 @@ To restore your original settings, run `nexus codex off`.
 - Instead of an Anthropic Provider Key, save your own key with `nexus auto --anthropic-api-key` (it prompts for the key) and run `nexus codex` again. Nexus CLI adds the saved key to Codex's `http_headers`.
 - Nexus CLI never sends an OpenAI key you saved with `nexus auto` to Codex. Your Codex sign-in covers OpenAI model turns.
 - With [manual setup](#manual-setup-advanced), Codex can send `x-anthropic-api-key` and `x-openai-api-key` headers.
+- A ChatGPT sign-in works with US [data residency](/accounts/data-residency#third-party-providers). Its OpenAI model turns follow OpenAI's own policies and your settings there, and may be processed outside the US. Fireworks model turns stay in the US.
 
 ### Who pays for OpenAI model turns
 

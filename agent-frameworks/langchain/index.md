@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1769 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1772 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -47,6 +47,7 @@
 - `api-reference/deployments-v2/interrupt-deployment-revision` — [Interrupt Deployment Revision](pages/api-reference/deployments-v2/interrupt-deployment-revision.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/interrupt-deployment-revision)
 - `api-reference/deployments-v2/list-deployment-log-entries` — [List Deployment Log Entries](pages/api-reference/deployments-v2/list-deployment-log-entries.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployment-log-entries)
 - `api-reference/deployments-v2/list-deployment-logs` — [List Deployment Logs](pages/api-reference/deployments-v2/list-deployment-logs.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployment-logs)
+- `api-reference/deployments-v2/list-deployment-namespaces` — [List Deployment Namespaces](pages/api-reference/deployments-v2/list-deployment-namespaces.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployment-namespaces)
 - `api-reference/deployments-v2/list-deployments` — [List Deployments](pages/api-reference/deployments-v2/list-deployments.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployments)
 - `api-reference/deployments-v2/list-revision-logs` — [List Revision Logs](pages/api-reference/deployments-v2/list-revision-logs.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-revision-logs)
 - `api-reference/deployments-v2/list-revisions` — [List Revisions](pages/api-reference/deployments-v2/list-revisions.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-revisions)
@@ -81,6 +82,7 @@
 - `langsmith/add-metadata-tags` — [Add metadata and tags to traces](pages/langsmith/add-metadata-tags.md) · [原文](https://docs.langchain.com/langsmith/add-metadata-tags)
 - `langsmith/admin` — [Account](pages/langsmith/admin.md) · [原文](https://docs.langchain.com/langsmith/admin)
 - `langsmith/administration-overview` — [Overview](pages/langsmith/administration-overview.md) · [原文](https://docs.langchain.com/langsmith/administration-overview)
+- `langsmith/advanced-code-evaluators` — [Use advanced code evaluators](pages/langsmith/advanced-code-evaluators.md) · [原文](https://docs.langchain.com/langsmith/advanced-code-evaluators)
 - `langsmith/aes-encryption` — [Configure AES encryption at rest](pages/langsmith/aes-encryption.md) · [原文](https://docs.langchain.com/langsmith/aes-encryption)
 - `langsmith/agent-auth` — [Set up Agent Auth](pages/langsmith/agent-auth.md) · [原文](https://docs.langchain.com/langsmith/agent-auth)
 - `langsmith/agent-environments` — [Agent environments](pages/langsmith/agent-environments.md) · [原文](https://docs.langchain.com/langsmith/agent-environments)
@@ -169,6 +171,7 @@
 - `langsmith/attach-user-feedback` — [Log user feedback using the SDK](pages/langsmith/attach-user-feedback.md) · [原文](https://docs.langchain.com/langsmith/attach-user-feedback)
 - `langsmith/audit-evaluator-scores` — [How to audit evaluator scores](pages/langsmith/audit-evaluator-scores.md) · [原文](https://docs.langchain.com/langsmith/audit-evaluator-scores)
 - `langsmith/audit-logs` — [Audit logs](pages/langsmith/audit-logs.md) · [原文](https://docs.langchain.com/langsmith/audit-logs)
+- `langsmith/audit-logs-siem` — [Forward audit logs to a SIEM](pages/langsmith/audit-logs-siem.md) · [原文](https://docs.langchain.com/langsmith/audit-logs-siem)
 - `langsmith/auth` — [Authentication & access control](pages/langsmith/auth.md) · [原文](https://docs.langchain.com/langsmith/auth)
 - `langsmith/authentication-methods` — [Authentication methods](pages/langsmith/authentication-methods.md) · [原文](https://docs.langchain.com/langsmith/authentication-methods)
 - `langsmith/aws-self-hosted` — [Self-hosted LangSmith on AWS](pages/langsmith/aws-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/aws-self-hosted)

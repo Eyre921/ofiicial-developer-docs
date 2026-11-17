@@ -22,6 +22,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Content repurposing](#content-repurposing-docs-getting-started-end-to-end-examples-content-repurposing-mdx)
 - [Real-time meeting assistant](#real-time-meeting-assistant-docs-getting-started-end-to-end-examples-real-time-meeting-assistant-mdx)
 - [Real-time live captioner](#real-time-live-captioner-docs-getting-started-end-to-end-examples-real-time-live-captioner-mdx)
+- [Real-time voice AI on ESP32](#real-time-voice-ai-on-esp32-docs-getting-started-end-to-end-examples-realtime-esp32-mdx)
 - [Speech model versions and deprecations](#speech-model-versions-and-deprecations-docs-getting-started-model-versions-and-deprecations-mdx)
 - [Account Management](#account-management-docs-account-management-mdx)
 - [Temporary tokens](#temporary-tokens-docs-temporary-tokens-mdx)
@@ -170,11 +171,12 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Error handling](#error-handling-docs-sync-stt-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-sync-stt-endpoints-and-data-zones-mdx)
 - [Connection pre-warming](#connection-pre-warming-docs-sync-stt-connection-pre-warming-mdx)
+- [Rate limits](#rate-limits-docs-sync-stt-rate-limits-mdx)
 - [Sync STT on Pipecat](#sync-stt-on-pipecat-docs-sync-stt-pipecat-mdx)
 - [Sync STT on OpenRouter](#sync-stt-on-openrouter-docs-sync-stt-openrouter-mdx)
 - [Quickstart](#quickstart-docs-dictation-mdx)
 - [Achieve lowest latency](#achieve-lowest-latency-docs-dictation-uploading-while-recording-mdx)
-- [Recordings over two minutes](#recordings-over-two-minutes-docs-dictation-recordings-over-two-minutes-mdx)
+- [Dictations up to 20 minutes](#dictations-up-to-20-minutes-docs-dictation-recordings-over-two-minutes-mdx)
 - [Examples](#examples-docs-dictation-examples-mdx)
 - [Transcript rewriting](#transcript-rewriting-docs-dictation-transcript-rewriting-mdx)
 - [Prompting and keyterms](#prompting-and-keyterms-docs-dictation-prompting-and-keyterms-mdx)
@@ -186,7 +188,9 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx)
 - [Reduce connection overhead](#reduce-connection-overhead-docs-dictation-connection-pre-warming-mdx)
 - [Authenticate your app](#authenticate-your-app-docs-dictation-authenticate-your-app-mdx)
+- [Rate limits](#rate-limits-docs-dictation-rate-limits-mdx)
 - [Inserting at the cursor](#inserting-at-the-cursor-docs-dictation-inserting-at-the-cursor-mdx)
+- [Add context mid-dictation](#add-context-mid-dictation-docs-dictation-add-context-mid-dictation-mdx)
 - [Quickstart](#quickstart-docs-tts-getting-started-quickstart-mdx)
 - [Optimizing Accuracy and Latency](#optimizing-accuracy-and-latency-docs-tts-getting-started-optimizing-accuracy-and-latency-mdx)
 - [Choose an interface](#choose-an-interface-docs-tts-getting-started-choose-an-interface-mdx)
@@ -866,7 +870,7 @@ Do not submit with `auto_chapters` and `summarization` both enabled — the API 
 
 **WebSocket (default, Edge Routing):** `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=assemblyai-stt-3-7-realtime-agent`
 
-**Model choice:** `assemblyai-stt-3-7-realtime-agent` (AssemblyAI-STT-3.7-Realtime-Agent) for voice agents. `assemblyai-stt-3-7-realtime` (AssemblyAI-STT-3.7-Realtime) for meeting notetakers, ambient transcription, live captions and speaker diarization; it doesn't support Voice Focus, `interruption_delay` has no effect on it, and `mode: "manual"` behaves as `balanced`. `universal-3-6-pro` is still supported for existing integrations but isn't recommended for new ones.
+**Model choice:** `assemblyai-stt-3-7-realtime-agent` (AssemblyAI-STT-3.7-Realtime-Agent) for voice agents. `assemblyai-stt-3-7-realtime` (AssemblyAI-STT-3.7-Realtime) for meeting notetakers, ambient transcription, live captions and speaker diarization; it doesn't support Voice Focus, `interruption_delay` has no effect on it, and it rejects `mode: "manual"` with a `3006` error. `universal-3-6-pro` is still supported for existing integrations but isn't recommended for new ones.
 
 For data residency, swap the host: `streaming.us.assemblyai.com` (US-pinned) or `streaming.eu.assemblyai.com` (EU-pinned). The default host auto-routes to the nearest region.
 
@@ -1849,6 +1853,7 @@ These pipelines use the [Real-time STT API](/streaming/getting-started/transcrib
 | --- | --- | --- |
 | [Real-time meeting assistant](/getting-started/end-to-end-examples/real-time-meeting-assistant) | Real-time STT + Universal-3.5 Pro + LLM Gateway | Live captions, real-time summaries |
 | [Real-time live captioner](/getting-started/end-to-end-examples/real-time-live-captioner) | Real-time STT + keyterms prompting | Accessibility, live events |
+| [Real-time voice AI on ESP32](/getting-started/end-to-end-examples/realtime-esp32) | Voice Agent API, or Real-time STT + LLM Gateway + Text-to-Speech | Hardware, AI toys, desk companions |
 
 ---
 
@@ -2369,7 +2374,7 @@ Transcribe a clinical encounter using Medical Mode with speaker labels and entit
 
 **Products used:** [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file) + [Medical Mode](/pre-recorded-audio/medical-mode) + [speaker diarization](/pre-recorded-audio/label-speakers) + [Speaker Identification](/speech-understanding/speaker-identification) + [entity detection](/speech-understanding/entity-detection) + [LLM Gateway](/llm-gateway/quickstart)
 
-**Model selection:** Uses `assemblyai-stt-3-7` with `"domain": "medical-v1"` for purpose-built accuracy on medical terminology, drug names, and clinical language.
+**Model selection:** Uses `assemblyai-stt-3-7` with `"domain": "medical-v1"` for improved accuracy on generic and brand-name medication names.
 
 ```python expandable
 import requests
@@ -2982,7 +2987,7 @@ Description: Stream audio from your microphone with speaker diarization and LLM 
 
 Stream audio from your microphone with speaker diarization and LLM Gateway to get live transcription and automatic summaries after each speaker turn.
 
-**Products used:** [Real-time STT](/streaming/getting-started/transcribe-streaming-audio) + [AssemblyAI-STT-3.7-Realtime](/getting-started/models#assemblyai-stt-37-realtime) + [LLM Gateway](/guides/real_time_llm_gateway)
+**Products used:** [Real-time STT](/streaming/getting-started/transcribe-streaming-audio) + [AssemblyAI-STT-3.7-Realtime](/getting-started/models#assemblyai-stt-3-7-realtime) + [LLM Gateway](/guides/real_time_llm_gateway)
 
 **Model selection:** Uses `assemblyai-stt-3-7-realtime` (AssemblyAI-STT-3.7-Realtime), built for notetakers and ambient transcription with speaker diarization.
 
@@ -3218,7 +3223,7 @@ Description: Stream audio from your microphone with keyterms prompting for domai
 
 Stream audio from your microphone with keyterms prompting for domain-specific accuracy, ideal for live events, accessibility, and broadcast captioning.
 
-**Products used:** [Real-time STT](/streaming/getting-started/transcribe-streaming-audio) + [AssemblyAI-STT-3.7-Realtime](/getting-started/models#assemblyai-stt-37-realtime) + [keyterms prompting](/streaming/prompting-and-keyterms)
+**Products used:** [Real-time STT](/streaming/getting-started/transcribe-streaming-audio) + [AssemblyAI-STT-3.7-Realtime](/getting-started/models#assemblyai-stt-3-7-realtime) + [keyterms prompting](/streaming/prompting-and-keyterms)
 
 **Model selection:** Uses `assemblyai-stt-3-7-realtime` (AssemblyAI-STT-3.7-Realtime), built for live captions with clean, readable formatted text.
 
@@ -3423,6 +3428,515 @@ Session ended — 3 captions, 24s of audio
 ---
 
 See the [End-to-end examples overview](/getting-started/end-to-end-examples) for all available pipelines.
+
+---
+
+<a id="real-time-voice-ai-on-esp32-docs-getting-started-end-to-end-examples-realtime-esp32-mdx"></a>
+
+# Real-time voice AI on ESP32
+
+URL: https://www.assemblyai.com/docs/getting-started/end-to-end-examples/realtime-esp32
+Source: docs/getting-started/end-to-end-examples/realtime-esp32.mdx
+Navigation: Overview > Build & Evaluate > End-to-end examples
+Description: Stream audio from an ESP32-S3 microphone to a voice agent that listens, thinks, and talks back through a speaker, using Elato and AssemblyAI.
+
+Stream audio from an ESP32-S3 microphone to a voice agent that listens, thinks, and talks back through a speaker, using Elato and AssemblyAI.
+
+**Products used:** [Voice Agent API](/voice-agents/voice-agent-api) + [Real-time STT](/streaming/getting-started/transcribe-streaming-audio) + [LLM Gateway](/llm-gateway/quickstart) + [Text-to-Speech](/tts/getting-started/quickstart)
+
+**Model selection:** The Voice Agent API manages the models for you, so it's the fastest way to get talking. For the optional pipeline we use `universal-3-6-pro` for streaming speech-to-text, `claude-haiku-4-5-20251001` through LLM Gateway for the reply, and the `aai-kyla` voice for text-to-speech.
+
+## Overview
+
+In this guide we'll build a voice agent on an ESP32-S3 with an INMP441 MEMS microphone and a MAX98357A amplifier and speaker. Mic audio is sampled as PCM16 at 16 kHz and relayed over a secure WebSocket to a Deno edge server, which talks to AssemblyAI. The reply plays out of the speaker at 24 kHz, and you can interrupt it at any time with a button or touchpad.
+
+The voice architecture design comes from [ElatoAI](https://github.com/akdeb/ElatoAI), an MIT-licensed, open-source project that ships the ESP32 firmware, the Deno edge server, and a Next.js webapp with a Supabase DB. The AssemblyAI Deno server files are live in the same repo. Let's dive in!
+
+  <iframe
+    src="https://www.youtube.com/embed/FAm6QM6FgiA"
+    title="AssemblyAI voice agent on ESP32 demo"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowFullScreen
+  ></iframe>
+
+We'll set `ASSEMBLYAI_API_KEY` on the edge server only, so the key never touches the device. You can get one from the [AssemblyAI dashboard](https://www.assemblyai.com/dashboard). The Voice Agent API also needs an account with Voice Agent API access.
+
+---
+
+## Architecture
+
+```text
+  ESP32-S3              Edge server (Deno)     AssemblyAI
+
+┌──────────────┐        ┌───────────────┐       ┌───────────────────┐
+│ INMP441 mic  │ PCM    │ ElatoAI       │ wss   │ Voice Agent API   │
+│              │──────▶ │ server/deno   │─────▶ │                   │
+│              │        │               │◀───── │ speech-to-text    │
+│              │        │ API key lives │       │ LLM               │
+│              │        │ here, not on  │       │ text-to-speech    │
+│ MAX98357A    │◀────── │ the device    │       │ turn-taking       │
+│ + speaker    │ Opus   │               │       │                   │
+└──────────────┘        └───────────────┘       └───────────────────┘
+```
+
+| Hop | Protocol | Notes |
+| --- | --- | --- |
+| ESP32 ⇄ edge server | `ws://` in `DEV_MODE`, `wss://` otherwise | Mic audio goes up as PCM16 at 16 kHz. The reply comes back as Opus packets. JSON frames carry control messages such as `INTERRUPT`. |
+| Edge server → Voice Agent API | `wss://agents.assemblyai.com/v1/ws` | `session.update` configures the agent. 24 kHz PCM in and out. |
+
+---
+
+## Hardware
+
+Here's what we need:
+
+| Part | Purpose |
+| --- | --- |
+| ESP32-S3 dev board with Wi-Fi | Runs the firmware (`firmware-arduino`). |
+| INMP441 I2S microphone | Audio in. |
+| MAX98357A I2S amplifier and small speaker | Audio out. |
+| Button | Wakes the device and interrupts the agent. |
+| RGB LED, common anode, with three resistors (optional) | Shows the device state. |
+
+### Wiring
+
+Let's wire the boards to the ESP32-S3. The pin numbers below are the defaults in `firmware-arduino/src/Config.cpp`, so if you use other pins, change them there.
+
+  <img src="/assets/img/end-to-end-examples/esp32-wiring-diagram.png" alt="Wiring diagram: INMP441 microphone, MAX98357A amplifier with speaker, button and LED connected to an ESP32-S3 board" />
+
+| Module | Module pin | ESP32-S3 pin | Notes |
+| --- | --- | --- | --- |
+| INMP441 mic | VDD | 3V3 | 3.3 V only. Don't connect it to 5 V. |
+|  | GND | GND |  |
+|  | SCK | GPIO 1 (`I2S_SCK`) | Bit clock. |
+|  | WS | GPIO 4 (`I2S_WS`) | Word select. |
+|  | SD | GPIO 14 (`I2S_SD`) | Audio data from the mic. |
+|  | L/R | GND | Selects the left channel, which the firmware reads. Don't leave it floating. |
+| MAX98357A amp | VIN | 3V3 | Same rail as the mic. |
+|  | GND | GND |  |
+|  | BCLK | GPIO 6 (`I2S_BCK_OUT`) | Bit clock. |
+|  | LRC | GPIO 5 (`I2S_WS_OUT`) | Word select. |
+|  | DIN | GPIO 7 (`I2S_DATA_OUT`) | Audio data to the amp. |
+|  | SD | GPIO 10 (`I2S_SD_OUT`) | The firmware drives this high to unmute the amp and low to mute it. |
+|  | + and − | Speaker | 4 or 8 Ω speaker. |
+| Button | One leg | GPIO 2 (`BUTTON_PIN`) | The other leg goes to GND. |
+| RGB LED | Red leg, through a resistor | GPIO 9 (`RED_LED_PIN`) | The common leg goes to 3V3. |
+|  | Green leg, through a resistor | GPIO 8 (`GREEN_LED_PIN`) |  |
+|  | Blue leg, through a resistor | GPIO 13 (`BLUE_LED_PIN`) |  |
+
+The mic and the amp use separate I2S ports, so they don't share clock pins. Keep the jumper wires short, and make sure every module shares a ground with the ESP32.
+
+---
+
+## Build the voice agent
+
+Before you start, you need:
+
+- The hardware above, wired up.
+- [PlatformIO](https://platformio.org/install) to flash the firmware, and [Deno](https://docs.deno.com/runtime/getting_started/installation/) to run the edge server.
+- A Supabase project and the Elato web app running locally. The [ElatoAI quickstart](https://www.elatoai.com/docs/quickstart) covers both.
+- An AssemblyAI API key with Voice Agent API access.
+
+### Step 1: Clone the repo
+
+```bash
+git clone https://github.com/akdeb/ElatoAI.git assemblyai-esp32
+cd assemblyai-esp32
+```
+
+From here on, we'll run everything from the root of this repo.
+
+### Step 2: Set your environment variables
+
+The edge server holds your API key, so it never touches the device. You can get one from the [AssemblyAI dashboard](https://www.assemblyai.com/dashboard). The Voice Agent API needs an account with Voice Agent API access.
+
+```bash
+cd server/deno
+cp .env.example .env
+```
+
+Set these in `server/deno/.env`. The server stores conversations in Supabase, so it needs your Supabase project URL and anon key too:
+
+```bash server/deno/.env
+ASSEMBLYAI_API_KEY=<your-assemblyai-key>
+SUPABASE_URL=<your-supabase-url>
+SUPABASE_KEY=<your-supabase-anon-key>
+```
+
+### Step 3: Run the Deno edge server
+
+Next up is the Deno edge server in `server/deno`. It relays audio between the ESP32 and AssemblyAI's [Voice Agent API](/voice-agents/voice-agent-api) over a single WebSocket. When a device connects, the server opens that WebSocket and sets up the session with one `session.update` event. We pass in the system prompt, the audio format going in, the voice, and the audio format coming out.
+
+The voice and the output format can't change after this first update. The agent speaks English, Italian, Spanish, German, Portuguese and French.
+
+```typescript server/deno/models/assemblyai.ts
+upstream.on('open', () => {
+    sendUpstream({
+        type: 'session.update',
+        session: {
+            system_prompt: systemPrompt,
+            input: { format: { encoding: 'audio/pcm' } },
+            output: { voice, format: { encoding: 'audio/pcm' } },
+        },
+    });
+});
+```
+
+Once the session is ready, the AI agent speaks first. We send a `reply.create` event and the model composes the greeting itself. From there AssemblyAI handles turn-taking, so it decides when you're done talking. The agent's voice comes back as `reply.audio` events, which we encode to Opus and send to the ESP32.
+
+```typescript server/deno/models/assemblyai.ts
+// ...inside switch (event.type) in upstream.on('message')
+case 'reply.audio':
+    if (!discardAudio && typeof event.data === 'string') {
+        ensureResponseStarted();
+        responseHasAudio = true;
+        opus.push(Buffer.from(event.data, 'base64'));
+    }
+    break;
+```
+
+When the call ends, we send `session.end` so you aren't billed for the reconnect grace window.
+
+Time to run it. Start the server from `server/deno`:
+
+```bash
+deno run -A --env-file=.env main.ts
+```
+
+Locally the server speaks plain HTTP on port 8000, so the ESP32 reaches it at `ws://<your-computer-ip>:8000`. There's no TLS on this hop yet. We'll fix that in [Step 6](#step-6-deploy-and-switch-to-wss) when we deploy the server to a remote host.
+
+Last piece: in the web app, create a character, pick **AssemblyAI** as its voice provider, and choose a voice like `alba`, `eve` or `george`.
+
+The server reads the provider every time a device connects, so you can switch a character's provider without restarting the server or reflashing the ESP32.
+
+### Step 4: Flash the firmware
+
+The firmware ships in `ELATO_MODE`, which connects to Elato's hosted server. To use your own server, open `firmware-arduino/src/Config.h` and switch to `DEV_MODE` with the Deno server:
+
+```cpp firmware-arduino/src/Config.h
+#define DEV_MODE
+// #define PROD_MODE
+// #define ELATO_MODE
+
+#define VOICE_SERVER_DENO
+```
+
+In `firmware-arduino/src/Config.cpp`, set both addresses in the `DEV_MODE` block to your computer's LAN IP. Don't use `localhost`, because the ESP32 is a separate device on your network. `backend_server` is where the Elato web app runs:
+
+```cpp firmware-arduino/src/Config.cpp
+const char *ws_server = "192.168.1.100";      // your computer's LAN IP
+const char *backend_server = "192.168.1.100"; // your computer's LAN IP
+```
+
+Plug in the board. From the root of the repo, build, flash and open the serial monitor:
+
+```bash
+cd firmware-arduino
+pio run -t upload
+pio device monitor
+```
+
+On first boot the board has no Wi-Fi credentials, so it starts a hotspot called `ELATO-DEVICE`. Join it from your phone or laptop, open `http://192.168.4.1/wifi`, and enter your 2.4 GHz network name and password. The board then restarts and joins your network.
+
+### Step 5: Talk to it
+
+Once the serial monitor shows the device is connected, the speaker should start playing out the AI agent's voice. Start talking to the agent and you should hear it respond. Depending on your setup, you can press the button or touchpad to interrupt it mid-speech.
+
+### Step 6: Deploy and switch to WSS
+
+So far the ESP32 has been talking to your computer over `ws://` and `http://`, and both are unencrypted. Anyone on the same network can read the audio and the auth token. That's fine on your own home Wi-Fi while we develop, but not once the traffic crosses the internet.
+
+For a remote server, we'll use `wss://`. It's the same WebSocket protocol inside TLS, so the traffic is encrypted and can't be read or changed on the way.
+
+| | `DEV_MODE` | `PROD_MODE` |
+| --- | --- | --- |
+| Device connects to | `ws://192.168.1.100:8000` | `wss://your-edge-server.deno.dev` |
+| Encryption | None | TLS |
+| Who provides TLS | Nobody. The server speaks plain HTTP. | The host, for example Deno Deploy. |
+| `ws_server` | Your computer's LAN IP | Your deployment's hostname |
+| `ws_port` | `8000` | `443` |
+| Certificate check | None | The firmware verifies the server against `CA_cert` |
+| Use it for | Development on a network you trust | Everything else |
+
+Let's deploy `server/deno` to Deno Deploy or another Deno-compatible host close to your users, and set `ASSEMBLYAI_API_KEY` and your Supabase settings as environment variables there. Then, in `firmware-arduino/src/Config.h`, we switch to `PROD_MODE`, and in `firmware-arduino/src/Config.cpp` we fill in the production block:
+
+```cpp firmware-arduino/src/Config.cpp
+#elif defined(PROD_MODE)
+// PROD - self-hosted. Pick VOICE_SERVER_DENO or VOICE_SERVER_CLOUDFLARE above.
+#if defined(VOICE_SERVER_DENO)
+const char *ws_server = "<your-edge-server>.deno.dev";
+const uint16_t ws_port = 443;
+const char *ws_path = "/";
+#elif defined(VOICE_SERVER_CLOUDFLARE)
+const char *ws_server = "<your-cloudflare-server>.workers.dev";
+const uint16_t ws_port = 443;
+const char *ws_path = "/ws/esp32";
+#else
+#error "PROD_MODE requires VOICE_SERVER_DENO or VOICE_SERVER_CLOUDFLARE in Config.h"
+#endif
+// Backend server details
+const char *backend_server = "<your-backend-server-url>"; // like www.facebook.com or facebook.vercel.app
+const uint16_t backend_port = 3000;
+```
+
+The firmware picks its connection call from the mode:
+
+```cpp firmware-arduino/src/Audio.cpp
+#ifdef DEV_MODE
+webSocket.begin(server_domain.c_str(), port, path.c_str());
+#else
+webSocket.beginSslWithCA(server_domain.c_str(), port, path.c_str(), CA_cert);
+#endif
+```
+
+TLS only protects us from a man-in-the-middle attack if the device checks the server's certificate. In `PROD_MODE` the firmware calls `beginSslWithCA` with the `CA_cert` you paste into `Config.cpp`, and it refuses any server that can't prove its identity. Paste your host's root CA certificate there. The hops from the edge server to AssemblyAI always use `wss://` and `https://`, even in local development.
+
+---
+
+## Optional: STT, LLM Gateway and Text-to-Speech pipeline
+
+The Voice Agent API is the quickest way to get going. But if you want to choose each model yourself, say to pin the speech-to-text model, use any LLM Gateway model, or pick a specific text-to-speech voice, we can run the same AssemblyAI products as three separate connections instead.
+
+The architecture stays the same. The device still talks to the same edge server, and a provider is just one file in `server/deno/models/` that the server picks based on the character's provider. To use the pipeline, we add one more provider next to `assemblyai.ts`.
+
+| | Voice Agent API (`assemblyai`) | Pipeline (`assemblyai-pipeline`) |
+| --- | --- | --- |
+| Connections | One WebSocket | Three: STT socket, LLM Gateway request, TTS socket |
+| Models | Managed by AssemblyAI. You choose the voice. | You choose: `universal-3-6-pro`, an LLM Gateway model, a TTS voice |
+| Turn-taking | Handled by AssemblyAI | The server reacts to `end_of_turn`, then calls the LLM and TTS |
+| Audio | 24 kHz PCM in and out | 16 kHz PCM16 in to STT, 24 kHz PCM16 out of TTS |
+| Ending a call | `session.end` | The server terminates the STT and TTS sockets |
+
+### Add the provider file
+
+Create `server/deno/models/assemblyai-pipeline.ts`. It connects to three AssemblyAI endpoints, and each one authenticates with your API key.
+
+```typescript
+const STT_URL = 'wss://streaming.assemblyai.com/v3/ws?' +
+    new URLSearchParams({ speech_model: 'universal-3-6-pro', sample_rate: String(MIC_RATE) });
+const LLM_URL = 'https://llm-gateway.assemblyai.com/v1/chat/completions';
+const ttsUrl = (voiceId: string) =>
+    'wss://tts.us.assemblyai.com/v1/ws?' +
+    new URLSearchParams({
+        voice_id: voiceId,
+        language: 'english',
+        sample_rate: String(TTS_RATE),
+        encoding: 'pcm_s16le',
+    });
+```
+
+The STT socket stays open for the whole session. When a final turn arrives, we queue it.
+
+```typescript
+    const stt = new WebSocket(STT_URL, { headers: { Authorization: assemblyaiApiKey } });
+
+    stt.on('message', (data: Buffer) => {
+        let msg: any;
+        try {
+            msg = JSON.parse(data.toString('utf-8'));
+        } catch {
+            return;
+        }
+        if (msg.type !== 'Turn') return;
+        const text = typeof msg.transcript === 'string' ? msg.transcript.trim() : '';
+        if (!text) return;
+
+        if (msg.end_of_turn) {
+            turns.push({ text });
+            void drain();
+        }
+    });
+```
+
+Each reply gets a new text-to-speech socket. We send `Generate` and `Flush`, encode the PCM we get back to Opus for the device, and send `Cancel` if you interrupt.
+
+```typescript
+    // --- Text-to-speech (one socket per reply) -----------------------------
+    function interrupt() {
+        if (tts?.readyState === WebSocket.OPEN) tts.send(JSON.stringify({ type: 'Cancel' }));
+        speaking = false;
+        opus.reset();
+        if (createdSent) {
+            sendDevice({ type: 'server', msg: 'RESPONSE.COMPLETE' });
+            createdSent = false;
+        }
+    }
+
+    function speak(text: string): Promise<void> {
+        return new Promise((resolve) => {
+            const sock = new WebSocket(ttsUrl(voiceId), {
+                headers: { Authorization: assemblyaiApiKey! },
+            });
+            tts = sock;
+            speaking = true;
+            sock.on('open', () => {
+                sock.send(JSON.stringify({ type: 'Generate', text }));
+                sock.send(JSON.stringify({ type: 'Flush' }));
+            });
+            sock.on('message', (data: Buffer) => {
+                let msg: any;
+                try {
+                    msg = JSON.parse(data.toString('utf-8'));
+                } catch {
+                    return;
+                }
+                if (msg.type === 'Audio' && speaking) {
+                    ensureResponseStarted();
+                    opus.push(Buffer.from(msg.audio, 'base64')); // PCM16 @ 24 kHz -> Opus
+                } else if (
+                    msg.type === 'FlushDone' || msg.type === 'Cancelled' || msg.type === 'Error'
+                ) {
+                    if (msg.type === 'Error') console.error('AssemblyAI TTS error:', msg);
+                    sock.send(JSON.stringify({ type: 'Terminate' }));
+                }
+            });
+            sock.on('close', () => {
+                if (speaking && createdSent) {
+                    // Finished normally (not interrupted).
+                    opus.flush(true);
+                    sendDevice({ type: 'server', msg: 'RESPONSE.COMPLETE' });
+                    createdSent = false;
+                }
+                speaking = false;
+                resolve();
+            });
+            sock.on('error', () => sock.close());
+        });
+    }
+```
+
+We handle replies one at a time: ask the LLM, then speak the answer.
+
+```typescript
+    async function drain() {
+        if (working) return;
+        working = true;
+        try {
+            while (turns.length && !closed) {
+                const turn = turns.shift()!;
+                history.push({ role: 'user', content: turn.text });
+                if (!turn.hidden) await addConversation(supabase, 'user', turn.text, user);
+                const answer = await think(history);
+                history.push({ role: 'assistant', content: answer });
+                await addConversation(supabase, 'assistant', answer, user);
+                if (!closed) await speak(answer);
+            }
+        } catch (err) {
+            console.error('AssemblyAI pipeline error:', err);
+            sendDevice({ type: 'server', msg: 'RESPONSE.ERROR' });
+            createdSent = false;
+            opus.reset();
+        } finally {
+            working = false;
+        }
+    }
+```
+
+### Register the provider
+
+In `server/deno/main.ts`, we import the provider and add a case to the provider switch:
+
+```typescript
+import { connectToAssemblyAIPipeline } from './models/assemblyai-pipeline.ts';
+
+// ...in the switch (provider) block, next to 'assemblyai':
+case 'assemblyai-pipeline':
+    await connectToAssemblyAIPipeline(providerArgs);
+    break;
+```
+
+In `server/deno/utils.ts`, we add the settings the provider imports. The voice is a text-to-speech voice slug like `aai-kyla`, which is AssemblyAI's default voice (you can browse the rest in the [voice catalog](/tts/voices)), and the model is an LLM Gateway model:
+
+```typescript
+export const defaultAssemblyAIPipelineVoice = "aai-kyla"; // AssemblyAI's default voice
+export const assemblyaiLlmModel = Deno.env.get('ASSEMBLYAI_LLM_MODEL') ?? 'claude-haiku-4-5-20251001';
+```
+
+It reuses `ASSEMBLYAI_API_KEY`. To change the LLM, set `ASSEMBLYAI_LLM_MODEL` in `server/deno/.env`.
+
+## How it works
+
+- **Listening.** Once the device is awake and connected, it streams your mic to the server while it's in the listening state, and AssemblyAI's turn detection decides when you're done talking, so you don't hold a button to talk. The device stops streaming the mic while the agent is speaking.
+- **One reply at a time.** Each finished turn gets one reply, and we log both sides of the conversation to Supabase.
+- **Interrupting.** The device doesn't stream your mic while the agent is speaking, so you interrupt with a short tap on the button or touchpad. We cancel the current reply, the device stops playing, and it goes back to listening.
+- **Opus on the way back.** Mic audio goes up as PCM16, which is about 32 KB/s. We encode the reply to Opus on the server, so the downstream traffic stays small even on a weak Wi-Fi link and decode it back on the ESP32.
+
+---
+
+## Limitations
+
+After running this design and the framework on hundreds of ESP32 devices globally, here are the limits Akash Deb, founder of Elato, and his team have documented:
+
+- **Cold starts.** Connecting to a freshly started edge server takes about 2 to 3 seconds.
+- **Session length.** Edge hosts end a connection when their wall-clock limit is reached. The team has tested up to 17 minutes of uninterrupted voice AI conversation.
+- **Interruptions.** For ESP32 boards without echo cancellation, we cannot detect barge-in while the AI agent is speaking. It only stops playing when the server tells it to, or when the user explicitly sends a button/touchpad interrupt signal.
+
+---
+
+## Troubleshooting
+
+Most problems come down to Wi-Fi, wiring or power. Keep the serial monitor open with `pio device monitor`, because it shows how far the device got.
+
+### Wi-Fi never connects
+
+- **Use a 2.4 GHz network.** The ESP32-S3 can't see 5 GHz Wi-Fi. If your router puts both bands under one name and the device won't join, create a separate 2.4 GHz network. On an iPhone hotspot, turn on Maximize Compatibility.
+- **Check the credentials.** Wi-Fi names and passwords are case-sensitive. Networks with a login page or a username, like hotel and office Wi-Fi, can be a problem for a device without a screen.
+- **Power-cycle the board** after you change Wi-Fi credentials.
+
+### Server never connects
+
+The device joins Wi-Fi, but it never reaches the voice server.
+
+- **`ws://` and `wss://` are mixed up.** `DEV_MODE` connects with `ws://` and expects your local server on port `8000`. Any other mode connects with `wss://` on port `443`. A local server only accepts `ws://`, and a hosted one only accepts `wss://`.
+- **The device can't reach your computer.** `ws_server` and `backend_server` must be your computer's LAN IP, not `localhost`. To check, open `http://<your-computer-ip>:8000` from a phone on the same Wi-Fi. If it doesn't load, allow incoming connections for Deno in your firewall, and avoid guest networks, which often stop devices from reaching each other.
+- **The device never got a token.** Look for `[Auth] Registration HTTP` in the serial monitor. Anything other than `200` means the device couldn't reach the web app at `backend_server` and `backend_port`.
+- **The TLS handshake fails in `PROD_MODE`.** `CA_cert` must be your host's root CA certificate. If it's wrong or empty, the firmware rejects the server.
+
+### No transcripts from the mic
+
+The server connects, but the agent never reacts to anything you say.
+
+- **Recheck the three I2S wires.** SCK, WS and SD must go to the pins in the [wiring table](#wiring). A single wire in the wrong place gives you silence, not an error.
+- **Tie L/R to GND.** The firmware reads the left channel, and a floating L/R pin gives silence or noise.
+- **Power the mic from 3V3**, and check that its ground reaches the ESP32.
+- **Shorten the wires.** Long or loose jumper wires corrupt the I2S clock, so reseat them or solder the connections.
+
+### No sound from the speaker
+
+You can see the agent's reply in the web app, but you hear nothing, or only static.
+
+- **Recheck BCLK, LRC and DIN.** Swapping BCLK and LRC is the most common mistake.
+- **Wire the amp's SD pin to its GPIO.** The firmware mutes the amp by driving SD low between replies, so if SD isn't connected to the pin in the wiring table, the amp can stay muted.
+- **Test the speaker on its own.** Get a small internet-radio sketch playing through the MAX98357A. If the radio plays, your wiring and I2S pins are fine, and the problem is in the audio stream. If it doesn't, recheck the pins in `Config.cpp`.
+
+### Board resets or audio crackles
+
+The board reboots when Wi-Fi connects or when the agent starts speaking, and the serial monitor may print `Brownout detector was triggered`. That's a USB brownout. Wi-Fi and the amplifier draw current in bursts, and a weak USB port or a thin cable can't keep the voltage up.
+
+- **Change the cable and the port.** Use a short, good-quality USB cable plugged straight into your computer, or a 5 V supply rated for 1 A or more. Avoid unpowered hubs.
+- **Add a capacitor.** 470 µF or more across the amp's VIN and GND soaks up the current spikes.
+- **Lower the load.** An 8 Ω speaker draws less current than a 4 Ω one.
+
+---
+
+## Customize and extend
+
+Here are a few ways to make it your own:
+
+- Change the persona and the voice in the web app.
+- Add tool calls like timers or smart-home actions. We declare them in `session.update`, run them in the server, and send the results back.
+- Deploy the server near your users. End-to-end latency comes from Wi-Fi, network distance, model time and playback, so measure it on your own hardware and region.
+
+---
+
+## Next steps
+
+- [ElatoAI on GitHub](https://github.com/akdeb/ElatoAI) — The full open-source project: firmware, Deno edge server, and web app
+- [ElatoAI Quickstart](https://www.elatoai.com/docs/quickstart) — Full setup details for Supabase, the web app and the firmware
+- [Voice Agent API](/voice-agents/voice-agent-api) — Learn more about the managed Voice Agent API
+- [Best practices for building voice agents](/voice-agents/best-practices) — Tips for getting the most out of AssemblyAI in a voice agent
+- [Text-to-Speech quickstart](/tts/getting-started/quickstart) — Turn text into speech with one SDK call or HTTP request
+- [Text-to-Speech voices](/tts/voices) — Browse the voice catalog and learn how to name a voice with `voice_id`
 
 ---
 
@@ -5615,7 +6129,7 @@ Follow this guide to move from `universal-3-pro`, `universal-3-5-pro`, or `unive
 Your default model may change. Check which model your requests use on the [usage page](https://www.assemblyai.com/dashboard/usage), or send a test request and check which model processed it, as described in [Identify the model used](/pre-recorded-audio/select-the-speech-model#identify-the-model-used). Then:
 
 - **`universal-3-5-pro` or `universal-3-pro`:** your requests will automatically use `assemblyai-stt-3-7` starting December 8, 2026. This is a change to the default model, not the retirement of `universal-3-5-pro` or `universal-3-pro`. See [Behavioral changes](#behavioral-changes).
-- **`universal-2`:** you won't be upgraded automatically. To upgrade, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`. If all your audio is in [languages AssemblyAI-STT-3.7 supports](/pre-recorded-audio/supported-languages#assemblyai-stt-37), `["assemblyai-stt-3-7"]` is enough.
+- **`universal-2`:** you won't be upgraded automatically. To upgrade, set `speech_models` to `["assemblyai-stt-3-7", "universal-2"]`. If all your audio is in [languages AssemblyAI-STT-3.7 supports](/pre-recorded-audio/supported-languages#assemblyai-stt-3-7), `["assemblyai-stt-3-7"]` is enough.
 
 **If you set `speech_models`**
 
@@ -5629,7 +6143,7 @@ You won't be upgraded to the latest model until that model is retired. To migrat
 | `"speech_models": ["universal-3-pro"]` | `"speech_models": ["assemblyai-stt-3-7"]` |
 | `"speech_models": ["universal-2"]` | `"speech_models": ["assemblyai-stt-3-7", "universal-2"]` |
 
-Keep `universal-2` in the list if you need languages AssemblyAI-STT-3.7 doesn't support. If all your audio is in [languages AssemblyAI-STT-3.7 supports](/pre-recorded-audio/supported-languages#assemblyai-stt-37), `["assemblyai-stt-3-7"]` is enough.
+Keep `universal-2` in the list if you need languages AssemblyAI-STT-3.7 doesn't support. If all your audio is in [languages AssemblyAI-STT-3.7 supports](/pre-recorded-audio/supported-languages#assemblyai-stt-3-7), `["assemblyai-stt-3-7"]` is enough.
 
 ```json After
 {
@@ -6183,7 +6697,7 @@ Medical Mode is designed for healthcare AI applications where accurate medicatio
 
 - **Ambient clinical documentation** — Capture generic and brand-name medication names correctly in scribing workflows.
 - **AI-powered clinical notes** — Generate clean transcripts for downstream LLMs producing SOAP notes, discharge summaries, and referral letters.
-- **Front-office automation** — Handle drug names, provider names, and clinic-specific terminology in scheduling calls, insurance verification, and voice agents.
+- **Front-office automation** — Capture medication names correctly in scheduling calls, insurance verification, and voice agents.
 - **Multi-speaker clinical conversations** — Combine with [Speaker Diarization](/pre-recorded-audio/label-speakers) for provider/patient separation in telehealth, therapy documentation, and clinical settings.
 
 ## Combine with other features
@@ -9744,7 +10258,7 @@ Unformatted output (`format_text: false`) is supported in the following language
 
 | Model | Supported languages |
 |-------|---------------------|
-| AssemblyAI-STT-3.7 | All [32 supported languages](/pre-recorded-audio/supported-languages#assemblyai-stt-37): English, Spanish, German, French, Portuguese, Italian, Afrikaans, Arabic, Cantonese, Catalan, Danish, Dutch, Estonian, Finnish, Galician, Hebrew, Hindi, Japanese, Korean, Mandarin, Marathi, Norwegian, Norwegian Nynorsk, Persian, Romanian, Russian, Swedish, Turkish, Urdu, Vietnamese, Xhosa, Zulu |
+| AssemblyAI-STT-3.7 | All [32 supported languages](/pre-recorded-audio/supported-languages#assemblyai-stt-3-7): English, Spanish, German, French, Portuguese, Italian, Afrikaans, Arabic, Cantonese, Catalan, Danish, Dutch, Estonian, Finnish, Galician, Hebrew, Hindi, Japanese, Korean, Mandarin, Marathi, Norwegian, Norwegian Nynorsk, Persian, Romanian, Russian, Swedish, Turkish, Urdu, Vietnamese, Xhosa, Zulu |
 | Universal-2 | English, Spanish, German |
 
 ---
@@ -9945,7 +10459,7 @@ Verbatim output (`disfluencies: true`) is supported in the following languages:
 
 | Model | Supported languages |
 |-------|---------------------|
-| AssemblyAI-STT-3.7 | All [32 supported languages](/pre-recorded-audio/supported-languages#assemblyai-stt-37): English, Spanish, German, French, Portuguese, Italian, Afrikaans, Arabic, Cantonese, Catalan, Danish, Dutch, Estonian, Finnish, Galician, Hebrew, Hindi, Japanese, Korean, Mandarin, Marathi, Norwegian, Norwegian Nynorsk, Persian, Romanian, Russian, Swedish, Turkish, Urdu, Vietnamese, Xhosa, Zulu |
+| AssemblyAI-STT-3.7 | All [32 supported languages](/pre-recorded-audio/supported-languages#assemblyai-stt-3-7): English, Spanish, German, French, Portuguese, Italian, Afrikaans, Arabic, Cantonese, Catalan, Danish, Dutch, Estonian, Finnish, Galician, Hebrew, Hindi, Japanese, Korean, Mandarin, Marathi, Norwegian, Norwegian Nynorsk, Persian, Romanian, Russian, Swedish, Turkish, Urdu, Vietnamese, Xhosa, Zulu |
 | Universal-2 | English only |
 
 ---
@@ -15034,7 +15548,7 @@ headers = {"authorization": "YOUR_API_KEY"}
 # Configure transcription with translation
 data = {
     "audio_url": "https://assembly.ai/wildfires.mp3",
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
     "speaker_labels": True,
     "speech_understanding": {
@@ -15076,7 +15590,7 @@ For meetings where you need per-utterance translations with speaker attribution:
 ```python
 data = {
     "audio_url": audio_url,
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "speaker_labels": True,
     "speech_understanding": {
         "request": {
@@ -15278,7 +15792,7 @@ meeting_insights = {
 - Add company-specific jargon and acronyms
 - Include product names and technical terms
 - Keep individual terms under 50 characters
-- Up to 200 terms per request (Universal-2) or 1000 terms (Universal-3.5 Pro)
+- Up to 200 terms per request (Universal-2) or 1000 terms (AssemblyAI-STT-3.7)
 
 ### Using Keyterms Prompt for Pre-recorded Transcription
 
@@ -15288,7 +15802,7 @@ Keyterms prompting improves recognition accuracy for domain-specific vocabulary 
 # Define domain-specific vocabulary
 company_terms = [
     "AssemblyAI",
-    "Universal-3.5 Pro",
+    "AssemblyAI-STT-3.7",
     "Speech Understanding",
     "diarization"
 ]
@@ -15535,7 +16049,7 @@ AssemblyAI provides everything you need to build a medical scribe, from high-acc
 Choose the guide that matches your clinical workflow:
 
   
-    Transcribe recorded patient encounters with Universal-3.5 Pro. Includes Medical Mode, speaker diarization, entity detection, PII redaction, and SOAP note generation.
+    Transcribe recorded patient encounters with AssemblyAI-STT-3.7. Includes Medical Mode, speaker diarization, entity detection, PII redaction, and SOAP note generation.
   
   
     Stream audio from a microphone during live encounters with AssemblyAI-STT-3.7-Realtime. Includes LLM Gateway post-processing, medical keyterms, and automatic SOAP note generation.
@@ -15572,7 +16086,7 @@ AssemblyAI stands out as the premier choice for contact center applications with
 
 ### Industry-leading accuracy on telephony audio
 
-- **Universal-3.5 Pro model** delivers best-in-class accuracy on 8kHz telephony audio
+- **AssemblyAI-STT-3.7 model** delivers best-in-class accuracy on 8kHz telephony audio
 - **2.9% speaker diarization error rate** for precise agent vs. customer attribution
 - **Multichannel support** for stereo call recordings where agent and customer are on separate channels
 - **Keyterms prompt** allows providing call context to improve accuracy of company names, products, and compliance phrases
@@ -15642,7 +16156,7 @@ Many contact center platforms use **both**:
 
 ## What languages and features for a contact center application?
 
-### Pre-recorded calls (Universal-3.5 Pro)
+### Pre-recorded calls (AssemblyAI-STT-3.7)
 
 For post-call analytics, AssemblyAI supports:
 
@@ -15657,8 +16171,8 @@ For post-call analytics, AssemblyAI supports:
 - Speaker diarization (agent-customer separation)
 - Multichannel audio support - when agent and customer are on separate audio channels, enables perfect speaker separation without diarization
 - Automatic formatting, punctuation, and capitalization
-- Keyterms prompting for boosting domain-specific terms (up to 1000 terms for Universal-3.5 Pro)
-- Natural language prompting (Universal-3.5 Pro) - up to 1,500 words to guide transcription behavior
+- Keyterms prompting for boosting domain-specific terms (up to 1000 terms for AssemblyAI-STT-3.7)
+- Natural language prompting (AssemblyAI-STT-3.7) - up to 1,500 words to guide transcription behavior
 - Speaker options with configurable min/max expected speakers for call transfers
 
 **Speech Understanding**:
@@ -15714,7 +16228,7 @@ async def transcribe_call(audio_source: str, agent_name: str = None) -> Dict:
     # Configure comprehensive call analysis
     config = aai.TranscriptionConfig(
         # Model selection
-        speech_models=["universal-3-5-pro", "universal-2"],
+        speech_models=["assemblyai-stt-3-7", "universal-2"],
 
         # Speaker diarization
         speaker_labels=True,
@@ -15832,7 +16346,7 @@ Most contact center recordings are stereo with the agent on one channel and the 
 
 ```python expandable
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     multichannel=True,  # Enable when agent and customer are on separate channels
     speaker_labels=False,  # Disable - channels already separate speakers
 
@@ -16157,7 +16671,7 @@ For high-volume contact center workloads, use webhooks instead of polling:
 
 ```python expandable
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     webhook_url="https://your-app.com/webhooks/assemblyai",
     webhook_auth_header_name="X-Webhook-Secret",
     webhook_auth_header_value="your_secret_here",
@@ -16290,7 +16804,7 @@ The most impactful lever for contact center accuracy is **prompting**. Use a str
 
 ```python expandable
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
 
     # Natural language prompt for transcription guidance
     prompt=(
@@ -16347,7 +16861,7 @@ call_keyterms = [
 ]
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     keyterms_prompt=call_keyterms,
     speaker_labels=True,
 )
@@ -16433,7 +16947,7 @@ Map generic speaker labels to agent and customer names:
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     speaker_labels=True,
     speech_understanding={
         "request": {
@@ -16455,7 +16969,7 @@ Translate call transcripts for international teams:
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True,
     speech_understanding={
@@ -16565,7 +17079,7 @@ print(f"Sentiment: {result.get('sentiment_breakdown', {})}")
 
 ## Additional Resources
 
-- [Universal-3.5 Pro Pre-recorded Documentation](/pre-recorded-audio)
+- [AssemblyAI-STT-3.7 Pre-recorded Documentation](/pre-recorded-audio)
 - [AssemblyAI-STT-3.7-Realtime-Agent documentation](/streaming/getting-started/transcribe-streaming-audio)
 - [Speaker Diarization Guide](/pre-recorded-audio/label-speakers)
 - [Multichannel Streaming Guide](/streaming/label-speakers-and-separate-channels)
@@ -16966,7 +17480,7 @@ Match these to your expected production traffic:
 
 - **Region: US or EU.** The EU region handles less traffic than US and is more sensitive to load spikes. Coordinate with our team for any EU workload, regardless of size.
 - **Traffic pattern.** Requests per minute at peak and whether traffic is steady or bursty.
-- **Models and features.** Universal-3.5 Pro, Universal-2, speaker labels, PII redaction, summarization, and so on — each has different processing characteristics, and every feature you enable adds to TaT. Audit your request body and turn off what you don't need; a faster run is also a cheaper one.
+- **Models and features.** AssemblyAI-STT-3.7, Universal-2, speaker labels, PII redaction, summarization, and so on — each has different processing characteristics, and every feature you enable adds to TaT. Audit your request body and turn off what you don't need; a faster run is also a cheaper one.
 - **Channels and speakers.** For call-center audio where agent and customer are on separate stereo channels, add `multichannel=true` to get per-channel utterances. For single-channel recordings with multiple speakers, use `speaker_labels=true` instead. See [Should I use Speaker Labels or Multi-channel?](/faq/should-i-use-speaker-labels-or-multi-channel) for guidance.
 - **Language.** Some languages, such as Hindi, Swedish, and Hebrew, scale differently and may show longer TaT. Coordinate with our team if your workload is primarily in a less common language.
 - **Audio format.** Format conversion and preprocessing run before transcription and contribute to overall TaT.
@@ -16993,7 +17507,7 @@ The most expensive bulk-run failures almost always come from discovering a confi
 
 The most common mistake — for both bulk uploads and load tests — is submitting all requests at once. A gradual ramp gives the pipeline time to scale ahead of your traffic, which is what produces the lowest and most consistent turnaround times. Submitting a large spike upfront typically results in higher TaT as capacity catches up.
 
-**Recommended schedule (validated for Universal-3.5 Pro with speaker labels):**
+**Recommended schedule (validated for AssemblyAI-STT-3.7 with speaker labels):**
 
 - Divide your ramp into 15-second windows.
 - Start at **25 requests per window**.
@@ -17021,7 +17535,7 @@ Your rate limit caps how many jobs can be in progress at once, so your sustained
 
 The 20% of headroom absorbs normal variation in audio duration, warm-up effects, and webhook-receive latency. Runs sized to the limit exactly will see TaT climb as the in-flight count bumps against the cap.
 
-For planning, Universal-3.5 Pro English async typically completes a 5-minute file in about 9 seconds at p50 and 60 seconds at p95. Use that as your starting turnaround estimate before the pilot.
+For planning, AssemblyAI-STT-3.7 English async typically completes a 5-minute file in about 9 seconds at p50 and 60 seconds at p95. Use that as your starting turnaround estimate before the pilot.
 
 ## Measure and verify
 
@@ -20777,7 +21291,7 @@ The `language_code` value you submitted isn't recognized.
 ```json
 # Status code: 400
 {
-"error": "\"speech_models\" must be a non-empty list containing one or more of: \"universal-3-pro\", \"universal-2\""
+"error": "\"speech_models\" must be a non-empty list containing one or more of: \"assemblyai-stt-3-7\", \"universal-2\""
 }
 ```
 
@@ -23067,7 +23581,7 @@ Description: Tune streaming models to balance transcription accuracy and latency
 
 ## Mode
 
-Streaming workloads sit on a spectrum between two competing goals: returning transcripts as fast as possible, and returning the most accurate transcripts possible. To make this tradeoff explicit, every streaming model supports a **mode** connection parameter you can set when opening a streaming session. On AssemblyAI-STT-3.7-Realtime, turn detection is tuned for transcript segmentation rather than voice-agent turn-taking (see [Turn detection on AssemblyAI-STT-3.7-Realtime](/streaming/turn-detection#turn-detection-on-assemblyai-stt-37-realtime)).
+Streaming workloads sit on a spectrum between two competing goals: returning transcripts as fast as possible, and returning the most accurate transcripts possible. To make this tradeoff explicit, every streaming model supports a **mode** connection parameter you can set when opening a streaming session. On AssemblyAI-STT-3.7-Realtime, turn detection is tuned for transcript segmentation rather than voice-agent turn-taking (see [Turn detection on AssemblyAI-STT-3.7-Realtime](/streaming/turn-detection#turn-detection-on-assemblyai-stt-3-7-realtime)).
 
 | Mode | Value | When to use |
 | --- | --- | --- |
@@ -23193,7 +23707,7 @@ The server sends `SpeechStarted` once per turn, immediately before the turn's fi
 }
 ```
 
-`SpeechStarted` is only emitted once the model produces an actual transcript, so background noise alone does not trigger it (except occasionally on AssemblyAI-STT-3.7-Realtime, see [below](#turn-detection-on-assemblyai-stt-37-realtime)). That makes it a reliable barge-in signal for voice agents. When it arrives, stop your agent's TTS playback and start listening.
+`SpeechStarted` is only emitted once the model produces an actual transcript, so background noise alone does not trigger it (except occasionally on AssemblyAI-STT-3.7-Realtime, see [below](#turn-detection-on-assemblyai-stt-3-7-realtime)). That makes it a reliable barge-in signal for voice agents. When it arrives, stop your agent's TTS playback and start listening.
 
 ### Partials
 
@@ -23288,7 +23802,9 @@ A held entity still ends at `max_turn_silence`. If speakers pause longer than th
 
 ## Bring your own turn detection
 
-If you run your own VAD or turn detection model, send a `ForceEndpoint` message to end the current turn immediately. The server responds with the turn's final `Turn` message right away, without waiting for silence.
+If you run your own VAD or turn detection model, send a `ForceEndpoint` message at any time during a turn to end it immediately. The server responds with the turn's final `Turn` message right away.
+
+If no words have been spoken since the last final, a final `Turn` message is still sent with an empty transcript.
 
 ```python
 websocket.send('{"type": "ForceEndpoint"}')
@@ -23308,13 +23824,18 @@ transcriber.forceEndpoint();
 
 ### Manual mode
 
-`ForceEndpoint` works in every `mode`, but the server also keeps ending turns on its own. If your client should decide when every turn ends, for example with your own VAD, a push-to-talk button, or an external turn detection model, connect with `mode` set to `manual`. Manual mode is supported only by `assemblyai-stt-3-7-realtime-agent`. Other models treat `manual` as `balanced`.
+`ForceEndpoint` works in every `mode`, but the server will also keep ending turns on its own, based on the `mode` and any `min_turn_silence` or `max_turn_silence` set.
+
+If the client should control endpointing and turn detection using an external turn detection model (e.g., LiveKit's `v1` or `v1-mini` [turn detector](https://docs.livekit.io/agents/logic/turns/turn-detector/)) or another signal (e.g., your own VAD or a push-to-talk key being released), connect with `mode` set to `manual`.
+
+  Manual mode is supported only by `assemblyai-stt-3-7-realtime-agent`. On other models, connecting with `mode` set to `manual` fails with a `3006` error.
 
 ```python
 CONNECTION_PARAMS = {
     "sample_rate": 16000,
     "speech_model": "assemblyai-stt-3-7-realtime-agent",
     "mode": "manual",
+    # "max_turn_silence": 10000,  # Optional: fallback if no ForceEndpoint arrives (default 10000 ms)
 }
 
 # When your turn detector decides the user is done
@@ -23326,21 +23847,47 @@ const CONNECTION_PARAMS = {
   sample_rate: 16000,
   speech_model: "assemblyai-stt-3-7-realtime-agent",
   mode: "manual",
+  // max_turn_silence: 10000, // Optional: fallback if no ForceEndpoint arrives (default 10000 ms)
 };
 
 // When your turn detector decides the user is done
 websocket.send('{"type": "ForceEndpoint"}');
 ```
 
-In manual mode:
+In manual mode, the model's built-in turn detection is disabled. Instead, your client decides when each turn ends and sends `ForceEndpoint` to end it.
 
-- Punctuation never ends a turn. When the speaker pauses, the session sends a partial `Turn` message instead, so you keep receiving partials while you decide.
-- Each `ForceEndpoint` is answered with one formatted final `Turn` message (`end_of_turn: true`). If no turn was in progress, that final has an empty transcript, so every `ForceEndpoint` gets exactly one final back. This applies to `assemblyai-stt-3-7-realtime-agent`, the only model that supports manual mode.
-- As a safety net, the server still ends a turn after 10000 ms of silence or when the turn reaches its maximum duration. Set `max_turn_silence` on the connection or mid-stream to change the silence limit.
-- You can switch to or from `manual` mid-stream with `UpdateConfiguration`.
-- If you connect with `speaker_labels` enabled, the session uses the speaker labels defaults instead of manual mode.
+#### Parameter behavior
 
-See [Forcing an endpoint](/streaming/message-sequence#forcing-an-endpoint) for the full `ForceEndpoint` contract.
+The parameters typically controlling endpointing work differently:
+
+- `min_turn_silence` — No longer ends turns.
+- `max_turn_silence` — If speech is detected and no `ForceEndpoint` is ever received, the server ends the turn after this amount of silence. Defaults to `10000` (ms) in manual mode (set during connection or via `UpdateConfiguration`).
+
+#### Turn lifecycle
+
+Each turn follows this contract:
+
+1. When the user starts speaking, `SpeechStarted` is sent, followed by the turn's first partial.
+2. Partials keep arriving while the user speaks ([roughly every second](#partials)) and upon every pause in speech.
+3. The turn ends for one of three reasons:
+   1. `ForceEndpoint` is sent at any point in the turn.
+   2. If `ForceEndpoint` is never sent, silence reaches `max_turn_silence`.
+   3. If `ForceEndpoint` is never sent, the turn reaches its maximum duration of 60 seconds.
+4. Each `ForceEndpoint` receives exactly one final `Turn` message (`end_of_turn: true`). If no words have been spoken since the last final, its `transcript` is empty (`""`).
+
+Ending the session also finalizes any open turn.
+
+  If you receive a final with a transcript followed by an empty final after sending `ForceEndpoint`, the turn most likely ended on `max_turn_silence` or the maximum turn duration (60s) just before your `ForceEndpoint` was received.
+
+#### Other behavior
+
+All other model behavior is the same, including:
+
+- Partials and finals are both formatted, but a partial's transcript can change until the turn's final.
+- As with other modes, you can switch to or from `manual` mid-stream with `UpdateConfiguration`.
+- If you connect with `speaker_labels` enabled, the session uses the speaker labels defaults instead of manual mode (*note: this is a temporary limitation and will be removed in an upcoming update*).
+
+  If you use a text-based turn detection model, there's not currently a way to request a partial on demand. This will be added in a future update. In the meantime, use the formatted partials sent during speech and upon every pause.
 
 ## Turn detection on AssemblyAI-STT-3.7-Realtime
 
@@ -24266,8 +24813,8 @@ Medical Mode is designed for healthcare AI applications where accurate medicatio
 
 - **Ambient clinical documentation** — Capture generic and brand-name medication names correctly during live patient encounters.
 - **Real-time medical scribes** — Deliver accurate transcripts to clinicians during or immediately after a consult.
-- **Front-office voice agents** — Handle drug names, provider names, and clinic-specific terminology in scheduling calls and insurance verification.
-- **Medical contact centers** — Transcribe calls with correct medical vocabulary for downstream processing and quality assurance.
+- **Front-office voice agents** — Capture medication names correctly in scheduling calls and insurance verification.
+- **Medical contact centers** — Transcribe calls with correct medication names for downstream processing and quality assurance.
 
 ## Combine with other features
 
@@ -26449,7 +26996,7 @@ When the turn ends, the server emits a `Turn` message with `end_of_turn: true` a
 
 ## Forcing an endpoint
 
-To end the current turn immediately, for example when your own VAD or a push-to-talk button decides the user is done, send a `ForceEndpoint` message:
+To end the current turn immediately, send a `ForceEndpoint` message:
 
 ```python
 ws.send(json.dumps({"type": "ForceEndpoint"}))
@@ -26467,9 +27014,9 @@ ws.send(JSON.stringify({ type: "ForceEndpoint" }));
 transcriber.forceEndpoint();
 ```
 
-The server responds with the `end_of_turn: true` message(s) for the current turn right away, without waiting for silence or punctuation.
+The server responds with the `end_of_turn: true` message(s) for the current turn right away, without waiting for silence or punctuation. If no turn is in progress (no words have been spoken since the last final), a final `Turn` message is still sent with an empty transcript.
 
-To have your client decide when every turn ends, use [manual mode](/streaming/turn-detection#manual-mode) on `assemblyai-stt-3-7-realtime-agent`.
+To have your client decide when every turn ends (e.g. an external turn detection model, your own VAD, or a push-to-talk button), use [manual mode](/streaming/turn-detection#manual-mode) on `assemblyai-stt-3-7-realtime-agent`.
 
 ## Updating configuration mid-session
 
@@ -27211,7 +27758,7 @@ Send an `UpdateConfiguration` message during an active streaming session to chan
 | --- | --- | --- |
 | `mode` | `"min_latency"` \| `"balanced"` \| `"max_accuracy"` \| `"manual"` | All (`manual` takes effect only on `assemblyai-stt-3-7-realtime-agent`) |
 
-Switch between accuracy/latency trade-off modes mid-session. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency). You can also switch to or from `manual`, which only `assemblyai-stt-3-7-realtime-agent` supports. See [Manual mode](/streaming/turn-detection#manual-mode).
+Switch between accuracy/latency trade-off modes mid-session. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency). You can also switch to or from `manual`, which only `assemblyai-stt-3-7-realtime-agent` supports. On other models, a switch to `manual` is ignored. See [Manual mode](/streaming/turn-detection#manual-mode).
 
 ### Turn detection
 
@@ -34440,7 +34987,7 @@ headers = {"authorization": "YOUR_API_KEY"}
 # Configure transcription with translation
 data = {
     "audio_url": "https://assembly.ai/wildfires.mp3",
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
     "speaker_labels": True,
     "speech_understanding": {
@@ -34482,7 +35029,7 @@ For meetings where you need per-utterance translations with speaker attribution:
 ```python
 data = {
     "audio_url": audio_url,
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "speaker_labels": True,
     "speech_understanding": {
         "request": {
@@ -34684,7 +35231,7 @@ meeting_insights = {
 - Add company-specific jargon and acronyms
 - Include product names and technical terms
 - Keep individual terms under 50 characters
-- Up to 200 terms per request (Universal-2) or 1000 terms (Universal-3.5 Pro)
+- Up to 200 terms per request (Universal-2) or 1000 terms (AssemblyAI-STT-3.7)
 
 ### Using Keyterms Prompt for Pre-recorded Transcription
 
@@ -34694,7 +35241,7 @@ Keyterms prompting improves recognition accuracy for domain-specific vocabulary 
 # Define domain-specific vocabulary
 company_terms = [
     "AssemblyAI",
-    "Universal-3.5 Pro",
+    "AssemblyAI-STT-3.7",
     "Speech Understanding",
     "diarization"
 ]
@@ -34941,7 +35488,7 @@ AssemblyAI provides everything you need to build a medical scribe, from high-acc
 Choose the guide that matches your clinical workflow:
 
   
-    Transcribe recorded patient encounters with Universal-3.5 Pro. Includes Medical Mode, speaker diarization, entity detection, PII redaction, and SOAP note generation.
+    Transcribe recorded patient encounters with AssemblyAI-STT-3.7. Includes Medical Mode, speaker diarization, entity detection, PII redaction, and SOAP note generation.
   
   
     Stream audio from a microphone during live encounters with AssemblyAI-STT-3.7-Realtime. Includes LLM Gateway post-processing, medical keyterms, and automatic SOAP note generation.
@@ -35578,7 +36125,7 @@ AssemblyAI stands out as the premier choice for contact center applications with
 
 ### Industry-leading accuracy on telephony audio
 
-- **Universal-3.5 Pro model** delivers best-in-class accuracy on 8kHz telephony audio
+- **AssemblyAI-STT-3.7 model** delivers best-in-class accuracy on 8kHz telephony audio
 - **2.9% speaker diarization error rate** for precise agent vs. customer attribution
 - **Multichannel support** for stereo call recordings where agent and customer are on separate channels
 - **Keyterms prompt** allows providing call context to improve accuracy of company names, products, and compliance phrases
@@ -35648,7 +36195,7 @@ Many contact center platforms use **both**:
 
 ## What languages and features for a contact center application?
 
-### Pre-recorded calls (Universal-3.5 Pro)
+### Pre-recorded calls (AssemblyAI-STT-3.7)
 
 For post-call analytics, AssemblyAI supports:
 
@@ -35663,8 +36210,8 @@ For post-call analytics, AssemblyAI supports:
 - Speaker diarization (agent-customer separation)
 - Multichannel audio support - when agent and customer are on separate audio channels, enables perfect speaker separation without diarization
 - Automatic formatting, punctuation, and capitalization
-- Keyterms prompting for boosting domain-specific terms (up to 1000 terms for Universal-3.5 Pro)
-- Natural language prompting (Universal-3.5 Pro) - up to 1,500 words to guide transcription behavior
+- Keyterms prompting for boosting domain-specific terms (up to 1000 terms for AssemblyAI-STT-3.7)
+- Natural language prompting (AssemblyAI-STT-3.7) - up to 1,500 words to guide transcription behavior
 - Speaker options with configurable min/max expected speakers for call transfers
 
 **Speech Understanding**:
@@ -35720,7 +36267,7 @@ async def transcribe_call(audio_source: str, agent_name: str = None) -> Dict:
     # Configure comprehensive call analysis
     config = aai.TranscriptionConfig(
         # Model selection
-        speech_models=["universal-3-5-pro", "universal-2"],
+        speech_models=["assemblyai-stt-3-7", "universal-2"],
 
         # Speaker diarization
         speaker_labels=True,
@@ -35838,7 +36385,7 @@ Most contact center recordings are stereo with the agent on one channel and the 
 
 ```python expandable
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     multichannel=True,  # Enable when agent and customer are on separate channels
     speaker_labels=False,  # Disable - channels already separate speakers
 
@@ -36163,7 +36710,7 @@ For high-volume contact center workloads, use webhooks instead of polling:
 
 ```python expandable
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     webhook_url="https://your-app.com/webhooks/assemblyai",
     webhook_auth_header_name="X-Webhook-Secret",
     webhook_auth_header_value="your_secret_here",
@@ -36296,7 +36843,7 @@ The most impactful lever for contact center accuracy is **prompting**. Use a str
 
 ```python expandable
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
 
     # Natural language prompt for transcription guidance
     prompt=(
@@ -36353,7 +36900,7 @@ call_keyterms = [
 ]
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     keyterms_prompt=call_keyterms,
     speaker_labels=True,
 )
@@ -36439,7 +36986,7 @@ Map generic speaker labels to agent and customer names:
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     speaker_labels=True,
     speech_understanding={
         "request": {
@@ -36461,7 +37008,7 @@ Translate call transcripts for international teams:
 
 ```python
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
     speaker_labels=True,
     speech_understanding={
@@ -36571,7 +37118,7 @@ print(f"Sentiment: {result.get('sentiment_breakdown', {})}")
 
 ## Additional Resources
 
-- [Universal-3.5 Pro Pre-recorded Documentation](/pre-recorded-audio)
+- [AssemblyAI-STT-3.7 Pre-recorded Documentation](/pre-recorded-audio)
 - [AssemblyAI-STT-3.7-Realtime-Agent documentation](/streaming/getting-started/transcribe-streaming-audio)
 - [Speaker Diarization Guide](/pre-recorded-audio/label-speakers)
 - [Multichannel Streaming Guide](/streaming/label-speakers-and-separate-channels)
@@ -45803,7 +46350,7 @@ The SDKs raise `SyncTranscriptError` and expose `title` in snake case as the err
 | 401 | `Unauthorized` | Missing or invalid API key |
 | 413 | `Audio Too Large` | Duration > 20 minutes on `/v1/transcribe`, or > 120 s on `/v1/transcribe/live` (returned mid-upload); or file > 256 MB |
 | 415 | `Unsupported Media Type` | Unsupported format, non-16-bit audio, or unsupported sample rate |
-| 429 | `Too Many Requests` | Rate limit exceeded — retry after the `Retry-After` header |
+| 429 | `Too Many Requests` | [Rate limit](/sync-stt/rate-limits) of 200 requests per minute exceeded. Retry after the `Retry-After` header |
 | 503 | `Capacity Exceeded` | Server at its concurrency limit — retry after `Retry-After: 1` |
 | 503 | `Service Unavailable` | Model still loading (cold start) |
 | 504 | `Inference Timeout` | Request exceeded the server deadline: 30 s on `/v1/transcribe`; 300 s on `/v1/transcribe/live`, covering recording and transcription, or a live upload idle for 120 s |
@@ -46291,6 +46838,39 @@ curl https://sync.assemblyai.com/v1/warm \
 The SDKs expose this directly — `SyncTranscriber.warm()` in Python, `client.sync.warm()` in JavaScript. Call it when recording starts, then call `transcribe()` as usual on the same transcriber or client.
 
 **Related:** the same connection-reuse principle applies to LLM Gateway calls. See [Improve latency with keep-alive connections](/llm-gateway/improve-latency).
+
+---
+
+<a id="rate-limits-docs-sync-stt-rate-limits-mdx"></a>
+
+# Rate limits
+
+URL: https://www.assemblyai.com/docs/sync-stt/rate-limits
+Source: docs/sync-stt/rate-limits.mdx
+Navigation: Sync STT > Advanced
+Description: Sync STT request rate limits, what happens when you exceed them, and how to request a higher limit.
+
+Requests to the Sync API, `/v1/transcribe` and `/v1/transcribe/live`, are rate limited per account, measured as requests per minute. Every API key on the account shares the limit.
+
+## Default limits
+
+| Limit | Value |
+| ----- | ----- |
+| Requests per minute | 200 |
+
+  **Need a higher rate limit?**
+
+  If you need a higher rate limit, either [contact our Sales team](https://www.assemblyai.com/contact) or send an email to [support@assemblyai.com](mailto:support@assemblyai.com).
+
+## What happens when you hit the limit
+
+If you exceed the limit, the API returns an HTTP `429` response with the title `Too Many Requests`. Wait for the number of seconds in the `Retry-After` header, or back off briefly when the header is absent, then retry. See [Error handling](/sync-stt/error-handling) for the full list of status codes.
+
+## Related pages
+
+- [Error handling](/sync-stt/error-handling)
+- [Audio requirements](/sync-stt/audio-requirements)
+- [Dictation API rate limits](/dictation/rate-limits)
 
 ---
 
@@ -47360,7 +47940,7 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe \
 ## Next steps
 
 - [Achieve lowest latency](/dictation/uploading-while-recording) — start the request before the speaker stops
-- [Recordings over two minutes](/dictation/recordings-over-two-minutes): fall back to `/v1/transcribe` when a dictation runs long
+- [Dictations up to 20 minutes](/dictation/recordings-over-two-minutes): fall back to `/v1/transcribe` when a dictation runs long
 - [Examples](/dictation/examples) — end-to-end requests for a clinical note and a travel booking
 - [Inserting at the cursor](/dictation/inserting-at-the-cursor): fit a dictation into existing text
 - [Transcript rewriting](/dictation/transcript-rewriting) — reshape the transcript with `llm_instruction`
@@ -47591,12 +48171,13 @@ the server does not wait for the full body before it begins.
 - [Quickstart](/dictation) — the single-call flow this builds on
 - [Audio requirements](/dictation/audio-requirements) — why raw PCM is the easiest format to stream
 - [Reduce connection overhead](/dictation/connection-pre-warming) — take the handshake off the critical path too
+- [Add context mid-dictation](/dictation/add-context-mid-dictation) — change the config after the user starts talking
 
 ---
 
-<a id="recordings-over-two-minutes-docs-dictation-recordings-over-two-minutes-mdx"></a>
+<a id="dictations-up-to-20-minutes-docs-dictation-recordings-over-two-minutes-mdx"></a>
 
-# Recordings over two minutes
+# Dictations up to 20 minutes
 
 URL: https://www.assemblyai.com/docs/dictation/recordings-over-two-minutes
 Source: docs/dictation/recordings-over-two-minutes.mdx
@@ -48446,6 +49027,10 @@ Both act on the transcription itself, before any LLM pass. They are a different
 lever from [`llm_instruction`](/dictation/transcript-rewriting), which reshapes
 the transcript after it has been written.
 
+Both are read with the rest of `config`, before the audio. To add terms or
+context that only arrive after the user starts speaking, restart the request
+with the new config; see [Add context mid-dictation](/dictation/add-context-mid-dictation).
+
 ## Contextual prompting
 
 `stt_prompt` describes what the audio is about. It gives the decoder situational
@@ -48821,7 +49406,7 @@ at the end, because the server is measuring the audio as it arrives. See
 For a recording longer than 120 seconds, wait until it finishes and post it to
 `/v1/transcribe`. If you can't tell in advance how long the user will talk,
 start on `/v1/transcribe/live` and fall back when it answers `413`; see
-[Recordings over two minutes](/dictation/recordings-over-two-minutes). For audio longer than 20 minutes, use
+[Dictations up to 20 minutes](/dictation/recordings-over-two-minutes). For audio longer than 20 minutes, use
 [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
 For a live transcript while the speaker is still talking, use
 [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
@@ -48866,7 +49451,7 @@ falling back to `error` covers every case.
 | 413 | `error` / `error_code` | `audio_too_large` on `/v1/transcribe/live`: audio passed 120 seconds or the size cap, returned mid-upload |
 | 413 | `status` / `title` / `detail` | `Audio Too Large` on `/v1/transcribe`: audio longer than 20 minutes |
 | 415 | `status` / `title` / `detail` | The `audio` part's format is not accepted: anything but `audio/wav` or `audio/pcm` on `/v1/transcribe/live`, or an unsupported format on `/v1/transcribe` |
-| 429 | `status` / `title` / `detail` | Rate limit exceeded |
+| 429 | `status` / `title` / `detail` | [Rate limit](/dictation/rate-limits) of 200 requests per minute exceeded |
 | 502 | `error` / `error_code` | `upstream_error`: transcription upstream unavailable |
 | 503 | `error` / `error_code` | `capacity_exceeded`: server at capacity |
 | 504 | `error` / `error_code` | `upstream_timeout`: transcription upstream timed out, the upload went silent for too long, or the request ran past its overall limit |
@@ -48953,7 +49538,7 @@ fall back to your own backoff rather than assuming a value is present.
   config before retrying. See [Audio requirements](/dictation/audio-requirements)
   for the constraints. The exception is `413 audio_too_large` from
   `/v1/transcribe/live`: send the same recording to `/v1/transcribe` instead.
-  See [Recordings over two minutes](/dictation/recordings-over-two-minutes).
+  See [Dictations up to 20 minutes](/dictation/recordings-over-two-minutes).
 - **401** is a credential problem. Retrying will not help.
 
 A chunked upload cannot be replayed, so keep the audio in memory if you want to
@@ -49634,6 +50219,39 @@ See [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones).
 
 ---
 
+<a id="rate-limits-docs-dictation-rate-limits-mdx"></a>
+
+# Rate limits
+
+URL: https://www.assemblyai.com/docs/dictation/rate-limits
+Source: docs/dictation/rate-limits.mdx
+Navigation: Dictation API > Advanced
+Description: Dictation API request rate limits, what happens when you exceed them, and how to request a higher limit.
+
+Requests to the Dictation API, `/v1/transcribe/live` and `/v1/transcribe`, are rate limited per account, measured as requests per minute. Every API key on the account shares the limit.
+
+## Default limits
+
+| Limit | Value |
+| ----- | ----- |
+| Requests per minute | 200 |
+
+  **Need a higher rate limit?**
+
+  If you need a higher rate limit, either [contact our Sales team](https://www.assemblyai.com/contact) or send an email to [support@assemblyai.com](mailto:support@assemblyai.com).
+
+## What happens when you hit the limit
+
+If you exceed the limit, the API returns an HTTP `429` response with a `status`, `title`, and `detail` body. Wait for the number of seconds in the `Retry-After` header, or back off briefly when the header is absent, then retry. See [Error handling](/dictation/error-handling) for the full list of status codes.
+
+## Related pages
+
+- [Error handling](/dictation/error-handling)
+- [Audio requirements](/dictation/audio-requirements)
+- [Sync STT rate limits](/sync-stt/rate-limits)
+
+---
+
 <a id="inserting-at-the-cursor-docs-dictation-inserting-at-the-cursor-mdx"></a>
 
 # Inserting at the cursor
@@ -50046,6 +50664,393 @@ with a full stop only when the sentence ends there.
 - [Transcript rewriting](/dictation/transcript-rewriting): `llm_instruction`, `rewrite_mode` and writing a good instruction
 - [Prompting and keyterms](/dictation/prompting-and-keyterms): `stt_prompt` and `keyterms_prompt`
 - [Error handling](/dictation/error-handling#a-failed-rewrite-is-not-a-failed-request): what to do when `llm_response` is `null`
+
+---
+
+<a id="add-context-mid-dictation-docs-dictation-add-context-mid-dictation-mdx"></a>
+
+# Add context mid-dictation
+
+URL: https://www.assemblyai.com/docs/dictation/add-context-mid-dictation
+Source: docs/dictation/add-context-mid-dictation.mdx
+Navigation: Dictation API > Guides
+Description: Change keyterms, the STT prompt or the rewrite after the user starts talking, by restarting the request with the audio so far.
+
+The `config` part arrives before the audio, so a [live upload](/dictation/uploading-while-recording)
+can't change its settings once the audio has started. Some context only arrives
+after the user starts speaking: names pulled from the screen, a message that
+comes in while they talk, the app they switch to. To use it, restart the
+request:
+
+1. **Keep a copy of every audio frame** you send, from the first one.
+2. **When the new context is ready, open a new request** with the updated
+   `config`: `stt_prompt`, `keyterms_prompt`, `llm_instruction` or `llm`.
+3. **Send the copy first, then keep streaming.** The copy can go faster than
+   real time, so the new request catches up with the speaker.
+4. **Abort the old request.** Abort it rather than ending its audio: ending the
+   audio asks for a transcript, and a finished request is billed. A request
+   aborted before it finishes returns nothing and is not billed.
+
+Restart once, when the context is ready, rather than on every change. Each
+restart transcribes the audio so far again, which adds a little latency on a
+long recording. The 120-second limit counts all the audio in the new request,
+the copy included; see [Recordings over two minutes](/dictation/recordings-over-two-minutes).
+
+## Example
+
+Each example records 16 kHz mono 16-bit PCM from the default microphone,
+starts with a plain config, and restarts with keyterms three seconds in, where
+your own screen-context lookup would call it. The SDK examples use a live
+session's `abort()`; the examples without an SDK drop the connection before the
+body is complete. The JavaScript examples record with
+[SoX](https://sourceforge.net/projects/sox/), so install it first
+(`brew install sox` or `sudo apt-get install sox`).
+
+```python expandable
+import threading
+
+import assemblyai as aai
+import sounddevice as sd
+
+aai.settings.api_key = "<YOUR_API_KEY>"
+
+class RestartableDictation:
+    """A live dictation whose config can change while the user is talking."""
+
+    def __init__(self, transcriber, config):
+        self._transcriber = transcriber
+        self._audio = bytearray()
+        self._lock = threading.Lock()
+        self._session = transcriber.open_live(config)
+
+    def write(self, chunk):
+        """Call from the microphone callback with each audio frame."""
+        with self._lock:
+            self._audio += chunk
+            self._session.write(chunk)
+
+    def update_config(self, config):
+        """Restart with a new config, replaying the audio captured so far."""
+        new_session = self._transcriber.open_live(config)
+        with self._lock:
+            old_session, self._session = self._session, new_session
+            new_session.write(bytes(self._audio))
+        old_session.abort()  # not close(): an aborted request is not billed
+
+    def result(self):
+        with self._lock:
+            session = self._session
+        return session.result()
+
+config = aai.DictationConfig(sample_rate=16000, channels=1, rewrite_mode="smart")
+with_context = aai.DictationConfig(
+    sample_rate=16000,
+    channels=1,
+    rewrite_mode="smart",
+    keyterms_prompt=["Priya Shah", "Q3 roadmap"],
+)
+
+with aai.DictationTranscriber() as transcriber:
+    dictation = RestartableDictation(transcriber, config)
+    stream = sd.RawInputStream(
+        samplerate=16000,
+        channels=1,
+        dtype="int16",
+        callback=lambda data, *_: dictation.write(bytes(data)),
+    )
+    with stream:
+        # Your screen-context lookup calls update_config when it's ready.
+        threading.Timer(3, dictation.update_config, args=[with_context]).start()
+        input("Dictating, press Enter to stop... ")
+
+    print(dictation.result().llm_response)
+```
+
+```javascript expandable
+import { spawn } from "node:child_process";
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
+
+// A live dictation whose config can change while the user is talking.
+function restartableDictation(config) {
+  const frames = [];
+  let session = client.dictation.openLive(config);
+
+  return {
+    // Call with each audio frame from the microphone.
+    write(chunk) {
+      frames.push(chunk);
+      session.write(chunk);
+    },
+    // Restart with a new config, replaying the audio captured so far.
+    async updateConfig(newConfig) {
+      const oldSession = session;
+      session = client.dictation.openLive(newConfig);
+      for (const frame of frames) session.write(frame);
+      await oldSession.abort(); // not close(): an aborted request is not billed
+    },
+    result() {
+      return session.result();
+    },
+  };
+}
+
+const config = { sample_rate: 16000, channels: 1, rewrite_mode: "smart" };
+const dictation = restartableDictation(config);
+
+// SoX writes 16 kHz, 16-bit mono PCM from the default microphone to stdout.
+const microphone = spawn("sox", [
+  "--default-device", "--no-show-progress",
+  "--rate", "16000", "--channels", "1",
+  "--encoding", "signed-integer", "--bits", "16", "--type", "raw", "-",
+]);
+microphone.on("error", () => console.error("Install SoX to record audio."));
+microphone.stdout.on("data", (chunk) => dictation.write(chunk));
+
+// Your screen-context lookup calls updateConfig when it's ready.
+setTimeout(() => {
+  dictation.updateConfig({ ...config, keyterms_prompt: ["Priya Shah", "Q3 roadmap"] });
+}, 3000);
+
+console.log("Dictating, press Enter to stop...");
+process.stdin.once("data", () => {
+  microphone.kill();
+  process.stdin.pause();
+});
+
+await new Promise((resolve) => microphone.on("close", resolve));
+const result = await dictation.result();
+console.log(result.llm_response);
+```
+
+```python expandable
+import json
+import queue
+import threading
+
+import requests
+import sounddevice as sd
+
+API_KEY = "<YOUR_API_KEY>"
+URL = "https://dictation.assemblyai.com/v1/transcribe/live"
+BOUNDARY = "----dictation-boundary"
+
+class Aborted(Exception):
+    """Raised inside the body so the connection drops before the body ends."""
+
+class LiveRequest:
+    """One upload to the live endpoint, fed frame by frame."""
+
+    def __init__(self, config):
+        self._frames = queue.Queue()
+        self._aborted = False
+        self._outcome = {}
+        self._thread = threading.Thread(target=self._send, args=(config,))
+        self._thread.start()
+
+    def _body(self, config):
+        yield (
+            f"--{BOUNDARY}\r\n"
+            'Content-Disposition: form-data; name="config"\r\n'
+            "Content-Type: application/json\r\n\r\n"
+            f"{json.dumps(config)}\r\n"
+            f"--{BOUNDARY}\r\n"
+            'Content-Disposition: form-data; name="audio"; filename="audio"\r\n'
+            "Content-Type: audio/pcm\r\n\r\n"
+        ).encode()
+        while (frame := self._frames.get()) is not None:
+            yield frame
+        if self._aborted:
+            raise Aborted()
+        yield f"\r\n--{BOUNDARY}--\r\n".encode()
+
+    def _send(self, config):
+        try:
+            self._outcome["response"] = requests.post(
+                URL,
+                headers={
+                    "Authorization": API_KEY,
+                    "Content-Type": f"multipart/form-data; boundary={BOUNDARY}",
+                },
+                data=self._body(config),
+                timeout=90,
+            )
+        except Exception as error:
+            self._outcome["error"] = error
+
+    def write(self, frame):
+        self._frames.put(frame)
+
+    def abort(self):
+        """Drop the request without a transcript. An aborted request is not billed."""
+        self._aborted = True
+        self._frames.put(None)
+        self._thread.join()
+
+    def result(self):
+        """End the audio and wait for the transcript."""
+        self._frames.put(None)
+        self._thread.join()
+        if "error" in self._outcome:
+            raise self._outcome["error"]
+        response = self._outcome["response"]
+        response.raise_for_status()
+        return response.json()
+
+class RestartableDictation:
+    """A live dictation whose config can change while the user is talking."""
+
+    def __init__(self, config):
+        self._audio = bytearray()
+        self._lock = threading.Lock()
+        self._request = LiveRequest(config)
+
+    def write(self, frame):
+        """Call from the microphone callback with each audio frame."""
+        with self._lock:
+            self._audio += frame
+            self._request.write(frame)
+
+    def update_config(self, config):
+        """Restart with a new config, replaying the audio captured so far."""
+        new_request = LiveRequest(config)
+        with self._lock:
+            old_request, self._request = self._request, new_request
+            new_request.write(bytes(self._audio))
+        old_request.abort()
+
+    def result(self):
+        with self._lock:
+            request = self._request
+        return request.result()
+
+config = {"sample_rate": 16000, "channels": 1, "rewrite_mode": "smart"}
+with_context = {**config, "keyterms_prompt": ["Priya Shah", "Q3 roadmap"]}
+
+dictation = RestartableDictation(config)
+stream = sd.RawInputStream(
+    samplerate=16000,
+    channels=1,
+    dtype="int16",
+    callback=lambda data, *_: dictation.write(bytes(data)),
+)
+with stream:
+    # Your screen-context lookup calls update_config when it's ready.
+    threading.Timer(3, dictation.update_config, args=[with_context]).start()
+    input("Dictating, press Enter to stop... ")
+
+print(dictation.result()["llm_response"])
+```
+
+```javascript expandable
+import { spawn } from "node:child_process";
+
+const API_KEY = "<YOUR_API_KEY>";
+const URL = "https://dictation.assemblyai.com/v1/transcribe/live";
+const BOUNDARY = "----dictation-boundary";
+const encoder = new TextEncoder();
+
+// One upload to the live endpoint, fed frame by frame. Needs Node.js 18+.
+function liveRequest(config) {
+  let body;
+  const stream = new ReadableStream({ start: (controller) => (body = controller) });
+  body.enqueue(encoder.encode(
+    `--${BOUNDARY}\r\n` +
+    'Content-Disposition: form-data; name="config"\r\n' +
+    "Content-Type: application/json\r\n\r\n" +
+    `${JSON.stringify(config)}\r\n` +
+    `--${BOUNDARY}\r\n` +
+    'Content-Disposition: form-data; name="audio"; filename="audio"\r\n' +
+    "Content-Type: audio/pcm\r\n\r\n",
+  ));
+  const aborter = new AbortController();
+  const response = fetch(URL, {
+    method: "POST",
+    headers: {
+      Authorization: API_KEY,
+      "Content-Type": `multipart/form-data; boundary=${BOUNDARY}`,
+    },
+    body: stream,
+    duplex: "half",
+    signal: aborter.signal,
+  });
+  response.catch(() => {}); // an aborted request rejects; nothing to keep
+
+  return {
+    write(frame) {
+      body.enqueue(frame);
+    },
+    // Drop the request without a transcript. An aborted request is not billed.
+    abort() {
+      aborter.abort();
+    },
+    // End the audio and wait for the transcript.
+    async result() {
+      body.enqueue(encoder.encode(`\r\n--${BOUNDARY}--\r\n`));
+      body.close();
+      const res = await response;
+      if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
+      return res.json();
+    },
+  };
+}
+
+// A live dictation whose config can change while the user is talking.
+function restartableDictation(config) {
+  const frames = [];
+  let request = liveRequest(config);
+
+  return {
+    write(frame) {
+      frames.push(frame);
+      request.write(frame);
+    },
+    updateConfig(newConfig) {
+      const oldRequest = request;
+      request = liveRequest(newConfig);
+      for (const frame of frames) request.write(frame);
+      oldRequest.abort();
+    },
+    result() {
+      return request.result();
+    },
+  };
+}
+
+const config = { sample_rate: 16000, channels: 1, rewrite_mode: "smart" };
+const dictation = restartableDictation(config);
+
+// SoX writes 16 kHz, 16-bit mono PCM from the default microphone to stdout.
+const microphone = spawn("sox", [
+  "--default-device", "--no-show-progress",
+  "--rate", "16000", "--channels", "1",
+  "--encoding", "signed-integer", "--bits", "16", "--type", "raw", "-",
+]);
+microphone.on("error", () => console.error("Install SoX to record audio."));
+microphone.stdout.on("data", (chunk) => dictation.write(new Uint8Array(chunk)));
+
+// Your screen-context lookup calls updateConfig when it's ready.
+setTimeout(() => {
+  dictation.updateConfig({ ...config, keyterms_prompt: ["Priya Shah", "Q3 roadmap"] });
+}, 3000);
+
+console.log("Dictating, press Enter to stop...");
+process.stdin.once("data", () => {
+  microphone.kill();
+  process.stdin.pause();
+});
+
+await new Promise((resolve) => microphone.on("close", resolve));
+const result = await dictation.result();
+console.log(result.llm_response);
+```
+
+## Related pages
+
+- [Achieve lowest latency](/dictation/uploading-while-recording) — the live upload this restarts
+- [Prompting and keyterms](/dictation/prompting-and-keyterms) — what `stt_prompt` and `keyterms_prompt` do
+- [Recordings over two minutes](/dictation/recordings-over-two-minutes) — the fallback past 120 seconds
 
 ---
 
@@ -59986,7 +60991,7 @@ data = {
     "redact_pii_sub": "entity_name",
     "redact_static_entities": {
         "INTERNAL_TOOL": ["Bearclaw", "Cubclaw"],
-        "PROJECT": ["Universal-3.5 Pro"]
+        "PROJECT": ["AssemblyAI-STT-3.7"]
     }
 }
 ```
@@ -60001,14 +61006,14 @@ const data = {
   redact_pii_sub: "entity_name",
   redact_static_entities: {
     INTERNAL_TOOL: ["Bearclaw", "Cubclaw"],
-    PROJECT: ["Universal-3.5 Pro"],
+    PROJECT: ["AssemblyAI-STT-3.7"],
   },
 };
 ```
 
 ### Example response
 
-Matched terms appear redacted inline in `text`, `words`, and `utterances`, exactly like standard PII. There are no additional response fields. For the transcript _"Our internal tool Bearclaw is powered by Universal-3.5 Pro."_ with the request above:
+Matched terms appear redacted inline in `text`, `words`, and `utterances`, exactly like standard PII. There are no additional response fields. For the transcript _"Our internal tool Bearclaw is powered by AssemblyAI-STT-3.7."_ with the request above:
 
 ```json
 {
@@ -77450,7 +78455,7 @@ Do not submit with `auto_chapters` and `summarization` both enabled — the API 
 
 **WebSocket (default, Edge Routing):** `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=assemblyai-stt-3-7-realtime-agent`
 
-**Model choice:** `assemblyai-stt-3-7-realtime-agent` (AssemblyAI-STT-3.7-Realtime-Agent) for voice agents. `assemblyai-stt-3-7-realtime` (AssemblyAI-STT-3.7-Realtime) for meeting notetakers, ambient transcription, live captions and speaker diarization; it doesn't support Voice Focus, `interruption_delay` has no effect on it, and `mode: "manual"` behaves as `balanced`. `universal-3-6-pro` is still supported for existing integrations but isn't recommended for new ones.
+**Model choice:** `assemblyai-stt-3-7-realtime-agent` (AssemblyAI-STT-3.7-Realtime-Agent) for voice agents. `assemblyai-stt-3-7-realtime` (AssemblyAI-STT-3.7-Realtime) for meeting notetakers, ambient transcription, live captions and speaker diarization; it doesn't support Voice Focus, `interruption_delay` has no effect on it, and it rejects `mode: "manual"` with a `3006` error. `universal-3-6-pro` is still supported for existing integrations but isn't recommended for new ones.
 
 For data residency, swap the host: `streaming.us.assemblyai.com` (US-pinned) or `streaming.eu.assemblyai.com` (EU-pinned). The default host auto-routes to the nearest region.
 
@@ -77831,9 +78836,11 @@ Rate limits apply per account. Every API key on the account shares them. To rais
 | Streaming TTS | New WebSocket sessions per minute, counted apart from STT | 5 | 200, grows with use | Close `3009` `rate_limited` |
 | Streaming TTS | HTTP requests per minute | 50 | 1,000 or more | `429` `rate_limited` |
 | Speech Understanding | Requests per minute | 2 | 30 | |
+| Sync STT | Requests per minute | 200 | 200 | `429` `Too Many Requests` with `Retry-After` |
+| Dictation | Requests per minute | 200 | 200 | `429` with `Retry-After` |
 | LLM Gateway | Requests per minute | Tier 0: 30 | Tier 1 (any spend) to Tier 5: 100, 300, 600, 1,500, 3,000 | `429` with `Retry-After` |
 
-Streaming STT and TTS do not limit how many sessions are open at once, only how many start each minute. LLM Gateway tokens per minute depend on the model and tier. Your dashboard shows them. Sync STT and Dictation have rate limits, but no numbers are published.
+Streaming STT and TTS do not limit how many sessions are open at once, only how many start each minute. LLM Gateway tokens per minute depend on the model and tier. Your dashboard shows them.
 
 ### Account limits
 
@@ -77921,7 +78928,7 @@ The error body uses RFC 9457. The `title` field identifies the error.
 | `401` `Unauthorized` | The API key is missing or not valid. | Check the key. |
 | `413` `Audio Too Large` | Over 20 minutes on `/v1/transcribe`, over 120 s on `/v1/transcribe/live`, or over 256 MB. | Use `/v1/transcribe` for audio over 120 s, and Pre-recorded for audio over 20 minutes. |
 | `415` `Unsupported Media Type` | The format, bit depth or sample rate is not supported. | See [Audio requirements](/sync-stt/audio-requirements). |
-| `429` `Too Many Requests` | Rate limit exceeded. | Retry after the `Retry-After` header. |
+| `429` `Too Many Requests` | More than 200 requests per minute. | Retry after the `Retry-After` header. See [Sync STT rate limits](/sync-stt/rate-limits). |
 | `503` `Service Unavailable` | The model is still loading. | Retry after the `Retry-After` header. |
 | `504` `Inference Timeout` | Over 30 s on `/v1/transcribe`, over 300 s on `/v1/transcribe/live`, or a live upload idle for 120 s. | Retry once. If it repeats, contact support. |
 | `500` `Inference Error` | An internal model error. | Retry once. If it repeats, contact support. |
@@ -77936,7 +78943,7 @@ The error body uses RFC 9457. The `title` field identifies the error.
 | `413` `audio_too_large` on `/v1/transcribe/live` | Audio passed 120 s or the size limit. | Use `/v1/transcribe`. |
 | `413` `Audio Too Large` on `/v1/transcribe` | Audio is longer than 20 minutes. | Use Pre-recorded. |
 | `415` | The audio format is not accepted. `/v1/transcribe/live` takes only `audio/wav` and `audio/pcm`. | Send compressed audio to `/v1/transcribe`. |
-| `429` | Rate limit exceeded. | Back off and retry. |
+| `429` | More than 200 requests per minute. | Back off and retry. See [Dictation rate limits](/dictation/rate-limits). |
 | `502` `upstream_error` | The transcription service is unavailable. | Back off and retry. |
 | `503` `capacity_exceeded` | The server is at capacity. | Back off and retry. |
 | `504` `upstream_timeout` | Transcription timed out, the upload was silent too long, or the request passed its time limit. | Back off and retry. |
@@ -78009,8 +79016,8 @@ The HTTP API returns these `code` values:
 | ------- | ------ | ------ |
 | Pre-recorded STT | [Troubleshoot common errors](/pre-recorded-audio/guides/common_errors_and_solutions) | [Rate limits](/pre-recorded-audio/rate-limits) |
 | Streaming STT | [Common session errors and closures](/streaming/common-session-errors-and-closures) | [Rate limits](/streaming/rate-limits) |
-| Sync STT | [Error handling](/sync-stt/error-handling) | [Audio requirements](/sync-stt/audio-requirements) |
-| Dictation | [Error handling](/dictation/error-handling) | [Audio requirements](/dictation/audio-requirements) |
+| Sync STT | [Error handling](/sync-stt/error-handling) | [Rate limits](/sync-stt/rate-limits) |
+| Dictation | [Error handling](/dictation/error-handling) | [Rate limits](/dictation/rate-limits) |
 | Streaming TTS | [Error handling](/tts/error-handling) | [Limits](/tts/limits) |
 | LLM Gateway | [Troubleshooting](/llm-gateway/troubleshooting) | [Rate limits](/llm-gateway/rate-limits) |
 | Speech Understanding | | [Rate limits](/speech-understanding/rate-limits) |
@@ -79052,7 +80059,7 @@ The Spanish, Portuguese and Slovenian files work well for testing [language dete
 
 ## Expected results
 
-Use these values to check that a test request worked. We tested each file with the default `speech_models` list, `["universal-3-5-pro", "universal-2"]`. The exact text and word counts can change a little between speech models.
+Use these values to check that a test request worked. We tested each file with `speech_models` set to `["assemblyai-stt-3-7", "universal-2"]`. The exact text and word counts can change a little between speech models.
 
 | File | Request options | Expected result | Transcript includes |
 | ---- | --------------- | --------------- | ------------------- |
@@ -79067,7 +80074,7 @@ Use these values to check that a test request worked. We tested each file with t
 | `56e2be1c-lispro.mp3` | `domain: "medical-v1"` | About 20 words, includes "Humalog" | "prandial mealtime and sliding scale" |
 | `public_benchmarking_spanish.mp3` | `language_detection: true` | `language_code: es` | "el diario estadounidense New York Times" |
 | `public_benchmarking_portugese.mp3` | `language_detection: true` | `language_code: pt` | "Olá pessoal, sejam bem-vindos a mais um vídeo" |
-| `slovenian_luka_doncic_interview.mp3` | `language_detection: true` | `language_code: sl`, `speech_model_used: universal-2` (falls back from Universal-3.5 Pro) | "Ni lepšega, ka videti enega otroka" |
+| `slovenian_luka_doncic_interview.mp3` | `language_detection: true` | `language_code: sl`, `speech_model_used: universal-2` (falls back from AssemblyAI-STT-3.7) | "Ni lepšega, ka videti enega otroka" |
 
 ## Not available yet
 
@@ -79118,7 +80125,7 @@ webhook_url = "https://your-domain.com/webhook?customer_id=customer_123"
 
 data = {
     "audio_url": "https://example.com/audio.mp3",
-    "speech_models": ["universal-3-5-pro", "universal-2"],
+    "speech_models": ["assemblyai-stt-3-7", "universal-2"],
     "language_detection": True,
     "webhook_url": webhook_url
 }
@@ -79137,7 +80144,7 @@ aai.settings.api_key = "<YOUR_API_KEY>"
 webhook_url = "https://your-domain.com/webhook?customer_id=customer_123"
 
 config = aai.TranscriptionConfig(
-    speech_models=["universal-3-5-pro", "universal-2"],
+    speech_models=["assemblyai-stt-3-7", "universal-2"],
     language_detection=True,
 ).set_webhook(webhook_url)
 
@@ -79154,7 +80161,7 @@ const webhookUrl = "https://your-domain.com/webhook?customer_id=customer_123";
 
 const data = {
   audio_url: "https://example.com/audio.mp3",
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7", "universal-2"],
   language_detection: true,
   webhook_url: webhookUrl,
 };
@@ -79182,7 +80189,7 @@ const webhookUrl = "https://your-domain.com/webhook?customer_id=customer_123";
 
 const transcript = await client.transcripts.submit({
   audio: "https://example.com/audio.mp3",
-  speech_models: ["universal-3-5-pro", "universal-2"],
+  speech_models: ["assemblyai-stt-3-7", "universal-2"],
   language_detection: true,
   webhook_url: webhookUrl,
 });
@@ -88310,7 +89317,7 @@ channels:
         enum: ["medical-v1", "veterinary-v1"]
 
       mode:
-        description: Latency and accuracy preset that controls the model's turn-detection and partial-emission defaults. `max_accuracy` favors transcription quality, `min_latency` favors speed, and `balanced` trades off between the two. When omitted, the server applies its own preset, which determines the defaults for the mode-dependent fields `min_turn_silence` and `interruption_delay`. `manual` hands turn detection to your client and is supported only by `assemblyai-stt-3-7-realtime-agent` (other models treat it as `balanced`). In `manual`, punctuation never ends a turn, so you end each turn by sending `ForceEndpoint`. The server still ends a turn on its own after 10000 ms of silence (`max_turn_silence`, which you can override) or when the turn reaches its maximum duration. See [Manual mode](https://www.assemblyai.com/docs/streaming/turn-detection#manual-mode).
+        description: Latency and accuracy preset that controls the model's turn-detection and partial-emission defaults. `max_accuracy` favors transcription quality, `min_latency` favors speed, and `balanced` trades off between the two. When omitted, the server applies its own preset, which determines the defaults for the mode-dependent fields `min_turn_silence` and `interruption_delay`. `manual` hands turn detection to your client and is supported only by `assemblyai-stt-3-7-realtime-agent` (other models reject it at connect with a `3006` error). In `manual`, punctuation never ends a turn, so you end each turn by sending `ForceEndpoint`. The server still ends a turn on its own after `10000` (ms) of silence (`max_turn_silence`, which you can override) or when the turn reaches its maximum duration. See [Manual mode](https://www.assemblyai.com/docs/streaming/turn-detection#manual-mode).
         location: $message.payload#/mode
         enum: ["max_accuracy", "min_latency", "balanced", "manual"]
 
@@ -88783,7 +89790,7 @@ components:
         mode:
           type: string
           enum: [max_accuracy, min_latency, balanced, manual]
-          description: Switch the latency and accuracy preset mid-session, including to and from `manual`. See the `mode` connection parameter for the behavior of each preset.
+          description: Switch the latency and accuracy preset mid-session, including to and from `manual`. Switching to `manual` is ignored on models that don't support it. See the `mode` connection parameter for the behavior of each preset.
         language_codes:
           type: array
           items:

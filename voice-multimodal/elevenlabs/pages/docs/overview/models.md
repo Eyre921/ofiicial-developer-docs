@@ -138,6 +138,20 @@ Same accuracy on everyday speech as Scribe v2
 
 Same features, languages, pricing, and API as Scribe v2
 
+#### [Scribe v3 Live Medical](/docs/overview/models#scribe-v3-live-medical)
+
+Real-time speech recognition for healthcare voice agents (early access)
+
+Available in ElevenAgents only
+
+Built for patient, member and provider calls
+
+Support for 90+ languages
+
+Turn prediction from conversation context
+
+ASR keywords for provider, clinic and drug names
+
 ### Voice agents
 
 #### [Eleven Realtime v1 Mini](/docs/overview/models#eleven-realtime)
@@ -624,6 +638,47 @@ Scribe v2 Medical is eligible for HIPAA, with Business Associate Agreements avai
 > sending protected health information.
 
 Read more about Speech to Text [here](/docs/overview/capabilities/speech-to-text).
+
+## Scribe v3 Live Medical
+
+Scribe v3 Live Medical is a real-time speech recognition model for healthcare voice agents in ElevenAgents. It transcribes patient, member and provider calls so that an agent can act on what it hears, such as a medication, dosage or diagnosis, while the caller is still on the line.
+
+> **Info**
+>
+> Scribe v3 Live Medical is available in ElevenAgents only. It is not available through the Speech
+> to Text API. For medical transcription through the API, use [Scribe v2 Medical](#scribe-v2-medical).
+
+> **Warning**
+>
+> Scribe v3 Live Medical is in early access. Do not send protected health information to Scribe v3
+> Live Medical until HIPAA eligibility is confirmed for this model. EU data residency is not
+> available during early access.
+
+> **Note**
+>
+> ### Intended purpose
+>
+> Scribe v3 Live Medical is a speech recognition model for organizations that build ElevenAgents voice
+> agents to handle live clinical calls, such as patient, member and provider calls. Its transcripts are
+> drafts and are intended for review by a healthcare professional or other authorized user before
+> clinical use. Scribe v3 Live Medical is not intended to interpret clinical information or provide
+> diagnoses, treatment recommendations, clinical decisions or other clinical guidance.
+
+The model is intended for intake and scheduling calls, member calls about claims and prior authorization, medical information lines and follow-up calls.
+
+Key features:
+
+* Support for 90+ languages. The model transcribes speech in the language it is spoken and does not translate.
+* ASR keywords to boost transcription of terms such as provider, clinic and drug names.
+* [Turn prediction](#turn-prediction), which uses conversation context to decide when a caller has finished speaking.
+
+### Turn prediction
+
+Silence-based voice activity detection can end a caller's turn during a natural pause. Turn prediction uses the context of the conversation rather than silence alone to decide when the caller has finished, so an agent waits while a caller reads out a member ID, date of birth or phone number.
+
+### Select Scribe v3 Live Medical
+
+Open your agent's **Settings**, go to **Automatic Speech Recognition** and select **Scribe v3 Live Medical** from the **ASR model** dropdown. The option requires the `turn_v3` turn model and is only shown to workspaces with early access.
 
 ## SFX v3
 

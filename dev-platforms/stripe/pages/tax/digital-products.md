@@ -54,6 +54,8 @@ For carts that include digital products and in-person goods or services, review 
 
 ### United States
 
+For covered software sales in California, [prepare with Stripe Tax for the January 1, 2027 software tax changes](https://docs.stripe.com/tax/supported-countries/united-states/california-software-tax.md). Review your product classifications, prices, registrations, customer addresses, and sales flows.
+
 US tax rules for digital products vary significantly by state. Some states tax all digital goods, others exempt them entirely, and many distinguish between:
 
 - Downloaded versus streamed content

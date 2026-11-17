@@ -63,6 +63,7 @@ You need a running Kubernetes cluster with GPU-enabled nodes. Choose a platform 
 
 * [Amazon Web Services (EKS)](/docs/aws-k8s)
 * [Google Cloud Platform (GKE)](/docs/gcp-k8s)
+* [Microsoft Azure (AKS)](/docs/azure-k8s)
 * [Self-managed Kubernetes](/docs/self-managed-kubernetes)
 
 > **Info**

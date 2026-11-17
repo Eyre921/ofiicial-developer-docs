@@ -14,8 +14,8 @@ Control how your deployment scales based on traffic and load.
 | - | - | - | - |
 | `--min-replica-count` | Integer | 0 | Minimum number of replicas. Set to 0 for scale-to-zero |
 | `--max-replica-count` | Integer | 1 | Maximum number of replicas |
-| `--scale-up-window` | Duration | 30s | Wait time before scaling up |
-| `--scale-down-window` | Duration | 10m | Wait time before scaling down |
+| `--scale-up-window` | Duration | 30s | How long a higher replica count must be recommended before it applies. See [How scaling decisions work](#how-scaling-decisions-work) |
+| `--scale-down-window` | Duration | 10m | How long a lower replica count must be recommended before it applies |
 | `--scale-to-zero-window` | Duration | 1h | Idle time before scaling to zero (min: 5m) |
 | `--load-targets` | Key-value | `default=0.8` | Scaling thresholds. See options below |
 
@@ -28,6 +28,30 @@ Control how your deployment scales based on traffic and load.
 * `concurrent_requests=<Number>` - Desired concurrent requests per replica
 
 When multiple targets are specified, the maximum replica count across all is used.
+
+When you create a deployment, `default=0.8` is added if you don't set `default` yourself. `firectl deployment update --load-targets` replaces all existing load targets, so include `default` in the list if you want to keep it:
+
+```bash theme={null}
+firectl deployment update <DEPLOYMENT_ID> --load-targets default=0.8,concurrent_requests=10
+```
+
+The console sets one load target at a time, and saving a change there replaces all existing load targets. To combine targets, such as `default` and `concurrent_requests`, use `firectl`.
+
+> [!NOTE]
+>
+> On deployments served by vLLM or SGLang, `concurrent_requests` counts the requests the engine is actively running. Requests queued inside the engine are not included.
+
+## How scaling decisions work
+
+The autoscaler regularly works out, for each load target, how many replicas would bring the load to that target, and uses the largest of those numbers, between your minimum and maximum replica counts.
+
+**Scale-up window.** The autoscaler applies the lowest replica count recommended during the last `--scale-up-window`. A higher count takes effect only after it has been recommended for the whole window. New replicas then need time to start before they serve traffic, which depends on model size, so extra capacity arrives roughly one window plus the start-up time after load rises. A shorter window reacts faster; a longer one ignores brief spikes.
+
+**Scale-down window.** The autoscaler applies the highest replica count recommended during the last `--scale-down-window`, so a lower count takes effect only after load has stayed lower for the whole window.
+
+**How far one step can go.** `default` tracks how busy each replica is, using measures such as KV-cache usage, compute utilization, or the share of requests waiting, depending on the serving engine. These measures top out at 100% of a replica, so with only `default` set, one scaling step can raise the replica count to at most about `1 / target` times the replicas serving traffic: about 25% more (and at least one more replica) at the default `0.8`. Under a sudden traffic spike the deployment therefore grows in several steps. Per-replica targets such as `concurrent_requests` or `requests_per_second` are not limited to 100%, so a large backlog can add several replicas in one step.
+
+To absorb sharp traffic increases, combine these with a `--min-replica-count` sized for your expected baseline traffic.
 
 ## Common patterns
 
