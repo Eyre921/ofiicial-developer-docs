@@ -205,6 +205,7 @@ Are you having problems setting up the SDK?
 - [Profiling](https://docs.sentry.io/platforms/ruby/guides/delayed_job/profiling.md)
 - [Crons](https://docs.sentry.io/platforms/ruby/guides/delayed_job/crons.md)
 - [User Feedback](https://docs.sentry.io/platforms/ruby/guides/delayed_job/user-feedback.md)
+- [Feature Flags](https://docs.sentry.io/platforms/ruby/guides/delayed_job/feature-flags.md)
 - [Enriching Events](https://docs.sentry.io/platforms/ruby/guides/delayed_job/enriching-events.md)
 - [Extended Configuration](https://docs.sentry.io/platforms/ruby/guides/delayed_job/configuration.md)
 - [Integrations](https://docs.sentry.io/platforms/ruby/guides/delayed_job/integrations.md)

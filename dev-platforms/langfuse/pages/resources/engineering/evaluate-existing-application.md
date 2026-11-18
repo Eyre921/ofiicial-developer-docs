@@ -115,7 +115,7 @@ finally:
 **JS/TS SDK**
 
 ```bash
-npm install @langfuse/client @langfuse/otel @opentelemetry/sdk-node
+npm install @langfuse/client @langfuse/otel "@opentelemetry/sdk-node@>=0.202.0 <0.300.0"
 npm install --save-dev tsx typescript
 ```
 

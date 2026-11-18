@@ -1,4 +1,4 @@
-> This is part 1 of 15 of the full documentation (pages 1–100 of 1414).
+> This is part 1 of 15 of the full documentation (pages 1–100 of 1415).
 > The content is paginated: fetch every part to see all of it.
 > Next part: https://docs.n8n.io/llms-full.txt/1
 > Page index: https://docs.n8n.io/llms.txt
@@ -2493,7 +2493,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2753,7 +2753,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -3125,7 +3125,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -3227,7 +3227,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3597,7 +3597,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -4545,7 +4545,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -4761,7 +4761,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -5044,7 +5044,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -6338,7 +6338,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.48.4 Current `beta`: 2.49.0
+Current `stable`: 2.48.5 Current `beta`: 2.49.1
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -7047,9 +7047,9 @@ To learn more about proxy environment variables, check the [environment variable
 | `N8N_PROTOCOL`                                            | Enum string: `http`, `https` | `http`                                                           | The protocol used to reach n8n.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `N8N_SSL_KEY`                                             | String                       | -                                                                | The SSL key for HTTPS protocol.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `N8N_SSL_CERT`                                            | String                       | -                                                                | The SSL certificate for HTTPS protocol.                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `N8N_PERSONALIZATION_ENABLED`                             | Boolean                      | `true`                                                           | Whether to ask users personalisation questions and then customise n8n accordingly.                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `N8N_PERSONALIZATION_ENABLED`                             | Boolean                      | `true`                                                           | Whether to ask users personalization questions and then customize n8n accordingly.                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `N8N_VERSION_NOTIFICATIONS_ENABLED`                       | Boolean                      | `true`                                                           | When enabled, n8n sends notifications of new versions and security updates.                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `N8N_VERSION_NOTIFICATIONS_ENDPOINT`                      | String                       | `https://api.n8n.io/versions/`                                   | The endpoint to retrieve where version information.                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `N8N_VERSION_NOTIFICATIONS_ENDPOINT`                      | String                       | `https://api.n8n.io/versions/`                                   | The endpoint to retrieve version information from.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `N8N_VERSION_NOTIFICATIONS_INFO_URL`                      | String                       | `https://docs.n8n.io/getting-started/installation/updating.html` | The URL displayed in the New Versions panel for more information.                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `N8N_DIAGNOSTICS_ENABLED`                                 | Boolean                      | `true`                                                           | Whether to share selected, anonymous [telemetry](https://docs.n8n.io/privacy-and-security/) with n8n. Note that if you set this to `false`, you can't enable Ask AI in the Code node.                                                                                                                                                                                                                                                                                                           |
 | `N8N_DIAGNOSTICS_CONFIG_FRONTEND`                         | String                       | `1zPn9bgWPzlQc0p8Gj1uiK6DOTn;https://telemetry.n8n.io`           | Telemetry configuration for the frontend.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -7060,7 +7060,7 @@ To learn more about proxy environment variables, check the [environment variable
 | `N8N_PUBLIC_API_SWAGGERUI_DISABLED`                       | Boolean                      | `false`                                                          | Whether the Swagger UI (API playground) is disabled (true) or not (false).                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `N8N_PUBLIC_API_DISABLED`                                 | Boolean                      | `false`                                                          | Whether to disable the public API (true) or not (false).                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `N8N_PUBLIC_API_ENDPOINT`                                 | String                       | `api`                                                            | Path for the public API endpoints.                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `N8N_PUBLIC_API_RATE_LIMIT_ENABLED`                       | Boolean                      | `false`                                                          | Whether n8n limits how many public API requests each API key can make. A request over a limit gets a `429` response. n8n counts only requests that use an API key. Each `N8N_PUBLIC_API_RATE_LIMIT_*` variable you set overrides its own field in **Settings** > **Policies**, and you can't change that field there. Refer to [API rate limits](https://app.gitbook.com/s/r7wKI4I1BgdBCuq5Cvcx/n8n-api/rate-limits).                                                                           |
+| `N8N_PUBLIC_API_RATE_LIMIT_ENABLED`                       | Boolean                      | `false`                                                          | Whether n8n limits how many public API requests each API key can make. A request over a limit gets a `429` response. n8n counts only requests that use an API key. Each `N8N_PUBLIC_API_RATE_LIMIT_*` variable you set overrides its own field in **Settings** > **Policies**, and you can't change that field there. Refer to [API rate limits](https://docs.n8n.io/connect/n8n-api/rate-limits).                                                                                              |
 | `N8N_PUBLIC_API_RATE_LIMIT_GLOBAL_READ_LIMIT`             | Number                       | `1200`                                                           | Maximum number of read requests (`GET`) that one API key can make to all public API endpoints together in each window. Set to `0` for no limit.                                                                                                                                                                                                                                                                                                                                                 |
 | `N8N_PUBLIC_API_RATE_LIMIT_GLOBAL_READ_WINDOW_SECONDS`    | Number                       | `60`                                                             | Length of the window for `N8N_PUBLIC_API_RATE_LIMIT_GLOBAL_READ_LIMIT`, in seconds. The count starts again when the window ends.                                                                                                                                                                                                                                                                                                                                                                |
 | `N8N_PUBLIC_API_RATE_LIMIT_GLOBAL_WRITE_LIMIT`            | Number                       | `600`                                                            | Maximum number of write requests (`POST`, `PUT`, `PATCH`, and `DELETE`) that one API key can make to all public API endpoints together in each window. Set to `0` for no limit.                                                                                                                                                                                                                                                                                                                 |
@@ -10639,11 +10639,11 @@ This variable expects a pre-hashed bcrypt value. Setting a plaintext password br
 You can now invite other people to your n8n instance.
 
 1. Sign in to your n8n instance with your owner account. On n8n Cloud, if you're in the n8n Cloud console, select **Open instance** on the **Overview** page.
-2. Click the three dots next to your user icon at the bottom left and click **Settings**.
-3. Click **Users** to go to the **Users** page.
-4. Click **Invite**.
+2. Select **Instance settings** at the bottom of the left menu.
+3. Select **Users** to go to the **Users** page.
+4. Select **Invite**.
 5. Enter the new user's email address.
-6. Click **Invite user**. n8n sends an email with a link for the new user to join.
+6. Select **Invite user**. n8n sends an email with a link for the new user to join.
 
 ## Related resources
 

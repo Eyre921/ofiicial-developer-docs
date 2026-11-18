@@ -224,6 +224,7 @@ Are you having problems setting up the SDK?
 - [Profiling](https://docs.sentry.io/platforms/ruby/profiling.md)
 - [Crons](https://docs.sentry.io/platforms/ruby/crons.md)
 - [User Feedback](https://docs.sentry.io/platforms/ruby/user-feedback.md)
+- [Feature Flags](https://docs.sentry.io/platforms/ruby/feature-flags.md)
 - [Enriching Events](https://docs.sentry.io/platforms/ruby/enriching-events.md)
 - [Extended Configuration](https://docs.sentry.io/platforms/ruby/configuration.md)
 - [Integrations](https://docs.sentry.io/platforms/ruby/integrations.md)

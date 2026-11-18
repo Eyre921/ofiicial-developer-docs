@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 372 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -11,6 +11,7 @@
 
 ## accounts
 
+- `accounts/data-residency` — [Data residency](pages/accounts/data-residency.md) · [原文](https://docs.fireworks.ai/accounts/data-residency)
 - `accounts/enterprise-features` — [Enterprise features](pages/accounts/enterprise-features.md) · [原文](https://docs.fireworks.ai/accounts/enterprise-features)
 - `accounts/exporting-billing-metrics` — [Exporting billing metrics](pages/accounts/exporting-billing-metrics.md) · [原文](https://docs.fireworks.ai/accounts/exporting-billing-metrics)
 - `accounts/exporting-usage-and-costs` — [Usage & cost breakdown](pages/accounts/exporting-usage-and-costs.md) · [原文](https://docs.fireworks.ai/accounts/exporting-usage-and-costs)
@@ -48,6 +49,7 @@
 - `api-reference/delete-router` — [Delete Router](pages/api-reference/delete-router.md) · [原文](https://docs.fireworks.ai/api-reference/delete-router)
 - `api-reference/delete-secret` — [Delete secret](pages/api-reference/delete-secret.md) · [原文](https://docs.fireworks.ai/api-reference/delete-secret)
 - `api-reference/delete-supervised-fine-tuning-job` — [Delete Supervised Fine-tuning Job](pages/api-reference/delete-supervised-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/delete-supervised-fine-tuning-job)
+- `api-reference/get-accelerator-usage` — [Get Accelerator Usage](pages/api-reference/get-accelerator-usage.md) · [原文](https://docs.fireworks.ai/api-reference/get-accelerator-usage)
 - `api-reference/get-account` — [Get Account](pages/api-reference/get-account.md) · [原文](https://docs.fireworks.ai/api-reference/get-account)
 - `api-reference/get-batch-inference-job` — [Get Batch Inference Job](pages/api-reference/get-batch-inference-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-batch-inference-job)
 - `api-reference/get-billing-summary` — [Get billing summary information for an account](pages/api-reference/get-billing-summary.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-summary)
@@ -65,6 +67,7 @@
 - `api-reference/get-policy-settings` — [Get Policy Settings](pages/api-reference/get-policy-settings.md) · [原文](https://docs.fireworks.ai/api-reference/get-policy-settings)
 - `api-reference/get-quota` — [Get Quota](pages/api-reference/get-quota.md) · [原文](https://docs.fireworks.ai/api-reference/get-quota)
 - `api-reference/get-reinforcement-fine-tuning-step` — [Get Reinforcement Fine-tuning Step](pages/api-reference/get-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-step)
+- `api-reference/get-reservation` — [Get Reservation](pages/api-reference/get-reservation.md) · [原文](https://docs.fireworks.ai/api-reference/get-reservation)
 - `api-reference/get-response` — [Get Response](pages/api-reference/get-response.md) · [原文](https://docs.fireworks.ai/api-reference/get-response)
 - `api-reference/get-secret` — [Get Secret](pages/api-reference/get-secret.md) · [原文](https://docs.fireworks.ai/api-reference/get-secret)
 - `api-reference/get-supervised-fine-tuning-job` — [Get Supervised Fine-tuning Job](pages/api-reference/get-supervised-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-supervised-fine-tuning-job)
@@ -82,6 +85,7 @@
 - `api-reference/list-models` — [List Models](pages/api-reference/list-models.md) · [原文](https://docs.fireworks.ai/api-reference/list-models)
 - `api-reference/list-quotas` — [List Quotas](pages/api-reference/list-quotas.md) · [原文](https://docs.fireworks.ai/api-reference/list-quotas)
 - `api-reference/list-reinforcement-fine-tuning-steps` — [List Reinforcement Fine-tuning Steps](pages/api-reference/list-reinforcement-fine-tuning-steps.md) · [原文](https://docs.fireworks.ai/api-reference/list-reinforcement-fine-tuning-steps)
+- `api-reference/list-reservations` — [List Reservations](pages/api-reference/list-reservations.md) · [原文](https://docs.fireworks.ai/api-reference/list-reservations)
 - `api-reference/list-responses` — [List Responses](pages/api-reference/list-responses.md) · [原文](https://docs.fireworks.ai/api-reference/list-responses)
 - `api-reference/list-routers` — [List Routers](pages/api-reference/list-routers.md) · [原文](https://docs.fireworks.ai/api-reference/list-routers)
 - `api-reference/list-secrets` — [List Secrets](pages/api-reference/list-secrets.md) · [原文](https://docs.fireworks.ai/api-reference/list-secrets)

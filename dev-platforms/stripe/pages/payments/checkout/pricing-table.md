@@ -74,7 +74,9 @@ Optionally, you can customize your pricing table.
 
 ### Add product marketing features  (Optional)
 
-The pricing table can display your products’ marketing features to help your customers decide what to purchase. To add marketing features to a product in your pricing table, go to **Additional options** > **Feature list**.
+The pricing table can display your products’ marketing features to help your customers decide what to purchase. The customer portal can display these marketing features as lost benefits when customers cancel. You can also customize a lost-benefit variation of each marketing feature in the Dashboard.
+
+To add marketing features to a product in your pricing table, go to **Additional options** > **Feature list**.
 
 You can also add marketing features when creating or updating products with the API.
 

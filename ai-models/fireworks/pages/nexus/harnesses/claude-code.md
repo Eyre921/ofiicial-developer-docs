@@ -20,13 +20,13 @@ Plan access: Pro and Team don't include general access to open models. They use 
 
 **1. Install and sign in**
 
-```bash wrap theme={null} theme={null} theme={null}
+```bash wrap theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null} theme={null} theme={null}
+```bash wrap theme={null}
 nexus login
 ```
 

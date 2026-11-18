@@ -1686,7 +1686,6 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.ekm.wek.revoked**: A workspace encryption key (WEK) was revoked.
 * **workspace.external_account_connected**: A public/external integration was connected to the workspace.
 * **workspace.external_account_disconnected**: A public/external integration was disconnected from the workspace, or a workspace owner removed access to a public integration for all users in the workspace.
-* **workspace.group.ai_credit_overage_updated**: AI credit overage access for a group was updated.
 * **workspace.group.created**: A new group was created. A group is a defined collection of workspace members.
 * **workspace.group.custom_agent_creation_updated**: The custom agent creation permission for a group was enabled or disabled.
 * **workspace.group.custom_mcp_server_creation_updated**: A permission group's ability to create connections to custom MCP servers was updated.
@@ -1742,7 +1741,6 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.search_performed**: A search was performed in the workspace.
 * **workspace.settings.agent_creation_policy_updated**: The agent creation policy setting was updated.
 * **workspace.settings.agent_model_policy_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted. For `personal_agent`, `previous_require_auto` and `require_auto` say whether Notion Agent was required to use Auto before and after the change. While it's required, members can't pick a model.
-* **workspace.settings.ai_credit_overage_policy_updated**: The AI credit overage policy setting was updated.
 * **workspace.settings.ai_leap_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
 * **workspace.settings.ai_legal_terms_setting_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai_meeting_notes_availability_updated**: The AI meeting notes availability setting was updated.
@@ -30039,6 +30037,163 @@ Using `filter_properties` can speed up the query and reduce its response size, e
 
 * Call [Retrieve a page](/reference/retrieve-a-page) with the returned page ID to get more properties from one page. You can also pass `filter_properties` to that endpoint.
 * Call [Retrieve a page property](/reference/retrieve-a-page-property) with the page and property IDs to retrieve one property. Use it when a formula, rollup, or relation contains more than 25 references.
+
+This example lists 10 pages with their title and **Status**, then reads a **Total hours** rollup for each one:
+
+```javascript JavaScript theme={null}
+import { Client } from "@notionhq/client";
+
+// The SDK retries 429 and 529 responses and waits for Retry-After.
+const notion = new Client({
+  auth: process.env.NOTION_API_KEY,
+  notionVersion: "2026-03-11",
+});
+
+// Step 1: list 10 pages with only the properties the list shows.
+const list = await notion.dataSources.query({
+  data_source_id: process.env.NOTION_DATA_SOURCE_ID,
+  filter_properties: ["title", "Status"],
+  result_type: "page",
+  page_size: 10,
+});
+// To show the next 10, send list.next_cursor as start_cursor.
+
+// Step 2: fetch the expensive rollup for each page you show.
+for (const { id } of list.results) {
+  const page = await notion.pages.retrieve({
+    page_id: id,
+    filter_properties: ["Total hours"],
+  });
+  console.log(id, JSON.stringify(page.properties["Total hours"]));
+}
+```
+
+```python Python theme={null}
+import os
+import time
+
+import requests
+
+API_URL = "https://api.notion.com/v1"
+HEADERS = {
+    "Authorization": f"Bearer {os.environ['NOTION_API_KEY']}",
+    "Notion-Version": "2026-03-11",
+}
+
+
+def notion(method, path, **kwargs):
+    for attempt in range(5):
+        response = requests.request(method, API_URL + path, headers=HEADERS, **kwargs)
+        if response.status_code not in (429, 529):
+            break
+        time.sleep(int(response.headers.get("Retry-After", 2**attempt)))
+    response.raise_for_status()
+    return response.json()
+
+
+# Step 1: list 10 pages with only the properties the list shows.
+listing = notion(
+    "POST",
+    f"/data_sources/{os.environ['NOTION_DATA_SOURCE_ID']}/query",
+    params={"filter_properties": ["title", "Status"]},
+    json={"result_type": "page", "page_size": 10},
+)
+# To show the next 10, send listing["next_cursor"] as start_cursor.
+
+# Step 2: fetch the expensive rollup for each page you show.
+for summary in listing["results"]:
+    page = notion(
+        "GET",
+        f"/pages/{summary['id']}",
+        params={"filter_properties": ["Total hours"]},
+    )
+    print(summary["id"], page["properties"]["Total hours"])
+```
+
+```go Go theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"os"
+	"strconv"
+	"time"
+)
+
+const apiURL = "https://api.notion.com/v1"
+
+type page struct {
+	ID         string                     `json:"id"`
+	Properties map[string]json.RawMessage `json:"properties"`
+}
+
+func notion(method, path string, query url.Values, body any, out any) error {
+	var payload []byte
+	if body != nil {
+		var err error
+		if payload, err = json.Marshal(body); err != nil {
+			return err
+		}
+	}
+	for attempt := 0; ; attempt++ {
+		request, err := http.NewRequest(method, apiURL+path+"?"+query.Encode(), bytes.NewReader(payload))
+		if err != nil {
+			return err
+		}
+		request.Header.Set("Authorization", "Bearer "+os.Getenv("NOTION_API_KEY"))
+		request.Header.Set("Notion-Version", "2026-03-11")
+		request.Header.Set("Content-Type", "application/json")
+		response, err := http.DefaultClient.Do(request)
+		if err != nil {
+			return err
+		}
+		retryable := response.StatusCode == 429 || response.StatusCode == 529
+		if retryable && attempt < 4 {
+			response.Body.Close()
+			seconds, err := strconv.Atoi(response.Header.Get("Retry-After"))
+			if err != nil {
+				seconds = 1 << attempt
+			}
+			time.Sleep(time.Duration(seconds) * time.Second)
+			continue
+		}
+		defer response.Body.Close()
+		if response.StatusCode >= 300 {
+			return fmt.Errorf("Notion API returned %s", response.Status)
+		}
+		return json.NewDecoder(response.Body).Decode(out)
+	}
+}
+
+func main() {
+	// Step 1: list 10 pages with only the properties the list shows.
+	var list struct {
+		Results    []page  `json:"results"`
+		NextCursor *string `json:"next_cursor"`
+	}
+	path := "/data_sources/" + os.Getenv("NOTION_DATA_SOURCE_ID") + "/query"
+	query := url.Values{"filter_properties": {"title", "Status"}}
+	body := map[string]any{"result_type": "page", "page_size": 10}
+	if err := notion(http.MethodPost, path, query, body, &list); err != nil {
+		panic(err)
+	}
+	// To show the next 10, send list.NextCursor as start_cursor.
+
+	// Step 2: fetch the expensive rollup for each page you show.
+	for _, summary := range list.Results {
+		var full page
+		query := url.Values{"filter_properties": {"Total hours"}}
+		if err := notion(http.MethodGet, "/pages/"+summary.ID, query, nil, &full); err != nil {
+			panic(err)
+		}
+		fmt.Println(summary.ID, string(full.Properties["Total hours"]))
+	}
+}
+```
 
 Don't fetch every property for every result unless you need all of them.
 

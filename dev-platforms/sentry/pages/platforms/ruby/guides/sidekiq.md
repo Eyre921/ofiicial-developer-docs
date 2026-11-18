@@ -205,6 +205,7 @@ Are you having problems setting up the SDK?
 - [Profiling](https://docs.sentry.io/platforms/ruby/guides/sidekiq/profiling.md)
 - [Crons](https://docs.sentry.io/platforms/ruby/guides/sidekiq/crons.md)
 - [User Feedback](https://docs.sentry.io/platforms/ruby/guides/sidekiq/user-feedback.md)
+- [Feature Flags](https://docs.sentry.io/platforms/ruby/guides/sidekiq/feature-flags.md)
 - [Enriching Events](https://docs.sentry.io/platforms/ruby/guides/sidekiq/enriching-events.md)
 - [Extended Configuration](https://docs.sentry.io/platforms/ruby/guides/sidekiq/configuration.md)
 - [Integrations](https://docs.sentry.io/platforms/ruby/guides/sidekiq/integrations.md)

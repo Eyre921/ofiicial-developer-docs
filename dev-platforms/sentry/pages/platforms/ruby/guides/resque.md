@@ -211,6 +211,7 @@ Are you having problems setting up the SDK?
 - [Profiling](https://docs.sentry.io/platforms/ruby/guides/resque/profiling.md)
 - [Crons](https://docs.sentry.io/platforms/ruby/guides/resque/crons.md)
 - [User Feedback](https://docs.sentry.io/platforms/ruby/guides/resque/user-feedback.md)
+- [Feature Flags](https://docs.sentry.io/platforms/ruby/guides/resque/feature-flags.md)
 - [Enriching Events](https://docs.sentry.io/platforms/ruby/guides/resque/enriching-events.md)
 - [Extended Configuration](https://docs.sentry.io/platforms/ruby/guides/resque/configuration.md)
 - [Integrations](https://docs.sentry.io/platforms/ruby/guides/resque/integrations.md)

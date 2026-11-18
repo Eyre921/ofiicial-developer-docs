@@ -482,8 +482,8 @@ post '/account' do
 end
   "fmt"
   "context"
-  "github.com/stripe/stripe-go/v84"
-  "github.com/stripe/stripe-go/v84/accountsession"
+  "github.com/stripe/stripe-go/v85"
+  "github.com/stripe/stripe-go/v85/accountsession"
 // This is a placeholder - it should be replaced with your secret API key.
 // Sign in to see your own test API key embedded in code samples.
 // Don't submit any personally identifiable information in requests made with this key.
@@ -3573,7 +3573,7 @@ Add the dependency to your build and import the library. Alternatively, if youâ€
 Make sure to initialize with Go Modules:
 
 ```bash
-go get -u github.com/stripe/stripe-go/v85.0.0
+go get -u github.com/stripe/stripe-go/v85@v85.0.0
 ```
 
 #### GitHub
@@ -3985,7 +3985,7 @@ Add the dependency to your build and import the library. Alternatively, if youâ€
 Make sure to initialize with Go Modules:
 
 ```bash
-go get -u github.com/stripe/stripe-go/v85.0.0
+go get -u github.com/stripe/stripe-go/v85@v85.0.0
 ```
 
 #### GitHub
@@ -4329,7 +4329,7 @@ Add the dependency to your build and import the library. Alternatively, if youâ€
 Make sure to initialize with Go Modules:
 
 ```bash
-go get -u github.com/stripe/stripe-go/v85.0.0
+go get -u github.com/stripe/stripe-go/v85@v85.0.0
 ```
 
 #### GitHub

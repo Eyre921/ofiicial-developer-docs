@@ -1,3 +1,9 @@
+# Docs by LangChain
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://docs.langchain.com/llms.txt instead.
+
+> Documentation for LangSmith, Fleet, and our open source packages.
+
 # Create Connection
 Source: https://docs.langchain.com/api-reference/agent-connections-v2/create-connection
 
@@ -69715,9 +69721,24 @@ scoop install langsmith-cli
 # https://github.com/langchain-ai/langsmith-cli/releases
 ```
 
+```bash PyPI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# As a standalone tool
+uv tool install langchain-langsmith-cli
+pipx install langchain-langsmith-cli
+
+# Into the current Python environment
+pip install langchain-langsmith-cli
+```
+
 ```bash Go install theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest
 ```
+
+The PyPI package, `langchain-langsmith-cli`, ships the same prebuilt binary as the other install methods, with one wheel per platform. It installs through any PyPI proxy, such as a JFrog Artifactory PyPI remote repository or a Nexus PyPI proxy, so you can install it where only an internal package index is reachable.
+
+> [!WARNING]
+>
+> `pip install langsmith-cli` installs a different, third-party package. Install `langchain-langsmith-cli` instead.
 
 To upgrade at any time:
 
@@ -69726,6 +69747,21 @@ langsmith self-update
 ```
 
 Use the `--dry-run` flag to preview the update without installing.
+
+`self-update` replaces the binary in place for installs from the install script or GitHub Releases. If a package manager installed the CLI, `self-update` leaves the binary alone and prints the command to run instead:
+
+| Installed with | Upgrade command |
+| - | - |
+| Homebrew | `brew upgrade langchain-ai/tap/langsmith-cli` |
+| Scoop | `scoop update langsmith-cli` |
+| `uv tool install` | `uv tool upgrade langchain-langsmith-cli` |
+| `pipx install` | `pipx upgrade langchain-langsmith-cli` |
+| `pip install` | `python -m pip install --upgrade langchain-langsmith-cli`, with the Python of the environment the CLI is installed in |
+| `uv pip install` | `uv pip install --python <python> --upgrade langchain-langsmith-cli` |
+| `uv add` (uv project) | `uv lock --upgrade-package langchain-langsmith-cli && uv sync`, run in the project |
+| `go install` | `go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest` |
+
+To replace the binary in place anyway, pass `--force`.
 
 > [!NOTE]
 >

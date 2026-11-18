@@ -1,0 +1,152 @@
+---
+title: "Data residency"
+source: https://docs.fireworks.ai/accounts/data-residency
+path: accounts/data-residency
+---
+
+Restrict inference and dedicated training for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
+
+Data residency restricts inference and dedicated training on your account to a single region. Once a region is set, every request must use that region's API endpoint and a model served in that region, and every dedicated training job must run in that region.
+
+It does not change how your requests are routed. Turning it on will not move existing traffic into the region. This setting *enforces* all requests to be in the set region, and rejects the ones that are not.
+
+> [!NOTE]
+>
+> **Enterprise feature.** Data residency is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
+
+> [!NOTE]
+>
+> Only account **Admins** can change data residency. Other roles can view the current setting but cannot change it.
+
+Residency applies **account-wide**: every API key on the account is restricted to the selected region.
+
+## What residency covers
+
+Residency sets where Fireworks serves. For a model that runs on a third-party provider, Fireworks follows the region you have already configured with that provider.
+
+| Traffic | Covered | Governed by |
+| :- | :- | :- |
+| Fireworks Serverless | Yes | The selected region |
+| Fireworks dedicated deployments | Yes | Placement in the selected region |
+| Dedicated training jobs | Yes | The selected region |
+| [Nexus](/nexus) calls to a Fireworks open model, [`auto`](/nexus/auto) included | Yes | The region's Serverless |
+| Anthropic, OpenAI, and Amazon Bedrock on your own [provider account](/nexus/provider-keys) | Follows your provider setting | Your own configuration with that provider |
+
+### Third-party providers
+
+Fireworks picks no region for a third-party provider. It follows the setting on your own account with them, which differs by provider:
+
+| Provider | How the region is decided |
+| :- | :- |
+| Anthropic | Fireworks sends no region, so Anthropic applies your workspace default |
+| OpenAI | OpenAI has no default, and a key only works on its project's host, so Fireworks detects it: it tries the global host first, resends to `us.api.openai.com` if OpenAI answers that the key belongs there, and remembers the host for that key |
+| Amazon Bedrock | The inference profile on each route, your own `global.` profiles included. The route's AWS region must still be inside the residency region, so a US-residency account is served from `us-*` endpoints only. A `global.` profile may process the request outside the US. See [Amazon Bedrock](/nexus/provider-keys/bedrock#us-data-residency) |
+
+A Claude subscription login or a ChatGPT sign-in also works with residency on. Its Anthropic or OpenAI turns follow that provider's own policies and settings, and may be processed outside the US.
+
+Providers may charge more to serve from the US. That premium applies only to calls actually served in the provider's US region, because your request sent `inference_geo: "us"`, your provider settings chose the US, your OpenAI key belongs to a US project, or Fireworks has set your account to pin provider calls to the US.
+
+## Available regional restrictions
+
+| Regional restrictions | API endpoint | Serverless | Dedicated deployments |
+| :- | :- | :- | :- |
+| None | `api.fireworks.ai` | Any model | Any region |
+| US | `us.api.fireworks.ai` | [US-only Serverless](/serverless/us-only-serverless) | [`US` multi-region](/deployments/regions), or a single US region such as `US_IOWA_1` |
+
+**None** is the default. For a region that is not listed, contact [sales](https://fireworks.ai/company/contact-us).
+
+## Before you switch it on
+
+A residency change takes effect as soon as you save it, and anything that does not match the region is rejected.
+
+### Serverless
+
+Point your clients at the region's API endpoint and change every request to use a model from that region. See [US-only Serverless](/serverless/us-only-serverless) for the US endpoint and model IDs.
+
+> [!NOTE]
+>
+> **`inference_geo` is honored, not overridden.** Send `"us"` to serve one request only from US deployments of that model. If the model has none, the request returns `404` with an `inference_geo` error. For an account-wide rule, use data residency instead.
+
+### Dedicated deployments
+
+Every dedicated deployment must run in the selected region. Create it with `--region` set to that region, or to a single region inside it. See [Regions](/deployments/regions).
+
+Check what you already have before you save the setting:
+
+```bash theme={null}
+firectl deployment list
+```
+
+* **New deployments outside the region are rejected** when you create them.
+* **Existing deployments are not checked, moved, or stopped** when you switch the setting on. One outside the region keeps running and keeps costing you money, but requests to it are rejected. Replace it first.
+* **You can move a deployment to another region inside your residency region, but not out of it.**
+
+### Dedicated training
+
+Supervised fine-tuning, DPO, reinforcement fine-tuning, and RLOR trainer jobs must set an explicit training region inside the selected region, for example with firectl's `--region US_IOWA_1` flag. See [Regions](/deployments/regions).
+
+* **Jobs without a region are rejected**, including jobs created from the console, which does not set one.
+* **Jobs with a region outside the selected region are rejected**, both when you create them and when you resume them.
+* **Only where the job runs is enforced.** Where its checkpoints and outputs are stored is not.
+
+## Configure in the console
+
+Account admins can set data residency in the Fireworks console at **Settings → Governances → Data Residency** ([open in console](https://app.fireworks.ai/settings/governances/region-access)).
+
+Select the region and save. The console asks you to confirm that your clients already use the endpoint and models shown for that region.
+
+## Configure with firectl
+
+Set the region:
+
+```bash theme={null}
+firectl policy residency set US
+```
+
+Inspect the current setting:
+
+```bash theme={null}
+firectl policy residency get
+```
+
+Remove the restriction and return the account to unrestricted serving:
+
+```bash theme={null}
+firectl policy residency clear
+```
+
+## Configure with the API
+
+Set the region with [Update Policy Settings](/api-reference/update-policy-settings), using an API key that belongs to an account Admin and naming `residency` in `updateMask`:
+
+```bash theme={null}
+curl -X PATCH \
+  "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/policySettings?updateMask=residency" \
+  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{"residency": "US"}'
+```
+
+To remove the restriction, send the same request with an empty body (`-d '{}'`).
+
+[Get Policy Settings](/api-reference/get-policy-settings) returns the current setting. An absent `residency` means serving is unrestricted.
+
+## Pricing
+
+Regional models are priced at a premium over the base serverless price for the same model. See [Serverless pricing](/serverless/pricing).
+
+## Limitations
+
+The following are not supported while a region is set: calls are rejected, and stay rejected until you clear the setting.
+
+* **Serverless training.** [Serverless Training](/fine-tuning/training-api/serverless) sessions, runs, and their samplers are blocked. Support is coming soon. [Dedicated training](#dedicated-training) is supported.
+* **[Nexus](/nexus) outside the US.** US is the only region Nexus supports. Any other region rejects `auto`, and the Anthropic, OpenAI, and Amazon Bedrock models that route through it. See [Enterprise Controls](/nexus/enterprise-controls#data-residency).
+* **The third-party model catalog API.** `ListThirdPartyModels` and `GetThirdPartyModel` are denied while a region is set, so `GET /v1/accounts/*/thirdPartyModels` and `firectl third-party-model list` return `PERMISSION_DENIED`. The [Model Providers](/nexus/provider-keys) page does not use that API and keeps working.
+* **BYOC.** [BYOC](/ecosystem/integrations/byoc/overview) deployments run in your own cloud account, so Fireworks cannot enforce where they run.
+
+## Related
+
+* [US-only Serverless](/serverless/us-only-serverless) — endpoint and model IDs for the US region
+* [Enterprise features](/accounts/enterprise-features) — overview of Enterprise administration capabilities
+* [Managing users](/accounts/users) — account roles and permissions
+* [Data Security](/guides/security_compliance/data_security) — encryption, retention, and access controls

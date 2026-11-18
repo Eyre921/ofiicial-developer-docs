@@ -173,7 +173,6 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.ekm.wek.revoked**: A workspace encryption key (WEK) was revoked.
 * **workspace.external_account_connected**: A public/external integration was connected to the workspace.
 * **workspace.external_account_disconnected**: A public/external integration was disconnected from the workspace, or a workspace owner removed access to a public integration for all users in the workspace.
-* **workspace.group.ai_credit_overage_updated**: AI credit overage access for a group was updated.
 * **workspace.group.created**: A new group was created. A group is a defined collection of workspace members.
 * **workspace.group.custom_agent_creation_updated**: The custom agent creation permission for a group was enabled or disabled.
 * **workspace.group.custom_mcp_server_creation_updated**: A permission group's ability to create connections to custom MCP servers was updated.
@@ -229,7 +228,6 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.search_performed**: A search was performed in the workspace.
 * **workspace.settings.agent_creation_policy_updated**: The agent creation policy setting was updated.
 * **workspace.settings.agent_model_policy_updated**: The list of AI models an agent is allowed to use was updated. `agent_type` names which allowed model list changed, and the model and provider lists are sent both before and after the change. `allowed_restricted_access_models` runs the other way from the restricted lists: a restricted-access model is off until an admin names it there, so a model entering that list was allowed and a model leaving it was restricted. For `personal_agent`, `previous_require_auto` and `require_auto` say whether Notion Agent was required to use Auto before and after the change. While it's required, members can't pick a model.
-* **workspace.settings.ai_credit_overage_policy_updated**: The AI credit overage policy setting was updated.
 * **workspace.settings.ai_leap_toggled**: A workspace owner enabled or disabled the Notion AI LEAP (Learning & Early Access Program) setting.
 * **workspace.settings.ai_legal_terms_setting_updated**: A user enabled or disabled Notion AI in the workspace by accepting or revoking AI legal terms.
 * **workspace.settings.ai_meeting_notes_availability_updated**: The AI meeting notes availability setting was updated.

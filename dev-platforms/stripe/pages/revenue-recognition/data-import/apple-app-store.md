@@ -12,14 +12,33 @@ The [Stripe Connector for the Apple App Store](https://docs.stripe.com/data/impo
 
 The benefits of using Stripe Revenue Recognition for the Apple App Store are:
 
-- **Near real-time availability**: Set up daily, automated imports from the Apple App Store. This minimizes manual work and reduces corrections at month-end.
+- **Automated imports**: Stripe fetches Apple App Store data daily and processes it before Revenue Recognition reports reflect it.
 - **Increased accuracy**: Improve recognition accuracy by considering time zone differences.
 - **Improved refund treatment**: Associate refunds with original purchases, and generate more accurate refund journal entries that adjust deferred revenue instead of treating refunds as negative line items.
 - **Audit by subscribers**: Break down numbers on a per subscriber basis to help with audits.
 
 ## Get started 
 
-To import data from the Apple App Store, [set up the Stripe Connector for the Apple App Store](https://docs.stripe.com/data/import-external-data/connectors/apple-app-store.md). It can take up to 24 hours for your reports to reflect imported data.
+To import data from the Apple App Store, [set up the Stripe Connector for the Apple App Store](https://docs.stripe.com/data/import-external-data/connectors/apple-app-store.md). Stripe fetches data daily. Revenue Recognition reports reflect the data approximately 24 hours after connector import, not 24 hours after the original purchase. These timings are estimates. See [Revenue Recognition data freshness](https://docs.stripe.com/revenue-recognition/data-freshness.md).
+
+### Follow an import through to revenue 
+
+Follow the [subscription purchase example](https://docs.stripe.com/revenue-recognition/data-import/apple-app-store.md#subscription-purchase) from import to accounting output. The connector imports Apple subscription data for Revenue Recognition, not to collect another payment or create a Stripe Billing subscription.
+
+1. **Prepare the connection**: Complete the linked connector setup. If you previously uploaded Apple sales manually, follow the [migration instructions](https://docs.stripe.com/revenue-recognition/data-import/apple-app-store.md#manual-data-import) to remove overlapping transactions.
+2. **Verify the import**: After a daily fetch, check the connector’s status and latest sync details in [Data management](https://dashboard.stripe.com/data-management/connectors). A successful sync doesn’t mean the revenue is already visible.
+3. **Wait for accounting processing**: Allow approximately 24 hours after connector import. Check the data freshness timestamp on the Revenue Recognition overview before concluding that a sale is missing. Don’t upload a manual copy to compensate for this delay.
+4. **Verify the financial output**: Follow the [subscriber audit steps](https://docs.stripe.com/revenue-recognition/data-import/apple-app-store.md#audit-numbers) and compare the balances with the example’s table. The 31 USD developer proceeds increase External Asset, with 28 USD recognized in December and 3 USD deferred until January. Revenue Recognition uses developer proceeds, not the 32 USD customer price, and [doesn’t book Apple commissions or tax liabilities](https://docs.stripe.com/revenue-recognition/data-import/apple-app-store.md#limitations).
+
+#### Correct data without duplicating the sale 
+
+Choose the correction path based on where the issue occurred:
+
+- **A failed sync**: Follow the [connection maintenance instructions](https://docs.stripe.com/data/import-external-data/connectors/apple-app-store.md#maintain-connection) to re-authenticate or resolve an Apple agreement issue.
+- **An overlapping manual CSV import**: Follow the [migration instructions](https://docs.stripe.com/revenue-recognition/data-import/apple-app-store.md#manual-data-import). Reports can take up to 24 hours to reflect deletions. Verify the remaining connector-generated revenue in the subscriber audit view.
+- **An unexpected amount or service period in connector data**: Compare the source report with the subscriber audit view and contact [Stripe support](https://support.stripe.com/contact) before attempting a manual replacement or re-import. Don’t assume a CSV upload replaces connector-generated records or that deleting and reconnecting the connector reverses previous accounting entries.
+
+For corrections that belong in a past accounting period, [open the period and wait for recalculation](https://docs.stripe.com/revenue-recognition/data-import.md#opening-accounting-periods) instead of re-importing.
 
 ### Backfill historical data 
 

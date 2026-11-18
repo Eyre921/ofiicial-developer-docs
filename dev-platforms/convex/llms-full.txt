@@ -23478,7 +23478,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-20 "Direct link to Defined in")
 
-[server/components/index.ts:48](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L48)
+[server/components/index.ts:52](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L52)
 
 ***
 
@@ -23498,7 +23498,7 @@ A [FunctionHandle](/api/modules/server.md#functionhandle) with the type semantic
 
 #### Defined in[​](#defined-in-21 "Direct link to Defined in")
 
-[server/components/index.ts:59](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L59)
+[server/components/index.ts:63](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L63)
 
 ***
 
@@ -23528,7 +23528,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[server/components/index.ts:105](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L105)
+[server/components/index.ts:109](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L109)
 
 ***
 
@@ -23564,7 +23564,7 @@ const app = defineApp({
 
 #### Defined in[​](#defined-in-23 "Direct link to Defined in")
 
-[server/components/index.ts:395](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L395)
+[server/components/index.ts:399](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L399)
 
 ***
 
@@ -23584,7 +23584,7 @@ Required entries get the validator's inferred string type; optional entries are 
 
 #### Defined in[​](#defined-in-24 "Direct link to Defined in")
 
-[server/components/index.ts:408](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L408)
+[server/components/index.ts:412](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L412)
 
 ***
 
@@ -23602,7 +23602,7 @@ Extract the typed environment from an [AppDefinition](/api/modules/server.md#app
 
 #### Defined in[​](#defined-in-25 "Direct link to Defined in")
 
-[server/components/index.ts:445](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L445)
+[server/components/index.ts:449](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L449)
 
 ***
 
@@ -23630,7 +23630,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-26 "Direct link to Defined in")
 
-[server/components/index.ts:457](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L457)
+[server/components/index.ts:461](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L461)
 
 ***
 
@@ -23640,7 +23640,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-27 "Direct link to Defined in")
 
-[server/components/index.ts:1004](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1004)
+[server/components/index.ts:1114](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1114)
 
 ***
 
@@ -23650,7 +23650,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-28 "Direct link to Defined in")
 
-[server/components/index.ts:1044](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1044)
+[server/components/index.ts:1154](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1154)
 
 ***
 
@@ -25524,7 +25524,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-113 "Direct link to Defined in")
 
-[server/components/index.ts:78](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L78)
+[server/components/index.ts:82](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L82)
 
 ***
 
@@ -25557,7 +25557,7 @@ Optionally define typed environment variables that will be available via the `en
 
 #### Defined in[​](#defined-in-114 "Direct link to Defined in")
 
-[server/components/index.ts:860](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L860)
+[server/components/index.ts:970](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L970)
 
 ***
 
@@ -25615,7 +25615,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-115 "Direct link to Defined in")
 
-[server/components/index.ts:964](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L964)
+[server/components/index.ts:1074](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1074)
 
 ***
 
@@ -25629,7 +25629,7 @@ This is a feature of components, which are in beta. This API is unstable and may
 
 #### Defined in[​](#defined-in-116 "Direct link to Defined in")
 
-[server/components/index.ts:1042](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1042)
+[server/components/index.ts:1152](https://github.com/convex/convex-js/blob/main/src/server/components/index.ts#L1152)
 
 ***
 
@@ -49663,11 +49663,11 @@ Configurable Node.js action memory is in beta
 
 Configurable Node.js action memory<!-- --> <!-- -->is<!-- --> currently a [beta feature](/production/state/.md#beta-features). If you have feedback or feature requests, [let us know on Discord](https://convex.dev/community)!
 
-Node actions run with 512 MiB of memory by default. To give them more, set `node.defaultMemoryMb` to `2048`. The setting applies to every Node action in the deployment, including those in components, and they bill [action compute](/production/state/limits.md) at that size. Convex runtime actions keep their own limits.
+Node actions run with 512 MiB of memory by default. To give them more, set `node.defaultMemoryMb` to `2048`. The setting applies to every Node action in the deployment, and they bill [action compute](/production/state/limits.md) at that size. Convex runtime actions keep their own limits.
 
 Convex version requirement
 
-To set the memory size, you must use the `convex` NPM package version 1.51.0-alpha.0 or later.
+To set the memory size, you must use the `convex` NPM package version 1.51.0 or later.
 
 convex.json
 

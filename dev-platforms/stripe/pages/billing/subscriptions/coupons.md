@@ -161,16 +161,14 @@ You can still create a subscription when a customer doesn’t have a stored paym
 
 Apply coupons to subscriptions in a Checkout Session by setting the `discounts` parameter when you [Create a Checkout Session](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-discounts). To create a session with an applied discount, pass the coupon ID in the `coupon` parameter of the `discounts` array.
 
-#### curl
-
-```bash
+```curl
 curl https://api.stripe.com/v1/checkout/sessions \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "line_items[][price]"="{{PRICE_ID}}" \
-  -d "line_items[][quantity]"=1 \
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d "line_items[0][price]={{PRICE_ID}}" \
+  -d "line_items[0][quantity]=1" \
   -d mode=subscription \
-  -d "discounts[][coupon]"="{{COUPON_ID}}" \
-  -d success_url="https://example.com/success"
+  -d "discounts[0][coupon]={{COUPON_ID}}" \
+  --data-urlencode "success_url=https://example.com/success"
 ```
 
 ### Delete coupons 

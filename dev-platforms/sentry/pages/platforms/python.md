@@ -247,6 +247,7 @@ Are you having problems setting up the SDK?
 - [User Feedback](https://docs.sentry.io/platforms/python/user-feedback.md)
 - [Feature Flags](https://docs.sentry.io/platforms/python/feature-flags.md)
 - [Sampling](https://docs.sentry.io/platforms/python/sampling.md)
+- [Sampling](https://docs.sentry.io/platforms/python/sampling__v2.x.md)
 - [Enriching Events](https://docs.sentry.io/platforms/python/enriching-events.md)
 - [Legacy SDK](https://docs.sentry.io/platforms/python/legacy-sdk.md)
 - [Extended Configuration](https://docs.sentry.io/platforms/python/configuration.md)

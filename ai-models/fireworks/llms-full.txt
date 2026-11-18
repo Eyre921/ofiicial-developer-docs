@@ -1,7 +1,10 @@
-# Data residency
+# Fireworks AI Docs
 
 > This file is very large and may be truncated. For an index of this content, please refer to https://docs.fireworks.ai/llms.txt instead.
 
+> Official Fireworks AI documentation for inference, deployments, training, Fireworks Nexus, APIs, SDKs, and CLI tools.
+
+# Data residency
 Source: https://docs.fireworks.ai/accounts/data-residency
 
 Restrict inference and dedicated training for your Fireworks Enterprise account to a selected region such as US-only, with regional API endpoints, SDK configuration, and compliance.
@@ -1834,6 +1837,14 @@ Source: https://docs.fireworks.ai/api-reference/delete-supervised-fine-tuning-jo
 
 delete /v1/accounts/{account_id}/supervisedFineTuningJobs/{supervised_fine_tuning_job_id}
 
+# Get Accelerator Usage
+Source: https://docs.fireworks.ai/api-reference/get-accelerator-usage
+
+get /v1/accounts/{account_id}/acceleratorUsage
+Gets the account's reserved accelerator capacity, allocated accelerators,
+and pending accelerator demand across deployments and training jobs,
+grouped by accelerator type.
+
 # Get Account
 Source: https://docs.fireworks.ai/api-reference/get-account
 
@@ -1946,6 +1957,12 @@ Gets a single quota by resource name.
 Source: https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-step
 
 get /v1/accounts/{account_id}/rlorTrainerJobs/{rlor_trainer_job_id}
+
+# Get Reservation
+Source: https://docs.fireworks.ai/api-reference/get-reservation
+
+get /v1/accounts/{account_id}/reservations/{reservation_id}
+Gets a reservation by name.
 
 # Get Response
 Source: https://docs.fireworks.ai/api-reference/get-response
@@ -2118,6 +2135,12 @@ Lists all quotas for an account.
 Source: https://docs.fireworks.ai/api-reference/list-reinforcement-fine-tuning-steps
 
 get /v1/accounts/{account_id}/rlorTrainerJobs
+
+# List Reservations
+Source: https://docs.fireworks.ai/api-reference/list-reservations
+
+get /v1/accounts/{account_id}/reservations
+Lists reservations for an account.
 
 # List Responses
 Source: https://docs.fireworks.ai/api-reference/list-responses
@@ -22844,13 +22867,13 @@ Plan access: Pro and Team don't include general access to open models. They use 
 
 **1. Install and sign in**
 
-```bash wrap theme={null} theme={null} theme={null}
+```bash wrap theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null} theme={null} theme={null}
+```bash wrap theme={null}
 nexus login
 ```
 
@@ -23156,13 +23179,13 @@ Support summary:
 
 **1. Install and sign in**
 
-```bash wrap theme={null} theme={null} theme={null}
+```bash wrap theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null} theme={null} theme={null}
+```bash wrap theme={null}
 nexus login
 ```
 

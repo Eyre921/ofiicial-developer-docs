@@ -99,7 +99,7 @@ path: docs/eleven-agents/llms.txt
 - [Environment variables](https://elevenlabs.io/docs/eleven-agents/integrate/environment-variables.md): Deploy the same agent across dev, staging, and production without duplicating resources.
 - [Widget customization](https://elevenlabs.io/docs/eleven-agents/customization/widget.md): Learn how to customize the widget appearance to match your brand, and personalize the agent's behavior from html.
 - [SIP trunking](https://elevenlabs.io/docs/eleven-agents/phone-numbers/sip-trunking.md): Connect your existing phone system with ElevenLabs Agents using SIP trunking
-- [SIP reference](https://elevenlabs.io/docs/eleven-agents/phone-numbers/sip-reference.md): A glossary of the SIP, networking, and audio terms used when configuring SIP trunking with ElevenLabs Agents.
+- [ElevenLabs SIP Technical Reference](https://elevenlabs.io/docs/eleven-agents/phone-numbers/sip-reference.md): Interoperability requirements and behavior of the ElevenLabs SIP service, covering network addressing, transports, signaling, and media.
 - [Twilio native integration](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/native-integration.md): Learn how to configure inbound calls for your agent with Twilio.
 - [Custom LLM integration](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/custom-llm-integration.md): Power a Twilio phone agent with your own LLM using the Speech Engine SDK.
 - [SMS conversations](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/sms-conversations.md): Let users text your ElevenLabs agent through a Twilio phone number.

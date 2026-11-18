@@ -160,11 +160,9 @@ curl https://api.stripe.com/v1/checkout/sessions \
 
 Since `line_items` is includable, the `checkout.session.completed` *webhook* (A configurable endpoint that executes when it receives certain event notifications from an event destination) response doesn’t list items by default. The smaller response object enables you to receive your Checkout webhooks faster. You can retrieve items with the `line_items` endpoint:
 
-#### curl
-
-```bash
+```curl
 curl https://api.stripe.com/v1/checkout/sessions/{{CHECKOUT_SESSION_ID}}/line_items \
-  -u <<YOUR_SECRET_KEY>>:
+  -u "<<YOUR_SECRET_KEY>>:"
 ```
 
 For more details, see [fulfilling orders with Checkout](https://docs.stripe.com/checkout/fulfillment.md).
