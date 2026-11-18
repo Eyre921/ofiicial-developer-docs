@@ -133,7 +133,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Streaming Endpoints and Data Zones](#streaming-endpoints-and-data-zones-docs-streaming-endpoints-and-data-zones-mdx)
 - [Rate limits](#rate-limits-docs-streaming-rate-limits-mdx)
 - [Self-Hosted Streaming](#self-hosted-streaming-docs-streaming-self-hosted-streaming-mdx)
-- [Universal-3.6 Pro on LiveKit](#universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-6-pro-mdx)
+- [AssemblyAI-STT-3.7-Realtime-Agent on LiveKit](#assemblyai-stt-3-7-realtime-agent-on-livekit-docs-voice-agents-livekit-mdx)
 - [Universal-3.6 Pro on Pipecat](#universal-3-6-pro-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx)
 - [Universal-3.6 Pro on Vapi](#universal-3-6-pro-on-vapi-docs-voice-agents-vapi-mdx)
 - [Universal-3.6 Pro on Bolna](#universal-3-6-pro-on-bolna-docs-voice-agents-bolna-mdx)
@@ -358,6 +358,8 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [What languages are supported for Streaming Speech-to-text?](#what-languages-are-supported-for-streaming-speech-to-text-docs-faq-language-support-for-real-time-transcription-mdx)
 - [Resolving SSL Certificate Verification Error When Trying to Use Real-time STT](#resolving-ssl-certificate-verification-error-when-trying-to-use-real-time-stt-docs-faq-resolving-ssl-certificate-verification-error-in-assemblyai-real-time-transcriber-mdx)
 - [I am getting a "Model deprecated. See docs for new model information" error message. What does it mean?](#i-am-getting-a-model-deprecated-see-docs-for-new-model-information-error-message-what-does-it-mean-docs-faq-upgrading-to-the-universal-streaming-model-mdx)
+- [How do I add voice typing to my app?](#how-do-i-add-voice-typing-to-my-app-docs-faq-how-do-i-add-voice-typing-to-my-app-mdx)
+- [Should I use Dictation, Streaming, or Pre-recorded for voice input?](#should-i-use-dictation-streaming-or-pre-recorded-for-voice-input-docs-faq-should-i-use-dictation-streaming-or-pre-recorded-for-voice-input-mdx)
 - [How do Content Moderation severity scores work?](#how-do-content-moderation-severity-scores-work-docs-faq-how-do-content-moderation-severity-scores-work-mdx)
 - [How can I summarize my audio file?](#how-can-i-summarize-my-audio-file-docs-faq-how-do-your-summarization-models-work-mdx)
 - [Is Mistral still supported?](#is-mistral-still-supported-docs-faq-is-mistral-still-supported-mdx)
@@ -440,7 +442,7 @@ Source: docs/getting-started/sdks.mdx
 Navigation: Overview > Getting started
 Description: Official AssemblyAI SDKs for Python and JavaScript.
 
-AssemblyAI maintains official SDKs for Python and JavaScript. Both SDKs cover pre-recorded transcription, real-time streaming, text-to-speech, and speech understanding, and handle authentication, polling, and retries for you.
+AssemblyAI maintains official SDKs for Python and JavaScript. Both SDKs cover pre-recorded transcription, real-time streaming, dictation (voice typing), text-to-speech, and speech understanding, and handle authentication, polling, and retries for you.
 
 ## Python
 
@@ -471,6 +473,9 @@ Follow the quickstart for the product you're building with:
   
   
     Transcribe live audio as it's spoken.
+  
+  
+    Add voice typing to your app: get send-ready text from a spoken utterance.
   
   
     Turn text into streamed speech.
@@ -1379,7 +1384,7 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
         <path d="M46.3409 183.984V138.234V92.4671V46.7178V0.950684H0.57373V46.7178V92.4671V138.234V183.984V229.751H46.3409H92.0902H137.857V183.984H92.0902H46.3409Z" fill="currentColor" />
       </svg>
     }
-    href="/voice-agents/livekit-universal-3-6-pro"
+    href="/voice-agents/livekit"
   >
     Use AssemblyAI with Livekit's voice agent orchestrator.
   
@@ -1518,9 +1523,9 @@ Looking to integrate with a different tool? Check out our [API Reference](/api-r
 URL: https://www.assemblyai.com/docs/getting-started/models
 Source: docs/getting-started/models.mdx
 Navigation: Overview > Build & Evaluate
-Description: AssemblyAI's speech-to-text and text-to-speech models and their capabilities
+Description: AssemblyAI's speech-to-text, dictation (voice typing) and text-to-speech models and their capabilities
 
-AssemblyAI offers several state-of-the-art speech recognition models, each optimized for different use cases, and a text-to-speech model that gives your application a voice. Choose the model that best fits your needs based on accuracy, latency, cost, and language requirements.
+AssemblyAI offers several state-of-the-art speech recognition models, each optimized for different use cases, and a text-to-speech model that gives your application a voice. Choose the model that best fits your needs based on accuracy, latency, cost, and language requirements. For voice typing in an app, use the [Dictation API](#dictation).
 
 ## Text to Speech
 
@@ -1585,6 +1590,19 @@ We recommend [AssemblyAI-STT-3.7](/pre-recorded-audio/select-the-speech-model) f
   
 
 We recommend [AssemblyAI-STT-3.7-Realtime-Agent](/streaming/getting-started/transcribe-streaming-audio) for voice agents and [AssemblyAI-STT-3.7-Realtime](/streaming/getting-started/transcribe-streaming-audio) for notetakers and ambient transcription.
+
+## Dictation
+
+  
+    <ul>
+      <li>Voice typing for any app: mic buttons, push-to-talk, voice notes</li>
+      <li>Returns send-ready text and the verbatim transcript in one call</li>
+      <li>Upload while the user is still talking</li>
+      <li>32 languages, up to 20 minutes per request</li>
+    </ul>
+  
+
+Building voice typing, where the user talks instead of typing into a text box? Use the [Dictation API](/dictation) rather than pre-recorded or streaming speech-to-text. It transcribes and cleans up the text (filler words, punctuation, self-corrections) in the same request.
 
 ## Add-on models
 
@@ -1769,6 +1787,14 @@ Streaming is billed per hour of **session duration** — the total time your Web
 | AssemblyAI-STT-3.7-Realtime-Agent | $0.45/hr                          | Available        |
 | AssemblyAI-STT-3.7-Realtime       | $0.30/hr                          | Available        |
 | Universal-3.6 Pro Realtime        | $0.45/hr                          | Available        |
+
+### Dictation
+
+Every Dictation feature (cleanup, transcript rewriting, keyterms and STT prompting) is included in the rate. See [Dictation billing](/billing-and-pricing#dictation-billing).
+
+| Model         | Price per Hour | Volume discounts |
+| ------------- | -------------- | ---------------- |
+| Dictation API | $0.62/hr       | Available        |
 
 For volume discounts, please reach out to sales@assemblyai.com.
 
@@ -4862,6 +4888,10 @@ Follow these best practices to avoid unexpected charges:
 
 For details on how to terminate a session, see the [Session termination](/streaming/message-sequence#session-termination) message sequence reference.
 
+## Dictation billing
+
+The [Dictation API](/dictation) is billed on the duration of the audio in each request, at the hourly Dictation rate listed in the [Models pricing section](/getting-started/models#pricing). Usage is metered to the millisecond, with no minimum per request. Silence in the audio counts toward the duration, so trim it before sending if you don't need it. The rate includes the cleanup, [transcript rewriting](/dictation/transcript-rewriting), and [keyterms and STT prompting](/dictation/prompting-and-keyterms), so there's no separate charge for the LLM step. A request you abort before it finishes returns nothing and isn't billed.
+
 ## LLM Gateway billing
 
 LLM Gateway is billed on **input and output tokens**, not on audio duration or session time. Each request is charged at the per-1M-token input and output rates for the specific model you call. Rates vary by model — Claude, GPT, Gemini, and the other supported providers each have their own input and output prices, listed in the Rates table on the [Billing page](https://www.assemblyai.com/dashboard/home) of the dashboard and on the [pricing page](https://www.assemblyai.com/pricing).
@@ -5253,7 +5283,7 @@ Prefer to try it first? Transcribe audio without writing any code in the [Assemb
 
 You'll need:
 
-- **An API key** — grab one from [your dashboard](https://www.assemblyai.com/dashboard/home). Every example below reads it from an environment variable, so set it once:
+- **An API key** — grab one from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`). Every example below reads it from an environment variable, so set it once:
 
   ```bash
   export ASSEMBLYAI_API_KEY=<your-key>
@@ -5322,9 +5352,7 @@ Smoke from hundreds of wildfires in Canada is triggering air quality alerts thro
 
 That's the whole first call. From here you can add options — speaker labels, language detection, or a local file — see the [complete example](#complete-example) to combine them, or use the [HTTP API directly](#using-the-http-api-directly) if you're not using an SDK.
 
-<Visibility for="agents">
 For more test files by scenario (meeting, call center, medical, noisy, other languages), see [Sample audio files](/samples).
-</Visibility>
 
 ## Customize your request
 
@@ -13359,7 +13387,7 @@ This guide walks through the process of migrating from Deepgram to AssemblyAI fo
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Side-By-Side Code Comparison
 
@@ -13520,7 +13548,7 @@ transcriber = aai.Transcriber()
 
 When migrating from Deepgram to AssemblyAI, you'll first need to handle authentication and SDK setup:
 
-Get your API key from your [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home) \
+Get your API key from your AssemblyAI dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) \
 To follow this guide, install AssemblyAI's Python SDK by typing this code into your terminal: \
  `pip install assemblyai`
 
@@ -13642,7 +13670,7 @@ This guide walks through the process of migrating from OpenAI to AssemblyAI for 
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Side-By-Side Code Comparison
 
@@ -13710,7 +13738,7 @@ transcriber = aai.Transcriber()
 
 When migrating from OpenAI to AssemblyAI, you'll first need to handle authentication and SDK setup:
 
-Get your API key from your [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home) \
+Get your API key from your AssemblyAI dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) \
 To follow this guide, install AssemblyAI's Python SDK by typing this code into your terminal: \
  `pip install assemblyai`
 
@@ -13810,7 +13838,7 @@ This guide walks through the process of migrating from AWS Transcribe to Assembl
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Side-by-side code comparison
 
@@ -13907,7 +13935,7 @@ transcriber = aai.Transcriber()
 
 When migrating from AWS to AssemblyAI, you'll first need to handle authentication and SDK setup:
 
-Get your API key from your [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home)
+Get your API key from your AssemblyAI dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`)
 
 Things to know:
 
@@ -14049,7 +14077,7 @@ This guide walks through the process of migrating from Google Speech-to-Text (ST
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Side-by-side code comparison
 
@@ -14126,7 +14154,7 @@ transcriber = aai.Transcriber()
 
 When migrating from Google Speech-to-Text to AssemblyAI, you'll first need to handle authentication and SDK setup:
 
-Get your API key from your [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home).
+Get your API key from your AssemblyAI dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 Things to know:
 
 - Store your API key securely in an environment variable
@@ -14258,7 +14286,7 @@ This guide walks through the process of migrating from Gladia to AssemblyAI for 
 
 ## Get started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 If you'd prefer to use one of our official SDKs, check our [documentation for the full list of available SDKs](/pre-recorded-audio/guides/do-more-with-sdk).
 
   The [Gladia
@@ -14383,7 +14411,7 @@ headers = {
 
 When migrating from Gladia to AssemblyAI, you'll first need to handle authentication:
 
-Get your API key from your [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home).
+Get your API key from your AssemblyAI dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 
 Things to know:
 
@@ -17193,7 +17221,7 @@ To download it, use the `yt-dlp` command with the following options:
 yt-dlp -f m4a/bestaudio -o "%(id)s.%(ext)s" https://www.youtube.com/watch?v=wtolixa9XTg
 ```
 
-Next, set up the AssemblyAI SDK and trancribe the file. Replace `YOUR_API_KEY` with your own key. If you don't have one, you can [sign up here](https://assemblyai.com/dashboard/signup) for free.
+Next, set up the AssemblyAI SDK and trancribe the file. Replace `YOUR_API_KEY` with your own key. If you don't have one, you can sign up here (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for free.
 
 Make sure that the path you pass to the `transcribe()` function corresponds to the saved filename.
 
@@ -17259,7 +17287,7 @@ In this guide, we'll show you how to use the [Gradio](https://www.gradio.app/) l
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Installing Dependencies
 
@@ -17329,7 +17357,7 @@ You can decide what your confidence threshold will be when implementing this log
 
 ## Getting Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home). This guide will use AssemblyAI's [JavaScript SDK](https://github.com/AssemblyAI/assemblyai-node-sdk). If you haven't already, install the SDK by following these [instructions](https://github.com/AssemblyAI/assemblyai-node-sdk#installation).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an account and get your API key from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`). This guide will use AssemblyAI's [JavaScript SDK](https://github.com/AssemblyAI/assemblyai-node-sdk). If you haven't already, install the SDK by following these [instructions](https://github.com/AssemblyAI/assemblyai-node-sdk#installation).
 
 ## Step-by-Step Instructions
 
@@ -17777,7 +17805,7 @@ In this guide, we'll show you how to transcribe multiple files simultaneously us
 
 ## Getting Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home). This guide will use AssemblyAI's [JavaScript SDK](https://github.com/AssemblyAI/assemblyai-node-sdk). If you haven't already, install the SDK in your project by following these [instructions](https://github.com/AssemblyAI/assemblyai-node-sdk#installation).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an account and get your API key from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`). This guide will use AssemblyAI's [JavaScript SDK](https://github.com/AssemblyAI/assemblyai-node-sdk). If you haven't already, install the SDK in your project by following these [instructions](https://github.com/AssemblyAI/assemblyai-node-sdk#installation).
 
 ## Step-by-Step Instructions
 
@@ -17983,7 +18011,7 @@ print("All transcriptions are complete.")
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Step-by-Step Guide
 
@@ -18080,9 +18108,9 @@ The overall process looks like this:
 
 ## Prerequisites
 
-First, you'll need an AssemblyAI account. You can [sign up for a free account](https://www.assemblyai.com/dashboard/signup) if you don't already have one.
+First, you'll need an AssemblyAI account. You can sign up for a free account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) if you don't already have one.
 
-Next, you'll need to **take note of your AssemblyAI API key**, which you can find on your [account dashboard](https://www.assemblyai.com/dashboard/home) after signing in. It will be on the left-hand side of the screen under _Your API Key_.
+Next, you'll need to **take note of your AssemblyAI API key**, which you can find on your account dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) after signing in. It will be on the left-hand side of the screen under _Your API Key_.
 
 You'll need the value of this key later, so leave the browser window open or copy the value into a text file.
 
@@ -18451,7 +18479,7 @@ print(talk_listen_stats)
 
 ## Get started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -18582,7 +18610,7 @@ plot_speaker_timeline(utterances)
 
 ### Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ### Step-by-Step Instructions
 
@@ -18808,7 +18836,7 @@ print(transcript_with_speakers)
 
 ### Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 You'll also need a HuggingFace account and API key. You can [sign up](https://huggingface.co/join) for a free account and get your API key [here](https://huggingface.co/settings/tokens). Create a **Read** type API token to ensure the necessary permissions are enabled.
 
@@ -19254,7 +19282,7 @@ display_transcript(clip_utterances)
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-step instructions
 
@@ -19836,7 +19864,7 @@ for utterance in identified_utterances:
 
 ## Initial Setup
 
-First, you'll need to [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/signup) and obtain your API key from your [account dashboard](https://www.assemblyai.com/dashboard/home). Then, [sign up for a Pinecone account](https://app.pinecone.io/?sessionType=signup) and obtain your API key from "API Keys" on the sidebar of your dashboard. Also note that any files you use for this Cookbook should be in WAV format. While not a requirement for AssemblyAI, TitaNet requires WAV format.
+First, you'll need to sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and obtain your API key from your account dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`). Then, [sign up for a Pinecone account](https://app.pinecone.io/?sessionType=signup) and obtain your API key from "API Keys" on the sidebar of your dashboard. Also note that any files you use for this Cookbook should be in WAV format. While not a requirement for AssemblyAI, TitaNet requires WAV format.
 
 ## Installing Dependencies
 
@@ -20216,7 +20244,7 @@ This workflow is designed to be cost-effective, slicing the first 60 seconds of 
 
 ## Get started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Step-by-step instructions
 
@@ -20327,7 +20355,7 @@ This guide will show you how to use AssemblyAI's API to resubmit a request using
 
 ## Getting started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-step instructions
 
@@ -20709,7 +20737,7 @@ This Colab will demonstrate how to use AssemblyAI's [Speaker Diarization](/pre-r
 
 ## Step-by-step guide
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://www.assemblyai.com/dashboard/signup) for an AssemblyAI account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for an AssemblyAI account and get your API key from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 
 ```bash
 pip install assemblyai
@@ -20848,7 +20876,7 @@ If you're planning to upload this file to YouTube, you should be able to use it 
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 The entire source code of this guide can be viewed [here](https://github.com/AssemblyAI-Examples/docs-snippets/tree/main/subtitles).
 
@@ -20929,7 +20957,7 @@ In this guide, we'll show you how to translate an AssemblyAI generated subtitle 
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -21780,7 +21808,7 @@ if transcript:
 
 ## Get started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Step-by-step instructions
 
@@ -21909,7 +21937,7 @@ transcribe_with_upload_retry("YOUR_AUDIO_URL")
 
 ## Get started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Step-by-step instructions
 
@@ -22071,7 +22099,7 @@ def convert_to_mono_if_duplicate(file_path):
 
 ## Combining with AssemblyAI
 
-Now we can combine this workflow with AssemblyAI to programmatically catch files that could cause duplicate results and modify them before submitting them to AssemblyAI. To get started, you'll need an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Now we can combine this workflow with AssemblyAI to programmatically catch files that could cause duplicate results and modify them before submitting them to AssemblyAI. To get started, you'll need an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 Now we'll create a workflow that checks if we should convert a file before using AssemblyAI's SDK to transcribe it.
 
@@ -22242,7 +22270,7 @@ if __name__ == "__main__":
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -22617,7 +22645,7 @@ In this guide, we'll show you how to translate an AssemblyAI generated subtitle 
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -22715,7 +22743,7 @@ Choosing a model depends on your use-case and preferences. Here are some conside
 
 ## Setup
 
-To get started, paste your API token into the empty string below. If you don't already have an API token, you can get one for free [here](https://www.assemblyai.com/dashboard/signup).
+To get started, paste your API token into the empty string below. If you don't already have an API token, you can get one for free here (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 
 ```python
 AAI_API_TOKEN = ""
@@ -22984,7 +23012,7 @@ This guide will show you additional ways to make use of AssemblyAI's Python and 
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## How to Check and Update Your Version of the SDK
 
@@ -23153,7 +23181,7 @@ Prefer to try it first? Transcribe audio without writing any code in the [Assemb
 
 You'll need:
 
-- **An API key** — grab one from [your dashboard](https://www.assemblyai.com/dashboard/home). Every example below reads it from an environment variable, so set it once:
+- **An API key** — grab one from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`). Every example below reads it from an environment variable, so set it once:
 
   ```bash
   export ASSEMBLYAI_API_KEY=<your-key>
@@ -27884,8 +27912,8 @@ The **Error text** column shows the `error` field of the `Error` message that co
 | `3007` | Audio Transmission Rate Exceeded: Received `<time>` sec. audio in `<time>` sec | Audio sent faster than real-time.                                                                                                                                                                                                                               |
 | `3005` | Session Cancelled: An error occurred                                           | Unknown server error.                                                                                                                                                                                                                                           |
 | `1008` | Unauthorized Connection: Too many concurrent sessions                          | Your account opened more new sessions this minute than its streaming rate limit allows. Despite the wording, the limit counts session starts per minute, not open sessions. Back off and open the session again in the next minute. For more on rate limits, see your [Account's Rate Limits](https://www.assemblyai.com/dashboard/home) and [how streaming rate limits work](/streaming/rate-limits). |
-| `1008` | Unauthorized Connection: Missing Authorization header                          | No API key or temporary token was sent. Your API keys can be found on the [API Keys page](https://www.assemblyai.com/dashboard/home) of your account dashboard.                                                                                              |
-| `1008` | Unauthorized Connection: Invalid API key                                       | The API key or temporary token is not valid. Check the key on the [API Keys page](https://www.assemblyai.com/dashboard/home) of your account dashboard.                                                                                                     |
+| `1008` | Unauthorized Connection: Missing Authorization header                          | No API key or temporary token was sent. Your API keys can be found on the API Keys page (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) of your account dashboard.                                                                                              |
+| `1008` | Unauthorized Connection: Invalid API key                                       | The API key or temporary token is not valid. Check the key on the API Keys page (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) of your account dashboard.                                                                                                     |
 | `1008` | Unauthorized Connection: Signature has expired                                 | The [temporary token](/streaming/authenticate-with-a-temporary-token) expired before it opened a session. Create a new temporary token and connect with it.                                                                                                  |
 | `1008` | Unauthorized Connection: Insufficient funds                                    | Your account balance is too low. Add funds before reconnecting.                                                                                                                                                                                                 |
 | `1008` | Unauthorized Connection: API key is disabled                                   | The API key, its project or the account is disabled. Use an enabled key, or contact support@assemblyai.com.                                                                                                                                                     |
@@ -28095,7 +28123,7 @@ This measures the time from when the user actually finishes speaking (end of spe
   the user will use when the turn ends. AssemblyAI provides native endpointing
   in our models, but you can also use our outputs with other providers and their
   End-of-Turn models like
-  [LiveKit](/voice-agents/livekit-universal-3-6-pro),
+  [LiveKit](/voice-agents/livekit),
   [Pipecat](/voice-agents/pipecat-universal-3-5-pro),
   or [Vapi](https://vapi.ai).
 
@@ -28236,7 +28264,7 @@ Another benefit of doing a vibe-evals is that truth files don't have to be sourc
 
 **LLM as a judge:** An LLM can automatically identify differences between two transcriptions and pick a winner. However, be cautious: an LLM judge can be misled by outputs that look correct but contain subtle errors (such as translated code-switching segments that read well in English but don't reflect what was actually spoken). Always pair LLM-based judgments with spot-checking against the actual audio. For a structured LLM-based scoring approach, see [LASER](#laser-score-llm-based-asr-evaluation-rubric) above and [aai-cli](https://github.com/alexkroman/aai-cli) for an implementation.
 
-**Live A/B testing:** Set up your voice agent with different STT providers using integrations like [LiveKit](/voice-agents/livekit-universal-3-6-pro) where you can swap out providers. Serve transcripts from different providers and collect feedback — ask users to score agent interactions directly, or track indirect signals like support ticket complaints about the agent misunderstanding users.
+**Live A/B testing:** Set up your voice agent with different STT providers using integrations like [LiveKit](/voice-agents/livekit) where you can swap out providers. Serve transcripts from different providers and collect feedback — ask users to score agent interactions directly, or track indirect signals like support ticket complaints about the agent misunderstanding users.
 
 ## Conclusion
 
@@ -28468,30 +28496,30 @@ For deployment questions, image access, license issues, or to report bugs, conta
 
 ---
 
-<a id="universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-6-pro-mdx"></a>
+<a id="assemblyai-stt-3-7-realtime-agent-on-livekit-docs-voice-agents-livekit-mdx"></a>
 
-# Universal-3.6 Pro on LiveKit
+# AssemblyAI-STT-3.7-Realtime-Agent on LiveKit
 
-URL: https://www.assemblyai.com/docs/voice-agents/livekit-universal-3-6-pro
-Source: docs/voice-agents/livekit-universal-3-6-pro.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/livekit
+Source: docs/voice-agents/livekit.mdx
 Navigation: Real-time STT > Integrations
-Description: Integrate AssemblyAI's Universal-3.6 Pro speech-to-text model into a LiveKit voice agent
+Description: Integrate AssemblyAI-STT-3.7-Realtime-Agent, AssemblyAI's speech-to-text model for voice agents, into a LiveKit voice agent
 
 ## Overview
 
-This guide covers integrating AssemblyAI's **Universal-3.6 Pro** speech-to-text model into a LiveKit voice agent using the [Agents framework](https://docs.livekit.io/agents/).
+This guide covers integrating AssemblyAI's **AssemblyAI-STT-3.7-Realtime-Agent** speech-to-text model into a LiveKit voice agent using the [Agents framework](https://docs.livekit.io/agents/).
 
 LiveKit Agents is an open-source framework for building real-time voice, video, and multimodal AI agents. Your agent joins a LiveKit room as a participant and exchanges audio with users over WebRTC or SIP telephony. An `AgentSession` wires together speech-to-text, LLM, and text-to-speech plugins and handles the orchestration, including turn detection and interruptions.
 
-  **Universal-3.6 Pro is our flagship next-generation streaming model for voice agents** — [multilingual](/streaming/multilingual-transcription) and [promptable](/streaming/prompting-and-keyterms), with [conversation context](#conversation-context) and [voice focus](#voice-focus).
+  **AssemblyAI-STT-3.7-Realtime-Agent is our most accurate streaming model for voice agents** — [multilingual](/streaming/multilingual-transcription) and [promptable](/streaming/prompting-and-keyterms), with [conversation context](#conversation-context) and [voice focus](#voice-focus).
 
-  Available on **`livekit-agents` 1.8.0+** — set `model="universal-3-6-pro"`.
+  It's available in the AssemblyAI plugin on **`livekit-agents` 1.8.12+**. Set `model="assemblyai-stt-3-7-realtime-agent"` explicitly: the plugin's default model is still `universal-3-6-pro`.
 
 AssemblyAI provides the speech-to-text and turn detection in your LiveKit pipeline:
 
 ```mermaid
 flowchart LR
-  U["User audio"] --> STT["AssemblyAI STT<br/>Universal-3.6 Pro"]
+  U["User audio"] --> STT["AssemblyAI-STT-3.7<br/>Realtime-Agent"]
   STT --> TD["Turn detection"]
   TD --> LLM["LLM"]
   LLM --> TTS["TTS"]
@@ -28520,7 +28548,7 @@ Get a working, talking agent in a few minutes, then optimize from there.
 Install the plugin and supporting packages (silero, codecs, dotenv) from PyPI:
 
 ```bash
-pip install "livekit-agents[assemblyai,silero,codecs]~=1.8" \
+pip install "livekit-agents[assemblyai,silero,codecs]>=1.8.12" \
     python-dotenv
 ```
 
@@ -28530,7 +28558,7 @@ If you plan to use LiveKit turn detection with `MultilingualModel()`, also insta
 pip install "livekit-plugins-turn-detector~=1.0"
 ```
 
-  Install the latest `livekit-agents` from PyPI. **Universal-3.6 Pro** (`universal-3-6-pro`) requires **1.8.0+**, and [LiveKit Inference](#livekit-inference) (`stt="assemblyai/universal-3-6-pro"`) requires **1.8.3+**. Older versions won't recognize the `universal-3-6-pro` model and return a validation error.
+  Install the latest `livekit-agents` from PyPI. `assemblyai-stt-3-7-realtime-agent` requires **1.8.12+**.
 
 Set your API keys in a `.env` file:
 
@@ -28542,8 +28570,7 @@ ASSEMBLYAI_API_KEY=your_assemblyai_key
 # Add API keys for your chosen LLM and TTS providers
 ```
 
-  You can obtain an AssemblyAI API key by [signing up for a free
-  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  You can obtain an AssemblyAI API key by signing up for a free account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and navigating to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 The following example uses `turn_detection="stt"` (recommended). Pay close attention to the comments for using with `MultilingualModel()`.
@@ -28570,11 +28597,11 @@ async def entrypoint(ctx: agents.JobContext):
 
     session = AgentSession(
         stt=assemblyai.STT(
-            model="universal-3-6-pro",
+            model="assemblyai-stt-3-7-realtime-agent",
             mode="balanced",  # With turn_detection="stt": applies min_turn_silence=128, max_turn_silence=1280.
             # If using MultilingualModel(), omit mode so the plugin defaults (min: 100, max: 100) hand off transcripts fastest.
             vad_threshold=0.2,  # AssemblyAI's default; keep equal to Silero's activation_threshold
-            # interruption_delay=0,  # Optional: faster first partial (~256ms effective). Default: 500 (~756ms effective).
+            # interruption_delay=500,  # Optional: more confident first partial (~756ms effective). Default: 0 (~256ms effective).
         ),
         # llm=your_llm_plugin(),  # Add your LLM provider here
         # tts=your_tts_plugin(),  # Add your TTS provider here
@@ -28620,22 +28647,21 @@ Then test it in the LiveKit Playground:
 
 ## Parameters reference
 
-### **Universal-3.6 Pro** parameters
+### **AssemblyAI-STT-3.7-Realtime-Agent** parameters
 
-These are the key parameters to tune for LiveKit when using **Universal-3.6 Pro**:
+These are the key parameters to tune for LiveKit when using **AssemblyAI-STT-3.7-Realtime-Agent**:
 
-  The streaming model. The plugin defaults to `"universal-3-6-pro"`, our
-  recommended flagship model, on `livekit-agents` **1.8.4+**. Earlier 1.8.x
-  releases default to `"universal-3-5-pro"`, so pass `model` explicitly if you
-  pin an older version.
+  The streaming model. Set `"assemblyai-stt-3-7-realtime-agent"`, our
+  recommended model for voice agents, which requires `livekit-agents`
+  **1.8.12+**. The plugin still defaults to `"universal-3-6-pro"`, so always
+  pass `model` explicitly.
 
   Accuracy/latency preset: `"min_latency"`, `"balanced"`, or `"max_accuracy"`. Sets
-  the defaults for `min_turn_silence`, `max_turn_silence`, `vad_threshold`, and
-  `interruption_delay`; any value you set explicitly still takes precedence. The
-  server default is `"balanced"`. When `mode` is set, the plugin leaves
-  `min_turn_silence` and `max_turn_silence` unset so the preset's values apply.
-  Connect-time only — cannot be changed with `update_options`. Universal-3.6 Pro and 3.5 Pro
-  only. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
+  the defaults for `min_turn_silence` and `max_turn_silence`; any value you set
+  explicitly still takes precedence. The server default is `"balanced"`. When
+  `mode` is set, the plugin leaves `min_turn_silence` and `max_turn_silence`
+  unset so the preset's values apply. Connect-time only — cannot be changed
+  with `update_options`. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
 
   List of terms to boost recognition for. Applied automatically alongside any
   contextual prompt.
@@ -28649,21 +28675,18 @@ These are the key parameters to tune for LiveKit when using **Universal-3.6 Pro*
   client-side — explicit values over the cap raise `ValueError` (both at
   construction and via `update_options`); only automatic forwarding truncates
   silently. Can be set at construction time and updated mid-stream with
-  `update_options`. Universal-3.6 Pro and 3.5 Pro only. See
-  [Conversation context](#conversation-context).
+  `update_options`. See [Conversation context](#conversation-context).
 
   Steer transcription toward one or more expected languages instead of
   auto-detecting across all supported languages. Accepts a single code
   (`"es"`) or a list (`["en", "es"]`); entries are normalized to ISO 639-1
   (`"en-US"`, `"english"` → `"en"`). Up to 10 codes. Leave unset for the
-  default multilingual behavior. Universal-3.6 Pro and 3.5 Pro only. Can be updated
-  mid-session via `update_options`; pass an empty list to clear steering.
-  Requires `livekit-agents` **1.6.6+**.
+  default multilingual behavior. Can be updated mid-session via
+  `update_options`; pass an empty list to clear steering.
 
   How many prior conversation entries are carried forward automatically. Range
   `0`–`100`; `0` disables carryover. Leave unset for the server default (5).
-  Connect-time only — cannot be changed with `update_options`. Universal-3.6 Pro and 3.5 Pro
-  only.
+  Connect-time only — cannot be changed with `update_options`.
 
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation to decide whether the turn has
@@ -28676,29 +28699,28 @@ These are the key parameters to tune for LiveKit when using **Universal-3.6 Pro*
   `mode="balanced"` (which applies `1280`) or set `max_turn_silence=1280`
   explicitly.
 
-  AssemblyAI's internal VAD onset threshold. **Universal-3.6 Pro** and
-  **Universal-3.5 Pro** default to `0.2` in every `mode`. Set LiveKit's Silero
-  `activation_threshold` to the same value for consistent behavior.
+  AssemblyAI's internal VAD onset threshold. Defaults to `0.2` in every `mode`.
+  Set LiveKit's Silero `activation_threshold` to the same value for consistent
+  behavior.
 
   Server-side noise suppression that isolates the primary speaker. `"near-field"`
   for close-talking mics, `"far-field"` for distant capture. Connect-time only.
-  Universal-3.6 Pro and 3.5 Pro only. See [Voice focus](#voice-focus).
+  See [Voice focus](#voice-focus).
 
   How aggressively `voice_focus` suppresses background audio. `0.0`–`1.0`; higher
-  is more aggressive. Connect-time only. Universal-3.6 Pro and 3.5 Pro only.
+  is more aggressive. Connect-time only.
 
   How soon the first partial transcript is emitted during a turn, in
   milliseconds. Range: `0`–`1000`. Lower values produce faster time to first
   token (TTFT) for barge-in and speculative inference; higher values produce
-  more confident first partials. Set by `mode` when unset: `0` on
-  `min_latency`, `500` otherwise. The server adds a fixed 256 ms on top of the
+  more confident first partials. Defaults to `0` in every `mode`. The server adds a fixed 256 ms on top of the
   configured value (`interruption_delay: 0` → ~256 ms effective,
   `interruption_delay: 500` → ~756 ms effective). See
   [Tuning early partial timing](/streaming/getting-started/transcribe-streaming-audio)
   for details.
 
-  **Universal-3.6 Pro** code-switches natively between supported
-  languages. This parameter controls whether `language_code` and
+  **AssemblyAI-STT-3.7-Realtime-Agent** code-switches natively between
+  supported languages. This parameter controls whether `language_code` and
   `language_confidence` are included in turn messages. Defaults to `true` in the
   LiveKit plugin, but `false` when using the API directly.
 
@@ -28712,23 +28734,21 @@ These parameters apply to all AssemblyAI streaming models and can remain the sam
 
 ### Legacy parameters
 
-These parameters apply to the `universal-streaming-english` and `universal-streaming-multilingual` AssemblyAI streaming models, but **do not affect Universal-3.6 Pro**:
+These parameters apply to the `universal-streaming-english` and `universal-streaming-multilingual` AssemblyAI streaming models, but **do not affect AssemblyAI-STT-3.7-Realtime-Agent**:
 
-  Confidence threshold for end-of-turn detection. **Universal-3.6 Pro**
-  uses punctuation-based turn detection instead.
+  Confidence threshold for end-of-turn detection. **AssemblyAI-STT-3.7-Realtime-Agent** uses punctuation-based turn detection instead.
 
-  Whether to return formatted final transcripts. **Universal-3.6 Pro**
-  always returns formatted transcripts, so this parameter no longer applies.
+  Whether to return formatted final transcripts. **AssemblyAI-STT-3.7-Realtime-Agent** always returns formatted transcripts, so this parameter no longer applies.
 
 ## Turn detection
 
 In LiveKit, how your agent detects the end of a user's turn is controlled by the [`turn_detection`](https://docs.livekit.io/reference/agents/turn-handling-options/#turn_detection) parameter inside [`TurnHandlingOptions`](https://docs.livekit.io/reference/agents/turn-handling-options/), which is passed to `AgentSession` via the `turn_handling` argument.
 
-**Universal-3.6 Pro** uses a **punctuation-based turn detection system**, which checks for terminal punctuation (`.` `?` `!`) after periods of silence rather than using a confidence score.
+**AssemblyAI-STT-3.7-Realtime-Agent** uses a **punctuation-based turn detection system**, which checks for terminal punctuation (`.` `?` `!`) after periods of silence rather than using a confidence score.
 
 This means the `min_turn_silence` and `max_turn_silence` parameters you pass to AssemblyAI directly control when transcripts are emitted and when turns end. For more details on how this works, see [Configuring turn detection](/streaming/getting-started/transcribe-streaming-audio).
 
-  When not explicitly provided, the default endpointing parameters for **Universal-3.6 Pro** differ on **LiveKit** versus using **AssemblyAI's API directly**:
+  When not explicitly provided, the default endpointing parameters for **AssemblyAI-STT-3.7-Realtime-Agent** differ on **LiveKit** versus using **AssemblyAI's API directly**:
   - LiveKit AssemblyAI plugin defaults (when `mode` is unset):
     - `min_turn_silence=100`
     - `max_turn_silence=100`
@@ -28742,7 +28762,7 @@ This means the `min_turn_silence` and `max_turn_silence` parameters you pass to 
 
 ### Default parameter differences
 
-**Universal-3.6 Pro's** endpointing is controlled by two AssemblyAI API parameters, `min_turn_silence` and `max_turn_silence`, that you pass to the STT plugin. These are separate from LiveKit's `endpointing.min_delay` and `endpointing.max_delay` (set inside `TurnHandlingOptions`).
+**AssemblyAI-STT-3.7-Realtime-Agent's** endpointing is controlled by two AssemblyAI API parameters, `min_turn_silence` and `max_turn_silence`, that you pass to the STT plugin. These are separate from LiveKit's `endpointing.min_delay` and `endpointing.max_delay` (set inside `TurnHandlingOptions`).
 
 | Parameter             | AssemblyAI API default (`balanced`) | LiveKit plugin default (`mode` unset) | Description                                                                                                                                                         |
 | --------------------- | ----------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -28798,7 +28818,7 @@ session = AgentSession(
         endpointing={"min_delay": 0},  # Avoid additive delay in STT mode
     ),
     stt=assemblyai.STT(
-        model="universal-3-6-pro",
+        model="assemblyai-stt-3-7-realtime-agent",
         min_turn_silence=128,   # Silence (ms) before a speculative end-of-turn check
         max_turn_silence=1280,  # Max silence (ms) before forcing the turn to end
         # Or replace both with mode="balanced", which sets these values
@@ -28814,7 +28834,7 @@ session = AgentSession(
 
 As a third-party turn detection model, LiveKit's [turn detector](https://docs.livekit.io/agents/logic/turns/turn-detector/) runs on top of STT output to make turn decisions. AssemblyAI's role is then just to provide transcripts as quickly as possible, while the turn detection model decides when the user is actually done speaking.
 
-Use `MultilingualModel()` rather than `EnglishModel()`, as **Universal-3.6 Pro** supports 32 languages. `MultilingualModel()` covers support for all of these languages.
+Use `MultilingualModel()` rather than `EnglishModel()`, as **AssemblyAI-STT-3.7-Realtime-Agent** supports 32 languages. `MultilingualModel()` covers support for all of these languages.
 
 The LiveKit plugin defaults of `min_turn_silence=100` and `max_turn_silence=100` work well here (leave `mode` unset so the plugin keeps them), as **`max_turn_silence` is brought down to match `min_turn_silence` so that transcripts are handed off to the turn detection model as fast as possible.**
 
@@ -28846,7 +28866,7 @@ session = AgentSession(
         },
     ),
     stt=assemblyai.STT(
-        model="universal-3-6-pro",
+        model="assemblyai-stt-3-7-realtime-agent",
         vad_threshold=0.2,
     ),
     vad=silero.VAD.load(
@@ -28878,7 +28898,7 @@ With `MultilingualModel()`, Silero VAD is **required**, as it is the only source
 
 #### Threshold alignment
 
-LiveKit's Silero VAD defaults to an `activation_threshold` of **0.5**. AssemblyAI's `vad_threshold` defaults to **0.2** on Universal-3.6 Pro and Universal-3.5 Pro. For best performance, set Silero's `activation_threshold` to **0.2** to match.
+LiveKit's Silero VAD defaults to an `activation_threshold` of **0.5**. AssemblyAI's `vad_threshold` defaults to **0.2**. For best performance, set Silero's `activation_threshold` to **0.2** to match.
 
 Both should be adjusted together to the same value to ensure accurate transcription and consistent barge-in thresholds.
 
@@ -28887,7 +28907,7 @@ When the thresholds are mismatched, you get a dead zone: if Silero is at `0.5` a
 ```python
 session = AgentSession(
     stt=assemblyai.STT(
-        model="universal-3-6-pro",
+        model="assemblyai-stt-3-7-realtime-agent",
         vad_threshold=0.2,         # AssemblyAI's internal VAD onset (default)
     ),
     vad=silero.VAD.load(
@@ -28933,7 +28953,7 @@ Lower `min_turn_silence` and `max_turn_silence` values produce faster transcript
 "I wanted to check on my order from last Tuesday, order number 4829."  → FINAL (single turn)
 ```
 
-**Universal-3.6 Pro's** formatting is significantly better when it has full context in a single turn. Email addresses, phone numbers, credit card numbers, and physical addresses all benefit from this.
+**AssemblyAI-STT-3.7-Realtime-Agent's** formatting is significantly better when it has full context in a single turn. Email addresses, phone numbers, credit card numbers, and physical addresses all benefit from this.
 
   LLMs downstream can usually piece together split entities, but if your use
   case involves alphanumeric dictation or entity extraction, consider increasing
@@ -28953,12 +28973,12 @@ Start with the **`mode` preset** — the highest-level dial for the accuracy/lat
 
 ```python
 stt=assemblyai.STT(
-    model="universal-3-6-pro",
+    model="assemblyai-stt-3-7-realtime-agent",
     mode="balanced",  # "min_latency" (fastest) · "balanced" · "max_accuracy" (best quality)
 )
 ```
 
-`mode` is set at construction time (it can't be changed mid-session) and sets the defaults of `min_turn_silence`, `max_turn_silence`, `vad_threshold`, and `interruption_delay`. Any value you set explicitly still wins. The server default is `balanced`. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
+`mode` is set at construction time (it can't be changed mid-session) and sets the defaults of `min_turn_silence` and `max_turn_silence`. Any value you set explicitly still wins. The server default is `balanced`. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
 
 From there, fine-tune the individual levers:
 
@@ -28989,22 +29009,22 @@ stt.update_options(
 
 ## Accuracy
 
-**Universal-3.6 Pro** is accurate out of the box. When you need more — domain vocabulary, proper nouns, noisy audio — reach for these levers. For entity-heavy dictation, also tune turn detection (see [Entity splitting tradeoff](#entity-splitting-tradeoff)), and note that the high-level [`mode` preset](#latency) shifts the overall accuracy/latency balance (use `max_accuracy` to favor quality).
+**AssemblyAI-STT-3.7-Realtime-Agent** is accurate out of the box. When you need more — domain vocabulary, proper nouns, noisy audio — reach for these levers. For entity-heavy dictation, also tune turn detection (see [Entity splitting tradeoff](#entity-splitting-tradeoff)), and note that the high-level [`mode` preset](#latency) shifts the overall accuracy/latency balance (use `max_accuracy` to favor quality).
 
 ### Prompting
 
-**Universal-3.6 Pro** supports a `prompt` parameter for [contextual prompting](/streaming/prompting-and-keyterms) — a description of what the audio is about. Transcription behavior (verbatim output, punctuation, turn detection) is built in and optimized automatically; the prompt carries context, not instructions.
+**AssemblyAI-STT-3.7-Realtime-Agent** supports a `prompt` parameter for [contextual prompting](/streaming/prompting-and-keyterms) — a description of what the audio is about. Transcription behavior (verbatim output, punctuation, turn detection) is built in and optimized automatically; the prompt carries context, not instructions.
 
 ```python
 stt=assemblyai.STT(
-    model="universal-3-6-pro",
+    model="assemblyai-stt-3-7-realtime-agent",
     prompt="Customer support call about an internet service outage.",
 )
 ```
 
 **Tips:**
 
-- **Start with no prompt**: Universal-3.6 Pro delivers strong accuracy out of the box — only add context if domain-specific vocabulary is being misrecognized.
+- **Start with no prompt**: AssemblyAI-STT-3.7-Realtime-Agent delivers strong accuracy out of the box — only add context if domain-specific vocabulary is being misrecognized.
 - **Describe the conversation**: domain, scenario, or full details — start broad, and add only details your application actually knows (see the [three context levels](/streaming/prompting-and-keyterms#contextual-prompting)).
 - **Include known names and identifiers**: caller name, account or order IDs, products — detailed context helps the model spell them correctly.
 
@@ -29014,25 +29034,25 @@ Instead of `prompt`, use `keyterms_prompt` to boost recognition of specific name
 
 ```python
 stt=assemblyai.STT(
-    model="universal-3-6-pro",
-    keyterms_prompt=["AssemblyAI", "LiveKit", "Universal-3.6 Pro"],
+    model="assemblyai-stt-3-7-realtime-agent",
+    keyterms_prompt=["AssemblyAI", "LiveKit", "Acme Fiber"],
 )
 ```
 
 ### Language selection
 
-By default, **Universal-3.6 Pro** auto-detects and code-switches across all supported languages. If you know which languages a caller will speak, `language_codes` steers transcription toward them for better accuracy on short or ambiguous turns. It can also be updated mid-session (e.g. when a caller switches languages) via `update_options`. Requires `livekit-agents` **1.6.6+**.
+By default, **AssemblyAI-STT-3.7-Realtime-Agent** auto-detects and code-switches across all supported languages. If you know which languages a caller will speak, `language_codes` steers transcription toward them for better accuracy on short or ambiguous turns. It can also be updated mid-session (e.g. when a caller switches languages) via `update_options`. Requires `livekit-agents` **1.6.6+**.
 
 ```python
 stt=assemblyai.STT(
-    model="universal-3-6-pro",
+    model="assemblyai-stt-3-7-realtime-agent",
     language_codes=["en", "es"],  # single code or list, up to 10; ISO 639-1
 )
 ```
 
 ### Conversation context
 
-Give the model both sides of the dialog so it transcribes the next user turn more accurately. **Universal-3.6 Pro** keeps a short, per-session memory of the conversation from two sources:
+Give the model both sides of the dialog so it transcribes the next user turn more accurately. **AssemblyAI-STT-3.7-Realtime-Agent** keeps a short, per-session memory of the conversation from two sources:
 
 - **The agent half** — what your agent just said, forwarded automatically into `agent_context` by `AgentSession` on `livekit-agents` 1.6.6+ (no wiring needed).
 - **The user half** — prior STT-finalized user turns, carried forward automatically (no configuration needed).
@@ -29044,7 +29064,7 @@ With the agent's question in context, the model can anticipate the answer, sharp
 | `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to 1750 characters. Set at construction time to seed an opening greeting; updated automatically after each agent reply on 1.6.6+.           |
 | `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (5).                                     |
 
-  `agent_context` and `previous_context_n_turns` are supported only on Universal-3.6 Pro (`universal-3-6-pro`) and Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
+  `agent_context` and `previous_context_n_turns` aren't supported on the legacy Universal-Streaming models. `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
 
 #### Automatic on 1.6.6+
 
@@ -29054,7 +29074,7 @@ To opt out, use the session-level toggle:
 
 ```python
 session = AgentSession(
-    stt=assemblyai.STT(model="universal-3-6-pro"),
+    stt=assemblyai.STT(model="assemblyai-stt-3-7-realtime-agent"),
     stt_context_options={"forward_chat_context": False},  # default: True
 )
 ```
@@ -29080,7 +29100,7 @@ AGENT_CONTEXT_MAX_CHARS = 1750
 
 session = AgentSession(
     stt=assemblyai.STT(
-        model="universal-3-6-pro",
+        model="assemblyai-stt-3-7-realtime-agent",
     ),
     stt_context_options={"forward_chat_context": False},  # Disable automatic forwarding on 1.6.6+
     # llm=your_llm_plugin(),
@@ -29107,7 +29127,7 @@ def _on_conversation_item_added(ev: ConversationItemAddedEvent) -> None:
 
 #### LiveKit Inference
 
-LiveKit Inference (`stt="assemblyai/universal-3-6-pro"`, `livekit-agents` 1.8.3+) receives the same automatic conversation-context forwarding by default, with the same `stt_context_options={"forward_chat_context": False}` opt-out. `language_codes` is plugin-only for now.
+LiveKit Inference also serves AssemblyAI-STT-3.7-Realtime-Agent: pass `stt="assemblyai/assemblyai-stt-3-7-realtime-agent"` to `AgentSession` instead of the plugin, and use your LiveKit Cloud credentials rather than an AssemblyAI API key. As of `livekit-agents` 1.8.12, the SDK forwards the agent's replies into `agent_context` automatically only for the Universal-3 Pro models it lists, which don't yet include the 3.7 model, so use the AssemblyAI plugin if you want automatic conversation context. `language_codes` is plugin-only for now.
 
 ### Voice focus
 
@@ -29118,11 +29138,11 @@ Voice Focus isolates the primary speaker and suppresses background noise — cha
 | `voice_focus`           | string | `"near-field"` for headsets, handsets, and other close-talking mics; `"far-field"` for conference rooms, laptop mics, and other distant capture. |
 | `voice_focus_threshold` | float  | Optional. `0.0`–`1.0`; higher values suppress background audio more aggressively.                                                                |
 
-Both are connection-time parameters on Universal-3.6 Pro and Universal-3.5 Pro and cannot be changed with `update_options()`. See [Voice Focus](/streaming/voice-focus) for details.
+Both are connection-time parameters and cannot be changed with `update_options()`. See [Voice Focus](/streaming/voice-focus) for details.
 
 ```python
 stt=assemblyai.STT(
-    model="universal-3-6-pro",
+    model="assemblyai-stt-3-7-realtime-agent",
     voice_focus="far-field",      # "near-field" for close-talking mics
     voice_focus_threshold=0.5,    # Optional: 0.0–1.0, higher = more aggressive
 )
@@ -29142,7 +29162,7 @@ LiveKit Agents v1.5.0 introduced [adaptive interruption handling](https://docs.l
 from livekit.agents import AgentSession, TurnHandlingOptions
 
 session = AgentSession(
-    stt=assemblyai.STT(model="universal-3-6-pro"),
+    stt=assemblyai.STT(model="assemblyai-stt-3-7-realtime-agent"),
     # llm=your_llm_plugin(),
     # tts=your_tts_plugin(),
     vad=silero.VAD.load(),
@@ -29321,7 +29341,7 @@ class MyAgent(BackchannelSTTFilterMixin, Agent):
 ```python
 session = AgentSession(
     stt=assemblyai.STT(
-        model="universal-3-6-pro",
+        model="assemblyai-stt-3-7-realtime-agent",
         min_turn_silence=100,
         max_turn_silence=1000,
         vad_threshold=0.3,
@@ -29420,7 +29440,7 @@ To balance accuracy, latency, turn-taking, and interruption handling, map your c
 
 | What you pass today | AssemblyAI equivalent |
 | --- | --- |
-| Current model (Deepgram, ElevenLabs, etc.) | `model="universal-3-6-pro"` (recommended flagship) |
+| Current model (Deepgram, ElevenLabs, etc.) | `model="assemblyai-stt-3-7-realtime-agent"` (recommended flagship) |
 | Overall accuracy/latency tuning | `mode="min_latency"` / `"balanced"` / `"max_accuracy"` — a one-line starting point before fine-tuning |
 | Endpointing / silence thresholds | `min_turn_silence` (speculative end-of-turn) and `max_turn_silence` (forced end) — see [Turn detection](#turn-detection) |
 | Custom vocabulary / keywords | `keyterms_prompt=[...]`; broader domain context → `prompt` |
@@ -29443,12 +29463,12 @@ If you're coming from AssemblyAI's standard streaming model:
 
 | Change                             | From                                       | To                                                                                       |
 | ---------------------------------- | ------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| Model                              | `assemblyai.STT()`                         | `assemblyai.STT(model="universal-3-6-pro")`                                                      |
+| Model                              | `assemblyai.STT()`                         | `assemblyai.STT(model="assemblyai-stt-3-7-realtime-agent")`                                                      |
 | Turn detection                     | `turn_detection="stt"` or `EnglishModel()` | `turn_detection="stt"` or `MultilingualModel()`                                          |
 | VAD                                | Optional                                   | Set `vad=silero.VAD.load()` to match `vad_threshold`                                     |
 | `min_turn_silence`                 | `400` (old default)                        | `128` (API default, `balanced`) or `100` (plugin default without `mode`)                 |
 | `max_turn_silence`                 | `1280` (old default)                       | `1280` (API default, `balanced`) or `100` (plugin default, for a 3rd-party turn detector) |
-| `end_of_turn_confidence_threshold` | Configurable                               | **Not applicable**: **Universal-3.6 Pro** uses punctuation-based turn detection |
+| `end_of_turn_confidence_threshold` | Configurable                               | **Not applicable**: **AssemblyAI-STT-3.7-Realtime-Agent** uses punctuation-based turn detection |
 | `endpointing.min_delay` (formerly `min_endpointing_delay`) | Default `0.5`                              | Set to `0` inside `TurnHandlingOptions` when using `turn_detection="stt"`                |
 
 Migrating a production deployment? [Talk to our team](https://www.assemblyai.com/contact/sales).
@@ -29545,8 +29565,7 @@ OPENAI_API_KEY=your_openai_key
 CARTESIA_API_KEY=your_cartesia_key
 ```
 
-  You can obtain an AssemblyAI API key by [signing up for a free
-  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  You can obtain an AssemblyAI API key by signing up for a free account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and navigating to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 The example below uses Pipecat-controlled turn detection (the default). Pay attention to the comments for switching to AssemblyAI's built-in turn detection, and note that the **assistant aggregator** at the end of the pipeline is what enables automatic [conversation context](#conversation-context).
@@ -30292,8 +30311,7 @@ curl -X POST https://api.vapi.ai/credential \
 
 Once the key is validated, AssemblyAI transcription runs on your AssemblyAI account and Vapi no longer charges for it. See Vapi's [provider keys](https://docs.vapi.ai/customization/provider-keys) guide.
 
-  You can obtain an AssemblyAI API key by [signing up for a free
-  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  You can obtain an AssemblyAI API key by signing up for a free account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and navigating to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 Create an assistant with a Universal-3.6 Pro transcriber. The request leaves `startSpeakingPlan.smartEndpointingPlan` unset, which is what tells Vapi to use [AssemblyAI's end-of-turn detection](#turn-detection):
@@ -31345,7 +31363,7 @@ This guide walks through the process of migrating from Deepgram to AssemblyAI fo
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Side-By-Side Code Comparison
 
@@ -31709,7 +31727,7 @@ Below is a side-by-side comparison of a basic snippet to transcribe live audio b
 
 When migrating from Deepgram to AssemblyAI, you'll first need to handle authentication:
 
-Get your API key from your [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home)
+Get your API key from your AssemblyAI dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`)
 
   **Protect Your API Key**
 
@@ -32129,7 +32147,7 @@ This guide walks through the process of migrating from **Speechmatics** to **Ass
 
 ## Get started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Side-by-side code comparison
 
@@ -32594,7 +32612,7 @@ In this step, you'll configure your API key to authenticate your requests.
 
   Navigate to [API Keys](https://portal.speechmatics.com/settings/api-keys) in your account settings and copy your API key.
 
-  Navigate to [API Keys](https://www.assemblyai.com/dashboard/home) in your account dashboard and copy your API key.
+  Navigate to API Keys (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) in your account dashboard and copy your API key.
 
 Store your API key in a variable. Replace `<YOUR_API_KEY>` with your copied API key.
 
@@ -33273,7 +33291,7 @@ This guide walks through the process of migrating from Gladia to AssemblyAI for 
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your [AssemblyAI dashboard](https://www.assemblyai.com/dashboard/home).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your AssemblyAI dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 
 ## Side-By-Side Code Comparison
 
@@ -35595,7 +35613,7 @@ For a cascading architecture, AssemblyAI has the best speech-to-text model. For 
 
 **LiveKit Agents (recommended)**
 
-LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [Universal-3.6 Pro on LiveKit](/voice-agents/livekit-universal-3-6-pro) for a full guide.
+LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [AssemblyAI-STT-3.7-Realtime-Agent on LiveKit](/voice-agents/livekit) for a full guide.
 
 ```python
 from livekit.agents import AgentSession
@@ -35770,7 +35788,7 @@ Users often produce short backchannel utterances ("mhm", "yeah", "um", "okay") w
 
 The fix is to gate barge-in on each `Turn` event during agent speech: suppress the interrupt when the transcript is short or every token is a known backchannel. Implementation depends on your stack:
 
-- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-universal-3-6-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
+- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
 - **Direct WebSocket**: see [Interruption handling](/voice-agents/universal-3-5-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Realtime API page for the combined word-count + filler-word filter.
 
 ### VAD threshold alignment
@@ -36099,7 +36117,7 @@ For a complete evaluation framework including accuracy metrics, latency metrics,
 - [Message sequence](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming diarization and multichannel](/streaming/label-speakers-and-separate-channels)
 - [Supported languages](/streaming/getting-started/transcribe-streaming-audio)
-- [LiveKit integration](/voice-agents/livekit-universal-3-6-pro)
+- [LiveKit integration](/voice-agents/livekit)
 - [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)
 - [API Playground](https://www.assemblyai.com/playground/streaming)
 - [Changelog](https://www.assemblyai.com/changelog)
@@ -37159,7 +37177,7 @@ If you only need a transcript and don't need real-time results, use the [pre-rec
 
 To complete this guide, you need:
 
-- An AssemblyAI API key. [Sign up](https://assemblyai.com/dashboard/signup) and get your key from the [dashboard](https://www.assemblyai.com/dashboard/home).
+- An AssemblyAI API key. Sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your key from the dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 - [Python 3.8+](https://www.python.org/) or [Node.js 18+](https://nodejs.org/).
 - A WAV audio file (mono, 16-bit PCM). If your file is in a different format, see [Prepare your audio file](#prepare-your-audio-file).
 
@@ -37822,7 +37840,7 @@ if __name__ == "__main__":
 
 ## Step-By-Step Guide
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ### Install/import Packages & Set API Key
 
@@ -38346,7 +38364,7 @@ if __name__ == "__main__":
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-step instructions
 
@@ -40532,7 +40550,7 @@ run();
 To complete this tutorial, you need:
 
 - [Python](https://www.python.org/) or [Node](https://nodejs.org/en) installed.
-- An <a href="https://www.assemblyai.com/dashboard/signup" target="_blank">AssemblyAI account with a credit card set up</a>.
+- An AssemblyAI account with a credit card set up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 - A microphone connected to your computer.
 - Basic understanding of how to [Transcribe streaming audio](/streaming/getting-started/transcribe-streaming-audio).
 
@@ -41651,7 +41669,7 @@ In this guide, you'll learn how to implement real-time translation of final tran
 
 ## Step-by-Step Instructions
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ### Install Dependencies
 
@@ -42285,7 +42303,7 @@ if __name__ == "__main__":
 
 ## Step-by-step guide
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard. Please note that Streaming Speech-to-text is available for upgraded accounts only. If you're on the free plan, you'll need to upgrade your account by adding a credit card.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard. Please note that Streaming Speech-to-text is available for upgraded accounts only. If you're on the free plan, you'll need to upgrade your account by adding a credit card.
 
 ### Install and import packages
 
@@ -42802,7 +42820,7 @@ if __name__ == "__main__":
 
 ## Step-by-step guide
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 
 ### Install and import packages
 
@@ -44051,7 +44069,7 @@ if __name__ == "__main__":
 
 ## Step-By-Step Guide
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 1. **Install All Required Packages**
 
@@ -44643,7 +44661,7 @@ The Sync API turns speech into one finished transcript, returned in the same HTT
 
 ## Before you begin
 
-- **An API key.** Copy it from [API Keys](https://www.assemblyai.com/dashboard/home) and set it once:
+- **An API key.** Copy it from API Keys (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and set it once:
 
   ```bash
   export ASSEMBLYAI_API_KEY=<your-key>
@@ -44808,7 +44826,7 @@ Not using an SDK? The same flow works over plain HTTP — see [Using the HTTP AP
 
 To complete this guide, you need:
 
-- **An API key** — browse to [API Keys](https://www.assemblyai.com/dashboard/home) in your dashboard and copy your key. Every example below reads it from an environment variable, so set it once:
+- **An API key** — browse to API Keys (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) in your dashboard and copy your key. Every example below reads it from an environment variable, so set it once:
 
   ```bash
   export ASSEMBLYAI_API_KEY=<your-key>
@@ -44831,9 +44849,7 @@ npm install assemblyai
 
 ### Step 2: Run your first transcription
 
-<Visibility for="agents">
 No WAV file? Download one under 120 seconds from [Sample audio files](/samples).
-</Visibility>
 
 Save this as `transcribe.py` (Python) or `transcribe.mjs` (JavaScript), next to a `sample.wav` file:
 
@@ -45342,7 +45358,7 @@ Both return the same result and post to `POST https://sync.assemblyai.com/v1/tra
 
 To complete this guide, you need:
 
-- **An API key** — copy it from [API Keys](https://www.assemblyai.com/dashboard/home) and set it once:
+- **An API key** — copy it from API Keys (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and set it once:
 
   ```bash
   export ASSEMBLYAI_API_KEY=<your-key>
@@ -47523,10 +47539,12 @@ Transcode to WAV before sending.
 URL: https://www.assemblyai.com/docs/dictation
 Source: docs/dictation.mdx
 Navigation: Dictation API > Getting started
-Description: Turn a spoken utterance into a clean dictation in under a second, with the verbatim transcript alongside it.
+Description: Add voice typing to your app. Turn a spoken utterance into clean, send-ready text, with the verbatim transcript alongside it.
 
 ## Overview
 
+Use the Dictation API to add voice typing to any app: a mic button, a
+push-to-talk hotkey or voice notes, where the user talks instead of typing.
 Send a spoken utterance in a single HTTP call and get back text your user can
 send as-is: filler gone, punctuation and capitalization applied, and the names
 and terms they care about spelled the way they spell them. The cleanup can also
@@ -47582,7 +47600,7 @@ API directly](#using-the-http-api-directly).
 
 To complete this guide, you need:
 
-- **An API key** — browse to [API Keys](https://www.assemblyai.com/dashboard/home) in your dashboard and copy your key.
+- **An API key** — browse to API Keys (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) in your dashboard and copy your key.
 - **An audio clip** in WAV format, or raw 16-bit PCM. Maximum 120 seconds through the SDKs, or 20 minutes [over HTTP](#transcribing-a-finished-recording).
 - **Python 3.8+** for the Python SDK, or **Node.js 18+** for the JavaScript SDK. The HTTP examples lower down need Python 3.8+ with `requests` or `httpx`, Node.js 18+ with `fetch`, or cURL.
 
@@ -47661,7 +47679,7 @@ config = aai.DictationConfig(
     stt_prompt="A doctor dictating a patient visit note.",
     keyterms_prompt=["amoxicillin", "lisinopril"],
     llm_instruction="Rewrite as a concise clinical chart note.",
-    rewrite_mode="fast",
+    rewrite_mode="smart",
 )
 
 result = aai.DictationTranscriber().transcribe_live("clip.wav", config)
@@ -47677,7 +47695,7 @@ const result = await client.dictation.transcribeLive("clip.wav", {
   stt_prompt: "A doctor dictating a patient visit note.",
   keyterms_prompt: ["amoxicillin", "lisinopril"],
   llm_instruction: "Rewrite as a concise clinical chart note.",
-  rewrite_mode: "fast",
+  rewrite_mode: "smart",
 });
 console.log(result.final_text); // the rewrite, falling back to the transcript
 ```
@@ -47697,18 +47715,18 @@ Every field except `llm_instruction` and `rewrite_mode` controls transcription. 
 | `stt_prompt` | string | Context for the transcription: a description of what the audio is about, such as `"A doctor dictating a patient visit note."` (max 6000 characters). It describes the situation rather than instructing the model, and is prepended to the base transcription prompt, which always applies. Also accepted as `prompt` — send one or the other, or the request is rejected with `400`. |
 | `keyterms_prompt` | array of strings | Terms to bias transcription toward, such as names or jargon (max 100 terms / 8000 characters total). Same parameter name as the Streaming and Pre-recorded APIs. The legacy names `keyterms` and `word_boost` are also accepted — send only one of the three, or the request is rejected with `400`. |
 | `llm_instruction` | string | Plain-English description of the rewrite you want. Replaces the default cleanup task; omit it to keep the default. See [Rewriting the transcript](#rewriting-the-transcript). |
-| `rewrite_mode` | string | Model tier that runs the rewrite. `fast` (the default) is a lighter-touch cleanup with the lowest latency. `smart` gives a more thorough cleanup and follows instructions more reliably, with higher latency. See [Choosing a rewrite mode](/dictation/transcript-rewriting#choosing-a-rewrite-mode). |
+| `rewrite_mode` | string | Model tier that runs the rewrite. `fast` (the default) gives a lighter cleanup at the lowest latency. `smart` gives a more thorough cleanup that resolves self-corrections consistently and follows `llm_instruction` more reliably, with higher latency. See [Choosing a rewrite mode](/dictation/transcript-rewriting#choosing-a-rewrite-mode). |
 
 Unknown fields are rejected with a `400` rather than ignored, so a typo surfaces as an error instead of a setting that quietly does nothing.
 
 ### Rewriting the transcript
 
-Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, punctuation and capitalization are applied, and self-corrections can be resolved to what the speaker landed on. The speaker's own phrasing and tone survive it.
+Cleanup is applied by default. Omitting `llm_instruction`, or the whole `config` part, runs the default cleanup task: filler comes out, punctuation and capitalization are applied, and self-corrections can be resolved to what the speaker landed on. The speaker's own phrasing and tone survive it. `"rewrite_mode": "smart"` resolves self-corrections more consistently, and we recommend it with `llm_instruction`.
 
 To ask for a different shape instead, set `llm_instruction` to a plain-English description of the task you want. It replaces the default cleanup task:
 
 ```json
-{ "llm_instruction": "Format as a bulleted task list. Keep names verbatim." }
+{ "rewrite_mode": "smart", "llm_instruction": "Format as a bulleted task list. Keep names verbatim." }
 ```
 
 The rewrite never replaces the transcription. `text` is always the verbatim transcript, and the rewritten version arrives separately in `llm_response`.
@@ -48001,6 +48019,7 @@ aai.settings.api_key = "<YOUR_API_KEY>"
 config = aai.DictationConfig(
     sample_rate=16000,
     channels=1,
+    rewrite_mode="smart",
     llm_instruction="Remove filler words and tidy the punctuation.",
 )
 
@@ -48073,6 +48092,7 @@ process.stdin.once("data", () => {
 const result = await client.dictation.transcribeLive(microphone.stdout, {
   sample_rate: 16000,
   channels: 1,
+  rewrite_mode: "smart",
   llm_instruction: "Remove filler words and tidy the punctuation.",
 });
 
@@ -48126,6 +48146,7 @@ BOUNDARY = "----dictation-example"
 CONFIG = {
     "sample_rate": 16000,
     "channels": 1,
+    "rewrite_mode": "smart",
     "llm_instruction": "Remove filler words and tidy the punctuation.",
 }
 
@@ -48456,6 +48477,7 @@ aai.settings.api_key = "<YOUR_API_KEY>"
 config = aai.DictationConfig(
     stt_prompt="A doctor dictating a patient visit note.",
     keyterms_prompt=["amoxicillin", "lisinopril", "metoprolol"],
+    rewrite_mode="smart",
     llm_instruction=(
         "Remove filler words and rewrite as a concise clinical chart note."
     ),
@@ -48475,6 +48497,7 @@ const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
 const config = {
   stt_prompt: "A doctor dictating a patient visit note.",
   keyterms_prompt: ["amoxicillin", "lisinopril", "metoprolol"],
+  rewrite_mode: "smart",
   llm_instruction:
     "Remove filler words and rewrite as a concise clinical chart note.",
 };
@@ -48492,6 +48515,7 @@ import requests
 config = {
     "stt_prompt": "A doctor dictating a patient visit note.",
     "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"],
+    "rewrite_mode": "smart",
     "llm_instruction": (
         "Remove filler words and rewrite as a concise clinical chart note."
     ),
@@ -48522,6 +48546,7 @@ import { readFileSync } from "fs";
 const config = {
   stt_prompt: "A doctor dictating a patient visit note.",
   keyterms_prompt: ["amoxicillin", "lisinopril", "metoprolol"],
+  rewrite_mode: "smart",
   llm_instruction:
     "Remove filler words and rewrite as a concise clinical chart note.",
 };
@@ -48553,7 +48578,7 @@ const rewrite = result.llm_response ?? transcript; // fall back on rewrite failu
 ```bash
 curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -F 'config={"stt_prompt": "A doctor dictating a patient visit note.", "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"], "llm_instruction": "Remove filler words and rewrite as a concise clinical chart note."};type=application/json' \
+  -F 'config={"stt_prompt": "A doctor dictating a patient visit note.", "keyterms_prompt": ["amoxicillin", "lisinopril", "metoprolol"], "rewrite_mode": "smart", "llm_instruction": "Remove filler words and rewrite as a concise clinical chart note."};type=application/json' \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
@@ -48568,6 +48593,7 @@ aai.settings.api_key = "<YOUR_API_KEY>"
 
 config = aai.DictationConfig(
     keyterms_prompt=["Reykjavik", "Cancun", "Lufthansa"],
+    rewrite_mode="smart",
     llm_instruction=(
         "Remove filler words and rewrite as a short, friendly booking "
         "confirmation addressed to the client."
@@ -48587,6 +48613,7 @@ const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
 
 const config = {
   keyterms_prompt: ["Reykjavik", "Cancun", "Lufthansa"],
+  rewrite_mode: "smart",
   llm_instruction:
     "Remove filler words and rewrite as a short, friendly booking confirmation addressed to the client.",
 };
@@ -48603,6 +48630,7 @@ import requests
 
 config = {
     "keyterms_prompt": ["Reykjavik", "Cancun", "Lufthansa"],
+    "rewrite_mode": "smart",
     "llm_instruction": (
         "Remove filler words and rewrite as a short, friendly booking "
         "confirmation addressed to the client."
@@ -48633,6 +48661,7 @@ import { readFileSync } from "fs";
 
 const config = {
   keyterms_prompt: ["Reykjavik", "Cancun", "Lufthansa"],
+  rewrite_mode: "smart",
   llm_instruction:
     "Remove filler words and rewrite as a short, friendly booking confirmation addressed to the client.",
 };
@@ -48664,7 +48693,7 @@ const rewrite = result.llm_response ?? transcript;
 ```bash
 curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -F 'config={"keyterms_prompt": ["Reykjavik", "Cancun", "Lufthansa"], "llm_instruction": "Remove filler words and rewrite as a short, friendly booking confirmation addressed to the client."};type=application/json' \
+  -F 'config={"keyterms_prompt": ["Reykjavik", "Cancun", "Lufthansa"], "rewrite_mode": "smart", "llm_instruction": "Remove filler words and rewrite as a short, friendly booking confirmation addressed to the client."};type=application/json' \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
@@ -48694,7 +48723,8 @@ Cleanup is applied by default. Omitting `llm_instruction`, or the whole
 `config` part, runs the default cleanup task: filler comes out, punctuation
 and capitalization are applied, and self-corrections can be resolved to what
 the speaker landed on. The speaker's own phrasing and tone survive it, so
-the result still reads like them.
+the result still reads like them. `"rewrite_mode": "smart"` resolves
+self-corrections more consistently: see [Choosing a rewrite mode](#choosing-a-rewrite-mode).
 
 ```python
 import assemblyai as aai
@@ -48716,8 +48746,13 @@ Set `llm_instruction` to a plain-English description of the task you want. It
 replaces the default cleanup task rather than adding to it:
 
 ```json
-{ "llm_instruction": "Remove filler words and fix punctuation." }
+{ "rewrite_mode": "smart", "llm_instruction": "Remove filler words and fix punctuation." }
 ```
+
+We recommend `"rewrite_mode": "smart"` with `llm_instruction`. `fast` is
+tuned for the default cleanup task, so a custom instruction on `fast` usually
+needs more iteration to get right: see
+[When the output isn't what you want](#when-the-output-isnt-what-you-want).
 
 An explicit `"llm_instruction": null` means the same as omitting the field, so
 the default cleanup task still runs.
@@ -48735,6 +48770,7 @@ import assemblyai as aai
 aai.settings.api_key = "<YOUR_API_KEY>"
 
 config = aai.DictationConfig(
+    rewrite_mode="smart",
     llm_instruction="Rewrite as a concise clinical chart note.",
 )
 
@@ -48750,6 +48786,7 @@ import { AssemblyAI } from "assemblyai";
 const client = new AssemblyAI({ apiKey: "<YOUR_API_KEY>" });
 
 const config = {
+  rewrite_mode: "smart",
   llm_instruction: "Rewrite as a concise clinical chart note.",
 };
 
@@ -48763,7 +48800,10 @@ console.log(result.final_text); // the rewrite, falling back to the transcript
 import json
 import requests
 
-config = {"llm_instruction": "Rewrite as a concise clinical chart note."}
+config = {
+    "rewrite_mode": "smart",
+    "llm_instruction": "Rewrite as a concise clinical chart note.",
+}
 
 with open("clip.wav", "rb") as f:
     audio = f.read()
@@ -48787,7 +48827,10 @@ print(result["llm_response"])
 ```javascript
 import { readFileSync } from "fs";
 
-const config = { llm_instruction: "Rewrite as a concise clinical chart note." };
+const config = {
+  rewrite_mode: "smart",
+  llm_instruction: "Rewrite as a concise clinical chart note.",
+};
 
 const audio = readFileSync("clip.wav");
 const form = new FormData();
@@ -48810,7 +48853,7 @@ console.log(result.llm_response);
 ```bash
 curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -H 'Authorization: <YOUR_API_KEY>' \
-  -F 'config={"llm_instruction": "Rewrite as a concise clinical chart note."};type=application/json' \
+  -F 'config={"rewrite_mode": "smart", "llm_instruction": "Rewrite as a concise clinical chart note."};type=application/json' \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
 
@@ -48820,8 +48863,8 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
 
 | `rewrite_mode` | Use it for |
 |---|---|
-| `fast` (default) | A lighter-touch cleanup and short, simple instructions, at the lowest latency. It often leaves clean speech unchanged. |
-| `smart` | A more thorough cleanup (filler words, self-corrections, punctuation), and any `llm_instruction` you need followed reliably. The rewrite has higher latency. |
+| `fast` (default) | A lighter cleanup at the lowest latency, for short dictations where speed matters most. It often leaves clean speech unchanged, and may keep some self-corrections. |
+| `smart` | A more thorough cleanup that resolves self-corrections consistently, and follows `llm_instruction` more reliably. The rewrite has higher latency. |
 
 ```json
 { "rewrite_mode": "smart", "llm_instruction": "Turn this into a bulleted list of action items." }
@@ -48836,6 +48879,27 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe/live \
   -F 'config={"rewrite_mode": "smart", "llm_instruction": "Turn this into a bulleted list of action items."};type=application/json' \
   -F 'audio=@clip.wav;type=audio/wav'
 ```
+
+### When the rewrite misses a correction or ignores your instruction
+
+If the output keeps a self-correction the speaker made ("Let's meet Sunday, no
+wait, Monday" comes back with both days, or with Sunday), or doesn't follow
+your `llm_instruction`, check `rewrite_mode` first:
+
+- **Self-corrections:** `fast` can leave some takebacks such as "no wait",
+  "actually" and "I mean" in place. `smart` resolves them to what the speaker
+  landed on: "Let's meet Monday."
+- **Custom instructions:** `fast` is tuned for the default cleanup task, so
+  `smart` is the better fit for an `llm_instruction`, especially one with
+  several rules. To stay on `fast`, follow the steps in
+  [When the output isn't what you want](#when-the-output-isnt-what-you-want).
+- **Words you wanted kept:** the default cleanup can trim words that carry
+  meaning for your users, such as a tag question ("It's affordable too,
+  right?" coming back as "It's affordable too?"). Write an `llm_instruction`
+  that says what to keep, and see the example below.
+
+`fast` is a good fit when your users mostly dictate short, clean text and the
+lowest latency matters most.
 
 ## Writing a good instruction
 
@@ -48868,34 +48932,68 @@ Some instructions that work well:
 - `"Turn this into a bulleted list of action items."`
 - `"Rewrite as a concise clinical chart note."`
 
-### Example: spoken punctuation
+### When the output isn't what you want
 
-Some users dictate punctuation and formatting aloud: "Do you want to get
-lunch together question mark it's been too long exclamation point". This instruction
-turns those spoken commands into the punctuation they name. Pair it with
-`"rewrite_mode": "smart"`, which follows a list of rules like this more
-reliably than `fast`.
+If the rewrite gets specific cases wrong, such as a self-correction left in, a
+false start kept, or a word you wanted dropped, improve the instruction rather
+than switching providers or adding your own LLM call. A few rounds usually get
+there:
+
+1. **Collect the failures.** Keep a set of real dictations from your users,
+   with the output you wanted for each. Twenty to fifty is enough to see a
+   pattern, and it lets you check that a fix doesn't break cases that already
+   worked.
+2. **Name the edits you want.** Say what the model may change and that
+   everything else stays as spoken. "Copy the dictation word for word, making
+   only these edits" followed by a short list beats a general "clean this up".
+3. **Describe how to spot each case.** The model handles a self-correction
+   better when you name the phrases that mark one ("I mean", "no wait",
+   "actually", "scratch that") and say what to do with it: keep the new
+   version, drop the old one and the marker.
+4. **Add examples.** Give three to six pairs of a spoken line and the cleaned
+   line you want, written from your own failures. Include at least one that
+   should come back unchanged, such as "I mean" used for emphasis, so the model
+   doesn't over-apply the rule.
+5. **Change one thing at a time and re-run the whole set.** That shows which
+   change helped, and whether it fixed one case by breaking another.
+6. **Try `smart` if `fast` still misses.** If `fast` still gets cases wrong
+   after a few rounds, run the same instruction on `smart` before writing a
+   longer one.
+
+The next example is an instruction built this way.
+
+### Example: word-for-word cleanup on `fast`
+
+`fast` can follow your own cleanup rules well when the instruction is
+specific. This one follows the steps above: a word-for-word copy
+with a list of allowed edits, the phrases that mark a self-correction, and
+spoken and cleaned pairs, including one that comes back unchanged. Replace the
+pairs with your own users' cases, and test it on your set before you switch.
 
 ```text
-You will be given a raw dictation transcript in which punctuation, capitalization, and formatting are stated aloud as literal spoken commands instead of being applied automatically. Rewrite it into final formatted text by replacing each spoken command as follows, leaving every other word exactly as given:
+Copy the dictation word for word, making only these edits:
 
-- 'comma' -> ','
-- 'period' -> '.'
-- 'question mark' -> '?'
-- 'exclamation point' -> '!'
-- 'colon' -> ':'
-- 'semicolon' -> ';'
-- 'all caps <word>' -> uppercase that one word; 'all caps <word> ... end caps' -> uppercase the whole span between them
-- 'cap <word>' -> capitalize just the first letter of that word
-- 'new paragraph' -> start a new paragraph
-- 'new line' -> start a new line
-- 'open quote' ... 'close quote' -> wrap the enclosed text in double quotes
-- 'open parenthesis' ... 'close parenthesis' -> wrap the enclosed text in parentheses
-- 'hyphen' -> join the surrounding words with a hyphen
-- 'apostrophe s' -> attach a possessive 's directly to the previous word
-- Spoken numbers stay spelled out as words -- never convert them to digits.
+- Delete filler sounds (um, uh, er) and filler uses of "like" and "you know". Collapse stuttered repeats ("the the") to one.
+- Self-corrections: when the speaker takes back what they just said and says it again differently, keep only the new version. The take-back is usually marked by a phrase such as "I mean", "no", "wait", "sorry", "actually", "scratch that", "or rather" or "make that". Delete the old version and the marker phrase, and fit the new version into the sentence.
+- False starts: when the speaker abandons a sentence and starts again, delete the abandoned part and any remark about starting over ("let me start over", "never mind").
+- Fix punctuation and capitalization.
 
-Every spoken command word above (comma, period, question mark, exclamation point, colon, semicolon, all caps, cap, new paragraph, new line, open/close quote, open/close parenthesis, hyphen, apostrophe s) is an INSTRUCTION, never content -- it must never appear literally in your output. Do not add, remove, reorder, or rephrase any other word.
+Change nothing else. Keep every other word as spoken, including slang, names, numbers and tag questions such as "right?". "I mean", "actually", "sorry" and "no" stay when they are not taking anything back. If nothing needs editing, return the text unchanged.
+
+Spoken: "Book the room for six people, no wait, eight people, and order coffee."
+Cleaned: "Book the room for eight people, and order coffee."
+
+Spoken: "The report is due Thursday. Actually, scratch that, it's due the following Monday."
+Cleaned: "The report is due the following Monday."
+
+Spoken: "Could you maybe, sorry, let me rephrase. Is the oven still under warranty?"
+Cleaned: "Is the oven still under warranty?"
+
+Spoken: "So, um, we could, like, split the bill three ways, right?"
+Cleaned: "So, we could split the bill three ways, right?"
+
+Spoken: "Honestly, I mean, the food was actually great, and no, we didn't wait long."
+Cleaned: "Honestly, I mean, the food was actually great, and no, we didn't wait long."
 ```
 
 ## Sending your own LLM request
@@ -51067,7 +51165,7 @@ The Streaming TTS API turns text into speech and sends the audio back as it is s
 
 ## Before you begin
 
-- **An API key.** Copy it from [API Keys](https://www.assemblyai.com/dashboard/home) and set it once:
+- **An API key.** Copy it from API Keys (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and set it once:
 
   ```bash
   export ASSEMBLYAI_API_KEY=<your-key>
@@ -52665,8 +52763,8 @@ What the plugin handles for you:
 Install LiveKit Agents with the AssemblyAI, OpenAI, and Silero plugins. The OpenAI plugin connects the agent to the LLM Gateway, which speaks the OpenAI Chat Completions API.
 
 ```bash
-pip install "livekit-agents[openai,silero]~=1.8" \
-    "livekit-plugins-assemblyai>=1.8.9" \
+pip install "livekit-agents[openai,silero]>=1.8.12" \
+    "livekit-plugins-assemblyai>=1.8.12" \
     python-dotenv
 ```
 
@@ -52681,8 +52779,7 @@ LIVEKIT_API_KEY=your_livekit_api_key
 LIVEKIT_API_SECRET=your_livekit_api_secret
 ```
 
-  You can get an AssemblyAI API key by [signing up for a free
-  account](https://www.assemblyai.com/dashboard/signup) and going to the [API
+  You can get an AssemblyAI API key by signing up for a free account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and going to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 Save this as `agent.py`. It uses AssemblyAI for speech-to-text, the LLM, and text-to-speech:
@@ -52739,7 +52836,7 @@ async def entrypoint(ctx: JobContext) -> None:
 
     session = AgentSession(
         stt=assemblyai.STT(
-            model="universal-3-6-pro",
+            model="assemblyai-stt-3-7-realtime-agent",
             mode="balanced",
             vad_threshold=VAD_THRESHOLD,
         ),
@@ -52778,13 +52875,13 @@ Recent `livekit-agents` releases print a deprecation notice for `console` and po
 
 Use headphones, so the agent doesn't hear its own voice. To connect the agent to LiveKit for a web or phone frontend, run `python agent.py dev`, or `lk agent dev`, with your LiveKit credentials set.
 
-For the speech-to-text settings in this example, such as `mode` and `vad_threshold`, see [Universal-3.6 Pro on LiveKit](/voice-agents/livekit-universal-3-6-pro).
+For the speech-to-text settings in this example, such as `mode` and `vad_threshold`, see [AssemblyAI-STT-3.7-Realtime-Agent on LiveKit](/voice-agents/livekit).
 
 ## Reference agent
 
   A complete starter agent that runs every model on AssemblyAI: a medical
   receptionist that takes a new patient's intake details or looks up a
-  returning patient, then books an appointment. It uses Universal-3.6 Pro with
+  returning patient, then books an appointment. It uses AssemblyAI-STT-3.7-Realtime-Agent with
   Medical Mode, the LLM Gateway, and Streaming TTS, and comes with tests and a
   Dockerfile for deploying to LiveKit Cloud. Fork it and make it yours.
 
@@ -52874,7 +52971,7 @@ The API fixes a session's voice, language, and model when it opens, so the next 
 
 ## Related
 
-- [Universal-3.6 Pro on LiveKit](/voice-agents/livekit-universal-3-6-pro): speech-to-text, turn detection, and interruption settings for LiveKit agents.
+- [AssemblyAI-STT-3.7-Realtime-Agent on LiveKit](/voice-agents/livekit): speech-to-text, turn detection, and interruption settings for LiveKit agents.
 - [Voices](/tts/voices): the AssemblyAI voices, languages, and how to name a voice.
 - [Voice cloning](/tts/cloned-voices): clone a voice from a short recording.
 - [Word boundaries](/tts/word-boundaries): the per-word timings behind aligned transcripts.
@@ -52924,8 +53021,7 @@ Set your API key in a `.env` file:
 ASSEMBLYAI_API_KEY=your_assemblyai_key
 ```
 
-  You can get an AssemblyAI API key by [signing up for a free
-  account](https://www.assemblyai.com/dashboard/signup) and going to the [API
+  You can get an AssemblyAI API key by signing up for a free account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and going to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 Save this as `bot.py`. It uses AssemblyAI for speech-to-text, the LLM, and text-to-speech:
@@ -64043,7 +64139,7 @@ console.log({
 
 **Fixes:**
 
-- Confirm your API key on the [API Keys page](https://www.assemblyai.com/dashboard/home).
+- Confirm your API key on the API Keys page (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 - Pass the key in the `Authorization` header — not as a query parameter and not prefixed with `Bearer`.
 - If you're using EU data residency, make sure the key was generated for the EU region. See [Cloud endpoints and data residency](/llm-gateway/cloud-endpoints-and-data-residency).
 
@@ -66940,7 +67036,7 @@ from overuse or sudden trauma during athletic activities
 To complete this tutorial, you need:
 
 - [Python](https://www.python.org/) or [Node](https://nodejs.org/en) installed.
-- An <a href="https://www.assemblyai.com/dashboard/signup" target="_blank">AssemblyAI account with a credit card set up</a>.
+- An AssemblyAI account with a credit card set up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 - Basic understanding of how to [Transcribe an audio file](/pre-recorded-audio/getting-started/transcribe-an-audio-file).
 
 ## Step 1: Install prerequisites
@@ -67350,7 +67446,7 @@ if (result.error) {
 
 ## Getting Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 Find more details on the current LLM Gateway pricing on the AssemblyAI [pricing page](https://www.assemblyai.com/pricing).
 
@@ -67730,7 +67826,7 @@ console.log(response.choices[0].message.content);
 
 ## Getting Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 Find more details on the current LLM Gateway pricing in the AssemblyAI [pricing page](https://www.assemblyai.com/pricing).
 
@@ -68246,7 +68342,7 @@ try {
 
 ## Getting Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 Find more details on the current LLM Gateway pricing in the AssemblyAI [pricing page](https://www.assemblyai.com/pricing).
 
@@ -68749,7 +68845,7 @@ pip install requests
 
 ### Set up your API key
 
-Import the necessary libraries and set your AssemblyAI API key, which can be found on your account [dashboard](https://www.assemblyai.com/dashboard/home):
+Import the necessary libraries and set your AssemblyAI API key, which can be found on your account dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`):
 
 ```python
 import requests
@@ -69244,7 +69340,7 @@ console.log(`\nCreated .csv file ${outputFilename}`);
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -70017,7 +70113,7 @@ matches.forEach((m, index) => {
 
 ## Getting Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://www.assemblyai.com/dashboard/signup) for an AssemblyAI account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for an AssemblyAI account and get your API key from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 
 ## Step-by-Step Instructions
 
@@ -70699,7 +70795,7 @@ console.log(JSON.stringify(quotesJson, null, 2));
 
 ## Getting Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://www.assemblyai.com/dashboard/signup/) for an AssemblyAI account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home).
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for an AssemblyAI account and get your API key from your dashboard (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 
 ## Step-by-Step Instructions
 
@@ -71265,7 +71361,7 @@ console.log(llmOutput);
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 See our [pricing page](https://www.assemblyai.com/pricing) for LLM Gateway pricing rates.
 
@@ -71745,7 +71841,7 @@ console.log(result.trim());
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -72192,7 +72288,7 @@ console.log(redactedTranscript);
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for an account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for an account and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -73197,7 +73293,7 @@ run();
 To complete this tutorial, you need:
 
 - [Python](https://www.python.org/) or [Node](https://nodejs.org/en) installed.
-- An <a href="https://www.assemblyai.com/dashboard/signup" target="_blank">AssemblyAI account with a credit card set up</a>.
+- An AssemblyAI account with a credit card set up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`).
 - A microphone connected to your computer.
 - Basic understanding of how to [Transcribe streaming audio](/streaming/getting-started/transcribe-streaming-audio).
 
@@ -74316,7 +74412,7 @@ In this guide, you'll learn how to implement real-time translation of final tran
 
 ## Step-by-Step Instructions
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ### Install Dependencies
 
@@ -74912,7 +75008,7 @@ ${answerFormat}
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -75338,7 +75434,7 @@ console.log(result);
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard.
 
 ## Step-by-Step Instructions
 
@@ -75625,7 +75721,7 @@ The acronym SOAP stands for Subjective, Objective, Assessment, and Plan. This st
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up for an AssemblyAI account](https://www.assemblyai.com/dashboard/home) and get your API key from your dashboard. You will need to upgrade your account by adding a credit card to have access to LLM Gateway.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up for an AssemblyAI account (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) and get your API key from your dashboard. You will need to upgrade your account by adding a credit card to have access to LLM Gateway.
 
 Find more details on the current pricing in the AssemblyAI [pricing page](https://www.assemblyai.com/pricing).
 
@@ -77781,6 +77877,42 @@ You'll need to update your implementation to use our recommended streaming model
 
 ---
 
+<a id="how-do-i-add-voice-typing-to-my-app-docs-faq-how-do-i-add-voice-typing-to-my-app-mdx"></a>
+
+# How do I add voice typing to my app?
+
+URL: https://www.assemblyai.com/docs/faq/how-do-i-add-voice-typing-to-my-app
+Source: docs/faq/how-do-i-add-voice-typing-to-my-app.mdx
+Navigation: FAQ > Overview > Dictation
+Description: Add voice typing (dictation) to your app with the AssemblyAI Dictation API.
+
+Use the [Dictation API](/dictation). Your app records what the user says, sends it in one request, and gets back clean text ready to drop into the text box, with the verbatim transcript alongside it. Cleanup (filler words, punctuation, self-corrections) happens in the same request, so you don't need a separate LLM call.
+
+It fits a mic button, a push-to-talk hotkey or voice notes: anywhere the user talks instead of typing. Start with the [Dictation quickstart](/dictation), then see [Uploading while recording](/dictation/uploading-while-recording) to get text back as soon as the user stops talking.
+
+---
+
+<a id="should-i-use-dictation-streaming-or-pre-recorded-for-voice-input-docs-faq-should-i-use-dictation-streaming-or-pre-recorded-for-voice-input-mdx"></a>
+
+# Should I use Dictation, Streaming, or Pre-recorded for voice input?
+
+URL: https://www.assemblyai.com/docs/faq/should-i-use-dictation-streaming-or-pre-recorded-for-voice-input
+Source: docs/faq/should-i-use-dictation-streaming-or-pre-recorded-for-voice-input.mdx
+Navigation: FAQ > Overview > Dictation
+Description: Choose between the Dictation API, Streaming STT and Pre-recorded STT for voice input.
+
+It depends on what your app does with the words:
+
+| You're building | Use |
+|---|---|
+| Voice typing: the user speaks a message, note or prompt and you insert the text | [Dictation API](/dictation) |
+| Live captions, or a voice agent that reacts while the user is still talking | [Streaming STT](/streaming/getting-started/transcribe-streaming-audio) |
+| Transcripts of recorded meetings, calls or files, with features such as speaker labels | [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file) |
+
+The Dictation API returns text that's already cleaned up and ready to send, and its price includes the cleanup. See [Models](/getting-started/models#dictation) for a comparison.
+
+---
+
 <a id="how-do-content-moderation-severity-scores-work-docs-faq-how-do-content-moderation-severity-scores-work-mdx"></a>
 
 # How do Content Moderation severity scores work?
@@ -79068,7 +79200,7 @@ In this guide, we'll show you how to configure your code to utilise the EU endpo
 
 ## Get Started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 ## Python (Requests)
 
@@ -79185,7 +79317,7 @@ In this step-by-step guide, you'll learn how to apply the model. In short, you h
 
 ## Get started
 
-Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
+Before we begin, make sure you have an AssemblyAI account and an API key. You can sign up (`https://www.assemblyai.com/dashboard/signup?utm_source=docs_md&utm_medium=ai_agent&utm_campaign=agent_docs`) for a free account and get your API key from your dashboard.
 
 The complete source code for this guide can be viewed [here](https://github.com/AssemblyAI-Community/docs-snippets/tree/main/speakers).
 
@@ -80621,7 +80753,7 @@ def on_message(ws, message):
 
   The `BACKCHANNELS` set is domain-customizable. "yes" and "no" are deliberately excluded because they often represent genuine confirmations in booking or IVR scenarios. Edit the set for your use case. `MIN_WORDS = 2` is a reasonable default. Raise it if you see frequent two-word filler ("uh okay", "yeah right") slipping through.
 
-  If you're building on LiveKit, prefer LiveKit's adaptive interruption handling. See [LiveKit > Interruption handling](/voice-agents/livekit-universal-3-6-pro#interruption-handling). The strategy on this page is the equivalent for direct-WebSocket integrations.
+  If you're building on LiveKit, prefer LiveKit's adaptive interruption handling. See [LiveKit > Interruption handling](/voice-agents/livekit#interruption-handling). The strategy on this page is the equivalent for direct-WebSocket integrations.
 
 ## Recommended configuration
 
@@ -80656,7 +80788,7 @@ For cross-cutting topics like dynamic configuration updates, scaling, latency bu
 
 - [Universal-3.5 Pro Realtime overview](/streaming/getting-started/transcribe-streaming-audio)
 - [Universal-3.5 Pro message sequence](/streaming/getting-started/transcribe-streaming-audio)
-- [LiveKit integration](/voice-agents/livekit-universal-3-6-pro)
+- [LiveKit integration](/voice-agents/livekit)
 - [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)
 - [Voice agent best practices](/voice-agents/best-practices)
 

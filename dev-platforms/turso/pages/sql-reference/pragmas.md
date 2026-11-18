@@ -20,7 +20,7 @@ PRAGMA pragma-name(value);
 
 ## Database Metadata
 
-### database\_list
+### database_list
 
 Returns one row for each attached database.
 
@@ -30,7 +30,7 @@ PRAGMA database_list;
 -- 0   | main | /path/to/database.db
 ```
 
-### page\_count
+### page_count
 
 Returns the total number of pages in the database file.
 
@@ -39,7 +39,7 @@ PRAGMA page_count;
 -- 42
 ```
 
-### page\_size
+### page_size
 
 Returns or sets the page size of the database. The page size can only be set before any tables are created.
 
@@ -50,7 +50,7 @@ PRAGMA page_size;
 PRAGMA page_size = 8192;
 ```
 
-### max\_page\_count
+### max_page_count
 
 Returns or sets the maximum number of pages allowed in the database file.
 
@@ -59,7 +59,7 @@ PRAGMA max_page_count;
 PRAGMA max_page_count = 1000000;
 ```
 
-### freelist\_count
+### freelist_count
 
 Returns the number of unused pages in the database file.
 
@@ -76,7 +76,7 @@ PRAGMA encoding;
 -- UTF-8
 ```
 
-### schema\_version
+### schema_version
 
 Returns the schema version number. This value is incremented each time the schema changes.
 
@@ -85,7 +85,7 @@ PRAGMA schema_version;
 -- 5
 ```
 
-### application\_id
+### application_id
 
 Returns or sets the application ID stored in the database header. Applications can use this 32-bit integer to identify the database file format.
 
@@ -94,7 +94,7 @@ PRAGMA application_id;
 PRAGMA application_id = 12345;
 ```
 
-### user\_version
+### user_version
 
 Returns or sets the user version number. This is a 32-bit integer available for application use.
 
@@ -105,7 +105,7 @@ PRAGMA user_version = 3;
 
 ## Schema Introspection
 
-### table\_info
+### table_info
 
 Returns one row for each column in the named table.
 
@@ -119,7 +119,7 @@ PRAGMA table_info(table-name);
 | name | TEXT | Column name |
 | type | TEXT | Declared type name |
 | notnull | INTEGER | 1 if NOT NULL constraint exists |
-| dflt\_value | TEXT | Default value expression, or NULL |
+| dflt_value | TEXT | Default value expression, or NULL |
 | pk | INTEGER | 1 if column is part of the PRIMARY KEY |
 
 ```sql theme={null}
@@ -131,7 +131,7 @@ PRAGMA table_info(users);
 -- 2   | email | TEXT    | 0       |            | 0
 ```
 
-### table\_xinfo
+### table_xinfo
 
 Similar to `table_info` but also includes hidden columns and additional metadata.
 
@@ -141,7 +141,7 @@ PRAGMA table_xinfo(table-name);
 
 Returns the same columns as `table_info` plus a `hidden` column (0 for normal columns, non-zero for hidden columns in virtual tables).
 
-### table\_list
+### table_list
 
 Returns one row for each table and view in the database.
 
@@ -152,7 +152,7 @@ PRAGMA table_list;
 -- main   | orders  | table | 4    | 0  | 0
 ```
 
-### index\_list
+### index_list
 
 Returns one row for each index on the named table.
 
@@ -170,7 +170,7 @@ PRAGMA index_list(table-name);
 | origin | TEXT | `c` for CREATE INDEX, `u` for UNIQUE constraint, `pk` for PRIMARY KEY |
 | partial | INTEGER | 1 if the index is a partial index |
 
-### index\_info
+### index_info
 
 Returns one row for each column in the named index.
 
@@ -180,7 +180,7 @@ PRAGMA index_info(index-name);
 -- 0     | 2   | email
 ```
 
-### index\_xinfo
+### index_xinfo
 
 Similar to `index_info` but includes additional columns.
 
@@ -188,7 +188,7 @@ Similar to `index_info` but includes additional columns.
 PRAGMA index_xinfo(index-name);
 ```
 
-### function\_list
+### function_list
 
 Returns one row for each SQL function available.
 
@@ -197,7 +197,7 @@ PRAGMA function_list;
 -- name | builtin | type | enc | narg | flags
 ```
 
-### pragma\_list
+### pragma_list
 
 Returns the list of all supported PRAGMA commands.
 
@@ -207,7 +207,7 @@ PRAGMA pragma_list;
 
 ## Database Configuration
 
-### journal\_mode
+### journal_mode
 
 Returns or sets the journal mode.
 
@@ -230,7 +230,7 @@ Turso supports WAL (Write-Ahead Logging) mode. Rollback journal modes (DELETE, T
 >
 > When MVCC mode is active, you can use `BEGIN CONCURRENT` for optimistic concurrent write transactions. See [Transactions](/sql-reference/statements/transactions#begin-concurrent) for details.
 
-### cache\_size
+### cache_size
 
 Returns or sets the suggested maximum number of database pages held in memory.
 
@@ -240,7 +240,7 @@ PRAGMA cache_size = 2000;          -- positive: number of pages
 PRAGMA cache_size = -2000;         -- negative: kilobytes of memory
 ```
 
-### cache\_spill
+### cache_spill
 
 Enables or disables cache spilling (writing dirty pages to the WAL before the cache is full).
 
@@ -262,7 +262,7 @@ PRAGMA synchronous = FULL;   -- fsync after every transaction (safest)
 
 Only `OFF` and `FULL` are supported in Turso.
 
-### temp\_store
+### temp_store
 
 Controls where temporary tables and indexes are stored.
 
@@ -273,16 +273,16 @@ PRAGMA temp_store = 1;    -- FILE
 PRAGMA temp_store = 2;    -- MEMORY
 ```
 
-### busy\_timeout
+### busy_timeout
 
-Sets the busy timeout in milliseconds. When a table is locked, Turso waits up to this many milliseconds before returning SQLITE\_BUSY.
+Sets the busy timeout in milliseconds. When a table is locked, Turso waits up to this many milliseconds before returning SQLITE_BUSY.
 
 ```sql theme={null}
 PRAGMA busy_timeout;
 PRAGMA busy_timeout = 5000;   -- 5 seconds
 ```
 
-### query\_only
+### query_only
 
 When enabled, prevents any changes to the database.
 
@@ -291,7 +291,7 @@ PRAGMA query_only = 1;    -- enable read-only mode
 PRAGMA query_only = 0;    -- disable read-only mode
 ```
 
-### foreign\_keys
+### foreign_keys
 
 Enables or disables foreign key constraint enforcement.
 
@@ -303,7 +303,7 @@ PRAGMA foreign_keys = OFF;
 
 Foreign key enforcement is off by default for SQLite compatibility.
 
-### legacy\_file\_format
+### legacy_file_format
 
 Returns the legacy file format flag.
 
@@ -311,7 +311,7 @@ Returns the legacy file format flag.
 PRAGMA legacy_file_format;
 ```
 
-### ignore\_check\_constraints
+### ignore_check_constraints
 
 When enabled, CHECK constraints are not enforced.
 
@@ -320,7 +320,7 @@ PRAGMA ignore_check_constraints = 1;   -- disable CHECK constraints
 PRAGMA ignore_check_constraints = 0;   -- enable CHECK constraints
 ```
 
-### data\_sync\_retry
+### data_sync_retry
 
 Controls whether Turso retries a disk sync (fsync) after a failure instead of treating it as fatal.
 
@@ -329,7 +329,7 @@ PRAGMA data_sync_retry = 1;   -- retry on sync failure
 PRAGMA data_sync_retry = 0;   -- do not retry (default)
 ```
 
-### require\_where
+### require_where
 
 > [!NOTE]
 >
@@ -347,7 +347,7 @@ PRAGMA i_am_a_dummy = 1;      -- equivalent to require_where = 1
 
 ## Integrity Checks
 
-### integrity\_check
+### integrity_check
 
 Performs a thorough integrity check of the entire database.
 
@@ -360,7 +360,7 @@ PRAGMA integrity_check(N);    -- check only the first N errors
 
 Returns `ok` if no problems are found, otherwise returns one row per error.
 
-### quick\_check
+### quick_check
 
 Performs a faster but less thorough integrity check than `integrity_check`.
 
@@ -370,7 +370,7 @@ PRAGMA quick_check;
 
 ## WAL Operations
 
-### wal\_checkpoint
+### wal_checkpoint
 
 Forces a WAL checkpoint.
 
@@ -386,7 +386,7 @@ A checkpoint writes pages from the WAL file back to the database file.
 >
 > **Turso Extension**: these pragmas apply only when MVCC mode is enabled (`PRAGMA journal_mode = mvcc`).
 
-### mvcc\_checkpoint\_threshold
+### mvcc_checkpoint_threshold
 
 Sets the amount of committed work that accumulates before Turso triggers an MVCC checkpoint.
 
@@ -394,7 +394,7 @@ Sets the amount of committed work that accumulates before Turso triggers an MVCC
 PRAGMA mvcc_checkpoint_threshold = 1000;
 ```
 
-### mvcc\_gc\_threshold
+### mvcc_gc_threshold
 
 Sets the threshold that controls how aggressively Turso garbage-collects obsolete MVCC row versions.
 
@@ -408,7 +408,7 @@ PRAGMA mvcc_gc_threshold = 1000;
 >
 > **Turso Extension**: Change Data Capture (CDC) is a Turso-specific feature that tracks all data changes for replication, auditing, and reactive applications.
 
-### capture\_data\_changes\_conn
+### capture_data_changes_conn
 
 Enables CDC for the current connection. Changes are captured to a designated table.
 
@@ -422,7 +422,7 @@ The legacy name `unstable_capture_data_changes_conn` is still accepted for backw
 | Parameter | Description |
 | - | - |
 | mode | Capture mode: `off`, `id`, `before`, `after`, `full` |
-| table\_name | Custom table name for storing changes (default: `turso_cdc`) |
+| table_name | Custom table name for storing changes (default: `turso_cdc`) |
 
 #### Capture Modes
 
@@ -440,10 +440,10 @@ The CDC table contains the following columns:
 
 | Column | Type | Description |
 | - | - | - |
-| change\_id | INTEGER | Auto-incrementing unique identifier |
-| change\_time | INTEGER | Unix epoch timestamp |
-| change\_type | INTEGER | 1 (INSERT), 0 (UPDATE), -1 (DELETE) |
-| table\_name | TEXT | Name of the changed table |
+| change_id | INTEGER | Auto-incrementing unique identifier |
+| change_time | INTEGER | Unix epoch timestamp |
+| change_type | INTEGER | 1 (INSERT), 0 (UPDATE), -1 (DELETE) |
+| table_name | TEXT | Name of the changed table |
 | id | varies | Primary key/rowid of the changed row |
 | before | BLOB | Row data before the change (modes: before, full) |
 | after | BLOB | Row data after the change (modes: after, full) |
@@ -536,7 +536,7 @@ To open an existing encrypted database, the cipher and key must be provided as U
 >
 > **Turso Extension**: Custom types are a Turso-specific feature.
 
-### list\_types
+### list_types
 
 Lists all available types (built-in and custom) with their metadata.
 

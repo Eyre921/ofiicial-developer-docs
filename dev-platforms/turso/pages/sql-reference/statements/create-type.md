@@ -219,7 +219,7 @@ CREATE TABLE products (
 
 ## Inspecting Types
 
-### PRAGMA list\_types
+### PRAGMA list_types
 
 Lists all available types, including built-in and user-defined:
 
@@ -236,7 +236,7 @@ PRAGMA list_types;
 -- ...
 ```
 
-### sqlite\_turso\_types Virtual Table
+### sqlite_turso_types Virtual Table
 
 The `sqlite_turso_types` virtual table provides the name and SQL definition of each type:
 
@@ -332,7 +332,7 @@ SELECT t.x FROM t;
 SELECT s.pos.x FROM locations AS s;
 ```
 
-#### struct\_pack()
+#### struct_pack()
 
 Creates a struct value for INSERT and UPDATE. Arguments are positional, matching the field order in the type definition.
 
@@ -341,7 +341,7 @@ INSERT INTO locations VALUES (1, struct_pack(10, 20));
 UPDATE locations SET pos = struct_pack(99, 88) WHERE id = 1;
 ```
 
-#### struct\_extract()
+#### struct_extract()
 
 Function form of dot notation — `struct_extract(col, 'field')` is equivalent to `col.field`. Primarily useful in expression indexes, where dot notation cannot be used:
 
@@ -390,7 +390,7 @@ SELECT data.telegram.chat_id, data.telegram.text FROM messages;
 -- 100|hello
 ```
 
-#### union\_value()
+#### union_value()
 
 Creates a union value for INSERT and UPDATE. The first argument is the variant tag (a string literal), the second is the value. The tag is resolved against the target column's union type.
 
@@ -399,7 +399,7 @@ INSERT INTO contacts VALUES (1, union_value('telegram', 12345));
 UPDATE contacts SET platform = union_value('slack', 'U0XYZ') WHERE id = 1;
 ```
 
-#### union\_tag()
+#### union_tag()
 
 Returns the tag name of the active variant as text.
 
@@ -410,7 +410,7 @@ SELECT id, union_tag(platform) FROM contacts ORDER BY id;
 -- 3|signal
 ```
 
-#### union\_extract()
+#### union_extract()
 
 Function form of dot notation — `union_extract(col, 'variant')` is equivalent to `col.variant`. Primarily useful in expression indexes:
 

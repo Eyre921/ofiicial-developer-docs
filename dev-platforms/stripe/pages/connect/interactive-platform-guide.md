@@ -155,11 +155,5 @@ You can [add your platform’s brand name and icon](https://docs.stripe.com/conn
 
 You can always add [Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md) to your own website in tandem with providing access to the Express Dashboard.
 
-> #### Preview API version required with the Express Dashboard
-> 
-> Combining Express Dashboard access with Stripe responsibility for negative balances is in [public preview](https://docs.stripe.com/release-phases.md). Use the current preview version string (`2026-10-28.preview`) in your Stripe SDK configuration when you create connected accounts.
-> 
-> The generated code and prompt on this page use the current generally available API version. Replace that version with the preview version string if you use this combination.
-
 > **Integration guides available:**We've generated integration guides for you. View the quickstart guide or copy integration details for use with an LLM assistant.
 

@@ -405,7 +405,7 @@ After creation, an inbound transfer moves through various states. Listen for and
 Available in: US
 > #### Request access
 > 
-> Check acceptance requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
+> Enabling Treasury for platforms doesn’t automatically grant access to check acceptance. Contact your Stripe representative to request access.
 
 Platforms in the US can use Check Scan to fund their connected accounts’ financial accounts. Capture images of an endorsed check to create a [US Paper Check](https://docs.stripe.com/api/us-paper-check.md) object that you can include in a PaymentIntent. Payment funds become available in the connected account’s `payments` financial account.
 

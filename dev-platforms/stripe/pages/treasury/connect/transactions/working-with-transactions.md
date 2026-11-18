@@ -69,7 +69,7 @@ A transaction progresses through the following statuses:
 Stripe doesn’t add more entries to a transaction after it reaches `posted` or `void`.
 
 ## Regulatory receipts
-
+Available in: US
 Some transaction types are considered *regulated* under Stripe’s money transmission licenses and require special treatment. You, the platform, must offer a transaction receipt and present disclosures to customers of your connected accounts who participate in regulated transactions.
 
 Stripe includes the `hosted_regulatory_receipt_url` attribute in each of the following money movement objects:

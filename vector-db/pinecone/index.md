@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 587 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 586 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## admin
@@ -151,7 +151,6 @@
 - `guides/data/upsert-data` — [Upsert data](pages/guides/data/upsert-data.md) · [原文](https://docs.pinecone.io/guides/data/upsert-data)
 - `guides/get-started/architecture` — [Pinecone architecture](pages/guides/get-started/architecture.md) · [原文](https://docs.pinecone.io/guides/get-started/architecture)
 - `guides/get-started/documents-api` — [Pinecone Documents API](pages/guides/get-started/documents-api.md) · [原文](https://docs.pinecone.io/guides/get-started/documents-api)
-- `guides/get-started/key-terms` — [Pinecone key terms](pages/guides/get-started/key-terms.md) · [原文](https://docs.pinecone.io/guides/get-started/key-terms)
 - `guides/get-started/overview` — [Pinecone Database](pages/guides/get-started/overview.md) · [原文](https://docs.pinecone.io/guides/get-started/overview)
 - `guides/get-started/quickstart` — [Pinecone quickstart](pages/guides/get-started/quickstart.md) · [原文](https://docs.pinecone.io/guides/get-started/quickstart)
 - `guides/indexes/back-up-an-index` — [Back up an index](pages/guides/indexes/back-up-an-index.md) · [原文](https://docs.pinecone.io/guides/indexes/back-up-an-index)

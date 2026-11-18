@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1772 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1773 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -124,6 +124,7 @@
 - `langsmith/agent-server-api/streaming/protocol-v2-event-stream-sse` — [Protocol v2 Event Stream (SSE)](pages/langsmith/agent-server-api/streaming/protocol-v2-event-stream-sse.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/streaming/protocol-v2-event-stream-sse)
 - `langsmith/agent-server-api/system/api-documentation` — [API Documentation](pages/langsmith/agent-server-api/system/api-documentation.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/system/api-documentation)
 - `langsmith/agent-server-api/system/health-check` — [Health Check](pages/langsmith/agent-server-api/system/health-check.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/system/health-check)
+- `langsmith/agent-server-api/system/root-health-check` — [Root Health Check](pages/langsmith/agent-server-api/system/root-health-check.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/system/root-health-check)
 - `langsmith/agent-server-api/system/server-information` — [Server Information](pages/langsmith/agent-server-api/system/server-information.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/system/server-information)
 - `langsmith/agent-server-api/system/system-metrics` — [System Metrics](pages/langsmith/agent-server-api/system/system-metrics.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/system/system-metrics)
 - `langsmith/agent-server-api/thread-runs/cancel-run` — [Cancel Run](pages/langsmith/agent-server-api/thread-runs/cancel-run.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/thread-runs/cancel-run)

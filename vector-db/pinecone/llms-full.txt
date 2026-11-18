@@ -1245,7 +1245,7 @@ A write unit (WU) measures the storage and compute resources a write request use
 
 > [!NOTE]
 >
-> Writes to a [document index](/guides/get-started/key-terms#document-index) use the same cost models as writes to a legacy vector index. The formulas below apply to both.
+> Writes to a [document index](/guides/indexes/index-data-overview#document-index) use the same cost models as writes to a legacy vector index. The formulas below apply to both.
 
 ### Upsert
 
@@ -1891,7 +1891,7 @@ This page shows you how to delete documents by ID, by metadata filter, or all at
 
 ## Delete documents
 
-In an index with a document schema, delete documents by ID, by metadata filter, or delete the whole namespace's contents. A request specifies exactly one of `ids`, `filter`, or `delete_all`, and can name up to 1,000 IDs.
+In a document index, delete documents by ID, by metadata filter, or delete the whole namespace's contents. A request specifies exactly one of `ids`, `filter`, or `delete_all`, and can name up to 1,000 IDs.
 
 ### Delete documents by ID
 
@@ -2316,7 +2316,7 @@ You can also fetch data in the [Pinecone console](https://app.pinecone.io/organi
 
 ## Fetch documents
 
-In an index with a document schema, fetch documents by ID or by metadata filter. A request specifies exactly one of `ids` or `filter`, and can name up to 1,000 IDs. `include_fields` selects which fields come back, and omitting it returns all of them.
+In a document index, fetch documents by ID or by metadata filter. A request specifies exactly one of `ids` or `filter`, and can name up to 1,000 IDs. `include_fields` selects which fields come back, and omitting it returns all of them.
 
 ### Fetch documents by ID
 
@@ -3088,13 +3088,13 @@ For example, to import data into the namespaces `example_namespace1` and `exampl
 
 For each namespace, create one or more files defining the data to import.
 
-To import into a namespace in an [index with a document schema](/guides/indexes/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files. Each line is one [document](/guides/get-started/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
+To import into a namespace in a [document index](/guides/indexes/index-data-overview#document-index), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files. Each line is one [document](/guides/indexes/data-modeling#documents), identical in shape to a document you'd pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 
 | Field | JSON type | Description |
 | - | - | - |
 | `_id` | `string` | Required. Unique identifier for each document within the namespace. |
 | Each schema field | Depends on the field's type | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A document doesn't need to populate every declared field, but it must include `_id` and at least one schema field. |
-| Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/get-started/key-terms#metadata). Field names can't start with `_` or `$`. |
+| Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/indexes/index-data-overview#metadata). Field names can't start with `_` or `$`. |
 
 For example, for a schema with a full-text `body` field and a `dense_vector` `embedding` field:
 
@@ -3425,7 +3425,7 @@ If the import fails, the response contains an `error` field with the reason for 
 
 ## Prepare document-schema files (JSONL)
 
-For indexes with a document schema, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation, and validated through the same code path, so a document that upserts cleanly imports cleanly.
+For document indexes, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you'd pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation, and validated through the same code path, so a document that upserts cleanly imports cleanly.
 
 ### File format
 
@@ -3827,7 +3827,7 @@ curl -X DELETE "https://$INDEX_HOST/bulk/imports/101" \
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 Also:
 
@@ -3929,7 +3929,7 @@ When an import fails, you'll see an error message with the reason for the failur
 
 > [accordion] Invalid JSONL files or documents
 >
-> For document-schema indexes, import files are JSONL: each line is one JSON document, validated against the index's [schema](#file-format). A line fails if it isn't valid JSON, or if the document doesn't conform to the schema. Each per-document error identifies the file name, row number, and document `_id`:
+> For document indexes, import files are JSONL: each line is one JSON document, validated against the index's [schema](#file-format). A line fails if it isn't valid JSON, or if the document doesn't conform to the schema. Each per-document error identifies the file name, row number, and document `_id`:
 >
 > ```
 > error reading record (file "0.jsonl", row 2, id "doc1"): {reason}
@@ -4047,7 +4047,7 @@ For a legacy vector index, see [List vector IDs](/guides/legacy/vectors-api/list
 
 ## List document IDs
 
-In an index with a document schema, `list` returns document IDs in sorted order, 100 per page, which is also the maximum page size. Each entry carries only an `_id`. To get the fields of a document, [fetch](/guides/data/fetch-data#fetch-documents) it.
+In a document index, `list` returns document IDs in sorted order, 100 per page, which is also the maximum page size. Each entry carries only an `_id`. To get the fields of a document, [fetch](/guides/data/fetch-data#fetch-documents) it.
 
 ### List all document IDs
 
@@ -5811,7 +5811,7 @@ This page shows you how to update documents in a [namespace](/guides/indexes/ind
 
 ## Update documents
 
-In an index with a document schema, [upsert](/guides/data/upsert-data#upsert-documents) replaces the whole document for a given `_id`. To change individual fields instead, use the documents update operation, which leaves the fields you don't mention unchanged.
+In a document index, [upsert](/guides/data/upsert-data#upsert-documents) replaces the whole document for a given `_id`. To change individual fields instead, use the documents update operation, which leaves the fields you don't mention unchanged.
 
 To patch specific documents, send one entry per `_id`. Include the fields you want to set, and name any fields to drop in `_remove_fields`. Both schema-declared fields and metadata fields can be set or removed this way:
 
@@ -5919,7 +5919,7 @@ For a legacy vector index, see [Upsert vectors](/guides/legacy/vectors-api/upser
 
 ## Upsert documents
 
-[Documents](/guides/get-started/key-terms#document) are the unit of data in a document index. Each field in a document is indexed according to the configuration you declared for it in the schema, not just its type. For example, a `string` field can be indexed for BM25 with the `full_text_search` config, and a separate `dense_vector` field can store vector values you provide at upsert time. A `string` field can also declare `embed` or `sparse_embed` so Pinecone embeds its text with [integrated embedding](/guides/search/integrated-embedding).
+[Documents](/guides/indexes/data-modeling#documents) are the unit of data in a document index. Each field in a document is indexed according to the configuration you declared for it in the schema, not just its type. For example, a `string` field can be indexed for BM25 with the `full_text_search` config, and a separate `dense_vector` field can store vector values you provide at upsert time. A `string` field can also declare `embed` or `sparse_embed` so Pinecone embeds its text with [integrated embedding](/guides/search/integrated-embedding).
 
 The following example upserts two documents into the `articles` namespace with the [Documents API](/guides/get-started/documents-api). Each document is indexed for BM25 ranking on `body`. The `category` field isn't declared in the schema, so it's stored as metadata and automatically indexed for filtering:
 
@@ -6695,7 +6695,7 @@ Pinecone's architecture has two layers: the resource hierarchy that organizes yo
 
 ## Resource hierarchy
 
-Your data in Pinecone is organized as a hierarchy of resources. An [organization](/guides/get-started/key-terms#organization) contains [projects](/guides/get-started/key-terms#project), a project contains [indexes](/guides/get-started/key-terms#index), and an index is divided into [namespaces](/guides/get-started/key-terms#namespace) that hold your [documents](/guides/get-started/key-terms#document) or [records](/guides/get-started/key-terms#record). For a definition of each object, see [Key terms](/guides/get-started/key-terms).
+Your data in Pinecone is organized as a hierarchy of resources. An [organization](/admin/organizations/organizations-overview) contains [projects](/admin/projects/projects-overview), a project contains [indexes](/guides/indexes/index-data-overview#indexes), and an index is divided into [namespaces](/guides/indexes/index-data-overview#namespaces) that hold your [documents](/guides/indexes/data-modeling#documents) or [records](/guides/indexes/data-modeling#records-in-legacy-indexes).
 
 This diagram shows an organization with two projects. The first project holds two indexes, and the first index is divided into three namespaces:
 
@@ -6753,7 +6753,7 @@ Each index is created for, and served by, one data-plane API. The [Documents API
 | Source text lives | In its own `string` field | In a separate store, or in metadata | In metadata |
 | Search by | Full-text, vector, or text that Pinecone embeds | Vector | Text that Pinecone embeds |
 | Configured by | Schema | Dimension and metric | Model and text field |
-| Unit of data | [Document](/guides/get-started/key-terms#document) | [Record](/guides/get-started/key-terms#record) | Record |
+| Unit of data | [Document](/guides/indexes/data-modeling#documents) | [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | Record |
 | Index | Document index | Legacy vector index | Legacy integrated index |
 
 To move data from a legacy index to a document index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
@@ -6906,192 +6906,6 @@ Indexes created before the Documents API keep working on the API they were creat
 To move a legacy index to the Documents API, including converting it without reloading your data, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).
 
 
-# Pinecone key terms
-Source: https://docs.pinecone.io/guides/get-started/key-terms
-
-The key terms and objects in Pinecone and how they relate to each other.
-
-This page defines the key terms and objects in Pinecone. For how these objects nest together, see [Architecture](/guides/get-started/architecture#resource-hierarchy).
-
-## Account and billing
-
-### Organization
-
-An organization is a group of one or more [projects](#project) that use the same billing. Organizations allow one or more [users](/admin/organizations/manage-organization-members) to control billing and permissions for all of the projects belonging to the organization.
-
-For more information, see [Organizations overview](/admin/organizations/organizations-overview).
-
-### Project
-
-A project belongs to an [organization](#organization) and contains one or more [indexes](#index). Each project belongs to exactly one organization, but only [users](/admin/projects/manage-project-members) who belong to the project can access the indexes in that project. [API keys](#api-key) and [assistants](/guides/assistant/overview) are project-specific.
-
-For more information, see [Projects overview](/admin/projects/projects-overview).
-
-### API key
-
-An API key is a unique token that [authenticates](/reference/api/authentication) and authorizes access to the [Pinecone APIs](/reference/api/introduction). API keys are project-specific.
-
-### Read unit (RU)
-
-A read unit (RU) is the unit Pinecone uses to measure and price the cost of read requests to a serverless index, including [query](/guides/cost/understand-cost#query), [fetch](/guides/cost/understand-cost#fetch), and [list](/guides/cost/understand-cost#list).
-
-For how read units are calculated, see [Understand Pinecone cost](/guides/cost/understand-cost#read-units).
-
-### Write unit (WU)
-
-A write unit (WU) is the unit Pinecone uses to measure and price the cost of write requests to a serverless index, including [upsert](/guides/cost/understand-cost#upsert), [update](/guides/cost/understand-cost#update), and [delete](/guides/cost/understand-cost#delete).
-
-For how write units are calculated, see [Understand Pinecone cost](/guides/cost/understand-cost#write-units).
-
-## Index
-
-Pinecone [serverless indexes](/guides/indexes/index-data-overview) hold your data as [documents](#document) or [records](#record), depending on how the index was created. One index per use case is the typical pattern.
-
-### Document index
-
-A document index is an index created with a document schema. It holds [documents](#document) and is served by the [Documents API](/guides/get-started/documents-api). Because a document can combine vectors, text, and metadata, a single document index often covers what previously required two indexes. Pick the ranking signal per query with `score_by`.
-
-### Legacy vector index
-
-A legacy vector index is an index created with a dense or sparse vector type. It holds [records](#record) and is served by the legacy Vectors API. New projects should use a [document index](#document-index).
-
-* In an index with dense vectors, each record has one [dense vector](#dense-vector). Records can also carry a [sparse vector](#sparse-vector) for single-index [hybrid search](/guides/legacy/vectors-api/hybrid-search-single-index).
-* In an index with sparse vectors, each record has one sparse vector.
-
-### Namespace
-
-A namespace is a partition within an index. It divides [documents](#document) or [records](#record) into separate groups so that each query scans only one namespace (faster lookups) and each customer's data can be isolated from another customer's (multitenant isolation).
-
-All [upserts](/guides/data/upsert-data), [queries](/guides/search/search-overview), and other data read and write operations always target one namespace.
-
-For more information, see [Use namespaces](/guides/indexes/index-data-overview#namespaces).
-
-### Backup
-
-A backup is a static copy of an index, including its schema. Backups only consume storage and can't be queried. You can create a backup from an index, and you can create a new index from that backup. The new index inherits the source index's schema, so it has the same fields, dimensions, and similarity metric, but it can have a different name.
-
-For more information, see [Understanding backups](/guides/indexes/backups-overview).
-
-## Data
-
-### Document
-
-A document is a JSON object with a required `_id` field, the ranking fields declared in the index's schema, and any number of metadata fields. It's the unit of data in a [document index](#document-index). A document can combine these ranking fields:
-
-* `string` fields with `full_text_search` enabled, for [full-text search](#full-text-search).
-* A `dense_vector` field, or a `string` field with `embed`, for [semantic search](#semantic-search).
-* A `sparse_vector` field, or a `string` field with `sparse_embed`, for [sparse-vector search](#sparse-vector-search).
-
-With `embed` and `sparse_embed`, Pinecone generates the vectors from your text using [integrated embedding](/guides/search/integrated-embedding). You choose the [scoring method](#scoring-methods) per query with `score_by`.
-
-Legacy vector indexes and legacy integrated indexes hold [records](#record) instead.
-
-For more information, see [Full-text search](/guides/search/full-text-search).
-
-#### Document fields
-
-* **Schema limits**: Up to 100 `string` fields with `full_text_search` enabled, at most one dense field (a `dense_vector` field or a `string` field with `embed`), and at most one sparse field (a `sparse_vector` field or a `string` field with `sparse_embed`) per index.
-* **Value shapes**: A `dense_vector` field holds an array of floats. A `sparse_vector` field is an object with two parallel arrays, `indices` (token positions) and `values` (token weights). A metadata `string_list` field holds an array of strings.
-* **Metadata fields**: Any field on an upserted document that's not declared in the schema is stored, returned via `include_fields`, and automatically indexed for filtering. Pinecone infers metadata field types (string, number, boolean, array of strings) from the values you upsert.
-* **Field names**: Names must be unique, non-empty strings of 64 bytes or less. They can't start with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators).
-
-### Record
-
-A record is the unit of data in a [legacy vector index](#legacy-vector-index). It contains:
-
-* A [record ID](#record-id).
-* One vector, or a dense and a sparse vector for single-index [hybrid search](/guides/search/hybrid-search).
-* Optional [metadata](#metadata).
-
-In a [legacy integrated index](/guides/legacy/records-api/create-an-integrated-index) created with `create_index_for_model`, you can upsert raw text instead of a vector, and Pinecone embeds it at index time. When an item has more than one searchable field, such as a text field ranked by BM25 and a `dense_vector` field for similarity, model it as a [document](#document).
-
-For more information, see [Upsert data](/guides/data/upsert-data).
-
-#### Record ID
-
-A record ID is a record's unique ID. [Use ID prefixes](/guides/indexes/data-modeling#use-structured-ids) that reflect the type of data you're storing.
-
-### Dense vector
-
-A dense vector, also referred to as a vector embedding or simply a vector, is a series of numbers that represent the meaning and relationships of data. Each vector is a point in a multidimensional space, and each number is a coordinate in that space. Vectors that are closer together in that space are semantically similar.
-
-Dense vectors power [semantic search](#semantic-search).
-
-You use a dense embedding model to convert data to dense vectors. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/indexes/index-configuration#embedding-models) and integrated with an index.
-
-For more information about dense vectors, see [What are vector embeddings?](https://www.pinecone.io/learn/vector-embeddings/).
-
-### Sparse vector
-
-Sparse vectors are often used to represent documents or queries in a way that captures keyword information. Each dimension in a sparse vector typically represents a word from a dictionary, and the non-zero values represent the importance of these words in the document.
-
-Sparse vectors have a large number of dimensions, but a small number of those values are non-zero. Because most values are zero, Pinecone stores sparse vectors efficiently by keeping only the non-zero values along with their corresponding indices.
-
-Sparse vectors power [sparse-vector search](#sparse-vector-search), and they can coexist with dense vectors in a single legacy vector index for [hybrid search](/guides/legacy/vectors-api/hybrid-search-single-index) on the legacy Vectors API. To convert data to sparse vectors, use a sparse embedding model. The embedding model can be external to Pinecone or [hosted on Pinecone infrastructure](/guides/indexes/index-configuration#embedding-models) and integrated with an index.
-
-For more information about sparse vectors, see [Sparse retrieval](https://www.pinecone.io/learn/sparse-retrieval/).
-
-### Metadata
-
-Metadata is additional information included in a document or record to provide more context and enable additional [filtering capabilities](/guides/indexes/index-data-overview#metadata). For example, the original text that was embedded can be stored in the metadata.
-
-## Search
-
-### Full-text search
-
-Full-text search ranks documents by BM25 token matching, with optional Lucene query syntax, over `string` fields declared with `full_text_search`. These are often called text fields. Full-text search doesn't need a model.
-
-* **At index time**: Pinecone tokenizes text and records term frequencies and field lengths.
-* **At query time**: Pinecone computes BM25 scores, including inverse document frequency (IDF).
-* **Tokens**: A token is a unit produced by Pinecone's text analyzer (split on whitespace and punctuation, lowercased by default, and optionally stemmed), not the subword unit an embedding model uses internally. See [Tokens and analyzers](/guides/search/full-text-search/text-processing#tokens-and-analyzers) for the full pipeline.
-
-Use full-text search for keyword and phrase search over text content — product names, identifiers, technical terms, code, and other cases where queries and documents share specific tokens.
-
-For more information, see [Full-text search](/guides/search/full-text-search).
-
-### Semantic search
-
-When you search with a [dense vector](#dense-vector), Pinecone retrieves the documents or records whose dense vectors are most semantically similar to the query. This is also called nearest neighbor search, similarity search, or vector search.
-
-### Sparse-vector search
-
-When you search with a [sparse vector](#sparse-vector), Pinecone retrieves the documents or records whose sparse vectors share the most weighted tokens with the query vector. This is also called sparse-vector retrieval.
-
-Sparse vectors are produced by a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0), a learned-sparse encoder that predicts per-token weights and includes term expansion (related concepts that don't appear in the source text). You can also bring your own sparse model.
-
-Sparse-vector search and [full-text search](#full-text-search) both retrieve on token-level signals, but they weight tokens differently:
-
-* **Full-text search**: Uses BM25, a statistical function with no model. Use it when you want a strong baseline with nothing to manage.
-* **Sparse-vector search**: Uses a learned encoder that weights tokens at index time and can expand to related terms. Use it when a learned encoder better captures your domain's term importance and synonyms.
-
-### Scoring methods
-
-On a document index, you choose a scoring method per query with `score_by`. The value of `type` selects the method:
-
-* `text`: BM25 token matching over one or more text fields.
-* `query_string`: [Lucene query syntax](/guides/search/full-text-search/query-syntax) across one or more text fields, including cross-field boolean queries.
-* `dense_vector`: Vector similarity.
-* `sparse_vector`: Sparse-vector similarity.
-* `embed`: Vector similarity, with Pinecone embedding the query text using the field's `embed` model.
-* `sparse_embed`: Sparse-vector similarity, with Pinecone embedding the query text using the field's `sparse_embed` model.
-
-You can combine several `text` and `query_string` clauses in one query. Any other type must be the only clause. To combine two or more signals, restrict a dense search with a text-match [filter](#metadata-filters), or run separate searches and merge the results client-side.
-
-### Metadata filters
-
-You can combine any scoring method with a metadata filter. Filters support:
-
-* **Logical operators**: `$and`, `$or`, and `$not`.
-* **Existence checks**: `$exists`.
-* **Text-match operators**: `$match_phrase`, `$match_all`, and `$match_any` match phrases and tokens in text fields.
-
-For more information, see [Metadata filter expressions](/guides/indexes/index-data-overview#metadata-filter-expressions).
-
-### Standalone embedding and reranking
-
-Standalone embedding and reranking let you call [embedding models](/guides/indexes/index-configuration#embedding-models) and [reranking models](/guides/search/rerank-results#reranking-models) hosted on Pinecone's infrastructure directly, separately from index operations.
-
-
 # Pinecone Database
 Source: https://docs.pinecone.io/guides/get-started/overview
 
@@ -7132,9 +6946,9 @@ With Pinecone Database, you can:
 >
 > One schema for your text, vectors, and metadata, searched through one API
 
-> [card] [Key terms](/guides/get-started/key-terms)
+> [card] [Architecture](/guides/get-started/architecture)
 >
-> Organizations, projects, indexes, namespaces, documents, and records
+> How organizations, projects, indexes, and namespaces fit together
 
 > [card] [Data modeling](/guides/indexes/data-modeling)
 >
@@ -9752,7 +9566,7 @@ These errors are returned when you start a conversion, before a job exists:
 # Create an index
 Source: https://docs.pinecone.io/guides/indexes/create-an-index
 
-Create a Pinecone serverless index for full-text (BM25), semantic (dense vector), sparse-vector, or hybrid search with a document schema.
+Create a Pinecone document index for full-text (BM25), semantic (dense vector), sparse-vector, or hybrid search.
 
 A Pinecone index lets you store and search your data. A document index stores JSON documents whose fields you declare in a schema at creation. It can combine dense vector, sparse vector, and full-text (`string`) fields in one document, so a single index serves [full-text search](/guides/search/full-text-search), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/sparse-vector-search).
 
@@ -9764,13 +9578,13 @@ To create a legacy vector index, see [Create a vector index](/guides/legacy/vect
 
 ## Create a document index
 
-An index with a document schema stores typed JSON documents. The schema declares how each ranking field is indexed: as a `string` field with `full_text_search` enabled for BM25 ranking, a `dense_vector` for ANN similarity, or a `sparse_vector`. A single index can mix all three ranking field types, and at query time you pick the ranking signal with `score_by`. Any other fields you upsert are stored as metadata, auto-indexed for filtering at upsert time.
+A document index stores typed JSON documents. The schema declares how each ranking field is indexed: as a `string` field with `full_text_search` enabled for BM25 ranking, a `dense_vector` for ANN similarity, or a `sparse_vector`. A single index can mix all three ranking field types, and at query time you pick the ranking signal with `score_by`. Any other fields you upsert are stored as metadata, auto-indexed for filtering at upsert time.
 
 > [!NOTE]
 >
 > Full-text search and integrated embedding are different features. A `string` field with `full_text_search` is indexed for BM25 keyword ranking and Lucene queries. It doesn't create vectors or call an embedding model. To have Pinecone turn a field's text into vectors, use [integrated embedding](/guides/search/integrated-embedding): declare `embed` or `sparse_embed` on a `string` field in a document index. The legacy `create_index_for_model` path does this too, creating a [legacy integrated index](/guides/legacy/records-api/create-an-integrated-index) served by the legacy Records API.
 
-Indexes with document schemas use API version `2026-07`, supported through REST and the Python (v10 or later), Node.js (v9 or later), and Go (v7 or later) SDKs. For other languages, call the REST endpoint directly.
+Document indexes use API version `2026-07`, supported through REST and the Python (v10 or later), Node.js (v9 or later), and Go (v7 or later) SDKs. For other languages, call the REST endpoint directly.
 
 ### Minimal: BM25 on a single text field
 
@@ -9818,7 +9632,7 @@ curl -X POST "https://api.pinecone.io/indexes" \
 
 ### Multi-field schema: BM25 + dense vector
 
-A single index with a document schema can hold `string` fields with `full_text_search` and `dense_vector` ranking fields together, and the same schema can also include a `sparse_vector` field. A single search request ranks by one scoring type. Multi-field BM25 is supported: use multiple `text` clauses on different fields, or one `query_string` clause spanning fields. Any scoring method can be combined with metadata filters, including text-match filters (`$match_phrase`, `$match_all`, `$match_any`) on `string` fields with `full_text_search`.
+A single document index can hold `string` fields with `full_text_search` and `dense_vector` ranking fields together, and the same schema can also include a `sparse_vector` field. A single search request ranks by one scoring type. Multi-field BM25 is supported: use multiple `text` clauses on different fields, or one `query_string` clause spanning fields. Any scoring method can be combined with metadata filters, including text-match filters (`$match_phrase`, `$match_all`, `$match_any`) on `string` fields with `full_text_search`.
 
 ```python Python theme={null}
 import os
@@ -10040,9 +9854,9 @@ Metadata values must be one of these types:
 # Index configuration
 Source: https://docs.pinecone.io/guides/indexes/index-configuration
 
-Reference for the naming rules, cloud regions, similarity metrics, and hosted embedding models you choose when you create a Pinecone index.
+Choose the name, cloud region, dimension, similarity metric, and hosted embedding model for a Pinecone index when you create it.
 
-When you create a Pinecone index, you choose a name, the cloud region where it's hosted, a similarity metric for dense vectors, and, for integrated embedding, a hosted embedding model. To index only the metadata fields you filter on, rather than all of them, see [Configure metadata indexing](/guides/indexes/configure-metadata-indexing).
+When you create a Pinecone index, you choose a name, the cloud region where it's hosted, a dimension and similarity metric for dense vectors, and, for integrated embedding, a hosted embedding model. To index only the metadata fields you filter on, rather than all of them, see [Configure metadata indexing](/guides/indexes/configure-metadata-indexing).
 
 ## Index names
 
@@ -10069,13 +9883,17 @@ The cloud and region can't be changed after a serverless index is created.
 >
 > On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
+## Dimensions
+
+A dimension is the number of values in a dense vector. You set it with `dimension` on a `dense_vector` field, or on a legacy vector index. It must match the output of the embedding model that produces your vectors, and every vector you upsert or search with must have that many values. With [integrated embedding](/guides/search/integrated-embedding), you can set `dimension` in the field's `embed` object, or leave it out to use the model's default. For each model's supported dimensions, see the [model gallery](/models/overview).
+
 ## Similarity metrics
 
 When creating an index that stores dense vectors, you can choose from the following similarity metrics. For the most accurate results, choose the similarity metric used to train the embedding model for your vectors. For more information, see [Vector Similarity Explained](https://www.pinecone.io/learn/vector-similarity/).
 
 > [!NOTE]
 >
-> Indexes that store [sparse vectors](/guides/get-started/key-terms#sparse-vector) must use the `dotproduct` metric.
+> Indexes that store [sparse vectors](/guides/search/sparse-vector-search) must use the `dotproduct` metric.
 
 > [accordion] Euclidean
 >
@@ -10116,7 +9934,7 @@ Each model's page lists the parameters it accepts and its specs, such as dimensi
 # Index data overview
 Source: https://docs.pinecone.io/guides/indexes/index-data-overview
 
-Learn how indexing works in Pinecone: serverless indexes, schemas, namespaces, integrated embedding, and metadata filtering.
+Learn how Pinecone indexes store and search your data, including schemas, namespaces, integrated embedding, and metadata filtering.
 
 ## Indexes
 
@@ -10128,13 +9946,13 @@ You define a `schema` with `pc.indexes.create` (or `POST /indexes`).
 
 * One schema can combine `dense_vector`, `sparse_vector`, and `full_text_search`-enabled `string` fields.
 * A single index can serve [full-text search](/guides/search/full-text-search) (BM25 with Lucene queries), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/sparse-vector-search) together, often covering what previously required two indexes.
-* Holds [documents](/guides/get-started/key-terms#document), read and written through the [Documents API](/guides/get-started/documents-api). Pick the ranking signal per query with `score_by`.
+* Holds [documents](/guides/indexes/data-modeling#documents), read and written through the [Documents API](/guides/get-started/documents-api). Pick the ranking signal per query with `score_by`.
 
 ### Legacy vector index
 
 Created with `pc.create_index(dimension=..., metric=..., vector_type=...)`. You don't declare fields yourself; the SDK builds the schema from the dimension, metric, and vector type you provide.
 
-* Holds [records](/guides/get-started/key-terms#record), read and written through the legacy Vectors API.
+* Holds [records](/guides/indexes/data-modeling#records-in-legacy-indexes), read and written through the legacy Vectors API.
 * Serves [dense and sparse vector queries](/guides/legacy/vectors-api/query-vectors).
 
 For how to create one, see [Create a legacy vector index](/guides/legacy/vectors-api/create-a-vector-index).
@@ -10172,8 +9990,6 @@ Learn more:
 
 A dense vector encodes the meaning of text, images, or other data as a fixed-length list of numbers. Items with similar meaning sit close to each other in vector space, and a query returns the records closest to the query vector. This is **semantic search** (also called nearest neighbor search, similarity search, or vector search).
 
-For the underlying concept, see [Dense vector](/guides/get-started/key-terms#dense-vector).
-
 Learn more:
 
 * [Create an index for dense vectors](/guides/legacy/vectors-api/create-a-vector-index#dense-vectors)
@@ -10184,7 +10000,7 @@ Learn more:
 
 A sparse vector represents tokens (or token-like features) and their weights, with the vast majority of dimensions zero. A query returns records that share the most weighted tokens with the query vector, which is called **sparse-vector search**.
 
-Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0); you can also bring your own. For the underlying concept and the distinction from full-text search, see [Sparse-vector search](/guides/get-started/key-terms#sparse-vector-search).
+Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0), and you can also bring your own. For how sparse-vector search differs from full-text search, see [Sparse-vector search](/guides/search/sparse-vector-search).
 
 Learn more:
 
@@ -10253,7 +10069,7 @@ flowchart LR
 
 ## Vector embedding
 
-A schema declares the vector fields your index uses: a [dense vector](/guides/get-started/key-terms#dense-vector) field, a [sparse vector](/guides/get-started/key-terms#sparse-vector) field, or both. Dense vectors represent the semantics of data such as text, images, and audio; sparse vectors capture keyword information.
+A schema declares the vector fields your index uses: a [dense vector](#semantic-search) field, a [sparse vector](#sparse-vector-search) field, or both. Dense vectors represent the meaning of data such as text, images, and audio. Sparse vectors capture keyword information.
 
 To turn your source data into vectors, you use an embedding model. You can either use Pinecone's integrated embedding models to convert your data to vectors automatically, or use an external embedding model and bring your own vectors to Pinecone.
 
@@ -10932,11 +10748,7 @@ index: {
 }
 ```
 
-> [!WARNING]
->
-> **Do not target an index by name in production.**
->
-> When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
+When you target an index by name, the SDK first calls `describe_index` to look up the index host. That's an extra call to `api.pinecone.io` and another point of failure, so in production, [target the index by host](/guides/indexes/target-an-index#target-by-index-host-recommended) instead.
 
 ## Delete an index
 
@@ -11105,7 +10917,7 @@ To enable deletion protection when creating a new index:
 
 ```python Python theme={null}
 # pip install pinecone
-# Serverless index with a document schema
+# Serverless document index
 from pinecone import Pinecone, SchemaBuilder
 
 pc = Pinecone(api_key="YOUR_API_KEY")
@@ -11126,7 +10938,7 @@ pc.indexes.create(
 
 ```javascript JavaScript theme={null}
 // npm install @pinecone-database/pinecone
-// Serverless index with a document schema
+// Serverless document index
 import { Pinecone } from '@pinecone-database/pinecone';
 
 const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
@@ -11184,7 +10996,7 @@ func main() {
         log.Fatalf("Failed to create Client: %v", err)
     }
 
-    // Serverless index with a document schema
+    // Serverless document index
     deletionProtection := pinecone.DeletionProtectionEnabled
     idx, err := pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
         Name: "docs-example",
@@ -11500,7 +11312,7 @@ func main() {
         log.Fatalf("Failed to create Client: %v", err)
     }
 
-    // Serverless index with a document schema
+    // Serverless document index
     deletionProtection := pinecone.DeletionProtectionDisabled
     idx, err := pc.CreateIndex(ctx, &pinecone.CreateIndexRequest{
         Name: "docs-example",
@@ -12786,11 +12598,9 @@ Source: https://docs.pinecone.io/guides/indexes/target-an-index
 
 Target a Pinecone index by host URL (recommended for production) or by name for data operations like upsert, query, and fetch across SDKs.
 
-> [!WARNING]
->
-> **Do not target an index by name in production.**
->
-> When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
+Every index has its own unique host URL, such as `docs-example-4zo0ijk.svc.us-east1-aws.pinecone.io`. Data operations, such as upsert, search, and fetch, go to the index host. Operations that manage indexes go to `api.pinecone.io` instead.
+
+When you target an index by name, the SDK first calls `describe_index` to look up the index host. That's an extra call to `api.pinecone.io` and another point of failure, so in production, [target the index by host](/guides/indexes/target-an-index#target-by-index-host-recommended) instead.
 
 ## Target by index host (recommended)
 
@@ -13562,11 +13372,7 @@ curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
 # }
 ```
 
-> [!WARNING]
->
-> **Do not target an index by name in production.**
->
-> When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
+When you target an index by name, the SDK first calls `describe_index` to look up the index host. That's an extra call to `api.pinecone.io` and another point of failure, so in production, [target the index by host](/guides/indexes/target-an-index#target-by-index-host-recommended) instead.
 
 ## Delete a pod-based index
 
@@ -15338,6 +15144,354 @@ When you're ready to cutover to your new serverless index:
 * [Limits](/reference/api/database-limits)
 * [Serverless architecture](/guides/get-started/architecture)
 * [Understanding serverless cost](/guides/cost/understand-cost)
+
+
+# Scale pod-based indexes
+Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/scale-pod-based-indexes
+
+Scale Pinecone pod-based indexes by adding pods or replicas. Pod indexes are legacy and unavailable to new customers, and serverless scales automatically.
+
+> [!WARNING]
+>
+> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
+
+While your index can still serve queries, new upserts may fail as the capacity becomes exhausted. If you need to scale your environment to accommodate more vectors, you can scale vertically by increasing the size of your existing pods, or horizontally by adding pods or replicas.
+
+This page explains how you can scale your [pod-based indexes](/guides/indexes/index-data-overview#pod-based-indexes) horizontally and vertically.
+
+## Vertical vs. horizontal scaling
+
+Vertical scaling increases the size of your existing pods, while horizontal scaling adds pods or replicas. Adding replicas also improves resilience and is an important part of a highly available (HA) setup. The following sections explain both approaches so you can choose the right strategy for your index.
+
+## Vertical scaling
+
+[Vertical scaling](https://www.pinecone.io/learn/testing-p2-collections-scaling/#vertical-scaling-on-p1-and-s1) is fast and involves no downtime. This is a good choice when you can't pause upserts and must continue serving traffic. It also allows you to double your capacity instantly. However, there are some factors to consider.
+
+### Increase pod size
+
+The default [pod size](/guides/indexes/index-data-overview#pod-size-and-performance) is `x1`. You can increase the size to `x2`, `x4`, or `x8`. Moving up to the next size effectively doubles the capacity of the index. If you need to scale by smaller increments, then consider horizontal scaling.
+
+Increasing the pod size of your index doesn't result in downtime. Reads and writes continue uninterrupted during the scaling process, which completes in about 10 minutes. You can't reduce the pod size of your indexes.
+
+The number of base pods you specify when you initially create the index is static and can't be changed. For example, if you start with 10 pods of `p1.x1` and vertically scale to `p1.x2`, this equates to 20 pods worth of usage. Pod types (performance versus storage pods) also can't be changed with vertical scaling. If you want to change your pod type while scaling, then horizontal scaling is the better option.
+
+#### When to increase pod size
+
+If your index is at around 90% fullness, we recommend increasing its size. This helps ensure optimal performance and prevents upserts from failing due to capacity constraints.
+
+#### How to increase pod size
+
+You can increase the pod size in the Pinecone console or using the API.
+
+> [tab] Console
+>
+> 1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
+> 2. Select the project containing the index you want to configure.
+> 3. Go to **Database > Indexes**.
+> 4. Select the index.
+> 5. Click **ellipsis (...) menu > Configure**.
+> 6. In the dropdown, choose the pod size to use.
+> 7. Click **Confirm**.
+
+> [tab] API
+>
+> Use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
+>
+> **Example**
+>
+> The following example assumes that `docs-example` has size `x1` and increases the size to `x2`.
+>
+> ```Python Python theme={null}
+> from pinecone.grpc import PineconeGRPC as Pinecone
+>
+> pc = Pinecone(api_key="YOUR_API_KEY")
+>
+> pc.configure_index("docs-example", pod_type="s1.x2")
+> ```
+>
+> ```JavaScript JavaScript theme={null}
+> import { Pinecone } from '@pinecone-database/pinecone'
+>
+> const pinecone = new Pinecone({
+>   apiKey: 'YOUR_API_KEY'
+> });
+>
+> await pc.configureIndex('docs-example', {
+>   spec: {
+>     pod: {
+>       podType: 's1.x2',
+>     },
+>   },
+> });
+> ```
+>
+> ```java Java theme={null}
+> import io.pinecone.clients.Pinecone;
+>
+> public class ConfigureIndexExample {
+>     public static void main(String[] args) {
+>         Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
+>         pc.configurePodsIndex("docs-example", "s1.x2", null, null, null);
+>     }
+> }
+> ```
+>
+> ```go Go theme={null}
+> package main
+>
+> import (
+>     "context"
+>     "fmt"
+>     "log"
+>
+>     "github.com/pinecone-io/go-pinecone/v7/pinecone"
+> )
+>
+> func main() {
+>     ctx := context.Background()
+>
+>     pc, err := pinecone.NewClient(pinecone.NewClientParams{
+>         ApiKey: "YOUR_API_KEY",
+>     })
+>     if err != nil {
+>         log.Fatalf("Failed to create Client: %v", err)
+>     }
+>
+>     idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{PodType: "s1.x2"})
+>   	if err != nil {
+>         log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
+>     } else {
+>         fmt.Printf("Successfully configured index \"%v\"", idx.Name)
+>     }
+> }
+> ```
+>
+> ```bash curl theme={null}
+> PINECONE_API_KEY="YOUR_API_KEY"
+>
+> curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example-curl" \
+>   -H "Content-Type: application/json" \
+>   -H "Api-Key: $PINECONE_API_KEY" \
+>   -H "X-Pinecone-Api-Version: 2025-10" \
+>   -d '{
+>          "pod_type": "s1.x2"
+>       }'
+> ```
+
+> [!NOTE]
+>
+> The size change can take up to 15 minutes to complete.
+
+### Decrease pod size
+
+After creating an index, you can't vertically downscale the index/pod size. Instead, you must [create a collection](/guides/legacy/pod-based-indexes/back-up-a-pod-based-index) and then [create a new index from your collection](/guides/legacy/pod-based-indexes/restore-a-pod-based-index) and specify your desired pod size.
+
+### Check the status of a pod size change
+
+To check the status of a pod size change, use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
+
+The index fullness metric provided by the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation may be inaccurate until the resizing process is complete.
+
+**Example**
+
+The following example uses `describe_index` to get the index status of the index `docs-example`. The `status` field contains the key-value pair `"state":"ScalingUp"`, indicating that the resizing process is still ongoing.
+
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.describe_index(name="docs-example")
+```
+
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await pc.describeIndex({
+  name: "docs-example",
+});
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+import org.openapitools.db_control.client.model.*;
+
+public class DescribeIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
+        IndexModel indexModel = pc.describeIndex("docs-example");
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.DescribeIndex(ctx, "docs-example")
+  	if err != nil {
+        log.Fatalf("Failed to describe index %v: %v", idx.Name, err)
+    } else {
+        fmt.Printf("Successfully found index: %v", idx.Name)
+    }
+}
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s -X GET "https://api.pinecone.io/indexes/docs-example-curl" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10"
+```
+
+## Horizontal scaling
+
+There are two approaches to horizontal scaling in Pinecone: adding pods and adding replicas. Adding pods increases all resources but requires a pause in upserts; adding replicas only increases throughput and requires no pause in upserts.
+
+### Add pods
+
+Adding additional pods to a running index isn't supported directly. However, you can increase the number of pods by using our [collections](/guides/legacy/pod-based-indexes/understanding-collections) feature to create a new index with more pods.
+
+A collection is an immutable snapshot of your index in time: a collection stores the data but not the original index configuration. When you [create an index from a collection](/guides/legacy/pod-based-indexes/create-a-pod-based-index#create-a-pod-index-from-a-collection), you define the new index configuration. This allows you to scale the base pod count horizontally without scaling vertically.
+
+The main advantage of this approach is that you can scale incrementally instead of doubling capacity as with vertical scaling. Also, you can redefine pod types if you are experimenting or if you need to use a different pod type, such as performance-optimized pods or storage-optimized pods. Another advantage of this method is that you can change your [metadata configuration](/guides/legacy/pod-based-indexes/manage-pod-based-indexes#selective-metadata-indexing) to redefine metadata fields as indexed or stored-only. This is important when tuning your index for the best throughput.
+
+Here are the general steps to make a copy of your index and create a new index while changing the pod type, pod count, metadata configuration, replicas, and all typical parameters when creating a new collection:
+
+1. Pause upserts.
+2. Create a collection from the current index.
+3. Create an index from the collection with new parameters.
+4. Continue upserts to the newly created index. Note: the URL has likely changed.
+5. Delete the old index if desired.
+
+For detailed steps on creating the collection, see [backup indexes](/guides/indexes/back-up-an-index#create-a-backup-using-a-collection). For steps on creating an index from a collection, see [Create an index from a collection](/guides/legacy/pod-based-indexes/create-a-pod-based-index#create-a-pod-index-from-a-collection).
+
+### Add replicas
+
+Each replica duplicates the resources and data in an index. This means that adding additional replicas increases the throughput of the index but not its capacity. However, adding replicas doesn't require downtime.
+
+Throughput in terms of queries per second (QPS) scales linearly with the number of replicas per index.
+
+#### When to add replicas
+
+Add replicas for two reasons:
+
+* **Data redundancy and availability**: When you add a replica to your index, the Pinecone controller chooses a zone in the same region that doesn't currently have a replica, up to a maximum of three zones. Your fourth and subsequent replicas are hosted in zones that already have a replica. If your application requires multizone redundancy, we recommend this approach.
+* **Increased QPS**: Each new replica adds another pod for reading from your index and generally increases QPS by the same amount as a single pod. For example, if you consistently get 25 QPS for a single pod, each replica adds 25 more QPS.
+
+> [!WARNING]
+>
+> Running a single replica does not provide a highly available setup and is therefore not covered by the uptime guarantees included in Enterprise SLAs.
+
+If you don't see an increase in QPS after adding replicas, add multiprocessing to your application to ensure you're running parallel operations. You can use the [Pinecone gRPC SDK](/guides/legacy/vectors-api/upsert-vectors#python-sdk-with-grpc) or your multiprocessing library of choice.
+
+#### How to add replicas
+
+To add replicas, use the `configure_index` endpoint to increase the number of replicas for your index:
+
+```Python Python theme={null}
+from pinecone.grpc import PineconeGRPC as Pinecone
+
+pc = Pinecone(api_key="YOUR_API_KEY")
+
+pc.configure_index("docs-example", replicas=4)
+```
+
+```JavaScript JavaScript theme={null}
+import { Pinecone } from '@pinecone-database/pinecone'
+
+const pc = new Pinecone({
+  apiKey: 'YOUR_API_KEY'
+});
+
+await pc.configureIndex('docs-example', {
+  spec: {
+    pod: {
+      replicas: 4,
+    },
+  },
+});
+```
+
+```java Java theme={null}
+import io.pinecone.clients.Pinecone;
+
+public class ConfigureIndexExample {
+    public static void main(String[] args) {
+        Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
+        pc.configurePodsIndex("docs-example", 4, null);
+    }
+}
+```
+
+```go Go theme={null}
+package main
+
+import (
+    "context"
+    "fmt"
+    "log"
+
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
+)
+
+func main() {
+    ctx := context.Background()
+
+    pc, err := pinecone.NewClient(pinecone.NewClientParams{
+        ApiKey: "YOUR_API_KEY",
+    })
+    if err != nil {
+        log.Fatalf("Failed to create Client: %v", err)
+    }
+
+    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{Replicas: 4})
+  	if err != nil {
+        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
+    } else {
+        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
+    }
+}
+```
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example-curl" \
+  -H "Content-Type: application/json" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2025-10" \
+  -d '{
+         "replicas": 4
+      }'
+```
+
+## Next steps
+
+* See our learning center for more information on [vertical scaling](https://www.pinecone.io/learn/testing-p2-collections-scaling/#vertical-scaling-on-p1-and-s1).
+* Learn more about [collections](/guides/legacy/pod-based-indexes/understanding-collections).
 
 
 # Understanding pod-based indexes
@@ -19714,9 +19868,9 @@ You can also import Parquet files into a legacy integrated index, but its record
 >
 > | Column name | Parquet type | Description |
 > | - | - | - |
-> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/get-started/key-terms#record-id). |
-> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/key-terms#dense-vector). |
-> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/get-started/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/indexes/data-modeling#records-in-legacy-indexes). |
+> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/search/semantic-search). |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/indexes/index-data-overview#metadata) for each record. To omit from specific rows, use `NULL`. |
 >
 > > [!NOTE]
 > >
@@ -19737,9 +19891,9 @@ You can also import Parquet files into a legacy integrated index, but its record
 >
 > | Column name | Parquet type | Description |
 > | - | - | - |
-> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/get-started/key-terms#record-id). |
-> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/get-started/key-terms#sparse-vector). |
-> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/get-started/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/indexes/data-modeling#records-in-legacy-indexes). |
+> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/search/sparse-vector-search). |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/indexes/index-data-overview#metadata) for each record. To omit from specific rows, use `NULL`. |
 >
 > > [!NOTE]
 > >
@@ -19760,10 +19914,10 @@ You can also import Parquet files into a legacy integrated index, but its record
 >
 > | Column name | Parquet type | Description |
 > | - | - | - |
-> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/get-started/key-terms#record-id). |
-> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/key-terms#dense-vector). |
-> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/get-started/key-terms#sparse-vector). To omit from specific rows, use `NULL`. |
-> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/get-started/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/indexes/data-modeling#records-in-legacy-indexes). |
+> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/search/semantic-search). |
+> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/search/sparse-vector-search). To omit from specific rows, use `NULL`. |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/indexes/index-data-overview#metadata) for each record. To omit from specific rows, use `NULL`. |
 >
 > > [!NOTE]
 > >
@@ -25333,9 +25487,9 @@ Pinecone provides [hosted reranking models](/guides/search/rerank-results#rerank
 
 ## Filter by metadata
 
-Every [record](/guides/get-started/key-terms#record) in an index must contain an ID and a dense or sparse vector, depending on the [type of index](/guides/indexes/index-data-overview#indexes). In addition, you can include metadata key-value pairs to store related information or context. When you search the index, you can then include a metadata filter to limit the search to records matching a filter expression.
+Every [document](/guides/indexes/data-modeling#documents) in a document index has an `_id` and the fields its schema declares. It can also carry [metadata](/guides/indexes/index-data-overview#metadata), key-value pairs that store related information or context. When you search the index, you can include a metadata filter to limit the search to documents that match a filter expression.
 
-For example, if an index contains records about books, you could use a metadata field to associate each record with a genre, like `"genre": "fiction"` or `"genre": "poetry"`. When you query the index, you could then use a metadata filter to limit your search to records related to a specific genre.
+For example, if an index contains documents about books, you could use a metadata field to associate each document with a genre, like `"genre": "fiction"` or `"genre": "poetry"`. When you search the index, you could then use a metadata filter to limit your search to documents in a specific genre.
 
 For more details, see [Filter by metadata](/guides/search/filter-by-metadata).
 
@@ -25343,7 +25497,7 @@ For more details, see [Filter by metadata](/guides/search/filter-by-metadata).
 
 When relevance depends on exact keyword or phrase matches over text content — for example, product names, technical IDs, named entities, or jargon — we recommend [full-text search](/guides/search/full-text-search). It uses **BM25** ranking on `string` fields you've declared with `full_text_search` enabled and supports Lucene query syntax (`query_string`), including phrase, boolean, and proximity operators, plus the `$match_phrase` filter for exact phrase matching against text fields.
 
-An index with a document schema can also include `dense_vector` and `sparse_vector` fields in the same schema, so you can combine BM25 token matching with semantic or sparse-vector ranking on a single index. A single search request ranks by one scoring type. To combine them, restrict a `dense_vector` or `sparse_vector` search with a text-match filter (`$match_phrase`, `$match_all`, `$match_any`) on an FTS-enabled `string` field, or run BM25 and dense (or sparse) searches separately and merge the results client-side.
+A document index can also include `dense_vector` and `sparse_vector` fields in the same schema, so you can combine BM25 token matching with semantic or sparse-vector ranking on a single index. A single search request ranks by one scoring type. To combine them, restrict a `dense_vector` or `sparse_vector` search with a text-match filter (`$match_phrase`, `$match_all`, `$match_any`) on a `string` field with `full_text_search` enabled, or run BM25 and dense (or sparse) searches separately and merge the results client-side.
 
 For more details, see [Full-text search](/guides/search/full-text-search).
 
@@ -25388,7 +25542,7 @@ There are two ways to do this:
 * [Use a single index for dense and sparse vectors](/guides/legacy/vectors-api/hybrid-search-single-index). This is the **recommended** approach for most use cases because you make requests to a single index, the linkage between dense and sparse vectors is implicit, and you can perform hybrid queries with a single request. Note that you'll need to [normalize sparse and dense values](/guides/legacy/vectors-api/hybrid-search-single-index#normalize-sparse-and-dense-values) at query time so the unbounded sparse component doesn't dominate the combined score.
 * [Use separate indexes for dense and sparse vectors](/guides/legacy/vectors-api/hybrid-search-separate-indexes). This approach provides more flexibility but requires managing two indexes, maintaining linkages between vectors, and querying each index separately before merging results.
 
-If you'd rather not tune sparse and dense weights at all, an [index with a document schema](/guides/get-started/key-terms#document) with a multi-field schema is a simpler single-index alternative: declare FTS-enabled `string` fields alongside a `dense_vector` or `sparse_vector` field on the same index, then either restrict the dense (or sparse) search with a text-match filter on the full-text field, or run separate searches and merge the results client-side.
+If you'd rather not tune sparse and dense weights at all, use a [document index](/guides/indexes/index-data-overview#document-index) instead. Declare `string` fields with `full_text_search` alongside a `dense_vector` or `sparse_vector` field in the same index. Then restrict the dense or sparse search with a text-match filter on the full-text field, or run separate searches and merge the results client-side.
 
 For more details, including guidance on choosing the right approach, see [Hybrid search](/guides/search/hybrid-search).
 
@@ -27289,7 +27443,7 @@ Learn how Pinecone permanently deletes customer data, including soft deletion, t
 
 Pinecone follows a secure process to ensure that customer data is permanently deleted from our system. This page gives an overview of the process.
 
-As defined in the [Master Subscription Agreement](https://www.pinecone.io/legal/master-subscription-agreement/), customer data is data that you provide to Pinecone through the services of the Pinecone system, or such data provided on your behalf by connected systems. This includes objects such as [records](/guides/get-started/key-terms#record), [indexes](/guides/get-started/key-terms#index), [backups](/guides/get-started/key-terms#backup), [projects](/guides/get-started/key-terms#project), [API keys](/guides/get-started/key-terms#api-key), [users](/admin/organizations/manage-organization-members), [assistants](/guides/assistant/overview), and [organizations](/guides/get-started/key-terms#organization).
+As defined in the [Master Subscription Agreement](https://www.pinecone.io/legal/master-subscription-agreement/), customer data is data that you provide to Pinecone through the services of the Pinecone system, or such data provided on your behalf by connected systems. This includes objects such as [documents](/guides/indexes/data-modeling#documents), [records](/guides/indexes/data-modeling#records-in-legacy-indexes), [indexes](/guides/indexes/index-data-overview#indexes), [backups](/guides/indexes/backups-overview), [projects](/admin/projects/projects-overview), [API keys](/admin/projects/manage-api-keys), [users](/admin/organizations/manage-organization-members), [assistants](/guides/assistant/overview), and [organizations](/admin/organizations/organizations-overview).
 
 ## Deletion request
 
@@ -28539,7 +28693,7 @@ Source: https://docs.pinecone.io/guides/search/filter-by-metadata
 
 Narrow Pinecone search results with metadata filter expressions such as $eq, $in, $gt, and $and, and with text-match filters on document indexes.
 
-[Documents](/guides/get-started/key-terms#document) can carry [metadata](/guides/indexes/index-data-overview#metadata), key-value pairs that store related information. When you search, add a metadata filter to limit results to the documents that match it. Document indexes also support [text-match filters](#text-match-filters) on full-text fields.
+[Documents](/guides/indexes/data-modeling#documents) can carry [metadata](/guides/indexes/index-data-overview#metadata), key-value pairs that store related information. When you search, add a metadata filter to limit results to the documents that match it. Document indexes also support [text-match filters](#text-match-filters) on full-text fields.
 
 For a legacy vector index, see [Query with a metadata filter](/guides/legacy/vectors-api/query-vectors#query-with-a-metadata-filter). For a legacy integrated index, see [Search with a metadata filter](/guides/legacy/records-api/search-with-text#search-with-a-metadata-filter).
 
@@ -29663,7 +29817,7 @@ Source: https://docs.pinecone.io/guides/search/integrated-embedding
 
 Declare embed or sparse_embed on a string field so Pinecone embeds your text on a document index, and upsert and search with plain text instead of vectors.
 
-Embedding converts text into a vector that captures its meaning. Instead of generating those vectors yourself, you can have Pinecone embed a `string` field's text for you. Add an `embed` (dense) or `sparse_embed` (learned-sparse) object to the field, and Pinecone embeds the text when you upsert or update a [document](/guides/get-started/key-terms#document), and embeds the query text when you search that field. You send and search with plain text and never handle vectors.
+Embedding converts text into a vector that captures its meaning. Instead of generating those vectors yourself, you can have Pinecone embed a `string` field's text for you. Add an `embed` (dense) or `sparse_embed` (learned-sparse) object to the field, and Pinecone embeds the text when you upsert or update a [document](/guides/indexes/data-modeling#documents), and embeds the query text when you search that field. You send and search with plain text and never handle vectors.
 
 This is the same integrated embedding that the [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) operation provides for the legacy Records API, brought to document indexes, where it composes with full-text search on the same field.
 
@@ -31627,6 +31781,8 @@ This page shows you how to search an [index with sparse vectors](/guides/indexes
 
 Sparse-vector search uses [sparse vectors](https://www.pinecone.io/learn/sparse-retrieval/), which have a very large number of dimensions, where only a small proportion of values are non-zero. The dimensions represent words from a dictionary, and the values represent the importance of these words in the document. Words are scored independently and then summed, with the most similar documents scored highest.
 
+Sparse-vector search and full-text search both match on tokens, but they weight them differently. Full-text search uses BM25, a statistical function with no model. Sparse-vector search uses the weights in your sparse vectors. With a learned encoder such as `pinecone-sparse-english-v0`, those weights come from a model and can include related terms that don't appear in the text.
+
 For a legacy vector index, see [Query vectors](/guides/legacy/vectors-api/query-vectors#query-with-sparse-vectors). For a legacy integrated index, see [Search with text](/guides/legacy/records-api/search-with-text#search-with-sparse-embedding).
 
 ## Search a document index
@@ -32801,354 +32957,6 @@ curl -s "https://api.pinecone.io/indexes" \
 ```
 
 
-# Scale pod-based indexes
-Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/scale-pod-based-indexes
-
-Scale Pinecone pod-based indexes by adding pods or replicas. Pod indexes are legacy and unavailable to new customers, and serverless scales automatically.
-
-> [!WARNING]
->
-> Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/indexes/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
-
-While your index can still serve queries, new upserts may fail as the capacity becomes exhausted. If you need to scale your environment to accommodate more vectors, you can scale vertically by increasing the size of your existing pods, or horizontally by adding pods or replicas.
-
-This page explains how you can scale your [pod-based indexes](/guides/indexes/index-data-overview#pod-based-indexes) horizontally and vertically.
-
-## Vertical vs. horizontal scaling
-
-Vertical scaling increases the size of your existing pods, while horizontal scaling adds pods or replicas. Adding replicas also improves resilience and is an important part of a highly available (HA) setup. The following sections explain both approaches so you can choose the right strategy for your index.
-
-## Vertical scaling
-
-[Vertical scaling](https://www.pinecone.io/learn/testing-p2-collections-scaling/#vertical-scaling-on-p1-and-s1) is fast and involves no downtime. This is a good choice when you can't pause upserts and must continue serving traffic. It also allows you to double your capacity instantly. However, there are some factors to consider.
-
-### Increase pod size
-
-The default [pod size](/guides/indexes/index-data-overview#pod-size-and-performance) is `x1`. You can increase the size to `x2`, `x4`, or `x8`. Moving up to the next size effectively doubles the capacity of the index. If you need to scale by smaller increments, then consider horizontal scaling.
-
-Increasing the pod size of your index doesn't result in downtime. Reads and writes continue uninterrupted during the scaling process, which completes in about 10 minutes. You can't reduce the pod size of your indexes.
-
-The number of base pods you specify when you initially create the index is static and can't be changed. For example, if you start with 10 pods of `p1.x1` and vertically scale to `p1.x2`, this equates to 20 pods worth of usage. Pod types (performance versus storage pods) also can't be changed with vertical scaling. If you want to change your pod type while scaling, then horizontal scaling is the better option.
-
-#### When to increase pod size
-
-If your index is at around 90% fullness, we recommend increasing its size. This helps ensure optimal performance and prevents upserts from failing due to capacity constraints.
-
-#### How to increase pod size
-
-You can increase the pod size in the Pinecone console or using the API.
-
-> [tab] Console
->
-> 1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-> 2. Select the project containing the index you want to configure.
-> 3. Go to **Database > Indexes**.
-> 4. Select the index.
-> 5. Click **ellipsis (...) menu > Configure**.
-> 6. In the dropdown, choose the pod size to use.
-> 7. Click **Confirm**.
-
-> [tab] API
->
-> Use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
->
-> **Example**
->
-> The following example assumes that `docs-example` has size `x1` and increases the size to `x2`.
->
-> ```Python Python theme={null}
-> from pinecone.grpc import PineconeGRPC as Pinecone
->
-> pc = Pinecone(api_key="YOUR_API_KEY")
->
-> pc.configure_index("docs-example", pod_type="s1.x2")
-> ```
->
-> ```JavaScript JavaScript theme={null}
-> import { Pinecone } from '@pinecone-database/pinecone'
->
-> const pinecone = new Pinecone({
->   apiKey: 'YOUR_API_KEY'
-> });
->
-> await pc.configureIndex('docs-example', {
->   spec: {
->     pod: {
->       podType: 's1.x2',
->     },
->   },
-> });
-> ```
->
-> ```java Java theme={null}
-> import io.pinecone.clients.Pinecone;
->
-> public class ConfigureIndexExample {
->     public static void main(String[] args) {
->         Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
->         pc.configurePodsIndex("docs-example", "s1.x2", null, null, null);
->     }
-> }
-> ```
->
-> ```go Go theme={null}
-> package main
->
-> import (
->     "context"
->     "fmt"
->     "log"
->
->     "github.com/pinecone-io/go-pinecone/v7/pinecone"
-> )
->
-> func main() {
->     ctx := context.Background()
->
->     pc, err := pinecone.NewClient(pinecone.NewClientParams{
->         ApiKey: "YOUR_API_KEY",
->     })
->     if err != nil {
->         log.Fatalf("Failed to create Client: %v", err)
->     }
->
->     idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{PodType: "s1.x2"})
->   	if err != nil {
->         log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
->     } else {
->         fmt.Printf("Successfully configured index \"%v\"", idx.Name)
->     }
-> }
-> ```
->
-> ```bash curl theme={null}
-> PINECONE_API_KEY="YOUR_API_KEY"
->
-> curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example-curl" \
->   -H "Content-Type: application/json" \
->   -H "Api-Key: $PINECONE_API_KEY" \
->   -H "X-Pinecone-Api-Version: 2025-10" \
->   -d '{
->          "pod_type": "s1.x2"
->       }'
-> ```
-
-> [!NOTE]
->
-> The size change can take up to 15 minutes to complete.
-
-### Decrease pod size
-
-After creating an index, you can't vertically downscale the index/pod size. Instead, you must [create a collection](/guides/legacy/pod-based-indexes/back-up-a-pod-based-index) and then [create a new index from your collection](/guides/legacy/pod-based-indexes/restore-a-pod-based-index) and specify your desired pod size.
-
-### Check the status of a pod size change
-
-To check the status of a pod size change, use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
-
-The index fullness metric provided by the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation may be inaccurate until the resizing process is complete.
-
-**Example**
-
-The following example uses `describe_index` to get the index status of the index `docs-example`. The `status` field contains the key-value pair `"state":"ScalingUp"`, indicating that the resizing process is still ongoing.
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.describe_index(name="docs-example")
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
-
-await pc.describeIndex({
-  name: "docs-example",
-});
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-import org.openapitools.db_control.client.model.*;
-
-public class DescribeIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("YOUR_API_KEY").build();
-        IndexModel indexModel = pc.describeIndex("docs-example");
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    idx, err := pc.DescribeIndex(ctx, "docs-example")
-  	if err != nil {
-        log.Fatalf("Failed to describe index %v: %v", idx.Name, err)
-    } else {
-        fmt.Printf("Successfully found index: %v", idx.Name)
-    }
-}
-```
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s -X GET "https://api.pinecone.io/indexes/docs-example-curl" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10"
-```
-
-## Horizontal scaling
-
-There are two approaches to horizontal scaling in Pinecone: adding pods and adding replicas. Adding pods increases all resources but requires a pause in upserts; adding replicas only increases throughput and requires no pause in upserts.
-
-### Add pods
-
-Adding additional pods to a running index isn't supported directly. However, you can increase the number of pods by using our [collections](/guides/legacy/pod-based-indexes/understanding-collections) feature to create a new index with more pods.
-
-A collection is an immutable snapshot of your index in time: a collection stores the data but not the original index configuration. When you [create an index from a collection](/guides/legacy/pod-based-indexes/create-a-pod-based-index#create-a-pod-index-from-a-collection), you define the new index configuration. This allows you to scale the base pod count horizontally without scaling vertically.
-
-The main advantage of this approach is that you can scale incrementally instead of doubling capacity as with vertical scaling. Also, you can redefine pod types if you are experimenting or if you need to use a different pod type, such as performance-optimized pods or storage-optimized pods. Another advantage of this method is that you can change your [metadata configuration](/guides/legacy/pod-based-indexes/manage-pod-based-indexes#selective-metadata-indexing) to redefine metadata fields as indexed or stored-only. This is important when tuning your index for the best throughput.
-
-Here are the general steps to make a copy of your index and create a new index while changing the pod type, pod count, metadata configuration, replicas, and all typical parameters when creating a new collection:
-
-1. Pause upserts.
-2. Create a collection from the current index.
-3. Create an index from the collection with new parameters.
-4. Continue upserts to the newly created index. Note: the URL has likely changed.
-5. Delete the old index if desired.
-
-For detailed steps on creating the collection, see [backup indexes](/guides/indexes/back-up-an-index#create-a-backup-using-a-collection). For steps on creating an index from a collection, see [Create an index from a collection](/guides/legacy/pod-based-indexes/create-a-pod-based-index#create-a-pod-index-from-a-collection).
-
-### Add replicas
-
-Each replica duplicates the resources and data in an index. This means that adding additional replicas increases the throughput of the index but not its capacity. However, adding replicas doesn't require downtime.
-
-Throughput in terms of queries per second (QPS) scales linearly with the number of replicas per index.
-
-#### When to add replicas
-
-Add replicas for two reasons:
-
-* **Data redundancy and availability**: When you add a replica to your index, the Pinecone controller chooses a zone in the same region that doesn't currently have a replica, up to a maximum of three zones. Your fourth and subsequent replicas are hosted in zones that already have a replica. If your application requires multizone redundancy, we recommend this approach.
-* **Increased QPS**: Each new replica adds another pod for reading from your index and generally increases QPS by the same amount as a single pod. For example, if you consistently get 25 QPS for a single pod, each replica adds 25 more QPS.
-
-> [!WARNING]
->
-> Running a single replica does not provide a highly available setup and is therefore not covered by the uptime guarantees included in Enterprise SLAs.
-
-If you don't see an increase in QPS after adding replicas, add multiprocessing to your application to ensure you're running parallel operations. You can use the [Pinecone gRPC SDK](/guides/legacy/vectors-api/upsert-vectors#python-sdk-with-grpc) or your multiprocessing library of choice.
-
-#### How to add replicas
-
-To add replicas, use the `configure_index` endpoint to increase the number of replicas for your index:
-
-```Python Python theme={null}
-from pinecone.grpc import PineconeGRPC as Pinecone
-
-pc = Pinecone(api_key="YOUR_API_KEY")
-
-pc.configure_index("docs-example", replicas=4)
-```
-
-```JavaScript JavaScript theme={null}
-import { Pinecone } from '@pinecone-database/pinecone'
-
-const pc = new Pinecone({
-  apiKey: 'YOUR_API_KEY'
-});
-
-await pc.configureIndex('docs-example', {
-  spec: {
-    pod: {
-      replicas: 4,
-    },
-  },
-});
-```
-
-```java Java theme={null}
-import io.pinecone.clients.Pinecone;
-
-public class ConfigureIndexExample {
-    public static void main(String[] args) {
-        Pinecone pc = new Pinecone.Builder("PINECONE_API_KEY").build();
-        pc.configurePodsIndex("docs-example", 4, null);
-    }
-}
-```
-
-```go Go theme={null}
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    "github.com/pinecone-io/go-pinecone/v7/pinecone"
-)
-
-func main() {
-    ctx := context.Background()
-
-    pc, err := pinecone.NewClient(pinecone.NewClientParams{
-        ApiKey: "YOUR_API_KEY",
-    })
-    if err != nil {
-        log.Fatalf("Failed to create Client: %v", err)
-    }
-
-    idx, err := pc.ConfigureIndex(ctx, "docs-example", pinecone.ConfigureIndexParams{Replicas: 4})
-  	if err != nil {
-        log.Fatalf("Failed to configure index \"%v\": %v", idx.Name, err)
-    } else {
-        fmt.Printf("Successfully configured index \"%v\"", idx.Name)
-    }
-}
-```
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl -s -X PATCH "https://api.pinecone.io/indexes/docs-example-curl" \
-  -H "Content-Type: application/json" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
-  -d '{
-         "replicas": 4
-      }'
-```
-
-## Next steps
-
-* See our learning center for more information on [vertical scaling](https://www.pinecone.io/learn/testing-p2-collections-scaling/#vertical-scaling-on-p1-and-s1).
-* Learn more about [collections](/guides/legacy/pod-based-indexes/understanding-collections).
-
-
 # Understanding collections
 Source: https://docs.pinecone.io/guides/legacy/pod-based-indexes/understanding-collections
 
@@ -33323,6 +33131,13 @@ Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/cr
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml post /admin/service-accounts
 Create a service account with optional initial role bindings; the client secret is returned only once.
+
+
+# Delete a service account
+Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/delete-a-service-account
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml delete /admin/service-accounts/{service_account_id}
+Delete a service account and its role bindings; tokens it minted are revoked within a few seconds.
 
 
 # Get service account details
@@ -39526,16 +39341,16 @@ Source: https://docs.pinecone.io/reference/api/database-limits/identifier-limits
 
 Maximum length and allowed characters for Pinecone identifiers, including organization, project, index, namespace, and record names.
 
-An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/key-terms). The following Pinecone objects use strings as identifiers:
+An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/architecture#resource-hierarchy). The following Pinecone objects use strings as identifiers:
 
 | Object | Field | Max # characters | Allowed characters |
 | - | - | - | - |
-| [Organization](/guides/get-started/key-terms#organization) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Project](/guides/get-started/key-terms#project) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Index](/guides/get-started/key-terms#index) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Cannot start or end with `-`</li><li>Cannot be empty</li></ul> |
-| [Namespace](/guides/get-started/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
+| [Organization](/admin/organizations/organizations-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Project](/admin/projects/projects-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Index](/guides/indexes/index-data-overview#indexes) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Can't start or end with `-`</li><li>Can't be empty</li></ul> |
+| [Namespace](/guides/indexes/index-data-overview#namespaces) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
 | [Namespace alias](/guides/data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
-| [Record](/guides/get-started/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |
+| [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Can't be empty</li></ul> |
 
 
 # Object limits
@@ -39634,7 +39449,7 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 
@@ -40209,13 +40024,6 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
 List role bindings in the caller's organization, optionally filtered by principal, resource, and role.
 
 
-# Delete a service account
-Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/delete-a-service-account
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/admin_2026-07.oas.yaml delete /admin/service-accounts/{service_account_id}
-Delete a service account and its role bindings; tokens it minted are revoked within a few seconds.
-
-
 # Rotate a service account's OAuth client secret
 Source: https://docs.pinecone.io/reference/api/2026-07/admin/service-accounts/rotate-a-service-accounts-oauth-client-secret
 
@@ -40477,16 +40285,16 @@ Source: https://docs.pinecone.io/reference/api/database-limits/identifier-limits
 
 Maximum length and allowed characters for Pinecone identifiers, including organization, project, index, namespace, and record names.
 
-An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/key-terms). The following Pinecone objects use strings as identifiers:
+An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/architecture#resource-hierarchy). The following Pinecone objects use strings as identifiers:
 
 | Object | Field | Max # characters | Allowed characters |
 | - | - | - | - |
-| [Organization](/guides/get-started/key-terms#organization) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Project](/guides/get-started/key-terms#project) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Index](/guides/get-started/key-terms#index) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Cannot start or end with `-`</li><li>Cannot be empty</li></ul> |
-| [Namespace](/guides/get-started/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
+| [Organization](/admin/organizations/organizations-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Project](/admin/projects/projects-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Index](/guides/indexes/index-data-overview#indexes) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Can't start or end with `-`</li><li>Can't be empty</li></ul> |
+| [Namespace](/guides/indexes/index-data-overview#namespaces) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
 | [Namespace alias](/guides/data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
-| [Record](/guides/get-started/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |
+| [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Can't be empty</li></ul> |
 
 
 # Object limits
@@ -40585,7 +40393,7 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 
@@ -46233,16 +46041,16 @@ Source: https://docs.pinecone.io/reference/api/database-limits/identifier-limits
 
 Maximum length and allowed characters for Pinecone identifiers, including organization, project, index, namespace, and record names.
 
-An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/key-terms). The following Pinecone objects use strings as identifiers:
+An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/architecture#resource-hierarchy). The following Pinecone objects use strings as identifiers:
 
 | Object | Field | Max # characters | Allowed characters |
 | - | - | - | - |
-| [Organization](/guides/get-started/key-terms#organization) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Project](/guides/get-started/key-terms#project) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Index](/guides/get-started/key-terms#index) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Cannot start or end with `-`</li><li>Cannot be empty</li></ul> |
-| [Namespace](/guides/get-started/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
+| [Organization](/admin/organizations/organizations-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Project](/admin/projects/projects-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Index](/guides/indexes/index-data-overview#indexes) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Can't start or end with `-`</li><li>Can't be empty</li></ul> |
+| [Namespace](/guides/indexes/index-data-overview#namespaces) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
 | [Namespace alias](/guides/data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
-| [Record](/guides/get-started/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |
+| [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Can't be empty</li></ul> |
 
 
 # Object limits
@@ -46341,7 +46149,7 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 
@@ -51989,16 +51797,16 @@ Source: https://docs.pinecone.io/reference/api/database-limits/identifier-limits
 
 Maximum length and allowed characters for Pinecone identifiers, including organization, project, index, namespace, and record names.
 
-An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/key-terms). The following Pinecone objects use strings as identifiers:
+An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/architecture#resource-hierarchy). The following Pinecone objects use strings as identifiers:
 
 | Object | Field | Max # characters | Allowed characters |
 | - | - | - | - |
-| [Organization](/guides/get-started/key-terms#organization) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Project](/guides/get-started/key-terms#project) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Index](/guides/get-started/key-terms#index) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Cannot start or end with `-`</li><li>Cannot be empty</li></ul> |
-| [Namespace](/guides/get-started/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
+| [Organization](/admin/organizations/organizations-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Project](/admin/projects/projects-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Index](/guides/indexes/index-data-overview#indexes) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Can't start or end with `-`</li><li>Can't be empty</li></ul> |
+| [Namespace](/guides/indexes/index-data-overview#namespaces) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
 | [Namespace alias](/guides/data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
-| [Record](/guides/get-started/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |
+| [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Can't be empty</li></ul> |
 
 
 # Object limits
@@ -52097,7 +51905,7 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 
@@ -57745,16 +57553,16 @@ Source: https://docs.pinecone.io/reference/api/database-limits/identifier-limits
 
 Maximum length and allowed characters for Pinecone identifiers, including organization, project, index, namespace, and record names.
 
-An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/key-terms). The following Pinecone objects use strings as identifiers:
+An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/architecture#resource-hierarchy). The following Pinecone objects use strings as identifiers:
 
 | Object | Field | Max # characters | Allowed characters |
 | - | - | - | - |
-| [Organization](/guides/get-started/key-terms#organization) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Project](/guides/get-started/key-terms#project) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Index](/guides/get-started/key-terms#index) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Cannot start or end with `-`</li><li>Cannot be empty</li></ul> |
-| [Namespace](/guides/get-started/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
+| [Organization](/admin/organizations/organizations-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Project](/admin/projects/projects-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Index](/guides/indexes/index-data-overview#indexes) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Can't start or end with `-`</li><li>Can't be empty</li></ul> |
+| [Namespace](/guides/indexes/index-data-overview#namespaces) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
 | [Namespace alias](/guides/data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
-| [Record](/guides/get-started/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |
+| [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Can't be empty</li></ul> |
 
 
 # Object limits
@@ -57853,7 +57661,7 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 
@@ -64257,6 +64065,259 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/age
 * [Pinecone MCP server guide](/guides/agents/mcp-server)
 
 
+# Cohere
+Source: https://docs.pinecone.io/integrations/cohere
+
+Generate embeddings with the Cohere Embed API, index them in Pinecone, and run semantic search queries against the index.
+
+The Cohere platform builds natural language processing and generation into your product with a few lines of code. Cohere's large language models (LLMs) can solve a broad spectrum of natural language use cases, including classification, semantic search, paraphrasing, summarization, and content generation.
+
+Use the Cohere Embed API endpoint to generate language embeddings, and then index those embeddings in Pinecone for fast and scalable vector search.
+
+## Setup guide
+
+In this guide, you'll learn how to use the [Cohere Embed API endpoint](https://docs.cohere.com/reference/embed) to generate language embeddings, and then index those embeddings in [Pinecone Database](/guides/get-started/overview) for fast and scalable vector search.
+
+This is a common combination for building semantic search, question-answering, threat-detection, and other applications that rely on NLP and search over a large corpus of text data.
+
+The basic workflow looks like this:
+
+* Embed and index
+  * Use the Cohere Embed API endpoint to generate vector embeddings of your documents (or any text data).
+  * Upload those vector embeddings into Pinecone, which can store and index millions or billions of these vector embeddings and search through them at low latency.
+* Search
+  * Pass your query text or document through the Cohere Embed API endpoint again.
+  * Take the resulting vector embedding and send it as a [query](/guides/search/search-overview) to Pinecone.
+  * Get back semantically similar documents, even if they don't share any keywords with the query.
+
+![Basic workflow of Cohere with Pinecone](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/fd0ba7b-pinecone-cohere-overview.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=60489f242107a8a6856e8a581fdb21a8)
+
+### 1. Set up the environment
+
+Start by installing the Cohere and Pinecone clients, along with Hugging Face Datasets for downloading the TREC dataset used in this guide:
+
+```shell Shell theme={null}
+pip install -U cohere pinecone datasets
+```
+
+### 2. Create embeddings
+
+Sign up for an API key at [Cohere](https://dashboard.cohere.com/api-keys) and then use it to initialize your connection.
+
+```Python Python theme={null}
+import cohere
+
+co = cohere.ClientV2(api_key="<YOUR_COHERE_API_KEY>")
+```
+
+Load the Text REtrieval Conference (TREC) question classification dataset, which contains 5.5K labeled questions. You'll take only the first 1K samples for this walkthrough, but you can scale this to millions or even billions of samples.
+
+```Python Python theme={null}
+from datasets import load_dataset
+
+# load the first 1K rows of the TREC dataset
+trec = load_dataset('CogComp/trec', revision='refs/convert/parquet', split='train[:1000]')
+```
+
+Each sample in `trec` contains two label features and the `text` feature. Pass the questions from the `text` feature to Cohere to create embeddings. The Embed API accepts up to 96 texts per request, so send them in batches.
+
+```Python Python theme={null}
+embeds = []
+batch_size = 96
+
+for i in range(0, len(trec['text']), batch_size):
+    res = co.embed(
+        texts=trec['text'][i:i+batch_size],
+        model='embed-english-v3.0',
+        input_type='search_document',
+        embedding_types=['float'],
+        truncate='END'
+    )
+    embeds.extend(res.embeddings.float_)
+```
+
+Check the dimensionality of the returned vectors. Save the embedding dimensionality, because you need it when you create your Pinecone index later.
+
+```Python Python theme={null}
+import numpy as np
+
+shape = np.array(embeds).shape
+print(shape)
+```
+
+```text Response theme={null}
+(1000, 1024)
+```
+
+You can see the `1024` embedding dimensionality produced by Cohere's `embed-english-v3.0` model, and the `1000` samples you built embeddings for.
+
+### 3. Store the embeddings
+
+Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a [Pinecone API key](/admin/projects/manage-api-keys).
+
+First, initialize your connection to Pinecone, and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When you create the index, specify the cosine similarity metric to align with Cohere's embeddings, and pass the embedding dimensionality of `1024`.
+
+```Python Python theme={null}
+from pinecone import Pinecone, ServerlessSpec
+
+# initialize connection to pinecone (get API key at app.pinecone.io)
+pc = Pinecone(api_key='<YOUR_PINECONE_API_KEY>')
+
+index_name = 'cohere-pinecone-trec'
+
+# if the index does not exist, we create it
+if not pc.has_index(index_name):
+    pc.create_index(
+        name=index_name,
+        dimension=shape[1],
+        metric="cosine",
+        spec=ServerlessSpec(
+            cloud='aws', 
+            region='us-east-1'
+        ) 
+    )
+
+# connect to index
+index = pc.Index(index_name)
+```
+
+Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format `(id, vector, metadata)`, where the `metadata` field is an optional extra field where you can store anything you want in a dictionary format. For this example, you'll store the original text of the embeddings.
+
+Upload the data in batches to avoid pushing too much data at once.
+
+```Python Python theme={null}
+batch_size = 128
+
+ids = [str(i) for i in range(shape[0])]
+# create list of metadata dictionaries
+meta = [{'text': text} for text in trec['text']]
+
+# create list of (id, vector, metadata) tuples to be upserted
+to_upsert = list(zip(ids, embeds, meta))
+
+for i in range(0, shape[0], batch_size):
+    i_end = min(i+batch_size, shape[0])
+    index.upsert(vectors=to_upsert[i:i_end])
+
+# let's view the index statistics
+print(index.describe_index_stats())
+```
+
+```text Response theme={null}
+DescribeIndexStatsResponse(dimension=1024, total_vector_count=1000, metric='cosine', namespaces=1)
+```
+
+You can see from `index.describe_index_stats` that you have a 1024-dimensional index populated with 1000 embeddings.
+
+### 4. Run a semantic search
+
+Now that you have your indexed vectors, you can perform a few search queries. To search, first embed your query with Cohere, and then search Pinecone with the returned vector.
+
+```Python Python theme={null}
+query = "What caused the 1929 Great Depression?"
+
+# create the query embedding
+xq = co.embed(
+    texts=[query],
+    model='embed-english-v3.0',
+    input_type='search_query',
+    embedding_types=['float'],
+    truncate='END'
+).embeddings.float_[0]
+
+# query, returning the top 5 most similar results
+res = index.query(vector=xq, top_k=5, include_metadata=True)
+```
+
+The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
+
+```Python Python theme={null}
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+```
+
+```text Response theme={null}
+0.62: Why did the world enter a global depression in 1929 ?
+0.49: When was `` the Great Depression '' ?
+0.38: What crop failure caused the Irish Famine ?
+0.32: What caused Harry Houdini 's death ?
+0.31: What causes pneumonia ?
+```
+
+The top results are relevant. To make the search harder, replace "depression" with the incorrect term "recession."
+
+```Python Python theme={null}
+query = "What was the cause of the major recession in the early 20th century?"
+
+# create the query embedding
+xq = co.embed(
+    texts=[query],
+    model='embed-english-v3.0',
+    input_type='search_query',
+    embedding_types=['float'],
+    truncate='END'
+).embeddings.float_[0]
+
+# query, returning the top 5 most similar results
+res = index.query(vector=xq, top_k=5, include_metadata=True)
+
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+```
+
+```text Response theme={null}
+0.43: When was `` the Great Depression '' ?
+0.40: Why did the world enter a global depression in 1929 ?
+0.39: When did World War I start ?
+0.35: What are some of the significant historical events of the 1990s ?
+0.32: What crop failure caused the Irish Famine ?
+```
+
+Finally, search using the definition of depression rather than the word or related words.
+
+```Python Python theme={null}
+query = "Why was there a long-term economic downturn in the early 20th century?"
+
+# create the query embedding
+xq = co.embed(
+    texts=[query],
+    model='embed-english-v3.0',
+    input_type='search_query',
+    embedding_types=['float'],
+    truncate='END'
+).embeddings.float_[0]
+
+# query, returning the top 10 most similar results
+res = index.query(vector=xq, top_k=10, include_metadata=True)
+
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+```
+
+```text Response theme={null}
+0.40: When was `` the Great Depression '' ?
+0.39: Why did the world enter a global depression in 1929 ?
+0.35: When did World War I start ?
+0.32: What are some of the significant historical events of the 1990s ?
+0.31: What war did the Wanna-Go-Home Riots occur after ?
+0.31: What do economists do ?
+0.29: What historical event happened in Dogtown in 1899 ?
+0.28: When did the Dow first reach ?
+0.28: Who earns their money the hard way ?
+0.28: What were popular songs and types of songs in the 1920s ?
+```
+
+This example shows that the semantic search pipeline can identify the meaning behind each of your queries. Using these embeddings with Pinecone lets you return the most semantically similar questions from the already indexed TREC dataset.
+
+### 5. Clean up
+
+When you're finished with the index, delete it.
+
+```Python Python theme={null}
+pc.delete_index(name=index_name)
+```
+
+
 # Confluent
 Source: https://docs.pinecone.io/integrations/confluent
 
@@ -66437,7 +66498,7 @@ A configuration uses one style or the other. You can't combine `schema` or `depl
 
 #### Document indexes
 
-A `schema` of named fields creates a [document index](/guides/get-started/key-terms#document-index), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
+A `schema` of named fields creates a [document index](/guides/indexes/index-data-overview#document-index), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
 
 ```hcl Terraform theme={null}
 resource "pinecone_index" "example_index_documents" {
@@ -67484,16 +67545,16 @@ Source: https://docs.pinecone.io/reference/api/database-limits/identifier-limits
 
 Maximum length and allowed characters for Pinecone identifiers, including organization, project, index, namespace, and record names.
 
-An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/key-terms). The following Pinecone objects use strings as identifiers:
+An identifier is a string of characters used to identify "named" [objects in Pinecone](/guides/get-started/architecture#resource-hierarchy). The following Pinecone objects use strings as identifiers:
 
 | Object | Field | Max # characters | Allowed characters |
 | - | - | - | - |
-| [Organization](/guides/get-started/key-terms#organization) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Project](/guides/get-started/key-terms#project) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
-| [Index](/guides/get-started/key-terms#index) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Cannot start or end with `-`</li><li>Cannot be empty</li></ul> |
-| [Namespace](/guides/get-started/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
+| [Organization](/admin/organizations/organizations-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Project](/admin/projects/projects-overview) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Can't be empty</li></ul> |
+| [Index](/guides/indexes/index-data-overview#indexes) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Can't start or end with `-`</li><li>Can't be empty</li></ul> |
+| [Namespace](/guides/indexes/index-data-overview#namespaces) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
 | [Namespace alias](/guides/data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
-| [Record](/guides/get-started/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |
+| [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Can't be empty</li></ul> |
 
 
 # Object limits
@@ -67592,7 +67653,7 @@ The 40 KB filterable metadata limit doesn't apply to `full_text_search` text fie
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 ## Query limits
 
@@ -80550,259 +80611,6 @@ Listings on the [Integrations overview](/integrations/overview) are curated. We 
 * [Connect your users to Pinecone](/integrations/build-integration/connect-your-users-to-pinecone)
 
 
-# Cohere
-Source: https://docs.pinecone.io/integrations/cohere
-
-Generate embeddings with the Cohere Embed API, index them in Pinecone, and run semantic search queries against the index.
-
-The Cohere platform builds natural language processing and generation into your product with a few lines of code. Cohere's large language models (LLMs) can solve a broad spectrum of natural language use cases, including classification, semantic search, paraphrasing, summarization, and content generation.
-
-Use the Cohere Embed API endpoint to generate language embeddings, and then index those embeddings in Pinecone for fast and scalable vector search.
-
-## Setup guide
-
-In this guide, you'll learn how to use the [Cohere Embed API endpoint](https://docs.cohere.com/reference/embed) to generate language embeddings, and then index those embeddings in [Pinecone Database](/guides/get-started/overview) for fast and scalable vector search.
-
-This is a common combination for building semantic search, question-answering, threat-detection, and other applications that rely on NLP and search over a large corpus of text data.
-
-The basic workflow looks like this:
-
-* Embed and index
-  * Use the Cohere Embed API endpoint to generate vector embeddings of your documents (or any text data).
-  * Upload those vector embeddings into Pinecone, which can store and index millions or billions of these vector embeddings and search through them at low latency.
-* Search
-  * Pass your query text or document through the Cohere Embed API endpoint again.
-  * Take the resulting vector embedding and send it as a [query](/guides/search/search-overview) to Pinecone.
-  * Get back semantically similar documents, even if they don't share any keywords with the query.
-
-![Basic workflow of Cohere with Pinecone](https://mintcdn.com/pinecone/9qvQp5nU6duJvusQ/images/fd0ba7b-pinecone-cohere-overview.png?fit=max\&auto=format\&n=9qvQp5nU6duJvusQ\&q=85\&s=60489f242107a8a6856e8a581fdb21a8)
-
-### 1. Set up the environment
-
-Start by installing the Cohere and Pinecone clients, along with Hugging Face Datasets for downloading the TREC dataset used in this guide:
-
-```shell Shell theme={null}
-pip install -U cohere pinecone datasets
-```
-
-### 2. Create embeddings
-
-Sign up for an API key at [Cohere](https://dashboard.cohere.com/api-keys) and then use it to initialize your connection.
-
-```Python Python theme={null}
-import cohere
-
-co = cohere.ClientV2(api_key="<YOUR_COHERE_API_KEY>")
-```
-
-Load the Text REtrieval Conference (TREC) question classification dataset, which contains 5.5K labeled questions. You'll take only the first 1K samples for this walkthrough, but you can scale this to millions or even billions of samples.
-
-```Python Python theme={null}
-from datasets import load_dataset
-
-# load the first 1K rows of the TREC dataset
-trec = load_dataset('CogComp/trec', revision='refs/convert/parquet', split='train[:1000]')
-```
-
-Each sample in `trec` contains two label features and the `text` feature. Pass the questions from the `text` feature to Cohere to create embeddings. The Embed API accepts up to 96 texts per request, so send them in batches.
-
-```Python Python theme={null}
-embeds = []
-batch_size = 96
-
-for i in range(0, len(trec['text']), batch_size):
-    res = co.embed(
-        texts=trec['text'][i:i+batch_size],
-        model='embed-english-v3.0',
-        input_type='search_document',
-        embedding_types=['float'],
-        truncate='END'
-    )
-    embeds.extend(res.embeddings.float_)
-```
-
-Check the dimensionality of the returned vectors. Save the embedding dimensionality, because you need it when you create your Pinecone index later.
-
-```Python Python theme={null}
-import numpy as np
-
-shape = np.array(embeds).shape
-print(shape)
-```
-
-```text Response theme={null}
-(1000, 1024)
-```
-
-You can see the `1024` embedding dimensionality produced by Cohere's `embed-english-v3.0` model, and the `1000` samples you built embeddings for.
-
-### 3. Store the embeddings
-
-Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a [Pinecone API key](/admin/projects/manage-api-keys).
-
-First, initialize your connection to Pinecone, and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When you create the index, specify the cosine similarity metric to align with Cohere's embeddings, and pass the embedding dimensionality of `1024`.
-
-```Python Python theme={null}
-from pinecone import Pinecone, ServerlessSpec
-
-# initialize connection to pinecone (get API key at app.pinecone.io)
-pc = Pinecone(api_key='<YOUR_PINECONE_API_KEY>')
-
-index_name = 'cohere-pinecone-trec'
-
-# if the index does not exist, we create it
-if not pc.has_index(index_name):
-    pc.create_index(
-        name=index_name,
-        dimension=shape[1],
-        metric="cosine",
-        spec=ServerlessSpec(
-            cloud='aws', 
-            region='us-east-1'
-        ) 
-    )
-
-# connect to index
-index = pc.Index(index_name)
-```
-
-Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format `(id, vector, metadata)`, where the `metadata` field is an optional extra field where you can store anything you want in a dictionary format. For this example, you'll store the original text of the embeddings.
-
-Upload the data in batches to avoid pushing too much data at once.
-
-```Python Python theme={null}
-batch_size = 128
-
-ids = [str(i) for i in range(shape[0])]
-# create list of metadata dictionaries
-meta = [{'text': text} for text in trec['text']]
-
-# create list of (id, vector, metadata) tuples to be upserted
-to_upsert = list(zip(ids, embeds, meta))
-
-for i in range(0, shape[0], batch_size):
-    i_end = min(i+batch_size, shape[0])
-    index.upsert(vectors=to_upsert[i:i_end])
-
-# let's view the index statistics
-print(index.describe_index_stats())
-```
-
-```text Response theme={null}
-DescribeIndexStatsResponse(dimension=1024, total_vector_count=1000, metric='cosine', namespaces=1)
-```
-
-You can see from `index.describe_index_stats` that you have a 1024-dimensional index populated with 1000 embeddings.
-
-### 4. Run a semantic search
-
-Now that you have your indexed vectors, you can perform a few search queries. To search, first embed your query with Cohere, and then search Pinecone with the returned vector.
-
-```Python Python theme={null}
-query = "What caused the 1929 Great Depression?"
-
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    embedding_types=['float'],
-    truncate='END'
-).embeddings.float_[0]
-
-# query, returning the top 5 most similar results
-res = index.query(vector=xq, top_k=5, include_metadata=True)
-```
-
-The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
-
-```Python Python theme={null}
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
-```
-
-```text Response theme={null}
-0.62: Why did the world enter a global depression in 1929 ?
-0.49: When was `` the Great Depression '' ?
-0.38: What crop failure caused the Irish Famine ?
-0.32: What caused Harry Houdini 's death ?
-0.31: What causes pneumonia ?
-```
-
-The top results are relevant. To make the search harder, replace "depression" with the incorrect term "recession."
-
-```Python Python theme={null}
-query = "What was the cause of the major recession in the early 20th century?"
-
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    embedding_types=['float'],
-    truncate='END'
-).embeddings.float_[0]
-
-# query, returning the top 5 most similar results
-res = index.query(vector=xq, top_k=5, include_metadata=True)
-
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
-```
-
-```text Response theme={null}
-0.43: When was `` the Great Depression '' ?
-0.40: Why did the world enter a global depression in 1929 ?
-0.39: When did World War I start ?
-0.35: What are some of the significant historical events of the 1990s ?
-0.32: What crop failure caused the Irish Famine ?
-```
-
-Finally, search using the definition of depression rather than the word or related words.
-
-```Python Python theme={null}
-query = "Why was there a long-term economic downturn in the early 20th century?"
-
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    embedding_types=['float'],
-    truncate='END'
-).embeddings.float_[0]
-
-# query, returning the top 10 most similar results
-res = index.query(vector=xq, top_k=10, include_metadata=True)
-
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
-```
-
-```text Response theme={null}
-0.40: When was `` the Great Depression '' ?
-0.39: Why did the world enter a global depression in 1929 ?
-0.35: When did World War I start ?
-0.32: What are some of the significant historical events of the 1990s ?
-0.31: What war did the Wanna-Go-Home Riots occur after ?
-0.31: What do economists do ?
-0.29: What historical event happened in Dogtown in 1899 ?
-0.28: When did the Dow first reach ?
-0.28: Who earns their money the hard way ?
-0.28: What were popular songs and types of songs in the 1920s ?
-```
-
-This example shows that the semantic search pipeline can identify the meaning behind each of your queries. Using these embeddings with Pinecone lets you return the most semantically similar questions from the already indexed TREC dataset.
-
-### 5. Clean up
-
-When you're finished with the index, delete it.
-
-```Python Python theme={null}
-pc.delete_index(name=index_name)
-```
-
-
 # Datadog
 Source: https://docs.pinecone.io/integrations/datadog
 
@@ -83811,6 +83619,85 @@ Connect your existing Pinecone Assistant to a chat interface with citations and 
 NextJS
 
 
+# Pinecone Nexus
+Source: https://docs.pinecone.io/guides/nexus/overview
+
+Pinecone Nexus is the knowledge engine for agents. It compiles your data into queryable knowledge once, then serves grounded, cited answers on every call.
+
+You point Nexus at your sources and curate them into a context. Agents then query that context with a single call and get back a structured, grounded answer with citations, instead of re-assembling context from raw chunks on every request.
+
+Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, and re-search. Nexus does that work once, upstream, so agents spend their budget on reasoning instead of re-orienting.
+
+> [card] [Quickstart](/guides/nexus/quickstart)
+>
+> Prepare your first context, then query it
+
+> [card] [Key terms](/guides/nexus/concepts)
+>
+> Contexts, manifests, artifacts, sessions, and the Query API
+
+> [card] [Architecture](/guides/nexus/architecture)
+>
+> Curated artifacts for retrieval, then answers composed over a retrieval SDK
+
+> [card] [Context design](/guides/nexus/context-design)
+>
+> How a context's manifest turns your sources into queryable knowledge
+
+> [card] [Bring Your Own Cloud](/guides/nexus/byoc/overview)
+>
+> Deploy Nexus in your own cloud account
+
+> [card] [Connect an MCP client](/guides/nexus/mcp-server)
+>
+> Query your contexts from any MCP client
+
+## What you can do
+
+With Pinecone Nexus, you can:
+
+* Turn raw sources into queryable knowledge. Upload documents or connect a data source, then curate them into a searchable context, without building a chunking pipeline or an eval set by hand.
+* Get an answer in one call. Agents issue a KnowQL query (`ask` plus `scope`, optionally a typed `shape`) and get back a grounded, cited answer. Each query is a turn, and multi-turn conversations are sessions.
+* Query across domains. A single query can span multiple contexts, so your knowledge forms a graph of contexts instead of one large index.
+* Keep answers grounded and scoped. Every answer carries citations, and access is scoped to your Pinecone project.
+
+## Why Nexus
+
+The most expensive part of an agent is knowledge acquisition. Agents built on raw retrieval burn tokens re-orienting on every call and loop through retrieve, evaluate, and re-retrieve cycles. Nexus compiles the knowledge once and serves it on every call:
+
+* It's cheaper than agentic RAG. The expensive work happens once at curation time instead of on every query, so agents spend far fewer tokens.
+* It's faster than a retrieval loop. A single query replaces the multi-step retrieve, evaluate, and re-retrieve cycle.
+* Its answers are trusted and grounded. Each answer carries citations and is scoped to your Pinecone project, with Pinecone Database running underneath.
+
+## What Nexus is not
+
+Nexus is sometimes confused with other kinds of AI tools. Here's how it differs:
+
+* Nexus isn't a vector database. Pinecone Database sits underneath Nexus as its retrieval layer, and Nexus is the engine layer above it.
+* Nexus isn't RAG. RAG returns ranked chunks for a human to read, while Nexus compiles typed, grounded artifacts for agents and returns answers.
+* Nexus isn't an agent framework. Your agent sends Nexus a query, gets back an answer, and decides what to do with it.
+
+## Resources
+
+> [card] [API reference](/reference/api/nexus/introduction)
+>
+> Details about the Nexus control plane and data plane APIs
+
+> [card] [Changelog](/release-notes)
+>
+> What's new in Pinecone
+
+## Other Pinecone products
+
+> [card] [Pinecone Database](/guides/get-started/overview)
+>
+> The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
+
+> [card] [Pinecone Assistant](/guides/assistant/overview)
+>
+> A managed service for RAG chat and agent applications grounded in your data
+
+
 # Create an API key
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_api_key
 
@@ -86796,85 +86683,6 @@ Name a Bedrock rerank model by its full foundation-model ARN, for example `bedro
 Your model catalog sets the default model for each work area in `phase_defaults`, and the catalog reapplies these defaults on every settings pull. To change a default, edit the catalog and redeploy. A default must be a model that's enabled for its work area. `GET /models` lists the current defaults. Usage reports spend by stage, and calls on the System model appear under the `system` stage.
 
 
-# Pinecone Nexus
-Source: https://docs.pinecone.io/guides/nexus/overview
-
-Pinecone Nexus is the knowledge engine for agents. It compiles your data into queryable knowledge once, then serves grounded, cited answers on every call.
-
-You point Nexus at your sources and curate them into a context. Agents then query that context with a single call and get back a structured, grounded answer with citations, instead of re-assembling context from raw chunks on every request.
-
-Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, and re-search. Nexus does that work once, upstream, so agents spend their budget on reasoning instead of re-orienting.
-
-> [card] [Quickstart](/guides/nexus/quickstart)
->
-> Prepare your first context, then query it
-
-> [card] [Key terms](/guides/nexus/concepts)
->
-> Contexts, manifests, artifacts, sessions, and the Query API
-
-> [card] [Architecture](/guides/nexus/architecture)
->
-> Curated artifacts for retrieval, then answers composed over a retrieval SDK
-
-> [card] [Context design](/guides/nexus/context-design)
->
-> How a context's manifest turns your sources into queryable knowledge
-
-> [card] [Bring Your Own Cloud](/guides/nexus/byoc/overview)
->
-> Deploy Nexus in your own cloud account
-
-> [card] [Connect an MCP client](/guides/nexus/mcp-server)
->
-> Query your contexts from any MCP client
-
-## What you can do
-
-With Pinecone Nexus, you can:
-
-* Turn raw sources into queryable knowledge. Upload documents or connect a data source, then curate them into a searchable context, without building a chunking pipeline or an eval set by hand.
-* Get an answer in one call. Agents issue a KnowQL query (`ask` plus `scope`, optionally a typed `shape`) and get back a grounded, cited answer. Each query is a turn, and multi-turn conversations are sessions.
-* Query across domains. A single query can span multiple contexts, so your knowledge forms a graph of contexts instead of one large index.
-* Keep answers grounded and scoped. Every answer carries citations, and access is scoped to your Pinecone project.
-
-## Why Nexus
-
-The most expensive part of an agent is knowledge acquisition. Agents built on raw retrieval burn tokens re-orienting on every call and loop through retrieve, evaluate, and re-retrieve cycles. Nexus compiles the knowledge once and serves it on every call:
-
-* It's cheaper than agentic RAG. The expensive work happens once at curation time instead of on every query, so agents spend far fewer tokens.
-* It's faster than a retrieval loop. A single query replaces the multi-step retrieve, evaluate, and re-retrieve cycle.
-* Its answers are trusted and grounded. Each answer carries citations and is scoped to your Pinecone project, with Pinecone Database running underneath.
-
-## What Nexus is not
-
-Nexus is sometimes confused with other kinds of AI tools. Here's how it differs:
-
-* Nexus isn't a vector database. Pinecone Database sits underneath Nexus as its retrieval layer, and Nexus is the engine layer above it.
-* Nexus isn't RAG. RAG returns ranked chunks for a human to read, while Nexus compiles typed, grounded artifacts for agents and returns answers.
-* Nexus isn't an agent framework. Your agent sends Nexus a query, gets back an answer, and decides what to do with it.
-
-## Resources
-
-> [card] [API reference](/reference/api/nexus/introduction)
->
-> Details about the Nexus control plane and data plane APIs
-
-> [card] [Changelog](/release-notes)
->
-> What's new in Pinecone
-
-## Other Pinecone products
-
-> [card] [Pinecone Database](/guides/get-started/overview)
->
-> The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
-
-> [card] [Pinecone Assistant](/guides/assistant/overview)
->
-> A managed service for RAG chat and agent applications grounded in your data
-
-
 # Nexus queries
 Source: https://docs.pinecone.io/guides/nexus/queries
 
@@ -87538,7 +87346,7 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 
 ## Prerequisites
 
-* A PostgreSQL 17 or 18 server with a superuser role, Docker, or an account on a supported hosting platform. The Docker image and the hosting platform templates include Postgres and pgvector.
+* A PostgreSQL 17 or 18 server with a superuser role, Docker, or an account on a supported hosting platform. Postgres.app, the Docker image, and the hosting platform templates include Postgres and pgvector.
 * Optional: a [Pinecone API key](https://app.pinecone.io/organizations/-/projects/-/keys), if you want Pinecone to generate the embeddings. A key from the free [Starter plan](https://www.pinecone.io/pricing/) is enough.
 
 ## 1. Install pg_pinecone
@@ -87570,6 +87378,16 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    ```
 >
 > On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86_64 CPUs, use the PGXN tab, which builds from source, or [build from source](https://github.com/pinecone-io/pg_pinecone#readme) yourself.
+
+> [tab] Postgres.app
+>
+> [Postgres.app](https://postgresapp.com/) is a Mac app that runs PostgreSQL and includes pgvector. pg_pinecone is one of its downloadable extensions, built for PostgreSQL 18 on Apple silicon.
+>
+> 1. Open Postgres.app and start a PostgreSQL 18 server. If the server is new, click **Initialize**.
+>
+> 2. On the Postgres.app [extensions page](https://postgresapp.com/extensions/), find pg_pinecone and download it. Open the installer it downloads and follow the prompts.
+>
+> 3. Back in the Postgres.app window, click **Stop**, then **Start**, so the server can find the extension you installed.
 
 > [tab] PGXN
 >
@@ -87653,7 +87471,9 @@ psql postgres
 docker exec -it pg_pinecone psql -U postgres
 ```
 
-On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
+On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew or Postgres.app on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
+
+With Postgres.app, if your terminal can't find `psql`, add Postgres.app's command-line tools to your `PATH`, as its [installation steps](https://postgresapp.com/) show.
 
 ### 2. Create the extensions
 

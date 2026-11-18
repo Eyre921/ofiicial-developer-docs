@@ -1,3 +1,9 @@
+# Resend
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://resend.com/docs/llms.txt instead.
+
+> Resend is the email API for developers. The documentation covers the REST API, official SDKs, the CLI, the MCP server, webhooks, deliverability guides, and step-by-step quickstarts for every major language and framework.
+
 # Add and verify a domain
 Source: https://resend.com/docs/add-a-domain
 
@@ -11,6 +17,24 @@ Resend sends emails using a domain you own. Before you can send or receive email
 > [Cloudflare](https://www.cloudflare.com/) or
 > [Namecheap](https://www.namecheap.com/) before continuing.
 
+## Choose a sending domain
+
+We strongly recommend sending emails from a subdomain (e.g., `notifications.example.com`) instead of your root domain (`example.com`) to conform to deliverability best practices.
+
+If you are [transferring from another provider](/docs/dashboard/domains/introduction#moving-from-another-provider) and already have an established sender reputation for your marketing emails, add and verify the domain or subdomain that matches your existing `from` address to continue sending from that address.
+
+You can have multiple subdomains associated with your root domain (e.g., `updates.example.com`, `notifications.example.com`). Each one must be added and verified individually, and they will be displayed as separate entries in the [**Domains** Dashboard page](https://resend.com/domains) where you can manage and configure them independently.
+
+> [!NOTE]
+>
+> If you only verify a subdomain, you must send from an address at that subdomain, not your
+> root domain.
+>
+> For example, if you verify `newsletters.example.com`, you can
+> send from `updates@newsletters.example.com` but not from `updates@example.com`.
+>
+> If you encounter a 403 domain mismatch error, check the [**Logs** Dashboard page](https://resend.com/logs) and make sure the `from` field in your API requests matches one of your verified domains.
+
 ## Add a domain
 
 You can add and verify a domain you own in four ways:
@@ -22,17 +46,13 @@ You can add and verify a domain you own in four ways:
 
 To add a new domain from the Resend Dashboard:
 
-**1. In your Resend Dashboard, navigate to the Domains page.**
+**1. In your Resend Dashboard, navigate to the **Domains** page.**
 
-**2. Click the Add Domain button.**
+**2. Click the **Add Domain** button.**
 
-**3. Enter a domain including a subdomain to use for your Resend emails.**
+**3. Enter your domain (including a subdomain, if you wish) to use for your Resend emails.**
 
-We strongly recommend sending emails from a subdomain (e.g., `notifications.example.com`) instead of your root domain (`example.com`) to conform to deliverability best practices.
-
-Choose a subdomain that reflects the purpose of your emails, such as `customers.example.com` or `updates.example.com`.
-
-You can have multiple subdomains associated with your root domain. But, each one must be configured and verified individually.
+Enter the existing domain you currently send emails from, or choose a subdomain that reflects the purpose of your emails, such as `customers.example.com` or `updates.example.com`.
 
 If you add a domain already used by another team, the dashboard will notify you and you can [claim the domain](/docs/dashboard/domains/claim) to transfer it to your team.
 
@@ -58,11 +78,11 @@ Provide the DKIM and SPF configurations (`TXT` and `MX` or `CNAME` records) to y
 
 When this process is completed correctly, your domain will often verify within 15 minutes of adding the DNS records. However, DNS changes can occasionally take up to 72 hours to propagate globally.
 
-You can use Resend's [dns.email tool](https://dns.email/) to check that your records are visible publicly. If verification has not completed after 72 hours, use the “Restart verification” button in the Resend dashboard to trigger a fresh verification check.
+You can use Resend's [dns.email tool](https://dns.email/) to check that your records are visible publicly. If verification has not completed after 72 hours, use the **Restart verification** button in the Resend dashboard to trigger a fresh verification check.
 
 **8. Add a DMARC record.**
 
-After your domain is verified, you can then [implement DMARC](/docs/dashboard/domains/dmarc) to build additional trust in your domain and protect against email spoofing.
+After your domain is verified, [implement DMARC](/docs/dashboard/domains/dmarc) to build additional trust in your domain and protect against email spoofing.
 
 This is an email authentication protocol to verify email senders and to allow receivers to reject unauthenticated messages, and is important for email deliverability.
 
@@ -72,9 +92,9 @@ After your domain is verified, you may wish to [enable open and click tracking](
 
 ## Learn more
 
-> [card] [Manage domains](/docs/dashboard/domains/introduction)
+> [card] [Domains introduction](/docs/dashboard/domains/introduction)
 >
-> View, create, edit, delete, and manage your domains.
+> Learn more about configuring, and managing your verified domains.
 
 > [card] [Multi-tenant domain setup](/docs/knowledge-base/setting-up-resend-for-multi-tenants)
 >
@@ -1144,6 +1164,47 @@ resend api-keys update b6d24b8e-af0b-4c3c-be0c-359bbd97381e --name Production
 {
   "object": "api_key",
   "id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
+}
+```
+
+
+# Cancel Automation Run
+Source: https://resend.com/docs/api-reference/automations/cancel-automation-run
+
+POST /automations/:automation_id/runs/:run_id/cancel
+Cancel a single automation run.
+
+Cancelling a run skips its remaining steps. Emails the run already sent stay sent, and the Automation stays enabled. To disable the Automation and cancel all of its runs in progress, [stop the Automation](/docs/api-reference/automations/stop-automation) instead.
+
+You can cancel any run that hasn't finished. Cancelling a run that already completed or failed returns a `422` `validation_error`. Cancelling a run that's already cancelled succeeds.
+
+## Path Parameters
+
+The automation ID.
+
+The automation run ID.
+
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
+
+const resend = new Resend('re_xxxxxxxxx');
+
+const { data, error } = await resend.automations.runs.cancel({
+  automationId: 'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+  runId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+});
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd/runs/a1b2c3d4-e5f6-7890-abcd-ef1234567890/cancel' \
+     -H 'Authorization: Bearer re_xxxxxxxxx'
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "automation_run",
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "status": "cancelled"
 }
 ```
 
@@ -8407,6 +8468,131 @@ resend domains delete d91cd9bd-1176-453e-8fc1-35364d380206
 ```
 
 
+# Enable Forge
+Source: https://resend.com/docs/api-reference/domains/enable-forge
+
+POST /domains/:domain_id/forge
+Put a domain's sending on Resend Forge.
+
+This endpoint returns the DNS record Forge needs. Add it to your DNS and call
+[Verify Domain](/docs/api-reference/domains/verify-domain) with `scope: ["forge"]`,
+then poll [Retrieve Domain](/docs/api-reference/domains/get-domain) until the
+Forge record's `status` is `verified`.
+Calling this endpoint again just returns the current state.
+
+> [!NOTE]
+>
+> The domain keeps sending through its current records while the Forge record
+> verifies, so there is no interruption.
+
+> [!NOTE]
+>
+> The domain must be a sending domain. Receive-only domains, domains on a
+> dedicated IP, and domains with legacy DKIM get a `forge_unavailable` error.
+
+## Path Parameters
+
+The Domain ID.
+
+## Body Parameters
+
+The subdomain label for the Forge return path, for example `forge` on
+`example.com` produces a `CNAME` record for `forge.example.com`. It must start
+with a letter, end with a letter or digit, contain only letters, digits, and
+hyphens, and be 63 characters or less. It is stored lowercased. When omitted,
+Resend picks a label that is free in your DNS. It cannot equal the domain's
+current return path, and the chosen host must not already have DNS records;
+either case gets a `return_path_unavailable` error. It is set once and cannot
+be changed afterwards.
+
+## Headers
+
+**Idempotency-Key** `string`
+
+Add an idempotency key to enable Forge only once.
+
+* Should be **unique per API request**
+* Idempotency keys expire after **24 hours**
+* Have a maximum length of **256 characters**
+* A retry with the same key returns the first successful response, with the
+  `idempotent-replayed: true` header
+* A failed request is not stored, so you can retry it with the same key
+* Reusing the key with a different body, or while the first request is still
+  running, returns a `409`
+
+[Learn more](/docs/dashboard/emails/idempotency-keys)
+
+```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { Resend } from 'resend';
+
+const resend = new Resend('re_xxxxxxxxx');
+
+const { data, error } = await resend.domains.forge.enable({
+  id: 'd91cd9bd-1176-453e-8fc1-35364d380206',
+  customReturnPath: 'forge',
+});
+```
+
+```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/domains/d91cd9bd-1176-453e-8fc1-35364d380206/forge' \
+     -H 'Authorization: Bearer re_xxxxxxxxx' \
+     -H 'Content-Type: application/json' \
+     -d '{"custom_return_path": "forge"}'
+```
+
+```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "object": "domain",
+  "id": "d91cd9bd-1176-453e-8fc1-35364d380206",
+  "name": "example.com",
+  "created_at": "2023-04-26T20:21:26.347412+00:00",
+  "status": "partially_verified",
+  "capabilities": {
+    "sending": "enabled",
+    "receiving": "disabled"
+  },
+  "records": [
+    {
+      "record": "DKIM",
+      "name": "resend._domainkey",
+      "value": "p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC...",
+      "type": "TXT",
+      "status": "verified",
+      "ttl": "Auto"
+    },
+    {
+      "record": "SPF",
+      "name": "send",
+      "type": "MX",
+      "ttl": "Auto",
+      "status": "verified",
+      "value": "feedback-smtp.us-east-1.amazonses.com",
+      "priority": 10
+    },
+    {
+      "record": "SPF",
+      "name": "send",
+      "value": "v=spf1 include:amazonses.com ~all",
+      "type": "TXT",
+      "ttl": "Auto",
+      "status": "verified"
+    },
+    {
+      "record": "SPF",
+      "name": "forge",
+      "value": "send.forge.rmta.net",
+      "type": "CNAME",
+      "status": "pending",
+      "ttl": "Auto"
+    }
+  ],
+  "region": "us-east-1",
+  "open_tracking": false,
+  "click_tracking": false
+}
+```
+
+
 # Retrieve Domain
 Source: https://resend.com/docs/api-reference/domains/get-domain
 
@@ -8421,6 +8607,12 @@ The Domain ID.
 >
 > See all available [domain `status`
 > types](/docs/dashboard/domains/manage-domains#understand-a-domain-status).
+
+> [!NOTE]
+>
+> The Forge record is the `SPF` record of type `CNAME` that points at
+> `send.forge.rmta.net`. Its `status` is the domain's Forge status. See [Enable
+> Forge](/docs/api-reference/domains/enable-forge).
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -8544,6 +8736,14 @@ resend domains get d91cd9bd-1176-453e-8fc1-35364d380206
       "name": "send",
       "value": "\"v=spf1 include:amazonses.com ~all\"",
       "type": "TXT",
+      "ttl": "Auto",
+      "status": "not_started"
+    },
+    {
+      "record": "SPF",
+      "name": "mail",
+      "value": "send.forge.rmta.net",
+      "type": "CNAME",
       "ttl": "Auto",
       "status": "not_started"
     },
@@ -9105,6 +9305,17 @@ Verify an existing domain.
 
 The Domain ID.
 
+## Body Parameters
+
+Limit the check to specific records. The only supported value is `forge`: only
+the Forge record is checked, and the other records keep their current status.
+Requires [Forge](/docs/forge) to be enabled on the domain, otherwise the endpoint
+responds with a `forge_not_enabled` error. When omitted, all records are
+checked.
+
+When verifying a Forge record, always pass `["forge"]` so we only verify
+its record and sending is never interrupted.
+
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
 
@@ -9112,6 +9323,8 @@ const resend = new Resend('re_xxxxxxxxx');
 
 const { data, error } = await resend.domains.verify(
   'd91cd9bd-1176-453e-8fc1-35364d380206',
+  // Optional: verify only the Forge record
+  // { scope: ['forge'] },
 );
 ```
 
@@ -19996,8 +20209,8 @@ User-Agent: my-app/1.0
 > [!NOTE]
 >
 > If you're getting a `403` error with error code `1010` despite having a valid
-> API key, a missing `User-Agent` header is likely the cause. See [Error
-> 1010](/docs/knowledge-base/403-error-1010) for more details.
+> API key, a missing `User-Agent` header is likely the cause. You may need to
+> [add a custom header](/docs/dashboard/emails/custom-headers) to your API request.
 
 ## Response codes
 
@@ -32666,11 +32879,11 @@ Each run has one of the following statuses:
 | `completed` | All steps finished successfully |
 | `failed` | A step encountered an error and the run stopped |
 | `cancelled` | The run was cancelled before completing |
-| `skipped` | A step was skipped because the contact has either unsubscribed or followed a different branch path |
+| `skipped` | A step was skipped because the contact unsubscribed, isn't subscribed to the step's Topic, or followed a different branch path |
 
 ### Skipped steps
 
-When a contact unsubscribes, any remaining **Send Email** steps in the Automation will be skipped automatically. Other step types (such as Delay, Condition, or Update Contact) will still be executed as normal.
+When a contact unsubscribes, any remaining **Send Email** steps in the Automation will be skipped automatically. A **Send Email** step with a [Topic](/docs/dashboard/automations/send-email#send-with-a-topic) is also skipped when the contact isn't subscribed to that Topic. Other step types (such as Delay, Condition, or Update Contact) will still be executed as normal.
 
 ## Listing runs
 
@@ -33258,6 +33471,36 @@ Common failure scenarios:
 * **Wait for event timeout:** The expected event was not received within the timeout window.
 * **Send email failed:** The template may not be published, or the sender address may not be verified.
 
+## Cancelling a run
+
+Cancel a single run to skip its remaining steps, for example when the same event triggered a duplicate run. Emails the run already sent are not affected, and the Automation stays enabled. A run that already completed or failed can't be cancelled.
+
+> [tab] Using the dashboard
+>
+> In the runs list, click the **Run actions** button on a `running` run and select **Cancel run**. Type `CANCEL` to confirm.
+
+> [tab] Using the API
+>
+> Cancel a run programmatically:
+>
+> ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+> import { Resend } from 'resend';
+>
+> const resend = new Resend('re_xxxxxxxxx');
+>
+> const { data, error } = await resend.automations.runs.cancel({
+>   automationId: 'c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd',
+>   runId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+> });
+> ```
+>
+> ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+> curl -X POST 'https://api.resend.com/automations/c9b16d4f-ba6c-4e2e-b044-6bf4404e57fd/runs/a1b2c3d4-e5f6-7890-abcd-ef1234567890/cancel' \
+>      -H 'Authorization: Bearer re_xxxxxxxxx'
+> ```
+
+View the [Cancel Automation Run API reference](/docs/api-reference/automations/cancel-automation-run) for more details.
+
 ## Stopping an Automation
 
 > [tab] Using the dashboard
@@ -33361,7 +33604,7 @@ Common failure scenarios:
 > >
 > > Stopping an Automation prevents new runs from being created.
 > >
-> > Existing in-progress runs will continue to completion.
+> > It also cancels the Automation's runs in progress. To cancel a single run instead, see [Cancelling a run](#cancelling-a-run).
 
 View the [Stop Automation API reference](/docs/api-reference/automations/stop-automation) for more details.
 
@@ -33392,6 +33635,8 @@ This automation step triggers a [Template](/docs/dashboard/templates/introductio
 > Select a published template, then configure the sender address.
 >
 > ![Send Email Action Sender Settings](https://mintcdn.com/resend/3_DkZ6MFMzztlC_E/images/automations-steps-email-settings.png?fit=max\&auto=format\&n=3_DkZ6MFMzztlC_E\&q=85\&s=312f80d13ca502ae8de7e7bffd31e251)
+>
+> Optionally, select a [Topic](#send-with-a-topic) to skip this step for contacts who opted out of it.
 >
 > *The subject always comes from the Template. To send a different subject, set `subject` when creating the step via the [API](#configuration).*
 
@@ -33720,6 +33965,37 @@ Template variables must be present in your referenced template and the key names
 
 For more help working with variables, see the [Template documentation](/docs/dashboard/templates/template-variables).
 
+## Send with a Topic
+
+Set `topic_id` to send the email only to contacts subscribed to a [Topic](/docs/dashboard/contacts/manage-topics). This lets contacts opt out of one kind of Automation email, like product tips, while still receiving others.
+
+```json {8} theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "key": "tips",
+  "type": "send_email",
+  "config": {
+    "template": {
+      "id": "044db673-fff6-420f-a566-f6aba05d60e7"
+    },
+    "topic_id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
+  }
+}
+```
+
+When the step runs, Resend checks the contact's subscription to the Topic:
+
+* **Opted in**: the email is sent.
+* **Opted out**: the step is [skipped](/docs/dashboard/automations/runs#skipped-steps) and no email is sent. The Automation continues to the next step.
+* **No preference**: the Topic's default subscription decides. The email is sent if the default is `opt_in`, and the step is skipped if it's `opt_out`.
+
+The Topic must exist in your team. If it doesn't, the API rejects the request with a `422` error.
+
+> [!WARNING]
+>
+> If you delete a Topic that a `send_email` step uses, the step keeps the
+> deleted Topic's ID and fails every time it runs. Pick another Topic for the
+> step or remove it before deleting the Topic.
+
 ## Unsubscribe behavior
 
 Resend does not automatically add an unsubscribe link to emails sent from a `send_email` step. To let contacts opt out, add `{{{RESEND_UNSUBSCRIBE_URL}}}` to the [Template](/docs/dashboard/templates/introduction) used by the step.
@@ -33727,6 +34003,12 @@ Resend does not automatically add an unsubscribe link to emails sent from a `sen
 > [!NOTE]
 >
 > `{{{RESEND_UNSUBSCRIBE_URL}}}` must be added to the Template itself, not the step's `config`. If the Template doesn't include this variable, contacts have no way to unsubscribe from within the email.
+
+When the Template includes `{{{RESEND_UNSUBSCRIBE_URL}}}`, Resend handles unsubscribes as follows, with or without a Topic:
+
+* **Global unsubscribe always wins.** A contact who is [unsubscribed](/docs/dashboard/contacts/managing-unsubscribe-list#subscription-statuses) never receives Automation emails, even if they have opted in to the step's Topic.
+* **The unsubscribe link opens your preference page.** It works the same as the [Broadcast unsubscribe link](/docs/dashboard/broadcasts/editor#broadcast-unsubscribe-link).
+* **One-click unsubscribe is global.** Resend also adds `List-Unsubscribe` and `List-Unsubscribe-Post` headers, which inbox providers like Gmail show as an unsubscribe button. Using that button unsubscribes the contact from all Broadcasts and Automation emails, not only the step's Topic.
 
 See [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsubscribe-link) to decide whether your Automation emails need one.
 
@@ -33764,6 +34046,12 @@ Reply-to email address.
 
 If provided, this value will override the template's default value.
 
+**config.topic_id** `string`
+
+The ID of the [Topic](/docs/dashboard/contacts/manage-topics) this email belongs
+to. Contacts not subscribed to the Topic skip this step. See [Send with a
+Topic](/docs/dashboard/automations/send-email#send-with-a-topic).
+
 ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "welcome",
@@ -33777,7 +34065,8 @@ If provided, this value will override the template's default value.
     },
     "from": "hello@example.com",
     "subject": "Welcome!",
-    "reply_to": "support@example.com"
+    "reply_to": "support@example.com",
+    "topic_id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
   }
 }
 ```
@@ -34097,6 +34386,12 @@ Reply-to email address.
 
 If provided, this value will override the template's default value.
 
+**config.topic_id** `string`
+
+The ID of the [Topic](/docs/dashboard/contacts/manage-topics) this email belongs
+to. Contacts not subscribed to the Topic skip this step. See [Send with a
+Topic](/docs/dashboard/automations/send-email#send-with-a-topic).
+
 ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "welcome",
@@ -34110,7 +34405,8 @@ If provided, this value will override the template's default value.
     },
     "from": "hello@example.com",
     "subject": "Welcome!",
-    "reply_to": "support@example.com"
+    "reply_to": "support@example.com",
+    "topic_id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
   }
 }
 ```
@@ -40583,14 +40879,15 @@ Customize how emails are sent with your own headers.
 
 Email headers are typically hidden from the end user but are crucial for deliverability. They include information about the sender, receiver, timestamp, and more.
 
-Resend already includes all the necessary headers for you, but now you can also add your own custom headers.
+Resend SDKs already include all the necessary headers for you, but you can also add your own custom headers. This can be useful for advanced use cases:
 
-This is a fairly advanced feature, but it can be useful for a few things:
+* **Prevent threading on Gmail** with the **`X-Entity-Ref-ID`** header ([Example](https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/prevent-threading))
+* **Include a shortcut for users to unsubscribe** with the **`List-Unsubscribe`** header
+* **Add missing identification headers** such as the `User-Agent` header when sending direct HTTP requests to the Resend API
 
-* Prevent threading on Gmail with the **`X-Entity-Ref-ID`** header ([Example](https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript/src/app/prevent-threading))
-* Include a shortcut for users to unsubscribe with the **`List-Unsubscribe`** header
+## Add custom headers
 
-Here's how you can add custom headers to your emails:
+Add custom headers to your emails in the `headers` object:
 
 ```ts Node.js {11} theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -40785,6 +41082,31 @@ resend emails send \
   --subject "hello world" \
   --html "<p>it works!</p>" \
   --headers "X-Entity-Ref-ID=xxx_xxxx"
+```
+
+## Avoid 403 error code 1010 with the `User-Agent` header
+
+If you're using a [Resend SDK](/docs/sdks) or tools like `curl`, the required `User-Agent` header is already included automatically.
+
+However, direct HTTP requests made without an SDK may require you to add a `User-Agent` header to avoid a 403 error with error code 1010 (`Access denied`):
+
+**Example with Node.js `fetch`:**
+
+```javascript theme={"theme":{"light":"github-light","dark":"vesper"}}
+fetch('https://api.resend.com/emails', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer re_123456789',
+    'Content-Type': 'application/json',
+    'User-Agent': 'my-app/1.0',
+  },
+  body: JSON.stringify({
+    from: 'you@example.com',
+    to: 'user@example.com',
+    subject: 'Hello World',
+    html: '<p>Hello World</p>',
+  }),
+});
 ```
 
 
@@ -57239,68 +57561,6 @@ Discover the full range of features and capabilities.
 > Notify your application about email events.
 
 
-# 403 Error with Error Code 1010
-Source: https://resend.com/docs/knowledge-base/403-error-1010
-
-Learn how to resolve a 403 error caused by a missing User-Agent header when sending requests to the Resend API.
-
-You may receive a 403 error with error code 1010 (`Access denied`) when sending requests to the Resend API. This happens because requests without a `User-Agent` header are blocked before they reach the API.
-
-## The Problem
-
-The Resend API requires all HTTP requests to include a `User-Agent` header. When your HTTP client doesn't send one, the request is rejected with a 403 status code and error 1010 before it ever reaches the API.
-
-This can be confusing because:
-
-* The error doesn't come from the Resend API itself
-* Tools like `curl` automatically include a `User-Agent` header, so requests from the command line work fine
-* The error message doesn't clearly indicate that the missing header is the cause
-
-## How to Identify This Issue
-
-* You're getting a 403 error, but your API key and domain are correct
-* The error response contains an error code of `1010`
-* The same request works when using `curl` from the command line
-
-## Solution
-
-Add a `User-Agent` header to your HTTP requests.
-
-**Example with Node.js `fetch`:**
-
-```javascript theme={"theme":{"light":"github-light","dark":"vesper"}}
-fetch('https://api.resend.com/emails', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer re_123456789',
-    'Content-Type': 'application/json',
-    'User-Agent': 'my-app/1.0',
-  },
-  body: JSON.stringify({
-    from: 'you@example.com',
-    to: 'user@example.com',
-    subject: 'Hello World',
-    html: '<p>Hello World</p>',
-  }),
-});
-```
-
-> [!NOTE]
->
-> If you're using a [Resend SDK](/docs/sdks), the `User-Agent` header is already
-> included automatically. This issue typically only affects direct HTTP requests
-> made without an SDK.
-
-## Get more help
-
-If you've added a `User-Agent` header and you're still getting a 403 error:
-
-1. Verify that the header is being sent correctly by inspecting your outgoing request.
-2. Ensure your API key is valid and has the necessary permissions.
-3. Check that your domain is verified in the [Resend Domains page](https://resend.com/domains).
-4. [Contact Resend support](https://resend.com/help) with details about your error.
-
-
 # 403 Error Using Verified Domain
 Source: https://resend.com/docs/knowledge-base/403-error-domain-mismatch
 
@@ -59960,10 +60220,6 @@ Step-by-step instructions for verifying your domain with popular DNS providers.
 >
 > Recommended options to avoid CORS errors when sending emails.
 
-> [card] [403 Error: Domain Mismatch](/docs/knowledge-base/403-error-domain-mismatch)
->
-> Resolve 403 errors when the sending domain doesn't match your verified domain.
-
 > [card] [Domain Already Registered by Another Account](/docs/knowledge-base/domain-already-registered)
 >
 > Resolve domain ownership conflicts when a domain is already registered.
@@ -60869,7 +61125,7 @@ You can **send** any file attachment types except for those in the following lis
 | .ps2xml | .psc1 | .psc2 | .tmp | .url |
 | .vb | .vbe | .vbs | .vps | .vsmacros |
 | .vss | .vst | .vsw | .vxd | .ws |
-| .wsc | .wsf | .wsh | .xnk | |
+| .wsc | .wsf | .wsh | .xnk |
 
 > [!NOTE]
 >

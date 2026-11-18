@@ -64,7 +64,7 @@ export const myChat = chat.agent({
     }
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -103,7 +103,7 @@ export const myChat = chat.agent({
     // (splice partial + first user into chain, dispatch the rest).
   },
   run: async ({ messages, signal }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
 });
 ```
 
@@ -159,7 +159,7 @@ export const myChat = chat.agent({
     // ... non-preloaded chat-row initialization
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -208,7 +208,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -247,7 +247,7 @@ export const myChat = chat.agent({
     return messages;
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools: chatTools, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, tools: chatTools, abortSignal: signal });
   },
 });
 ```
@@ -307,7 +307,7 @@ export const myChat = chat.agent({
     return stored;
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -365,7 +365,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -400,7 +400,7 @@ export const myChat = chat.agent({
     }
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -448,7 +448,7 @@ export const myChat = chat.agent({
     ]);
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -491,7 +491,7 @@ export const myChat = chat.agent({
     logger.info("Resumed", { phase: event.phase });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -525,7 +525,7 @@ export const myChat = chat.agent({
     await initializeChat(chatId, clientData);
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```

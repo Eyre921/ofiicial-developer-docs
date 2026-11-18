@@ -132,7 +132,7 @@ A write unit (WU) measures the storage and compute resources a write request use
 
 > [!NOTE]
 >
-> Writes to a [document index](/guides/get-started/key-terms#document-index) use the same cost models as writes to a legacy vector index. The formulas below apply to both.
+> Writes to a [document index](/guides/indexes/index-data-overview#document-index) use the same cost models as writes to a legacy vector index. The formulas below apply to both.
 
 ### Upsert
 

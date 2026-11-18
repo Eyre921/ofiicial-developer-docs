@@ -26,9 +26,9 @@ You can also import Parquet files into a legacy integrated index, but its record
 >
 > | Column name | Parquet type | Description |
 > | - | - | - |
-> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/get-started/key-terms#record-id). |
-> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/key-terms#dense-vector). |
-> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/get-started/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/indexes/data-modeling#records-in-legacy-indexes). |
+> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/search/semantic-search). |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/indexes/index-data-overview#metadata) for each record. To omit from specific rows, use `NULL`. |
 >
 > > [!NOTE]
 > >
@@ -49,9 +49,9 @@ You can also import Parquet files into a legacy integrated index, but its record
 >
 > | Column name | Parquet type | Description |
 > | - | - | - |
-> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/get-started/key-terms#record-id). |
-> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/get-started/key-terms#sparse-vector). |
-> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/get-started/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/indexes/data-modeling#records-in-legacy-indexes). |
+> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/search/sparse-vector-search). |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/indexes/index-data-overview#metadata) for each record. To omit from specific rows, use `NULL`. |
 >
 > > [!NOTE]
 > >
@@ -72,10 +72,10 @@ You can also import Parquet files into a legacy integrated index, but its record
 >
 > | Column name | Parquet type | Description |
 > | - | - | - |
-> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/get-started/key-terms#record-id). |
-> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/get-started/key-terms#dense-vector). |
-> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/get-started/key-terms#sparse-vector). To omit from specific rows, use `NULL`. |
-> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/get-started/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+> | `id` | `STRING` | Required. The unique [identifier for each record](/guides/indexes/data-modeling#records-in-legacy-indexes). |
+> | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/search/semantic-search). |
+> | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/search/sparse-vector-search). To omit from specific rows, use `NULL`. |
+> | `metadata` | `STRING` | Optional. Additional [metadata](/guides/indexes/index-data-overview#metadata) for each record. To omit from specific rows, use `NULL`. |
 >
 > > [!NOTE]
 > >

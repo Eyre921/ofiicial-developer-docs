@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 1007 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1004 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -165,9 +165,6 @@
 - `docs/devops/developer-api/redis/reset_password` — [Reset Password](pages/docs/devops/developer-api/redis/reset_password.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/reset_password)
 - `docs/devops/developer-api/redis/update_budget` — [Update Database Budget](pages/docs/devops/developer-api/redis/update_budget.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/update_budget)
 - `docs/devops/developer-api/redis/update_regions` — [Update Regions](pages/docs/devops/developer-api/redis/update_regions.md) · [原文](https://upstash.com/docs/devops/developer-api/redis/update_regions)
-- `docs/devops/developer-api/start-redis/create` — [Create a Free Database](pages/docs/devops/developer-api/start-redis/create.md) · [原文](https://upstash.com/docs/devops/developer-api/start-redis/create)
-- `docs/devops/developer-api/start-redis/instructions` — [Get Instructions](pages/docs/devops/developer-api/start-redis/instructions.md) · [原文](https://upstash.com/docs/devops/developer-api/start-redis/instructions)
-- `docs/devops/developer-api/start-redis/metrics` — [Get Metrics](pages/docs/devops/developer-api/start-redis/metrics.md) · [原文](https://upstash.com/docs/devops/developer-api/start-redis/metrics)
 - `docs/devops/developer-api/teams/add_team_member` — [Add Team Member](pages/docs/devops/developer-api/teams/add_team_member.md) · [原文](https://upstash.com/docs/devops/developer-api/teams/add_team_member)
 - `docs/devops/developer-api/teams/create_team` — [Create Team](pages/docs/devops/developer-api/teams/create_team.md) · [原文](https://upstash.com/docs/devops/developer-api/teams/create_team)
 - `docs/devops/developer-api/teams/delete_team` — [Delete Team](pages/docs/devops/developer-api/teams/delete_team.md) · [原文](https://upstash.com/docs/devops/developer-api/teams/delete_team)

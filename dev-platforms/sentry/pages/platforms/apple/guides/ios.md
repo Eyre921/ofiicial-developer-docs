@@ -100,7 +100,7 @@ Select a compatible SDK version and add **one** SDK product to your application 
 * **SentrySPM** builds the SDK from source and is the recommended choice.
 * **Sentry** uses the prebuilt static framework.
 
-Both products use `import Sentry`. See [Swift Package Manager](https://docs.sentry.io/platforms/apple/guides/ios/install/swift-package-manager.md) for other products, or [the installation options](https://docs.sentry.io/platforms/apple/guides/ios/install.md) for other installation methods.
+With **SentrySPM**, import the SDK with `import SentrySwift`. With **Sentry**, use `import Sentry`. The code snippets on this page use `import Sentry`, so replace it with `import SentrySwift` if you chose **SentrySPM**. See [Swift Package Manager](https://docs.sentry.io/platforms/apple/guides/ios/install/swift-package-manager.md) for other products, or [the installation options](https://docs.sentry.io/platforms/apple/guides/ios/install.md) for other installation methods.
 
 ## [Configure](https://docs.sentry.io/platforms/apple/guides/ios.md#configure)
 

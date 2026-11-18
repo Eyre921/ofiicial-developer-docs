@@ -7,7 +7,7 @@ path: docs/2026-07-28/tutorials/security/local-server-security
 Practical defaults for running MCP servers safely on your own machine.
 
 Most MCP security documentation covers the protocol threat model: OAuth flows,
-token handling, session hijacking, and confused deputy attacks. For those, see
+token handling, state handle hijacking, and confused deputy attacks. For those, see
 [Authorization](/docs/2026-07-28/tutorials/security/authorization) and
 [Security Best Practices](/docs/2026-07-28/tutorials/security/security_best_practices).
 
@@ -425,8 +425,8 @@ For a fleet:
 
 > [card] [Security Best Practices](/docs/2026-07-28/tutorials/security/security_best_practices)
 >
-> The protocol threat model: confused deputy, token passthrough, and session
-> hijacking
+> The protocol threat model: confused deputy, token passthrough, and state
+> handle hijacking
 
 > [card] [Authorization](/docs/2026-07-28/tutorials/security/authorization)
 >

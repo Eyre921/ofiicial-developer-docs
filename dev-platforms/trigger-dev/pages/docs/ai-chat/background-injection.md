@@ -89,7 +89,7 @@ const registry = createProviderRegistry({ anthropic });
 
 const selfReviewPrompt = prompts.define({
   id: "self-review",
-  model: "anthropic:claude-haiku-4-5",
+  model: "anthropic:claude-haiku-5-5",
   content: `You are a conversation quality reviewer. Analyze the assistant's most recent response.
 
 Focus on:
@@ -109,7 +109,7 @@ export const myChat = chat.agent({
         const resolved = await selfReviewPrompt.resolve({});
 
         const review = await generateObject({
-          model: registry.languageModel(resolved.model ?? "anthropic:claude-haiku-4-5"),
+          model: registry.languageModel(resolved.model ?? "anthropic:claude-haiku-5-5"),
           ...resolved.toAISDKTelemetry(),
           system: resolved.text,
           prompt: messages
@@ -154,7 +154,7 @@ export const myChat = chat.agent({
 });
 ```
 
-The self-review runs on `claude-haiku-4-5` (fast, cheap) in the background. If the user sends another message before it completes, the coaching is still injected, because `chat.inject()` persists across the idle wait.
+The self-review runs on `claude-haiku-5-5` (fast, cheap) in the background. If the user sends another message before it completes, the coaching is still injected, because `chat.inject()` persists across the idle wait.
 
 ## Other use cases
 
@@ -175,7 +175,7 @@ export const myChat = chat.agent({
     chat.defer(analytics.track("turn_started", { chatId, runId }));
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -202,7 +202,7 @@ export const myChat = chat.agent({
     );
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```

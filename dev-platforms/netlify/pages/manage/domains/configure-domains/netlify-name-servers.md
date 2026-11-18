@@ -22,9 +22,9 @@ Next you can find Netlify's available name servers for that domain in the Netlif
 2. Select 
 ### NavigationPath Component:
 
-DNS
- from the left sidebar.
-    ![DNS option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
+Domains
+ from the top navigation.
+    ![Domains option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
 
 2. Select the specific domain you want to set up name servers for.
 

@@ -73,7 +73,7 @@ FROM sales
 GROUP BY region;
 ```
 
-| region | avg\_amount |
+| region | avg_amount |
 | - | - |
 | North | 183.333333333333 |
 | South | 162.5 |
@@ -110,12 +110,12 @@ FROM sales
 GROUP BY region;
 ```
 
-| region | total\_rows | rows\_with\_amount |
+| region | total_rows | rows_with_amount |
 | - | - | - |
 | North | 3 | 3 |
 | South | 3 | 2 |
 
-### group\_concat(X) and group\_concat(X, Y)
+### group_concat(X) and group_concat(X, Y)
 
 ```sql theme={null}
 group_concat(X)
@@ -148,7 +148,7 @@ GROUP BY region;
 | North | Widget \| Gadget \| Widget |
 | South | Widget \| Gadget \| Widget |
 
-### string\_agg(X, Y)
+### string_agg(X, Y)
 
 ```sql theme={null}
 string_agg(X, Y)
@@ -259,7 +259,7 @@ FROM sales
 GROUP BY region;
 ```
 
-| region | sum\_amount | total\_amount |
+| region | sum_amount | total_amount |
 | - | - | - |
 | North | 550.0 | 550.0 |
 | South | 325.0 | 325.0 |
@@ -293,7 +293,7 @@ FROM sales
 GROUP BY region, product;
 ```
 
-| region | product | order\_count | total\_sales | avg\_sale | min\_sale | max\_sale |
+| region | product | order_count | total_sales | avg_sale | min_sale | max_sale |
 | - | - | - | - | - | - | - |
 | North | Gadget | 1 | 250.0 | 250.0 | 250.0 | 250.0 |
 | North | Widget | 2 | 300.0 | 150.0 | 100.0 | 200.0 |
@@ -312,7 +312,7 @@ GROUP BY region
 HAVING sum(amount) > 400;
 ```
 
-| region | total\_sales |
+| region | total_sales |
 | - | - |
 | North | 550.0 |
 
@@ -346,7 +346,7 @@ FROM sales
 ORDER BY region, id;
 ```
 
-| id | region | amount | running\_total | region\_count |
+| id | region | amount | running_total | region_count |
 | - | - | - | - | - |
 | 1 | North | 100.0 | 100.0 | 3 |
 | 2 | North | 250.0 | 350.0 | 3 |
@@ -394,7 +394,7 @@ FROM sales
 GROUP BY region;
 ```
 
-| region | top\_product |
+| region | top_product |
 | - | - |
 | North | Widget |
 | South | Widget |
@@ -403,7 +403,7 @@ GROUP BY region;
 >
 > `mode()` is only valid with `WITHIN GROUP`; calling `mode(X)` without it is an error.
 
-### percentile\_cont(fraction) and percentile\_disc(fraction)
+### percentile_cont(fraction) and percentile_disc(fraction)
 
 ```sql theme={null}
 percentile_cont(fraction) WITHIN GROUP (ORDER BY X)
@@ -454,7 +454,7 @@ Text values are ordered using the applicable collation — an explicit `COLLATE`
 * These aggregates work with `GROUP BY`, `FILTER (WHERE ...)`, `HAVING`, subqueries, CTEs, joins, and attached databases.
 * The **percentile** extension also provides non-standard two-argument forms, `percentile_cont(Y, P)` and `percentile_disc(Y, P)` (see [Extension Aggregate Functions](#extension-aggregate-functions)). The `WITHIN GROUP` forms above are the SQL-standard versions and require no extension.
 
-## Turso Extension: array\_agg(X)
+## Turso Extension: array_agg(X)
 
 > [!NOTE]
 >
@@ -479,7 +479,7 @@ SELECT array_agg(name) FROM users;
 SELECT department, array_agg(name) FROM employees GROUP BY department;
 ```
 
-| department | array\_agg(name) |
+| department | array_agg(name) |
 | - | - |
 | Engineering | \["Alice","Bob"] |
 | Sales | \["Charlie","Diana","Eve"] |
@@ -573,7 +573,7 @@ SELECT percentile(amount, 90) FROM sales;   -- 90th percentile
 SELECT percentile(amount, 25) FROM sales;   -- 25th percentile (Q1)
 ```
 
-### percentile\_cont(Y, P) and percentile\_disc(Y, P)
+### percentile_cont(Y, P) and percentile_disc(Y, P)
 
 ```sql theme={null}
 percentile_cont(Y, P)

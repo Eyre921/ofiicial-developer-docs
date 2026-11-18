@@ -120,7 +120,6 @@ Create a SetupIntent on your server with a list of [payment methods](https://doc
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
-  -d "allowed_payment_method_types[]=bancontact" \
   -d "allowed_payment_method_types[]=card" \
   -d "allowed_payment_method_types[]=ideal"
 ```
@@ -131,7 +130,6 @@ curl https://api.stripe.com/v1/setup_intents \
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d customer={{CUSTOMER_ID}} \
-  -d "allowed_payment_method_types[]=bancontact" \
   -d "allowed_payment_method_types[]=card" \
   -d "allowed_payment_method_types[]=ideal"
 ```
@@ -912,8 +910,6 @@ Use test payment details and the test redirect page to verify your integration. 
 
 | Payment method | Scenario | How to test |
 | --- | --- | --- |
-| Bancontact | Your customer successfully sets up a SEPA Direct Debit payment method for future usage by using Bancontact. | Use any name in the Bancontact form, then click **Authorize test setup** on the redirect page. |
-| Bancontact | Your customer fails to authenticate on the Bancontact redirect page. | Use any name in the Bancontact form, then click **Fail test setup** on the redirect page. |
 | BECS Direct Debit | Your customer successfully pays with BECS Direct Debit. | Fill out the form using the account number `900123456`. The confirmed `PaymentIntent` status initially transitions to `processing`, then to `succeeded` 3 minutes later. |
 | BECS Direct Debit | Your customer’s payment fails with an `account_closed` error code. | Fill out the form using the account number `111111113`. |
 | iDEAL | Your customer successfully sets up a [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) payment method for future usage by using iDEAL. | Use any name and bank in the iDEAL form, then click **Authorize test setup** on the redirect page. |
@@ -928,7 +924,9 @@ Use test payment details and the test redirect page to verify your integration. 
 
 ### Test charging a saved SEPA Debit PaymentMethod
 
-Confirming the `SetupIntent` using iDEAL, Bancontact, or Sofort generates a [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) *PaymentMethod* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs). SEPA Direct Debit is a [delayed notification](https://docs.stripe.com/payments/payment-methods.md#payment-notification) payment method that transitions to an intermediate `processing` state before transitioning several days later to a `succeeded` or `requires_payment_method` state.
+Confirming the `SetupIntent` using iDEAL or Sofort generates a [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) *PaymentMethod* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs).
+
+SEPA Direct Debit is a [delayed notification](https://docs.stripe.com/payments/payment-methods.md#payment-notification) payment method that transitions to an intermediate `processing` state before transitioning several days later to a `succeeded` or `requires_payment_method` state.
 
 #### Email
 
@@ -949,12 +947,12 @@ Use these PaymentMethods to test that the `PaymentIntent` status transitions. Th
 
 | Payment Method | Description |
 | --- | --- |
-| `pm_bancontact_generatedSepaDebitIntentsSucceed` | The `PaymentIntent` status transitions from `processing` to `succeeded`. |
-| `pm_bancontact_generatedSepaDebitIntentsSucceedDelayed` | The `PaymentIntent` status transitions from `processing` to `succeeded` after at least three minutes. |
-| `pm_bancontact_generatedSepaDebitIntentsFail` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method`. |
-| `pm_bancontact_generatedSepaDebitIntentsFailDelayed` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` after at least three minutes. |
-| `pm_bancontact_generatedSepaDebitIntentsSucceedDisputed` | The `PaymentIntent` status transitions from `processing` to `succeeded`, but a dispute is created immediately. |
-| `pm_bancontact_generatedSepaDebitIntentsFailsDueToInsufficientFunds` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` with the `insufficient_funds` failure code. |
+| `pm_ideal_generatedSepaDebitIntentsSucceed` | The `PaymentIntent` status transitions from `processing` to `succeeded`. |
+| `pm_ideal_generatedSepaDebitIntentsSucceedDelayed` | The `PaymentIntent` status transitions from `processing` to `succeeded` after at least three minutes. |
+| `pm_ideal_generatedSepaDebitIntentsFail` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method`. |
+| `pm_ideal_generatedSepaDebitIntentsFailDelayed` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| `pm_ideal_generatedSepaDebitIntentsSucceedDisputed` | The `PaymentIntent` status transitions from `processing` to `succeeded`, but a dispute is created immediately. |
+| `pm_ideal_generatedSepaDebitIntentsFailsDueToInsufficientFunds` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` with the `insufficient_funds` failure code. |
 
 ## Optional: Customize the layout [Client-side]
 

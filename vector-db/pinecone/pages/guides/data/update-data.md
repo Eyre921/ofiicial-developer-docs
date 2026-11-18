@@ -14,7 +14,7 @@ This page shows you how to update documents in a [namespace](/guides/indexes/ind
 
 ## Update documents
 
-In an index with a document schema, [upsert](/guides/data/upsert-data#upsert-documents) replaces the whole document for a given `_id`. To change individual fields instead, use the documents update operation, which leaves the fields you don't mention unchanged.
+In a document index, [upsert](/guides/data/upsert-data#upsert-documents) replaces the whole document for a given `_id`. To change individual fields instead, use the documents update operation, which leaves the fields you don't mention unchanged.
 
 To patch specific documents, send one entry per `_id`. Include the fields you want to set, and name any fields to drop in `_remove_fields`. Both schema-declared fields and metadata fields can be set or removed this way:
 

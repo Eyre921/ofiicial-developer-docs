@@ -1183,6 +1183,9 @@ Events are split into the following categories:
 * **Database property exception removed**: That an exception was removed from a database property's permissions.
 * **Database property exception updated**: That an exception on a database property's permissions was updated.
 * **Database schema edited**: That a database schema was edited.
+* **Meeting-note filing rule created**: A meeting-note filing rule was created.
+* **Meeting-note filing rule deleted**: A meeting-note filing rule was deleted.
+* **Meeting-note filing rule updated**: The destination, template, or linked calendar events of a meeting-note filing rule were updated.
 
 ***
 
@@ -1193,6 +1196,7 @@ Events are split into the following categories:
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated.
 * **Ability for managed users to grant support access updated**: That the ability for managed users to grant support access was updated.
 * **Ability for managed users to join external workspaces updated**: That the ability for managed users to join external workspaces was updated.
+* **Added allowed email domain**: An allowed email domain was added.
 * **Added allowed email domain**: That a user added an allowed email domain to the workspace.
 * **Admin added themselves as integration owner**: That a workspace admin used admin privileges to add themselves as an integration owner.
 * **Agent chat created**: That a user created an AI agent chat.
@@ -1320,6 +1324,7 @@ Events are split into the following categories:
 * **Public home page link cleared**: That a workspace owner has cleared public home page.
 * **Public home page set**: That a workspace owner has changed public home page.
 * **Public page sharing toggled**: That a workspace owner has switched public page sharing on/off.
+* **Removed allowed email domain**: An allowed email domain was removed.
 * **Removed allowed email domain**: That a user removed an allowed email domain from a workspace.
 * **Restricted member invite request resolved**: That a restricted member invite request was resolved.
 * **SAML authorization for workspace**: That a user was authorized via SAML.
@@ -1643,6 +1648,9 @@ When available, applicable events include a top-level `team_ids` array containin
 * **database.property.permissions.exception_removed**: A user removed an access exception for a database property.
 * **database.property.permissions.exception_updated**: A user changed an access exception for a database property.
 * **database.schema_edited**: A user edited the schema of a database.
+* **meeting_notes.filing_rule.created**: A meeting-note filing rule was created.
+* **meeting_notes.filing_rule.deleted**: A meeting-note filing rule was deleted.
+* **meeting_notes.filing_rule.updated**: The destination, template, or linked calendar events of a meeting-note filing rule were updated.
 
 ### Workspace events
 
@@ -1792,6 +1800,8 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.saml_automatic_account_creation_setting_updated**: A workspace owner enabled or disabled automatically creating accounts on SAML sign-in.
 * **workspace.settings.sidebar_editing_setting_updated**: A workspace owner enabled or disabled the ability for users to change the workspace sidebar.
 * **workspace.teams_read**: A user viewed the list of teamspaces in the workspace.
+* **workspace.trusted_domain.created**: A user added an allowed email domain.
+* **workspace.trusted_domain.deleted**: A user removed an allowed email domain.
 * **workspace.user_analytics_exported**: The User Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics) was exported.
 * **workspace.users_read**: A user viewed the list of users in the workspace.
 
@@ -32745,19 +32755,19 @@ User objects appear in nearly all objects returned by the API, including:
 * [Rich text object](/reference/rich-text), as user mentions.
 * [Property object](/reference/property-object) when the property is a `people` property.
 
-User objects will **always** contain `object` and `id` keys, as described below. The remaining properties may appear if the user is being rendered in a rich text or page property context, and the bot has the correct capabilities to access those properties. For more about capabilities, see the [Capabilities guide](/reference/capabilities) and the [Authorization guide](/guides/authorization/overview).
+In rich text and page properties, the API can return a partial user reference or a full user object. The response depends on the context and the connection's capabilities. See [Capabilities](/reference/capabilities) and [Authorization](/guides/authorization/overview).
 
 ## All users
 
-These fields are shared by all users, including people and bots. Fields marked with \* are always present.
+A partial user reference contains only the fields marked with \*. A full user object contains every field in the table.
 
 | Property | Updatable | Type | Description | Example value |
 | :- | :- | :- | :- | :- |
 | `object`\* | Display-only | `"user"` | Always "user" | `"user"` |
 | `id`\* | Display-only | `string` (UUID) | Unique identifier for this user. | `"e79a0b74-3aba-4149-9f74-0bb5791a6ee6"` |
-| `type` | Display-only | `string` (optional, enum) | Type of the user. Possible values are `"person"` and `"bot"`. | `"person"` |
-| `name` | Display-only | `string` (optional) | User's name, as displayed in Notion. | `"Avocado Lovelace"` |
-| `avatar_url` | Display-only | `string` (optional) | Chosen avatar image. | `"https://secure.notion-static.com/e6a352a8-8381-44d0-a1dc-9ed80e62b53d.jpg"` |
+| `type` | Display-only | `string` (enum) | Either `"person"` or `"bot"`. | `"person"` |
+| `name` | Display-only | `string \| null` | The user's display name. `null` if unavailable. | `"Avocado Lovelace"` |
+| `avatar_url` | Display-only | `string \| null` | The URL of the user's avatar. `null` if unavailable. | `"https://secure.notion-static.com/e6a352a8-8381-44d0-a1dc-9ed80e62b53d.jpg"` |
 
 ## People
 

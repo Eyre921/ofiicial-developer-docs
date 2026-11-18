@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 424 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 425 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -13,6 +13,7 @@
 - `docs/api-reference/api-keys/delete-api-key` — [Delete API key](pages/docs/api-reference/api-keys/delete-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/delete-api-key)
 - `docs/api-reference/api-keys/list-api-keys` — [List API keys](pages/docs/api-reference/api-keys/list-api-keys.md) · [原文](https://resend.com/docs/api-reference/api-keys/list-api-keys)
 - `docs/api-reference/api-keys/update-api-key` — [Update API key](pages/docs/api-reference/api-keys/update-api-key.md) · [原文](https://resend.com/docs/api-reference/api-keys/update-api-key)
+- `docs/api-reference/automations/cancel-automation-run` — [Cancel Automation Run](pages/docs/api-reference/automations/cancel-automation-run.md) · [原文](https://resend.com/docs/api-reference/automations/cancel-automation-run)
 - `docs/api-reference/automations/create-automation` — [Create Automation](pages/docs/api-reference/automations/create-automation.md) · [原文](https://resend.com/docs/api-reference/automations/create-automation)
 - `docs/api-reference/automations/delete-automation` — [Delete Automation](pages/docs/api-reference/automations/delete-automation.md) · [原文](https://resend.com/docs/api-reference/automations/delete-automation)
 - `docs/api-reference/automations/duplicate-automation` — [Duplicate Automation](pages/docs/api-reference/automations/duplicate-automation.md) · [原文](https://resend.com/docs/api-reference/automations/duplicate-automation)
@@ -53,6 +54,7 @@
 - `docs/api-reference/domains/claim-domain` — [Claim Domain](pages/docs/api-reference/domains/claim-domain.md) · [原文](https://resend.com/docs/api-reference/domains/claim-domain)
 - `docs/api-reference/domains/create-domain` — [Create Domain](pages/docs/api-reference/domains/create-domain.md) · [原文](https://resend.com/docs/api-reference/domains/create-domain)
 - `docs/api-reference/domains/delete-domain` — [Delete Domain](pages/docs/api-reference/domains/delete-domain.md) · [原文](https://resend.com/docs/api-reference/domains/delete-domain)
+- `docs/api-reference/domains/enable-forge` — [Enable Forge](pages/docs/api-reference/domains/enable-forge.md) · [原文](https://resend.com/docs/api-reference/domains/enable-forge)
 - `docs/api-reference/domains/get-domain` — [Retrieve Domain](pages/docs/api-reference/domains/get-domain.md) · [原文](https://resend.com/docs/api-reference/domains/get-domain)
 - `docs/api-reference/domains/get-domain-claim` — [Retrieve Domain Claim](pages/docs/api-reference/domains/get-domain-claim.md) · [原文](https://resend.com/docs/api-reference/domains/get-domain-claim)
 - `docs/api-reference/domains/list-domains` — [List Domains](pages/docs/api-reference/domains/list-domains.md) · [原文](https://resend.com/docs/api-reference/domains/list-domains)
@@ -275,7 +277,6 @@
 - `docs/guides/vercel-marketplace-integration` — [Vercel Marketplace Integration](pages/docs/guides/vercel-marketplace-integration.md) · [原文](https://resend.com/docs/guides/vercel-marketplace-integration)
 - `docs/integrations` — [Integrations](pages/docs/integrations.md) · [原文](https://resend.com/docs/integrations)
 - `docs/introduction` — [Introduction](pages/docs/introduction.md) · [原文](https://resend.com/docs/introduction)
-- `docs/knowledge-base/403-error-1010` — [403 Error with Error Code 1010](pages/docs/knowledge-base/403-error-1010.md) · [原文](https://resend.com/docs/knowledge-base/403-error-1010)
 - `docs/knowledge-base/403-error-domain-mismatch` — [403 Error Using Verified Domain](pages/docs/knowledge-base/403-error-domain-mismatch.md) · [原文](https://resend.com/docs/knowledge-base/403-error-domain-mismatch)
 - `docs/knowledge-base/403-error-resend-dev-domain` — [403 Error Using resend.dev Domain](pages/docs/knowledge-base/403-error-resend-dev-domain.md) · [原文](https://resend.com/docs/knowledge-base/403-error-resend-dev-domain)
 - `docs/knowledge-base/account-quotas-and-limits` — [What are Resend account quotas and limits?](pages/docs/knowledge-base/account-quotas-and-limits.md) · [原文](https://resend.com/docs/knowledge-base/account-quotas-and-limits)

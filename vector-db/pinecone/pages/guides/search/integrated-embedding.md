@@ -6,7 +6,7 @@ path: guides/search/integrated-embedding
 
 Declare embed or sparse_embed on a string field so Pinecone embeds your text on a document index, and upsert and search with plain text instead of vectors.
 
-Embedding converts text into a vector that captures its meaning. Instead of generating those vectors yourself, you can have Pinecone embed a `string` field's text for you. Add an `embed` (dense) or `sparse_embed` (learned-sparse) object to the field, and Pinecone embeds the text when you upsert or update a [document](/guides/get-started/key-terms#document), and embeds the query text when you search that field. You send and search with plain text and never handle vectors.
+Embedding converts text into a vector that captures its meaning. Instead of generating those vectors yourself, you can have Pinecone embed a `string` field's text for you. Add an `embed` (dense) or `sparse_embed` (learned-sparse) object to the field, and Pinecone embeds the text when you upsert or update a [document](/guides/indexes/data-modeling#documents), and embeds the query text when you search that field. You send and search with plain text and never handle vectors.
 
 This is the same integrated embedding that the [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) operation provides for the legacy Records API, brought to document indexes, where it composes with full-text search on the same field.
 

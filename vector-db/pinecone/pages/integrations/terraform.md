@@ -109,7 +109,7 @@ A configuration uses one style or the other. You can't combine `schema` or `depl
 
 #### Document indexes
 
-A `schema` of named fields creates a [document index](/guides/get-started/key-terms#document-index), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
+A `schema` of named fields creates a [document index](/guides/indexes/index-data-overview#document-index), which you read and write through the Documents API. Each field sets exactly one of `dense_vector`, `sparse_vector`, or `string`. A `string` field stores its text by default, and a field that stores its text is always indexed for [full-text search](/guides/search/full-text-search). A `string` field can also use [integrated embedding](#integrated-embedding).
 
 ```hcl Terraform theme={null}
 resource "pinecone_index" "example_index_documents" {

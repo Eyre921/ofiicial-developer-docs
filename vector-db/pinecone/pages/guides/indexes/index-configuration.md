@@ -4,9 +4,9 @@ source: https://docs.pinecone.io/guides/indexes/index-configuration
 path: guides/indexes/index-configuration
 ---
 
-Reference for the naming rules, cloud regions, similarity metrics, and hosted embedding models you choose when you create a Pinecone index.
+Choose the name, cloud region, dimension, similarity metric, and hosted embedding model for a Pinecone index when you create it.
 
-When you create a Pinecone index, you choose a name, the cloud region where it's hosted, a similarity metric for dense vectors, and, for integrated embedding, a hosted embedding model. To index only the metadata fields you filter on, rather than all of them, see [Configure metadata indexing](/guides/indexes/configure-metadata-indexing).
+When you create a Pinecone index, you choose a name, the cloud region where it's hosted, a dimension and similarity metric for dense vectors, and, for integrated embedding, a hosted embedding model. To index only the metadata fields you filter on, rather than all of them, see [Configure metadata indexing](/guides/indexes/configure-metadata-indexing).
 
 ## Index names
 
@@ -33,13 +33,17 @@ The cloud and region can't be changed after a serverless index is created.
 >
 > On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
 
+## Dimensions
+
+A dimension is the number of values in a dense vector. You set it with `dimension` on a `dense_vector` field, or on a legacy vector index. It must match the output of the embedding model that produces your vectors, and every vector you upsert or search with must have that many values. With [integrated embedding](/guides/search/integrated-embedding), you can set `dimension` in the field's `embed` object, or leave it out to use the model's default. For each model's supported dimensions, see the [model gallery](/models/overview).
+
 ## Similarity metrics
 
 When creating an index that stores dense vectors, you can choose from the following similarity metrics. For the most accurate results, choose the similarity metric used to train the embedding model for your vectors. For more information, see [Vector Similarity Explained](https://www.pinecone.io/learn/vector-similarity/).
 
 > [!NOTE]
 >
-> Indexes that store [sparse vectors](/guides/get-started/key-terms#sparse-vector) must use the `dotproduct` metric.
+> Indexes that store [sparse vectors](/guides/search/sparse-vector-search) must use the `dotproduct` metric.
 
 > [accordion] Euclidean
 >

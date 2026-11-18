@@ -64,6 +64,16 @@ To view all available fields for the `evidence` parameter, see [Dispute evidence
 
 You can provide documents or images (for example, a contract or screenshot) as part of dispute evidence using the [File Upload API](https://docs.stripe.com/file-upload.md). You first upload a document with the purpose of `dispute_evidence`, which generates a `File_upload` object that you can use when submitting evidence. Make sure the file meets [Stripe’s recommendations](https://docs.stripe.com/disputes/best-practices.md#file-upload-recommendations) before uploading it for evidence submission.
 
+### Upload and attach file evidence
+
+If you have command-line access:
+
+1. Install or upgrade the [Stripe CLI](https://docs.stripe.com/stripe-cli.md) to version 1.55.1 or later. Run `stripe --version` to confirm the installed version.
+2. Follow [Create a file](https://docs.stripe.com/api/files/create.md?lang=cli) to upload the file with `--purpose=dispute_evidence`.
+3. Use the `id` from the returned `File` object.
+4. Use the Stripe MCP `stripe_api_write` tool to [update the dispute](https://docs.stripe.com/api/disputes/update.md). In the `evidence` object, set the most specific applicable file field to the file ID. If no specific field applies, use `uncategorized_file`.
+5. Set `submit` to `false` to stage the evidence without sending the response. Set `submit` to `true` only when the user explicitly asks to send the response after reviewing all evidence. Submitting the response is final.
+
 If you’re only interested in submitting a single file or a large amount of plaintext as evidence, use `uncategorized_text` or `uncategorized_file`. However, fill in as many fields as possible so you have the best chance at overturning a dispute.
 
 ## Multiple disputes on a single payment

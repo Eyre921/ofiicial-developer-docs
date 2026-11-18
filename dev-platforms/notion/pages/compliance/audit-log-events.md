@@ -80,6 +80,9 @@ Events are split into the following categories:
 * **Database property exception removed**: That an exception was removed from a database property's permissions.
 * **Database property exception updated**: That an exception on a database property's permissions was updated.
 * **Database schema edited**: That a database schema was edited.
+* **Meeting-note filing rule created**: A meeting-note filing rule was created.
+* **Meeting-note filing rule deleted**: A meeting-note filing rule was deleted.
+* **Meeting-note filing rule updated**: The destination, template, or linked calendar events of a meeting-note filing rule were updated.
 
 ***
 
@@ -90,6 +93,7 @@ Events are split into the following categories:
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated.
 * **Ability for managed users to grant support access updated**: That the ability for managed users to grant support access was updated.
 * **Ability for managed users to join external workspaces updated**: That the ability for managed users to join external workspaces was updated.
+* **Added allowed email domain**: An allowed email domain was added.
 * **Added allowed email domain**: That a user added an allowed email domain to the workspace.
 * **Admin added themselves as integration owner**: That a workspace admin used admin privileges to add themselves as an integration owner.
 * **Agent chat created**: That a user created an AI agent chat.
@@ -217,6 +221,7 @@ Events are split into the following categories:
 * **Public home page link cleared**: That a workspace owner has cleared public home page.
 * **Public home page set**: That a workspace owner has changed public home page.
 * **Public page sharing toggled**: That a workspace owner has switched public page sharing on/off.
+* **Removed allowed email domain**: An allowed email domain was removed.
 * **Removed allowed email domain**: That a user removed an allowed email domain from a workspace.
 * **Restricted member invite request resolved**: That a restricted member invite request was resolved.
 * **SAML authorization for workspace**: That a user was authorized via SAML.

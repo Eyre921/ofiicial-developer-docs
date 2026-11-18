@@ -121,7 +121,7 @@ export async function POST(req: Request) {
   if (!session) return new Response("Unauthorized", { status: 401 });
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     system: "You are a helpful assistant.",
     messages: convertToModelMessages(messages),
     tools,
@@ -150,7 +150,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       messages,
       abortSignal: signal,
@@ -357,7 +357,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       messages,
       abortSignal: signal,
@@ -464,7 +464,7 @@ export const chatHandler = chat.headStart({
   agentId: "my-chat",
   run: async ({ streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       tools: headStartTools,
     }),

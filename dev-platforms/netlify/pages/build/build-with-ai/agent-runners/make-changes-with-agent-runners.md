@@ -15,6 +15,10 @@ Learn how to make changes and iterate on an existing project with your preferred
 
 If you want to create a new project with an AI agent, check out our [Agent Runners quickstart for new projects](/start/quickstarts/create-new-project-with-ai-agent/).
 
+### Note
+
+Not seeing this experience? You might have the new Netlify experience. [Learn more](/start/new-netlify-experience/overview).
+
 ### Tip - Build with connectors
 
 Want your agent to work from a Linear issue, Notion spec, or Snowflake dataset? Connectors let you link third-party services to an agent run so your agent can read and act on data you already have. For details, see [Build with connectors](/build/build-with-ai/agent-runners/build-with-connectors/).

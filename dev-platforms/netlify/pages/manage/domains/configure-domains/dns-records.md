@@ -40,9 +40,9 @@ To add a new DNS record:
 2. Select 
 ### NavigationPath Component:
 
-DNS
- from the left sidebar.
-    ![DNS option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
+Domains
+ from the top navigation.
+    ![Domains option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
 3. Select the domain (or DNS zone) you want to add a new DNS record for.
 4. At the bottom of the **DNS records** section, select **Add new record**.
 5. Choose the type of record to create from the menu and fill in the remaining options. The fields you need to fill out will depend on the type of record you select.
@@ -69,9 +69,9 @@ To delete a DNS record:
 2. Select 
 ### NavigationPath Component:
 
-DNS
- from the left sidebar.
-    ![DNS option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
+Domains
+ from the top navigation.
+    ![Domains option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
 3. Select the domain (or DNS zone) you want to delete a DNS record for.
 4. In the **DNS records** section, find the record you want to delete.
 5. Select the record to expand the details and then select the delete option.

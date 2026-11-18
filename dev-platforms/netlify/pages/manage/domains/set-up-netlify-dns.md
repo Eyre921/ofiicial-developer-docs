@@ -57,9 +57,9 @@ To delegate your domain to Netlify:
 2. Select 
 ### NavigationPath Component:
 
-DNS
- from the left sidebar.
-    ![DNS option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
+Domains
+ from the top navigation.
+    ![Domains option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
 2. Select your domain.
 3. Make note of the four name servers listed in the **Name servers** panel.
 4. Log in to the account you have with your domain registrar and find their instructions for updating name servers.

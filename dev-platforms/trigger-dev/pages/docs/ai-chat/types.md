@@ -95,10 +95,12 @@ export const myChat = chat
     run: async ({ messages, tools, signal, streamText }) => {
       // `tools` is myTools, typed, handed back on the payload
       return streamText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         messages,
         tools,
         abortSignal: signal,
+        // Claude 5.5 models omit thinking text unless you ask for a summary
+        providerOptions: { anthropic: { thinking: { type: "adaptive", display: "summarized" } } },
         stopWhen: stepCountIs(15),
       });
     },
@@ -196,7 +198,12 @@ export const myChat = chat
   .agent({
     id: "my-chat",
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({
+        model: anthropic("claude-sonnet-5-5"),
+        messages,
+        abortSignal: signal,
+        providerOptions: { anthropic: { thinking: { type: "adaptive", display: "summarized" } } },
+      });
     },
   });
 ```
@@ -221,7 +228,7 @@ chat
       await createChatRecord(event.chatId);
     },
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
     },
   });
 ```

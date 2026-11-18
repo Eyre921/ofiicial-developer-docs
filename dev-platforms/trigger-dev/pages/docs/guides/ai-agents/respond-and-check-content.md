@@ -21,7 +21,7 @@ In this example, we'll create a workflow that simultaneously checks content for 
 * Uses `generateText` from the [AI SDK](https://ai-sdk.dev/) to call Anthropic's Claude models
 * Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
 * Uses [`batch.triggerByTaskAndWait`](/docs/triggering#batch-triggerbytaskandwait) to run customer response and content moderation tasks in parallel
-* Answers with `claude-sonnet-4-5` and moderates with the faster, cheaper `claude-haiku-4-5`
+* Answers with `claude-sonnet-5-5` and moderates with the faster, cheaper `claude-haiku-5-5`
 * Simultaneously checks for inappropriate content while generating responses
 
 ```typescript theme={"theme":"css-variables"}
@@ -34,12 +34,9 @@ export const generateCustomerResponse = task({
   id: "generate-customer-response",
   run: async (payload: { question: string }) => {
     const response = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
+      system: "You are a helpful customer service representative.",
       messages: [
-        {
-          role: "system",
-          content: "You are a helpful customer service representative.",
-        },
         { role: "user", content: payload.question },
       ],
       experimental_telemetry: {
@@ -57,13 +54,9 @@ export const checkInappropriateContent = task({
   id: "check-inappropriate-content",
   run: async (payload: { text: string }) => {
     const response = await generateText({
-      model: anthropic("claude-haiku-4-5"),
+      model: anthropic("claude-haiku-5-5"),
+      system: "You are a content moderator. Respond with 'true' if the content is inappropriate or contains harmful, threatening, offensive, or explicit content, 'false' otherwise.",
       messages: [
-        {
-          role: "system",
-          content:
-            "You are a content moderator. Respond with 'true' if the content is inappropriate or contains harmful, threatening, offensive, or explicit content, 'false' otherwise.",
-        },
         { role: "user", content: payload.text },
       ],
       experimental_telemetry: {

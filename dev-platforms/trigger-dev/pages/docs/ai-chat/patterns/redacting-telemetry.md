@@ -30,7 +30,7 @@ export const supportAgent = chat.agent({
   id: "support-agent",
   telemetry: { recordUserMessage: false, recordClientData: false },
   run: async ({ messages, signal, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
 });
 ```
 
@@ -49,7 +49,7 @@ export const supportAgent = chat.agent({
   telemetry: { recordUserMessage: false, recordClientData: false },
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       // Replaces the default telemetry config (and chat.prompt.set()'s), so keep isEnabled on

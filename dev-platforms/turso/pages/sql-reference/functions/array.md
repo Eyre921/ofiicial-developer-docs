@@ -50,7 +50,7 @@ SELECT tags FROM t ORDER BY id;
 -- ["x","y","z"]
 ```
 
-### string\_to\_array
+### string_to_array
 
 Splits a string into an array using a delimiter.
 
@@ -137,7 +137,7 @@ SELECT tags[1:3] FROM t;
 
 ## Scalar Functions
 
-### array\_length
+### array_length
 
 Returns the number of elements along a given dimension of an array.
 
@@ -178,7 +178,7 @@ SELECT array_length(ARRAY[1, 2, 3], 0);
 -- NULL (dimension < 1)
 ```
 
-### array\_upper
+### array_upper
 
 Returns the upper bound (inclusive) of a given dimension of an array.
 
@@ -206,7 +206,7 @@ SELECT array_upper(ARRAY[1, 2, 3], 2);
 -- NULL
 ```
 
-### array\_append
+### array_append
 
 Appends an element to the end of an array.
 
@@ -232,7 +232,7 @@ SELECT array_append(NULL, 'x');
 -- ["x"]
 ```
 
-### array\_prepend
+### array_prepend
 
 Prepends an element to the beginning of an array.
 
@@ -252,7 +252,7 @@ SELECT array_prepend('z', '["a", "b"]');
 -- ["z","a","b"]
 ```
 
-### array\_cat
+### array_cat
 
 Concatenates two arrays.
 
@@ -294,7 +294,7 @@ SELECT tags || ARRAY['x', 'y'] FROM t;
 -- ["a","b","x","y"]
 ```
 
-### array\_remove
+### array_remove
 
 Removes all occurrences of an element from an array.
 
@@ -317,7 +317,7 @@ SELECT array_remove('[1, 2, 3]', 99);
 -- [1,2,3]
 ```
 
-### array\_contains
+### array_contains
 
 Tests whether an array contains a specific element.
 
@@ -340,7 +340,7 @@ SELECT array_contains('[1, 2, 3]', 5);
 -- 0
 ```
 
-### array\_position
+### array_position
 
 Returns the zero-based index of the first occurrence of an element.
 
@@ -366,7 +366,7 @@ SELECT array_position('[10, 20, 30]', 99);
 -- NULL
 ```
 
-### array\_slice
+### array_slice
 
 Extracts a sub-array by index range.
 
@@ -390,7 +390,7 @@ SELECT array_slice('[1, 2, 3, 4]', NULL, 2);
 -- [1,2]
 ```
 
-### array\_to\_string
+### array_to_string
 
 Joins array elements into a string with a delimiter.
 
@@ -421,7 +421,7 @@ SELECT array_to_string('[1, null, 3]', ',', 'N/A');
 -- 1,N/A,3
 ```
 
-### array\_contains\_all
+### array_contains_all
 
 Tests whether one array contains all elements of another.
 
@@ -449,7 +449,7 @@ SELECT array_contains_all('[1, 2, 3]', '[]');
 
 The `@>` operator is an alias for this function. See [Array Operators](/sql-reference/expressions#array-operators).
 
-### array\_overlap
+### array_overlap
 
 Tests whether two arrays share any common elements.
 
@@ -481,7 +481,7 @@ SELECT array_overlap('[]', '[1, 2]');
 
 ## Aggregate Function
 
-### array\_agg
+### array_agg
 
 Collects values from a group of rows into an array.
 
@@ -502,7 +502,7 @@ INSERT INTO t VALUES ('x', 'a'), ('x', 'b'), ('y', 'c'), ('y', 'd'), ('y', 'e');
 SELECT grp, array_agg(val) FROM t GROUP BY grp ORDER BY grp;
 ```
 
-| grp | array\_agg(val) |
+| grp | array_agg(val) |
 | - | - |
 | x | \["a","b"] |
 | y | \["c","d","e"] |

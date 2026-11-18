@@ -15,6 +15,10 @@ Prompt AI agents to [create a new project](/start/quickstarts/create-new-project
 
 Without any extra setup or additional accounts, Agent Runners offer advantages over running AI agents in other environments by giving secure access to your Netlify project context, deployment pipeline, build settings, and more. This enables you and your team to optimize AI workflows for your Netlify projects.
 
+### Note
+
+Not seeing this experience? You might have the new Netlify experience. [Learn more](/start/new-netlify-experience/overview).
+
 > **Pricing Information:** This feature is available on Credit-based plans only, including the [Free, Personal, and Pro](https://www.netlify.com/pricing) plans. If you are on an Enterprise plan and you're interested, reach out to your Account Manager.
 
 Agent Runners offer agents unique advantages on Netlify's platform with the following: 

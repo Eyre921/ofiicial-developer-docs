@@ -41,9 +41,9 @@ With Pinecone Database, you can:
 >
 > One schema for your text, vectors, and metadata, searched through one API
 
-> [card] [Key terms](/guides/get-started/key-terms)
+> [card] [Architecture](/guides/get-started/architecture)
 >
-> Organizations, projects, indexes, namespaces, documents, and records
+> How organizations, projects, indexes, and namespaces fit together
 
 > [card] [Data modeling](/guides/indexes/data-modeling)
 >

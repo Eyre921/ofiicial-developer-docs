@@ -183,6 +183,7 @@ Trusted by: Ramp, GoDaddy, [Khan Academy](/users/khan-academy), [Merck Group](/u
 | [SCIM API (automated user provisioning)](/docs/administration/scim-and-org-api)                                    | --                  | --                           | --                           | Yes                                              |
 | [Audit logs](/docs/administration/audit-logs)                                                                      | --                  | --                           | --                           | Yes                                              |
 | [IAM role authentication for Amazon S3](/docs/api-and-data-platform/features/export-to-blob-storage#iam-role-auth) | --                  | --                           | --                           | Yes                                              |
+| [IAM role authentication for Amazon Bedrock](/docs/administration/llm-connection#bedrock-iam-role)                 | --                  | --                           | --                           | Yes                                              |
 | **Billing**                                                                                                        |                     |                              |                              |                                                  |
 | Subscription management                                                                                            | --                  | Self-serve                   | Self-serve                   | Self-serve, or contact sales                     |
 | Payment methods                                                                                                    | --                  | Credit card                  | Credit card                  | Credit card, Invoice                             |
@@ -265,7 +266,6 @@ A billable unit in Langfuse is any tracing data point sent to the platform -- in
 | Early-stage startups | 50% off, first year                 | [Learn more and apply](/startups)   |
 | Research / Students  | Up to 100% off (limits apply)       | [Learn more and apply](/research)   |
 | Non-profits          | $199 in credits / month             | [Learn more and apply](/non-profit) |
-| Hackathons           | $100 in credits / month, 3 months   | [Learn more and apply](/hackathons) |
 | Open-source projects | $300 in credits / month, first year | Contact support@langfuse.com        |
 
 ## Frequently Asked Questions

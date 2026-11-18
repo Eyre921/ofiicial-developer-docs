@@ -152,6 +152,11 @@ Everything else (`--catalog`, `--config`, `--server-url`, `--transport`, `--meth
 >
 > Connect once, then run many commands against a named connection.
 
+> [card] [Load testing](/docs/2026-07-28/tools/inspector/load-testing)
+>
+> Concurrent and sustained load from the web client, the CLI, or mcpdo, with
+> CI thresholds and baselines.
+
 > [card] [Security](/docs/2026-07-28/tools/inspector/security)
 >
 > The threat model: the web backend's token, Docker, secret storage, stdio

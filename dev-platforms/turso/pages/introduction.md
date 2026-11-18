@@ -47,7 +47,7 @@ The next evolution of SQLite, built for modern applications:
 
 > [card] Async Design
 >
-> Modern async primitives such as Linux io\_uring to keep your apps responsive
+> Modern async primitives such as Linux io_uring to keep your apps responsive
 
 > [card] SQLite Compatible
 >

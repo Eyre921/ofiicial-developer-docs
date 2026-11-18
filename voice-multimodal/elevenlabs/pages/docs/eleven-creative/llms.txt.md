@@ -14,6 +14,7 @@ path: docs/eleven-creative/llms.txt
 
 - [ElevenCreative](https://elevenlabs.io/docs/eleven-creative/overview.md): Create studio-quality AI audio for any use case
 - [ElevenCreative quickstart](https://elevenlabs.io/docs/eleven-creative/quickstart.md): Start creating studio-quality AI audio in minutes
+- [ElevenCreative MCP](https://elevenlabs.io/docs/eleven-creative/mcp.md): Generate speech, music, sound effects, images, and video from Claude, ChatGPT, Cursor, and other MCP clients.
 - [Text to Speech](https://elevenlabs.io/docs/eleven-creative/playground/text-to-speech.md): A guide on how to turn text to speech with ElevenLabs
 - [Voice changer](https://elevenlabs.io/docs/eleven-creative/playground/voice-changer.md): A guide on how to transform audio between voices while preserving emotion and delivery.
 - [Sound effects](https://elevenlabs.io/docs/eleven-creative/playground/sound-effects.md): How to create high-quality sound effects from text with ElevenLabs.

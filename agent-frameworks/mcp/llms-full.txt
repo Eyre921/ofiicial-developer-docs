@@ -1,3 +1,7 @@
+# Model Context Protocol
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://modelcontextprotocol.io/llms.txt instead.
+
 # Build an MCP client
 Source: https://modelcontextprotocol.io/docs/2026-07-28/develop/build-client
 
@@ -105,7 +109,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > load_dotenv()  # load environment variables from .env
 >
-> MODEL = "claude-opus-5"
+> MODEL = "claude-haiku-5-5"
 > # The model thinks adaptively unless told otherwise, and max_tokens caps thinking
 > # plus the reply, so leave room for both.
 > MAX_TOKENS = 10000
@@ -294,7 +298,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > ### 3. Query Processing
 >
-> * Maintains conversation context
+> * Starts a new conversation for each query
 > * Handles Claude's responses and tool calls
 > * Runs every tool call of a turn, then answers them all in one message
 > * Keeps looping while Claude asks for tools, up to `MAX_TOOL_TURNS`
@@ -487,7 +491,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > {
 >   "type": "module",
 >   "scripts": {
->     "build": "tsc && chmod 755 build/index.js"
+>     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
 >   }
 > }
 > ```
@@ -560,7 +564,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >   throw new Error("ANTHROPIC_API_KEY is not set");
 > }
 >
-> const MODEL = "claude-opus-5";
+> const MODEL = "claude-haiku-5-5";
 > // The model thinks adaptively unless told otherwise, and max_tokens caps
 > // thinking plus the reply, so leave room for both.
 > const MAX_TOKENS = 10000;
@@ -780,7 +784,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > ```typescript theme={null}
 > async function main() {
 >   if (process.argv.length < 3) {
->     console.log("Usage: node index.ts <path_to_server_script>");
+>     console.log("Usage: node build/index.js <path_to_server_script>");
 >     return;
 >   }
 >   const mcpClient = new MCPClient();
@@ -914,19 +918,13 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > * Java 17 or higher
 > * Maven 3.6+
-> * npx package manager
+> * npm
 > * Anthropic API key (Claude)
 > * Brave Search API key
 >
 > ## Setting Up Your Environment
 >
-> 1. Install npx (Node Package eXecute):
->    First, make sure to install [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
->    and then run:
->
->    ```bash theme={null}
->    npm install -g npx
->    ```
+> 1. Install [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), which includes `npx`.
 >
 > 2. Clone the repository:
 >
@@ -1189,7 +1187,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > First, let's create the basic client class:
 >
 > ```kotlin theme={null}
-> private const val MODEL = "claude-opus-5"
+> private const val MODEL = "claude-haiku-5-5"
 > // The model thinks adaptively unless told otherwise, and max_tokens caps thinking
 > // plus the reply, so leave room for both.
 > private const val MAX_TOKENS = 10_000L
@@ -1562,7 +1560,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > Before starting, ensure your system meets these requirements:
 >
-> * .NET 8.0 or higher
+> * .NET 10.0 or higher
 > * Anthropic API key (Claude)
 > * Windows, Linux, or macOS
 >
@@ -1578,8 +1576,8 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > Then, add the required dependencies to your project:
 >
 > ```bash theme={null}
-> dotnet add package ModelContextProtocol --prerelease
-> dotnet add package Anthropic.SDK
+> dotnet add package ModelContextProtocol
+> dotnet add package Anthropic
 > dotnet add package Microsoft.Extensions.Hosting
 > dotnet add package Microsoft.Extensions.AI
 > ```
@@ -1600,7 +1598,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > First, let's setup the basic client class in the file `Program.cs`:
 >
 > ```csharp theme={null}
-> using Anthropic.SDK;
+> using Anthropic;
 > using Microsoft.Extensions.AI;
 > using Microsoft.Extensions.Configuration;
 > using Microsoft.Extensions.Hosting;
@@ -1658,8 +1656,8 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > Now let's add the core functionality for processing queries and handling tool calls:
 >
 > ```csharp theme={null}
-> using var anthropicClient = new AnthropicClient(new APIAuthentication(builder.Configuration["ANTHROPIC_API_KEY"]))
->     .Messages
+> using var anthropicClient = new AnthropicClient(new() { ApiKey = builder.Configuration["ANTHROPIC_API_KEY"] })
+>     .AsIChatClient("claude-haiku-5-5")
 >     .AsBuilder()
 >     .UseFunctionInvocation()
 >     .Build();
@@ -1667,7 +1665,6 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > var options = new ChatOptions
 > {
 >     MaxOutputTokens = 10000,
->     ModelId = "claude-opus-5",
 >     Tools = [.. tools]
 > };
 >
@@ -1719,9 +1716,9 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 >
 > * Leverages [Microsoft.Extensions.AI](https://learn.microsoft.com/dotnet/ai/ai-extensions) for the chat client.
 > * Configures the `IChatClient` to use automatic tool (function) invocation.
-> * The client reads user input and sends it to the server.
-> * The server processes the query and returns a response.
-> * The response is displayed to the user.
+> * The client reads user input and sends it to Claude.
+> * When Claude asks for a tool, the client calls it on the server and sends the result back to Claude.
+> * The client displays Claude's response to the user.
 >
 > ## Running the Client
 >
@@ -1743,7 +1740,6 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > 2. List available tools
 > 3. Start an interactive chat session where you can:
 >    * Enter queries
->    * See tool executions
 >    * Get responses from Claude
 > 4. Exit the session when done
 >
@@ -1830,7 +1826,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > require "mcp"
 >
 > class MCPClient
->   ANTHROPIC_MODEL = "claude-opus-5"
+>   ANTHROPIC_MODEL = "claude-haiku-5-5"
 >   # The model thinks adaptively unless told otherwise, and max_tokens caps thinking
 >   # plus the reply, so leave room for both.
 >   MAX_TOKENS = 10000
@@ -2277,7 +2273,7 @@ Before you begin, it helps to have gone through our [Build an MCP Server](/docs/
 > use tokio::io::{self, AsyncBufReadExt, BufReader};
 > use tokio::process::Command;
 >
-> const MODEL_ANTHROPIC: &str = "claude-opus-5";
+> const MODEL_ANTHROPIC: &str = "claude-haiku-5-5";
 > /// The model may think before answering, and max_tokens caps thinking
 > /// plus the reply, so leave room for both.
 > const MAX_TOKENS: u32 = 10000;
@@ -3062,6 +3058,7 @@ This tutorial will primarily focus on tools.
 >
 > import httpx2
 > from mcp.server import MCPServer
+> from mcp.server.mcpserver.exceptions import ToolError
 >
 > # Initialize MCPServer
 > mcp = MCPServer("weather")
@@ -3083,7 +3080,7 @@ This tutorial will primarily focus on tools.
 > async def make_nws_request(url: str) -> dict[str, Any] | None:
 >     """Make a request to the NWS API with proper error handling."""
 >     headers = {"User-Agent": USER_AGENT, "Accept": "application/geo+json"}
->     async with httpx2.AsyncClient() as client:
+>     async with httpx2.AsyncClient(follow_redirects=True) as client:
 >         try:
 >             response = await client.get(url, headers=headers, timeout=30.0)
 >             response.raise_for_status()
@@ -3116,11 +3113,11 @@ This tutorial will primarily focus on tools.
 >     Args:
 >         state: Two-letter US state code (e.g. CA, NY)
 >     """
->     url = f"{NWS_API_BASE}/alerts/active/area/{state}"
+>     url = f"{NWS_API_BASE}/alerts/active/area/{state.upper()}"
 >     data = await make_nws_request(url)
 >
 >     if not data or "features" not in data:
->         return "Unable to fetch alerts or no alerts found."
+>         raise ToolError("Unable to fetch alerts.")
 >
 >     if not data["features"]:
 >         return "No active alerts for this state."
@@ -3142,17 +3139,20 @@ This tutorial will primarily focus on tools.
 >     points_data = await make_nws_request(points_url)
 >
 >     if not points_data:
->         return "Unable to fetch forecast data for this location."
+>         raise ToolError("Unable to fetch forecast data for this location.")
 >
 >     # Get the forecast URL from the points response
 >     forecast_url = points_data["properties"]["forecast"]
 >     forecast_data = await make_nws_request(forecast_url)
 >
 >     if not forecast_data:
->         return "Unable to fetch detailed forecast."
+>         raise ToolError("Unable to fetch detailed forecast.")
 >
 >     # Format the periods into a readable forecast
 >     periods = forecast_data["properties"]["periods"]
+>     if not periods:
+>         raise ToolError("No forecast periods available.")
+>
 >     forecasts = []
 >     for period in periods[:5]:  # Only show next 5 periods
 >         forecast = f"""
@@ -3345,7 +3345,7 @@ This tutorial will primarily focus on tools.
 >     "weather": "./build/index.js"
 >   },
 >   "scripts": {
->     "build": "tsc && chmod 755 build/index.js"
+>     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
 >   },
 >   "files": ["build"]
 > }
@@ -3488,7 +3488,7 @@ This tutorial will primarily focus on tools.
 >     },
 >     async ({ state }) => {
 >       const stateCode = state.toUpperCase();
->       const alertsUrl = `${NWS_API_BASE}/alerts?area=${stateCode}`;
+>       const alertsUrl = `${NWS_API_BASE}/alerts/active?area=${stateCode}`;
 >       const alertsData = await makeNWSRequest<AlertsResponse>(alertsUrl);
 >
 >       if (!alertsData) {
@@ -3499,6 +3499,7 @@ This tutorial will primarily focus on tools.
 >               text: "Failed to retrieve alerts data",
 >             },
 >           ],
+>           isError: true,
 >         };
 >       }
 >
@@ -3558,6 +3559,7 @@ This tutorial will primarily focus on tools.
 >               text: `Failed to retrieve grid point data for coordinates: ${latitude}, ${longitude}. This location may not be supported by the NWS API (only US locations are supported).`,
 >             },
 >           ],
+>           isError: true,
 >         };
 >       }
 >
@@ -3570,6 +3572,7 @@ This tutorial will primarily focus on tools.
 >               text: "Failed to get forecast URL from grid point data",
 >             },
 >           ],
+>           isError: true,
 >         };
 >       }
 >
@@ -3583,6 +3586,7 @@ This tutorial will primarily focus on tools.
 >               text: "Failed to retrieve forecast data",
 >             },
 >           ],
+>           isError: true,
 >         };
 >       }
 >
@@ -3595,6 +3599,7 @@ This tutorial will primarily focus on tools.
 >               text: "No forecast periods available",
 >             },
 >           ],
+>           isError: true,
 >         };
 >       }
 >
@@ -3602,7 +3607,7 @@ This tutorial will primarily focus on tools.
 >       const formattedForecast = periods.map((period: ForecastPeriod) =>
 >         [
 >           `${period.name || "Unknown"}:`,
->           `Temperature: ${period.temperature || "Unknown"}°${period.temperatureUnit || "F"}`,
+>           `Temperature: ${period.temperature ?? "Unknown"}°${period.temperatureUnit || "F"}`,
 >           `Wind: ${period.windSpeed || "Unknown"} ${period.windDirection || ""}`,
 >           `${period.shortForecast || "No forecast available"}`,
 >           "---",
@@ -3762,8 +3767,8 @@ This tutorial will primarily focus on tools.
 >
 > ```groovy Gradle theme={null}
 > dependencies {
->   implementation platform("org.springframework.ai:spring-ai-starter-mcp-server")
->   implementation platform("org.springframework:spring-web")
+>   implementation "org.springframework.ai:spring-ai-starter-mcp-server"
+>   implementation "org.springframework:spring-web"
 > }
 > ```
 >
@@ -3856,7 +3861,7 @@ This tutorial will primarily focus on tools.
 > }
 > ```
 >
-> Uses the `MethodToolCallbackProvider` utils to convert the `@Tools` into actionable callbacks used by the MCP server.
+> Uses the `MethodToolCallbackProvider` utils to convert the `@Tool` methods into actionable callbacks used by the MCP server.
 >
 > ### Running the server
 >
@@ -3919,9 +3924,9 @@ This tutorial will primarily focus on tools.
 >     "spring-ai-mcp-weather": {
 >       "command": "java",
 >       "args": [
->         "-Dspring.ai.mcp.server.transport=STDIO",
+>         "-Dspring.ai.mcp.server.stdio=true",
 >         "-jar",
->         "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\weather\\mcp-weather-stdio-server-0.0.1-SNAPSHOT.jar"
+>         "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\mcp-weather-stdio-server-0.0.1-SNAPSHOT.jar"
 >       ]
 >     }
 >   }
@@ -3934,8 +3939,8 @@ This tutorial will primarily focus on tools.
 >
 > This tells Claude for Desktop:
 >
-> 1. There's an MCP server named "my-weather-server"
-> 2. To launch it by running `java -jar /ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-weather-stdio-server-0.0.1-SNAPSHOT.jar`
+> 1. There's an MCP server named "spring-ai-mcp-weather"
+> 2. To launch it by running `java -Dspring.ai.mcp.server.stdio=true -jar /ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-weather-stdio-server-0.0.1-SNAPSHOT.jar`
 >
 > Save the file, and restart **Claude for Desktop**.
 >
@@ -3947,7 +3952,7 @@ This tutorial will primarily focus on tools.
 >
 > ```java theme={null}
 > var stdioParams = ServerParameters.builder("java")
->   .args("-jar", "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-weather-stdio-server-0.0.1-SNAPSHOT.jar")
+>   .args("-Dspring.ai.mcp.server.stdio=true", "-jar", "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-weather-stdio-server-0.0.1-SNAPSHOT.jar")
 >   .build();
 >
 > var stdioTransport = new StdioClientTransport(stdioParams, McpJsonDefaults.getMapper());
@@ -3960,7 +3965,7 @@ This tutorial will primarily focus on tools.
 >
 > CallToolResult weather = mcpClient.callTool(
 >   new CallToolRequest("getWeatherForecastByLocation",
->       Map.of("latitude", "47.6062", "longitude", "-122.3321")));
+>       Map.of("latitude", 47.6062, "longitude", -122.3321)));
 >
 > CallToolResult alert = mcpClient.callTool(
 >   new CallToolRequest("getAlerts", Map.of("state", "NY")));
@@ -4158,7 +4163,7 @@ This tutorial will primarily focus on tools.
 >
 > // Extension function to fetch weather alerts for a given state
 > suspend fun HttpClient.getAlerts(state: String): List<String> {
->     val alerts = this.get("/alerts/active/area/$state").body<AlertsResponse>()
+>     val alerts = this.get("/alerts/active/area/${state.uppercase()}").body<AlertsResponse>()
 >     return alerts.features.map { feature ->
 >         """
 >             Event: ${feature.properties.event}
@@ -4246,6 +4251,7 @@ This tutorial will primarily focus on tools.
 >     val state = request.arguments?.get("state")?.jsonPrimitive?.content
 >         ?: return@addTool CallToolResult(
 >             content = listOf(TextContent("The 'state' parameter is required.")),
+>             isError = true,
 >         )
 >
 >     val alerts = httpClient.getAlerts(state)
@@ -4274,6 +4280,7 @@ This tutorial will primarily focus on tools.
 >     if (latitude == null || longitude == null) {
 >         return@addTool CallToolResult(
 >             content = listOf(TextContent("The 'latitude' and 'longitude' parameters are required.")),
+>             isError = true,
 >         )
 >     }
 >
@@ -4378,7 +4385,7 @@ This tutorial will primarily focus on tools.
 >
 > * C#
 > * LLMs like Claude
-> * .NET 8 or higher
+> * .NET 10 or higher
 >
 > ### Logging in MCP Servers
 >
@@ -4394,7 +4401,7 @@ This tutorial will primarily focus on tools.
 >
 > ### System requirements
 >
-> * [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) or higher installed.
+> * [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) or higher installed.
 >
 > ### Set up your environment
 >
@@ -4429,7 +4436,7 @@ This tutorial will primarily focus on tools.
 >
 > ```bash theme={null}
 > # Add the Model Context Protocol SDK NuGet package
-> dotnet add package ModelContextProtocol --prerelease
+> dotnet add package ModelContextProtocol
 > # Add the .NET Hosting NuGet package
 > dotnet add package Microsoft.Extensions.Hosting
 > ```
@@ -4506,7 +4513,7 @@ This tutorial will primarily focus on tools.
 >         HttpClient client,
 >         [Description("The US state code to get alerts for.")] string state)
 >     {
->         using var jsonDocument = await client.ReadJsonDocumentAsync($"/alerts/active/area/{state}");
+>         using var jsonDocument = await client.ReadJsonDocumentAsync($"/alerts/active/area/{state.ToUpperInvariant()}");
 >         var jsonElement = jsonDocument.RootElement;
 >         var alerts = jsonElement.GetProperty("features").EnumerateArray();
 >
@@ -4614,8 +4621,9 @@ This tutorial will primarily focus on tools.
 > This tells Claude for Desktop:
 >
 > 1. There's an MCP server named "weather"
-> 2. Launch it by running `dotnet run /ABSOLUTE/PATH/TO/PROJECT`
->    Save the file, and restart **Claude for Desktop**.
+> 2. To launch it by running `dotnet run --project /ABSOLUTE/PATH/TO/PROJECT --no-build`
+>
+> Save the file, and restart **Claude for Desktop**.
 
 > [tab] Ruby
 >
@@ -5349,7 +5357,7 @@ This tutorial will primarily focus on tools.
 > }
 > ```
 >
-> `get_info` returns a `ServerConfig`. Setting `server_info` gives the server its own name and version in the `initialize` response.
+> `get_info` returns a `ServerConfig`. Setting `server_info` makes the server report its own name and version instead of those of the `rmcp` crate.
 >
 > ### Running the server
 >
@@ -5672,6 +5680,7 @@ This tutorial will primarily focus on tools.
 > 			Content: []mcp.Content{
 > 				&mcp.TextContent{Text: "Unable to fetch forecast data for this location."},
 > 			},
+> 			IsError: true,
 > 		}, nil, nil
 > 	}
 >
@@ -5682,6 +5691,7 @@ This tutorial will primarily focus on tools.
 > 			Content: []mcp.Content{
 > 				&mcp.TextContent{Text: "Unable to fetch forecast URL."},
 > 			},
+> 			IsError: true,
 > 		}, nil, nil
 > 	}
 >
@@ -5691,6 +5701,7 @@ This tutorial will primarily focus on tools.
 > 			Content: []mcp.Content{
 > 				&mcp.TextContent{Text: "Unable to fetch detailed forecast."},
 > 			},
+> 			IsError: true,
 > 		}, nil, nil
 > 	}
 >
@@ -5701,6 +5712,7 @@ This tutorial will primarily focus on tools.
 > 			Content: []mcp.Content{
 > 				&mcp.TextContent{Text: "No forecast periods available."},
 > 			},
+> 			IsError: true,
 > 		}, nil, nil
 > 	}
 >
@@ -5730,8 +5742,9 @@ This tutorial will primarily focus on tools.
 > 	if err != nil {
 > 		return &mcp.CallToolResult{
 > 			Content: []mcp.Content{
-> 				&mcp.TextContent{Text: "Unable to fetch alerts or no alerts found."},
+> 				&mcp.TextContent{Text: "Unable to fetch alerts."},
 > 			},
+> 			IsError: true,
 > 		}, nil, nil
 > 	}
 >
@@ -5862,7 +5875,7 @@ Let's make sure Claude for Desktop is picking up the two tools we've exposed in 
 
 ![](https://mintcdn.com/mcp/zNouQwo2h8cbxlDS/images/visual-indicator-mcp-tools.png?fit=max\&auto=format\&n=zNouQwo2h8cbxlDS\&q=85\&s=1bf23a2cfc5f6dd3dac1c7574cceebc9)
 
-After clicking on the plus icon, hover over the "Connectors" menu. You should see the `weather` servers listed:
+After clicking on the plus icon, hover over the "Connectors" menu. You should see your weather server listed:
 
 ![](https://mintcdn.com/mcp/zNouQwo2h8cbxlDS/images/available-mcp-tools.png?fit=max\&auto=format\&n=zNouQwo2h8cbxlDS\&q=85\&s=e2ace1ac88895a5fe30ebd8d01456bc3)
 
@@ -6594,7 +6607,7 @@ If you encounter issues setting up or using the Filesystem Server, these solutio
 > ```
 >
 > ```powershell Windows theme={null}
-> type "%APPDATA%\Claude\logs\mcp*.log"
+> type "$env:AppData\Claude\logs\mcp*.log"
 > ```
 
 > [accordion] Tool calls failing silently
@@ -6615,12 +6628,18 @@ If you encounter issues setting up or using the Filesystem Server, these solutio
 >
 > ```json theme={null}
 > {
->   "brave-search": {
->     "command": "npx",
->     "args": ["-y", "@modelcontextprotocol/server-brave-search"],
->     "env": {
->       "APPDATA": "C:\\Users\\user\\AppData\\Roaming\\",
->       "BRAVE_API_KEY": "..."
+>   "mcpServers": {
+>     "filesystem": {
+>       "command": "npx",
+>       "args": [
+>         "-y",
+>         "@modelcontextprotocol/server-filesystem",
+>         "C:\\Users\\username\\Desktop",
+>         "C:\\Users\\username\\Downloads"
+>       ],
+>       "env": {
+>         "APPDATA": "C:\\Users\\username\\AppData\\Roaming"
+>       }
 >     }
 >   }
 > }
@@ -6642,10 +6661,9 @@ If you encounter issues setting up or using the Filesystem Server, these solutio
 
 Now that you've successfully connected Claude Desktop to a local MCP server, explore these options to expand your setup:
 
-> [card] [Explore other servers](https://github.com/modelcontextprotocol/servers)
+> [card] [Explore other servers](https://registry.modelcontextprotocol.io/)
 >
-> Browse our collection of official and community-created MCP servers for
-> additional capabilities
+> Browse the servers published to the MCP Registry
 
 > [card] [Build your own server](/docs/2026-07-28/develop/build-server)
 >
@@ -6758,9 +6776,9 @@ Now that you've connected Claude to a remote MCP server, you can explore its cap
 > Create custom remote MCP servers to integrate with proprietary tools and
 > services
 
-> [card] [Explore available servers](https://github.com/modelcontextprotocol/servers)
+> [card] [Explore available servers](https://registry.modelcontextprotocol.io/)
 >
-> Browse our collection of official and community-created MCP servers
+> Browse the servers published to the MCP Registry
 
 > [card] [Connect local servers](/docs/2026-07-28/develop/connect-local-servers)
 >
@@ -8243,7 +8261,7 @@ Features that are currently Deprecated are listed in the
 
 Every request declares the protocol version it is using via the
 `io.modelcontextprotocol/protocolVersion` key in its
-[`_meta`](/specification/2026-07-28/basic/index#meta) field, and the server accepts or
+[`_meta`](/specification/2026-07-28/basic/index#_meta) field, and the server accepts or
 rejects each request independently. On Streamable HTTP, the same value is also carried
 in the
 [`MCP-Protocol-Version` header](/specification/2026-07-28/basic/transports/streamable-http#protocol-version-header).
@@ -8502,7 +8520,7 @@ When servers fail to connect:
    `UnsupportedProtocolVersionError` (`-32022`) lists the server's supported
    versions in its `data` field
 5. Check the
-   [per-request `_meta` fields](/specification/2026-07-28/basic/index#meta):
+   [per-request `_meta` fields](/specification/2026-07-28/basic/index#_meta):
    every request must carry `io.modelcontextprotocol/protocolVersion` and
    `io.modelcontextprotocol/clientCapabilities`, and clients should also
    include `io.modelcontextprotocol/clientInfo`. A request missing either
@@ -8833,6 +8851,11 @@ Everything else (`--catalog`, `--config`, `--server-url`, `--transport`, `--meth
 >
 > Connect once, then run many commands against a named connection.
 
+> [card] [Load testing](/docs/2026-07-28/tools/inspector/load-testing)
+>
+> Concurrent and sustained load from the web client, the CLI, or mcpdo, with
+> CI thresholds and baselines.
+
 > [card] [Security](/docs/2026-07-28/tools/inspector/security)
 >
 > The threat model: the web backend's token, Docker, secret storage, stdio
@@ -9067,7 +9090,7 @@ See [Configuration and flags](/docs/2026-07-28/tools/inspector/configuration) fo
 | - | - | - |
 | `initialize` | None | Connect-only probe: `{serverInfo, protocolVersion, capabilities, instructions}`. |
 | `tools/list` | None | `--strict` turns its schema portability check into a gate (see [CI gates](#ci-gates)). |
-| `tools/call` | `--tool-name`, plus optional `--tool-arg` / `--tool-args-json` | |
+| `tools/call` | `--tool-name`, plus optional `--tool-arg` / `--tool-args-json` | `--load` calls it repeatedly (see [Load testing](/docs/2026-07-28/tools/inspector/load-testing)). |
 | `resources/list` | None | |
 | `resources/read` | `--uri` | |
 | `resources/templates/list` | None | |
@@ -9132,6 +9155,18 @@ The CLI can't render an App, so by default it doesn't advertise the MCP Apps ext
 > `--format`; `--format json` reshapes only the single-tool output of
 > `tools/call --app-info`.
 
+## Load testing a tool
+
+`--load` calls one tool, or a weighted mix of tools, resources and prompts, repeatedly and concurrently, and prints a latency and error-rate summary in place of a result. [Load testing](/docs/2026-07-28/tools/inspector/load-testing) covers every flag, the summary's fields, thresholds for CI and the other run modes.
+
+```bash theme={null}
+# 20 calls in flight for 30 seconds; fail the job if p99 is above 250 ms
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-concurrency 20 --load-duration 30 --load-max-p99 250
+```
+
+A completed run exits `0` whatever its error rate, unless a threshold or baseline is set, which exits `10` on a breach. Ctrl+C prints the summary of what completed and exits `130`.
+
 ## Exit codes and error envelopes
 
 Every non-zero exit maps to a stable failure class, so a caller can branch on *why* without scraping prose:
@@ -9148,8 +9183,9 @@ Every non-zero exit maps to a stable failure class, so a caller can branch on *w
 | `7` | `--verify` found a skill that violates SEP-2640 (conformance, digest, or size mismatch). |
 | `8` | `--verify` couldn't check every skill within its read bounds. |
 | `9` | `--verify --require-digests` found a skill that advertises no digests. |
-| `10` | A `--load` run breached a `--load-max-error-rate` or `--load-max-p99` threshold. The summary is printed first, and the envelope `code` names the threshold: `load_error_rate_exceeded` or `load_p99_exceeded`. |
+| `10` | A `--load` run breached a [threshold](/docs/2026-07-28/tools/inspector/load-testing#thresholds) or its [baseline](/docs/2026-07-28/tools/inspector/load-testing#comparing-against-a-baseline) budget. The summary is printed first, and the envelope `code` names the check, such as `load_p99_exceeded` or `load_regression`. |
 | `11` | The server answered HTTP 429 (envelope `code` `rate_limited`). The envelope also carries `method`, plus `retryAfter` (the `Retry-After` header as sent) and `retryAfterMs` when the server sent one that parses. |
+| `130` | A `--load` run was interrupted by Ctrl+C or SIGTERM (envelope `code` `interrupted`). The summary of what completed is printed first. |
 
 On any non-zero exit the CLI also writes a **single JSON line to stderr**:
 
@@ -9201,7 +9237,7 @@ These flags turn a check into a non-zero exit, each with its own code so a job c
 * `--strict` (with `tools/list`): reports tool-schema portability problems in full on stderr (path, issue, suggested fix) and exits `6` if any is error-severity. Without it, `tools/list` prints only a one-line count. Under `--format json` the findings are folded into the output as `schemaFindings`.
 * `--verify` (with `skills/list` or `skills/get`): runs the SEP-2640 conformance and digest checks, writes one JSON report per skill on stdout, and exits `7` on a violation or `8` when the read bounds stopped it before every skill was checked. `--skill-catalog-max-skills` and `--skill-catalog-max-bytes` set those bounds.
 * `--require-digests` (with `--verify`): exits `9` for a skill that advertises no digests, instead of reporting it as unverifiable and exiting `0`.
-* `--load-max-error-rate <fraction>` and `--load-max-p99 <ms>` (with `--load`): turn a load run into a gate. The run prints its summary, then exits `10` when the share of failed calls is above the fraction (`0` to `1`, so `0` fails on any failed call), when the p99 latency is above the given milliseconds, or when no call completed. `--load` (with `tools/call --tool-name`) calls the tool repeatedly and concurrently and prints a latency and error-rate summary instead of a result, bounded by `--load-duration <sec>` (default `10` when `--load-requests` is not set) and `--load-requests <n>`, with in-flight calls still finishing. `--load-concurrency <n>` (default `10`) caps the calls in flight, `--load-connections <n>` (default `1`, at most `--load-concurrency`, HTTP and SSE servers only) spreads them over independent sessions opened before timing starts, and `--load-rate <n>` (default unlimited) caps the calls started per second.
+* `--load-max-error-rate`, `--load-max-p50`, `--load-max-p95`, `--load-max-p99` and `--load-min-throughput` (with `--load`): print the load run's summary, then exit `10` when the run breaches the limit. `--load-baseline` with `--load-max-regression` does the same for a run worse than a saved one. See [Thresholds](/docs/2026-07-28/tools/inspector/load-testing#thresholds) and [Comparing against a baseline](/docs/2026-07-28/tools/inspector/load-testing#comparing-against-a-baseline).
 
 ```bash theme={null}
 mcp-inspector --cli <server> --method tools/list --strict > /dev/null
@@ -9409,7 +9445,7 @@ The whole scripting surface belongs to the CLI. See [CLI client](/docs/2026-07-2
 | - | - |
 | **What to invoke** | `--method`, `--tool-name`, `--tool-arg`, `--tool-args-json`, `--uri`, `--cursor`, `--prompt-name`, `--prompt-args`, `--log-level`, `--metadata`, `--tool-metadata`, `--rename` |
 | **How to run it** | `--connect-timeout`, `--format`, `-q` / `--quiet`, `--output`, `--output-format`, `--app-info`, `--advertise-apps`, `--strict`, `--verify`, `--require-digests`, `--completion <shell>` (`bash`, `zsh`, or `fish`) |
-| **Load test** | `--load`, `--load-concurrency`, `--load-connections`, `--load-duration`, `--load-requests`, `--load-rate`, `--load-max-error-rate`, `--load-max-p99` (see [CI gates](/docs/2026-07-28/tools/inspector/cli#ci-gates)) |
+| **Load test** | `--load` and the `--load-*` flags that shape and judge a run, such as `--load-concurrency`, `--load-duration`, `--load-rate`, `--load-scenario` and `--load-max-p99` (see [Load testing](/docs/2026-07-28/tools/inspector/load-testing)) |
 | **Auth** | `--use-stored-auth`, `--stored-auth-only`, `--relogin`, `--no-revoke`, `--wait-for-auth`, `--list-stored-auth`, `--print-handoff` |
 
 ## Environment variables
@@ -9608,6 +9644,418 @@ The Inspector-specific fields and their defaults:
 You do not have to hand-write these; the web client can [import an existing client config](/docs/2026-07-28/tools/inspector/recipes#importing-an-existing-client-config) from Claude Desktop, Cursor, Cline, or VS Code, or a registry `server.json`.
 
 
+# Load testing
+Source: https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/load-testing
+
+Call a tool, or a weighted mix of tools, resources and prompts, repeatedly and concurrently from the web client, the CLI or mcpdo, and read the latency and error-rate summary
+
+The Inspector can aim one of its own connections at a server and keep calling it, so you can see how the server behaves under concurrent or sustained traffic without rebuilding the connection's transport, headers and OAuth in a separate script. When the run ends, you get one latency and error-rate summary.
+
+One engine runs behind three front ends, so the settings, their defaults and the summary fields mean the same thing in each:
+
+| Client | How to start a run |
+| - | - |
+| [Web](/docs/2026-07-28/tools/inspector/web) | The **Load test** button on a tool, on the Tools screen. |
+| [CLI](/docs/2026-07-28/tools/inspector/cli) | `--method tools/call --load`, which connects, runs and disconnects. |
+| [mcpdo](/docs/2026-07-28/tools/inspector/mcpdo) | `tools/call --load` against an open connection, run inside the daemon. |
+
+## In the web client
+
+Select a tool on the Tools screen and choose **Load test**, beside **Execute Tool**. Each call sends the arguments currently in the tool's form, so fill those in first. Placeholders such as `{{seq}}` in a value are filled in per call (see [Varying the arguments](#varying-the-arguments)).
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/load-test-button.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=f5a43de3b4e2fe091e6c5a0491929731)
+
+The Load test button beside Execute Tool. This form's message, load \{\{seq}}, gives each call a distinct value.
+
+The panel loads either the selected tool or a pasted [scenario](#scenarios). Set the concurrency, the rate (empty for as fast as possible), the duration or request count, and a warm-up, or give comma-separated **Steps** to run [stepped load](#stepped-and-ramped-load) by concurrency or by rate. Then choose **Start**.
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/load-test-form.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=bd6b4d040987eec16588bdd6cb95e771)
+
+The form, set for 10 calls in flight at 40 calls per second for 6 seconds, after a 1-second warm-up.
+
+While the run goes, a progress line shows the calls so far and the latest p50 and p99. **Stop** ends the run early.
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/load-test-running.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=f078cfcc490ade4db845207d3bcdaf3a)
+
+A run in progress.
+
+When the run ends, the summary renders as tables: an overview of counts and rates, the latency percentiles of the successful and failed calls, and the warm-up, steps, stages and error messages when the run has them. The fields are the same ones the command line reports, described in [The summary](#the-summary).
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/load-test-summary.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=1493229de8e0ae2ae06e87726f18bc33)
+
+The summary of that run: every call succeeded, and the target rate of 40 calls per second was met with no dropped slots.
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/load-test-scenario-stages.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=2e7be20ec8319f423ef95c3b4fbd53ce)
+
+A two-step scenario stepped over concurrency 2, 4 and 8. The get_temp step omits a required argument, so it fails every call, which shows the per-step rows, the per-stage rows and the error tally.
+
+The run happens in the browser rather than on the backend, because the connection being inspected, with its transport, OAuth tokens, headers and negotiated era, lives in the tab. Every call therefore crosses the browser-to-backend hop, and the page records each call in the monitoring sidebar, so latencies include both. Close the sidebar for figures that measure the server rather than the page.
+
+## From the command line
+
+The same runs, from the CLI and from mcpdo:
+
+```bash theme={null}
+# 20 calls in flight for 30 seconds
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-concurrency 20 --load-duration 30
+
+# exactly 500 calls, started at no more than 50 per second
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-requests 500 --load-rate 50
+
+# the first run again, on an open mcpdo connection
+mcpdo @my-server tools/call search query:=mcp --load --load-concurrency 20 --load-duration 30
+```
+
+| Flag | Meaning |
+| - | - |
+| `--load` | Load-test the tool instead of calling it once. Requires `--method tools/call` and `--tool-name <name>` (or a [scenario](#scenarios)). |
+| `--load-concurrency <n>` | The most calls in flight at once (default `10`). |
+| `--load-duration <sec>` | Stop *starting* calls after this many seconds. Calls already in flight still finish. Default `10` when `--load-requests` is not set. |
+| `--load-requests <n>` | Stop after starting this many calls. With `--load-duration` too, whichever is reached first ends the run. |
+| `--load-rate <n>` | Start at most this many calls per second across all workers, spaced evenly (default unlimited). |
+| `--load-progress <sec>` | How often to print a progress line on stderr (default `5`). See [Watching a run](#watching-a-run). |
+| `--load-interval <sec>` | Also report the run as a time series of buckets this long. |
+| `--load-warmup <sec>` | Run this long first, at the same concurrency and rate, and leave those calls out of every figure. |
+
+The other `--load-*` flags shape the traffic or judge the result, and each group is covered below:
+
+| Topic | Flags |
+| - | - |
+| [Varying the arguments](#varying-the-arguments) | `--load-args-file`, `--load-args-random`, and placeholders in argument values |
+| [Scenarios](#scenarios) | `--load-scenario` |
+| [Stepped and ramped load](#stepped-and-ramped-load) | `--load-steps`, `--load-ramp`, `--load-step-by`, `--load-step-duration`, `--load-stop-on-breach` |
+| [Open loop](#open-loop) | `--load-open-loop` |
+| [Saving every call](#saving-every-call) | `--output` (CLI only) |
+| [Thresholds](#thresholds) | `--load-max-error-rate`, `--load-max-p50`, `--load-max-p95`, `--load-max-p99`, `--load-min-throughput` |
+| [Comparing against a baseline](#comparing-against-a-baseline) | `--load-baseline`, `--load-max-regression` |
+| [Multiple sessions](#multiple-sessions) | `--load-connections` |
+| [Session churn](#session-churn) | `--load-churn`, `--load-churn-calls` |
+| [Notification fan-out](#notification-fan-out) | `--load-subscribe`, `--load-subscribers`, `--load-subscribe-wait` |
+| [Multiple generator processes](#multiple-generator-processes) | `--load-workers` (CLI only) |
+
+Each `--load-*` flag requires `--load`. In the CLI, `--load` is rejected with any method other than `tools/call`, and with `--app-info`, `--output-format`, `--list-stored-auth` and `--print-handoff`. Each of those mistakes, and each pair of `--load-*` flags that cannot be combined, exits `1` with the envelope `code` `load_flag_conflict`.
+
+## The summary
+
+The [web client](#in-the-web-client) shows the summary as tables. On the command line it goes to stdout in one of three shapes:
+
+* **`--format text`, or no `--format` when stdout is a terminal:** a short, readable table, in colour unless `NO_COLOR` is set. mcpdo prints the same one.
+* **`--format json`:** the summary wrapped in `{ "result": … }`.
+* **No `--format` when stdout is a pipe or a file:** the bare summary as pretty-printed JSON, so scripts written against earlier releases keep working. Pass `--format json` to be explicit.
+
+The JSON summary looks like this:
+
+```json theme={null}
+{
+  "tool": "search",
+  "concurrency": 20,
+  "durationMs": 30000,
+  "requests": 41210,
+  "ok": 41187,
+  "toolErrors": 0,
+  "errors": 23,
+  "errorRate": 0.0006,
+  "elapsedMs": 30012.4,
+  "throughput": 1373.12,
+  "okThroughput": 1372.35,
+  "latencyMs": {
+    "min": 2.1,
+    "mean": 14.5,
+    "p50": 12.9,
+    "p90": 22.4,
+    "p95": 30.7,
+    "p99": 61.3,
+    "p999": 140.2,
+    "max": 212.8
+  },
+  "errorLatencyMs": {
+    "min": 30001.2,
+    "mean": 30003.1,
+    "p50": 30002.9,
+    "p90": 30004.1,
+    "p95": 30004.6,
+    "p99": 30004.8,
+    "p999": 30004.8,
+    "max": 30004.8
+  },
+  "errorMessages": [{ "message": "Request timed out", "count": 23 }],
+  "toolErrorMessages": []
+}
+```
+
+* **`toolErrors`** counts results that carry `isError: true`, meaning the tool ran and reported a failure. **`errors`** counts calls that never produced a result, such as protocol errors, request timeouts or a dropped connection. `errorRate` is both together over `requests`, rounded to four places.
+* **`errorMessages`** groups the thrown messages by frequency. It keeps the first ten distinct messages and counts any others under `(other)`. **`toolErrorMessages`** does the same for `isError` results, using the first text block of each, cut to 200 characters, so a run where every call returned `rate limited` says so.
+* **Latency** is measured per call on the client, in milliseconds. `latencyMs` covers the successful calls only, and `errorLatencyMs` covers the failed ones, so failures that return instantly can't make a struggling server look fast. Either is `null` when it has no calls. `throughput` counts every completed call per second, and `okThroughput` counts only the successful ones.
+* **Percentiles** are `p50`, `p90`, `p95`, `p99` and `p999` (the 99.9th), by nearest rank. Memory stays bounded however long the run: the first 10,000 latencies of each kind are kept exactly, so a short run's percentiles are exact, and later ones fold into a histogram whose percentiles are within 1% of the exact value. `min`, `max` and `mean` are always exact.
+* **`plannedStarts`, `droppedSlots` and `achievedRate`** appear only with `--load-rate`. Starts follow an even `1/rate` grid. A slot missed because every worker was busy is dropped rather than made up later, so a stall is never followed by a burst. A server too slow for the target rate can then report healthy latency while most of the planned load never ran, so when fewer than 90% of `plannedStarts` were started, a warning goes to stderr (dropped by `--quiet`). Raise `--load-concurrency`, lower the rate, or switch to [open loop](#open-loop). Rates in the high hundreds per second and above are reached only approximately.
+* **`stoppedEarly`** appears when the run ended before its bounds, with a `reason` and a `detail`. See [When a run fails or stops](#when-a-run-fails-or-stops).
+* **Other blocks** appear only when the mode that fills them is on: `steps` for a scenario, `stages` for a stepped run, `intervals` and `warmup` for those flags, `openLoop`, `connections`, `churn`, `fanout` and `workers`. A default run's summary has none of them.
+
+`--load-duration` stops new calls, but calls in flight are allowed to finish, so `elapsedMs` can exceed the window by up to one call. A run that reaches its `--load-duration` is measured over that whole window at least, so a `--load-rate 1` run over five seconds reports 1 call per second. Each call is still bounded by the server's request timeout (`requestTimeout` in the catalog or config file).
+
+## Watching a run
+
+* **Progress.** Every `--load-progress` seconds a line goes to stderr with the totals so far, plus the completion rate and the p50 and p99 of the successful calls over the last interval, such as `[load 12.0s] 1234 calls (1230 ok, 4 failed), 102.3/s, p50 12.1 / p99 40.2 ms`. It is prefixed `warm-up` during a warm-up and `stage N` in a stepped run. `--quiet` turns it off, and it never reaches stdout.
+* **Time series.** `--load-interval <sec>` adds an `intervals` array: the run's calls bucketed by completion time, one entry per interval with empty ones included, so a GC pause or a slow leak in the middle of a run shows instead of averaging away. Each entry has `startMs` and `endMs`, then the same counts, rates, latencies and message tallies as the totals.
+* **Warm-up.** `--load-warmup <sec>` runs that long first, over the same connections, and leaves those calls out of every figure. `--load-duration` and `--load-requests` bound the measured part only, and `warmup` reports what the warm-up ran. If the warm-up stops early, the run ends there and nothing is measured. It is refused with `--load-steps` and `--load-ramp`, where the first stage already plays that part.
+
+## Saving every call
+
+In the CLI, with `--load`, `--output <path>` writes one NDJSON line per measured call, for analysis the summary can't do: your own histogram, a scatter over time, or a join against server logs. The summary still goes to stdout.
+
+```json theme={null}
+{"seq":17,"worker":3,"startMs":412.5,"latencyMs":14.218,"outcome":"ok"}
+{"seq":18,"worker":0,"startMs":415.02,"latencyMs":30001.4,"outcome":"error","message":"Request timed out"}
+```
+
+* `seq` is the run-wide call number and `worker` is the worker that made the call. `startMs` is measured from the start of the run, or of the stage in a stepped run.
+* `outcome` is `ok`, `tool_error` (with the result's text as `message`) or `error` (with the thrown message). A scenario adds `step`, and a stepped run adds `stage`.
+* Lines are in completion order. Warm-up calls are not written.
+* `--output-format` is refused with `--load`. A file that can't be written exits `1` (`output_write_failed`) after the summary is printed.
+
+## Varying the arguments
+
+A server that caches results or dedupes identical requests looks far faster under one fixed argument than under real traffic. Two ways to vary each call's arguments can be used together:
+
+```bash theme={null}
+# a distinct id per call, and a random page from 1 to 50
+mcp-inspector --cli <server> --method tools/call --tool-name lookup \
+  --tool-arg id=user-{{seq}} --tool-arg page={{rand:1-50}} --load --load-requests 1000
+
+# one argument object per line of args.ndjson, in turn
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --load --load-args-file args.ndjson --load-duration 30
+```
+
+**Placeholders** work in any string value of a call's arguments (`--tool-arg`, `--tool-args-json`, an args-file row, and a scenario step's `args` and `uri`), and only in a `--load` run:
+
+| Placeholder | Becomes |
+| - | - |
+| `{{seq}}` | The call's number in start order, from `1`. |
+| `{{worker}}` | The index of the worker making it, from `0`. |
+| `{{uuid}}` | A fresh random UUID (v4). |
+| `{{rand:<min>-<max>}}` | A random integer from `min` to `max`, inclusive. |
+
+A value that is exactly one numeric placeholder, like `page={{rand:1-50}}`, is sent as a number, so an integer-typed argument receives an integer. A placeholder inside other text, like `user-{{seq}}`, yields a string. Anything else in double braces is sent as written, so an argument that is itself a template is untouched. A `{{rand:…}}` with reversed or out-of-range bounds exits `1` (`load_args_invalid`) before anything connects.
+
+**`--load-args-file <file>`** is NDJSON, one JSON object per line. Each call takes the next row in turn (or a random one with `--load-args-random`), cycling, and merges it over the `--tool-arg` and `--tool-args-json` arguments, with the row winning on a shared key. Placeholders inside a row are substituted too. A file that can't be read, or a line that isn't a JSON object, exits `1` (`load_args_invalid`). It can't be combined with `--load-scenario`, whose steps carry their own `args`.
+
+## Scenarios
+
+Real traffic is rarely one tool with fixed arguments. `--load-scenario <file>` runs a weighted mix of `tools/call`, `resources/read` and `prompts/get` steps over the same connections and bounds:
+
+```json theme={null}
+{
+  "steps": [
+    {
+      "name": "search",
+      "method": "tools/call",
+      "tool": "search",
+      "args": { "query": "mcp" },
+      "weight": 7
+    },
+    { "method": "resources/read", "uri": "docs://readme", "weight": 2 },
+    {
+      "method": "prompts/get",
+      "prompt": "summarize",
+      "args": { "style": "short" },
+      "weight": 1
+    }
+  ]
+}
+```
+
+```bash theme={null}
+mcp-inspector --cli <server> --method tools/call \
+  --load --load-scenario scenario.json --load-duration 30 --load-concurrency 20
+```
+
+* **The file** is that object or a bare array of steps. Each step has a `method` and what it calls (`tool`, `uri` or `prompt`), plus optional `args` (tools and prompts), `meta` (the request's `_meta`), `weight` (a positive number, default `1`) and `name`. Any other key is an error, so a typo such as `"argument"` fails the run instead of silently sending no arguments. Every problem with the file exits `1` (`load_scenario_invalid`) before anything connects.
+* **The mix is exact, not random.** Steps are picked by smooth weighted round-robin, so weights `7:2:1` start exactly 7, 2 and 1 calls in every 10, interleaved, and two runs of the same scenario are comparable.
+* **The summary** keeps its totals at the top level, so the thresholds judge the whole mix, and adds a `steps` array with each step's `name`, `method`, `target` and `weight` followed by the same counts, rates, latencies and messages as the totals, for that step alone.
+* **Tools are checked up front; resources and prompts are not.** A missing tool exits `5` (`tool_not_found`) before the clock starts. A server may serve URIs or prompts it doesn't list, so a bad one shows up as that step's `errors`.
+* `--load-scenario` replaces `--tool-name`, `--tool-arg`, `--tool-args-json` and `--tool-metadata`, so combining it with any of them is refused. `--method tools/call` is still required, since it selects the load mode.
+
+## Stepped and ramped load
+
+One concurrency or rate shows how a server behaves at one load level. To find where latency or errors start climbing, run consecutive stages at rising levels in one run, with one summary row per stage:
+
+```bash theme={null}
+# concurrency 10, 25, 50, then 100, 30 seconds each
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-steps 10,25,50,100 --load-step-duration 30
+
+# rate from 50/s to 500/s over two minutes in 10 s stairs, over 200 workers,
+# stopping at the first stage whose p99 tops 250 ms
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-ramp 50:500:120 --load-step-duration 10 \
+  --load-step-by rate --load-concurrency 200 --load-max-p99 250 --load-stop-on-breach
+```
+
+* **`--load-steps <list>`** runs one stage per level. **`--load-ramp <from>:<to>:<sec>`** is a staircase of `sec / --load-step-duration` stages with levels spaced evenly from `from` to `to`, both included. Stairs rather than a continuous ramp give every level enough time to measure and a row of its own.
+* **`--load-step-by`** says what a level sets. `concurrency` (the default) is calls in flight, so `--load-concurrency` is refused. `rate` is calls started per second over a fixed pool of `--load-concurrency` workers, so `--load-rate` is refused.
+* **Each stage runs for `--load-step-duration`** seconds (default `10`), so `--load-duration` and `--load-requests` are refused. Connections are opened once and serve every stage.
+* **The summary** keeps its totals at the top level, across every stage, and adds a `stages` array with one full summary per stage that ran, each carrying `stage`, `stepBy` and `level`.
+* **Any early stop ends the run.** With `--load-stop-on-breach`, which needs a [threshold](#thresholds), so does the first stage that breaches one, with `stoppedEarly.reason` `threshold_breached`. Without it every stage runs, and the run still exits `10` if any stage breached.
+
+## Open loop
+
+By default `--load-rate` is closed-loop: a slot that no worker is free to take is dropped, so a server too slow for the rate is sent fewer requests and its latency looks healthier than its users would see. `--load-open-loop` keeps the rate grid as the arrival schedule instead:
+
+* **No slot is dropped while the run lasts.** A slot that comes due while every worker is busy waits, and starts as soon as one frees.
+* **Each call is timed from its scheduled start**, so the wait for a worker counts in its latency, and queueing behind a slow server shows in `latencyMs`.
+* `--load-concurrency` still caps the calls in flight. Slots still waiting when the window closes are reported in `droppedSlots`, and the summary carries `"openLoop": true`.
+* It needs `--load-rate`, or `--load-step-by rate`, whose stages then all run open loop.
+
+## When a run fails or stops
+
+The tool is looked up once before the clock starts, so a missing tool exits `5` instead of reporting a 100% error rate. Otherwise a completed run exits `0` whatever its error rate, because the summary is the result, unless a [threshold](#thresholds) is set.
+
+A server that dies mid-run would otherwise turn the rest of the window into thousands of instant failures, so the run stops early once 50 calls in a row have thrown, or calls have done nothing but throw for a full second. Only thrown calls count: a tool error is the server answering. The summary covers what completed and carries `"stoppedEarly": { "reason": "consecutive_errors" }`, with a warning on stderr. The exit code is unchanged.
+
+The first Ctrl+C or SIGTERM stops new calls, lets the in-flight ones finish, prints the summary of what completed with `stoppedEarly.reason` `interrupted`, and exits `130` (envelope `code` `interrupted`) without checking any threshold. A second Ctrl+C exits `130` immediately.
+
+A load run does not prompt for OAuth step-up. A tool that needs scopes the session lacks fails every call, and the challenge shows in `errorMessages`. Run one plain `tools/call` of the tool first to grant the scopes, then load it.
+
+## Thresholds
+
+Set a threshold to gate a CI job on the run without parsing the summary:
+
+```bash theme={null}
+# fail the job if more than 1% of calls fail, or p99 is above 250 ms
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-requests 1000 \
+  --load-max-error-rate 0.01 --load-max-p99 250
+```
+
+| Flag | Exits `10` when | Envelope `code` |
+| - | - | - |
+| `--load-max-error-rate <fraction>` | The share of failed calls is above this value (`0` to `1`). | `load_error_rate_exceeded` |
+| `--load-max-p50 <ms>` | The p50 latency of the successful calls is above this many milliseconds. | `load_p50_exceeded` |
+| `--load-max-p95 <ms>` | The same, for p95. | `load_p95_exceeded` |
+| `--load-max-p99 <ms>` | The same, for p99. | `load_p99_exceeded` |
+| `--load-min-throughput <n>` | Fewer than this many calls per second succeeded (`okThroughput`). | `load_throughput_below` |
+
+* The full summary prints first either way. A breach then exits `10` with an error envelope on stderr. When several are breached, the message lists them all and the `code` names the first in the table's order.
+* A value equal to the threshold passes. The error-rate check uses the exact share of failed calls (`toolErrors` plus `errors`, over `requests`), not the rounded `errorRate`, so `--load-max-error-rate 0` fails on a single failure.
+* The latency checks judge the successful calls, so a run where half the calls fail instantly can't pass on the speed of its failures. A run where no call succeeded has no latency to compare, and fails. `--load-min-throughput` likewise counts only successful calls.
+* A [stepped run](#stepped-and-ramped-load) is judged stage by stage, and the message names the first stage that breached.
+
+## Comparing against a baseline
+
+An absolute threshold has to be picked, and re-picked as the server changes. To gate on "no worse than last time" instead, save one run's summary and compare later runs against it:
+
+```bash theme={null}
+# on the release: save the summary
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-duration 30 --format json > baseline.json
+
+# on each change: the same run, failing if anything is more than 10% worse
+mcp-inspector --cli <server> --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-duration 30 \
+  --load-baseline baseline.json --load-max-regression 10%
+```
+
+* **Four figures are compared:** p50 and p99 of the successful calls and `okThroughput` by relative change, and the error rate in percentage points, since a healthy baseline's error rate is usually `0` and any relative change from it is infinite.
+* **The comparison prints on stderr** after the summary, one line per figure (dropped by `--quiet`). Without `--load-max-regression` it only reports. With it, a figure worse than the baseline by more than the budget exits `10` (`load_regression`). Absolute thresholds are judged first.
+* **The two runs must have the same shape:** the same tool or scenario steps, concurrency, duration, request count, rate, open loop, connections, churn and stages. Otherwise the run exits `1` (`load_baseline_mismatch`) and lists every difference, rather than comparing numbers that mean different things. A stepped run is compared stage by stage.
+* **The baseline is read before anything connects.** Either JSON shape is accepted: the CLI's `{ "result": … }` envelope, or the bare summary that mcpdo and a piped run print. A file that isn't a summary, or a baseline run that stopped early, exits `1` (`load_baseline_invalid`).
+
+## Multiple sessions
+
+By default all calls share one connection, so a run measures how a server copes with concurrent requests on a single session. `--load-connections <n>` opens `n` independent connections with the same transport, headers and OAuth. Use it to see per-session state, session setup cost, connection limits and contention that only appear across sessions.
+
+* **HTTP and SSE only.** Over stdio, every connection would spawn its own server process, which tests `n` isolated servers rather than one server under `n` sessions. More than one connection over stdio exits `1` (`load_flag_conflict`).
+
+* **`--load-concurrency` and `--load-rate` are totals across all connections.** Workers are split as evenly as the counts allow, so `--load-connections` can't exceed `--load-concurrency`.
+
+* **Setup is excluded from latency.** Every connection opens before the clock starts. Their connect times are reported separately in `connections.connectMs`.
+
+* **A connection that fails to open is not a call error.** The run continues on the connections that opened, and the failures are counted under `connections`, never in `errors` or `errorRate`:
+
+  ```json theme={null}
+  "connections": {
+    "requested": 50,
+    "opened": 48,
+    "failed": 2,
+    "connectMs": { "min": 8.2, "mean": 21.7, "p50": 19.4, "p90": 33.0, "p95": 38.1, "p99": 41.8, "p999": 41.8, "max": 41.8 },
+    "errorMessages": [{ "message": "Too many sessions", "count": 2 }]
+  }
+  ```
+
+* **OAuth.** The extra connections reuse the first connection's token and never start a sign-in of their own. Against a server that rotates refresh tokens, two connections refreshing an expired token at the same moment can lose a refresh, which shows up as call errors.
+
+## Session churn
+
+`--load-connections` opens its sessions once and keeps them, so session setup, per-session state and many short-lived sessions, which is what a server behind a gateway mostly sees, are never under load. With `--load-churn`, every worker connects, makes `--load-churn-calls` calls (default `1`), disconnects, and starts over:
+
+```bash theme={null}
+# 20 workers, each opening a fresh session for every 5 calls, for 30 s
+mcp-inspector --cli https://example.com/mcp --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-concurrency 20 --load-duration 30 \
+  --load-churn --load-churn-calls 5
+```
+
+* **Connecting is not in the call latency.** The sessions are reported in their own `churn` block: `opened`, `failed`, `closeFailed`, `connectMs` (handshake included) and the connect `errorMessages`. In [open loop](#open-loop), a call is timed from its scheduled start, so the connect is inside it there.
+* **A session that fails to open is not a call error**, but it does count toward the early stop, so a server refusing every session stops the run in about a second.
+* **HTTP and SSE only**, for the same reason as `--load-connections`, and not combined with it. Sessions use stored credentials only, so the CLI's first connection completes any sign-in.
+* **`--load-rate` paces a session's turn**, connect included, so a slow handshake shifts calls off the even grid. Slots lost to failed or late connects show as `droppedSlots`.
+
+## Notification fan-out
+
+A request's latency says nothing about what it costs a server to fan `notifications/resources/updated` out to many subscribers, or how long each one waits. `--load-subscribe <uri>` opens `--load-subscribers` sessions (default `1`), subscribes each to the resource, and measures the notifications instead:
+
+```bash theme={null}
+# 50 subscribers; each call of update_doc should notify all of them
+mcp-inspector --cli https://example.com/mcp --method tools/call \
+  --tool-name update_doc --tool-arg id=1 --load --load-requests 100 \
+  --load-subscribe docs://1 --load-subscribers 50
+
+# no trigger: listen for 30 s to the server's own updates
+mcp-inspector --cli https://example.com/mcp --method tools/call --load \
+  --load-subscribe feed://live --load-subscribers 50 --load-duration 30
+```
+
+* **Triggered,** with a tool or scenario: each successful call is expected to update the resource once. Triggers run one at a time (`--load-concurrency` must be `1`), so each notification can be matched to its call, and delivery latency runs from that call's start.
+* **Passive,** with no tool: nothing is called. The run listens for `--load-duration`, and delivery latency runs from the first subscriber's receipt of each update, so it measures the spread of the fan-out rather than its absolute cost.
+* **After the run**, subscribers get `--load-subscribe-wait` seconds (default `2`) to catch up, and whatever hasn't arrived by then is missed. The `fanout` block reports `updates` (expected per subscriber), `delivered`, `missed`, `sessionsMissed`, `unexpected`, `deliveryMs`, and the setup costs `connectMs` and `subscribeMs`.
+* A session that fails to open or subscribe is counted in `failed`, and the run continues with the rest. More than one subscriber needs an HTTP or SSE server, and the extra sessions use stored credentials only. Fan-out can't be combined with `--load-connections`, `--load-churn`, stepped load, `--load-warmup` or `--load-open-loop`.
+
+## Multiple generator processes
+
+One Node process has a ceiling, so at high load the Inspector itself can become the bottleneck rather than the server. In the CLI, `--load-workers <n>` spreads one run over `n` generator processes:
+
+```bash theme={null}
+# 400 in flight, 4000 calls/s, over 4 generator processes
+mcp-inspector --cli https://example.com/mcp --method tools/call --tool-name search \
+  --tool-arg query=mcp --load --load-concurrency 400 --load-rate 4000 \
+  --load-duration 60 --load-workers 4
+```
+
+* **One run, split.** The CLI connects once, so any sign-in happens before a worker starts, then re-runs its own command as `n` child processes. Each takes an even share of `--load-concurrency`, `--load-requests` and `--load-rate`, and connects with stored credentials only. Everything else, such as the duration, warm-up, scenario and argument rows, applies to every worker as given.
+* **One summary, merged exactly.** The workers send back their counts, error tallies and latency histograms, and the CLI merges them as if one recorder had seen every call. The summary gains `"workers": n`, and thresholds and baselines judge the merged result.
+* **One stop reaches every worker.** If one worker stops early, the CLI stops the rest with the same `stoppedEarly` reason. Ctrl+C stops them all and still prints the merged summary. If a worker fails outright, the run exits with that worker's exit code (`load_worker_failed`) once the rest have stopped.
+* **The rate and the mix hold across processes.** Each worker's rate grid is offset so the processes interleave into one even spacing, and `{{seq}}` and `{{worker}}` stay unique across them. Progress lines add up every worker's latest report, with the slowest worker's p50 and p99, while the final summary's latencies are exact.
+* `n` can't exceed `--load-concurrency` or `--load-requests`. HTTP and SSE only, since each worker opens its own session. Not combined with stepped load, `--load-interval`, `--load-connections`, `--load-churn`, `--load-subscribe` or `--output`. mcpdo has no `--load-workers`, because its run happens inside the daemon on the connection it holds.
+
+## On an mcpdo connection
+
+`mcpdo tools/call --load` takes every flag above except `--output` and `--load-workers`. The default `--format text` prints the same readable summary table as the CLI, with progress lines on stderr while the run goes. `--format json` prints the summary object itself, with no `{ "result": … }` envelope, like every other mcpdo command, and asks the daemon for no progress lines. A breached threshold or baseline exits `10` after the summary is printed, with the same envelope `code` the CLI uses.
+
+How a run differs on a daemon connection:
+
+* **The run happens inside the daemon**, on the connection's live client with its transport, headers and OAuth tokens. The `mcpdo` process makes one round trip for the whole run, so a long `--load-duration` or a long staircase of stages is not cut off. The connection's request timeout still applies to each call.
+* **Files are read by `mcpdo`, not the daemon.** A `--load-scenario`, `--load-args-file` or `--load-baseline` path is relative to your working directory. The parsed contents travel to the daemon with the run.
+* **Later commands on the same connection wait for it.** A connection runs [one call at a time](/docs/2026-07-28/tools/inspector/mcpdo#addressing-a-connection), and the load run is one call, so a `tools/list` sent mid-run starts when the run ends. Other connections, and a `logging/tail` or `resources/subscribe` stream that is already running, are unaffected.
+* **Ctrl+C ends the run.** No more calls start and the in-flight ones are cancelled, so the connection is free at once. No summary is printed, since the caller has gone.
+* **A dropped connection ends the run early** with a summary of what completed, marked `"stoppedEarly": { "reason": "connection_lost" }`. Calls that were in flight when it dropped count as `errors`, under `errorMessages` as `AbortError: load run stopped: <detail>`. A server that keeps failing calls while the connection stays up stops the run with `consecutive_errors`, as in the CLI. The next command revives the connection as usual.
+* **Extra sessions open inside the daemon.** `--load-connections`, `--load-churn` and `--load-subscribers` open their sessions from the connection's stored settings, using stored credentials only, so connect first. The connection's own client is always the first session. The extras never appear in `connections/list`, and they close when the run ends.
+* **A connection already subscribed to the `--load-subscribe` resource**, through a running `resources/subscribe` stream, is listened on during the run and left subscribed after it.
+* **Elicitations are cancelled.** No call can be answered in the middle of a run, so a server that elicits during one sees each request cancelled. Use `connect --elicit off` to keep the server from asking.
+
+
 # mcpdo connection client
 Source: https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/mcpdo
 
@@ -9689,7 +10137,7 @@ Connections **self-heal**: a dropped transport (an expired HTTP session, an exit
 
 A connection runs **one call at a time**. Commands against it from other shells queue behind the call in flight, and while a call is parked on an [elicitation](#elicitation), new calls on that connection are refused until it is answered. A long call does not block other connections.
 
-`tools/call` also accepts the one-shot CLI's `--load` family (`--load`, `--load-concurrency`, `--load-connections`, `--load-duration`, `--load-requests`, `--load-rate`, `--load-max-error-rate`, `--load-max-p99`), with the same defaults and the same summary, run inside the daemon against the connection (see [CI gates](/docs/2026-07-28/tools/inspector/cli#ci-gates)). `--load-connections` opens its extra sessions with stored credentials only. Later commands on the connection wait until the run ends.
+`tools/call --load` load-tests a tool over the connection. See [Load testing](#load-testing).
 
 ## Tasks
 
@@ -9700,6 +10148,17 @@ mcpdo @my-server tools/call --task start_job size:=large   # task-augmented call
 ```
 
 If the task reaches `input_required`, its question is handled like any other [elicitation](#elicitation).
+
+## Load testing
+
+`tools/call --load` is the one-shot CLI's load mode, run against an open connection, with the same flags, defaults, thresholds and summary fields.
+
+```bash theme={null}
+# 20 calls in flight for 30 seconds
+mcpdo @my-server tools/call search query:=mcp --load --load-concurrency 20 --load-duration 30
+```
+
+The run happens inside the daemon, so later commands on the same connection wait for it, and Ctrl+C cancels the in-flight calls and prints no summary. [Load testing](/docs/2026-07-28/tools/inspector/load-testing#on-an-mcpdo-connection) covers how a run behaves on a daemon connection, and the rest of that page covers every flag and field.
 
 ## Output
 
@@ -10292,7 +10751,7 @@ The Inspector refuses to bind the **wildcard** all-interfaces addresses (`0.0.0.
 >
 > Each entry must include the scheme; a scheme-less value is dropped with a warning. A blank value does **not** disable the check; it falls back to the default. There is no knob to turn origin validation off.
 
-Two further caveats when going off loopback:
+Three further caveats when going off loopback:
 
 * **MCP Apps need their sandbox port reachable too.** It's a separate listener (`6275` by default, set with `MCP_SANDBOX_PORT`), so expose or forward it alongside the web port.
 * **Behind TLS or a reverse proxy, give MCP Apps their public addresses.** By default the sandbox is advertised as `http://<bind host>:6275`, which an `https://` page blocks as mixed content. Set `MCP_SANDBOX_FULL_ADDRESS` (for example `https://inspector-sandbox.example.com/sandbox`) and, for apps that declare `_meta.ui.domain`, `MCP_APP_ORIGIN_FULL_ADDRESS` (for example `https://inspector-apps.example.com`). Each needs its own hostname or port; an address that shares the Inspector's origin is refused.
@@ -10697,6 +11156,37 @@ The tab bar on a connected server. Which tabs appear depends on the capabilities
 
 The monitoring sidebar pinned beside the Tools screen and dragged to its full width, with the tool call's request and response expanded in the Protocol stream.
 
+## Active sessions
+
+The web backend holds each connection open as a session, and a session can outlive the tab that opened it. When a tab closes or reloads, the backend keeps the session for 60 seconds, so that a reload or an OAuth redirect can pick it back up, and then closes it, ending a stdio server process with it. **Active Sessions** lists every session the backend holds, from every tab, so you can find one that outlived its tab, or one whose server crashed, and end it without restarting the Inspector.
+
+Open it with the **Active sessions** button in the header, between the disconnect button and **Client settings**.
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/web-active-sessions-button.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=5291d737091f15eccad9ada04689ba75)
+
+The Active sessions button, the network icon in the header between the disconnect and Client settings buttons.
+
+Each row shows the server and its session ID, the transport, the status, when the session was created, when a tab was last attached to it (`now`, or `never`), and how many events are queued for a tab to collect.
+
+| Status | Meaning |
+| - | - |
+| **This tab** | The session this tab is using. It also shows **Attached**. |
+| **Attached** | A tab is connected to the session now. |
+| **Detached** | No tab is attached. Events queue until a tab reattaches or the backend closes it. |
+| **Closed** | The session's transport has died, such as a stdio server process that exited or crashed. |
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/web-active-sessions.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=8e635a422faaefb526729b731c15fe51)
+
+Sessions from a closed tab, another open tab, a browser that never opened its stream, a crashed server, and this tab.
+
+**Terminate** closes the session's connection, which ends its stdio server process, and drops it from the list. A tab still attached to it is told that the connection was terminated. The refresh button re-reads the list.
+
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/web-active-sessions-terminated.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=04363e9b2e14a3fa92e01e5ecc89390b)
+
+The same list after terminating the session the other open tab was using.
+
+The list and the terminate action are backend routes, `GET /api/mcp/sessions` and `DELETE /api/mcp/sessions/<id>`, and like every other `/api` route they require the [session token](#the-session-token).
+
 ## Servers
 
 The Servers screen is the entry point. A server row carries its transport, its connection state, and a control that opens its per-server settings.
@@ -10734,9 +11224,13 @@ Select a tool to see its description, its input schema rendered as a form, and i
 
 On modern-era servers this screen also shows mirrored `Mcp-Param-*` headers, excluded tools, and distinct `-32602` error panels, all covered in [Protocol eras](/docs/2026-07-28/tools/inspector/protocol-eras#tools-mirrored-headers-and-excluded-tools).
 
-![](https://mintcdn.com/mcp/gk28X8wi_tbRYzej/images/inspector/web-tools.png?fit=max\&auto=format\&n=gk28X8wi_tbRYzej\&q=85\&s=7ef469a969f398ac0ec70cf019c133da)
+![](https://mintcdn.com/mcp/wLu3KAa2YGoA7yJe/images/inspector/web-tools.png?fit=max\&auto=format\&n=wLu3KAa2YGoA7yJe\&q=85\&s=2a49f6d49cec4fba8d693bd87692ad9b)
 
-A tool call and its rendered result. The argument form collapses into the result panel once the call returns.
+A selected tool's input schema rendered as a form, with its required city and units arguments filled in, ready to execute or load test.
+
+### Load testing
+
+A tool's **Load test** button, beside **Execute Tool**, opens a panel that calls the tool, or a pasted scenario, repeatedly and concurrently over this tab's connection, then shows a latency and error-rate summary. See [Load testing](/docs/2026-07-28/tools/inspector/load-testing#in-the-web-client).
 
 ## Resources
 
@@ -11602,7 +12096,7 @@ Source: https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/local
 Practical defaults for running MCP servers safely on your own machine.
 
 Most MCP security documentation covers the protocol threat model: OAuth flows,
-token handling, session hijacking, and confused deputy attacks. For those, see
+token handling, state handle hijacking, and confused deputy attacks. For those, see
 [Authorization](/docs/2026-07-28/tutorials/security/authorization) and
 [Security Best Practices](/docs/2026-07-28/tutorials/security/security_best_practices).
 
@@ -12020,8 +12514,8 @@ For a fleet:
 
 > [card] [Security Best Practices](/docs/2026-07-28/tutorials/security/security_best_practices)
 >
-> The protocol threat model: confused deputy, token passthrough, and session
-> hijacking
+> The protocol threat model: confused deputy, token passthrough, and state
+> handle hijacking
 
 > [card] [Authorization](/docs/2026-07-28/tutorials/security/authorization)
 >
@@ -12682,7 +13176,7 @@ mitigate potential code execution attack vectors:
 * Keep sandboxing solutions up-to-date to account for emerging
   vulnerabilities
 
-MCP servers intending for their servers to be run locally **SHOULD**
+MCP server developers intending for their servers to be run locally **SHOULD**
 implement measures to prevent unauthorized usage from malicious
 processes:
 
@@ -13302,7 +13796,7 @@ implementation:
 ## Capability Negotiation
 
 The Model Context Protocol uses a capability-based negotiation system where clients and
-servers declare their supported features on each request. Clients include their
+servers declare their supported features. Clients include their
 capabilities in `_meta.io.modelcontextprotocol/clientCapabilities` on every request.
 Servers advertise their capabilities in response to
 [`server/discover`](/specification/2026-07-28/server/discover), which clients may call before
@@ -14009,7 +14503,7 @@ MCP servers **MUST** validate that access tokens were issued specifically for th
 according to [RFC 8707 Section 2](https://www.rfc-editor.org/rfc/rfc8707.html#section-2).
 If validation fails, servers **MUST** respond according to
 [OAuth 2.1 Section 5.3](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-13#section-5.3)
-error handling requirements. Invalid or expired tokens **MUST** receive a HTTP 401
+error handling requirements. Invalid or expired tokens **MUST** receive an HTTP 401
 response.
 
 MCP clients **MUST NOT** send tokens to the MCP server other than ones issued by the MCP server's authorization server.
@@ -14119,7 +14613,7 @@ The flow is as follows:
    [Scope Selection Strategy](#scope-selection-strategy) for
    initial scope selection guidance.
 3. **Initiate (re-)authorization** with the determined scope set
-4. **Retry the original request** with the new authorization no more than a few times and treat this as a permanent authorization failure
+4. **Retry the original request** with the new authorization no more than a few times. If it still fails, treat this as a permanent authorization failure
 
 Clients **SHOULD** implement retry limits and **SHOULD** track scope upgrade attempts to avoid
 repeated failures for the same resource and operation combination.
@@ -14375,7 +14869,7 @@ can use to determine how to parse and handle the `result` object.
 }
 ```
 
-* Error responses **MUST** include the same ID as the request they correspond to (except in error cases where the ID could not be read due a malformed request).
+* Error responses **MUST** include the same ID as the request they correspond to (except in error cases where the ID could not be read due to a malformed request).
 * Error responses **MUST** include an `error` field with a `code` and `message`.
 * Error codes **MUST** be integers.
 * Error responses **MAY** include a `data` member with additional information of any type, such
@@ -14629,6 +15123,7 @@ The following `_meta` keys are reserved by this specification:
 | `io.modelcontextprotocol/clientInfo` | Client name and version | Per-request protocol fields (below) |
 | `io.modelcontextprotocol/clientCapabilities` | Client capabilities relevant to a request | Per-request protocol fields (below) |
 | `io.modelcontextprotocol/logLevel` | Minimum log level the server should emit for a request | [Logging](/specification/2026-07-28/server/utilities/logging) |
+| `io.modelcontextprotocol/serverInfo` | Server name and version | Per-response protocol fields (below) |
 | `io.modelcontextprotocol/subscriptionId` | Correlates a notification with its originating subscription | [Subscriptions](/specification/2026-07-28/basic/patterns/subscriptions) |
 | `traceparent`, `tracestate`, `baggage` | OpenTelemetry trace context propagation | OpenTelemetry trace context (below) |
 
@@ -14715,6 +15210,12 @@ Non-normative example of trace context in `_meta`:
       "location": "New York"
     },
     "_meta": {
+      "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+      "io.modelcontextprotocol/clientInfo": {
+        "name": "ExampleClient",
+        "version": "1.0.0"
+      },
+      "io.modelcontextprotocol/clientCapabilities": {},
       "traceparent": "00-0af7651916cd43dd8448eb211c80319c-00f067aa0ba902b7-01"
     }
   }
@@ -14998,7 +15499,7 @@ Source: https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/
 > `io.modelcontextprotocol/clientInfo`, and
 > `io.modelcontextprotocol/clientCapabilities`). Every request **MUST** include
 > the required `_meta` fields; see
-> [`_meta`](/specification/2026-07-28/basic/index#meta).
+> [`_meta`](/specification/2026-07-28/basic/index#_meta).
 
 ## Multi Round-Trip Requests
 
@@ -15193,7 +15694,7 @@ sequenceDiagram
     note over C: Client retries tool call <br/> with inputResponses and requestState
     C->>S: tools/call (id: 2, ElicitResult, requestState)
     note over S: Server reconstitutes state<br/>Completes execution
-    S-->>C: Result (id: 2, ToolCallResult)
+    S-->>C: Result (id: 2, CallToolResult)
 ```
 
 Note that the requests in each step are completely independent: the server processing the retry does not need any information beyond
@@ -15547,7 +16048,7 @@ initiate JSON-RPC requests and clients do not send JSON-RPC responses.
 
 All protocol metadata travels in the message body: every request carries its
 protocol version and client capabilities in
-[`_meta.io.modelcontextprotocol/*`](/specification/2026-07-28/basic/index#meta)
+[`_meta.io.modelcontextprotocol/*`](/specification/2026-07-28/basic/index#_meta)
 fields.
 
 A binding **MAY** additionally mirror selected body fields into envelope
@@ -15670,7 +16171,7 @@ optional client identity live in
 the method name and arguments live where JSON-RPC puts them. There is no
 header layer.
 
-[meta-fields]: /specification/2026-07-28/basic/index#meta
+[meta-fields]: /specification/2026-07-28/basic/index#_meta
 
 ## Cancellation
 
@@ -16055,7 +16556,9 @@ described in [Value Encoding](#value-encoding).
 
 ```http theme={null}
 POST /mcp HTTP/1.1
+Host: example.com
 Content-Type: application/json
+Accept: application/json, text/event-stream
 MCP-Protocol-Version: 2026-07-28
 Mcp-Method: tools/call
 Mcp-Name: get_weather
@@ -16085,7 +16588,9 @@ Mcp-Name: get_weather
 
 ```http theme={null}
 POST /mcp HTTP/1.1
+Host: example.com
 Content-Type: application/json
+Accept: application/json, text/event-stream
 MCP-Protocol-Version: 2026-07-28
 Mcp-Method: resources/read
 Mcp-Name: file:///projects/myapp/config.json
@@ -16191,7 +16696,9 @@ annotations entirely.
 
 ```http theme={null}
 POST /mcp HTTP/1.1
+Host: example.com
 Content-Type: application/json
+Accept: application/json, text/event-stream
 MCP-Protocol-Version: 2026-07-28
 Mcp-Method: tools/call
 Mcp-Name: execute_sql
@@ -16528,7 +17035,7 @@ revisions:
 ## Protocol Version Negotiation
 
 Every request declares the protocol version it is using in its
-[`_meta`](/specification/2026-07-28/basic/index#meta) field. On HTTP, this is
+[`_meta`](/specification/2026-07-28/basic/index#_meta) field. On HTTP, this is
 also carried in the
 [`MCP-Protocol-Version` header](/specification/2026-07-28/basic/transports/streamable-http#protocol-version-header).
 
@@ -16570,7 +17077,7 @@ Clients and servers can negotiate support for optional
 [extensions](/docs/extensions/overview) beyond the core protocol. Extensions
 are advertised in the `extensions` field of capabilities, which is a map of
 extension identifiers to per-extension settings objects. Extension identifiers
-**MUST** follow the [`_meta` key naming rules](/specification/2026-07-28/basic/index#meta),
+**MUST** follow the [`_meta` key naming rules](/specification/2026-07-28/basic/index#_meta),
 with a mandatory prefix.
 
 The following is an example of a client that advertises the
@@ -16578,18 +17085,21 @@ The following is an example of a client that advertises the
 
 ```json theme={null}
 {
-  "capabilities": {
-    "roots": {},
-    "extensions": {
-      "io.modelcontextprotocol/ui": {
-        "mimeTypes": ["text/html;profile=mcp-app"]
+  "_meta": {
+    "io.modelcontextprotocol/clientCapabilities": {
+      "extensions": {
+        "io.modelcontextprotocol/ui": {
+          "mimeTypes": ["text/html;profile=mcp-app"]
+        }
       }
     }
   }
 }
 ```
 
-An example of [Tasks extension](/extensions/tasks/overview) identified as `io.modelcontextprotocol/tasks`:
+The following is an example of a server that advertises the
+[Tasks extension](/extensions/tasks/overview) identified as `io.modelcontextprotocol/tasks`
+in its `server/discover` result:
 
 ```json theme={null}
 {
@@ -16703,7 +17213,7 @@ the previous revision, [2025-11-25](/specification/2025-11-25).
 3. Servers **SHOULD** return tools from `tools/list` in a deterministic order to enable client-side caching and improve LLM prompt cache hit rates.
 4. Require standard MCP request headers (`Mcp-Method`, `Mcp-Name`) on Streamable HTTP POST requests, and add support for custom headers from tool parameters via `x-mcp-header` ([SEP-2243](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2243)).
 5. Require `ttlMs` and `cacheScope` fields on results returned by `tools/list`, `prompts/list`, `resources/list`, `resources/read`, and `resources/templates/list` via a new `CacheableResult` interface. `ttlMs` is a freshness hint (in milliseconds) allowing clients to cache responses and reduce polling; `cacheScope` (`"public"` or `"private"`) controls whether shared intermediaries may cache the response. Both fields complement existing `listChanged` notifications ([SEP-2549](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2549)).
-6. Change resource not found error code from `-32002` to `-32602` (Invalid Params) to align with JSON-RPC specification.
+6. Change resource not found error code from `-32002` to `-32602` (Invalid Params) to align with JSON-RPC specification ([SEP-2164](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2164)).
 7. Authorization servers **SHOULD** include the `iss` parameter in authorization responses per
    [RFC 9207](https://datatracker.ietf.org/doc/html/rfc9207), and MCP clients **MUST** validate a
    present `iss` against the recorded issuer before redeeming the authorization code
@@ -17206,7 +17716,7 @@ sequenceDiagram
     User-->>Client: Provide consent
 
     Client->>UserAgent: Open URL
-    Client->>Server: tools/call(id: 2, Accept Response, requestState))
+    Client->>Server: tools/call(id: 2, Accept Response, requestState)
     Note over Server: Server uses requestState to discover url info. <br/> It may need to block until the request is fulfilled.
 
     Note over User,UserAgent: User interaction
@@ -17752,7 +18262,6 @@ To request a language model generation during the processing of a client request
     },
     "temperature": 0.1,
     "systemPrompt": "You are a helpful assistant.",
-    "includeContext": "thisServer",
     "maxTokens": 100
   }
 }
@@ -18394,7 +18903,7 @@ Servers offer any of the following features to clients:
 
 Clients may offer the following features to servers:
 
-* **Elicitation**: Server-initiated requests for additional information from users
+* **Elicitation**: Server requests for additional information from users
 
 ### Additional Utilities
 
@@ -18589,14 +19098,14 @@ deprecated features registry.&#x20;
 
 ### `MetaObject`
 
-MetaObject: Record\<string, unknown>Represents the contents of a `_meta` field, which clients and servers use to attach additional metadata to their interactions. Certain key names are reserved by MCP for protocol-level metadata; implementations MUST NOT make assumptions about values at these keys. Additionally, specific schema definitions may reserve particular names for purpose-specific metadata, as declared in those definitions. Valid keys have two segments: **Prefix:** <ul> <li>Optional — if specified, MUST be a series of *labels* separated by dots (`.`), followed by a slash (`/`).</li> <li>Labels MUST start with a letter and end with a letter or digit. Interior characters may be letters, digits, or hyphens (`-`).</li> <li>Implementations SHOULD use reverse DNS notation (e.g., `com.example/` rather than `example.com/`).</li> <li>Any prefix where the second label is `modelcontextprotocol` or `mcp` is **reserved** for MCP use. For example: `io.modelcontextprotocol/`, `dev.mcp/`, `org.modelcontextprotocol.api/`, and `com.mcp.tools/` are all reserved. However, `com.example.mcp/` is NOT reserved, as the second label is `example`.</li> </ul> **Name:** <ul> <li>Unless empty, MUST start and end with an alphanumeric character (`[a-z0-9A-Z]`).</li> <li>Interior characters may be alphanumeric, hyphens (`-`), underscores (`_`), or dots (`.`).</li> </ul>   See[General fields: `_meta`](/specification/2026-07-28/basic/index#meta) for more details.&#x20;
+MetaObject: Record\<string, unknown>Represents the contents of a `_meta` field, which clients and servers use to attach additional metadata to their interactions. Certain key names are reserved by MCP for protocol-level metadata; implementations MUST NOT make assumptions about values at these keys. Additionally, specific schema definitions may reserve particular names for purpose-specific metadata, as declared in those definitions. Valid keys have two segments: **Prefix:** <ul> <li>Optional — if specified, MUST be a series of *labels* separated by dots (`.`), followed by a slash (`/`).</li> <li>Labels MUST start with a letter and end with a letter or digit. Interior characters may be letters, digits, or hyphens (`-`).</li> <li>Implementations SHOULD use reverse DNS notation (e.g., `com.example/` rather than `example.com/`).</li> <li>Any prefix where the second label is `modelcontextprotocol` or `mcp` is **reserved** for MCP use. For example: `io.modelcontextprotocol/`, `dev.mcp/`, `org.modelcontextprotocol.api/`, and `com.mcp.tools/` are all reserved. However, `com.example.mcp/` is NOT reserved, as the second label is `example`.</li> </ul> **Name:** <ul> <li>Unless empty, MUST start and end with an alphanumeric character (`[a-z0-9A-Z]`).</li> <li>Interior characters may be alphanumeric, hyphens (`-`), underscores (`_`), or dots (`.`).</li> </ul>   See[General fields: `_meta`](/specification/2026-07-28/basic/index#_meta) for more details.&#x20;
 
 ### `NotificationMetaObject`
 
 interface NotificationMetaObject \{\
   ["io.modelcontextprotocol/subscriptionId"](#notificationmetaobject-iomodelcontextprotocolsubscriptionid)?: [RequestId](#requestid);\
   \[key: string]: unknown;\
-}Extends [MetaObject](#metaobject) with additional notification-specific fields. All key naming rules from `MetaObject` apply.   See<ul> <li>[MetaObject](#metaobject) for key naming rules and reserved prefixes.</li> <li>[General fields: `_meta`](/specification/2026-07-28/basic/index#meta) for more details.</li> </ul>  "io.modelcontextprotocol/subscriptionId"?: RequestId[Permalink](#notificationmetaobject-iomodelcontextprotocolsubscriptionid) Identifies the subscription stream a notification was delivered on. The
+}Extends [MetaObject](#metaobject) with additional notification-specific fields. All key naming rules from `MetaObject` apply.   See<ul> <li>[MetaObject](#metaobject) for key naming rules and reserved prefixes.</li> <li>[General fields: `_meta`](/specification/2026-07-28/basic/index#_meta) for more details.</li> </ul>  "io.modelcontextprotocol/subscriptionId"?: RequestId[Permalink](#notificationmetaobject-iomodelcontextprotocolsubscriptionid) Identifies the subscription stream a notification was delivered on. The
 server MUST include this key on every notification delivered via a [subscriptions/listen](#subscriptionslistenrequest) stream, so the
 client can correlate the notification with the originating subscription.
 The key is absent on notifications not delivered via a subscription
@@ -18635,7 +19144,7 @@ interface RequestMetaObject \{\
   ["io.modelcontextprotocol/clientCapabilities"](#requestmetaobject-iomodelcontextprotocolclientcapabilities): [ClientCapabilities](#clientcapabilities);\
   ["io.modelcontextprotocol/logLevel"](#requestmetaobject-iomodelcontextprotocolloglevel)?: [LoggingLevel](#logginglevel);\
   \[key: string]: unknown;\
-}Extends [MetaObject](#metaobject) with additional request-specific fields. All key naming rules from `MetaObject` apply.   See<ul> <li>[MetaObject](#metaobject) for key naming rules and reserved prefixes.</li> <li>[General fields: `_meta`](/specification/2026-07-28/basic/index#meta) for more details.</li> </ul>  progressToken?: ProgressToken[Permalink](#requestmetaobject-progresstoken) If specified, the caller is requesting out-of-band progress notifications for this request (as represented by [notifications/progress](#progressnotification)). The value of this parameter is an opaque token that will be attached to any subsequent notifications. The receiver is not obligated to provide these notifications.  "io.modelcontextprotocol/protocolVersion": string[Permalink](#requestmetaobject-iomodelcontextprotocolprotocolversion) The MCP Protocol Version being used for this request. Required. For the HTTP transport, this value MUST match the `MCP-Protocol-Version`
+}Extends [MetaObject](#metaobject) with additional request-specific fields. All key naming rules from `MetaObject` apply.   See<ul> <li>[MetaObject](#metaobject) for key naming rules and reserved prefixes.</li> <li>[General fields: `_meta`](/specification/2026-07-28/basic/index#_meta) for more details.</li> </ul>  progressToken?: ProgressToken[Permalink](#requestmetaobject-progresstoken) If specified, the caller is requesting out-of-band progress notifications for this request (as represented by [notifications/progress](#progressnotification)). The value of this parameter is an opaque token that will be attached to any subsequent notifications. The receiver is not obligated to provide these notifications.  "io.modelcontextprotocol/protocolVersion": string[Permalink](#requestmetaobject-iomodelcontextprotocolprotocolversion) The MCP Protocol Version being used for this request. Required. For the HTTP transport, this value MUST match the `MCP-Protocol-Version`
 header; otherwise the server MUST return a `400 Bad Request`. If the
 server does not support the requested version, it MUST return an [UnsupportedProtocolVersionError](#unsupportedprotocolversionerror).  "io.modelcontextprotocol/clientInfo"?: Implementation[Permalink](#requestmetaobject-iomodelcontextprotocolclientinfo) Identifies the client software making the request. Clients SHOULD
 include this field on every request unless specifically configured not
@@ -18673,7 +19182,7 @@ server implementing an earlier protocol version (which does not include `resultT
 interface ResultMetaObject \{\
   ["io.modelcontextprotocol/serverInfo"](#resultmetaobject-iomodelcontextprotocolserverinfo)?: [Implementation](#implementation);\
   \[key: string]: unknown;\
-}Extends [MetaObject](#metaobject) with additional result-specific fields. All key naming rules from `MetaObject` apply.   See<ul> <li>[MetaObject](#metaobject) for key naming rules and reserved prefixes.</li> <li>[General fields: `_meta`](/specification/2026-07-28/basic/index#meta) for more details.</li> </ul>  "io.modelcontextprotocol/serverInfo"?: Implementation[Permalink](#resultmetaobject-iomodelcontextprotocolserverinfo) Identifies the server software producing the response. Servers SHOULD
+}Extends [MetaObject](#metaobject) with additional result-specific fields. All key naming rules from `MetaObject` apply.   See<ul> <li>[MetaObject](#metaobject) for key naming rules and reserved prefixes.</li> <li>[General fields: `_meta`](/specification/2026-07-28/basic/index#_meta) for more details.</li> </ul>  "io.modelcontextprotocol/serverInfo"?: Implementation[Permalink](#resultmetaobject-iomodelcontextprotocolserverinfo) Identifies the server software producing the response. Servers SHOULD
 include this field on every response unless specifically configured not
 to do so. The [Implementation](#implementation) schema requires `name` and `version`; other
 fields are optional. The value is self-reported by the server and is not verified by the
@@ -20197,7 +20706,7 @@ prompts, retrieve their contents, and provide arguments to customize them.
 > `io.modelcontextprotocol/clientInfo`, and
 > `io.modelcontextprotocol/clientCapabilities`). Every request **MUST** include
 > the required `_meta` fields; see
-> [`_meta`](/specification/2026-07-28/basic/index#meta).
+> [`_meta`](/specification/2026-07-28/basic/index#_meta).
 
 ## User Interaction Model
 
@@ -20533,7 +21042,7 @@ Each resource is uniquely identified by a
 > `io.modelcontextprotocol/clientInfo`, and
 > `io.modelcontextprotocol/clientCapabilities`). Every request **MUST** include
 > the required `_meta` fields; see
-> [`_meta`](/specification/2026-07-28/basic/index#meta).
+> [`_meta`](/specification/2026-07-28/basic/index#_meta).
 
 ## User Interaction Model
 
@@ -20571,9 +21080,9 @@ The capability supports two optional features:
 
 * `listChanged`: whether the server will emit notifications when the list of available
   resources changes.
-* `subscribe` : whether the server supports resource-specific update notifications
-  for resources requested through subscriptions/listen using the resourceSubscriptions
-  filter.
+* `subscribe`: whether the server supports resource-specific update notifications
+  for resources requested through `subscriptions/listen` using the
+  `resourceSubscriptions` filter.
 
 Servers may advertise either feature independently, together or neither.
 
@@ -20692,7 +21201,7 @@ several files when a directory resource is read.
 
 Servers **MAY** also respond to `resources/read` with an [`InputRequiredResult`](/specification/2026-07-28/basic/patterns/mrtr#inputrequiredresult) to indicate that additional input is needed before the resource can be read. This follows the [multi round-trip requests](/specification/2026-07-28/basic/patterns/mrtr#multi-round-trip-requests) mechanism. When retrying the request, clients include `inputResponses` and, if provided by the server, `requestState` in the request parameters.
 
-Alternatively, if the scheme of `uri` is `https://`, clients may fetch the resource directly from the web. See the [Common URI Schemes section](#https%3A%2F%2F) for more information.
+Alternatively, if the scheme of `uri` is `https://`, clients may fetch the resource directly from the web. See the [Common URI Schemes section](#https//) for more information.
 
 ### Resource Templates
 
@@ -20914,7 +21423,7 @@ Git version control integration.
 ### Custom URI Schemes
 
 Custom URI schemes **MUST** be in accordance with [RFC3986](https://datatracker.ietf.org/doc/html/rfc3986),
-taking the above guidance in to account.
+taking the above guidance into account.
 
 ## Error Handling
 
@@ -20967,7 +21476,7 @@ a name and includes metadata describing its schema.
 > `io.modelcontextprotocol/clientInfo`, and
 > `io.modelcontextprotocol/clientCapabilities`). Every request **MUST** include
 > the required `_meta` fields; see
-> [`_meta`](/specification/2026-07-28/basic/index#meta).
+> [`_meta`](/specification/2026-07-28/basic/index#_meta).
 
 ## User Interaction Model
 
@@ -21740,7 +22249,7 @@ Clients **SHOULD** provide tool execution errors to language models to enable se
    * Show tool inputs to the user before calling the server, to avoid malicious or
      accidental data exfiltration
    * Validate tool results before passing to LLM
-   * Follow the [`$ref` resolution requirements](/specification/2026-07-28/basic/index#ref-resolution)
+   * Follow the [`$ref` resolution requirements](/specification/2026-07-28/basic/index#\$ref-resolution)
      when validating tool inputs and outputs against `inputSchema` and `outputSchema`
    * Implement timeouts for tool calls
    * Log tool usage for audit purposes
@@ -21785,8 +22294,8 @@ as they depend on inputs that are not part of the cache key.
 
 Cacheable Results in MCP use two fields to provide caching hints to clients:
 
-* The **Time-to-live (TTL) Field**,`ttlMs`, is an integer value in milliseconds specifying how long the client MAY consider the result fresh.
-* The **Cache Scope Field**,`cacheScope`, indicates the intended scope of the cached response, either `"public"` or `"private"`.
+* The **Time-to-live (TTL) Field**, `ttlMs`, is an integer value in milliseconds specifying how long the client MAY consider the result fresh.
+* The **Cache Scope Field**, `cacheScope`, indicates the intended scope of the cached response, either `"public"` or `"private"`.
 
 ### Time-to-Live (TTL) Field
 
@@ -21915,7 +22424,7 @@ request. For example, if the first page of a `tools/list` response has
 
 ## Security Considerations
 
-A `cacheScope` of `"public"` indicates that the response does not contain user-specific data and can be safely shared. Servers MUST be aware that responses with a `"public"` `cacheScope` may be shared between callers even if the Result is coming from an authenticated endpoint. For example, the Result from an authenticated `tools/list` call with a `"public"` `cacheScope` may be cached by a client and may be shared outside of the initial requests authorization context. (i.e. different access tokens can leverage the same cache).
+A `cacheScope` of `"public"` indicates that the response does not contain user-specific data and can be safely shared. Servers MUST be aware that responses with a `"public"` `cacheScope` may be shared between callers even if the Result is coming from an authenticated endpoint. For example, the Result from an authenticated `tools/list` call with a `"public"` `cacheScope` may be cached by a client and may be shared outside of the initial request's authorization context (i.e. different access tokens can leverage the same cache).
 
 Server implementors:
 
@@ -21939,7 +22448,7 @@ resource template (identified by URI), servers can provide contextual suggestion
 > `io.modelcontextprotocol/clientInfo`, and
 > `io.modelcontextprotocol/clientCapabilities`). Every request **MUST** include
 > the required `_meta` fields; see
-> [`_meta`](/specification/2026-07-28/basic/index#meta).
+> [`_meta`](/specification/2026-07-28/basic/index#_meta).
 
 ## User Interaction Model
 
@@ -22286,7 +22795,7 @@ data sets.
 > `io.modelcontextprotocol/clientInfo`, and
 > `io.modelcontextprotocol/clientCapabilities`). Every request **MUST** include
 > the required `_meta` fields; see
-> [`_meta`](/specification/2026-07-28/basic/index#meta).
+> [`_meta`](/specification/2026-07-28/basic/index#_meta).
 
 ## Pagination Model
 
@@ -22328,7 +22837,7 @@ including that cursor:
   "id": "124",
   "method": "resources/list",
   "params": {
-    "cursor": "eyJwYWdlIjogMn0="
+    "cursor": "eyJwYWdlIjogM30="
   }
 }
 ```
@@ -23852,7 +24361,7 @@ Optional extensions to the Model Context Protocol
 
 MCP extensions are optional additions to the specification that define capabilities beyond the core protocol. Extensions enable functionality that may be modular (e.g., distinct features like authentication), specialized (e.g., industry-specific logic), or experimental (e.g., features being incubated for potential core inclusion).
 
-Extensions are identified using a unique *extension identifier* with the format: `{vendor-prefix}/{extension-name}`, e.g. `io.modelcontextprotocol/oauth-client-credentials`. Identifiers follow the same rules as [`_meta` keys](/specification/draft/basic/index#meta), with a mandatory prefix. Official extensions use the `io.modelcontextprotocol` vendor prefix.
+Extensions are identified using a unique *extension identifier* with the format: `{vendor-prefix}/{extension-name}`, e.g. `io.modelcontextprotocol/oauth-client-credentials`. Identifiers follow the same rules as [`_meta` keys](/specification/draft/basic/index#_meta), with a mandatory prefix. Official extensions use the `io.modelcontextprotocol` vendor prefix.
 
 > [!TIP]
 >
@@ -27787,315 +28296,6 @@ After this SEP is approved, we can ping each of the groups to confirm they are o
 * tool-interfaces --> Retire
 * ui --> Interest Group
 * schema-validation --> Retire (same as Steering equivalent)
-
-
-# SEP-1303: Input Validation Errors as Tool Execution Errors
-Source: https://modelcontextprotocol.io/seps/1303-input-validation-errors-as-tool-execution-errors
-
-Input Validation Errors as Tool Execution Errors
-
-Final
-
-Standards Track
-
-> [!NOTE]
->
-> This SEP has reached Final status and is preserved as a historical record of
-> the design as accepted. Changes made to the protocol after finalization are
-> not reflected here. Refer to the [current
-> specification](/specification/latest) and its changelog for authoritative
-> requirements.
-
-| Field | Value |
-| - | - |
-| **SEP** | 1303 |
-| **Title** | Input Validation Errors as Tool Execution Errors |
-| **Status** | Final |
-| **Type** | Standards Track |
-| **Created** | 2025-08-05 |
-| **Author(s)** | [@fredericbarthelet](https://github.com/fredericbarthelet) |
-| **Sponsor** | None |
-| **PR** | [#1303](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1303) |
-
-***
-
-## Abstract
-
-This SEP proposes treating tools input validation errors as Tool Execution Errors rather than Protocol Errors. This change would enable language models to receive validation error feedback in their context window, allowing them to self-correct and successfully complete tasks without human intervention, significantly improving task completion rate.
-
-## Motivation
-
-Language models can learn from tool input validation error messages and retry a tools/call with corrected parameters accordingly, but only if they receive the error feedback in their context window. Protocol Errors are catch at the application level by the MCP Client. Only Tool Execution Errors are forwarded back to the model as JSON-RPC responses. With the current specifications, models cannot see these error messages and thus cannot self-correct, leading to repeated failures and poor user experiences.
-
-### Problem Statement
-
-Consider a flight booking tool that validates departure dates using the following `zod` validation schema:
-
-```typescript theme={null}
-departureDate: z.string()
-  .regex(/^\d{2}\/\d{2}\/\d{4}$/, "date must be in dd/mm/yyyy format")
-  .superRefine((dateStr, ctx) => {
-    const date = parseDateFr(dateStr);
-    if (date.getTime() < Date.now()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message:
-          "Dates must be in the future. Current date is " +
-          formatDateFr(new Date()),
-      });
-    }
-    return true;
-  })
-  .describe("Departure date in dd/mm/yyyy format");
-```
-
-Tool expected input JSON schema can only describe the regex statement. The actual programmatic check that the date is in the past cannot be expressed here as JSON schema.
-Even when a model provides a syntactically correct date that passes JSON schema validation, there is no guarantee it will be in the future. When a validation error is raised and returned as a Protocol Error:
-
-1. The model doesn't receive the error message explaining why the date was rejected
-2. The model repeats the same mistake multiple times (e.g., Cursor typically consistently sends dates in 2024 when the user only specify day and month or relative date and repeats the same tools/call request 3 times without getting any information as to why the tools call fails)
-3. The task fails despite the model being capable of correcting itself if given proper feedback
-4. Users experience frustration and must manually intervene
-
-### Benefits of This Proposal
-
-1. **Higher Task Completion Rates**: Models can self-correct validation errors without human intervention
-2. **Better User Experience**: Reduced failures and faster task completion
-3. **Leverages Model Capabilities**: Modern LLMs excel at understanding and responding to error messages
-4. **Reduced API Calls**: Fewer retry attempts as models correct themselves on the first error
-
-## Specification
-
-### Current Behavior
-
-The [tool errors specification](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#error-handling) currently provides ambiguous guidance:
-
-* "Invalid arguments" should be treated as Protocol Error
-* "Invalid input data" should be treated as Tool Execution Error
-
-This ambiguity leads to inconsistent implementations where valuable error feedback is lost.
-
-### Proposed Change
-
-Clarify the specification with the following changes:
-
-1. Removes the "invalid argument" category from **Protocol Errors**.
-2. **Tool Execution Errors** should be used for all tool argument validation failures (merging `invalid argument` and `invalid input data` under a new `input validation errors` category)
-
-### Specification Text Changes
-
-Update the error handling section to include:
-
-```
-## Error Handling
-
-Tools use two error reporting mechanisms:
-
-1. **Protocol Errors**: Standard JSON-RPC errors for issues like:
-
-   - Unknown tools
-   - Server errors
-
-2. **Tool Execution Errors**: Reported in tool results with `isError: true`:
-   - API failures
-   - Input validation errors
-   - Business logic errors
-```
-
-## Implementation
-
-### Before (Protocol Error)
-
-```typescript theme={null}
-// Model submits past date
-request: {
-  ...
-  method: "tools/call",
-  params: {
-    name: "book_flight",
-    arguments: {
-      departureDate: "12/12/2024"  // Past date
-    }
-  }
-}
-
-// Server returns Protocol Error
-response: {
-  ...
-  error: {
-    code: -32602,
-    message: "Invalid params"
-  }
-}
-
-// Model retries blindly with another past date
-// This cycle repeats until failure
-```
-
-### After (Tool Execution Error)
-
-```typescript theme={null}
-// Model submits past date
-request: {
-  ...
-  method: "tools/call",
-  params: {
-    name: "book_flight",
-    arguments: {
-      departureDate: "12/12/2024"  // Past date
-    }
-  }
-}
-
-// Server returns Tool Execution Error (visible to model)
-response: {
-  ...
-  "result": {
-    "content": [
-      {
-        "type": "text",
-        "text": "Dates must be in the future. Current date is 08/08/2025"
-      }
-    ],
-    "isError": true
-  }
-}
-
-// Model understands the error and corrects itself
-request: {
-  method: "tools/call",
-  params: {
-    name: "book_flight",
-    arguments: {
-      departureDate: "12/12/2025"  // Future date
-    }
-  }
-}
-```
-
-## Backwards Compatibility
-
-This change is backwards compatible as it:
-
-* Does not alter the protocol structure
-* Only clarifies existing ambiguous behavior
-* Maintains all existing error types and formats
-* Improves behavior without breaking existing implementations
-
-Servers implementing the clarified behavior will provide better model self-recovery while continuing to work with all existing clients.
-
-## References
-
-* [MCP Tools Error Handling Specification](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#error-handling)
-* [Better MCP tools/call Error Responses: Help Your AI Recover Gracefully](https://dev.to/alpic/better-mcp-toolscall-error-responses-help-your-ai-recover-gracefully-15c7)
-* Related Issue: [https://github.com/modelcontextprotocol/typescript-sdk/pull/824](https://github.com/modelcontextprotocol/typescript-sdk/pull/824)
-
-
-# SEP-1319: Decouple Request Payload from RPC Methods Definition
-Source: https://modelcontextprotocol.io/seps/1319-decouple-request-payload-from-rpc-methods-definiti
-
-Decouple Request Payload from RPC Methods Definition
-
-Final
-
-Standards Track
-
-> [!NOTE]
->
-> This SEP has reached Final status and is preserved as a historical record of
-> the design as accepted. Changes made to the protocol after finalization are
-> not reflected here. Refer to the [current
-> specification](/specification/latest) and its changelog for authoritative
-> requirements.
-
-| Field | Value |
-| - | - |
-| **SEP** | 1319 |
-| **Title** | Decouple Request Payload from RPC Methods Definition |
-| **Status** | Final |
-| **Type** | Standards Track |
-| **Created** | 2025-08-08 |
-| **Author(s)** | [@kurtisvg](https://github.com/kurtisvg) |
-| **Sponsor** | None |
-| **PR** | [#1319](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1319) |
-
-***
-
-## Abstract
-
-This SEP proposes a structural refactoring of the Model Context Protocol (MCP) specification. The core change is to define payload of requests (e.g., CallToolRequest) as independent definitions and have the RPC method definitions refer to these models. This decouples the definition of the data payload from the definition of the remote procedure that transports it, leading to a clearer, more modular, and more maintainable specification.
-
-## Motivation
-
-The current MCP specification tightly couples the data payload of a request with the JSON-RPC method that transports it. This design presents several challenges:
-
-* **Reduced Clarity:** It forces developers to mentally parse the JSON-RPC transport structure just to understand the core data being exchanged. This increases cognitive load and makes the specification difficult to read and implement correctly.
-* **Hindered Maintainability:** Defining data structures inline prevents their reuse across different methods, leading to redundancy and making future updates to the protocol more complex and error-prone.
-* **Tightly Coupled to JSON-RPC:** Most critically, this tight coupling to JSON-RPC is the primary blocker for defining bindings for other transport protocols. To support transports like **gRPC** (which is currently a [popular ask from the community](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/966)), a transport-agnostic definition of its request and response messages. The current structure makes this practically impossible.
-
-By refactoring the specification to separate the data model (the "what") from the RPC method (the "how"), this proposal will create a clearer, more modular specification. This change will immediately improve the developer experience and, most importantly, pave the way for the future evolution of MCP across multiple transports.
-
-## Specification
-
-The proposal introduces the following principle: All data structures used as parameters (params) or results (result) for RPC methods should be defined as standalone, named schemas. The RPC method definitions will then use references to these schemas.
-
-### Current Approach (Inline Definition):
-
-The RPC method definition contains the full structure of its parameters and results.
-
-```ts theme={null}
-export interface CallToolRequest extends Request {
-  method: "tools/call";
-  params: {
-    name: string;
-    arguments?: { [key: string]: unknown };
-  };
-}
-```
-
-### Proposed Approach (Decoupled Definition):
-
-First, the data models for the request and response are defined as top-level schemas.
-
-```ts theme={null}
-/**
- * Parameters for a `tools/call` request.
- *
- * @category tools/call
- */
-export interface CallToolRequestParams extends RequestParams {
-  name: string;
-  arguments?: { [key: string]: unknown };
-}
-```
-
-Then, the RPC method definition becomes much simpler, merely referring to these models.
-
-```ts theme={null}
-export interface CallToolRequest extends Request {
-  method: "tools/call";
-  params: CallToolRequestParams;
-}
-```
-
-## Rationale
-
-The proposed solution—separating payload definitions from the RPC method—was chosen as the most direct and non-disruptive path to achieving the goals outlined in the motivation.
-
-This approach establishes a clear architectural boundary between two distinct concerns:
-
-1. **The Data Layer:** The transport-agnostic payload definition (e.g., `CallToolRequestParams`), which represents the core information being exchanged.
-2. **The Transport Layer:** The protocol-specific wrapper (e.g., the JSON-RPC `CallToolRequest` object), which describes how the data is sent.
-
-This architectural separation is superior to maintaining separate, parallel specifications for each transport (e.g., one for JSON-RPC, another for gRPC), which would introduce significant maintenance overhead and risk inconsistencies.
-
-Crucially, this design refactors the specification document itself but intentionally **leaves the on-the-wire format unchanged**. This makes the proposal fully backward-compatible, requiring no changes from existing, compliant clients and servers. In short, this change is a strategic, foundational improvement that enables future growth without penalizing the current ecosystem.
-
-## Backward Compatibility
-
-This proposal is a **non-breaking change** for existing implementations. It is a refactoring of the *specification document itself* and does not alter the on-the-wire JSON format of the protocol messages. A client or server that is compliant with the old specification structure will remain compliant with the new one, as the resulting JSON payloads are identical.
-
-The primary impact is on developers who read the specification and on tools that parse the specification to generate code or documentation.
 
 
 # SEP-414: Document OpenTelemetry Trace Context Propagation Conventions
@@ -33221,6 +33421,315 @@ Every priority area above has a Working Group behind it or forming around it, an
 * **Propose or comment on a SEP**: read the [SEP guidelines](/community/sep-guidelines), then open one or weigh in.
 * **Start an experimental extension**: [SEP-2133](/seps/2133-extensions) lets any WG or IG experiment in an `experimental-ext-` repository before a formal SEP.
 * **Contribute directly**: the [contributing guide](/community/contributing) covers the specification, SDKs, and tooling.
+
+
+# SEP-1303: Input Validation Errors as Tool Execution Errors
+Source: https://modelcontextprotocol.io/seps/1303-input-validation-errors-as-tool-execution-errors
+
+Input Validation Errors as Tool Execution Errors
+
+Final
+
+Standards Track
+
+> [!NOTE]
+>
+> This SEP has reached Final status and is preserved as a historical record of
+> the design as accepted. Changes made to the protocol after finalization are
+> not reflected here. Refer to the [current
+> specification](/specification/latest) and its changelog for authoritative
+> requirements.
+
+| Field | Value |
+| - | - |
+| **SEP** | 1303 |
+| **Title** | Input Validation Errors as Tool Execution Errors |
+| **Status** | Final |
+| **Type** | Standards Track |
+| **Created** | 2025-08-05 |
+| **Author(s)** | [@fredericbarthelet](https://github.com/fredericbarthelet) |
+| **Sponsor** | None |
+| **PR** | [#1303](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1303) |
+
+***
+
+## Abstract
+
+This SEP proposes treating tools input validation errors as Tool Execution Errors rather than Protocol Errors. This change would enable language models to receive validation error feedback in their context window, allowing them to self-correct and successfully complete tasks without human intervention, significantly improving task completion rate.
+
+## Motivation
+
+Language models can learn from tool input validation error messages and retry a tools/call with corrected parameters accordingly, but only if they receive the error feedback in their context window. Protocol Errors are catch at the application level by the MCP Client. Only Tool Execution Errors are forwarded back to the model as JSON-RPC responses. With the current specifications, models cannot see these error messages and thus cannot self-correct, leading to repeated failures and poor user experiences.
+
+### Problem Statement
+
+Consider a flight booking tool that validates departure dates using the following `zod` validation schema:
+
+```typescript theme={null}
+departureDate: z.string()
+  .regex(/^\d{2}\/\d{2}\/\d{4}$/, "date must be in dd/mm/yyyy format")
+  .superRefine((dateStr, ctx) => {
+    const date = parseDateFr(dateStr);
+    if (date.getTime() < Date.now()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Dates must be in the future. Current date is " +
+          formatDateFr(new Date()),
+      });
+    }
+    return true;
+  })
+  .describe("Departure date in dd/mm/yyyy format");
+```
+
+Tool expected input JSON schema can only describe the regex statement. The actual programmatic check that the date is in the past cannot be expressed here as JSON schema.
+Even when a model provides a syntactically correct date that passes JSON schema validation, there is no guarantee it will be in the future. When a validation error is raised and returned as a Protocol Error:
+
+1. The model doesn't receive the error message explaining why the date was rejected
+2. The model repeats the same mistake multiple times (e.g., Cursor typically consistently sends dates in 2024 when the user only specify day and month or relative date and repeats the same tools/call request 3 times without getting any information as to why the tools call fails)
+3. The task fails despite the model being capable of correcting itself if given proper feedback
+4. Users experience frustration and must manually intervene
+
+### Benefits of This Proposal
+
+1. **Higher Task Completion Rates**: Models can self-correct validation errors without human intervention
+2. **Better User Experience**: Reduced failures and faster task completion
+3. **Leverages Model Capabilities**: Modern LLMs excel at understanding and responding to error messages
+4. **Reduced API Calls**: Fewer retry attempts as models correct themselves on the first error
+
+## Specification
+
+### Current Behavior
+
+The [tool errors specification](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#error-handling) currently provides ambiguous guidance:
+
+* "Invalid arguments" should be treated as Protocol Error
+* "Invalid input data" should be treated as Tool Execution Error
+
+This ambiguity leads to inconsistent implementations where valuable error feedback is lost.
+
+### Proposed Change
+
+Clarify the specification with the following changes:
+
+1. Removes the "invalid argument" category from **Protocol Errors**.
+2. **Tool Execution Errors** should be used for all tool argument validation failures (merging `invalid argument` and `invalid input data` under a new `input validation errors` category)
+
+### Specification Text Changes
+
+Update the error handling section to include:
+
+```
+## Error Handling
+
+Tools use two error reporting mechanisms:
+
+1. **Protocol Errors**: Standard JSON-RPC errors for issues like:
+
+   - Unknown tools
+   - Server errors
+
+2. **Tool Execution Errors**: Reported in tool results with `isError: true`:
+   - API failures
+   - Input validation errors
+   - Business logic errors
+```
+
+## Implementation
+
+### Before (Protocol Error)
+
+```typescript theme={null}
+// Model submits past date
+request: {
+  ...
+  method: "tools/call",
+  params: {
+    name: "book_flight",
+    arguments: {
+      departureDate: "12/12/2024"  // Past date
+    }
+  }
+}
+
+// Server returns Protocol Error
+response: {
+  ...
+  error: {
+    code: -32602,
+    message: "Invalid params"
+  }
+}
+
+// Model retries blindly with another past date
+// This cycle repeats until failure
+```
+
+### After (Tool Execution Error)
+
+```typescript theme={null}
+// Model submits past date
+request: {
+  ...
+  method: "tools/call",
+  params: {
+    name: "book_flight",
+    arguments: {
+      departureDate: "12/12/2024"  // Past date
+    }
+  }
+}
+
+// Server returns Tool Execution Error (visible to model)
+response: {
+  ...
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Dates must be in the future. Current date is 08/08/2025"
+      }
+    ],
+    "isError": true
+  }
+}
+
+// Model understands the error and corrects itself
+request: {
+  method: "tools/call",
+  params: {
+    name: "book_flight",
+    arguments: {
+      departureDate: "12/12/2025"  // Future date
+    }
+  }
+}
+```
+
+## Backwards Compatibility
+
+This change is backwards compatible as it:
+
+* Does not alter the protocol structure
+* Only clarifies existing ambiguous behavior
+* Maintains all existing error types and formats
+* Improves behavior without breaking existing implementations
+
+Servers implementing the clarified behavior will provide better model self-recovery while continuing to work with all existing clients.
+
+## References
+
+* [MCP Tools Error Handling Specification](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#error-handling)
+* [Better MCP tools/call Error Responses: Help Your AI Recover Gracefully](https://dev.to/alpic/better-mcp-toolscall-error-responses-help-your-ai-recover-gracefully-15c7)
+* Related Issue: [https://github.com/modelcontextprotocol/typescript-sdk/pull/824](https://github.com/modelcontextprotocol/typescript-sdk/pull/824)
+
+
+# SEP-1319: Decouple Request Payload from RPC Methods Definition
+Source: https://modelcontextprotocol.io/seps/1319-decouple-request-payload-from-rpc-methods-definiti
+
+Decouple Request Payload from RPC Methods Definition
+
+Final
+
+Standards Track
+
+> [!NOTE]
+>
+> This SEP has reached Final status and is preserved as a historical record of
+> the design as accepted. Changes made to the protocol after finalization are
+> not reflected here. Refer to the [current
+> specification](/specification/latest) and its changelog for authoritative
+> requirements.
+
+| Field | Value |
+| - | - |
+| **SEP** | 1319 |
+| **Title** | Decouple Request Payload from RPC Methods Definition |
+| **Status** | Final |
+| **Type** | Standards Track |
+| **Created** | 2025-08-08 |
+| **Author(s)** | [@kurtisvg](https://github.com/kurtisvg) |
+| **Sponsor** | None |
+| **PR** | [#1319](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1319) |
+
+***
+
+## Abstract
+
+This SEP proposes a structural refactoring of the Model Context Protocol (MCP) specification. The core change is to define payload of requests (e.g., CallToolRequest) as independent definitions and have the RPC method definitions refer to these models. This decouples the definition of the data payload from the definition of the remote procedure that transports it, leading to a clearer, more modular, and more maintainable specification.
+
+## Motivation
+
+The current MCP specification tightly couples the data payload of a request with the JSON-RPC method that transports it. This design presents several challenges:
+
+* **Reduced Clarity:** It forces developers to mentally parse the JSON-RPC transport structure just to understand the core data being exchanged. This increases cognitive load and makes the specification difficult to read and implement correctly.
+* **Hindered Maintainability:** Defining data structures inline prevents their reuse across different methods, leading to redundancy and making future updates to the protocol more complex and error-prone.
+* **Tightly Coupled to JSON-RPC:** Most critically, this tight coupling to JSON-RPC is the primary blocker for defining bindings for other transport protocols. To support transports like **gRPC** (which is currently a [popular ask from the community](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/966)), a transport-agnostic definition of its request and response messages. The current structure makes this practically impossible.
+
+By refactoring the specification to separate the data model (the "what") from the RPC method (the "how"), this proposal will create a clearer, more modular specification. This change will immediately improve the developer experience and, most importantly, pave the way for the future evolution of MCP across multiple transports.
+
+## Specification
+
+The proposal introduces the following principle: All data structures used as parameters (params) or results (result) for RPC methods should be defined as standalone, named schemas. The RPC method definitions will then use references to these schemas.
+
+### Current Approach (Inline Definition):
+
+The RPC method definition contains the full structure of its parameters and results.
+
+```ts theme={null}
+export interface CallToolRequest extends Request {
+  method: "tools/call";
+  params: {
+    name: string;
+    arguments?: { [key: string]: unknown };
+  };
+}
+```
+
+### Proposed Approach (Decoupled Definition):
+
+First, the data models for the request and response are defined as top-level schemas.
+
+```ts theme={null}
+/**
+ * Parameters for a `tools/call` request.
+ *
+ * @category tools/call
+ */
+export interface CallToolRequestParams extends RequestParams {
+  name: string;
+  arguments?: { [key: string]: unknown };
+}
+```
+
+Then, the RPC method definition becomes much simpler, merely referring to these models.
+
+```ts theme={null}
+export interface CallToolRequest extends Request {
+  method: "tools/call";
+  params: CallToolRequestParams;
+}
+```
+
+## Rationale
+
+The proposed solution—separating payload definitions from the RPC method—was chosen as the most direct and non-disruptive path to achieving the goals outlined in the motivation.
+
+This approach establishes a clear architectural boundary between two distinct concerns:
+
+1. **The Data Layer:** The transport-agnostic payload definition (e.g., `CallToolRequestParams`), which represents the core information being exchanged.
+2. **The Transport Layer:** The protocol-specific wrapper (e.g., the JSON-RPC `CallToolRequest` object), which describes how the data is sent.
+
+This architectural separation is superior to maintaining separate, parallel specifications for each transport (e.g., one for JSON-RPC, another for gRPC), which would introduce significant maintenance overhead and risk inconsistencies.
+
+Crucially, this design refactors the specification document itself but intentionally **leaves the on-the-wire format unchanged**. This makes the proposal fully backward-compatible, requiring no changes from existing, compliant clients and servers. In short, this change is a strategic, foundational improvement that enables future growth without penalizing the current ecosystem.
+
+## Backward Compatibility
+
+This proposal is a **non-breaking change** for existing implementations. It is a refactoring of the *specification document itself* and does not alter the on-the-wire JSON format of the protocol messages. A client or server that is compliant with the old specification structure will remain compliant with the new one, as the resulting JSON payloads are identical.
+
+The primary impact is on developers who read the specification and on tools that parse the specification to generate code or documentation.
 
 
 # SEP-1330: Elicitation Enum Schema Improvements and Standards Compliance

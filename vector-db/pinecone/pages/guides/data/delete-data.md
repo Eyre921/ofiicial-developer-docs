@@ -14,7 +14,7 @@ This page shows you how to delete documents by ID, by metadata filter, or all at
 
 ## Delete documents
 
-In an index with a document schema, delete documents by ID, by metadata filter, or delete the whole namespace's contents. A request specifies exactly one of `ids`, `filter`, or `delete_all`, and can name up to 1,000 IDs.
+In a document index, delete documents by ID, by metadata filter, or delete the whole namespace's contents. A request specifies exactly one of `ids`, `filter`, or `delete_all`, and can name up to 1,000 IDs.
 
 ### Delete documents by ID
 

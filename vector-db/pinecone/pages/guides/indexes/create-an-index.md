@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/indexes/create-an-index
 path: guides/indexes/create-an-index
 ---
 
-Create a Pinecone serverless index for full-text (BM25), semantic (dense vector), sparse-vector, or hybrid search with a document schema.
+Create a Pinecone document index for full-text (BM25), semantic (dense vector), sparse-vector, or hybrid search.
 
 A Pinecone index lets you store and search your data. A document index stores JSON documents whose fields you declare in a schema at creation. It can combine dense vector, sparse vector, and full-text (`string`) fields in one document, so a single index serves [full-text search](/guides/search/full-text-search), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/sparse-vector-search).
 
@@ -16,13 +16,13 @@ To create a legacy vector index, see [Create a vector index](/guides/legacy/vect
 
 ## Create a document index
 
-An index with a document schema stores typed JSON documents. The schema declares how each ranking field is indexed: as a `string` field with `full_text_search` enabled for BM25 ranking, a `dense_vector` for ANN similarity, or a `sparse_vector`. A single index can mix all three ranking field types, and at query time you pick the ranking signal with `score_by`. Any other fields you upsert are stored as metadata, auto-indexed for filtering at upsert time.
+A document index stores typed JSON documents. The schema declares how each ranking field is indexed: as a `string` field with `full_text_search` enabled for BM25 ranking, a `dense_vector` for ANN similarity, or a `sparse_vector`. A single index can mix all three ranking field types, and at query time you pick the ranking signal with `score_by`. Any other fields you upsert are stored as metadata, auto-indexed for filtering at upsert time.
 
 > [!NOTE]
 >
 > Full-text search and integrated embedding are different features. A `string` field with `full_text_search` is indexed for BM25 keyword ranking and Lucene queries. It doesn't create vectors or call an embedding model. To have Pinecone turn a field's text into vectors, use [integrated embedding](/guides/search/integrated-embedding): declare `embed` or `sparse_embed` on a `string` field in a document index. The legacy `create_index_for_model` path does this too, creating a [legacy integrated index](/guides/legacy/records-api/create-an-integrated-index) served by the legacy Records API.
 
-Indexes with document schemas use API version `2026-07`, supported through REST and the Python (v10 or later), Node.js (v9 or later), and Go (v7 or later) SDKs. For other languages, call the REST endpoint directly.
+Document indexes use API version `2026-07`, supported through REST and the Python (v10 or later), Node.js (v9 or later), and Go (v7 or later) SDKs. For other languages, call the REST endpoint directly.
 
 ### Minimal: BM25 on a single text field
 
@@ -70,7 +70,7 @@ curl -X POST "https://api.pinecone.io/indexes" \
 
 ### Multi-field schema: BM25 + dense vector
 
-A single index with a document schema can hold `string` fields with `full_text_search` and `dense_vector` ranking fields together, and the same schema can also include a `sparse_vector` field. A single search request ranks by one scoring type. Multi-field BM25 is supported: use multiple `text` clauses on different fields, or one `query_string` clause spanning fields. Any scoring method can be combined with metadata filters, including text-match filters (`$match_phrase`, `$match_all`, `$match_any`) on `string` fields with `full_text_search`.
+A single document index can hold `string` fields with `full_text_search` and `dense_vector` ranking fields together, and the same schema can also include a `sparse_vector` field. A single search request ranks by one scoring type. Multi-field BM25 is supported: use multiple `text` clauses on different fields, or one `query_string` clause spanning fields. Any scoring method can be combined with metadata filters, including text-match filters (`$match_phrase`, `$match_all`, `$match_any`) on `string` fields with `full_text_search`.
 
 ```python Python theme={null}
 import os

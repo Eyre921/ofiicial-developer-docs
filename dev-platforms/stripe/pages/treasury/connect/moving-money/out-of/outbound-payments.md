@@ -817,7 +817,7 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
 Available in: US
 > #### Request access
 > 
-> Check send requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
+> Enabling Treasury for platforms doesn’t automatically grant access to check send. Contact your Stripe representative to request access.
 
 Before sending a paper check, request the following capabilities and confirm that both have an `active` status:
 

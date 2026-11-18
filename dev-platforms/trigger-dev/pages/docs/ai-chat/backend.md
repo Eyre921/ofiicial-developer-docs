@@ -39,7 +39,7 @@ export const simpleChat = chat.agent({
   id: "simple-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       messages,
       abortSignal: signal,
@@ -65,7 +65,7 @@ export const simpleChat = chat.agent({
   id: "simple-chat",
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -110,7 +110,7 @@ async function runAgentLoop(messages: ModelMessage[], streamText: ChatStreamText
   // ... agent logic, tool calls, etc.
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     stopWhen: stepCountIs(15),
   });
@@ -131,7 +131,7 @@ export const myChat = chat.agent({
     // This data part will be in responseMessage.parts in onTurnComplete
     writer.write({
       type: "data-metadata",
-      data: { turn, model: "gpt-4o", timestamp: Date.now() },
+      data: { turn, model: "gpt-6-luna", timestamp: Date.now() },
     });
   },
   onTurnComplete: async ({ responseMessage }) => {
@@ -145,7 +145,7 @@ export const myChat = chat.agent({
       data: { searchResults: results },
     });
 
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -216,7 +216,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -241,7 +241,7 @@ Use [AI Prompts](/docs/ai/prompts) to manage your system prompt as versioned, ov
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
 import { prompts } from "@trigger.dev/sdk";
-import { createProviderRegistry } from "ai";
+import { createProviderRegistry, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
@@ -249,8 +249,8 @@ const registry = createProviderRegistry({ anthropic });
 
 const systemPrompt = prompts.define({
   id: "my-chat-system",
-  model: "anthropic:claude-sonnet-4-5",
-  config: { temperature: 0.7 },
+  model: "anthropic:claude-sonnet-5-5",
+  config: { maxOutputTokens: 1024 },
   variables: z.object({ name: z.string() }),
   content: `You are a helpful assistant for {{name}}.`,
 });
@@ -304,7 +304,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, stopSignal, cancelSignal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal, // Handles both stop and cancel
       stopWhen: stepCountIs(15),
@@ -332,7 +332,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -346,7 +346,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       onFinish: ({ isAborted }) => {
@@ -399,7 +399,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools: { sendEmail },
       abortSignal: signal,
@@ -638,7 +638,7 @@ export const myChat = chat.agent({
     ];
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -665,7 +665,7 @@ chat.agent({
   run: async ({ messages, signal, streamText }) => {
     // Single-response agent — exit after this turn.
     chat.endRun();
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -686,7 +686,7 @@ Use this when the agent knows its work is done (budget exhausted, goal achieved,
 chat.agent({
   id: "budgeted-agent",
   run: async ({ messages, signal }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
   // onBeforeTurnComplete carries the same fields as onTurnComplete, including
   // `usage`, and still runs while the response stream is open.
   onBeforeTurnComplete: async ({ chatId }) => {
@@ -738,7 +738,7 @@ Override how long the run stays suspended waiting for the next message. Call fro
 ```ts theme={"theme":"css-variables"}
 run: async ({ messages, signal, streamText }) => {
   chat.setTurnTimeout("2h"); // Wait longer for this conversation
-  return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+  return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
 },
 ```
 
@@ -749,7 +749,7 @@ Override how long the run stays idle (active, using compute) after each turn:
 ```ts theme={"theme":"css-variables"}
 run: async ({ messages, signal, streamText }) => {
   chat.setIdleTimeoutInSeconds(60); // Stay idle for 1 minute
-  return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+  return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
 },
 ```
 
@@ -783,7 +783,7 @@ export const myChat = chat.agent({
     },
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -814,7 +814,7 @@ export const myChat = chat.agent({
     sendSources: true, // Forward source citations (default: false)
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -832,7 +832,7 @@ export const myChat = chat.agent({
     generateMessageId: () => uuidv7(),
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -852,7 +852,7 @@ export const myChat = chat
   .agent({
     id: "my-chat",
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
     },
   });
 ```
@@ -874,7 +874,7 @@ run: async ({ messages, clientData, signal, streamText }) => {
   if (clientData.model?.includes("claude")) {
     chat.setUIMessageStreamOptions({ sendReasoning: true });
   }
-  return streamText({ model: openai(clientData.model ?? "gpt-4o"), messages, abortSignal: signal });
+  return streamText({ model: openai(clientData.model ?? "gpt-6-luna"), messages, abortSignal: signal });
 },
 ```
 
@@ -903,7 +903,7 @@ export const manualChat = task({
   queue: { concurrencyLimit: 10 },
   run: async (payload: ChatTaskPayload) => {
     const result = streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages: payload.messages,
       stopWhen: stepCountIs(15),
     });

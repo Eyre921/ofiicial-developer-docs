@@ -88,7 +88,7 @@ If your application needs to query a Turso Cloud database directly over the netw
 >
 > For most applications, we recommend running a local database with [Turso Sync](/sync/usage) (`turso.sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
 
-### Remote Turso database: turso\_serverless
+### Remote Turso database: turso_serverless
 
 `turso_serverless` connects to a remote Turso database over HTTP — no persistent connections, no native extensions, just the standard library. Like `pyturso`, it implements the standard DB-API interface.
 

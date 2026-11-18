@@ -163,7 +163,7 @@ Use the prompt in the accordion below to help you migrate your v3 tasks to v4. T
 >   run: async (payload, { ctx }) => {
 >     const { text } = await generateText({
 >       prompt: payload.text,
->       model: openai("gpt-4o"),
+>       model: openai("gpt-6-luna"),
 >       tools: {
 >         myToolTask,
 >       },
@@ -176,7 +176,7 @@ Use the prompt in the accordion below to help you migrate your v3 tasks to v4. T
 > import { schemaTask } from "@trigger.dev/sdk";
 > import { ai } from "@trigger.dev/sdk/ai";
 > import { z } from "zod";
-> import { generateText, tool } from "ai";
+> import { generateText, stepCountIs, tool } from "ai";
 > import { openai } from "@ai-sdk/openai";
 >
 > // Convert toolTask to schemaTask with a schema
@@ -203,10 +203,11 @@ Use the prompt in the accordion below to help you migrate your v3 tasks to v4. T
 >   run: async (payload, { ctx }) => {
 >     const { text } = await generateText({
 >       prompt: payload.text,
->       model: openai("gpt-4o"),
+>       model: openai("gpt-6-luna"),
 >       tools: {
 >         myTool,
 >       },
+>       stopWhen: stepCountIs(5),
 >     });
 >   },
 > });
@@ -387,7 +388,7 @@ export const myAiTask = schemaTask({
   run: async (payload, { ctx }) => {
     const { text } = await generateText({
       prompt: payload.text,
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       tools: {
         myToolTask,
       },

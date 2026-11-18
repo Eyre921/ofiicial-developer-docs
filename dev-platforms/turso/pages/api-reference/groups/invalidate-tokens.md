@@ -5,7 +5,11 @@ path: api-reference/groups/invalidate-tokens
 ---
 
 POST /v1/organizations/{organizationSlug}/groups/{groupName}/auth/rotate
-Invalidates all authorization tokens for the specified group.
+Invalidates all group authorization tokens for the specified group. On AWS, database-scoped tokens are not invalidated; invalidate them per database.
+
+> [!NOTE]
+>
+> This invalidates group tokens. On AWS, database-scoped tokens are not invalidated; invalidate them per database with the database endpoint.
 
 ```bash cURL theme={null}
 curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/groups/{groupName}/auth/rotate' \

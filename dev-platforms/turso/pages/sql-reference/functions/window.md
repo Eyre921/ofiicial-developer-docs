@@ -59,7 +59,7 @@ Any aggregate function can be used as a window function by adding an OVER clause
 
 ## Ranking Functions
 
-### row\_number()
+### row_number()
 
 Assigns a sequential integer (starting at 1) to each row within its partition, in the order defined by the window's `ORDER BY`. This is the one dedicated ranking function supported in Turso.
 
@@ -72,7 +72,7 @@ SELECT
 FROM employees;
 ```
 
-| department | name | salary | rank\_in\_dept |
+| department | name | salary | rank_in_dept |
 | - | - | - | - |
 | Engineering | Alice | 90000 | 1 |
 | Engineering | Bob | 85000 | 2 |
@@ -106,7 +106,7 @@ SELECT
 FROM employees;
 ```
 
-| department | name | salary | dept\_total |
+| department | name | salary | dept_total |
 | - | - | - | - |
 | Engineering | Alice | 90000 | 250000 |
 | Engineering | Bob | 85000 | 250000 |
@@ -136,7 +136,7 @@ SELECT
 FROM employees;
 ```
 
-| name | salary | running\_total |
+| name | salary | running_total |
 | - | - | - |
 | Eve | 60000 | 60000 |
 | Dave | 70000 | 130000 |
@@ -160,7 +160,7 @@ SELECT
 FROM employees;
 ```
 
-| department | name | salary | dept\_running\_total |
+| department | name | salary | dept_running_total |
 | - | - | - | - |
 | Engineering | Carol | 75000 | 75000 |
 | Engineering | Bob | 85000 | 160000 |

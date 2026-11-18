@@ -381,7 +381,7 @@ SELECT ipnetwork('192.168.1.42/24');       -- '192.168.1.0/24'
 SELECT ipcontains('10.0.0.0/8', '10.1.2.3'); -- 1
 ```
 
-## generate\_series
+## generate_series
 
 The `generate_series` table-valued function generates a sequence of integers.
 

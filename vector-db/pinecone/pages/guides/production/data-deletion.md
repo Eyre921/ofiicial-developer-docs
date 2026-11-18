@@ -8,7 +8,7 @@ Learn how Pinecone permanently deletes customer data, including soft deletion, t
 
 Pinecone follows a secure process to ensure that customer data is permanently deleted from our system. This page gives an overview of the process.
 
-As defined in the [Master Subscription Agreement](https://www.pinecone.io/legal/master-subscription-agreement/), customer data is data that you provide to Pinecone through the services of the Pinecone system, or such data provided on your behalf by connected systems. This includes objects such as [records](/guides/get-started/key-terms#record), [indexes](/guides/get-started/key-terms#index), [backups](/guides/get-started/key-terms#backup), [projects](/guides/get-started/key-terms#project), [API keys](/guides/get-started/key-terms#api-key), [users](/admin/organizations/manage-organization-members), [assistants](/guides/assistant/overview), and [organizations](/guides/get-started/key-terms#organization).
+As defined in the [Master Subscription Agreement](https://www.pinecone.io/legal/master-subscription-agreement/), customer data is data that you provide to Pinecone through the services of the Pinecone system, or such data provided on your behalf by connected systems. This includes objects such as [documents](/guides/indexes/data-modeling#documents), [records](/guides/indexes/data-modeling#records-in-legacy-indexes), [indexes](/guides/indexes/index-data-overview#indexes), [backups](/guides/indexes/backups-overview), [projects](/admin/projects/projects-overview), [API keys](/admin/projects/manage-api-keys), [users](/admin/organizations/manage-organization-members), [assistants](/guides/assistant/overview), and [organizations](/admin/organizations/organizations-overview).
 
 ## Deletion request
 

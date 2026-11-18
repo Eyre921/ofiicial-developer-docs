@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 160 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 161 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -68,6 +68,7 @@
 - `docs/2026-07-28/tools/inspector/authorization` — [Authorization](pages/docs/2026-07-28/tools/inspector/authorization.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/authorization)
 - `docs/2026-07-28/tools/inspector/cli` — [CLI client](pages/docs/2026-07-28/tools/inspector/cli.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/cli)
 - `docs/2026-07-28/tools/inspector/configuration` — [Configuration and flags](pages/docs/2026-07-28/tools/inspector/configuration.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/configuration)
+- `docs/2026-07-28/tools/inspector/load-testing` — [Load testing](pages/docs/2026-07-28/tools/inspector/load-testing.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/load-testing)
 - `docs/2026-07-28/tools/inspector/mcpdo` — [mcpdo connection client](pages/docs/2026-07-28/tools/inspector/mcpdo.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/mcpdo)
 - `docs/2026-07-28/tools/inspector/protocol-eras` — [Protocol eras](pages/docs/2026-07-28/tools/inspector/protocol-eras.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/protocol-eras)
 - `docs/2026-07-28/tools/inspector/recipes` — [Recipes](pages/docs/2026-07-28/tools/inspector/recipes.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/recipes)

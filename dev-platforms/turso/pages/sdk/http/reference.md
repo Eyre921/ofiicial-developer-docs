@@ -423,7 +423,7 @@ curl -X GET 'https://[databaseName]-[organizationSlug].turso.io/v1/jobs' \
 
 #### Response Fields
 
-**schema\_version** `number`
+**schema_version** `number`
 
 Current version of the schema.
 
@@ -433,7 +433,7 @@ List of migration jobs
 
 **Migration Object**
 
-**job\_id** `number`
+**job_id** `number`
 
 Unique ID for the migration job.
 
@@ -479,7 +479,7 @@ The ID of the migration job.
 
 #### Response Fields
 
-**job\_id** `number`
+**job_id** `number`
 
 Unique ID of the migration job.
 

@@ -6,12 +6,12 @@ path: build/build-with-ai/agent-setup-guides/agent-setup-overview
 
 ---
 title: "Agent setup overview"
-description: "Learn how to set up most agents, including custom agents, quickly."
+description: "Learn how to set up any agent with Netlify, including custom agents, and find setup guides for specific agents."
 ---
 
 > For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
-Learn how to set up most agents, including custom agents, quickly. For even more specific setup guidance, check out our agent setup guides for your specific agent.
+Learn how to set up any agent with Netlify, including custom agents, in a few minutes. For setup steps written for your specific agent, check out the [guides for specific agents](#guides-for-specific-agents) below.
 
 ### Promoted Content
 
@@ -21,8 +21,20 @@ Learn how to set up most agents, including custom agents, quickly. For even more
 Equip your agent with the latest Netlify context, including agent skills:
 
 ```
-fetch https://netlify.ai to help me deploy and build with Netlify using the latest agent skills
+fetch https://netlify.ai to get me set up with Netlify
 ```
+
+Paste it into your agent and say what to build and deploy to Netlify in the same prompt. If your agent gives you a login link, open it and sign in to Netlify.
+
+## Set up with the Netlify CLI
+
+Run this in your project folder:
+
+```
+npx netlify@latest init
+```
+
+It signs you in, installs Netlify's agent skills, adds the Netlify MCP server for the agents it finds, and links the folder to a Netlify project. Then open your agent in the same folder and ask your agent for a draft or production deploy.
 
 ## MCP Server support
 
@@ -38,16 +50,7 @@ To start connecting to Netlify's remote MCP server by running this command and f
 npx -y add-mcp https://mcp.netlify.com/mcp
 ```
 
-If you would like to use your agent's own official setup command, check out the agent-specific MCP instructions below:
-
-- [Claude Code](/build/build-with-ai/agent-setup-guides/set-up-claude-code-for-netlify/#connect-to-the-netlify-mcp-server)
-- [Codex](/build/build-with-ai/agent-setup-guides/set-up-codex-for-netlify/#install-netlify-mcp-server)
-- [Claude Web](/build/build-with-ai/agent-setup-guides/set-up-claude-web-for-netlify/#connect-netlify-to-claude-web) via Claude's Netlify Connector
-- [Claude Desktop](/build/build-with-ai/agent-setup-guides/set-up-claude-desktop-for-netlify/#connect-to-the-netlify-connector) via Claude's Netlify Connector
-- [ChatGPT](/build/build-with-ai/agent-setup-guides/use-netlify-with-chatgpt/#find-netlify-in-chatgpt-apps) via ChatGPT's Netlify App
-- [Grok](/build/build-with-ai/agent-setup-guides/set-up-grok-for-netlify/#connect-netlify-to-grok) via Grok's Netlify connector
-- [Antigravity](/build/build-with-ai/agent-setup-guides/set-up-antigravity-for-netlify/#connect-to-the-netlify-mcp-server)
-- [Antigravity CLI](/build/build-with-ai/agent-setup-guides/set-up-antigravity-cli-for-netlify/#connect-to-the-netlify-mcp-server)
+To use your agent's own official setup, check out the [guides for specific agents](#guides-for-specific-agents) below.
 
 The following editors allow one-click install of our MCP with the following links
 
@@ -71,13 +74,25 @@ Our recommendation is to use the remote MCP server to have the most up-to-date v
 npx -y add-mcp "npx -y @netlify/mcp"
 ```
 
+## Guides for specific agents
+
+Each guide covers the setup path for one agent:
+
+- [Claude](/build/build-with-ai/agent-setup-guides/set-up-claude-for-netlify/): Claude.ai and Claude Desktop, through the Netlify connector
+- [Claude Code](/build/build-with-ai/agent-setup-guides/set-up-claude-code-for-netlify/): Claude Code in your terminal
+- [ChatGPT](/build/build-with-ai/agent-setup-guides/use-netlify-with-chatgpt/): ChatGPT, through the Netlify app
+- [Codex](/build/build-with-ai/agent-setup-guides/set-up-codex-for-netlify/): Codex in your terminal
+- [Grok](/build/build-with-ai/agent-setup-guides/set-up-grok-for-netlify/): Grok, through the Netlify connector
+- [Antigravity](/build/build-with-ai/agent-setup-guides/set-up-antigravity-for-netlify/): Antigravity, through the Netlify plugin
+- [Antigravity CLI](/build/build-with-ai/agent-setup-guides/set-up-antigravity-cli-for-netlify/): Antigravity CLI in your terminal
+
 ## Agent skills
 
 To help your agent build with best practices, check out our agent skills for building and deploying on Netlify.
 
-You can share a skill directly with your agent or have all skills installed in your local project files or repository. Some agents also support invoking a specific skill by name in a command, such as Claude Code with `/<skill-name>`.
+The `fetch https://netlify.ai` message and `npx netlify@latest init` both install Netlify's agent skills for you. You can also share a skill directly with your agent or have all skills installed in your local project files or repository. Some agents also support invoking a specific skill by name in a command, such as Claude Code with `/<skill-name>`.
 
-To install agent skills for Netlify with any agent directly in your terminal or agent chat:
+To install only Netlify's agent skills, run this in your terminal or agent chat:
 
 ```
 npx skills add netlify/context-and-tools --skill '*' --yes

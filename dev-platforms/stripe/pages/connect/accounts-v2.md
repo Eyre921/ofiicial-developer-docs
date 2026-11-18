@@ -107,6 +107,26 @@ You can [use the Accounts v2 API to manage Accounts created using the Accounts v
 
 Stripe discourages indefinitely maintaining both Accounts API versions simultaneously.
 
+## Close an account 
+
+When you no longer need a connected account, you can [close its Account](https://docs.stripe.com/api/v2/core/accounts/close.md). Closing an `Account` is permanent.
+
+As a safeguard against closing the wrong `Account`, the close request must include the `applied_configurations` parameter. Its value must list every configuration on the `Account`, matching the Account’s [applied_configurations](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-applied_configurations) property in any order. If you omit the parameter, leave out a configuration, or add one that the `Account` doesn’t have, Stripe rejects the request with a `configs_must_match_to_close` error.
+
+To get the current configurations, [retrieve the Account](https://docs.stripe.com/api/v2/core/accounts/retrieve.md) and read its `applied_configurations` property. The following example closes an `Account` that has the `customer` and `merchant` configurations:
+
+```curl
+curl -X POST https://api.stripe.com/v2/core/accounts/acct_123/close \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-10-28.preview" \
+  --json '{
+    "applied_configurations": [
+        "customer",
+        "merchant"
+    ]
+  }'
+```
+
 ## Accounts API v2 limitations
 
 You must use Accounts v1 in the following cases:

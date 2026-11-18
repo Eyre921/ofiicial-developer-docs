@@ -27,7 +27,7 @@ You can **send** any file attachment types except for those in the following lis
 | .ps2xml | .psc1 | .psc2 | .tmp | .url |
 | .vb | .vbe | .vbs | .vps | .vsmacros |
 | .vss | .vst | .vsw | .vxd | .ws |
-| .wsc | .wsf | .wsh | .xnk | |
+| .wsc | .wsf | .wsh | .xnk |
 
 > [!NOTE]
 >

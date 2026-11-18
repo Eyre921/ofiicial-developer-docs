@@ -127,7 +127,7 @@ Use this format for extremely compact representations. Eight dimensions are pack
 SELECT vector1bit('[1, 0, 1, 1, 0, 0, 1, 0]');
 ```
 
-### vector32\_sparse
+### vector32_sparse
 
 Creates a 32-bit floating-point **sparse** vector from a JSON array. Only non-zero components are stored, which is efficient for high-dimensional vectors that are mostly zero.
 
@@ -155,7 +155,7 @@ SELECT vector32_sparse('[0.0, 0.0, 1.5, 0.0, 0.0, 2.5]');
 
 Distance functions compute the distance between two vectors. Smaller values indicate more similar vectors.
 
-### vector\_distance\_cos
+### vector_distance_cos
 
 Computes the cosine distance between two vectors, defined as `1 - cosine_similarity`. A result of 0 means the vectors are identical in direction; a result of 1 means they are orthogonal.
 
@@ -184,7 +184,7 @@ SELECT vector_distance_cos(
 -- 0.0 (identical vectors)
 ```
 
-### vector\_distance\_l2
+### vector_distance_l2
 
 Computes the Euclidean (L2) distance between two vectors. A result of 0 means the vectors are identical.
 
@@ -213,7 +213,7 @@ SELECT vector_distance_l2(
 -- 5.0
 ```
 
-### vector\_distance\_dot
+### vector_distance_dot
 
 Computes the negative dot product distance between two vectors. The result is the negation of the dot product, so smaller (more negative) values indicate higher similarity.
 
@@ -236,7 +236,7 @@ SELECT vector_distance_dot(
 -- -32.0 (dot product is 32)
 ```
 
-### vector\_distance\_jaccard
+### vector_distance_jaccard
 
 Computes the Jaccard distance between two binary vectors. Best suited for use with `vector1bit` vectors.
 
@@ -255,7 +255,7 @@ vector_distance_jaccard(v1, v2)
 
 ## Utility Functions
 
-### vector\_extract
+### vector_extract
 
 Converts a vector BLOB back to a JSON text representation.
 
@@ -274,7 +274,7 @@ SELECT vector_extract(vector32('[1.5, 2.5, 3.5]'));
 -- [1.500000,2.500000,3.500000]
 ```
 
-### vector\_concat
+### vector_concat
 
 Concatenates two or more vectors into a single vector.
 
@@ -298,7 +298,7 @@ SELECT vector_extract(
 -- [1.000000,2.000000,3.000000,4.000000]
 ```
 
-### vector\_slice
+### vector_slice
 
 Extracts a contiguous portion of a vector.
 

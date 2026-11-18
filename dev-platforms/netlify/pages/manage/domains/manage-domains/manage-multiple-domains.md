@@ -38,9 +38,9 @@ To find your Team Overview's domains list:
 2. Select 
 ### NavigationPath Component:
 
-DNS
- from the left sidebar.
-    ![DNS option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
+Domains
+ from the top navigation.
+    ![Domains option highlighted from team dashboard](/images/dns-option-from-team-dashboard.png)
 
 3. Next, select a domain from the domains list for your team.
 

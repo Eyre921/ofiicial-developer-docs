@@ -144,7 +144,7 @@ The whole scripting surface belongs to the CLI. See [CLI client](/docs/2026-07-2
 | - | - |
 | **What to invoke** | `--method`, `--tool-name`, `--tool-arg`, `--tool-args-json`, `--uri`, `--cursor`, `--prompt-name`, `--prompt-args`, `--log-level`, `--metadata`, `--tool-metadata`, `--rename` |
 | **How to run it** | `--connect-timeout`, `--format`, `-q` / `--quiet`, `--output`, `--output-format`, `--app-info`, `--advertise-apps`, `--strict`, `--verify`, `--require-digests`, `--completion <shell>` (`bash`, `zsh`, or `fish`) |
-| **Load test** | `--load`, `--load-concurrency`, `--load-connections`, `--load-duration`, `--load-requests`, `--load-rate`, `--load-max-error-rate`, `--load-max-p99` (see [CI gates](/docs/2026-07-28/tools/inspector/cli#ci-gates)) |
+| **Load test** | `--load` and the `--load-*` flags that shape and judge a run, such as `--load-concurrency`, `--load-duration`, `--load-rate`, `--load-scenario` and `--load-max-p99` (see [Load testing](/docs/2026-07-28/tools/inspector/load-testing)) |
 | **Auth** | `--use-stored-auth`, `--stored-auth-only`, `--relogin`, `--no-revoke`, `--wait-for-auth`, `--list-stored-auth`, `--print-handoff` |
 
 ## Environment variables

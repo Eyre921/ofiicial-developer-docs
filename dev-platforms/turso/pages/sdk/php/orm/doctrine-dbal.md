@@ -97,15 +97,15 @@ $params = [
 
 **Other environment variables (Embedded Replica Only)**
 
-**sync\_interval** `integer`
+**sync_interval** `integer`
 
 Integer value representing synchronization interval in seconds (optional, default: `5`).
 
-**read\_your\_writes** `boolean`
+**read_your_writes** `boolean`
 
 Boolean value indicating whether to read your writes (optional, default: `true`).
 
-**encryption\_key** `string`
+**encryption_key** `string`
 
 String value for encryption purposes (optional, default: empty).
 

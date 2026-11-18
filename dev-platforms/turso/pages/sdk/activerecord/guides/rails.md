@@ -16,7 +16,7 @@ Before you start, make sure you:
 * [Sign up or login to Turso](/cli/authentication#signup)
 * Have a Rails app — [learn more](https://guides.rubyonrails.org/getting_started.html)
 
-**1. Install the libsql\_activerecord Rubygem**
+**1. Install the libsql_activerecord Rubygem**
 
 Add the following to your Gemfile:
 

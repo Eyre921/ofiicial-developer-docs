@@ -94,7 +94,7 @@ return (
 
 Note: The following is a preview/demo component that behaves differently than live mode usage with real connected accounts. The actual component has more functionality than what might appear in this demo component. For example, for connected accounts without Stripe dashboard access (custom accounts), no user authentication is required in production.
 
-The tax settings component allows connected accounts to set their head office address and a [preset tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#product-tax-code). Both attributes are required to calculate taxes for the connected account.
+The tax settings component allows connected accounts to set their head office address and a [preset tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#product-tax-code). Stripe Tax needs the head office address to calculate taxes for the connected account. It also needs a tax code for every line item. That tax code comes from the line item’s product: `tax_code` on an existing product, or `price_data.product_data.tax_code` when you create the product inline. If the product doesn’t have one, Stripe Tax uses the account’s preset tax code (`defaults.tax_code`).
 
 #### Tax registrations component
 
@@ -106,7 +106,12 @@ Your platform must then check whether connected accounts have configured Stripe 
 
 > #### Verify tax settings for a connected account
 > 
-> Before setting `automatic_tax[enabled]: true` on a payment, verify that the connected account’s tax settings are active. If a connected account hasn’t completed their tax setup (head office location, preset tax code, and at least one registration), enabling `automatic_tax` results in errors or zero-tax calculations. Use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#checking-settings) to confirm the account’s `status` is `active` before enabling automatic tax on their payments.
+> Before setting `automatic_tax[enabled]: true` on a payment, use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#checking-settings) to confirm that the connected account’s tax settings `status` is `active`. An `active` status means only that the account has a head office address. It doesn’t confirm that the account has a preset tax code or any tax registrations.
+
+Before you enable automatic tax for a connected account, also confirm the following:
+
+- **Tax codes**: Each line item needs a [product tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#product-tax-code), set as `tax_code` on an existing product or as `price_data.product_data.tax_code` for an inline product. If a product doesn’t have a tax code, the account’s `defaults.tax_code` applies. If neither is set, Checkout Sessions and subscriptions that enable `automatic_tax` return an error.
+- **Tax registrations**: The account has an active [tax registration](https://docs.stripe.com/tax/registering.md) in each jurisdiction where you want to collect tax. Without one, Stripe Tax returns a tax amount of `0.00` for that jurisdiction.
 
 You can check the status of your connected accounts directly from this page.
 
@@ -775,7 +780,13 @@ If you believe Stripe Tax should apply tax but it returns a zero amount, verify 
 
 ### Tax settings status is pending
 
-Before you can calculate tax for a connected account, their tax settings `status` must be `active`. A `pending` status means required settings are missing, not that activation is still processing. Check the [status_details.pending.missing_fields](https://docs.stripe.com/api/tax/settings/object.md#tax_settings_object-status_details-pending-missing_fields) array for what to provide (typically the head office address or preset tax code).
+Before you can calculate tax for a connected account, their tax settings `status` must be `active`. A `pending` status means required settings are missing, not that activation is still processing. Check the [status_details.pending.missing_fields](https://docs.stripe.com/api/tax/settings/object.md#tax_settings_object-status_details-pending-missing_fields) array for what to provide, such as `head_office`.
+
+### Tax code is missing from line items
+
+A connected account’s tax settings `status` can be `active` without a preset tax code. In that case, a request that enables `automatic_tax` returns an error if any line item’s product has no tax code. The error message says that a tax code is missing and suggests setting a default tax code in the account’s tax settings.
+
+To resolve this, [set a preset tax code](https://docs.stripe.com/tax/settings-api.md#updating-settings) for the connected account, or assign a [product tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#product-tax-code) to each product by setting `tax_code` on an existing product or `price_data.product_data.tax_code` when you create the product inline.
 
 ## Access Stripe Tax Reports
 

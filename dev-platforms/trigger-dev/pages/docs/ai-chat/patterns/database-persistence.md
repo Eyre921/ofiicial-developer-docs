@@ -229,7 +229,7 @@ export const myChat = chat.agent({
     ]);
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -299,7 +299,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),

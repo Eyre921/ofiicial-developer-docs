@@ -114,7 +114,7 @@ If you want to delete your organization and its associated teams, please [contac
 
 1. Organization Owners can create a team in two ways:
 
-   - Select the menu next to the team name in the navigation and then select **Create new team**.
+   - Select the menu next to the team name in the navigation and then select **Create a team**.
 
      ![](/images/accounts-and-billing-team-switcher-on-nav.png)
 

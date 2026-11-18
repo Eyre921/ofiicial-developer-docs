@@ -16,6 +16,8 @@ This page shows you how to search an [index with sparse vectors](/guides/indexes
 
 Sparse-vector search uses [sparse vectors](https://www.pinecone.io/learn/sparse-retrieval/), which have a very large number of dimensions, where only a small proportion of values are non-zero. The dimensions represent words from a dictionary, and the values represent the importance of these words in the document. Words are scored independently and then summed, with the most similar documents scored highest.
 
+Sparse-vector search and full-text search both match on tokens, but they weight them differently. Full-text search uses BM25, a statistical function with no model. Sparse-vector search uses the weights in your sparse vectors. With a learned encoder such as `pinecone-sparse-english-v0`, those weights come from a model and can include related terms that don't appear in the text.
+
 For a legacy vector index, see [Query vectors](/guides/legacy/vectors-api/query-vectors#query-with-sparse-vectors). For a legacy integrated index, see [Search with text](/guides/legacy/records-api/search-with-text#search-with-sparse-embedding).
 
 ## Search a document index

@@ -28,7 +28,7 @@ You will need an existing database to continue. If you don't have one, [create o
 >
 > You will want to store these as environment variables.
 
-**2. Install libsql\_dart**
+**2. Install libsql_dart**
 
 ```bash theme={null}
 flutter pub add libsql_dart

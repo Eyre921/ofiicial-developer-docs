@@ -44,7 +44,7 @@ The `csv` module reads data from a CSV file and exposes its contents as a read-o
 | `columns` | Number of columns to expect when `header` is `no`. |
 | `schema` | Explicit CREATE TABLE schema for column names and types. |
 
-### generate\_series
+### generate_series
 
 The `generate_series` module is a built-in table-valued function that produces a sequence of integer values. It does not require an extension to be loaded.
 
@@ -95,7 +95,7 @@ SELECT value FROM generate_series(0, 100, 10);
 -- 100
 ```
 
-### Generate a Date Series with generate\_series
+### Generate a Date Series with generate_series
 
 ```sql theme={null}
 -- Generate dates for the next 7 days

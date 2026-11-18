@@ -12,7 +12,7 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 
 ## Prerequisites
 
-* A PostgreSQL 17 or 18 server with a superuser role, Docker, or an account on a supported hosting platform. The Docker image and the hosting platform templates include Postgres and pgvector.
+* A PostgreSQL 17 or 18 server with a superuser role, Docker, or an account on a supported hosting platform. Postgres.app, the Docker image, and the hosting platform templates include Postgres and pgvector.
 * Optional: a [Pinecone API key](https://app.pinecone.io/organizations/-/projects/-/keys), if you want Pinecone to generate the embeddings. A key from the free [Starter plan](https://www.pinecone.io/pricing/) is enough.
 
 ## 1. Install pg_pinecone
@@ -44,6 +44,16 @@ If you already have a table with a pgvector index, complete steps 1 and 2 to ins
 >    ```
 >
 > On Linux arm64, use the `linux-arm64` archive. If more than one Postgres version is installed, use the `pg_config` that belongs to the server you're installing into. On other platforms, including Debian 12, Ubuntu 22.04, RHEL 9, and older x86_64 CPUs, use the PGXN tab, which builds from source, or [build from source](https://github.com/pinecone-io/pg_pinecone#readme) yourself.
+
+> [tab] Postgres.app
+>
+> [Postgres.app](https://postgresapp.com/) is a Mac app that runs PostgreSQL and includes pgvector. pg_pinecone is one of its downloadable extensions, built for PostgreSQL 18 on Apple silicon.
+>
+> 1. Open Postgres.app and start a PostgreSQL 18 server. If the server is new, click **Initialize**.
+>
+> 2. On the Postgres.app [extensions page](https://postgresapp.com/extensions/), find pg_pinecone and download it. Open the installer it downloads and follow the prompts.
+>
+> 3. Back in the Postgres.app window, click **Stop**, then **Start**, so the server can find the extension you installed.
 
 > [tab] PGXN
 >
@@ -127,7 +137,9 @@ psql postgres
 docker exec -it pg_pinecone psql -U postgres
 ```
 
-On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
+On Linux, the `postgres` system user is the superuser that the package creates. With Homebrew or Postgres.app on macOS, your own user is the superuser. In the Docker image, the superuser is `postgres`. To connect to a different database or a remote server, add `-d your_database`, `-h your_host`, and `-U your_superuser`.
+
+With Postgres.app, if your terminal can't find `psql`, add Postgres.app's command-line tools to your `PATH`, as its [installation steps](https://postgresapp.com/) show.
 
 ### 2. Create the extensions
 

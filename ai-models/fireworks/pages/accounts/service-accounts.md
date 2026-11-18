@@ -40,7 +40,7 @@ You can assign a role when creating a service account using the `--role` flag:
 firectl user create --user-id "my-service-account" --service-account --role=contributor
 ```
 
-If not specified, the default service account role is `user`.
+If not specified, the default service account role is `inference-user`.
 
 To change the role of an existing service account, use the update command:
 

@@ -63,13 +63,13 @@ For example, to import data into the namespaces `example_namespace1` and `exampl
 
 For each namespace, create one or more files defining the data to import.
 
-To import into a namespace in an [index with a document schema](/guides/indexes/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files. Each line is one [document](/guides/get-started/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
+To import into a namespace in a [document index](/guides/indexes/index-data-overview#document-index), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files. Each line is one [document](/guides/indexes/data-modeling#documents), identical in shape to a document you'd pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 
 | Field | JSON type | Description |
 | - | - | - |
 | `_id` | `string` | Required. Unique identifier for each document within the namespace. |
 | Each schema field | Depends on the field's type | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A document doesn't need to populate every declared field, but it must include `_id` and at least one schema field. |
-| Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/get-started/key-terms#metadata). Field names can't start with `_` or `$`. |
+| Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/indexes/index-data-overview#metadata). Field names can't start with `_` or `$`. |
 
 For example, for a schema with a full-text `body` field and a `dense_vector` `embedding` field:
 
@@ -400,7 +400,7 @@ If the import fails, the response contains an `error` field with the reason for 
 
 ## Prepare document-schema files (JSONL)
 
-For indexes with a document schema, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation, and validated through the same code path, so a document that upserts cleanly imports cleanly.
+For document indexes, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you'd pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation, and validated through the same code path, so a document that upserts cleanly imports cleanly.
 
 ### File format
 
@@ -802,7 +802,7 @@ curl -X DELETE "https://$INDEX_HOST/bulk/imports/101" \
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/optimize/dedicated-read-nodes/overview).
 
-Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
+Bulk import supports indexes without a schema definition (Parquet files) and document indexes ([JSONL files](/guides/data/import-data#prepare-document-schema-files-jsonl)). Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 
 Also:
 
@@ -904,7 +904,7 @@ When an import fails, you'll see an error message with the reason for the failur
 
 > [accordion] Invalid JSONL files or documents
 >
-> For document-schema indexes, import files are JSONL: each line is one JSON document, validated against the index's [schema](#file-format). A line fails if it isn't valid JSON, or if the document doesn't conform to the schema. Each per-document error identifies the file name, row number, and document `_id`:
+> For document indexes, import files are JSONL: each line is one JSON document, validated against the index's [schema](#file-format). A line fails if it isn't valid JSON, or if the document doesn't conform to the schema. Each per-document error identifies the file name, row number, and document `_id`:
 >
 > ```
 > error reading record (file "0.jsonl", row 2, id "doc1"): {reason}

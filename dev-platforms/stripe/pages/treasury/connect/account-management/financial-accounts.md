@@ -30,6 +30,42 @@ Monitor your connected accounts to identify and address negative financial accou
 
 Stripe contacts you if individual or aggregate balances exceed our risk limits.
 
+## Multiple financial addresses (Private preview)
+
+> #### Request access
+> 
+> Enabling Treasury for platforms doesn’t automatically grant access to multiple financial addresses. Contact your Stripe representative to request access.
+
+A financial address allows you to associate virtual bank account credentials (such as account number and US routing number, British sort code, or EU IBAN) with a financial account. Every transfer to a financial account with a financial address identifies the receiving financial address.
+
+You can create multiple financial addresses in the same currency for a single financial account to separate different types of funding while maintaining one underlying balance. Multiple financial addresses allow you to:
+
+- Give different bank account details to different customers or business units.
+- Reconcile incoming financial account credits in your own ledger.
+- Separate eligible received debits against a financial account.
+- Provide bank account details that external parties can use to initiate supported outbound money movement.
+- Categorize financial account activity without creating separate financial accounts.
+
+### Choose a reconciliation model
+
+Whether you use dedicated financial addresses or bank transfers to accept payments into your financial account depends on how you reconcile incoming funds against what your customer owes.
+
+- [Create multiple financial addresses](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#external-account) when your platform owns the relationship with the sender and you reconcile in your own system. Your integration maps each financial address to a specific party or ledger entry, monitors incoming funds, and handles differences between the amount received and the amount expected.
+
+  This approach gives your platform direct access to money-movement and transaction data. Your platform is also responsible for payment obligations, overpayments, underpayments, refunds, returns, and other exceptions.
+
+- [Use bank transfers](https://docs.stripe.com/payments/bank-transfers.md) for incoming transfers that pay a specific customer obligation managed by your Stripe integration. Stripe provides financial address details to the customer and reconciles incoming funds to that customer’s open payment or invoice.
+
+  Stripe uses the customer balance to track underpayments, overpayments, and funds that can’t be reconciled automatically. Bank transfers also support refunds and applicable disputes, and you can use them with Checkout, the Payment Element, the Payment Intents API, Invoicing, and Subscriptions.
+
+You can use either or both of these approaches in your integration, applying each where it fits the use case.
+
+| Model | Use case |
+| --- | --- |
+| Financial addresses | Fund a balance, identify incoming funds, or reconcile transactions in your own ledger. |
+| Bank transfers | Match incoming funds to a customer payment or invoice and have Stripe manage the payment lifecycle. |
+| Both | Support both managed customer payments and platform-managed money movement. |
+
 ## Financial account types
 
 The `FinancialAccount` object has a [type](https://docs.stripe.com/api/v2/money-management/financial-accounts/object.md?api-version=preview#v2_financial_account_object-type) that determines:
@@ -57,7 +93,7 @@ Your [connected account](https://docs.stripe.com/treasury/connect/account-manage
 
 ### Savings (Private preview)
 Available in: GB
-Connected accounts in the UK can have one [savings financial account](https://docs.stripe.com/treasury/connect/savings-financial-accounts.md) that earns interest.
+Connected accounts in the UK can create a [savings financial account](https://docs.stripe.com/treasury/connect/savings-financial-accounts.md) that earns interest.
 
 ### Payments (Private preview)
 Available in: US

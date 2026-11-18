@@ -16,7 +16,7 @@ You can also fetch data in the [Pinecone console](https://app.pinecone.io/organi
 
 ## Fetch documents
 
-In an index with a document schema, fetch documents by ID or by metadata filter. A request specifies exactly one of `ids` or `filter`, and can name up to 1,000 IDs. `include_fields` selects which fields come back, and omitting it returns all of them.
+In a document index, fetch documents by ID or by metadata filter. A request specifies exactly one of `ids` or `filter`, and can name up to 1,000 IDs. `include_fields` selects which fields come back, and omitting it returns all of them.
 
 ### Fetch documents by ID
 

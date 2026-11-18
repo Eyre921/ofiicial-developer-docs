@@ -86,7 +86,7 @@ The following times apply to ACH transactions you schedule for settlement on the
 
 > #### Request access
 > 
-> Direct FedACH requires separate access in addition to Treasury for platforms. If you already use Treasury for platforms, contact your Stripe representative to request this feature.
+> Enabling Treasury for platforms doesn’t automatically grant access to Direct FedACH. Contact your Stripe representative to request access.
 
 ### Wire timing
 

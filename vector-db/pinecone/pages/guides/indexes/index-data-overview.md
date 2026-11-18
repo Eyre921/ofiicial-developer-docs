@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/indexes/index-data-overview
 path: guides/indexes/index-data-overview
 ---
 
-Learn how indexing works in Pinecone: serverless indexes, schemas, namespaces, integrated embedding, and metadata filtering.
+Learn how Pinecone indexes store and search your data, including schemas, namespaces, integrated embedding, and metadata filtering.
 
 ## Indexes
 
@@ -16,13 +16,13 @@ You define a `schema` with `pc.indexes.create` (or `POST /indexes`).
 
 * One schema can combine `dense_vector`, `sparse_vector`, and `full_text_search`-enabled `string` fields.
 * A single index can serve [full-text search](/guides/search/full-text-search) (BM25 with Lucene queries), [semantic search](/guides/search/semantic-search), and [sparse-vector search](/guides/search/sparse-vector-search) together, often covering what previously required two indexes.
-* Holds [documents](/guides/get-started/key-terms#document), read and written through the [Documents API](/guides/get-started/documents-api). Pick the ranking signal per query with `score_by`.
+* Holds [documents](/guides/indexes/data-modeling#documents), read and written through the [Documents API](/guides/get-started/documents-api). Pick the ranking signal per query with `score_by`.
 
 ### Legacy vector index
 
 Created with `pc.create_index(dimension=..., metric=..., vector_type=...)`. You don't declare fields yourself; the SDK builds the schema from the dimension, metric, and vector type you provide.
 
-* Holds [records](/guides/get-started/key-terms#record), read and written through the legacy Vectors API.
+* Holds [records](/guides/indexes/data-modeling#records-in-legacy-indexes), read and written through the legacy Vectors API.
 * Serves [dense and sparse vector queries](/guides/legacy/vectors-api/query-vectors).
 
 For how to create one, see [Create a legacy vector index](/guides/legacy/vectors-api/create-a-vector-index).
@@ -60,8 +60,6 @@ Learn more:
 
 A dense vector encodes the meaning of text, images, or other data as a fixed-length list of numbers. Items with similar meaning sit close to each other in vector space, and a query returns the records closest to the query vector. This is **semantic search** (also called nearest neighbor search, similarity search, or vector search).
 
-For the underlying concept, see [Dense vector](/guides/get-started/key-terms#dense-vector).
-
 Learn more:
 
 * [Create an index for dense vectors](/guides/legacy/vectors-api/create-a-vector-index#dense-vectors)
@@ -72,7 +70,7 @@ Learn more:
 
 A sparse vector represents tokens (or token-like features) and their weights, with the vast majority of dimensions zero. A query returns records that share the most weighted tokens with the query vector, which is called **sparse-vector search**.
 
-Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0); you can also bring your own. For the underlying concept and the distinction from full-text search, see [Sparse-vector search](/guides/get-started/key-terms#sparse-vector-search).
+Sparse vectors come from a sparse embedding model. Pinecone hosts [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0), and you can also bring your own. For how sparse-vector search differs from full-text search, see [Sparse-vector search](/guides/search/sparse-vector-search).
 
 Learn more:
 
@@ -141,7 +139,7 @@ flowchart LR
 
 ## Vector embedding
 
-A schema declares the vector fields your index uses: a [dense vector](/guides/get-started/key-terms#dense-vector) field, a [sparse vector](/guides/get-started/key-terms#sparse-vector) field, or both. Dense vectors represent the semantics of data such as text, images, and audio; sparse vectors capture keyword information.
+A schema declares the vector fields your index uses: a [dense vector](#semantic-search) field, a [sparse vector](#sparse-vector-search) field, or both. Dense vectors represent the meaning of data such as text, images, and audio. Sparse vectors capture keyword information.
 
 To turn your source data into vectors, you use an embedding model. You can either use Pinecone's integrated embedding models to convert your data to vectors automatically, or use an external embedding model and bring your own vectors to Pinecone.
 

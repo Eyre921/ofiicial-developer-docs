@@ -74,7 +74,7 @@ SELECT typeof(jsonb('{"a":1}'));
 -- blob
 ```
 
-### json\_array / jsonb\_array
+### json_array / jsonb_array
 
 Creates a JSON array from the arguments.
 
@@ -87,7 +87,7 @@ jsonb_array(value1, value2, ...)
 | - | - | - |
 | `value1, value2, ...` | any | Values to include in the array. SQL NULL becomes JSON `null`. |
 
-**Returns:** TEXT (json\_array) or BLOB (jsonb\_array) -- a JSON array.
+**Returns:** TEXT (json_array) or BLOB (jsonb_array) -- a JSON array.
 
 ```sql theme={null}
 SELECT json_array(1, 'hello', NULL, 3.14);
@@ -97,7 +97,7 @@ SELECT json_array();
 -- []
 ```
 
-### json\_object / jsonb\_object
+### json_object / jsonb_object
 
 Creates a JSON object from alternating label/value pairs. When called with `*`, expands all columns of the row into label/value pairs using column names as keys.
 
@@ -112,7 +112,7 @@ json_object(*)
 | `label1, label2, ...` | TEXT | Keys for the JSON object. Must be strings. |
 | `value1, value2, ...` | any | Corresponding values. SQL NULL becomes JSON `null`. |
 
-**Returns:** TEXT (json\_object) or BLOB (jsonb\_object) -- a JSON object.
+**Returns:** TEXT (json_object) or BLOB (jsonb_object) -- a JSON object.
 
 ```sql theme={null}
 SELECT json_object('name', 'Alice', 'age', 30);
@@ -122,7 +122,7 @@ SELECT json_object('items', json_array(1, 2, 3));
 -- {"items":[1,2,3]}
 ```
 
-### json\_quote
+### json_quote
 
 Converts a SQL value to its JSON representation.
 
@@ -147,7 +147,7 @@ SELECT json_quote(NULL);
 -- null
 ```
 
-### json\_valid
+### json_valid
 
 Returns 1 if the argument is well-formed JSON, or 0 otherwise.
 
@@ -172,7 +172,7 @@ SELECT json_valid(NULL);
 -- 0
 ```
 
-### json\_error\_position
+### json_error_position
 
 Returns the character position of the first syntax error in a JSON string, or 0 if the string is valid JSON.
 
@@ -198,7 +198,7 @@ SELECT json_error_position('{"a":}');
 
 ## JSON Extraction
 
-### json\_extract / jsonb\_extract
+### json_extract / jsonb_extract
 
 Extracts one or more values from a JSON document using path arguments.
 
@@ -273,7 +273,7 @@ SELECT '{"count":42}' ->> '$.count';
 -- 42
 ```
 
-### json\_type
+### json_type
 
 Returns the type of a JSON value as a string: `"null"`, `"true"`, `"false"`, `"integer"`, `"real"`, `"text"`, `"array"`, or `"object"`.
 
@@ -307,7 +307,7 @@ SELECT json_type('{"a": "hello"}', '$.a');
 
 ## JSON Modification
 
-### json\_insert / jsonb\_insert
+### json_insert / jsonb_insert
 
 Inserts new values into a JSON document. Existing values are **not** overwritten. If the path already exists, the value is left unchanged.
 
@@ -322,7 +322,7 @@ jsonb_insert(json_text, path1, value1, path2, value2, ...)
 | `path` | TEXT | A JSON path where the value should be inserted |
 | `value` | any | The value to insert |
 
-**Returns:** TEXT (json\_insert) or BLOB (jsonb\_insert) -- the modified JSON.
+**Returns:** TEXT (json_insert) or BLOB (jsonb_insert) -- the modified JSON.
 
 ```sql theme={null}
 SELECT json_insert('{"a":1}', '$.b', 2);
@@ -333,7 +333,7 @@ SELECT json_insert('{"a":1}', '$.a', 99);
 -- {"a":1}
 ```
 
-### json\_replace / jsonb\_replace
+### json_replace / jsonb_replace
 
 Replaces existing values in a JSON document. If the path does not exist, no insertion is made.
 
@@ -348,7 +348,7 @@ jsonb_replace(json_text, path1, value1, path2, value2, ...)
 | `path` | TEXT | A JSON path identifying the value to replace |
 | `value` | any | The replacement value |
 
-**Returns:** TEXT (json\_replace) or BLOB (jsonb\_replace) -- the modified JSON.
+**Returns:** TEXT (json_replace) or BLOB (jsonb_replace) -- the modified JSON.
 
 ```sql theme={null}
 SELECT json_replace('{"a":1,"b":2}', '$.a', 99);
@@ -359,7 +359,7 @@ SELECT json_replace('{"a":1}', '$.b', 2);
 -- {"a":1}
 ```
 
-### json\_set / jsonb\_set
+### json_set / jsonb_set
 
 Inserts or replaces values in a JSON document. Combines the behavior of `json_insert` and `json_replace`: if the path exists, the value is replaced; if it does not exist, the value is inserted.
 
@@ -374,7 +374,7 @@ jsonb_set(json_text, path1, value1, path2, value2, ...)
 | `path` | TEXT | A JSON path for the value |
 | `value` | any | The value to set |
 
-**Returns:** TEXT (json\_set) or BLOB (jsonb\_set) -- the modified JSON.
+**Returns:** TEXT (json_set) or BLOB (jsonb_set) -- the modified JSON.
 
 ```sql theme={null}
 -- Replace existing
@@ -386,7 +386,7 @@ SELECT json_set('{"a":1}', '$.b', 2);
 -- {"a":1,"b":2}
 ```
 
-### json\_remove / jsonb\_remove
+### json_remove / jsonb_remove
 
 Removes one or more elements from a JSON document.
 
@@ -400,7 +400,7 @@ jsonb_remove(json_text, path1, path2, ...)
 | `json_text` | TEXT or BLOB | A JSON document |
 | `path` | TEXT | One or more JSON paths to remove |
 
-**Returns:** TEXT (json\_remove) or BLOB (jsonb\_remove) -- the modified JSON.
+**Returns:** TEXT (json_remove) or BLOB (jsonb_remove) -- the modified JSON.
 
 ```sql theme={null}
 SELECT json_remove('{"a":1,"b":2,"c":3}', '$.b');
@@ -410,7 +410,7 @@ SELECT json_remove('[1,2,3,4]', '$[1]');
 -- [1,3,4]
 ```
 
-### json\_patch / jsonb\_patch
+### json_patch / jsonb_patch
 
 Applies an RFC 7396 merge patch to a JSON document. Object members in the patch overwrite members in the target. A `null` value in the patch removes the corresponding member.
 
@@ -424,7 +424,7 @@ jsonb_patch(json_text, patch)
 | `json_text` | TEXT or BLOB | The target JSON document |
 | `patch` | TEXT or BLOB | The merge patch to apply |
 
-**Returns:** TEXT (json\_patch) or BLOB (jsonb\_patch) -- the patched JSON.
+**Returns:** TEXT (json_patch) or BLOB (jsonb_patch) -- the patched JSON.
 
 ```sql theme={null}
 SELECT json_patch('{"a":1,"b":2}', '{"b":3,"c":4}');
@@ -435,7 +435,7 @@ SELECT json_patch('{"a":1,"b":2}', '{"b":null}');
 -- {"a":1}
 ```
 
-### json\_pretty
+### json_pretty
 
 Returns a pretty-printed (indented) representation of a JSON document.
 
@@ -467,7 +467,7 @@ SELECT json_pretty('{"name":"Alice","scores":[90,85,92]}');
 
 ## JSON Array Functions
 
-### json\_array\_length
+### json_array_length
 
 Returns the number of elements in a JSON array. Returns 0 for an empty array and NULL for non-array JSON values.
 
@@ -498,7 +498,7 @@ SELECT json_array_length('{"a": 1}');
 
 ## JSON Aggregate Functions
 
-### json\_group\_array / jsonb\_group\_array
+### json_group_array / jsonb_group_array
 
 Aggregate function that collects values from a group into a JSON array.
 
@@ -511,7 +511,7 @@ jsonb_group_array(value)
 | - | - | - |
 | `value` | any | The value to aggregate from each row |
 
-**Returns:** TEXT (json\_group\_array) or BLOB (jsonb\_group\_array) -- a JSON array of all values in the group.
+**Returns:** TEXT (json_group_array) or BLOB (jsonb_group_array) -- a JSON array of all values in the group.
 
 ```sql theme={null}
 CREATE TABLE items (category TEXT, name TEXT);
@@ -522,7 +522,7 @@ SELECT category, json_group_array(name) FROM items GROUP BY category;
 -- veggie | ["carrot"]
 ```
 
-### json\_group\_object / jsonb\_group\_object
+### json_group_object / jsonb_group_object
 
 Aggregate function that collects label/value pairs from a group into a JSON object.
 
@@ -536,7 +536,7 @@ jsonb_group_object(label, value)
 | `label` | TEXT | The key for each entry |
 | `value` | any | The value for each entry |
 
-**Returns:** TEXT (json\_group\_object) or BLOB (jsonb\_group\_object) -- a JSON object.
+**Returns:** TEXT (json_group_object) or BLOB (jsonb_group_object) -- a JSON object.
 
 ```sql theme={null}
 CREATE TABLE settings (key TEXT, value TEXT);
@@ -550,7 +550,7 @@ SELECT json_group_object(key, value) FROM settings;
 
 ## JSON Table-Valued Functions
 
-### json\_each
+### json_each
 
 A table-valued function that walks the top-level elements of a JSON array or object, returning one row per element.
 
@@ -594,7 +594,7 @@ SELECT key, value FROM json_each('{"data": [1, 2, 3]}', '$.data');
 -- 2 | 3
 ```
 
-### json\_tree
+### json_tree
 
 > [!WARNING]
 >
@@ -666,7 +666,7 @@ SELECT json_object('users', json_group_array(
 -- {"users":[{"id":1,"name":"Alice","email":"alice@example.com"},{"id":2,"name":"Bob","email":"bob@example.com"}]}
 ```
 
-### Flattening JSON arrays with json\_each
+### Flattening JSON arrays with json_each
 
 ```sql theme={null}
 CREATE TABLE orders (id INTEGER PRIMARY KEY, items TEXT);

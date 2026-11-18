@@ -262,7 +262,7 @@ Aggregate functions that can be used with GROUP BY:
 | `MAX(expression)` | Maximum value |
 | `TOTAL(expression)` | Sum as a REAL (returns 0.0 instead of NULL for empty sets) |
 | `GROUP_CONCAT(expression, separator)` | Concatenation of values |
-| `STRING_AGG(expression, separator)` | Alias for GROUP\_CONCAT |
+| `STRING_AGG(expression, separator)` | Alias for GROUP_CONCAT |
 
 ### HAVING
 

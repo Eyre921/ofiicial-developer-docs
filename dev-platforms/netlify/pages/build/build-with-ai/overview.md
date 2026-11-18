@@ -30,7 +30,7 @@ For more info on working with Netlify's AI features, check out these docs:
 ## Building with context
 
 Ensure your AI agents, tools, and workflows always have the right context with the following:
-- **[Netlify MCP Server](/build/build-with-ai/agent-setup-guides/agent-setup-overview/#mcp-servers-plugins-and-more)**: Share Netlify context with your AI tools and agents.
+- **[Netlify MCP Server](/build/build-with-ai/agent-setup-guides/agent-setup-overview/#mcp-server-support)**: Share Netlify context with your AI tools and agents.
 - **[Agent setup best practices](/build/build-with-ai/agent-setup-guides/agent-setup-overview/)**: Learn some best practices for setting up agents for Netlify.
 
 If you're building with AI tools, we recommend using context files (sometimes called rule files) based on your AI tool's requirements.

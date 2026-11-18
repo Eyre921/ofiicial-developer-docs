@@ -192,11 +192,7 @@ curl -i -X GET "https://api.pinecone.io/indexes/docs-example" \
 # }
 ```
 
-> [!WARNING]
->
-> **Do not target an index by name in production.**
->
-> When you target an index by name for data operations such as `upsert` and `query`, the SDK gets the unique DNS host for the index using the `describe_index` operation. This is convenient for testing but should be avoided in production because `describe_index` uses a different API than data operations and therefore adds an additional network call and point of failure. Instead, you should get an index host once and cache it for reuse or specify the host directly.
+When you target an index by name, the SDK first calls `describe_index` to look up the index host. That's an extra call to `api.pinecone.io` and another point of failure, so in production, [target the index by host](/guides/indexes/target-an-index#target-by-index-host-recommended) instead.
 
 ## Delete a pod-based index
 

@@ -32,7 +32,7 @@ Direct Charges (See full diagram at https://docs.stripe.com/connect/saas-platfor
 [account] --> [Fulfillment]
 [Fulfillment] --> [customer]
 [account] -- Stripe fees --> [stripe]
-[account] -- Platform fees* --> [platform]
+[account] -- Platform fees * --> [platform]
 ```
 
 \*Platform fees can include application fees and subscription fees.
@@ -63,7 +63,7 @@ Destination & Separate Charges (See full diagram at https://docs.stripe.com/conn
 [account] --> [Fulfillment]
 [Fulfillment] --> [customer]
 [platform] -- Stripe fees --> [stripe]
-[platform] -- Payment minus fees* --> [account]
+[platform] -- Payment minus fees * --> [account]
 ```
 
 \*The platform withholds fees from the connected account’s funds to cover its Stripe fees and other monetization.

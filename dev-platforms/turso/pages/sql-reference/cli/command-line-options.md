@@ -88,7 +88,7 @@ Select the Virtual File System backend.
 | - | - |
 | `syscall` | Standard OS file I/O (default) |
 | `memory` | In-memory storage |
-| `io_uring` | Linux io\_uring (requires feature flag) |
+| `io_uring` | Linux io_uring (requires feature flag) |
 
 ```bash theme={null}
 tursodb -v memory

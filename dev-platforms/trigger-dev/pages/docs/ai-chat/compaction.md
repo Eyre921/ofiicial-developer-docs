@@ -31,7 +31,7 @@ export const myChat = chat.agent({
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) => {
       const result = await generateText({
-        model: anthropic("claude-haiku-4-5"),
+        model: anthropic("claude-haiku-5-5"),
         messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
       });
       return result.text;
@@ -86,7 +86,7 @@ export const myChat = chat.agent({
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) => {
       return generateText({
-        model: anthropic("claude-haiku-4-5"),
+        model: anthropic("claude-haiku-5-5"),
         messages: [...messages, { role: "user", content: "Summarize." }],
       }).then((r) => r.text);
     },
@@ -100,7 +100,7 @@ export const myChat = chat.agent({
     ],
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -125,12 +125,20 @@ By default, model messages are replaced with a single summary message. Use `comp
 
 ### Summary + recent context
 
-Keep the last few model messages so the LLM has recent detail alongside the summary:
+Keep the last few model messages so the LLM has recent detail alongside the summary. The kept messages now follow a different history, so strip their reasoning: Claude 5.5 models reject thinking blocks whose earlier conversation changed with a 400 (`Invalid signature in thinking block`).
 
 ```ts theme={"theme":"css-variables"}
+import type { ModelMessage } from "ai";
+
+function stripReasoning(message: ModelMessage): ModelMessage {
+  if (message.role !== "assistant" || typeof message.content === "string") return message;
+  return { ...message, content: message.content.filter((part) => part.type !== "reasoning") };
+}
+
+// ...
 compactModelMessages: ({ modelMessages, summary }) => [
   { role: "user", content: summary },
-  ...modelMessages.slice(-2), // Keep last exchange for detail
+  ...modelMessages.slice(-2).map(stripReasoning), // Keep last exchange for detail
 ],
 ```
 
@@ -194,7 +202,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -216,7 +224,7 @@ import { z } from "zod";
 // Reusable summarize fn — also used by the automatic compaction config.
 async function summarize(messages: ModelMessage[]) {
   const result = await generateText({
-    model: anthropic("claude-haiku-4-5"),
+    model: anthropic("claude-haiku-5-5"),
     messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
   });
   return result.text;
@@ -252,7 +260,7 @@ export const myChat = chat.agent({
   },
 
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -319,7 +327,10 @@ const session = chat.createSession(payload, {
   compaction: {
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) =>
-      generateText({ model: anthropic("claude-haiku-4-5"), messages }).then((r) => r.text),
+      generateText({
+        model: anthropic("claude-haiku-5-5"),
+        messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
+      }).then((r) => r.text),
     compactUIMessages: ({ uiMessages, summary }) => [
       { id: generateId(), role: "assistant",
         parts: [{ type: "text", text: `[Summary]\n\n${summary}` }] },
@@ -330,7 +341,7 @@ const session = chat.createSession(payload, {
 
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal,
     stopWhen: stepCountIs(15),
@@ -355,7 +366,10 @@ const conversation = new chat.MessageAccumulator({
   compaction: {
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) =>
-      generateText({ model: anthropic("claude-haiku-4-5"), messages }).then((r) => r.text),
+      generateText({
+        model: anthropic("claude-haiku-5-5"),
+        messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
+      }).then((r) => r.text),
     compactUIMessages: ({ summary }) => [
       { id: generateId(), role: "assistant",
         parts: [{ type: "text", text: `[Summary]\n\n${summary}` }] },
@@ -367,7 +381,7 @@ for (let turn = 0; turn < 100; turn++) {
   const messages = await conversation.addIncoming(payload.messages, payload.trigger, turn);
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     prepareStep: conversation.prepareStep(), // Inner-loop compaction
     stopWhen: stepCountIs(15),
@@ -390,11 +404,17 @@ for (let turn = 0; turn < 100; turn++) {
 For maximum control, use `chat.compact()` directly inside a custom `prepareStep`:
 
 ```ts theme={"theme":"css-variables"}
-prepareStep: async ({ messages: stepMessages, steps }) => {
+prepareStep: async ({ messages: stepMessages, steps, responseMessages }) => {
   const result = await chat.compact(stepMessages, steps, {
+    // On AI SDK 7, pass these so the steps after a compaction are rebuilt
+    // with every new tool result. Earlier AI SDK versions don't need them.
+    responseMessages,
     threshold: 80_000,
     summarize: async (msgs) =>
-      generateText({ model: anthropic("claude-haiku-4-5"), messages: msgs }).then((r) => r.text),
+      generateText({
+        model: anthropic("claude-haiku-5-5"),
+        messages: [...msgs, { role: "user", content: "Summarize this conversation concisely." }],
+      }).then((r) => r.text),
   });
   return result.type === "skipped" ? undefined : result;
 },
@@ -406,7 +426,10 @@ Or use the `chat.compactionStep()` factory:
 prepareStep: chat.compactionStep({
   threshold: 80_000,
   summarize: async (msgs) =>
-    generateText({ model: anthropic("claude-haiku-4-5"), messages: msgs }).then((r) => r.text),
+    generateText({
+      model: anthropic("claude-haiku-5-5"),
+      messages: [...msgs, { role: "user", content: "Summarize this conversation concisely." }],
+    }).then((r) => r.text),
 }),
 ```
 

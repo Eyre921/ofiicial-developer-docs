@@ -315,6 +315,12 @@ Reply-to email address.
 
 If provided, this value will override the template's default value.
 
+**config.topic_id** `string`
+
+The ID of the [Topic](/docs/dashboard/contacts/manage-topics) this email belongs
+to. Contacts not subscribed to the Topic skip this step. See [Send with a
+Topic](/docs/dashboard/automations/send-email#send-with-a-topic).
+
 ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "welcome",
@@ -328,7 +334,8 @@ If provided, this value will override the template's default value.
     },
     "from": "hello@example.com",
     "subject": "Welcome!",
-    "reply_to": "support@example.com"
+    "reply_to": "support@example.com",
+    "topic_id": "b6d24b8e-af0b-4c3c-be0c-359bbd97381e"
   }
 }
 ```

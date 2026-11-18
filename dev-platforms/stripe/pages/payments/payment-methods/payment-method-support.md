@@ -242,7 +242,7 @@ The following payment methods support `on_behalf_of` in private preview:
 
 | Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/advanced/save-during-payment.md)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
-| [Bancontact](https://docs.stripe.com/payments/bancontact.md) | `bancontact` | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | Yes |
+| [Bancontact](https://docs.stripe.com/payments/bancontact.md) | `bancontact` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [BLIK](https://docs.stripe.com/payments/blik.md)4 | `blik` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported 1 | No |
 | [EPS](https://docs.stripe.com/payments/eps.md) | `eps` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [FPX](https://docs.stripe.com/payments/fpx.md) | `fpx` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
@@ -250,7 +250,7 @@ The following payment methods support `on_behalf_of` in private preview:
 | [P24](https://docs.stripe.com/payments/p24.md) | `p24` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [Pay by Bank](https://docs.stripe.com/payments/pay-by-bank.md) | `pay_by_bank` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 
-1 Cards and bank debit methods including SEPA debit, AU BECS direct debit, and ACSS debit support both `on_session` and `off_session` with [setup future usage](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-setup_future_usage). All other payment method types either don’t support `setup_future_usage` or only support `off_session`.2 Payment methods might require confirmation with [return_url](https://docs.stripe.com/api/payment_intents/confirm.md#confirm_payment_intent-return_url) to indicate where Stripe should redirect your customer after they complete the payment.3 Bancontact supports `setup_future_usage` by saving the customer’s bank details as a SEPA Direct Debit payment method.4 BLIK doesn’t support the [deferred intent](https://docs.stripe.com/payments/accept-a-payment-deferred.md) creation integration path.
+1 Cards and bank debit methods including SEPA debit, AU BECS direct debit, and ACSS debit support both `on_session` and `off_session` with [setup future usage](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-setup_future_usage). All other payment method types either don’t support `setup_future_usage` or only support `off_session`.2 Payment methods might require confirmation with [return_url](https://docs.stripe.com/api/payment_intents/confirm.md#confirm_payment_intent-return_url) to indicate where Stripe should redirect your customer after they complete the payment.4 BLIK doesn’t support the [deferred intent](https://docs.stripe.com/payments/accept-a-payment-deferred.md) creation integration path.
 
 ### Bank transfers API support 
 

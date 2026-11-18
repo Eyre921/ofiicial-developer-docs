@@ -10,7 +10,7 @@ Pinecone's architecture has two layers: the resource hierarchy that organizes yo
 
 ## Resource hierarchy
 
-Your data in Pinecone is organized as a hierarchy of resources. An [organization](/guides/get-started/key-terms#organization) contains [projects](/guides/get-started/key-terms#project), a project contains [indexes](/guides/get-started/key-terms#index), and an index is divided into [namespaces](/guides/get-started/key-terms#namespace) that hold your [documents](/guides/get-started/key-terms#document) or [records](/guides/get-started/key-terms#record). For a definition of each object, see [Key terms](/guides/get-started/key-terms).
+Your data in Pinecone is organized as a hierarchy of resources. An [organization](/admin/organizations/organizations-overview) contains [projects](/admin/projects/projects-overview), a project contains [indexes](/guides/indexes/index-data-overview#indexes), and an index is divided into [namespaces](/guides/indexes/index-data-overview#namespaces) that hold your [documents](/guides/indexes/data-modeling#documents) or [records](/guides/indexes/data-modeling#records-in-legacy-indexes).
 
 This diagram shows an organization with two projects. The first project holds two indexes, and the first index is divided into three namespaces:
 
@@ -68,7 +68,7 @@ Each index is created for, and served by, one data-plane API. The [Documents API
 | Source text lives | In its own `string` field | In a separate store, or in metadata | In metadata |
 | Search by | Full-text, vector, or text that Pinecone embeds | Vector | Text that Pinecone embeds |
 | Configured by | Schema | Dimension and metric | Model and text field |
-| Unit of data | [Document](/guides/get-started/key-terms#document) | [Record](/guides/get-started/key-terms#record) | Record |
+| Unit of data | [Document](/guides/indexes/data-modeling#documents) | [Record](/guides/indexes/data-modeling#records-in-legacy-indexes) | Record |
 | Index | Document index | Legacy vector index | Legacy integrated index |
 
 To move data from a legacy index to a document index, see [Move to the Documents API](/guides/indexes/move-to-the-documents-api).

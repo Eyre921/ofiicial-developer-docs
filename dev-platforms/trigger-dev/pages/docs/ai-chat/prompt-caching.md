@@ -6,7 +6,7 @@ path: docs/ai-chat/prompt-caching
 
 Cache the stable prefix of your agent's prompt with Anthropic prompt caching to cut token cost and latency on every turn.
 
-**Prompt caching lets a provider reuse the unchanged prefix of your prompt across requests, billing it at a fraction of the input price and skipping re-processing.** With Anthropic, cache reads cost \~10% of base input tokens, so a long, stable system prompt or a growing conversation history pays full price once and reads cheaply on every turn after.
+**Prompt caching lets a provider reuse the unchanged prefix of your prompt across requests, billing it at a fraction of the input price and skipping re-processing.** With Anthropic, cache reads cost \~5% of base input tokens on Claude Sonnet 5.5 and Opus 5.5, so a long, stable system prompt or a growing conversation history pays full price once and reads cheaply on every turn after.
 
 Caching is a **byte-exact prefix match**: any change in the prefix invalidates everything after it. A multi-turn agent is the ideal case — the system prompt, tools, and earlier turns are identical turn over turn, so the cacheable prefix only grows. `chat.agent` is built to keep that prefix stable across turns, suspends, and resumes; this page shows how to place the cache breakpoints and verify they're hitting.
 
@@ -48,7 +48,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       // Caches the system block with a 5-minute breakpoint.
       messages,
       abortSignal: signal,
@@ -65,7 +65,7 @@ export const myChat = chat.agent({
   systemProviderOptions: { anthropic: { cacheControl: { type: "ephemeral" } } },
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
     }),
@@ -82,7 +82,7 @@ onChatStart: async () => {
 },
 run: async ({ messages, signal, streamText }) => {
   return streamText({
-    model: anthropic("claude-sonnet-4-6"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     abortSignal: signal,
   });
@@ -119,7 +119,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
     });
@@ -131,7 +131,7 @@ The system breakpoint and the conversation breakpoint compose: the system block 
 
 > [!NOTE]
 >
-> Anthropic allows **at most 4** cache breakpoints per request, and a prefix must be at least \~1024 tokens (model-dependent) to cache at all — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
+> Anthropic allows **at most 4** cache breakpoints per request, and a prefix must reach a model-dependent minimum to cache at all (512 tokens on Claude Sonnet 5.5 and Opus 5.5) — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
 
 > [!NOTE]
 >
@@ -173,7 +173,7 @@ run: async ({ messages, signal, previousTurnUsage, streamText }) => {
   console.log("cache write", previousTurnUsage?.inputTokenDetails?.cacheWriteTokens);
 
   return streamText({
-    model: anthropic("claude-sonnet-4-6"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     abortSignal: signal,
   });

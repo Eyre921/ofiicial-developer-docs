@@ -5,11 +5,11 @@ path: api-reference/databases/invalidate-tokens
 ---
 
 POST /v1/organizations/{organizationSlug}/databases/{databaseName}/auth/rotate
-Invalidates all authorization tokens for the specified database.
+Invalidates all database-scoped authorization tokens for the specified database. On AWS, only tokens for this database are invalidated; group tokens and tokens for other databases in the group are not affected.
 
 > [!WARNING]
 >
-> A short downtime is required to complete the changes.
+> On AWS, this invalidates only the tokens created for this database. Group tokens and tokens for other databases in the group are not affected.
 
 ```bash cURL theme={null}
 curl -L -X POST 'https://api.turso.tech/v1/organizations/{organizationSlug}/databases/{databaseName}/auth/rotate' \

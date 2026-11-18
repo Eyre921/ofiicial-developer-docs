@@ -318,7 +318,7 @@ Currently, Stripe Invoicing supports the following tax ID types in the following
 | UG | ug_tin | Uganda Tax Identification Number | 1014751879 | Yes |
 | US | us_ein | United States EIN | 12-3456789 | No |
 | UY | uy_ruc | Uruguayan RUC number | 123456789012 | Yes |
-| UZ | uz_tin | Uzbekistan TIN Number | 123456789 | No |
+| UZ | uz_tin | Uzbekistan TIN Number | 123456789 | Yes |
 | UZ | uz_vat | Uzbekistan VAT Number | 123456789012 | Yes |
 | VE | ve_rif | Venezuelan RIF number | A-12345678-9 | No |
 | VN | vn_tin | Vietnamese tax ID number | 1234567890 | No |

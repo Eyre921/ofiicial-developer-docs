@@ -204,36 +204,34 @@ If the customer declines to have their payment details saved, disable `setup_fut
 
 You can manage payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods). Stripe handles the return of eligible payment methods based on factors such as the transaction’s amount, currency, and payment flow.
 
-#### curl
-
-```bash
+```curl
+# automatic_payment_methods: In the latest API version, this parameter is optional
+#   because Stripe enables the functionality by default.
 curl https://api.stripe.com/v1/payment_intents \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "amount"=1099 \
-  -d "currency"="usd" \
-  -d "automatic_payment_methods[enabled]"="true" \
-  -d "payment_method_options[card][setup_future_usage]"="off_session"
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d amount=1099 \
+  -d currency=usd \
+  -d "automatic_payment_methods[enabled]=true" \
+  -d "payment_method_options[card][setup_future_usage]=off_session"
 ```
 
 #### Listing payment methods manually
 
 Alternatively, you can list `card` and `giropay` using [allowed_payment_method_types](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-allowed_payment_method_types), as in the following example.
 
-#### curl
-
-```bash
+```curl
 curl https://api.stripe.com/v1/payment_intents \
-  -u <<YOUR_SECRET_KEY>>: \
-  -d "amount"=1099 \
-  -d "currency"="usd" \
-  -d "allowed_payment_method_types[]"="card" \
-  -d "allowed_payment_method_types[]"="giropay" \
-  -d "payment_method_options[card][setup_future_usage]"="off_session"
+  -u "<<YOUR_SECRET_KEY>>:" \
+  -d amount=1099 \
+  -d currency=usd \
+  -d "allowed_payment_method_types[]=card" \
+  -d "allowed_payment_method_types[]=giropay" \
+  -d "payment_method_options[card][setup_future_usage]=off_session"
 ```
 
 ## Charge the saved payment method later [Server-side]
 
-> `bancontact`, `ideal`, and `sofort` are one-time payment methods by default. When set up for future usage, they generate a `sepa_debit` reusable payment method type so you need to use `sepa_debit` to query for saved payment methods.
+> `ideal` and `sofort` are one-time payment methods by default. When set up for future usage, they generate a `sepa_debit` reusable payment method type so you need to use `sepa_debit` to query for saved payment methods.
 
 To find a payment method to charge, list the payment methods associated with your customer. This example lists cards, but you can list any supported [type](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-type).
 
@@ -317,8 +315,6 @@ Use test payment details and the test redirect page to verify your integration. 
 
 | Payment method | Scenario | How to test |
 | --- | --- | --- |
-| Bancontact | Your customer successfully sets up a SEPA Direct Debit payment method for future usage by using Bancontact. | Use any name in the Bancontact form, then click **Authorize test setup** on the redirect page. |
-| Bancontact | Your customer fails to authenticate on the Bancontact redirect page. | Use any name in the Bancontact form, then click **Fail test setup** on the redirect page. |
 | BECS Direct Debit | Your customer successfully pays with BECS Direct Debit. | Fill out the form using the account number `900123456`. The confirmed `PaymentIntent` status initially transitions to `processing`, then to `succeeded` 3 minutes later. |
 | BECS Direct Debit | Your customer’s payment fails with an `account_closed` error code. | Fill out the form using the account number `111111113`. |
 | iDEAL | Your customer successfully sets up a [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) payment method for future usage by using iDEAL. | Use any name and bank in the iDEAL form, then click **Authorize test setup** on the redirect page. |
@@ -333,7 +329,9 @@ Use test payment details and the test redirect page to verify your integration. 
 
 ### Test charging a saved SEPA Debit PaymentMethod
 
-Confirming the `PaymentIntent` using iDEAL, Bancontact, or Sofort generates a [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) *PaymentMethod* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs). SEPA Direct Debit is a [delayed notification](https://docs.stripe.com/payments/payment-methods.md#payment-notification) payment method that transitions to an intermediate `processing` state before transitioning several days later to a `succeeded` or `requires_payment_method` state.
+Confirming the `PaymentIntent` using iDEAL or Sofort generates a [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) *PaymentMethod* (PaymentMethods represent your customer's payment instruments, used with the Payment Intents or Setup Intents APIs).
+
+SEPA Direct Debit is a [delayed notification](https://docs.stripe.com/payments/payment-methods.md#payment-notification) payment method that transitions to an intermediate `processing` state before transitioning several days later to a `succeeded` or `requires_payment_method` state.
 
 #### Email
 
@@ -354,12 +352,12 @@ Use these PaymentMethods to test that the `PaymentIntent` status transitions. Th
 
 | Payment Method | Description |
 | --- | --- |
-| `pm_bancontact_generatedSepaDebitIntentsSucceed` | The `PaymentIntent` status transitions from `processing` to `succeeded`. |
-| `pm_bancontact_generatedSepaDebitIntentsSucceedDelayed` | The `PaymentIntent` status transitions from `processing` to `succeeded` after at least three minutes. |
-| `pm_bancontact_generatedSepaDebitIntentsFail` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method`. |
-| `pm_bancontact_generatedSepaDebitIntentsFailDelayed` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` after at least three minutes. |
-| `pm_bancontact_generatedSepaDebitIntentsSucceedDisputed` | The `PaymentIntent` status transitions from `processing` to `succeeded`, but a dispute is created immediately. |
-| `pm_bancontact_generatedSepaDebitIntentsFailsDueToInsufficientFunds` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` with the `insufficient_funds` failure code. |
+| `pm_ideal_generatedSepaDebitIntentsSucceed` | The `PaymentIntent` status transitions from `processing` to `succeeded`. |
+| `pm_ideal_generatedSepaDebitIntentsSucceedDelayed` | The `PaymentIntent` status transitions from `processing` to `succeeded` after at least three minutes. |
+| `pm_ideal_generatedSepaDebitIntentsFail` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method`. |
+| `pm_ideal_generatedSepaDebitIntentsFailDelayed` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| `pm_ideal_generatedSepaDebitIntentsSucceedDisputed` | The `PaymentIntent` status transitions from `processing` to `succeeded`, but a dispute is created immediately. |
+| `pm_ideal_generatedSepaDebitIntentsFailsDueToInsufficientFunds` | The `PaymentIntent` status transitions from `processing` to `requires_payment_method` with the `insufficient_funds` failure code. |
 
 ## See also
 

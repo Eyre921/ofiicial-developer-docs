@@ -28,7 +28,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -90,7 +90,7 @@ export const chartChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -114,13 +114,17 @@ export const myChat = chat
     run: async ({ messages, tools, signal, streamText }) =>
       streamText({
         tools,
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         messages,
         abortSignal: signal,
         stopWhen: stepCountIs(15),
       }),
   });
 ```
+
+> [!NOTE]
+>
+> Claude 5.5 models bind each thinking block to the tool set it was produced with. Adding or removing a tool partway through a chat can make Anthropic reject the earlier thinking blocks with a 400, so keep a chat's tool set stable once it starts (for example, decide `plan`-based tools on the first turn).
 
 The function receives a `ResolveToolsEvent` and runs once per turn (after `clientData` is parsed):
 
@@ -142,7 +146,7 @@ run: async ({ messages, tools, signal, streamText }) => {
   // `tools` is typed as your tool set, not a broad `ToolSet`
   return streamText({
     tools,
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     abortSignal: signal,
   });
@@ -183,7 +187,7 @@ const messages = await convertToModelMessages(uiMessages, {
   ignoreIncompleteToolCalls: true,
 });
 
-return streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools });
+return streamText({ model: anthropic("claude-sonnet-5-5"), messages, tools });
 ```
 
 ## Learn more

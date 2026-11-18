@@ -6,7 +6,7 @@ path: connect/dart
 
 **1. Install**
 
-Add the turso\_dart package to your `pubspec.yaml`:
+Add the turso_dart package to your `pubspec.yaml`:
 
 ```yaml theme={null}
 dependencies:

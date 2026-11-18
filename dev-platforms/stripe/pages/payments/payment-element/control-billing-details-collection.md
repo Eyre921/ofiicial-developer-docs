@@ -36,17 +36,21 @@ When `never` is set, you must manually pass in the omitted billing fields at the
 
 ```javascript
 stripe.confirmPayment({
- //...Other values
- payment_method: {
-  billing_details: {
-    address: {
-        line1: '123 Main Street',
-        city: 'Anytown',
-        country: 'US',
-        postal_code: '12345'
+  elements,
+  confirmParams: {
+    return_url: 'https://example.com/order/complete',
+    payment_method_data: {
+      billing_details: {
+        address: {
+          line1: '123 Main Street',
+          city: 'Anytown',
+          state: 'CA',
+          country: 'US',
+          postal_code: '12345',
+        },
       },
-   }
- } 
+    },
+  },
 });
 ```
 

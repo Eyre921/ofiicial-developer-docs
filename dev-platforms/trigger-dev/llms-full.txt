@@ -1,3 +1,9 @@
+# Trigger.dev
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://trigger.dev/docs/llms.txt instead.
+
+> Trigger.dev is an open source background jobs framework that lets you write reliable workflows in plain async code. Run long-running AI tasks, handle complex background jobs, and build AI agents with built-in queuing, automatic retries, and real-time monitoring. No timeouts, elastic scaling, and zero infrastructure management required.
+
 # Actions
 Source: https://trigger.dev/docs/ai-chat/actions
 
@@ -44,7 +50,7 @@ export const myChat = chat.agent({
   },
 
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -213,7 +219,7 @@ export const myAgent = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -273,7 +279,7 @@ export const simpleChat = chat.agent({
   id: "simple-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       messages,
       abortSignal: signal,
@@ -299,7 +305,7 @@ export const simpleChat = chat.agent({
   id: "simple-chat",
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -344,7 +350,7 @@ async function runAgentLoop(messages: ModelMessage[], streamText: ChatStreamText
   // ... agent logic, tool calls, etc.
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     stopWhen: stepCountIs(15),
   });
@@ -365,7 +371,7 @@ export const myChat = chat.agent({
     // This data part will be in responseMessage.parts in onTurnComplete
     writer.write({
       type: "data-metadata",
-      data: { turn, model: "gpt-4o", timestamp: Date.now() },
+      data: { turn, model: "gpt-6-luna", timestamp: Date.now() },
     });
   },
   onTurnComplete: async ({ responseMessage }) => {
@@ -379,7 +385,7 @@ export const myChat = chat.agent({
       data: { searchResults: results },
     });
 
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -450,7 +456,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -475,7 +481,7 @@ Use [AI Prompts](/docs/ai/prompts) to manage your system prompt as versioned, ov
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
 import { prompts } from "@trigger.dev/sdk";
-import { createProviderRegistry } from "ai";
+import { createProviderRegistry, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
@@ -483,8 +489,8 @@ const registry = createProviderRegistry({ anthropic });
 
 const systemPrompt = prompts.define({
   id: "my-chat-system",
-  model: "anthropic:claude-sonnet-4-5",
-  config: { temperature: 0.7 },
+  model: "anthropic:claude-sonnet-5-5",
+  config: { maxOutputTokens: 1024 },
   variables: z.object({ name: z.string() }),
   content: `You are a helpful assistant for {{name}}.`,
 });
@@ -538,7 +544,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, stopSignal, cancelSignal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal, // Handles both stop and cancel
       stopWhen: stepCountIs(15),
@@ -566,7 +572,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -580,7 +586,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       onFinish: ({ isAborted }) => {
@@ -633,7 +639,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools: { sendEmail },
       abortSignal: signal,
@@ -872,7 +878,7 @@ export const myChat = chat.agent({
     ];
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -899,7 +905,7 @@ chat.agent({
   run: async ({ messages, signal, streamText }) => {
     // Single-response agent — exit after this turn.
     chat.endRun();
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -920,7 +926,7 @@ Use this when the agent knows its work is done (budget exhausted, goal achieved,
 chat.agent({
   id: "budgeted-agent",
   run: async ({ messages, signal }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
   // onBeforeTurnComplete carries the same fields as onTurnComplete, including
   // `usage`, and still runs while the response stream is open.
   onBeforeTurnComplete: async ({ chatId }) => {
@@ -972,7 +978,7 @@ Override how long the run stays suspended waiting for the next message. Call fro
 ```ts theme={"theme":"css-variables"}
 run: async ({ messages, signal, streamText }) => {
   chat.setTurnTimeout("2h"); // Wait longer for this conversation
-  return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+  return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
 },
 ```
 
@@ -983,7 +989,7 @@ Override how long the run stays idle (active, using compute) after each turn:
 ```ts theme={"theme":"css-variables"}
 run: async ({ messages, signal, streamText }) => {
   chat.setIdleTimeoutInSeconds(60); // Stay idle for 1 minute
-  return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+  return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
 },
 ```
 
@@ -1017,7 +1023,7 @@ export const myChat = chat.agent({
     },
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -1048,7 +1054,7 @@ export const myChat = chat.agent({
     sendSources: true, // Forward source citations (default: false)
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -1066,7 +1072,7 @@ export const myChat = chat.agent({
     generateMessageId: () => uuidv7(),
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -1086,7 +1092,7 @@ export const myChat = chat
   .agent({
     id: "my-chat",
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
     },
   });
 ```
@@ -1108,7 +1114,7 @@ run: async ({ messages, clientData, signal, streamText }) => {
   if (clientData.model?.includes("claude")) {
     chat.setUIMessageStreamOptions({ sendReasoning: true });
   }
-  return streamText({ model: openai(clientData.model ?? "gpt-4o"), messages, abortSignal: signal });
+  return streamText({ model: openai(clientData.model ?? "gpt-6-luna"), messages, abortSignal: signal });
 },
 ```
 
@@ -1137,7 +1143,7 @@ export const manualChat = task({
   queue: { concurrencyLimit: 10 },
   run: async (payload: ChatTaskPayload) => {
     const result = streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages: payload.messages,
       stopWhen: stepCountIs(15),
     });
@@ -1252,7 +1258,7 @@ const registry = createProviderRegistry({ anthropic });
 
 const selfReviewPrompt = prompts.define({
   id: "self-review",
-  model: "anthropic:claude-haiku-4-5",
+  model: "anthropic:claude-haiku-5-5",
   content: `You are a conversation quality reviewer. Analyze the assistant's most recent response.
 
 Focus on:
@@ -1272,7 +1278,7 @@ export const myChat = chat.agent({
         const resolved = await selfReviewPrompt.resolve({});
 
         const review = await generateObject({
-          model: registry.languageModel(resolved.model ?? "anthropic:claude-haiku-4-5"),
+          model: registry.languageModel(resolved.model ?? "anthropic:claude-haiku-5-5"),
           ...resolved.toAISDKTelemetry(),
           system: resolved.text,
           prompt: messages
@@ -1317,7 +1323,7 @@ export const myChat = chat.agent({
 });
 ```
 
-The self-review runs on `claude-haiku-4-5` (fast, cheap) in the background. If the user sends another message before it completes, the coaching is still injected, because `chat.inject()` persists across the idle wait.
+The self-review runs on `claude-haiku-5-5` (fast, cheap) in the background. If the user sends another message before it completes, the coaching is still injected, because `chat.inject()` persists across the idle wait.
 
 ## Other use cases
 
@@ -1338,7 +1344,7 @@ export const myChat = chat.agent({
     chat.defer(analytics.track("turn_started", { chatId, runId }));
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -1365,7 +1371,7 @@ export const myChat = chat.agent({
     );
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -2496,7 +2502,7 @@ export const myChat = chat.agent({
     userContext.messageCount++;
 
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: `Helping ${userContext.name} (${userContext.plan} plan).`,
       messages,
       abortSignal: signal,
@@ -2565,7 +2571,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools: { analyzeData },
       abortSignal: signal,
@@ -3745,7 +3751,7 @@ export const myChat = chat.agent({
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) => {
       const result = await generateText({
-        model: anthropic("claude-haiku-4-5"),
+        model: anthropic("claude-haiku-5-5"),
         messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
       });
       return result.text;
@@ -3800,7 +3806,7 @@ export const myChat = chat.agent({
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) => {
       return generateText({
-        model: anthropic("claude-haiku-4-5"),
+        model: anthropic("claude-haiku-5-5"),
         messages: [...messages, { role: "user", content: "Summarize." }],
       }).then((r) => r.text);
     },
@@ -3814,7 +3820,7 @@ export const myChat = chat.agent({
     ],
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -3839,12 +3845,20 @@ By default, model messages are replaced with a single summary message. Use `comp
 
 ### Summary + recent context
 
-Keep the last few model messages so the LLM has recent detail alongside the summary:
+Keep the last few model messages so the LLM has recent detail alongside the summary. The kept messages now follow a different history, so strip their reasoning: Claude 5.5 models reject thinking blocks whose earlier conversation changed with a 400 (`Invalid signature in thinking block`).
 
 ```ts theme={"theme":"css-variables"}
+import type { ModelMessage } from "ai";
+
+function stripReasoning(message: ModelMessage): ModelMessage {
+  if (message.role !== "assistant" || typeof message.content === "string") return message;
+  return { ...message, content: message.content.filter((part) => part.type !== "reasoning") };
+}
+
+// ...
 compactModelMessages: ({ modelMessages, summary }) => [
   { role: "user", content: summary },
-  ...modelMessages.slice(-2), // Keep last exchange for detail
+  ...modelMessages.slice(-2).map(stripReasoning), // Keep last exchange for detail
 ],
 ```
 
@@ -3908,7 +3922,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -3930,7 +3944,7 @@ import { z } from "zod";
 // Reusable summarize fn — also used by the automatic compaction config.
 async function summarize(messages: ModelMessage[]) {
   const result = await generateText({
-    model: anthropic("claude-haiku-4-5"),
+    model: anthropic("claude-haiku-5-5"),
     messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
   });
   return result.text;
@@ -3966,7 +3980,7 @@ export const myChat = chat.agent({
   },
 
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -4033,7 +4047,10 @@ const session = chat.createSession(payload, {
   compaction: {
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) =>
-      generateText({ model: anthropic("claude-haiku-4-5"), messages }).then((r) => r.text),
+      generateText({
+        model: anthropic("claude-haiku-5-5"),
+        messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
+      }).then((r) => r.text),
     compactUIMessages: ({ uiMessages, summary }) => [
       { id: generateId(), role: "assistant",
         parts: [{ type: "text", text: `[Summary]\n\n${summary}` }] },
@@ -4044,7 +4061,7 @@ const session = chat.createSession(payload, {
 
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal,
     stopWhen: stepCountIs(15),
@@ -4069,7 +4086,10 @@ const conversation = new chat.MessageAccumulator({
   compaction: {
     shouldCompact: ({ totalTokens }) => (totalTokens ?? 0) > 80_000,
     summarize: async ({ messages }) =>
-      generateText({ model: anthropic("claude-haiku-4-5"), messages }).then((r) => r.text),
+      generateText({
+        model: anthropic("claude-haiku-5-5"),
+        messages: [...messages, { role: "user", content: "Summarize this conversation concisely." }],
+      }).then((r) => r.text),
     compactUIMessages: ({ summary }) => [
       { id: generateId(), role: "assistant",
         parts: [{ type: "text", text: `[Summary]\n\n${summary}` }] },
@@ -4081,7 +4101,7 @@ for (let turn = 0; turn < 100; turn++) {
   const messages = await conversation.addIncoming(payload.messages, payload.trigger, turn);
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     prepareStep: conversation.prepareStep(), // Inner-loop compaction
     stopWhen: stepCountIs(15),
@@ -4104,11 +4124,17 @@ for (let turn = 0; turn < 100; turn++) {
 For maximum control, use `chat.compact()` directly inside a custom `prepareStep`:
 
 ```ts theme={"theme":"css-variables"}
-prepareStep: async ({ messages: stepMessages, steps }) => {
+prepareStep: async ({ messages: stepMessages, steps, responseMessages }) => {
   const result = await chat.compact(stepMessages, steps, {
+    // On AI SDK 7, pass these so the steps after a compaction are rebuilt
+    // with every new tool result. Earlier AI SDK versions don't need them.
+    responseMessages,
     threshold: 80_000,
     summarize: async (msgs) =>
-      generateText({ model: anthropic("claude-haiku-4-5"), messages: msgs }).then((r) => r.text),
+      generateText({
+        model: anthropic("claude-haiku-5-5"),
+        messages: [...msgs, { role: "user", content: "Summarize this conversation concisely." }],
+      }).then((r) => r.text),
   });
   return result.type === "skipped" ? undefined : result;
 },
@@ -4120,7 +4146,10 @@ Or use the `chat.compactionStep()` factory:
 prepareStep: chat.compactionStep({
   threshold: 80_000,
   summarize: async (msgs) =>
-    generateText({ model: anthropic("claude-haiku-4-5"), messages: msgs }).then((r) => r.text),
+    generateText({
+      model: anthropic("claude-haiku-5-5"),
+      messages: [...msgs, { role: "user", content: "Summarize this conversation concisely." }],
+    }).then((r) => r.text),
 }),
 ```
 
@@ -4239,7 +4268,7 @@ export const myChat = chat
         });
 
         const result = streamText({
-          model: anthropic("claude-sonnet-4-5"),
+          model: anthropic("claude-sonnet-5-5"),
           messages: turn.messages,
           abortSignal: turn.signal,
           stopWhen: stepCountIs(15),
@@ -4360,7 +4389,7 @@ For more control, you can do each step manually:
 ```ts theme={"theme":"css-variables"}
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal,
     stopWhen: stepCountIs(15),
@@ -4397,7 +4426,7 @@ and aborts that turn as normal.
 ```ts trigger/my-chat.ts theme={"theme":"css-variables"}
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal, // fires on a user stop OR a run cancel
     stopWhen: stepCountIs(15),
@@ -4572,7 +4601,7 @@ export const myChat = chat.customAgent({
       const combinedSignal = AbortSignal.any([runSignal, stop.signal]);
 
       const result = streamText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         messages,
         abortSignal: combinedSignal,
         stopWhen: stepCountIs(15),
@@ -4725,7 +4754,7 @@ export const myChat = chat.agent({
     },
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -4761,7 +4790,7 @@ export const myChat = chat.agent({
     await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -4829,7 +4858,7 @@ chat.agent({
     });
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -4861,7 +4890,7 @@ chat.agent({
     }
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -5148,7 +5177,7 @@ export const myChat = chat.agent({
     // ... fallback initialization for non-preloaded runs
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -5311,7 +5340,8 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
+      system: "You are a helpful assistant.",
       messages,
       tools: chatTools,
       stopWhen: stepCountIs(10),
@@ -5334,7 +5364,7 @@ export const chatHandler = chat.headStart({
   agentId: "my-chat",
   run: async ({ streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       tools: headStartTools,
     }),
@@ -5352,7 +5382,7 @@ export const chatHandler = chat.headStart({
 
 > [!TIP]
 >
-> Use the **same model** on both sides (route handler and `chat.agent`) to avoid a tone or style shift between step 1 and step 2+. Your LLM provider keys stay server-side in your warm process — Trigger.dev never holds them in this design.
+> Use the **same model and system prompt** on both sides (route handler and `chat.agent`), with the same tool names and schemas. On Claude 5.5 models, step 1's thinking is bound to that system prompt and tool set, so a mismatch makes step 2 fail with a 400. Your LLM provider keys stay server-side in your warm process — Trigger.dev never holds them in this design.
 
 Mount the handler in whatever framework you use — see [Mounting in your framework](#mounting-in-your-framework) below.
 
@@ -5627,7 +5657,7 @@ for await (const turn of session) {
   const result = turn.handover?.isFinal
     ? undefined
     : streamText({
-        model: anthropic("claude-sonnet-4-6"),
+        model: anthropic("claude-sonnet-5-5"),
         messages: turn.messages,
         abortSignal: turn.signal,
         stopWhen: stepCountIs(10),
@@ -5651,7 +5681,7 @@ if (turn === 0 && payload.trigger === "handover-prepare") {
     // passing originalMessages so the tool output merges into the
     // handed-over assistant instead of starting a new message.
     const result = streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       messages: conversation.modelMessages,
       stopWhen: stepCountIs(10),
     });
@@ -5749,7 +5779,7 @@ export async function POST(req: Request) {
     messages, // first-turn user history
     run: async ({ streamText }) =>
       streamText({
-        model: anthropic("claude-sonnet-4-6"),
+        model: anthropic("claude-sonnet-5-5"),
         system: "You are a helpful assistant.",
         tools: headStartTools,
       }),
@@ -6090,7 +6120,7 @@ Browser-supplied `clientData` is input, including after schema validation. Use i
 Pass metadata with individual messages via `sendMessage`. Per-message values are merged with transport-level client data (per-message wins on conflicts):
 
 ```ts theme={"theme":"css-variables"}
-sendMessage({ text: "Hello" }, { metadata: { model: "gpt-4o", priority: "high" } });
+sendMessage({ text: "Hello" }, { metadata: { model: "gpt-6-luna", priority: "high" } });
 ```
 
 ### Typed client data with clientDataSchema
@@ -6110,7 +6140,7 @@ export const myChat = chat.agent({
   }),
   run: async ({ messages, clientData, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: clientData?.locale === "fr" ? "Reply in French." : "Reply in English.",
       messages,
       abortSignal: signal,
@@ -6119,6 +6149,10 @@ export const myChat = chat.agent({
   },
 });
 ```
+
+> [!NOTE]
+>
+> On Claude 5.5 models, each thinking block is bound to the system prompt it was produced with, so changing `system` partway through a chat makes Anthropic reject the next request with a 400 (`Invalid signature in thinking block`). If users can switch language mid-chat, start a new chat when the locale changes.
 
 The schema also types the `clientData` option on the frontend transport:
 
@@ -6773,7 +6807,7 @@ export const myChat = chat.agent({
     }
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -6812,7 +6846,7 @@ export const myChat = chat.agent({
     // (splice partial + first user into chain, dispatch the rest).
   },
   run: async ({ messages, signal }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
 });
 ```
 
@@ -6868,7 +6902,7 @@ export const myChat = chat.agent({
     // ... non-preloaded chat-row initialization
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -6917,7 +6951,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -6956,7 +6990,7 @@ export const myChat = chat.agent({
     return messages;
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools: chatTools, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, tools: chatTools, abortSignal: signal });
   },
 });
 ```
@@ -7016,7 +7050,7 @@ export const myChat = chat.agent({
     return stored;
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -7074,7 +7108,7 @@ export const myChat = chat.agent({
     });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -7109,7 +7143,7 @@ export const myChat = chat.agent({
     }
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -7157,7 +7191,7 @@ export const myChat = chat.agent({
     ]);
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -7200,7 +7234,7 @@ export const myChat = chat.agent({
     logger.info("Resumed", { phase: event.phase });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -7234,7 +7268,7 @@ export const myChat = chat.agent({
     await initializeChat(chatId, clientData);
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -7467,7 +7501,7 @@ export async function POST(req: Request) {
   if (!session) return new Response("Unauthorized", { status: 401 });
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     system: "You are a helpful assistant.",
     messages: convertToModelMessages(messages),
     tools,
@@ -7496,7 +7530,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       messages,
       abortSignal: signal,
@@ -7703,7 +7737,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       messages,
       abortSignal: signal,
@@ -7810,7 +7844,7 @@ export const chatHandler = chat.headStart({
   agentId: "my-chat",
   run: async ({ streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       system: "You are a helpful assistant.",
       tools: headStartTools,
     }),
@@ -8131,7 +8165,7 @@ export const myChat = chat.agent({
   storage: transcriptStorage,
   clientDataSchema: z.object({ userId: z.string() }),
   run: async ({ messages, signal, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
 });
 ```
 
@@ -8252,7 +8286,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -8421,7 +8455,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
     });
@@ -8819,7 +8853,7 @@ export const myChat = chat.agent({
     ]);
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -8889,7 +8923,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -9091,7 +9125,7 @@ export const myChat = chat.withUIMessage<ChatMessage>().agent({
   tools,
   run: async ({ messages, tools, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools,
       abortSignal: signal,
@@ -9509,23 +9543,28 @@ const isToolPart = (p: { type?: string }) =>
   typeof p?.type === "string" && (p.type.startsWith("tool-") || p.type === "dynamic-tool");
 
 // Drop the oldest n tool parts, mirroring what the provider cleared. A tool call
-// and its result live in one part, so pairing stays intact.
+// and its result live in one part, so pairing stays intact. Once a message is
+// edited, its thinking and every later message's thinking no longer verify on
+// Claude 5.5 models, so those reasoning parts are dropped too.
 function pruneOldestToolParts(messages: UIMessage[], n: number): UIMessage[] {
   let toRemove = n;
+  let edited = false;
   const out: UIMessage[] = [];
   for (const m of messages) {
-    if (toRemove <= 0 || m.role !== "assistant" || !m.parts) {
+    if (m.role !== "assistant" || !m.parts) {
       out.push(m);
       continue;
     }
     const kept = m.parts.filter((p) => {
       if (toRemove > 0 && isToolPart(p)) {
         toRemove--;
+        edited = true;
         return false;
       }
       return true;
     });
-    if (kept.length > 0) out.push({ ...m, parts: kept });
+    const parts = edited ? kept.filter((p) => p.type !== "reasoning") : kept;
+    if (parts.length > 0) out.push({ ...m, parts });
   }
   return out;
 }
@@ -9536,7 +9575,7 @@ export const nativePersist = chat.agent({
   tools: { fetchRecord },
   run: async ({ messages, chatId, tools, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools,
       abortSignal: signal,
@@ -9585,6 +9624,10 @@ Turn 1 sends the user message and accumulates six tool results. Anthropic clears
 >
 > `onTurnComplete` is where persistence happens. Action turns fire `onAction` only, and a `chat.history.set()` inside `run()` is overwritten by the accumulator at turn end. See [Persistence and replay](/docs/ai-chat/patterns/persistence-and-replay#action-turns-no-snapshot-write).
 
+> [!WARNING]
+>
+> Thinking is on by default on Claude 5.5 models, and each thinking block is bound to the conversation that came before it. Removing tool parts from earlier turns in your own code changes that history, so Anthropic can reject the next request with a 400 (`Invalid signature in thinking block`). Server-side context editing, as configured above, doesn't count as an edit. That's why `pruneOldestToolParts` also removes the reasoning parts from the turns it changes and every turn after them.
+
 ## Persist OpenAI stored responses
 
 OpenAI's `store: true` keeps the thread server-side and returns a `responseId`. Pass that back as `previousResponseId` on the next turn and send only the messages since the last assistant reply; everything before it lives on OpenAI's side.
@@ -9615,7 +9658,7 @@ export const openaiStore = chat.agent({
     const outbound = native ? messagesSinceLastAssistant(messages) : messages;
 
     const result = streamText({
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       messages: outbound,
       abortSignal: signal,
       stopWhen: stepCountIs(5),
@@ -9656,10 +9699,17 @@ const FALLBACK_ORDER: Provider[] = ["anthropic", "openai"];
 type NativeState = { provider: "openai"; previousResponseId: string };
 const nativeStore = new Map<string, NativeState>();
 
+// Retained messages follow a different history after compaction, so their thinking
+// blocks no longer verify on Claude 5.5 models. Drop reasoning parts before replaying them.
+function stripReasoning(message: ModelMessage): ModelMessage {
+  if (message.role !== "assistant" || typeof message.content === "string") return message;
+  return { ...message, content: message.content.filter((part) => part.type !== "reasoning") };
+}
+
 // Provider-agnostic summary: a plain string, portable across any provider.
 async function summarizeConversation(messages: ModelMessage[]): Promise<string> {
   const { text } = await generateText({
-    model: openai("gpt-4o-mini"),
+    model: openai("gpt-6-luna"),
     messages: [
       ...messages,
       {
@@ -9682,7 +9732,7 @@ export const resilientChat = chat.agent({
     summarize: ({ messages }) => summarizeConversation(messages),
     compactModelMessages: ({ modelMessages, summary }) => [
       { role: "user", content: `Summary of the conversation so far:\n\n${summary}` },
-      ...modelMessages.slice(-2),
+      ...modelMessages.slice(-2).map(stripReasoning),
     ],
     compactUIMessages: ({ uiMessages, summary }) => [
       {
@@ -9710,7 +9760,7 @@ export const resilientChat = chat.agent({
           // compacted baseline (summary + recent), so raw history is not re-sent.
           const useHandle = native?.provider === "openai";
           const result = streamText({
-            model: openai("gpt-4o"),
+            model: openai("gpt-6-luna"),
             messages,
             abortSignal: signal,
             stopWhen: stepCountIs(5),
@@ -9728,7 +9778,7 @@ export const resilientChat = chat.agent({
         }
 
         return streamText({
-          model: anthropic("claude-sonnet-4-5"),
+          model: anthropic("claude-sonnet-5-5"),
           messages,
           abortSignal: signal,
           stopWhen: stepCountIs(5),
@@ -9750,6 +9800,10 @@ export const resilientChat = chat.agent({
 ```
 
 When Anthropic is down, the loop falls through to OpenAI. Because `compaction` has already reduced `messages` to a summary plus the last couple of exchanges, the switch sends the portable baseline, not megabytes of raw transcript.
+
+> [!NOTE]
+>
+> The messages that `compactModelMessages` keeps after the summary now follow a different history from the one their thinking blocks were produced in. Claude 5.5 models reject those blocks with a 400 (`Invalid signature in thinking block`), which is why the example runs the retained messages through `stripReasoning`.
 
 > [!WARNING]
 >
@@ -10053,7 +10107,7 @@ export const myChat = chat.agent({
     await db.chat.update({ where: { id: chatId }, data: { messages: uiMessages } });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -10371,7 +10425,7 @@ export const supportAgent = chat.agent({
   id: "support-agent",
   telemetry: { recordUserMessage: false, recordClientData: false },
   run: async ({ messages, signal, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
 });
 ```
 
@@ -10390,7 +10444,7 @@ export const supportAgent = chat.agent({
   telemetry: { recordUserMessage: false, recordClientData: false },
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       // Replaces the default telemetry config (and chat.prompt.set()'s), so keep isEnabled on
@@ -10555,7 +10609,7 @@ export const agent = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -10626,7 +10680,7 @@ If you also define your own AI SDK tools, pass them through `chat.toStreamTextOp
 
 ```ts theme={"theme":"css-variables"}
 return streamText({
-  model: anthropic("claude-sonnet-4-5"),
+  model: anthropic("claude-sonnet-5-5"),
   messages,
   abortSignal: signal,
   tools: {
@@ -10977,7 +11031,7 @@ export const myAgent = chat.agent({
   tools, // declare here so toModelOutput survives across turns
   run: async ({ messages, tools, stopSignal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools,
       abortSignal: stopSignal,
@@ -11153,7 +11207,7 @@ export const myChat = chat.agent({
     return await db.getMessages(chatId);
   },
   run: async ({ messages, signal, streamText }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -11509,7 +11563,7 @@ export const myAgent = chat
       // Score-based routing. The values arrive from the edge proxy.
       if (clientData.__cf.botScore < 30) {
         return streamText({
-          model: anthropic("claude-haiku-4-5"),
+          model: anthropic("claude-haiku-5-5"),
           messages: [{ role: "system", content: "Reject politely; do not engage." }],
           abortSignal: signal,
           stopWhen: stepCountIs(15),
@@ -11517,7 +11571,7 @@ export const myAgent = chat
       }
 
       return streamText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         messages,
         abortSignal: signal,
         // ...
@@ -11718,7 +11772,7 @@ export const myChat = chat
       }
     },
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
     },
   });
 ```
@@ -11781,7 +11835,7 @@ export const myChat = chat
       }
     },
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
     },
   });
 ```
@@ -11904,7 +11958,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools: {
         inspectDocument: tool({
@@ -12011,7 +12065,7 @@ const session = chat.createSession(payload, {
 
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal,
     prepareStep: turn.prepareStep(), // Handles injection + compaction
@@ -12053,7 +12107,7 @@ for (let turn = 0; turn < 100; turn++) {
   });
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     prepareStep: conversation.prepareStep(), // Handles injection + compaction
     stopWhen: stepCountIs(15),
@@ -12108,7 +12162,7 @@ function Chat({ chatId }: { chatId: string }) {
     messages,
     setMessages,
     sendMessage,
-    metadata: { model: "gpt-4o" },
+    metadata: { model: "gpt-6-luna" },
   });
 
   return (
@@ -12205,7 +12259,7 @@ const sent = await transport.sendPendingMessage(chatId, {
   id: crypto.randomUUID(),
   role: "user",
   parts: [{ type: "text", text: "and compare to vercel" }],
-}, { model: "gpt-4o" });
+}, { model: "gpt-6-luna" });
 ```
 
 Unlike `sendMessage()` from useChat, this does NOT:
@@ -12231,7 +12285,7 @@ Source: https://trigger.dev/docs/ai-chat/prompt-caching
 
 Cache the stable prefix of your agent's prompt with Anthropic prompt caching to cut token cost and latency on every turn.
 
-**Prompt caching lets a provider reuse the unchanged prefix of your prompt across requests, billing it at a fraction of the input price and skipping re-processing.** With Anthropic, cache reads cost \~10% of base input tokens, so a long, stable system prompt or a growing conversation history pays full price once and reads cheaply on every turn after.
+**Prompt caching lets a provider reuse the unchanged prefix of your prompt across requests, billing it at a fraction of the input price and skipping re-processing.** With Anthropic, cache reads cost \~5% of base input tokens on Claude Sonnet 5.5 and Opus 5.5, so a long, stable system prompt or a growing conversation history pays full price once and reads cheaply on every turn after.
 
 Caching is a **byte-exact prefix match**: any change in the prefix invalidates everything after it. A multi-turn agent is the ideal case — the system prompt, tools, and earlier turns are identical turn over turn, so the cacheable prefix only grows. `chat.agent` is built to keep that prefix stable across turns, suspends, and resumes; this page shows how to place the cache breakpoints and verify they're hitting.
 
@@ -12273,7 +12327,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       // Caches the system block with a 5-minute breakpoint.
       messages,
       abortSignal: signal,
@@ -12290,7 +12344,7 @@ export const myChat = chat.agent({
   systemProviderOptions: { anthropic: { cacheControl: { type: "ephemeral" } } },
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
     }),
@@ -12307,7 +12361,7 @@ onChatStart: async () => {
 },
 run: async ({ messages, signal, streamText }) => {
   return streamText({
-    model: anthropic("claude-sonnet-4-6"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     abortSignal: signal,
   });
@@ -12344,7 +12398,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-6"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
     });
@@ -12356,7 +12410,7 @@ The system breakpoint and the conversation breakpoint compose: the system block 
 
 > [!NOTE]
 >
-> Anthropic allows **at most 4** cache breakpoints per request, and a prefix must be at least \~1024 tokens (model-dependent) to cache at all — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
+> Anthropic allows **at most 4** cache breakpoints per request, and a prefix must reach a model-dependent minimum to cache at all (512 tokens on Claude Sonnet 5.5 and Opus 5.5) — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
 
 > [!NOTE]
 >
@@ -12398,7 +12452,7 @@ run: async ({ messages, signal, previousTurnUsage, streamText }) => {
   console.log("cache write", previousTurnUsage?.inputTokenDetails?.cacheWriteTokens);
 
   return streamText({
-    model: anthropic("claude-sonnet-4-6"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     abortSignal: signal,
   });
@@ -12456,7 +12510,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -14549,7 +14603,7 @@ export const myChatAgent = chat
     id: "my-chat",
     run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
-        model: clientData?.model ?? "openai/gpt-4o-mini",
+        model: clientData?.model ?? "openai/gpt-6-luna",
         messages,
         abortSignal: signal,
         stopWhen: stepCountIs(15),
@@ -14618,7 +14672,7 @@ export const agent = chat
     id: "agent",
     run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
-        model: clientData?.model ?? anthropic("claude-haiku-4-5"),
+        model: clientData?.model ?? anthropic("claude-haiku-5-5"),
         messages,
         abortSignal: signal,
         stopWhen: stepCountIs(15),
@@ -14634,9 +14688,13 @@ const harness = mockChatAgent(agent, {
 });
 ```
 
+`clientData` reaches `run()` and the callbacks an agent can call a model from: `prepareMessages`, `onValidateMessages`, `onAction`, `onTurnComplete`, `onCompacted`, the compaction `shouldCompact` and `summarize` callbacks (between steps and between turns, also through `chat.MessageAccumulator` and `chat.createSession` turns), and the `pendingMessages` `onReceived` and `onInjected` callbacks. Read the mock model from `clientData` in each of them and those calls stay offline.
+
+In a hand-rolled `chat.customAgent` loop that doesn't use `chat.createSession`, the SDK has no turn to read from. `conversation.prepareStep()` then calls the inner `summarize` without `chatId`, `turn` or `clientData`, so close over `clientData` when you build the `summarize` config. Pass `{ chatId, turn, clientData }` to `conversation.compactIfNeeded()` for the outer compaction.
+
 ## Driving turns
 
-The harness exposes one method per chat trigger. Each waits for the next `trigger:turn-complete` chunk before resolving.
+The harness exposes one method per chat trigger. Each waits for the next `trigger:turn-complete` chunk, and for the turn's post-turn hooks (`onTurnComplete` and the transcript save) to finish, before resolving. You can assert on what those hooks recorded right after the `await`.
 
 ### sendMessage
 
@@ -14740,9 +14798,6 @@ const agent = chat.agent({
 const harness = mockChatAgent(agent, { chatId: "t" });
 await harness.sendMessage(userMessage("hi"));
 
-// onTurnComplete fires after the turn-complete chunk is written —
-// give it a tick before asserting.
-await new Promise((r) => setTimeout(r, 20));
 expect(events).toEqual([
   "onChatStart",
   "onTurnStart",
@@ -14870,7 +14925,6 @@ try {
     role: "user",
     parts: [{ type: "text", text: "where were we?" }],
   });
-  await new Promise((r) => setTimeout(r, 20));
 
   expect(onChatStart).not.toHaveBeenCalled();
   expect(onTurnStart).toHaveBeenCalledTimes(1);
@@ -14991,7 +15045,7 @@ export const agent = chat.agent({
     });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -15132,7 +15186,7 @@ await runInMockTaskContext(
 
 * **No network.** The mock task context replaces realtime streams, run metadata, lifecycle managers, and the runtime. Anything that bypasses these (raw `fetch`, direct DB clients) runs against the real network.
 * **Single agent per process.** The resource catalog is process-global; tests within a file are sequential by default. If you parallelize across files, vitest runs each file in its own worker, which avoids registry collisions.
-* **Time-sensitive hooks.** `onTurnComplete` runs *after* the `turn-complete` chunk is written, so `sendMessage()` resolves before that hook finishes. Add a brief `await new Promise((r) => setTimeout(r, 20))` if you need to assert on hook side-effects.
+* **Deferred work.** Turn methods wait for `onTurnComplete`, but not for work you start with `chat.defer()`. That work runs alongside the idle wait, as it does in production, so await your own promise before asserting on it.
 * **No real LLM.** The harness does not call providers — you must inject `MockLanguageModelV3` (or another mock) yourself.
 
 ## Check the deployed behavior
@@ -15175,7 +15229,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -15237,7 +15291,7 @@ export const chartChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) =>
     streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -15261,13 +15315,17 @@ export const myChat = chat
     run: async ({ messages, tools, signal, streamText }) =>
       streamText({
         tools,
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         messages,
         abortSignal: signal,
         stopWhen: stepCountIs(15),
       }),
   });
 ```
+
+> [!NOTE]
+>
+> Claude 5.5 models bind each thinking block to the tool set it was produced with. Adding or removing a tool partway through a chat can make Anthropic reject the earlier thinking blocks with a 400, so keep a chat's tool set stable once it starts (for example, decide `plan`-based tools on the first turn).
 
 The function receives a `ResolveToolsEvent` and runs once per turn (after `clientData` is parsed):
 
@@ -15289,7 +15347,7 @@ run: async ({ messages, tools, signal, streamText }) => {
   // `tools` is typed as your tool set, not a broad `ToolSet`
   return streamText({
     tools,
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     abortSignal: signal,
   });
@@ -15330,7 +15388,7 @@ const messages = await convertToModelMessages(uiMessages, {
   ignoreIncompleteToolCalls: true,
 });
 
-return streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools });
+return streamText({ model: anthropic("claude-sonnet-5-5"), messages, tools });
 ```
 
 ## Learn more
@@ -15378,7 +15436,7 @@ import { anthropic } from "@ai-sdk/anthropic";
 export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
 });
 ```
 
@@ -15397,7 +15455,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   storage: myTranscriptStorage,
   run: async ({ messages, signal, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal }),
 });
 ```
 
@@ -15685,10 +15743,12 @@ export const myChat = chat
     run: async ({ messages, tools, signal, streamText }) => {
       // `tools` is myTools, typed, handed back on the payload
       return streamText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         messages,
         tools,
         abortSignal: signal,
+        // Claude 5.5 models omit thinking text unless you ask for a summary
+        providerOptions: { anthropic: { thinking: { type: "adaptive", display: "summarized" } } },
         stopWhen: stepCountIs(15),
       });
     },
@@ -15786,7 +15846,12 @@ export const myChat = chat
   .agent({
     id: "my-chat",
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({
+        model: anthropic("claude-sonnet-5-5"),
+        messages,
+        abortSignal: signal,
+        providerOptions: { anthropic: { thinking: { type: "adaptive", display: "summarized" } } },
+      });
     },
   });
 ```
@@ -15811,7 +15876,7 @@ chat
       await createChatRecord(event.chatId);
     },
     run: async ({ messages, signal, streamText }) => {
-      return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+      return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
     },
   });
 ```
@@ -16345,7 +16410,7 @@ If continuations boot empty:
 # LLM observability
 Source: https://trigger.dev/docs/ai/observability
 
-Capture Vercel AI SDK calls in a task as spans in the run trace, with model, token usage, cost, and latency. Opt in per call, link calls to prompt versions, and query usage across runs.
+Capture Vercel AI SDK calls in a task as spans in the run trace, with model, token usage, cost, and latency. Link calls to prompt versions and query usage across runs.
 
 **LLM observability turns a Vercel AI SDK call inside a task into its own span in the run trace, next to your logs and other spans.** Each span carries the model, provider, input, output, and total token counts, cost, and latency, so you can see what each generation did and what it cost without leaving the run.
 
@@ -16353,32 +16418,11 @@ Everything shows up inline in the run trace you already use to debug runs. There
 
 > [!NOTE]
 >
-> Observability is opt-in per call and only covers [Vercel AI SDK](https://ai-sdk.dev) functions (`generateText`, `streamText`, `generateObject`). Calls you make with a raw `fetch`, a provider's own SDK, or any other HTTP client are not captured automatically.
+> Observability only covers [Vercel AI SDK](https://ai-sdk.dev) functions (`generateText`, `streamText`, `generateObject`). On AI SDK 5 and 6 it's opt-in per call. On AI SDK 7, once the `@ai-sdk/otel` adapter is registered, every call is traced, including its prompts and responses, unless you pass `telemetry: { isEnabled: false }`. Calls you make with a raw `fetch`, a provider's own SDK, or any other HTTP client are not captured automatically.
 
 ## Turn it on
 
-Set `experimental_telemetry: { isEnabled: true }` on the AI SDK call. There is nothing to install for AI SDK 6, and nothing to configure on the Trigger.dev side.
-
-```ts /trigger/summarize.ts theme={"theme":"css-variables"}
-import { task } from "@trigger.dev/sdk";
-import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
-
-export const summarize = task({
-  id: "summarize",
-  run: async (payload: { text: string }) => {
-    const result = await generateText({
-      model: openai("gpt-4o"),
-      prompt: `Summarize the following text:\n\n${payload.text}`,
-      experimental_telemetry: { isEnabled: true },
-    });
-
-    return { summary: result.text };
-  },
-});
-```
-
-Trigger the task and open the run. The `generateText` call appears as a span in the trace. `streamText` and `generateObject` work the same way: add the same `experimental_telemetry` flag to each call you want captured.
+Set `experimental_telemetry: { isEnabled: true }` on the AI SDK call. There is nothing to configure on the Trigger.dev side.
 
 > [!NOTE]
 >
@@ -16391,7 +16435,30 @@ Trigger the task and open the run. The `generateText` call appears as a span in 
 > registerTelemetry(new OpenTelemetry());
 > ```
 >
-> A [`chat.agent()`](/docs/ai-chat/overview) run registers the adapter for you at run start, so chat agents need only the install. On AI SDK 5 and 6, `ai` core emits spans directly and no adapter is needed.
+> Register it the same way in projects with [`chat.agent()`](/docs/ai-chat/overview) runs too: the static import is what includes `@ai-sdk/otel` in your deployed bundle. `chat.agent()` detects the existing registration and won't add a second one.
+>
+> Once the adapter is registered, AI SDK 7 traces every call by default, so the per-call flag is optional. To leave a call out, pass `telemetry: { isEnabled: false }` (`telemetry` is the non-deprecated name for `experimental_telemetry`). On AI SDK 5 and 6, `ai` core emits spans directly and no adapter is needed.
+
+```ts /trigger/summarize.ts theme={"theme":"css-variables"}
+import { task } from "@trigger.dev/sdk";
+import { generateText } from "ai";
+import { openai } from "@ai-sdk/openai";
+
+export const summarize = task({
+  id: "summarize",
+  run: async (payload: { text: string }) => {
+    const result = await generateText({
+      model: openai("gpt-6-luna"),
+      prompt: `Summarize the following text:\n\n${payload.text}`,
+      experimental_telemetry: { isEnabled: true },
+    });
+
+    return { summary: result.text };
+  },
+});
+```
+
+Trigger the task and open the run. The `generateText` call appears as a span in the trace. `streamText` and `generateObject` work the same way: add the same `experimental_telemetry` flag to each call you want captured.
 
 ## What each span shows
 
@@ -16406,6 +16473,10 @@ A fourth **Prompt** tab appears when the call is linked to an [AI Prompt](/docs/
 ## Link a call to its prompt
 
 If you manage prompts with [AI Prompts](/docs/ai/prompts), resolve the prompt and spread `toAISDKTelemetry()` into the call. This sets `experimental_telemetry` for you and links the span back to the exact prompt version that produced it.
+
+> [!NOTE]
+>
+> Prompt linking currently works on AI SDK 5 and 6. On AI SDK 7, the metadata from `toAISDKTelemetry()` doesn't reach the span yet, so the call is traced but isn't linked to its prompt version or given the custom attributes.
 
 ```ts /trigger/support.ts theme={"theme":"css-variables"}
 import { task, prompts } from "@trigger.dev/sdk";
@@ -16423,7 +16494,7 @@ export const handleSupport = task({
     });
 
     const result = await generateText({
-      model: openai(resolved.model ?? "gpt-4o"),
+      model: openai(resolved.model ?? "gpt-6-luna"),
       system: resolved.text,
       prompt: payload.issue,
       ...resolved.toAISDKTelemetry(),
@@ -16440,7 +16511,7 @@ Pass custom attributes to `toAISDKTelemetry()` to tag the span with your own met
 
 ```ts theme={"theme":"css-variables"}
 const result = await generateText({
-  model: openai(resolved.model ?? "gpt-4o"),
+  model: openai(resolved.model ?? "gpt-6-luna"),
   system: resolved.text,
   prompt: payload.issue,
   ...resolved.toAISDKTelemetry({
@@ -16542,8 +16613,8 @@ import { z } from "zod";
 export const supportPrompt = prompts.define({
   id: "customer-support",
   description: "System prompt for customer support interactions",
-  model: "gpt-4o",
-  config: { temperature: 0.7 },
+  model: "gpt-6-luna",
+  config: { maxOutputTokens: 1024 },
   variables: z.object({
     customerName: z.string(),
     plan: z.string(),
@@ -16567,8 +16638,8 @@ Respond to the customer's issue. Be concise and helpful.`,
 | - | - | - | - |
 | `id` | `string` | Yes | Unique identifier (becomes the prompt slug) |
 | `description` | `string` | No | Shown in the dashboard |
-| `model` | `string` | No | Default model (e.g. `"gpt-4o"`, `"claude-sonnet-4-6"`) |
-| `config` | `object` | No | Default config (temperature, maxTokens, etc.) |
+| `model` | `string` | No | Default model (e.g. `"gpt-6-luna"`, `"claude-sonnet-5-5"`) |
+| `config` | `object` | No | Default AI SDK call settings (e.g. `maxOutputTokens`) |
 | `variables` | Zod/ArkType schema | No | Schema for template variables (enables validation and dashboard UI) |
 | `content` | `string` | Yes | The prompt template with `{{variable}}` placeholders |
 
@@ -16582,7 +16653,7 @@ Templates use Mustache-style placeholders:
 ```ts theme={"theme":"css-variables"}
 export const prompt = prompts.define({
   id: "summarizer",
-  model: "gpt-4o-mini",
+  model: "gpt-6-luna",
   variables: z.object({
     text: z.string(),
     maxSentences: z.string().optional(),
@@ -16608,7 +16679,7 @@ const resolved = await supportPrompt.resolve({
 
 console.log(resolved.text);    // The compiled prompt with variables filled in
 console.log(resolved.version); // e.g. 3
-console.log(resolved.model);   // "gpt-4o"
+console.log(resolved.model);   // "gpt-6-luna"
 console.log(resolved.labels);  // ["current"] or ["override"]
 ```
 
@@ -16652,12 +16723,16 @@ By default, `resolve()` returns the **override** version if one is active, other
 
 The resolved prompt integrates with the [Vercel AI SDK](https://ai-sdk.dev) via `toAISDKTelemetry()`. This links AI generation spans to the prompt in the dashboard.
 
+> [!NOTE]
+>
+> Prompt linking currently works on AI SDK 5 and 6. On AI SDK 7, the metadata from `toAISDKTelemetry()` doesn't reach the span yet, so generations are traced but not linked to the prompt.
+
 ### generateText
 
 ```ts theme={"theme":"css-variables"}
 import { task } from "@trigger.dev/sdk";
 import { generateText, stepCountIs } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { openai } from "@ai-sdk/openai";
 
 export const supportTask = task({
   id: "handle-support",
@@ -16669,9 +16744,10 @@ export const supportTask = task({
     });
 
     const result = await generateText({
-      model: openai(resolved.model ?? "gpt-4o"),
+      model: openai(resolved.model ?? "gpt-6-luna"),
       system: resolved.text,
       prompt: payload.issue,
+      ...resolved.config,
       ...resolved.toAISDKTelemetry(),
     });
 
@@ -16695,9 +16771,10 @@ export const streamTask = task({
     });
 
     const result = streamText({
-      model: openai(resolved.model ?? "gpt-4o"),
+      model: openai(resolved.model ?? "gpt-6-luna"),
       system: resolved.text,
       prompt: payload.issue,
+      ...resolved.config,
       ...resolved.toAISDKTelemetry(),
       stopWhen: stepCountIs(15),
     });
@@ -16718,7 +16795,7 @@ Pass additional metadata to `toAISDKTelemetry()` that will appear on the generat
 
 ```ts theme={"theme":"css-variables"}
 const result = await generateText({
-  model: anthropic("claude-sonnet-4-5"),
+  model: anthropic("claude-sonnet-5-5"),
   prompt: resolved.text,
   ...resolved.toAISDKTelemetry({
     "task.type": "summarization",
@@ -16744,8 +16821,8 @@ const registry = createProviderRegistry({ anthropic });
 
 const systemPrompt = prompts.define({
   id: "my-chat-system",
-  model: "anthropic:claude-sonnet-4-5",
-  config: { temperature: 0.7 },
+  model: "anthropic:claude-sonnet-5-5",
+  config: { maxOutputTokens: 1024 },
   variables: z.object({ name: z.string() }),
   content: `You are a helpful assistant for {{name}}.`,
 });
@@ -16776,22 +16853,22 @@ Inside a `chat.agent` you don't need this: the `streamText` passed to `run()` ap
 
 * `system` — the compiled prompt text
 * `model` — resolved via the `registry` when provided
-* `temperature`, `maxTokens`, etc. — from the prompt's `config`
+* `maxOutputTokens` and other call settings — from the prompt's `config`
 * `experimental_telemetry` — links generations to the prompt in the dashboard
 
 ```ts theme={"theme":"css-variables"}
 // With registry — model is resolved automatically
 const options = chat.toStreamTextOptions({ registry });
-// { system: "...", model: LanguageModel, temperature: 0.7, experimental_telemetry: { ... } }
+// { system: "...", model: LanguageModel, maxOutputTokens: 1024, experimental_telemetry: { ... } }
 
 // Without registry — model is not included
 const options = chat.toStreamTextOptions();
-// { system: "...", temperature: 0.7, experimental_telemetry: { ... } }
+// { system: "...", maxOutputTokens: 1024, experimental_telemetry: { ... } }
 ```
 
 > [!TIP]
 >
-> When the user provides a `registry` and the prompt has a `model` string (e.g. `"anthropic:claude-sonnet-4-5"`), the model is resolved via `registry.languageModel()` and included in the returned options. This means `streamText` uses the prompt's model by default — no manual model selection needed.
+> When the user provides a `registry` and the prompt has a `model` string (e.g. `"anthropic:claude-sonnet-5-5"`), the model is resolved via `registry.languageModel()` and included in the returned options. This means `streamText` uses the prompt's model by default — no manual model selection needed.
 
 ### Reading the prompt
 
@@ -16801,7 +16878,7 @@ Access the stored prompt from anywhere in the run:
 run: async ({ messages, signal, streamText }) => {
   const prompt = chat.prompt(); // Throws if not set
   console.log(prompt.text);     // The compiled prompt
-  console.log(prompt.model);    // "anthropic:claude-sonnet-4-5"
+  console.log(prompt.model);    // "anthropic:claude-sonnet-5-5"
   console.log(prompt.version);  // 3
 
   return streamText({
@@ -16841,7 +16918,7 @@ Create a new override that takes priority over the deployed version:
 ```ts theme={"theme":"css-variables"}
 const result = await prompts.createOverride("customer-support", {
   textContent: "New prompt template: Hello {{customerName}}!",
-  model: "gpt-4o-mini",
+  model: "gpt-6-luna",
   commitMessage: "Shorter prompt",
 });
 ```
@@ -16851,7 +16928,7 @@ const result = await prompts.createOverride("customer-support", {
 ```ts theme={"theme":"css-variables"}
 await prompts.updateOverride("customer-support", {
   textContent: "Updated template: Hi {{customerName}}!",
-  model: "gpt-4o",
+  model: "gpt-6-luna",
 });
 ```
 
@@ -23449,7 +23526,7 @@ export const myChat = chat.agent({
     const user = await prisma.user.findUnique({ where: { id: clientData.userId } });
     // The connection is back in the pool before the model stream starts.
     return streamText({
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       system: `Helping ${user?.name ?? "the user"}.`,
       messages,
       abortSignal: signal,
@@ -25248,7 +25325,7 @@ export const openaiTask = task({
     //if this fails, it will throw an error and retry
     const chatCompletion = await openai.chat.completions.create({
       messages: [{ role: "user", content: payload.prompt }],
-      model: "gpt-3.5-turbo",
+      model: "gpt-6-luna",
     });
 
     if (chatCompletion.choices[0]?.message.content === undefined) {
@@ -25447,7 +25524,7 @@ export const openaiTask = task({
   run: async (payload: { prompt: string }) => {
     const chatCompletion = await openai.chat.completions.create({
       messages: [{ role: "user", content: payload.prompt }],
-      model: "gpt-3.5-turbo",
+      model: "gpt-6-luna",
     });
 
     return chatCompletion.choices[0].message.content;
@@ -25548,7 +25625,7 @@ export const openaiTask = task({
     //if this fails, it will throw an error and stop retrying
     const chatCompletion = await openai.chat.completions.create({
       messages: [{ role: "user", content: payload.prompt }],
-      model: "gpt-3.5-turbo",
+      model: "gpt-6-luna",
     });
 
     if (chatCompletion.choices[0]?.message.content === undefined) {
@@ -25563,10 +25640,15 @@ export const openaiTask = task({
 
 ### Using try/catch
 
-Sometimes you want to catch an error and don't want to retry the task. You can use try/catch as you normally would. In this example we fallback to using Replicate if OpenAI fails.
+Sometimes you want to catch an error and don't want to retry the task. You can use try/catch as you normally would. In this example we fall back to using Anthropic if OpenAI fails.
 
 ```ts /trigger/myTasks.ts theme={"theme":"css-variables"}
 import { task } from "@trigger.dev/sdk";
+import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
+
+const openai = new OpenAI();
+const anthropic = new Anthropic();
 
 export const openaiTask = task({
   id: "openai-task",
@@ -25575,7 +25657,7 @@ export const openaiTask = task({
       //if this fails, it will throw an error and retry
       const chatCompletion = await openai.chat.completions.create({
         messages: [{ role: "user", content: payload.prompt }],
-        model: "gpt-3.5-turbo",
+        model: "gpt-6-luna",
       });
 
       if (chatCompletion.choices[0]?.message.content === undefined) {
@@ -25585,23 +25667,25 @@ export const openaiTask = task({
 
       return chatCompletion.choices[0].message.content;
     } catch (error) {
-      //use Replicate if OpenAI fails
-      const prediction = await replicate.run(
-        "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
-        {
-          input: {
-            prompt: payload.prompt,
-            max_new_tokens: 250,
-          },
-        }
-      );
+      //use Anthropic if OpenAI fails
+      const message = await anthropic.messages.create({
+        model: "claude-haiku-5-5",
+        max_tokens: 16000,
+        messages: [{ role: "user", content: payload.prompt }],
+      });
 
-      if (prediction.output === undefined) {
-        //retry if Replicate fails
-        throw new Error("Replicate call failed");
+      //the response can include thinking blocks, so only read the text blocks
+      const text = message.content
+        .filter((block) => block.type === "text")
+        .map((block) => block.text)
+        .join("");
+
+      if (!text) {
+        //retry if Anthropic fails
+        throw new Error("Anthropic call failed");
       }
 
-      return prediction.output;
+      return text;
     }
   },
 });
@@ -26082,7 +26166,7 @@ export const myChat = chat.agent({
   id: "my-chat",
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -26120,7 +26204,7 @@ export const myChat = chat.agent({
   run: async ({ messages, tools, signal, streamText }) => {
     return streamText({
       tools,
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       stopWhen: stepCountIs(15),
       abortSignal: signal,
@@ -26259,7 +26343,7 @@ export const codeGenerator = schemaTask({
       const result = query({
         prompt,
         options: {
-          model: "claude-sonnet-4-20250514",
+          model: "claude-sonnet-5-5",
           abortController,
           cwd: workDir,
           maxTurns: 10,
@@ -26399,12 +26483,9 @@ export const generateAndTranslateTask = task({
   run: async (payload: TranslatePayload) => {
     // Step 1: Generate marketing copy
     const generatedCopy = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
+      system: "You are an expert copywriter.",
       messages: [
-        {
-          role: "system",
-          content: "You are an expert copywriter.",
-        },
         {
           role: "user",
           content: `Generate as close as possible to ${payload.targetWordCount} words of compelling marketing copy for ${payload.marketingSubject}`,
@@ -26432,12 +26513,9 @@ export const generateAndTranslateTask = task({
 
     // Step 2: Translate to target language
     const translatedCopy = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
+      system: `You are an expert translator specializing in marketing content translation into ${payload.targetLanguage}.`,
       messages: [
-        {
-          role: "system",
-          content: `You are an expert translator specializing in marketing content translation into ${payload.targetLanguage}.`,
-        },
         {
           role: "user",
           content: `Translate the following marketing copy to ${payload.targetLanguage}, maintaining the same tone and marketing impact:\n\n${generatedCopy.text}`,
@@ -26593,7 +26671,7 @@ In this example, we'll create a workflow that simultaneously checks content for 
 * Uses `generateText` from the [AI SDK](https://ai-sdk.dev/) to call Anthropic's Claude models
 * Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
 * Uses [`batch.triggerByTaskAndWait`](/docs/triggering#batch-triggerbytaskandwait) to run customer response and content moderation tasks in parallel
-* Answers with `claude-sonnet-4-5` and moderates with the faster, cheaper `claude-haiku-4-5`
+* Answers with `claude-sonnet-5-5` and moderates with the faster, cheaper `claude-haiku-5-5`
 * Simultaneously checks for inappropriate content while generating responses
 
 ```typescript theme={"theme":"css-variables"}
@@ -26606,12 +26684,9 @@ export const generateCustomerResponse = task({
   id: "generate-customer-response",
   run: async (payload: { question: string }) => {
     const response = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
+      system: "You are a helpful customer service representative.",
       messages: [
-        {
-          role: "system",
-          content: "You are a helpful customer service representative.",
-        },
         { role: "user", content: payload.question },
       ],
       experimental_telemetry: {
@@ -26629,13 +26704,9 @@ export const checkInappropriateContent = task({
   id: "check-inappropriate-content",
   run: async (payload: { text: string }) => {
     const response = await generateText({
-      model: anthropic("claude-haiku-4-5"),
+      model: anthropic("claude-haiku-5-5"),
+      system: "You are a content moderator. Respond with 'true' if the content is inappropriate or contains harmful, threatening, offensive, or explicit content, 'false' otherwise.",
       messages: [
-        {
-          role: "system",
-          content:
-            "You are a content moderator. Respond with 'true' if the content is inappropriate or contains harmful, threatening, offensive, or explicit content, 'false' otherwise.",
-        },
         { role: "user", content: payload.text },
       ],
       experimental_telemetry: {
@@ -26722,8 +26793,8 @@ In this example, we'll create a workflow that routes a question to a different A
 
 * Uses `generateObject` from the [AI SDK](https://ai-sdk.dev/) to classify the question into a typed routing decision
 * Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
-* Classifies complexity with a fast, cheap model (`claude-haiku-4-5`)
-* Directs simple questions to `claude-haiku-4-5` and complex ones to `claude-sonnet-4-5`
+* Classifies complexity with a fast, cheap model (`claude-haiku-5-5`)
+* Directs simple questions to `claude-haiku-5-5` and complex ones to `claude-sonnet-5-5`
 * Returns both the answer and metadata about the routing decision
 
 ```typescript theme={"theme":"css-variables"}
@@ -26735,7 +26806,7 @@ import { z } from "zod";
 // The router's structured decision. generateObject validates the model
 // output against this schema, so there's no manual JSON parsing.
 const routingSchema = z.object({
-  model: z.enum(["claude-haiku-4-5", "claude-sonnet-4-5"]),
+  model: z.enum(["claude-haiku-5-5", "claude-sonnet-5-5"]),
   reason: z.string(),
 });
 
@@ -26744,12 +26815,12 @@ export const routeAndAnswerQuestion = task({
   run: async (payload: { question: string }) => {
     // Step 1: Classify the question and pick a model
     const { object: routing } = await generateObject({
-      model: anthropic("claude-haiku-4-5"),
+      model: anthropic("claude-haiku-5-5"),
       schema: routingSchema,
       system:
         "You are a routing assistant. Pick the model best suited to answer the question:\n" +
-        "- claude-haiku-4-5 for simple, common, or straightforward questions\n" +
-        "- claude-sonnet-4-5 for complex, unusual, or questions needing deep reasoning",
+        "- claude-haiku-5-5 for simple, common, or straightforward questions\n" +
+        "- claude-sonnet-5-5 for complex, unusual, or questions needing deep reasoning",
       prompt: payload.question,
       experimental_telemetry: {
         isEnabled: true,
@@ -26778,7 +26849,7 @@ export const routeAndAnswerQuestion = task({
 
 ## Run a test
 
-Triggering our task with a simple question shows it routing to the `claude-haiku-4-5` model and returning the answer with reasoning:
+Triggering our task with a simple question shows it routing to the `claude-haiku-5-5` model and returning the answer with reasoning:
 
 ```json theme={"theme":"css-variables"}
 {
@@ -26853,13 +26924,10 @@ export const translateAndRefine = task({
       : `Translate this text into ${payload.targetLanguage}, preserving style and meaning: "${payload.text}"`;
 
     const translation = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
-      messages: [
-        {
-          role: "system",
-          content: `You are an expert literary translator into ${payload.targetLanguage}.
+      model: anthropic("claude-sonnet-5-5"),
+      system: `You are an expert literary translator into ${payload.targetLanguage}.
                    Focus on accuracy first, then style and natural flow.`,
-        },
+      messages: [
         {
           role: "user",
           content: translationPrompt,
@@ -26873,11 +26941,8 @@ export const translateAndRefine = task({
 
     // Evaluate the translation
     const evaluation = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
-      messages: [
-        {
-          role: "system",
-          content: `You are an expert literary critic and translator focused on practical, high-quality translations.
+      model: anthropic("claude-sonnet-5-5"),
+      system: `You are an expert literary critic and translator focused on practical, high-quality translations.
                  Your goal is to ensure translations are accurate and natural, but not necessarily perfect.
                  This is iteration ${
                    rejectionCount + 1
@@ -26899,7 +26964,7 @@ export const translateAndRefine = task({
                  - First iteration MUST receive feedback for improvement
                  - Be very strict on accuracy in early iterations
                  - After 3 iterations, lower quality threshold to 85%`,
-        },
+      messages: [
         {
           role: "user",
           content: `Original: "${payload.text}"
@@ -26983,7 +27048,7 @@ Our example task uses multiple LLM calls to extract claims from a news article a
 * Uses `generateText` from the [AI SDK](https://ai-sdk.dev/) to call Anthropic's Claude models
 * Uses `experimental_telemetry` to surface each LLM call on the Run page in the dashboard
 * Uses [`batch.triggerByTaskAndWait`](/docs/triggering#batch-triggerbytaskandwait) to orchestrate parallel processing of claims
-* Extracts factual claims from news articles using `claude-sonnet-4-5`
+* Extracts factual claims from news articles using `claude-sonnet-5-5`
 * Evaluates claims against recent sources and analyzes historical context in parallel
 * Combines results into a structured analysis report
 
@@ -27016,12 +27081,8 @@ export const extractClaims = task({
   id: "extract-claims",
   run: async ({ article }: { article: string }) => {
     try {
+      const system = "Extract distinct factual claims from the news article. Format as numbered claims.";
       const messages: ModelMessage[] = [
-        {
-          role: "system",
-          content:
-            "Extract distinct factual claims from the news article. Format as numbered claims.",
-        },
         {
           role: "user",
           content: article,
@@ -27029,7 +27090,8 @@ export const extractClaims = task({
       ];
 
       const response = await generateText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
+        system,
         messages,
         experimental_telemetry: {
           isEnabled: true,
@@ -27061,13 +27123,9 @@ export const verifySource = task({
   id: "verify-source",
   run: async (claim: Claim) => {
     const response = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
+      system: "Verify this claim by considering recent news sources and official statements. Assess reliability.",
       messages: [
-        {
-          role: "system",
-          content:
-            "Verify this claim by considering recent news sources and official statements. Assess reliability.",
-        },
         {
           role: "user",
           content: claim.text,
@@ -27093,13 +27151,9 @@ export const analyzeHistory = task({
   id: "analyze-history",
   run: async (claim: Claim) => {
     const response = await generateText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
+      system: "Analyze this claim in historical context, considering past announcements and technological feasibility.",
       messages: [
-        {
-          role: "system",
-          content:
-            "Analyze this claim in historical context, considering past announcements and technological feasibility.",
-        },
         {
           role: "user",
           content: claim.text,
@@ -31156,7 +31210,7 @@ export const openaiTask = task({
     //if this fails, it will throw an error and retry
     const chatCompletion = await openai.chat.completions.create({
       messages: [{ role: "user", content: payload.prompt }],
-      model: "gpt-3.5-turbo",
+      model: "gpt-6-luna",
     });
 
     if (chatCompletion.choices[0]?.message.content === undefined) {
@@ -33006,7 +33060,7 @@ export const scrapeAndSummarizeArticle = task({
 
     // Summarize the content using ChatGPT
     const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-6-luna",
       messages: [
         {
           role: "user",
@@ -33819,7 +33873,7 @@ export const openaiTask = task({
 
   run: async (payload: { prompt: string }) => {
     const chatCompletion = await generateText({
-      model: openai("gpt-4-turbo"),
+      model: openai("gpt-6-luna"),
       // Add a system message which will be included with the prompt
       system: "You are a friendly assistant!",
       // The prompt passed in from the payload
@@ -34559,8 +34613,8 @@ export const analyzePRs = task({
       .join("\n\n");
 
     const message = await anthropic.messages.create({
-      model: "claude-opus-4-6",
-      max_tokens: 1024,
+      model: "claude-opus-5-5",
+      max_tokens: 16000,
       messages: [
         {
           role: "user",
@@ -34569,7 +34623,15 @@ export const analyzePRs = task({
       ],
     });
 
-    const summary = message.content[0].type === "text" ? message.content[0].text : "";
+    if (message.stop_reason === "max_tokens") {
+      throw new Error("Summary was cut off by max_tokens");
+    }
+
+    // Claude may return a thinking block before the text, so read text blocks by type
+    const summary = message.content
+      .filter((block): block is Anthropic.TextBlock => block.type === "text")
+      .map((block) => block.text)
+      .join("\n");
 
     return { summary, prCount: prs.length };
   },
@@ -40729,7 +40791,7 @@ export const supportAgent = chat.agent({
   id: "support-agent",
   run: async ({ messages, signal, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
     }),
@@ -45541,7 +45603,7 @@ Use the prompt in the accordion below to help you migrate your v3 tasks to v4. T
 >   run: async (payload, { ctx }) => {
 >     const { text } = await generateText({
 >       prompt: payload.text,
->       model: openai("gpt-4o"),
+>       model: openai("gpt-6-luna"),
 >       tools: {
 >         myToolTask,
 >       },
@@ -45554,7 +45616,7 @@ Use the prompt in the accordion below to help you migrate your v3 tasks to v4. T
 > import { schemaTask } from "@trigger.dev/sdk";
 > import { ai } from "@trigger.dev/sdk/ai";
 > import { z } from "zod";
-> import { generateText, tool } from "ai";
+> import { generateText, stepCountIs, tool } from "ai";
 > import { openai } from "@ai-sdk/openai";
 >
 > // Convert toolTask to schemaTask with a schema
@@ -45581,10 +45643,11 @@ Use the prompt in the accordion below to help you migrate your v3 tasks to v4. T
 >   run: async (payload, { ctx }) => {
 >     const { text } = await generateText({
 >       prompt: payload.text,
->       model: openai("gpt-4o"),
+>       model: openai("gpt-6-luna"),
 >       tools: {
 >         myTool,
 >       },
+>       stopWhen: stepCountIs(5),
 >     });
 >   },
 > });
@@ -45765,7 +45828,7 @@ export const myAiTask = schemaTask({
   run: async (payload, { ctx }) => {
     const { text } = await generateText({
       prompt: payload.text,
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       tools: {
         myToolTask,
       },
@@ -48316,7 +48379,7 @@ export const openrouterChat = task({
       apiKey: access_token,
     });
     const completion = await openrouter.chat.completions.create({
-      model: "openai/gpt-4o-mini",
+      model: "openai/gpt-6-luna",
       messages: [{ role: "user", content: payload.prompt }],
     });
 
@@ -54393,7 +54456,7 @@ export const myTask = task({
   run: async (payload: { prompt: string }) => {
     const completion = await openai.chat.completions.create({
       messages: [{ role: "user", content: payload.prompt }],
-      model: "gpt-3.5-turbo",
+      model: "gpt-6-luna",
       stream: true,
     });
 
@@ -58241,7 +58304,7 @@ Prefer building the tool with the AI SDK’s [`tool()`](https://sdk.vercel.ai/do
 ```ts theme={"theme":"css-variables"}
 import { ai } from "@trigger.dev/sdk/ai";
 import { schemaTask } from "@trigger.dev/sdk";
-import { tool, generateText } from "ai";
+import { tool, generateText, stepCountIs } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { z } from "zod";
 
@@ -58269,24 +58332,25 @@ export const myAiTask = schemaTask({
   run: async ({ text }) => {
     const { text: reply } = await generateText({
       prompt: text,
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       tools: {
         myTool,
       },
+      stopWhen: stepCountIs(5),
     });
     return reply;
   },
 });
 ```
 
-`experimental_toToolResultContent` and other tool-level options belong on **`tool({ ... })`**, not on `ai.toolExecute`:
+`toModelOutput` and other tool-level options belong on **`tool({ ... })`**, not on `ai.toolExecute`:
 
 ```ts theme={"theme":"css-variables"}
 import { openai } from "@ai-sdk/openai";
 import { Sandbox } from "@e2b/code-interpreter";
 import { ai } from "@trigger.dev/sdk/ai";
 import { schemaTask } from "@trigger.dev/sdk";
-import { generateObject, tool } from "ai";
+import { generateText, Output, tool } from "ai";
 import { z } from "zod";
 
 const chartTask = schemaTask({
@@ -58296,17 +58360,19 @@ const chartTask = schemaTask({
     input: z.string().describe("The chart to generate"),
   }),
   run: async ({ input }) => {
-    const code = await generateObject({
-      model: openai("gpt-4o"),
-      schema: z.object({
-        code: z.string().describe("The Python code to execute"),
+    const { output } = await generateText({
+      model: openai("gpt-6-luna"),
+      output: Output.object({
+        schema: z.object({
+          code: z.string().describe("The Python code to execute"),
+        }),
       }),
       system: `You are a helpful assistant that generates matplotlib code. End with plt.show().`,
       prompt: input,
     });
 
     const sandbox = await Sandbox.create();
-    const execution = await sandbox.runCode(code.object.code);
+    const execution = await sandbox.runCode(output.code);
     const firstResult = execution.results[0];
 
     if (firstResult.png) {
@@ -58316,15 +58382,25 @@ const chartTask = schemaTask({
   },
 });
 
+// Keep the executor in its own const so `output` below is typed from the task
+const executeChart = ai.toolExecute(chartTask);
+
 export const chartTool = tool({
   description: chartTask.description ?? "",
   inputSchema: chartTask.schema!,
-  execute: ai.toolExecute(chartTask),
-  experimental_toToolResultContent: (result) => [
-    { type: "image", data: result.chart, mimeType: "image/png" },
-  ],
+  execute: executeChart,
+  toModelOutput: ({ output }) => ({
+    type: "content",
+    value: [
+      { type: "file", mediaType: "image/png", data: { type: "data", data: output.chart } },
+    ],
+  }),
 });
 ```
+
+> [!NOTE]
+>
+> This sample uses AI SDK 7. On AI SDK 6, use `{ type: "image-data", data: output.chart, mediaType: "image/png" }` as the item in `value` instead of the `file` part. On AI SDK 5, pass `experimental_output: Output.object(...)` instead of `output` and read the result from `experimental_output`, and use `toModelOutput: (output) => ({ type: "content", value: [{ type: "media", data: output.chart, mediaType: "image/png" }] })`.
 
 Inside the task run, you can read tool execution context with **`ai.currentToolOptions()`** (and helpers like `ai.toolCallId()`, `ai.chatContext()` when running inside a [`chat.agent`](/docs/ai-chat/overview)):
 
@@ -58970,7 +59046,7 @@ export async function POST(req: Request) {
   const { messages, runId } = await req.json();
 
   const result = streamText({
-    model: openai("gpt-4o"),
+    model: openai("gpt-6-luna"),
     messages,
   });
 
@@ -59254,7 +59330,7 @@ export const generateAI = task({
   id: "generate-ai",
   run: async (payload: { prompt: string }) => {
     const result = streamText({
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       prompt: payload.prompt,
     });
 
@@ -63151,7 +63227,7 @@ export const supportAgent = chat.agent({
     }),
   ],
   run: async ({ messages, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages }),
 });
 ```
 
@@ -63780,7 +63856,7 @@ export const supportAgent = chat.agent({
   tools: { requestApproval },
   run: async ({ messages, tools, streamText }) =>
     streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools,
       system:
@@ -63894,7 +63970,7 @@ export const triage = chat.agent({
   channels: [linear({ id: "linear", endpoint: linearEvents, token: process.env.LINEAR_ACCESS_TOKEN! })],
   tools: { searchDocs, createSubIssues },
   run: async ({ messages, tools, signal, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools, abortSignal: signal }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages, tools, abortSignal: signal }),
 });
 ```
 
@@ -66363,7 +66439,7 @@ export const orderAgent = chat.agent({
     }
   },
   run: async ({ messages, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages }),
+    streamText({ model: anthropic("claude-sonnet-5-5"), messages }),
 });
 ```
 
@@ -66492,6 +66568,7 @@ import { webhooks } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
 import { appMentions, slack, webhookSource } from "@trigger.dev/slack";
 import { anthropic } from "@ai-sdk/anthropic";
+import { stepCountIs } from "ai";
 
 const slackEvents = webhooks.endpoint.define({ id: "slack", source: webhookSource() });
 
@@ -66507,7 +66584,13 @@ export const support = chat.agent({
   ],
   tools: { searchDocs, refundOrder },
   run: async ({ messages, tools, signal, streamText }) =>
-    streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools, abortSignal: signal }),
+    streamText({
+      model: anthropic("claude-sonnet-5-5"),
+      messages,
+      tools,
+      abortSignal: signal,
+      stopWhen: stepCountIs(10),
+    }),
 });
 ```
 

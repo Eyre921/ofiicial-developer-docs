@@ -105,7 +105,7 @@ app.post('/create-confirm-intent', async (req, res) => {
       use_stripe_sdk: true,
     });
     res.json({
-      client_secret: intent.client_secret,
+      clientSecret: intent.client_secret,
       status: intent.status
     });
   } catch (err) {
@@ -133,7 +133,7 @@ app.post('/create-confirm-intent', async (req, res) => {
       confirmation_token: req.body.confirmationTokenId,
     });
     res.json({
-      client_secret: intent.client_secret,
+      clientSecret: intent.client_secret,
       status: intent.status
     });
   } catch (err) {

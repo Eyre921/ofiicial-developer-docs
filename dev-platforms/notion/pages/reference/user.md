@@ -27,19 +27,19 @@ User objects appear in nearly all objects returned by the API, including:
 * [Rich text object](/reference/rich-text), as user mentions.
 * [Property object](/reference/property-object) when the property is a `people` property.
 
-User objects will **always** contain `object` and `id` keys, as described below. The remaining properties may appear if the user is being rendered in a rich text or page property context, and the bot has the correct capabilities to access those properties. For more about capabilities, see the [Capabilities guide](/reference/capabilities) and the [Authorization guide](/guides/authorization/overview).
+In rich text and page properties, the API can return a partial user reference or a full user object. The response depends on the context and the connection's capabilities. See [Capabilities](/reference/capabilities) and [Authorization](/guides/authorization/overview).
 
 ## All users
 
-These fields are shared by all users, including people and bots. Fields marked with \* are always present.
+A partial user reference contains only the fields marked with \*. A full user object contains every field in the table.
 
 | Property | Updatable | Type | Description | Example value |
 | :- | :- | :- | :- | :- |
 | `object`\* | Display-only | `"user"` | Always "user" | `"user"` |
 | `id`\* | Display-only | `string` (UUID) | Unique identifier for this user. | `"e79a0b74-3aba-4149-9f74-0bb5791a6ee6"` |
-| `type` | Display-only | `string` (optional, enum) | Type of the user. Possible values are `"person"` and `"bot"`. | `"person"` |
-| `name` | Display-only | `string` (optional) | User's name, as displayed in Notion. | `"Avocado Lovelace"` |
-| `avatar_url` | Display-only | `string` (optional) | Chosen avatar image. | `"https://secure.notion-static.com/e6a352a8-8381-44d0-a1dc-9ed80e62b53d.jpg"` |
+| `type` | Display-only | `string` (enum) | Either `"person"` or `"bot"`. | `"person"` |
+| `name` | Display-only | `string \| null` | The user's display name. `null` if unavailable. | `"Avocado Lovelace"` |
+| `avatar_url` | Display-only | `string \| null` | The URL of the user's avatar. `null` if unavailable. | `"https://secure.notion-static.com/e6a352a8-8381-44d0-a1dc-9ed80e62b53d.jpg"` |
 
 ## People
 

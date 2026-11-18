@@ -111,7 +111,7 @@ export const myChat = chat
         });
 
         const result = streamText({
-          model: anthropic("claude-sonnet-4-5"),
+          model: anthropic("claude-sonnet-5-5"),
           messages: turn.messages,
           abortSignal: turn.signal,
           stopWhen: stepCountIs(15),
@@ -232,7 +232,7 @@ For more control, you can do each step manually:
 ```ts theme={"theme":"css-variables"}
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal,
     stopWhen: stepCountIs(15),
@@ -269,7 +269,7 @@ and aborts that turn as normal.
 ```ts trigger/my-chat.ts theme={"theme":"css-variables"}
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal, // fires on a user stop OR a run cancel
     stopWhen: stepCountIs(15),
@@ -444,7 +444,7 @@ export const myChat = chat.customAgent({
       const combinedSignal = AbortSignal.any([runSignal, stop.signal]);
 
       const result = streamText({
-        model: anthropic("claude-sonnet-4-5"),
+        model: anthropic("claude-sonnet-5-5"),
         messages,
         abortSignal: combinedSignal,
         stopWhen: stepCountIs(15),

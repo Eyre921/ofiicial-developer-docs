@@ -140,7 +140,7 @@ Best for sparse vectors, set-like comparisons, TF-IDF representations, and binar
 
 ## Utility Functions
 
-### vector\_extract
+### vector_extract
 
 Convert a vector BLOB back to a readable JSON representation:
 
@@ -149,7 +149,7 @@ SELECT vector_extract(embedding) FROM documents WHERE id = 1;
 -- [0.200000,0.500000,0.100000,0.800000]
 ```
 
-### vector\_concat
+### vector_concat
 
 Concatenate two vectors into one:
 
@@ -160,7 +160,7 @@ SELECT vector_extract(
 -- [1.000000,2.000000,3.000000,4.000000]
 ```
 
-### vector\_slice
+### vector_slice
 
 Extract a contiguous portion of a vector (zero-based, end exclusive):
 

@@ -47,7 +47,7 @@ export const myChat = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       tools: {
         inspectDocument: tool({
@@ -154,7 +154,7 @@ const session = chat.createSession(payload, {
 
 for await (const turn of session) {
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages: turn.messages,
     abortSignal: turn.signal,
     prepareStep: turn.prepareStep(), // Handles injection + compaction
@@ -196,7 +196,7 @@ for (let turn = 0; turn < 100; turn++) {
   });
 
   const result = streamText({
-    model: anthropic("claude-sonnet-4-5"),
+    model: anthropic("claude-sonnet-5-5"),
     messages,
     prepareStep: conversation.prepareStep(), // Handles injection + compaction
     stopWhen: stepCountIs(15),
@@ -251,7 +251,7 @@ function Chat({ chatId }: { chatId: string }) {
     messages,
     setMessages,
     sendMessage,
-    metadata: { model: "gpt-4o" },
+    metadata: { model: "gpt-6-luna" },
   });
 
   return (
@@ -348,7 +348,7 @@ const sent = await transport.sendPendingMessage(chatId, {
   id: crypto.randomUUID(),
   role: "user",
   parts: [{ type: "text", text: "and compare to vercel" }],
-}, { model: "gpt-4o" });
+}, { model: "gpt-6-luna" });
 ```
 
 Unlike `sendMessage()` from useChat, this does NOT:

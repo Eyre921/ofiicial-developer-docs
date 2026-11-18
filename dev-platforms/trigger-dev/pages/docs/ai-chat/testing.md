@@ -94,7 +94,7 @@ export const myChatAgent = chat
     id: "my-chat",
     run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
-        model: clientData?.model ?? "openai/gpt-4o-mini",
+        model: clientData?.model ?? "openai/gpt-6-luna",
         messages,
         abortSignal: signal,
         stopWhen: stepCountIs(15),
@@ -163,7 +163,7 @@ export const agent = chat
     id: "agent",
     run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
-        model: clientData?.model ?? anthropic("claude-haiku-4-5"),
+        model: clientData?.model ?? anthropic("claude-haiku-5-5"),
         messages,
         abortSignal: signal,
         stopWhen: stepCountIs(15),
@@ -179,9 +179,13 @@ const harness = mockChatAgent(agent, {
 });
 ```
 
+`clientData` reaches `run()` and the callbacks an agent can call a model from: `prepareMessages`, `onValidateMessages`, `onAction`, `onTurnComplete`, `onCompacted`, the compaction `shouldCompact` and `summarize` callbacks (between steps and between turns, also through `chat.MessageAccumulator` and `chat.createSession` turns), and the `pendingMessages` `onReceived` and `onInjected` callbacks. Read the mock model from `clientData` in each of them and those calls stay offline.
+
+In a hand-rolled `chat.customAgent` loop that doesn't use `chat.createSession`, the SDK has no turn to read from. `conversation.prepareStep()` then calls the inner `summarize` without `chatId`, `turn` or `clientData`, so close over `clientData` when you build the `summarize` config. Pass `{ chatId, turn, clientData }` to `conversation.compactIfNeeded()` for the outer compaction.
+
 ## Driving turns
 
-The harness exposes one method per chat trigger. Each waits for the next `trigger:turn-complete` chunk before resolving.
+The harness exposes one method per chat trigger. Each waits for the next `trigger:turn-complete` chunk, and for the turn's post-turn hooks (`onTurnComplete` and the transcript save) to finish, before resolving. You can assert on what those hooks recorded right after the `await`.
 
 ### sendMessage
 
@@ -285,9 +289,6 @@ const agent = chat.agent({
 const harness = mockChatAgent(agent, { chatId: "t" });
 await harness.sendMessage(userMessage("hi"));
 
-// onTurnComplete fires after the turn-complete chunk is written —
-// give it a tick before asserting.
-await new Promise((r) => setTimeout(r, 20));
 expect(events).toEqual([
   "onChatStart",
   "onTurnStart",
@@ -415,7 +416,6 @@ try {
     role: "user",
     parts: [{ type: "text", text: "where were we?" }],
   });
-  await new Promise((r) => setTimeout(r, 20));
 
   expect(onChatStart).not.toHaveBeenCalled();
   expect(onTurnStart).toHaveBeenCalledTimes(1);
@@ -536,7 +536,7 @@ export const agent = chat.agent({
     });
   },
   run: async ({ messages, signal }) => {
-    return streamText({ model: anthropic("claude-sonnet-4-5"), messages, abortSignal: signal });
+    return streamText({ model: anthropic("claude-sonnet-5-5"), messages, abortSignal: signal });
   },
 });
 ```
@@ -677,7 +677,7 @@ await runInMockTaskContext(
 
 * **No network.** The mock task context replaces realtime streams, run metadata, lifecycle managers, and the runtime. Anything that bypasses these (raw `fetch`, direct DB clients) runs against the real network.
 * **Single agent per process.** The resource catalog is process-global; tests within a file are sequential by default. If you parallelize across files, vitest runs each file in its own worker, which avoids registry collisions.
-* **Time-sensitive hooks.** `onTurnComplete` runs *after* the `turn-complete` chunk is written, so `sendMessage()` resolves before that hook finishes. Add a brief `await new Promise((r) => setTimeout(r, 20))` if you need to assert on hook side-effects.
+* **Deferred work.** Turn methods wait for `onTurnComplete`, but not for work you start with `chat.defer()`. That work runs alongside the idle wait, as it does in production, so await your own promise before asserting on it.
 * **No real LLM.** The harness does not call providers — you must inject `MockLanguageModelV3` (or another mock) yourself.
 
 ## Check the deployed behavior

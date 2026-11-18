@@ -14,7 +14,11 @@ Metronome, a Stripe product, is a usage-based billing platform that provides rea
 [Try Metronome](https://signup.metronome.com/)
 ## Get started with Metronome
 
-[How Metronome works with Stripe](https://docs.stripe.com/billing/how-metronome-works-with-stripe.md): Learn how Metronome and Stripe integrate to handle usage-based billing, invoicing, payments, and revenue recognition.
+[How Metronome works with Stripe](https://docs.stripe.com/billing/how-metronome-works-with-stripe.md): Learn about integration patterns, billing models, and Stripe product compatibility.
+
+[Set up Metronome with Stripe](https://docs.stripe.com/billing/set-up-metronome-with-stripe.md): Follow a setup checklist to configure billing, payment collection, tax, and webhooks.
+
+[Metronome invoice and payment reference](https://docs.stripe.com/billing/metronome-invoice-payment-reference.md): Review invoice processing, payment collection, and payment recovery.
 
 [API quickstart](https://docs.metronome.com/guides/get-started/api-quickstart): Get a token and make your first request.
 

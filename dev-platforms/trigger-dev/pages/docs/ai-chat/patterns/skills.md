@@ -96,7 +96,7 @@ export const agent = chat.agent({
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
-      model: anthropic("claude-sonnet-4-5"),
+      model: anthropic("claude-sonnet-5-5"),
       messages,
       abortSignal: signal,
       stopWhen: stepCountIs(15),
@@ -167,7 +167,7 @@ If you also define your own AI SDK tools, pass them through `chat.toStreamTextOp
 
 ```ts theme={"theme":"css-variables"}
 return streamText({
-  model: anthropic("claude-sonnet-4-5"),
+  model: anthropic("claude-sonnet-5-5"),
   messages,
   abortSignal: signal,
   tools: {

@@ -158,7 +158,7 @@ SELECT coalesce(1, 2, 3);                  -- 1
 SELECT coalesce(NULL, 42);                 -- 42
 ```
 
-### concat(X, ...) and concat\_ws(SEP, X, ...)
+### concat(X, ...) and concat_ws(SEP, X, ...)
 
 `concat` joins all arguments as strings, skipping NULLs. `concat_ws` inserts the separator between non-NULL arguments.
 
@@ -249,7 +249,7 @@ SELECT instr('abcabc', 'bc');           -- 2
 SELECT strpos('Hello World', 'World');  -- 7
 ```
 
-### length(X), char\_length(X), character\_length(X), and octet\_length(X)
+### length(X), char_length(X), character_length(X), and octet_length(X)
 
 `length` returns the number of characters in a text value, or the number of bytes in a blob value. For NULL, returns NULL. For numeric values, returns the length of the text representation.
 
@@ -406,7 +406,7 @@ SELECT replace('aabbcc', 'bb', 'XX');               -- 'aaXXcc'
 SELECT replace('2024-01-15', '-', '/');              -- '2024/01/15'
 ```
 
-### reverse(X) and string\_reverse(X)
+### reverse(X) and string_reverse(X)
 
 Returns string X with its characters in reverse order. Reversal is done on Unicode characters, so multi-byte characters are preserved intact. Returns NULL if X is NULL. Non-text inputs are converted to their text representation first.
 
@@ -495,7 +495,7 @@ SELECT length(zeroblob(10));    -- 10
 SELECT hex(zeroblob(4));        -- '00000000'
 ```
 
-### last\_insert\_rowid()
+### last_insert_rowid()
 
 Returns the rowid of the most recent successful INSERT on the current database connection. Returns 0 if no INSERT has been performed.
 
@@ -507,7 +507,7 @@ INSERT INTO users (name) VALUES ('Bob');
 SELECT last_insert_rowid();  -- 2
 ```
 
-### changes() and total\_changes()
+### changes() and total_changes()
 
 `changes` returns the number of rows modified by the most recent INSERT, UPDATE, or DELETE statement. `total_changes` returns the total number of rows modified since the database connection was opened.
 
@@ -521,7 +521,7 @@ SELECT changes();        -- 2
 SELECT total_changes();  -- 5 (3 inserted + 2 deleted)
 ```
 
-### sqlite\_version()
+### sqlite_version()
 
 Returns the SQLite-compatible version string.
 
@@ -529,7 +529,7 @@ Returns the SQLite-compatible version string.
 SELECT sqlite_version();  -- '3.42.0'
 ```
 
-### turso\_version()
+### turso_version()
 
 Returns the version string of the Turso engine.
 
@@ -537,7 +537,7 @@ Returns the version string of the Turso engine.
 SELECT turso_version();  -- e.g. '0.7.0'
 ```
 
-### load\_extension(X)
+### load_extension(X)
 
 Loads a Turso-native extension from the shared library at path X.
 

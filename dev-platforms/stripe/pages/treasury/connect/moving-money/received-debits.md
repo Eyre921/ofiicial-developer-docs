@@ -139,6 +139,8 @@ After you authorize a third party’s mandate to directly debit a financial acco
 
 [Retrieve a received debit](https://docs.stripe.com/api/v2/money-management/received-debits/retrieve.md?api-version=preview) by its ID to review details such as the `amount`, `status`, and `type` of transfer.
 
+For bank transfers, use `bank_transfer.originating_bank_account.type` to select the `aba` or `sort_code` credential object. Sort-code details require Bacs debit support on your account. Read the payment network from `bank_transfer.network`.
+
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
@@ -156,12 +158,15 @@ curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT
   },
   "bank_transfer": {
     "financial_address": "{{FINANCIAL_ADDRESS_ID}}",
-    "payment_method_type": "us_bank_account",
+    "network": "ach",
     "statement_descriptor": "Some statement descriptor",
-    "us_bank_account": {
-      "bank_name": "US BANK NAME",
-      "network": "ach",
-      "routing_number": "110000000"
+    "originating_bank_account": {
+      "type": "aba",
+      "aba": {
+        "account_holder_name": "Jenny Rosen",
+        "bank_name": "US BANK NAME",
+        "routing_number": "110000000"
+      }
     }
   },
   "created": "2026-05-28T08:21:19.751Z",

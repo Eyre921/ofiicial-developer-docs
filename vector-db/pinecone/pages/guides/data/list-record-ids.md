@@ -16,7 +16,7 @@ For a legacy vector index, see [List vector IDs](/guides/legacy/vectors-api/list
 
 ## List document IDs
 
-In an index with a document schema, `list` returns document IDs in sorted order, 100 per page, which is also the maximum page size. Each entry carries only an `_id`. To get the fields of a document, [fetch](/guides/data/fetch-data#fetch-documents) it.
+In a document index, `list` returns document IDs in sorted order, 100 per page, which is also the maximum page size. Each entry carries only an `_id`. To get the fields of a document, [fetch](/guides/data/fetch-data#fetch-documents) it.
 
 ### List all document IDs
 

@@ -404,7 +404,7 @@ export async function POST(req: Request) {
   const { messages, runId } = await req.json();
 
   const result = streamText({
-    model: openai("gpt-4o"),
+    model: openai("gpt-6-luna"),
     messages,
   });
 
@@ -688,7 +688,7 @@ export const generateAI = task({
   id: "generate-ai",
   run: async (payload: { prompt: string }) => {
     const result = streamText({
-      model: openai("gpt-4o"),
+      model: openai("gpt-6-luna"),
       prompt: payload.prompt,
     });
 

@@ -1,3 +1,7 @@
+# CrewAI
+
+> This file is very large and may be truncated. For an index of this content, please refer to https://docs.crewai.com/llms.txt instead.
+
 # CrewAI Documentation
 Source: https://docs.crewai.com/index
 
@@ -171,7 +175,7 @@ Browse the [examples and cookbooks](/en/examples/cookbooks) for end-to-end refer
 
 
 # Agent Capabilities
-Source: https://docs.crewai.com/v1.15.41/en/concepts/agent-capabilities
+Source: https://docs.crewai.com/v1.15.42/en/concepts/agent-capabilities
 
 Understand the five ways to extend CrewAI agents: Tools, MCPs, Apps, Skills, and Knowledge.
 
@@ -325,7 +329,7 @@ Ready to learn more about each capability type?
 
 
 # Agents
-Source: https://docs.crewai.com/v1.15.41/en/concepts/agents
+Source: https://docs.crewai.com/v1.15.42/en/concepts/agents
 
 Detailed guide on creating and managing agents within the CrewAI framework.
 
@@ -1188,7 +1192,7 @@ Remember that agents are most effective when configured according to their speci
 
 
 # Checkpointing
-Source: https://docs.crewai.com/v1.15.41/en/concepts/checkpointing
+Source: https://docs.crewai.com/v1.15.42/en/concepts/checkpointing
 
 Automatically save execution state so crews, flows, and agents can resume after failures.
 
@@ -1637,7 +1641,7 @@ Single database file at `location` with WAL journaling.
 
 
 # CLI
-Source: https://docs.crewai.com/v1.15.41/en/concepts/cli
+Source: https://docs.crewai.com/v1.15.42/en/concepts/cli
 
 Learn how to use the CrewAI CLI to interact with CrewAI.
 
@@ -1722,6 +1726,16 @@ crewai create agent python_support --format python
 ```
 
 Standalone Agent projects default to `agent.json`. Use `--format yaml` for configuration in YAML, or `--format python` for an exported Python Agent. This experimental project/loading contract may change and requires matching preview CLI/SDK builds. See [Standalone Agent Projects](/edge/en/guides/agents/standalone-agent-projects) for setup, tools, runtime inputs, and deployment limits.
+
+In a terminal, JSON and YAML agents open the same tool picker as `crewai create crew`. Add tools to an existing agent project later with `crewai tool add`:
+
+```shell Terminal theme={null}
+crewai tool add                                  # pick from the list
+crewai tool add SerperDevTool platform:gmail     # or name them
+crewai tool setup                                # connect the definition's CrewAI Platform apps
+```
+
+`crewai tool add` appends to the definition's `tools` list. CrewAI Platform applications are checked on AMP first, and the Enterprise Action Auth Token is saved to `.env`. `crewai tool setup` repeats that check for the apps already in the definition, for example after cloning the project.
 
 #### Tool
 
@@ -2309,7 +2323,7 @@ Trace collection is controlled by checking three settings in priority order:
 
 
 # Collaboration
-Source: https://docs.crewai.com/v1.15.41/en/concepts/collaboration
+Source: https://docs.crewai.com/v1.15.42/en/concepts/collaboration
 
 How to enable agents to work together, delegate tasks, and communicate effectively within CrewAI teams.
 
@@ -2688,7 +2702,7 @@ Collaboration transforms individual AI agents into powerful teams that can tackl
 
 
 # Crews
-Source: https://docs.crewai.com/v1.15.41/en/concepts/crews
+Source: https://docs.crewai.com/v1.15.42/en/concepts/crews
 
 Understanding and utilizing crews in the crewAI framework with comprehensive attributes and functionalities.
 
@@ -2698,36 +2712,36 @@ A crew in crewAI represents a collaborative group of agents working together to 
 
 ## Crew Attributes
 
-| Attribute | Parameters | Description | |
-| :- | :- | :- | - |
-| **Tasks** | `tasks` | A list of tasks assigned to the crew. | |
-| **Agents** | `agents` | A list of agents that are part of the crew. | |
-| **Process** *(optional)* | `process` | The process flow (e.g., sequential, hierarchical) the crew follows. Default is `sequential`. | |
-| **Verbose** *(optional)* | `verbose` | The verbosity level for logging during execution. Defaults to `False`. | |
-| **Manager LLM** *(optional)* | `manager_llm` | The language model used by the manager agent in a hierarchical process. **Required when using a hierarchical process.** | |
-| **Function Calling LLM** *(optional)* | `function_calling_llm` | If passed, the crew will use this LLM to do function calling for tools for all agents in the crew. Each agent can have its own LLM, which overrides the crew's LLM for function calling. | |
-| **Config** *(optional)* | `config` | Optional configuration settings for the crew, in `Json` or `Dict[str, Any]` format. | |
-| **Max RPM** *(optional)* | `max_rpm` | Maximum requests per minute the crew adheres to during execution. Defaults to `None`. | |
+| Attribute | Parameters | Description |
+| :- | :- | :- |
+| **Tasks** | `tasks` | A list of tasks assigned to the crew. |
+| **Agents** | `agents` | A list of agents that are part of the crew. |
+| **Process** *(optional)* | `process` | The process flow (e.g., sequential, hierarchical) the crew follows. Default is `sequential`. |
+| **Verbose** *(optional)* | `verbose` | The verbosity level for logging during execution. Defaults to `False`. |
+| **Manager LLM** *(optional)* | `manager_llm` | The language model used by the manager agent in a hierarchical process. **Required when using a hierarchical process.** |
+| **Function Calling LLM** *(optional)* | `function_calling_llm` | If passed, the crew will use this LLM to do function calling for tools for all agents in the crew. Each agent can have its own LLM, which overrides the crew's LLM for function calling. |
+| **Config** *(optional)* | `config` | Optional configuration settings for the crew, in `Json` or `Dict[str, Any]` format. |
+| **Max RPM** *(optional)* | `max_rpm` | Maximum requests per minute the crew adheres to during execution. Defaults to `None`. |
 | **Memory** *(optional)* | `memory` | Utilized for storing execution memories (short-term, long-term, entity memory). | |
-| **Cache** *(optional)* | `cache` | Specifies whether to use a cache for storing the results of tools' execution. Defaults to `True`. | |
-| **Embedder** *(optional)* | `embedder` | Configuration for the embedder to be used by the crew. Mostly used by memory for now. Default is `{"provider": "openai"}`. | |
-| **Step Callback** *(optional)* | `step_callback` | A function that is called after each step of every agent. This can be used to log the agent's actions or to perform other operations; it won't override the agent-specific `step_callback`. | |
-| **Task Callback** *(optional)* | `task_callback` | A function that is called after the completion of each task. Useful for monitoring or additional operations post-task execution. | |
-| **Share Crew** *(optional)* | `share_crew` | Whether you want to share the complete crew information and execution with the crewAI team to make the library better, and allow us to train models. | |
-| **Output Log File** *(optional)* | `output_log_file` | Set to True to save logs as logs.txt in the current directory or provide a file path. Logs will be in JSON format if the filename ends in .json, otherwise .txt. Defaults to `None`. | |
-| **Manager Agent** *(optional)* | `manager_agent` | `manager` sets a custom agent that will be used as a manager. | |
-| **Prompt File** *(optional)* | `prompt_file` | Path to the prompt JSON file to be used for the crew. | |
-| **Planning** *(optional)* | `planning` | Adds planning ability to the Crew. When activated before each Crew iteration, all Crew data is sent to an AgentPlanner that will plan the tasks and this plan will be added to each task description. | |
-| **Planning LLM** *(optional)* | `planning_llm` | The language model used by the AgentPlanner in a planning process. | |
-| **Knowledge Sources** *(optional)* | `knowledge_sources` | Knowledge sources available at the crew level, accessible to all the agents. | |
-| **Stream** *(optional)* | `stream` | Enable streaming output to receive real-time updates during crew execution. Returns a `CrewStreamingOutput` object that can be iterated for chunks. Defaults to `False`. | |
-| **Chat LLM** *(optional)* | `chat_llm` | The language model used to orchestrate `crewai chat` CLI interactions with the crew. Accepts a model name string or `LLM` instance. Defaults to `None`. | |
-| **Before Kickoff Callbacks** *(optional)* | `before_kickoff_callbacks` | A list of callable functions executed **before** the crew starts. Each callback receives and can modify the inputs dict. Distinct from the `@before_kickoff` decorator. Defaults to `[]`. | |
-| **After Kickoff Callbacks** *(optional)* | `after_kickoff_callbacks` | A list of callable functions executed **after** the crew finishes. Each callback receives and can modify the `CrewOutput`. Distinct from the `@after_kickoff` decorator. Defaults to `[]`. | |
-| **Tracing** *(optional)* | `tracing` | Controls tracing for the crew. `True` = always enable, `False` = always disable, `None` = inherit from environment / user settings. Defaults to `None`. | |
-| **Skills** *(optional)* | `skills` | A list of `Path` objects (skill search directories) or pre-loaded `Skill` objects applied to all agents in the crew. Defaults to `None`. | |
-| **Security Config** *(optional)* | `security_config` | A `SecurityConfig` instance managing crew fingerprinting and identity. Defaults to `SecurityConfig()`. | |
-| **Checkpoint** *(optional)* | `checkpoint` | Enables automatic checkpointing. Pass `True` for sensible defaults, a `CheckpointConfig` for full control, `False` to opt out, or `None` to inherit. See the [Checkpointing](#checkpointing) section below. Defaults to `None`. | |
+| **Cache** *(optional)* | `cache` | Specifies whether to use a cache for storing the results of tools' execution. Defaults to `True`. |
+| **Embedder** *(optional)* | `embedder` | Configuration for the embedder to be used by the crew. Mostly used by memory for now. Default is `{"provider": "openai"}`. |
+| **Step Callback** *(optional)* | `step_callback` | A function that is called after each step of every agent. This can be used to log the agent's actions or to perform other operations; it won't override the agent-specific `step_callback`. |
+| **Task Callback** *(optional)* | `task_callback` | A function that is called after the completion of each task. Useful for monitoring or additional operations post-task execution. |
+| **Share Crew** *(optional)* | `share_crew` | Whether you want to share the complete crew information and execution with the crewAI team to make the library better, and allow us to train models. |
+| **Output Log File** *(optional)* | `output_log_file` | Set to True to save logs as logs.txt in the current directory or provide a file path. Logs will be in JSON format if the filename ends in .json, otherwise .txt. Defaults to `None`. |
+| **Manager Agent** *(optional)* | `manager_agent` | `manager` sets a custom agent that will be used as a manager. |
+| **Prompt File** *(optional)* | `prompt_file` | Path to the prompt JSON file to be used for the crew. |
+| **Planning** *(optional)* | `planning` | Adds planning ability to the Crew. When activated before each Crew iteration, all Crew data is sent to an AgentPlanner that will plan the tasks and this plan will be added to each task description. |
+| **Planning LLM** *(optional)* | `planning_llm` | The language model used by the AgentPlanner in a planning process. |
+| **Knowledge Sources** *(optional)* | `knowledge_sources` | Knowledge sources available at the crew level, accessible to all the agents. |
+| **Stream** *(optional)* | `stream` | Enable streaming output to receive real-time updates during crew execution. Returns a `CrewStreamingOutput` object that can be iterated for chunks. Defaults to `False`. |
+| **Chat LLM** *(optional)* | `chat_llm` | The language model used to orchestrate `crewai chat` CLI interactions with the crew. Accepts a model name string or `LLM` instance. Defaults to `None`. |
+| **Before Kickoff Callbacks** *(optional)* | `before_kickoff_callbacks` | A list of callable functions executed **before** the crew starts. Each callback receives and can modify the inputs dict. Distinct from the `@before_kickoff` decorator. Defaults to `[]`. |
+| **After Kickoff Callbacks** *(optional)* | `after_kickoff_callbacks` | A list of callable functions executed **after** the crew finishes. Each callback receives and can modify the `CrewOutput`. Distinct from the `@after_kickoff` decorator. Defaults to `[]`. |
+| **Tracing** *(optional)* | `tracing` | Controls tracing for the crew. `True` = always enable, `False` = always disable, `None` = inherit from environment / user settings. Defaults to `None`. |
+| **Skills** *(optional)* | `skills` | A list of `Path` objects (skill search directories) or pre-loaded `Skill` objects applied to all agents in the crew. Defaults to `None`. |
+| **Security Config** *(optional)* | `security_config` | A `SecurityConfig` instance managing crew fingerprinting and identity. Defaults to `SecurityConfig()`. |
+| **Checkpoint** *(optional)* | `checkpoint` | Enables automatic checkpointing. Pass `True` for sensible defaults, a `CheckpointConfig` for full control, `False` to opt out, or `None` to inherit. See the [Checkpointing](#checkpointing) section below. Defaults to `None`. |
 
 > [!TIP]
 >
@@ -3147,7 +3161,7 @@ These commands let you replay from your latest kickoff tasks, still retaining co
 
 
 # Event Listeners
-Source: https://docs.crewai.com/v1.15.41/en/concepts/event-listener
+Source: https://docs.crewai.com/v1.15.42/en/concepts/event-listener
 
 Tap into CrewAI events to build custom integrations and monitoring
 
@@ -3562,7 +3576,7 @@ By leveraging CrewAI's event system, you can extend its functionality and integr
 
 
 # Files
-Source: https://docs.crewai.com/v1.15.41/en/concepts/files
+Source: https://docs.crewai.com/v1.15.42/en/concepts/files
 
 Pass images, PDFs, audio, video, and text files to your agents for multimodal processing.
 
@@ -3838,7 +3852,7 @@ task = Task(
 
 
 # Flows
-Source: https://docs.crewai.com/v1.15.41/en/concepts/flows
+Source: https://docs.crewai.com/v1.15.42/en/concepts/flows
 
 Learn how to create and manage AI workflows using CrewAI Flows.
 
@@ -5008,7 +5022,7 @@ The legacy `crewai flow kickoff` command is deprecated. Use `crewai run` for bot
 
 
 # Knowledge
-Source: https://docs.crewai.com/v1.15.41/en/concepts/knowledge
+Source: https://docs.crewai.com/v1.15.42/en/concepts/knowledge
 
 What is knowledge in CrewAI and how to use it.
 
@@ -5035,25 +5049,26 @@ Think of it as giving your agents a reference library they can consult while wor
 
 ### Vector store (RAG) client configuration
 
-CrewAI exposes a provider-neutral RAG client abstraction for vector stores. The default provider is ChromaDB, and Qdrant is supported as well. You can switch providers using configuration utilities.
+CrewAI exposes a provider-neutral RAG client abstraction for vector stores. The default provider is Qdrant, stored locally on disk with no server to run. ChromaDB is supported as an optional extra (`pip install "crewai[chromadb]"`). You can switch providers using configuration utilities.
 
 Supported today:
 
-* ChromaDB (default)
-* Qdrant
+* Qdrant (default)
+* ChromaDB (requires `crewai[chromadb]`)
 
 ```python Code theme={null}
 from crewai.rag.config.utils import set_rag_config, get_rag_client, clear_rag_config
 
-# ChromaDB (default)
-from crewai.rag.chromadb.config import ChromaDBConfig
-set_rag_config(ChromaDBConfig())
-chromadb_client = get_rag_client()
-
-# Qdrant
+# Qdrant (default). QdrantConfig() embeds locally with fastembed
+# (pip install "crewai[qdrant]"); pass embedding_function to use another embedder.
 from crewai.rag.qdrant.config import QdrantConfig
 set_rag_config(QdrantConfig())
 qdrant_client = get_rag_client()
+
+# ChromaDB (requires: pip install "crewai[chromadb]")
+from crewai.rag.chromadb.config import ChromaDBConfig
+set_rag_config(ChromaDBConfig())
+chromadb_client = get_rag_client()
 
 # Example operations (same API for any provider)
 client = qdrant_client  # or chromadb_client
@@ -5067,7 +5082,7 @@ results = client.search(collection_name="docs", query="collaborative agents", li
 clear_rag_config()  # optional reset
 ```
 
-This RAG client is separate from Knowledge’s built-in storage. Use it when you need direct vector-store control or custom retrieval pipelines.
+Knowledge’s built-in storage uses the provider selected here: Qdrant unless you set a ChromaDB configuration. Use the client directly when you need vector-store control or custom retrieval pipelines.
 
 ### Basic String Knowledge Example
 
@@ -5295,11 +5310,11 @@ agent_collection_name = agent.role  # e.g., "Technical Specialist"
 # Crew knowledge storage  
 crew_collection_name = "crew"
 
-# Both stored in same ChromaDB instance but different collections
-# Path: ~/.local/share/CrewAI/{project}/knowledge/
-#   ├── crew/                    # Crew knowledge collection
-#   ├── Technical Specialist/    # Agent knowledge collection
-#   └── Another Agent Role/      # Another agent's collection
+# Both stored in the same Qdrant storage but different collections
+# Path: ~/.local/share/CrewAI/{project}/qdrant/collection/
+#   ├── knowledge_crew/                    # Crew knowledge collection
+#   ├── knowledge_Technical Specialist/    # Agent knowledge collection
+#   └── knowledge_Another Agent Role/      # Another agent's collection
 ```
 
 ### Complete Working Examples
@@ -5442,6 +5457,7 @@ agent = Agent(
 >
 > `results_limit`: is the number of relevant documents to return. Default is 3.
 > `score_threshold`: is the minimum score for a document to be considered relevant. Default is 0.35.
+> Scores run from 0 to 1 on both Qdrant and ChromaDB (cosine similarity rescaled as `(cosine + 1) / 2`), so the same threshold means the same on either.
 
 ## Supported Knowledge Parameters
 
@@ -5461,11 +5477,19 @@ Custom storage configuration for managing how the knowledge is stored and retrie
 
 > [!NOTE]
 >
-> **Understanding Knowledge Storage**: CrewAI automatically stores knowledge sources in platform-specific directories using ChromaDB for vector storage. Understanding these locations and defaults helps with production deployments, debugging, and storage management.
+> **Understanding Knowledge Storage**: CrewAI automatically stores knowledge sources in platform-specific directories using a local Qdrant database for vector storage. Understanding these locations and defaults helps with production deployments, debugging, and storage management. By default each process uses its own temporary folder, so Knowledge is not kept between runs unless you set a fixed path (see the note below).
+
+> [!WARNING]
+>
+> **Knowledge now defaults to Qdrant instead of ChromaDB.** Knowledge that was indexed with ChromaDB in an earlier version is not read automatically, and nothing is migrated. Run your crew again to index your knowledge sources into Qdrant (they are re-embedded, which calls your embedder again), or opt back in to ChromaDB with `pip install "crewai[chromadb]"` and `set_rag_config(ChromaDBConfig())`.
+
+> [!NOTE]
+>
+> By default, each process uses its own temporary Qdrant folder (`qdrant-pid<PID>` in the storage directory), removed when the process exits. Several processes, workers or replicas never collide, but nothing is kept between runs: Knowledge is embedded again in every process. To keep Knowledge on disk, set a fixed path (`set_rag_config(QdrantConfig(options={"path": "./knowledge_db"}))`). A fixed folder allows **one process at a time**, and a second process fails with an error that suggests the options below. To share one store across processes, use a Qdrant server (`QdrantConfig(options={"url": "http://localhost:6333"})`) or ChromaDB (`pip install "crewai[chromadb]"` + `set_rag_config(ChromaDBConfig())`). `QdrantConfig(...)` builds its default local embedder when it is created, so install `crewai[qdrant]` or pass `embedding_function`. Knowledge still embeds with your agent's embedder. Threads in the same process are safe: calls to the shared local client run one at a time.
 
 ### Where CrewAI Stores Knowledge Files
 
-By default, CrewAI uses the same storage system as memory, storing knowledge in platform-specific directories:
+A local Qdrant folder has the layout below. By default each process gets `qdrant-pid<PID>` in these directories (instead of `qdrant`) and removes it when it exits. With a fixed `path`, the same layout is created at that path.
 
 #### Default Storage Locations by Platform
 
@@ -5473,30 +5497,30 @@ By default, CrewAI uses the same storage system as memory, storing knowledge in 
 
 ```
 ~/Library/Application Support/CrewAI/{project_name}/
-└── knowledge/                    # Knowledge ChromaDB files
-    ├── chroma.sqlite3           # ChromaDB metadata
-    ├── {collection_id}/         # Vector embeddings
-    └── knowledge_{collection}/  # Named collections
+└── qdrant/                       # Local Qdrant database (Knowledge)
+    ├── meta.json                # Qdrant metadata
+    └── collection/
+        └── knowledge_{collection}/  # One folder per collection (storage.sqlite)
 ```
 
 **Linux:**
 
 ```
 ~/.local/share/CrewAI/{project_name}/
-└── knowledge/
-    ├── chroma.sqlite3
-    ├── {collection_id}/
-    └── knowledge_{collection}/
+└── qdrant/
+    ├── meta.json
+    └── collection/
+        └── knowledge_{collection}/
 ```
 
 **Windows:**
 
 ```
 C:\Users\{username}\AppData\Local\CrewAI\{project_name}\
-└── knowledge\
-    ├── chroma.sqlite3
-    ├── {collection_id}\
-    └── knowledge_{collection}\
+└── qdrant\
+    ├── meta.json
+    └── collection\
+        └── knowledge_{collection}\
 ```
 
 ### Finding Your Knowledge Storage Location
@@ -5508,14 +5532,17 @@ from crewai.utilities.paths import db_storage_path
 import os
 
 # Get the knowledge storage path
-knowledge_path = os.path.join(db_storage_path(), "knowledge")
+# Default folder of this process (removed when the process exits). Set a fixed
+# path with QdrantConfig(options={"path": ...}) to keep Knowledge on disk.
+knowledge_path = os.path.join(db_storage_path(), f"qdrant-pid{os.getpid()}")
 print(f"Knowledge storage location: {knowledge_path}")
 
 # List knowledge collections and files
 if os.path.exists(knowledge_path):
     print("\nKnowledge storage contents:")
-    for item in os.listdir(knowledge_path):
-        item_path = os.path.join(knowledge_path, item)
+    collections_path = os.path.join(knowledge_path, "collection")
+    for item in os.listdir(collections_path):
+        item_path = os.path.join(collections_path, item)
         if os.path.isdir(item_path):
             print(f"📁 Collection: {item}/")
             # Show collection contents
@@ -5942,8 +5969,8 @@ import os
 from crewai.utilities.paths import db_storage_path
 
 # Check storage structure
-storage_path = db_storage_path()
-knowledge_path = os.path.join(storage_path, "knowledge")
+# The fixed path you set with QdrantConfig(options={"path": "./knowledge_db"})
+knowledge_path = os.path.join("./knowledge_db", "collection")
 
 if os.path.exists(knowledge_path):
     print("Knowledge collections found:")
@@ -5974,25 +6001,27 @@ if hasattr(agent, 'knowledge') and agent.knowledge:
 #### Inspect Knowledge Collections
 
 ```python theme={null}
-import chromadb
+from qdrant_client import QdrantClient
 from crewai.utilities.paths import db_storage_path
 import os
 
-# Connect to CrewAI's knowledge ChromaDB
-knowledge_path = os.path.join(db_storage_path(), "knowledge")
+# Connect to CrewAI's local knowledge database.
+# Local Qdrant allows one process per folder, so stop your crew first.
+# Use the fixed path you set with QdrantConfig(options={"path": ...}).
+knowledge_path = "./knowledge_db"
 
 if os.path.exists(knowledge_path):
-    client = chromadb.PersistentClient(path=knowledge_path)
-    collections = client.list_collections()
-    
+    client = QdrantClient(path=knowledge_path)
+
     print("Knowledge Collections:")
-    for collection in collections:
-        print(f"  - {collection.name}: {collection.count()} documents")
-        
+    for collection in client.get_collections().collections:
+        count = client.count(collection.name).count
+        print(f"  - {collection.name}: {count} documents")
+
         # Sample a few documents to verify content
-        if collection.count() > 0:
-            sample = collection.peek(limit=2)
-            print(f"    Sample content: {sample['documents'][0][:100]}...")
+        if count > 0:
+            points, _ = client.scroll(collection.name, limit=2, with_payload=True)
+            print(f"    Sample content: {points[0].payload['content'][:100]}...")
 else:
     print("No knowledge storage found")
 ```
@@ -6055,7 +6084,7 @@ crew = Crew(
 )
 ```
 
-**"ChromaDB permission denied" errors:**
+**"Permission denied" errors on the knowledge storage:**
 
 ```bash theme={null}
 # Fix storage permissions
@@ -6071,7 +6100,7 @@ from crewai.utilities.paths import db_storage_path
 
 print("CREWAI_STORAGE_DIR:", os.getenv("CREWAI_STORAGE_DIR"))
 print("Computed storage path:", db_storage_path())
-print("Knowledge path:", os.path.join(db_storage_path(), "knowledge"))
+print("Default Knowledge folder:", os.path.join(db_storage_path(), f"qdrant-pid{os.getpid()}"))
 ```
 
 ### Knowledge Reset Commands
@@ -6141,7 +6170,7 @@ This is useful when you've updated your knowledge sources and want to ensure tha
 
 
 # LLMs
-Source: https://docs.crewai.com/v1.15.41/en/concepts/llms
+Source: https://docs.crewai.com/v1.15.42/en/concepts/llms
 
 A comprehensive guide to configuring and using Large Language Models (LLMs) in your CrewAI projects
 
@@ -7850,7 +7879,7 @@ Learn how to get the most out of your LLM configuration:
 
 
 # Memory
-Source: https://docs.crewai.com/v1.15.41/en/concepts/memory
+Source: https://docs.crewai.com/v1.15.42/en/concepts/memory
 
 Leveraging the unified memory system in CrewAI to enhance agent capabilities.
 
@@ -8728,7 +8757,7 @@ All configuration is passed as keyword arguments to `Memory(...)`. Every paramet
 
 
 # Planning
-Source: https://docs.crewai.com/v1.15.41/en/concepts/planning
+Source: https://docs.crewai.com/v1.15.42/en/concepts/planning
 
 Learn how to make agents plan before they act with PlanningConfig, and how to plan a whole crew with Crew(planning=True).
 
@@ -9101,7 +9130,7 @@ Crew planning uses `gpt-6-luna` by default. Set `planning_llm` to a model name o
 
 
 # Processes
-Source: https://docs.crewai.com/v1.15.41/en/concepts/processes
+Source: https://docs.crewai.com/v1.15.42/en/concepts/processes
 
 Detailed guide on workflow management through processes in CrewAI, with updated implementation details.
 
@@ -9170,7 +9199,7 @@ This documentation has been updated to reflect the latest features and enhanceme
 
 
 # Production Architecture
-Source: https://docs.crewai.com/v1.15.41/en/concepts/production-architecture
+Source: https://docs.crewai.com/v1.15.42/en/concepts/production-architecture
 
 Best practices for building production-ready AI applications with CrewAI
 
@@ -9341,7 +9370,7 @@ The new run gets a fresh `state.id` (auto-generated, or `inputs["id"]` if pinned
 
 
 # Reasoning
-Source: https://docs.crewai.com/v1.15.41/en/concepts/reasoning
+Source: https://docs.crewai.com/v1.15.42/en/concepts/reasoning
 
 Agent reasoning is now agent planning. Learn how to move from reasoning=True to planning_config.
 
@@ -9385,7 +9414,7 @@ For reasoning effort levels, step limits, a separate planning LLM, custom prompt
 
 
 # Skills
-Source: https://docs.crewai.com/v1.15.41/en/concepts/skills
+Source: https://docs.crewai.com/v1.15.42/en/concepts/skills
 
 Filesystem-based skill packages that inject domain expertise and instructions into agent prompts.
 
@@ -9792,7 +9821,7 @@ Both skills and knowledge modify the agent's prompt, but they serve different pu
 | Aspect | Skills | Knowledge |
 | :- | :- | :- |
 | **What it provides** | Instructions, procedures, guidelines | Facts, data, information |
-| **How it's stored** | Markdown files (SKILL.md) | Embedded in vector store (ChromaDB) |
+| **How it's stored** | Markdown files (SKILL.md) | Embedded in vector store (Qdrant by default) |
 | **How it's retrieved** | Entire body injected into prompt | Semantic search finds relevant chunks |
 | **Best for** | Methodology, checklists, style guides | Company docs, product info, reference data |
 | **Set via** | `skills=["./skills"]` | `knowledge_sources=[source]` |
@@ -9825,7 +9854,7 @@ Both skills and knowledge modify the agent's prompt, but they serve different pu
 
 
 # Streaming
-Source: https://docs.crewai.com/v1.15.41/en/concepts/streaming
+Source: https://docs.crewai.com/v1.15.42/en/concepts/streaming
 
 Understand CrewAI's streaming model for Flows, direct LLM calls, tools, and conversational turns.
 
@@ -9962,7 +9991,7 @@ Direct `llm.call(...)` still returns the final assembled LLM result. Use `llm.st
 
 
 # Tasks
-Source: https://docs.crewai.com/v1.15.41/en/concepts/tasks
+Source: https://docs.crewai.com/v1.15.42/en/concepts/tasks
 
 Detailed guide on managing and creating tasks within the CrewAI framework.
 
@@ -10992,7 +11021,7 @@ ensuring agents are effectively prepared for their assignments and that tasks ar
 
 
 # Testing
-Source: https://docs.crewai.com/v1.15.41/en/concepts/testing
+Source: https://docs.crewai.com/v1.15.42/en/concepts/testing
 
 Learn how to test your CrewAI Crew and evaluate their performance.
 
@@ -11046,7 +11075,7 @@ The example above shows the test results for two runs of the crew with two tasks
 
 
 # Tools
-Source: https://docs.crewai.com/v1.15.41/en/concepts/tools
+Source: https://docs.crewai.com/v1.15.42/en/concepts/tools
 
 Understanding and leveraging tools within the CrewAI framework for agent collaboration and task execution.
 
@@ -11528,7 +11557,7 @@ caching mechanisms, and the flexibility of tool arguments to optimize your agent
 
 
 # Training
-Source: https://docs.crewai.com/v1.15.41/en/concepts/training
+Source: https://docs.crewai.com/v1.15.42/en/concepts/training
 
 Learn how to train your CrewAI agents by giving them feedback early on and get consistent results.
 
@@ -11726,7 +11755,7 @@ Remember to regularly update and retrain your agents to ensure they stay up-to-d
 
 
 # Customizing Prompts
-Source: https://docs.crewai.com/v1.15.41/en/guides/advanced/customizing-prompts
+Source: https://docs.crewai.com/v1.15.42/en/guides/advanced/customizing-prompts
 
 Dive deeper into low-level prompt customization for CrewAI, enabling super custom and complex use cases for different models and languages.
 
@@ -12063,7 +12092,7 @@ Low-level prompt customization in CrewAI opens the door to super custom, complex
 
 
 # Fingerprinting
-Source: https://docs.crewai.com/v1.15.41/en/guides/advanced/fingerprinting
+Source: https://docs.crewai.com/v1.15.42/en/guides/advanced/fingerprinting
 
 Learn how to use CrewAI's fingerprinting system to uniquely identify and track components throughout their lifecycle.
 
@@ -12198,7 +12227,7 @@ metadata = fingerprint.metadata  # A dictionary, defaults to {}
 
 
 # Crafting Effective Agents
-Source: https://docs.crewai.com/v1.15.41/en/guides/agents/crafting-effective-agents
+Source: https://docs.crewai.com/v1.15.42/en/guides/agents/crafting-effective-agents
 
 Learn best practices for designing powerful, specialized AI agents that collaborate effectively to solve complex problems.
 
@@ -12683,7 +12712,7 @@ Remember that agent and task design is an iterative process. Start with these be
 
 
 # Standalone Agent Projects (Experimental)
-Source: https://docs.crewai.com/v1.15.41/en/guides/agents/standalone-agent-projects
+Source: https://docs.crewai.com/v1.15.42/en/guides/agents/standalone-agent-projects
 
 Create and run a standalone Agent project using JSON, YAML, or Python.
 
@@ -12831,6 +12860,17 @@ Both `.yml` and `.yaml` are supported. When renaming or moving a configuration, 
 
 Without an explicit `definition`, discovery accepts a single root `agent.py`, `agent.json`, `agent.yml`, or `agent.yaml`, or the conventional `src/<package>/agent.py`. Multiple discovered files produce an error; set `definition` to choose one.
 
+## Add tools from the CLI
+
+In a terminal, `crewai create agent` for a JSON or YAML project opens the same tool picker as `crewai create crew`, including CrewAI Platform applications. Run `crewai tool add` in the project to add more tools later, either from the picker or by name:
+
+```shell Terminal theme={null}
+crewai tool add
+crewai tool add SerperDevTool platform:gmail/send-email
+```
+
+The command appends to the definition's `tools` list and changes the `crewai` dependency to `crewai[tools]` when a tool needs it; run `crewai install` afterwards. CrewAI Platform applications are validated on AMP before they are added, and the Enterprise Action Auth Token is saved to `.env`. Run `crewai tool setup` to validate the platform applications already in the definition, for example after cloning the project. Python agents are edited in `agent.py` instead.
+
 ## Add a custom tool
 
 Use the included `tools/support_hours.py` as a starting point for another tool:
@@ -12951,7 +12991,7 @@ This preview has been exercised with a native API and Celery worker. Token strea
 
 
 # Coding Tools
-Source: https://docs.crewai.com/v1.15.41/en/guides/coding-tools/agents-md
+Source: https://docs.crewai.com/v1.15.42/en/guides/coding-tools/agents-md
 
 Use AGENTS.md to guide coding agents and IDEs across your CrewAI projects.
 
@@ -13020,7 +13060,7 @@ If you are using Windsurf’s native assistant, configure its project rules or i
 
 
 # Build with AI
-Source: https://docs.crewai.com/v1.15.41/en/guides/coding-tools/build-with-ai
+Source: https://docs.crewai.com/v1.15.42/en/guides/coding-tools/build-with-ai
 
 Everything AI coding agents need to build, deploy, and scale with CrewAI — skills, machine-readable docs, deployment, and enterprise features.
 
@@ -13249,7 +13289,7 @@ CrewAI AMP is built for production teams. Here's what you get beyond deployment.
 
 
 # Evaluating Use Cases for CrewAI
-Source: https://docs.crewai.com/v1.15.41/en/guides/concepts/evaluating-use-cases
+Source: https://docs.crewai.com/v1.15.42/en/guides/concepts/evaluating-use-cases
 
 Learn how to assess your AI application needs and choose the right approach between Crews and Flows based on complexity and precision requirements.
 
@@ -13761,7 +13801,7 @@ Remember that the best approach often evolves as your application matures. Start
 
 
 # Build Your First Crew
-Source: https://docs.crewai.com/v1.15.41/en/guides/crews/first-crew
+Source: https://docs.crewai.com/v1.15.42/en/guides/crews/first-crew
 
 Step-by-step tutorial to create a collaborative AI team with JSON-first crew configuration.
 
@@ -13925,7 +13965,7 @@ You can add:
 
 
 # Conversational Flows
-Source: https://docs.crewai.com/v1.15.41/en/guides/flows/conversational-flows
+Source: https://docs.crewai.com/v1.15.42/en/guides/flows/conversational-flows
 
 Build multi-turn chat apps with handle_turn per turn, message history, intent routing, tracing, and structured streaming.
 
@@ -14772,7 +14812,7 @@ Call `close()` before cancelling and draining your application-owned delivery ta
 
 
 # Build Your First Flow
-Source: https://docs.crewai.com/v1.15.41/en/guides/flows/first-flow
+Source: https://docs.crewai.com/v1.15.42/en/guides/flows/first-flow
 
 Learn how to create structured, event-driven workflows with precise control over execution.
 
@@ -15337,7 +15377,7 @@ Now that you've built your first flow, you can:
 
 
 # Migrating from inputs.id to restore_from_state_id
-Source: https://docs.crewai.com/v1.15.41/en/guides/flows/inputs-id-deprecation
+Source: https://docs.crewai.com/v1.15.42/en/guides/flows/inputs-id-deprecation
 
 Move @persist flows off the deprecated inputs.id hydration onto the supported restore_from_state_id field
 
@@ -15481,7 +15521,7 @@ previous run.
 
 
 # Mastering Flow State Management
-Source: https://docs.crewai.com/v1.15.41/en/guides/flows/mastering-flow-state
+Source: https://docs.crewai.com/v1.15.42/en/guides/flows/mastering-flow-state
 
 A comprehensive guide to managing, persisting, and leveraging state in CrewAI Flows for building robust AI applications.
 
@@ -16325,7 +16365,7 @@ As you develop more complex flows, remember that good state management is about 
 
 
 # A2UI
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/a2ui
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/a2ui
 
 The declarative tier of generative UI — the agent assembles a surface from a catalog of components you own.
 
@@ -16441,7 +16481,7 @@ Both modes share the same frontend: one catalog, registered once on the provider
 
 
 # Agentic Generative UI
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/agentic-generative-ui
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/agentic-generative-ui
 
 Render your CrewAI Flow's live state as UI that updates as the agent works through multi-step tasks.
 
@@ -16635,7 +16675,7 @@ Reading state is the foundation. Two guides build directly on it:
 
 
 # Channels
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/channels
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/channels
 
 Run the same CrewAI agent as a Slack or Teams bot with the CopilotKit Channels SDK and managed Intelligence platform.
 
@@ -16776,7 +16816,7 @@ The managed Intelligence path covers **Slack** and **Microsoft Teams** today —
 
 
 # Conversational Flows
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/conversational-flows
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/conversational-flows
 
 Serve native, session-aware CrewAI Flows over AG-UI with managed conversation state and full frontend parity.
 
@@ -16886,7 +16926,7 @@ The only difference is on the backend: how you author the Flow (turn-based `stre
 
 
 # Frontend Actions
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/frontend-actions
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/frontend-actions
 
 Let your CrewAI agent call functions that run in the user's browser, from switching themes to navigating your app.
 
@@ -16997,7 +17037,7 @@ You can supply either one, or both. A `handler` with a `render` alongside it per
 
 
 # Generative UI
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/generative-ui
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/generative-ui
 
 Render your CrewAI agent's work as live React components, across the full spectrum from author-controlled to agent-invented UI.
 
@@ -17105,7 +17145,7 @@ MCP tool calls surface as standard tool-call UI — render them with `useRenderT
 
 
 # Human-in-the-Loop
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/human-in-the-loop
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/human-in-the-loop
 
 Pause your CrewAI agent mid-run to collect a user decision, then resume the agent with their answer.
 
@@ -17284,7 +17324,7 @@ Once the user clicks Confirm, `respond()` fires, the run resumes, and the Flow's
 
 
 # Frontend Overview
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/overview
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/overview
 
 Build interactive user interfaces for your CrewAI agents with CopilotKit and the AG-UI protocol.
 
@@ -17370,7 +17410,7 @@ app = FastAPI(title="CrewAI Agent Server")
 add_crewai_crew_fastapi_endpoint(
     app=app,
     crew=ResearchCrew().crew(),
-    path="/research",
+    path="/recipe",
 )
 ```
 
@@ -17502,7 +17542,7 @@ import { CopilotChat } from "@copilotkit/react-core/v2";
 
 
 # Predictive State Updates
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/predictive-state-updates
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/predictive-state-updates
 
 Stream an in-progress tool call's arguments into agent state so the UI updates optimistically while the agent is still generating.
 
@@ -17634,7 +17674,7 @@ The `document` field fills in progressively as the agent generates the `write_do
 
 
 # Reasoning
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/reasoning
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/reasoning
 
 Show the model's thinking in the chat automatically, with no component to build.
 
@@ -17702,7 +17742,7 @@ import { CopilotChat } from "@copilotkit/react-core/v2";
 
 
 # Shared State
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/shared-state
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/shared-state
 
 Keep your CrewAI agent's state and your app's UI in two-way sync, so edits on either side flow to the other.
 
@@ -17900,7 +17940,7 @@ Putting the pieces together, a single recipe object is kept in sync in both dire
 
 
 # Tool-Based Generative UI
-Source: https://docs.crewai.com/v1.15.41/en/guides/frontend/tool-based-generative-ui
+Source: https://docs.crewai.com/v1.15.42/en/guides/frontend/tool-based-generative-ui
 
 Map a CrewAI agent's tool calls to React components and stream the arguments in as they arrive.
 
@@ -18121,7 +18161,7 @@ useRenderTool({
 
 
 # Moving from LangGraph to CrewAI: A Practical Guide for Engineers
-Source: https://docs.crewai.com/v1.15.41/en/guides/migration/migrating-from-langgraph
+Source: https://docs.crewai.com/v1.15.42/en/guides/migration/migrating-from-langgraph
 
 If you already have built with LangGraph, learn how to quickly port your projects to CrewAI
 
@@ -18639,7 +18679,7 @@ Start with `crewai create flow`. You won't look back.
 
 
 # Upgrading CrewAI
-Source: https://docs.crewai.com/v1.15.41/en/guides/migration/upgrading-crewai
+Source: https://docs.crewai.com/v1.15.42/en/guides/migration/upgrading-crewai
 
 How to upgrade CrewAI in your project and adapt to breaking changes between versions.
 
@@ -18830,7 +18870,7 @@ Set the relevant provider credentials (`OPENAI_API_KEY`, `OLLAMA_HOST`, etc.) in
 
 
 # Publish Custom Tools
-Source: https://docs.crewai.com/v1.15.41/en/guides/tools/publish-custom-tools
+Source: https://docs.crewai.com/v1.15.42/en/guides/tools/publish-custom-tools
 
 How to build, package, and publish your own CrewAI-compatible tools to PyPI so any CrewAI user can install and use them.
 
@@ -19135,7 +19175,7 @@ agent = Agent(
 
 
 # Installation
-Source: https://docs.crewai.com/v1.15.41/en/installation
+Source: https://docs.crewai.com/v1.15.42/en/installation
 
 Get started with CrewAI - Install, configure, and build your first AI crew
 
@@ -19225,10 +19265,6 @@ If you haven't installed `uv` yet, follow **step 1** to quickly get it set up on
   > uv tool update-shell
   > ```
 
-  > [!WARNING]
-  >
-  > If you encounter the `chroma-hnswlib==0.7.6` build error (`fatal error C1083: Cannot open include file: 'float.h'`) on Windows, install [Visual Studio Build Tools](https://visualstudio.microsoft.com/downloads/) with *Desktop development with C++*.
-
 * To verify that `crewai` is installed, run:
   ```shell theme={null}
   uv tool list
@@ -19309,9 +19345,15 @@ If you haven't installed `uv` yet, follow **step 1** to quickly get it set up on
   crewai install
   ```
 * If you need to install additional packages, use:
+
   ```shell theme={null}
   uv add <package-name>
   ```
+
+  > [!NOTE]
+  >
+  > ChromaDB is an optional dependency. Install it only if you use the ChromaDB vector store or an embedding provider backed by it (Bedrock, Cohere, Google Generative AI, Hugging Face, Instructor, Jina, Ollama, ONNX, OpenCLIP, Roboflow, Sentence Transformers, Text2Vec): `uv add "crewai[chromadb]"`.
+
   > [!NOTE]
   >
   > As a supply-chain security measure, CrewAI's internal packages use `exclude-newer = "3 days"` in their `pyproject.toml` files. This means transitive dependencies pulled in by CrewAI won't resolve packages released less than 3 days ago. Your own direct dependencies are not affected by this policy. If you notice a transitive dependency is behind, you can pin the version you want explicitly in your project's dependencies.
@@ -19357,7 +19399,7 @@ If you haven't installed `uv` yet, follow **step 1** to quickly get it set up on
 
 
 # Introduction
-Source: https://docs.crewai.com/v1.15.41/en/introduction
+Source: https://docs.crewai.com/v1.15.42/en/introduction
 
 Build AI agent teams that work together to tackle complex tasks
 
@@ -19491,7 +19533,7 @@ For any production-ready application, **start with a Flow**.
 
 
 # MCP DSL Integration
-Source: https://docs.crewai.com/v1.15.41/en/mcp/dsl-integration
+Source: https://docs.crewai.com/v1.15.42/en/mcp/dsl-integration
 
 Learn how to use CrewAI's simple DSL syntax to integrate MCP servers directly with your agents using the mcps field.
 
@@ -19840,7 +19882,7 @@ For complex scenarios requiring manual connection management, use the `MCPServer
 
 
 # Connecting to Multiple MCP Servers
-Source: https://docs.crewai.com/v1.15.41/en/mcp/multiple-servers
+Source: https://docs.crewai.com/v1.15.42/en/mcp/multiple-servers
 
 Learn how to use MCPServerAdapter in CrewAI to connect to multiple MCP servers simultaneously and aggregate their tools.
 
@@ -19905,7 +19947,7 @@ When using the context manager (`with` statement), `MCPServerAdapter` handles th
 
 
 # MCP Servers as Tools in CrewAI
-Source: https://docs.crewai.com/v1.15.41/en/mcp/overview
+Source: https://docs.crewai.com/v1.15.42/en/mcp/overview
 
 Learn how to integrate MCP servers as tools in your CrewAI agents using the `crewai-tools` library.
 
@@ -20596,7 +20638,7 @@ For more details, see the [Anthropic's MCP Transport Security docs](https://mode
 
 
 # MCP Security Considerations
-Source: https://docs.crewai.com/v1.15.41/en/mcp/security
+Source: https://docs.crewai.com/v1.15.42/en/mcp/security
 
 Learn about important security best practices when integrating MCP servers with your CrewAI agents.
 
@@ -20763,7 +20805,7 @@ The threats will continue to evolve, so it's important to stay informed and adap
 
 
 # SSE Transport
-Source: https://docs.crewai.com/v1.15.41/en/mcp/sse
+Source: https://docs.crewai.com/v1.15.42/en/mcp/sse
 
 Learn how to connect CrewAI to remote MCP servers using Server-Sent Events (SSE) for real-time communication.
 
@@ -20915,7 +20957,7 @@ For a comprehensive overview of security best practices, please refer to our [Se
 
 
 # Stdio Transport
-Source: https://docs.crewai.com/v1.15.41/en/mcp/stdio
+Source: https://docs.crewai.com/v1.15.42/en/mcp/stdio
 
 Learn how to connect CrewAI to local MCP servers using the Stdio (Standard Input/Output) transport mechanism.
 
@@ -21050,7 +21092,7 @@ be used to set environment variables for the server process, which can be useful
 
 
 # Streamable HTTP Transport
-Source: https://docs.crewai.com/v1.15.41/en/mcp/streamable-http
+Source: https://docs.crewai.com/v1.15.42/en/mcp/streamable-http
 
 Learn how to connect CrewAI to remote MCP servers using the flexible Streamable HTTP transport.
 
@@ -21188,7 +21230,7 @@ For a comprehensive guide on securing your MCP integrations, please refer to our
 
 
 # Quickstart
-Source: https://docs.crewai.com/v1.15.41/en/quickstart
+Source: https://docs.crewai.com/v1.15.42/en/quickstart
 
 Build your first CrewAI Flow in minutes — orchestration, state, and an agent crew that produces a real report.
 
@@ -21429,7 +21471,7 @@ crewai deploy remove -u <deployment_uuid>
 
 
 # Skills
-Source: https://docs.crewai.com/v1.15.41/en/skills
+Source: https://docs.crewai.com/v1.15.42/en/skills
 
 Install crewaiinc/skills from the official registry at skills.sh—Flows, Crews, and docs-aware agents for Claude Code, Cursor, Codex, and more.
 
@@ -21481,7 +21523,7 @@ That pulls the official skill pack into your agent workflow so it can apply Crew
 
 
 # CSV RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/csvsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/csvsearchtool
 
 The `CSVSearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool designed for semantic searches within a CSV file's content.
 
@@ -21546,7 +21588,7 @@ tool = CSVSearchTool(
             },
         },
         "vectordb": {
-            "provider": "chromadb",  # or "qdrant"
+            "provider": "chromadb",  # requires crewai[chromadb]; default is "qdrant"
             "config": {
                 # "settings": Settings(persist_directory="/content/chroma", allow_reset=True, is_persistent=True),
                 # from qdrant_client.models import VectorParams, Distance
@@ -21577,7 +21619,7 @@ URL inputs are validated: `file://` URIs and requests targeting private or reser
 
 
 # Directory Read
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/directoryreadtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/directoryreadtool
 
 The `DirectoryReadTool` is a powerful utility designed to provide a comprehensive listing of directory contents.
 
@@ -21631,7 +21673,7 @@ The following parameters can be used to customize the `DirectoryReadTool`'s beha
 
 
 # Directory RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/directorysearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/directorysearchtool
 
 The `DirectorySearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool designed for semantic searches within a directory's content.
 
@@ -21688,7 +21730,7 @@ tool = DirectorySearchTool(
             },
         },
         "vectordb": {
-            "provider": "chromadb",  # or "qdrant"
+            "provider": "chromadb",  # requires crewai[chromadb]; default is "qdrant"
             "config": {
                 # "settings": Settings(persist_directory="/content/chroma", allow_reset=True, is_persistent=True),
                 # from qdrant_client.models import VectorParams, Distance
@@ -21715,7 +21757,7 @@ CREWAI_TOOLS_ALLOW_UNSAFE_PATHS=true
 
 
 # DOCX RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/docxsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/docxsearchtool
 
 The `DOCXSearchTool` is a RAG tool designed for semantic searching within DOCX documents.
 
@@ -21782,7 +21824,7 @@ tool = DOCXSearchTool(
             },
         },
         "vectordb": {
-            "provider": "chromadb",  # or "qdrant"
+            "provider": "chromadb",  # requires crewai[chromadb]; default is "qdrant"
             "config": {
                 # "settings": Settings(persist_directory="/content/chroma", allow_reset=True, is_persistent=True),
                 # from qdrant_client.models import VectorParams, Distance
@@ -21795,7 +21837,7 @@ tool = DOCXSearchTool(
 
 
 # File Read
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/filereadtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/filereadtool
 
 The `FileReadTool` is designed to read files from the local file system.
 
@@ -21875,7 +21917,7 @@ As a last resort, setting `CREWAI_TOOLS_ALLOW_UNSAFE_PATHS=true` disables path v
 
 
 # File Write
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/filewritetool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/filewritetool
 
 The `FileWriterTool` is designed to write content to files.
 
@@ -21956,7 +21998,7 @@ By adhering to the setup and usage guidelines provided, incorporating this tool 
 
 
 # JSON RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/jsonsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/jsonsearchtool
 
 The `JSONSearchTool` is designed to search JSON files and return the most relevant results.
 
@@ -22048,7 +22090,7 @@ URL inputs are validated: `file://` URIs and requests targeting private or reser
 
 
 # MDX RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/mdxsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/mdxsearchtool
 
 The `MDXSearchTool` is designed to search MDX files and return the most relevant results.
 
@@ -22107,7 +22149,7 @@ tool = MDXSearchTool(
             },
         },
         "vectordb": {
-            "provider": "chromadb",  # or "qdrant"
+            "provider": "chromadb",  # requires crewai[chromadb]; default is "qdrant"
             "config": {
                 # "settings": Settings(persist_directory="/content/chroma", allow_reset=True, is_persistent=True),
                 # from qdrant_client.models import VectorParams, Distance
@@ -22120,7 +22162,7 @@ tool = MDXSearchTool(
 
 
 # OCR Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/ocrtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/ocrtool
 
 The `OCRTool` extracts text from local images or image URLs using an LLM with vision.
 
@@ -22208,7 +22250,7 @@ result = crew.kickoff()
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/overview
 
 Read, write, and search through various file formats with CrewAI's document processing tools
 
@@ -22303,7 +22345,7 @@ agent = Agent(
 
 
 # PDF Text Writing Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/pdf-text-writing-tool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/pdf-text-writing-tool
 
 The `PDFTextWritingTool` writes text to specific positions in a PDF, supporting custom fonts.
 
@@ -22378,7 +22420,7 @@ PDFTextWritingTool().run(
 
 
 # PDF RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/pdfsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/pdfsearchtool
 
 The `PDFSearchTool` is designed to search PDF files and return the most relevant results.
 
@@ -22423,13 +22465,13 @@ tool = PDFSearchTool(pdf='path/to/your/document.pdf')
 
 ## Custom model and embeddings
 
-By default, the tool uses OpenAI for both embeddings and summarization. To customize the model, you can use a config dictionary as follows. Note: a vector database is required because generated embeddings must be stored and queried from a vectordb.
+By default, the tool uses OpenAI for both embeddings and summarization. To customize the model, you can use a config dictionary as follows. Note: a vector database is required because generated embeddings must be stored and queried from a vectordb. The default vector database is local Qdrant; `chromadb` needs `pip install "crewai[chromadb]"`.
 
 ````python Code theme={null}
 from crewai_tools import PDFSearchTool
 
 # - embedding_model (required): choose provider + provider-specific config
-# - vectordb (required): choose vector DB and pass its config
+# - vectordb (optional, defaults to Qdrant): choose vector DB and pass its config
 
 tool = PDFSearchTool(
     config={
@@ -22462,7 +22504,7 @@ tool = PDFSearchTool(
             },
         },
         "vectordb": {
-                    "provider": "chromadb",  # or "qdrant"
+                    "provider": "chromadb",  # requires crewai[chromadb]; default is "qdrant"
                     "config": {
                         # For ChromaDB: pass "settings" (chromadb.config.Settings) or rely on defaults.
                         # Example (uncomment and import):
@@ -22505,7 +22547,7 @@ URL inputs are validated: `file://` URIs and requests targeting private or reser
 
 
 # TXT RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/txtsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/txtsearchtool
 
 The `TXTSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a text file.
 
@@ -22581,7 +22623,7 @@ tool = TXTSearchTool(
 
         # Required: vector database config
         "vectordb": {
-            "provider": "chromadb",  # or "qdrant"
+            "provider": "chromadb",  # requires crewai[chromadb]; default is "qdrant"
             "config": {
                 # Chroma settings (optional persistence)
                 # "settings": Settings(
@@ -22603,7 +22645,7 @@ tool = TXTSearchTool(
 
 
 # URL Read
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/urlreadtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/urlreadtool
 
 The `URLReadTool` fetches a URL and returns its content as text.
 
@@ -22688,7 +22730,7 @@ This is narrower than `CREWAI_TOOLS_ALLOW_UNSAFE_PATHS=true`, which disables pat
 
 
 # XML RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/file-document/xmlsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/file-document/xmlsearchtool
 
 The `XMLSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a XML file.
 
@@ -22753,7 +22795,7 @@ tool = XMLSearchTool(
             },
         },
         "vectordb": {
-            "provider": "chromadb",  # or "qdrant"
+            "provider": "chromadb",  # requires crewai[chromadb]; default is "qdrant"
             "config": {
                 # "settings": Settings(persist_directory="/content/chroma", allow_reset=True, is_persistent=True),
                 # from qdrant_client.models import VectorParams, Distance
@@ -22766,7 +22808,7 @@ tool = XMLSearchTool(
 
 
 # Tools Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/overview
 
 Discover CrewAI's extensive library of 40+ tools to supercharge your AI agents
 
@@ -22876,7 +22918,7 @@ Ready to explore? Pick a category above to discover tools that fit your use case
 
 
 # Brave Search Tools
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/bravesearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/bravesearchtool
 
 A suite of tools for querying the Brave Search API — covering web, news, image, and video search.
 
@@ -23193,7 +23235,7 @@ The Brave Search tool suite gives your CrewAI agents flexible, endpoint-specific
 
 
 # Exa Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/exasearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/exasearchtool
 
 Search the web with Exa, the fastest and most accurate web search API. Get token-efficient highlights and full page content.
 
@@ -23345,7 +23387,7 @@ Get your API key from the [Exa dashboard](https://dashboard.exa.ai/api-keys). Fo
 
 
 # Linkup Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/linkupsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/linkupsearchtool
 
 The `LinkupSearchTool` enables querying the Linkup API for contextual information.
 
@@ -23460,7 +23502,7 @@ The `LinkupSearchTool` provides a seamless way to integrate Linkup's contextual 
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/overview
 
 Perform web searches, find repositories, and research information across the internet
 
@@ -23578,7 +23620,7 @@ agent = Agent(
 
 
 # Google Serper Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/serperdevtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/serperdevtool
 
 The `SerperDevTool` is designed to search the internet and return the most relevant results.
 
@@ -23688,7 +23730,7 @@ The updated parameters allow for more customized and localized search results. B
 
 
 # Bright Data Tools
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/brightdata-tools
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/brightdata-tools
 
 Bright Data integrations for SERP search, Web Unlocker scraping, and Dataset API.
 
@@ -23798,7 +23840,7 @@ result = crew.kickoff()
 
 
 # Browserbase Web Loader
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/browserbaseloadtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/browserbaseloadtool
 
 Browserbase is a developer platform to reliably run, manage, and monitor headless browsers.
 
@@ -23849,7 +23891,7 @@ The following parameters can be used to customize the `BrowserbaseLoadTool`'s be
 
 
 # Firecrawl Crawl Website
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/firecrawlcrawlwebsitetool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/firecrawlcrawlwebsitetool
 
 The `FirecrawlCrawlWebsiteTool` is designed to crawl and convert websites into clean markdown or structured data.
 
@@ -23897,7 +23939,7 @@ tool = FirecrawlCrawlWebsiteTool(url='firecrawl.dev')
 
 
 # Firecrawl Scrape Website
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/firecrawlscrapewebsitetool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/firecrawlscrapewebsitetool
 
 The `FirecrawlScrapeWebsiteTool` is designed to scrape websites and convert them into clean markdown or structured data.
 
@@ -23941,7 +23983,7 @@ tool = FirecrawlScrapeWebsiteTool(url='firecrawl.dev')
 
 
 # Hyperbrowser Load Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/hyperbrowserloadtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/hyperbrowserloadtool
 
 The `HyperbrowserLoadTool` enables web scraping and crawling using Hyperbrowser.
 
@@ -24032,7 +24074,7 @@ The `HyperbrowserLoadTool` provides a powerful way to scrape and crawl websites,
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/overview
 
 Extract data from websites and automate browser interactions with powerful scraping tools
 
@@ -24142,7 +24184,7 @@ agent = Agent(
 
 
 # Oxylabs Scrapers
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/oxylabsscraperstool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/oxylabsscraperstool
 
 Oxylabs Scrapers allow to easily access the information from the respective sources. Please see the list of available sources below:
   - `Amazon Product`
@@ -24380,7 +24422,7 @@ print(result)
 
 
 # Scrape Element From Website Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/scrapeelementfromwebsitetool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/scrapeelementfromwebsitetool
 
 The `ScrapeElementFromWebsiteTool` enables CrewAI agents to extract specific elements from websites using CSS selectors.
 
@@ -24520,7 +24562,7 @@ The `ScrapeElementFromWebsiteTool` provides a powerful way to extract specific e
 
 
 # Scrapegraph Scrape Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/scrapegraphscrapetool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/scrapegraphscrapetool
 
 The `ScrapegraphScrapeTool` leverages Scrapegraph AI's SmartScraper API to intelligently extract content from websites.
 
@@ -24717,7 +24759,7 @@ The `ScrapegraphScrapeTool` provides a powerful way to extract content from webs
 
 
 # Scrape Website
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/scrapewebsitetool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/scrapewebsitetool
 
 The `ScrapeWebsiteTool` is designed to extract and read the content of a specified website.
 
@@ -24767,7 +24809,7 @@ print(text)
 
 
 # Scrapfly Scrape Website Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/scrapflyscrapetool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/scrapflyscrapetool
 
 The `ScrapflyScrapeWebsiteTool` leverages Scrapfly's web scraping API to extract content from websites in various formats.
 
@@ -24988,7 +25030,7 @@ The `ScrapflyScrapeWebsiteTool` provides a powerful way to extract content from 
 
 
 # Selenium Scraper
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/seleniumscrapingtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/seleniumscrapingtool
 
 The `SeleniumScrapingTool` is designed to extract and read the content of a specified website using Selenium.
 
@@ -25185,7 +25227,7 @@ The `SeleniumScrapingTool` provides a powerful way to extract content from websi
 
 
 # Spider Scraper
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/spidertool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/spidertool
 
 The `SpiderTool` is designed to extract and read the content of a specified website using Spider.
 
@@ -25279,7 +25321,7 @@ if __name__ == "__main__":
 
 
 # Stagehand Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/stagehandtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/stagehandtool
 
 Web automation tool that integrates Stagehand with CrewAI for browser interaction and automation
 
@@ -25523,7 +25565,7 @@ For questions about the CrewAI integration:
 
 
 # You.com Content Extraction Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/web-scraping/youai-contents
+Source: https://docs.crewai.com/v1.15.42/en/tools/web-scraping/youai-contents
 
 Extract full page content from URLs in markdown, HTML, or metadata format via You.com's remote MCP server.
 
@@ -25735,13 +25777,13 @@ with MCPServerAdapter({
 
 
 # GET /inputs
-Source: https://docs.crewai.com/v1.15.41/en/api-reference/inputs
+Source: https://docs.crewai.com/v1.15.42/en/api-reference/inputs
 
-v1.15.41/enterprise-api.en.yaml GET /inputs
+v1.15.42/enterprise-api.en.yaml GET /inputs
 Get the inputs your crew or flow accepts, and which are required
 
 # Introduction
-Source: https://docs.crewai.com/v1.15.41/en/api-reference/introduction
+Source: https://docs.crewai.com/v1.15.42/en/api-reference/introduction
 
 Complete reference for the CrewAI AMP REST API
 
@@ -25864,19 +25906,19 @@ Each endpoint page shows you:
 
 
 # POST /kickoff
-Source: https://docs.crewai.com/v1.15.41/en/api-reference/kickoff
+Source: https://docs.crewai.com/v1.15.42/en/api-reference/kickoff
 
-v1.15.41/enterprise-api.en.yaml POST /kickoff
+v1.15.42/enterprise-api.en.yaml POST /kickoff
 Start a crew execution
 
 # POST /resume
-Source: https://docs.crewai.com/v1.15.41/en/api-reference/resume
+Source: https://docs.crewai.com/v1.15.42/en/api-reference/resume
 
-v1.15.41/enterprise-api.en.yaml POST /resume
+v1.15.42/enterprise-api.en.yaml POST /resume
 Resume crew execution with human feedback
 
 # Before and After Kickoff Hooks
-Source: https://docs.crewai.com/v1.15.41/en/learn/before-and-after-kickoff-hooks
+Source: https://docs.crewai.com/v1.15.42/en/learn/before-and-after-kickoff-hooks
 
 Learn how to use before and after kickoff hooks in CrewAI
 
@@ -25936,7 +25978,7 @@ Before and after kickoff hooks in CrewAI offer powerful ways to interact with th
 
 
 # Coding Agents
-Source: https://docs.crewai.com/v1.15.41/en/learn/coding-agents
+Source: https://docs.crewai.com/v1.15.42/en/learn/coding-agents
 
 Learn how to enable your CrewAI Agents to write and execute code, and explore advanced features for enhanced functionality.
 
@@ -26033,7 +26075,7 @@ In this example, the `coding_agent` can write and execute Python code to perform
 
 
 # Conditional Tasks
-Source: https://docs.crewai.com/v1.15.41/en/learn/conditional-tasks
+Source: https://docs.crewai.com/v1.15.42/en/learn/conditional-tasks
 
 Learn how to use conditional tasks in a crewAI kickoff
 
@@ -26123,7 +26165,7 @@ print("results", result)
 
 
 # Consuming Streams
-Source: https://docs.crewai.com/v1.15.41/en/learn/consuming-streams
+Source: https://docs.crewai.com/v1.15.42/en/learn/consuming-streams
 
 Print LLM chunks, observe tool events, and read final results from CrewAI streams.
 
@@ -26300,7 +26342,7 @@ For async streams, call `await stream.aclose()`.
 
 
 # Create Custom Tools
-Source: https://docs.crewai.com/v1.15.41/en/learn/create-custom-tools
+Source: https://docs.crewai.com/v1.15.42/en/learn/create-custom-tools
 
 Comprehensive guide on crafting, using, and managing custom tools within the CrewAI framework, including new functionalities and error handling.
 
@@ -26529,7 +26571,7 @@ you can leverage the full capabilities of the CrewAI framework, enhancing both t
 
 
 # Custom LLM Implementation
-Source: https://docs.crewai.com/v1.15.41/en/learn/custom-llm
+Source: https://docs.crewai.com/v1.15.42/en/learn/custom-llm
 
 Learn how to create custom LLM implementations in CrewAI.
 
@@ -26884,7 +26926,7 @@ This guide covers the essentials of implementing custom LLMs in CrewAI.
 
 
 # Custom Manager Agent
-Source: https://docs.crewai.com/v1.15.41/en/learn/custom-manager-agent
+Source: https://docs.crewai.com/v1.15.42/en/learn/custom-manager-agent
 
 Learn how to set a custom agent as the manager in CrewAI, providing more control over task management and coordination.
 
@@ -26975,7 +27017,7 @@ crew = Crew(
 
 
 # Customize Agents
-Source: https://docs.crewai.com/v1.15.41/en/learn/customizing-agents
+Source: https://docs.crewai.com/v1.15.42/en/learn/customizing-agents
 
 A comprehensive guide to tailoring agents for specific roles, tasks, and advanced customizations within the CrewAI framework.
 
@@ -27087,7 +27129,7 @@ equips a nuanced and capable AI team ready for complex challenges.
 
 
 # Image Generation with DALL-E
-Source: https://docs.crewai.com/v1.15.41/en/learn/dalle-image-generation
+Source: https://docs.crewai.com/v1.15.42/en/learn/dalle-image-generation
 
 Learn how to use DALL-E for AI-powered image generation in your CrewAI projects
 
@@ -27157,7 +27199,7 @@ The agent with the DALL-E tool will be able to generate the image and provide a 
 
 
 # Execution Boundary Hooks
-Source: https://docs.crewai.com/v1.15.41/en/learn/execution-boundary-hooks
+Source: https://docs.crewai.com/v1.15.42/en/learn/execution-boundary-hooks
 
 Intercept the start, inputs, output, and end of crew and flow executions with the @on decorator
 
@@ -27364,7 +27406,7 @@ clear_all_hooks()  # Clears every point, including boundaries
 
 
 # Execution Hooks
-Source: https://docs.crewai.com/v1.15.41/en/learn/execution-hooks
+Source: https://docs.crewai.com/v1.15.42/en/learn/execution-hooks
 
 Intercept, modify, and control CrewAI's runtime with the @on decorator - one contract covering every interception point
 
@@ -27646,7 +27688,7 @@ For the detailed guides — context attributes, patterns, and management APIs
 
 
 # Force Tool Output as Result
-Source: https://docs.crewai.com/v1.15.41/en/learn/force-tool-output-as-result
+Source: https://docs.crewai.com/v1.15.42/en/learn/force-tool-output-as-result
 
 Learn how to force tool output as the result in an Agent's task in CrewAI.
 
@@ -27698,7 +27740,7 @@ The tool output is returned as the task result without any modifications.
 
 
 # Hierarchical Process
-Source: https://docs.crewai.com/v1.15.41/en/learn/hierarchical-process
+Source: https://docs.crewai.com/v1.15.42/en/learn/hierarchical-process
 
 A comprehensive guide to understanding and applying the hierarchical process within your CrewAI projects, updated to reflect the latest coding practices and functionalities.
 
@@ -27809,7 +27851,7 @@ Utilize the advanced features and customizations to tailor the workflow to your 
 
 
 # Human Feedback in Flows
-Source: https://docs.crewai.com/v1.15.41/en/learn/human-feedback-in-flows
+Source: https://docs.crewai.com/v1.15.42/en/learn/human-feedback-in-flows
 
 Learn how to integrate human feedback directly into your CrewAI Flows using the @human_feedback decorator
 
@@ -28518,7 +28560,7 @@ class ArticleReviewFlow(Flow):
 
 
 # Human-in-the-Loop (HITL) Workflows
-Source: https://docs.crewai.com/v1.15.41/en/learn/human-in-the-loop
+Source: https://docs.crewai.com/v1.15.42/en/learn/human-in-the-loop
 
 Learn how to implement Human-in-the-Loop workflows in CrewAI for enhanced decision-making
 
@@ -28681,7 +28723,7 @@ HITL workflows are particularly valuable for:
 
 
 # Human Input on Execution
-Source: https://docs.crewai.com/v1.15.41/en/learn/human-input-on-execution
+Source: https://docs.crewai.com/v1.15.42/en/learn/human-input-on-execution
 
 Integrating CrewAI with human input during execution in complex decision-making processes and leveraging the full capabilities of the agent's attributes and tools.
 
@@ -28780,7 +28822,7 @@ print(result)
 
 
 # Kickoff Crew Asynchronously
-Source: https://docs.crewai.com/v1.15.41/en/learn/kickoff-async
+Source: https://docs.crewai.com/v1.15.42/en/learn/kickoff-async
 
 Kickoff a Crew Asynchronously
 
@@ -29086,7 +29128,7 @@ asyncio.run(main())
 
 
 # Kickoff Crew for Each
-Source: https://docs.crewai.com/v1.15.41/en/learn/kickoff-for-each
+Source: https://docs.crewai.com/v1.15.42/en/learn/kickoff-for-each
 
 Kickoff Crew for Each Item in a List
 
@@ -29140,7 +29182,7 @@ result = analysis_crew.kickoff_for_each(inputs=datasets)
 
 
 # Using CrewAI Without LiteLLM
-Source: https://docs.crewai.com/v1.15.41/en/learn/litellm-removal-guide
+Source: https://docs.crewai.com/v1.15.42/en/learn/litellm-removal-guide
 
 How to use CrewAI with native provider integrations and remove the LiteLLM dependency from your project.
 
@@ -29605,7 +29647,7 @@ llm = LLM(
 
 
 # Connect to any LLM
-Source: https://docs.crewai.com/v1.15.41/en/learn/llm-connections
+Source: https://docs.crewai.com/v1.15.42/en/learn/llm-connections
 
 Comprehensive guide on integrating CrewAI with various Large Language Models (LLMs) using LiteLLM, including supported providers and configuration options.
 
@@ -29811,7 +29853,7 @@ By leveraging LiteLLM, CrewAI offers seamless integration with a vast array of L
 
 
 # LLM Call Hooks
-Source: https://docs.crewai.com/v1.15.41/en/learn/llm-hooks
+Source: https://docs.crewai.com/v1.15.42/en/learn/llm-hooks
 
 Learn how to use LLM call hooks to intercept, modify, and control language model interactions in CrewAI
 
@@ -30099,7 +30141,7 @@ there is no behavioral penalty.
 
 
 # Strategic LLM Selection Guide
-Source: https://docs.crewai.com/v1.15.41/en/learn/llm-selection-guide
+Source: https://docs.crewai.com/v1.15.42/en/learn/llm-selection-guide
 
 Strategic framework for choosing the right LLM for your CrewAI AI agents and writing effective task and agent definitions
 
@@ -30875,7 +30917,7 @@ Track performance metrics relevant to your use case and be prepared to adjust mo
 
 
 # Using Multimodal Agents
-Source: https://docs.crewai.com/v1.15.41/en/learn/multimodal-agents
+Source: https://docs.crewai.com/v1.15.42/en/learn/multimodal-agents
 
 Learn how to enable and use multimodal capabilities in your agents for processing images and other non-text content within the CrewAI framework.
 
@@ -31017,7 +31059,7 @@ When working with multimodal agents, keep these best practices in mind:
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/learn/overview
+Source: https://docs.crewai.com/v1.15.42/en/learn/overview
 
 Learn how to build, customize, and optimize your CrewAI applications with comprehensive guides and tutorials
 
@@ -31176,7 +31218,7 @@ Start with the guides that match your current needs and gradually explore more a
 
 
 # Replay Tasks from Latest Crew Kickoff
-Source: https://docs.crewai.com/v1.15.41/en/learn/replay-tasks-from-latest-crew-kickoff
+Source: https://docs.crewai.com/v1.15.42/en/learn/replay-tasks-from-latest-crew-kickoff
 
 Replay tasks from the latest crew.kickoff(...)
 
@@ -31253,7 +31295,7 @@ Ensure you follow the commands and steps precisely to make the most of these fea
 
 
 # Sequential Processes
-Source: https://docs.crewai.com/v1.15.41/en/learn/sequential-process
+Source: https://docs.crewai.com/v1.15.42/en/learn/sequential-process
 
 A comprehensive guide to utilizing the sequential processes for task execution in CrewAI projects.
 
@@ -31381,7 +31423,7 @@ The content is kept simple and direct to ensure easy understanding.
 
 
 # Step Hooks
-Source: https://docs.crewai.com/v1.15.41/en/learn/step-hooks
+Source: https://docs.crewai.com/v1.15.42/en/learn/step-hooks
 
 Intercept task and flow-method steps with PRE_STEP and POST_STEP hooks in CrewAI
 
@@ -31524,7 +31566,7 @@ clear_all_hooks()  # Clears every point, including steps
 
 
 # Streaming Runtime Contract
-Source: https://docs.crewai.com/v1.15.41/en/learn/streaming-runtime-contract
+Source: https://docs.crewai.com/v1.15.42/en/learn/streaming-runtime-contract
 
 Stream ordered runtime frames from Flows, direct LLM calls, and conversational turns.
 
@@ -31718,7 +31760,7 @@ Crew streaming with `stream=True` still returns the chunk-oriented `CrewStreamin
 
 
 # Tool Call Hooks
-Source: https://docs.crewai.com/v1.15.41/en/learn/tool-hooks
+Source: https://docs.crewai.com/v1.15.42/en/learn/tool-hooks
 
 Learn how to use tool call hooks to intercept, modify, and control tool execution in CrewAI
 
@@ -32063,7 +32105,7 @@ there is no behavioral penalty.
 
 
 # Using Annotations in crew.py
-Source: https://docs.crewai.com/v1.15.41/en/learn/using-annotations
+Source: https://docs.crewai.com/v1.15.42/en/learn/using-annotations
 
 Learn how to use classic Python annotations to structure agents, tasks, and components in CrewAI
 
@@ -32218,7 +32260,7 @@ By following these guidelines and properly using annotations, you can maintain c
 
 
 # Arize Phoenix
-Source: https://docs.crewai.com/v1.15.41/en/observability/arize-phoenix
+Source: https://docs.crewai.com/v1.15.42/en/observability/arize-phoenix
 
 Arize Phoenix integration for CrewAI with OpenTelemetry and OpenInference
 
@@ -32373,7 +32415,7 @@ Open your Phoenix project and navigate to the project you specified in the `proj
 
 
 # Braintrust
-Source: https://docs.crewai.com/v1.15.41/en/observability/braintrust
+Source: https://docs.crewai.com/v1.15.42/en/observability/braintrust
 
 Braintrust integration for CrewAI with OpenTelemetry tracing and evaluation
 
@@ -32604,7 +32646,7 @@ See the [Braintrust Eval SDK guide](https://www.braintrust.dev/docs/start/eval-s
 
 
 # Datadog Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/datadog
+Source: https://docs.crewai.com/v1.15.42/en/observability/datadog
 
 Learn how to integrate Datadog with CrewAI to submit LLM Observability traces to Datadog.
 
@@ -32709,7 +32751,7 @@ Additionally, you can view the execution graph view of the trace, which shows th
 
 
 # Galileo
-Source: https://docs.crewai.com/v1.15.41/en/observability/galileo
+Source: https://docs.crewai.com/v1.15.42/en/observability/galileo
 
 Galileo integration for CrewAI tracing and evaluation
 
@@ -32824,7 +32866,7 @@ log stream specified by your environment configuration
 
 
 # LangDB Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/langdb
+Source: https://docs.crewai.com/v1.15.42/en/observability/langdb
 
 Govern, secure, and optimize your CrewAI workflows with LangDB AI Gateway—access 350+ models, automatic routing, cost optimization, and full observability.
 
@@ -33119,7 +33161,7 @@ For more advanced features and use cases, visit the [LangDB Documentation](https
 
 
 # Langfuse Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/langfuse
+Source: https://docs.crewai.com/v1.15.42/en/observability/langfuse
 
 Learn how to integrate Langfuse with CrewAI via OpenTelemetry using OpenLit
 
@@ -33228,7 +33270,7 @@ After running the agent, you can view the traces generated by your CrewAI applic
 
 
 # Langtrace Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/langtrace
+Source: https://docs.crewai.com/v1.15.42/en/observability/langtrace
 
 How to monitor cost, latency, and performance of CrewAI Agents using Langtrace, an external observability tool.
 
@@ -33304,7 +33346,7 @@ from crewai import Agent, Task, Crew
 
 
 # Maxim Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/maxim
+Source: https://docs.crewai.com/v1.15.42/en/observability/maxim
 
 Start Agent monitoring, evaluation, and observability
 
@@ -33499,7 +33541,7 @@ After running your CrewAI application:
 ### Common Issues
 
 * **No traces appearing**: Ensure your API key and repository ID are correct
-* Ensure you've **`called instrument_crewai()`** ***before*** running your crew. This initializes logging hooks correctly.
+* Ensure you've **`called instrument_crewai()`** **_before_** running your crew. This initializes logging hooks correctly.
 * Set `debug=True` in your `instrument_crewai()` call to surface any internal errors:
 
   ```python theme={null}
@@ -33528,7 +33570,7 @@ After running your CrewAI application:
 
 
 # MLflow Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/mlflow
+Source: https://docs.crewai.com/v1.15.42/en/observability/mlflow
 
 Quickly start monitoring your Agents with MLflow.
 
@@ -33737,7 +33779,7 @@ MLflow Tracing Dashboard
 
 
 # Neatlogs Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/neatlogs
+Source: https://docs.crewai.com/v1.15.42/en/observability/neatlogs
 
 Understand, debug, and share your CrewAI agent runs
 
@@ -33853,7 +33895,7 @@ No setup overhead. Full trace transparency. Full team collaboration.
 
 
 # OpenLIT Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/openlit
+Source: https://docs.crewai.com/v1.15.42/en/observability/openlit
 
 Quickly start monitoring your Agents in just a single line of code with OpenTelemetry.
 
@@ -34040,7 +34082,7 @@ OpenLIT Dashboard
 
 
 # Opik Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/opik
+Source: https://docs.crewai.com/v1.15.42/en/observability/opik
 
 Learn how to use Comet Opik to debug, evaluate, and monitor your CrewAI applications with comprehensive tracing, automated evaluations, and production-ready dashboards.
 
@@ -34174,7 +34216,7 @@ After running your CrewAI application, visit the Opik app to view:
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/observability/overview
+Source: https://docs.crewai.com/v1.15.42/en/observability/overview
 
 Monitor, evaluate, and optimize your CrewAI agents with comprehensive observability tools
 
@@ -34295,7 +34337,7 @@ Choose the observability tools that best fit your use case, infrastructure, and 
 
 
 # Patronus AI Evaluation
-Source: https://docs.crewai.com/v1.15.41/en/observability/patronus-evaluation
+Source: https://docs.crewai.com/v1.15.42/en/observability/patronus-evaluation
 
 Monitor and evaluate CrewAI agent performance using Patronus AI's comprehensive evaluation platform for LLM outputs and agent behaviors.
 
@@ -34501,7 +34543,7 @@ The Patronus evaluation tools provide a powerful way to evaluate and score model
 
 
 # Portkey Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/portkey
+Source: https://docs.crewai.com/v1.15.42/en/observability/portkey
 
 How to use Portkey with CrewAI
 
@@ -35305,7 +35347,7 @@ researcher = Agent(
 
 
 # CrewAI Tracing
-Source: https://docs.crewai.com/v1.15.41/en/observability/tracing
+Source: https://docs.crewai.com/v1.15.42/en/observability/tracing
 
 Built-in tracing for CrewAI Crews and Flows with the CrewAI AMP platform
 
@@ -35564,7 +35606,7 @@ If traces aren't showing up in the dashboard:
 
 
 # TrueFoundry Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/truefoundry
+Source: https://docs.crewai.com/v1.15.42/en/observability/truefoundry
 
 TrueFoundry provides an enterprise-ready [AI Gateway](https://www.truefoundry.com/ai-gateway) which can integrate with agentic frameworks like CrewAI and provides governance and observability for your AI Applications. TrueFoundry AI Gateway serves as a unified interface for LLM access, providing:
 
@@ -35709,7 +35751,7 @@ This provides additional trace correlation across your entire CrewAI workflow.
 
 
 # Weave Integration
-Source: https://docs.crewai.com/v1.15.41/en/observability/weave
+Source: https://docs.crewai.com/v1.15.42/en/observability/weave
 
 Learn how to use Weights & Biases (W&B) Weave to track, experiment with, evaluate, and improve your CrewAI applications.
 
@@ -35837,7 +35879,7 @@ For detailed information on what's supported, visit the [Weave CrewAI documentat
 
 
 # Telemetry
-Source: https://docs.crewai.com/v1.15.41/en/telemetry
+Source: https://docs.crewai.com/v1.15.42/en/telemetry
 
 Understanding the telemetry data collected by CrewAI and how it contributes to the enhancement of the library.
 
@@ -35945,7 +35987,7 @@ This enables a deeper insight into usage patterns.
 
 
 # AI Mind Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/aimindtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/aimindtool
 
 The `AIMindTool` is designed to query data sources in natural language.
 
@@ -36065,7 +36107,7 @@ The `AIMindTool` provides a powerful way to query your data sources using natura
 
 
 # Code Interpreter
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/codeinterpretertool
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/codeinterpretertool
 
 The `CodeInterpreterTool` is a powerful tool designed for executing Python 3 code within a secure, isolated environment.
 
@@ -36279,7 +36321,7 @@ The `CodeInterpreterTool` provides a powerful way for CrewAI agents to execute P
 
 
 # DALL-E Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/dalletool
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/dalletool
 
 The `DallETool` is a powerful tool designed for generating images from textual descriptions.
 
@@ -36332,7 +36374,7 @@ please refer to the [OpenAI API documentation](https://platform.openai.com/docs/
 
 
 # Daytona Sandbox Tools
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/daytona
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/daytona
 
 Run shell commands, execute Python, and manage files inside isolated [Daytona](https://www.daytona.io/) sandboxes.
 
@@ -36562,7 +36604,7 @@ All three tools accept these parameters at initialization:
 
 
 # E2B Sandbox Tools
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/e2bsandboxtools
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/e2bsandboxtools
 
 The `E2BExecTool`, `E2BPythonTool`, and `E2BFileTool` give CrewAI agents shell, Python, and filesystem access inside isolated, ephemeral E2B remote sandboxes.
 
@@ -36758,7 +36800,7 @@ These tools give agents arbitrary shell, Python, and filesystem access inside th
 
 
 # LangChain Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/langchaintool
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/langchaintool
 
 The `LangChainTool` is a wrapper for LangChain tools and query engines.
 
@@ -36817,7 +36859,7 @@ and the flexibility of tool arguments to optimize your agents' performance and c
 
 
 # LlamaIndex Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/llamaindextool
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/llamaindextool
 
 The `LlamaIndexTool` is a wrapper for LlamaIndex tools and query engines.
 
@@ -36964,7 +37006,7 @@ The `LlamaIndexTool` provides a powerful way to integrate LlamaIndex's capabilit
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/overview
 
 Leverage AI services, generate images, process vision, and build intelligent systems
 
@@ -37025,7 +37067,7 @@ agent = Agent(
 
 
 # RAG Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/ragtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/ragtool
 
 The `RagTool` is a dynamic knowledge base tool for answering questions using Retrieval-Augmented Generation.
 
@@ -37155,6 +37197,14 @@ def knowledge_expert(self) -> Agent:
     )
 ```
 
+## Vector Database
+
+`RagTool` stores content in a local Qdrant database by default, with OpenAI's `text-embedding-3-small` as the embedder. To use ChromaDB, install it with `pip install "crewai[chromadb]"` and set `"provider": "chromadb"` in the `vectordb` config.
+
+> [!NOTE]
+>
+> Content that an earlier version stored in ChromaDB is not read by the Qdrant default. Add it again, or set the `chromadb` provider.
+
 ## Advanced Configuration
 
 You can customize the behavior of the `RagTool` by providing a configuration dictionary:
@@ -37201,6 +37251,10 @@ The `embedding_model` parameter accepts a `crewai.rag.embeddings.types.ProviderS
 ```
 
 ### Supported Providers
+
+> [!NOTE]
+>
+> These providers use ChromaDB and need `pip install "crewai[chromadb]"`: `bedrock`, `cohere`, `google-generativeai`, `huggingface`, `instructor`, `jina`, `ollama`, `onnx`, `openclip`, `roboflow`, `sentence-transformer`, `text2vec`. The others (such as `openai`, `azure`, `openrouter`, `google-vertex`, `voyageai`, `watsonx`, `oracle` and `custom`) work without it.
 
 > [accordion] OpenAI
 >
@@ -37723,7 +37777,7 @@ The `RagTool` provides a powerful way to create and query knowledge bases from v
 
 
 # Vision Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/ai-ml/visiontool
+Source: https://docs.crewai.com/v1.15.42/en/tools/ai-ml/visiontool
 
 The `VisionTool` is designed to extract text from images.
 
@@ -37785,7 +37839,7 @@ The VisionTool accepts the following arguments:
 
 
 # Apify Actors
-Source: https://docs.crewai.com/v1.15.41/en/tools/automation/apifyactorstool
+Source: https://docs.crewai.com/v1.15.42/en/tools/automation/apifyactorstool
 
 `ApifyActorsTool` lets you call Apify Actors to provide your CrewAI workflows with web scraping, crawling, data extraction, and web automation capabilities.
 
@@ -37884,7 +37938,7 @@ The `ApifyActorsTool` requires these inputs to work:
 
 
 # Composio Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/automation/composiotool
+Source: https://docs.crewai.com/v1.15.42/en/tools/automation/composiotool
 
 Composio provides 250+ production-ready tools for AI agents with flexible authentication management.
 
@@ -37974,7 +38028,7 @@ crew.kickoff()
 
 
 # MultiOn Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/automation/multiontool
+Source: https://docs.crewai.com/v1.15.42/en/tools/automation/multiontool
 
 The `MultiOnTool` empowers CrewAI agents with the capability to navigate and interact with the web through natural language instructions.
 
@@ -38101,7 +38155,7 @@ The `MultiOnTool` provides a powerful way to integrate web browsing capabilities
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/automation/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/automation/overview
 
 Automate workflows and integrate with external platforms and services
 
@@ -38163,7 +38217,7 @@ agent = Agent(
 
 
 # Wait Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/automation/waittool
+Source: https://docs.crewai.com/v1.15.42/en/tools/automation/waittool
 
 The `WaitTool` lets an agent pause before checking a long-running job again.
 
@@ -38287,7 +38341,7 @@ asyncio.run(main())
 
 
 # Zapier Actions Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/automation/zapieractionstool
+Source: https://docs.crewai.com/v1.15.42/en/tools/automation/zapieractionstool
 
 The `ZapierActionsAdapter` exposes Zapier actions as CrewAI tools for automation.
 
@@ -38344,7 +38398,7 @@ result = crew.kickoff()
 
 
 # Bedrock Knowledge Base Retriever
-Source: https://docs.crewai.com/v1.15.41/en/tools/cloud-storage/bedrockkbretriever
+Source: https://docs.crewai.com/v1.15.42/en/tools/cloud-storage/bedrockkbretriever
 
 Retrieve information from Amazon Bedrock Knowledge Bases using natural language queries
 
@@ -38515,7 +38569,7 @@ policy_expert = Agent(
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/cloud-storage/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/cloud-storage/overview
 
 Interact with cloud services, storage systems, and cloud-based AI platforms
 
@@ -38565,7 +38619,7 @@ agent = Agent(
 
 
 # S3 Reader Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/cloud-storage/s3readertool
+Source: https://docs.crewai.com/v1.15.42/en/tools/cloud-storage/s3readertool
 
 The `S3ReaderTool` enables CrewAI agents to read files from Amazon S3 buckets.
 
@@ -38710,7 +38764,7 @@ The `S3ReaderTool` provides a straightforward way to read files from Amazon S3 b
 
 
 # S3 Writer Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/cloud-storage/s3writertool
+Source: https://docs.crewai.com/v1.15.42/en/tools/cloud-storage/s3writertool
 
 The `S3WriterTool` enables CrewAI agents to write content to files in Amazon S3 buckets.
 
@@ -38861,7 +38915,7 @@ The `S3WriterTool` provides a straightforward way to write content to files in A
 
 
 # Db2 Vector Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/db2searchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/db2searchtool
 
 Semantic vector search for CrewAI agents using IBM Db2 native VECTOR_DISTANCE capabilities.
 
@@ -39072,7 +39126,7 @@ When `custom_embedding_fn` is provided, `OPENAI_API_KEY` is not required.
 
 
 # MongoDB Vector Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/mongodbvectorsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/mongodbvectorsearchtool
 
 The `MongoDBVectorSearchTool` performs vector search on MongoDB Atlas with optional indexing helpers.
 
@@ -39251,7 +39305,7 @@ To learn more about CrewAI integrations with MongoDB, see the following MongoDB 
 
 
 # MySQL RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/mysqltool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/mysqltool
 
 The `MySQLSearchTool` is designed to search MySQL databases and return the most relevant results.
 
@@ -39321,7 +39375,7 @@ tool = MySQLSearchTool(
 
 
 # NL2SQL Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/nl2sqltool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/nl2sqltool
 
 The `NL2SQLTool` is designed to convert natural language to SQL queries.
 
@@ -39492,7 +39546,7 @@ The Tool provides endless possibilities on the logic of the Agent and how it can
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/overview
 
 Connect to databases, vector stores, and data warehouses for comprehensive data access
 
@@ -39562,7 +39616,7 @@ agent = Agent(
 
 
 # PG RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/pgsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/pgsearchtool
 
 The `PGSearchTool` is designed to search PostgreSQL databases and return the most relevant results.
 
@@ -39645,7 +39699,7 @@ tool = PGSearchTool(
 
 
 # Qdrant Vector Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/qdrantvectorsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/qdrantvectorsearchtool
 
 Semantic search capabilities for CrewAI agents using Qdrant vector database
 
@@ -40000,7 +40054,7 @@ export OPENAI_API_KEY="your_openai_key"  # If using default embeddings
 
 
 # SingleStore Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/singlestoresearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/singlestoresearchtool
 
 The `SingleStoreSearchTool` safely executes SELECT/SHOW queries on SingleStore with pooling.
 
@@ -40060,7 +40114,7 @@ result = crew.kickoff()
 
 
 # Snowflake Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/snowflakesearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/snowflakesearchtool
 
 The `SnowflakeSearchTool` enables CrewAI agents to execute SQL queries and perform semantic search on Snowflake data warehouses.
 
@@ -40263,7 +40317,7 @@ The `SnowflakeSearchTool` provides a powerful way to integrate Snowflake data wa
 
 
 # Weaviate Vector Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/database-data/weaviatevectorsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/database-data/weaviatevectorsearchtool
 
 The `WeaviateVectorSearchTool` is designed to search a Weaviate vector database for semantically similar documents using hybrid search.
 
@@ -40431,7 +40485,7 @@ The `WeaviateVectorSearchTool` provides a powerful way to search for semanticall
 
 
 # Bedrock Invoke Agent Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/integration/bedrockinvokeagenttool
+Source: https://docs.crewai.com/v1.15.42/en/tools/integration/bedrockinvokeagenttool
 
 Enables CrewAI agents to invoke Amazon Bedrock Agents and leverage their capabilities within your workflows
 
@@ -40624,7 +40678,7 @@ result = crew.kickoff()
 
 
 # CrewAI Run Automation Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/integration/crewaiautomationtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/integration/crewaiautomationtool
 
 Enables CrewAI agents to invoke CrewAI Platform automations and leverage external crew services within your workflows.
 
@@ -40906,7 +40960,7 @@ The tool interacts with two main API endpoints:
 
 
 # Merge Agent Handler Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/integration/mergeagenthandlertool
+Source: https://docs.crewai.com/v1.15.42/en/tools/integration/mergeagenthandlertool
 
 Enables CrewAI agents to securely access third-party integrations like Linear, GitHub, Slack, and more through Merge's Agent Handler platform
 
@@ -41278,7 +41332,7 @@ All errors are wrapped in `MergeAgentHandlerToolError` for consistent error hand
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.41/en/tools/integration/overview
+Source: https://docs.crewai.com/v1.15.42/en/tools/integration/overview
 
 Connect CrewAI agents with external automations and managed AI services
 
@@ -41352,7 +41406,7 @@ Crew(agents=[automation_strategist], tasks=[execute_playbook]).kickoff()
 
 
 # Arxiv Paper Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/arxivpapertool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/arxivpapertool
 
 The `ArxivPaperTool` searches arXiv for papers matching a query and optionally downloads PDFs.
 
@@ -41464,7 +41518,7 @@ When `download_pdfs=True`, PDFs are saved to disk and the summary mentions saved
 
 
 # Code Docs RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/codedocssearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/codedocssearchtool
 
 The `CodeDocsSearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool designed for semantic searches within code documentation.
 
@@ -41550,7 +41604,7 @@ tool = CodeDocsSearchTool(
 
 
 # Databricks SQL Query Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/databricks-query-tool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/databricks-query-tool
 
 The `DatabricksQueryTool` executes SQL queries against Databricks workspace tables.
 
@@ -41629,7 +41683,7 @@ print(result)
 
 
 # Github Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/githubsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/githubsearchtool
 
 The `GithubSearchTool` is designed to search websites and convert them into clean markdown or structured data.
 
@@ -41716,7 +41770,7 @@ tool = GithubSearchTool(
 
 
 # SerpApi Google Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/serpapi-googlesearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/serpapi-googlesearchtool
 
 The `SerpApiGoogleSearchTool` performs Google searches using the SerpApi service.
 
@@ -41780,7 +41834,7 @@ result = crew.kickoff()
 
 
 # SerpApi Google Shopping Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/serpapi-googleshoppingtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/serpapi-googleshoppingtool
 
 The `SerpApiGoogleShoppingTool` searches Google Shopping results using SerpApi.
 
@@ -41840,7 +41894,7 @@ result = crew.kickoff()
 
 
 # Tavily Extractor Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/tavilyextractortool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/tavilyextractortool
 
 Extract structured content from web pages using the Tavily API
 
@@ -41981,7 +42035,7 @@ Refer to the [Tavily API documentation](https://docs.tavily.com/sdk/python/refer
 
 
 # Tavily Research Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/tavilyresearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/tavilyresearchtool
 
 Run multi-step research tasks and get cited reports using the Tavily Research API
 
@@ -42106,7 +42160,7 @@ Refer to the [Tavily API documentation](https://docs.tavily.com/) for full detai
 
 
 # Tavily Search Tool
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/tavilysearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/tavilysearchtool
 
 Perform comprehensive web searches using the Tavily Search API
 
@@ -42232,7 +42286,7 @@ Content for each result is automatically truncated to prevent context window iss
 
 
 # Website RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/websitesearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/websitesearchtool
 
 The `WebsiteSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a website.
 
@@ -42309,7 +42363,7 @@ tool = WebsiteSearchTool(
 
 
 # You.com Search & Research Tools
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/youai-search
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/youai-search
 
 Web search and AI-powered research via You.com's remote MCP server — includes a free tier with 100 queries/day.
 
@@ -42485,7 +42539,7 @@ See [MCP Security](/en/mcp/security) for full security best practices.
 
 
 # YouTube Channel RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/youtubechannelsearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/youtubechannelsearchtool
 
 The `YoutubeChannelSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a Youtube channel.
 
@@ -42680,7 +42734,7 @@ The `YoutubeChannelSearchTool` provides a powerful way to search and extract inf
 
 
 # YouTube Video RAG Search
-Source: https://docs.crewai.com/v1.15.41/en/tools/search-research/youtubevideosearchtool
+Source: https://docs.crewai.com/v1.15.42/en/tools/search-research/youtubevideosearchtool
 
 The `YoutubeVideoSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a Youtube video.
 
@@ -42954,15 +43008,61 @@ Browse the [examples and cookbooks](/en/examples/cookbooks) for end-to-end refer
 
 
 # GET /status/{kickoff_id}
-Source: https://docs.crewai.com/v1.15.41/en/api-reference/status
+Source: https://docs.crewai.com/v1.15.42/en/api-reference/status
 
-v1.15.41/enterprise-api.en.yaml GET /status/{kickoff_id}
+v1.15.42/enterprise-api.en.yaml GET /status/{kickoff_id}
 Get execution status
 
 # Changelog
-Source: https://docs.crewai.com/v1.15.41/en/changelog
+Source: https://docs.crewai.com/v1.15.42/en/changelog
 
 Product updates, improvements, and bug fixes for CrewAI
+
+**Nov 18, 2026**
+
+## v1.15.42
+
+[View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/1.15.42)
+
+## What's Changed
+
+### Features
+
+* Make ChromaDB an optional extra
+* Default Knowledge to local Qdrant and decouple storage from ChromaDB
+* Pick tools for standalone agents and add them later
+
+### Bug Fixes
+
+* Store output_json values as JSON to prevent date issues in .json and output_file
+* Give each Flow its own ID from an initial_state instance
+* Honor max_execution_time without waiting for the worker
+* Save task outputs that hold URLs and other Pydantic types
+* Read the experiment baseline as UTF-8
+* Prefix sanitized tool names that start with a digit
+* Count scoped LanceDB records exactly above 50,000 rows
+* Report Serply's hybrid flag from its own field
+* Let TavilyResearchTool's configured defaults apply
+* Normalize flat Chroma metadata filters
+* Handle CSV record newlines without translating cell values
+* Load JSON crew and agent files saved with a UTF-8 BOM
+* Preserve validated converter output in the configured format
+* Read and write .env as UTF-8
+* Keep a streamed delta when its chunk also carries usage
+* Honor caller-provided Weaviate headers
+* Exit with the UV status when crewai install fails
+* Read pyproject.toml as UTF-8 in project helpers
+* Accept an LLM mapping in agents.yaml
+* Raise soupsieve floor to 4.0 for CVE-2026-126190
+
+### Documentation
+
+* Align crew endpoint path with runtime example
+* Update FAQ links to AMP headings
+
+## Contributors
+
+@HhH666-ux, @Kiko0301, @Pranav-Singh-Devloper, @TejasLamba2006, @Varshith-Kali, @Vidit-Ostwal, @adityajai119, @ats3v, @bballhaus, @github-actions\[bot], @iris-clawd, @jjhong011001, @lakers-abing, @lorenzejay, @lxcxjxhx, @xu-song
 
 **Nov 13, 2026**
 
@@ -48961,7 +49061,7 @@ We are thrilled to announce the initial release of CrewAI, version 0.1.0! CrewAI
 
 
 # CrewAI Cookbooks
-Source: https://docs.crewai.com/v1.15.41/en/examples/cookbooks
+Source: https://docs.crewai.com/v1.15.42/en/examples/cookbooks
 
 Feature-focused quickstarts and notebooks for learning patterns fast.
 
@@ -49005,7 +49105,7 @@ Feature-focused quickstarts and notebooks for learning patterns fast.
 
 
 # CrewAI Examples
-Source: https://docs.crewai.com/v1.15.41/en/examples/example
+Source: https://docs.crewai.com/v1.15.42/en/examples/example
 
 Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 
@@ -49096,6 +49196,92 @@ Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 > [card] [All Notebooks](https://github.com/crewAIInc/crewAI-examples/tree/main/notebooks)
 >
 > Interactive examples for learning and experimentation.
+
+
+# CrewAI Documentation
+Source: https://docs.crewai.com/index
+
+Build collaborative AI agents, crews, and flows — production ready from day one.
+
+![CrewAI](https://mintcdn.com/crewai/5SZbe87tsCWZY09V/images/crew_only_logo.png?fit=max\&auto=format\&n=5SZbe87tsCWZY09V\&q=85\&s=439ca5dc63a1768cad7196005ff5636f)
+
+# Ship multi‑agent systems with confidence
+
+Design agents, orchestrate crews, and automate flows with guardrails, memory, knowledge, and observability baked in.
+
+[Get started](/en/quickstart)
+
+Copy agent setup prompt
+
+[Coding-agent guide](/guides/coding-tools/build-with-ai)
+
+[API Reference](/en/api-reference/introduction)
+
+## Get started
+
+> [card] [Introduction](/en/introduction)
+>
+> Overview of CrewAI concepts, architecture, and what you can build with agents, crews, and flows.
+
+> [card] [Installation](/en/installation)
+>
+> Install via `uv`, configure API keys, and set up the CLI for local development.
+
+> [card] [Quickstart](/en/quickstart)
+>
+> Spin up your first crew in minutes. Learn the core runtime, project layout, and dev loop.
+
+## Build the basics
+
+> [card] [Agents](/en/concepts/agents)
+>
+> Compose agents with tools, memory, knowledge, and structured outputs using Pydantic. Includes templates and best practices.
+
+> [card] [Flows](/en/concepts/flows)
+>
+> Orchestrate start/listen/router steps, manage state, persist execution, and resume long-running workflows.
+
+> [card] [Tasks & Processes](/en/concepts/tasks)
+>
+> Define sequential, hierarchical, or hybrid processes with guardrails, callbacks, and human-in-the-loop triggers.
+
+## Enterprise journey
+
+> [card] [Deploy automations](https://docs-platform.crewai.com/platform/en/features/automations)
+>
+> Manage environments, redeploy safely, and monitor live runs directly from the Enterprise console.
+
+> [card] [Triggers & Flows](https://docs-platform.crewai.com/platform/en/guides/automation-triggers)
+>
+> Connect Gmail, Slack, Salesforce, and more. Pass trigger payloads into crews and flows automatically.
+
+> [card] [Team management](https://docs-platform.crewai.com/platform/en/guides/team-management)
+>
+> Invite teammates, configure RBAC, and control access to production automations.
+
+## What’s new
+
+> [card] [Triggers overview](https://docs-platform.crewai.com/platform/en/guides/automation-triggers)
+>
+> Unified overview for Gmail, Drive, Outlook, Teams, OneDrive, HubSpot, and more — now with sample payloads and crews.
+
+> [card] [Integration tools](/en/tools/integration/overview)
+>
+> Call existing CrewAI automations or Amazon Bedrock Agents directly from your crews using the updated integration toolkit.
+
+**Explore real-world patterns**
+
+Browse the [examples and cookbooks](/en/examples/cookbooks) for end-to-end reference implementations across agents, flows, and enterprise automations.
+
+## Stay connected
+
+> [card] [Star us on GitHub](https://github.com/crewAIInc/crewAI)
+>
+> If CrewAI helps you ship faster, give us a star and share your builds with the community.
+
+> [card] [Join the community](https://community.crewai.com)
+>
+> Ask questions, showcase workflows, and request features alongside other builders.
 
 
 # CrewAI Documentation

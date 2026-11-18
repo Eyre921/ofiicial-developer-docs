@@ -1111,7 +1111,7 @@ You can assign a role when creating a service account using the `--role` flag:
 firectl user create --user-id "my-service-account" --service-account --role=contributor
 ```
 
-If not specified, the default service account role is `user`.
+If not specified, the default service account role is `inference-user`.
 
 To change the role of an existing service account, use the update command:
 
@@ -25705,7 +25705,7 @@ firectl api-key create --service-account "prod-litellm"
 firectl user list --filter 'service_account=true'
 ```
 
-If you leave out `--role`, the role is `user`. See [User roles](/accounts/users#user-roles) for each role's permissions.
+If you leave out `--role`, the role is `inference-user`. See [User roles](/accounts/users#user-roles) for each role's permissions.
 
 * To match an existing service account, check its role first with `firectl user get <user-id>`.
 * `firectl signin` connects to `gateway.fireworks.ai:443` over gRPC (HTTP/2). A corporate proxy that inspects TLS can break that connection, with errors such as `missing selected ALPN property` or `error reading server preface: EOF`. Ask your network team to allow HTTP/2 gRPC to that host or exempt it from TLS inspection, or use the console steps above.

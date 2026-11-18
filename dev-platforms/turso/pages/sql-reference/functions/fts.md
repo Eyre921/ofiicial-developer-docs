@@ -76,7 +76,7 @@ CREATE INDEX idx_articles ON articles USING fts (title, body)
 
 ## Functions
 
-### fts\_match
+### fts_match
 
 Returns 1 if the row matches the full-text query, or 0 otherwise. Used in the `WHERE` clause to filter rows.
 
@@ -102,7 +102,7 @@ SELECT id, title FROM articles
 WHERE fts_match(body, 'machine learning');
 ```
 
-### fts\_score
+### fts_score
 
 Computes the BM25 relevance score for each matching row. Lower scores indicate higher relevance.
 
@@ -129,7 +129,7 @@ ORDER BY score DESC
 LIMIT 10;
 ```
 
-### fts\_highlight
+### fts_highlight
 
 Returns text with matching query terms wrapped in custom tags. Useful for displaying search results with visual emphasis on matched terms.
 
@@ -144,7 +144,7 @@ fts_highlight(column1, column2, ..., open_tag, close_tag, query)
 | `close_tag` | TEXT | The tag to insert after each matching term (e.g. `'</b>'`) |
 | `query` | TEXT | The search query string |
 
-**Returns:** TEXT -- the input text with matching terms wrapped in the specified tags. Returns the original text if no matches are found. Returns NULL if the query, open\_tag, or close\_tag is NULL.
+**Returns:** TEXT -- the input text with matching terms wrapped in the specified tags. Returns the original text if no matches are found. Returns NULL if the query, open_tag, or close_tag is NULL.
 
 When multiple columns are provided, their text is concatenated with spaces.
 

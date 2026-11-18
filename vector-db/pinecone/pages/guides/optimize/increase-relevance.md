@@ -16,9 +16,9 @@ Pinecone provides [hosted reranking models](/guides/search/rerank-results#rerank
 
 ## Filter by metadata
 
-Every [record](/guides/get-started/key-terms#record) in an index must contain an ID and a dense or sparse vector, depending on the [type of index](/guides/indexes/index-data-overview#indexes). In addition, you can include metadata key-value pairs to store related information or context. When you search the index, you can then include a metadata filter to limit the search to records matching a filter expression.
+Every [document](/guides/indexes/data-modeling#documents) in a document index has an `_id` and the fields its schema declares. It can also carry [metadata](/guides/indexes/index-data-overview#metadata), key-value pairs that store related information or context. When you search the index, you can include a metadata filter to limit the search to documents that match a filter expression.
 
-For example, if an index contains records about books, you could use a metadata field to associate each record with a genre, like `"genre": "fiction"` or `"genre": "poetry"`. When you query the index, you could then use a metadata filter to limit your search to records related to a specific genre.
+For example, if an index contains documents about books, you could use a metadata field to associate each document with a genre, like `"genre": "fiction"` or `"genre": "poetry"`. When you search the index, you could then use a metadata filter to limit your search to documents in a specific genre.
 
 For more details, see [Filter by metadata](/guides/search/filter-by-metadata).
 
@@ -26,7 +26,7 @@ For more details, see [Filter by metadata](/guides/search/filter-by-metadata).
 
 When relevance depends on exact keyword or phrase matches over text content — for example, product names, technical IDs, named entities, or jargon — we recommend [full-text search](/guides/search/full-text-search). It uses **BM25** ranking on `string` fields you've declared with `full_text_search` enabled and supports Lucene query syntax (`query_string`), including phrase, boolean, and proximity operators, plus the `$match_phrase` filter for exact phrase matching against text fields.
 
-An index with a document schema can also include `dense_vector` and `sparse_vector` fields in the same schema, so you can combine BM25 token matching with semantic or sparse-vector ranking on a single index. A single search request ranks by one scoring type. To combine them, restrict a `dense_vector` or `sparse_vector` search with a text-match filter (`$match_phrase`, `$match_all`, `$match_any`) on an FTS-enabled `string` field, or run BM25 and dense (or sparse) searches separately and merge the results client-side.
+A document index can also include `dense_vector` and `sparse_vector` fields in the same schema, so you can combine BM25 token matching with semantic or sparse-vector ranking on a single index. A single search request ranks by one scoring type. To combine them, restrict a `dense_vector` or `sparse_vector` search with a text-match filter (`$match_phrase`, `$match_all`, `$match_any`) on a `string` field with `full_text_search` enabled, or run BM25 and dense (or sparse) searches separately and merge the results client-side.
 
 For more details, see [Full-text search](/guides/search/full-text-search).
 
@@ -71,7 +71,7 @@ There are two ways to do this:
 * [Use a single index for dense and sparse vectors](/guides/legacy/vectors-api/hybrid-search-single-index). This is the **recommended** approach for most use cases because you make requests to a single index, the linkage between dense and sparse vectors is implicit, and you can perform hybrid queries with a single request. Note that you'll need to [normalize sparse and dense values](/guides/legacy/vectors-api/hybrid-search-single-index#normalize-sparse-and-dense-values) at query time so the unbounded sparse component doesn't dominate the combined score.
 * [Use separate indexes for dense and sparse vectors](/guides/legacy/vectors-api/hybrid-search-separate-indexes). This approach provides more flexibility but requires managing two indexes, maintaining linkages between vectors, and querying each index separately before merging results.
 
-If you'd rather not tune sparse and dense weights at all, an [index with a document schema](/guides/get-started/key-terms#document) with a multi-field schema is a simpler single-index alternative: declare FTS-enabled `string` fields alongside a `dense_vector` or `sparse_vector` field on the same index, then either restrict the dense (or sparse) search with a text-match filter on the full-text field, or run separate searches and merge the results client-side.
+If you'd rather not tune sparse and dense weights at all, use a [document index](/guides/indexes/index-data-overview#document-index) instead. Declare `string` fields with `full_text_search` alongside a `dense_vector` or `sparse_vector` field in the same index. Then restrict the dense or sparse search with a text-match filter on the full-text field, or run separate searches and merge the results client-side.
 
 For more details, including guidance on choosing the right approach, see [Hybrid search](/guides/search/hybrid-search).
 

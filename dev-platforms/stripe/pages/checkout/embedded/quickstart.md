@@ -651,7 +651,7 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
     CustomerEmail: stripe.String("customer@example.com"),
     SubmitType: stripe.String("donate"),
     BillingAddressCollection: stripe.String("auto"),
-    ShippingAddressCollection: &stripe.CheckoutSessionShippingAddressCollectionParams{
+    ShippingAddressCollection: &stripe.CheckoutSessionCreateShippingAddressCollectionParams{
       AllowedCountries: stripe.StringSlice([]string{
         "US",
         "CA",
@@ -664,8 +664,8 @@ $stripeSecretKey = '<<YOUR_SECRET_KEY>>';
         Quantity: stripe.Int64(1),
       },
     },
-    Mode: stripe.String("{{CHECKOUT_MODE}}"),
-    AutomaticTax: &stripe.CheckoutSessionAutomaticTaxParams{Enabled: stripe.Bool(true)},
+    Mode: {{CHECKOUT_MODE}},
+    AutomaticTax: &stripe.CheckoutSessionCreateAutomaticTaxParams{Enabled: stripe.Bool(true)},
     CustomerCreation: stripe.String(stripe.CheckoutSessionCustomerCreationAlways),
     // Provide the Customer ID (for example, cus_1234) for an existing customer to associate it with this session
     // Customer:   stripe.String("{{CUSTOMER_ID}}"),
@@ -824,7 +824,7 @@ async function initialize() {
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "react-router-dom": "^6.16.0",
-    "stripe": "^8.202.0"
+    "stripe": "^23.0.0"
   },
   "devDependencies": {
     "concurrently": "4.1.2"

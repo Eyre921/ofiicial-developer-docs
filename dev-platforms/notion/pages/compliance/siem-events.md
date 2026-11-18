@@ -130,6 +130,9 @@ When available, applicable events include a top-level `team_ids` array containin
 * **database.property.permissions.exception_removed**: A user removed an access exception for a database property.
 * **database.property.permissions.exception_updated**: A user changed an access exception for a database property.
 * **database.schema_edited**: A user edited the schema of a database.
+* **meeting_notes.filing_rule.created**: A meeting-note filing rule was created.
+* **meeting_notes.filing_rule.deleted**: A meeting-note filing rule was deleted.
+* **meeting_notes.filing_rule.updated**: The destination, template, or linked calendar events of a meeting-note filing rule were updated.
 
 ### Workspace events
 
@@ -279,6 +282,8 @@ When available, applicable events include a top-level `team_ids` array containin
 * **workspace.settings.saml_automatic_account_creation_setting_updated**: A workspace owner enabled or disabled automatically creating accounts on SAML sign-in.
 * **workspace.settings.sidebar_editing_setting_updated**: A workspace owner enabled or disabled the ability for users to change the workspace sidebar.
 * **workspace.teams_read**: A user viewed the list of teamspaces in the workspace.
+* **workspace.trusted_domain.created**: A user added an allowed email domain.
+* **workspace.trusted_domain.deleted**: A user removed an allowed email domain.
 * **workspace.user_analytics_exported**: The User Analytics table of [Workspace Analytics](https://www.notion.so/help/workspace-analytics) was exported.
 * **workspace.users_read**: A user viewed the list of users in the workspace.
 
