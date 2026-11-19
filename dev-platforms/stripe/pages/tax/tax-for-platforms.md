@@ -54,7 +54,7 @@ To embed tax settings and tax registrations into your website:
 ```curl
 curl https://api.stripe.com/v1/account_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d account={{CONNECTED_ACCOUNT_ID}} \
+  -d "account={{CONNECTED_ACCOUNT_ID}}" \
   -d "components[tax_settings][enabled]=true" \
   -d "components[tax_registrations][enabled]=true"
 ```

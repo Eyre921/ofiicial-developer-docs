@@ -39,13 +39,14 @@ You need:
 * An OpenRouter API key available as `OPENROUTER_API_KEY`
 * Bun, or Node.js 22.18 or newer (both run TypeScript files directly)
 * `sharp` to load and draw on the image: `npm install sharp`
-* A JPEG, PNG, WebP, or GIF photo. To follow along exactly, download the [workbench photo](https://openrouter.ai/docs/assets/cookbook/image-understanding/find-objects-in-images/workbench.jpg) used on this page and save it as `workbench.jpg`.
+* For the Go tabs, Go 1.21 or newer in place of Node.js and `sharp`. They use only the standard library.
+* A JPEG, PNG, WebP, or GIF photo. The Go tabs read JPEG, PNG, and GIF only, because the standard library has no WebP decoder, so convert a WebP photo first. To follow along exactly, download the [workbench photo](https://openrouter.ai/docs/assets/cookbook/image-understanding/find-objects-in-images/workbench.jpg) used on this page and save it as `workbench.jpg`.
 
 This guide uses `moondream/moondream3.1-9b-a2b`. `moondream/moondream3-preview` takes the same commands. See the [Moondream 3.1](https://openrouter.ai/moondream/moondream3.1-9b-a2b) model page for pricing, and [Image Understanding](https://openrouter.ai/docs/guides/overview/multimodal/image-understanding.md) for the ways to send images.
 
 ## Step 1: Find every match with /detect
 
-Create `find-objects.ts`. The `loadImage` helper turns the photo upright and reads its format: Moondream reads the stored pixels and ignores the EXIF orientation tag that phone cameras set, so a phone photo would otherwise come back with coordinates for a sideways image. The `locate` helper sends one image and one command, and returns the array of matches. The command must be the first thing in the text part, and its argument must be a JSON object with an `object` key.
+Create `find-objects.ts`. The `loadImage` helper turns the photo upright and reads its format: Moondream reads the stored pixels and ignores the EXIF orientation tag that phone cameras set, so a phone photo would otherwise come back with coordinates for a sideways image. The Go tab is the exception: its `loadImage` reads the size and format but does not rotate anything, so turn a phone photo upright in an image editor before you pass it in, or the coordinates describe the sideways image. The `locate` helper sends one image and one command, and returns the array of matches. The command must be the first thing in the text part, and its argument must be a JSON object with an `object` key.
 
 ```ts expandable lines theme={null}
 import sharp from "sharp";
@@ -127,7 +128,150 @@ console.log(`detect screwdriver: ${objects.length} boxes`);
 console.log(JSON.stringify(objects, null, 2));
 ```
 
-Run it with `bun find-objects.ts` or `node find-objects.ts`:
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/base64"
+	"encoding/json"
+	"fmt"
+	"image"
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+const model = "moondream/moondream3.1-9b-a2b"
+
+type Image struct {
+	Data          []byte
+	Mime          string
+	Width, Height int
+}
+
+var mimeTypes = map[string]string{
+	"jpeg": "image/jpeg",
+	"png":  "image/png",
+	"gif":  "image/gif",
+}
+
+// loadImage reads the photo and its format. The Go standard library does not
+// apply EXIF orientation, so rotate phone photos upright before using them.
+// It also has no WebP decoder, so this tab accepts JPEG, PNG, and GIF only.
+func loadImage(path string) (Image, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return Image{}, err
+	}
+	cfg, format, err := image.DecodeConfig(bytes.NewReader(data))
+	if err != nil {
+		return Image{}, err
+	}
+	mime, ok := mimeTypes[format]
+	if !ok {
+		return Image{}, fmt.Errorf("unsupported image format: %s. Use JPEG, PNG, or GIF", format)
+	}
+	return Image{data, mime, cfg.Width, cfg.Height}, nil
+}
+
+func locate(apiKey string, img Image, skill, object string) ([]any, error) {
+	arg, _ := json.Marshal(map[string]string{"object": object})
+	body, _ := json.Marshal(map[string]any{
+		"model": model,
+		"input": []any{map[string]any{
+			"role": "user",
+			"content": []any{
+				map[string]any{"type": "input_text", "text": "/" + skill + " " + string(arg)},
+				map[string]any{
+					"type":      "input_image",
+					"image_url": "data:" + img.Mime + ";base64," + base64.StdEncoding.EncodeToString(img.Data),
+					"detail":    "auto",
+				},
+			},
+		}},
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+apiKey)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	raw, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode >= 300 {
+		return nil, fmt.Errorf("%s", raw)
+	}
+
+	var result struct {
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.Unmarshal(raw, &result); err != nil {
+		return nil, err
+	}
+	content := ""
+	for _, item := range result.Output {
+		if item.Type == "message" {
+			for _, part := range item.Content {
+				if part.Type == "output_text" {
+					content = part.Text
+				}
+			}
+		}
+	}
+
+	key := "points"
+	if skill == "detect" {
+		key = "objects"
+	}
+	var parsed map[string]any
+	json.Unmarshal([]byte(content), &parsed)
+	matches, ok := parsed[key].([]any)
+	if !ok {
+		return nil, fmt.Errorf("expected %q in the response, got: %s", key, content)
+	}
+	return matches, nil
+}
+
+func main() {
+	apiKey := os.Getenv("OPENROUTER_API_KEY")
+	if apiKey == "" {
+		log.Fatal("Set OPENROUTER_API_KEY first.")
+	}
+
+	path := "workbench.jpg"
+	if len(os.Args) > 1 {
+		path = os.Args[1]
+	}
+	img, err := loadImage(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	objects, err := locate(apiKey, img, "detect", "screwdriver")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("detect screwdriver: %d boxes\n", len(objects))
+	out, _ := json.MarshalIndent(objects, "", "  ")
+	fmt.Println(string(out))
+}
+
+```
+
+Run it with `bun find-objects.ts` or `node find-objects.ts`. For the Go tab, save it as `find-objects.go` and run `go run find-objects.go`. With the workbench photo, it prints:
 
 ```text lines theme={null}
 detect screwdriver: 3 boxes
@@ -165,6 +309,17 @@ The `object` value can be a short description as well as a noun. `{"object":"red
 const points = (await locate(image, "point", "hammer")) as Point[];
 console.log(`point hammer: ${points.length} points`);
 console.log(JSON.stringify(points, null, 2));
+```
+
+```go title="Go" lines theme={null}
+	points, err := locate(apiKey, img, "point", "hammer")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("point hammer: %d points\n", len(points))
+	out, _ = json.MarshalIndent(points, "", "  ")
+	fmt.Println(string(out))
+
 ```
 
 ```text lines theme={null}
@@ -213,11 +368,42 @@ await sharp(image.data)
 console.log(`Saved annotated.png (${width}x${height})`);
 ```
 
+```go title="Go" lines theme={null}
+	width, height := float64(img.Width), float64(img.Height)
+
+	var svg strings.Builder
+	fmt.Fprintf(&svg, `<svg width="%d" height="%d" xmlns="http://www.w3.org/2000/svg">`, img.Width, img.Height)
+	fmt.Fprintf(&svg, `<image href="data:%s;base64,%s" width="%d" height="%d"/>`,
+		img.Mime, base64.StdEncoding.EncodeToString(img.Data), img.Width, img.Height)
+
+	for _, o := range objects {
+		b := o.(map[string]any)
+		x := b["x_min"].(float64) * width
+		y := b["y_min"].(float64) * height
+		w := (b["x_max"].(float64) - b["x_min"].(float64)) * width
+		h := (b["y_max"].(float64) - b["y_min"].(float64)) * height
+		fmt.Fprintf(&svg, `<rect x="%g" y="%g" width="%g" height="%g" fill="none" stroke="#6467f2" stroke-width="5"/>`, x, y, w, h)
+	}
+
+	for _, p := range points {
+		pt := p.(map[string]any)
+		fmt.Fprintf(&svg, `<circle cx="%g" cy="%g" r="14" fill="#6467f2" stroke="white" stroke-width="4"/>`,
+			pt["x"].(float64)*width, pt["y"].(float64)*height)
+	}
+	svg.WriteString("</svg>")
+
+	if err := os.WriteFile("annotated.svg", []byte(svg.String()), 0o644); err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Printf("Saved annotated.svg (%dx%d)\n", img.Width, img.Height)
+```
+
 ```text lines theme={null}
 Saved annotated.png (1360x768)
 ```
 
-Open `annotated.png` to see the image at the top of this page. To crop a match out instead of drawing it, pass the same pixel values to `sharp(image.data).extract({ left: x, top: y, width: w, height: h })`, rounded to whole numbers.
+Open `annotated.png` to see the image at the top of this page. The Go version has no `sharp`, so it embeds the photo in the SVG and saves `annotated.svg` instead. To crop a match out instead of drawing it, pass the same pixel values to `sharp(image.data).extract({ left: x, top: y, width: w, height: h })`, rounded to whole numbers.
 
 ## Troubleshooting
 

@@ -139,9 +139,9 @@ Dedicated read nodes indexes support a single namespace. To request early access
 | :- | :- |
 | [Shards](/guides/optimize/dedicated-read-nodes/concepts#shards) | Minimum 1 per index |
 | [Replicas](/guides/optimize/dedicated-read-nodes/concepts#replicas) | Minimum 0 per index, where 0 [pauses the index](/guides/optimize/dedicated-read-nodes/manage#pause-an-index) |
-| [Nodes](/guides/optimize/dedicated-read-nodes/concepts#node-types) | Maximum 20 per project |
+| [Nodes](/guides/optimize/dedicated-read-nodes/concepts#node-types) | Maximum 50 per project |
 
-Nodes are a project-level limit, not a per-index limit. To calculate your total node count, multiply `shards × replicas` for each of your project's indexes, then sum the results; this total must not exceed 20. For example, two indexes that each have two shards and three replicas total `(2 × 3) + (2 × 3) = 12` nodes.
+Nodes are a project-level limit, not a per-index limit. To calculate your total node count, multiply `shards × replicas` for each of your project's indexes, then sum the results; this total must not exceed 50. For example, two indexes that each have two shards and three replicas total `(2 × 3) + (2 × 3) = 12` nodes.
 
 To increase your project's node limit, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 

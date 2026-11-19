@@ -1,5 +1,5 @@
 ---
-title: "API Reference (186 pages)"
+title: "API Reference (188 pages)"
 source: https://openrouter.ai/docs/_llms/api-reference.txt
 path: docs/_llms/api-reference.txt
 ---
@@ -53,6 +53,8 @@ path: docs/_llms/api-reference.txt
 #### Speech
 
 - [Create speech](https://openrouter.ai/docs/api/api-reference/tts/create-speech.md): Synthesizes audio from the input text. Returns a raw audio bytestream in the requested format (e.g. mp3, pcm, wav).
+- [List text-to-speech models](https://openrouter.ai/docs/api/api-reference/tts/list-text-to-speech-models.md): Lists every text-to-speech model with the inputs it accepts and its speech output parameters, merged across its endpoints, plus each endpoint with its own.
+- [Get a text-to-speech model](https://openrouter.ai/docs/api/api-reference/tts/get-a-text-to-speech-model.md): Returns a text-to-speech model with each endpoint's own inputs and speech output parameters.
 
 #### Transcriptions
 

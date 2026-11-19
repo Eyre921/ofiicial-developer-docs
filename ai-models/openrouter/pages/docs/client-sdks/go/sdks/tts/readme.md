@@ -19,6 +19,8 @@ Text-to-speech endpoints
 ### Available Operations
 
 * [CreateSpeech](#createspeech) - Create speech
+* [ListModels](#listmodels) - List text-to-speech models
+* [GetModel](#getmodel) - Get a text-to-speech model
 
 ## CreateSpeech
 
@@ -89,5 +91,108 @@ func main() {
 | sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.EdgeNetworkTimeoutResponseError | 524 | application/json |
 | sdkerrors.ProviderOverloadedResponseError | 529 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
+
+## ListModels
+
+Lists every text-to-speech model with the inputs it accepts and its speech output parameters, merged across its endpoints, plus each endpoint with its own.
+
+### Example Usage
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New()
+
+    res, err := s.TTS.ListModels(ctx)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
+
+### Response
+
+**[\*components.SpeechModelsListResponse](../../models/components/speechmodelslistresponse.mdx), error**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
+
+## GetModel
+
+Returns a text-to-speech model with each endpoint's own inputs and speech output parameters.
+
+### Example Usage
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New()
+
+    res, err := s.TTS.GetModel(ctx, "openai", "gpt-4o-mini-tts")
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `author` | `string` | ✔️ | Model author/organization | openai |
+| `slug` | `string` | ✔️ | Model slug | gpt-4o-mini-tts |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+
+### Response
+
+**[\*components.SpeechModelResponse](../../models/components/speechmodelresponse.mdx), error**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

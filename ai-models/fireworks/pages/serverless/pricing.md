@@ -4,11 +4,11 @@ source: https://docs.fireworks.ai/serverless/pricing
 path: serverless/pricing
 ---
 
-Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, Fast, and Ultra-fast (Preview) serverless mode rates.
+Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, Fast, Ultra-fast (Preview), and Flex serverless mode rates.
 
 ## Overview
 
-Serverless inference is priced per token. For how Standard, Priority, Fast, and Ultra-fast (Preview) modes work and how to select one, see [Serverless Modes](/serverless/serverless-modes).
+Serverless inference is priced per token. For how Standard, Priority, Fast, Ultra-fast (Preview), and Flex modes work and how to select one, see [Serverless Modes](/serverless/serverless-modes).
 
 Every text or vision request is billed across three dimensions:
 
@@ -24,7 +24,7 @@ Embeddings are billed only on input tokens.
 
 ## Text and vision models
 
-Per-model pricing for headline models. Fast and Ultra-fast (Preview) variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
+Per-model pricing for headline models. Fast, Ultra-fast (Preview), and Flex variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
 
 | Model | Standard | Priority |
 | - | - | - |
@@ -37,7 +37,8 @@ Per-model pricing for headline models. Fast and Ultra-fast (Preview) variants ap
 | [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
 | [DeepSeek V4.1 Flash (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
-| [DeepSeek V4.1 Flash 1017 Ultra-fast (Preview)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$2.40 / \$0.048 / \$9.60 | — |
+| [DeepSeek V4.1 Flash 1017 Flex](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.15 / \$0.003 / \$0.60 | — |
+| [DeepSeek V4.1 Flash 1017 Ultra-fast (Preview)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$1.20 / \$0.024 / \$4.80 | — |
 | [DeepSeek V4.1 Flash 1017 (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.15 / \$0.03 / \$0.50 | \$0.1875 / \$0.0375 / \$0.625 |
 | [GLM 5.3 Flash (US)](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |

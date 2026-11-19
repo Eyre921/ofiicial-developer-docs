@@ -55,6 +55,7 @@ Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgr
 - HIPAA available as paid add-on
 - SSO for Supabase Dashboard
 - Priority email support & SLAs
+- Supports AWS PrivateLink
 - Daily backups stored for 14 days
 - 28-day log retention
 
@@ -199,7 +200,7 @@ Compute is billed hourly. Each project runs its own instance. Pro and Team plans
 | SOC2                           | Not included            | Not included                                                               | Included                                                                   | Included                       |
 | ISO 27001                      | Not included            | Not included                                                               | Included                                                                   | Included                       |
 | HIPAA                          | Not included            | Not included                                                               | Available as paid add-on                                                   | Available as paid add-on       |
-| AWS PrivateLink                | Not included            | Not included                                                               | Included                                                                   | Included                       |
+| Supports AWS PrivateLink       | Not included            | Not included                                                               | Included                                                                   | Included                       |
 | SSO                            | Not included            | Not included                                                               | Contact Us                                                                 | Contact Us                     |
 | Uptime SLAs                    | Not included            | Not included                                                               | Not included                                                               | Included                       |
 | Access Roles                   | Owner, Admin, Developer | Owner, Admin, Developer                                                    | Owner, Admin, Developer, Read-only, Predefined project scoped roles        | Custom project scoped roles    |

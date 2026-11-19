@@ -94,7 +94,7 @@ curl https://api.stripe.com/v1/invoices \
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d customer={{CUSTOMER_ID}} \
+  -d "customer={{CUSTOMER_ID}}" \
   -d "payment_settings[payment_method_options][us_bank_account][financial_connections][permissions][]=ownership" \
   -d "payment_settings[payment_method_options][us_bank_account][financial_connections][permissions][]=payment_method"
 ```

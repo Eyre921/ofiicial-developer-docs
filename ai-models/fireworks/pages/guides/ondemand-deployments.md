@@ -502,8 +502,11 @@ Without `--region`, or with a multi-region such as `GLOBAL` or `US`, replicas ca
 Fireworks reclaims a replica when the workload that reserved its GPUs needs them back. This can happen at any time, mid-request, with no notice.
 
 * Requests in flight on that replica fail. Other ready replicas keep serving.
-* Fireworks recreates the replica, and it restarts when GPUs free up, possibly in another region. If 10 of 20 replicas are preempted, the other 10 keep serving while the 10 wait. Fireworks doesn't guarantee how long the wait is.
-* The deployment's state doesn't change, and you don't need to recreate it. If every replica is preempted, requests fail until one is ready again. To see how many replicas are serving, check `replicaStats.readyReplicaCount` in `firectl deployment get <NAME> -a <ACCOUNT_ID> -o json` or the [Get Deployment](/api-reference/get-deployment) response.
+* Fireworks recreates the replica, and it restarts when GPUs free up, possibly in another region. If 10 of 20 replicas are preempted, the other 10 keep serving while the 10 wait. Fireworks doesn't guarantee how long the wait is. GPU billing counts only ready replicas, so you aren't billed for a preempted replica while it waits, or for a `PREEMPTED` deployment.
+* You don't need to recreate the deployment. A partial preemption leaves its state unchanged.
+* If preemption takes every ready replica, the state changes from `READY` to `PREEMPTED` and requests fail. It changes back to `READY` on its own when a replica is ready again, or when you scale the deployment to 0. `firectl deployment get` and the [Get Deployment](/api-reference/get-deployment) response show the state.
+* If that happens while `firectl deployment create --wait` is running, the command returns and says the deployment is `PREEMPTED`.
+* To see how many replicas are serving, check `replica_stats.ready_replica_count` in `firectl deployment get <NAME> -a <ACCOUNT_ID> -o json`, or `replicaStats.readyReplicaCount` in the Get Deployment response.
 
 ### How you are notified
 

@@ -53,7 +53,7 @@ When you connect a repository, the default branch of your repository will be use
 When you configure a production or staging branch, every push to that branch will trigger a deployment.
 Our build server will install the project dependencies, build your project, and deploy it to the corresponding environment.
 
-If there are multiple consecutive pushes to a tracked branch, the later deployments will be queued until the previous deployment completes.
+Builds for an environment run one at a time, in the order the pushes arrived, so a push made while another build is running waits in a queue. Each preview branch has its own queue. A deployment still queued 15 minutes after it was created times out.
 
 > [!NOTE]
 >
@@ -70,6 +70,16 @@ The name of the preview branch matches the branch name of the pull request.
 > [!NOTE]
 >
 > Preview branch deployments require the preview environment to be enabled on your project. Learn more about [preview branches](/docs/deployment/preview-branches).
+
+### Skip superseded builds
+
+When you push a newer commit while an older one is still queued, the older build is skipped. Its deployment shows as **Superseded** and its GitHub check is marked skipped, so only the newest queued commit builds. A build that has already started always finishes. Each preview branch is handled on its own.
+
+Turn this on or off for each environment with the **Skip superseded** switches in your project's Git settings. It's on by default for staging and preview, and off for production.
+
+> [!WARNING]
+>
+> With [version skew protection](/docs/deployment/atomic-deployment), runs from a skipped commit's app wait for a build that never happens, then expire. On Vercel this affects staging and preview. Turn Skip superseded off for an environment whose app serves traffic from every commit.
 
 ## Ignored branches
 

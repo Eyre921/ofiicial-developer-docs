@@ -87,7 +87,7 @@ Stripe distinguishes all disputes by a unique identifier, regardless of whether 
 ```curl
 curl -G https://api.stripe.com/v1/disputes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d payment_intent={{PAYMENT_INTENT_ID}}
+  -d "payment_intent={{PAYMENT_INTENT_ID}}"
 ```
 
 #### By Charge
@@ -95,7 +95,7 @@ curl -G https://api.stripe.com/v1/disputes \
 ```curl
 curl -G https://api.stripe.com/v1/disputes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d charge={{CHARGE_ID}}
+  -d "charge={{CHARGE_ID}}"
 ```
 
 When a payment has multiple disputes, use the `id` provided for each returned dispute in the list to make sure you’re responding to the correct dispute by specifying its `id` when you [retrieve](https://docs.stripe.com/disputes/api.md#retrieve-a-dispute) or [update the dispute](https://docs.stripe.com/disputes/api.md#update-a-dispute).

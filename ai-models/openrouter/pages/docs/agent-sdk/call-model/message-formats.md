@@ -19,7 +19,7 @@ path: docs/agent-sdk/call-model/message-formats
 Convert OpenAI chat-style messages to OpenResponses input:
 
 ```typescript lines theme={null}
-import { OpenRouter, fromChatMessages } from '@openrouter/agent';
+import { OpenRouter, callModel, fromChatMessages } from '@openrouter/agent';
 
 const openrouter = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -33,12 +33,135 @@ const chatMessages = [
   { role: 'user', content: 'What is the weather like?' },
 ];
 
-const result = openrouter.callModel({
+const result = callModel(openrouter, {
   model: 'openai/gpt-5-nano',
   input: fromChatMessages(chatMessages),
 });
 
 const text = await result.getText();
+console.log(text);
+
+```
+
+```python title="Python" lines theme={null}
+import asyncio
+import os
+
+from openrouter_agent import OpenRouter, call_model, from_chat_messages
+
+
+async def main() -> None:
+    client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+
+    # OpenAI chat format
+    chat_messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"},
+        {"role": "assistant", "content": "Hi there! How can I help you?"},
+        {"role": "user", "content": "What is the weather like?"},
+    ]
+
+    result = call_model(
+        client,
+        {
+            "model": "openai/gpt-5-nano",
+            "input": from_chat_messages(chat_messages),
+        },
+    )
+
+    text = await result.get_text()
+    print(text)
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	// OpenAI chat format; the Responses API accepts these role/content messages as input
+	chatMessages := []map[string]string{
+		{"role": "system", "content": "You are a helpful assistant."},
+		{"role": "user", "content": "Hello!"},
+		{"role": "assistant", "content": "Hi there! How can I help you?"},
+		{"role": "user", "content": "What is the weather like?"},
+	}
+
+	body, _ := json.Marshal(map[string]any{
+		"model": "openai/gpt-5-nano",
+		"input": chatMessages,
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("request failed: %s", resp.Status)
+	}
+
+	var result struct {
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		log.Fatal(err)
+	}
+
+	text := ""
+	for _, item := range result.Output {
+		if item.Type == "message" {
+			for _, c := range item.Content {
+				if c.Type == "output_text" {
+					text += c.Text
+				}
+			}
+		}
+	}
+	fmt.Println(text)
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl -s https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-5-nano",
+    "input": [
+      { "role": "system", "content": "You are a helpful assistant." },
+      { "role": "user", "content": "Hello!" },
+      { "role": "assistant", "content": "Hi there! How can I help you?" },
+      { "role": "user", "content": "What is the weather like?" }
+    ]
+  }' | jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'
+
+```
+
+```text title="Output" theme={null}
+I don’t know your location. Could you tell me the city or ZIP code you’re interested in, and whether you want the current weather or a forecast (today, next 24 hours, or 7 days)? If you’d prefer, I can also share typical climate for that area by season.
 ```
 
 ### toChatMessage()
@@ -46,9 +169,13 @@ const text = await result.getText();
 Convert an OpenResponses response to chat message format:
 
 ```typescript lines theme={null}
-import { toChatMessage } from '@openrouter/agent';
+import { OpenRouter, callModel, toChatMessage } from '@openrouter/agent';
 
-const result = openrouter.callModel({
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = callModel(openrouter, {
   model: 'openai/gpt-5-nano',
   input: 'Hello!',
 });
@@ -59,6 +186,132 @@ const chatMessage = toChatMessage(response);
 // chatMessage is now: { role: 'assistant', content: '...' }
 console.log(chatMessage.role);    // 'assistant'
 console.log(chatMessage.content); // Response text
+
+```
+
+```python title="Python" lines theme={null}
+import asyncio
+import os
+
+from openrouter_agent import OpenRouter, call_model, to_chat_message
+
+
+async def main() -> None:
+    client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+
+    result = call_model(
+        client,
+        {
+            "model": "openai/gpt-5-nano",
+            "input": "Hello!",
+        },
+    )
+
+    response = await result.get_response()
+    chat_message = to_chat_message(response)
+
+    # chat_message is now: {"role": "assistant", "content": "..."}
+    print(chat_message["role"])  # 'assistant'
+    print(chat_message["content"])  # Response text
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	body, _ := json.Marshal(map[string]any{
+		"model": "openai/gpt-5-nano",
+		"input": "Hello!",
+	})
+
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("request failed: %s", resp.Status)
+	}
+
+	var response struct {
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		log.Fatal(err)
+	}
+
+	// Convert the response to a chat message: { role: "assistant", content: "..." }
+	chatMessage := map[string]string{"role": "assistant", "content": ""}
+	for _, item := range response.Output {
+		if item.Type == "message" {
+			for _, c := range item.Content {
+				if c.Type == "output_text" {
+					chatMessage["content"] += c.Text
+				}
+			}
+		}
+	}
+
+	fmt.Println(chatMessage["role"])    // assistant
+	fmt.Println(chatMessage["content"]) // Response text
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+curl -s https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-5-nano",
+    "input": "Hello!"
+  }' | jq -r '
+    # Convert the response to chat message format: { role: "assistant", content: "..." }
+    {
+      role: "assistant",
+      content: ([.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text] | join(""))
+    }
+    | .role, .content'
+
+```
+
+```text title="Output" theme={null}
+assistant
+Hi there! How can I help today?
+
+I can assist with a variety of tasks, for example:
+- Answer questions or explain topics
+- Write or edit emails, essays, resumes
+- Help with coding or debugging
+- Brainstorm ideas or plan projects
+- Translate or summarize text
+- Create study notes or summaries
+- Plan a trip or suggest recipes
+
+Tell me what you need, or paste any text you want worked on.
 ```
 
 ### Supported Message Types
@@ -97,6 +350,99 @@ const chatMessages = [
 const input = fromChatMessages(chatMessages);
 ```
 
+```python title="Python" lines theme={null}
+chat_messages = [
+    {"role": "user", "content": "What is the weather?"},
+    {
+        "role": "assistant",
+        "content": None,
+        "tool_calls": [{
+            "id": "call_123",
+            "type": "function",
+            "function": {"name": "get_weather", "arguments": '{"location":"Paris"}'},
+        }],
+    },
+    {
+        "role": "tool",
+        "tool_call_id": "call_123",
+        "content": '{"temperature": 20}',
+    },
+]
+
+input = from_chat_messages(chat_messages)
+```
+
+```go title="Go" lines theme={null}
+chatMessages := []map[string]any{
+	{"role": "user", "content": "What is the weather?"},
+	{
+		"role":    "assistant",
+		"content": nil,
+		"tool_calls": []map[string]any{{
+			"id":       "call_123",
+			"type":     "function",
+			"function": map[string]any{"name": "get_weather", "arguments": `{"location":"Paris"}`},
+		}},
+	},
+	{
+		"role":         "tool",
+		"tool_call_id": "call_123",
+		"content":      `{"temperature": 20}`,
+	},
+}
+
+// Convert chat messages to Responses API input items
+input := []map[string]any{}
+for _, m := range chatMessages {
+	if m["role"] == "tool" {
+		input = append(input, map[string]any{"type": "function_call_output", "call_id": m["tool_call_id"], "output": m["content"]})
+		continue
+	}
+	content, _ := m["content"].(string)
+	if calls, ok := m["tool_calls"].([]map[string]any); ok {
+		if content != "" {
+			input = append(input, map[string]any{"role": m["role"], "content": content})
+		}
+		for _, tc := range calls {
+			fn, _ := tc["function"].(map[string]any)
+			input = append(input, map[string]any{"type": "function_call", "call_id": tc["id"], "name": fn["name"], "arguments": fn["arguments"]})
+		}
+		continue
+	}
+	input = append(input, map[string]any{"role": m["role"], "content": content})
+}
+```
+
+```bash title="cURL" lines theme={null}
+CHAT_MESSAGES='[
+  { "role": "user", "content": "What is the weather?" },
+  {
+    "role": "assistant",
+    "content": null,
+    "tool_calls": [{
+      "id": "call_123",
+      "type": "function",
+      "function": { "name": "get_weather", "arguments": "{\"location\":\"Paris\"}" }
+    }]
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_123",
+    "content": "{\"temperature\": 20}"
+  }
+]'
+
+INPUT=$(echo "$CHAT_MESSAGES" | jq '[.[] |
+  if .role == "tool" then
+    { type: "function_call_output", call_id: .tool_call_id, output: .content }
+  elif .tool_calls then
+    (if .content then { role, content } else empty end),
+    (.tool_calls[] | { type: "function_call", call_id: .id, name: .function.name, arguments: .function.arguments })
+  else
+    { role, content }
+  end]')
+```
+
 ## Anthropic Claude Format
 
 ### fromClaudeMessages()
@@ -119,6 +465,55 @@ const result = openrouter.callModel({
 });
 ```
 
+```python title="Python" lines theme={null}
+import os
+
+from openrouter_agent import OpenRouter, call_model, from_claude_messages
+
+client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+
+# Claude format
+claude_messages = [
+    {"role": "user", "content": "Hello!"},
+    {"role": "assistant", "content": "Hi there!"},
+    {"role": "user", "content": "Tell me about TypeScript."},
+]
+
+result = call_model(client, {
+    "model": "anthropic/claude-sonnet-4.5",
+    "input": from_claude_messages(claude_messages),
+})
+
+```
+
+```go title="Go" lines theme={null}
+claudeMessages := []map[string]any{
+	{"role": "user", "content": "Hello!"},
+	{"role": "assistant", "content": "Hi there!"},
+	{"role": "user", "content": "Tell me about TypeScript."},
+}
+
+// Convert Claude messages to Responses API input items
+input := []map[string]any{}
+for _, m := range claudeMessages {
+	input = append(input, map[string]any{"type": "message", "role": m["role"], "content": m["content"]})
+}
+
+body, _ := json.Marshal(map[string]any{"model": "anthropic/claude-sonnet-4.5", "input": input})
+req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+req.Header.Set("Content-Type", "application/json")
+
+resp, err := http.DefaultClient.Do(req)
+if err != nil {
+	log.Fatal(err)
+}
+defer resp.Body.Close()
+if resp.StatusCode != http.StatusOK {
+	log.Fatalf("request failed: %s", resp.Status)
+}
+```
+
 ### toClaudeMessage()
 
 Convert an OpenResponses response to Claude message format:
@@ -137,12 +532,124 @@ const claudeMessage = toClaudeMessage(response);
 // Compatible with Anthropic SDK types
 ```
 
+```python title="Python" lines theme={null}
+import asyncio
+import os
+
+from openrouter_agent import OpenRouter, call_model, to_claude_message
+
+
+async def main() -> None:
+    client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+
+    result = call_model(client, {
+        "model": "anthropic/claude-sonnet-4.5",
+        "input": "Hello!",
+    })
+
+    response = await result.get_response()
+    claude_message = to_claude_message(response)
+
+    # Compatible with Anthropic SDK types
+    print(claude_message)
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+body, _ := json.Marshal(map[string]any{"model": "anthropic/claude-sonnet-4.5", "input": "Hello!"})
+req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+req.Header.Set("Content-Type", "application/json")
+
+resp, err := http.DefaultClient.Do(req)
+if err != nil {
+	log.Fatal(err)
+}
+defer resp.Body.Close()
+if resp.StatusCode != http.StatusOK {
+	log.Fatalf("request failed: %s", resp.Status)
+}
+
+var response struct {
+	ID     string `json:"id"`
+	Model  string `json:"model"`
+	Status string `json:"status"`
+	Output []struct {
+		Type      string `json:"type"`
+		CallID    string `json:"call_id"`
+		Name      string `json:"name"`
+		Arguments string `json:"arguments"`
+		Content   []struct {
+			Type string `json:"type"`
+			Text string `json:"text"`
+		} `json:"content"`
+	} `json:"output"`
+	Usage struct {
+		InputTokens  int `json:"input_tokens"`
+		OutputTokens int `json:"output_tokens"`
+	} `json:"usage"`
+}
+if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+	log.Fatal(err)
+}
+
+// Convert the Responses API output to Claude message format
+content := []map[string]any{}
+hasToolUse := false
+for _, item := range response.Output {
+	switch item.Type {
+	case "message":
+		for _, c := range item.Content {
+			if c.Type == "output_text" {
+				content = append(content, map[string]any{"type": "text", "text": c.Text})
+			}
+		}
+	case "function_call":
+		var args any
+		if err := json.Unmarshal([]byte(item.Arguments), &args); err != nil {
+			log.Fatalf("invalid arguments for %s: %v", item.Name, err)
+		}
+		hasToolUse = true
+		content = append(content, map[string]any{"type": "tool_use", "id": item.CallID, "name": item.Name, "input": args})
+	}
+}
+
+stopReason := "end_turn"
+if response.Status == "incomplete" {
+	stopReason = "max_tokens"
+} else if hasToolUse {
+	stopReason = "tool_use"
+}
+
+// Compatible with Anthropic SDK types
+claudeMessage := map[string]any{
+	"id":            response.ID,
+	"type":          "message",
+	"role":          "assistant",
+	"model":         response.Model,
+	"content":       content,
+	"stop_reason":   stopReason,
+	"stop_sequence": nil,
+	"usage": map[string]any{
+		"input_tokens":  response.Usage.InputTokens,
+		"output_tokens": response.Usage.OutputTokens,
+	},
+}
+```
+
+```text title="Output" theme={null}
+{'id': 'gen-1794946537-osjP8X9EY1FTAYMfZgXJ', 'type': 'message', 'role': 'assistant', 'model': 'anthropic/claude-sonnet-4.5', 'content': [{'type': 'text', 'text': 'Hello! How can I help you today?'}], 'stop_reason': 'end_turn', 'stop_sequence': None, 'usage': {'input_tokens': 9, 'output_tokens': 12, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0}}
+```
+
 ### Content Blocks
 
 Claude's content block format is supported:
 
 ```typescript lines theme={null}
-const claudeMessages = [
+const input = fromClaudeMessages([
   {
     role: 'user',
     content: [
@@ -151,14 +658,64 @@ const claudeMessages = [
         type: 'image',
         source: {
           type: 'url',
-          url: 'https://example.com/image.jpg',
+          url: 'https://openrouter.ai/docs/assets/guides/ori/ori-codex-poster.jpg',
         },
       },
     ],
   },
-];
+]);
+```
 
-const input = fromClaudeMessages(claudeMessages);
+```python title="Python" lines theme={null}
+input = from_claude_messages([
+    {
+        "role": "user",
+        "content": [
+            {"type": "text", "text": "What is in this image?"},
+            {
+                "type": "image",
+                "source": {
+                    "type": "url",
+                    "url": "https://openrouter.ai/docs/assets/guides/ori/ori-codex-poster.jpg",
+                },
+            },
+        ],
+    },
+])
+```
+
+```go title="Go" lines theme={null}
+claudeMessages := []map[string]any{
+	{
+		"role": "user",
+		"content": []map[string]any{
+			{"type": "text", "text": "What is in this image?"},
+			{
+				"type": "image",
+				"source": map[string]any{
+					"type": "url",
+					"url":  "https://openrouter.ai/docs/assets/guides/ori/ori-codex-poster.jpg",
+				},
+			},
+		},
+	},
+}
+
+// Convert Claude content blocks to Responses API input items
+input := []map[string]any{}
+for _, m := range claudeMessages {
+	content := []map[string]any{}
+	for _, b := range m["content"].([]map[string]any) {
+		switch b["type"] {
+		case "text":
+			content = append(content, map[string]any{"type": "input_text", "text": b["text"]})
+		case "image":
+			src := b["source"].(map[string]any)
+			content = append(content, map[string]any{"type": "input_image", "detail": "auto", "image_url": src["url"]})
+		}
+	}
+	input = append(input, map[string]any{"role": m["role"], "content": content})
+}
 ```
 
 ### Tool Use Blocks
@@ -194,6 +751,114 @@ const claudeMessages = [
 const input = fromClaudeMessages(claudeMessages);
 ```
 
+```python title="Python" lines theme={null}
+claude_messages = [
+    {"role": "user", "content": "What is the weather?"},
+    {
+        "role": "assistant",
+        "content": [
+            {
+                "type": "tool_use",
+                "id": "tool_123",
+                "name": "get_weather",
+                "input": {"location": "Paris"},
+            },
+        ],
+    },
+    {
+        "role": "user",
+        "content": [
+            {
+                "type": "tool_result",
+                "tool_use_id": "tool_123",
+                "content": '{"temperature": 20}',
+            },
+        ],
+    },
+]
+
+input = from_claude_messages(claude_messages)
+```
+
+```go title="Go" lines theme={null}
+claudeMessages := []map[string]any{
+	{"role": "user", "content": "What is the weather?"},
+	{
+		"role": "assistant",
+		"content": []map[string]any{
+			{
+				"type":  "tool_use",
+				"id":    "tool_123",
+				"name":  "get_weather",
+				"input": map[string]any{"location": "Paris"},
+			},
+		},
+	},
+	{
+		"role": "user",
+		"content": []map[string]any{
+			{
+				"type":        "tool_result",
+				"tool_use_id": "tool_123",
+				"content":     `{"temperature": 20}`,
+			},
+		},
+	},
+}
+
+// Convert Claude text / tool_use / tool_result blocks to Responses API input items
+input := []map[string]any{}
+for _, m := range claudeMessages {
+	blocks, ok := m["content"].([]map[string]any)
+	if !ok {
+		input = append(input, m)
+		continue
+	}
+	for _, b := range blocks {
+		switch b["type"] {
+		case "text":
+			input = append(input, map[string]any{"role": m["role"], "content": b["text"]})
+		case "tool_use":
+			args, _ := json.Marshal(b["input"])
+			input = append(input, map[string]any{"type": "function_call", "call_id": b["id"], "name": b["name"], "arguments": string(args), "id": b["id"], "status": "completed"})
+		case "tool_result":
+			input = append(input, map[string]any{"type": "function_call_output", "call_id": b["tool_use_id"], "output": b["content"]})
+		}
+	}
+}
+```
+
+```bash title="cURL" lines theme={null}
+CLAUDE_MESSAGES='[
+  { "role": "user", "content": "What is the weather?" },
+  {
+    "role": "assistant",
+    "content": [
+      { "type": "tool_use", "id": "tool_123", "name": "get_weather", "input": { "location": "Paris" } }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      { "type": "tool_result", "tool_use_id": "tool_123", "content": "{\"temperature\": 20}" }
+    ]
+  }
+]'
+
+# Convert Claude text / tool_use / tool_result blocks to Responses API input items
+INPUT=$(echo "$CLAUDE_MESSAGES" | jq '[.[] |
+  if (.content | type) == "string" then {role, content}
+  else .role as $role | .content[] |
+    if .type == "text" then
+      {role: $role, content: .text}
+    elif .type == "tool_use" then
+      {type: "function_call", call_id: .id, name, arguments: (.input | tojson), id, status: "completed"}
+    elif .type == "tool_result" then
+      {type: "function_call_output", call_id: .tool_use_id, output: .content}
+    else empty end
+  end]')
+```
+
 ### Base64 Images
 
 Both URL and base64 images are supported:
@@ -215,6 +880,59 @@ const claudeMessages = [
     ],
   },
 ];
+```
+
+```python title="Python" lines theme={null}
+claude_messages = [
+    {
+        "role": "user",
+        "content": [
+            {"type": "text", "text": "Describe this image."},
+            {
+                "type": "image",
+                "source": {
+                    "type": "base64",
+                    "media_type": "image/png",
+                    "data": "iVBORw0KGgo...",
+                },
+            },
+        ],
+    },
+]
+```
+
+```go title="Go" lines theme={null}
+claudeMessages := []map[string]any{
+	{
+		"role": "user",
+		"content": []map[string]any{
+			{"type": "text", "text": "Describe this image."},
+			{
+				"type": "image",
+				"source": map[string]any{
+					"type":       "base64",
+					"media_type": "image/png",
+					"data":       "iVBORw0KGgo...",
+				},
+			},
+		},
+	},
+}
+```
+
+```bash title="cURL" lines theme={null}
+CLAUDE_MESSAGES='[
+  {
+    "role": "user",
+    "content": [
+      { "type": "text", "text": "Describe this image." },
+      {
+        "type": "image",
+        "source": { "type": "base64", "media_type": "image/png", "data": "iVBORw0KGgo..." }
+      }
+    ]
+  }
+]'
 ```
 
 ### Limitations
@@ -255,26 +973,110 @@ const result = openrouter.callModel({
 const text = await result.getText();
 ```
 
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	// Chat Completions-style messages work as Responses API input as-is
+	messages := []map[string]any{
+		{"role": "system", "content": "You are helpful."},
+		{"role": "user", "content": "Hello!"},
+	}
+
+	body, _ := json.Marshal(map[string]any{"model": "openai/gpt-5.2", "input": messages})
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		b, _ := io.ReadAll(resp.Body)
+		log.Fatalf("%s: %s", resp.Status, b)
+	}
+
+	var result struct {
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		log.Fatal(err)
+	}
+
+	text := ""
+	for _, item := range result.Output {
+		if item.Type != "message" {
+			continue
+		}
+		for _, c := range item.Content {
+			if c.Type == "output_text" {
+				text += c.Text
+			}
+		}
+	}
+	fmt.Println(text)
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+# Chat-style messages work as Responses API input items
+curl -s https://openrouter.ai/api/v1/responses \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-5.2",
+    "input": [
+      { "role": "system", "content": "You are helpful." },
+      { "role": "user", "content": "Hello!" }
+    ]
+  }' | jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'
+
+```
+
+```text title="Output" theme={null}
+Hello! What can I help you with today?
+```
+
 ### From Anthropic SDK
 
 ```typescript expandable lines theme={null}
 // Before: Anthropic SDK
-import Anthropic from '@anthropic-ai/sdk';
-
-const anthropic = new Anthropic();
-const message = await anthropic.messages.create({
-  model: 'claude-sonnet-4-20250514',
-  max_tokens: 1024,
-  messages: [
-    { role: 'user', content: 'Hello!' },
-  ],
-});
+// import Anthropic from '@anthropic-ai/sdk';
+//
+// const anthropic = new Anthropic();
+// const message = await anthropic.messages.create({
+//   model: 'claude-sonnet-4-20250514',
+//   max_tokens: 1024,
+//   messages: [
+//     { role: 'user', content: 'Hello!' },
+//   ],
+// });
 
 // After: OpenRouter SDK
-import { OpenRouter, fromClaudeMessages } from '@openrouter/agent';
+import { OpenRouter } from '@openrouter/sdk';
+import { callModel, fromClaudeMessages } from '@openrouter/agent';
 
 const openrouter = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
-const result = openrouter.callModel({
+const result = callModel(openrouter, {
   model: 'anthropic/claude-sonnet-4.5',
   input: fromClaudeMessages([
     { role: 'user', content: 'Hello!' },
@@ -283,6 +1085,120 @@ const result = openrouter.callModel({
 });
 
 const text = await result.getText();
+console.log(text);
+
+```
+
+```python title="Python" lines theme={null}
+# Before: Anthropic SDK
+# import anthropic
+#
+# client = anthropic.Anthropic()
+# message = client.messages.create(
+#     model="claude-sonnet-4-20250514",
+#     max_tokens=1024,
+#     messages=[
+#         {"role": "user", "content": "Hello!"},
+#     ],
+# )
+
+# After: OpenRouter SDK
+import asyncio
+import os
+
+from openrouter_agent import OpenRouter, call_model, from_claude_messages
+
+
+async def main() -> None:
+    openrouter = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+    result = call_model(
+        openrouter,
+        {
+            "model": "anthropic/claude-sonnet-4.5",
+            "input": from_claude_messages([
+                {"role": "user", "content": "Hello!"},
+            ]),
+            "max_output_tokens": 1024,
+        },
+    )
+
+    text = await result.get_text()
+    print(text)
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func main() {
+	// Claude-style messages with string content work as Responses API input as-is
+	claudeMessages := []map[string]any{
+		{"role": "user", "content": "Hello!"},
+	}
+
+	body, _ := json.Marshal(map[string]any{
+		"model":             "anthropic/claude-sonnet-4.5",
+		"input":             claudeMessages,
+		"max_output_tokens": 1024,
+	})
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		b, _ := io.ReadAll(resp.Body)
+		log.Fatalf("%s: %s", resp.Status, b)
+	}
+
+	var result struct {
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		log.Fatal(err)
+	}
+
+	text := ""
+	for _, item := range result.Output {
+		if item.Type != "message" {
+			continue
+		}
+		for _, c := range item.Content {
+			if c.Type == "output_text" {
+				text += c.Text
+			}
+		}
+	}
+	fmt.Println(text)
+}
+
+```
+
+```text title="Output" theme={null}
+Hello! How can I help you today?
 ```
 
 ## Building Conversations
@@ -290,16 +1206,19 @@ const text = await result.getText();
 Accumulate messages across multiple calls:
 
 ```typescript expandable lines theme={null}
-import { fromChatMessages, toChatMessage } from '@openrouter/agent';
+import { OpenRouter } from '@openrouter/sdk';
+import { callModel, fromChatMessages, toChatMessage } from '@openrouter/agent';
+
+const openrouter = new OpenRouter({ apiKey: process.env.OPENROUTER_API_KEY });
 
 // Start with initial message
-let messages = [
+let messages: any[] = [
   { role: 'system', content: 'You are a helpful assistant.' },
   { role: 'user', content: 'Hello!' },
 ];
 
 // First call
-let result = openrouter.callModel({
+let result = callModel(openrouter, {
   model: 'openai/gpt-5-nano',
   input: fromChatMessages(messages),
 });
@@ -312,10 +1231,184 @@ messages.push(assistantMessage);
 messages.push({ role: 'user', content: 'What can you help me with?' });
 
 // Continue conversation
-result = openrouter.callModel({
+result = callModel(openrouter, {
   model: 'openai/gpt-5-nano',
   input: fromChatMessages(messages),
 });
+
+console.log(await result.getText());
+
+```
+
+```python title="Python" lines theme={null}
+import asyncio
+import os
+
+from openrouter_agent import OpenRouter, call_model, from_chat_messages, to_chat_message
+
+
+async def main() -> None:
+    openrouter = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+
+    # Start with initial message
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"},
+    ]
+
+    # First call
+    result = call_model(
+        openrouter,
+        {"model": "openai/gpt-5-nano", "input": from_chat_messages(messages)},
+    )
+
+    response = await result.get_response()
+    assistant_message = to_chat_message(response)
+
+    # Add to history
+    messages.append(assistant_message)
+    messages.append({"role": "user", "content": "What can you help me with?"})
+
+    # Continue conversation
+    result = call_model(
+        openrouter,
+        {"model": "openai/gpt-5-nano", "input": from_chat_messages(messages)},
+    )
+
+    print(await result.get_text())
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+)
+
+func callModel(messages []map[string]any) string {
+	body, _ := json.Marshal(map[string]any{
+		"model": "openai/gpt-5-nano",
+		"input": messages,
+	})
+	req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", bytes.NewReader(body))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		b, _ := io.ReadAll(resp.Body)
+		log.Fatalf("%s: %s", resp.Status, b)
+	}
+
+	var result struct {
+		Output []struct {
+			Type    string `json:"type"`
+			Content []struct {
+				Type string `json:"type"`
+				Text string `json:"text"`
+			} `json:"content"`
+		} `json:"output"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		log.Fatal(err)
+	}
+
+	text := ""
+	for _, item := range result.Output {
+		if item.Type != "message" {
+			continue
+		}
+		for _, c := range item.Content {
+			if c.Type == "output_text" {
+				text += c.Text
+			}
+		}
+	}
+	return text
+}
+
+func main() {
+	// Start with initial message
+	messages := []map[string]any{
+		{"role": "system", "content": "You are a helpful assistant."},
+		{"role": "user", "content": "Hello!"},
+	}
+
+	// First call
+	reply := callModel(messages)
+
+	// Add to history
+	messages = append(messages, map[string]any{"role": "assistant", "content": reply})
+	messages = append(messages, map[string]any{"role": "user", "content": "What can you help me with?"})
+
+	// Continue conversation
+	fmt.Println(callModel(messages))
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+set -euo pipefail
+
+# Start with initial messages
+MESSAGES='[
+  {"role": "system", "content": "You are a helpful assistant."},
+  {"role": "user", "content": "Hello!"}
+]'
+
+ask() {
+  curl -sS --fail https://openrouter.ai/api/v1/responses \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d "$(jq -n --argjson input "$MESSAGES" '{model: "openai/gpt-5-nano", input: $input}')" \
+    | jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text'
+}
+
+# First call; exit before touching the history if it fails
+REPLY=$(ask) || exit 1
+
+# Add to history
+MESSAGES=$(jq --arg reply "$REPLY" '. + [
+  {role: "assistant", content: $reply},
+  {role: "user", content: "What can you help me with?"}
+]' <<< "$MESSAGES")
+
+# Continue conversation
+ask
+
+```
+
+```text title="Output" theme={null}
+I can help with a lot. Here are some things I can do:
+
+- Answer questions and explain concepts (science, math, history, tech, etc.)
+- Writing and editing (essays, emails, resumes/cover letters, reports, blog posts)
+- Brainstorming and ideation (ideas for projects, stories, names, marketing ideas)
+- Planning and organization (schedules, itineraries, to-do lists, study plans)
+- Coding and debugging (explain concepts, generate or fix code snippets, review)
+- Data analysis and math help (step-by-step solutions, graphs, explanations)
+- Learning and tutoring (practice problems, explanations at your level)
+- Translation and language help (translate, summarize, improve phrasing)
+- Summaries and comprehension (condense articles, documents, books)
+- Creative writing (stories, poems, dialogue)
+- Research and synthesis (pulling together information from multiple sources)
+- Image understanding (describe what’s in an image, analyze it, extract text)
+
+If you have something specific in mind, tell me a bit about it and I’ll tailor my help.
 ```
 
 ## Next Steps

@@ -70,6 +70,75 @@ if (!veo) {
 console.log(veo.allowed_passthrough_parameters);
 ```
 
+```python title="Python" lines theme={null}
+import json
+
+import requests
+
+response = requests.get("https://openrouter.ai/api/v1/videos/models")
+
+if not response.ok:
+    raise RuntimeError(response.text)
+
+models = response.json()["data"]
+veo = next(
+    (model for model in models if model["id"] == "google/veo-3.1-lite"),
+    None,
+)
+
+if veo is None:
+    raise RuntimeError("google/veo-3.1-lite was not found in the video model list.")
+
+print(json.dumps(veo["allowed_passthrough_parameters"], indent=2))
+```
+
+```go title="Go" lines theme={null}
+resp, err := http.Get("https://openrouter.ai/api/v1/videos/models")
+if err != nil {
+	log.Fatal(err)
+}
+defer resp.Body.Close()
+
+if resp.StatusCode != http.StatusOK {
+	body, _ := io.ReadAll(resp.Body)
+	log.Fatal(string(body))
+}
+
+var payload struct {
+	Data []struct {
+		ID                           string   `json:"id"`
+		AllowedPassthroughParameters []string `json:"allowed_passthrough_parameters"`
+	} `json:"data"`
+}
+if err := json.NewDecoder(resp.Body).Decode(&payload); err != nil {
+	log.Fatal(err)
+}
+
+found := false
+for _, model := range payload.Data {
+	if model.ID == "google/veo-3.1-lite" {
+		found = true
+		out, err := json.MarshalIndent(model.AllowedPassthroughParameters, "", "  ")
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
+		break
+	}
+}
+
+if !found {
+	log.Fatal("google/veo-3.1-lite was not found in the video model list.")
+}
+```
+
+```bash title="cURL" lines theme={null}
+curl -sSf https://openrouter.ai/api/v1/videos/models \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  | jq -e '.data[] | select(.id == "google/veo-3.1-lite") | .allowed_passthrough_parameters'
+
+```
+
 Example output:
 
 ```json lines theme={null}
@@ -103,6 +172,72 @@ if (unsupportedParameters.length > 0) {
 }
 
 console.log("All provider parameters are supported.");
+```
+
+```python title="Python" lines theme={null}
+provider_parameters = {
+    "negativePrompt": "blurry, low quality, distorted petals",
+    "enhancePrompt": True,
+}
+
+allowed = veo.get("allowed_passthrough_parameters") or []
+unsupported_parameters = [key for key in provider_parameters if key not in allowed]
+
+if unsupported_parameters:
+    raise RuntimeError(
+        f"Unsupported passthrough parameters: {', '.join(unsupported_parameters)}"
+    )
+
+print("All provider parameters are supported.")
+
+```
+
+```go title="Go" lines theme={null}
+providerParameters := map[string]any{
+	"negativePrompt": "blurry, low quality, distorted petals",
+	"enhancePrompt":  true,
+}
+
+var unsupportedParameters []string
+for key := range providerParameters {
+	if !slices.Contains(veo.AllowedPassthroughParameters, key) {
+		unsupportedParameters = append(unsupportedParameters, key)
+	}
+}
+
+if len(unsupportedParameters) > 0 {
+	log.Fatalf("Unsupported passthrough parameters: %s", strings.Join(unsupportedParameters, ", "))
+}
+
+fmt.Println("All provider parameters are supported.")
+```
+
+```bash title="cURL" lines theme={null}
+PROVIDER_PARAMETERS='{
+  "negativePrompt": "blurry, low quality, distorted petals",
+  "enhancePrompt": true
+}'
+
+ALLOWED_PARAMS=$(curl -sSf https://openrouter.ai/api/v1/videos/models \
+  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  | jq -c '.data[] | select(.id == "google/veo-3.1-lite") | .allowed_passthrough_parameters')
+
+if [ -z "$ALLOWED_PARAMS" ]; then
+  echo "google/veo-3.1-lite was not found in the video model list." >&2
+  exit 1
+fi
+
+UNSUPPORTED=$(jq -rn \
+  --argjson params "$PROVIDER_PARAMETERS" \
+  --argjson allowed "$ALLOWED_PARAMS" \
+  '$params | keys - ($allowed // []) | join(", ")')
+
+if [ -n "$UNSUPPORTED" ]; then
+  echo "Unsupported passthrough parameters: $UNSUPPORTED" >&2
+  exit 1
+fi
+
+echo "All provider parameters are supported."
 ```
 
 Metadata assertion output:
@@ -220,6 +355,86 @@ const requestBody =
         ...baseRequest,
         model: selectedModel.id,
       };
+```
+
+```python title="Python" lines theme={null}
+base_request = {
+    "prompt": "A short cinematic product shot of a white orchid blooming",
+    "duration": 4,
+    "resolution": "720p",
+    "aspect_ratio": "16:9",
+}
+
+selected_model = {
+    "id": "google/veo-3.1-lite",
+}
+
+if selected_model["id"] == "google/veo-3.1-lite":
+    request_body = {
+        **base_request,
+        "model": selected_model["id"],
+        "provider": {
+            "options": {
+                "google-vertex": {
+                    "parameters": {
+                        "negativePrompt": "blurry, low quality",
+                    },
+                },
+            },
+        },
+    }
+else:
+    request_body = {
+        **base_request,
+        "model": selected_model["id"],
+    }
+```
+
+```go title="Go" lines theme={null}
+baseRequest := map[string]any{
+	"prompt":       "A short cinematic product shot of a white orchid blooming",
+	"duration":     4,
+	"resolution":   "720p",
+	"aspect_ratio": "16:9",
+}
+
+selectedModel := struct{ ID string }{
+	ID: "google/veo-3.1-lite",
+}
+
+requestBody := map[string]any{"model": selectedModel.ID}
+maps.Copy(requestBody, baseRequest)
+
+if selectedModel.ID == "google/veo-3.1-lite" {
+	requestBody["provider"] = map[string]any{
+		"options": map[string]any{
+			"google-vertex": map[string]any{
+				"parameters": map[string]any{
+					"negativePrompt": "blurry, low quality",
+				},
+			},
+		},
+	}
+}
+```
+
+```bash title="cURL" lines theme={null}
+BASE_REQUEST='{
+  "prompt": "A short cinematic product shot of a white orchid blooming",
+  "duration": 4,
+  "resolution": "720p",
+  "aspect_ratio": "16:9"
+}'
+
+SELECTED_MODEL="google/veo-3.1-lite"
+
+if [ "$SELECTED_MODEL" = "google/veo-3.1-lite" ]; then
+  REQUEST_BODY=$(jq -n --argjson base "$BASE_REQUEST" --arg model "$SELECTED_MODEL" \
+    '$base + {model: $model, provider: {options: {"google-vertex": {parameters: {negativePrompt: "blurry, low quality"}}}}}')
+else
+  REQUEST_BODY=$(jq -n --argjson base "$BASE_REQUEST" --arg model "$SELECTED_MODEL" \
+    '$base + {model: $model}')
+fi
 ```
 
 Request shape for `google/veo-3.1-lite`:

@@ -131,6 +131,110 @@ const legalReview = tool({
 });
 ```
 
+```python title="Python" lines theme={null}
+class ReviewInput(BaseModel):
+    contract_id: str
+
+class ReviewOutput(BaseModel):
+    approved: bool
+    notes: str | None = None
+
+def request_review(params, ctx):
+    # Fast path: returning a value resolves immediately.
+    cached = legal.cached_verdict(params.contract_id)
+    if cached:
+        return cached
+
+    # Returning None pauses the run with this call pending in state.
+    # start_review below opens the ticket once the call's ID is known.
+    return None
+
+legal_review = tool(
+    name="request_legal_review",
+    description="Send a contract for legal review. Takes days.",
+    input_schema=ReviewInput,
+    output_schema=ReviewOutput,
+    on_tool_called=request_review,
+)
+
+# The webhook needs the conversation ID and the pending call's ID to resume the
+# right call. The handler above only knows the contract, so open one ticket per
+# pending call when the run pauses. legal and its methods are application-defined.
+async def start_review(conversation_id: str, request: dict):
+    result = call_model(client, {**request, "tools": [legal_review], "state": make_accessor(conversation_id)})
+    pending = await result.get_pending_tool_calls()  # tool calls still waiting on a result
+    for call in pending:
+        # One ticket per pending call, so two reviews of the same contract stay distinct.
+        # open_for_call reads the contract from the call's arguments and stores
+        # conversation_id and the call's ID for the webhook to pass to on_review_done.
+        ticket = legal.open_for_call(conversation_id, call)
+        print(f"Ticket {ticket['id']} opened.")
+```
+
+```go title="Go" lines theme={null}
+// Tool definition sent to the model (Chat Completions wire format).
+legalReviewTool := map[string]any{
+	"type": "function",
+	"function": map[string]any{
+		"name":        "request_legal_review",
+		"description": "Send a contract for legal review. Takes days.",
+		"parameters": map[string]any{
+			"type":       "object",
+			"properties": map[string]any{"contractId": map[string]any{"type": "string"}},
+			"required":   []string{"contractId"},
+		},
+	},
+}
+
+// ToolOutcome, Deferral, the legal client, and savePending are application-defined.
+// There is no Go SDK, so your own tool loop implements them.
+type Deferral struct {
+	TaskID    string
+	PollAfter time.Duration
+	Ack       string
+}
+
+type ToolOutcome struct {
+	Result   *ReviewOutput // set when the call resolved immediately
+	Deferred *Deferral     // set when the work was handed to the external system
+}
+
+// Run handler: a plain value resolves immediately; otherwise defer to the external system.
+runLegalReview := func(contractID, conversationID string) ToolOutcome {
+	if cached, ok := legal.CachedVerdict(contractID); ok {
+		return ToolOutcome{Result: &cached}
+	}
+	ticket := legal.Open(contractID, conversationID) // hand to the webhook for resume
+	return ToolOutcome{Deferred: &Deferral{
+		TaskID:    ticket.ID,
+		PollAfter: 60 * time.Second,
+		Ack:       fmt.Sprintf("Ticket %s opened.", ticket.ID),
+	}}
+}
+
+// Dispatch in your tool loop. Account for every call in the model's response before
+// pausing: a result goes back to the model, a deferral is saved as pending.
+// toolCalls is application-defined: each entry has the call's ID and its contract ID.
+paused := false
+for _, call := range toolCalls {
+	outcome := runLegalReview(call.ContractID, conversationID)
+	if outcome.Deferred != nil {
+		// Save this call as pending, keyed by the task ID. The webhook handler below resumes it.
+		savePending(conversationID, call.ID, *outcome.Deferred)
+		paused = true
+		continue
+	}
+	output, err := json.Marshal(outcome.Result)
+	if err != nil {
+		log.Fatal(err)
+	}
+	messages = append(messages, Message{Role: "tool", ToolCallID: call.ID, Content: string(output)})
+}
+if paused {
+	return // stop the loop with the conversation saved
+}
+```
+
 Deferred tools require a `StateAccessor` (see [Tool Approval & State](https://openrouter.ai/docs/agent-sdk/call-model/tool-approval-state.md)) so the paused conversation can be found and resumed from another process.
 
 ### Typed Completion from Any Process
@@ -145,6 +249,37 @@ await legalReview.resolve(client, {
   output: { approved: true },          // ← typechecked against outputSchema
   run: { model: 'openai/gpt-5-nano' }, // continue the conversation immediately
 });
+```
+
+```python title="Python" lines theme={null}
+# webhook handler, hours later, in a different process
+# conversation_id and call_id come from the ticket association stored by start_review
+async def on_review_done(conversation_id: str, call_id: str):
+    result = call_model(client, {
+        "model": "openai/gpt-5-nano",  # continue the conversation immediately
+        "input": [{
+            "type": "function_call_output",
+            "call_id": call_id,
+            # validated against output_schema before it is sent
+            "output": ReviewOutput(approved=True).model_dump_json(),
+        }],
+        "tools": [legal_review],
+        "state": make_accessor(conversation_id),
+    })
+    return await result.get_state()
+
+```
+
+```go title="Go" lines theme={null}
+// webhook handler, hours later, in a different process
+// loadConversation, resolveDeferred, and continueRun are application-defined:
+// they read the pending call saved by savePending, append the tool result, and rerun the loop.
+conv := loadConversation(conversationID)
+// ← typechecked: resolveDeferred only accepts a ReviewOutput
+if err := resolveDeferred(conv, ticketID, ReviewOutput{Approved: true}); err != nil {
+	log.Fatal(err)
+}
+continueRun(conv, "openai/gpt-5-nano") // continue the conversation immediately
 ```
 
 * `legalReview.resolve(...)`: deliver a successful result.
@@ -172,6 +307,25 @@ task({ taskId, view: "transcript" })                  // full detail (agents: ch
 task({ taskId, action: "steer", message: "..." })     // send guidance to the running task
 task({ taskId, action: "result" })                    // final result if settled, else status
 task({ taskId, action: "cancel", reason: "..." })     // stop the task
+```
+
+```python title="Python" lines theme={null}
+task(taskId="task_7f3")                             # status: state, elapsed, last log
+task(taskId=task_id, view="logs", tail=5)             # recent progress entries
+task(taskId=task_id, view="transcript")               # full detail (agents: child conversation)
+task(taskId=task_id, action="steer", message="...")   # send guidance to the running task
+task(taskId=task_id, action="result")                 # final result if settled, else status
+task(taskId=task_id, action="cancel", reason="...")  # stop the task
+
+```
+
+```go title="Go" lines theme={null}
+task(TaskArgs{TaskID: "task_7f3"})                               // status: state, elapsed, last log
+task(TaskArgs{TaskID: taskID, View: "logs", Tail: 5})              // recent progress entries
+task(TaskArgs{TaskID: taskID, View: "transcript"})                 // full detail (agents: child conversation)
+task(TaskArgs{TaskID: taskID, Action: "steer", Message: "..."})    // send guidance to the running task
+task(TaskArgs{TaskID: taskID, Action: "result"})                   // final result if settled, else status
+task(TaskArgs{TaskID: taskID, Action: "cancel", Reason: "..."})    // stop the task
 ```
 
 The SDK intercepts these calls and routes each one to the tool that owns the task. The model sees one tool; each of your tools decides how to answer.
@@ -202,6 +356,58 @@ const renderVideo = tool({
 });
 ```
 
+```python title="Python" lines theme={null}
+class RenderCheckParams(BaseModel):
+    # Validates the model's task(params=...) payload
+    include_frames: bool | None = None
+
+async def check_render_video(params: RenderCheckParams, turn_context: dict) -> dict:
+    # turn_context["tool_call_status"]           -> 'working' | 'completed' | ...
+    # turn_context["accumulated_yielded_events"] -> every run yield so far
+    # turn_context["task"]                       -> status_view / tail_logs / transcript / send / cancel
+    view = {
+        "state": turn_context.get("tool_call_status"),
+        "progressEvents": len(turn_context.get("accumulated_yielded_events") or []),
+    }
+    if params.include_frames and turn_context.get("task"):
+        view["lastFrames"] = turn_context["task"].tail_logs(3)
+    return view
+
+# Fragment: a check handler only takes effect once it is registered on the tool.
+# This page does not confirm a check parameter on the Python tool() call, so
+# pass this config wherever your SDK version accepts a tool's check config.
+# Until it is registered, check-ins on render_video use the default views.
+render_video_check = {"schema": RenderCheckParams, "execute": check_render_video}
+
+```
+
+```go title="Go" lines theme={null}
+renderVideo := BackgroundTool{
+	Name: "render_video",
+	// ...schemas and run as above...
+	Check: &CheckConfig{
+		// Validates the model's task({ params }) payload
+		Schema: map[string]any{
+			"type":       "object",
+			"properties": map[string]any{"includeFrames": map[string]any{"type": "boolean"}},
+		},
+		Execute: func(params CheckParams, turn TurnContext) any {
+			// turn.ToolCallStatus           → "working" | "completed" | ...
+			// turn.AccumulatedYieldedEvents → every run yield so far
+			// turn.Task                     → StatusView / TailLogs / Transcript / Send / Cancel
+			out := map[string]any{
+				"state":          turn.ToolCallStatus,
+				"progressEvents": len(turn.AccumulatedYieldedEvents),
+			}
+			if params.IncludeFrames && turn.Task != nil {
+				out["lastFrames"] = turn.Task.TailLogs(3)
+			}
+			return out
+		},
+	},
+}
+```
+
 Without a custom `check`, the SDK answers the three views itself (`status` / `logs` / `transcript`, truncated to `asyncTools.maxTranscriptChars`, default 20,000 characters).
 
 > [!NOTE]
@@ -227,6 +433,30 @@ result.sendToTask(taskId, 'Prioritize the intro segment.');
 
 // 3. From a custom check handler
 //    turnContext.task.send(message)
+```
+
+```python title="Python" lines theme={null}
+# 1. From code: ModelResult.send_to_task
+result.send_to_task(task_id, "Prioritize the intro segment.")
+
+# 2. From the model: the task tool
+#    task(taskId=task_id, action="steer", message="Prioritize the intro.")
+
+# 3. From a custom check handler
+#    turn_context["task"].send(message)
+
+```
+
+```go title="Go" lines theme={null}
+// 1. From code: ModelResult.SendToTask
+result.SendToTask(taskID, "Prioritize the intro segment.")
+
+// 2. From the model: the task tool
+//    task(TaskArgs{TaskID: taskID, Action: "steer", Message: "Prioritize the intro."})
+
+// 3. From a custom check handler
+//    turn.Task.Send(message)
+
 ```
 
 Messages are delivered to the run body's `ctx.onMessage(handler)` and queued until a handler registers, so no messages are lost. Deferred tasks throw on `sendToTask` because their work runs in an external system the SDK can't reach.
@@ -281,6 +511,30 @@ result.sendToTask(taskId, message);   // steer an in-process task
 result.cancelTask(taskId, reason);    // cancel; returns true when a working task was cancelled
 ```
 
+```python title="Python" lines theme={null}
+async def main():
+    result = call_model(client, request)
+
+    pending = await result.get_pending_tool_calls()  # tool calls still waiting on a result
+    state = await result.get_state()                 # full conversation state, including pending calls
+
+    print("pending tool calls:", pending)
+    print("state:", state)
+    print(await result.get_text())
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+result := client.CallModel(CallModelRequest{ /* ... */ })
+
+result.GetAsyncTasks()             // snapshot of pending tasks (TaskID, Status, LastLog, ...)
+result.SendToTask(taskID, message) // steer an in-process task
+result.CancelTask(taskID, reason)  // cancel; returns true when a working task was cancelled
+
+```
+
 ### From the Event Stream
 
 Async tasks emit dedicated events on `getFullResponsesStream()`:
@@ -323,6 +577,40 @@ const result = openrouter.callModel({
     maxTranscriptChars: 20_000,      // transcript view cap
   },
 });
+```
+
+```python title="Python" lines theme={null}
+# The Python agent SDK does not accept the async-tool run options
+# (tool_timeout_ms, tool_concurrency, async_tools); passing them raises a TypeError.
+# Use the run-level options it supports instead:
+result = call_model(client, {
+    "model": "openai/gpt-5-nano",
+    "input": "...",
+    "tools": [render_video, legal_review, researcher],
+    "stop_when": step_count_is(5),        # stop after at most 5 steps
+    "allow_final_response": True,         # one extra turn for a natural-language answer
+})
+
+```
+
+```go title="Go" lines theme={null}
+result := client.CallModel(CallModelRequest{
+	Model:         "openai/gpt-5-nano",
+	Input:         "...",
+	Tools:         []Tool{renderVideo, legalReview, researcher},
+	ToolTimeoutMs: 60_000, // default per-tool deadline
+	ToolConcurrency: &ToolConcurrency{
+		Round:      4, // max simultaneous calls per round
+		Background: 8, // max detached background tasks
+	},
+	AsyncTools: &AsyncToolsConfig{
+		OnRunEnd:           "drain", // "drain" | "detach" | "cancel"
+		DrainTimeoutMs:     30_000,
+		MaxDrainTurns:      2,
+		Checkins:           true,   // register the universal task tool
+		MaxTranscriptChars: 20_000, // transcript view cap
+	},
+})
 ```
 
 Per-tool configuration on `tool()` / `tool.agent()`:

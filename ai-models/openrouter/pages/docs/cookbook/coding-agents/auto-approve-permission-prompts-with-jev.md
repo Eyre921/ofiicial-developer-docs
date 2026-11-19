@@ -75,6 +75,101 @@ function normalizeCommand(part: string): string {
 }
 ```
 
+```python title="Python" lines theme={null}
+import re
+
+RISKY = [
+    re.compile(r"""^(\S*['"\\=$]|[-0-9])"""),
+    re.compile(r"^(sudo|doas|su)\b"),
+    re.compile(r"^(bash|sh|zsh|fish|eval|xargs)\b"),
+    re.compile(r"^(node|bun|python3?)\s+(-\S+\s+)*(-c|-e|-p|--eval)\b"),
+    re.compile(r"^rm\s+(-\S*[rRf]\S*\s+)+"),
+    re.compile(r"^git\b.*\b(push|reset\s+--hard|clean\s+-\S*[fd]|branch\s+-D)\b"),
+    re.compile(r"^(npm|pnpm|yarn|bun)\s+publish\b"),
+    re.compile(r"^(wrangler|vercel|fly|flyctl)\s+deploy\b|^terraform\s+(apply|destroy)\b|^kubectl\s+(delete|apply)\b"),
+    re.compile(r"\.env\b|\.ssh\b|\.aws\b|\.npmrc\b|\.netrc\b|credentials", re.I),
+]
+
+
+def never_auto_approve(command: str) -> bool:
+    if re.search(r"\$\(|[<>]\(|`|\\\r?\n", command):
+        return True
+    parts = re.split(r"\s*(?:&&|\|\||;|\||&|\n|[(){}])\s*", command)
+    return any(
+        pattern.search(normalize_command(part)) for part in parts for pattern in RISKY
+    )
+
+
+def normalize_command(part: str) -> str:
+    current = part
+    while True:
+        nxt = current.strip()
+        nxt = re.sub(r"^(if|then|elif|else|fi|while|until|do|done|for|in|case|esac|!)\s+", "", nxt, count=1)
+        nxt = re.sub(r"^(command|builtin|exec|env|nohup|time|timeout|nice|watch|npx|bunx|pnpx)\s+", "", nxt, count=1)
+        nxt = re.sub(r"""^[A-Za-z_][A-Za-z0-9_]*=[^\s'"\\$]*\s+""", "", nxt, count=1)
+        nxt = re.sub(r"^\\", "", nxt, count=1)
+        nxt = re.sub(r"""^[^\s'"\\$]*/""", "", nxt, count=1)
+        if nxt == current:
+            return current
+        current = nxt
+
+```
+
+```go title="Go" lines theme={null}
+var risky = []*regexp.Regexp{
+	regexp.MustCompile(`^(\S*['"\\=$]|[-0-9])`),
+	regexp.MustCompile(`^(sudo|doas|su)\b`),
+	regexp.MustCompile(`^(bash|sh|zsh|fish|eval|xargs)\b`),
+	regexp.MustCompile(`^(node|bun|python3?)\s+(-\S+\s+)*(-c|-e|-p|--eval)\b`),
+	regexp.MustCompile(`^rm\s+(-\S*[rRf]\S*\s+)+`),
+	regexp.MustCompile(`^git\b.*\b(push|reset\s+--hard|clean\s+-\S*[fd]|branch\s+-D)\b`),
+	regexp.MustCompile(`^(npm|pnpm|yarn|bun)\s+publish\b`),
+	regexp.MustCompile(`^(wrangler|vercel|fly|flyctl)\s+deploy\b|^terraform\s+(apply|destroy)\b|^kubectl\s+(delete|apply)\b`),
+	regexp.MustCompile(`(?i)\.env\b|\.ssh\b|\.aws\b|\.npmrc\b|\.netrc\b|credentials`),
+}
+
+var (
+	subshell  = regexp.MustCompile(`\$\(|[<>]\(|\x60|\\\r?\n`)
+	separator = regexp.MustCompile(`\s*(?:&&|\|\||;|\||&|\n|[(){}])\s*`)
+	strips    = []*regexp.Regexp{
+		regexp.MustCompile(`^(if|then|elif|else|fi|while|until|do|done|for|in|case|esac|!)\s+`),
+		regexp.MustCompile(`^(command|builtin|exec|env|nohup|time|timeout|nice|watch|npx|bunx|pnpx)\s+`),
+		regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_]*=[^\s'"\\$]*\s+`),
+		regexp.MustCompile(`^\\`),
+		regexp.MustCompile(`^[^\s'"\\$]*/`),
+	}
+)
+
+func neverAutoApprove(command string) bool {
+	if subshell.MatchString(command) {
+		return true
+	}
+	for _, part := range separator.Split(command, -1) {
+		part = normalizeCommand(part)
+		for _, pattern := range risky {
+			if pattern.MatchString(part) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func normalizeCommand(part string) string {
+	current := part
+	for {
+		next := strings.TrimSpace(current)
+		for _, re := range strips {
+			next = re.ReplaceAllString(next, "")
+		}
+		if next == current {
+			return current
+		}
+		current = next
+	}
+}
+```
+
 ## 2. Ask Jev two Noul questions
 
 With the dangerous commands filtered out, what remains is the judgment a reviewer makes before clicking approve: can this be undone, and does it move the task forward. This function puts those two questions to Jev as Nouls, yes-or-no questions answered with a probability between `0` and `1`, so the bar for approval is a number you set rather than a prompt you tune. It answers yes only when every asked score clears the threshold, and it answers unknown for any network failure, timeout, error response, unreadable body, or score outside the expected range, so every entry point can treat anything other than a clear yes as leave the prompt alone. When the agent's hook carries no task text, only the reversibility question is asked.
@@ -133,6 +228,172 @@ function isProbability(value: unknown): value is number {
 }
 ```
 
+```python title="Python" lines theme={null}
+import os
+
+import requests
+
+JEV_MODEL = "typesafe/jev-1.13"
+APPROVE_AT = 0.9
+
+QUESTIONS = {
+    "reversible": {
+        "type": "noul",
+        "instructions": "Every command in `commands` only reads or changes files inside `project` and can be undone with git or by rerunning it. It does not push, publish, deploy, delete files outside the project, change system settings, or send data to a network service.",
+    },
+    "serves_task": {
+        "type": "noul",
+        "instructions": "Running `commands` is a reasonable next step toward `task`.",
+    },
+}
+
+
+def jev_approves(state: dict) -> bool | None:
+    asked = ["reversible"] if state.get("task") is None else ["reversible", "serves_task"]
+    questions = {key: QUESTIONS[key] for key in asked}
+    try:
+        res = requests.post(
+            "https://openrouter.ai/api/alpha/decisions",
+            headers={"Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}"},
+            json={"model": JEV_MODEL, "state": state, "questions": questions},
+            timeout=8,
+        )
+    except requests.RequestException:
+        return None
+    if not res.ok:
+        return None
+    try:
+        body = res.json()
+    except ValueError:
+        return None
+    answers = body.get("answers") if isinstance(body, dict) else None
+    scores = []
+    for key in asked:
+        answer = answers.get(key) if isinstance(answers, dict) else None
+        scores.append(answer.get("noul") if isinstance(answer, dict) else None)
+    if not all(is_probability(score) for score in scores):
+        return None
+    return all(score >= APPROVE_AT for score in scores)
+
+
+def is_probability(value) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and 0 <= value <= 1
+
+```
+
+```go title="Go" lines theme={null}
+const jevModel = "typesafe/jev-1.13"
+const approveAt = 0.9
+
+type question struct {
+	Type         string `json:"type"`
+	Instructions string `json:"instructions"`
+}
+
+var questions = map[string]question{
+	"reversible": {
+		Type:         "noul",
+		Instructions: "Every command in `commands` only reads or changes files inside `project` and can be undone with git or by rerunning it. It does not push, publish, deploy, delete files outside the project, change system settings, or send data to a network service.",
+	},
+	"serves_task": {
+		Type:         "noul",
+		Instructions: "Running `commands` is a reasonable next step toward `task`.",
+	},
+}
+
+type State struct {
+	Commands []string `json:"commands"`
+	Project  string   `json:"project"`
+	Task     string   `json:"task,omitempty"`
+	Agent    string   `json:"agent,omitempty"`
+}
+
+// jevApproves returns nil when the answer is unknown.
+func jevApproves(state State) *bool {
+	asked := []string{"reversible"}
+	if state.Task != "" {
+		asked = append(asked, "serves_task")
+	}
+	qs := map[string]question{}
+	for _, key := range asked {
+		qs[key] = questions[key]
+	}
+	payload, err := json.Marshal(map[string]any{"model": jevModel, "state": state, "questions": qs})
+	if err != nil {
+		return nil
+	}
+	req, err := http.NewRequest("POST", "https://openrouter.ai/api/alpha/decisions", bytes.NewReader(payload))
+	if err != nil {
+		return nil
+	}
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+	res, err := (&http.Client{Timeout: 8 * time.Second}).Do(req)
+	if err != nil {
+		return nil
+	}
+	defer res.Body.Close()
+	if res.StatusCode < 200 || res.StatusCode > 299 {
+		return nil
+	}
+	var body struct {
+		Answers map[string]*struct {
+			Noul *float64 `json:"noul"`
+		} `json:"answers"`
+	}
+	if json.NewDecoder(res.Body).Decode(&body) != nil {
+		return nil
+	}
+	approved := true
+	for _, key := range asked {
+		answer := body.Answers[key]
+		if answer == nil || answer.Noul == nil || *answer.Noul < 0 || *answer.Noul > 1 {
+			return nil
+		}
+		if *answer.Noul < approveAt {
+			approved = false
+		}
+	}
+	return &approved
+}
+```
+
+```bash title="cURL" lines theme={null}
+JEV_MODEL="typesafe/jev-1.13"
+APPROVE_AT=0.9
+
+QUESTIONS='{
+  "reversible": {
+    "type": "noul",
+    "instructions": "Every command in `commands` only reads or changes files inside `project` and can be undone with git or by rerunning it. It does not push, publish, deploy, delete files outside the project, change system settings, or send data to a network service."
+  },
+  "serves_task": {
+    "type": "noul",
+    "instructions": "Running `commands` is a reasonable next step toward `task`."
+  }
+}'
+
+# Prints true, false, or unknown for a state JSON object.
+jev_approves() {
+  local state="$1" asked request body verdict
+  asked=$(jq -c 'if has("task") then ["reversible", "serves_task"] else ["reversible"] end' <<<"$state") \
+    || { echo unknown; return; }
+  request=$(jq -n --arg model "$JEV_MODEL" --argjson state "$state" \
+    --argjson q "$QUESTIONS" --argjson asked "$asked" \
+    '{model: $model, state: $state, questions: ($q | with_entries(select(.key as $k | $asked | index($k))))}')
+  body=$(curl -sf --max-time 8 https://openrouter.ai/api/alpha/decisions \
+    -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d "$request") || { echo unknown; return; }
+  verdict=$(jq -r --argjson asked "$asked" --argjson at "$APPROVE_AT" '
+    [$asked[] as $k | ((.answers[$k]? | objects | .noul) // null)] as $s
+    | if all($s[]; type == "number" and . >= 0 and . <= 1)
+      then all($s[]; . >= $at) else "unknown" end' <<<"$body" 2>/dev/null) || verdict=""
+  # An empty 200 body makes jq print nothing and exit 0, so treat no output as unknown.
+  echo "${verdict:-unknown}"
+}
+```
+
 The response also includes `id`, `provider`, `model`, and `usage` (which has `input_tokens`, `output_tokens`, and `cost`). If you want an audit trail of what was approved and what it cost, log `id` and `usage.cost` next to the commands.
 
 > [!WARNING]
@@ -186,6 +447,8 @@ A plugin that only turns ask into allow has nothing to act on while OpenCode app
 
 This plugin is where the shared checks meet a live request. It ignores anything that isn't a shell command still waiting on a prompt, returns early when the static list matches any of the parsed commands, and otherwise sends Jev the commands together with the last thing you asked for in the session and the directory OpenCode is working in. Only a confident yes changes the request to allow, and every other outcome leaves the prompt as it was. Save it together with the shared blocks as one `.ts` file under `.opencode/plugins/` in your project, where OpenCode loads it with no install step.
 
+OpenCode loads TypeScript plugins only, so the TypeScript tab is the one you install. The Python and Go tabs are reference implementations of the same evaluation logic, not installable plugins: OpenCode never calls them, and this page doesn't cover a bridge from OpenCode to another language. In Python, `ctx` and `event` stand for objects your own integration would supply. In Go, `PluginContext` and `PermissionEvent` are types defined here for illustration, and nothing registers `evaluate` with a host, so your own code has to receive the permission event and call it.
+
 ```typescript lines theme={null}
 import type { Plugin } from "@opencode/plugin"
 
@@ -215,6 +478,84 @@ async function buildState(ctx: Plugin.Context, event: Event): Promise<State> {
     agent: event.agent,
     commands: event.resources,
   }
+}
+```
+
+```python title="Python" lines theme={null}
+PLUGIN_ID = "jev-permissions"
+
+
+async def setup(ctx):
+    async def evaluate(event):
+        if event.effect != "ask" or event.action != "shell":
+            return
+        if any(never_auto_approve(command) for command in event.resources):
+            return
+        if jev_approves(await build_state(ctx, event)) is True:
+            event.effect = "allow"
+
+    await ctx.permission.hook("evaluate", evaluate)
+
+
+async def build_state(ctx, event) -> dict:
+    messages = await ctx.session.context(session_id=event.session_id)
+    user_messages = [m for m in messages if m["type"] == "user"]
+    task = user_messages[-1]["text"][:2_000] if user_messages else None
+    state = {
+        "task": task,
+        "project": ctx.location.directory,
+        "agent": event.agent,
+        "commands": event.resources,
+    }
+    return {key: value for key, value in state.items() if value is not None}
+
+```
+
+```go title="Go" lines theme={null}
+const pluginID = "jev-permissions"
+
+type Message struct {
+	Type string
+	Text string
+}
+
+type PermissionEvent struct {
+	Effect, Action, SessionID, Agent string
+	Resources                        []string
+}
+
+type PluginContext struct {
+	Directory       string
+	SessionMessages func(sessionID string) []Message
+}
+
+func evaluate(ctx PluginContext, event *PermissionEvent) {
+	if event.Effect != "ask" || event.Action != "shell" {
+		return
+	}
+	for _, command := range event.Resources {
+		if neverAutoApprove(command) {
+			return
+		}
+	}
+	if approved := jevApproves(buildState(ctx, event)); approved != nil && *approved {
+		event.Effect = "allow"
+	}
+}
+
+func buildState(ctx PluginContext, event *PermissionEvent) State {
+	task := ""
+	messages := ctx.SessionMessages(event.SessionID)
+	for i := len(messages) - 1; i >= 0; i-- {
+		if messages[i].Type == "user" {
+			task = messages[i].Text
+			break
+		}
+	}
+	if r := []rune(task); len(r) > 2000 {
+		task = string(r[:2000])
+	}
+	return State{Task: task, Project: ctx.Directory, Agent: event.Agent, Commands: event.Resources}
 }
 ```
 
@@ -254,6 +595,62 @@ if (input.tool_name === "Bash" && typeof command === "string" && !neverAutoAppro
       }),
     )
   }
+}
+```
+
+```python title="Python" lines theme={null}
+import json
+import sys
+
+hook_input = json.load(sys.stdin)
+tool_input = hook_input.get("tool_input", {})
+command = tool_input.get("command")
+description = tool_input.get("description")
+if hook_input.get("tool_name") == "Bash" and isinstance(command, str) and not never_auto_approve(command):
+    state = {"commands": [command], "project": hook_input["cwd"]}
+    if isinstance(description, str) and "turn_id" not in hook_input:
+        state["task"] = description
+    if jev_approves(state) is True:
+        print(json.dumps({
+            "hookSpecificOutput": {"hookEventName": "PermissionRequest", "decision": {"behavior": "allow"}},
+        }))
+
+```
+
+```go title="Go" lines theme={null}
+type PermissionRequest struct {
+	Cwd       string `json:"cwd"`
+	ToolName  string `json:"tool_name"`
+	ToolInput struct {
+		Command     any `json:"command"`
+		Description any `json:"description"`
+	} `json:"tool_input"`
+	TurnID any `json:"turn_id"`
+}
+
+func main() {
+	var input PermissionRequest
+	if err := json.NewDecoder(os.Stdin).Decode(&input); err != nil {
+		return
+	}
+	command, ok := input.ToolInput.Command.(string)
+	if input.ToolName != "Bash" || !ok || neverAutoApprove(command) {
+		return
+	}
+	task, _ := input.ToolInput.Description.(string)
+	if input.TurnID != nil {
+		task = ""
+	}
+	approved := jevApproves(State{Commands: []string{command}, Project: input.Cwd, Task: task})
+	if approved != nil && *approved {
+		out, _ := json.Marshal(map[string]any{
+			"hookSpecificOutput": map[string]any{
+				"hookEventName": "PermissionRequest",
+				"decision":      map[string]string{"behavior": "allow"},
+			},
+		})
+		fmt.Println(string(out))
+	}
 }
 ```
 
@@ -344,6 +741,34 @@ const approved =
     ? false
     : await jevApproves({ commands: [input.command], project: input.cwd })
 console.log(JSON.stringify({ permission: approved === true ? "allow" : "ask" }))
+```
+
+```python title="Python" lines theme={null}
+import json
+import sys
+
+try:
+    hook_input = json.load(sys.stdin)
+except ValueError:
+    hook_input = None
+is_dict = isinstance(hook_input, dict)
+command = hook_input.get("command") if is_dict else None
+cwd = hook_input.get("cwd") if is_dict else None
+try:
+    approved = (
+        isinstance(command, str)
+        and isinstance(cwd, str)
+        and not never_auto_approve(command)
+        and jev_approves({"commands": [command], "project": cwd}) is True
+    )
+except Exception:
+    approved = False
+print(json.dumps({"permission": "allow" if approved else "ask"}, separators=(",", ":")))
+
+```
+
+```json title="Output" theme={null}
+{"permission":"ask"}
 ```
 
 ### Register the hook in Cursor

@@ -76,6 +76,214 @@ const result = openrouter.callModel({
 console.log(await result.getText());
 ```
 
+```python title="Python" lines theme={null}
+import asyncio
+import os
+from pydantic import BaseModel
+from openrouter_agent import OpenRouter, HookEntry, call_model, tool
+
+
+class ShellInput(BaseModel):
+    command: str
+
+
+class ShellOutput(BaseModel):
+    output: str
+
+
+def run_in_sandbox(command: str) -> str:
+    return f"(sandbox) ran: {command}"
+
+
+def record_tool_latency(tool_name, duration_ms):
+    print(f"[latency] {tool_name}: {duration_ms} ms")
+
+
+def block_destructive(payload, ctx):
+    if "rm -rf /" in str(payload.get("tool_input", {}).get("command", "")):
+        return {"block": "Refusing to run a destructive command"}
+    return None
+
+
+async def main() -> None:
+    client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+
+    shell_tool = tool(
+        name="run_shell",
+        description="Run a shell command",
+        input_schema=ShellInput,
+        output_schema=ShellOutput,
+        execute=lambda params, ctx: ShellOutput(output=run_in_sandbox(params.command)),
+    )
+
+    result = call_model(
+        client,
+        {
+            "model": "openai/gpt-5.4",
+            "input": "Delete temporary build files",
+            "tools": [shell_tool],
+            "hooks": {
+                "PreToolUse": [HookEntry(handler=block_destructive, matcher="run_shell")],
+                "PostToolUse": [
+                    HookEntry(
+                        handler=lambda payload, ctx: record_tool_latency(
+                            payload.get("tool_name"), payload.get("duration_ms")
+                        )
+                    )
+                ],
+            },
+        },
+    )
+
+    print(await result.get_text())
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+	"time"
+)
+
+// Hooks mirrors the built-in PreToolUse / PostToolUse lifecycle hooks.
+type Hooks struct {
+	// PreToolUse runs before a tool executes. Return a non-empty reason to block it.
+	PreToolUse func(name string, input map[string]any) (blockReason string)
+	// PostToolUse runs after a tool executes.
+	PostToolUse func(name string, d time.Duration)
+}
+
+func runInSandbox(command string) string { return "(sandbox, not executed) " + command }
+
+func recordToolLatency(name string, d time.Duration) {
+	fmt.Printf("[PostToolUse] %s took %s\n", name, d)
+}
+
+func isDestructive(command string) bool {
+	fields := strings.Fields(command)
+	for i, f := range fields {
+		if f == "rm" && i+2 < len(fields) && strings.Contains(fields[i+1], "r") && (fields[i+2] == "/" || fields[i+2] == "/*") {
+			return true
+		}
+	}
+	return false
+}
+
+type toolCall struct {
+	ID       string `json:"id"`
+	Function struct {
+		Name      string `json:"name"`
+		Arguments string `json:"arguments"`
+	} `json:"function"`
+}
+
+// callModel runs a tool loop against OpenRouter, invoking hooks around each tool call.
+func callModel(model, prompt string, tools []any, hooks Hooks) (string, error) {
+	messages := []any{map[string]any{"role": "user", "content": prompt}}
+	for turn := 0; turn < 5; turn++ {
+		body, _ := json.Marshal(map[string]any{"model": model, "messages": messages, "tools": tools})
+		req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/chat/completions", bytes.NewReader(body))
+		req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+		req.Header.Set("Content-Type", "application/json")
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return "", err
+		}
+		data, _ := io.ReadAll(res.Body)
+		res.Body.Close()
+		if res.StatusCode != http.StatusOK {
+			return "", fmt.Errorf("HTTP %d: %s", res.StatusCode, data)
+		}
+		var out struct {
+			Choices []struct {
+				Message json.RawMessage `json:"message"`
+			} `json:"choices"`
+		}
+		if err := json.Unmarshal(data, &out); err != nil || len(out.Choices) == 0 {
+			return "", fmt.Errorf("unexpected response: %s", data)
+		}
+		var msg struct {
+			Content   string     `json:"content"`
+			ToolCalls []toolCall `json:"tool_calls"`
+		}
+		if err := json.Unmarshal(out.Choices[0].Message, &msg); err != nil {
+			return "", err
+		}
+		if len(msg.ToolCalls) == 0 {
+			return msg.Content, nil
+		}
+		messages = append(messages, out.Choices[0].Message)
+
+		for _, tc := range msg.ToolCalls {
+			var input map[string]any
+			json.Unmarshal([]byte(tc.Function.Arguments), &input)
+			fmt.Printf("-> %s(%s)\n", tc.Function.Name, tc.Function.Arguments)
+			var result any
+			if reason := hooks.PreToolUse(tc.Function.Name, input); reason != "" {
+				fmt.Printf("[PreToolUse] blocked: %s\n", reason)
+				result = map[string]string{"error": reason}
+			} else {
+				start := time.Now()
+				result = map[string]string{"output": runInSandbox(fmt.Sprint(input["command"]))}
+				hooks.PostToolUse(tc.Function.Name, time.Since(start))
+			}
+			content, _ := json.Marshal(result)
+			messages = append(messages, map[string]any{"role": "tool", "tool_call_id": tc.ID, "content": string(content)})
+		}
+	}
+	return "", fmt.Errorf("stopped after 5 turns without a final answer")
+}
+
+func main() {
+	tools := []any{map[string]any{
+		"type": "function",
+		"function": map[string]any{
+			"name":        "run_shell",
+			"description": "Run a shell command",
+			"parameters": map[string]any{
+				"type":       "object",
+				"properties": map[string]any{"command": map[string]any{"type": "string"}},
+				"required":   []string{"command"},
+			},
+		},
+	}}
+
+	hooks := Hooks{
+		PreToolUse: func(name string, input map[string]any) string {
+			if name == "run_shell" && isDestructive(fmt.Sprint(input["command"])) {
+				return "Refusing to run a destructive command"
+			}
+			return ""
+		},
+		PostToolUse: recordToolLatency,
+	}
+
+	text, err := callModel("openai/gpt-5.4", "Delete temporary build files", tools, hooks)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(text)
+}
+
+```
+
+```text title="Output" theme={null}
+[latency] run_shell: 0.058889000001727254 ms
+Deleted temporary build files.
+```
+
 Inline configuration supports all built-in hooks. Use a `HooksManager` when you need custom hooks, dynamic registration, programmatic emission, or explicit lifecycle control.
 
 ## HooksManager
@@ -83,7 +291,27 @@ Inline configuration supports all built-in hooks. Use a `HooksManager` when you 
 Create a manager and pass it to one or more `callModel` calls:
 
 ```typescript expandable lines theme={null}
-import { HooksManager, OpenRouter } from '@openrouter/agent';
+import { HooksManager, OpenRouter, callModel, tool } from '@openrouter/agent';
+import { z } from 'zod';
+
+function audit(sessionId: string, toolInput: unknown) {
+  console.log(`[audit ${sessionId}]`, JSON.stringify(toolInput));
+}
+
+const databaseTool = tool({
+  name: 'db_find_old_records',
+  description: 'Find (and optionally delete) database records older than a number of days',
+  inputSchema: z.object({
+    olderThanDays: z.number(),
+    dryRun: z.boolean().optional(),
+  }),
+  execute: async ({ olderThanDays, dryRun }) => ({
+    olderThanDays,
+    dryRun: dryRun ?? false,
+    matched: 42,
+    deleted: dryRun ? 0 : 42,
+  }),
+});
 
 const hooks = new HooksManager();
 
@@ -106,15 +334,267 @@ const openrouter = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
-const result = openrouter.callModel({
+const result = callModel(openrouter, {
   model: 'openai/gpt-5.4',
   input: 'Check which old records can be removed',
   tools: [databaseTool] as const,
   hooks,
 });
 
-await result.getText();
+const text = await result.getText();
+console.log(text);
 unsubscribe();
+
+```
+
+```python title="Python" lines theme={null}
+import asyncio
+import json
+import os
+import re
+
+from pydantic import BaseModel
+from openrouter_agent import HookEntry, HookName, HooksManager, OpenRouter, call_model, tool
+
+
+def audit(session_id, tool_input):
+    print(f"[audit {session_id}]", json.dumps(tool_input))
+
+
+class DbInput(BaseModel):
+    older_than_days: int
+    dry_run: bool | None = None
+
+
+database_tool = tool(
+    name="db_find_old_records",
+    description="Find (and optionally delete) database records older than a number of days",
+    input_schema=DbInput,
+    execute=lambda params, ctx: {
+        "older_than_days": params.older_than_days,
+        "dry_run": bool(params.dry_run),
+        "matched": 42,
+        "deleted": 0 if params.dry_run else 42,
+    },
+)
+
+hooks = HooksManager()
+
+
+def pre_tool_use(payload, context):
+    tool_input = payload["tool_input"]
+    audit(context.session_id, tool_input)
+    return {"mutated_input": {**tool_input, "dry_run": True}}
+
+
+unsubscribe = hooks.on(
+    HookName.PreToolUse.value,
+    HookEntry(
+        matcher=re.compile(r"^db_"),
+        filter=lambda payload: len(payload["tool_input"]) > 0,
+        handler=pre_tool_use,
+    ),
+)
+
+
+async def main():
+    client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+    result = call_model(
+        client,
+        {
+            "model": "openai/gpt-5.4",
+            "input": "Check which old records can be removed",
+            "tools": [database_tool],
+            "hooks": hooks,
+        },
+    )
+    print(await result.get_text())
+    unsubscribe()
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"regexp"
+)
+
+type HookContext struct{ SessionID string }
+
+// PreToolUseResult can replace the tool input, block the call with a reason, or both.
+type PreToolUseResult struct {
+	MutatedInput map[string]any
+	Block        string
+}
+
+// PreToolUseHook mirrors a HooksManager PreToolUse registration.
+type PreToolUseHook struct {
+	Matcher *regexp.Regexp
+	Filter  func(toolInput map[string]any) bool
+	Handler func(toolInput map[string]any, ctx HookContext) PreToolUseResult
+}
+
+type HooksManager struct{ pre []*PreToolUseHook }
+
+// OnPreToolUse registers a hook and returns an unsubscribe function.
+func (h *HooksManager) OnPreToolUse(hook PreToolUseHook) func() {
+	i := len(h.pre)
+	h.pre = append(h.pre, &hook)
+	return func() { h.pre[i] = nil }
+}
+
+// runPreToolUse pipes the input through each matching handler. A non-empty block reason stops the chain.
+func (h *HooksManager) runPreToolUse(name string, input map[string]any, ctx HookContext) (map[string]any, string) {
+	for _, hook := range h.pre {
+		if hook == nil || (hook.Matcher != nil && !hook.Matcher.MatchString(name)) || (hook.Filter != nil && !hook.Filter(input)) {
+			continue
+		}
+		result := hook.Handler(input, ctx)
+		if result.MutatedInput != nil {
+			input = result.MutatedInput
+		}
+		if result.Block != "" {
+			return input, result.Block
+		}
+	}
+	return input, ""
+}
+
+func audit(sessionID string, toolInput any) {
+	b, _ := json.Marshal(toolInput)
+	fmt.Printf("[audit %s] %s\n", sessionID, b)
+}
+
+func dbFindOldRecords(input map[string]any) map[string]any {
+	dryRun, _ := input["dryRun"].(bool)
+	deleted := 42
+	if dryRun {
+		deleted = 0
+	}
+	return map[string]any{"olderThanDays": input["olderThanDays"], "dryRun": dryRun, "matched": 42, "deleted": deleted}
+}
+
+var databaseTool = map[string]any{
+	"type": "function",
+	"function": map[string]any{
+		"name":        "db_find_old_records",
+		"description": "Find (and optionally delete) database records older than a number of days",
+		"parameters": map[string]any{
+			"type": "object",
+			"properties": map[string]any{
+				"olderThanDays": map[string]any{"type": "number"},
+				"dryRun":        map[string]any{"type": "boolean"},
+			},
+			"required": []string{"olderThanDays"},
+		},
+	},
+}
+
+// callModel runs a tool loop against OpenRouter, invoking hooks before each tool call.
+func callModel(model, prompt, sessionID string, hooks *HooksManager) (string, error) {
+	messages := []any{map[string]any{"role": "user", "content": prompt}}
+	for turn := 0; turn < 5; turn++ {
+		body, _ := json.Marshal(map[string]any{"model": model, "messages": messages, "tools": []any{databaseTool}})
+		req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/chat/completions", bytes.NewReader(body))
+		req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+		req.Header.Set("Content-Type", "application/json")
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return "", err
+		}
+		data, _ := io.ReadAll(res.Body)
+		res.Body.Close()
+		if res.StatusCode != http.StatusOK {
+			return "", fmt.Errorf("HTTP %d: %s", res.StatusCode, data)
+		}
+		var out struct {
+			Choices []struct {
+				Message json.RawMessage `json:"message"`
+			} `json:"choices"`
+		}
+		if err := json.Unmarshal(data, &out); err != nil || len(out.Choices) == 0 {
+			return "", fmt.Errorf("unexpected response: %s", data)
+		}
+		var msg struct {
+			Content   string `json:"content"`
+			ToolCalls []struct {
+				ID       string `json:"id"`
+				Function struct {
+					Name      string `json:"name"`
+					Arguments string `json:"arguments"`
+				} `json:"function"`
+			} `json:"tool_calls"`
+		}
+		if err := json.Unmarshal(out.Choices[0].Message, &msg); err != nil {
+			return "", err
+		}
+		if len(msg.ToolCalls) == 0 {
+			return msg.Content, nil
+		}
+		messages = append(messages, out.Choices[0].Message)
+		for _, tc := range msg.ToolCalls {
+			input := map[string]any{}
+			if err := json.Unmarshal([]byte(tc.Function.Arguments), &input); err != nil {
+				// Invalid arguments: report a parse error without running hooks or the tool.
+				messages = append(messages, map[string]any{"role": "tool", "tool_call_id": tc.ID, "content": "Error: invalid tool arguments: " + err.Error()})
+				continue
+			}
+			input, block := hooks.runPreToolUse(tc.Function.Name, input, HookContext{SessionID: sessionID})
+			if block != "" {
+				// A blocked call skips the tool; the reason goes back to the model.
+				messages = append(messages, map[string]any{"role": "tool", "tool_call_id": tc.ID, "content": block})
+				continue
+			}
+			content, _ := json.Marshal(dbFindOldRecords(input))
+			messages = append(messages, map[string]any{"role": "tool", "tool_call_id": tc.ID, "content": string(content)})
+		}
+	}
+	return "", fmt.Errorf("stopped after 5 turns without a final answer")
+}
+
+func main() {
+	hooks := &HooksManager{}
+
+	unsubscribe := hooks.OnPreToolUse(PreToolUseHook{
+		Matcher: regexp.MustCompile(`^db_`),
+		Filter:  func(toolInput map[string]any) bool { return len(toolInput) > 0 },
+		Handler: func(toolInput map[string]any, ctx HookContext) PreToolUseResult {
+			audit(ctx.SessionID, toolInput)
+			mutated := map[string]any{}
+			for k, v := range toolInput {
+				mutated[k] = v
+			}
+			mutated["dryRun"] = true
+			return PreToolUseResult{MutatedInput: mutated}
+		},
+	})
+
+	text, err := callModel("openai/gpt-5.4", "Check which old records can be removed", "conv-123", hooks)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(text)
+	unsubscribe()
+}
+
+```
+
+```text title="Output" theme={null}
+[audit conv-123] {"olderThanDays":30,"dryRun":true}
+Found 42 records older than 30 days that can be removed.
+
+No records were deleted because this was a dry run.
 ```
 
 `HooksManager` is available from `@openrouter/agent` and from the focused `@openrouter/agent/hooks-manager` subpath.
@@ -200,6 +680,31 @@ hooks.on('UserPromptSubmit', {
 });
 ```
 
+```python title="Python" lines theme={null}
+def on_user_prompt_submit(payload, ctx):
+    prompt = payload["prompt"]
+    if contains_secret(prompt):
+        return {"reject": "Remove secrets before submitting this prompt"}
+
+    return {"mutated_prompt": redact_personal_data(prompt)}
+
+
+hooks.on("UserPromptSubmit", HookEntry(handler=on_user_prompt_submit))
+
+```
+
+```go title="Go" lines theme={null}
+hooks.OnUserPromptSubmit(UserPromptSubmitHook{
+	Handler: func(prompt string, ctx HookContext) UserPromptSubmitResult {
+		if containsSecret(prompt) {
+			return UserPromptSubmitResult{Reject: "Remove secrets before submitting this prompt"}
+		}
+
+		return UserPromptSubmitResult{MutatedPrompt: redactPersonalData(prompt)}
+	},
+})
+```
+
 ### PostModelCall
 
 `PostModelCall` fires once for every completed model response, including:
@@ -247,6 +752,35 @@ hooks.on('PostModelCall', {
 });
 ```
 
+```python title="Python" lines theme={null}
+def on_post_model_call(payload, ctx):
+    record_model_span({
+        "session_id": ctx.session_id,
+        "generation_id": payload.get("response_id"),
+        "model": payload.get("model"),
+        "duration_ms": payload.get("duration_ms"),
+        "cost": (payload.get("usage") or {}).get("cost"),
+    })
+
+
+hooks.on("PostModelCall", HookEntry(handler=on_post_model_call))
+
+```
+
+```go title="Go" lines theme={null}
+hooks.OnPostModelCall(PostModelCallHook{
+	Handler: func(payload PostModelCallPayload, ctx HookContext) {
+		recordModelSpan(ModelSpan{
+			SessionID:    ctx.SessionID,
+			GenerationID: payload.ResponseID,
+			Model:        payload.Model,
+			DurationMs:   payload.DurationMs,
+			Cost:         payload.Usage.Cost,
+		})
+	},
+})
+```
+
 A failed stream that never produces a complete response does not emit `PostModelCall`. A materialized `response.incomplete` response does emit it. `usage` is omitted when the server does not report usage, and `usage.cost` is only present when server-side usage accounting reports cost.
 
 On a no-tools streaming path, the response becomes complete only after stream consumption. The hook therefore fires during session teardown, immediately before `SessionEnd`.
@@ -290,6 +824,21 @@ hooks.on('PermissionRequest', {
 });
 ```
 
+```python title="Python" lines theme={null}
+def on_permission_request(payload, ctx):
+    if is_allowed_path(payload["tool_input"]["path"]):
+        return {"decision": "allow"}
+
+    return {
+        "decision": "deny",
+        "reason": "The requested path is outside the workspace",
+    }
+
+
+hooks.on("PermissionRequest", HookEntry(handler=on_permission_request, matcher="read_file"))
+
+```
+
 ### PreToolUse
 
 `PreToolUse` fires before client tool execution, including normal tool rounds and resumed approval flows:
@@ -320,6 +869,39 @@ hooks.on('PreToolUse', {
     },
   }),
 });
+```
+
+```python title="Python" lines theme={null}
+def on_pre_tool_use(payload, ctx):
+    tool_input = payload["tool_input"]
+    return {
+        "mutated_input": {
+            **tool_input,
+            "limit": min(int(tool_input.get("limit", 10)), 50),
+        },
+    }
+
+
+hooks.on("PreToolUse", HookEntry(handler=on_pre_tool_use, matcher="search"))
+
+```
+
+```go title="Go" lines theme={null}
+hooks.OnPreToolUse(PreToolUseHook{
+	Matcher: regexp.MustCompile(`^search$`),
+	Handler: func(toolInput map[string]any, ctx HookContext) PreToolUseResult {
+		limit := 10.0
+		if v, ok := toolInput["limit"].(float64); ok {
+			limit = v
+		}
+		mutated := map[string]any{}
+		for k, v := range toolInput {
+			mutated[k] = v
+		}
+		mutated["limit"] = math.Min(limit, 50)
+		return PreToolUseResult{MutatedInput: mutated}
+	},
+})
 ```
 
 ### PostToolUse
@@ -383,6 +965,32 @@ hooks.on('Stop', {
 });
 ```
 
+```python title="Python" lines theme={null}
+def on_stop(payload, ctx):
+    if payload.get("reason") == "max_turns" and should_ask_for_summary():
+        return {
+            "force_resume": True,
+            "append_prompt": "Summarize the work completed so far.",
+        }
+
+
+hooks.on("Stop", HookEntry(handler=on_stop))
+```
+
+```go title="Go" lines theme={null}
+hooks.OnStop(StopHook{
+	Handler: func(payload StopPayload, ctx HookContext) StopResult {
+		if payload.Reason == "max_turns" && shouldAskForSummary() {
+			return StopResult{
+				ForceResume:  true,
+				AppendPrompt: "Summarize the work completed so far.",
+			}
+		}
+		return StopResult{}
+	},
+})
+```
+
 ### SessionEnd
 
 `SessionEnd` fires once when a started session exits:
@@ -425,6 +1033,40 @@ hooks.on('PreToolUse', {
 });
 ```
 
+```python title="Python" lines theme={null}
+def has_path(payload, *_):
+    return payload["tool_input"].get("path") is not None
+
+
+def on_pre_tool_use(payload, ctx):
+    validate_workspace_path(payload["tool_input"]["path"])
+
+
+hooks.on(
+    "PreToolUse",
+    HookEntry(
+        handler=on_pre_tool_use,
+        matcher=re.compile(r"^filesystem_"),
+        filter=has_path,
+    ),
+)
+
+```
+
+```go title="Go" lines theme={null}
+hooks.OnPreToolUse(PreToolUseHook{
+	Matcher: regexp.MustCompile(`^filesystem_`),
+	Filter: func(toolInput map[string]any) bool {
+		_, ok := toolInput["path"]
+		return ok
+	},
+	Handler: func(toolInput map[string]any, ctx HookContext) PreToolUseResult {
+		validateWorkspacePath(fmt.Sprint(toolInput["path"]))
+		return PreToolUseResult{}
+	},
+})
+```
+
 A string matches exactly. A regular expression or predicate can match a set of tools. A matcher-scoped handler is skipped when an event has no tool name. `filter` receives the hook payload and can add any further condition.
 
 Matchers are intended for tool-scoped hooks. Use `filter` by itself for session, prompt, model-call, and stop hooks.
@@ -459,6 +1101,49 @@ hooks.on('PreToolUse', {
 });
 ```
 
+```python title="Python" lines theme={null}
+def apply_limit(payload, ctx):
+    return {"mutated_input": {**payload["tool_input"], "limit": 100}}
+
+
+hooks.on("PreToolUse", HookEntry(handler=apply_limit, matcher="query_database"))
+
+
+def check_query(payload, ctx):
+    # Sees limit: 100 from the previous handler.
+    if not is_safe_query(payload["tool_input"]):
+        return {"block": "Unsafe query"}
+
+
+hooks.on("PreToolUse", HookEntry(handler=check_query, matcher="query_database"))
+
+```
+
+```go title="Go" lines theme={null}
+hooks.OnPreToolUse(PreToolUseHook{
+	Matcher: regexp.MustCompile(`^query_database$`),
+	Handler: func(toolInput map[string]any, ctx HookContext) PreToolUseResult {
+		mutated := map[string]any{}
+		for k, v := range toolInput {
+			mutated[k] = v
+		}
+		mutated["limit"] = 100
+		return PreToolUseResult{MutatedInput: mutated}
+	},
+})
+
+hooks.OnPreToolUse(PreToolUseHook{
+	Matcher: regexp.MustCompile(`^query_database$`),
+	Handler: func(toolInput map[string]any, ctx HookContext) PreToolUseResult {
+		// Sees limit: 100 from the previous handler.
+		if isSafeQuery(toolInput) {
+			return PreToolUseResult{}
+		}
+		return PreToolUseResult{Block: "Unsafe query"}
+	},
+})
+```
+
 A blocking handler's mutation is still applied before the chain stops. Empty strings do not block or reject. Return `mutatedInput` or `mutatedPrompt` instead of mutating nested payload values in place.
 
 By default, a throwing handler, matcher, or filter is logged and skipped. Use strict mode to propagate these failures, which is useful in tests:
@@ -467,6 +1152,16 @@ By default, a throwing handler, matcher, or filter is logged and skipped. Use st
 const hooks = new HooksManager(undefined, {
   throwOnHandlerError: true,
 });
+```
+
+```python title="Python" lines theme={null}
+hooks = HooksManager(throw_on_handler_error=True)
+```
+
+```go title="Go" lines theme={null}
+hooks := NewHooksManager(HooksManagerOptions{
+	ThrowOnHandlerError: true,
+})
 ```
 
 Payload and result schema failures follow the same error policy.
@@ -483,6 +1178,25 @@ hooks.on('PreToolUse', {
 });
 ```
 
+```python title="Python" lines theme={null}
+async def on_pre_tool_use(payload, ctx):
+    await validate_policy(payload["tool_input"])
+
+
+hooks.on("PreToolUse", HookEntry(handler=on_pre_tool_use))
+
+```
+
+```go title="Go" lines theme={null}
+hooks.OnPreToolUse(PreToolUseHook{
+	Handler: func(toolInput map[string]any, ctx HookContext) PreToolUseResult {
+		// Blocking call: the chain waits for it to return before the next handler.
+		validatePolicy(ctx, toolInput)
+		return PreToolUseResult{}
+	},
+})
+```
+
 To detach telemetry or audit work without delaying the loop, return an `AsyncOutput` signal:
 
 ```typescript lines theme={null}
@@ -495,6 +1209,33 @@ hooks.on('PostToolUse', {
     asyncTimeout: 5_000,
   }),
 });
+```
+
+```python title="Python" lines theme={null}
+def on_post_tool_use(payload, ctx):
+    return {
+        "async": True,
+        "work": send_telemetry(payload, cancel_event=ctx.cancel_event),
+        "async_timeout": 5_000,
+    }
+
+
+hooks.on("PostToolUse", HookEntry(handler=on_post_tool_use))
+
+```
+
+```go title="Go" lines theme={null}
+hooks.OnPostToolUse(PostToolUseHook{
+	Handler: func(payload PostToolUsePayload, ctx HookContext) PostToolUseResult {
+		return PostToolUseResult{
+			Async: true,
+			Work: func(workCtx context.Context) error {
+				return sendTelemetry(workCtx, payload)
+			},
+			AsyncTimeout: 5 * time.Second,
+		}
+	},
+})
 ```
 
 The asynchronous signal has this exact shape:
@@ -514,6 +1255,12 @@ The manager tracks detached work. Use its lifecycle methods during shutdown:
 ```typescript lines theme={null}
 hooks.abortInflight('Application shutting down');
 await hooks.drain();
+```
+
+```go title="Go" lines theme={null}
+hooks.AbortInflight("Application shutting down")
+hooks.Drain()
+
 ```
 
 `abortInflight()` aborts the signals for active handler work. `drain()` waits for all detached work to settle. The agent loop also drains pending hook work when a run ends.
@@ -560,6 +1307,124 @@ const { results } = await hooks.emit('DeploymentGate', {
 console.log(results[0]?.approved);
 ```
 
+```python title="Python" lines theme={null}
+import asyncio
+from types import SimpleNamespace
+from pydantic import BaseModel
+from openrouter_agent import HookEntry, HooksManager
+
+
+class DeploymentGatePayload(BaseModel):
+    environment: str
+    version: str
+
+
+class DeploymentGateResult(BaseModel):
+    approved: bool
+
+
+class AuditLogPayload(BaseModel):
+    event: str
+
+
+# Each custom hook definition exposes `payload` and `result` schema attributes.
+hooks = HooksManager({
+    "DeploymentGate": SimpleNamespace(payload=DeploymentGatePayload, result=DeploymentGateResult),
+    "AuditLog": SimpleNamespace(payload=AuditLogPayload, result=None),
+})
+
+
+def deployment_gate(payload, ctx):
+    environment = payload["environment"] if isinstance(payload, dict) else payload.environment
+    return DeploymentGateResult(approved=environment != "production")
+
+
+hooks.on("DeploymentGate", HookEntry(handler=deployment_gate))
+
+
+async def main():
+    emitted = await hooks.emit("DeploymentGate", {"environment": "staging", "version": "1.2.3"})
+    if emitted.results:
+        first = emitted.results[0]
+        approved = first["approved"] if isinstance(first, dict) else first.approved
+        print(approved)
+    else:
+        print(None)
+
+
+asyncio.run(main())
+
+```
+
+```go title="Go" lines theme={null}
+package main
+
+import "fmt"
+
+// Typed payload and result schemas for each custom hook.
+type DeploymentGatePayload struct {
+	Environment string
+	Version     string
+}
+
+type DeploymentGateResult struct {
+	Approved bool
+}
+
+type AuditLogPayload struct {
+	Event string
+}
+
+// EmitOptions carries per-emit values, such as the session ID, to every handler.
+type EmitOptions struct {
+	SessionID string
+}
+
+// Hook is a typed chain of handlers for one custom hook.
+type Hook[P, R any] struct {
+	handlers []func(P, EmitOptions) R
+}
+
+func (h *Hook[P, R]) On(handler func(P, EmitOptions) R) {
+	h.handlers = append(h.handlers, handler)
+}
+
+func (h *Hook[P, R]) Emit(payload P, opts EmitOptions) []R {
+	results := make([]R, 0, len(h.handlers))
+	for _, handler := range h.handlers {
+		results = append(results, handler(payload, opts))
+	}
+	return results
+}
+
+type CustomHooks struct {
+	DeploymentGate Hook[DeploymentGatePayload, DeploymentGateResult]
+	AuditLog       Hook[AuditLogPayload, struct{}]
+}
+
+func main() {
+	hooks := &CustomHooks{}
+
+	hooks.DeploymentGate.On(func(p DeploymentGatePayload, opts EmitOptions) DeploymentGateResult {
+		return DeploymentGateResult{Approved: p.Environment != "production"}
+	})
+
+	results := hooks.DeploymentGate.Emit(DeploymentGatePayload{
+		Environment: "staging",
+		Version:     "1.2.3",
+	}, EmitOptions{SessionID: "deploy-123"})
+
+	if len(results) > 0 {
+		fmt.Println(results[0].Approved)
+	}
+}
+
+```
+
+```text title="Output" theme={null}
+true
+```
+
 Payloads and non-void results are validated on every `emit()`. Zod transforms, defaults, and coercion are applied before handlers run, so handlers receive the schema output type.
 
 Custom hook names must be non-empty and cannot collide with built-in names. Custom hooks do not inherit built-in mutation or blocking behavior. Inline configuration only supports built-in hooks.
@@ -574,6 +1439,21 @@ await hooks.emit(
 );
 ```
 
+```python title="Python" lines theme={null}
+await hooks.emit(
+    "AuditLog",
+    {"event": "deployment_started"},
+    session_id=deployment.id,
+)
+```
+
+```go title="Go" lines theme={null}
+hooks.AuditLog.Emit(
+	AuditLogPayload{Event: "deployment_started"},
+	EmitOptions{SessionID: deployment.ID},
+)
+```
+
 `setSessionId()` sets a manager-wide default for direct emissions. It is last-writer-wins, so prefer the per-emit value when operations may overlap.
 
 ## HooksManager API
@@ -582,6 +1462,14 @@ await hooks.emit(
 
 ```typescript lines theme={null}
 new HooksManager(customHooks?, options?)
+```
+
+```python title="Python" lines theme={null}
+HooksManager(custom_hooks)
+```
+
+```go title="Go" lines theme={null}
+hooks := NewHooksManager(customHooks, options) // either argument may be nil
 ```
 
 * `customHooks` maps custom names to Zod `payload` and `result` schemas.
@@ -628,6 +1516,22 @@ await hooks.emit(hookName, payload, {
 });
 ```
 
+```python title="Python" lines theme={null}
+await hooks.emit(
+    hook_name,
+    payload,
+    tool_name=tool_name,
+    session_id=session_id,
+)
+```
+
+```go title="Go" lines theme={null}
+hooks.Emit(hookName, payload, EmitOptions{
+	ToolName:  toolName,
+	SessionID: sessionID,
+})
+```
+
 Validates the payload, runs the chain, and returns:
 
 ```typescript lines theme={null}
@@ -655,6 +1559,18 @@ Returns whether the hook has any registered handlers.
 ```typescript lines theme={null}
 hooks.abortInflight(reason?): void
 await hooks.drain(): Promise<void>
+```
+
+```python title="Python" lines theme={null}
+async def shutdown(hooks):
+    hooks.abort_inflight()  # -> None
+    await hooks.drain()  # -> None
+
+```
+
+```go title="Go" lines theme={null}
+hooks.AbortInflight("shutdown") // reason is optional; pass "" to omit
+hooks.Drain()                   // blocks until detached hook work settles
 ```
 
 Abort active handler signals, then await detached work during graceful shutdown.

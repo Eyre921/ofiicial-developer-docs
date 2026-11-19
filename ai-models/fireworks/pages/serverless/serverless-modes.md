@@ -4,14 +4,15 @@ source: https://docs.fireworks.ai/serverless/serverless-modes
 path: serverless/serverless-modes
 ---
 
-Compare Standard, Priority, Fast, and Ultra-fast (Preview) serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
+Compare Standard, Priority, Fast, Ultra-fast (Preview), and Flex serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
 
-Fireworks Serverless offers four modes:
+Fireworks Serverless offers five modes:
 
 * **Standard** is the default mode. No `service_tier` parameter is needed.
 * **Priority tier** is for workloads that require higher reliability during peak traffic.
 * **Fast** is for workloads that require higher speeds.
 * **Ultra-fast** (Preview) for workloads requiring extremely fast end-to-end generation speeds.
+* **Flex** is for cost-sensitive workloads that can tolerate slower speeds.
 
 ## Priority tier
 
@@ -71,6 +72,28 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
     "model": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
+```
+
+Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
+
+## Flex
+
+Flex is a lower-cost mode for workloads that can tolerate slower response speeds, billed at 50% off Standard rates.
+
+Flex is available for select models. To use Flex, change the `model` ID as listed below.
+
+| Model | `model` ID |
+| - | - |
+| DeepSeek V4.1 Flash 1017 Flex | `accounts/fireworks/routers/deepseek-v4p1-flash-1017-flex` |
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-flex",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
 ```

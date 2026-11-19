@@ -81,6 +81,76 @@ const approvePayment = tool({
 });
 ```
 
+```python title="Python" lines theme={null}
+from typing import Optional
+from pydantic import BaseModel
+from openrouter_agent import tool
+
+
+class PaymentInput(BaseModel):
+    amount: float
+    recipient: str
+
+
+class PaymentDecision(BaseModel):
+    approved: bool
+    reviewed_at: Optional[float] = None
+
+
+async def on_payment_called(params: PaymentInput, ctx=None):
+    if params.amount < 100:
+        return PaymentDecision(approved=True)
+    # Pause for human review
+    return None
+
+
+approve_payment = tool(
+    name="approve_payment",
+    description="Approve a payment, escalating large amounts to a human",
+    input_schema=PaymentInput,
+    output_schema=PaymentDecision,
+    on_tool_called=on_payment_called,
+)
+
+```
+
+```go title="Go" lines theme={null}
+type PaymentInput struct {
+	Amount    float64 `json:"amount"`
+	Recipient string  `json:"recipient"`
+}
+
+type PaymentDecision struct {
+	Approved   bool   `json:"approved"`
+	ReviewedAt *int64 `json:"reviewedAt,omitempty"`
+}
+
+var approvePaymentTool = map[string]any{
+	"type": "function",
+	"function": map[string]any{
+		"name":        "approve_payment",
+		"description": "Approve a payment, escalating large amounts to a human",
+		"parameters": map[string]any{
+			"type": "object",
+			"properties": map[string]any{
+				"amount":    map[string]any{"type": "number"},
+				"recipient": map[string]any{"type": "string"},
+			},
+			"required": []string{"amount", "recipient"},
+		},
+	},
+}
+
+// onApprovePaymentCalled returns a result to auto-resolve, or nil to pause for a human.
+func onApprovePaymentCalled(input PaymentInput) *PaymentDecision {
+	if input.Amount < 100 {
+		return &PaymentDecision{Approved: true}
+	}
+	// Pause for human review
+	return nil
+}
+```
+
 `outputSchema` is required for HITL tools — it validates both the auto-resolved return value and any human-supplied response. See the [HITLTool type reference](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md#hitltool) for the full type signature.
 
 ## 2. Add post-processing with onResponseReceived
@@ -119,6 +189,69 @@ const approvePayment = tool({
 });
 ```
 
+```python title="Python" lines theme={null}
+import time
+
+
+async def on_payment_response(raw, ctx=None):
+    # Normalize and validate the human review result before it is sent back to
+    # the model as the tool output. This is where you would add reviewer
+    # metadata, enforce policy, or adapt UI fields to the tool's output schema.
+    decision = PaymentDecision.model_validate(raw)
+
+    return decision.model_copy(update={"reviewed_at": time.time() * 1000})
+
+
+approve_payment = tool(
+    name="approve_payment",
+    description="Approve a payment, escalating large amounts to a human",
+    input_schema=PaymentInput,
+    output_schema=PaymentDecision,
+    on_tool_called=on_payment_called,
+    on_response_received=on_payment_response,
+)
+
+```
+
+```go title="Go" lines theme={null}
+var approvePaymentTool = map[string]any{
+	"type": "function",
+	"function": map[string]any{
+		"name":        "approve_payment",
+		"description": "Approve a payment, escalating large amounts to a human",
+		"parameters": map[string]any{
+			"type": "object",
+			"properties": map[string]any{
+				"amount":    map[string]any{"type": "number"},
+				"recipient": map[string]any{"type": "string"},
+			},
+			"required": []string{"amount", "recipient"},
+		},
+	},
+}
+
+func onApprovePaymentCalled(input PaymentInput) *PaymentDecision {
+	if input.Amount < 100 {
+		return &PaymentDecision{Approved: true}
+	}
+	return nil
+}
+
+func onApprovePaymentResponseReceived(raw json.RawMessage) (*PaymentDecision, error) {
+	// Normalize and validate the human review result before it is sent back to
+	// the model as the tool output. This is where you would add reviewer
+	// metadata, enforce policy, or adapt UI fields to the tool's output schema.
+	var decision PaymentDecision
+	if err := json.Unmarshal(raw, &decision); err != nil {
+		return nil, err
+	}
+
+	now := time.Now().UnixMilli()
+	decision.ReviewedAt = &now
+	return &decision, nil
+}
+```
+
 If parsing or `onResponseReceived` throws, the error is surfaced to the model as `{ error: ..., originalOutput: ... }`. If omitted, the human-supplied value passes through directly after schema validation.
 
 ## 3. Add it to your callModel loop and detect a pause
@@ -150,10 +283,152 @@ const result = openrouter.callModel({
 });
 ```
 
+```python title="Python" lines theme={null}
+# Keep using your existing OpenRouter client if your agent already has one.
+client = OpenRouter(api_key=os.environ["OPENROUTER_API_KEY"])
+
+# Use your existing tools list and state accessor if you already have them.
+tools = [approve_payment]
+store: dict[str, ConversationState] = {}
+conversation_id = "conv-1"
+
+
+class InMemoryState:
+    async def load(self):
+        return store.get(conversation_id)
+
+    async def save(self, s):
+        store[conversation_id] = s
+
+
+state = InMemoryState()
+
+result = call_model(
+    client,
+    {
+        "model": "~openai/gpt-sol-latest",
+        "input": "Pay $500 to Acme Corp for the May invoice",
+        "tools": tools,
+        "state": state,
+    },
+)
+
+```
+
+```go title="Go" lines theme={null}
+// Use your existing tools array and state store if you already have them.
+type ConversationState struct {
+	ID               string           `json:"id"`
+	Messages         []map[string]any `json:"messages"`
+	Status           string           `json:"status"`
+	PendingToolCalls []map[string]any `json:"pendingToolCalls,omitempty"`
+}
+tools := []any{approvePaymentTool}
+store := map[string]*ConversationState{}
+conversationID := "conv-1"
+
+state := store[conversationID]
+if state == nil {
+	state = &ConversationState{ID: conversationID, Messages: []map[string]any{
+		{"role": "user", "content": "Pay $500 to Acme Corp for the May invoice"},
+	}}
+}
+
+type toolCall struct {
+	ID       string `json:"id"`
+	Type     string `json:"type"`
+	Function struct {
+		Name      string `json:"name"`
+		Arguments string `json:"arguments"`
+	} `json:"function"`
+}
+type assistantMessage struct {
+	Content   *string    `json:"content"`
+	ToolCalls []toolCall `json:"tool_calls"`
+}
+
+// Keep calling the model until it answers without tools or a call needs a human.
+// Step 4 calls runModelLoop again after a human answers a paused call.
+var msg assistantMessage
+runModelLoop := func() {
+	for {
+		body, _ := json.Marshal(map[string]any{
+			"model":    "~openai/gpt-sol-latest",
+			"messages": state.Messages,
+			"tools":    tools,
+		})
+		req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/chat/completions", bytes.NewReader(body))
+		req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+		req.Header.Set("Content-Type", "application/json")
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		var completion struct {
+			Choices []struct {
+				Message assistantMessage `json:"message"`
+			} `json:"choices"`
+		}
+		err = json.NewDecoder(res.Body).Decode(&completion)
+		res.Body.Close()
+		if err != nil || len(completion.Choices) == 0 {
+			log.Fatalf("bad response (HTTP %d): %v", res.StatusCode, err)
+		}
+		msg = completion.Choices[0].Message
+		assistant := map[string]any{"role": "assistant", "content": msg.Content}
+		if len(msg.ToolCalls) > 0 {
+			assistant["tool_calls"] = msg.ToolCalls
+		}
+		state.Messages = append(state.Messages, assistant)
+
+		if len(msg.ToolCalls) == 0 {
+			state.Status = "complete"
+			break
+		}
+
+		// Run each tool call; a nil result from onApprovePaymentCalled pauses for a human.
+		state.Status = "in_progress"
+		for _, call := range msg.ToolCalls {
+			var input PaymentInput
+			if err := json.Unmarshal([]byte(call.Function.Arguments), &input); err != nil {
+				log.Fatalf("invalid arguments for %s: %v", call.Function.Name, err)
+			}
+			if decision := onApprovePaymentCalled(input); decision != nil {
+				out, _ := json.Marshal(decision)
+				state.Messages = append(state.Messages, map[string]any{
+					"role": "tool", "tool_call_id": call.ID, "content": string(out),
+				})
+			} else {
+				state.Status = "awaiting_hitl"
+				state.PendingToolCalls = append(state.PendingToolCalls, map[string]any{
+					"id": call.ID, "name": call.Function.Name, "arguments": input,
+				})
+			}
+		}
+
+		// A paused call waits for a human; otherwise send the tool results back to the model.
+		if state.Status == "awaiting_hitl" {
+			break
+		}
+	}
+	store[conversationID] = state
+}
+runModelLoop()
+```
+
 If you need a deterministic smoke test, temporarily force this tool call:
 
 ```typescript lines theme={null}
 toolChoice: { type: 'function', name: 'approve_payment' },
+```
+
+```python title="Python" lines theme={null}
+"tool_choice": {"type": "function", "name": "approve_payment"},
+```
+
+```go title="Go" lines theme={null}
+"tool_choice": map[string]any{"type": "function", "function": map[string]any{"name": "approve_payment"}},
 ```
 
 In production, your agent instructions or user request can let the model decide when to call the tool.
@@ -170,6 +445,38 @@ const pendingCalls =
 for (const call of pendingCalls) {
   console.log(`Pending: ${call.name}(${JSON.stringify(call.arguments)})`);
   console.log(`Call ID: ${call.id}`);
+}
+```
+
+```python title="Python" lines theme={null}
+async def show_pending_calls():
+    state_snapshot = await result.get_state()
+    pending_calls = (
+        await result.get_pending_tool_calls()
+        if state_snapshot.status == "awaiting_hitl"
+        else []
+    )
+
+    for call in pending_calls:
+        print(f"Pending: {call.name}({json.dumps(call.arguments)})")
+        print(f"Call ID: {call.id}")
+    print(f"Status: {state_snapshot.status}")
+
+
+asyncio.run(show_pending_calls())
+
+```
+
+```go title="Go" lines theme={null}
+var pendingCalls []map[string]any
+if state.Status == "awaiting_hitl" {
+	pendingCalls = state.PendingToolCalls
+}
+
+for _, call := range pendingCalls {
+	args, _ := json.Marshal(call["arguments"])
+	fmt.Printf("Pending: %s(%s)\n", call["name"], args)
+	fmt.Printf("Call ID: %s\n", call["id"])
 }
 ```
 
@@ -196,14 +503,16 @@ In other HITL workflows, the human input might be more than a boolean. A support
 ```typescript expandable lines theme={null}
 // Simulate collecting a human decision
 const humanDecision = { approved: true };
-const firstPendingCall = pendingCalls[0];
+// Fall back to the paused turn's tool calls if the run did not report them as pending
+const firstPendingCall =
+  pendingCalls[0] ?? (await result.getToolCalls()).find((call) => call.name === 'approve_payment');
 
 if (!firstPendingCall) {
   throw new Error('No pending HITL call to resume');
 }
 
 const resumed = openrouter.callModel({
-  model: '~openai/gpt-sol-latest',
+  model: 'openai/gpt-4o-mini',
   input: [
     {
       type: 'function_call_output',
@@ -217,6 +526,95 @@ const resumed = openrouter.callModel({
 
 const text = await resumed.getText();
 console.log(text);
+```
+
+```python title="Python" lines theme={null}
+async def resume_with_human_input():
+    # Simulate collecting a human decision
+    human_decision = {"approved": True}
+    state_snapshot = await result.get_state()
+    pending_calls = (
+        await result.get_pending_tool_calls()
+        if state_snapshot.status == "awaiting_hitl"
+        else []
+    )
+    # Fall back to the paused turn's tool calls if the run did not report them as pending
+    first_pending_call = pending_calls[0] if pending_calls else next(
+        (call for call in await result.get_tool_calls() if call.name == "approve_payment"),
+        None,
+    )
+
+    if first_pending_call is None:
+        raise RuntimeError("No pending HITL call to resume")
+
+    resumed = call_model(
+        client,
+        {
+            "model": "openai/gpt-4o-mini",
+            "input": [
+                {
+                    "type": "function_call_output",
+                    "call_id": first_pending_call.id,
+                    "output": json.dumps(human_decision),
+                },
+            ],
+            "tools": tools,
+            "state": state,
+        },
+    )
+
+    text = await resumed.get_text()
+    print(text)
+
+
+asyncio.run(resume_with_human_input())
+
+```
+
+```go title="Go" lines theme={null}
+// Simulate collecting a human decision for each paused call, keyed by call ID
+humanDecisions := map[string]json.RawMessage{}
+for _, call := range pendingCalls {
+	id, _ := call["id"].(string)
+	humanDecisions[id] = json.RawMessage(`{"approved": true}`)
+}
+if len(humanDecisions) == 0 {
+	log.Fatal("No pending HITL call to resume")
+}
+
+// Answer every call that has a decision. A call without one stays pending.
+var stillPending []map[string]any
+for _, call := range state.PendingToolCalls {
+	id, _ := call["id"].(string)
+	raw, ok := humanDecisions[id]
+	if !ok {
+		stillPending = append(stillPending, call)
+		continue
+	}
+	// Validate the human response and add the review timestamp before the model sees it
+	var content []byte
+	if decision, err := onApprovePaymentResponseReceived(raw); err != nil {
+		content, _ = json.Marshal(map[string]any{"error": err.Error(), "originalOutput": string(raw)})
+	} else {
+		content, _ = json.Marshal(decision)
+	}
+	state.Messages = append(state.Messages, map[string]any{
+		"role": "tool", "tool_call_id": id, "content": string(content),
+	})
+}
+state.PendingToolCalls = stillPending
+store[conversationID] = state
+
+// Once no call is pending, restart the model loop from step 3. It sends the tool results
+// to the model, runs or pauses any further tool calls the same way, and saves the
+// conversation as "complete" when the model answers in text.
+if len(stillPending) == 0 {
+	state.Status = "in_progress"
+	runModelLoop()
+}
+if state.Status == "complete" && msg.Content != nil {
+	fmt.Println(*msg.Content)
+}
 ```
 
 The `onResponseReceived` hook fires on the human-supplied output before the model sees it. In this example, it adds a `reviewedAt` timestamp.

@@ -14605,7 +14605,7 @@ Run your own deployment on spare capacity at a discount. This works with any mod
 
 * **Bulk and non-urgent work only.** Treat a preempted replica as a normal outcome, not an error. We do not recommend sending production or latency-sensitive traffic to a preemptible deployment.
 * **`--preemptible` is immutable.** It's set at creation and can't be turned on or off later. To change it, delete the deployment and create a new one.
-* **Clean up when done.** Delete the deployment when the job finishes, so you stop paying for it and release the borrowed capacity.
+* **Clean up when done.** Delete the deployment when the job finishes, so you stop paying for it and release the borrowed capacity. The script can do it with `--delete-deployment-on-finish` (see [Step 4](#step-4-delete-the-deployment)).
 
 > [!TIP]
 >
@@ -14668,22 +14668,22 @@ A deployment answers `404` until it's ready, and the script stops on that `404`,
 > firectl deployment get <DEPLOYMENT_ID> -a <ACCOUNT_ID>
 > ```
 >
-> Wait for `State: READY`. The other states are `CREATING`, `UPDATING`, `DELETING`, `DELETED` and `FAILED`; see [Deployment status states](/guides/ondemand-deployments#deployment-status-states).
+> Wait until the output has no `State` line: `firectl` hides the state once it's `READY`. In `-o json` output, wait for `"state": "READY"`. The other states are `CREATING`, `PARTIAL_READY`, `UPDATING`, `PREEMPTED`, `DELETING`, `DELETED` and `FAILED`; see [Deployment status states](/guides/ondemand-deployments#deployment-status-states).
 >
 > > [!NOTE]
 > >
-> > `State` stays `READY` when a replica is preempted, and while it's placed again. It isn't marked `FAILED` or `UPDATING`. To see whether replicas are serving, check `replicaStats` instead:
+> > A partial preemption leaves the deployment `READY`. If every replica is preempted, its state becomes `PREEMPTED`, and it returns to `READY` on its own once a replica is ready again. Preemption doesn't mark it `FAILED` or `UPDATING`. To see how many replicas are serving, check `replica_stats`:
 >
 > ```bash theme={null}
 > firectl deployment get <DEPLOYMENT_ID> -a <ACCOUNT_ID> -o json
 > ```
 >
-> | `replicaStats` field | What it means for a preemptible deployment |
+> | `replica_stats` field | What it means for a preemptible deployment |
 > | - | - |
-> | `readyReplicaCount` | Replicas serving traffic. It drops when a replica is preempted, and is `0` if every replica was preempted. |
-> | `pendingSchedulingReplicaCount` | Replicas waiting for free GPUs. A preempted replica is counted here until it's placed again. |
-> | `downloadingModelReplicaCount` | Replicas that were placed and are downloading model weights. |
-> | `initializingReplicaCount` | Replicas starting the model server. Once it's up, the replica moves back to `readyReplicaCount`. |
+> | `ready_replica_count` | Replicas serving traffic. It drops when a replica is preempted, and is `0` if every replica was preempted. |
+> | `pending_scheduling_replica_count` | Replicas waiting for free GPUs. A preempted replica is counted here until it's placed again. |
+> | `downloading_model_replica_count` | Replicas that were placed and are downloading model weights. |
+> | `initializing_replica_count` | Replicas starting the model server. Once it's up, the replica moves back to `ready_replica_count`. |
 >
 > A field that's `0` can be left out of the output.
 >
@@ -14695,7 +14695,7 @@ A deployment answers `404` until it's ready, and the script stops on that `404`,
 
 > [tab] Fireworks app
 >
-> Open the [Deployments page](https://app.fireworks.ai/dashboard/deployments) and select your deployment. The page shows its status; wait until it's ready before you start the script. As with `firectl`, the status stays ready after a preemption, so check how many replicas are ready.
+> Open the [Deployments page](https://app.fireworks.ai/dashboard/deployments) and select your deployment. The page shows its status; wait until it's ready before you start the script. If every replica is preempted, the status shows Preempted until a replica is ready again. A partial preemption leaves it Ready, so check how many replicas are ready.
 >
 > The deployment's activity log shows what happened to it. Each preempted replica adds a "Replica preempted to free capacity; it will restart when capacity is available" event.
 
@@ -14713,12 +14713,12 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 ## Step 3: Run your Batch file
 
-Point `--model` at your deployment with the `<MODEL>#<DEPLOYMENT>` form:
+Point `--model` at your deployment with the `<MODEL>#<DEPLOYMENT>` form. Add `--delete-deployment-on-finish` to delete the deployment, and stop its billing, once every row has a result (see [Step 4](#step-4-delete-the-deployment)):
 
 ```bash theme={null}
 python batch_to_realtime.py --input batch_input.jsonl --output results.jsonl \
   --model "<MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>" \
-  --concurrency 16
+  --concurrency 16 --delete-deployment-on-finish
 ```
 
 The script:
@@ -14734,15 +14734,22 @@ Rows are written as they finish, so match output rows on `custom_id`, not line o
 
 * **Validate on a sample first.** Run a few hundred rows and compare outputs with your Batch results before running the full file.
 * **Tune `--concurrency`** (default 16, up to 256). Start at about 8 to 16 per replica and raise it while latency stays acceptable.
-* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and the deployment stays `READY`, so you don't need to recreate it. Watch `replicaStats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than a day, raise `--max-retry-time`, or rerun the same command later.
+* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and a `PREEMPTED` deployment returns to `READY` on its own, so you don't need to recreate it. Watch `replica_stats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than a day, raise `--max-retry-time`, or rerun the same command later.
 * **Know when it happens.** Each preempted replica adds an event to the deployment's activity log, in the app and in `firectl deployment events list` (see [Step 2](#step-2-check-the-deployment-status)). If preemption leaves the deployment with no ready replicas, the user who created it gets an email, and another when it can serve again.
 
 ## Step 4: Delete the deployment
 
-Delete the deployment when the job is done to stop billing and release the borrowed capacity:
+A deployment can be billed until you delete it. With `--delete-deployment-on-finish` (see [Step 3](#step-3-run-your-batch-file)), the script deletes it:
+
+* It deletes the deployment only when every row has a result. If a row failed or the run stopped, it keeps the deployment so a rerun can finish, and says so.
+* It skips the API's in-use and default-deployment checks, so use it only with a deployment you created for this run.
+* It's a soft delete. For 7 days, `firectl deployment undelete <DEPLOYMENT_ID> -a <ACCOUNT_ID>` brings the deployment back.
+* If every row has a result but the delete fails, the script exits with code 3 and says why.
+
+Otherwise, delete it yourself to stop billing and release the borrowed capacity. Within an hour of the run, the API refuses to delete a deployment that served requests, so pass `--ignore-checks`:
 
 ```bash theme={null}
-firectl deployment delete <DEPLOYMENT_ID> -a <ACCOUNT_ID>
+firectl deployment delete <DEPLOYMENT_ID> -a <ACCOUNT_ID> --ignore-checks
 ```
 
 ## Errors
@@ -15876,8 +15883,11 @@ Without `--region`, or with a multi-region such as `GLOBAL` or `US`, replicas ca
 Fireworks reclaims a replica when the workload that reserved its GPUs needs them back. This can happen at any time, mid-request, with no notice.
 
 * Requests in flight on that replica fail. Other ready replicas keep serving.
-* Fireworks recreates the replica, and it restarts when GPUs free up, possibly in another region. If 10 of 20 replicas are preempted, the other 10 keep serving while the 10 wait. Fireworks doesn't guarantee how long the wait is.
-* The deployment's state doesn't change, and you don't need to recreate it. If every replica is preempted, requests fail until one is ready again. To see how many replicas are serving, check `replicaStats.readyReplicaCount` in `firectl deployment get <NAME> -a <ACCOUNT_ID> -o json` or the [Get Deployment](/api-reference/get-deployment) response.
+* Fireworks recreates the replica, and it restarts when GPUs free up, possibly in another region. If 10 of 20 replicas are preempted, the other 10 keep serving while the 10 wait. Fireworks doesn't guarantee how long the wait is. GPU billing counts only ready replicas, so you aren't billed for a preempted replica while it waits, or for a `PREEMPTED` deployment.
+* You don't need to recreate the deployment. A partial preemption leaves its state unchanged.
+* If preemption takes every ready replica, the state changes from `READY` to `PREEMPTED` and requests fail. It changes back to `READY` on its own when a replica is ready again, or when you scale the deployment to 0. `firectl deployment get` and the [Get Deployment](/api-reference/get-deployment) response show the state.
+* If that happens while `firectl deployment create --wait` is running, the command returns and says the deployment is `PREEMPTED`.
+* To see how many replicas are serving, check `replica_stats.ready_replica_count` in `firectl deployment get <NAME> -a <ACCOUNT_ID> -o json`, or `replicaStats.readyReplicaCount` in the Get Deployment response.
 
 ### How you are notified
 
@@ -26121,11 +26131,11 @@ For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deplo
 # Serverless pricing
 Source: https://docs.fireworks.ai/serverless/pricing
 
-Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, Fast, and Ultra-fast (Preview) serverless mode rates.
+Per-token serverless pricing for text, vision, and embedding models on Fireworks, including Standard, Priority, Fast, Ultra-fast (Preview), and Flex serverless mode rates.
 
 ## Overview
 
-Serverless inference is priced per token. For how Standard, Priority, Fast, and Ultra-fast (Preview) modes work and how to select one, see [Serverless Modes](/serverless/serverless-modes).
+Serverless inference is priced per token. For how Standard, Priority, Fast, Ultra-fast (Preview), and Flex modes work and how to select one, see [Serverless Modes](/serverless/serverless-modes).
 
 Every text or vision request is billed across three dimensions:
 
@@ -26141,7 +26151,7 @@ Embeddings are billed only on input tokens.
 
 ## Text and vision models
 
-Per-model pricing for headline models. Fast and Ultra-fast (Preview) variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
+Per-model pricing for headline models. Fast, Ultra-fast (Preview), and Flex variants appear as adjacent rows. In each **Standard** or **Priority** cell, prices are **input / cached input / output** (USD per 1M tokens), in that order.
 
 | Model | Standard | Priority |
 | - | - | - |
@@ -26154,7 +26164,8 @@ Per-model pricing for headline models. Fast and Ultra-fast (Preview) variants ap
 | [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
 | [DeepSeek V4.1 Flash (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [DeepSeek V4.1 Flash 1017](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.30 / \$0.006 / \$1.20 | \$0.375 / \$0.0075 / \$1.50 |
-| [DeepSeek V4.1 Flash 1017 Ultra-fast (Preview)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$2.40 / \$0.048 / \$9.60 | — |
+| [DeepSeek V4.1 Flash 1017 Flex](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.15 / \$0.003 / \$0.60 | — |
+| [DeepSeek V4.1 Flash 1017 Ultra-fast (Preview)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$1.20 / \$0.024 / \$4.80 | — |
 | [DeepSeek V4.1 Flash 1017 (US)](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash-1017) | \$0.45 / \$0.009 / \$1.80 | \$0.5625 / \$0.01125 / \$2.25 |
 | [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.15 / \$0.03 / \$0.50 | \$0.1875 / \$0.0375 / \$0.625 |
 | [GLM 5.3 Flash (US)](https://app.fireworks.ai/models/fireworks/glm-5p3-flash) | \$0.225 / \$0.045 / \$0.75 | \$0.28125 / \$0.05625 / \$0.9375 |
@@ -26534,14 +26545,15 @@ The diagram does not show Elastic Burst separately. When available, Elastic Burs
 # Serverless modes
 Source: https://docs.fireworks.ai/serverless/serverless-modes
 
-Compare Standard, Priority, Fast, and Ultra-fast (Preview) serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
+Compare Standard, Priority, Fast, Ultra-fast (Preview), and Flex serverless modes on Fireworks Serverless to choose the right tradeoff between cost, latency, and throughput.
 
-Fireworks Serverless offers four modes:
+Fireworks Serverless offers five modes:
 
 * **Standard** is the default mode. No `service_tier` parameter is needed.
 * **Priority tier** is for workloads that require higher reliability during peak traffic.
 * **Fast** is for workloads that require higher speeds.
 * **Ultra-fast** (Preview) for workloads requiring extremely fast end-to-end generation speeds.
+* **Flex** is for cost-sensitive workloads that can tolerate slower speeds.
 
 ## Priority tier
 
@@ -26601,6 +26613,28 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
     "model": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-ultrafast",
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
+```
+
+Pricing is listed on the [Serverless pricing](/serverless/pricing) page.
+
+## Flex
+
+Flex is a lower-cost mode for workloads that can tolerate slower response speeds, billed at 50% off Standard rates.
+
+Flex is available for select models. To use Flex, change the `model` ID as listed below.
+
+| Model | `model` ID |
+| - | - |
+| DeepSeek V4.1 Flash 1017 Flex | `accounts/fireworks/routers/deepseek-v4p1-flash-1017-flex` |
+
+```bash theme={null}
+curl https://api.fireworks.ai/inference/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $FIREWORKS_API_KEY" \
+  -d '{
+    "model": "accounts/fireworks/routers/deepseek-v4p1-flash-1017-flex",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
 ```

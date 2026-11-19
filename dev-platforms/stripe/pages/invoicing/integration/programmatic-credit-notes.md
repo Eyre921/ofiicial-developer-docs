@@ -47,7 +47,7 @@ If applying a credit note to an invoice changes the amount due to zero, the invo
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d "lines[0][type]=invoice_line_item" \
   -d "lines[0][invoice_line_item]={{INVOICE_LINE_ITEM}}" \
   -d "lines[0][quantity]=2"
@@ -58,7 +58,7 @@ To create a custom line item on the credit note, pass the invoice ID, descriptio
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d "lines[0][type]=custom_line_item" \
   -d "lines[0][description]=Courtesy credit" \
   -d "lines[0][quantity]=1" \
@@ -81,7 +81,7 @@ In the following example, the credit note creates a refund:
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d "lines[0][type]=invoice_line_item" \
   -d "lines[0][invoice_line_item]={{INVOICE_LINE_ITEM}}" \
   -d "lines[0][quantity]=2" \
@@ -93,7 +93,7 @@ Here, the credit note creates a credit to the customer credit balance:
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d "lines[0][type]=invoice_line_item" \
   -d "lines[0][invoice_line_item]={{INVOICE_LINE_ITEM}}" \
   -d "lines[0][quantity]=2" \
@@ -105,7 +105,7 @@ You can also combine multiple parameters. Funds that are left over after subtrac
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d "lines[0][type]=invoice_line_item" \
   -d "lines[0][invoice_line_item]={{INVOICE_LINE_ITEM}}" \
   -d "lines[0][quantity]=2" \
@@ -137,7 +137,7 @@ This example uses the `amount` parameter to credit the full amount of both line 
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d "lines[0][type]=invoice_line_item" \
   -d "lines[0][invoice_line_item]={{POSITIVE_INVOICE_LINE_ITEM}}" \
   -d "lines[0][amount]=10000" \
@@ -151,7 +151,7 @@ This example uses the `quantity` parameter to do the same:
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d "lines[0][type]=invoice_line_item" \
   -d "lines[0][invoice_line_item]={{POSITIVE_INVOICE_LINE_ITEM}}" \
   -d "lines[0][quantity]=1" \

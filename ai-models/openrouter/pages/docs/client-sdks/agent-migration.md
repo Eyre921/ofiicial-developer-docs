@@ -79,6 +79,14 @@ You can also import the client from a direct subpath:
 import { OpenRouter } from '@openrouter/agent/openrouter';
 ```
 
+```python title="Python" lines theme={null}
+from openrouter_agent import OpenRouter
+```
+
+```go title="Go" lines theme={null}
+import agent "github.com/OpenRouterTeam/go-agent"
+```
+
 ### Core imports
 
 ```diff lines theme={null}
@@ -219,6 +227,19 @@ Yes. They are designed to work side by side. Use `@openrouter/sdk` for REST API 
 import { OpenRouter } from '@openrouter/sdk';
 import { callModel } from '@openrouter/agent/call-model';
 import { tool } from '@openrouter/agent/tool';
+```
+
+```python title="Python" lines theme={null}
+from openrouter import OpenRouter
+from openrouter_agent import call_model, tool
+
+```
+
+```go title="Go" lines theme={null}
+import (
+	agent "github.com/OpenRouterTeam/go-agent"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+)
 ```
 
 ### Will the old imports keep working?

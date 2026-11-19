@@ -34,7 +34,7 @@ Run your own deployment on spare capacity at a discount. This works with any mod
 
 * **Bulk and non-urgent work only.** Treat a preempted replica as a normal outcome, not an error. We do not recommend sending production or latency-sensitive traffic to a preemptible deployment.
 * **`--preemptible` is immutable.** It's set at creation and can't be turned on or off later. To change it, delete the deployment and create a new one.
-* **Clean up when done.** Delete the deployment when the job finishes, so you stop paying for it and release the borrowed capacity.
+* **Clean up when done.** Delete the deployment when the job finishes, so you stop paying for it and release the borrowed capacity. The script can do it with `--delete-deployment-on-finish` (see [Step 4](#step-4-delete-the-deployment)).
 
 > [!TIP]
 >
@@ -97,22 +97,22 @@ A deployment answers `404` until it's ready, and the script stops on that `404`,
 > firectl deployment get <DEPLOYMENT_ID> -a <ACCOUNT_ID>
 > ```
 >
-> Wait for `State: READY`. The other states are `CREATING`, `UPDATING`, `DELETING`, `DELETED` and `FAILED`; see [Deployment status states](/guides/ondemand-deployments#deployment-status-states).
+> Wait until the output has no `State` line: `firectl` hides the state once it's `READY`. In `-o json` output, wait for `"state": "READY"`. The other states are `CREATING`, `PARTIAL_READY`, `UPDATING`, `PREEMPTED`, `DELETING`, `DELETED` and `FAILED`; see [Deployment status states](/guides/ondemand-deployments#deployment-status-states).
 >
 > > [!NOTE]
 > >
-> > `State` stays `READY` when a replica is preempted, and while it's placed again. It isn't marked `FAILED` or `UPDATING`. To see whether replicas are serving, check `replicaStats` instead:
+> > A partial preemption leaves the deployment `READY`. If every replica is preempted, its state becomes `PREEMPTED`, and it returns to `READY` on its own once a replica is ready again. Preemption doesn't mark it `FAILED` or `UPDATING`. To see how many replicas are serving, check `replica_stats`:
 >
 > ```bash theme={null}
 > firectl deployment get <DEPLOYMENT_ID> -a <ACCOUNT_ID> -o json
 > ```
 >
-> | `replicaStats` field | What it means for a preemptible deployment |
+> | `replica_stats` field | What it means for a preemptible deployment |
 > | - | - |
-> | `readyReplicaCount` | Replicas serving traffic. It drops when a replica is preempted, and is `0` if every replica was preempted. |
-> | `pendingSchedulingReplicaCount` | Replicas waiting for free GPUs. A preempted replica is counted here until it's placed again. |
-> | `downloadingModelReplicaCount` | Replicas that were placed and are downloading model weights. |
-> | `initializingReplicaCount` | Replicas starting the model server. Once it's up, the replica moves back to `readyReplicaCount`. |
+> | `ready_replica_count` | Replicas serving traffic. It drops when a replica is preempted, and is `0` if every replica was preempted. |
+> | `pending_scheduling_replica_count` | Replicas waiting for free GPUs. A preempted replica is counted here until it's placed again. |
+> | `downloading_model_replica_count` | Replicas that were placed and are downloading model weights. |
+> | `initializing_replica_count` | Replicas starting the model server. Once it's up, the replica moves back to `ready_replica_count`. |
 >
 > A field that's `0` can be left out of the output.
 >
@@ -124,7 +124,7 @@ A deployment answers `404` until it's ready, and the script stops on that `404`,
 
 > [tab] Fireworks app
 >
-> Open the [Deployments page](https://app.fireworks.ai/dashboard/deployments) and select your deployment. The page shows its status; wait until it's ready before you start the script. As with `firectl`, the status stays ready after a preemption, so check how many replicas are ready.
+> Open the [Deployments page](https://app.fireworks.ai/dashboard/deployments) and select your deployment. The page shows its status; wait until it's ready before you start the script. If every replica is preempted, the status shows Preempted until a replica is ready again. A partial preemption leaves it Ready, so check how many replicas are ready.
 >
 > The deployment's activity log shows what happened to it. Each preempted replica adds a "Replica preempted to free capacity; it will restart when capacity is available" event.
 
@@ -142,12 +142,12 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 ## Step 3: Run your Batch file
 
-Point `--model` at your deployment with the `<MODEL>#<DEPLOYMENT>` form:
+Point `--model` at your deployment with the `<MODEL>#<DEPLOYMENT>` form. Add `--delete-deployment-on-finish` to delete the deployment, and stop its billing, once every row has a result (see [Step 4](#step-4-delete-the-deployment)):
 
 ```bash theme={null}
 python batch_to_realtime.py --input batch_input.jsonl --output results.jsonl \
   --model "<MODEL_ID>#accounts/<ACCOUNT_ID>/deployments/<DEPLOYMENT_ID>" \
-  --concurrency 16
+  --concurrency 16 --delete-deployment-on-finish
 ```
 
 The script:
@@ -163,15 +163,22 @@ Rows are written as they finish, so match output rows on `custom_id`, not line o
 
 * **Validate on a sample first.** Run a few hundred rows and compare outputs with your Batch results before running the full file.
 * **Tune `--concurrency`** (default 16, up to 256). Start at about 8 to 16 per replica and raise it while latency stays acceptable.
-* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and the deployment stays `READY`, so you don't need to recreate it. Watch `replicaStats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than a day, raise `--max-retry-time`, or rerun the same command later.
+* **Ride out preemption.** If a replica is preempted mid-run, its in-flight requests fail with dropped connections or `503` until it's back, and the script retries them. The replica is placed again automatically when GPUs free up, and a `PREEMPTED` deployment returns to `READY` on its own, so you don't need to recreate it. Watch `replica_stats` (see [Step 2](#step-2-check-the-deployment-status)) to see it come back. If that takes longer than a day, raise `--max-retry-time`, or rerun the same command later.
 * **Know when it happens.** Each preempted replica adds an event to the deployment's activity log, in the app and in `firectl deployment events list` (see [Step 2](#step-2-check-the-deployment-status)). If preemption leaves the deployment with no ready replicas, the user who created it gets an email, and another when it can serve again.
 
 ## Step 4: Delete the deployment
 
-Delete the deployment when the job is done to stop billing and release the borrowed capacity:
+A deployment can be billed until you delete it. With `--delete-deployment-on-finish` (see [Step 3](#step-3-run-your-batch-file)), the script deletes it:
+
+* It deletes the deployment only when every row has a result. If a row failed or the run stopped, it keeps the deployment so a rerun can finish, and says so.
+* It skips the API's in-use and default-deployment checks, so use it only with a deployment you created for this run.
+* It's a soft delete. For 7 days, `firectl deployment undelete <DEPLOYMENT_ID> -a <ACCOUNT_ID>` brings the deployment back.
+* If every row has a result but the delete fails, the script exits with code 3 and says why.
+
+Otherwise, delete it yourself to stop billing and release the borrowed capacity. Within an hour of the run, the API refuses to delete a deployment that served requests, so pass `--ignore-checks`:
 
 ```bash theme={null}
-firectl deployment delete <DEPLOYMENT_ID> -a <ACCOUNT_ID>
+firectl deployment delete <DEPLOYMENT_ID> -a <ACCOUNT_ID> --ignore-checks
 ```
 
 ## Errors

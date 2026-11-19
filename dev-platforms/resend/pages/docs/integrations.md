@@ -110,6 +110,10 @@ Integrate Resend with the tools you already use.
 >
 > Add email to your camelAI apps
 
+> [card] [Composio](https://docs.composio.dev/toolkits/resend)
+>
+> Send emails from agents built on Composio
+
 ## No-code
 
 > [card] [n8n](https://n8n.io/integrations/resend)

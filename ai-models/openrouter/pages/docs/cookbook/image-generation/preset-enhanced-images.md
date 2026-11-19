@@ -131,6 +131,57 @@ curl https://openrouter.ai/api/v1/responses \
   }'
 ```
 
+```typescript title="TypeScript" lines theme={null}
+const response = await fetch('https://openrouter.ai/api/v1/responses', {
+  method: 'POST',
+  headers: {
+    Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: '@preset/image-enhancer',
+    input: 'A cozy bookshop on a rainy evening',
+  }),
+});
+
+const data = await response.json();
+```
+
+```python title="Python" lines theme={null}
+import os
+import requests
+
+response = requests.post(
+    "https://openrouter.ai/api/v1/responses",
+    headers={
+        "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "@preset/image-enhancer",
+        "input": "A cozy bookshop on a rainy evening",
+    },
+)
+```
+
+```go title="Go" lines theme={null}
+body := strings.NewReader(`{
+  "model": "@preset/image-enhancer",
+  "input": "A cozy bookshop on a rainy evening"
+}`)
+req, _ := http.NewRequest("POST", "https://openrouter.ai/api/v1/responses", body)
+req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+req.Header.Set("Content-Type", "application/json")
+
+resp, err := http.DefaultClient.Do(req)
+if err != nil {
+	log.Fatal(err)
+}
+defer resp.Body.Close()
+out, _ := io.ReadAll(resp.Body)
+fmt.Println(string(out))
+```
+
 The text model receives your message, crafts a detailed prompt, calls the image generation tool, and returns the result. Your application code doesn't know or care about the orchestration happening inside.
 
 ## What comes back

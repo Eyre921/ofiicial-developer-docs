@@ -24,7 +24,7 @@ Langfuse is built with enterprise needs in mind, focusing on:
 - **Transparency:** Open-source core and clear information on [software dependencies](/security/dependencies).
 - **Reporting:** Clear channels for [responsible disclosure through Bugcrowd](/security/responsible-disclosure) and [Whistleblowing](/security/whistleblowing).
 
-Langfuse is the [most widely adopted open-source LLM engineering platform](/adoption), used by **50,000+ companies**, with **37,604 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
+Langfuse is the [most widely adopted open-source LLM engineering platform](/adoption), used by **50,000+ companies**, with **37,622 GitHub stars**, **65M+ SDK installs per month**, and **38M+ Docker pulls**. Trusted by **21 of the Fortune 50** and **129 of the Fortune 500** companies.
 
 ## Langfuse Cloud security model
 
@@ -38,10 +38,13 @@ Langfuse Cloud runs on AWS and ClickHouse Cloud in isolated regional environment
 
 ## Compliance
 
-We maintain internal policies in the [ClickHouse Trust Center](https://trust.clickhouse.com/) and adhere to several industry-standard compliance frameworks. Please check [Security FAQs](/security/security-faq) for more details.
+We adhere to several industry-standard compliance frameworks. See the [Security FAQ](/security/security-faq) for more details.
+
+ClickHouse, Inc. holds [ISO/IEC 27701:2025 certification](/security/iso27701) for its privacy information management system, which covers Langfuse Cloud. Visit the [ClickHouse Trust Center](https://trust.clickhouse.com/) to find our internal policies and request access to the certificate.
 
 - [SOC 2 Type II](/security/soc2)
 - [ISO 27001](/security/iso27001)
+- [ISO/IEC 27701:2025](/security/iso27701)
 - [HIPAA](/security/hipaa)
 - [Hardening for Government](/self-hosting/configuration/hardening#hardening-for-government)
 

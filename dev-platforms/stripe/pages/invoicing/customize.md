@@ -254,6 +254,8 @@ To render shipping details on the Invoice PDF, set the [shipping_details](https:
 
 Invoices include any public information that you specified under [Public business information](https://dashboard.stripe.com/settings/public), such as your support email address or business website. Using these settings, you can also choose to include a support phone number in customer-facing documents—like invoice PDFs and emails—or default to your business address.
 
+To change the business name, support email, or support address on invoices, update your [Public business information](https://dashboard.stripe.com/settings/public). If you don’t set a support address, Stripe uses your business address. Draft invoices reflect changes to your business name. When you finalize an invoice, Stripe saves the business name on that invoice. Later changes to your business name don’t affect finalized invoices.
+
 ## See also
 
 - [Use the Dashboard](https://docs.stripe.com/invoicing/dashboard.md)

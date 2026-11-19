@@ -395,7 +395,7 @@ print(f"Split documentation into {len(all_splits)} chunks.")
 Split documentation into 782 chunks.
 ```
 
-If you want to learn more about text splitters, check out the [`TextSplitter` interface](https://reference.langchain.com/python/langchain-text-splitters/base/TextSplitter) and [text splitter integrations](/oss/python/integrations/splitters/).
+If you want to learn more about text splitters, check out the [`TextSplitter` interface](https://reference.langchain.com/python/langchain-text-splitters/base/TextSplitter) and [text splitter integrations](/oss/python/integrations/splitters/). For guidance on choosing chunk size and a splitting strategy, see [Chunk documents for retrieval](/oss/python/langchain/chunking).
 
 ### Select an embeddings model
 
@@ -653,6 +653,10 @@ You can choose from many different [embedding integrations](/oss/python/integrat
 >
 > embeddings = IsaacusEmbeddings(model="kanon-2-embedder")
 > ```
+
+> [!WARNING]
+>
+> Use the same embedding model, with a compatible vector dimension, when indexing documents and querying them. If you change embedding models, re-embed and re-index your documents.
 
 ### Store chunks and embeddings in VectorStore
 
@@ -1472,6 +1476,7 @@ You implemented one RAG pattern with [`create_deep_agent`](https://reference.lan
 
 * Add [Skills](/oss/python/deepagents/skills) to package retrieval workflows and domain-specific search guidance
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) with LangSmith datasets and evaluators
+* [Chunk documents for retrieval](/oss/python/langchain/chunking) to improve retrieval quality
 * Read [Context engineering](/oss/python/deepagents/context-engineering) for offloading and subagent isolation strategies
 * Deploy with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, host agents yourself or use a custom [Agent Server](/langsmith/agent-server)
 * Use [Grading rubrics](/oss/python/deepagents/rubric) to verify answers are grounded in retrieved source material

@@ -77,7 +77,7 @@ If there’s an issue with the invoice, you can create a credit note. If you nee
 ```curl
 curl https://api.stripe.com/v1/credit_notes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d invoice={{INVOICE_ID}} \
+  -d "invoice={{INVOICE_ID}}" \
   -d reason=duplicate \
   -d amount=1000 \
   -d credit_amount=1000

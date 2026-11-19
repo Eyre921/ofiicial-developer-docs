@@ -18,6 +18,8 @@ The values you assign to your connected account properties also affect other asp
 
 You must define `defaults.responsibilities` properties when you add the Merchant configuration to an account. You can’t update their values later.
 
+Setting `defaults.responsibilities` or `dashboard` on an account with only the Customer configuration fails with an `unsupported_field_for_configs` error. If you create an account with only the Customer configuration to bill it for your platform’s subscription and you later add the Merchant configuration or request `stripe_transfers` for the Recipient configuration, you must include these properties in that update request.
+
 | Property | Description | Values |
 | --- | --- | --- |
 | [defaults.responsibilities.fees_collector](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-defaults-responsibilities-fees_collector) | Defines how Stripe collects payment fees for direct charges on the connected account. (For destination or separate charges, Stripe always collects fees from your platform.) | - `application`: Your platform collects application fees from the connected account, and Stripe collects payment fees from your platform.

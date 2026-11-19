@@ -412,6 +412,8 @@ console.log(`Split documentation into ${allSplits.length} chunks.`);
 Split documentation into 722 chunks.
 ```
 
+If you want to learn more about text splitters, see the [text splitter integrations](/oss/javascript/integrations/splitters/). For guidance on choosing chunk size and a splitting strategy, see [Chunk documents for retrieval](/oss/javascript/langchain/chunking).
+
 ### Select an embeddings model
 
 An [embedding](/oss/javascript/integrations/embeddings) is a numeric vector that captures the meaning of each documentation chunk. An [Embeddings](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings) model converts those chunks into vectors so that similar meanings land close together in vector space, enabling you to retrieve relevant sections when a user asks a question.
@@ -571,6 +573,10 @@ You can choose from many different [embedding integrations](/oss/javascript/inte
 >   model: "embed-english-v3.0"
 > });
 > ```
+
+> [!WARNING]
+>
+> Use the same embedding model, with a compatible vector dimension, when indexing documents and querying them. If you change embedding models, re-embed and re-index your documents.
 
 ### Store chunks and embeddings in VectorStore
 
@@ -2406,6 +2412,7 @@ You implemented one RAG pattern with [`createDeepAgent`](https://reference.langc
 
 * Add [Skills](/oss/javascript/deepagents/skills) to package retrieval workflows and domain-specific search guidance
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) with LangSmith datasets and evaluators
+* [Chunk documents for retrieval](/oss/javascript/langchain/chunking) to improve retrieval quality
 * Read [Context engineering](/oss/javascript/deepagents/context-engineering) for offloading and subagent isolation strategies
 * Deploy with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, host agents yourself or use a custom [Agent Server](/langsmith/agent-server)
 

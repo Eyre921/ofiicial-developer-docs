@@ -46,6 +46,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Claude Code and Expo](https://docs.expo.dev/agents/claude.md)
 - [Codex and Expo](https://docs.expo.dev/agents/codex.md)
 - [Cursor and Expo](https://docs.expo.dev/agents/cursor.md)
+- [Grok Build and Expo](https://docs.expo.dev/agents/grok.md)
 
 ### Agent toolkits
 - [agent-device and Expo](https://docs.expo.dev/agents/agent-device.md)

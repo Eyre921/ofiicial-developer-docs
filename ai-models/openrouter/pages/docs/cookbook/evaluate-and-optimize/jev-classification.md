@@ -161,6 +161,116 @@ async function classifyPost(post: string): Promise<Classified> {
 }
 ```
 
+```go title="Go" lines theme={null}
+type Usage struct {
+	InputTokens  float64 `json:"input_tokens"`
+	OutputTokens float64 `json:"output_tokens"`
+	Cost         float64 `json:"cost"`
+}
+
+type Classified struct {
+	Category   string             `json:"category"`
+	Confidence *float64           `json:"confidence"`
+	Tags       map[string]float64 `json:"tags"`
+	Usage      Usage              `json:"usage"`
+}
+
+type RetryableError struct {
+	Message    string
+	RetryAfter time.Duration // zero when the server gave no Retry-After
+}
+
+func (e *RetryableError) Error() string { return e.Message }
+
+func isInFlightBudgetError(body []byte) bool {
+	var v struct {
+		Error struct {
+			Metadata struct {
+				LimitSource string `json:"limit_source"`
+			} `json:"metadata"`
+		} `json:"error"`
+	}
+	return json.Unmarshal(body, &v) == nil && v.Error.Metadata.LimitSource == "openrouter_in_flight_budget"
+}
+
+func inUnit(v float64) bool { return v >= 0 && v <= 1 }
+
+var httpClient = &http.Client{Timeout: 60 * time.Second}
+
+func classifyPost(post string) (*Classified, error) {
+	payload, err := json.Marshal(map[string]any{"model": JEVModel, "state": map[string]any{"post": post}, "questions": questions})
+	if err != nil {
+		return nil, err
+	}
+	req, err := http.NewRequest("POST", "https://openrouter.ai/api/alpha/decisions", bytes.NewReader(payload))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENROUTER_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
+	res, err := httpClient.Do(req)
+	if err != nil {
+		return nil, &RetryableError{Message: "Decisions request failed: " + err.Error()}
+	}
+	defer res.Body.Close()
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, &RetryableError{Message: "Decisions request failed: " + err.Error()}
+	}
+	if res.StatusCode < 200 || res.StatusCode >= 300 {
+		msg := fmt.Sprintf("Decisions %d: %s", res.StatusCode, body)
+		transient := res.StatusCode == 429 || res.StatusCode >= 500 || (res.StatusCode == 402 && isInFlightBudgetError(body))
+		if !transient {
+			return nil, errors.New(msg)
+		}
+		var retryAfter time.Duration
+		if secs, err := strconv.Atoi(res.Header.Get("Retry-After")); err == nil && secs > 0 {
+			retryAfter = time.Duration(secs) * time.Second
+		}
+		return nil, &RetryableError{Message: msg, RetryAfter: retryAfter}
+	}
+
+	var parsed struct {
+		Answers map[string]struct {
+			Type       string   `json:"type"`
+			Choice     string   `json:"choice"`
+			Confidence *float64 `json:"confidence"`
+			Noul       *float64 `json:"noul"`
+		} `json:"answers"`
+		Usage *struct {
+			InputTokens  *float64 `json:"input_tokens"`
+			OutputTokens *float64 `json:"output_tokens"`
+			Cost         *float64 `json:"cost"`
+		} `json:"usage"`
+	}
+	if err := json.Unmarshal(body, &parsed); err != nil {
+		return nil, fmt.Errorf("Decisions response is not JSON: %w", err)
+	}
+	cat, ok := parsed.Answers["category"]
+	if !ok || cat.Type != "choice" || !slices.Contains(Categories, cat.Choice) || (cat.Confidence != nil && !inUnit(*cat.Confidence)) {
+		return nil, fmt.Errorf("Decisions response has an invalid category answer: %s", body)
+	}
+	tags := make(map[string]float64, len(Tags))
+	for _, tag := range Tags {
+		a, ok := parsed.Answers[tag]
+		if !ok || a.Type != "noul" || a.Noul == nil || !inUnit(*a.Noul) {
+			return nil, fmt.Errorf("Decisions response has an invalid %s answer: %s", tag, body)
+		}
+		tags[tag] = *a.Noul
+	}
+	u := parsed.Usage
+	if u == nil || u.InputTokens == nil || u.OutputTokens == nil || u.Cost == nil {
+		return nil, fmt.Errorf("Decisions response is missing usage: %s", body)
+	}
+	return &Classified{
+		Category:   cat.Choice,
+		Confidence: cat.Confidence,
+		Tags:       tags,
+		Usage:      Usage{InputTokens: *u.InputTokens, OutputTokens: *u.OutputTokens, Cost: *u.Cost},
+	}, nil
+}
+```
+
 > [!WARNING]
 >
 > Every call to `classifyPost` is a paid request. At the time of writing, Jev on OpenRouter costs \$0.042 per million input tokens with no output-token charge, and the current price is on the [model page](https://openrouter.ai/typesafe/jev-1.13). One kind of `402` is transient: when your running requests fill the [in-flight spending budget](https://openrouter.ai/docs/api_reference/limits.md#in-flight-spending-budget), the body includes `limit_source: "openrouter_in_flight_budget"` and the code retries after `Retry-After`. Any other `402` means your credits or key limit ran out, so the item fails and `runBatch` stops the batch.
@@ -260,6 +370,118 @@ function sweepThresholds(sample: Labeled[], results: Classified[]) {
 const sweep = sweepThresholds(sample, sampleResults);
 ```
 
+```python title="Python" lines theme={null}
+sample = [
+    {"post": "Sample text about a topic you labeled by hand", "tags": ["music", "celebrity"], "category": "pop_culture"},
+]
+sample_results = run_batch([item["post"] for item in sample], classify_post, 8)
+
+
+def precision_recall(sample, results, tag, threshold):
+    tp = fp = fn = 0
+    for item, result in zip(sample, results):
+        predicted = result["tags"][tag] >= threshold
+        actual = tag in item["tags"]
+        if predicted and actual:
+            tp += 1
+        elif predicted:
+            fp += 1
+        elif actual:
+            fn += 1
+    return {
+        "precision": None if tp + fp == 0 else tp / (tp + fp),
+        "recall": None if tp + fn == 0 else tp / (tp + fn),
+        "tp": tp,
+        "fp": fp,
+        "fn": fn,
+    }
+
+
+THRESHOLDS = [0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+
+
+def sweep_thresholds(sample, results):
+    return {
+        tag: [{"threshold": t, **precision_recall(sample, results, tag, t)} for t in THRESHOLDS]
+        for tag in TAGS
+    }
+
+
+sweep = sweep_thresholds(sample, sample_results)
+
+```
+
+```go title="Go" lines theme={null}
+type Labeled struct {
+	Post     string
+	Tags     []string
+	Category string
+}
+
+var sample = []Labeled{
+	{Post: "Sample text about a topic you labeled by hand", Tags: []string{"music", "celebrity"}, Category: "pop_culture"},
+}
+
+func postsOf(items []Labeled) []string {
+	out := make([]string, len(items))
+	for i, item := range items {
+		out[i] = item.Post
+	}
+	return out
+}
+
+var sampleResults = runBatch(postsOf(sample), classifyPost, 8)
+
+type PR struct {
+	Threshold float64  `json:"threshold"`
+	Precision *float64 `json:"precision"` // nil when nothing was predicted
+	Recall    *float64 `json:"recall"`    // nil when nothing was labeled
+	TP        int      `json:"tp"`
+	FP        int      `json:"fp"`
+	FN        int      `json:"fn"`
+}
+
+func ratio(a, b int) *float64 {
+	if b == 0 {
+		return nil
+	}
+	r := float64(a) / float64(b)
+	return &r
+}
+
+func precisionRecall(sample []Labeled, results []*Classified, tag string, threshold float64) PR {
+	var tp, fp, fn int
+	for i, item := range sample {
+		predicted := results[i].Tags[tag] >= threshold
+		actual := slices.Contains(item.Tags, tag)
+		switch {
+		case predicted && actual:
+			tp++
+		case predicted:
+			fp++
+		case actual:
+			fn++
+		}
+	}
+	return PR{Threshold: threshold, Precision: ratio(tp, tp+fp), Recall: ratio(tp, tp+fn), TP: tp, FP: fp, FN: fn}
+}
+
+var Thresholds = []float64{0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9}
+
+func sweepThresholds(sample []Labeled, results []*Classified) map[string][]PR {
+	sweep := make(map[string][]PR, len(Tags))
+	for _, tag := range Tags {
+		for _, t := range Thresholds {
+			sweep[tag] = append(sweep[tag], precisionRecall(sample, results, tag, t))
+		}
+	}
+	return sweep
+}
+
+var sweep = sweepThresholds(sample, sampleResults)
+
+```
+
 `precisionRecall` returns `undefined` instead of a score when a threshold predicts no positives or when the sample contains no positive examples for a tag. In that case you'll want to label more items rather than pick a threshold from an undefined score.
 
 The `choice` answer needs no threshold since its `confidence` tells you which items to hand to a person. Group the sample by confidence band, compare the category with the human label in each band, and send to review anything below the band that meets your accuracy bar. Run this calibration once, separately from the production batch in step 3, since both are paid.
@@ -293,6 +515,107 @@ function categoryAccuracyByBand(sample: Labeled[], results: Classified[]) {
 const bands = categoryAccuracyByBand(sample, sampleResults);
 ```
 
+```python title="Python" lines theme={null}
+BANDS = [
+    {"label": "<0.5", "min": 0, "max": 0.5},
+    {"label": "0.5-0.8", "min": 0.5, "max": 0.8},
+    {"label": ">=0.8", "min": 0.8, "max": float("inf")},
+]
+
+
+def category_accuracy_by_band(sample, results):
+    def in_band(indices, label):
+        return {
+            "band": label,
+            "n": len(indices),
+            "correct": sum(1 for i in indices if results[i]["category"] == sample[i]["category"]),
+        }
+
+    all_indices = range(len(sample))
+    measured = [
+        in_band(
+            [
+                i
+                for i in all_indices
+                if results[i].get("confidence") is not None
+                and band["min"] <= results[i]["confidence"] < band["max"]
+            ],
+            band["label"],
+        )
+        for band in BANDS
+    ]
+    return measured + [in_band([i for i in all_indices if results[i].get("confidence") is None], "unknown")]
+
+
+bands = category_accuracy_by_band(sample, sample_results)
+
+```
+
+```go title="Go" lines theme={null}
+type Band struct {
+	Label    string
+	Min, Max float64
+}
+
+var Bands = []Band{
+	{Label: "<0.5", Min: 0, Max: 0.5},
+	{Label: "0.5-0.8", Min: 0.5, Max: 0.8},
+	{Label: ">=0.8", Min: 0.8, Max: math.Inf(1)},
+}
+
+type BandAccuracy struct {
+	Band    string `json:"band"`
+	N       int    `json:"n"`
+	Correct int    `json:"correct"`
+}
+
+func categoryAccuracyByBand(sample []Labeled, results []*Classified) []BandAccuracy {
+	inBand := func(label string, keep func(c *float64) bool) BandAccuracy {
+		out := BandAccuracy{Band: label}
+		for i, item := range sample {
+			if keep(results[i].Confidence) {
+				out.N++
+				if results[i].Category == item.Category {
+					out.Correct++
+				}
+			}
+		}
+		return out
+	}
+	var measured []BandAccuracy
+	for _, b := range Bands {
+		measured = append(measured, inBand(b.Label, func(c *float64) bool { return c != nil && *c >= b.Min && *c < b.Max }))
+	}
+	return append(measured, inBand("unknown", func(c *float64) bool { return c == nil }))
+}
+
+var bands = categoryAccuracyByBand(sample, sampleResults)
+```
+
+```bash title="cURL" lines theme={null}
+# sample.json holds your labeled items. sample_results.json holds the classifier's
+# result for each one, in the same order. Two items stand in for both here.
+cat > sample.json <<'EOF'
+[{"category": "billing"}, {"category": "bug"}]
+EOF
+cat > sample_results.json <<'EOF'
+[
+  {"category": "billing", "confidence": 0.93, "usage": {"input_tokens": 212, "cost": 0.00011}},
+  {"category": "feature_request", "confidence": 0.41, "usage": {"input_tokens": 198, "cost": 0.0001}}
+]
+EOF
+
+bands=$(jq -n --slurpfile s sample.json --slurpfile r sample_results.json '
+  def band($pairs; $name; f):
+    ($pairs | map(select(f))) as $in
+    | {band: $name, n: ($in | length), correct: ($in | map(select(.[0].category == .[1].category)) | length)};
+  ([$s[0], $r[0]] | transpose) as $pairs
+  | [ band($pairs; "<0.5"; .[1].confidence != null and .[1].confidence < 0.5),
+      band($pairs; "0.5-0.8"; .[1].confidence != null and .[1].confidence >= 0.5 and .[1].confidence < 0.8),
+      band($pairs; ">=0.8"; .[1].confidence != null and .[1].confidence >= 0.8),
+      band($pairs; "unknown"; .[1].confidence == null) ]')
+```
+
 > [!NOTE]
 >
 > When a tag's precision stays low at every threshold, fix the question rather than the threshold. In the captured run, `celebrity` never passed 0.41 precision because its instruction, `Is the post about a celebrity or pop culture?`, overlaps with `music` and `film_tv`. Tighten the instruction or the criteria and re-run the sample before shipping that tag.
@@ -313,6 +636,57 @@ function costPerThousand(results: Classified[]) {
     tokensPerItem: inputTokens / results.length,
   };
 }
+```
+
+```python title="Python" lines theme={null}
+def cost_per_thousand(results):
+    cost = sum(r["usage"]["cost"] for r in results)
+    input_tokens = sum(r["usage"]["input_tokens"] for r in results)
+    return {
+        "items": len(results),
+        "inputTokens": input_tokens,
+        "cost": cost,
+        "perThousand": (cost / len(results)) * 1_000,
+        "tokensPerItem": input_tokens / len(results),
+    }
+
+```
+
+```go title="Go" lines theme={null}
+type CostSummary struct {
+	Items         int     `json:"items"`
+	InputTokens   int     `json:"inputTokens"`
+	Cost          float64 `json:"cost"`
+	PerThousand   float64 `json:"perThousand"`
+	TokensPerItem float64 `json:"tokensPerItem"`
+}
+
+func costPerThousand(results []*Classified) CostSummary {
+	s := CostSummary{Items: len(results)}
+	for _, r := range results {
+		s.Cost += r.Usage.Cost
+		s.InputTokens += r.Usage.InputTokens
+	}
+	n := float64(len(results))
+	s.PerThousand = s.Cost / n * 1_000
+	s.TokensPerItem = float64(s.InputTokens) / n
+	return s
+}
+
+```
+
+```bash title="cURL" lines theme={null}
+# The classifier results from the calibration step
+cat > sample_results.json <<'EOF'
+[
+  {"category": "billing", "confidence": 0.93, "usage": {"input_tokens": 212, "cost": 0.00011}},
+  {"category": "feature_request", "confidence": 0.41, "usage": {"input_tokens": 198, "cost": 0.0001}}
+]
+EOF
+
+cost_report=$(jq '
+  {items: length, inputTokens: (map(.usage.input_tokens) | add), cost: (map(.usage.cost) | add)}
+  | . + {perThousand: (.cost / .items * 1000), tokensPerItem: (.inputTokens / .items)}' sample_results.json)
 ```
 
 ## Worked example

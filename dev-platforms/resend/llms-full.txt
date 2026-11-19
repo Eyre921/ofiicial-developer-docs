@@ -8472,13 +8472,18 @@ resend domains delete d91cd9bd-1176-453e-8fc1-35364d380206
 Source: https://resend.com/docs/api-reference/domains/enable-forge
 
 POST /domains/:domain_id/forge
-Put a domain's sending on Resend Forge.
+Put a domain's sending and receiving on Resend Forge.
 
-This endpoint returns the DNS record Forge needs. Add it to your DNS and call
+This endpoint returns the DNS records Forge needs. Add them to your DNS and call
 [Verify Domain](/docs/api-reference/domains/verify-domain) with `scope: ["forge"]`,
-then poll [Retrieve Domain](/docs/api-reference/domains/get-domain) until the
-Forge record's `status` is `verified`.
+then poll [Retrieve Domain](/docs/api-reference/domains/get-domain) until each of
+these records has the `status` `verified`.
 Calling this endpoint again just returns the current state.
+
+* **Sending:** a Forge `SPF` record of type `CNAME`.
+* **Receiving:** when the domain also receives email, Forge moves receiving
+  too. The `Receiving` record of type `MX` gets a new value and the `status`
+  `pending`. Replace your current `MX` record with it.
 
 > [!NOTE]
 >
@@ -49356,8 +49361,8 @@ DNS records stay untouched. Don't remove them.
 
 **4. Verify**
 
-Once the record verifies, the Forge section of your domain's page shows an
-**Enabled** tag. From there, Resend gradually moves your sending onto Forge to
+Once the record verifies, the Forge section of your domain's page shows a
+**Ready** tag. From there, Resend gradually moves your sending onto Forge to
 keep deliverability high, and the share of your email going through Forge
 grows over time. Once your email is routing through Forge, the tag changes to
 **Active**.
@@ -49460,7 +49465,7 @@ If the Forge record doesn't verify, these are some common troubleshooting method
 
 > [accordion] I have activated Forge but I'm still seeing the old headers
 >
-> The **Enabled** tag means your domain is ready for Forge. Resend moves your
+> The **Ready** tag means your domain is ready for Forge. Resend moves your
 > sending onto Forge gradually, so for a while part of your email still goes
 > out the usual way. You don't need to do anything.
 
@@ -57297,6 +57302,10 @@ Integrate Resend with the tools you already use.
 > [card] [camelAI](https://camelai.com/docs/getting-started/partners/resend)
 >
 > Add email to your camelAI apps
+
+> [card] [Composio](https://docs.composio.dev/toolkits/resend)
+>
+> Send emails from agents built on Composio
 
 ## No-code
 
