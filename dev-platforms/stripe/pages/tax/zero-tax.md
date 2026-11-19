@@ -81,7 +81,7 @@ Tax authorities require businesses to obtain a license or register before collec
 
 Stripe automatically aggregates and analyzes your transactions and compares them to local thresholds. See [Monitor your obligations](https://docs.stripe.com/tax/monitoring.md) to learn more about your potential tax registration obligations.
 
-Learn more about how to [register for sales tax, VAT, and GST](https://docs.stripe.com/tax/supported-countries.md) in each location and, if you’re a Connect platform, how to [use the Registrations API to manage tax registrations](https://docs.stripe.com/tax/registrations-api.md). You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
+Learn more about how to [register for sales tax, VAT, and GST](https://docs.stripe.com/tax/supported-countries.md) in each location. If you’re a Connect platform, learn how to [use the Registrations API to manage tax registrations](https://docs.stripe.com/tax/registrations-api.md). You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
 
 ### Exempt or zero-rated products
 

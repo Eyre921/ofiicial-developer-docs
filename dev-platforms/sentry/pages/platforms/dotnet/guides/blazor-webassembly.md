@@ -66,9 +66,9 @@ await builder.Build().RunAsync();
 
 ## [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly.md#send-logs)
 
-Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in your Sentry initialization.
+Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in the options you pass to `UseSentry`.
 
-See [Microsoft.Extensions.Logging](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md) for setup details.
+See [Logs](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly/logs.md) for setup details.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/dotnet/guides/blazor-webassembly/logs.md) for all available logging methods and formatting options.
 

@@ -19,12 +19,12 @@ Management endpoints for SCIM group-to-workspace mappings, authenticated with a 
 ### Available Operations
 
 * [list\_mappings](#list_mappings) - List SCIM group mappings
-* [create](#create) - Create a SCIM group mapping
-* [delete](#delete) - Delete a SCIM group mapping
+* [~~create~~](#create) - Create a SCIM group mapping ⚠️ **Deprecated**
+* [~~delete~~](#delete) - Delete a SCIM group mapping ⚠️ **Deprecated**
 * [read](#read) - Get a SCIM group mapping
-* [update](#update) - Update a SCIM group mapping
+* [~~update~~](#update) - Update a SCIM group mapping ⚠️ **Deprecated**
 * [list\_groups](#list_groups) - List SCIM groups
-* [create\_sync\_job](#create_sync_job) - Start a SCIM directory sync
+* [~~create\_sync\_job~~](#create_sync_job) - Start a SCIM directory sync ⚠️ **Deprecated**
 * [get\_sync\_job](#get_sync_job) - Get SCIM directory sync status
 
 ## list\_mappings
@@ -79,9 +79,11 @@ with OpenRouter(
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
-## create
+## ~~create~~
 
-Create a SCIM group-to-workspace role mapping. Creating a mapping that already exists with the same role succeeds and re-applies the mapping to the group members. Requesting a different role for an existing mapping returns 409. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Create a SCIM group-to-workspace role mapping. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+
+> ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -132,9 +134,11 @@ with OpenRouter(
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
-## delete
+## ~~delete~~
 
-Delete a SCIM group-to-workspace mapping. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Delete a SCIM group-to-workspace mapping. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+
+> ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -232,9 +236,11 @@ with OpenRouter(
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
-## update
+## ~~update~~
 
-Update a SCIM group mapping role. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Update a SCIM group mapping role. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+
+> ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -337,9 +343,11 @@ with OpenRouter(
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
-## create\_sync\_job
+## ~~create\_sync\_job~~
 
-Start a SCIM directory sync. [Management key](https://openrouter.ai/docs/client-sdks/python/docs/guides/overview/auth/management-api-keys) required.
+Start a SCIM directory sync. Disabled: no API key can perform this write, including management keys. Use the organization settings in the dashboard, which require step-up verification. A valid management key for an organization with SCIM access receives 403; an invalid key still receives 401 and an organization without SCIM access receives 404.
+
+> ⚠️ **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 

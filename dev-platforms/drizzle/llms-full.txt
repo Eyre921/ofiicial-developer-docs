@@ -18419,7 +18419,7 @@ You can obtain your connection string from the Appwrite Console by opening your 
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL' usersImport='users as usersTable'/>
 
 #### Step 8 - Run index.ts file
 
@@ -18435,7 +18435,7 @@ You can obtain your connection string from the Appwrite Console by opening your 
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='node-postgres' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='node-postgres' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 
 Source: https://orm.drizzle.team/docs/get-started/appwrite-postgres-new
@@ -18581,7 +18581,7 @@ We've created a [github issue](https://github.com/oven-sh/bun/issues/16774) that
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='bun-sql' env_variable='DATABASE_URL' />
+<QueryDatabase dialect='bun-sql' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 #### Step 8 - Run index.ts file
 
@@ -18600,7 +18600,7 @@ bun src/index.ts
 
 #### Step 10 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='bun-sql' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='bun-sql' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 
 Source: https://orm.drizzle.team/docs/get-started/bun-sql-new
@@ -18916,7 +18916,7 @@ import UpdateSchema from '@mdx/get-started/cockroach/UpdateSchema.mdx';
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='cockroach' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='cockroach' env_variable='DATABASE_URL' usersImport='users as usersTable'/>
 
 #### Step 8 - Run index.ts file
 
@@ -18932,7 +18932,7 @@ import UpdateSchema from '@mdx/get-started/cockroach/UpdateSchema.mdx';
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='cockroach' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='cockroach' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 
 Source: https://orm.drizzle.team/docs/get-started/cockroach-new
@@ -20000,20 +20000,11 @@ import * as PgDrizzle from 'drizzle-orm/effect-postgres';
 import { PgClient } from '@effect/sql-pg';
 import * as Effect from 'effect/Effect';
 import * as Redacted from 'effect/Redacted';
-import { types } from 'pg';
 import { eq } from 'drizzle-orm';
-import { usersTable } from './db/schema';
+import { users as usersTable } from './db/schema';
 
 const PgClientLive = PgClient.layer({
   url: Redacted.make(process.env.DATABASE_URL!),
-  types: {
-    getTypeParser: (typeId, format) => {
-      if ([1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182].includes(typeId)) {
-        return (val: any) => val;
-      }
-      return types.getTypeParser(typeId, format);
-    },
-  },
 });
 
 const program = Effect.gen(function*() {
@@ -20074,20 +20065,11 @@ import * as PgDrizzle from 'drizzle-orm/effect-postgres';
 import { PgClient } from '@effect/sql-pg';
 import * as Effect from 'effect/Effect';
 import * as Redacted from 'effect/Redacted';
-import { types } from 'pg';
 import { eq } from 'drizzle-orm';
-import { usersTable } from './db/schema';
+import { users as usersTable } from './db/schema';
 
 const PgClientLive = PgClient.layer({
   url: Redacted.make(process.env.DATABASE_URL!),
-  types: {
-    getTypeParser: (typeId, format) => {
-      if ([1184, 1114, 1082, 1186, 1231, 1115, 1185, 1187, 1182].includes(typeId)) {
-        return (val: any) => val;
-      }
-      return types.getTypeParser(typeId, format);
-    },
-  },
 });
 
 const program = Effect.gen(function*() {
@@ -20947,7 +20929,7 @@ import UpdateSchema from '@mdx/get-started/mssql/UpdateSchema.mdx';
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='node-mssql' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='node-mssql' env_variable='DATABASE_URL' usersImport='users as usersTable'/>
 
 #### Step 8 - Run index.ts file
 
@@ -20963,7 +20945,7 @@ import UpdateSchema from '@mdx/get-started/mssql/UpdateSchema.mdx';
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='node-mssql' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='node-mssql' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 
 Source: https://orm.drizzle.team/docs/get-started/mssql-new
@@ -21258,7 +21240,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='neon-http' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='neon-http' env_variable='DATABASE_URL' usersImport='users as usersTable'/>
 
 #### Step 8 - Run index.ts file
 
@@ -21274,7 +21256,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='neon-http' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='neon-http' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 Source: https://orm.drizzle.team/docs/get-started/neon-new
 
@@ -21557,7 +21539,7 @@ Create a `schema.ts` file in the `src/db` directory and declare your tables. Sin
 import { pgTable, uuid, text, timestamp, varchar, vector, boolean } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
-export const tenantsTable = pgTable("tenants", {
+export const tenants = pgTable("tenants", {
 	id: uuid().default(sql`public.uuid_generate_v7()`).primaryKey().notNull(),
 	name: text(),
 	created: timestamp({ mode: 'string' }).default(sql`LOCALTIMESTAMP`).notNull(),
@@ -22027,8 +22009,6 @@ import Prerequisites from "@mdx/Prerequisites.astro";
 import IntrospectPostgreSQL from '@mdx/get-started/postgresql/IntrospectPostgreSQL.mdx';
 import FileStructure from '@mdx/get-started/FileStructure.mdx';
 import InstallPackages from '@mdx/get-started/InstallPackages.mdx';
-import SetupConfig from '@mdx/get-started/SetupConfig.mdx';
-import SetupEnv from '@mdx/get-started/SetupEnv.mdx';
 import TransferCode from '@mdx/get-started/TransferCode.mdx';
 import ApplyChanges from '@mdx/get-started/ApplyChanges.mdx';
 import RunFile from '@mdx/get-started/RunFile.mdx';
@@ -22055,11 +22035,30 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 #### Step 2 - Setup connection variables
 
-<SetupEnv env_variable='DATABASE_URL' />
+Set `DATABASE_URL` in `.env` to your database directory, relative to the project root.
+
+```dotenv copy filename=".env"
+DATABASE_URL=./database
+```
 
 #### Step 3 - Setup Drizzle config file
 
-<SetupConfig dialect='postgresql' env_variable='DATABASE_URL'/>
+Create `drizzle.config.ts` at the project root.
+
+```typescript copy filename="drizzle.config.ts"
+import 'dotenv/config';
+import { defineConfig } from 'drizzle-kit';
+
+export default defineConfig({
+  out: './drizzle',
+  schema: './src/db/schema.ts',
+  dialect: 'postgresql',
+  driver: 'pglite',
+  dbCredentials: {
+    url: process.env.DATABASE_URL!,
+  },
+});
+```
 
 #### Step 4 - Introspect your database
 
@@ -22075,7 +22074,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='pglite' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='pglite' env_variable='DATABASE_URL' usersImport='users as usersTable'/>
 
 #### Step 8 - Run index.ts file
 
@@ -22091,7 +22090,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='pglite' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='pglite' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 Source: https://orm.drizzle.team/docs/get-started/pglite-new
 
@@ -22453,7 +22452,7 @@ You can obtain your connection credentials from the PlanetScale dashboard by nav
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL' usersImport='users as usersTable'/>
 
 #### Step 8 - Run index.ts file
 
@@ -22469,7 +22468,7 @@ You can obtain your connection credentials from the PlanetScale dashboard by nav
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='node-postgres' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='node-postgres' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 
 Source: https://orm.drizzle.team/docs/get-started/planetscale-postgres-new
@@ -22621,7 +22620,7 @@ The PostgreSQL in Docker guide is available [here](/docs/guides/postgresql-local
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='node-postgres' env_variable='DATABASE_URL' usersImport='users as usersTable'/>
 
 #### Step 8 - Run index.ts file
 
@@ -22637,7 +22636,7 @@ The PostgreSQL in Docker guide is available [here](/docs/guides/postgresql-local
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='node-postgres' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='node-postgres' env_variable='DATABASE_URL' usersImport='users as usersTable' />
 
 Source: https://orm.drizzle.team/docs/get-started/postgresql-new
 
@@ -23341,7 +23340,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 <FileStructure/>
 
 #### Step 1 - Install **postgres** package
-<InstallPackages lib='postgres'/>
+<InstallPackages lib='postgres@3'/>
 
 #### Step 2 - Setup connection variables
 
@@ -23365,7 +23364,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='postgres-js' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='postgres-js' env_variable='DATABASE_URL' usersImport='users as usersTable' closeClient/>
 
 #### Step 8 - Run index.ts file
 
@@ -23381,7 +23380,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='postgres-js' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='postgres-js' env_variable='DATABASE_URL' usersImport='users as usersTable' closeClient />
 
 Source: https://orm.drizzle.team/docs/get-started/supabase-new
 
@@ -24229,7 +24228,7 @@ In the Vercel Postgres storage tab, you can find the `.env.local` tab and copy t
 import 'dotenv/config';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/vercel-postgres';
-import { usersTable } from './db/schema';
+import { users as usersTable } from './db/schema';
 
 async function main() {
   const db = drizzle();
@@ -24287,7 +24286,7 @@ main();
 import 'dotenv/config';
 import { eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/vercel-postgres';
-import { usersTable } from './db/schema';
+import { users as usersTable } from './db/schema';
 
 async function main() {
   const db = drizzle();
@@ -24479,7 +24478,7 @@ import UpdateSchema from '@mdx/get-started/postgresql/UpdateSchema.mdx';
 <FileStructure/>
 
 #### Step 1 - Install **postgres** package
-<InstallPackages lib='postgres'/>
+<InstallPackages lib='postgres@3'/>
 
 #### Step 2 - Setup connection variables
 
@@ -24505,7 +24504,7 @@ You can obtain a connection string by following the [Xata documentation](https:/
 
 #### Step 7 - Query the database
 
-<QueryDatabase dialect='postgres-js' env_variable='DATABASE_URL'/>
+<QueryDatabase dialect='postgres-js' env_variable='DATABASE_URL' usersImport='users as usersTable' closeClient/>
 
 #### Step 8 - Run index.ts file
 
@@ -24521,7 +24520,7 @@ You can obtain a connection string by following the [Xata documentation](https:/
 
 #### Step 11 - Query the database with a new field (optional)
 
-<QueryDatabaseUpdated dialect='postgres-js' env_variable='DATABASE_URL' />
+<QueryDatabaseUpdated dialect='postgres-js' env_variable='DATABASE_URL' usersImport='users as usersTable' closeClient />
 
 Source: https://orm.drizzle.team/docs/get-started/xata-new
 

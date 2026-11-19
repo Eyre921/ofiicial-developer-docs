@@ -10,7 +10,7 @@ Learn how to calculate and collect tax on a payment page without writing any cod
 
 > [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
 
-You can use Stripe Tax with [Payment Links](https://stripe.com/payments/payment-links) to automatically calculate and collect tax on a payment page and share a link to it with your customers, without writing any code.
+You can use Stripe Tax with [Payment Links](https://stripe.com/payments/payment-links) to automatically calculate and collect tax on a payment page. You can then share a link to the page with your customers, without writing any code.
 [Watch on YouTube](https://www.youtube.com/watch?v=aotUFvYtmys)
 Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
 

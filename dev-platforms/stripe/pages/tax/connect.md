@@ -10,7 +10,7 @@ Understand how Stripe Tax can help your platform and your connected accounts com
 
 Stripe Tax supports [Connect](https://docs.stripe.com/connect.md) by helping you calculate and collect taxes. It provides transactional reports to help with tax reporting and filing for your platform or your connected accounts.
 
-The first step for using Stripe Tax with Connect requires you to **determine which entity has the obligation to collect and report taxes**. The entity that’s liable for tax might be you or your connected account, depending on your business model, regulations (for example, [marketplace laws in the US and EU](https://stripe.com/en-nl/guides/guide-to-sales-tax-and-vat-for-marketplace-sellers)), or the transaction details, such as the order amount or the type of goods being sold.
+The first step for using Stripe Tax with Connect requires you to determine which entity has the obligation to collect and report taxes. The entity that’s liable for tax might be you or your connected account. This depends on your business model, regulations (for example, [marketplace laws in the US and EU](https://stripe.com/en-nl/guides/guide-to-sales-tax-and-vat-for-marketplace-sellers)), or the transaction details, such as the order amount or the type of goods being sold.
 
 ## Use cases
 

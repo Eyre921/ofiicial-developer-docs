@@ -8,7 +8,7 @@ path: tax/monitoring
 
 Use our tool to see where you might need to register to collect tax based on past transactions.
 
-Stripe Tax provides insights about your potential tax registration obligations (called economic nexus in the US). We help you understand where you might have to register, collect, and remit tax based on your sales into a state or country, even if you don’t have physical presence there. You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
+Stripe Tax provides information about your potential tax registration obligations (called economic nexus in the US). We help you understand where you might have to register, collect, and remit tax based on your sales into a state or country. You might have this obligation even if you don’t have physical presence there. You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
 
 > Tax provides threshold monitoring primarily for payments processed by Stripe. The only out of band payments we currently include are invoices processed off of Stripe and transactions created using the Stripe Tax APIs.
 
@@ -64,9 +64,9 @@ Separate charges and transfers without `on_behalf_of` aren’t included. This is
 
 ### Location attribution 
 
-Location attribution is an important part of monitoring tax thresholds. To correctly determine your tax obligations, Stripe Tax attributes a location to each processed transaction once per day, adding new resulting transactions to your monitoring threshold in a 24-hour cycle. Location attribution happens even if tax isn’t calculated for the transactions, and it’s a different process from the [address validation](https://docs.stripe.com/tax/customer-locations.md) that we perform to calculate tax. You might not need specific tax rates and precise address information for threshold monitoring purposes, unlike when Stripe calculates and collects tax for transactions.
+To correctly determine your tax obligations, Stripe Tax attributes a location to each processed transaction once per day. In each 24-hour cycle, it adds the new resulting transactions to your monitoring threshold. Location attribution happens even if tax isn’t calculated for the transactions, and it’s a different process from the [address validation](https://docs.stripe.com/tax/customer-locations.md) that we perform to calculate tax. You might not need specific tax rates and precise address information for threshold monitoring purposes, unlike when Stripe calculates and collects tax for transactions.
 
-To attribute a location, Stripe Tax uses available information for that transaction and prefers some information sources to others—some examples are the current customer address, country of the card issuer, and the customer’s IP address.
+To attribute a location, Stripe Tax uses available information for that transaction and prefers some information sources to others. Some examples are the current customer address, country of the card issuer, and the customer’s IP address.
 
 Stripe Tax uses information in the following order:
 
@@ -138,7 +138,7 @@ We group your location statuses into the following categories:
 - (Not collecting tax): You aren’t collecting tax in this location. This can occur when:
   - Your registration is expired.
   - You don’t have a registration and haven’t exceeded the threshold yet.
-  - You don’t have a registration and we can’t determine your threshold status (for example, the revenue is unattributed or your preset product tax code doesn’t match the location’s supported tax types).
+  - You don’t have a registration and we can’t determine your threshold status. For example, the revenue is unattributed or your preset product tax code doesn’t match the location’s supported tax types.
 - (Issue): There’s a problem with your registration application that requires your attention. Review your application details to resolve the issue.
 - (Registration in progress): You’ve submitted a registration application through Stripe and our partners, and it’s currently being processed. You’ll be notified when the registration is complete.
 

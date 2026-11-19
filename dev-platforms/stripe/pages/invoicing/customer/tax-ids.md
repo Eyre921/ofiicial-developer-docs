@@ -202,17 +202,17 @@ Compare the validation for customer tax ID types:
 
 ### Australian Business Numbers (ABN) 
 
-Stripe automatically validates all Australian Business Numbers (ABNs) with the [Australian Business Register (ABR)](https://abr.gov.au/). This process only verifies the validity of the tax ID, and not whether the customer’s name, address, and GST registration status match what’s on the customers page in the Dashboard.
+Stripe automatically validates all Australian Business Numbers (ABNs) with the [Australian Business Register (ABR)](https://abr.gov.au/). This process only verifies the validity of the tax ID. It doesn’t check whether the customer’s name, address, and GST registration status match what’s on the customers page in the Dashboard.
 
 ### European Value-Added-Tax (EU VAT) Numbers 
 
-Stripe also automatically validates all European Value-Added-Tax (EU VAT) numbers with the [European Commission’s VAT Information Exchange System (VIES)](https://ec.europa.eu/taxation_customs/vies/). This process only validates whether or not the tax ID is valid—you still need to verify the customer’s name and address to make sure it matches the registration information.
+Stripe also automatically validates all European Value-Added-Tax (EU VAT) numbers with the [European Commission’s VAT Information Exchange System (VIES)](https://ec.europa.eu/taxation_customs/vies/). This process only validates whether or not the tax ID is valid. You still need to verify the customer’s name and address to make sure they match the registration information.
 
 VIES validation usually takes only a few seconds, but depending on the availability of various government databases, might take longer. Stripe automatically handles VIES downtime and attempts retries.
 
 ### United Kingdom Value-Added-Tax (GB VAT) Numbers 
 
-Stripe automatically validates all UK Value-Added-Tax (GB VAT) numbers with the [United Kingdom’s Revenue & Customs (HMRC)](https://www.gov.uk/). This process only validates whether or not the tax ID is valid—you still need to verify the customer’s name and address to make sure it matches the registration information.
+Stripe automatically validates all UK Value-Added-Tax (GB VAT) numbers with the [United Kingdom’s Revenue & Customs (HMRC)](https://www.gov.uk/). This process only validates whether or not the tax ID is valid. You still need to verify the customer’s name and address to make sure they match the registration information.
 
 HMRC validation usually takes only a few seconds, but depending on the availability, might take longer. Stripe automatically handles HMRC downtime and attempts retries.
 

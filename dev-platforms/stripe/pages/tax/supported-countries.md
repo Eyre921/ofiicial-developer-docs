@@ -48,7 +48,7 @@ The table below lists each location’s support. Select the country name to lear
 The table references the following terms:
 
 - **All PTCs**: You can use any supported [product tax codes (PTCs)](https://docs.stripe.com/tax/tax-codes.md) in this location.
-- **Digital products**: We only support [digital products](https://docs.stripe.com/tax/tax-codes.md?type=digital) (non-physical items or services that are delivered, given, or rendered electronically) in this location and don’t calculate tax for any product not using a digital product tax code.
+- **Digital products**: Stripe only supports [digital products](https://docs.stripe.com/tax/tax-codes.md?type=digital) in this location, and doesn’t calculate tax for any product that doesn’t use a digital product tax code. Digital products are non-physical items or services that are delivered, given, or rendered electronically.
 - **Your business location**: ✓ Supported means your business can be based in this location and use Stripe Tax. ❌ Not supported means your business can’t be based here.
 - **Your customer location**: ✓ Supported means Stripe Tax can calculate tax on sales to customers in this location.
 

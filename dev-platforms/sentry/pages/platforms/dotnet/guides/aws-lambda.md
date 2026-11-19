@@ -74,9 +74,9 @@ Check out the [Sentry ASP.NET Core](https://docs.sentry.io/platforms/dotnet/guid
 
 ## [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/aws-lambda.md#send-logs)
 
-Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in your Sentry initialization.
+Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in the options you pass to `UseSentry`.
 
-See [Microsoft.Extensions.Logging](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md) for setup details.
+See [Logs](https://docs.sentry.io/platforms/dotnet/guides/aws-lambda/logs.md) for setup details.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/dotnet/guides/aws-lambda/logs.md) for all available logging methods and formatting options.
 

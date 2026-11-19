@@ -232,7 +232,7 @@ If you’re using the deprecated `tax_percent`, `tax_info`, `tax_info_verificati
 
 Existing `tax_percent` uses have been automatically converted into [tax rates](https://docs.stripe.com/api/tax_rates.md), and your invoices and subscriptions have been updated to reference the new objects through [default_tax_rates](https://docs.stripe.com/api/invoices/create.md#create_invoice-default_tax_rates).
 
-This means that if you had previously been setting a `tax_percent` of `15%` on your invoices, Stripe has created a new `15%` tax rate object for you (although it lacks details such as a customer facing display name or a jurisdiction). If you continue to set the `tax_percent` to `15%`, Stripe dynamically creates a 15% tax rate for you to aid your migration. This works exactly as it had before.
+This means that if you had previously been setting a `tax_percent` of `15%` on your invoices, Stripe has created a new `15%` tax rate object for you. That tax rate object lacks details such as a customer facing display name or a jurisdiction. If you continue to set the `tax_percent` to `15%`, Stripe dynamically creates a 15% tax rate for you to aid your migration. This works exactly as it had before.
 
 You can manage your full list of tax rates in the Dashboard’s [tax rates](https://dashboard.stripe.com/tax-rates) page.
 
@@ -257,7 +257,7 @@ Invoices and receipts show the `display_name` of tax rates. When determining how
 
 #### Full update and benefits 
 
-We no longer recommend using the `tax_percent` field for new invoices, and to use tax rates instead. Apply tax rates to [invoices](https://docs.stripe.com/invoicing/taxes/tax-rates.md) and [subscriptions](https://docs.stripe.com/billing/taxes/collect-taxes.md). This allows you to add multiple tax rates per line item and invoice, display the correct name for tax rates and summaries on generated invoices and receipts, and improved tax reporting.
+We no longer recommend using the `tax_percent` field for new invoices. Use tax rates instead. Apply tax rates to [invoices](https://docs.stripe.com/invoicing/taxes/tax-rates.md) and [subscriptions](https://docs.stripe.com/billing/taxes/collect-taxes.md). This lets you add multiple tax rates per line item and invoice. You can also display the correct name for tax rates and summaries on generated invoices and receipts.
 
 ### Customer Tax IDs
 

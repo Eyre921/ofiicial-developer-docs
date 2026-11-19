@@ -90,7 +90,7 @@ Keep the records needed to support your GST/HST liabilities and returns for six 
 
 ## Understand Irish non-Union OSS filing
 
-Irish non-Union OSS filing is for a business that isn’t established and doesn’t have a fixed establishment in the EU and supplies services to non-taxable persons in EU member states. After you register for the scheme, you must report all supplies that are within its scope through non-Union OSS.
+The Irish non-Union OSS filing is for a business that isn’t established in the EU and has no fixed establishment there. That business supplies services to non-taxable persons in EU member states. After you register for the scheme, you must report all supplies that are within its scope through non-Union OSS.
 
 The filing service doesn’t cover:
 

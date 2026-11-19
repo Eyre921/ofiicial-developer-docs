@@ -3430,13 +3430,13 @@ async function capture(paymentIntentId) {
 }
     <script src="https://js.stripe.com/terminal/v1/"></script>
         Terminal.initWithTokenProvider(APIClient.shared)
-        let config = try InternetDiscoveryConfigurationBuilder().setSimulated(true).build()
-        let config = try TapToPayDiscoveryConfigurationBuilder().setSimulated(true).build()
-        let config = try BluetoothScanDiscoveryConfigurationBuilder().setSimulated(true).build()
-        let params = try PaymentIntentParametersBuilder(amount: 1000,
+            config = try InternetDiscoveryConfigurationBuilder().setSimulated(true).build()
+            config = try TapToPayDiscoveryConfigurationBuilder().setSimulated(true).build()
+            config = try BluetoothScanDiscoveryConfigurationBuilder().setSimulated(true).build()
+            params = try PaymentIntentParametersBuilder(amount: 1000,
                                                         currency: "{{TERMINAL_CURRENCY}}")
-            .setPaymentMethodTypes([{{TERMINAL_PAYMENT_METHODS}}])
-            .build()
+                .setPaymentMethodTypes([{{TERMINAL_PAYMENT_METHODS}}])
+                .build()
                 Terminal.shared.processPaymentIntent(paymentIntent, collectConfig: nil, confirmConfig: nil) { processResult, processError in
         let connectionConfig: InternetConnectionConfiguration
         do {
@@ -3509,27 +3509,27 @@ extension ViewController: InternetReaderDelegate {
     }
 }
 extension ViewController: TapToPayReaderDelegate {
-    func tapToPayReader(_ reader: Reader, didStartInstallingUpdate update: ReaderSoftwareUpdate, cancelable: Cancelable?) {
+    func reader(_ reader: Reader, didStartInstallingUpdate update: ReaderSoftwareUpdate, cancelable: Cancelable?) {
         // In your app, let the user know that an update is being installed on the reader
     }
 
-    func tapToPayReader(_ reader: Reader, didReportReaderSoftwareUpdateProgress progress: Float) {
+    func reader(_ reader: Reader, didReportReaderSoftwareUpdateProgress progress: Float) {
         // The update or configuration process has reached the specified progress (0.0 to 1.0)
         // If you are displaying a progress bar or percentage, this can be updated here
     }
 
-    func tapToPayReader(_ reader: Reader, didFinishInstallingUpdate update: ReaderSoftwareUpdate?, error: Error?) {
+    func reader(_ reader: Reader, didFinishInstallingUpdate update: ReaderSoftwareUpdate?, error: Error?) {
         // The reader has finished installing an update
         // If `error` is nil, it is safe to proceed and start collecting payments
         // Otherwise, check the value of `error` for more information on what went wrong
     }
 
-    func tapToPayReader(_ reader: Reader, didRequestReaderDisplayMessage displayMessage: ReaderDisplayMessage) {
+    func reader(_ reader: Reader, didRequestReaderDisplayMessage displayMessage: ReaderDisplayMessage) {
         // This is called to request that a prompt be displayed in your app.
         readerMessageLabel.text = Terminal.stringFromReaderDisplayMessage(displayMessage)
     }
 
-    func tapToPayReader(_ reader: Reader, didRequestReaderInput inputOptions: ReaderInputOptions = []) {
+    func reader(_ reader: Reader, didRequestReaderInput inputOptions: ReaderInputOptions = []) {
         // This is called when the reader begins waiting for input
         readerMessageLabel.text = Terminal.stringFromReaderInputOptions(inputOptions)
     }
@@ -3670,15 +3670,15 @@ extension TerminalManager: @MainActor InternetReaderDelegate {
 }
 // MARK: - Tap To Pay Reader Delegate
 extension TerminalManager: @MainActor TapToPayReaderDelegate {
-    func tapToPayReader(_ reader: Reader, didStartInstallingUpdate update: ReaderSoftwareUpdate, cancelable: Cancelable?) {
+    func reader(_ reader: Reader, didStartInstallingUpdate update: ReaderSoftwareUpdate, cancelable: Cancelable?) {
         statusMessage = "Installing update..."
     }
 
-    func tapToPayReader(_ reader: Reader, didReportReaderSoftwareUpdateProgress progress: Float) {
+    func reader(_ reader: Reader, didReportReaderSoftwareUpdateProgress progress: Float) {
         statusMessage = "Update progress: \(Int(progress * 100))%"
     }
 
-    func tapToPayReader(_ reader: Reader, didFinishInstallingUpdate update: ReaderSoftwareUpdate?, error: Error?) {
+    func reader(_ reader: Reader, didFinishInstallingUpdate update: ReaderSoftwareUpdate?, error: Error?) {
         if let error = error {
             statusMessage = "Update failed: \(error.localizedDescription)"
         } else {
@@ -3686,11 +3686,11 @@ extension TerminalManager: @MainActor TapToPayReaderDelegate {
         }
     }
 
-    func tapToPayReader(_ reader: Reader, didRequestReaderDisplayMessage displayMessage: ReaderDisplayMessage) {
+    func reader(_ reader: Reader, didRequestReaderDisplayMessage displayMessage: ReaderDisplayMessage) {
         statusMessage = Terminal.stringFromReaderDisplayMessage(displayMessage)
     }
 
-    func tapToPayReader(_ reader: Reader, didRequestReaderInput inputOptions: ReaderInputOptions = []) {
+    func reader(_ reader: Reader, didRequestReaderInput inputOptions: ReaderInputOptions = []) {
         statusMessage = Terminal.stringFromReaderInputOptions(inputOptions)
     }
 }
@@ -4101,21 +4101,17 @@ import com.stripe.stripeterminal.external.callable.TapToPayReaderListener
     internal fun createPaymentIntent(
         amount: Int, currency: String, callback: Callback<ServerPaymentIntent>
     ) {
-        service.createPaymentIntent(amount, currency).enqueue(callback)
+        service.createPaymentIntent(mapOf("amount" to amount, "currency" to currency)).enqueue(callback)
     }
     internal fun capturePaymentIntent(id: String) {
-        service.capturePaymentIntent(id).execute()
+        service.capturePaymentIntent(mapOf("payment_intent_id" to id)).execute()
     }
 import com.stripe.example.ServerPaymentIntent
     /**
      * Create a payment intent on the backend
      */
-    @FormUrlEncoded
     @POST("create_payment_intent")
-    fun createPaymentIntent(
-        @Field("amount") amount: Int,
-        @Field("currency") currency: String
-    ): Call<ServerPaymentIntent>
+    fun createPaymentIntent(@Body params: Map<String, @JvmSuppressWildcards Any>): Call<ServerPaymentIntent>
   implementation "com.stripe:stripeterminal:6.0.0"
   implementation("com.stripe:stripeterminal-taptopay:6.0.0")
   implementation("com.stripe:stripeterminal-core:6.0.0")
@@ -4255,30 +4251,25 @@ import com.stripe.stripeterminal.external.callable.TapToPayReaderListener;
             String currency,
             Callback<ServerPaymentIntent> callback)
     {
-        mService.createPaymentIntent(amount, currency).enqueue(callback);
+        Map<String, Object> params = new HashMap<>();
+        params.put("amount", amount);
+        params.put("currency", currency);
+        mService.createPaymentIntent(params).enqueue(callback);
     }
 
     public static void capturePaymentIntent(@NonNull String id) throws IOException {
-        mService.capturePaymentIntent(id).execute();
+        mService.capturePaymentIntent(Collections.singletonMap("payment_intent_id", id)).execute();
     }
     /**
      * Create a payment intent on the backend
      */
-    @FormUrlEncoded
     @POST("create_payment_intent")
-    Call<ServerPaymentIntent> createPaymentIntent(
-        @Field("amount") Integer amount,
-        @Field("currency") String currency
-    );
+    Call<ServerPaymentIntent> createPaymentIntent(@Body Map<String, Object> params);
     /**
      * Create a payment intent on the backend
      */
-    @FormUrlEncoded
     @POST("create_payment_intent")
-    Call<ServerPaymentIntent> createPaymentIntent(
-        @Field("amount") Integer amount,
-        @Field("currency") String currency
-    );
+    Call<ServerPaymentIntent> createPaymentIntent(@Body Map<String, Object> params);
   implementation 'com.stripe:stripeterminal:6.0.0'
   implementation 'com.stripe:stripeterminal-taptopay:6.0.0'
   implementation 'com.stripe:stripeterminal-core:6.0.0'

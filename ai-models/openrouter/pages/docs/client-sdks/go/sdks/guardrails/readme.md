@@ -34,7 +34,7 @@ Guardrails endpoints
 
 ## List
 
-List all guardrails for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List all guardrails for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -85,7 +85,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
-| `workspaceID` | `*string` | ➖ | Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
+| `workspaceID` | `*string` | ➖ | Filter guardrails by workspace ID. When omitted, an organization management key gets guardrails in the default workspace and a workspace-scoped key gets guardrails in its own workspace. A workspace-scoped key gets 403 for any other workspace. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -104,7 +104,7 @@ func main() {
 
 ## Create
 
-Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace's traffic. To restrict all traffic in a workspace, update the workspace's default guardrail instead. Set `allowed_data_regions` to enforce [In-Region Routing](https://openrouter.ai/docs/client-sdks/go/docs/guides/features/in-region-routing#enforcing-in-region-routing-with-guardrails): governed requests must arrive through one of the listed OpenRouter domains and are rejected with a 403 otherwise. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Create a new guardrail for the authenticated user. A newly created guardrail enforces nothing until it is assigned to API keys or organization members; `workspace_id` places the guardrail in a workspace but does not apply it to that workspace's traffic. To restrict all traffic in a workspace, update the workspace's default guardrail instead. Set `allowed_data_regions` to enforce [In-Region Routing](https://openrouter.ai/docs/client-sdks/go/docs/guides/features/in-region-routing#enforcing-in-region-routing-with-guardrails): governed requests must arrive through one of the listed OpenRouter domains and are rejected with a 403 otherwise. A workspace-scoped management key creates in its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -182,7 +182,7 @@ func main() {
 
 ## Delete
 
-Delete an existing guardrail. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Delete an existing guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -237,7 +237,7 @@ func main() {
 
 ## Get
 
-Get a single guardrail by ID. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Get a single guardrail by ID. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -292,7 +292,7 @@ func main() {
 
 ## Update
 
-Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Update an existing guardrail, or materialize an unconfigured workspace default guardrail. Collection fields use replace semantics: send the full desired set on every update. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -357,7 +357,7 @@ func main() {
 
 ## ListGuardrailKeyAssignments
 
-List all API key assignments for a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List all API key assignments for a specific guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -427,7 +427,7 @@ func main() {
 
 ## BulkAssignKeys
 
-Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple API keys to a specific guardrail. A key may hold at most one guardrail; assigning replaces any existing assignment. A workspace-scoped management key reaches only guardrails in its own workspace (any other returns 404), and a batch naming an unknown or out-of-workspace key hash is rejected with 400 before anything changes. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -489,7 +489,7 @@ func main() {
 
 ## BulkUnassignKeys
 
-Unassign multiple API keys from a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple API keys from a specific guardrail. A workspace-scoped management key reaches only guardrails in its own workspace (any other returns 404), and a batch naming an unknown or out-of-workspace key hash is rejected with 400 before anything changes. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -551,7 +551,7 @@ func main() {
 
 ## ListGuardrailMemberAssignments
 
-List all organization member assignments for a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List all organization member assignments for a specific guardrail. A workspace-scoped management key reaches only guardrails in its own workspace; any other guardrail returns 404. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -621,7 +621,7 @@ func main() {
 
 ## BulkAssignMembers
 
-Assign multiple organization members to a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Assign multiple organization members to a specific guardrail. Requires an organization-scoped management key; workspace-scoped management keys return 403. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -684,7 +684,7 @@ func main() {
 
 ## BulkUnassignMembers
 
-Unassign multiple organization members from a specific guardrail. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+Unassign multiple organization members from a specific guardrail. Requires an organization-scoped management key; workspace-scoped management keys return 403. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -747,7 +747,7 @@ func main() {
 
 ## ListKeyAssignments
 
-List all API key guardrail assignments for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List all API key guardrail assignments for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -769,7 +769,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Guardrails.ListKeyAssignments(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50))
+    res, err := s.Guardrails.ListKeyAssignments(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -798,6 +798,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `workspaceID` | `*string` | ➖ | Only list assignments of guardrails in this workspace. When omitted, an organization management key lists every workspace and a workspace-scoped key lists its own workspace. A workspace-scoped key gets 403 for any other workspace. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -817,7 +818,7 @@ func main() {
 
 ## ListMemberAssignments
 
-List all organization member guardrail assignments for the authenticated user. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
+List all organization member guardrail assignments for the authenticated user. A workspace-scoped management key lists only its own workspace, which `workspace_id` defaults to; naming another workspace returns 403. [Management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys) required.
 
 ### Example Usage
 
@@ -839,7 +840,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Guardrails.ListMemberAssignments(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50))
+    res, err := s.Guardrails.ListMemberAssignments(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -868,6 +869,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `workspaceID` | `*string` | ➖ | Only list assignments of guardrails in this workspace. When omitted, an organization management key lists every workspace and a workspace-scoped key lists its own workspace. A workspace-scoped key gets 403 for any other workspace. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

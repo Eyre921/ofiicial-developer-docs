@@ -26,7 +26,7 @@ When activating Stripe Tax you can set two types of preset tax codes: one for pr
 
 ### Preset product tax code 
 
-We use the preset if you don’t explicitly specify a `tax_code` on your *products* (Products represent what your business sells—whether that's a good or a service) or in [product_data](https://docs.stripe.com/api/prices/create.md#create_price-product_data) on your transactions. As you process payments, we also use the preset tax code to display the tax thresholds you might be approaching or have exceeded, under the **Threshold monitoring** section in your tax settings.
+We use the preset if you don’t explicitly specify a `tax_code` on your *products* (Products represent what your business sells—whether that's a good or a service) or in [product_data](https://docs.stripe.com/api/prices/create.md#create_price-product_data) on your transactions. As you process payments, we also use the preset tax code to display the tax thresholds you might be approaching or have exceeded. You can see these under the **Threshold monitoring** section in your tax settings.
 
 ### Preset shipping tax code 
 

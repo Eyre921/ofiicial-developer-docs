@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 211 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 212 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -49,6 +49,7 @@
 - `docs/client-sdks/go/sdks/extractions/readme` — [Alpha.Extractions](pages/docs/client-sdks/go/sdks/extractions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/extractions/README.md)
 - `docs/client-sdks/go/sdks/files/readme` — [Files](pages/docs/client-sdks/go/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/files/README.md)
 - `docs/client-sdks/go/sdks/generations/readme` — [Generations](pages/docs/client-sdks/go/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/generations/README.md)
+- `docs/client-sdks/go/sdks/guardrailpolicies/readme` — [Guardrail Policies](pages/docs/client-sdks/go/sdks/guardrailpolicies/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/guardrailpolicies/README.md)
 - `docs/client-sdks/go/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/go/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/guardrails/README.md)
 - `docs/client-sdks/go/sdks/images/readme` — [Images](pages/docs/client-sdks/go/sdks/images/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/images/README.md)
 - `docs/client-sdks/go/sdks/models/readme` — [Models](pages/docs/client-sdks/go/sdks/models/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/models/README.md)

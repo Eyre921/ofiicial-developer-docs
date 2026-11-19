@@ -14,7 +14,7 @@ Many countries and US states require marketplace operators to collect sales tax 
 
 As a marketplace operator, your tax collection requirements differ depending on the country or state. However, if your electronic interface enables transactions between customers and sellers and you directly or indirectly collect customer payments, you might need to fulfill tax collection responsibilities.
 
-If your business operates a marketplace or platform, you must first determine whether it qualifies as a marketplace facilitator or a deemed seller, then make sure that you maintain tax compliance. If you’re unsure about your business’s tax requirements, consult a tax advisor.
+If your business operates a marketplace or platform, you must first determine whether it qualifies as a marketplace facilitator or a deemed seller. You must then make sure that you maintain tax compliance. If you’re unsure about your business’s tax requirements, consult a tax advisor.
 
 > #### US 1099 tax reporting
 > 
@@ -49,7 +49,7 @@ To collect taxes, you need the platform account’s tax settings and registratio
 
 ### Use the Stripe API
 
-Use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#updating-settings) to set your head office location and other default values and the [Tax Registrations API](https://docs.stripe.com/tax/registrations-api.md#adding-registration) to add tax registrations for the locations where you have tax obligations.
+Use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#updating-settings) to set your head office location and other default values. Use the [Tax Registrations API](https://docs.stripe.com/tax/registrations-api.md#adding-registration) to add tax registrations for the locations where you have tax obligations.
 
 ## Assign tax codes to your product catalog
 

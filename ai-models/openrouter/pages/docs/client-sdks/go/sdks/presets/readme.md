@@ -19,10 +19,12 @@ Presets endpoints
 ### Available Operations
 
 * [List](#list) - List presets
+* [Delete](#delete) - Delete a preset
 * [Get](#get) - Get a preset
 * [CreatePresetsChatCompletions](#createpresetschatcompletions) - Create a preset from a chat-completions request body
 * [CreatePresetsMessages](#createpresetsmessages) - Create a preset from a messages request body
 * [CreatePresetsResponses](#createpresetsresponses) - Create a preset from a responses request body
+* [Restore](#restore) - Restore a preset
 * [ListVersions](#listversions) - List versions of a preset
 * [GetVersion](#getversion) - Get a specific version of a preset
 
@@ -50,7 +52,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Presets.List(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50))
+    res, err := s.Presets.List(ctx, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -79,6 +81,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -92,8 +95,67 @@ func main() {
 | sdkerrors.BadRequestResponseError | 400 | application/json |
 | sdkerrors.UnauthorizedResponseError | 401 | application/json |
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
+
+## Delete
+
+Archives a preset: it no longer resolves for inference and is hidden from get and list. The preset and its versions are kept, so the slug stays taken; restore it with `POST /presets/{slug}/restore`. Deleting an already-archived preset succeeds again. A disabled preset returns 409. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys); inference API keys are rejected. `workspace_id` may be sent as a query parameter or a JSON body field.
+
+### Example Usage
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	"os"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New(
+        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
+    )
+
+    res, err := s.Presets.Delete(ctx, "my-preset", nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `slug` | `string` | ✔️ | URL-safe slug identifying the preset. | my-preset |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+
+### Response
+
+**[\*components.GetPresetResponse](../../models/components/getpresetresponse.mdx), error**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Get
@@ -119,7 +181,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Presets.Get(ctx, "my-preset")
+    res, err := s.Presets.Get(ctx, "my-preset", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -135,6 +197,7 @@ func main() {
 | - | - | - | - | - |
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `slug` | `string` | ✔️ | URL-safe slug identifying the preset. | my-preset |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -155,7 +218,7 @@ func main() {
 
 ## CreatePresetsChatCompletions
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -199,7 +262,7 @@ func main() {
         },
         Model: openrouter.Pointer("openai/gpt-5.4"),
         Temperature: optionalnullable.From(openrouter.Pointer[float64](0.7)),
-    })
+    }, nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -216,6 +279,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `slug` | `string` | ✔️ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
 | `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | ✔️ | N/A | \{ "max\_tokens": 150, "messages": \[ \{ "content": "You are a helpful assistant.", "role": "system" }, \{ "content": "What is the capital of France?", "role": "user" } ], "model": "openai/gpt-4", "temperature": 0.7 } |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -236,7 +300,7 @@ func main() {
 
 ## CreatePresetsMessages
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -272,7 +336,7 @@ func main() {
         System: openrouter.Pointer(components.CreateSystemStr(
             "You are a helpful assistant.",
         )),
-    })
+    }, nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -289,6 +353,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `slug` | `string` | ✔️ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
 | `messagesRequest` | [components.MessagesRequest](../../models/components/messagesrequest.mdx) | ✔️ | N/A | \{ "max\_tokens": 1024, "messages": \[ \{ "content": "Hello, how are you?", "role": "user" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7 } |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -309,7 +374,7 @@ func main() {
 
 ## CreatePresetsResponses
 
-Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored.
+Creates a preset (or a new version of an existing one) from an inference request body. Only fields that overlap with the preset config are persisted; other fields (e.g. `messages`, `stream`, `prompt`) are silently ignored. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys); inference API keys are rejected.
 
 ### Example Usage
 
@@ -338,7 +403,7 @@ func main() {
         )),
         Instructions: optionalnullable.From(openrouter.Pointer("You are a helpful assistant.")),
         Model: openrouter.Pointer("openai/gpt-5.4"),
-    })
+    }, nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -355,11 +420,70 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `slug` | `string` | ✔️ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
 | `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | ✔️ | N/A | \{ "input": \[ \{ "content": "Hello, how are you?", "role": "user", "type": "message" } ], "model": "anthropic/claude-4.5-sonnet-20250929", "temperature": 0.7, "tools": \[ \{ "description": "Get the current weather in a given location", "name": "get\_current\_weather", "parameters": \{ "properties": \{ "location": \{ "type": "string" } }, "type": "object" }, "type": "function" } ], "top\_p": 0.9 } |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
 **[\*components.CreatePresetFromInferenceResponse](../../models/components/createpresetfrominferenceresponse.mdx), error**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
+
+## Restore
+
+Re-activates an archived preset so it resolves for inference again. No version is created and the designated version is unchanged. Restoring an active preset returns it unchanged. A disabled preset returns 409. Requires a read-write [management key](https://openrouter.ai/docs/client-sdks/go/docs/guides/overview/auth/management-api-keys); inference API keys are rejected. `workspace_id` may be sent as a query parameter or a JSON body field.
+
+### Example Usage
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	"os"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New(
+        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
+    )
+
+    res, err := s.Presets.Restore(ctx, "my-preset", nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
+| `slug` | `string` | ✔️ | URL-safe slug identifying the preset. | my-preset |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
+
+### Response
+
+**[\*components.GetPresetResponse](../../models/components/getpresetresponse.mdx), error**
 
 ### Errors
 
@@ -397,7 +521,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Presets.ListVersions(ctx, "my-preset", optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50))
+    res, err := s.Presets.ListVersions(ctx, "my-preset", optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -427,6 +551,7 @@ func main() {
 | `slug` | `string` | ✔️ | URL-safe slug identifying the preset. | my-preset |
 | `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
 | `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
@@ -468,7 +593,7 @@ func main() {
         openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
     )
 
-    res, err := s.Presets.GetVersion(ctx, "my-preset", "1")
+    res, err := s.Presets.GetVersion(ctx, "my-preset", "1", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -485,6 +610,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✔️ | The context to use for the request. | |
 | `slug` | `string` | ✔️ | URL-safe slug identifying the preset. | my-preset |
 | `version` | `string` | ✔️ | Version number of the preset. | 1 |
+| `workspaceID` | `*string` | ➖ | Workspace to act in. Also accepted as a `workspace_id` field in a JSON request body. Defaults to the key's workspace for a key limited to one workspace, otherwise to the account's default workspace. | 750e8400-e29b-41d4-a716-446655440002 |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response

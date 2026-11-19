@@ -129,7 +129,7 @@ curl https://api.stripe.com/v1/setup_intents \
 ```curl
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d customer={{CUSTOMER_ID}} \
+  -d "customer={{CUSTOMER_ID}}" \
   -d "allowed_payment_method_types[]=card" \
   -d "allowed_payment_method_types[]=ideal"
 ```
@@ -836,7 +836,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d currency=usd \
   -d "automatic_payment_methods[enabled]=true" \
   -d "customer_account={{CUSTOMER_ACCOUNT_ID}}" \
-  -d payment_method={{PAYMENT_METHOD_ID}} \
+  -d "payment_method={{PAYMENT_METHOD_ID}}" \
   --data-urlencode "return_url=https://example.com/order/123/complete" \
   -d off_session=true \
   -d confirm=true
@@ -851,7 +851,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d currency=usd \
   -d "automatic_payment_methods[enabled]=true" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d payment_method={{PAYMENT_METHOD_ID}} \
+  -d "payment_method={{PAYMENT_METHOD_ID}}" \
   --data-urlencode "return_url=https://example.com/order/123/complete" \
   -d off_session=true \
   -d confirm=true

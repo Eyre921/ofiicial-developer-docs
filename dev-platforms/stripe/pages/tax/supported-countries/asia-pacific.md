@@ -38,7 +38,7 @@ Learn how Stripe calculates taxes for your sales in Asia Pacific.
 
 ### Map your product to our product tax codes 
 
-Stripe can calculate tax for [any of the product tax codes you assign to your products](https://docs.stripe.com/tax/tax-codes.md) and for domestic and cross-border sales in Australia, Hong Kong, Japan, New Zealand, Singapore, and the United Arab Emirates. For other supported APAC countries, Stripe can only calculate tax for [digital products](https://docs.stripe.com/tax/tax-codes.md?type=digital) sold by remote sellers. Digital products are non-physical items or services that are delivered, given, or rendered electronically. This includes digital goods and electronically supplied services. We determine whether you’re selling digital products or physical goods using the [product tax code](https://docs.stripe.com/tax/tax-codes.md) you assigned to your product.
+Stripe can calculate tax for [any of the product tax codes you assign to your products](https://docs.stripe.com/tax/tax-codes.md). Stripe can also calculate tax for domestic and cross-border sales in Australia, Hong Kong, Japan, New Zealand, Singapore, and the United Arab Emirates. For other supported APAC countries, Stripe can only calculate tax for [digital products](https://docs.stripe.com/tax/tax-codes.md?type=digital) sold by remote sellers. Digital products are non-physical items or services that are delivered, given, or rendered electronically. This includes digital goods and electronically supplied services. We determine whether you’re selling digital products or physical goods using the [product tax code](https://docs.stripe.com/tax/tax-codes.md) you assigned to your product.
 
 ### Domestic transactions 
 

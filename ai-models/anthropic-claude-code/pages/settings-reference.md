@@ -5928,7 +5928,7 @@ Claude Code ignores this key in `settings.json`.
 
 Start every interactive CLI session with [Chrome integration](/docs/en/chrome) on, without passing `--chrome` each time. If you run [`claude remote-control`](/docs/en/remote-control), a session it starts for one of your [project](/docs/en/claude-projects) threads follows this key too, except in `bypassPermissions` mode. With Claude Code v2.1.287 or later, this key also applies to sessions in the [VS Code extension](/docs/en/vs-code#automate-browser-tasks-with-chrome): see [Enable Chrome by default](/docs/en/chrome#enable-chrome-by-default).
 
-Running `/chrome` and selecting **Enabled by default** sets this key for you, as does answering the ["Claude in Chrome extension detected" dialog](/docs/en/chrome#answer-the-startup-dialog). Appears in `/config` as **Claude in Chrome enabled by default**.
+You set this key when you turn Chrome on by default from `/chrome` or answer the ["Claude in Chrome extension detected" dialog](/docs/en/chrome#answer-the-startup-dialog). Appears in `/config` as **Claude in Chrome enabled by default**.
 
 * **Scope**: [`Global config`](#scopes)
 * **Type**: Boolean

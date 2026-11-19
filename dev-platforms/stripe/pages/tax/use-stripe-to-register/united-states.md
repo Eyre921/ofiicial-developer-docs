@@ -50,7 +50,7 @@ Under [Locations](https://dashboard.stripe.com/tax/locations) on the Tax page:
 
 ### Gather information needed to register
 
-Gather key business information such as address, EIN, contact and ID information (for business owners and your business representative), and any state-specific information such as previous year sales and the date you want your registration to become effective.
+Gather key business information, such as address, EIN, contact and ID information (for business owners and your business representative). Also gather any state-specific information, such as previous year sales and the date you want your registration to become effective.
 
 > Some state tax registrations require complete business ownership details, including investor information, cap table data, and ownership percentages. You only need to provide this detailed ownership information once, and Stripe uses it for all applicable state registrations.
 
@@ -151,7 +151,7 @@ The chart below shows the current state grace periods by state, if offered.
 
 If you’re late in registering to collect tax, you have two main options:
 
-The first option is to register as soon as possible with a registration effective date of when nexus was established in the jurisdiction, even if this date is in the past. This date reflects when you should have initially registered. Keep in mind that the state often requires you to file overdue returns for missing tax periods and back-pay any taxes along with penalties and interest. If you’re subject to penalties, most states offer penalty waivers that you can file to ask for a reduction or elimination of any penalties you owe.
+The first option is to register as soon as possible. You set the registration effective date to when nexus was established in the jurisdiction, even if that date is in the past. This date reflects when you should have initially registered. Keep in mind that the state often requires you to file overdue returns for missing tax periods and back-pay any taxes along with penalties and interest. If you’re subject to penalties, most states offer penalty waivers that you can file to ask for a reduction or elimination of any penalties you owe.
 
 The second option is to work with your tax advisor to file a Voluntary Disclosure Agreement (VDA) in any jurisdictions where you’re late to register. VDAs allow taxpayers to become compliant with the state and ask for leniency on any overdue returns, taxes, and penalties. States might limit how far back you have to pay previously owed taxes (for example, 3 years versus 5 years) or waive any associated penalties. You can often do this anonymously through a third party. This can be costly, so it’s important to consult your tax advisor and weigh the pros and cons of both options.
 
@@ -182,7 +182,7 @@ We can only support remote (out-of-state) sellers with no physical presence in t
 
 Adding a registration to the Stripe Dashboard doesn’t automatically register you in that jurisdiction.
 
-If Stripe registers on your behalf, one of our tax experts automatically adds this new tax registration to your Stripe Dashboard with the correct effective date, so you don’t need to take any further action to begin automatically calculating tax.
+If Stripe registers on your behalf, one of our tax experts automatically adds this new tax registration to your Stripe Dashboard with the correct effective date. You don’t need to take any further action to begin automatically calculating tax.
 
 ### Viewing the signup option or reviewing an in-progress application
 

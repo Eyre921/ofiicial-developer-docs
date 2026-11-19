@@ -88,7 +88,7 @@ sentry_sdk.init(
     # Enables Profiling.
     # Set to 1.0 to profile 100% of sessions.
     profile_session_sample_rate=1.0,
-    # Profiles are collected while a transaction is active.
+    # Profiles are collected while there is an active span.
     profile_lifecycle="trace",
 )
 ```
@@ -100,7 +100,7 @@ To further customize your setup, review the [Options section](https://docs.sentr
 Sentry automatically captures errors and reports issues for you. You can also expect the following for your FastAPI project:
 
 * By default, all exceptions leading to an Internal Server Error are captured and reported. The HTTP status codes to report on are configurable via the `failed_request_status_codes` [option](https://docs.sentry.io/platforms/python/integrations/fastapi.md#options).
-* Request data will be attached to all events: HTTP method, URL, headers, form data, JSON payloads. Sentry excludes raw bodies and multipart file uploads.
+* Request data will be attached to all events: HTTP method, URL, headers, form data, JSON payloads. Sentry excludes raw bodies and multipart file uploads. Form data and JSON payloads are only attached if your handler already read them with `await request.form()` or `await request.json()` before the event was captured.
 * Personally identifiable information (such as user IDs, usernames, cookies, and IP addresses) is also attached, with sensitive values like authorization headers scrubbed. Use the [`data_collection` option](https://docs.sentry.io/platforms/python/configuration/options.md#data_collection) to configure which categories to collect. In SDK versions prior to `3.0`, Sentry excludes this information unless you use `data_collection` or set `send_default_pii` to `True`.
 
 To learn how to manually report issues, see [Capturing Errors](https://docs.sentry.io/platforms/python/usage.md).
@@ -271,7 +271,7 @@ Create spans and track performance of all middleware layers in your FastAPI proj
 | Type            | `Tuple[str, ...]`                                                |
 | Default         | `("CONNECT", "DELETE", "GET", "PATCH", "POST", "PUT", "TRACE",)` |
 
-A tuple containing all the HTTP methods (as uppercase strings) that should create a transaction in Sentry. The default is `("CONNECT", "DELETE", "GET", "PATCH", "POST", "PUT", "TRACE",)`.
+A tuple containing all the HTTP methods (as uppercase strings) that should create a service span in Sentry. The default is `("CONNECT", "DELETE", "GET", "PATCH", "POST", "PUT", "TRACE",)`.
 
 Note that `OPTIONS` and `HEAD` are excluded by default.
 

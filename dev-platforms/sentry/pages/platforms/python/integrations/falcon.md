@@ -76,7 +76,7 @@ app = falcon.App()
 app.add_route('/', HelloWorldResource())
 ```
 
-When you point your browser to <http://localhost:8000/> a transaction will be created in the Performance section of [sentry.io](https://sentry.io). Additionally, an error event will be sent to [sentry.io](https://sentry.io) and will be connected to the transaction.
+When you point your browser to <http://localhost:8000/> a service span will be created in the Traces section of [sentry.io](https://sentry.io). Additionally, an error event will be sent to [sentry.io](https://sentry.io) and will be connected to the service span.
 
 It takes a couple of moments for the data to appear in [sentry.io](https://sentry.io).
 
@@ -101,8 +101,6 @@ Note that automatic tracing on file-like responses when `offloading` is configur
 ## [Options](https://docs.sentry.io/platforms/python/integrations/falcon.md#options)
 
 Only available in SDK versions prior to `3.0`. In SDK `3.x`, `FalconIntegration` doesn't accept any options, and service spans are always named after the route pattern, for example `/message/{message_id}`.
-
-In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
 
 By adding `FalconIntegration` to your `sentry_sdk.init()` call explicitly, you can set options for `FalconIntegration` to change its behavior:
 

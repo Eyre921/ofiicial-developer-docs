@@ -34,7 +34,7 @@ This guide also enables **Tracing**.
 
 The simplest way to initialize Sentry in ASP.NET Core is by using the `UseSentry` extension method from the `Sentry.AspNetCore` package in conjunction with the [framework configuration system](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/).
 
-`Sentry.AspNetCore` 6.x requires .NET 8 or later. Call `UseSentry` with your DSN and the options you want. For .NET 6 or 7, use `Sentry.AspNetCore` 4.x.
+`Sentry.AspNetCore` requires .NET 8 or later. Call `UseSentry` with your DSN and the options you want. For .NET 6 or 7, use `Sentry.AspNetCore` 4.x.
 
 The snippet also turns on:
 
@@ -289,9 +289,9 @@ The [AspNetCore.Mvc sample](https://github.com/getsentry/sentry-dotnet/tree/main
 
 ## [Send Logs](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore.md#send-logs)
 
-Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in your Sentry initialization.
+Use `Microsoft.Extensions.Logging` to send structured logs from your application. Set `EnableLogs = true` in the options you pass to `UseSentry`.
 
-See [Microsoft.Extensions.Logging](https://docs.sentry.io/platforms/dotnet/guides/extensions-logging.md) for setup details.
+See [Logs](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore/logs.md) for setup details.
 
 See [Set Up Logs](https://docs.sentry.io/platforms/dotnet/guides/aspnetcore/logs.md) for all available logging methods and formatting options.
 

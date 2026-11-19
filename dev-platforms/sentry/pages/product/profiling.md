@@ -32,6 +32,7 @@ Profiling helps you quickly identify performance bottlenecks, enabling you to bu
 * [Node.js](https://docs.sentry.io/platforms/javascript/guides/node/profiling.md)
 * [PHP (including Laravel and Symfony)](https://docs.sentry.io/platforms/php/profiling.md)
 * [Browser JavaScript \[beta\]](https://docs.sentry.io/platforms/javascript/profiling.md)
+* [Electron \[beta\]](https://docs.sentry.io/platforms/javascript/guides/electron/profiling.md)
 * [Ruby \[beta\]](https://docs.sentry.io/platforms/ruby/profiling.md)
 * [React Native \[beta\]](https://docs.sentry.io/platforms/react-native/profiling.md)
 * [.NET \[experimental\]](https://docs.sentry.io/platforms/dotnet/profiling.md)

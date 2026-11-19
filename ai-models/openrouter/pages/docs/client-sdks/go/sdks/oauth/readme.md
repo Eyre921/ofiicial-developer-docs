@@ -85,7 +85,7 @@ func main() {
 
 ## CreateAuthCode
 
-Create an authorization code for the PKCE flow to generate a user-controlled API key
+Create an authorization code for the PKCE flow to generate a user-controlled API key. Requires a Clerk session that completed reverification recently (Clerk `lax` level); otherwise the response is `403` with `error.metadata.reverification` set to `lax`, and the caller must reverify the session before retrying.
 
 ### Example Usage
 
@@ -143,6 +143,7 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.ConflictResponseError | 409 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## ListOauthJwks

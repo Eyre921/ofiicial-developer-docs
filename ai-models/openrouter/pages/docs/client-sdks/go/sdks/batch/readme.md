@@ -90,7 +90,7 @@ func main() {
 
 ## CreateBatches
 
-Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
+Creates a batch of requests that run asynchronously against a single endpoint (`/v1/chat/completions`, `/v1/responses`, `/v1/messages`, `/v1/embeddings`, `/v1/audio/speech`). Returns `202` with `status: "validating"`. Poll `GET /batches/{id}` for progress and results. See the [Batch API Quickstart](https://openrouter.ai/docs/batch-quickstart.md).
 
 ### Example Usage: chatCompletions
 
@@ -115,20 +115,6 @@ func main() {
     res, err := s.Batch.CreateBatches(ctx, components.BatchSubmitBody{
         Endpoint: components.EndpointRootV1ChatCompletions,
         Model: "openai/gpt-4o",
-        Requests: []components.Request{
-            components.Request{
-                Body: map[string]any{
-                    "messages": []any{
-                        map[string]any{
-                            "content": "Summarize ...",
-                            "role": "user",
-                        },
-                    },
-                    "model": "openai/gpt-4o",
-                },
-                CustomID: "req-0001",
-            },
-        },
     })
     if err != nil {
         log.Fatal(err)
@@ -162,21 +148,6 @@ func main() {
     res, err := s.Batch.CreateBatches(ctx, components.BatchSubmitBody{
         Endpoint: components.EndpointRootV1Messages,
         Model: "openai/gpt-5-nano",
-        Requests: []components.Request{
-            components.Request{
-                Body: map[string]any{
-                    "max_tokens": 1024,
-                    "messages": []any{
-                        map[string]any{
-                            "content": "Summarize ...",
-                            "role": "user",
-                        },
-                    },
-                    "model": "openai/gpt-5-nano",
-                },
-                CustomID: "req-0001",
-            },
-        },
     })
     if err != nil {
         log.Fatal(err)
@@ -210,20 +181,6 @@ func main() {
     res, err := s.Batch.CreateBatches(ctx, components.BatchSubmitBody{
         Endpoint: components.EndpointRootV1ChatCompletions,
         Model: "google/gemini-3.6-flash",
-        Requests: []components.Request{
-            components.Request{
-                Body: map[string]any{
-                    "messages": []any{
-                        map[string]any{
-                            "content": "Summarize ...",
-                            "role": "user",
-                        },
-                    },
-                    "model": "google/gemini-3.6-flash",
-                },
-                CustomID: "req-0001",
-            },
-        },
     })
     if err != nil {
         log.Fatal(err)
@@ -257,25 +214,6 @@ func main() {
     res, err := s.Batch.CreateBatches(ctx, components.BatchSubmitBody{
         Endpoint: components.EndpointRootV1Responses,
         Model: "openai/gpt-4o",
-        Requests: []components.Request{
-            components.Request{
-                Body: map[string]any{
-                    "input": []any{
-                        map[string]any{
-                            "content": []any{
-                                map[string]any{
-                                    "text": "Summarize ...",
-                                    "type": "input_text",
-                                },
-                            },
-                            "role": "user",
-                        },
-                    },
-                    "model": "openai/gpt-4o",
-                },
-                CustomID: "req-0001",
-            },
-        },
     })
     if err != nil {
         log.Fatal(err)

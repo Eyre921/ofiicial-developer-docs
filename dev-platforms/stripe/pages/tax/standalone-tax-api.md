@@ -55,7 +55,7 @@ curl https://api.stripe.com/v1/tax/calculations \
 
 If you provide your customer’s [IP address](https://docs.stripe.com/api/tax/calculations/create.md#calculate_tax-customer_details-ip_address), we geolocate it and use that location as your customer’s location. Use this to show your customer a tax estimate before they provide their postal address.
 
-> Because the location of an IP address might be some distance from the actual customer location, we recommend against using an IP address to determine the *final* amount of tax to collect.
+The location of an IP address might be some distance from the actual customer location. Don’t use a customer’s IP address to determine the *final* amount of tax to collect.
 
 ```curl
 curl https://api.stripe.com/v1/tax/calculations \

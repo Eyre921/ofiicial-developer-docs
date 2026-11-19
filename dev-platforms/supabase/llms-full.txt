@@ -67276,7 +67276,9 @@ Note: Supabase Pipelines is currently in public alpha. Features and behavior may
 
 ## Which plans support Pipelines?
 
-Pipelines requires a Pro, Team, or Enterprise plan. During public alpha, availability varies by organization; an eligible plan does not guarantee access. If unavailable, request access from **Database > Pipelines** or contact your account manager.
+Pipelines is in public alpha on Pro, Team, and Enterprise plans. Go to **Database > Pipelines** to see the destinations available for your project and [set up a pipeline](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview). If Studio shows **No Pipelines destinations are available for this project**, [contact support](https://supabase.com/dashboard/support/new).
+
+Pipeline creation is unavailable for High Availability projects. For those projects, **Database > Pipelines** shows the High Availability cluster topology.
 
 ## What destinations are supported?
 
@@ -67597,7 +67599,7 @@ Pipelines provides at-least-once delivery. How repeated changes affect stored da
 
 ## Before you start
 
-Check the [plan and access requirements](https://supabase.com/docs/guides/database/replication/pipelines-faq#which-plans-support-pipelines) and [check supported destinations](https://supabase.com/docs/guides/database/replication#supported-destinations).
+Check the [plan and project requirements](https://supabase.com/docs/guides/database/replication/pipelines-faq#which-plans-support-pipelines) and [supported destinations](https://supabase.com/docs/guides/database/replication#supported-destinations).
 
 ### Region
 
@@ -67609,7 +67611,7 @@ Pipelines charges for configured pipeline hours, initial sync data, and ongoing 
 
 ## Setup overview
 
-Prepare your destination, then enable and configure Pipelines in the Dashboard. A Postgres publication selects the data to replicate; you can create one during setup.
+The Dashboard is the supported way to enable Pipelines and create a managed pipeline. Prepare your destination before setup. To select the data to replicate, create a Postgres publication in the Dashboard during setup or [create it with SQL](#creating-a-publication-with-sql) ahead of time.
 
 ### Step 1: Prepare your destination
 
@@ -67624,19 +67626,27 @@ Follow your destination guide to prepare its resources and credentials, and chec
 
 Note: Pipelines installs an `etl` schema and a database event trigger to track replication and schema changes. If your application already has an `etl` schema, rename it before enabling Pipelines. See [what Pipelines installs and how to remove it](https://supabase.com/docs/guides/database/replication/pipelines-faq#what-does-pipelines-install-in-the-database).
 
-1. Navigate to the [**Database > Pipelines**](https://supabase.com/dashboard/project/_/database/pipelines) section of the Dashboard
-2. Click **Add pipeline** to begin setup
-3. Select a destination available to your organization
-4. If Pipelines is not yet enabled, click **Enable Pipelines**, review the dialog, and confirm **Enable Pipelines**.
+1. In the Dashboard, go to [**Database > Pipelines**](https://supabase.com/dashboard/project/_/database/pipelines).
+2. Click **Add pipeline**.
+3. If Pipelines is disabled for the project, review the **Enable Pipelines** dialog and click **Enable**. The destination selection opens after you enable Pipelines.
 
 ### Step 3: Configure a destination
 
-1. Enter a **Pipeline name** and select a **Publication**. Use an existing publication, or click **New publication**, name it, and select at least one table. For schema-wide replication or advanced options, [create the publication with SQL](#creating-a-publication-with-sql).
-2. Under **Initial sync**, keep **All tables** to copy existing rows, or [choose which tables to copy](#choosing-which-tables-to-copy) if you only need future changes for some tables.
-3. Enter the credentials and destination-specific settings prepared in Step 1.
-4. Optionally expand **Advanced settings** to change [batching, initial sync concurrency, or slot recovery](#advanced-settings).
-5. Complete validation. Fix any required issues and review warnings before continuing.
-6. Review the estimated initial sync cost and ongoing charges, then confirm creation.
+For **Publication**, choose an existing publication or select **New publication**, name it, and add at least one table. For schema-wide replication or advanced publication options, [create the publication with SQL](#creating-a-publication-with-sql). Under **Initial sync**, keep **All tables** to copy existing rows from every published table, or [choose which tables to copy](#choosing-which-tables-to-copy).
+
+#### Destination form
+
+1. Select your destination. Enter a **Pipeline name**, set **Publication** and **Initial sync**, and enter the destination connection details from Step 1.
+2. If needed, use **Advanced settings** to change [batching, initial sync concurrency, or slot recovery](#advanced-settings).
+3. Click **Start pipeline** to validate the configuration. Fix any blocking issues and run validation again. If only warnings remain, review them, click **Start pipeline anyway**, and confirm the warnings with **Create and start pipeline anyway**.
+4. Review the cost estimates and click **Create and start pipeline** in the cost dialog.
+
+#### Pipeline creation wizard
+
+1. On **Destination**, select your destination and click **Continue**.
+2. On **Connection**, name the pipeline and enter the destination connection details from Step 1. Click **Continue** to validate the connection. If warnings appear, review them and click **Continue** again.
+3. On **Data**, set **Publication** and **Initial sync**. If needed, adjust [advanced replication settings](#advanced-settings). Click **Continue**.
+4. On **Review**, check the configuration, estimated initial sync cost, and ongoing charges. Click **Start pipeline** to run final validation. Fix any blocking issues and run validation again. If only warnings remain, review them and click **Start pipeline anyway**.
 
 The pipeline copies the selected tables' existing rows and begins ongoing replication for every published table.
 
@@ -67795,7 +67805,7 @@ create publication pub_users_subset
 for table users (id, email, created_at);
 ```
 
-For updates and deletes, the column list must include all replica-identity columns. With `REPLICA IDENTITY FULL`, that means all columns, so you cannot publish a subset. Also check your destination's source table requirements.
+For updates and deletes, a column list must include all replica identity columns. With `REPLICA IDENTITY FULL`, omit the list entirely. Postgres rejects source updates and deletes if a publication that sends those operations specifies a column list for the table, even if it names every column. Review the columns before removing a list because the publication can then replicate previously excluded columns. Also check your destination's source table requirements.
 
 ### Filtering rows with a predicate
 
@@ -67919,6 +67929,7 @@ Pipelines has the following limitations:
 - **Transformations**: Pipelines maps names and types for the destination but does not run user-defined transformations.
 - **Custom data types**: Custom values replicate as strings. Check that your destination can interpret those string values correctly.
 - **Arrays**: Only one-dimensional arrays are supported. Non-default lower bounds are not preserved. Check the destination guide for additional array restrictions.
+- **JSON nesting**: Source `json` and `jsonb` values can have up to 127 levels of nested objects and arrays, including the outermost object or array. The limit also applies to each JSON value in a Postgres array. Pipelines rejects deeper values while reading from the source.
 - **Generated columns**: Generated columns are skipped. Use triggers to store derived values in regular columns if you need them in the destination.
 
 Destination-specific limitations, such as row size and type mappings, are documented in each destination guide.
@@ -67962,7 +67973,7 @@ If you use a custom IAM role, see the [required permissions](#custom-iam-permiss
 
 ## Configure BigQuery as a destination
 
-Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview) to enable Pipelines, select **BigQuery**, and configure the publication and initial sync. Then enter:
+Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview) to enable Pipelines and select **BigQuery**. In the **Pipeline creation wizard** preview, enter the settings below on **Connection** and click **Continue** to validate them before choosing the publication and initial sync on **Data**. In the destination form, configure the connection and data settings together.
 
 | Field                   | Value                                                                            |
 | ----------------------- | -------------------------------------------------------------------------------- |
@@ -68031,8 +68042,6 @@ Choose a supported Postgres replica identity:
 
 BigQuery upserts require complete new rows. Postgres can omit unchanged out-of-line TOAST values; `REPLICA IDENTITY FULL` supplies the old row so Pipelines can reconstruct them.
 
-If replication fails on a partial update row, set full replica identity and restart the pipeline. The change affects only new WAL: incompatible retained updates can still require a [table reset](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables).
-
 Check a table's current replica identity:
 
 ```sql
@@ -68048,13 +68057,19 @@ where n.nspname = 'public' and c.relname = 'your_table';
 
 The `replica_identity` value is `d` for default, `f` for full, `i` for index, and `n` for nothing.
 
-Set full replica identity when a table has toasted columns and update replication must be reliable:
+Before setting `REPLICA IDENTITY FULL`, check the [column lists](https://supabase.com/docs/guides/database/replication/pipelines#selecting-specific-columns) in every publication that sends updates or deletes for this table. Full replica identity requires omitting the list entirely. Remove a list only if all columns can be replicated to the publication's subscribers.
+
+Run the following SQL using the source project's [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
 
 ```sql
 alter table public.your_table replica identity full;
 ```
 
-`REPLICA IDENTITY FULL` increases WAL volume by logging the complete old row for updates and deletes.
+For a partitioned table, run the statement on the parent and each partition. Postgres applies replica identity per table. `REPLICA IDENTITY FULL` increases WAL volume by logging the complete old row for updates and deletes.
+
+If replication has already failed on a partial update, use [**Reset table**](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables) on the affected table after changing its replica identity. The change applies only to new write-ahead log (WAL) records. The reset lets the table resume from a new replication position past the incompatible update.
+
+Danger: Resetting a table deletes its existing BigQuery data when replication resumes. Include the table in **Initial sync** before resetting if you want to copy its current source rows again.
 
 ## Column names
 
@@ -68257,9 +68272,25 @@ Resetting a table drops and recreates its table and, for `ReplacingMergeTree`, i
 
 `REPLICA IDENTITY NOTHING` cannot support updates or deletes.
 
-Use `REPLICA IDENTITY FULL` for tables whose updates can omit unchanged out-of-line TOAST values. It lets Pipelines reconstruct the complete new row. Changing replica identity affects only new WAL; incompatible retained updates can still require a [table reset](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables).
-
 Array elements can be `NULL`. A whole-array SQL `NULL` is stored as an empty array, so these two source values become indistinguishable.
+
+### Recover from partial updates
+
+Use `REPLICA IDENTITY FULL` for tables whose updates can omit unchanged out-of-line TOAST values. It lets Pipelines reconstruct the complete new row.
+
+Before setting `REPLICA IDENTITY FULL`, check the [column lists](https://supabase.com/docs/guides/database/replication/pipelines#selecting-specific-columns) in every publication that sends updates or deletes for this table. Full replica identity requires omitting the list entirely. Remove a list only if all columns can be replicated to the publication's subscribers.
+
+Run the following SQL using the source project's [SQL Editor](https://supabase.com/dashboard/project/_/sql) in the Supabase Dashboard or with `psql` over a direct connection. To connect with `psql`, see [Direct connection](https://supabase.com/docs/guides/database/connecting-to-postgres#direct-connection).
+
+```sql
+alter table public.your_table replica identity full;
+```
+
+For a partitioned table, run the statement on the parent and each partition. Postgres applies replica identity per table.
+
+If replication has already failed on a partial update, use [**Reset table**](https://supabase.com/docs/guides/database/replication/pipelines-monitoring#restarting-tables) on the affected table. Changing replica identity applies only to new write-ahead log (WAL) records. The reset lets the table resume from a new replication position past the incompatible update.
+
+Danger: Resetting a table deletes its existing ClickHouse data when replication resumes, including any append-only history in a `MergeTree` table. Include the table in **Initial sync** before resetting if you want to copy its current source rows again.
 
 ## Type mapping
 
@@ -68354,7 +68385,7 @@ You can query replicated tables, but treat them and their underlying catalog and
 
 ## Configure DuckLake as a destination
 
-Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview). In **Add pipeline**, select **DuckLake**, enter a **Pipeline name**, choose a **Publication**, and set **Initial sync**. Then choose how to configure the catalog and storage.
+Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview) to enable Pipelines and select **DuckLake**. In the **Pipeline creation wizard** preview, configure the catalog and storage on **Connection**, then click **Continue** to validate the settings before choosing the publication and initial sync on **Data**. In the destination form, configure the connection and data settings together.
 
 ### Use this Supabase project
 
@@ -68371,7 +68402,6 @@ To configure the destination:
 2. Enter the **Metadata schema**.
 3. Choose the **Bucket**. Select **New bucket** at the bottom of the bucket list if you haven't created one yet.
 4. Optionally adjust **Pool size** under **Advanced settings** to tune destination concurrency and resource use.
-5. Click **Start pipeline**. Review any validation warnings, then confirm the estimated cost with **Create and start pipeline**.
 
 Credential-provisioning warnings are expected before creation: catalog and Storage credentials are provisioned when you save the destination. Review the metadata schema and bucket before proceeding.
 
@@ -68398,9 +68428,14 @@ Select **Enter connection details** under **Configuration method**, then configu
 - **Use SSL**: Choose **On** for HTTPS, or **Off** if your provider requires HTTP
 - **Metadata schema**: A unique Postgres schema for DuckLake metadata, using only letters, numbers, and underscores
 
-Optionally adjust **Pool size** under **Advanced settings** to tune destination concurrency and resource use. Complete validation and review the initial sync estimate before confirming creation.
+Optionally adjust **Pool size** under **Advanced settings** to tune destination concurrency and resource use.
 
 The catalog URL and storage credentials are stored as secrets and aren't returned after creation. When editing the destination, leave a secret field empty to keep its stored value, or enter a new value to replace it.
+
+### Start the pipeline
+
+- In the wizard, check the initial sync estimate on **Review** and click **Start pipeline**. If validation returns warnings, review them before confirming with **Start pipeline anyway**.
+- In the destination form, click **Start pipeline** to run validation. Confirm any warnings using the [destination form steps](https://supabase.com/docs/guides/database/replication/pipelines#destination-form), then review the initial sync estimate and click **Create and start pipeline**.
 
 ## How replication works
 
@@ -117019,23 +117054,27 @@ When SSO is enabled for an organization:
 - If an SSO user with the following email of `alice@foocorp.com` attempts to sign in with a GitHub account that uses the same email, a separate Supabase account is created and will not be linked to the SSO user's account.
 - SSO users will only see organizations/projects they've been invited to or auto-joined into. See [access control](https://supabase.com/docs/guides/platform/access-control) for more details.
 
-## Enabling SSO for an organization
-
-**Recommended workflow:**
-
-1. Create or verify at least one non-SSO owner account exists (required for safety)
-2. Configure your SSO provider following one of our [provider-specific guides](#supported-providers)
-3. Start with auto-join **disabled** to test the configuration
-4. Test SSO sign-in with your own account
-5. Once confirmed working, enable auto-join if desired
-6. Thoroughly test using our [SSO Testing and Best Practices](https://supabase.com/docs/guides/platform/sso/testing-best-practices) guide
-7. Invite users to the organization or let them auto-join on sign-in
-
 Note: If a user is already a member of the organization under a non-SSO account, they will need to be removed and invited again with an SSO-required invitation to join under their SSO account. SSO and non-SSO accounts with the same email are treated as separate accounts.
 
 Note: Each user account verified using an SSO identity provider will not be eligible for [identity linking](https://supabase.com/docs/guides/auth/auth-identity-linking) to existing user accounts in the system. That is, if a user `valid.email@supabase.io` had signed up with a password, and then uses their company SSO sign-in with your project, there will be two `valid.email@supabase.io` user accounts in the system.
 
 Users will need to ensure they are signed in with the correct account when accessing organizations/projects.
+
+## Enabling SSO for an organization
+
+**Recommended workflow:**
+
+1. Create or verify a non-SSO owner account.
+   - This account is required so you can't lock yourself out of the organization.
+   - Use an email address that no one will use for SSO. You can't invite an email that already belongs to an account in the organization.
+2. Configure your SSO provider following one of our [provider-specific guides](#supported-providers)
+3. Start with auto-join **disabled** to test the configuration
+4. Test SSO sign-in with your own account or a test account
+   - If your own account is already a non-SSO member, remove the account from the organization. Using the non-SSO owner account you set up in step 1, re-invite the same email with an SSO-required invitation.
+   - Otherwise, use a separate test account.
+5. After you confirm it works, enable auto-join if desired
+6. Thoroughly test using our [SSO Testing and Best Practices](https://supabase.com/docs/guides/platform/sso/testing-best-practices) guide
+7. Invite users to the organization or let them auto-join on sign-in
 
 ## Disabling SSO for an organization
 

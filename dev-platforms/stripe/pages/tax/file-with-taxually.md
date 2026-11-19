@@ -43,7 +43,7 @@ If you don’t have any registrations, you must register with local tax authorit
 
 ## Provide documentation
 
-Provide your business registration documents, Tax ID numbers, and location-specific forms to Taxually. Before submitting, make sure your documents aren’t expired and all text is clear and readable. For filing in the US and Canada, Taxually might prompt you to create a new account with LumaTax and enter details (for example, Department of Revenue login credentials) in the [LumaTax portal](https://account.lumatax.com/login).
+Provide your business registration documents, Tax ID numbers, and location-specific forms to Taxually. Before submitting, make sure your documents aren’t expired and all text is clear and readable. For filing in the US and Canada, Taxually might prompt you to create a new account with LumaTax. In the [LumaTax portal](https://account.lumatax.com/login), Taxually might also prompt you to enter details, such as Department of Revenue login credentials.
 ![Provide Information](https://b.stripecdn.com/docs-statics-srv/assets/provide-information.1bbbfc4baf46eb0e8819743b8373a508.png)
 
 ## Submit and await approval

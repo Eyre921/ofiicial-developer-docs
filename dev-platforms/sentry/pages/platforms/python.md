@@ -110,7 +110,7 @@ sentry_sdk.init(
     # Enables Profiling.
     # Set to 1.0 to profile 100% of sessions.
     profile_session_sample_rate=1.0,
-    # Profiles are collected while a transaction is active.
+    # Profiles are collected while there is an active span.
     profile_lifecycle="trace",
 )
 ```
@@ -192,7 +192,7 @@ with sentry_sdk.start_span(name="Verify Sentry setup", attributes={"sentry.op": 
     1 / 0
 ```
 
-The SDK sends profiles after a transaction finishes, so a script that exits right away, like the one above, might not send a profile. Profiles appear for applications that keep running after their transactions complete.
+The SDK sends profile data in chunks while your application runs, so a script that exits right away, like the one above, might not send a profile. Profiles appear for applications that keep running.
 
 ### [View Captured Data in Sentry](https://docs.sentry.io/platforms/python.md#view-captured-data-in-sentry)
 

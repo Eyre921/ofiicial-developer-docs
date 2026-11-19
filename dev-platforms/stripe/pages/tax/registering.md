@@ -38,7 +38,7 @@ If you register directly with local tax authorities, then you need to add the re
 
 ### Add a registration manually 
 
-To calculate and collect tax for a location (often referred to as a nexus in the US), you must register with the local tax authorities and add the registration to Stripe Tax. You need to identify each state, province, and country where you have tax obligations and register with each of them. Registration requirements vary by location.
+To calculate and collect tax for a location, you must register with the local tax authorities and add the registration to Stripe Tax. In the US, this location is often referred to as a nexus. You need to identify each state, province, and country where you have tax obligations and register with each of them. Registration requirements vary by location.
 
 You can add a tax registration to Stripe [using the Registrations API](https://docs.stripe.com/tax/registrations-api.md?tax-integration=direct#adding-registration) or by following these steps in your Dashboard:
 
@@ -90,7 +90,7 @@ We group your location statuses into the following categories:
 - (Not collecting tax): You aren’t collecting tax in this location. This can occur when:
   - Your registration is expired.
   - You don’t have a registration and haven’t exceeded the threshold yet.
-  - You don’t have a registration and we can’t determine your threshold status (for example, the revenue is unattributed or your preset product tax code doesn’t match the location’s supported tax types).
+  - You don’t have a registration and we can’t determine your threshold status. For example, the revenue is unattributed or your preset product tax code doesn’t match the location’s supported tax types.
 - (Issue): There’s a problem with your registration application that requires your attention. Review your application details to resolve the issue.
 - (Registration in progress): You’ve submitted a registration application through Stripe and our partners, and it’s currently being processed. You’ll be notified when the registration is complete.
 
@@ -112,7 +112,7 @@ Register for state sales tax if you sell goods and services to customers in a st
 
 **API value**: `home_rule_tax`
 
-Register for a local home rule sales tax if you sell goods and services to customers in a home rule city (a city that levies a tax that isn’t administered by the state). You must add a registration for each home rule city where you want to collect tax.
+Register for a local home rule sales tax if you sell goods and services to customers in a home rule city. A home rule city is a city that levies a tax that isn’t administered by the state. You must add a registration for each home rule city where you want to collect tax.
 
 Home rule tax registrations aren’t available for Custom or Express [Connect](https://docs.stripe.com/connect.md) accounts. For these account types, the Colorado and Alaska state registrations include all jurisdictions in that state.
 
@@ -170,31 +170,31 @@ Register for Hospitality tax if you do business in a US state that requires it o
 
 **API value**: `luxury_tax`
 
-Register for Luxury tax if you do business in a US state that requires it on admission fees to entertainment events and amusement attractions, lodging accommodations, and prepared food and beverage.
+Register for Luxury tax if you do business in a US state that requires it. The tax applies to admission fees to entertainment events and amusement attractions, lodging accommodations, and prepared food and beverage.
 
 ### Resort tax registration type
 
 **API value**: `resort_tax`
 
-Register for Resort tax if you do business in a US state that requires it on admission fees to entertainment events and amusement attractions, lodging accommodations, and prepared food and beverage.
+Register for Resort tax if you do business in a US state that requires it. The tax applies to admission fees to entertainment events and amusement attractions, lodging accommodations, and prepared food and beverage.
 
 ### Tourism tax registration type
 
 **API value**: `tourism_tax`
 
-Register for Tourism tax if you do business in a US state that requires it on admission fees to entertainment events and amusement attractions, lodging accommodations, and prepared food and beverage.
+Register for Tourism tax if you do business in a US state that requires it. The tax applies to admission fees to entertainment events and amusement attractions, lodging accommodations, and prepared food and beverage.
 
 ### Parking tax registration type
 
 **API value**: `parking_tax`
 
-Register for Parking tax if you have customers in a US state that requires this tax on parking fees for a vehicle in a public street space, a commercial lot, or a garage.
+Register for Parking tax if you have customers in a US state that requires this tax. The tax applies to parking fees for a vehicle in a public street space, a commercial lot, or a garage.
 
 ### Mass transit parking tax registration type
 
 **API value**: `mass_transit_parking_tax`
 
-Register for Mass transit parking tax if you have customers in a US state that requires this tax on parking fees for a vehicle in a public street space, a commercial lot, or a garage.
+Register for Mass transit parking tax if you have customers in a US state that requires this tax. The tax applies to parking fees for a vehicle in a public street space, a commercial lot, or a garage.
 
 ### Digital excise tax registration type
 

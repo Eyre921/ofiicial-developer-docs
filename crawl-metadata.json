@@ -3,14 +3,14 @@
     "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (7) for https://docs.mistral.ai/llms-full.txt: curl: (7) Failed to connect to docs.mistral.ai port 443 after 8 ms: Could not connect to server\n"
+    "status": "error: curl failed (7) for https://docs.mistral.ai/llms-full.txt: curl: (7) Failed to connect to docs.mistral.ai port 443 after 11 ms: Could not connect to server\n"
   },
   "ai-models/cohere": {
     "pages": 2,
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 208,
@@ -34,11 +34,10 @@
     "status": "ok"
   },
   "agent-frameworks/mcp": {
-    "pages": 161,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://modelcontextprotocol.io/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "agent-frameworks/crewai": {
-    "pages": 260,
+    "pages": 436,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
@@ -58,7 +57,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 586,
+    "pages": 806,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -66,8 +65,7 @@
     "status": "ok"
   },
   "vector-db/chroma": {
-    "pages": 147,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://docs.trychroma.com/llms-full.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
   },
   "vector-db/weaviate": {
     "pages": 4,
@@ -86,8 +84,7 @@
     "status": "ok"
   },
   "dev-platforms/prisma": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://www.prisma.io/docs/llms-full.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
   },
   "dev-platforms/cloudflare": {
     "pages": 0,
@@ -102,15 +99,14 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
     "status": "ok"
   },
   "dev-platforms/neon": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://neon.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1461130 out of 7250726 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) Operation ti"
   },
   "dev-platforms/clerk": {
     "pages": 0,
@@ -121,8 +117,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 1004,
-    "status": "ok"
+    "status": "error: curl failed (28) for https://upstash.com/docs/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Operation timed out after 90000 milliseconds with 1392640 bytes received\ncurl: (28) Operation timed out after 90001 milliseconds wit"
   },
   "dev-platforms/expo": {
     "pages": 0,
@@ -137,7 +132,7 @@
     "status": "ok"
   },
   "dev-platforms/x-developer": {
-    "status": "error: curl failed (35) for https://docs.x.com/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
+    "status": "error: curl failed (28) for https://docs.x.com/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/n8n": {
     "pages": 0,
@@ -187,7 +182,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 82,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -195,7 +190,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 211,
+    "pages": 212,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -206,5 +201,5 @@
     "pages": 75,
     "status": "ok"
   },
-  "_last_crawl": "2026-11-18T23:30:50Z"
+  "_last_crawl": "2026-11-19T11:31:32Z"
 }

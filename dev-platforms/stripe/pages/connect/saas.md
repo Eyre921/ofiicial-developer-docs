@@ -33,6 +33,8 @@ Stripe doesn’t charge your platform in this model and you can earn revenue by:
 - Charging your connected accounts an application fee per transaction.
 - Qualifying for revenue share from Stripe when your connected accounts meet product activation targets.
 
+The following example uses hypothetical amounts to show how funds move. Your actual Stripe fees might differ.
+
 A diagram showing Stripe-owned pricing monetization for a SaaS platform (See full diagram at https://docs.stripe.com/connect/saas)
 
 ```text
@@ -56,6 +58,8 @@ Stripe charges your platform in this model and you can earn revenue by:
 
 - Charging your connected accounts a subscription fee for using your platform.
 - Charging your connected accounts an application fee per transaction. Use the [platform pricing](https://docs.stripe.com/connect/platform-pricing-tools.md) tool to automatically set pricing logic for the application fees you charge your connected accounts.
+
+The following example uses hypothetical amounts to show how funds move. Your actual Stripe fees might differ.
 
 A diagram showing buy rate monetization for a SaaS platform (See full diagram at https://docs.stripe.com/connect/saas)
 

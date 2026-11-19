@@ -121,11 +121,11 @@ with OpenRouter(
 | `default_text_model` | *OptionalNullable\[str]* | ➖ | Default text model for this workspace | openai/gpt-4o |
 | `description` | *OptionalNullable\[str]* | ➖ | Description of the workspace | Production environment workspace |
 | `disabled_server_tools` | List\[[components.CreateWorkspaceRequestDisabledServerTool](../../components/createworkspacerequestdisabledservertool.mdx)] | ➖ | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[ "openrouter:web\_search", "openrouter:bash" ] |
-| `io_logging_api_key_ids` | List\[*int*] | ➖ | Optional array of API key IDs to filter I/O logging | null |
-| `io_logging_sampling_rate` | *Optional\[float]* | ➖ | Sampling rate for I/O logging (0.0001-1) | 1 |
-| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403. | true |
+| `io_logging_api_key_ids` | List\[*int*] | ➖ | Optional array of API key IDs to filter I/O logging. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard. | null |
+| `io_logging_sampling_rate` | *Optional\[float]* | ➖ | Sampling rate for I/O logging (0.0001-1). Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard. | 1 |
+| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard. | false |
 | `is_observability_broadcast_enabled` | *Optional\[bool]* | ➖ | Whether broadcast is enabled | false |
-| `is_observability_io_logging_enabled` | *Optional\[bool]* | ➖ | Whether private logging is enabled | false |
+| `is_observability_io_logging_enabled` | *Optional\[bool]* | ➖ | Whether private logging is enabled. Read-only for management keys: any value other than the default returns 403. Change it in the OpenRouter dashboard. | false |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
@@ -280,11 +280,11 @@ with OpenRouter(
 | `default_text_model` | *OptionalNullable\[str]* | ➖ | Default text model for this workspace | openai/gpt-4o |
 | `description` | *OptionalNullable\[str]* | ➖ | New description for the workspace | Updated description |
 | `disabled_server_tools` | List\[[components.UpdateWorkspaceRequestDisabledServerTool](../../components/updateworkspacerequestdisabledservertool.mdx)] | ➖ | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[ "openrouter:web\_search", "openrouter:bash" ] |
-| `io_logging_api_key_ids` | List\[*int*] | ➖ | Optional array of API key IDs to filter I/O logging | null |
-| `io_logging_sampling_rate` | *Optional\[float]* | ➖ | Sampling rate for I/O logging (0.0001-1) | 1 |
-| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled. Enabling it requires the account to allow workspace data-discount logging; otherwise the request returns 403. | true |
+| `io_logging_api_key_ids` | List\[*int*] | ➖ | Optional array of API key IDs to filter I/O logging. Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard. | null |
+| `io_logging_sampling_rate` | *Optional\[float]* | ➖ | Sampling rate for I/O logging (0.0001-1). Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard. | 1 |
+| `is_data_discount_logging_enabled` | *Optional\[bool]* | ➖ | Whether data discount logging is enabled. Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard. | false |
 | `is_observability_broadcast_enabled` | *Optional\[bool]* | ➖ | Whether broadcast is enabled | false |
-| `is_observability_io_logging_enabled` | *Optional\[bool]* | ➖ | Whether private logging is enabled | false |
+| `is_observability_io_logging_enabled` | *Optional\[bool]* | ➖ | Whether private logging is enabled. Read-only for management keys: any value other than the stored one returns 403. Change it in the OpenRouter dashboard. | false |
 | `name` | *Optional\[str]* | ➖ | New name for the workspace | Updated Workspace |
 | `slug` | *Optional\[str]* | ➖ | New URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens) | updated-workspace |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |

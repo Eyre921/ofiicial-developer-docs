@@ -13,7 +13,7 @@ Set up Stripe Tax to fit your business needs with tax customizations. Create rul
 For example, you can:
 
 - Change the [Software as a service (SaaS) - personal use](https://docs.stripe.com/tax/tax-codes.md?tax_code=txcd_10103000) tax code from taxable to non-taxable in Louisiana to reflect the uncertainty of how SaaS might be taxed.
-- Apply a 5% tax rate to the [Newspapers](https://docs.stripe.com/tax/tax-codes.md?tax_code=txcd_35020100%09) tax code in Poland, instead of the applied rate of 8%, to reflect that your product is a regional newspaper and not a national one.
+- Apply a 5% tax rate to the [Newspapers](https://docs.stripe.com/tax/tax-codes.md?tax_code=txcd_35020100%09) tax code in Poland instead of the applied rate of 8%. This rate reflects that your product is a regional newspaper, not a national one.
 - Treat the [Food for non-immediate consumption](https://docs.stripe.com/tax/tax-codes.md?tax_code=txcd_40040000) tax code as taxable at the standard rate in New York, to reflect that you sell a bagels with cream cheese.
 
 After you create a tax customization, you’re responsible for keeping the rate and taxability up to date with any changes in tax law. When you remove a tax customizations, Stripe manages the updates.

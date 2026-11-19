@@ -10,38 +10,15 @@ path: docs/agent-sdk/dev-tools/devtools
 
 # DevTools
 
-> SDK Development Tools for telemetry capture and visualization
+> SDK development tools for telemetry capture
 
 > [!WARNING]
 >
-> The DevTools telemetry hooks and viewer are currently pre-release. There is no complete supported public client integration yet: `@openrouter/sdk` cannot attach the DevTools hooks through its typed public options, and `@openrouter/agent` `callModel` uses streaming Responses API output that DevTools cannot currently complete or normalize. See [Client Compatibility](#client-compatibility) below. DevTools is designed for development use only and should never be deployed in production environments.
+> The OpenRouter CLI and its DevTools viewer are retired. The separate `@openrouter/devtools` telemetry package remains available and is currently pre-release. There is no complete supported public client integration yet: `@openrouter/sdk` cannot attach the DevTools hooks through its typed public options, and `@openrouter/agent` `callModel` uses streaming Responses API output that DevTools cannot currently complete or normalize. See [Client Compatibility](#client-compatibility) below. DevTools is designed for development use only and should never be deployed in production environments.
 
-The OpenRouter DevTools include pre-release telemetry hooks and a viewer for compatible telemetry files.
+The `@openrouter/devtools` package provides pre-release telemetry hooks for compatible integrations. It stores captured data locally as JSON; it no longer includes a maintained viewer.
 
-## Why use DevTools?
-
-Building with AI SDKs requires visibility into what's happening under the hood. The DevTools viewer helps inspect telemetry produced by a compatible integration.
-
-**Two main components:**
-
-1. **SDK Telemetry Hooks** - Normalize supported operations into the DevTools telemetry format
-2. **DevTools Viewer** - Beautiful web UI for visualizing captured telemetry data
-
-## Key Features
-
-### SDK DevTools Viewer
-
-Launch a web-based interface to visualize your SDK telemetry:
-
-* **Run tracking** - View operations from an existing compatible telemetry file
-* **Detailed step analysis** - Inspect request/response data, timing, and errors for each step
-* **Token usage insights** - Track prompt and completion tokens across all requests
-* **Error debugging** - Easily identify and debug failed requests with full error details
-* **Dark/Light mode** - Full theme support with automatic system preference detection
-
-![DevTools Interface](https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/sdk-devtools-dark.png?fit=max\&auto=format\&n=PSwwwiCqAD_BNeni\&q=85\&s=31e8a7d3861f46564eed7f30b6c8579b)
-
-### SDK Telemetry Hooks
+## Telemetry capture
 
 For compatible operations that complete successfully, the hooks record:
 
@@ -75,12 +52,6 @@ bun add -d @openrouter/devtools
 deno add --dev npm:@openrouter/devtools
 ```
 
-Install the CLI that provides the `openrouter devtools` command:
-
-```bash lines theme={null}
-npm install --global @openrouter/cli
-```
-
 **Important:** DevTools is designed for development only. It will throw an error if `NODE_ENV === 'production'` to prevent accidental production deployment.
 
 ## Client Compatibility
@@ -91,24 +62,6 @@ npm install --global @openrouter/cli
 
 The generated `@openrouter/sdk` client is not an alternative setup: its typed public constructor options do not provide a way to attach the plain DevTools hook object. Neither published client currently provides a complete supported public integration.
 
-## Quick Start - DevTools Viewer
-
-From a project containing an existing compatible `.devtools/openrouter-generations.json` file, launch the DevTools web interface:
-
-```bash lines theme={null}
-openrouter devtools
-```
-
-This starts a local server on port 4983. Open `http://localhost:4983` in your browser to view:
-
-* All SDK runs with timestamps and status
-* Step-by-step request/response details
-* Token usage
-* Error messages and stack traces
-* Performance timing information
-
-The viewer automatically refreshes when new telemetry data is captured.
-
 ## How It Works
 
 ### Telemetry Capture Flow
@@ -118,8 +71,7 @@ With a compatible hook integration:
 1. SDK hooks intercept requests before they're sent
 2. Hook processing parses the request or response body
 3. Data is stored in `.devtools/openrouter-generations.json`
-4. A notification is sent to the local DevTools server (if running)
-5. The DevTools viewer updates in real-time
+4. An optional notification is sent to the configured local endpoint; notification failures are ignored
 
 ### Failure Isolation
 
@@ -151,15 +103,7 @@ When calling `createOpenRouterDevtools()`, you can customize:
 | Option | Type | Default | Description |
 | - | - | - | - |
 | `storagePath` | `string` | `'.devtools/openrouter-generations.json'` | Where to store captured telemetry |
-| `serverUrl` | `string` | `'http://localhost:4983/api/notify'` | DevTools server notification endpoint |
-
-### DevTools Server Configuration
-
-The DevTools viewer runs on port 4983 by default. Set `OPENROUTER_DEVTOOLS_PORT` when launching the CLI to use a different port:
-
-```bash lines theme={null}
-OPENROUTER_DEVTOOLS_PORT=5000 openrouter devtools
-```
+| `serverUrl` | `string` | `'http://localhost:4983/api/notify'` | Legacy viewer notification endpoint; no maintained server is provided |
 
 ## Recognized Operation IDs
 
@@ -212,28 +156,6 @@ DevTools catches failures in request parsing, response parsing, storage, and ser
 
 ## Troubleshooting
 
-### Port Already in Use
-
-If port 4983 is already in use:
-
-```bash lines theme={null}
-Error: listen EADDRINUSE: address already in use :::4983
-```
-
-**Solution:** Either stop the process using port 4983, or launch the viewer with a different port:
-
-```bash lines theme={null}
-OPENROUTER_DEVTOOLS_PORT=5000 openrouter devtools
-```
-
-If you maintain a compatible hook integration, update its notification configuration:
-
-```typescript lines theme={null}
-createOpenRouterDevtools({
-  serverUrl: 'http://localhost:5000/api/notify'
-})
-```
-
 ### Storage Location Issues
 
 If you can't find the telemetry file:
@@ -241,15 +163,6 @@ If you can't find the telemetry file:
 1. Check the default location: `.devtools/openrouter-generations.json`
 2. Ensure you have write permissions in your working directory
 3. Check for custom `storagePath` configuration
-
-### DevTools Viewer Not Updating
-
-If the viewer doesn't show new requests:
-
-1. Verify the DevTools server is running (`openrouter devtools`)
-2. Check that `serverUrl` matches the DevTools server port
-3. Ensure the telemetry file is being written (check `.devtools/` directory)
-4. Try refreshing the browser manually
 
 ### Common Setup Issues
 

@@ -364,7 +364,7 @@ Compare the validation for customer tax ID types:
 
 ### Australian Business Numbers (ABN)
 
-Stripe automatically validates all [Australian Business Numbers (ABNs)](https://abr.gov.au/) with the Australian Business Register (ABR). This process only verifies the validity of the tax ID, and not whether the customer’s name, address, and GST registration status match what’s on the customers page in the Dashboard.
+Stripe automatically validates all [Australian Business Numbers (ABNs)](https://abr.gov.au/) with the Australian Business Register (ABR). This process only verifies the validity of the tax ID. It doesn’t check whether the customer’s name, address, and GST registration status match what’s on the customers page in the Dashboard.
 
 ### European Value Added Tax (EU VAT) numbers
 

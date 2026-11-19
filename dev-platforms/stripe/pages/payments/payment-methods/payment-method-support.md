@@ -352,9 +352,16 @@ The following payment methods support `on_behalf_of` in private preview:
 
 If you need a payment method not offered on this page, consider [custom payment methods](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md).
 
-| Payment method | Connect | Checkout | Payment Links | Payment Element | Express Checkout Element | Mobile Payment Element | Subscriptions | Invoicing | Customer Portal |
+| Integration | Connect | Checkout | Payment Links | Payment Element | Express Checkout Element | Mobile Payment Element | Subscriptions | Invoicing | Customer Portal |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Custom payment methods | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
+| Display in your payment form | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
+| Redirect-based | Contact Stripe | ✓ Supported | - Unsupported | ✓ Supported 2 | - Unsupported | Contact Stripe | ✓ Supported | ✓ Supported 3 | ✓ Supported 4 |
 
 1 In private preview.
+
+2 With the Checkout Sessions API only.
+
+3 Collect invoice payments with a saved custom payment method. Customers can’t add a custom payment method on the hosted invoice page.
+
+4 Customers can manage existing subscriptions, but can’t change a subscription’s payment method to a custom payment method.
 

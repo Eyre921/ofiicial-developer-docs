@@ -170,6 +170,6 @@ const result = openrouter.callModel({
 * [Tools](https://openrouter.ai/docs/agent-sdk/call-model/tools.md): defining and using tools
 * [Stop Conditions](https://openrouter.ai/docs/agent-sdk/call-model/stop-conditions.md): controlling agent loop termination
 * [Streaming](https://openrouter.ai/docs/agent-sdk/call-model/streaming.md): real-time token output
-* [DevTools](https://openrouter.ai/docs/agent-sdk/dev-tools/devtools.md): telemetry capture and visualization for development
+* [DevTools](https://openrouter.ai/docs/agent-sdk/dev-tools/devtools.md): pre-release telemetry capture; the CLI viewer is retired
 * [Migrating from @openrouter/sdk](https://openrouter.ai/docs/agent-sdk/agent-migration.md): move agent imports to the standalone package
 

@@ -36,6 +36,8 @@ Marketplaces typically charge a commission or fee to their connected accounts fo
 
 Charging an application fee allows you to earn revenue and cover your costs to keep your balance from becoming negative. Use the [platform pricing tool](https://docs.stripe.com/connect/platform-pricing-tools.md) to automatically set pricing logic for the application fees you charge your connected accounts.
 
+The following example uses hypothetical amounts to show how funds move. Your actual Stripe fees might differ.
+
 A diagram showing monetization for a marketplace (See full diagram at https://docs.stripe.com/connect/marketplace)
 
 ```text

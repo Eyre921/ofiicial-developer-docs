@@ -325,7 +325,7 @@ Stripe Tax supports full rooftop-accurate address lookup for customer addresses 
 
 For addresses outside the US, Stripe uses the country, state, and postal code fields to determine tax obligations without comparing against a comprehensive address database. See “[Special jurisdictions and excluded territories](https://docs.stripe.com/tax/zero-tax.md#excluded-territories)” for more about when the state and postal code are used.
 
-> Stripe Tax uses the 5-digit US postal code if the address lacks sufficient information, has inconsistencies, or otherwise can’t be matched to an address in the US Postal Service address database.
+> Stripe Tax uses the 5-digit US postal code if the address lacks sufficient information or has inconsistencies. It also uses the 5-digit US postal code if the address can’t be matched to an address in the US Postal Service address database.
 
 #### US Military and Diplomatic Addresses
 

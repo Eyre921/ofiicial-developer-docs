@@ -84,6 +84,7 @@ Stripe accounts in the following countries can accept bank transfer payments:
 - HU
 - IE
 - IT
+- JP
 - LI
 - LT
 - LU

@@ -96,6 +96,78 @@ func main() {
 }
 ```
 
+### Example Usage: invalid-parameters
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	"os"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New(
+        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
+    )
+
+    res, err := s.Beta.Responses.Send(ctx, components.ResponsesRequest{}, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        defer res.ResponsesStreamingResponse.Close()
+
+        for res.ResponsesStreamingResponse.Next() {
+            event := res.ResponsesStreamingResponse.Value()
+            log.Print(event)
+            // Handle the event
+	      }
+    }
+}
+```
+
+### Example Usage: invalid-request-body
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	"os"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"github.com/OpenRouterTeam/go-sdk/models/components"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New(
+        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
+    )
+
+    res, err := s.Beta.Responses.Send(ctx, components.ResponsesRequest{}, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        defer res.ResponsesStreamingResponse.Close()
+
+        for res.ResponsesStreamingResponse.Next() {
+            event := res.ResponsesStreamingResponse.Value()
+            log.Print(event)
+            // Handle the event
+	      }
+    }
+}
+```
+
 ### Parameters
 
 | Parameter | Type | Required | Description | Example |
@@ -113,7 +185,7 @@ func main() {
 
 | Error Type | Status Code | Content Type |
 | - | - | - |
-| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.ResponsesBadRequestResponseError | 400 | application/json |
 | sdkerrors.UnauthorizedResponseError | 401 | application/json |
 | sdkerrors.PaymentRequiredResponseError | 402 | application/json |
 | sdkerrors.ForbiddenResponseError | 403 | application/json |

@@ -109,8 +109,6 @@ Note that automatic tracing on file-like responses when `offloading` is configur
 
 Only available in SDK versions prior to `3.0`. In SDK `3.x`, `PyramidIntegration` doesn't accept any options, and service spans are always named after the route pattern, for example `/myurl/{id}`.
 
-In SDK `3.x`, and in stream mode in SDK `2.x`, these options still work as described, but apply to service spans instead of transactions.
-
 By adding `PyramidIntegration` to your `sentry_sdk.init()` call explicitly, you can set options for `PyramidIntegration` to change its behavior:
 
 ```python

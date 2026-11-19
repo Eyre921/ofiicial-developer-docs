@@ -39,7 +39,7 @@ If your business ships goods from locations other than your head office, you can
 
 ### How to use performance location
 
-You can calculate taxes based on [performance location addresses](https://docs.stripe.com/tax/location-sales.md) that differ from your business address and your customer’s address. If you provide a performance location, Stripe Tax uses its address as the place of taxation for physical goods, services and events. To use performance locations:
+You can calculate taxes based on [performance location addresses](https://docs.stripe.com/tax/location-sales.md) that differ from your business address and your customer’s address. If you provide a performance location, Stripe Tax uses its address as the place of taxation for physical goods, services, and events. To use performance locations:
 
 - You can provide a performance location on line items through the Tax Calculations API, Checkout Sessions, Payment Intents, Payment Links, and invoices. For implementation instructions, see [Tax in-person sales at a specific location](https://docs.stripe.com/tax/optional-tax-location/integration-guide.md) and [Tax ticket sales based on event location](https://docs.stripe.com/tax/tax-for-tickets/integration-guide.md).
 - You can also set a performance location from a product’s details page in the Dashboard for eligible tax codes. See [Product tax codes](https://docs.stripe.com/tax/tax-codes.md) to find supported tax codes.
@@ -74,7 +74,7 @@ Rounding can make the applied tax rate appear slightly higher or lower if you di
 | 66.55 EUR | 12.64 EUR | 79.19 EUR |
 | 66.56 EUR | 12.65 EUR | 79.21 EUR |
 
-Instead, Stripe preserves the 79.20 EUR amount charged to the customer by reporting a 66.55 EUR subtotal and 12.65 EUR of tax. Those rounded amounts make the tax rate appear to be 19.01%, even though the applied rate is 19% Depending on the transaction amounts, this ratio might appear as 19.01%, 19.02%, or another nearby value.
+Instead, Stripe preserves the 79.20 EUR amount charged to the customer by reporting a 66.55 EUR subtotal and 12.65 EUR of tax. Those rounded amounts make the tax rate appear to be 19.01%, even though the applied rate is 19%. Depending on the transaction amounts, this ratio might appear as 19.01%, 19.02%, or another nearby value.
 
 ## Tax breakdowns
 

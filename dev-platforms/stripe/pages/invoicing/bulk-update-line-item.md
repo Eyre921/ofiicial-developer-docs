@@ -85,8 +85,8 @@ curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}}/update_lines \
   -u <<YOUR_SECRET_KEY>>: \
   -d "lines[0][id]"={{LINE_ITEM_1}} \
   -d "lines[0][description]"="New description" \
-  -d "lines[1][id]"={{LINE_ITEM_1}} \
-  -d "lines[2][description]"="Another description" \
+  -d "lines[1][id]"={{LINE_ITEM_2}} \
+  -d "lines[1][description]"="Another description" \
   -d "invoice_metadata[is_processed]"="true"
 ```
 

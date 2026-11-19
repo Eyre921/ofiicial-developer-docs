@@ -42,14 +42,14 @@ This account lets you access TaxJar directly from your Stripe account without ne
 
 ## Review your business information
 
-Confirm your business details, including your address and [bank details](https://stripe-tax-filing.helpscoutdocs.com/article/1147-banking). TaxJar uses your bank account to remit any tax that you collected to the taxing authorities. Always make sure you have sufficient funds in this bank account to cover your sales tax liabilities. If you have a [debit blocker](https://stripe-tax-filing.helpscoutdocs.com/article/1147-banking#debit-blocks) enabled on your bank account, you could also need to add the ACH originator IDs to your bank account to make sure payments to the taxing authorities process successfully.
+Confirm your business details, including your address and [bank details](https://stripe-tax-filing.helpscoutdocs.com/article/1147-banking). TaxJar uses your bank account to remit any tax that you collected to the taxing authorities. Always make sure you have sufficient funds in this bank account to cover your sales tax liabilities. If you have a [debit blocker](https://stripe-tax-filing.helpscoutdocs.com/article/1147-banking#debit-blocks) enabled on your bank account, you could also need to add the ACH originator IDs to your bank account. This ensures payments to the taxing authorities process successfully.
 
 ## Add your state details
 
 Provide your state-specific business registration and filing information. These details differ by state, but generally include your state tax ID, nexus start date, and assigned filing frequency. Select the first filing period you want Stripe to file, typically the next available filing period. Available filing period options are based on the date you submit your filing application, your filing frequency, and state processing deadlines. TaxJar has [detailed information by state](https://stripe-tax-filing.helpscoutdocs.com/category/1150-set-up-filings) to help you set up your filings.
 
 - **Filing for previous filing periods**: If you need to file returns for previous filing periods, you can request TaxJar to [file overdue returns](https://stripe-tax-filing.helpscoutdocs.com/article/1213-file-overdue-returns) for you.
-- **Updating your filing frequency**: If you later receive a notice that a state has changed your filing frequency, [send a copy to TaxJar support](https://stripe-tax-filing.helpscoutdocs.com/article/1214-change-your-filing-frequency-for-a-state) to make sure TaxJar updates your filing correctly and you don’t miss a return.
+- **Updating your filing frequency**: If you later receive a notice that a state has changed your filing frequency, [send a copy to TaxJar support](https://stripe-tax-filing.helpscoutdocs.com/article/1214-change-your-filing-frequency-for-a-state). This helps TaxJar update your filing correctly, so you don’t miss a return.
 
 ## Review and submit your application
 

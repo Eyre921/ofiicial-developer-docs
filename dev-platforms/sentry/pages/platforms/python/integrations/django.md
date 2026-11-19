@@ -86,7 +86,7 @@ sentry_sdk.init(
     # Enables Profiling.
     # Set to 1.0 to profile 100% of sessions.
     profile_session_sample_rate=1.0,
-    # Profiles are collected while a transaction is active.
+    # Profiles are collected while there is an active span.
     profile_lifecycle="trace",
 )
 ```
@@ -264,7 +264,7 @@ Create spans and track performance of all read operations to configured caches. 
 | Type            | `Tuple[str, ...]`                                                |
 | Default         | `("CONNECT", "DELETE", "GET", "PATCH", "POST", "PUT", "TRACE",)` |
 
-A tuple containing all the HTTP methods (as uppercase strings) that should create a transaction in Sentry. The default is `("CONNECT", "DELETE", "GET", "PATCH", "POST", "PUT", "TRACE",)`.
+A tuple containing all the HTTP methods (as uppercase strings) that should create a service span in Sentry. The default is `("CONNECT", "DELETE", "GET", "PATCH", "POST", "PUT", "TRACE",)`.
 
 Note that `OPTIONS` and `HEAD` are excluded by default.
 

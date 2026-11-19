@@ -1,0 +1,136 @@
+---
+title: "Rate limits"
+source: https://docs.pinecone.io/reference/api/database-limits/rate-limits
+path: reference/api/database-limits/rate-limits
+---
+
+Request-per-second, monthly usage, and model throughput limits for Pinecone Database serverless indexes, and the 429 errors returned when you exceed them.
+
+Rate limits help protect your applications from misuse and maintain the health of our shared serverless infrastructure. They vary by [pricing plan](https://www.pinecone.io/pricing/) and apply to [serverless indexes](/guides/indexes/index-data-overview) only.
+
+Request-per-second limits are enforced per namespace or per index, as noted in the [Data operation throughput limits](#data-operation-throughput-limits) table, in addition to your read and write unit limits, so a request fails if it exceeds any applicable limit. When you exceed a limit, the request returns a `429 - TOO_MANY_REQUESTS` and the error message names the limit, scope, and value.
+
+**Most rate limits can be adjusted upon request.** If you need higher limits, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
+
+> [!NOTE]
+>
+> Indexes built on [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) aren't subject to read unit limits for query, fetch, list, and full-text search operations. For sizing and capacity planning guidance, see the [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) guide.
+
+## Monthly usage limits
+
+[Read units](/guides/cost/understand-cost#read-units) and [write units](/guides/cost/understand-cost#write-units) measure resource consumption. To check your current usage, see [Download a usage report](/admin/billing/download-usage-report).
+
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Read units per month per org | 1,000,000 | 2,000,000 | Unlimited | Unlimited |
+| Write units per month per org | 2,000,000 | 5,000,000 | Unlimited | Unlimited |
+| Embedding tokens per month per model | 5,000,000 | 10,000,000 | Unlimited | Unlimited |
+| `gemini-embedding-2` embedding tokens per month | Not available | 10,000,000 | Unlimited | Unlimited |
+
+> [!NOTE]
+>
+> From November 4 through December 31, 2026, Starter orgs get 10,000,000 embedding tokens per month per model, and Builder orgs get 20,000,000. Allowances return to the values in the table on January 1, 2027.
+
+Monthly rerank request limits vary by model:
+
+| Reranking model | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| `cohere-rerank-4-fast` | Not available | Not available | Unlimited | Unlimited |
+| `bge-reranker-v2-m3` | 500 | 1,000 | Unlimited | Unlimited |
+| `pinecone-rerank-v0` | 500 | Not available | Unlimited | Unlimited |
+
+Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to continue.
+
+> [accordion] Example error
+>
+> ```
+> Request failed. You've reached your read unit limit for the current month.
+> To continue reading data, upgrade your plan.
+> ```
+
+## Data operation throughput limits
+
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Upsert size per second per namespace | 50 MB | 50 MB | 50 MB | 50 MB |
+| Query read units per second per namespace | 2,000 | 2,000 | 2,000 | 2,000 |
+| Query read units per second per index | 2,000 | 2,000 | 2,000 | 2,000 |
+| Query requests per second per namespace | 100 | 100 | 100 | 100 |
+| Update records per second per namespace | 100 | 100 | 100 | 100 |
+| Update requests per second per namespace | 100 | 100 | 100 | 100 |
+| Update by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
+| Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
+| Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
+| Fetch requests per second per index | 100 | 100 | 100 | 100 |
+| List requests per second per index | 200 | 200 | 200 | 200 |
+| Describe index stats requests per second per index | 100 | 100 | 100 | 100 |
+| Delete requests per second per namespace | 100 | 100 | 100 | 100 |
+| Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
+| Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
+| Delete by metadata requests per second per namespace | 20 | 20 | 20 | 20 |
+| Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
+
+The per-namespace and per-index query read unit limits are enforced separately. At the defaults they're equal, so the namespace limit only matters once the index limit is raised. When you ask Support for a higher read limit, ask for both, or each namespace stays capped at its current limit.
+
+Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/optimize/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
+
+> [accordion] Example error
+>
+> ```
+> Request failed. You've reached the query QPS limit for namespace {namespace_name} ({limit} QPS). Pace your queries, consider Dedicated Read Nodes for your index, or contact Pinecone Support (https://app.pinecone.io/organizations/-/settings/support/ticket) to request a higher limit.
+> ```
+
+## Model throughput limits
+
+Per-minute token limits for embedding models:
+
+| Embedding model | Input type | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- | :- |
+| `llama-text-embed-v2` | Passage | 250,000 | 250,000 | 1,000,000 | 1,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `multilingual-e5-large` | Passage | 250,000 | 250,000 | 1,000,000 | 1,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `gemini-embedding-2` | Passage | Not available | 250,000 | 2,000,000 | 2,000,000 |
+| | Query | Not available | 50,000 | 250,000 | 250,000 |
+| `text-embedding-3-small` | Passage | 250,000 | 250,000 | 2,000,000 | 2,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `text-embedding-3-large` | Passage | 250,000 | 250,000 | 2,000,000 | 2,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `pinecone-sparse-english-v0` | Passage | 250,000 | 250,000 | 3,000,000 | 3,000,000 |
+| | Query | 250,000 | 250,000 | 3,000,000 | 3,000,000 |
+
+Per-minute request limits for reranking models:
+
+| Reranking model | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| `cohere-rerank-4-fast` | Not available | Not available | 300 | 300 |
+| `bge-reranker-v2-m3` | 60 | 60 | 60 | 60 |
+| `pinecone-rerank-v0` | 60 | Not available | 60 | 60 |
+
+Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase it, or [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
+
+> [accordion] Example error
+>
+> ```
+> Request failed. You've reached the max embedding tokens per minute (<limit>) model '<model name>' and input type '<passage|query>' for the current project.
+> To increase this limit, upgrade your plan.
+> ```
+
+## Inference request limits
+
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Inference requests per second per project | 100 | 100 | 100 | 100 |
+| Inference requests per minute per project | 2,000 | 2,000 | 2,000 | 2,000 |
+
+These limits apply per project across all models. Every inference request counts toward them, including requests that a [per-minute token limit](#model-throughput-limits) then rejects.
+
+Exceeding the per-second or per-minute limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic) to handle it.
+
+> [accordion] Example error
+>
+> ```
+> Request failed. You've reached the max inference requests per second (<limit>) for the current project.
+> ```
+>
+> The message names the per-second or per-minute limit, whichever you exceeded.
