@@ -110,7 +110,7 @@ Checkout includes provided tax IDs on the resulting [Session](https://docs.strip
     "id": "cs_test_a1dJwt0TCJTBsDkbK7RcoyJ91vJxe2Y",
     "object": "checkout.session",
     ...
-    "customer_account": {{CUSTOMER_ACCOUNT_ID}},
+    "customer_account": "{{CUSTOMER_ACCOUNT_ID}}",
     "customer_details": {
       ...
       "tax_ids": [
@@ -139,7 +139,7 @@ Checkout saves collected tax IDs and business names to the [v2 Account](https://
     "id": "cs_test_a1dJwt0TCJTBsDkbK7RcoyJ91vJxe2Y",
     "object": "checkout.session",
     ...
-    "customer": {{CUSTOMER_ID}},
+    "customer": "{{CUSTOMER_ID}}",
     "customer_details": {
       ...
       "tax_ids": [

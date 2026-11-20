@@ -1522,7 +1522,7 @@ app.post("/capture_payment_intent", async (req, res) => {
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "stripe": "^23.0.0"
+    "stripe": "^23.2.0"
   }
 }
 {
@@ -1535,7 +1535,7 @@ app.post("/capture_payment_intent", async (req, res) => {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^3.4.0",
-    "stripe": "23.0.0"
+    "stripe": "23.2.0"
   },
   "devDependencies": {
     "concurrently": "4.1.2"
@@ -1996,7 +1996,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 requests==2.32.5
-stripe==16.0.0
+stripe==17.1.0
 toml==0.10.2
 Werkzeug==3.1.5
   case '/':
@@ -2854,7 +2854,7 @@ func handleCapture(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
 
   writeJSON(w, pi)
 }
-require github.com/stripe/stripe-go/v87 v87.0.0
+require github.com/stripe/stripe-go/v87 v87.2.0
 import java.nio.file.Paths;
 import static spark.Spark.staticFiles;
 import com.stripe.model.terminal.ConnectionToken;

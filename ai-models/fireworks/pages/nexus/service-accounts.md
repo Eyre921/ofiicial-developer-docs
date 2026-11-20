@@ -31,7 +31,7 @@ Select the new service account and create its key. Copy the `fw_...` key right a
 
 To add another key later, for example to rotate one, repeat these steps and pick the existing service account in step 2.
 
-* A service account created in the console gets the default `user` role. To give it a different role, use `firectl` as shown below.
+* A service account created in the console gets the default `user` role, which Nexus shows as **Member**. To give it a role Nexus doesn't offer, use `firectl` as shown below.
 * To see service account keys, an admin can run `firectl api-key list --all-users`.
 
 ## Set a role or script it with firectl
@@ -45,10 +45,14 @@ firectl api-key create --service-account "prod-litellm"
 firectl user list --filter 'service_account=true'
 ```
 
-If you leave out `--role`, the role is `inference-user`. See [User roles](/accounts/users#user-roles) for each role's permissions.
+If you leave out `--role`, the role is `inference-user`. `firectl` shows the platform role name, not the Nexus one. See [User roles](/accounts/users#user-roles) for each role's platform permissions.
 
 * To match an existing service account, check its role first with `firectl user get <user-id>`.
 * `firectl signin` connects to `gateway.fireworks.ai:443` over gRPC (HTTP/2). A corporate proxy that inspects TLS can break that connection, with errors such as `missing selected ALPN property` or `error reading server preface: EOF`. Ask your network team to allow HTTP/2 gRPC to that host or exempt it from TLS inspection, or use the console steps above.
+
+## Roles in Nexus
+
+Nexus shows both `user` and `inference-user` as **Member**, and either can use Nexus with its own key. A service account created in the console gets `user`, and one created with `firectl` gets `inference-user` unless you pass `--role`. Other roles, such as `contributor`, keep their platform name in Nexus and can only be changed with `firectl`.
 
 ## Billing and audit logs
 

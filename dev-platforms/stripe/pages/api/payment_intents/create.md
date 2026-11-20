@@ -17,7 +17,7 @@ When you use `confirm=true` during creation, it’s equivalent to creating and c
 ```curl
 curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-10-28.endive" \
+  -H "Stripe-Version: 2026-11-18.endive" \
   -d amount=2000 \
   -d currency=usd \
   -d "automatic_payment_methods[enabled]=true"
@@ -697,7 +697,7 @@ Possible enum values:
   The maximum length is 22 characters.
 
 - `statement_descriptor_suffix` (string, optional)
-  Provides information about a card charge. Concatenated to the account’s [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors.md#static) to form the complete statement descriptor that appears on the customer’s statement.
+  Provides information about a card charge. Concatenated to the account’s [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors.md#static) to form the complete statement descriptor that appears on the customer’s statement. A suffix longer than 22 characters returns an error. If a valid suffix makes the complete statement descriptor longer than 22 characters, Stripe truncates the descriptor instead of returning an error. Learn how to [fit the suffix in the complete descriptor](https://docs.stripe.com/get-started/account/statement-descriptors.md#suffix-length).
 
   The maximum length is 22 characters.
 

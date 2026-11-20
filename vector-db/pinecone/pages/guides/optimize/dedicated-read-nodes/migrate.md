@@ -18,7 +18,7 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
 
 **1. Create a backup of your index**
 
-Before migrating, [back up your index](/guides/indexes/back-up-an-index) so you can return to on-demand later, either by [converting back](/guides/optimize/dedicated-read-nodes/manage#convert-to-on-demand) or by restoring the backup to a new on-demand index.
+Before migrating, [back up your index](/guides/indexes/back-up-an-index). You can't convert a dedicated read nodes index back to on-demand, so [returning to on-demand](/guides/optimize/dedicated-read-nodes/manage#convert-to-on-demand) means restoring that backup to a new index.
 
 **2. Delete extra namespaces**
 

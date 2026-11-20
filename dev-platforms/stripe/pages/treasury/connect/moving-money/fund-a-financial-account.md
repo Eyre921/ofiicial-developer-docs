@@ -253,7 +253,7 @@ After acceptance, create a mandate for the connected account’s GB Bank Account
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/inbound_transfer_mandates \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "credential": "gbba_…",

@@ -21,7 +21,7 @@ Atlas provides legal information and self-serve tools that assist you in providi
 Atlas is appropriate for most founders, but not all. If you have unique considerations such as any of the following, consider talking to a lawyer before using Atlas. This list isn’t exhaustive.
 
 1. **You’re contributing significant intellectual property (IP) or other assets to your company**. Atlas forms C corporations with an industry standard fair market value (FMV) of 100 USD, which might not be accurate if you have substantially valuable IP.
-2. **You have prior inventions you want to exclude from being assigned to your company**. Atlas assigns all prior inventions relevant to your company to the newly incorporated company.
+2. **You have prior company-related inventions you want to exclude from being assigned to your company**. Atlas assigns all company-related prior inventions to the newly incorporated company. Atlas doesn’t assign unrelated IP from things like side projects, previous startups, or personal inventions to your company upon incorporation.
 3. **You want to include non-compete or non-solicit clauses in your formation documents**. Atlas omits non-compete and non-solicit clauses because they’re state specific, change on a regular basis, and can be hard to enforce. If you use Atlas, you can work with a lawyer to include them after incorporation.
 4. **You’re rolling over qualified small business stock (QSBS) gains from a previous company to your new one**. Atlas automatically purchases shares on all founders’ behalf using IP and doesn’t support purchasing stock with cash.
 5. **You don’t want to file an 83(b) election**. Atlas automatically files 83(b) elections for all founders, a step that startup lawyers recommend, and one expected by investors.

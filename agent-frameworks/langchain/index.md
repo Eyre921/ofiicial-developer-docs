@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1808 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1810 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -192,8 +192,10 @@
 - `langsmith/byoc-byovpc-aws` — [Bring your own VPC on AWS](pages/langsmith/byoc-byovpc-aws.md) · [原文](https://docs.langchain.com/langsmith/byoc-byovpc-aws)
 - `langsmith/byoc-data-plane-cost-aws` — [AWS data plane cost estimate](pages/langsmith/byoc-data-plane-cost-aws.md) · [原文](https://docs.langchain.com/langsmith/byoc-data-plane-cost-aws)
 - `langsmith/byoc-data-plane-cost-azure` — [Azure data plane cost estimate](pages/langsmith/byoc-data-plane-cost-azure.md) · [原文](https://docs.langchain.com/langsmith/byoc-data-plane-cost-azure)
+- `langsmith/byoc-data-plane-cost-gcp` — [GCP data plane cost estimate](pages/langsmith/byoc-data-plane-cost-gcp.md) · [原文](https://docs.langchain.com/langsmith/byoc-data-plane-cost-gcp)
 - `langsmith/byoc-faq` — [BYOC FAQ](pages/langsmith/byoc-faq.md) · [原文](https://docs.langchain.com/langsmith/byoc-faq)
 - `langsmith/byoc-migration` — [Migrate to BYOC](pages/langsmith/byoc-migration.md) · [原文](https://docs.langchain.com/langsmith/byoc-migration)
+- `langsmith/byoc-networking-gcp` — [BYOC networking on GCP](pages/langsmith/byoc-networking-gcp.md) · [原文](https://docs.langchain.com/langsmith/byoc-networking-gcp)
 - `langsmith/byoc-onboarding-aws` — [BYOC onboarding](pages/langsmith/byoc-onboarding-aws.md) · [原文](https://docs.langchain.com/langsmith/byoc-onboarding-aws)
 - `langsmith/byoc-onboarding-azure` — [BYOC onboarding on Azure](pages/langsmith/byoc-onboarding-azure.md) · [原文](https://docs.langchain.com/langsmith/byoc-onboarding-azure)
 - `langsmith/byoc-onboarding-gcp` — [BYOC onboarding on GCP](pages/langsmith/byoc-onboarding-gcp.md) · [原文](https://docs.langchain.com/langsmith/byoc-onboarding-gcp)

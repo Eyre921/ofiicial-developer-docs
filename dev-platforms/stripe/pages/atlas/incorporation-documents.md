@@ -30,7 +30,7 @@ Atlas helps you set up a company using templates created in collaboration with C
 | Section 83(b) | Tax filing that allows founders to pay taxes on equity when it’s granted, rather than when it vests. It can help save you money on US personal taxes. Notifies the IRS of the date you purchased your equity in your company, and the amount you purchased it for. Atlas files 83(b) elections automatically for all founders. |
 | Stock Assignment Separate from Certificate | Allows the company to repurchase your shares based on terms in your Restricted Stock Purchase Agreement. |
 | Joint Escrow Instructions | Puts founders’ shares in escrow with the company Secretary. |
-| Form of Employee Confidential Information and Invention Assignment Agreement | Commonly used by companies to ensure that relevant IP created both before and after incorporation belongs to the company. If you have any prior inventions you’d like to exclude from being assigned to the company, Atlas might not be right for you. Atlas omits non-compete and non-solicit clauses  because they’re state specific, and can be hard to enforce. You can work with a lawyer to include  them after incorporation. |
+| Form of Employee Confidential Information and Invention Assignment Agreement | Commonly used by companies to ensure that relevant IP created both before and after incorporation belongs to the company. If you have any company-related prior inventions you want to exclude from being assigned to the company, consider speaking to a lawyer before using Atlas. Atlas omits non-compete and non-solicit clauses because they’re state specific, and can be hard to enforce. You can work with a lawyer to include them after incorporation. |
 
 #### LLC
 

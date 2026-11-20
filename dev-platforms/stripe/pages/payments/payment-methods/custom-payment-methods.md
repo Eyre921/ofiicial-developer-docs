@@ -14,14 +14,24 @@ Custom payment methods extend your payment and billing integrations with payment
 
 Add a custom payment method in one of two ways. No matter which method you use, your payment method provider processes the payment.
 
-| Integration | Display in your payment form | Redirect through an adapter |
+| Integration | Display in your payment form | Redirect-based |
 | --- | --- | --- |
 | Stripe role | Displays the payment method | Displays the payment method, calls your adapter, and redirects the customer |
 | Your role | Process the payment in your client-side code | Build and host an adapter that starts the payment and reports the result |
-| Supported APIs | Payment Intents | Checkout Sessions |
+| Supported APIs | [Payment Intents API](https://docs.stripe.com/api/payment_intents.md) | [Checkout Sessions API](https://docs.stripe.com/api/checkout/sessions.md) |
 | Payment result in Stripe | Optional. Report it with the [Payment Records API](https://docs.stripe.com/api/payment-record/report.md). | Required. Your adapter reports it. |
 
-If you use the Checkout Sessions API and your provider redirects customers to complete the payment, add a redirect-based payment method. Otherwise, display the custom payment method in your payment form.
+If you use the Checkout Sessions API and your provider redirects customers to complete the payment, add a [redirect-based payment method](https://docs.stripe.com/payments/payment-methods/custom-payment-methods/redirect.md). Otherwise, display the custom payment method in your payment form.
+
+Then use the guide that matches your integration:
+
+[Payment Element](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md): Display a custom payment method in the Payment Element or Express Checkout Element, and process the payment in your client-side code.
+
+[Mobile Payment Element](https://docs.stripe.com/payments/mobile/custom-payment-methods.md): Display a custom payment method in your mobile app.
+
+[Redirect-based payment methods (Private preview)](https://docs.stripe.com/payments/payment-methods/custom-payment-methods/redirect.md): Build an adapter that lets Checkout redirect customers to your payment method provider.
+
+[Third-party payment processing](https://docs.stripe.com/billing/subscriptions/third-party-payment-processing.md): Bill subscriptions with payment methods stored with your third-party processor.
 
 ## Configure a custom payment method type 
 
@@ -30,29 +40,9 @@ Create custom payment method types in the Dashboard to represent payment methods
 Go to [Custom payment method types](https://dashboard.stripe.com/settings/custom_payment_methods), then complete these actions:
 
 1. **Create the type**: Create a custom payment method type for each payment method that you want to offer your customers at checkout.
-2. **Choose a preset or provide branding**: Choose from the presets for common payment methods processed outside of Stripe, or provide your own display name and logo. Use a preset if you display the payment method in the Payment Element. For redirect-based payment methods, enter your own display name and logo. Provide custom branding if you use a custom front end or interact with the custom payment method through the [Payment Methods API](https://docs.stripe.com/api/payment_methods.md). Make sure the display name and logo comply with the [marks policy](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#marks-requirements).
+2. **Choose a preset or provide branding**: Choose from the presets for common payment methods processed outside of Stripe, or provide your own display name and logo. Use a preset if you display the payment method in the Payment Element. Provide custom branding if you use a custom front end or interact with the custom payment method through the [Payment Methods API](https://docs.stripe.com/api/payment_methods.md). Make sure the display name and logo comply with the [marks policy](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#marks-requirements).
 3. **Configure an adapter for redirect-based payments**: If you add a redirect-based payment method, enter the URL of the adapter endpoint that receives requests from Stripe.
 4. **Save the type**: Click **Create** to save the type. You can then view its details in the Dashboard and use it to create custom payment methods. You can’t retrieve custom payment method types through the API, so store the type ID in your database for use when creating payment methods.
-
-## Display a custom payment method in your payment form
-
-Display a custom payment method alongside payment methods that Stripe processes. Your integration handles the payment with your provider. You can [record the transaction details](https://docs.stripe.com/api/payment-record/report.md) in Stripe to combine reporting with payments that Stripe processes.
-
-Choose the guide for your payment form:
-
-- [Payment Element](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md).
-- [Express Checkout Element](https://docs.stripe.com/payments/payment-element/custom-payment-methods.md#cpm-express-checkout-element).
-- [Mobile Payment Element](https://docs.stripe.com/payments/mobile/custom-payment-methods.md).
-
-## Add a redirect-based payment method 
-
-When a customer pays with the custom payment method, Stripe calls an adapter that you build and host. The adapter starts the payment with your provider and returns a URL. Stripe redirects the customer to that URL, and the adapter reports the result to Stripe. Redirect-based payment methods require the Checkout Sessions API and are in private preview.
-
-- [Add a redirect-based payment method](https://docs.stripe.com/payments/payment-methods/custom-payment-methods/redirect.md).
-
-## Bill subscriptions with a third-party processor
-
-Integrate Stripe Billing with your third-party payment processor to create subscriptions that charge payment methods stored with your provider. Stripe manages subscription status and tracks payment results. See [Integrate with third-party payment processors](https://docs.stripe.com/billing/subscriptions/third-party-payment-processing.md).
 
 ## Create payment methods with the API 
 
@@ -100,20 +90,14 @@ curl https://api.stripe.com/v1/payment_methods \
 
 ## Product support 
 
-Compare the products available for each integration. Contact Stripe to confirm support for your redirect-based integration where indicated.
+The following table shows which Stripe products support each integration:
 
-| Integration | Connect | Checkout | Payment Links | Payment Element | Express Checkout Element | Mobile Payment Element | Subscriptions | Invoicing | Customer Portal |
+| Integration | [Connect](https://docs.stripe.com/connect.md) | [Checkout](https://docs.stripe.com/payments/checkout.md) | [Payment Links](https://docs.stripe.com/payment-links.md) | [Payment Element](https://docs.stripe.com/payments/payment-element.md) | [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md) | [Mobile Payment Element](https://docs.stripe.com/payments/mobile.md) | [Subscriptions](https://docs.stripe.com/subscriptions.md) | [Invoicing](https://docs.stripe.com/invoicing.md) | [Customer Portal](https://docs.stripe.com/customer-management.md) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Display in your payment form | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
-| Redirect-based | Contact Stripe | ✓ Supported | - Unsupported | ✓ Supported 2 | - Unsupported | Contact Stripe | ✓ Supported | ✓ Supported 3 | ✓ Supported 4 |
+| Display in your payment form | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | (Private preview) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
+| Redirect-based | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported 1 | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported 2 | ✓ Supported 3 |
 
-1 In private preview.
-
-2 With the Checkout Sessions API only.
-
-3 Collect invoice payments with a saved custom payment method. Customers can’t add a custom payment method on the hosted invoice page.
-
-4 Customers can manage existing subscriptions, but can’t change a subscription’s payment method to a custom payment method.
+1 With the Checkout Sessions API only.2 Collect invoice payments with a saved custom payment method. Customers can’t add a custom payment method on the hosted invoice page.3 Customers can manage existing subscriptions, but can’t change a subscription’s payment method to a custom payment method.
 
 ## Compliance 
 

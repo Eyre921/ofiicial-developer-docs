@@ -10,6 +10,72 @@ Keep track of changes and upgrades to the Stripe API.
 
 # Endive
 [Learn what's changing in Endive](https://docs.stripe.com/changelog/endive.md)
+## 2026-11-18.endive
+
+### Connect and Accounts v2
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Create Express accounts with Stripe pricing and negative balance liability in Accounts v1](https://docs.stripe.com/changelog/endive/2026-11-18/express-accounts-v1-stripe-owned-pricing-negative-balance-liability.md) | Connect | Non-breaking | api |
+| [Create Express accounts with Stripe pricing and negative balance liability in Accounts v2](https://docs.stripe.com/changelog/endive/2026-11-18/express-accounts-v2-stripe-owned-pricing-negative-balance-liability.md) | Connect | Non-breaking | api |
+| [Adds PayPay payment method support to the Accounts v2 API](https://docs.stripe.com/changelog/endive/2026-11-18/paypay-payment-method-support-accounts-v2-api.md) | Connect, Payments | Non-breaking | api |
+| [Adds the application property to the Refund object for Connect](https://docs.stripe.com/changelog/endive/2026-11-18/adds-application-property-to-refund-object-for-connect.md) | Payments | Non-breaking | api |
+| [Adds Billie, MB WAY, and NZ BECS Direct Debit capabilities to the Accounts v2 API](https://docs.stripe.com/changelog/endive/2026-11-18/billie-mb-way-nz-becs-direct-debit-capabilities-accounts-v2-api.md) | Connect | Non-breaking | api |
+| [Adds additional material parameter for Konbini payments to the Accounts v2 API](https://docs.stripe.com/changelog/endive/2026-11-18/additional-material-parameter-for-konbini-payments-accounts-v2-api.md) | Connect | Non-breaking | api |
+| [Adds Pix payments to the Accounts v2 API](https://docs.stripe.com/changelog/endive/2026-11-18/adds-pix-payments-capability-to-the-accounts-api.md) | Payments | Non-breaking | api |
+| [Adds dashboard access to the Account Links v2 API](https://docs.stripe.com/changelog/endive/2026-11-18/dashboard-access-use-case-account-links-v2.md) | All products | Non-breaking | api |
+
+### Payments
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Allows updating the capture method on payment links](https://docs.stripe.com/changelog/endive/2026-11-18/payment-links-update-capture-method.md) | Paymentlinks | Non-breaking | api |
+| [Adds funding source details for Link payments on the Charge object](https://docs.stripe.com/changelog/endive/2026-11-18/adds-card-details-for-link-payments-to-the-charge-object.md) | Payments | Non-breaking | api |
+| [Adds refund reference tracking for Bizum and UPI](https://docs.stripe.com/changelog/endive/2026-11-18/refund-destination-details-bizum-upi.md) | Payments | Non-breaking | api |
+| [Adds support for car rental and lodging industry metadata](https://docs.stripe.com/changelog/endive/2026-11-18/car-rental-and-lodging-industry-metadata.md) | Payments | Non-breaking | api |
+| [Adds a fingerprint property for PayPay payments](https://docs.stripe.com/changelog/endive/2026-11-18/fingerprint-property-paypay-payments.md) | Payments | Non-breaking | api |
+
+### Additional updates
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds IGIC registrations for the Canary Islands](https://docs.stripe.com/changelog/endive/2026-11-18/igic-registrations-canary-islands.md) | Tax | Non-breaking | api |
+| [Adds Invoice Filtered All Fees report to the Reporting API](https://docs.stripe.com/changelog/endive/2026-11-18/invoice-filtered-all-fees-report.md) | All products | Non-breaking | api |
+| [Adds the Claimable Sandboxes API for platforms](https://docs.stripe.com/changelog/endive/2026-11-18/adds-the-claimable-sandboxes-api-for-platforms.md) | All products | Non-breaking | api |
+| [Shipping timestamps are always included on Issuing Card objects](https://docs.stripe.com/changelog/endive/2026-11-18/issuing-card-shipping-timestamps-always-included.md) | Issuing | Non-breaking | api |
+| [Adds lost benefits to product marketing features for the customer portal](https://docs.stripe.com/changelog/endive/2026-11-18/product-loss-messages-customer-portal-cancellation.md) | Billing | Non-breaking | api |
+| [Adds DevKit device types for Apps on Devices to Terminal Reader APIs](https://docs.stripe.com/changelog/endive/2026-11-18/terminal-devkit-device-types-for-apps-on-devices.md) | Terminal | Non-breaking | api |
+| [Adds an error code for account creation requests blocked due to inactivity](https://docs.stripe.com/changelog/endive/2026-11-18/error-code-for-blocked-account-creation-requests.md) | All products | Non-breaking | api |
+| [Adds Tron as a supported network for stablecoin payments](https://docs.stripe.com/changelog/endive/2026-11-18/adds-tron-as-a-supported-network-for-stablecoin-payments.md) | Crypto, Payments | Non-breaking | api |
+| [Adds address collection precision for automatic tax](https://docs.stripe.com/changelog/endive/2026-11-18/automatic-tax-address-collection-precision.md) | Elements | Non-breaking | api |
+
+## 2026-11-18.preview
+
+### Billing and invoicing
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds support for manually applying a customer balance to an open invoice](https://docs.stripe.com/changelog/endive/2026-11-18/manually-apply-customer-balance-to-open-invoices.md) | Invoicing | Non-breaking | api |
+| [Adds custom coupon support to preview SDKs](https://docs.stripe.com/changelog/endive/2026-11-18/adds-custom-coupon-support-to-preview-sdks.md) | Billing | Non-breaking | api |
+
+### Treasury
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Adds originating bank account and network details to the Received Debits object](https://docs.stripe.com/changelog/endive/2026-11-18/adds-originating-bank-account-and-network-details-to-received-debits.md) | Treasury | Non-breaking | api |
+| [Adds date filters for listing received debits in Money Management](https://docs.stripe.com/changelog/endive/2026-11-18/adds-created-filter-for-listing-received-debits-in-money-management.md) | Treasury | Non-breaking | api |
+
+### Additional updates
+
+| Title | Affected Products | Breaking change? | Category |
+| --- | --- | --- | --- |
+| [Makes microdeposit arrival dates nullable](https://docs.stripe.com/changelog/endive/2026-11-18/makes-microdeposit-arrival-dates-nullable.md) | Payments | Breaking | api |
+| [Adds alert severity when event generation failures are resolved](https://docs.stripe.com/changelog/endive/2026-11-18/event-generation-failure-resolved-event-severity.md) | All products | Non-breaking | api |
+| [Adds organization-level support to the List Activity Logs endpoint](https://docs.stripe.com/changelog/endive/2026-11-18/organization-level-support-list-activity-logs-endpoint.md) | Atlas, Billing, Capital, Checkout, Climate, Connect, Corporatecard, Crypto, Datapipeline, Elements, Financialconnections, Identity, Invoicing, Issuing, Paymentlinks, Payments, Payouts, Radar, Revrec, Sigma, Tax, Terminal, Treasury | Non-breaking | api |
+| [Expands action coverage in Activity Logs](https://docs.stripe.com/changelog/endive/2026-11-18/activity-logs-action-coverage.md) | Atlas, Billing, Capital, Checkout, Climate, Connect, Corporatecard, Crypto, Datapipeline, Elements, Financialconnections, Identity, Invoicing, Issuing, Paymentlinks, Payments, Payouts, Radar, Revrec, Sigma, Tax, Terminal, Treasury | Non-breaking | api |
+| [Documents the Account Session configuration for additional embedded components](https://docs.stripe.com/changelog/endive/2026-11-18/documents-account-session-parameters-and-responses-for-additional-connect-embedded-components.md) | Connect | Non-breaking | api |
+| [Adds Apple Pay Global Payouts in Public Preview](https://docs.stripe.com/changelog/endive/2026-11-18/apple-pay-global-payouts-public-preview.md) | Payouts | Non-breaking | api |
+
 ## 2026-10-28.preview
 
 ### Payments

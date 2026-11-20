@@ -8,6 +8,8 @@ path: api/checkout/sessions/create
 
 Creates a Checkout Session object.
 
+Validate requests on your server and protect your application’s Session-creation endpoint with access controls and limits on repeated creation. See [Protect your Session-creation endpoint](https://docs.stripe.com/payments/accept-a-payment.md?payment-ui=elements&api-integration=checkout#protect-session-creation).
+
 ## Prerequisites
 
 Before you can run the following code snippet, you need to call these APIs with the provided parameters to set up the prerequisite API object(s).
@@ -20,7 +22,7 @@ POST /v1/prices {"currency":"usd","unit_amount":1000,"recurring":{"interval":"mo
 ```curl
 curl https://api.stripe.com/v1/checkout/sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-10-28.endive" \
+  -H "Stripe-Version: 2026-11-18.endive" \
   --data-urlencode "success_url=https://example.com/success" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=2" \

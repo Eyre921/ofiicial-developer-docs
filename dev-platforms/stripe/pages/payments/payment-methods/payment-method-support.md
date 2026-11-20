@@ -352,16 +352,10 @@ The following payment methods support `on_behalf_of` in private preview:
 
 If you need a payment method not offered on this page, consider [custom payment methods](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md).
 
-| Integration | Connect | Checkout | Payment Links | Payment Element | Express Checkout Element | Mobile Payment Element | Subscriptions | Invoicing | Customer Portal |
+| Integration | [Connect](https://docs.stripe.com/connect.md) | [Checkout](https://docs.stripe.com/payments/checkout.md) | [Payment Links](https://docs.stripe.com/payment-links.md) | [Payment Element](https://docs.stripe.com/payments/payment-element.md) | [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md) | [Mobile Payment Element](https://docs.stripe.com/payments/mobile.md) | [Subscriptions](https://docs.stripe.com/subscriptions.md) | [Invoicing](https://docs.stripe.com/invoicing.md) | [Customer Portal](https://docs.stripe.com/customer-management.md) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Display in your payment form | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported 1 | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
-| Redirect-based | Contact Stripe | ✓ Supported | - Unsupported | ✓ Supported 2 | - Unsupported | Contact Stripe | ✓ Supported | ✓ Supported 3 | ✓ Supported 4 |
+| Display in your payment form | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | (Private preview) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
+| Redirect-based | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported 1 | - Unsupported | - Unsupported | ✓ Supported | ✓ Supported 2 | ✓ Supported 3 |
 
-1 In private preview.
-
-2 With the Checkout Sessions API only.
-
-3 Collect invoice payments with a saved custom payment method. Customers can’t add a custom payment method on the hosted invoice page.
-
-4 Customers can manage existing subscriptions, but can’t change a subscription’s payment method to a custom payment method.
+1 With the Checkout Sessions API only.2 Collect invoice payments with a saved custom payment method. Customers can’t add a custom payment method on the hosted invoice page.3 Customers can manage existing subscriptions, but can’t change a subscription’s payment method to a custom payment method.
 

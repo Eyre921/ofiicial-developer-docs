@@ -113,7 +113,7 @@ You can retrieve a connected account’s financial accounts using the `type: "pa
 ```curl
 curl -G https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   -d type=payments
 ```
@@ -202,7 +202,7 @@ You can permanently [close a financial account](https://docs.stripe.com/api/v2/m
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_accounts/{{FINANCIAL_ACCOUNT_ID}}/close \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "forwarding_settings": {

@@ -3115,6 +3115,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/desktop/installing-and-authenticating-to-github-desktop/setting-up-github-desktop
 /en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop
 /en/desktop/installing-and-authenticating-to-github-desktop/authenticating-to-github-in-github-desktop
+/en/desktop/installing-and-authenticating-to-github-desktop/using-multiple-accounts-in-github-desktop
 /en/desktop/installing-and-authenticating-to-github-desktop/about-connections-to-github-in-github-desktop
 /en/desktop/installing-and-authenticating-to-github-desktop/updating-github-desktop
 /en/desktop/installing-and-authenticating-to-github-desktop/uninstalling-github-desktop

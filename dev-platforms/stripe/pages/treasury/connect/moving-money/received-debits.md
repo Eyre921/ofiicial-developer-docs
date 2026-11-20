@@ -38,7 +38,7 @@ You can retrieve the mandate using the ID from the webhook event to review the a
 ```curl
 curl https://api.stripe.com/v2/money_management/spending_mandates/{{SPENDING_MANDATE_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
@@ -79,7 +79,7 @@ You can cancel a mandate to end debit authorization at any time. Canceling while
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/spending_mandates/{{SPENDING_MANDATE_ID}}/cancel \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
@@ -94,7 +94,7 @@ You can retrieve the set of mandates in place for a connected account. Use inlin
 ```curl
 curl https://api.stripe.com/v2/money_management/spending_mandates \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Account: {{CONNECTED_ACCOUNT_ID}}"
 ```
 
@@ -144,7 +144,7 @@ For bank transfers, use `bank_transfer.originating_bank_account.type` to select 
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}"
 ```
 
@@ -196,7 +196,7 @@ curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debits \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}"
 ```
 
@@ -209,7 +209,7 @@ You can dispute a `ReceivedDebit` within the dispute window specified in `disput
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/debit_disputes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "received_debit": "{{RECEIVED_DEBIT_ID}}",
@@ -226,7 +226,7 @@ curl -X POST https://api.stripe.com/v2/money_management/debit_disputes \
 ```curl
 curl https://api.stripe.com/v2/money_management/debit_disputes/{{DEBIT_DISPUTE_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}"
 ```
 
@@ -237,7 +237,7 @@ curl https://api.stripe.com/v2/money_management/debit_disputes/{{DEBIT_DISPUTE_I
 ```curl
 curl https://api.stripe.com/v2/money_management/debit_disputes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}"
 ```
 
@@ -254,7 +254,7 @@ In a sandbox, cancellation due to inactive or unrequested capabilities uses a fi
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/debit \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "amount": {

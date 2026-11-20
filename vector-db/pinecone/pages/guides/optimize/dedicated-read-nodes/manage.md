@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/optimize/dedicated-read-nodes/manage
 path: guides/optimize/dedicated-read-nodes/manage
 ---
 
-Use a hosted embedding model, monitor fullness, change node types, pause, or convert a Pinecone dedicated read nodes index back to on-demand.
+Use a hosted embedding model, monitor fullness, change node types, pause, or move a Pinecone dedicated read nodes index back to on-demand.
 
 ## Use a hosted embedding model
 
@@ -232,61 +232,13 @@ When changing node types, shards, or replicas, monitor the read capacity status 
 
 ## Convert to on-demand
 
-To convert a dedicated read nodes index back to on-demand, call [Configure an index](/reference/api/2026-07/control-plane/configure_index) and set `read_capacity.mode` to `OnDemand`. This converts the index in place, keeping the same index name and host.
+You can't change an index from dedicated read capacity back to on-demand. A [Configure an index](/reference/api/2026-07/control-plane/configure_index) request that sets `read_capacity.mode` to `OnDemand` returns a `400` with `Cannot change from Provisioned to OnDemand`, and leaves the index unchanged.
 
-```bash Request theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-INDEX_NAME="YOUR_INDEX_NAME"
-
-curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
-     -H "Accept: application/json" \
-     -H "Content-Type: application/json" \
-     -H "Api-Key: $PINECONE_API_KEY" \
-     -H "X-Pinecone-Api-Version: 2026-07" \
-     -d '{
-           "read_capacity": {
-             "mode": "OnDemand"
-           }
-         }'
-```
-
-```jsonc Response expandable theme={null}
-{
-  "name": "example-index",
-  "status": {
-    "ready": true,
-    "state": "Ready"
-  },
-  "host": "example-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-  "deployment": {
-    "deployment_type": "managed",
-    "region": "us-east-1",
-    "cloud": "aws",
-    "environment": "aped-4627-b74a"
-  },
-  "read_capacity": {
-    "mode": "OnDemand",
-    "status": {
-      "state": "Ready",
-      "current_shards": null,
-      "current_replicas": null
-    }
-  },
-  "schema": {
-    "fields": {
-      "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
-    }
-  },
-  "deletion_protection": "disabled",
-  "tags": null
-}
-```
-
-If you'd rather return to on-demand on a fresh index, use the backup and restore path instead:
+To return to on-demand, restore a backup to a new index:
 
 1. [Create a backup](/guides/indexes/back-up-an-index) of your dedicated read nodes index.
 2. [Create a new index from the backup](/guides/indexes/restore-an-index), without specifying dedicated read node configuration.
-3. Verify the new on-demand index and update your application to use it.
+3. Verify the new on-demand index and update your application to use it. The new index has its own name and host.
 4. Delete the old dedicated read nodes index.
 
-If you have concerns or need assistance, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+To discuss converting an index in place, [contact support](https://app.pinecone.io/organizations/-/settings/support/ticket).

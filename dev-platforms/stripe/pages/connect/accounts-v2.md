@@ -42,7 +42,7 @@ The following example creates an `Account` using API v2. Notice that its structu
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   --json '{
     "contact_email": "jenny.rosen@example.com",
     "display_name": "Jenny Rosen",
@@ -118,7 +118,7 @@ To get the current configurations, [retrieve the Account](https://docs.stripe.co
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/acct_123/close \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   --json '{
     "applied_configurations": [
         "customer",

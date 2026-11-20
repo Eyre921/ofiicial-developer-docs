@@ -70,6 +70,7 @@ path: docs/eleven-agents/llms.txt
 - [Exa](https://elevenlabs.io/docs/eleven-agents/customization/integrations/exa.md): Give your ElevenLabs agents real-time web search
 - [Freshdesk](https://elevenlabs.io/docs/eleven-agents/customization/integrations/freshdesk.md): Connect your ElevenLabs agents with Freshdesk
 - [Genesys](https://elevenlabs.io/docs/eleven-agents/customization/integrations/genesys.md): Connect your ElevenLabs agents with Genesys Cloud
+- [Gmail](https://elevenlabs.io/docs/eleven-agents/customization/integrations/gmail.md): Connect a Gmail mailbox to send, read, and respond to email
 - [Google Calendar](https://elevenlabs.io/docs/eleven-agents/customization/integrations/google_calendar.md): Connect your ElevenLabs agents with Google Calendar scheduling
 - [Google Drive](https://elevenlabs.io/docs/eleven-agents/customization/integrations/google_drive.md): Sync Google Drive files to your knowledge base
 - [HubSpot](https://elevenlabs.io/docs/eleven-agents/customization/integrations/hubspot.md): Connect your ElevenLabs agents with HubSpot CRM
@@ -77,6 +78,7 @@ path: docs/eleven-agents/llms.txt
 - [Jira](https://elevenlabs.io/docs/eleven-agents/customization/integrations/jira.md): Connect your ElevenLabs agents with Jira Cloud
 - [Parallel](https://elevenlabs.io/docs/eleven-agents/customization/integrations/parallel.md): Connect your ElevenLabs agents with Parallel web search
 - [Perplexity](https://elevenlabs.io/docs/eleven-agents/customization/integrations/perplexity.md): Give your ElevenLabs agents answers and web search grounded in live sources
+- [Plain](https://elevenlabs.io/docs/eleven-agents/customization/integrations/plain.md): Connect your ElevenLabs agents with Plain support threads
 - [Salesforce](https://elevenlabs.io/docs/eleven-agents/customization/integrations/salesforce.md): Connect your ElevenLabs agents with Salesforce CRM
 - [ServiceNow](https://elevenlabs.io/docs/eleven-agents/customization/integrations/servicenow.md): Connect your ElevenLabs agents with ServiceNow ITSM
 - [Slack](https://elevenlabs.io/docs/eleven-agents/customization/integrations/slack.md): Connect a Slack workspace to ElevenLabs Agents to chat with an agent in channels and threads

@@ -33,9 +33,12 @@ With [Custom SSO](/accounts/sso), people sign in to the Nexus app and to Nexus C
 Nexus has two roles:
 
 * **Admin:** invites and removes members, changes roles, and manages Model Providers. On Enterprise, admins also manage Spend Limits.
-* **User:** uses Nexus with their own Nexus key. Team calls this role **Member**.
+* **Member:** uses Nexus with their own Nexus key.
 
-Admins manage members on **Members** (Team) or **Settings → Users & Access** (Enterprise). On Enterprise, users can view that page but can't change it.
+Admins manage members on **Members** (Team) or **Settings → Users & Access** (Enterprise). On Enterprise, members can view that page but can't change it.
+
+* **Member** is the platform `user` role. Nexus also shows `inference-user` as **Member**; people who join through SSO sign-up get that role when the identity provider sets no default role. The label changes only what the Nexus app shows, not the stored role or its permissions.
+* Other platform roles, such as Contributor, keep their platform name and can't be chosen in the Nexus app.
 
 ## Keep provider credentials with admins
 

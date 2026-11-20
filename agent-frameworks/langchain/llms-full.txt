@@ -15727,7 +15727,7 @@ To set up a data plane, follow [BYOC onboarding on GCP](/langsmith/byoc-onboardi
 
 LangSmith creates the following in your GCP project:
 
-* **Network**: A VPC with a GKE subnet, Cloud NAT with a static egress IP address, and private services access.
+* **Network**: A VPC with a GKE subnet, Cloud NAT with a static egress IP address, private services access, and the routes and private DNS zones that keep Google API traffic on [Private Google Access](/langsmith/byoc-networking-gcp#private-google-access).
 * **GKE**: A regional, private GKE Standard cluster with Workload Identity and shielded nodes.
 * **Cloud SQL for PostgreSQL**: One instance for LangSmith and one for the SmithDB metastore. Private IP only, high availability, TLS, and IAM database login, so no database password exists.
 * **Memorystore for Redis Cluster**: TLS and IAM auth, reached through Private Service Connect.
@@ -15758,16 +15758,7 @@ LangSmith creates the following in your GCP project:
 
 ## Network
 
-All subnets come from the `vpc_cidr` you choose, a range from `/16` to `/18`. All have Private Google Access on.
-
-| Range | Size | Use |
-| - | - | - |
-| GKE subnet | First `/20` | GKE nodes. Pods use the secondary range `192.168.0.0/18`, and services use `192.168.64.0/18`. |
-| Endpoints subnet | `/24` | Private Service Connect endpoints for Memorystore. |
-| Control plane endpoint subnet | `/24` | The Private Service Connect endpoint to the LangSmith control plane, in `us-central1`. |
-| Private services access | `/20` | Peered to Google services for the Cloud SQL private IP. |
-
-The VPC is one regional VPC with custom subnets. Cloud NAT uses one static external IP address, so you can allowlist the data plane, and logs errors only.
+LangSmith creates one regional VPC for the data plane, with custom subnets from the `vpc_cidr` you choose. Cloud NAT gives it one static egress IP address. Private Service Connect carries traffic to the control plane, and Private Google Access carries traffic to Google APIs and Artifact Registry. For the address ranges, MTU, connecting your network, DNS and ingress, and the egress the data plane needs, see [BYOC networking on GCP](/langsmith/byoc-networking-gcp).
 
 ## Storage
 
@@ -15805,23 +15796,6 @@ Not on by default: application-layer Secrets encryption with your Cloud KMS key,
 * **Istio**: Base, istiod, and the ingress gateway.
 * **Postgres setup job**: Creates the databases and the IAM database user, and grants it the database owner roles. It keeps no password.
 
-## DNS and ingress
-
-* **Hostname**: `<first 8 characters of the data plane ID>.gcp.langchain-byoc.com`. LangChain owns the parent zone.
-* **Public zone**: A public Cloud DNS zone for the hostname in your project, which LangChain delegates from the parent zone.
-* **Public endpoint**: An external passthrough load balancer. The hostname resolves on the internet.
-* **Internal endpoint** (default): An internal passthrough load balancer in the GKE subnet, with global access. The address record is in a private zone, visible only in the data plane VPC, so the private address is never published. The public zone stays for the delegation and the certificate challenges.
-* **TLS**: A Let's Encrypt certificate. HTTP redirects to HTTPS.
-* **Gateway hardening**: The gateway normalizes paths before routing, rejects request bodies over 100 MiB, limits requests per gateway pod, and denies `TRACE`, `TRACK`, and `CONNECT`.
-* **Control plane paths**: Paths such as sign-in are forwarded to the control plane over Private Service Connect.
-
-## Private Service Connect
-
-* LangChain publishes a service attachment in `us-central1`. LangSmith automatically adds your project to its accept list during data plane provisioning. No manual project allowlisting is required.
-* The data plane creates the endpoint: an internal address in the control plane endpoint subnet, and a forwarding rule to the service attachment. Data planes in other regions reach the endpoint through global access.
-* A private DNS zone for `us-central1.p.api.smith.langchain.com`, visible only in the data plane VPC, points at the endpoint.
-* Private Service Connect carries traffic from the data plane to the control plane only. The control plane reaches the cluster through the GKE DNS-based endpoint.
-
 ## Access and permissions
 
 ### Terraform module resources
@@ -15833,7 +15807,7 @@ The [`langsmith-byoc-service-account` Terraform module](https://github.com/langc
 | `langsmith-byoc-provisioner` service account | The service account LangSmith provisions as. Its description is your external ID. |
 | Token Creator on the provisioner | Lets `byoc-crossplane@langchain-prod.iam.gserviceaccount.com` impersonate the provisioner. No other LangChain identity is trusted. |
 | `langsmithByocProvisioner` custom role | The permissions to create, update, and delete data plane resources that a name condition cannot limit, bound on the project. |
-| `langsmithByocNamed<Kind>` custom roles | One role per resource kind: Cloud SQL instances, GKE clusters, networks, subnets, Cloud Routers, addresses, forwarding rules, Memorystore for Redis clusters, service connection policies, Cloud Storage, and Secret Manager. Each is bound with an IAM condition on the resource name, so the provisioner can create, change, and delete only resources whose names start with `langsmith-`, and secrets whose IDs start with `ls-`. |
+| `langsmithByocNamed<Kind>` custom roles | One role per resource kind: Cloud SQL instances, GKE clusters, networks, subnets, routes, Cloud Routers, network firewall policies (release v0.17.91 and later), addresses, forwarding rules, Memorystore for Redis clusters, service connection policies, Cloud Storage, and Secret Manager. Each is bound with an IAM condition on the resource name, so the provisioner can create, change, and delete only resources whose names start with `langsmith-`, and secrets whose IDs start with `ls-`. |
 | `managed_by: langsmith` tag | A project tag. The provisioner can bind it only to GKE clusters and Cloud SQL instances whose names start with `langsmith-`. |
 | `roles/container.admin` for the control plane | Granted to `byoc-crossplane@langchain-prod.iam.gserviceaccount.com` with the condition that the cluster has the `managed_by: langsmith` tag. It covers the GKE API and the Kubernetes API. |
 | `langsmithByocClusterConnect` custom role | `container.clusters.connect` for the control plane service account, limited to clusters whose names start with `langsmith-`. The DNS-based endpoint checks it without the cluster's tags. Connecting gives no access inside a cluster. |
@@ -15905,6 +15879,7 @@ To remove LangChain's access to your project:
 ## See also
 
 * [BYOC onboarding on GCP](/langsmith/byoc-onboarding-gcp)
+* [BYOC networking on GCP](/langsmith/byoc-networking-gcp)
 * [BYOC overview](/langsmith/byoc)
 * [BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)
 
@@ -16551,6 +16526,88 @@ If your deployment includes sandboxes, budget separately for their dedicated hos
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-data-plane-cost-azure.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
+# GCP data plane cost estimate
+Source: https://docs.langchain.com/langsmith/byoc-data-plane-cost-gcp
+
+Rough Google Cloud cost of a LangSmith BYOC data plane running SmithDB, with the default resource sizes and a separate estimate for sandboxes.
+
+> [!WARNING]
+>
+> These are estimates, not a quote. Google Cloud changes its prices without notice. Your bill depends on region, usage, and any discounts you have with Google Cloud, such as committed use discounts.
+
+This is a rough monthly cost for a [LangSmith BYOC data plane on GCP](/langsmith/byoc-architecture-gcp). GCP data planes run SmithDB, not ClickHouse.
+
+The estimate uses USD on-demand list prices for `us-west1` and 730 hours per month. It does not include sustained use discounts, which Google Cloud applies automatically to N2 and N2D VMs. The database, Redis, and node pool sizes are the defaults for a new data plane. Application and SmithDB node counts are based on a LangChain-operated test data plane with low tracing volume. LangSmith increases capacity as tracing volume requires it.
+
+> [!NOTE]
+>
+> Scaling capacity for any resource can be lowered when required, as long as the deployment remains within safe operating limits.
+
+## Rough monthly estimate
+
+Sandboxes are excluded from this estimate. See [Sandbox add-on](#sandbox-add-on).
+
+| Area | Rough monthly estimate | Notes |
+| - | - | - |
+| GKE cluster management | \~\$73 | One regional GKE cluster at \$0.10/hour. |
+| System node pool | \~\$455 | 3 `n2-standard-4` nodes, one per zone, with 100 GB balanced persistent disk boot disks. |
+| Application worker nodes | \$800–\$1,600 | 4 to 8 `e2-standard-8` nodes for LangSmith pods, created by GKE node auto-provisioning, with 100 GB standard persistent disk boot disks. |
+| SmithDB nodes | \$637–\$1,274 | 1 to 2 `n2-standard-16` nodes with 2 local SSDs (750 GB) each, for the SmithDB query, ingestion, and compaction workers. The pool scales up to 16 nodes. |
+| Cloud SQL for PostgreSQL, LangSmith | \~\$214 | PostgreSQL 18, Enterprise edition, `db-custom-2-7680` (2 vCPUs, 7.5 GB), high availability, 50 GB SSD storage. |
+| Cloud SQL for PostgreSQL, SmithDB metastore | \~\$195 | PostgreSQL 18, Enterprise edition, `db-custom-2-4096` (2 vCPUs, 4 GB), high availability, 100 GB SSD storage. |
+| Memorystore for Redis Cluster | \~\$46 | 1 shard with 1 replica: 2 `REDIS_SHARED_CORE_NANO` nodes. |
+| Networking | \$50–\$150 | Cloud NAT, the ingress load balancer, the Private Service Connect endpoint to the LangSmith control plane, external IP addresses, and low-volume data processing. |
+| Cloud Storage, Secret Manager, Cloud Logging, Cloud Monitoring | \$25–\$200 | Low-volume baseline. Grows with trace payloads, retention, and log volume. |
+
+Estimated monthly total, excluding sandboxes: **\$2,495–\$4,207**
+
+### Notes on the estimate
+
+* **Cloud SQL** prices both the primary and the standby for high availability. Storage grows automatically, and backup storage beyond the included allowance costs extra.
+* **SmithDB** keeps its caches on local SSD. They are not separately billed persistent disks. If the first SmithDB pool cannot add a node, for example during a zonal stockout, GKE scales up a fallback pool instead: `n2d-standard-16`, then `c3-standard-22-lssd`, then `c3d-standard-30-lssd`.
+* **Cloud NAT** costs \$0.0014 per VM per hour, plus \$0.045 per GB processed.
+* **Cloud Logging** receives VPC flow logs from every data plane subnet. Ingestion beyond the free monthly allowance is billed per GB.
+
+### SmithDB object store pricing
+
+SmithDB stores trace data in the data plane's Cloud Storage bucket, at Standard storage pricing of \$0.020 per GB per month in `us-west1`. The figures assume about 2 million traces per month.
+
+| Stored size per trace | 14-day retention | 400-day retention |
+| - | - | - |
+| 10 KB | \$2 per year | \$64 per year |
+| 50 KB | \$11 per year | \$320 per year |
+| 200 KB | \$45 per year | \$1,280 per year |
+
+See [Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure) for details of SmithDB infrastructure.
+
+## Sandbox add-on
+
+If your data plane runs sandboxes, budget separately for these resources:
+
+| Area | Rough monthly estimate | Notes |
+| - | - | - |
+| Sandbox node pool | \$637–\$1,911 | 1 to 3 `n2-standard-16` nodes with 2 local SSDs (750 GB) each. The pool keeps at least one node running. |
+| Memorystore for Redis Cluster | +\$162 | Redis moves to 2 `REDIS_STANDARD_SMALL` nodes, about \$208 per month in total, because sandboxes keep their filesystem metadata in Redis. |
+| Cloud Storage | Usage-based | Sandbox filesystems are stored in the data plane bucket. |
+
+## See also
+
+* [Google Cloud pricing calculator](https://cloud.google.com/products/calculator)
+* [Compute Engine VM pricing](https://cloud.google.com/compute/vm-instance-pricing)
+* [GKE pricing](https://cloud.google.com/kubernetes-engine/pricing)
+* [Cloud SQL pricing](https://cloud.google.com/sql/pricing)
+* [Memorystore for Redis Cluster pricing](https://cloud.google.com/memorystore/docs/cluster/pricing)
+* [Cloud NAT pricing](https://cloud.google.com/nat/pricing)
+* [BYOC architecture on GCP](/langsmith/byoc-architecture-gcp)
+* [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale)
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-data-plane-cost-gcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+
+
 # BYOC FAQ
 Source: https://docs.langchain.com/langsmith/byoc-faq
 
@@ -16770,6 +16827,10 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 > Yes. An organization can have several data planes, each in its own AWS account and region.
 >
 > The default limit is five data planes per organization. To deploy more than that, contact the LangChain team.
+
+> [accordion] Why does the UI say I may not have network access to a workspace?
+>
+> The LangSmith UI cannot reach the workspace's data plane. Check that you are on the private network that reaches the data plane. In Chrome or Edge, also check that you allowed local network access for the LangSmith site. See [Allow local network access in Chrome and Edge](/langsmith/byoc-usage#allow-local-network-access-in-chrome-and-edge).
 
 > [accordion] Can one organization hold both Cloud and BYOC workspaces?
 >
@@ -17034,6 +17095,112 @@ For more information, see [Deploy agents](/langsmith/deploy-overview).
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-migration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
+# BYOC networking on GCP
+Source: https://docs.langchain.com/langsmith/byoc-networking-gcp
+
+The network that LangSmith BYOC creates in your GCP project, how to connect your network to it, and the traffic that leaves the data plane.
+
+LangSmith creates one VPC for each BYOC data plane in your GCP project. This page describes its address ranges, how to connect your network to it, and which traffic stays on Google's network or needs the internet. For everything else LangSmith deploys, see [BYOC architecture on GCP](/langsmith/byoc-architecture-gcp).
+
+> [!NOTE]
+>
+> BYOC on GCP is in [beta](/langsmith/release-stages). Network details can change between releases. The values on this page are the current defaults.
+
+## Address ranges
+
+All subnets come from the `vpc_cidr` you choose, a range from `/16` to `/18`. All have Private Google Access on.
+
+| Range | Size | Use |
+| - | - | - |
+| GKE subnet | First `/20` | GKE nodes. |
+| Endpoints subnet | `/24` | Private Service Connect endpoints for Memorystore. |
+| Control plane endpoint subnet | `/24` | The Private Service Connect endpoint to the LangSmith control plane, in `us-central1`. |
+| Private services access | `/20` | Peered to Google services for the Cloud SQL private IP. |
+| GKE pods | `/18` | The GKE subnet's secondary range: the first `/18` after the private services access range. |
+
+A `/18` VPC has no room for the pod range, so its pods use `192.168.0.0/18`, and the VPC must not overlap that range. Use a `/17` or `/16` to keep every range inside your VPC.
+
+GKE services take no range from the VPC. GKE assigns them its Google-managed range, `34.118.224.0/20`, which stays inside the cluster and is not exported over VPC peering. Older data planes keep `192.168.0.0/18` for pods and `192.168.64.0/18` for services.
+
+The VPC is one regional VPC with custom subnets. Cloud NAT uses one static external IP address, which you can allowlist to accept traffic from the data plane. Cloud NAT logging is set to errors only.
+
+## Connect your network
+
+The data plane endpoint is internal by default: an internal passthrough load balancer in the GKE subnet, with global access, so clients in any region of a connected network can reach it. You choose public or internal when you [create the data plane](/langsmith/byoc-onboarding-gcp#choose-a-public-or-internal-endpoint).
+
+To reach an internal endpoint:
+
+* **Connect your network to the data plane VPC**, for example with VPC peering or Cloud VPN. Peering exchanges subnet routes, including the GKE pod range, so choose a `vpc_cidr` that does not overlap your networks. With a `/18` VPC, your networks must not overlap `192.168.0.0/18` either.
+* **Make the hostname resolve from your network.** The address record is in a private zone that only the data plane VPC can see, so the private address is never published.
+
+If you connect a network with a smaller MTU, set the VPC [MTU](#mtu) to match it. If that network exports a default route to the data plane VPC, Google API traffic still uses [Private Google Access](#private-google-access), and all other egress follows the imported route.
+
+## MTU
+
+The VPC uses the GCP default MTU, 1460 bytes. If you connect the VPC to a network with a smaller MTU, such as a hub VPC or an interconnect at 1440 bytes, set `mtu_bytes` when you create the data plane. LangSmith accepts 1300 to 8896.
+
+## Private Service Connect
+
+* LangChain publishes a service attachment in `us-central1`. LangSmith automatically adds your project to its accept list during data plane provisioning. No manual project allowlisting is required.
+* The data plane creates the endpoint: an internal address in the control plane endpoint subnet, and a forwarding rule to the service attachment. Data planes in other regions reach the endpoint through global access.
+* A private DNS zone for `us-central1.p.api.smith.langchain.com`, visible only in the data plane VPC, points at the endpoint.
+* Private Service Connect carries traffic from the data plane to the control plane only. The control plane reaches the cluster through the GKE DNS-based endpoint.
+
+## Private Google Access
+
+The data plane reaches Google APIs over `private.googleapis.com`, so that traffic stays on Google's network and does not depend on the VPC's default route. LangSmith creates the following in the data plane VPC:
+
+* **Routes**: `199.36.153.8/30` (`private.googleapis.com`) and `34.126.0.0/18` (direct connectivity for some Google APIs), both with the default internet gateway as next hop. Their names start with `langsmith-`.
+* **Private DNS zones**: `googleapis.com`, `pkg.dev`, and `gcr.io` resolve to `private.googleapis.com`. A `rep.googleapis.com` zone keeps regional endpoints, such as `aiplatform.us-central1.rep.googleapis.com`, on their public addresses. The zones are visible only in the data plane VPC.
+
+The routes are more specific than a default route, including one imported from a peered network. Secret Manager, Cloud Storage, Workload Identity, Cloud Logging, and image pulls from Artifact Registry therefore do not go through that network. VPC peering does not exchange routes whose next hop is the default internet gateway, so peered networks do not learn these routes, and their DNS is unchanged.
+
+## DNS and ingress
+
+* **Hostname**: `<first 8 characters of the data plane ID>.gcp.langchain-byoc.com`. LangChain owns the parent zone.
+* **Public zone**: A public Cloud DNS zone for the hostname in your project, which LangChain delegates from the parent zone.
+* **Public endpoint**: An external passthrough load balancer. The hostname resolves on the internet.
+* **Internal endpoint** (default): An internal passthrough load balancer in the GKE subnet, with global access. The address record is in a private zone, visible only in the data plane VPC, so the private address is never published. The public zone stays for the delegation and the certificate challenges.
+* **TLS**: A Let's Encrypt certificate. HTTP redirects to HTTPS.
+* **Gateway hardening**: The gateway normalizes paths before routing, rejects request bodies over 100 MiB, limits requests per gateway pod, and denies `TRACE`, `TRACK`, and `CONNECT`.
+* **Control plane paths**: Paths such as sign-in are forwarded to the control plane over Private Service Connect.
+
+## Container images
+
+LangSmith and its add-ons pull their images over Private Google Access from LangChain's Artifact Registry repository, `us-docker.pkg.dev/langchain-artifacts/langsmith-byoc`. The add-ons are cert-manager, trust-manager, External Secrets, Istio, and KEDA. No images come from Docker Hub, Quay, or GitHub Container Registry.
+
+## Outbound traffic
+
+The following traffic needs no internet access:
+
+* **Control plane**: Private Service Connect.
+* **Google APIs and images**: Private Google Access.
+* **Cloud SQL and Memorystore**: Private IP and Private Service Connect.
+
+All other egress leaves through the VPC's default route: Cloud NAT, or your network if you import a default route from it. If your network filters that traffic, allow the following destinations:
+
+| Feature | Destinations |
+| - | - |
+| Model providers | The LLM providers your workspaces use, for example `api.openai.com` and `api.anthropic.com`, Azure OpenAI (`<resource>.openai.azure.com`), Amazon Bedrock (`bedrock-runtime.<region>.amazonaws.com`), or a custom base URL. For Vertex AI, including Gemini on Vertex AI, allow only its regional `aiplatform.<region>.rep.googleapis.com` endpoints. The Gemini Developer API (`generativelanguage.googleapis.com`) goes over Private Google Access and needs no entry. |
+| Certificates | `acme-v02.api.letsencrypt.org` on TCP 443, and DNS to `1.1.1.1` and `8.8.8.8` on TCP and UDP 53 for the DNS-01 propagation check. |
+| Deployment builds from GitHub | `github.com`, `api.github.com`, `codeload.github.com`, `pypi.org`, `files.pythonhosted.org`, `registry.npmjs.org`, and any package index or git host the project uses. |
+| Agent and sandbox code | The tools, APIs, and package indexes that the code calls. |
+| Webhooks, alerts, MCP servers, and integrations | The URLs you configure, for example `events.pagerduty.com` or `slack.com`. |
+
+If your network inspects TLS, exclude these destinations from inspection. Workloads in the data plane do not trust your inspection CA.
+
+## See also
+
+* [BYOC architecture on GCP](/langsmith/byoc-architecture-gcp)
+* [BYOC onboarding on GCP](/langsmith/byoc-onboarding-gcp)
+
+***
+
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-networking-gcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+
+
 # BYOC onboarding
 Source: https://docs.langchain.com/langsmith/byoc-onboarding-aws
 
@@ -17103,6 +17270,8 @@ Data planes are provisioned with a private endpoint by default, so you need priv
 Find the API URL under **Settings > Data Planes**.
 
 If you open a workspace and see the following screen, your machine does not have network access to that workspace's data plane. The LangSmith frontend runs in your browser and calls the data plane directly, so your machine must be on a network that can reach the data plane's private endpoint. Connect through your private connectivity option, then refresh the page.
+
+If you are connected and still see this screen in Chrome or Edge, the browser may be blocking the request. See [Allow local network access in Chrome and Edge](/langsmith/byoc-usage#allow-local-network-access-in-chrome-and-edge).
 
 ![LangSmith error screen titled You may not have network access to this workspace. It states that LangSmith cannot reach the data plane for the selected workspace and lists other workspaces grouped by data plane. Reachable data planes show a green header with active Switch buttons. The unreachable data plane shows a red header with disabled Switch buttons.](https://mintcdn.com/langchain-5e9cc07a/a_vO91vE4oZRWYyY/langsmith/images/byoc-data-plane-unreachable.png?fit=max\&auto=format\&n=a_vO91vE4oZRWYyY\&q=85\&s=881f94a84e295064162e8673517245fd)
 
@@ -17431,7 +17600,7 @@ provider "google" {
 }
 
 module "langsmith_byoc_service_account" {
-  source = "github.com/langchain-ai/terraform//modules/byoc/gcp/langsmith-byoc-service-account?ref=v0.17.80"
+  source = "github.com/langchain-ai/terraform//modules/byoc/gcp/langsmith-byoc-service-account?ref=v0.17.103"
 
   project_id                 = "<project-id>"
   crossplane_service_account = "byoc-crossplane@langchain-prod.iam.gserviceaccount.com"
@@ -17443,7 +17612,7 @@ output "provisioner_service_account" {
 }
 ```
 
-LangSmith requires release v0.17.80 or later of the module. If you applied an earlier release, re-apply the module at v0.17.80 or later.
+LangSmith requires release v0.17.90 or later of the module, which lets the provisioner create the [Private Google Access](/langsmith/byoc-networking-gcp#private-google-access) routes. With an earlier release, the data plane still becomes ready, but without Private Google Access: Google API traffic resolves to public addresses and follows your VPC's routes. If you applied an earlier release, re-apply the module at v0.17.90 or later.
 
 To create the data plane service accounts and their project roles yourself, set `byo_iam = true` before you create data planes in the project. The provisioner then cannot create service accounts or change the project IAM policy. Set it if the project holds resources that are not LangSmith's. Create the data plane with `byoiam_enabled` set to `true`. For more information, see [Bring your own IAM](/langsmith/byoc-architecture-gcp#bring-your-own-iam).
 
@@ -17476,10 +17645,11 @@ The request takes the following fields:
 | `region` | The GCP region of the data plane. BYOC on GCP can run in any GCP region. If the region you need is not enabled yet, contact the LangChain team to add it. |
 | `gcp_project_id` | The project from [Step 2](#step-2-run-the-terraform-module). |
 | `provisioner_service_account` | The `provisioner_service_account` Terraform output. It must be in the project. |
-| `vpc_cidr` | The range of the VPC that LangSmith creates. A private RFC 1918 range from `/16` to `/18`. It must not overlap `192.168.0.0/17`, which GKE pods and services use. |
+| `vpc_cidr` | The range of the VPC that LangSmith creates. A private RFC 1918 range from `/16` to `/18`. A `/16` or `/17` holds every range, GKE pods included. A `/18` must not overlap `192.168.0.0/18`, where its GKE pods go. See [Network](/langsmith/byoc-networking-gcp#address-ranges). |
 | `public_load_balancer` | `true` for a public endpoint. `false` (default) for an internal endpoint. See [Choose a public or internal endpoint](#choose-a-public-or-internal-endpoint). |
 | `byoiam_enabled` | Optional. `true` if you applied the module with `byo_iam = true`. |
 | `sandboxes_enabled` | Optional. `true` to deploy [LangSmith sandboxes](/langsmith/sandboxes) in the data plane. Defaults to `false`. |
+| `mtu_bytes` | Optional. The VPC MTU, from 1300 to 8896. Set it to match a peered hub or interconnect with a smaller MTU, such as 1440. Defaults to the GCP default, 1460. See [MTU](/langsmith/byoc-networking-gcp#mtu). |
 
 The API returns `202` with the data plane's `id`, `api_url`, and `status`. Before it accepts the request, LangSmith checks that it can impersonate the provisioner, and that the provisioner is in the project and carries your external ID. If a check fails, the response names the problem. See [Troubleshoot create errors](#troubleshoot-create-errors).
 
@@ -17506,9 +17676,9 @@ To point applications and API clients at the data plane, see [BYOC usage](/langs
 You pick the endpoint type when you create the data plane:
 
 * **Public**: Users reach the data plane from the internet.
-* **Internal** (default): The ingress is on an internal load balancer, and the hostname resolves only inside the data plane VPC. Connect your network to that VPC, for example with VPC peering or Cloud VPN, and make the hostname resolve from your network.
+* **Internal** (default): The ingress is on an internal load balancer, and the hostname resolves only inside the data plane VPC. Connect your network to that VPC, for example with VPC peering or Cloud VPN, and make the hostname resolve from your network. See [Connect your network](/langsmith/byoc-networking-gcp#connect-your-network).
 
-Outbound traffic from the data plane leaves through Cloud NAT with a static IP address, so you can allowlist the data plane.
+Outbound traffic from the data plane leaves through Cloud NAT with a static IP address, so you can allowlist the data plane. For the destinations the data plane needs, see [Outbound traffic](/langsmith/byoc-networking-gcp#outbound-traffic).
 
 ### Change data plane settings
 
@@ -17546,7 +17716,7 @@ The create request returns these error codes:
 | `organization_external_id_missing` | 409 | BYOC is not set up for your organization. | Contact the LangChain team. |
 | `data_plane_name_taken` | 409 | Your organization already has a data plane with this name. | Choose another `name`. |
 
-A request that fails field validation, such as a region that is not enabled or a `vpc_cidr` that overlaps the GKE ranges, returns `400` with the field and the reason.
+A request that fails field validation, such as a region that is not enabled, a `/18` `vpc_cidr` that overlaps the GKE pod range, or an `mtu_bytes` out of range, returns `400` with the field and the reason.
 
 ## Delete a data plane
 
@@ -17582,6 +17752,7 @@ When something does not work, [contact LangChain support](https://support.langch
 ## See also
 
 * [BYOC architecture on GCP](/langsmith/byoc-architecture-gcp)
+* [BYOC networking on GCP](/langsmith/byoc-networking-gcp)
 * [BYOC overview](/langsmith/byoc)
 * [BYOC usage](/langsmith/byoc-usage)
 
@@ -18133,7 +18304,7 @@ Route tracing and API traffic to a LangSmith BYOC data plane, including tracing 
 
 Once your data plane is active, all API traffic for its workspaces goes to the data plane endpoint rather than to the LangSmith Cloud backend. This page explains how to route requests to the right service.
 
-The LangSmith UI handles this automatically: it routes to the correct data plane based on the workspace you have selected. The guidance below applies to your own client code and direct API calls.
+The LangSmith UI routes to the correct data plane based on the workspace you have selected. Chrome and Edge users may need to [allow local network access](#allow-local-network-access-in-chrome-and-edge) first. The rest of this page applies to your own client code and direct API calls.
 
 ## Organizations, data planes, and workspaces
 
@@ -18160,6 +18331,37 @@ Each data plane has a base URL. Navigate to **Settings > Data Planes** to see ea
 > [!WARNING]
 >
 > Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
+
+## Allow local network access in Chrome and Edge
+
+When you open a workspace on a private data plane, the LangSmith UI sends requests from the LangSmith site to the data plane's private address. Chrome and Edge treat these as local network requests and ask each user to allow them. If a user blocks or ignores the prompt, the UI cannot reach the data plane and shows a network access error, even when the user is on your private network.
+
+To allow access for one user:
+
+1. Open the LangSmith UI, such as `https://aws.smith.langchain.com`.
+2. Click the icon to the left of the address bar.
+3. If **Local network access** is in the list, set it to **Allow**. Otherwise, click **Site settings** in Chrome or **Permissions for this site** in Edge, and set **Local network access** to **Allow**.
+4. Reload the page.
+
+To allow access for every user in your organization, push a managed browser policy. Chrome and Edge use the same policy names:
+
+* `LocalNetworkAllowedForUrls`: The current policy, in recent Chrome versions and in Edge 146 and later.
+* `LocalNetworkAccessAllowedForUrls`: The earlier policy, for older browser versions.
+
+If your fleet runs a mix of versions, set both:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "LocalNetworkAllowedForUrls": ["https://aws.smith.langchain.com"],
+  "LocalNetworkAccessAllowedForUrls": ["https://aws.smith.langchain.com"]
+}
+```
+
+Each policy lists the site that makes the requests, which is the LangSmith UI URL, not the data plane URL. It therefore also covers data planes you add later. To confirm that the policy applies, open `chrome://policy` or `edge://policy`.
+
+> [!NOTE]
+>
+> This setting does not replace private connectivity. Users still need a network path to the data plane, such as a VPN.
 
 ## Trace to a data plane
 
@@ -25311,6 +25513,8 @@ Pull request tracking uses the same GitHub and GitLab connections as [LangSmith 
 * **GitLab**: A workspace admin connects the account in workspace settings.
 
 For details, see [Connect repositories to Engine](/langsmith/engine-repositories).
+
+On BYOC and self-hosted LangSmith, GitHub connections use the Engine GitHub App that your administrator registers for the installation, not a LangSmith-owned App. Set up that App before connecting GitHub to a coding agent. See [Configure GitHub for Engine on self-hosted and BYOC](/langsmith/engine-self-hosted-github).
 
 On the agent Overview, click **Track pull requests** and connect a GitHub or GitLab account. You can reuse an installation that is already connected to another agent in the workspace.
 
@@ -40609,7 +40813,7 @@ For GitHub:
 * **Self-hosted LangSmith**: An operator first completes [GitHub configuration for self-hosted](/langsmith/engine-self-hosted-github) for your GitHub instance. Then, workspace users follow the same repository connection steps below.
 * **BYOC**: An Organization Admin first registers a GitHub App and saves it in the LangSmith UI. See [Configure the App on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc). Then, workspace users follow the same repository connection steps below.
 
-For GitLab, a workspace admin connects a GitLab account's access token in workspace settings. GitLab is available only on LangSmith Cloud. Start with [Connect GitLab](#connect-gitlab).
+For GitLab, a workspace admin connects a GitLab account's access token in workspace settings. GitLab is available on LangSmith Cloud, self-hosted LangSmith, and BYOC, with the same connection steps on each. Start with [Connect GitLab](#connect-gitlab).
 
 ## GitHub
 
@@ -40701,7 +40905,7 @@ Engine connects to GitLab with one access token per workspace. The token belongs
 
 > [!NOTE]
 >
-> GitLab is available only on [LangSmith Cloud](/langsmith/cloud). It is not yet available on [self-hosted LangSmith](/langsmith/self-hosted) or [BYOC](/langsmith/byoc).
+> GitLab is available on [LangSmith Cloud](/langsmith/cloud), [self-hosted LangSmith](/langsmith/self-hosted), and [BYOC](/langsmith/byoc). On self-hosted LangSmith, GitLab requires LangSmith Helm chart version 0.18.0-rc.45 or later.
 
 ### Connect GitLab
 
@@ -40711,7 +40915,19 @@ Your GitLab instance must meet these requirements:
 
 * **Version**: GitLab.com, or a self-managed instance running GitLab 16.10 or later. LangSmith renews the token with GitLab's token self-rotation API, which earlier versions do not have.
 * **URL**: HTTPS on port 443, with no path. GitLab installed under a relative URL root, such as `https://example.com/gitlab`, is not supported.
-* **Network access**: LangSmith reaches GitLab over the internet, and refuses GitLab URLs that resolve to private IP addresses. The instance must also be able to deliver webhooks to LangSmith.
+* **Network access**: LangSmith reaches GitLab over the internet, and refuses GitLab URLs that resolve to private IP addresses. The instance must also be able to deliver webhooks to LangSmith. On BYOC, these requests leave from your data plane, and webhooks go to your data plane's LangSmith URL. On self-hosted LangSmith, see [Self-hosted network access](#self-hosted-network-access).
+
+#### Self-hosted network access
+
+On self-hosted LangSmith, an operator allows these HTTPS connections:
+
+| Source | Destination | Purpose |
+| - | - | - |
+| LangSmith services and Engine workers | GitLab instance | Token rotation, project information, branch and diff operations, and merge request creation and status. |
+| Sandbox hosts | GitLab instance | Clone projects and push fix branches. |
+| GitLab instance | LangSmith hostname | Deliver merge request webhooks. |
+
+A self-managed GitLab instance refuses webhooks to private IP addresses unless a GitLab administrator allows requests to the local network. If your GitLab hostname resolves to private IP addresses, also set the environment variables listed in [GHES on a private network](/langsmith/engine-self-hosted-github#ghes-on-a-private-network). They apply to any private Git host, not only GitHub.
 
 #### Prepare a service account
 
@@ -40911,7 +41127,7 @@ You can revoke Engine's access to GitHub at any time by uninstalling the App fro
 
 ## GitLab integration
 
-In LangSmith Cloud, Engine connects to GitLab.com or a self-managed GitLab instance with a personal access token that a workspace admin saves in LangSmith, usually for a dedicated [service account](/langsmith/engine-repositories#prepare-a-service-account). The token requires the `api` scope. Only users with the `workspaces:manage` permission can connect or disconnect GitLab.
+In LangSmith Cloud, Engine connects to GitLab.com or a self-managed GitLab instance with a personal access token that a workspace admin saves in LangSmith, usually for a dedicated [service account](/langsmith/engine-repositories#prepare-a-service-account). The token requires the `api` scope. Only users with the `workspaces:manage` permission can connect or disconnect GitLab. On [self-hosted LangSmith](/langsmith/self-hosted) and [BYOC](/langsmith/byoc), the connection and its token are stored in your deployment.
 
 The token acts as its GitLab account:
 
@@ -41003,7 +41219,7 @@ Set up LangSmith Engine on a self-hosted LangSmith instance or a BYOC data plane
 
 In self-hosted LangSmith, [LangSmith Engine](/langsmith/engine)'s analysis and fix workflow runs in your environment. Engine sends the trace content and code it needs to its models, which run either on LangSmith Intelligence (LSI) or on your own model providers. It reports usage metadata to LSI for billing, unless your installation is [air-gapped](#air-gapped-installations).
 
-This page covers how to [choose how Engine runs its models](#choose-how-engine-runs-its-models), where Engine processes data, and how to [install Engine](#install-engine). To configure your own model providers, see [Configure model providers for Engine on self-hosted](/langsmith/engine-self-hosted-model-providers). To give Engine access to source code, also [configure a GitHub App](/langsmith/engine-self-hosted-github). GitHub is optional for trace analysis.
+This page covers how to [choose how Engine runs its models](#choose-how-engine-runs-its-models), where Engine processes data, and how to [install Engine](#install-engine). To configure your own model providers, see [Configure model providers for Engine on self-hosted](/langsmith/engine-self-hosted-model-providers). To give Engine access to source code, also [configure a GitHub App](/langsmith/engine-self-hosted-github) or [connect GitLab](/langsmith/engine-repositories#connect-gitlab). A code connection is optional for trace analysis.
 
 Engine also runs on [BYOC](/langsmith/byoc) data planes, where LangChain installs and operates it for you. See [Engine on BYOC](#engine-on-byoc) for what differs.
 
@@ -41019,6 +41235,7 @@ Engine on BYOC differs from self-hosted LangSmith in the following ways:
 
 * **Model providers**: Engine runs only on [your own model providers](/langsmith/engine-self-hosted-model-providers). LangSmith Intelligence is not available. Amazon Bedrock can use your data plane's cloud identity instead of saved credentials. Enable access to the required models in the AWS account that hosts the data plane.
 * **GitHub**: An Organization Admin registers a GitHub App and saves its credentials from an Engine project in the LangSmith UI. See [Connect Engine to GitHub on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc).
+* **GitLab**: A workspace admin connects GitLab in workspace settings, the same way as on LangSmith Cloud. See [Connect GitLab](/langsmith/engine-repositories#connect-gitlab).
 * **Slack**: An Organization Admin configures a Slack app for the organization under **Settings** > **General Settings** > **Slack**. See [Create your Slack app on BYOC](/langsmith/self-host-slack#create-your-slack-app-on-byoc).
 
 To set up Engine after LangChain enables it on your data plane:
@@ -41026,7 +41243,7 @@ To set up Engine after LangChain enables it on your data plane:
 1. An Organization Admin goes to **Settings** > **Engine**, selects the data plane, and turns on Engine. This setting applies to all workspaces on the data plane. Other data planes and LangSmith Cloud are unaffected.
 2. An Organization Admin [chooses model providers](/langsmith/engine-self-hosted-model-providers#choose-model-providers) under **Settings** > **Engine** > **Model providers**. Saving credentials requires the `organization:manage-model-secrets` permission.
 3. A user whose [role](/langsmith/rbac) can update tracing projects turns on Engine for a tracing project. See [Set up Engine](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project).
-4. (Optional) An Organization Admin [configures the GitHub App](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc), and workspace users connect repositories.
+4. (Optional) Connect source code. For GitHub, an Organization Admin [configures the GitHub App](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc), and workspace users connect repositories. For GitLab, a workspace admin [connects GitLab](/langsmith/engine-repositories#connect-gitlab), and workspace users add projects.
 5. (Optional) An Organization Admin [configures the Slack app](/langsmith/self-host-slack#create-your-slack-app-on-byoc) and adds [notification destinations](/langsmith/engine-notifications).
 
 To move Engine issues from LangSmith Cloud or self-hosted LangSmith to a data plane, see [Migrate to BYOC](/langsmith/byoc-migration#complete-the-engine-manual-steps).
@@ -41156,7 +41373,7 @@ Serve that hostname through your ingress with TLS, as described in [Set up an in
 
 When Engine generates a code fix, it installs dependencies from `pypi.org`, `files.pythonhosted.org`, and `registry.npmjs.org`. The registry hosts are not configurable, so Engine cannot use an internal PyPI or npm mirror, and dependency installs fail if your network blocks the public registries. Sandboxes cannot reach Go module proxies such as `proxy.golang.org`, so Engine uses your connected code repository's `vendor/` directory when it is present.
 
-For GitHub connections, also allow the [outbound requests and inbound webhooks](/langsmith/engine-self-hosted-github#allow-network-access) required by your GitHub environment. Browser access to LangSmith alone does not establish webhook connectivity from GitHub.
+For GitHub connections, also allow the [outbound requests and inbound webhooks](/langsmith/engine-self-hosted-github#allow-network-access) required by your GitHub environment. For GitLab, see [Self-hosted network access](/langsmith/engine-repositories#self-hosted-network-access). Browser access to LangSmith alone does not establish webhook connectivity from GitHub.
 
 **5. Generate Engine's keys**
 
@@ -41292,7 +41509,7 @@ Enabling Engine in Helm makes the feature available, but it does not start any s
 2. An Organization Admin [chooses how Engine runs its models](/langsmith/engine-self-hosted-model-providers#choose-model-providers) under **Settings > Engine > Model providers**. Engine does not start any runs until this is saved.
 3. A user whose [role](/langsmith/rbac) can update tracing projects turns on Engine for a tracing project from its **Engine** tab. For more information, see [Set up Engine](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project).
 
-To read source code and open pull requests, Engine also needs a GitHub connection. An operator [configures the GitHub App](/langsmith/engine-self-hosted-github), then workspace users [connect repositories](/langsmith/engine-repositories#connect-repositories).
+To read source code and open pull requests, Engine also needs a GitHub or GitLab connection. For GitHub, an operator [configures the GitHub App](/langsmith/engine-self-hosted-github), then workspace users [connect repositories](/langsmith/engine-repositories#connect-repositories). For GitLab, a workspace admin [connects GitLab](/langsmith/engine-repositories#connect-gitlab).
 
 ### Disable Engine
 
@@ -41348,6 +41565,8 @@ Register a GitHub App and configure self-hosted LangSmith or a BYOC data plane s
 * **Self-hosted**: An operator configures the App's credentials in Helm values. See [Configure the App on self-hosted](#configure-the-app-on-self-hosted).
 
 This configuration is separate from GitHub setup for Agent Server builds and previews.
+
+The same App also powers [pull request tracking for coding agents](/langsmith/coding-agents#connect-github-or-gitlab). On BYOC and self-hosted LangSmith, coding agents link GitHub through this App's installations, so complete this setup before connecting GitHub to a coding agent, even if you do not use Engine.
 
 ## Configure the App on BYOC
 
@@ -41640,6 +41859,26 @@ hostBackend:
 
 Remove these variables from component-specific `extraEnv` lists, including `hostBackend.deployment.extraEnv`, to avoid duplicate definitions. The shared configuration supplies the same values to API and background workloads.
 
+Keep the private key and webhook secret in `commonEnv` rather than only on `hostBackend`. The platform backend (`platformBackend`) also reads `ENGINE_GITHUB_APP_ID`, `ENGINE_GITHUB_APP_PRIVATE_KEY`, and `ENGINE_GITHUB_APP_WEBHOOK_SECRET` to link coding agents to GitHub and to verify the pull request webhooks that host-backend forwards to it. If you scope these settings to individual components instead, also add the private key and webhook secret to `platformBackend.deployment.extraEnv`:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+platformBackend:
+  deployment:
+    extraEnv:
+      - name: ENGINE_GITHUB_APP_PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: langsmith-engine-github
+            key: private_key
+      - name: ENGINE_GITHUB_APP_WEBHOOK_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: langsmith-engine-github
+            key: webhook_secret
+```
+
+Without them, Engine's GitHub connection works, but connecting GitHub to a coding agent fails with **GitHub App is not configured** and pull requests are not linked to coding agent threads.
+
 The chart's `config.hostname`, `config.frontendHostname` if used, and `config.basePath` must also describe the URL users open in their browser.
 
 #### Private GHES deployments
@@ -41694,6 +41933,7 @@ A successful webhook response alone does not prove the event matched an Engine i
 | Installation does not return to LangSmith | Enable **Request user authorization (OAuth) during installation**. Check the exact authorization callback URL and confirm the Client ID and Client secret belong to this App. Then restart **Connect GitHub** in LangSmith. |
 | Repositories appear, but cloning or pushing fails | Check sandbox-host DNS, routing, private-IP settings, certificate trust, and GitHub IP/push policies. |
 | PR creation fails after a successful push | Check **Pull requests: Read and write**, draft PR availability, and the selected base branch. |
+| Connecting GitHub to a coding agent fails with **GitHub App is not configured** | Confirm that `platformBackend` receives `ENGINE_GITHUB_APP_ID`, `ENGINE_GITHUB_APP_PRIVATE_KEY`, and `ENGINE_GITHUB_APP_WEBHOOK_SECRET`, through `commonEnv` or `platformBackend.deployment.extraEnv`. See [Set Helm values](#set-helm-values). Engine can work while these are missing from the platform backend. |
 | A merge does not complete an issue | Check **Pull request** event subscription, webhook reachability, the matching webhook secret, and **Recent deliveries**. Redeliver failed events after correcting the cause. |
 
 If GitHub cannot deliver webhooks, repository reads, fixes, and PR creation can still work. Webhook-driven PR linking and automatic issue completion after merges do not work. Restore delivery and redeliver missed events from GitHub's App settings.
@@ -42245,7 +42485,7 @@ In the [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medi
 
 **2. Connect a code repository (optional)**
 
-Connecting a repository is optional but recommended, because Engine finds better issues when it can read your source code. See [Why connect a repository](/langsmith/engine#why-connect-a-repository). Under **Connect your agent's code repository**, select the repositories Engine should use. Only repositories the GitHub App can access are shown. Click **Manage app access →** to update permissions. On LangSmith Cloud, GitLab projects appear once a workspace admin [connects GitLab](/langsmith/engine-repositories#connect-gitlab). For GitHub App setup and organization approval, see [Connect Engine to your repository](/langsmith/engine-repositories). To give Engine additional project context, select a repository in the **Context Hub repository** field.
+Connecting a repository is optional but recommended, because Engine finds better issues when it can read your source code. See [Why connect a repository](/langsmith/engine#why-connect-a-repository). Under **Connect your agent's code repository**, select the repositories Engine should use. Only repositories the GitHub App can access are shown. Click **Manage app access →** to update permissions. GitLab projects appear once a workspace admin [connects GitLab](/langsmith/engine-repositories#connect-gitlab). For GitHub App setup and organization approval, see [Connect Engine to your repository](/langsmith/engine-repositories). To give Engine additional project context, select a repository in the **Context Hub repository** field.
 
 Also set `revision_id` on your traces so Engine can match each trace to the commit that produced it. Engine then reasons from the code that ran, for example by comparing the commits shipped between two releases when a metric regresses. See [Record the code version on traces](/langsmith/add-metadata-tags#record-the-code-version-on-traces).
 
@@ -198912,12 +199152,14 @@ totals;
 
 Code runs against [**QuickJS**](https://github.com/quickjs-ng/quickjs), a lightweight JavaScript runtime. By default, interpreter code has no access to the host filesystem, network, shell, package manager, or clock. It can compute, hold state, and write to `console.log`, `console.warn`, or `console.error`, and nothing more.
 
-Two explicit bridges extend that reach:
+Explicit bridges extend that reach:
 
 * **Tools**, through [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc). Provide an allowlist of tools as async functions under the `tools` namespace. These can be the agent's own tools or standalone tools you define and pass in.
 * **Subagents**, through [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents). When the agent has subagents configured, the interpreter exposes a `task()` global for dispatching them from code.
 
-Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off. Nothing else crosses the QuickJS boundary.
+Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off.
+
+Nothing else crosses the QuickJS boundary.
 
 ## Programmatic tool calling (PTC)
 
@@ -234980,6 +235222,14 @@ In the default batched mode, provide decisions in the same order as the actions 
 
 Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
 
+For `reject` and `respond`, the middleware creates the tool message itself, because the tool does not run. It marks that message with [notification metadata](/oss/javascript/langchain/messages#notifications): the `source` is `hitl_interrupt_decision` and `data` holds the `decision`. Tool output after `approve` or `edit` is not marked.
+
+To tell these messages apart from real tool output in your frontend, read the metadata with `getNotificationMetadata`.
+
+> [!NOTE]
+>
+> Marking these tool messages requires `langchain>=1.6.7`.
+
 > [!TIP]
 >
 > When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
@@ -235130,7 +235380,7 @@ Use per-call mode for new agents. LangChain plans to make it the default in the 
 
 Set `interruptMode: "per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235173,7 +235423,7 @@ let agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235216,7 +235466,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235259,7 +235509,7 @@ let agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235302,7 +235552,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235345,7 +235595,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235388,7 +235638,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235435,7 +235685,7 @@ let agent = createAgent({
 
 When the model calls all three tools in one turn, `read_data` runs right away. The two gated calls each raise an interrupt:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { isToolApprovalInterrupt } from "langchain";
 
 let config = { configurable: { thread_id: "1" } };
@@ -235577,7 +235827,7 @@ Each tab shows one `write_file` branch, an answer that matches it, and the [Tool
 
 Answer each interrupt with one decision, keyed by its ID:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph";
 
 const decisions = Object.fromEntries(
@@ -235602,7 +235852,7 @@ You can also answer interrupts one at a time. An interrupt you do not answer sta
 
 LangGraph checks each answer against the interrupt's `response_schema` before it saves the answer. An invalid answer throws an error and nothing is saved, so you can send a corrected answer to the same interrupt ID. The middleware wraps the error in a `MiddlewareError`, and its `cause` is the Zod error with the list of issues. Here, the edit leaves out `content`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const writeFileInterrupt = (result.__interrupt__ ?? [])
   .filter(isToolApprovalInterrupt)
   .find((interrupt) => interrupt.value.name === "write_file")!;
@@ -235873,7 +236123,7 @@ for await (const message of resumeStream.messages) {  // [!code highlight]
 
 In [per-call mode](#pause-once-per-tool-call), `stream.interrupts` holds one entry per gated tool call, with the interrupt value in `payload` and no `response_schema`. Resume with an object keyed by `interruptId`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const streamDecisions = Object.fromEntries(
   stream.interrupts.map((interrupt) => [
     interrupt.interruptId,
@@ -239653,6 +239903,8 @@ const response = await model.invoke(messages);
 
 A [`HumanMessage`](https://reference.langchain.com/javascript/langchain-core/messages/HumanMessage) represents user input and interactions. They can contain text, images, audio, files, and any other amount of multimodal [content](#message-content).
 
+When an agent adds a human message that the user did not type, such as a conversation summary, it can mark the message with [notification metadata](#notifications).
+
 #### Text content
 
 ```typescript Message object theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -239678,50 +239930,6 @@ const humanMsg = new HumanMessage({
 > [!NOTE]
 >
 > The `name` field behavior varies by provider—some use it for user identification, others ignore it. To check, refer to the model provider's [reference](https://reference.langchain.com/python/integrations/).
-
-#### Notifications
-
-An agent harness sometimes adds a human message that the user did not type, such as a background task update or a conversation summary. Notification metadata marks these messages so that your frontend can show them differently from user input.
-
-> [!NOTE]
->
-> Notification metadata requires `@langchain/core>=1.3.2`.
-
-`addNotificationMetadata` returns a copy of a `HumanMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { HumanMessage, addNotificationMetadata } from "@langchain/core/messages";
-
-const notification = addNotificationMetadata(
-  new HumanMessage("Background task t_42 finished."),
-  { source: "background_job", data: { task_id: "t_42", status: "success" } },
-);
-```
-
-`getNotificationMetadata` returns the `source` and `data` of a notification, or `undefined` for any other message:
-
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { getNotificationMetadata } from "@langchain/core/messages";
-
-for (const message of messages) {
-  const metadata = getNotificationMetadata(message);
-  if (metadata === undefined) {
-    console.log(message.text); // A regular message
-  } else {
-    console.log(`[${metadata.source}]`, metadata.data);
-  }
-}
-```
-
-The metadata does not change the message content: the model reads the content as written. LangChain's chat model integrations do not send the metadata to the model. Anyone who can send input to a thread can set it, so do not use it to decide whether to trust a message.
-
-Deep Agents notification sources include:
-
-| Source | Added when | Details |
-| - | - | - |
-| `async_subagent` | An async subagent task finishes, fails, or waits for input. `data` is the task event. | [Async subagents](/oss/javascript/deepagents/async-subagents#understand-the-lifecycle) |
-| `summarization` | The agent summarizes the conversation history. | [Summarization](/oss/javascript/deepagents/context-engineering#summarization) |
-| `pinned_skill` | The agent adds a pinned skill to the conversation. | [Pin skills](/oss/javascript/deepagents/skills#pin-skills) |
 
 ***
 
@@ -239858,6 +240066,8 @@ for (const chunk of chunks) {
 For models that support [tool calling](/oss/javascript/langchain/models#tool-calling), AI messages can contain tool calls. Tool messages are used to pass the results of a single tool execution back to the model.
 
 [Tools](/oss/javascript/langchain/tools) can generate [`ToolMessage`](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) objects directly. Below, we show a simple example. Read more in the [tools guide](/oss/javascript/langchain/tools).
+
+When middleware creates a tool message instead of running the tool, it can mark the message with [notification metadata](#notifications). For example, [human-in-the-loop middleware](/oss/javascript/langchain/human-in-the-loop#interrupt-decision-types) marks the tool message for a `reject` or `respond` decision.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessage, ToolMessage } from "langchain";
@@ -240570,11 +240780,62 @@ const imageBlock: ContentBlock.Multimodal.Image = {
 >
 > Content blocks are not a replacement for the [`content`](https://reference.langchain.com/javascript/langchain-core/messages/BaseMessage) property, but rather a new property that can be used to access the content of a message in a standardized format.
 
+## Notifications
+
+An agent harness sometimes adds a human message that the user did not type, such as a background task update or a conversation summary. Notification metadata marks these messages so that your frontend can show them differently from user input. Middleware can also mark a tool message that it creates instead of running the tool.
+
+> [!NOTE]
+>
+> Notification metadata requires `@langchain/core>=1.3.2`. Marking a `ToolMessage` requires `@langchain/core>=1.4.2`.
+
+`addNotificationMetadata` returns a copy of a `HumanMessage` or `ToolMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { HumanMessage, addNotificationMetadata } from "@langchain/core/messages";
+
+const notification = addNotificationMetadata(
+  new HumanMessage("Background task t_42 finished."),
+  { source: "background_job", data: { task_id: "t_42", status: "success" } },
+);
+```
+
+`getNotificationMetadata` returns the `source` and `data` of a notification, or `undefined` for any other message:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { getNotificationMetadata } from "@langchain/core/messages";
+
+for (const message of messages) {
+  const metadata = getNotificationMetadata(message);
+  if (metadata === undefined) {
+    console.log(message.text); // A regular message
+  } else {
+    console.log(`[${metadata.source}]`, metadata.data);
+  }
+}
+```
+
+The metadata does not change the message content: the model reads the content as written. LangChain's chat model integrations do not send the metadata to the model. Anyone who can send input to a thread can set it, so do not use it to decide whether to trust a message. A notification can be a tool message, so check the message type before you show a notification as user input.
+
+LangChain notification sources include:
+
+| Source | Added when | Details |
+| - | - | - |
+| `hitl_interrupt_decision` | The human-in-the-loop middleware creates a tool message for a `reject` or `respond` decision. `data` has `decision`. | [Interrupt decision types](/oss/javascript/langchain/human-in-the-loop#interrupt-decision-types) |
+| `summarization` | The summarization middleware summarizes the conversation history. | [Summarization](/oss/javascript/langchain/middleware/built-in#summarization) |
+
+Deep Agents notification sources include:
+
+| Source | Added when | Details |
+| - | - | - |
+| `async_subagent` | An async subagent task finishes, fails, or waits for input. `data` is the task event. | [Async subagents](/oss/javascript/deepagents/async-subagents#understand-the-lifecycle) |
+| `summarization` | The agent summarizes the conversation history. | [Summarization](/oss/javascript/deepagents/context-engineering#summarization) |
+| `pinned_skill` | The agent adds a pinned skill to the conversation. | [Pin skills](/oss/javascript/deepagents/skills#pin-skills) |
+
 ## Serialization
 
 You can serialize messages to plain objects for storage and deserialize back to message instances. This is useful for persisting conversation history and resuming sessions.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage } from "@langchain/core/messages";
 import { load } from "@langchain/core/load";
 
@@ -299485,12 +299746,14 @@ By default (`mode="thread"`), interpreter state persists across turns in the sam
 
 Code runs against [**QuickJS**](https://github.com/quickjs-ng/quickjs), a lightweight JavaScript runtime. By default, interpreter code has no access to the host filesystem, network, shell, package manager, or clock. It can compute, hold state, and write to `console.log`, `console.warn`, or `console.error`, and nothing more.
 
-Two explicit bridges extend that reach:
+Explicit bridges extend that reach:
 
 * **Tools**, through [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc). Provide an allowlist of tools as async functions under the `tools` namespace. These can be the agent's own tools or standalone tools you define and pass in.
 * **Subagents**, through [dynamic subagents](/oss/python/deepagents/dynamic-subagents). When the agent has subagents configured, the interpreter exposes a `task()` global for dispatching them from code.
 
-Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off. Nothing else crosses the QuickJS boundary.
+Programmatic tool calling is off until you [enable it](#enable-ptc). Subagent dispatch through `task()` is on by default whenever the agent has subagents, and you can turn it off.
+
+A third bridge, [files](#files-fs), gives interpreter code an opt-in `fs` global over the agent's backend. Nothing else crosses the QuickJS boundary.
 
 ## Programmatic tool calling (PTC)
 
@@ -299597,6 +299860,115 @@ results.join("\n\n");
 > [!WARNING]
 >
 > PTC calls currently execute through the interpreter bridge and do not go through the normal tool calling path. As a result, `interrupt_on` approval workflows are not enforced per PTC-invoked tool call.
+
+## Files (`fs`)
+
+The `fs` option gives interpreter code a Node-style `fs` global over the agent's [backend](/oss/python/deepagents/backends), the same files the built-in filesystem tools see. Code can read many files, process them, and write the results without a tool call per file.
+
+> [!NOTE]
+>
+> `fs` requires `langchain-quickjs>=0.4.0`.
+
+Set `fs=True` to use the backend that `create_deep_agent` gives its file tools:
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="google_genai:gemini-4-hydrogen",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="openai:gpt-6.1-sol",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[CodeInterpreterMiddleware(fs=True)],
+)
+```
+
+With another agent factory, such as `create_agent`, pass the backend itself: `CodeInterpreterMiddleware(fs=backend)`. One middleware instance with `fs=True` cannot serve agents with different backends, so create a separate middleware for each such agent.
+
+`fs` functions are async and return promises, as Node's `fs/promises` does. `fs.promises` exposes the same functions:
+
+* **`fs.readFile(path)`**: Return the whole file as a string.
+* **`fs.writeFile(path, text)`**: Create or replace a file, creating parent directories.
+* **`fs.readdir(dir)`**: List the entry names in one directory.
+* **`fs.access(path)`**: Resolve if the path exists, and reject with `ENOENT` otherwise.
+* **`fs.rm(path, { recursive, force })`**: Delete a path. A directory requires `recursive: true`, and `force: true` ignores a missing path.
+
+This example totals every report in a directory and writes the summary back to the backend:
+
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const names = await fs.readdir("/reports");
+const totals = {};
+for (const name of names) {
+  const { region, revenue } = JSON.parse(await fs.readFile(`/reports/${name}`));
+  totals[region] = (totals[region] ?? 0) + revenue;
+}
+await fs.writeFile("/summary/totals.json", JSON.stringify(totals));
+totals;
+```
+
+`fs` reads and writes UTF-8 text only. Failed calls throw Node errors with a `code` such as `ENOENT`, `EISDIR`, or `EACCES`. Sync functions such as `readFileSync`, along with `stat`, `glob`, `mkdir`, and `appendFile`, throw `ERR_METHOD_NOT_IMPLEMENTED`, and `require` is not available. A file too large for the interpreter's `memory_limit` ends the `eval` call with a `MarshalError`.
+
+> [!WARNING]
+>
+> `fs` calls the backend directly, not the filesystem tools, so [permissions](/oss/python/deepagents/permissions) and `interrupt_on` approvals do not apply to it. Interpreter code can read, write, and delete anything the backend can reach. On a `FilesystemBackend` with `virtual_mode=False`, or a local shell backend, that is the host filesystem. Leave `fs` unset for agents that rely on filesystem permissions or approvals, and enable it only for trusted use or with a backend scoped to files the agent may change.
 
 ## Dynamic subagents
 
@@ -299846,7 +300218,7 @@ Every tool you expose through PTC is an outside capability that interpreter code
 | Top-level `await` | Yes | Use promises in interpreter code |
 | `console.log`, `warn`, `error` capture | Yes | Disable with `capture_console=False` |
 | Agent tools | No | Add a PTC allowlist |
-| Filesystem access | No | Add the [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) via the PTC allowlist |
+| Filesystem access | No | Set [`fs`](#files-fs), or add the [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) via the PTC allowlist |
 | Network access | No | Expose a specific network tool through PTC |
 | Wall-clock or datetime access | No | Expose an explicit time tool if needed |
 | Shell commands, package installs, tests, OS-level execution | No | Use a [sandbox backend](/oss/python/deepagents/sandboxes) |
@@ -299859,7 +300231,7 @@ Every tool you expose through PTC is an outside capability that interpreter code
 >
 > The sandbox runs inside the host process on [wasmtime](https://wasmtime.dev/), so a wasmtime vulnerability is the remaining path out of the sandbox. Keep `wasmtime` updated. For hostile multi-tenant workloads, also run agents in isolated worker processes or containers. For details, see the `quickjs-rs` [Security guide](https://github.com/langchain-ai/quickjs-rs#security).
 >
-> The sandbox contains the engine, not the capabilities you give it. Interpreter code can call every tool bridged into it, so keep the PTC allowlist narrow.
+> The sandbox contains the engine, not the capabilities you give it. Interpreter code can call every tool bridged into it and, with `fs`, reach every file the backend can, so keep the PTC allowlist narrow and set `fs` only when code needs files.
 
 ## Configuration
 
@@ -299875,6 +300247,7 @@ Every tool you expose through PTC is an outside capability that interpreter code
 | `ptc` | `None` | Allowlist of tool names or `BaseTool` instances exposed as `tools.*` inside the interpreter. Omit to disable. See [Enable PTC](#enable-ptc). |
 | `max_ptc_calls` | `256` | Maximum `tools.*` calls allowed per `eval`. Set to `None` only in trusted environments. See [Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) and [Security](#security). |
 | `subagents` | `True` | Expose the built-in `task()` global when the agent has subagents. Set to `False` to require dispatch through the normal `task` tool. See [Dynamic subagents](#dynamic-subagents). |
+| `fs` | `None` | Give interpreter code a Node-style `fs` global over a backend. `True` uses the backend from `create_deep_agent`. See [Files (`fs`)](#files-fs). |
 | `mode` | `"thread"` | Control interpreter persistence: `"thread"` (across turns), `"turn"` (within one turn), or `"call"` (fresh REPL per `eval`). See [Persistence](#persistence). |
 | `max_snapshot_bytes` | `None` | Drop snapshots larger than this byte limit. Defaults to `memory_limit`. See [Persistence](#persistence). |
 
@@ -333557,6 +333930,14 @@ In the default batched mode, provide decisions in the same order as the actions 
 
 Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
 
+For `reject` and `respond`, the middleware creates the tool message itself, because the tool does not run. It marks that message with [notification metadata](/oss/python/langchain/messages#notifications): the `source` is `hitl_interrupt_decision` and `data` holds the `decision`. Tool output after `approve` or `edit` is not marked.
+
+To tell these messages apart from real tool output in your frontend, read the metadata with `get_notification_metadata`.
+
+> [!NOTE]
+>
+> Marking these tool messages requires `langchain>=1.5.2`.
+
 > [!TIP]
 >
 > When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
@@ -333705,7 +334086,7 @@ Use per-call mode for new agents. LangChain plans to make it the default in the 
 
 Set `interrupt_mode="per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -333747,7 +334128,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -333789,7 +334170,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -333831,7 +334212,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -333873,7 +334254,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -333915,7 +334296,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -333957,7 +334338,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334003,7 +334384,7 @@ agent = create_agent(
 
 When the model calls all three tools in one turn, `read_data` runs right away. The two gated calls each raise an interrupt:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": "1"}}
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "Archive old orders, then delete them."}]},
@@ -334126,7 +334507,7 @@ Each tab shows one `write_file` branch, an answer that matches it, and the [Tool
 
 Answer each interrupt with one decision, keyed by its ID:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
 
 decisions = {}
@@ -334152,7 +334533,7 @@ You can also answer interrupts one at a time. An interrupt you do not answer sta
 
 LangGraph checks each answer against the interrupt's `response_schema` before it saves the answer. An invalid answer raises a `ValidationError` and nothing is saved, so you can send a corrected answer to the same interrupt ID. Here, the edit leaves out `content`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import ValidationError
 
 write_file_interrupt = next(
@@ -334424,7 +334805,7 @@ for message in stream.messages:  # [!code highlight]
 
 In [per-call mode](#pause-once-per-tool-call), `stream.interrupts` holds one interrupt per gated tool call. Resume with a dict keyed by interrupt ID:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 decisions = {interrupt.id: {"type": "approve"} for interrupt in stream.interrupts}
 stream = agent.stream_events(Command(resume=decisions), config=config, version="v3")
 for message in stream.messages:
@@ -337385,6 +337766,8 @@ response = model.invoke(messages)
 
 A [`HumanMessage`](https://reference.langchain.com/python/langchain-core/messages/human/HumanMessage) represents user input and interactions. They can contain text, images, audio, files, and any other amount of multimodal [content](#message-content).
 
+When an agent adds a human message that the user did not type, such as a conversation summary, it can mark the message with [notification metadata](#notifications).
+
 #### Text content
 
 ```python Message object theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -337411,52 +337794,6 @@ human_msg = HumanMessage(
 > [!NOTE]
 >
 > The `name` field behavior varies by provider—some use it for user identification, others ignore it. To check, refer to the model provider's [reference](https://reference.langchain.com/python/integrations/).
-
-#### Notifications
-
-An agent harness sometimes adds a human message that the user did not type, such as a background task update or a conversation summary. Notification metadata marks these messages so that your frontend can show them differently from user input.
-
-> [!NOTE]
->
-> Notification metadata requires `langchain-core>=1.7.2`.
-
-`add_notification_metadata` returns a copy of a `HumanMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import HumanMessage
-from langchain_core.messages import add_notification_metadata
-
-notification = add_notification_metadata(
-    HumanMessage("Background task t_42 finished."),
-    source="background_job",
-    data={"task_id": "t_42", "status": "success"},
-)
-```
-
-`get_notification_metadata` returns the `source` and `data` of a notification, or `None` for any other message:
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain_core.messages import get_notification_metadata
-
-for message in messages:
-    metadata = get_notification_metadata(message)
-    if metadata is None:
-        print(message.text)  # A regular message
-    else:
-        print(f"[{metadata['source']}]", metadata.get("data"))
-```
-
-The metadata does not change the message content: the model reads the content as written. LangChain's chat model integrations do not send the metadata to the model. Anyone who can send input to a thread can set it, so do not use it to decide whether to trust a message.
-
-Deep Agents notification sources include:
-
-| Source | Added when | Details |
-| - | - | - |
-| `async_subagent` | An async subagent task finishes, fails, or waits for input. `data` is the task event. | [Async subagents](/oss/python/deepagents/async-subagents#understand-the-lifecycle) |
-| `summarization` | The agent summarizes the conversation history. | [Summarization](/oss/python/deepagents/context-engineering#summarization) |
-| `pinned_skill` | The agent adds a pinned skill to the conversation. | [Pin skills](/oss/python/deepagents/skills#pin-skills) |
-| `rubric_grader` | The rubric grader asks the agent to revise its output. | [Grading rubrics](/oss/python/deepagents/rubric#rubric-verdicts) |
-| `read_file_media` | `read_file` attaches frames sampled from a video file. `data` has `path` and `tool_call_id`. | [Built-in `read_file` tool](/oss/python/deepagents/multimodal#built-in-read_file-tool) |
 
 ***
 
@@ -337596,6 +337933,8 @@ for chunk in model.stream("Hi"):
 For models that support [tool calling](/oss/python/langchain/models#tool-calling), AI messages can contain tool calls. Tool messages are used to pass the results of a single tool execution back to the model.
 
 [Tools](/oss/python/langchain/tools) can generate [`ToolMessage`](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) objects directly. Below, we show a simple example. Read more in the [tools guide](/oss/python/langchain/tools).
+
+When middleware creates a tool message instead of running the tool, it can mark the message with [notification metadata](#notifications). For example, [human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop#interrupt-decision-types) marks the tool message for a `reject` or `respond` decision.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessage
@@ -338304,11 +338643,64 @@ Content blocks are represented (either when creating a message or accessing the 
 >
 > Content blocks are not a replacement for the [`content`](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) property, but rather a new property that can be used to access the content of a message in a standardized format.
 
+## Notifications
+
+An agent harness sometimes adds a human message that the user did not type, such as a background task update or a conversation summary. Notification metadata marks these messages so that your frontend can show them differently from user input. Middleware can also mark a tool message that it creates instead of running the tool.
+
+> [!NOTE]
+>
+> Notification metadata requires `langchain-core>=1.7.2`.
+
+`add_notification_metadata` returns a copy of a `HumanMessage` or `ToolMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import HumanMessage
+from langchain_core.messages import add_notification_metadata
+
+notification = add_notification_metadata(
+    HumanMessage("Background task t_42 finished."),
+    source="background_job",
+    data={"task_id": "t_42", "status": "success"},
+)
+```
+
+`get_notification_metadata` returns the `source` and `data` of a notification, or `None` for any other message:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.messages import get_notification_metadata
+
+for message in messages:
+    metadata = get_notification_metadata(message)
+    if metadata is None:
+        print(message.text)  # A regular message
+    else:
+        print(f"[{metadata['source']}]", metadata.get("data"))
+```
+
+The metadata does not change the message content: the model reads the content as written. LangChain's chat model integrations do not send the metadata to the model. Anyone who can send input to a thread can set it, so do not use it to decide whether to trust a message. A notification can be a tool message, so check the message type before you show a notification as user input.
+
+LangChain notification sources include:
+
+| Source | Added when | Details |
+| - | - | - |
+| `hitl_interrupt_decision` | The human-in-the-loop middleware creates a tool message for a `reject` or `respond` decision. `data` has `decision`. | [Interrupt decision types](/oss/python/langchain/human-in-the-loop#interrupt-decision-types) |
+| `summarization` | The summarization middleware summarizes the conversation history. | [Summarization](/oss/python/langchain/middleware/built-in#summarization) |
+
+Deep Agents notification sources include:
+
+| Source | Added when | Details |
+| - | - | - |
+| `async_subagent` | An async subagent task finishes, fails, or waits for input. `data` is the task event. | [Async subagents](/oss/python/deepagents/async-subagents#understand-the-lifecycle) |
+| `summarization` | The agent summarizes the conversation history. | [Summarization](/oss/python/deepagents/context-engineering#summarization) |
+| `pinned_skill` | The agent adds a pinned skill to the conversation. | [Pin skills](/oss/python/deepagents/skills#pin-skills) |
+| `rubric_grader` | The rubric grader asks the agent to revise its output. | [Grading rubrics](/oss/python/deepagents/rubric#rubric-verdicts) |
+| `read_file_media` | `read_file` attaches frames sampled from a video file. `data` has `path` and `tool_call_id`. | [Built-in `read_file` tool](/oss/python/deepagents/multimodal#built-in-read_file-tool) |
+
 ## Serialization
 
 You can serialize messages to plain objects for storage and deserialize back to message instances. This is useful for persisting conversation history and resuming sessions.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
 from langchain_core.load import dumpd, load
 

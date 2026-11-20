@@ -50,7 +50,7 @@ The account must not use a Stripe-hosted dashboard and you must be responsible f
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   --json '{
     "include": [
         "configuration.money_manager"
@@ -259,7 +259,7 @@ If you already have an eligible connected account, you can request to add `money
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   --json '{
     "include": [
         "configuration.money_manager"
@@ -360,7 +360,7 @@ Check for one of the following status results in the API or Dashboard:
    ```curl
    curl -G https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-10-28.preview" \
+     -H "Stripe-Version: 2026-11-18.preview" \
      -d "include[0]=configuration.money_manager" \
      -d "include[1]=requirements"
    ```
@@ -415,7 +415,7 @@ Create a GB bank account and initiate Confirmation of Payee (CoP) using the [GB 
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "sort_code": "108800",
@@ -442,14 +442,14 @@ Check CoP status and acknowledge if needed.
 ```curl
 curl https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}"
 ```
 
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/gb_bank_accounts/{{PAYOUT_METHOD_ID}}/acknowledge_confirmation_of_payee \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}"
 ```
 
@@ -460,7 +460,7 @@ Create a US bank account for ACH using the [US Bank Accounts API](https://docs.s
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "routing_number": "110000000",
@@ -485,7 +485,7 @@ Optionally, you can add a Fedwire routing number if you want to support wires.
 ```curl
 curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANK_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "fedwire_routing_number": "110000000"
@@ -499,7 +499,7 @@ Create a payout method for a bank account in any of more than 50 countries using
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}" \
   --json '{
     "payout_method_data": {
@@ -608,7 +608,7 @@ You can list all payout methods for a connected account using the [Payout Method
 ```curl
 curl https://api.stripe.com/v2/money_management/payout_methods \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -H "Stripe-Context: {{CONTEXT}}"
 ```
 

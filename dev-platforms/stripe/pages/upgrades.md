@@ -35,7 +35,7 @@ To set the API version for all requests made by a `StripeClient`, provide the `s
 ```ruby
 require 'stripe'
 # Don't put any keys in code. See /keys-best-practices.
-client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-10-28.endive')
+client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-11-18.endive')
 ```
 
 Or set the version per-request:
@@ -47,7 +47,7 @@ client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
 intent = client.v1.payment_intents.retrieve(
   'pi_1DlIVK2eZvKYlo2CW4yj5l2C',
   {},
-  {stripe_version: '2026-10-28.endive'},
+  {stripe_version: '2026-11-18.endive'},
 )
 intent.capture
 ```
@@ -66,7 +66,7 @@ To set the API version **globally** with the SDK, assign the version to the `str
 import stripe
 # Don't put any keys in code. See /keys-best-practices.
 stripe.api_key = <<YOUR_SECRET_KEY>>
-stripe.api_version = '2026-10-28.endive'
+stripe.api_version = '2026-11-18.endive'
 ```
 
 Or set the version per-request:
@@ -75,7 +75,7 @@ Or set the version per-request:
 import stripe
 intent = stripe.PaymentIntent.retrieve(
   "pi_1DlIVK2eZvKYlo2CW4yj5l2C",
-  stripe_version="2026-10-28.endive",
+  stripe_version="2026-11-18.endive",
 )
 intent.capture()
 ```
@@ -94,7 +94,7 @@ To set the API version **globally** with the SDK, pass the version to the `\Stri
 $stripe = new \Stripe\StripeClient([
   // Don't put any keys in code. See /keys-best-practices.
   "api_key" => "<<YOUR_SECRET_KEY>>",
-  "stripe_version" => "2026-10-28.endive"
+  "stripe_version" => "2026-11-18.endive"
 ]);
 ```
 
@@ -104,7 +104,7 @@ Or set the version per-request:
 $intent = $stripe->paymentIntents->capture(
   'pi_1DlIVK2eZvKYlo2CW4yj5l2C',
   [],
-  ['stripe_version' => '2026-10-28.endive']
+  ['stripe_version' => '2026-11-18.endive']
 );
 ```
 
@@ -127,7 +127,7 @@ To set the API version **globally** with the SDK, provide the `apiVersion` optio
 ```javascript
 // Don't put any keys in code. See /keys-best-practices.
 const stripe = require('stripe')('<<YOUR_SECRET_KEY>>', {
-  apiVersion: '2026-10-28.endive',
+  apiVersion: '2026-11-18.endive',
 });
 ```
 
@@ -135,7 +135,7 @@ Or set the version per-request:
 
 ```javascript
 const intent = await stripe.paymentIntents.retrieve('pi_1DlIVK2eZvKYlo2CW4yj5l2C', {
-  apiVersion: '2026-10-28.endive',
+  apiVersion: '2026-11-18.endive',
 });
 ```
 
@@ -148,7 +148,7 @@ Import Stripe as a default import and instantiate it as `new Stripe()` with the 
 ```javascript
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-10-28.endive'
+  apiVersion: '2026-11-18.endive'
 });
 ```
 
@@ -169,13 +169,13 @@ We don’t recommend setting a different API version for strongly-typed programm
 ```sh
 curl https://api.stripe.com/v1/charges \
   -u <<YOUR_SECRET_KEY>>: \
-  -H "Stripe-Version: 2026-10-28.endive"
+  -H "Stripe-Version: 2026-11-18.endive"
 ```
 
 #### Stripe CLI
 
 ```sh
-stripe charges create --stripe-version 2026-10-28.endive
+stripe charges create --stripe-version 2026-11-18.endive
 ```
 
 ## Update your code to handle API changes

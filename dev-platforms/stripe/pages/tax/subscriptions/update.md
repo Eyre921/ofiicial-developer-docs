@@ -90,7 +90,7 @@ To check an account’s tax location status using the API, retrieve the [v2 Acco
 ```curl
 curl -G https://api.stripe.com/v2/core/accounts/{{CUSTOMER_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   -d "include[0]=configuration.customer"
 ```
 
@@ -141,7 +141,7 @@ To update the account’s address, use the [v2 Account](https://docs.stripe.com/
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CUSTOMER_ACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-10-28.preview" \
+  -H "Stripe-Version: 2026-11-18.preview" \
   --json '{
     "identity": {
         "individual": {

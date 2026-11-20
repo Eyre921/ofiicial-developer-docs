@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 161 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 163 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -87,6 +87,7 @@
 - `extensions/auth/oauth-client-credentials` — [OAuth Client Credentials](pages/extensions/auth/oauth-client-credentials.md) · [原文](https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials)
 - `extensions/auth/overview` — [Authorization Extensions](pages/extensions/auth/overview.md) · [原文](https://modelcontextprotocol.io/extensions/auth/overview)
 - `extensions/client-matrix` — [Extension Support Matrix](pages/extensions/client-matrix.md) · [原文](https://modelcontextprotocol.io/extensions/client-matrix)
+- `extensions/events/overview` — [Events](pages/extensions/events/overview.md) · [原文](https://modelcontextprotocol.io/extensions/events/overview)
 - `extensions/overview` — [Extensions Overview](pages/extensions/overview.md) · [原文](https://modelcontextprotocol.io/extensions/overview)
 - `extensions/skills/overview` — [Skills](pages/extensions/skills/overview.md) · [原文](https://modelcontextprotocol.io/extensions/skills/overview)
 - `extensions/tasks/overview` — [Tasks](pages/extensions/tasks/overview.md) · [原文](https://modelcontextprotocol.io/extensions/tasks/overview)
@@ -144,6 +145,7 @@
 - `seps/2663-tasks-extension` — [SEP-2663: Tasks Extension](pages/seps/2663-tasks-extension.md) · [原文](https://modelcontextprotocol.io/seps/2663-tasks-extension)
 - `seps/3392-extension-lifecycle` — [SEP-3392: Extension Lifecycle](pages/seps/3392-extension-lifecycle.md) · [原文](https://modelcontextprotocol.io/seps/3392-extension-lifecycle)
 - `seps/3398-release-cycle-updates` — [SEP-3398: Release Cycle Updates](pages/seps/3398-release-cycle-updates.md) · [原文](https://modelcontextprotocol.io/seps/3398-release-cycle-updates)
+- `seps/3415-events-extension` — [SEP-3415: Events Extension](pages/seps/3415-events-extension.md) · [原文](https://modelcontextprotocol.io/seps/3415-events-extension)
 - `seps/414-request-meta` — [SEP-414: Document OpenTelemetry Trace Context Propagation Conventions](pages/seps/414-request-meta.md) · [原文](https://modelcontextprotocol.io/seps/414-request-meta)
 - `seps/932-model-context-protocol-governance` — [SEP-932: Model Context Protocol Governance](pages/seps/932-model-context-protocol-governance.md) · [原文](https://modelcontextprotocol.io/seps/932-model-context-protocol-governance)
 - `seps/973-expose-additional-metadata-for-implementations-res` — [SEP-973: Expose additional metadata for Implementations, Resources, Tools and Prompts](pages/seps/973-expose-additional-metadata-for-implementations-res.md) · [原文](https://modelcontextprotocol.io/seps/973-expose-additional-metadata-for-implementations-res)

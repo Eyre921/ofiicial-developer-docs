@@ -536,7 +536,7 @@ app.listen(4242, () =>
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "stripe": "^23.0.0"
+    "stripe": "^23.2.0"
   }
 }
 {
@@ -549,7 +549,7 @@ app.listen(4242, () =>
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^3.4.0",
-    "stripe": "23.0.0"
+    "stripe": "23.2.0"
   },
   "devDependencies": {
     "concurrently": "4.1.2"
@@ -585,7 +585,7 @@ app.listen(4242, () =>
 # To see your own test secret API key embedded in code samples, sign in to your Stripe account.
 # You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
 \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
-client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-10-28.endive')
+client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-11-18.endive')
 YOUR_DOMAIN = 'http://localhost:4242'
 YOUR_DOMAIN = 'http://localhost:3000'
   session = client.v1.checkout.sessions.create({
@@ -649,7 +649,7 @@ import stripe
 client = stripe.StripeClient(
     \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
     '<<YOUR_SECRET_KEY>>',
-    stripe_version='2026-10-28.endive',
+    stripe_version='2026-11-18.endive',
 )
 YOUR_DOMAIN = 'http://localhost:4242'
 YOUR_DOMAIN = 'http://localhost:3000'
@@ -719,12 +719,12 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 requests==2.32.5
-stripe==16.0.0
+stripe==17.1.0
 toml==0.10.2
 Werkzeug==3.1.5
 $stripe = new \Stripe\StripeClient([
   "api_key" => $stripeSecretKey,
-  "stripe_version" => "2026-10-28.endive"
+  "stripe_version" => "2026-11-18.endive"
 ]);
 $YOUR_DOMAIN = 'http://localhost:4242';
 $YOUR_DOMAIN = 'http://localhost:3000';
@@ -999,7 +999,7 @@ func retrieveCheckoutSession(sc *stripe.Client, w http.ResponseWriter, r *http.R
     SubscriptionStatus: subscriptionStatus,
   })
 }
-require github.com/stripe/stripe-go/v87 v87.0.0
+require github.com/stripe/stripe-go/v87 v87.2.0
     // This is a public sample test API key.
     // Don't submit any personally identifiable information in requests made with this key.
     // To see your own test secret API key embedded in code samples, sign in to your Stripe account.
@@ -1216,7 +1216,7 @@ async function handleSubmit(e) {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.18.4",
-    "stripe": "^23.0.0"
+    "stripe": "^23.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.1",

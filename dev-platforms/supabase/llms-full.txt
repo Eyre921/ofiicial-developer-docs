@@ -20,7 +20,8 @@ For current pricing, visit https://supabase.com/pricing.
 
 A Supabase project can be used as a standalone Postgres database. Connect with psql, Prisma, Drizzle, or any Postgres client or ORM using the project's connection string. Auth, Storage, Realtime, and Edge Functions are included in every project but optional. Unused products cost nothing.
 
-- Free: $0/month, including 500 MB database size. Free projects are paused after 1 week of inactivity. Limit of 2 active projects.
+- Free: $0/month, including 500 MB database size. Free projects are paused after 1 week of inactivity.
+Limit of 2 active projects.
 - Pro: from $25/month, including 8 GB disk size per project and $10/month in compute credits that cover one project on Micro compute. A single database-only project on Micro compute costs $25/month before usage beyond the included quotas.
 - Projects on paid plans are not paused for inactivity.
 
@@ -36,7 +37,8 @@ Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgr
 - 5 GB cached egress
 - 1 GB file storage
 - Community support
-- Note: Free projects are paused after 1 week of inactivity. Limit of 2 active projects.
+- Note: Free projects are paused after 1 week of inactivity.
+Limit of 2 active projects.
 
 ### Pro - from $25/month
 - 100,000 monthly active users (then $0.00325 per MAU)
@@ -54,6 +56,7 @@ Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgr
 - Project-scoped and read-only access
 - HIPAA available as paid add-on
 - SSO for Supabase Dashboard
+- Supports AWS PrivateLink
 - Priority email support & SLAs
 - Supports AWS PrivateLink
 - Daily backups stored for 14 days
@@ -62,7 +65,6 @@ Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgr
 ### Enterprise - custom pricing
 - Technical Account Management
 - Uptime SLAs
-- Supports AWS PrivateLink
 - 24×7×365 premium enterprise support
 - Private Slack channel
 - Custom Security Questionnaires
@@ -10003,6 +10005,14 @@ To revoke these privileges as well, see [Revoke default privileges](#revoke-defa
 
 Supabase is changing the platform default to revoke these automatic grants so that exposure becomes opt-in. See [the platform defaults discussion](https://github.com/orgs/supabase/discussions/45329) in the Supabase GitHub discussions.
 
+Changes to default privileges, including the platform default change, apply only to new objects. Existing tables keep their grants and stay reachable through the Data API. To remove Data API access from an existing table, revoke its grants:
+
+```sql
+revoke all on table public.your_table from anon, authenticated, service_role;
+```
+
+Leave out `service_role` to keep server-side access with a secret key.
+
 The default privileges are part of the standard Supabase permission model and don't bypass RLS. The internal `supabase_admin` role grants them to `anon`, `authenticated`, and `service_role`, but it can't authenticate through the Data API. See [`pg_default_acl`](https://www.postgresql.org/docs/current/catalog-pg-default-acl.html) in the Postgres documentation and [`supabase_admin`](https://supabase.com/docs/guides/database/postgres/roles#supabaseadmin) in the Supabase documentation.
 
 To see which privileges your project grants on new objects, see [Check your default privileges](#check-your-default-privileges). To prevent automatic grants on new objects, see [Revoke default privileges](#revoke-default-privileges).
@@ -10210,7 +10220,7 @@ Revoke automatic grants when you want new objects in `public` to remain inaccess
      revoke execute on functions from public;
    ```
 
-New tables, sequences, and functions then require explicit grants before Data API roles can access them.
+New tables, sequences, and functions then require explicit grants before Data API roles can access them. Existing tables, sequences, and functions keep their current grants, so [revoke grants on each existing table](#default-privileges) that you want to remove from the Data API.
 
 Caution: The last statement also restricts functions that `postgres` creates in other schemas, such as helper functions that your Row Level Security policies call. Grant `execute` on each of those functions to the roles that call them, or the policies that use them fail. For more information, see [Function privileges](https://supabase.com/docs/guides/database/functions#function-privileges).
 
@@ -32650,9 +32660,9 @@ Keycloak OAuth consists of five broad steps:
 
 - Create a new client in your specified Keycloak realm.
 - Obtain the `issuer` from the "OpenID Endpoint Configuration". This will be used as the `Keycloak URL`.
-- Ensure that the new client has the "Client Protocol" set to `openid-connect` and the "Access Type" is set to "confidential".
+- Ensure that the new client has the **Client type** set to **OpenID Connect**, and that under **Capability config**, **Client authentication** and **Standard flow** are on.
 - The `Client ID` of the client created will be used as the `client id`.
-- Obtain the `Secret` from the credentials tab which will be used as the `client secret`.
+- Obtain the **Client Secret** from the **Credentials** tab which will be used as the `client secret`.
 - Add the callback URL of your application to your allowlist.
 
 ## Access your Keycloak admin console
@@ -32665,31 +32675,20 @@ Keycloak OAuth consists of five broad steps:
 - After you've added a new realm, you can retrieve the `issuer` from the "OpenID Endpoint Configuration" endpoint. The `issuer` will be used as the `Keycloak URL`.
 - You can find this endpoint from the realm settings under the "General Tab" or visit [`http://localhost:8080/realms/my_realm_name/.well-known/openid-configuration`](http://localhost:8080/realms/my_realm_name/.well-known/openid-configuration)
 
-![Add a Keycloak Realm.](/docs/img/guides/auth-keycloak/keycloak-create-realm.png)
-
 ## Create a Keycloak client
 
-The "Client ID" of the created client will serve as the `client_id` when you make API calls to authenticate the user.
+Create the client in your realm. Its **Client ID** serves as the `client_id` when you make API calls to authenticate the user.
 
-![Add a Keycloak client](/docs/img/guides/auth-keycloak/keycloak-add-client.png)
-
-## Client settings
-
-After you've created the client successfully, ensure that you set the following settings:
-
-1. The "Client Protocol" should be set to `openid-connect`.
-2. The "Access Type" should be set to "confidential".
-3. The "Valid Redirect URIs" should be set to: `https://<project-ref>.supabase.co/auth/v1/callback`.
-
-![Obtain the client id, set the client protocol and access type](/docs/img/guides/auth-keycloak/keycloak-client-id.png)
-![Set redirect uri](/docs/img/guides/auth-keycloak/keycloak-redirect-uri.png)
+1. In the realm's side panel, go to **Clients** > **Create client**.
+2. Set **Client type** to **OpenID Connect**.
+3. Set **Client ID**, for example `supabase`, then click **Next**.
+4. In **Capability config**, turn on **Client authentication** and leave **Standard flow** on, then click **Next**.
+5. In **Login settings**, add `https://<project-ref>.supabase.co/auth/v1/callback` to **Valid redirect URIs**.
+6. Click **Save**.
 
 ## Obtain the client secret
 
-This will serve as the `client_secret` when you make API calls to authenticate the user.
-Under the "Credentials" tab, the `Secret` value will be used as the `client secret`.
-
-![Obtain the client secret](/docs/img/guides/auth-keycloak/keycloak-client-secret.png)
+Open the client's **Credentials** tab and copy the **Client Secret**. It serves as the `client_secret` when you make API calls to authenticate the user.
 
 ## Add sign-in code to your client app
 
@@ -33066,7 +33065,6 @@ await supabase.Auth.SignOut();
 ## Resources
 
 - You can find the Keycloak OpenID endpoint configuration under the realm settings.
-  ![Keycloak OpenID Endpoint Configuration](/docs/img/guides/auth-keycloak/keycloak-openid-endpoint-config.png)
 
 
 ---
@@ -39372,6 +39370,10 @@ if (connectionString.includes('postgres:postgres@supabase_db_')) {
 export const client = postgres(connectionString, { prepare: false })
 export const db = drizzle(client)
 ```
+
+## Related Resources
+
+- [Build a TanStack and Drizzle app with Postgres Database](https://supabase.com/kb/guides/setup-drizzle-with-postgres-and-tanstack-start)
 
 
 ---
@@ -65156,6 +65158,49 @@ Never prove an allowed write with `lives_ok`. It passes when the write matched z
 
 Switch role and identity with `set local role` and `set local request.jwt.claim.sub`.
 
+### Share rows between users
+
+Some rows belong to two users at once, such as an order that both its buyer and its seller can see. Store each user in their own column, and check both columns in the same policy. The following examples use an `orders` table where each row has a `buyer_id` and a `seller_id`:
+
+```sql
+create table orders (
+  id bigint generated always as identity primary key,
+  buyer_id uuid not null references auth.users,
+  seller_id uuid not null references auth.users,
+  total numeric
+);
+
+alter table orders enable row level security;
+
+revoke all on table orders from anon, authenticated;
+grant select, update on table orders to authenticated;
+```
+
+The select policy lets either user read the order:
+
+```sql
+create policy "Buyers and sellers can view their orders."
+on orders for select
+to authenticated
+using ( (select auth.uid()) in (buyer_id, seller_id) );
+```
+
+The update policy uses the same expression in `using` and `with check`, so either user can update the order, but the updated row must still include them as the buyer or the seller:
+
+```sql
+create policy "Buyers and sellers can update their orders."
+on orders for update
+to authenticated
+using ( (select auth.uid()) in (buyer_id, seller_id) )
+with check ( (select auth.uid()) in (buyer_id, seller_id) );
+```
+
+For `insert` and `delete`, check only the user who can create or remove the row, such as `with check ( (select auth.uid()) = buyer_id )` for a buyer placing an order. If either user could delete the row, one user could remove it for both.
+
+This pattern needs no `security definer` function, because a plain policy can check both columns of the row. Use a security definer function when the check reads another table, as in [Use security definer functions](#use-security-definer-functions).
+
+Index `buyer_id` and `seller_id` separately, because a policy that checks both columns needs an index on each. See [Add indexes](#add-indexes).
+
 ### Specify roles in your policies
 
 Always name the role a policy applies to, using the `to` clause. Instead of this:
@@ -65458,64 +65503,77 @@ This can be useful for system-level access. **Never** share login credentials fo
 
 ---
 
-# Replicate to another Postgres database using Logical Replication
+# Replicate to an external Postgres
 
-Example to setup logical replication using publish-subscribe to a Postgres database outside of Supabase
+Set up logical replication from your Supabase database to a Postgres database outside Supabase: create a publication and a slot, subscribe, then add tables.
 
-For this example, you will need:
+Replicate changes from your Supabase database to a Postgres database outside Supabase, using logical replication with a publication and a subscription.
 
-- A Supabase project
-- A Postgres database (running v10 or newer)
+## Prerequisites
 
-You will be running commands on both of these databases to publish changes from the Supabase database to the external database.
+For this example, you need:
+
+- A [Supabase project](https://supabase.com/dashboard/new/_)
+- A [Postgres database](https://www.postgresql.org/download/) (running v10 or later)
+
+## Procedure
+
+You run commands on both of these databases to publish changes from the Supabase database to the external database.
 
 1. Create a `publication` on the **Supabase database**:
 
-```sql
-CREATE PUBLICATION example_pub;
-```
+   ```sql
+   CREATE PUBLICATION example_pub;
+   ```
 
 2. Also on the **Supabase database**, create a `replication slot`:
 
-```sql
-select pg_create_logical_replication_slot('example_slot', 'pgoutput');
-```
+   ```sql
+   select pg_create_logical_replication_slot('example_slot', 'pgoutput');
+   ```
 
-3. Now connect to your **external database** and subscribe to the `publication`
+3. Connect to your **external database** and subscribe to the `publication`:
 
-Caution: This needs a **direct** connection (not a Connection Pooler) to your database and you can find the connection info in the [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true) in the `Direct connection` section.
+   Caution: This needs a **direct** connection (not a Connection Pooler) to your database and you can find the connection info in the [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true) in the `Direct connection` section.
 
-You will also need to ensure that IPv6 is supported by your replication destination (or you can enable the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address))
+   You also need to ensure that IPv6 is supported by your replication destination (or you can enable the [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address))
 
-If you would prefer not to use the `postgres` user, then you can run `CREATE ROLE <user> WITH REPLICATION;` using the `postgres` user.
+   If you would prefer not to use the `postgres` user, then you can run `CREATE ROLE <user> WITH REPLICATION;` using the `postgres` user.
 
-```sql
-CREATE SUBSCRIPTION example_sub
-CONNECTION 'host=db.oaguxblfdassqxvvwtfe.supabase.co user=postgres password=YOUR_PASS dbname=postgres'
-PUBLICATION example_pub
-WITH (copy_data = true, create_slot=false, slot_name=example_slot);
-```
+   ```sql
+   CREATE SUBSCRIPTION example_sub
+   CONNECTION 'host=db.oaguxblfdassqxvvwtfe.supabase.co user=postgres password=YOUR_PASS dbname=postgres'
+   PUBLICATION example_pub
+   WITH (copy_data = true, create_slot=false, slot_name=example_slot);
+   ```
 
-Note: For projects running Postgres 17+, it is possible to subscribe to a [Read
-Replica](https://supabase.com/docs/guides/platform/read-replicas) by using your Read Replica's connection string.
+   Note: For projects running Postgres 17 or later, it is possible to subscribe to a [Read
+   Replica](https://supabase.com/docs/guides/platform/read-replicas) by using your Read Replica's connection string.
 
-Note: `create_slot` is set to `false` because `slot_name` is provided and the slot was already created in Step 2.
-To copy data from before the slot was created, set `copy_data` to `true`.
+   Note: `create_slot` is set to `false` because `slot_name` is provided and the slot was already created in Step 2.
+   To copy data from before the slot was created, set `copy_data` to `true`.
 
-4. Now we'll go back to the Supabase DB and add all the tables that you want replicated to the publication.
+4. Back on the **Supabase database**, add all the tables that you want replicated to the publication:
 
-```sql
-ALTER PUBLICATION example_pub ADD TABLE example_table;
-```
+   ```sql
+   ALTER PUBLICATION example_pub ADD TABLE example_table;
+   ```
 
 5. Check the replication status using `pg_stat_replication`
 
-```sql
-select * from pg_stat_replication;
-```
+   ```sql
+   select * from pg_stat_replication;
+   ```
 
-Note: You can add more tables to the initial publication, but you're going to need to do a REFRESH on the subscribing database.
-See [https://www.postgresql.org/docs/current/sql-alterpublication.html](https://www.postgresql.org/docs/current/sql-alterpublication.html)
+   Note: You can add more tables to the initial publication, but you need to run a REFRESH on the subscribing database.
+   See [ALTER PUBLICATION](https://www.postgresql.org/docs/current/sql-alterpublication.html).
+
+## Next steps
+
+To go further with replication, see these pages:
+
+- [Read Replicas](https://supabase.com/docs/guides/platform/read-replicas): subscribe to a Read Replica instead of the primary on Postgres 17 or later.
+- [IPv4 add-on](https://supabase.com/docs/guides/platform/ipv4-address): connect from a replication destination that doesn't support IPv6.
 
 
 ---
@@ -69842,6 +69900,10 @@ create view <view name> with(security_invoker=true) as (
 );
 ```
 
+When you query a `security_invoker` view through the Data API, Postgres checks the role from the request's API key or JWT: `anon`, `authenticated`, or `service_role`. That role needs privileges, such as `select`, on every table the view reads, not only on the view. Postgres logs show `authenticator`, but that's the role the Data API connects as, not the role the view checks.
+
+By default, API roles have no privileges on tables in the `auth` schema. A `security_invoker` view that reads `auth.users` fails with `permission denied for table users`, even with a secret key. To expose user data through the Data API, store it in a table in the `public` schema. See [User management](https://supabase.com/docs/guides/auth/managing-user-data).
+
 ## When to use views
 
 Views provide several benefits.
@@ -74087,31 +74149,54 @@ For detailed information on how to set up and use Dart Edge with Supabase, refer
 
 ---
 
-# Local Debugging
+# Debug Edge Functions locally
 
-Debug your Edge Functions locally using Chrome DevTools for easy breakpoint debugging and code inspection.
+Debug your Edge Functions locally using Chrome DevTools for breakpoint debugging and code inspection.
 
-How to use Chrome DevTools to debug Edge Functions.
+Debug Edge Functions locally with Chrome DevTools: serve in inspect mode, attach DevTools, send a request, then set breakpoints to inspect your function.
 
-Since [v1.171.0](https://github.com/supabase/cli/releases/tag/v1.171.0) the Supabase CLI supports debugging Edge Functions via the v8 inspector protocol, allowing for debugging via [Chrome DevTools](https://developer.chrome.com/docs/devtools/) and other Chromium-based browsers.
+Debug your Edge Functions on your machine in Chrome DevTools, with breakpoints and code inspection.
+
+## Overview
+
+Supabase CLI [v1.171.0](https://github.com/supabase/cli/releases/tag/v1.171.0) or later supports debugging Edge Functions via the v8 inspector protocol, allowing for debugging via [Chrome DevTools](https://developer.chrome.com/docs/devtools/) and other Chromium-based browsers.
 
 ## Inspect with Chrome Developer Tools
 
-1. Serve your functions in inspect mode. This will set a breakpoint at the first line to pause script execution before any code runs.
+To debug a function, serve it in inspect mode, connect DevTools, then send a request. This takes two phases.
+
+### 1. Serve your function and connect DevTools
+
+To serve your functions in inspect mode and connect Chrome DevTools to them:
+
+1. Serve your functions in inspect mode. This sets a breakpoint at the first line to pause script execution before any code runs.
    ```bash
    supabase functions serve --inspect-mode brk
    ```
-2. In your Chrome browser navigate to `chrome://inspect`.
-3. Click the "Configure..." button to the right of the Discover network targets checkbox.
-4. In the Target discovery settings dialog box that opens, enter `127.0.0.1:8083` in the blank space and click the "Done" button to exit the dialog box.
-5. Click "Open dedicated DevTools for Node" to complete the preparation for debugging. The opened DevTools window will now listen to any incoming requests to edge-runtime.
-6. Send a request to your function running locally, e.g. via curl or Postman. The DevTools window will now pause script execution at first line.
-7. In the "Sources" tab navigate to `file://` > `home/deno/functions/<your-function-name>/index.ts`.
-8. Use the DevTools to set breakpoints and inspect the execution of your Edge Function.
+2. In your Chrome browser, go to `chrome://inspect`.
+3. Click **Configure...** to the right of the **Discover network targets** checkbox.
+4. In the Target discovery settings dialog box that opens, enter `127.0.0.1:8083` in the blank space and click **Done** to close the dialog.
+5. Click **Open dedicated DevTools for Node** to complete the preparation for debugging. The opened DevTools window now listens to any incoming requests to edge-runtime.
 
-![Debugging in Chrome DevTools.](/docs/img/guides/functions/debug-chrome-devtools.png)
+Chrome DevTools is now configured and ready to debug your functions.
 
-Now you should have Chrome DevTools configured and ready to debug your functions.
+### 2. Send a request and debug it
+
+To pause on a request and inspect your function's execution:
+
+1. Send a request to your function running locally, e.g. via curl or Postman. The DevTools window now pauses script execution at the first line.
+2. In the **Sources** tab, go to `file://` > `home/deno/functions/<your-function-name>/index.ts`.
+3. Use the DevTools to set breakpoints and inspect the execution of your Edge Function.
+
+![Chrome DevTools paused on a breakpoint in an Edge Function's index.ts. The Sources file tree is on the left, the code with an inspected array of results is in the middle, and the Scope panel is on the right.](/docs/img/guides/functions/debug-chrome-devtools.png)
+
+## Next steps
+
+To keep building and testing your functions locally, see these pages:
+
+- [Development environment](https://supabase.com/docs/guides/functions/development-environment): set up your editor and project structure for Edge Functions.
+- [Testing your Edge Functions](https://supabase.com/docs/guides/functions/unit-test): write unit tests with Deno Test.
+- [Edge Functions logging](https://supabase.com/docs/guides/functions/logging): read the logs for your functions.
 
 
 ---
@@ -121107,17 +121192,30 @@ Reads up to "n" Messages from the specified Queue with an optional "sleep\_secon
 
 ---
 
-# Consuming Supabase Queue Messages with Edge Functions
+# Consume queue messages
 
 Learn how to consume Supabase Queue messages server-side with a Supabase Edge Function
 
-This guide helps you read & process queue messages server-side with a Supabase Edge Function. Read [Queues API Reference](https://supabase.com/docs/guides/queues/api) for more details on our API.
+Read Supabase Queue messages in an Edge Function, process each one, and delete it when done, so failed messages stay on the queue and run again next time.
 
-## Concepts
+Read and process queue messages server-side with a Supabase Edge Function. For more details on the API, see the [Queues API reference](https://supabase.com/docs/guides/queues/api).
 
-Supabase Queues is a pull-based Message Queue consisting of three main components: Queues, Messages, and Queue Types. You should already be familiar with the [Queues Quickstart](https://supabase.com/docs/guides/queues/quickstart).
+## Overview
 
-### Consuming messages in an Edge Function
+Supabase Queues is a pull-based Message Queue consisting of three main components: Queues, Messages, and Queue Types.
+
+Every time the Edge Function below is run it:
+
+1. Read 5 messages off the queue
+2. Call the `processMessage` function
+3. At the end of `processMessage`, the message is deleted from the queue
+4. If `processMessage` throws an error, the error is logged. In this case, the message is still in the queue, so the next time this Edge Function runs it reads the message again.
+
+## Prerequisites
+
+You need to be familiar with the [Queues Quickstart](https://supabase.com/docs/guides/queues/quickstart).
+
+## Consuming messages in an Edge Function
 
 This is a [Supabase Edge Function](https://supabase.com/docs/guides/functions) that reads 5 messages off the queue, processes each of them, and deletes each message when it is done.
 
@@ -121206,16 +121304,19 @@ Deno.serve(async (req) => {
 })
 ```
 
-Every time this Edge Function is run it:
+## Next steps
 
-1. Read 5 messages off the queue
-2. Call the `processMessage` function
-3. At the end of `processMessage`, the message is deleted from the queue
-4. If `processMessage` throws an error, the error is logged. In this case, the message is still in the queue, so the next time this Edge Function runs it reads the message again.
+To run this Edge Function, use one of these:
 
-You might find this kind of setup handy to run with [Supabase Cron](https://supabase.com/docs/guides/cron). You can set up Cron so that every N number of minutes or seconds, the Edge Function will run and process a number of messages off the queue.
+- [Supabase Cron](https://supabase.com/docs/guides/cron): set up Cron so that every N number of minutes or seconds, the Edge Function runs and processes a number of messages off the queue.
+- [`supabase.functions.invoke`](https://supabase.com/docs/guides/functions/quickstart-dashboard#usage): invoke the Edge Function on command at any given time.
 
-Similarly, you can invoke the Edge Function on command at any given time with [`supabase.functions.invoke`](https://supabase.com/docs/guides/functions/quickstart-dashboard#usage).
+## Related resources
+
+To read more about Queues, see these pages:
+
+- [Queues API reference](https://supabase.com/docs/guides/queues/api): look up every function for sending, reading, and deleting messages.
+- [Queues Quickstart](https://supabase.com/docs/guides/queues/quickstart): create a queue and send your first message.
 
 
 ---
@@ -130608,20 +130709,26 @@ To review the risks that are specific to your app:
 
 ---
 
-# Rotate a leaked or compromised API key
+# Rotate a leaked API key
 
-Stop a leaked API key from granting access to your project without breaking the components that use it.
+Stop a leaked or compromised API key from granting access to your project without breaking the components that use it: create a new key, retire the old one.
 
 Replace a leaked secret key or `service_role` key with a new secret key, then retire the compromised key so it stops granting access to your project. To learn what each key type can access, see [API keys](https://supabase.com/docs/guides/getting-started/api-keys).
 
 ## Prerequisites
 
-Fix the root cause of the leak before you rotate anything. Otherwise the new key can leak the same way. The [OWASP Risk Rating Methodology](https://community.owasp.org/OWASP_Risk_Rating_Methodology) helps you judge the severity of the incident and plan your next steps. If someone is actively using the leaked key, retire it right away with the steps in [Retire the compromised key](#retire-the-compromised-key), even though components that still use it stop working until you replace it.
+Fix the root cause of the leak before you rotate anything. Otherwise the new key can leak the same way. The [OWASP Risk Rating Methodology](https://community.owasp.org/OWASP_Risk_Rating_Methodology) helps you judge the severity of the incident and plan your next steps.
 
 To follow the Management API path, you also need:
 
 - A [personal access token](https://supabase.com/dashboard/account/tokens). If you use a [scoped personal access token](https://supabase.com/docs/guides/platform/personal-access-tokens), it needs the **API Keys** permission with **Read-write** access. An OAuth application needs the `secrets:read` and `secrets:write` scopes.
 - [`jq`](https://jqlang.org/), to filter the responses.
+
+## Procedure
+
+To rotate the key, create a new secret key, replace the compromised key with it, then retire the compromised key.
+
+If someone is actively using the leaked key, retire it right away with the steps in [Retire the compromised key](#retire-the-compromised-key), even though components that still use it stop working until you replace it.
 
 If you use the Management API, set your project reference and access token in your terminal:
 
@@ -130630,7 +130737,9 @@ export PROJECT_REF="your-project-ref"
 export SUPABASE_ACCESS_TOKEN="your-personal-access-token"
 ```
 
-## Create a new secret key
+### 1. Create a new secret key
+
+To create the key, use the Dashboard or the Management API:
 
 **Dashboard**
 
@@ -130648,7 +130757,7 @@ curl --fail-with-body -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF
   | jq -er '.api_key'
 ```
 
-## Replace the compromised key
+### 2. Replace the compromised key
 
 To move your application to the new key:
 
@@ -130656,7 +130765,7 @@ To move your application to the new key:
 2. If the compromised key is a legacy `service_role` key, also replace the legacy `anon` key with a [publishable key](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys) in your browser and mobile clients. Retiring the compromised key deactivates both legacy keys.
 3. Confirm that every component now uses the new key.
 
-## Retire the compromised key
+### 3. Retire the compromised key
 
 Unless someone is actively using the leaked key, wait until every component uses the new key before you start. Deleting a secret key can't be undone. If you find a client you missed after you deactivate the legacy keys, move it to a new key rather than re-enabling them, because re-enabling restores the compromised key.
 
@@ -130710,6 +130819,21 @@ For a legacy `anon` or `service_role` key:
 If the compromised key is a legacy `service_role` key, also revoke the legacy JWT secret. The legacy keys are JWTs signed by that secret, so anything that still trusts the secret can accept the leaked key. To move to JWT signing keys and revoke the legacy secret, see [Getting started](https://supabase.com/docs/guides/auth/signing-keys#getting-started) in the JWT signing keys guide.
 
 The compromised key no longer grants access to your project.
+
+## Next steps
+
+To finish the move off the old keys, see these pages:
+
+- [API keys](https://supabase.com/docs/guides/getting-started/api-keys): check what each key type can access.
+- [Migrating to new API keys](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys): move your clients to publishable and secret keys.
+- [JWT signing keys](https://supabase.com/docs/guides/auth/signing-keys#getting-started): revoke the legacy JWT secret.
+
+## Related resources
+
+To read more about how keys reach your services, see these pages:
+
+- [Service-to-service calls](https://supabase.com/docs/guides/functions/auth#service-to-service-calls): name the secret key an Edge Function accepts.
+- [Personal access tokens](https://supabase.com/docs/guides/platform/personal-access-tokens): scope the token you use to manage keys.
 
 
 ---
@@ -136704,21 +136828,29 @@ A successful response returns the catalog configuration including warehouse loca
 
 ---
 
-# Creating Analytics Buckets
+# Create an analytics bucket
 
 Set up your first analytics bucket using the SDK or dashboard.
 
-Caution: This feature is in **Private Alpha**. API stability and backward compatibility are not guaranteed at this stage. Request access through this [form](https://forms.supabase.com/analytics-buckets).
+Create an analytics bucket in your Supabase project with the SDK or the Dashboard, then store Apache Iceberg tables in it and query them with Iceberg clients.
+
+Create an analytics bucket to store large analytical datasets as Apache Iceberg tables.
+
+Caution: This feature is in **private alpha**. API stability and backward compatibility are not guaranteed at this stage. Request access through the [Analytics Buckets request form](https://forms.supabase.com/analytics-buckets).
+
+## Overview
 
 Analytics buckets use [Apache Iceberg](https://iceberg.apache.org/), an open-table format for efficient management of large analytical datasets. You can interact with analytics buckets using tools such as [PyIceberg](https://py.iceberg.apache.org/), [Apache Spark](https://spark.apache.org/), or any client supporting the [Iceberg REST Catalog API](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/apache/iceberg/main/open-api/rest-catalog-open-api.yaml).
 
 Note: Analytics Buckets are still available, but replication into Analytics Buckets via Supabase Pipelines is no longer supported. If you want to use Analytics Buckets, bring your own ingestion pipeline.
 
-## Creating an Analytics bucket
+## Procedure
 
 You can create an analytics bucket using either the Supabase SDK or the Supabase Dashboard.
 
 ### Using the Supabase SDK
+
+To create the bucket in code, run the following in the language you use:
 
 **JavaScript**
 
@@ -136750,20 +136882,29 @@ print('Analytics bucket created:', response)
 
 ### Using the Supabase Dashboard
 
+To create the bucket in the Dashboard:
+
 1. Navigate to the **Storage** section in the Supabase Dashboard.
 2. Click **Create Bucket**.
 3. Enter a name for your bucket (e.g., `my-analytics-bucket`).
 4. Select **Analytics Bucket** as the bucket type.
 5. Click **Create**.
 
-![Create Analytics Bucket in Dashboard](https://supabase.com/docs/img/storage/iceberg-bucket.png)
+![The Create storage bucket dialog with the name my-analytics-bucket entered and the Analytics bucket type selected.](https://supabase.com/docs/img/storage/iceberg-bucket.png)
 
 ## Next steps
 
-Once you've created your analytics bucket, you can:
+After you create your analytics bucket, you can:
 
 - [Connect with Iceberg clients](https://supabase.com/docs/guides/storage/analytics/connecting-to-analytics-bucket) like PyIceberg or Apache Spark
 - [Query data with Postgres](https://supabase.com/docs/guides/storage/analytics/query-with-postgres) using the Iceberg Foreign Data Wrapper
+
+## Related resources
+
+To read more about Analytics Buckets, see these pages:
+
+- [Analytics Buckets](https://supabase.com/docs/guides/storage/analytics/introduction): learn what they store and how they work.
+- [Limits](https://supabase.com/docs/guides/storage/analytics/limits): check the quotas that apply to your buckets.
 
 
 ---

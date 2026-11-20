@@ -2042,7 +2042,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 requests==2.32.5
-stripe==16.0.0
+stripe==17.1.0
 toml==0.10.2
 Werkzeug==3.1.5
           <h2>Rocket Rides</h2>
@@ -3093,10 +3093,10 @@ export const useStripeConnect = (connectedAccountId) => {
   return stripeConnectInstance;
 };
 export const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2026-10-28.endive',
+  apiVersion: '2026-11-18.endive',
 });
 export const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2026-10-28.endive',
+  apiVersion: '2026-11-18.endive',
 });
   margin-top: 0;
   margin-bottom: 80px;
