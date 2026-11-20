@@ -74,7 +74,7 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds organization-level support to the List Activity Logs endpoint](https://docs.stripe.com/changelog/endive/2026-11-18/organization-level-support-list-activity-logs-endpoint.md) | Atlas, Billing, Capital, Checkout, Climate, Connect, Corporatecard, Crypto, Datapipeline, Elements, Financialconnections, Identity, Invoicing, Issuing, Paymentlinks, Payments, Payouts, Radar, Revrec, Sigma, Tax, Terminal, Treasury | Non-breaking | api |
 | [Expands action coverage in Activity Logs](https://docs.stripe.com/changelog/endive/2026-11-18/activity-logs-action-coverage.md) | Atlas, Billing, Capital, Checkout, Climate, Connect, Corporatecard, Crypto, Datapipeline, Elements, Financialconnections, Identity, Invoicing, Issuing, Paymentlinks, Payments, Payouts, Radar, Revrec, Sigma, Tax, Terminal, Treasury | Non-breaking | api |
 | [Documents the Account Session configuration for additional embedded components](https://docs.stripe.com/changelog/endive/2026-11-18/documents-account-session-parameters-and-responses-for-additional-connect-embedded-components.md) | Connect | Non-breaking | api |
-| [Adds Apple Pay Global Payouts in Public Preview](https://docs.stripe.com/changelog/endive/2026-11-18/apple-pay-global-payouts-public-preview.md) | Payouts | Non-breaking | api |
+| [Adds Apple Pay as a supported payout method for Global Payouts](https://docs.stripe.com/changelog/endive/2026-11-18/apple-pay-global-payouts.md) | Payouts | Non-breaking | api |
 
 ## 2026-10-28.preview
 

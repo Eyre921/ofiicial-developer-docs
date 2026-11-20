@@ -148,7 +148,7 @@ Need help locating captured data in your Sentry project?
 At this point, you should have integrated Sentry into your Astro application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/astro/agent-tracing.md) to monitor your AI systems
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/astro/agent-tracing.md) to follow agent runs from system prompt to final output, capturing every model call, tool execution, and handoff as a span
 * [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/astro/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers blocking Sentry events
 * Read the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/astro/manual-setup.md) guide to learn what each file does and how to configure Sentry yourself
 

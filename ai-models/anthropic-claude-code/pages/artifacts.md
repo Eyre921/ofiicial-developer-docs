@@ -180,17 +180,13 @@ To ask for the comments yourself, give Claude the URL:
 Read the comments on https://claude.ai/code/artifact/5fbea6f3-... and make the changes the commenters ask for.
 ```
 
-If Claude tells you it can't read comments, confirm your version, your session, and your feature-flag setting:
-
-* You're running Claude Code v2.1.221 or later.
-* You're not in your first session since you installed Claude Code or upgraded from a version before v2.1.221. In that [first session after an install or upgrade](/docs/en/env-vars#first-session-after-an-install-or-upgrade), Claude might not be able to read comments yet; start a new session and ask again.
-* You haven't turned feature-flag fetching off.
+Before v2.1.326, Claude needs [feature-flag fetching](/docs/en/env-vars#features-that-need-feature-flag-fetching) on to read or watch comments.
 
 ### Let Claude reply to comments on its own
 
 After your session publishes an artifact, Claude Code watches that artifact for comments. When someone who can edit the artifact sends a comment to Claude, it reaches your session right away, and Claude can read the thread and reply without you asking.
 
-You need Claude Code v2.1.228 or later. If you turned [feature-flag fetching](/docs/en/env-vars#features-that-need-feature-flag-fetching) off, Claude Code doesn't watch for comments.
+You need Claude Code v2.1.228 or later.
 
 Your [permission mode](/docs/en/permission-modes) decides what Claude does when a sent comment arrives:
 

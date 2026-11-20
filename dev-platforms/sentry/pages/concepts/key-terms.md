@@ -34,7 +34,7 @@ url: https://docs.sentry.io/concepts/key-terms/
 
 * #### [Tracing](https://docs.sentry.io/concepts/key-terms/tracing.md)
 
-  Learn more about the tracing features Sentry offers to help you track your software performance across multiple systems.
+  Follow requests, background jobs, and agent runs across services, and see where they fail or slow down.
 
 * #### [Agent Tracing - What It Is and How To Use It](https://docs.sentry.io/concepts/key-terms/agent-tracing.md)
 

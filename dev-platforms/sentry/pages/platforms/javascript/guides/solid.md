@@ -12,6 +12,8 @@ url: https://docs.sentry.io/platforms/javascript/guides/solid/
 
 # Sentry for Solid
 
+Using Solid 2? See the [Solid 2 (Alpha) guide](https://docs.sentry.io/platforms/javascript/guides/solid/solid-2.md). This page covers Solid 1.
+
 This SDK guide is specifically for Solid. For instrumenting your SolidStart app, see our [SolidStart guide](https://docs.sentry.io/platforms/javascript/guides/solidstart.md).
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/solid.md#prerequisites)
@@ -283,6 +285,7 @@ Are you having problems setting up the SDK?
 ## Topics
 
 - [Capturing Errors](https://docs.sentry.io/platforms/javascript/guides/solid/usage.md)
+- [Solid 2 (Alpha)](https://docs.sentry.io/platforms/javascript/guides/solid/solid-2.md)
 - [Source Maps](https://docs.sentry.io/platforms/javascript/guides/solid/sourcemaps.md)
 - [Logs](https://docs.sentry.io/platforms/javascript/guides/solid/logs.md)
 - [Session Replay](https://docs.sentry.io/platforms/javascript/guides/solid/session-replay.md)

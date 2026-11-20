@@ -25,6 +25,7 @@ Deepgram on SageMaker is the fastest path to running Deepgram inside your own AW
 * **Lower management overhead.** AWS manages the underlying instances, host OS, container runtime, and model package distribution. You don't need a dedicated platform team to keep the service patched and healthy.
 * **Compliance for regulated workloads.** Deepgram runs entirely inside your AWS account and VPC. Audio never leaves your environment, and you inherit the compliance posture of SageMaker AI (HIPAA-eligible, SOC, ISO, PCI, FedRAMP, and others). This makes SageMaker a strong fit for regulated industries that need a private deployment without operating their own Kubernetes platform.
 * **Native integration with AWS services.** SageMaker Endpoints integrate out of the box with Amazon CloudWatch (logs and metrics), AWS IAM (authentication and authorization), Amazon VPC (network isolation), AWS PrivateLink, AWS KMS, AWS CloudTrail (audit), and SageMaker auto-scaling. You get production-grade observability and access controls without building them yourself.
+* **Cross-Region failover.** An Amazon SageMaker AI inference router can send pre-recorded and asynchronous requests to your Deepgram Endpoints in other AWS Regions or accounts when the local endpoint runs short of capacity. See [Cross-region inference routing](/docs/cross-region-routing-sagemaker).
 * **AWS Marketplace billing.** Deepgram license charges flow through your existing AWS bill, simplifying procurement for teams that already buy through AWS.
 
 ### When Docker or Kubernetes may be a better fit

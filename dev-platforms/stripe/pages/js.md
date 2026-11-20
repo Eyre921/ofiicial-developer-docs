@@ -5299,10 +5299,10 @@ Get the Currency Selector Element
 Programmatically sets the active view on the embedded form. This method is only available when `options[layout]` is `'compact'`.
 The compact layout is in private preview. [Request access](https://docs.stripe.com/checkout/form/quickstart.md#request-access-to-the-compact-layout).
 
-The `viewIndex` parameter is a positive integer that corresponds to an index from the `views` array provided on the embedded form's [change event](https://docs.stripe.com/js/custom_checkout/element_events/on_change.md?type=checkoutForm). You can only set a view where `enabled` is `true`.
+The `viewIndex` parameter is a nonnegative integer that corresponds to an index from the `views` array provided on the embedded form's [change event](https://docs.stripe.com/js/custom_checkout/element_events/on_change.md?type=checkoutForm). You can only set a view where `canNavigate` is `true`.
 
 - `viewIndex`
-  A positive integer index corresponding to an entry in the `views` array provided on the embedded form's [change event](https://docs.stripe.com/js/custom_checkout/element_events/on_change.md?type=checkoutForm). The view at the specified index must have `enabled: true`.
+  A nonnegative integer index corresponding to an entry in the `views` array provided on the embedded form's [change event](https://docs.stripe.com/js/custom_checkout/element_events/on_change.md?type=checkoutForm). The view at the specified index must have `canNavigate: true`.
 
 ### Example
 
@@ -5520,7 +5520,7 @@ To use `CheckoutElementsProvider`, call `loadStripe` from `@stripe/stripe-js` wi
 ### Props
 
 - `stripe`
-  A [Stripe object](https://docs.stripe.com/js/initializing.md) or a `Promise` resolving to a Stripe object. The easiest way to initialize a Stripe object is with the [Stripe.js wrapper module](https://github.com/stripe/stripe-js/blob/master/README.md#readme). After this prop has been set, it can not be changed.
+  A [Stripe object](https://docs.stripe.com/js/initializing.md), `null`, or a `Promise` resolving to a Stripe object or `null`. The easiest way to initialize a Stripe object is with the [Stripe.js wrapper module](https://github.com/stripe/stripe-js/blob/master/README.md#readme). After this prop has been set, it can not be changed.
 
 - `options`
   Options for `CheckoutElementsProvider`.
@@ -7243,7 +7243,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -7256,7 +7256,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -7359,7 +7359,7 @@ The following Checkout Elements support the `cancel` event:
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -7400,7 +7400,7 @@ target the Element for styling or testing.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -7413,7 +7413,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -7492,7 +7492,7 @@ The default setting is `automatic`, where we'll support autocomplete when possib
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -7505,7 +7505,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -7584,7 +7584,7 @@ The default setting is `automatic`, where we'll support autocomplete when possib
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -7597,7 +7597,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -7626,7 +7626,7 @@ target the Element for styling or testing.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -7639,7 +7639,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -7713,7 +7713,7 @@ Default is `never`.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -7726,7 +7726,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -7755,7 +7755,7 @@ To use `CheckoutFormProvider`, call `loadStripe` from `@stripe/stripe-js` with y
 ### Props
 
 - `stripe`
-  A [Stripe object](https://docs.stripe.com/js/initializing.md) or a `Promise` resolving to a Stripe object. The easiest way to initialize a Stripe object is with the [Stripe.js wrapper module](https://github.com/stripe/stripe-js/blob/master/README.md#readme). After this prop has been set, it can not be changed.
+  A [Stripe object](https://docs.stripe.com/js/initializing.md), `null`, or a `Promise` resolving to a Stripe object or `null`. The easiest way to initialize a Stripe object is with the [Stripe.js wrapper module](https://github.com/stripe/stripe-js/blob/master/README.md#readme). After this prop has been set, it can not be changed.
 
 - `options`
   Options for `CheckoutFormProvider`.
@@ -9053,7 +9053,7 @@ you can set its property in `paymentMethods` to `always`.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -9093,7 +9093,7 @@ see the [ElementsProvider without an intent](https://docs.stripe.com/js/react_st
 ### Props
 
 - `stripe`
-  A [Stripe object](https://docs.stripe.com/js/initializing.md) or a `Promise` that resolves to one. The value returned from
+  A [Stripe object](https://docs.stripe.com/js/initializing.md), `null`, or a `Promise` that resolves to a Stripe object or `null`. The value returned from
 `loadStripe` is the recommended way to initialize this prop.
 
 - `options`
@@ -10055,7 +10055,7 @@ Link makes a best effort to return the phone number registered to the wallet, bu
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10068,7 +10068,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -10295,7 +10295,7 @@ If you're using the `cancel` event as a hook for canceling the customer's order,
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10440,7 +10440,7 @@ Specify 'organization' to display an organization field.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10453,7 +10453,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -10493,7 +10493,7 @@ The form will render with empty fields if not provided.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10506,7 +10506,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -10574,7 +10574,7 @@ Default is `never`.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10587,7 +10587,7 @@ Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onLoaderStart`
   Callback called right before Stripe displays the Element skeleton loader.
-Receives the Element instance as its only argument.
+Receives an event object containing `elementType`, the type of Element that started loading.
 
 - `onLoadError`
   Callback called when the Element fails to load.
@@ -10656,7 +10656,7 @@ Default is `false`.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10749,7 +10749,7 @@ at confirm time.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10818,7 +10818,7 @@ Default is `false`.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10884,7 +10884,7 @@ Default is `false`.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -10975,7 +10975,7 @@ at confirm time.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -11054,7 +11054,7 @@ Default is `false`.
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -11106,7 +11106,7 @@ If there are payment methods that will show that aren't specified in `paymentMet
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.
@@ -17475,7 +17475,7 @@ Receives the [click event payload](https://docs.stripe.com/js/element/events/on_
 
 - `onReady`
   Callback called once the Element is fully rendered.
-Recieves the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler).
+Receives the Element instance as its only argument. For `ExpressCheckoutElement`, receives the [ready event payload](https://docs.stripe.com/js/element/events/on_ready.md#element_on_ready-handler) instead.
 
 - `onBlur`
   Callback called when the Element loses focus.

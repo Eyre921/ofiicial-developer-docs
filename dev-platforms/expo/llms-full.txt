@@ -354,6 +354,9 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 ### TV apps
 - [Build Expo apps for TV](https://docs.expo.dev/guides/building-for-tv.md)
 
+### Voice and video
+- [Using LiveKit](https://docs.expo.dev/guides/using-livekit.md)
+
 ### Web apps
 - [Using Next.js with Expo for web](https://docs.expo.dev/guides/using-nextjs.md)
 

@@ -78,9 +78,19 @@ In GitHub Desktop, if you clone a repository that you do not have write access t
 
    </div>
 
-2. Click the tab that corresponds to the location of the repository you want to clone. In this example, we click on the URL tab.
+2. Click the **URL** tab.
 
-   ![Screenshot of the "URL" tab of the "Clone a repository" window. The "GitHub.com", "GitHub Enterprise" and "URL" tabs are outlined in dark orange.](/assets/images/help/desktop/choose-repository-location-url-tab-windows.png)
+   <div class="ghd-tool mac">
+
+   ![Screenshot of the "Clone a Repository" window on a Mac. At the top of the window, the "URL" tab is outlined in dark orange.](/assets/images/help/desktop/mac-clone-repository-url-tab.png)
+
+   </div>
+
+   <div class="ghd-tool windows">
+
+   ![Screenshot of the "Clone a repository" window on Windows. At the top of the window, the "URL" tab is outlined in dark orange.](/assets/images/help/desktop/windows-clone-repository-url-tab.png)
+
+   </div>
 
 3. Enter the url or path of the repository you want to clone.
 

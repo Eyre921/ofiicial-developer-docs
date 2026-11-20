@@ -307,7 +307,7 @@ Need help locating captured data in your Sentry project?
 At this point, you should have integrated Sentry into your Cloudflare Worker. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/cloudflare/agent-tracing.md) to monitor your AI systems
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/cloudflare/agent-tracing.md) to follow agent runs from system prompt to final output, capturing every model call, tool execution, and handoff as a span
 
 Are you having problems setting up the SDK?
 

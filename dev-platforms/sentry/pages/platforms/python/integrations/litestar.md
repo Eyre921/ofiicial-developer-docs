@@ -30,7 +30,7 @@ pip install sentry-sdk uvicorn
 
 If you have the `litestar` package in your dependencies, the Litestar integration will be enabled automatically when you initialize the Sentry SDK.
 
-In addition to capturing errors, you can monitor interactions between multiple services or applications by [enabling tracing](https://docs.sentry.io/concepts/key-terms/tracing.md). You can also collect and analyze performance profiles from real users with [profiling](https://docs.sentry.io/product/profiling.md).
+In addition to capturing errors, you can follow requests, jobs, and [agent runs](https://docs.sentry.io/product/agents.md) across services by [enabling tracing](https://docs.sentry.io/concepts/key-terms/tracing.md), and see where they fail or slow down. You can also collect and analyze performance profiles from real users with [profiling](https://docs.sentry.io/product/profiling.md).
 
 Select which Sentry features you'd like to install in addition to Error Monitoring to get the corresponding installation and configuration instructions below.
 

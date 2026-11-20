@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 408 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 409 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -77,6 +77,7 @@
 - `docs/configure-sagemaker-deployments` — [Configure Amazon SageMaker Deployments](pages/docs/configure-sagemaker-deployments.md) · [原文](https://developers.deepgram.com/docs/configure-sagemaker-deployments.md)
 - `docs/configure-voice-agent` — [Configure the Voice Agent](pages/docs/configure-voice-agent.md) · [原文](https://developers.deepgram.com/docs/configure-voice-agent.md)
 - `docs/create-additional-api-keys` — [Creating API keys](pages/docs/create-additional-api-keys.md) · [原文](https://developers.deepgram.com/docs/create-additional-api-keys.md)
+- `docs/cross-region-routing-sagemaker` — [Cross-region inference routing](pages/docs/cross-region-routing-sagemaker.md) · [原文](https://developers.deepgram.com/docs/cross-region-routing-sagemaker.md)
 - `docs/deepgram-unimrcp-plugin` — [Deepgram UniMRCP Plugin](pages/docs/deepgram-unimrcp-plugin.md) · [原文](https://developers.deepgram.com/docs/deepgram-unimrcp-plugin.md)
 - `docs/deepgram-whisper-cloud` — [Getting Started with Deepgram Whisper Cloud](pages/docs/deepgram-whisper-cloud.md) · [原文](https://developers.deepgram.com/docs/deepgram-whisper-cloud.md)
 - `docs/deepgram-with-amazon-connect` — [Amazon Connect and Deepgram](pages/docs/deepgram-with-amazon-connect.md) · [原文](https://developers.deepgram.com/docs/deepgram-with-amazon-connect.md)
@@ -277,7 +278,7 @@
 - `docs/tts-tagging` — [Tagging TTS requests](pages/docs/tts-tagging.md) · [原文](https://developers.deepgram.com/docs/tts-tagging.md)
 - `docs/tts-text-chunking` — [Text chunking for TTS](pages/docs/tts-text-chunking.md) · [原文](https://developers.deepgram.com/docs/tts-text-chunking.md)
 - `docs/tts-troubleshooting-websocket-net-and-data-errors` — [TTS Troubleshooting WebSocket, NET, and DATA Errors](pages/docs/tts-troubleshooting-websocket-net-and-data-errors.md) · [原文](https://developers.deepgram.com/docs/tts-troubleshooting-websocket-net-and-data-errors.md)
-- `docs/tts-voice-controls` — [Speed, pause, pronunciation](pages/docs/tts-voice-controls.md) · [原文](https://developers.deepgram.com/docs/tts-voice-controls.md)
+- `docs/tts-voice-controls` — [Speed, pause, pronunciation, volume normalization](pages/docs/tts-voice-controls.md) · [原文](https://developers.deepgram.com/docs/tts-voice-controls.md)
 - `docs/tts-websocket` — [Text-to-speech streaming](pages/docs/tts-websocket.md) · [原文](https://developers.deepgram.com/docs/tts-websocket.md)
 - `docs/tts-websocket-streaming` — [Real-time TTS with WebSockets](pages/docs/tts-websocket-streaming.md) · [原文](https://developers.deepgram.com/docs/tts-websocket-streaming.md)
 - `docs/tts-ws-clear` — [Clear](pages/docs/tts-ws-clear.md) · [原文](https://developers.deepgram.com/docs/tts-ws-clear.md)

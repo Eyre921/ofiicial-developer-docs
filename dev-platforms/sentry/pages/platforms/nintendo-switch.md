@@ -29,6 +29,29 @@ If you're using Unity or Unreal Engine, use the engine-specific SDK instead of i
 
 For custom engines or native C++ games, request access to integrate the console SDK directly as described above.
 
+## [Feature Highlights](https://docs.sentry.io/platforms/nintendo-switch.md#feature-highlights)
+
+Nintendo Switch support was originally introduced in Native SDK `0.8.2`. Switch 2 support followed in `0.12.5+20260203` for native and Unreal, and `0.16.5-20260901` for Unity.
+
+* **Screenshots**\
+  Screenshot attachments through Nintendo crash-report forwarding.
+
+* **Device Context**\
+  Automatic console model, family, and manufacturer context.\
+  Available since `0.11.3+20251020` (expanded console context since `0.15.3-20260707`).
+
+* **Unity Network Checks**\
+  Detect offline status without triggering system connection dialogs.\
+  Available since `0.16.5-20260907`.
+
+* \**Default user IDs*\
+  Default user IDs set based on a unique device identifier, scoped to the Sentry project, and preserved when local storage is cleared.\
+  Available since `0.17.3-20261013`.
+
+* [**Crash-Free Session Tracking**](https://docs.sentry.io/platforms/native/configuration/releases.md#release-health)\
+  Track crashed sessions through Nintendo crash reports without requiring persistent storage or a subsequent game launch.\
+  Available since `0.17.5-20261029`.
+
 ***
 
 "Nintendo", "Nintendo Switch" are trademarks or registered trademarks of Nintendo.

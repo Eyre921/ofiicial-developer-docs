@@ -23,7 +23,7 @@ The Inbox ID or the inbox email address, such as `support@example.com`.
 ## Body Parameters
 
 At least one of `to`, `cc`, `bcc`, `subject`, `text`, `html`, or `attachments`
-must be non-empty. `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+must be non-empty. `to`, `cc`, and `bcc` combined can't exceed 50 recipients.
 
 **to** `string | string[] | null`
 

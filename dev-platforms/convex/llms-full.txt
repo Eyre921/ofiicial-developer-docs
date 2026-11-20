@@ -5964,7 +5964,7 @@ Enable [ZDR routing](/ai-gateway/api.md#provider-preferences) on each request th
 
 <!-- -->
 
-ZDR endpoint catalog checked: 2026-11-17.
+ZDR endpoint catalog checked: 2026-11-18.
 
 ## OpenAI[​](#openai "Direct link to OpenAI")
 
@@ -6012,7 +6012,7 @@ ZDR endpoint catalog checked: 2026-11-17.
 * `openai/gpt-6-astra` · ZDR
 * `openai/gpt-6-astra-pro` · ZDR
 * `openai/gpt-6-luna` · ZDR
-* `openai/gpt-6-luna-decisions` · ZDR
+* `openai/gpt-6-luna-decisions`
 * `openai/gpt-6-luna-pro` · ZDR
 * `openai/gpt-6-sol` · ZDR
 * `openai/gpt-6-sol-pro` · ZDR
@@ -6020,6 +6020,10 @@ ZDR endpoint catalog checked: 2026-11-17.
 * `openai/gpt-6.1-sol-pro` · ZDR
 * `openai/gpt-6.1-terra` · ZDR
 * `openai/gpt-6.1-terra-pro` · ZDR
+* `openai/gpt-6.2-astra` · ZDR
+* `openai/gpt-6.2-astra-pro` · ZDR
+* `openai/gpt-6.2-sol` · ZDR
+* `openai/gpt-6.2-sol-pro` · ZDR
 * `openai/gpt-audio`
 * `openai/gpt-audio-mini`
 * `openai/gpt-chat-latest`
@@ -6190,7 +6194,7 @@ ZDR endpoint catalog checked: 2026-11-17.
 * `mistralai/ministral-3b-2512` · ZDR
 * `mistralai/ministral-8b-2512` · ZDR
 * `mistralai/mistral-embed-2312` · ZDR
-* `mistralai/mistral-large` · ZDR
+* `mistralai/mistral-large`
 * `mistralai/mistral-large-2407` · ZDR
 * `mistralai/mistral-large-2512` · ZDR
 * `mistralai/mistral-large-4-0` · ZDR
@@ -6354,6 +6358,8 @@ ZDR endpoint catalog checked: 2026-11-17.
 * `microsoft/mai-image-2.5-pro` · ZDR
 * `microsoft/mai-image-2.6` · ZDR
 * `microsoft/mai-image-2.6-flash` · ZDR
+* `microsoft/mai-image-2.7` · ZDR
+* `microsoft/mai-image-2.7-flash` · ZDR
 * `microsoft/mai-transcribe-1.5` · ZDR
 * `microsoft/mai-transcribe-2` · ZDR
 * `microsoft/mai-voice-2` · ZDR
@@ -6361,6 +6367,7 @@ ZDR endpoint catalog checked: 2026-11-17.
 * `microsoft/mai-voice-2.1` · ZDR
 * `microsoft/mai-voice-2.1-flash` · ZDR
 * `microsoft/microsoft-decision-1` · ZDR
+* `microsoft/microsoft-decision-1.1` · ZDR
 * `microsoft/phi-4` · ZDR
 
 ## Cohere[​](#cohere "Direct link to Cohere")
@@ -6692,6 +6699,8 @@ ZDR endpoint catalog checked: 2026-11-17.
 ## heygen[​](#heygen "Direct link to heygen")
 
 * `heygen/avatar-iv`
+* `heygen/heygen-avatar-6`
+* `heygen/heygen-avatar-6-turbo`
 * `heygen/heygen-decision-1`
 * `heygen/heygen-decision-1-turbo`
 * `heygen/heygen-video-1`
@@ -67521,37 +67530,45 @@ Other platform limits can be found [here](/production/state/limits.md).
 
 While this limit in itself is quite high for just source code, certain dependencies can quickly make your bundle size cross over this limit, particularly if they are not effectively [tree-shakeable](https://webpack.js.org/guides/tree-shaking/) (such as [aws-sdk](https://www.npmjs.com/package/aws-sdk) or [snowflake-sdk](https://www.npmjs.com/package/snowflake-sdk))
 
-You can follow these steps to debug bundle size:
-
-1. Make sure you're using the most recent version of convex
-
-   ```
-   npm install convex@latest
-   ```
-
-2. Generate the bundle
-
-   Note that this will not push code, just generate a bundle for debugging purposes.
-
-   ```
-   npx convex dev --once --debug-bundle-path /tmp/myBundle
-   ```
-
-3. Visualize the bundle
-
-   Use [source-map-explorer](https://github.com/danvk/source-map-explorer/tree/master) to visualize your bundle.
-
-   ```
-   npx source-map-explorer /tmp/myBundle/**/*.js
-   ```
-
-Code bundled for the Convex runtime will be in the `isolate` directory while code bundled for node actions will be in the `node` directory.
+If your code exceeds this limit, pushing fails with a `ModulesTooLarge` error.
 
 [External packages](/functions/bundling.md#external-packages) count towards the size limit, but will not be uploaded when pushing code to your deployment. Marking large node dependencies as external can make pushing code faster. However, external packages are installed in full rather than tree-shaken, so marking a dependency as external can increase your total code size.
 
 Upgrade to optimize your bundle
 
 Starting from version 1.31.5, the `convex` NPM package includes optimizations to the sourcemaps in your bundle, which can substantially reduce bundle size. Upgrade to the latest version of the `convex` package for these improvements.
+
+### Debugging bundle size[​](#debugging-bundle-size "Direct link to Debugging bundle size")
+
+To debug bundle size, run [`@convex-dev/bundle-analyzer`](https://www.npmjs.com/package/@convex-dev/bundle-analyzer) from the root directory of your project:
+
+```
+npx @convex-dev/bundle-analyzer summary
+```
+
+This bundles your code locally and provides a summary of the largest components, packages, and modules, along with suggestions for optimizing the bundle.
+
+You can use the bundle analyzer commands to pinpoint areas for optimization. For example, the `packages` command lists the largest packages in the bundle:
+
+```
+npx @convex-dev/bundle-analyzer packages
+```
+
+You can also use the `packages` command to drill into which modules import a package:
+
+```
+npx @convex-dev/bundle-analyzer packages zod
+```
+
+To browse the whole bundle in an interactive treemap in your terminal, run `explore`:
+
+```
+npx @convex-dev/bundle-analyzer explore
+```
+
+Every command (except `explore`) accepts the `--json` option, which prints the command output as JSON. This can be helpful for AI agents using these commands.
+
+Run `npx @convex-dev/bundle-analyzer --help` to see all commands, or see the [package README](https://www.npmjs.com/package/@convex-dev/bundle-analyzer).
 
 ### Dynamic dependencies[​](#dynamic-dependencies "Direct link to Dynamic dependencies")
 

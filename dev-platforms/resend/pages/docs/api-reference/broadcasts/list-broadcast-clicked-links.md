@@ -7,7 +7,7 @@ path: docs/api-reference/broadcasts/list-broadcast-clicked-links
 GET /broadcasts/:broadcast_id/clicked-links
 Retrieve the links clicked in a broadcast.
 
-Retrieve every link clicked in a broadcast, ranked by total clicks. Results are
+Retrieve every link clicked in a Broadcast, ranked by total clicks. Results are
 paginated with cursors. See [Pagination](/docs/api-reference/pagination) for how
 `after` and `before` work.
 
@@ -18,7 +18,7 @@ paginated with cursors. See [Pagination](/docs/api-reference/pagination) for how
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 ## Query Parameters
 
@@ -46,7 +46,7 @@ The clicked links, ordered by total clicks, descending.
 
 **id** `string`
 
-An opaque cursor for this row, used only for pagination. It does not
+An opaque cursor for this row, used only for pagination. It doesn't
 identify any entity in Resend.
 
 **url** `string`

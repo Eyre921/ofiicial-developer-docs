@@ -642,7 +642,7 @@ The payment succeeds unless you [block it with a custom Radar rule](https://docs
 To test errors resulting from invalid data, provide invalid details. You don’t need a special test card for this. Any invalid value works. For instance:
 
 - [invalid_expiry_month](https://docs.stripe.com/declines/codes.md#invalid_expiry_month): Use an invalid month, such as **13**.
-- [invalid_expiry_year](https://docs.stripe.com/declines/codes.md#invalid_expiry_year): Use a year up to 50 years in the past, such as **95**.
+- [invalid_expiry_year](https://docs.stripe.com/declines/codes.md#invalid_expiry_year): Use a year of **1970** or earlier.
 - [invalid_cvc](https://docs.stripe.com/declines/codes.md#invalid_cvc): Use a two-digit number, such as **99**.
 - [incorrect_number](https://docs.stripe.com/declines/codes.md#incorrect_number): Use a card number that fails the [Luhn check](https://en.wikipedia.org/wiki/Luhn_algorithm), such as `4242424242424241`.
 

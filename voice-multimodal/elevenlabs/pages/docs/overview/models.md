@@ -22,7 +22,7 @@ Exceptional voice cloning capabilities
 
 90+ languages supported
 
-10,000 character limit
+100,000 character limit
 
 Support for natural multi-speaker dialogue
 
@@ -140,7 +140,7 @@ Same features, languages, pricing, and API as Scribe v2
 
 #### [Scribe v3 Live Medical](/docs/overview/models#scribe-v3-live-medical)
 
-Real-time speech recognition for healthcare voice agents (early access)
+Real-time speech recognition for healthcare voice agents
 
 Available in ElevenAgents only
 
@@ -450,7 +450,7 @@ The maximum number of characters supported in a single text-to-speech request va
 
 | Model ID                 | Character limit | Approximate audio duration |
 | ------------------------ | --------------- | -------------------------- |
-| `eleven_v4`              | 10,000          | \~10 minutes               |
+| `eleven_v4`              | 100,000         | \~100 minutes              |
 | `eleven_v3`              | 5,000           | \~5 minutes                |
 | `eleven_flash_v2_5`      | 40,000          | \~40 minutes               |
 | `eleven_flash_v2`        | 30,000          | \~30 minutes               |
@@ -648,11 +648,10 @@ Scribe v3 Live Medical is a real-time speech recognition model for healthcare vo
 > Scribe v3 Live Medical is available in ElevenAgents only. It is not available through the Speech
 > to Text API. For medical transcription through the API, use [Scribe v2 Medical](#scribe-v2-medical).
 
-> **Warning**
+> **Info**
 >
-> Scribe v3 Live Medical is in early access. Do not send protected health information to Scribe v3
-> Live Medical until HIPAA eligibility is confirmed for this model. EU data residency is not
-> available during early access.
+> Companies requiring HIPAA compliance must contact [ElevenLabs Sales](https://elevenlabs.io/contact-sales) to sign a Business Associate Agreement (BAA) before
+> sending protected health information.
 
 > **Note**
 >
@@ -678,7 +677,7 @@ Silence-based voice activity detection can end a caller's turn during a natural 
 
 ### Select Scribe v3 Live Medical
 
-Open your agent's **Settings**, go to **Automatic Speech Recognition** and select **Scribe v3 Live Medical** from the **ASR model** dropdown. The option requires the `turn_v3` turn model and is only shown to workspaces with early access.
+Open your agent's **Settings**, go to **Automatic Speech Recognition** and select **Scribe v3 Live Medical** from the **ASR model** dropdown. The option requires the `turn_v3` turn model.
 
 ## SFX v3
 

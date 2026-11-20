@@ -93,7 +93,7 @@ Follow along with a sample app to set up error monitoring or distributed tracing
 
 * #### [Performance Monitoring](https://docs.sentry.io/product/sentry-basics/performance-monitoring.md)
 
-  Track application performance across your full stack with distributed tracing, automated issue detection, and pre-built dashboards.
+  Use traces to find latency, throughput, and regressions. Traces also show where work fails and how agent runs flow.
 
 * #### [User Feedback Basics](https://docs.sentry.io/product/sentry-basics/user-feedback-basics.md)
 

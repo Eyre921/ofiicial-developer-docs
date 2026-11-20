@@ -87,6 +87,8 @@ If you’ve deployed a *Content Security Policy* (Content Security Policy (CSP) 
 - `script-src`, `https://connect-js.stripe.com`, `https://js.stripe.com`
 - `style-src`, `sha256-0hAheEzaMe6uXIKV4EehS9pu1am1lj/KnnzrOYqckXk=` (SHA of empty style element)
 
+If your policy already allows inline styles through `'unsafe-inline'`, this hash isn’t required. Adding a hash or nonce to `style-src` makes browsers ignore `'unsafe-inline'` for styles controlled by that directive, which can block existing inline styles.
+
 If you’re using a CSS file to load [web fonts](https://docs.stripe.com/connect/get-started-connect-embedded-components.md#fonts-object) for use with Connect embedded components, its URL must be allowed by your [connect-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/connect-src) CSP directive.
 
 #### Stripe.js

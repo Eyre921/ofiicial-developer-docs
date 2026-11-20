@@ -13,6 +13,7 @@ Support summary:
 * API the harness speaks to Fireworks: Anthropic Messages
 * Nexus Auto: Supported
 * Native web search: Supported. Fireworks runs the harness's native web search server-side, with any Fireworks model. See [Web search](/nexus/auto#web-search).
+* Auto mode safety checks: Supported. Fireworks runs the checks server-side, separately from the main model. See [Auto mode safety checks](#auto-mode-safety-checks).
 
 Plan access: Pro and Team don't include general access to open models. They use Nexus Auto (`auto`) along with their own Claude or ChatGPT models, and Nexus Auto still sends turns to open models. Enterprise accounts also get general access to open models on Fireworks serverless. See [Plans and Accounts](/nexus/plans).
 
@@ -20,13 +21,13 @@ Plan access: Pro and Team don't include general access to open models. They use 
 
 **1. Install and sign in**
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
 nexus login
 ```
 
@@ -87,15 +88,35 @@ To restore your original settings, run `nexus claude off`.
 
 Nexus CLI adds a [session cost status line](/nexus/metrics) if Claude Code doesn't already have a status line.
 
+## Auto mode safety checks
+
+In [auto mode](https://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode), Claude Code checks risky actions, such as shell commands, before they run. Through Fireworks, these checks run server-side at Fireworks, separately from the model that answers your turn.
+
+* **Independent check:** a separate classifier reviews each tool call, even when your session uses a smaller open model.
+* **No billing notice:** Claude Code doesn't show the "this session isn't eligible" notice. `/status` shows **Auto mode server: Enabled**.
+* **Billed to Fireworks:** checks bill to your Fireworks account at Fireworks rates. On Nexus accounts they run on Fireworks open models, so the [usage dashboard](/nexus/metrics#break-down-fireworks-usage-and-cost) can list a model, such as Kimi or GLM, that your session didn't use.
+* **Not in the session meter:** the status line and `nexus claude usage` don't include checks.
+* **Claude Desktop too:** the Code tab in [Claude Desktop](/nexus/harnesses/claude-desktop#auto-mode-safety-checks) gets the same checks.
+
+- Nexus accounts, and accounts that use Nexus Auto, run checks on `auto` limited to Fireworks open models. Other accounts run checks on the request's model.
+- Each turn with tool calls adds one check request that reviews all of the turn's tool calls together. If some tool calls get no verdict, one more request checks only those. At most two check requests per turn.
+- Each check request includes the conversation and the tool calls, so its input tokens grow with the conversation.
+- Calls with no verdict, because a check failed or timed out, are denied rather than run unreviewed. Claude Code shows [The server returned no safety verdict](https://code.claude.com/docs/en/errors#the-server-returned-no-safety-verdict).
+- Checks also apply to [manual setup](#manual-setup-advanced). Claude Code asks a gateway for server-side checks by default from v2.1.278.
+- To use Claude Code's own classifier instead, run `export CLAUDE_CODE_AUTO_MODE_SERVER=0` before starting Claude Code. Its classifier requests then run on the Sonnet slot and bill to Anthropic. To bill them at Fireworks rates, pin Sonnet with `nexus claude --sonnet <id>`.
+- Earlier Nexus CLI versions wrote `CLAUDE_CODE_AUTO_MODE_SERVER=0` to `~/.claude/settings.json`. Upgrading removes it. Restart Claude Code to apply.
+- Claude Code docs: [classifier billing](https://code.claude.com/docs/en/auto-mode-classifier-billing) and [server-side classifier review](https://code.claude.com/docs/en/permission-modes#server-side-classifier-review).
+
 ## Troubleshooting
 
 * **A pasted image fails:** the model is text-only. Use `/rewind`, or switch to a vision model such as `glm-5p3-flash`.
 * **`/model` doesn't list Fireworks models:** run `claude update`, then `nexus claude` again.
-* **Auto mode says classifier requests are billed:** this notice is expected and doesn't stop auto mode.
+* **Auto mode says classifier requests are billed:** server-side checks aren't reaching the session. Run `claude update` and `nexus update`, then start a new session. See [Auto mode safety checks](#auto-mode-safety-checks).
+* **Usage shows Kimi or GLM charges you didn't expect:** they may come from auto mode safety checks. See [Auto mode safety checks](#auto-mode-safety-checks).
 
 - Resume or restart the session after changing models.
 - The Fireworks catalog in `/model` needs Claude Code 2.1.242 or later.
-- The auto mode notice appears once per session. The safety checks run on the Sonnet slot, so they bill to Anthropic. To bill them at Fireworks rates, pin Sonnet with `nexus claude --sonnet <id>`.
+- If the billing notice still appears, check that `CLAUDE_CODE_AUTO_MODE_SERVER` isn't set to `0` in your shell or in `~/.claude/settings.json`.
 - Upgrading from an earlier version: see [Upgrading from earlier versions](/nexus/cli#upgrading-from-earlier-versions).
 
 ## Manual setup (advanced)

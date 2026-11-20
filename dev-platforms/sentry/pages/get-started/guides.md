@@ -32,7 +32,7 @@ Looking for ways to customize based on your specific use case? Explore a [Sentry
 
 * #### [Querying Traces](https://docs.sentry.io/get-started/guides/querying-traces.md)
 
-  Find performance issues using data Sentry captures automatically and set up alerts.
+  Find slow pages and bottlenecks with performance queries on data Sentry captures automatically.
 
 * #### [Adding Custom Spans](https://docs.sentry.io/get-started/guides/custom-spans.md)
 

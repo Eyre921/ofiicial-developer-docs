@@ -183,14 +183,14 @@ The [ElevenAgents quickstart](/docs/eleven-agents/quickstart) builds a first age
 
 Start from your use case. Each model ID below is the value to pass as `model_id` in API requests.
 
-| Use case                          | Recommended model | Model ID            | Why                                                                                                                                                                                                        |
-| --------------------------------- | ----------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Real-time voice agents            | Eleven v4 Turbo   | `eleven_v4_turbo`   | Median latency of \~100ms† with the most expressive real-time delivery. `eleven_flash_v2_5` has a similar median latency.                                                                                  |
-| Expressive or long-form narration | Eleven v4         | `eleven_v4`         | The most expressive model, suited to audiobooks and character voiceovers. Up to 10,000 characters (\~10 minutes of audio) per request. For the most stable long-form output, use `eleven_multilingual_v2`. |
-| Multilingual content              | Eleven v4         | `eleven_v4`         | 90+ languages with consistent voice quality across language switches. `eleven_v4_turbo` covers the same languages in real time.                                                                            |
-| Lowest cost                       | Eleven Flash v2.5 | `eleven_flash_v2_5` | 50% lower price per character for API generations, 32 languages, and up to 40,000 characters per request.                                                                                                  |
-| Speech to text, batch             | Scribe v3         | `scribe_v3`         | Our most accurate transcription model, in 90+ languages with word-level timestamps, speaker diarization for up to 32 speakers, and keyterm prompting. Use `scribe_v2_medical` for clinical audio.          |
-| Speech to text, realtime          | Scribe v3 Live    | `scribe_v3_live`    | Our most accurate real-time transcription model, in 90+ languages, with turn prediction to commit transcripts when the speaker finishes.                                                                   |
+| Use case                          | Recommended model | Model ID            | Why                                                                                                                                                                                                          |
+| --------------------------------- | ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Real-time voice agents            | Eleven v4 Turbo   | `eleven_v4_turbo`   | Median latency of \~100ms† with the most expressive real-time delivery. `eleven_flash_v2_5` has a similar median latency.                                                                                    |
+| Expressive or long-form narration | Eleven v4         | `eleven_v4`         | The most expressive model, suited to audiobooks and character voiceovers. Up to 100,000 characters (\~100 minutes of audio) per request. For the most stable long-form output, use `eleven_multilingual_v2`. |
+| Multilingual content              | Eleven v4         | `eleven_v4`         | 90+ languages with consistent voice quality across language switches. `eleven_v4_turbo` covers the same languages in real time.                                                                              |
+| Lowest cost                       | Eleven Flash v2.5 | `eleven_flash_v2_5` | 50% lower price per character for API generations, 32 languages, and up to 40,000 characters per request.                                                                                                    |
+| Speech to text, batch             | Scribe v3         | `scribe_v3`         | Our most accurate transcription model, in 90+ languages with word-level timestamps, speaker diarization for up to 32 speakers, and keyterm prompting. Use `scribe_v2_medical` for clinical audio.            |
+| Speech to text, realtime          | Scribe v3 Live    | `scribe_v3_live`    | Our most accurate real-time transcription model, in 90+ languages, with turn prediction to commit transcripts when the speaker finishes.                                                                     |
 
 See [Choosing the right model](/docs/eleven-api/choosing-the-right-model) for more use cases and the [models reference](/docs/overview/models) for full specifications.
 
@@ -202,7 +202,7 @@ Exceptional voice cloning capabilities
 
 90+ languages supported
 
-10,000 character limit
+100,000 character limit
 
 Support for natural multi-speaker dialogue
 
@@ -318,7 +318,7 @@ Same features, languages, pricing, and API as Scribe v2
 
 #### [Scribe v3 Live Medical](/docs/overview/models#scribe-v3-live-medical)
 
-Real-time speech recognition for healthcare voice agents (early access)
+Real-time speech recognition for healthcare voice agents
 
 Available in ElevenAgents only
 

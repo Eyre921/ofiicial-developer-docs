@@ -188,7 +188,7 @@ Use per-call mode for new agents. LangChain plans to make it the default in the 
 
 Set `interruptMode: "per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -231,7 +231,7 @@ let agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -274,7 +274,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -317,7 +317,7 @@ let agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -360,7 +360,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -403,7 +403,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -446,7 +446,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -493,7 +493,7 @@ let agent = createAgent({
 
 When the model calls all three tools in one turn, `read_data` runs right away. The two gated calls each raise an interrupt:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { isToolApprovalInterrupt } from "langchain";
 
 let config = { configurable: { thread_id: "1" } };
@@ -635,7 +635,7 @@ Each tab shows one `write_file` branch, an answer that matches it, and the [Tool
 
 Answer each interrupt with one decision, keyed by its ID:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph";
 
 const decisions = Object.fromEntries(
@@ -660,7 +660,7 @@ You can also answer interrupts one at a time. An interrupt you do not answer sta
 
 LangGraph checks each answer against the interrupt's `response_schema` before it saves the answer. An invalid answer throws an error and nothing is saved, so you can send a corrected answer to the same interrupt ID. The middleware wraps the error in a `MiddlewareError`, and its `cause` is the Zod error with the list of issues. Here, the edit leaves out `content`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const writeFileInterrupt = (result.__interrupt__ ?? [])
   .filter(isToolApprovalInterrupt)
   .find((interrupt) => interrupt.value.name === "write_file")!;
@@ -931,7 +931,7 @@ for await (const message of resumeStream.messages) {  // [!code highlight]
 
 In [per-call mode](#pause-once-per-tool-call), `stream.interrupts` holds one entry per gated tool call, with the interrupt value in `payload` and no `response_schema`. Resume with an object keyed by `interruptId`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const streamDecisions = Object.fromEntries(
   stream.interrupts.map((interrupt) => [
     interrupt.interruptId,

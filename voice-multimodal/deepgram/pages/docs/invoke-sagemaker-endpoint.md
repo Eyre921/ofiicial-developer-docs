@@ -214,6 +214,8 @@ transcript = result["results"]["channels"][0]["alternatives"][0]["transcript"]
 
 For the complete example, see [`python-stt/stt_wav_stress.py`](https://github.com/deepgram-devs/dg-sagemaker/blob/main/python-stt/stt_wav_stress.py) (`batch` subcommand) in the repository.
 
+To fail over synchronous requests to Deepgram Endpoints in other AWS Regions, call an inference router with `InvokeInferenceRouter` instead. See [Cross-region inference routing](/docs/cross-region-routing-sagemaker).
+
 ## Asynchronous
 
 Asynchronous invocation (`InvokeEndpointAsync`, files up to 1 GB) is temporarily not supported for Marketplace-hosted Deepgram. If your use case needs it, contact a [Deepgram representative](https://deepgram.com/contact-us).
@@ -304,4 +306,5 @@ nslookup runtime-fips.sagemaker.us-east-2.amazonaws.com
 * [Validate a Deepgram SageMaker Endpoint](/docs/test-amazon-sagemaker-endpoint)
 * [Troubleshooting](/docs/troubleshooting-sagemaker)
 * [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker)
+* [Cross-region inference routing](/docs/cross-region-routing-sagemaker)
 * [deepgram-devs/dg-sagemaker](https://github.com/deepgram-devs/dg-sagemaker) example repository

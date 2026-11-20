@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 432 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 433 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -126,6 +126,7 @@
 - `docs/guides/example-projects/clickhouse-chat-agent` — [ClickHouse chat agent](pages/docs/guides/example-projects/clickhouse-chat-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/clickhouse-chat-agent)
 - `docs/guides/example-projects/cursor-background-agent` — [Background Cursor agent using the Cursor CLI](pages/docs/guides/example-projects/cursor-background-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/cursor-background-agent)
 - `docs/guides/example-projects/elevenlabs-voice-agent` — [ElevenLabs Voice agent](pages/docs/guides/example-projects/elevenlabs-voice-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/elevenlabs-voice-agent)
+- `docs/guides/example-projects/granola-meeting-agent` — [How to trigger an AI agent from a new Granola note](pages/docs/guides/example-projects/granola-meeting-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/granola-meeting-agent)
 - `docs/guides/example-projects/grok-ai-teammates` — [Grok AI Teammates: chat agents with their own cloud computer](pages/docs/guides/example-projects/grok-ai-teammates.md) · [原文](https://trigger.dev/docs/guides/example-projects/grok-ai-teammates)
 - `docs/guides/example-projects/human-in-the-loop-workflow` — [Human-in-the-loop workflow with ReactFlow and Trigger.dev waitpoint tokens](pages/docs/guides/example-projects/human-in-the-loop-workflow.md) · [原文](https://trigger.dev/docs/guides/example-projects/human-in-the-loop-workflow)
 - `docs/guides/example-projects/mastra-agents-with-memory` — [Mastra agents with memory sharing + Trigger.dev task orchestration](pages/docs/guides/example-projects/mastra-agents-with-memory.md) · [原文](https://trigger.dev/docs/guides/example-projects/mastra-agents-with-memory)
@@ -135,6 +136,7 @@
 - `docs/guides/example-projects/product-image-generator` — [Product image generator using Replicate and Trigger.dev](pages/docs/guides/example-projects/product-image-generator.md) · [原文](https://trigger.dev/docs/guides/example-projects/product-image-generator)
 - `docs/guides/example-projects/realtime-csv-importer` — [Next.js Realtime CSV Importer](pages/docs/guides/example-projects/realtime-csv-importer.md) · [原文](https://trigger.dev/docs/guides/example-projects/realtime-csv-importer)
 - `docs/guides/example-projects/realtime-fal-ai` — [Image generation with Fal.ai and Trigger.dev Realtime](pages/docs/guides/example-projects/realtime-fal-ai.md) · [原文](https://trigger.dev/docs/guides/example-projects/realtime-fal-ai)
+- `docs/guides/example-projects/recall-meeting-agent` — [How to connect Trigger.dev AI agents with Recall.ai meeting agents](pages/docs/guides/example-projects/recall-meeting-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/recall-meeting-agent)
 - `docs/guides/example-projects/resend-email-agent` — [Resend email agent with Slack approval](pages/docs/guides/example-projects/resend-email-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/resend-email-agent)
 - `docs/guides/example-projects/smart-spreadsheet` — [Smart Spreadsheet](pages/docs/guides/example-projects/smart-spreadsheet.md) · [原文](https://trigger.dev/docs/guides/example-projects/smart-spreadsheet)
 - `docs/guides/example-projects/turborepo-monorepo-prisma` — [Turborepo monorepo with Prisma](pages/docs/guides/example-projects/turborepo-monorepo-prisma.md) · [原文](https://trigger.dev/docs/guides/example-projects/turborepo-monorepo-prisma)
@@ -295,7 +297,6 @@
 - `docs/manual-setup` — [Manual setup](pages/docs/manual-setup.md) · [原文](https://trigger.dev/docs/manual-setup)
 - `docs/mcp-agent-rules` — [Agent rules](pages/docs/mcp-agent-rules.md) · [原文](https://trigger.dev/docs/mcp-agent-rules)
 - `docs/mcp-introduction` — [MCP Introduction](pages/docs/mcp-introduction.md) · [原文](https://trigger.dev/docs/mcp-introduction)
-- `docs/mcp-remote` — [Remote MCP server](pages/docs/mcp-remote.md) · [原文](https://trigger.dev/docs/mcp-remote)
 - `docs/mcp-tools` — [MCP Tools](pages/docs/mcp-tools.md) · [原文](https://trigger.dev/docs/mcp-tools)
 - `docs/migrating-from-v3` — [Migrating from v3](pages/docs/migrating-from-v3.md) · [原文](https://trigger.dev/docs/migrating-from-v3)
 - `docs/migration-mergent` — [Migrating from Mergent](pages/docs/migration-mergent.md) · [原文](https://trigger.dev/docs/migration-mergent)

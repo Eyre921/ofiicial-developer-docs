@@ -12,10 +12,6 @@ url: https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/
 
 # Sentry for TanStack Start React
 
-##### Beta
-
-This SDK is compatible with TanStack Start 1.0 RC and is currently in **beta**. Beta features are still in progress and may have bugs. Please reach out on [GitHub](https://github.com/getsentry/sentry-javascript/issues/new/choose) if you have any feedback or concerns.
-
 ## Set up with Sentry CLI
 
 Set up the Sentry TanStack Start SDK with the Sentry CLI. Install the CLI with one of these commands, then follow the Sentry CLI docs to finish setup.
@@ -52,6 +48,7 @@ You need:
 
 * A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
 * Your application up and running
+* `@tanstack/react-start` 1.169.0 or newer
 
 ## [Install](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react.md#install)
 
@@ -179,7 +176,7 @@ Need help locating captured data in your Sentry project?
 You've successfully integrated Sentry into your TanStack Start React application! Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/agent-tracing.md) to monitor your AI systems
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/agent-tracing.md) to follow agent runs from system prompt to final output, capturing every model call, tool execution, and handoff as a span
 * Explore [TanStack Start React-specific features](https://docs.sentry.io/platforms/javascript/guides/tanstackstart-react/features.md)
 
 Are you having problems setting up the SDK?

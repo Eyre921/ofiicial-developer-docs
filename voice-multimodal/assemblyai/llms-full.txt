@@ -187,10 +187,11 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Language selection](#language-selection-docs-dictation-language-selection-mdx)
 - [Transcribe while recording](#transcribe-while-recording-docs-api-reference-dictation-api-transcribe-live-mdx)
 - [Transcribe a finished recording](#transcribe-a-finished-recording-docs-api-reference-dictation-api-transcribe-mdx)
+- [Pre-warm a connection](#pre-warm-a-connection-docs-api-reference-dictation-api-warm-mdx)
 - [Audio requirements](#audio-requirements-docs-dictation-audio-requirements-mdx)
 - [Error handling](#error-handling-docs-dictation-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-dictation-endpoints-and-data-zones-mdx)
-- [Reduce connection overhead](#reduce-connection-overhead-docs-dictation-connection-pre-warming-mdx)
+- [Connection pre-warming](#connection-pre-warming-docs-dictation-connection-pre-warming-mdx)
 - [Authenticate your app](#authenticate-your-app-docs-dictation-authenticate-your-app-mdx)
 - [Rate limits](#rate-limits-docs-dictation-rate-limits-mdx)
 - [Inserting at the cursor](#inserting-at-the-cursor-docs-dictation-inserting-at-the-cursor-mdx)
@@ -49645,7 +49646,7 @@ curl -X POST https://dictation.assemblyai.com/v1/transcribe \
 - [Audio requirements](/dictation/audio-requirements) — duration, sample width, and format constraints
 - [Error handling](/dictation/error-handling) — status codes and retry guidance
 - [Cloud endpoints & data residency](/dictation/endpoints-and-data-zones) — global routing and the US/EU data zones
-- [Reduce connection overhead](/dictation/connection-pre-warming) — open the connection early when you send audio only after recording ends
+- [Connection pre-warming](/dictation/connection-pre-warming) — open the connection early when you send audio only after recording ends
 - [API reference](/api-reference/dictation-api/transcribe-live) — the full request and response schema
 
 ---
@@ -49666,6 +49667,26 @@ the endpoint can also start transcribing early. Audio is split into speech
 segments of up to about 32 seconds, and a segment is transcribed once two later
 segments exist, so early transcription only begins on recordings longer than
 roughly 90 seconds.
+
+## Steps to the lowest latency
+
+Do all four. Each one takes a different piece of time off what the user waits
+for after they stop speaking.
+
+1. **Pre-warm the connection when the user reaches for record.** Call
+   `GET /warm` (or `warm()` in the SDKs) so the DNS, TCP and TLS setup happens
+   while they get ready to speak, not after. Reuse the same HTTP client for the
+   transcription request. See [Connection pre-warming](/dictation/connection-pre-warming).
+2. **Upload while recording.** Send audio to `/v1/transcribe/live` as it's
+   captured, so the upload is done by the time the user stops. The rest of this
+   page shows how.
+3. **Pick the rewrite mode for your latency budget.** `fast` (the default)
+   returns the rewrite at the lowest latency. `smart` gives a more thorough
+   cleanup and follows `llm_instruction` more reliably, at higher latency. See
+   [Choosing a rewrite mode](/dictation/transcript-rewriting#choosing-a-rewrite-mode).
+4. **Call the nearest region.** The global endpoint routes to the nearest
+   region. Use a data-zone endpoint only when you need data residency. See
+   [Cloud endpoints and data residency](/dictation/endpoints-and-data-zones).
 
 ## Rules for a chunked upload
 
@@ -49869,7 +49890,7 @@ the server does not wait for the full body before it begins.
 
 - [Quickstart](/dictation) — the single-call flow this builds on
 - [Audio requirements](/dictation/audio-requirements) — why raw PCM is the easiest format to stream
-- [Reduce connection overhead](/dictation/connection-pre-warming) — take the handshake off the critical path too
+- [Connection pre-warming](/dictation/connection-pre-warming) — take the handshake off the critical path too
 - [Add context mid-dictation](/dictation/add-context-mid-dictation) — change the config after the user starts talking
 
 ---
@@ -51129,6 +51150,20 @@ Metadata:
 
 ---
 
+<a id="pre-warm-a-connection-docs-api-reference-dictation-api-warm-mdx"></a>
+
+# Pre-warm a connection
+
+URL: https://www.assemblyai.com/docs/api-reference/dictation-api/warm
+Source: docs/api-reference/dictation-api/warm.mdx
+Navigation: Dictation API > API reference
+Description: Establish the HTTPS connection ahead of a Dictation request so it skips DNS, TCP and TLS setup and returns sooner.
+
+Metadata:
+- openapi: ../specs/dictation.yaml GET /warm
+
+---
+
 <a id="audio-requirements-docs-dictation-audio-requirements-mdx"></a>
 
 # Audio requirements
@@ -51600,20 +51635,21 @@ curl -X POST https://dictation.eu.assemblyai.com/v1/transcribe/live \
   Pre-warming is per host. A connection warmed against the global endpoint is
   no use to a request aimed at a data zone endpoint, so warm the same host you
   are about to transcribe against. See
-  [Reduce connection overhead](/dictation/connection-pre-warming).
+  [Connection pre-warming](/dictation/connection-pre-warming).
 
 ---
 
-<a id="reduce-connection-overhead-docs-dictation-connection-pre-warming-mdx"></a>
+<a id="connection-pre-warming-docs-dictation-connection-pre-warming-mdx"></a>
 
-# Reduce connection overhead
+# Connection pre-warming
 
 URL: https://www.assemblyai.com/docs/dictation/connection-pre-warming
 Source: docs/dictation/connection-pre-warming.mdx
 Navigation: Dictation API > Advanced
-Description: Use the /warm endpoint to take the TLS handshake off the critical path of a dictation request.
+Description: Call /warm as recording starts so a dictation request skips the DNS, TCP and TLS setup and returns sooner.
 
-A request that opens its connection on demand pays the full DNS lookup, TCP
+Pre-warming lowers dictation latency by opening the connection before the
+user starts speaking. A request that opens its connection on demand pays the full DNS lookup, TCP
 handshake, and TLS handshake before the first audio byte can leave. For a
 distant client that is a network round trip or more, and on a dictation of a
 few seconds it is a noticeable share of the total wait.

@@ -741,7 +741,7 @@ Run your server and go to [localhost:4242](http://localhost:4242).
 
 ### Use a test card number to try your integration
 
-You can configure the simulated reader to test different flows within your point of sale application such as different card brands or error scenarios like a declined charge. To enable this behavior, insert this line of code before you call `collectPaymentMethod`.
+You can configure the simulated reader to test different flows within your point of sale application such as different card brands or error scenarios like a declined charge. To enable this behavior, insert this line of code before you call `processPaymentIntent`.
 
 | Scenario | Card Number |
 | --- | --- |
@@ -981,7 +981,7 @@ To prevent memory leaks and ensure proper cleanup of long-running Terminal SDK p
 
 ### Initialize the SDK
 
-To get started, provide the current application context, the ConnectionTokenProvider, and a TerminalListener object.
+To get started, provide the current application context, the ConnectionTokenProvider, a TerminalListener object, and a [LocaleConfig](https://stripe.dev/stripe-terminal-android/external/com.stripe.stripeterminal.external.models/-locale-config/index.html), which determines the language of API error messages (see [Localize error messages](https://docs.stripe.com/terminal/features/locale-config.md)).
 
 ### Discover readers
 
@@ -1019,7 +1019,7 @@ Run your server and go to [localhost:4242](http://localhost:4242).
 
 ### Use a test card number to try your integration
 
-You can configure the simulated reader to test different flows within your point of sale application such as different card brands or error scenarios like a declined charge. To enable this behavior, insert this line of code before you call `collectPaymentMethod`.
+You can configure the simulated reader to test different flows within your point of sale application such as different card brands or error scenarios like a declined charge. To enable this behavior, insert this line of code before you call `processPaymentIntent`.
 
 | Scenario | Card Number |
 | --- | --- |
@@ -1254,7 +1254,7 @@ Allow your app to display a Bluetooth permission dialog.
 
 ### Set up the context provider
 
-Pass the `onFetchConnectionToken` function to `StripeTerminalProvider` as a prop.
+Pass your `fetchConnectionToken` function to `StripeTerminalProvider` as the `tokenProvider` prop, along with the required `localeConfig`.
 
 ### Initialize the SDK
 
@@ -1286,11 +1286,11 @@ Make a request to your server for a PaymentIntent to initiate the payment proces
 
 ### Collect payment method details
 
-Call `collectPaymentMethod` with the PaymentIntent’s client secret to collect a payment method. When connected to the simulated reader calling this method immediately updates the PaymentIntent object with a [simulated test card](https://docs.stripe.com/terminal/references/testing.md#simulated-test-cards). When connected to a physical reader the connected reader waits for a card to be presented.
+Call `retrievePaymentIntent` with the PaymentIntent’s client secret, then pass the returned PaymentIntent to `processPaymentIntent` to collect a payment method and authorize the payment. When connected to the simulated reader, the SDK immediately uses a [simulated test card](https://docs.stripe.com/terminal/references/testing.md#simulated-test-cards). When connected to a physical reader, the reader waits for a card to be presented. A successful call returns a PaymentIntent with a status of `requires_capture` for manual capture, or `succeeded` for automatic capture.
 
 ### Process the payment
 
-After successfully collecting payment method data, call `processPayment` with the updated PaymentIntent to process the payment. A successful call results in a PaymentIntent with a status of `requires_capture` for manual capture or `succeeded` for automatic capture.
+When `processPaymentIntent` succeeds, pass the PaymentIntent’s ID to your back end to capture the payment.
 
 ### Create an endpoint to capture the PaymentIntent
 
@@ -1308,7 +1308,7 @@ Run your server and go to [localhost:4242](http://localhost:4242).
 
 ### Use a test card number to try your integration
 
-You can configure the simulated reader to test different flows within your point of sale application such as different card brands or error scenarios like a declined charge. To enable this behavior, insert this line of code before you call `collectPaymentMethod`.
+You can configure the simulated reader to test different flows within your point of sale application such as different card brands or error scenarios like a declined charge. To enable this behavior, insert this line of code before you call `processPaymentIntent`.
 
 | Scenario | Card Number |
 | --- | --- |
@@ -2538,7 +2538,6 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
     }
   }
   "github.com/stripe/stripe-go/v87"
-  readertesthelpers "github.com/stripe/stripe-go/v87/testhelpers/terminal/reader"
   // This is a public sample test API key.
   // Don't submit any personally identifiable information in requests made with this key.
   // Sign in to see your own test API key embedded in code samples.
@@ -2549,7 +2548,7 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
   http.HandleFunc("/create_location", func(w http.ResponseWriter, r *http.Request) { handleCreateLocation(sc, w, r) })
   http.HandleFunc("/register_reader", func(w http.ResponseWriter, r *http.Request) { handleRegisterReader(sc, w, r) })
   http.HandleFunc("/process_payment", func(w http.ResponseWriter, r *http.Request) { handleProcessPayment(sc, w, r) })
-  http.HandleFunc("/simulate_payment", handleSimulatePayment)
+  http.HandleFunc("/simulate_payment", func(w http.ResponseWriter, r *http.Request) { handleSimulatePayment(sc, w, r) })
 func createLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) *stripe.TerminalLocation {
   params := &stripe.TerminalLocationCreateParams{
     Address: &stripe.AddressParams{
@@ -2570,7 +2569,7 @@ func createLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) *
 }
 func createLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) *stripe.TerminalLocation {
   params := &stripe.TerminalLocationCreateParams{
-    AddressKana: &stripe.TerminalLocationAddressKanaParams{
+    AddressKana: &stripe.TerminalLocationCreateAddressKanaParams{
       Line1: stripe.String("{{TERMINAL_LOCATION_LINE1KANA}}"),
       Line2: stripe.String("{{TERMINAL_LOCATION_LINE2KANA}}"),
       Town: stripe.String("{{TERMINAL_LOCATION_TOWNKANA}}"),
@@ -2578,7 +2577,7 @@ func createLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) *
       State: stripe.String("{{TERMINAL_LOCATION_STATEKANA}}"),
       PostalCode: stripe.String("{{TERMINAL_LOCATION_POSTALCODEKANA}}"),
     },
-    AddressKanji: &stripe.TerminalLocationAddressKanjiParams{
+    AddressKanji: &stripe.TerminalLocationCreateAddressKanjiParams{
       Line1: stripe.String("{{TERMINAL_LOCATION_LINE1KANJI}}"),
       Line2: stripe.String("{{TERMINAL_LOCATION_LINE2KANJI}}"),
       Town: stripe.String("{{TERMINAL_LOCATION_TOWNKANJI}}"),
@@ -2637,7 +2636,7 @@ func handleCreateLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Requ
 }
 func handleCreateLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
   params := &stripe.TerminalLocationCreateParams{
-    AddressKana: &stripe.TerminalLocationAddressKanaParams{
+    AddressKana: &stripe.TerminalLocationCreateAddressKanaParams{
       Line1: stripe.String("{{TERMINAL_LOCATION_LINE1KANA}}"),
       Line2: stripe.String("{{TERMINAL_LOCATION_LINE2KANA}}"),
       Town: stripe.String("{{TERMINAL_LOCATION_TOWNKANA}}"),
@@ -2645,7 +2644,7 @@ func handleCreateLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Requ
       State: stripe.String("{{TERMINAL_LOCATION_STATEKANA}}"),
       PostalCode: stripe.String("{{TERMINAL_LOCATION_POSTALCODEKANA}}"),
     },
-    AddressKanji: &stripe.TerminalLocationAddressKanjiParams{
+    AddressKanji: &stripe.TerminalLocationCreateAddressKanjiParams{
       Line1: stripe.String("{{TERMINAL_LOCATION_LINE1KANJI}}"),
       Line2: stripe.String("{{TERMINAL_LOCATION_LINE2KANJI}}"),
       Town: stripe.String("{{TERMINAL_LOCATION_TOWNKANJI}}"),
@@ -2713,7 +2712,7 @@ func handleConnectionToken(sc *stripe.Client, w http.ResponseWriter, r *http.Req
     return
   }
 
-  params := &stripe.TerminalConnectionTokenParams{}
+  params := &stripe.TerminalConnectionTokenCreateParams{}
   ct, err := sc.V1TerminalConnectionTokens.Create(context.TODO(), params)
 
   if err != nil {
@@ -2735,7 +2734,7 @@ func handleCreate(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
   }
 
   var req struct {
-    PaymentIntentAmount string `json:"amount"`
+    PaymentIntentAmount json.Number `json:"amount"`
   }
 
   if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -2744,7 +2743,7 @@ func handleCreate(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  amount, _ := strconv.ParseInt(req.PaymentIntentAmount, 10, 64)
+  amount, _ := req.PaymentIntentAmount.Int64()
 
   // For Terminal payments, the 'allowed_payment_method_types' parameter must include
   // 'card_present'.
@@ -2799,7 +2798,7 @@ func handleProcessPayment(sc *stripe.Client, w http.ResponseWriter, r *http.Requ
 
   writeJSON(w, reader)
 }
-func handleSimulatePayment(w http.ResponseWriter, r *http.Request) {
+func handleSimulatePayment(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
   var req struct {
     ReaderID string `json:"reader_id"`
     CardNumber string `json:"card_number"`
@@ -2818,11 +2817,11 @@ func handleSimulatePayment(w http.ResponseWriter, r *http.Request) {
 		Type: stripe.String("card_present"),
 	}
 
-  reader, err := readertesthelpers.PresentPaymentMethod(req.ReaderID, params)
+  reader, err := sc.V1TestHelpersTerminalReaders.PresentPaymentMethod(context.TODO(), req.ReaderID, params)
 
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
-    log.Printf("reader.New: %v", err)
+    log.Printf("sc.V1TestHelpersTerminalReaders.PresentPaymentMethod: %v", err)
     return
   }
 
@@ -3229,9 +3228,9 @@ export const fetchPaymentIntent = async () => {
   }
   return data.client_secret;
 };
-export const capturePaymentIntent = async () => {
+export const capturePaymentIntent = async (paymentIntentId) => {
   const parameters = {
-    id: 'paymentIntentId',
+    payment_intent_id: paymentIntentId,
   };
 
   const response = await fetch('http://localhost:4242/capture_payment_intent', {
@@ -3294,6 +3293,16 @@ export const capturePaymentIntent = async () => {
       setPermissionsGranted(true);
     }
   }, []);
+  useEffect(() => {
+    // Initialize the SDK after the location permission is granted
+    if (permissionsGranted) {
+      initialize().then(({error}) => {
+        if (error) {
+          console.log('initialize error', error);
+        }
+      });
+    }
+  }, [permissionsGranted, initialize]);
     const {error} = await discoverReaders({
       discoveryMethod: 'internet',
       simulated: true,
@@ -3307,16 +3316,23 @@ export const capturePaymentIntent = async () => {
       simulated: true,
     });
     await setSimulatedCard("4242424242424242");
+    const {paymentIntent: retrievedPaymentIntent, error: retrieveError} =
+      await retrievePaymentIntent(clientSecret);
+    if (retrieveError) {
+      console.log(`retrievePaymentIntent failed: ${retrieveError.message}`);
+      return;
+    }
     const {paymentIntent, error} = await processPaymentIntent({
-      clientSecret,
+      paymentIntent: retrievedPaymentIntent,
     });
-      const result = await capturePaymentIntent();
+      const result = await capturePaymentIntent(paymentIntent.id);
 import {
   StripeTerminalProvider,
 } from '@stripe/stripe-terminal-react-native';
         <StripeTerminalProvider
           logLevel="verbose"
           tokenProvider={fetchConnectionToken}
+          localeConfig={{ type: 'cardLanguagePreferenceIfAvailable' }}
         >
           <App/>
         </StripeTerminalProvider>
@@ -3864,27 +3880,27 @@ extension TerminalManager: @MainActor TapToPayReaderDelegate {
 }
 #pragma mark - SCPTapToPayReaderDelegate
 
-- (void)tapToPayReader:(nonnull SCPReader *)reader didStartInstallingUpdate:(nonnull SCPReaderSoftwareUpdate *)update cancelable:(nullable SCPCancelable *)cancelable {
+- (void)reader:(nonnull SCPReader *)reader didStartInstallingUpdate:(nonnull SCPReaderSoftwareUpdate *)update cancelable:(nullable SCPCancelable *)cancelable {
     // In your app, let the user know that an update is being installed on the reader
 }
 
-- (void)tapToPayReader:(nonnull SCPReader *)reader didReportReaderSoftwareUpdateProgress:(float)progress {
+- (void)reader:(nonnull SCPReader *)reader didReportReaderSoftwareUpdateProgress:(float)progress {
     // The update or configuration process has reached the specified progress (0.0 to 1.0)
     // If you are displaying a progress bar or percentage, this can be updated here
 }
 
-- (void)tapToPayReader:(nonnull SCPReader *)reader didFinishInstallingUpdate:(nullable SCPReaderSoftwareUpdate *)update error:(nullable NSError *)error {
+- (void)reader:(nonnull SCPReader *)reader didFinishInstallingUpdate:(nullable SCPReaderSoftwareUpdate *)update error:(nullable NSError *)error {
     // The reader has finished installing an update
     // If `error` is nil, it is safe to proceed and start collecting payments
     // Otherwise, check the value of `error` for more information on what went wrong
 }
 
-- (void)tapToPayReader:(nonnull SCPReader *)reader didRequestReaderDisplayMessage:(SCPReaderDisplayMessage)displayMessage {
+- (void)reader:(nonnull SCPReader *)reader didRequestReaderDisplayMessage:(SCPReaderDisplayMessage)displayMessage {
     // This is called to request that a prompt be displayed in your app.
     self.readerMessageLabel.text = [SCPTerminal stringFromReaderDisplayMessage:displayMessage];
 }
 
-- (void)tapToPayReader:(nonnull SCPReader *)reader didRequestReaderInput:(SCPReaderInputOptions)inputOptions {
+- (void)reader:(nonnull SCPReader *)reader didRequestReaderInput:(SCPReaderInputOptions)inputOptions {
     // This is called when the reader begins waiting for input
     self.readerMessageLabel.text = [SCPTerminal stringFromReaderInputOptions:inputOptions];
 }
@@ -3908,6 +3924,7 @@ extension TerminalManager: @MainActor TapToPayReaderDelegate {
                                                   code:1000
                                               userInfo:@{NSLocalizedDescriptionKey: @"No data in response from ConnectionToken endpoint"}];
             completion(nil, error);
+            return;
         }
         if (!(jsonObject && [jsonObject isKindOfClass:[NSDictionary class]])) {
             completion(nil, jsonSerializationError);
@@ -3936,6 +3953,7 @@ extension TerminalManager: @MainActor TapToPayReaderDelegate {
 
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
+    [request setValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     request.HTTPBody = [parameters dataUsingEncoding:NSUTF8StringEncoding];
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request
@@ -3977,6 +3995,7 @@ extension TerminalManager: @MainActor TapToPayReaderDelegate {
             PaymentIntentParameters.Builder(listOf(PaymentMethodType.CARD_PRESENT))
             .setAmount(500)
             .setCurrency("{{TERMINAL_CURRENCY}}")
+            .setCaptureMethod(CaptureMethod.Manual)
             .build()
         private val discoveryConfig =
             DiscoveryConfiguration.InternetDiscoveryConfiguration(isSimulated = true)
@@ -4014,6 +4033,7 @@ extension TerminalManager: @MainActor TapToPayReaderDelegate {
                 tokenProvider = TokenProvider(),
                 listener = TerminalEventListener(),
                 offlineListener = null,
+                localeConfig = LocaleConfig.CardLanguagePreferenceIfAvailable,
             )
         } catch (e: TerminalException) {
             throw RuntimeException(
@@ -4118,7 +4138,7 @@ import com.stripe.example.ServerPaymentIntent
                     .setAmount(500)
     private final DiscoveryConfiguration discoveryConfig =
             new DiscoveryConfiguration.InternetDiscoveryConfiguration(0, null, true, DiscoveryFilter.None.INSTANCE);
-    private final TapToPayDiscoveryConfiguration discoveryConfig =
+    private final DiscoveryConfiguration discoveryConfig =
             new DiscoveryConfiguration.TapToPayDiscoveryConfiguration(true);
     private final DiscoveryConfiguration discoveryConfig =
             new DiscoveryConfiguration.BluetoothDiscoveryConfiguration(0, true);
@@ -4129,7 +4149,8 @@ import com.stripe.example.ServerPaymentIntent
         try {
             Terminal.init(
                     getApplicationContext(), LogLevel.VERBOSE, new TokenProvider(),
-                    new TerminalEventListener(), null);
+                    new TerminalEventListener(), null,
+                    LocaleConfig.CardLanguagePreferenceIfAvailable.INSTANCE);
         } catch (TerminalException e) {
             throw new RuntimeException(
                     "Location services are required to initialize " +

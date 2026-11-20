@@ -19,9 +19,9 @@ Resend sends emails using a domain you own. Before you can send or receive email
 
 ## Choose a sending domain
 
-We strongly recommend sending emails from a subdomain (e.g., `notifications.example.com`) instead of your root domain (`example.com`) to conform to deliverability best practices.
+For deliverability best practices, send emails from a subdomain (e.g., `notifications.example.com`) instead of your root domain (`example.com`).
 
-If you are [transferring from another provider](/docs/dashboard/domains/introduction#moving-from-another-provider) and already have an established sender reputation for your marketing emails, add and verify the domain or subdomain that matches your existing `from` address to continue sending from that address.
+If you are [transferring from another provider](/docs/dashboard/domains/introduction#moving-from-another-provider) and already have an established sender reputation for your marketing emails, add the domain or subdomain that matches your existing `from` address, then verify it to continue sending from that address.
 
 You can have multiple subdomains associated with your root domain (e.g., `updates.example.com`, `notifications.example.com`). Each one must be added and verified individually, and they will be displayed as separate entries in the [**Domains** Dashboard page](https://resend.com/domains) where you can manage and configure them independently.
 
@@ -52,9 +52,9 @@ To add a new domain from the Resend Dashboard:
 
 **3. Enter your domain (including a subdomain, if you wish) to use for your Resend emails.**
 
-Enter the existing domain you currently send emails from, or choose a subdomain that reflects the purpose of your emails, such as `customers.example.com` or `updates.example.com`.
+Enter the existing domain you send emails from, or choose a subdomain that reflects the purpose of your emails, such as `customers.example.com` or `updates.example.com`.
 
-If you add a domain already used by another team, the dashboard will notify you and you can [claim the domain](/docs/dashboard/domains/claim) to transfer it to your team.
+If you add a domain already used by another team, the Dashboard will notify you and you can [claim the domain](/docs/dashboard/domains/claim) to transfer it to your team.
 
 **4. Choose a region from the list provided.**
 
@@ -68,7 +68,7 @@ Return-Path defaults to `send.example.com`, although you can [provide a custom p
 
 View the **Records** tab for your domain to find the records to provide to your DNS host provider. Adding these records will verify that you own the domain and have the correct permissions to send and receive emails.
 
-Provide the DKIM and SPF configurations (`TXT` and `MX` or `CNAME` records) to your DNS provider. These records must match exactly what Resend generated. Copy and paste the records to avoid configuration errors.
+Provide the DomainKeys Identified Mail (DKIM) and Sender Policy Framework (SPF) configurations (`TXT` and `MX` or `CNAME` records) to your DNS provider. These records must match exactly what Resend generated. Copy and paste the records to avoid configuration errors.
 
 > [!TIP]
 >
@@ -78,11 +78,11 @@ Provide the DKIM and SPF configurations (`TXT` and `MX` or `CNAME` records) to y
 
 When this process is completed correctly, your domain will often verify within 15 minutes of adding the DNS records. However, DNS changes can occasionally take up to 72 hours to propagate globally.
 
-You can use Resend's [dns.email tool](https://dns.email/) to check that your records are visible publicly. If verification has not completed after 72 hours, use the **Restart verification** button in the Resend dashboard to trigger a fresh verification check.
+You can use Resend's [dns.email tool](https://dns.email/) to check that your records are visible publicly. If verification hasn't completed after 72 hours, use the **Restart verification** button in the Resend Dashboard to trigger a fresh verification check.
 
 **8. Add a DMARC record.**
 
-After your domain is verified, [implement DMARC](/docs/dashboard/domains/dmarc) to build additional trust in your domain and protect against email spoofing.
+After your domain is verified, implement Domain-based Message Authentication, Reporting, and Conformance ([DMARC](/docs/dashboard/domains/dmarc)) to build additional trust in your domain and protect against email spoofing.
 
 This is an email authentication protocol to verify email senders and to allow receivers to reject unauthenticated messages, and is important for email deliverability.
 
@@ -105,8 +105,8 @@ After your domain is verified, you may wish to [enable open and click tracking](
 
 > [card] [Add a DMARC record](/docs/dashboard/domains/dmarc)
 >
-> Implement DMARC to build trust in your domain and protect against email
-> spoofing.
+> Implement Domain-based Message Authentication, Reporting, and Conformance
+> (DMARC) to build trust in your domain and protect against email spoofing.
 
 > [card] [Quickstart tutorials](/docs/introduction)
 >
@@ -143,7 +143,7 @@ npx skills add resend/resend-skills
 * **Real-time webhook architecture**: Event-driven design means your agent reacts to emails in seconds, not minutes.
 * **Threaded replies**: Your agent replies inside the conversation, and Resend sets the recipients and threading headers.
 * **Webhook signature verification**: Built-in patterns for verifying Resend webhook signatures to prevent spoofed events.
-* **Multi-language SDK support**: The inbox examples use the Node.js SDK. The Receiving fallback works with Node.js, Python, Go, Ruby, PHP, Rust, Java, and .NET.
+* **Multi-language SDK support**: The inbox examples use the Node.js SDK. The Receiving fallback works with eight SDKs: Node.js, Python, Go, and Ruby, as well as PHP, Rust, Java, and .NET.
 * **Common threat protection**: Built-in guidance for handling prompt injection, sender spoofing, and email flooding.
 
 ## Architecture
@@ -259,7 +259,7 @@ A human must create the Resend account. Once you have an account, you'll need to
 
 > [!NOTE]
 >
-> To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the dashboard.
+> To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the Dashboard.
 
 ## Resend MCP Server
 
@@ -280,8 +280,8 @@ The [Resend plugin](https://github.com/resend/resend-skills) follows the [Agent 
 
 > [card] [MCP Server](/docs/mcp-server)
 >
-> View setup instructions for Claude, Cursor, Codex, Copilot, Hermes, OpenClaw,
-> and more.
+> View setup instructions for Claude, Cursor, Codex, and Copilot. The setup also
+> covers Hermes, OpenClaw, and more.
 
 ## Resend CLI
 
@@ -349,7 +349,7 @@ Or install individually:
 | - | - | - |
 | [Resend](/docs/resend-skill) | `npx skills add resend/resend-skills` | Send and receive emails, handle errors, and prevent duplicate sends. Get code examples from various SDKs. |
 | [React Email](/docs/react-email-skill) | `npx skills add resend/react-email` | Build emails in React, Tailwind, and TypeScript. Audit existing React emails for style and cross-client rendering. |
-| [Email Best Practices](/docs/email-best-practices-skill) | `npx skills add resend/email-best-practices` | Audit SPF/DKIM/DMARC setup, compliance (CAN-SPAM, GDPR), webhook handling |
+| [Email Best Practices](/docs/email-best-practices-skill) | `npx skills add resend/email-best-practices` | Audit Sender Policy Framework (SPF), DomainKeys Identified Mail (DKIM), and Domain-based Message Authentication, Reporting, and Conformance (DMARC) setup. Check compliance (CAN-SPAM, GDPR) and webhook handling. |
 
 ## Quick Start Guides
 
@@ -361,25 +361,23 @@ Resend provides two endpoints for sending emails:
 
 | Approach | Endpoint | Use Case |
 | - | - | - |
-| **Single** | `POST /emails` | Individual transactional emails, emails with attachments, scheduled sends |
+| **Single** | `POST /emails` | Individual transactional emails, emails with attachments |
 | **Batch** | `POST /emails/batch` | Multiple distinct emails in one request (max 100), bulk notifications |
 
 **Choose batch when:**
 
 * Sending 2+ distinct emails at once
 * Reducing API calls is important (by default, rate limit is 10 requests per second)
-* No attachments or scheduling needed
+* No attachments needed
 
 **Choose single when:**
 
 * Sending one email
 * Email needs attachments
-* Email needs to be scheduled
-* Different recipients need different timing
 
 ## Quick Start
 
-1. **Detect project language** from config files (package.json, requirements.txt, go.mod, etc.)
+1. **Detect project language** from config files (such as package.json, requirements.txt, or go.mod)
 2. **Install SDK** (preferred) or use cURL
 3. **Choose single or batch** based on the decision matrix above
 4. **Implement best practices** - Idempotency keys, error handling, retries
@@ -414,7 +412,7 @@ Prevent duplicate emails when retrying failed requests.
 ### Retry Strategy
 
 * **Backoff:** Exponential (1s, 2s, 4s...)
-* **Max retries:** 3-5 for most use cases
+* **Max retries:** 3–5 for most use cases
 * **Only retry:** 429 (rate limit) and 500 (server error)
 * **Always use:** Idempotency keys when retrying
 
@@ -476,7 +474,6 @@ console.log('Sent:', data.id);
 ### Limitations
 
 * **No attachments** - Use single sends for emails with attachments
-* **No scheduling** - Use single sends for scheduled emails
 * **Atomic** - If one email fails validation, the entire batch fails
 * **Max 100 emails** per request
 * **Max 50 recipients** per individual email in the batch
@@ -1180,9 +1177,9 @@ You can cancel any run that hasn't finished. Cancelling a run that already compl
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
-The automation run ID.
+The Automation run ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -1219,23 +1216,23 @@ Create a new automation to automate email sequences.
 
 **name** `string` *required*
 
-The name of the automation.
+The name of the Automation.
 
 **status** `string`
 
-The status of the automation. Possible values are `enabled` or `disabled`.
+The status of the Automation. Possible values are `enabled` or `disabled`.
 Defaults to `disabled`.
 
 **steps** `Step[]`
 
-The steps that compose the automation graph. Must be provided together with
+The steps that compose the Automation graph. Must be provided together with
 `connections`. See [Step
 Properties](/docs/dashboard/automations/steps#step-properties) for full object
 definition.
 
 **connections** `Connection[]`
 
-The connections between steps in the automation graph. Must be provided
+The connections between steps in the Automation graph. Must be provided
 together with `steps`. See [Connection
 Properties](/docs/dashboard/automations/connections#connection-properties) for full
 object definition.
@@ -1531,7 +1528,7 @@ Remove an existing automation.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -1642,7 +1639,7 @@ Duplicate an existing automation.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -1752,7 +1749,7 @@ Retrieve a single automation.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -1887,9 +1884,9 @@ Retrieve a single automation run.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
-The automation run ID.
+The Automation run ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -2050,7 +2047,7 @@ Retrieve a list of automation runs.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ## Query Parameters
 
@@ -2238,7 +2235,7 @@ Cannot be used with the `after` parameter.
 > [pagination guide](/docs/api-reference/pagination) for more
 > information.
 
-Filter automations by status. Possible values: `enabled`, `disabled`.
+Filter Automations by status. Possible values: `enabled`, `disabled`.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -2359,7 +2356,7 @@ Stop a running automation.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -2476,29 +2473,29 @@ Update an existing automation.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ## Body Parameters
 
 **name** `string`
 
-The name of the automation.
+The name of the Automation.
 
 **status** `string`
 
-The status of the automation. Possible values are `enabled` or `disabled`.
+The status of the Automation. Possible values are `enabled` or `disabled`.
 
 **steps** `Step[]`
 
-The steps that compose the automation graph. Must be provided together with
-`connections`. The graph of an `enabled` automation cannot be updated: disable
-the automation first, or duplicate it and edit the copy. See [Step
+The steps that compose the Automation graph. Must be provided together with
+`connections`. The graph of an `enabled` Automation can't be updated: disable
+the Automation first, or duplicate it and edit the copy. See [Step
 Properties](/docs/dashboard/automations/steps#step-properties) for full object
 definition.
 
 **connections** `Connection[]`
 
-The connections between steps in the automation graph. Must be provided
+The connections between steps in the Automation graph. Must be provided
 together with `steps`. See [Connection
 Properties](/docs/dashboard/automations/connections#connection-properties) for full
 object definition.
@@ -2647,11 +2644,11 @@ Cancel a queued or scheduled broadcast.
 You can only cancel Broadcasts that are `queued` or `scheduled`. When you cancel a Broadcast, here's what happens based on its status:
 
 * `scheduled` → `draft`: no emails are sent. You can update the Broadcast and reschedule it to be sent.
-* `queued` → `canceled`: emails that have already been sent are not affected, but any emails still in the queue will no longer be sent.
+* `queued` → `canceled`: emails that have already been sent aren't affected, but any emails still in the queue will no longer be sent.
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -2797,20 +2794,20 @@ SDK.*
 
 **name** `string`
 
-The friendly name of the broadcast. Only used for internal reference.
+The friendly name of the Broadcast. Only used for internal reference.
 
 Optional. Omit it to send to every subscribed contact in the segment, without
 checking topic preferences.
 
 **send** `boolean`
 
-Send the broadcast immediately after creation. Defaults to `false`.
+Send the Broadcast immediately after creation. Defaults to `false`.
 
 > [!NOTE]
 >
-> When set to `true`, the broadcast will be sent or scheduled (if `scheduled_at` is provided) without requiring a separate call to the [Send Broadcast](/docs/api-reference/broadcasts/send-broadcast) endpoint.
+> When set to `true`, the Broadcast will be sent or scheduled (if `scheduled_at` is provided) without requiring a separate call to the [Send Broadcast](/docs/api-reference/broadcasts/send-broadcast) endpoint.
 
-Schedule the broadcast to be sent later. The date should be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g: `2026-08-05T11:52:01.858Z`).
+Schedule the Broadcast to be sent later. The date can be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g: `2026-08-05T11:52:01.858Z`).
 
 > [!WARNING]
 >
@@ -3197,11 +3194,11 @@ Source: https://resend.com/docs/api-reference/broadcasts/delete-broadcast
 DELETE /broadcasts/:broadcast_id
 Remove an existing broadcast.
 
-You can only delete Broadcasts that have not yet been sent (i.e., `draft` or `scheduled`). Deleting a `scheduled` Broadcast also cancels the scheduled delivery and the email will not be sent.
+You can only delete Broadcasts that haven't yet been sent (`draft` or `scheduled`). Deleting a `scheduled` Broadcast also cancels the scheduled delivery and the email won't be sent.
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -3304,11 +3301,11 @@ Source: https://resend.com/docs/api-reference/broadcasts/duplicate-broadcast
 POST /broadcasts/:broadcast_id/duplicate
 Duplicate a broadcast.
 
-Creates a new draft broadcast with the same segment, topic, sender, subject, reply-to, preview text, and content as the source. The copy is named after the source with ` (copy)` appended, truncated to 70 characters. Any broadcast can be duplicated, including sent ones.
+Creates a new draft Broadcast that copies the source's segment, topic, sender, and subject. It also copies the reply-to, preview text, and content. The copy is named after the source with ` (copy)` appended, truncated to 70 characters. Any Broadcast can be duplicated, including sent ones.
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -3411,11 +3408,11 @@ Source: https://resend.com/docs/api-reference/broadcasts/get-broadcast
 GET /broadcasts/:broadcast_id
 Retrieve a single broadcast.
 
-You can retrieve broadcasts created via both this API and the Resend dashboard.
+You can retrieve Broadcasts created via both this API and the Resend Dashboard.
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 > [!NOTE]
 >
@@ -3537,7 +3534,7 @@ Source: https://resend.com/docs/api-reference/broadcasts/list-broadcast-clicked-
 GET /broadcasts/:broadcast_id/clicked-links
 Retrieve the links clicked in a broadcast.
 
-Retrieve every link clicked in a broadcast, ranked by total clicks. Results are
+Retrieve every link clicked in a Broadcast, ranked by total clicks. Results are
 paginated with cursors. See [Pagination](/docs/api-reference/pagination) for how
 `after` and `before` work.
 
@@ -3548,7 +3545,7 @@ paginated with cursors. See [Pagination](/docs/api-reference/pagination) for how
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 ## Query Parameters
 
@@ -3576,7 +3573,7 @@ The clicked links, ordered by total clicks, descending.
 
 **id** `string`
 
-An opaque cursor for this row, used only for pagination. It does not
+An opaque cursor for this row, used only for pagination. It doesn't
 identify any entity in Resend.
 
 **url** `string`
@@ -3713,7 +3710,7 @@ Source: https://resend.com/docs/api-reference/broadcasts/list-broadcast-recipien
 GET /broadcasts/:broadcast_id/recipients
 Retrieve the recipients of a broadcast for a given event type.
 
-Retrieve the recipients of a broadcast, filtered by a single event `type` (for
+Retrieve the recipients of a Broadcast, filtered by a single event `type` (for
 example everyone who `opened`, `clicked`, or `bounced`). Results are paginated
 with cursors. See [Pagination](/docs/api-reference/pagination) for how `after` and
 `before` work.
@@ -3725,7 +3722,7 @@ with cursors. See [Pagination](/docs/api-reference/pagination) for how `after` a
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 ## Query Parameters
 
@@ -3761,7 +3758,7 @@ The recipients matching the requested `type`.
 
 **id** `string`
 
-An opaque cursor for this row, used only for pagination. It does not
+An opaque cursor for this row, used only for pagination. It doesn't
 identify any entity in Resend. Use `contact_id` to reference the contact.
 
 **contact_id** `string | null`
@@ -4099,15 +4096,15 @@ Start sending broadcasts to your audience through the Resend API.
 
 > [!NOTE]
 >
-> You can send broadcasts only if they were created via the API.
+> You can send Broadcasts only if they were created via the API.
 
 ## Path Parameters
 
-The broadcast ID.
+The Broadcast ID.
 
 ## Body Parameters
 
-Schedule email to be sent later. The date should be in natural language (e.g.:
+Schedule email to be sent later. The date can be in natural language (e.g.:
 `in 1 min`) or ISO 8601 format (e.g: `2026-08-05T11:52:01.858Z`).
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -4245,7 +4242,7 @@ Update a broadcast to send to your contacts.
 
 ## Path Parameters
 
-The ID of the broadcast you want to update.
+The ID of the Broadcast you want to update.
 
 ## Body Parameters
 
@@ -4288,9 +4285,9 @@ SDK.*
 
 **name** `string`
 
-The friendly name of the broadcast. Only used for internal reference.
+The friendly name of the Broadcast. Only used for internal reference.
 
-The topic ID that the broadcast will be scoped to.
+The topic ID that the Broadcast will be scoped to.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -4437,8 +4434,8 @@ and underscores are allowed.
 
 The property type. Possible values: `string` or `number`.
 
-The default value to use when the property is not set for a contact. Must
-match the type specified in the `type` field.
+The default value to use when the property isn't set for a contact. Must match
+the type specified in the `type` field.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -4998,13 +4995,13 @@ The Contact Property ID.
 
 > [!NOTE]
 >
-> The `key` and `type` fields cannot be changed after creation. This preserves
+> The `key` and `type` fields can't be changed after creation. This preserves
 > data integrity for existing contact values.
 
 ## Body Parameters
 
-The default value to use when the property is not set for a contact. Must
-match the type of the property.
+The default value to use when the property isn't set for a contact. Must match
+the type of the property.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
 import { Resend } from 'resend';
@@ -6885,15 +6882,15 @@ Number of contact imports to retrieve.
 
 **after** `string`
 
-The contact import ID *after* which we'll retrieve more contact
-imports. This ID will *not* be included in the returned list. Cannot be
-used with the `before` parameter.
+The contact import ID *after* which to retrieve more contact imports.
+This ID *won't* be included in the returned list. Can't be used with
+the `before` parameter.
 
 **before** `string`
 
-The contact import ID *before* which we'll retrieve more contact
-imports. This ID will *not* be included in the returned list. Cannot be
-used with the `after` parameter.
+The contact import ID *before* which to retrieve more contact imports.
+This ID *won't* be included in the returned list. Can't be used with
+the `after` parameter.
 
 **status** `'queued' | 'in_progress' | 'completed' | 'failed'`
 
@@ -7959,9 +7956,9 @@ The name of the domain you want to claim.
 The region where emails will be sent from. Possible values: `'us-east-1' |
     'eu-west-1' | 'sa-east-1' | 'ap-northeast-1'`
 
-Choose a subdomain for the Return-Path address. Defaults to `send` (i.e.,
-`send.yourdomain.tld`). Avoid setting values that could undermine credibility
-(e.g. `testing`), as they may be exposed to recipients.
+Choose a subdomain for the Return-Path address. Defaults to `send` (that is,
+`send.yourdomain.tld`). Avoid setting values that undermine credibility (e.g.
+`testing`), as they may be exposed to recipients.
 
 Track the open rate of each email.
 
@@ -8125,10 +8122,11 @@ The region where emails will be sent from. Possible values: `'us-east-1' |
     'eu-west-1' | 'sa-east-1' | 'ap-northeast-1'`
 
 For advanced use cases, choose a subdomain for the Return-Path address. The
-custom return path is used for SPF authentication, DMARC alignment, and
-handling bounced emails. Defaults to `send` (i.e., `send.yourdomain.tld`). Avoid
-setting values that could undermine credibility (e.g. `testing`), as they may
-be exposed to recipients.
+custom return path is used for Sender Policy Framework (SPF)
+authentication, Domain-based Message Authentication, Reporting, and
+Conformance (DMARC) alignment, and handling bounced emails. Defaults to
+`send` (that is, `send.yourdomain.tld`). Avoid setting values that undermine
+credibility (e.g. `testing`), as they may be exposed to recipients.
 
 Learn more about [custom return paths](/docs/dashboard/domains/custom-return-path).
 
@@ -8154,15 +8152,16 @@ Learn more about [custom tracking subdomains](/docs/dashboard/domains/tracking).
 
 <ul>
   <li>
-    `opportunistic`: Opportunistic TLS means that it always attempts to make a
-    secure connection to the receiving mail server. If it can't establish a
-    secure connection, it sends the message unencrypted.
+    `opportunistic`: Opportunistic Transport Layer Security (TLS) means that
+    it always attempts to make a secure connection to the receiving mail
+    server. If it can't establish a secure connection, it sends the message
+    unencrypted.
   </li>
 
   <li>
-    `enforced`: Enforced TLS on the other hand, requires that the email
-    communication must use TLS no matter what. If the receiving server does
-    not support TLS, the email will not be sent.
+    `enforced`: Enforced Transport Layer Security (TLS) on the other hand,
+    requires that the email communication must use TLS no matter what. If the
+    receiving server doesn't support TLS, the email won't be sent.
   </li>
 </ul>
 
@@ -8478,7 +8477,7 @@ This endpoint returns the DNS records Forge needs. Add them to your DNS and call
 [Verify Domain](/docs/api-reference/domains/verify-domain) with `scope: ["forge"]`,
 then poll [Retrieve Domain](/docs/api-reference/domains/get-domain) until each of
 these records has the `status` `verified`.
-Calling this endpoint again just returns the current state.
+Calling this endpoint again returns the current state.
 
 * **Sending:** a Forge `SPF` record of type `CNAME`.
 * **Receiving:** when the domain also receives email, Forge moves receiving
@@ -8493,7 +8492,8 @@ Calling this endpoint again just returns the current state.
 > [!NOTE]
 >
 > The domain must be a sending domain. Receive-only domains, domains on a
-> dedicated IP, and domains with legacy DKIM get a `forge_unavailable` error.
+> dedicated IP, and domains with legacy DomainKeys Identified Mail (DKIM) get a
+> `forge_unavailable` error.
 
 ## Path Parameters
 
@@ -8503,11 +8503,11 @@ The Domain ID.
 
 The subdomain label for the Forge return path, for example `forge` on
 `example.com` produces a `CNAME` record for `forge.example.com`. It must start
-with a letter, end with a letter or digit, contain only letters, digits, and
-hyphens, and be 63 characters or less. It is stored lowercased. When omitted,
-Resend picks a label that is free in your DNS. It cannot equal the domain's
-current return path, and the chosen host must not already have DNS records;
-either case gets a `return_path_unavailable` error. It is set once and cannot
+with a letter and end with a letter or digit. It can contain only letters,
+digits, and hyphens, and be 63 characters or less. It's stored lowercased.
+When omitted, Resend picks a label that is free in your DNS. It can't equal
+the domain's current return path, and the chosen host must not already have
+DNS records, and either case gets a `return_path_unavailable` error. It can't
 be changed afterwards.
 
 ## Headers
@@ -8516,12 +8516,12 @@ be changed afterwards.
 
 Add an idempotency key to enable Forge only once.
 
-* Should be **unique per API request**
+* Must be **unique per API request**
 * Idempotency keys expire after **24 hours**
 * Have a maximum length of **256 characters**
 * A retry with the same key returns the first successful response, with the
   `idempotent-replayed: true` header
-* A failed request is not stored, so you can retry it with the same key
+* A failed request isn't stored, so you can retry it with the same key
 * Reusing the key with a different body, or while the first request is still
   running, returns a `409`
 
@@ -9082,7 +9082,7 @@ This value can only be changed after it has been specified, never removed. This 
 may already be sent with the current tracking subdomain.
 
 After changing the tracking subdomain, a new DNS record must be verified, until then, the previous value is used.
-Do not remove old tracking DNS records, all previously used records remain active and are included in the response.
+Don't remove old tracking DNS records, all previously used records remain active and are included in the response.
 
 Learn more about [custom tracking subdomains](/docs/dashboard/domains/tracking).
 
@@ -9090,15 +9090,16 @@ Learn more about [custom tracking subdomains](/docs/dashboard/domains/tracking).
 
 <ul>
   <li>
-    `opportunistic`: Opportunistic TLS means that it always attempts to make a
-    secure connection to the receiving mail server. If it can't establish a
-    secure connection, it sends the message unencrypted.
+    `opportunistic`: Opportunistic Transport Layer Security (TLS) means that
+    it always attempts to make a secure connection to the receiving mail
+    server. If it can't establish a secure connection, it sends the message
+    unencrypted.
   </li>
 
   <li>
-    `enforced`: Enforced TLS on the other hand, requires that the email
-    communication must use TLS no matter what. If the receiving server does
-    not support TLS, the email will not be sent.
+    `enforced`: Enforced TLS, on the other hand, requires that the email
+    communication must be encrypted no matter what. If the receiving server
+    doesn't support it, the email won't be sent.
   </li>
 </ul>
 
@@ -9288,9 +9289,9 @@ Verify an existing domain.
 >
 > Calling this API endpoint triggers an **asynchronous domain verification
 > process**. Records that are already verified stay `verified` while the
-> verification is in progress, so sending and receiving are not interrupted.
-> Records that are not verified are marked as `pending`. If a verified record is
-> no longer found, it is marked as `failed` once the verification times out.
+> verification is in progress, so sending and receiving aren't interrupted.
+> Records that aren't verified are marked as `pending`. If a verified record is
+> no longer found, it's marked as `failed` once the verification times out.
 > Since this request initiates the complete domain verification cycle, it will
 > trigger `domain.updated` webhook events as the domain status changes during
 > the verification process.
@@ -9318,7 +9319,7 @@ Requires [Forge](/docs/forge) to be enabled on the domain, otherwise the endpoin
 responds with a `forge_not_enabled` error. When omitted, all records are
 checked.
 
-When verifying a Forge record, always pass `["forge"]` so we only verify
+When verifying a Forge record, always pass `["forge"]` to verify only
 its record and sending is never interrupted.
 
 ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -9440,8 +9441,8 @@ Trigger DNS verification for a domain claim.
 > [!NOTE]
 >
 > **After the claim completes:** the domain is transferred to your account as a
-> brand-new domain with its own DKIM keys, so the previous account's DNS records
-> can't be reused. Fetch it with [Retrieve
+> brand-new domain with its own DomainKeys Identified Mail (DKIM) keys, so the
+> previous account's DNS records can't be reused. Fetch it with [Retrieve
 > Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
 > record(s), then run [Verify Domain](/docs/api-reference/domains/verify-domain) to
 > finish setup before sending or receiving email. See [DKIM
@@ -9741,15 +9742,15 @@ List of metrics to include in the response. Omit for all. See
 
 List of dimensions to break the response down by. Combine
 any of `period`, `domain`, `email`, or `broadcast` to group the data by
-more than one at once, except `email` cannot be combined with `broadcast`.
+more than one at once, except `email` can't be combined with `broadcast`.
 Omit for a single `totals` row for the whole range, with no `data`.
 
 Possible values:
 
 * `period`: groups the data by `granularity` period, in chronological order.
 * `domain`: groups the data by sending domain.
-* `email`: groups the data by email. Cannot be combined with `broadcast`.
-* `broadcast`: groups the data by broadcast. Cannot be combined with `email`.
+* `email`: groups the data by email. Can't be combined with `broadcast`.
+* `broadcast`: groups the data by Broadcast. Can't be combined with `email`.
 
 **domain_id** `string[]`
 
@@ -9757,12 +9758,12 @@ List of sending domain IDs to restrict the response to, up to 100.
 
 **email_id** `string[]`
 
-List of email IDs to restrict the response to, up to 100. Cannot be combined
+List of email IDs to restrict the response to, up to 100. Can't be combined
 with the `broadcast` dimension or `broadcast_id`.
 
 **broadcast_id** `string[]`
 
-List of broadcast IDs to restrict the response to, up to 100. Cannot be
+List of Broadcast IDs to restrict the response to, up to 100. Can't be
 combined with the `email` dimension or `email_id`.
 
 > [!TIP]
@@ -11027,24 +11028,24 @@ clause of the message's `Received` headers.
 
 The SPF, DKIM, and DMARC results computed when the email was received. These
 come from the receiving mail server, not from the message headers, so the
-sender cannot forge them. `null` for emails received before this field was
+sender can't forge them. `null` for emails received before this field was
 introduced.
 
 **properties**
 
 **spf** `'pass' | 'fail' | 'gray' | 'processing_failed' | 'unknown'`
 
-SPF result. `gray` means the result was `none`, `softfail`, or `neutral`.
+Sender Policy Framework (SPF) result. `gray` means the result was `none`, `softfail`, or `neutral`.
 
 **dkim** `'pass' | 'fail' | 'gray' | 'processing_failed' | 'unknown'`
 
-DKIM result. `gray` means the message is not signed, or the signing
-domain does not match the `From` domain.
+DomainKeys Identified Mail (DKIM) result. `gray` means the message isn't signed, or the signing
+domain doesn't match the `From` domain.
 
 **dmarc** `'pass' | 'fail' | 'gray' | 'processing_failed' | 'unknown'`
 
-DMARC result. `gray` means SPF or DKIM passed but the sending domain has
-no DMARC policy or uses `p=none`.
+DMARC result. `gray` means SPF or DKIM passed but the sending domain has no
+DMARC policy or uses `p=none`.
 
 **raw** `object | null`
 
@@ -11399,7 +11400,7 @@ strings.
 Cc recipient email address. For multiple addresses, send as an array of
 strings.
 
-Schedule email to be sent later. The date should be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g:
+Schedule email to be sent later. The date can be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g:
 `2026-08-05T11:52:01.858Z`).
 
 [See examples](/docs/dashboard/emails/schedule-email)
@@ -11431,8 +11432,8 @@ Custom headers to add to the email.
 The topic ID to receive the email.
 
 * If the recipient is a contact and has opted-in to the topic, the email is sent.
-* If the recipient is a contact and has opted-out of the topic, the email is not sent and will be marked as failed.
-* If the recipient is not a contact, the email is sent if the topic default subscription value is set to `opt-in`.
+* If the recipient is a contact and has opted-out of the topic, the email isn't sent and will be marked as failed.
+* If the recipient isn't a contact, the email is sent if the topic default subscription value is set to `opt-in`.
 
 > [!NOTE]
 >
@@ -11483,7 +11484,7 @@ The id of the published email template. Required if `template` is provided. Only
 
 Template variables object with key/value pairs.
 
-```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+```ts theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
 variables: {
 	CTA: 'Sign up now',
 	CTA_LINK: 'https://example.com/signup'
@@ -11519,7 +11520,7 @@ Observe these technical limitations:
 
 Add an idempotency key to prevent duplicated emails.
 
-* Should be **unique per API request**
+* Must be **unique per API request**
 * Idempotency keys expire after **24 hours**
 * Have a maximum length of **256 characters**
 
@@ -11527,7 +11528,7 @@ Add an idempotency key to prevent duplicated emails.
 
 ## Limitations
 
-The `attachments` field is not supported yet.
+The `attachments` field isn't supported yet.
 
 ## Response format
 
@@ -13703,7 +13704,7 @@ Source: https://resend.com/docs/api-reference/inboxes/add-thread-labels
 POST /inboxes/:inbox_id/threads/:thread_id/labels
 Apply one or more labels to a thread.
 
-Labels already on the thread stay on it. If any label ID is not found, the
+Labels already on the thread stay on it. If any label ID isn't found, the
 request returns a `404` and nothing changes. To replace the thread's labels
 instead, use [Set Thread Labels](/docs/api-reference/inboxes/set-thread-labels).
 
@@ -13927,7 +13928,7 @@ The Inbox ID or the inbox email address, such as `support@example.com`.
 ## Body Parameters
 
 At least one of `to`, `cc`, `bcc`, `subject`, `text`, `html`, or `attachments`
-must be non-empty. `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+must be non-empty. `to`, `cc`, and `bcc` combined can't exceed 50 recipients.
 
 **to** `string | string[] | null`
 
@@ -14264,9 +14265,9 @@ Create an inbox to send, receive and organize email.
 An inbox sends and receives email at an address on one of your domains, such as
 `support@example.com`.
 
-Without `forwarding`, the domain must have receiving enabled, with DKIM and SPF
+Without `forwarding`, the domain must have receiving enabled, with DomainKeys Identified Mail (DKIM) and Sender Policy Framework (SPF)
 verified and the inbound MX record verified or pending. With `forwarding` set to
-`true`, the domain needs only DKIM and SPF verified. Otherwise, the request
+`true`, the domain needs only those DKIM and SPF records verified. Otherwise, the request
 returns a `422`. An address that is already in use
 returns a `409`. A team at the inbox limit of its plan gets a `403`.
 
@@ -15232,8 +15233,8 @@ Forwards a message from the inbox address.
 
 The attachments of the original message are sent with the forward, together
 with any `attachments` you add. The request fails when they exceed 25 MB of
-`content` in total. Files you add with `path` do not count toward it. An original
-attachment that was sent from a URL (`path`) cannot be forwarded, and the
+`content` in total. Files you add with `path` don't count toward it. An original
+attachment that was sent from a URL (`path`) can't be forwarded, and the
 request returns a `422`. The whole email can be at most 40 MB.
 
 The forward carries the same `In-Reply-To` and `References` headers as a

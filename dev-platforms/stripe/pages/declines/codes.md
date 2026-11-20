@@ -8,11 +8,17 @@ path: declines/codes
 
 Learn about Stripe decline codes and how to resolve them when a charge fails.
 
-Stripe uses its own decline codes that cover many of the same potential reasons as [issuer decline codes](https://docs.stripe.com/declines/network-codes.md). Stripe’s decline codes expand on issuer decline codes by going into more detail about the specific reason for the decline. In addition to a decline code, an error can contain an [advice_code](https://docs.stripe.com/declines/card.md#retrying-issuer-declines) with suggested next steps.
+Use Stripe decline codes to understand why a payment was declined and what to do next.
 
-> #### Other API errors
-> 
-> Some [API errors](https://docs.stripe.com/api/errors.md) include a [code](https://docs.stripe.com/api/errors.md#errors-code) attribute to help you [resolve them](https://docs.stripe.com/error-handling.md).
+## Find your code 
+
+Choose a reference based on the code’s source:
+
+- **Stripe decline code**: Find codes such as `insufficient_funds` in the [card decline codes](https://docs.stripe.com/declines/codes.md#card-decline-codes).
+- **Network decline code**: Find raw codes such as `05` or `R01` in the [network decline codes](https://docs.stripe.com/declines/network-codes.md). Select the payment method or card network that returned the code.
+- **Other API error**: Find the API error’s [code](https://docs.stripe.com/api/errors.md#errors-code) in the [error codes](https://docs.stripe.com/error-codes.md). For guidance on handling the error, see [Error handling](https://docs.stripe.com/error-handling.md).
+
+An error can also include an [advice_code](https://docs.stripe.com/declines/card.md#retrying-issuer-declines) with suggested next steps.
 
 ## Card decline codes 
 

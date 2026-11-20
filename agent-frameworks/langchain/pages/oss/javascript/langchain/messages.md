@@ -1016,7 +1016,7 @@ An agent harness sometimes adds a human message that the user did not type, such
 
 `addNotificationMetadata` returns a copy of a `HumanMessage` or `ToolMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage, addNotificationMetadata } from "@langchain/core/messages";
 
 const notification = addNotificationMetadata(
@@ -1027,7 +1027,7 @@ const notification = addNotificationMetadata(
 
 `getNotificationMetadata` returns the `source` and `data` of a notification, or `undefined` for any other message:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { getNotificationMetadata } from "@langchain/core/messages";
 
 for (const message of messages) {
@@ -1061,7 +1061,7 @@ Deep Agents notification sources include:
 
 You can serialize messages to plain objects for storage and deserialize back to message instances. This is useful for persisting conversation history and resuming sessions.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage } from "@langchain/core/messages";
 import { load } from "@langchain/core/load";
 

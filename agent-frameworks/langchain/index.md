@@ -573,7 +573,7 @@
 - `langsmith/script-running-pg-support-queries` — [Run support queries against PostgreSQL](pages/langsmith/script-running-pg-support-queries.md) · [原文](https://docs.langchain.com/langsmith/script-running-pg-support-queries)
 - `langsmith/self-host-additional-features` — [Configure additional self-hosted features](pages/langsmith/self-host-additional-features.md) · [原文](https://docs.langchain.com/langsmith/self-host-additional-features)
 - `langsmith/self-host-basic-auth` — [Basic authentication with email and password](pages/langsmith/self-host-basic-auth.md) · [原文](https://docs.langchain.com/langsmith/self-host-basic-auth)
-- `langsmith/self-host-blob-storage` — [Enable blob storage](pages/langsmith/self-host-blob-storage.md) · [原文](https://docs.langchain.com/langsmith/self-host-blob-storage)
+- `langsmith/self-host-blob-storage` — [Configure blob storage](pages/langsmith/self-host-blob-storage.md) · [原文](https://docs.langchain.com/langsmith/self-host-blob-storage)
 - `langsmith/self-host-custom-tls-certificates` — [Configure custom TLS certificates](pages/langsmith/self-host-custom-tls-certificates.md) · [原文](https://docs.langchain.com/langsmith/self-host-custom-tls-certificates)
 - `langsmith/self-host-dependency-versions` — [Minimum versions for self-hosting dependencies](pages/langsmith/self-host-dependency-versions.md) · [原文](https://docs.langchain.com/langsmith/self-host-dependency-versions)
 - `langsmith/self-host-disaster-recovery` — [Disaster recovery for self-hosted LangSmith](pages/langsmith/self-host-disaster-recovery.md) · [原文](https://docs.langchain.com/langsmith/self-host-disaster-recovery)

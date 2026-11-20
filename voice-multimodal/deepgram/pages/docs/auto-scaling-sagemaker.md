@@ -145,6 +145,8 @@ sagemaker.create_endpoint_config(
 )
 ```
 
+Instance pools fall back within one Region. To fall back to Deepgram Endpoints in other Regions when a whole Region runs short of capacity, put an inference router in front of them. See [Cross-region inference routing](/docs/cross-region-routing-sagemaker).
+
 When you use multiple instance types, give additional consideration to your scaling policy. The predefined scaling metrics (`ConcurrentRequestsPerModel` for real-time endpoints, `ApproximateBacklogSizePerInstance` for async endpoints) don't account for capacity differences between pools, so a target tracking policy that uses them directly may scale unevenly across instance types. For mixed fleets, AWS recommends driving the scaling policy from a weighted custom metric instead. See the [AWS heterogeneous endpoints documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/realtime-endpoints-heterogeneous.html) for details on configuring weighted custom metrics for heterogeneous endpoints.
 
 ## Related resources
@@ -152,6 +154,7 @@ When you use multiple instance types, give additional consideration to your scal
 * [Auto-scaling real-time endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Auto-Scaling Asynchronous Endpoints](/docs/auto-scaling-sagemaker-async)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
+* [Cross-region inference routing](/docs/cross-region-routing-sagemaker)
 * [Amazon SageMaker Asynchronous Inference (AWS)](https://docs.aws.amazon.com/sagemaker/latest/dg/async-inference.html)
 * [Automatic scaling of Amazon SageMaker models (AWS)](https://docs.aws.amazon.com/sagemaker/latest/dg/endpoint-auto-scaling.html)
 * [Minimize real-time inference latency by using Amazon SageMaker routing strategies (AWS)](https://aws.amazon.com/blogs/machine-learning/minimize-real-time-inference-latency-by-using-amazon-sagemaker-routing-strategies/)

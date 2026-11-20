@@ -11,23 +11,23 @@ Create a new automation to automate email sequences.
 
 **name** `string` *required*
 
-The name of the automation.
+The name of the Automation.
 
 **status** `string`
 
-The status of the automation. Possible values are `enabled` or `disabled`.
+The status of the Automation. Possible values are `enabled` or `disabled`.
 Defaults to `disabled`.
 
 **steps** `Step[]`
 
-The steps that compose the automation graph. Must be provided together with
+The steps that compose the Automation graph. Must be provided together with
 `connections`. See [Step
 Properties](/docs/dashboard/automations/steps#step-properties) for full object
 definition.
 
 **connections** `Connection[]`
 
-The connections between steps in the automation graph. Must be provided
+The connections between steps in the Automation graph. Must be provided
 together with `steps`. See [Connection
 Properties](/docs/dashboard/automations/connections#connection-properties) for full
 object definition.

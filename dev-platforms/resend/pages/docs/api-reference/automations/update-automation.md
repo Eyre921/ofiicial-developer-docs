@@ -15,29 +15,29 @@ Update an existing automation.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ## Body Parameters
 
 **name** `string`
 
-The name of the automation.
+The name of the Automation.
 
 **status** `string`
 
-The status of the automation. Possible values are `enabled` or `disabled`.
+The status of the Automation. Possible values are `enabled` or `disabled`.
 
 **steps** `Step[]`
 
-The steps that compose the automation graph. Must be provided together with
-`connections`. The graph of an `enabled` automation cannot be updated: disable
-the automation first, or duplicate it and edit the copy. See [Step
+The steps that compose the Automation graph. Must be provided together with
+`connections`. The graph of an `enabled` Automation can't be updated: disable
+the Automation first, or duplicate it and edit the copy. See [Step
 Properties](/docs/dashboard/automations/steps#step-properties) for full object
 definition.
 
 **connections** `Connection[]`
 
-The connections between steps in the automation graph. Must be provided
+The connections between steps in the Automation graph. Must be provided
 together with `steps`. See [Connection
 Properties](/docs/dashboard/automations/connections#connection-properties) for full
 object definition.

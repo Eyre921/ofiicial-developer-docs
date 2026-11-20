@@ -34,7 +34,7 @@ If you don't have [Trimming](https://learn.microsoft.com/en-us/dotnet/core/deplo
 
 Do not initialize the SDK in the `OnLaunched` event of the application or the `Hub` will not be initialized correctly.
 
-In addition to capturing errors, you can monitor interactions between multiple services or applications by [enabling tracing](https://docs.sentry.io/concepts/key-terms/tracing.md).
+In addition to capturing errors, you can follow operations and processes in your app by [enabling tracing](https://docs.sentry.io/concepts/key-terms/tracing.md), and see where they fail or slow down.
 
 The snippet also turns on:
 

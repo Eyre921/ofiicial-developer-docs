@@ -11,8 +11,8 @@ Forwards a message from the inbox address.
 
 The attachments of the original message are sent with the forward, together
 with any `attachments` you add. The request fails when they exceed 25 MB of
-`content` in total. Files you add with `path` do not count toward it. An original
-attachment that was sent from a URL (`path`) cannot be forwarded, and the
+`content` in total. Files you add with `path` don't count toward it. An original
+attachment that was sent from a URL (`path`) can't be forwarded, and the
 request returns a `422`. The whole email can be at most 40 MB.
 
 The forward carries the same `In-Reply-To` and `References` headers as a

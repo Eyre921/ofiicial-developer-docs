@@ -6,35 +6,28 @@ path: platforms/java/guides/spring
 
 ---
 title: "Spring"
-description: "Learn how to use Sentry's Spring SDK."
+description: "Learn how to set up Sentry in your Spring application and capture your first events."
 url: https://docs.sentry.io/platforms/java/guides/spring/
 ---
 
 # Sentry for Spring
 
-There are multiple variants of Sentry available for Spring:
+Are you using Spring Boot? Then follow our [Spring Boot quick start guide](https://docs.sentry.io/platforms/java/guides/spring-boot.md) instead.
 
-* For Spring 5, use `sentry-spring` ([GitHub](https://github.com/getsentry/sentry-java/tree/master/sentry-spring))
-* For Spring 6, use `sentry-spring-jakarta` ([GitHub](https://github.com/getsentry/sentry-java/tree/master/sentry-spring-jakarta))
-* For Spring 7, use `sentry-spring-7` ([GitHub](https://github.com/getsentry/sentry-java/tree/main/sentry-spring-7))
+## [Prerequisites](https://docs.sentry.io/platforms/java/guides/spring.md#prerequisites)
 
-Sentry's integration with [Spring](https://spring.io/projects/spring-framework) supports Spring Framework 5.1.2 and above to report unhandled exceptions and optional user information. If you're on an older version, use [our legacy integration](https://docs.sentry.io/platforms/java/legacy/spring.md). The minimum version of Spring Framework supported by the Sentry WebFlux integration is, instead, 5.2.4.
+You need:
 
-* Provides a [HandlerExceptionResolver](https://docs.spring.io/spring/docs/4.3.9.RELEASE/javadoc-api/org/springframework/web/servlet/HandlerExceptionResolver.html) to send unhandled exceptions to Sentry
-* Attaches HTTP request information to every `SentryEvent` recorded within the scope of the request
-* Provides the ability to [record user information](https://docs.sentry.io/platforms/java/guides/spring/advanced-usage.md)
+* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
+* Your application up and running
+* Spring Framework `5.1.2`+
+  * [Sentry WebFlux integration](https://docs.sentry.io/platforms/java/guides/spring-boot/webflux.md) requires Spring Framework `5.2.4` or above
 
-To use Sentry with **Spring Boot**, we recommend using Sentry [Spring Boot integration](https://docs.sentry.io/platforms/java/guides/spring-boot.md) as it provides richer configuration capabilities.
-
-On this page, we get you up and running with Sentry's SDK.
-
-Don't already have an account and Sentry project established? Head over to [sentry.io](https://sentry.io/signup/), then return to this page.
+If you're on an older version, use [our legacy integration](https://docs.sentry.io/platforms/java/legacy/spring.md).
 
 ## [Install](https://docs.sentry.io/platforms/java/guides/spring.md#install)
 
-Sentry captures data by using an SDK within your application’s runtime.
-
-Error Monitoring\[ ]Tracing\[ ]Profiling\[ ]Logs\[x]OpenTelemetry
+Install Sentry for your Spring version:
 
 **Gradle Plugin**
 
@@ -42,11 +35,9 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[ ]Logs\[x]OpenTelemetry
 plugins {
   id "io.sentry.jvm.gradle" version "6.27.0"
 }
-// ___PRODUCT_OPTION_START___ profiling
 dependencies {
   implementation 'io.sentry:sentry-async-profiler:8.65.0'
 }
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **\[Maven Plugin] pom.xml**
@@ -84,7 +75,6 @@ dependencies {
     </execution>
   </executions>
 </plugin>
-// ___PRODUCT_OPTION_START___ profiling
 <dependencies>
   <dependency>
       <groupId>io.sentry</groupId>
@@ -92,34 +82,27 @@ dependencies {
       <version>8.65.0</version>
   </dependency>
 </dependencies>
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Gradle (Spring 5)**
 
 ```groovy
 implementation 'io.sentry:sentry-spring:8.65.0'
-// ___PRODUCT_OPTION_START___ profiling
 implementation 'io.sentry:sentry-async-profiler:8.65.0'
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Gradle (Spring 6)**
 
 ```groovy
 implementation 'io.sentry:sentry-spring-jakarta:8.65.0'
-// ___PRODUCT_OPTION_START___ profiling
 implementation 'io.sentry:sentry-async-profiler:8.65.0'
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Gradle (Spring 7)**
 
 ```groovy
 implementation 'io.sentry:sentry-spring-7:8.65.0'
-// ___PRODUCT_OPTION_START___ profiling
 implementation 'io.sentry:sentry-async-profiler:8.65.0'
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Maven (Spring 5)**
@@ -130,13 +113,11 @@ implementation 'io.sentry:sentry-async-profiler:8.65.0'
     <artifactId>sentry-spring</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Maven (Spring 6)**
@@ -147,13 +128,11 @@ implementation 'io.sentry:sentry-async-profiler:8.65.0'
     <artifactId>sentry-spring-jakarta</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Maven (Spring 7)**
@@ -164,40 +143,32 @@ implementation 'io.sentry:sentry-async-profiler:8.65.0'
     <artifactId>sentry-spring-7</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_START___ profiling
 <dependency>
     <groupId>io.sentry</groupId>
     <artifactId>sentry-async-profiler</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **SBT (Spring 5)**
 
 ```scala
 libraryDependencies += "io.sentry" % "sentry-spring" % "8.65.0"
-// ___PRODUCT_OPTION_START___ profiling
 libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.65.0"
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **SBT (Spring 6)**
 
 ```scala
 libraryDependencies += "io.sentry" % "sentry-spring-jakarta" % "8.65.0"
-// ___PRODUCT_OPTION_START___ profiling
 libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.65.0"
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **SBT (Spring 7)**
 
 ```scala
 libraryDependencies += "io.sentry" % "sentry-spring-7" % "8.65.0"
-// ___PRODUCT_OPTION_START___ profiling
 libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.65.0"
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 For other dependency managers see the [central Maven repository (Spring 5)](https://search.maven.org/artifact/io.sentry/sentry-spring), [central Maven repository (Spring 6)](https://search.maven.org/artifact/io.sentry/sentry-spring-jakarta), and [central Maven repository (Spring 7)](https://search.maven.org/artifact/io.sentry/sentry-spring-7).
@@ -206,7 +177,220 @@ We recommend using our Gradle plugin as it can add integrations and provide sour
 
 If you are manually adding multiple Sentry dependencies, you can add a [bill of materials](https://docs.sentry.io/platforms/java/configuration/bill-of-materials.md) to avoid specifying the version of each dependency.
 
-When running your application, please add our `sentry-opentelemetry-agent` to the `java` command. In case you are using an application server to run your `.WAR` file, please add it to the `JAVA_OPTS` of your application server.
+## [Configure](https://docs.sentry.io/platforms/java/guides/spring.md#configure)
+
+**Error Monitoring** starts once Sentry is configured. **Application Metrics** need no extra configuration, and you'll learn how to send them in step [#4](https://docs.sentry.io/platforms/java/guides/spring.md#send-application-metrics-). This guide also configures **Tracing**, **Logs**, and **Profiling**.
+
+Want to learn more about these features?
+
+* [**Issues**](https://docs.sentry.io/product/issues.md) (always enabled): Sentry's core error monitoring product that automatically reports errors, uncaught exceptions, and crashes. If you have something that looks like an exception, Sentry can capture it.
+* [**Tracing**](https://docs.sentry.io/product/tracing.md): Track software performance while seeing the impact of errors across multiple systems. For example, distributed tracing allows you to follow a request from the frontend to the backend and back.
+* [**Profiling**](https://docs.sentry.io/product/profiling.md): Gain deeper insight than traditional tracing without custom instrumentation, letting you discover slow-to-execute or resource-intensive functions in your app.
+* [**Logs**](https://docs.sentry.io/product/logs.md): Centralize and analyze your application logs to correlate them with errors and performance issues. Search, filter, and visualize log data to understand what's happening in your applications.
+* [**Application Metrics**](https://docs.sentry.io/product/metrics.md) (always enabled): Track and analyze custom application metrics, such as response times and database query durations, to understand trends and patterns in your application's performance and behavior over time.
+
+Configuration should happen as early as possible in your application's lifecycle.
+
+The `sentry-spring`, `sentry-spring-jakarta`, and `sentry-spring-7` libraries provide an `@EnableSentry` annotation that registers all required Spring beans. Place it on any class annotated with [@Configuration](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Configuration.html), including your main [@SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html) class.
+
+**Java (Spring 5)**
+
+```java
+import io.sentry.spring.EnableSentry;
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
+)
+@Configuration
+class SentryConfiguration {
+}
+```
+
+**Java (Spring 6)**
+
+```java
+import io.sentry.spring.jakarta.EnableSentry;
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
+)
+@Configuration
+class SentryConfiguration {
+}
+```
+
+**Java (Spring 7)**
+
+```java
+import io.sentry.spring7.EnableSentry;
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
+)
+@Configuration
+class SentryConfiguration {
+}
+```
+
+**Kotlin (Spring 5)**
+
+```kotlin
+import io.sentry.spring.EnableSentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
+)
+@Configuration
+class SentryConfiguration
+```
+
+**Kotlin (Spring 6)**
+
+```kotlin
+import io.sentry.spring.jakarta.EnableSentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
+)
+@Configuration
+class SentryConfiguration
+```
+
+**Kotlin (Spring 7)**
+
+```kotlin
+import io.sentry.spring7.EnableSentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
+)
+@Configuration
+class SentryConfiguration
+```
+
+Then configure the remaining options in `sentry.properties`.
+
+The snippet also configures:
+
+* Data Collection: via [`data-collection`](https://docs.sentry.io/platforms/java/guides/spring/data-management/data-collected.md)
+* Tracing: via [`traces-sample-rate`](https://docs.sentry.io/platforms/java/guides/spring/configuration/options.md#tracesSampleRate)
+* Profiling: via [`profile-session-sample-rate`](https://docs.sentry.io/platforms/java/guides/spring/configuration/options.md#profileSessionSampleRate) and [`profile-lifecycle`](https://docs.sentry.io/platforms/java/guides/spring/configuration/options.md#profileLifecycle)
+* Logs: via [`logs.enabled`](https://docs.sentry.io/platforms/java/guides/spring/logs.md)
+
+Don't need a feature? Remove its configuration. Remove the `sentry-async-profiler` dependency to disable Profiling.
+
+```properties
+# Use Data Collection defaults but don't collect automatic user information.
+data-collection.user-info=false
+# Configure other data categories here.
+
+# Enable tracing
+traces-sample-rate=1.0
+
+# Enable profiling
+profile-session-sample-rate=1.0
+profile-lifecycle=TRACE
+
+# Enable logs
+logs.enabled=true
+```
+
+The DSN can also come from the `sentry.dsn` system property, the `SENTRY_DSN` environment variable, or `sentry.properties`. See the [configuration page](https://docs.sentry.io/platforms/java/configuration.md) for details on external configuration.
+
+### [Capture Handled Exceptions](https://docs.sentry.io/platforms/java/guides/spring.md#capture-handled-exceptions)
+
+By default, only unhandled exceptions are sent to Sentry. You can tune this behavior by configuring the `exceptionResolverOrder` property. For example, setting it to `Ordered#HIGHEST_PRECEDENCE` ensures exceptions that have been handled by exception resolvers with higher order are sent to Sentry – including ones handled by `@ExceptionHandler` annotated methods.
+
+**Java (Spring 5)**
+
+```java
+import io.sentry.spring.EnableSentry;
+import org.springframework.core.Ordered;
+// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
+)
+class SentryConfiguration {
+}
+```
+
+**Java (Spring 6)**
+
+```java
+import io.sentry.spring.jakarta.EnableSentry;
+import org.springframework.core.Ordered;
+// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
+)
+class SentryConfiguration {
+}
+```
+
+**Java (Spring 7)**
+
+```java
+import io.sentry.spring7.EnableSentry;
+import org.springframework.core.Ordered;
+// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
+)
+class SentryConfiguration {
+}
+```
+
+**Kotlin (Spring 5)**
+
+```kotlin
+import io.sentry.spring.EnableSentry
+import org.springframework.core.Ordered
+// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
+)
+class SentryConfiguration
+```
+
+**Kotlin (Spring 6)**
+
+```kotlin
+import io.sentry.spring.jakarta.EnableSentry
+import org.springframework.core.Ordered
+// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
+)
+class SentryConfiguration
+```
+
+**Kotlin (Spring 7)**
+
+```kotlin
+import io.sentry.spring7.EnableSentry
+import org.springframework.core.Ordered
+// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
+// project/dashboard
+@EnableSentry(
+  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
+  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
+)
+class SentryConfiguration
+```
+
+### [Add the OpenTelemetry Agent (Optional)](https://docs.sentry.io/platforms/java/guides/spring.md#add-the-opentelemetry-agent-optional)
+
+[Sentry's OpenTelemetry](https://docs.sentry.io/platforms/java/guides/spring/opentelemetry.md) support lets Sentry use OpenTelemetry instrumentation to trace your application. Sentry's agent attaches when the JVM starts. Your configuration stays the same, but Sentry is still initialized by `@EnableSentry`, so set `SENTRY_AUTO_INIT=false` to stop the agent from initializing it as well.
 
 Download the latest version of the `sentry-opentelemetry-agent-8.65.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
 
@@ -222,7 +406,7 @@ SENTRY_AUTO_INIT=false JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-
 
 *Other available variations of the above snippet: Java CLI argument*
 
-In case of an application server, adding the Agent might look more like the following:
+If you run a `.WAR` file on an application server, add the agent to the server's `JAVA_OPTS` instead:
 
 ```bash
 JAVA_OPTS="${JAVA_OPTS} JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.65.0.jar"
@@ -230,215 +414,81 @@ JAVA_OPTS="${JAVA_OPTS} JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent
 
 *Other available variations of the above snippet: Java CLI argument*
 
-## [Configure](https://docs.sentry.io/platforms/java/guides/spring.md#configure)
+See the [agent setup guide](https://docs.sentry.io/platforms/java/guides/spring/opentelemetry/setup/agent.md) or [agentless setup guide](https://docs.sentry.io/platforms/java/guides/spring/opentelemetry/setup/agentless.md) for details.
 
-Configuration should happen as early as possible in your application's lifecycle.
+## [Send Logs](https://docs.sentry.io/platforms/java/guides/spring.md#send-logs)
 
-The `sentry-spring`, `sentry-spring-jakarta`, and `sentry-spring-7` libraries provide an `@EnableSentry` annotation that registers all required Spring beans. `@EnableSentry` can be placed on any class annotated with [@Configuration](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/context/annotation/Configuration.html) including the main entry class in Spring Boot applications annotated with [@SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html).
-
-**Java (Spring 5)**
+Use `Sentry.logger()` to send logs at different levels, such as `info`, `warn`, or `error`. You can pass any attributes you want and search or filter by them later. See [Set Up Logs](https://docs.sentry.io/platforms/java/guides/spring/logs.md) for all available logging methods and the syntax for formatting messages.
 
 ```java
-import io.sentry.spring.EnableSentry;
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
-)
-@Configuration
-class SentryConfiguration {
-}
+import io.sentry.Sentry;
+import io.sentry.SentryAttribute;
+import io.sentry.SentryAttributes;
+import io.sentry.SentryLogLevel;
+import io.sentry.logger.SentryLogParameters;
+
+
+Sentry.logger().info("A simple log message");
+Sentry.logger().error("A %s log message", "formatted");
+
+// attach custom attributes with Sentry.logger().log()
+Sentry.logger().log(
+    SentryLogLevel.FATAL,
+    SentryLogParameters.create(
+        SentryAttributes.of(
+            SentryAttribute.stringAttribute("my.string-attribute", "some-value"),
+            SentryAttribute.named("my.attribute", new Point(1, 2))
+        )
+    ),
+    "log message %s",
+    "param1"
+);
 ```
 
-**Java (Spring 6)**
+*Other available variations of the above snippet: kotlin*
+
+We also provide integrations for:
+
+* [Logback](https://docs.sentry.io/platforms/java/guides/logback/logs.md)
+* [Log4j2](https://docs.sentry.io/platforms/java/guides/log4j2/logs.md)
+* [java.util.logging](https://docs.sentry.io/platforms/java/guides/jul/logs.md)
+
+## [Send Application Metrics NEW](https://docs.sentry.io/platforms/java/guides/spring.md#send-application-metrics-)
+
+Use `Sentry.metrics()` to send counters, gauges, and distributions from your app to Sentry. You can pass any attributes you want and search or filter by them later.
+
+See [Set Up Metrics](https://docs.sentry.io/platforms/java/guides/spring/metrics.md) for all metric types and configuration options.
 
 ```java
-import io.sentry.spring.jakarta.EnableSentry;
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
-)
-@Configuration
-class SentryConfiguration {
-}
+import io.sentry.Sentry;
+import io.sentry.SentryAttribute;
+import io.sentry.SentryAttributes;
+import io.sentry.metrics.MetricsUnit;
+import io.sentry.metrics.SentryMetricsParameters;
+
+Sentry.metrics().count("button_click", 1.0);
+Sentry.metrics().gauge("queue_depth", 42.0);
+
+// pass additional attributes via SentryMetricsParameters
+Sentry.metrics().distribution(
+  "response_time",
+  1.0,
+  MetricsUnit.Duration.MILLISECOND,
+  SentryMetricsParameters.create(
+    SentryAttributes.of(
+      SentryAttribute.stringAttribute("browser", "Firefox")
+    )
+  )
+);
 ```
 
-**Java (Spring 7)**
+*Other available variations of the above snippet: kotlin*
 
-```java
-import io.sentry.spring7.EnableSentry;
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
-)
-@Configuration
-class SentryConfiguration {
-}
-```
+## [Verify Your Setup](https://docs.sentry.io/platforms/java/guides/spring.md#verify-your-setup)
 
-**Kotlin (Spring 5)**
+Let's test your setup and confirm that Sentry is working correctly and sending data to your Sentry project.
 
-```kotlin
-import io.sentry.spring.EnableSentry
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
-)
-@Configuration
-class SentryConfiguration
-```
-
-**Kotlin (Spring 6)**
-
-```kotlin
-import io.sentry.spring.jakarta.EnableSentry
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
-)
-@Configuration
-class SentryConfiguration
-```
-
-**Kotlin (Spring 7)**
-
-```kotlin
-import io.sentry.spring7.EnableSentry
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>"
-)
-@Configuration
-class SentryConfiguration
-```
-
-Configure Data Collection in `sentry.properties`. Setting any Data Collection field applies its defaults to omitted fields:
-
-```properties
-# Use Data Collection defaults but don't collect automatic user information.
-data-collection.user-info=false
-# Configure other data categories here.
-```
-
-The DSN can be also provided through the system property `sentry.dsn`, environment variable `SENTRY_DSN` or the `dsn` property in `sentry.properties` file. [See the configuration page](https://docs.sentry.io/platforms/java/configuration.md) for more details on external configuration.
-
-Once this integration is configured you can *also* use Sentry’s static API, [as shown on the usage page](https://docs.sentry.io/platforms/java/guides/spring/usage.md), to record breadcrumbs, set the current user, or manually send events, for example.
-
-By default, only unhandled exceptions are sent to Sentry. This behavior can be tuned through configuring the `exceptionResolverOrder` property. For example, setting it to `Ordered#HIGHEST_PRECEDENCE` ensures exceptions that have been handled by exception resolvers with higher order are sent to Sentry - including ones handled by `@ExceptionHandler` annotated methods.
-
-**Java (Spring 5)**
-
-```java
-import io.sentry.spring.EnableSentry;
-import org.springframework.core.Ordered;
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
-)
-class SentryConfiguration {
-}
-```
-
-**Java (Spring 6)**
-
-```java
-import io.sentry.spring.jakarta.EnableSentry;
-import org.springframework.core.Ordered;
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
-)
-class SentryConfiguration {
-}
-```
-
-**Java (Spring 7)**
-
-```java
-import io.sentry.spring7.EnableSentry;
-import org.springframework.core.Ordered;
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
-)
-class SentryConfiguration {
-}
-```
-
-**Kotlin (Spring 5)**
-
-```kotlin
-import io.sentry.spring.EnableSentry
-import org.springframework.core.Ordered
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
-)
-class SentryConfiguration
-```
-
-**Kotlin (Spring 6)**
-
-```kotlin
-import io.sentry.spring.jakarta.EnableSentry
-import org.springframework.core.Ordered
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
-)
-class SentryConfiguration
-```
-
-**Kotlin (Spring 7)**
-
-```kotlin
-import io.sentry.spring7.EnableSentry
-import org.springframework.core.Ordered
-// NOTE: Replace the test DSN below with YOUR OWN DSN to see the events from this app in your Sentry
-// project/dashboard
-@EnableSentry(
-  dsn = "https://<key>@o<orgId>.ingest.sentry.io/<projectId>",
-  exceptionResolverOrder = Ordered.LOWEST_PRECEDENCE
-)
-class SentryConfiguration
-```
-
-The SDK can be configured using a `sentry.properties` file:
-
-```properties
-// ___PRODUCT_OPTION_START___ performance
-# Enable tracing
-traces-sample-rate=1.0
-// ___PRODUCT_OPTION_END___ performance
-// ___PRODUCT_OPTION_START___ profiling
-# Enable profiling
-profile-session-sample-rate=1.0
-profile-lifecycle=TRACE
-// ___PRODUCT_OPTION_END___ profiling
-// ___PRODUCT_OPTION_START___ logs
-# Enable logs
-logs.enabled=true
-// ___PRODUCT_OPTION_END___ logs
-```
-
-## [Verify](https://docs.sentry.io/platforms/java/guides/spring.md#verify)
-
-This snippet includes an intentional error, so you can test that everything is working as soon as you set it up.
+Add this intentional error to your application:
 
 ```java
 import io.sentry.Sentry;
@@ -452,13 +502,26 @@ try {
 
 *Other available variations of the above snippet: Kotlin*
 
-Learn more about manually capturing an error or message in our [Usage documentation](https://docs.sentry.io/platforms/java/guides/spring/usage.md).
+### [View Captured Data in Sentry](https://docs.sentry.io/platforms/java/guides/spring.md#view-captured-data-in-sentry)
 
-To view and resolve the recorded error, log into [sentry.io](https://sentry.io) and select your project. Clicking on the error's title will open a page where you can see detailed information and mark it as resolved.
+Now, head over to your project on [Sentry.io](https://sentry.io) to view the collected data (it takes a couple of moments for the data to appear).
+
+Need help locating captured data in your Sentry project?
+
+* Open the [**Issues**](https://sentry.io/orgredirect/organizations/:orgslug/issues/) page and select an error from the issues list to view the full details and context of this error. For more details, see the [Issue Details documentation](https://docs.sentry.io/product/issues/issue-details.md).
+* Open the [**Traces**](https://sentry.io/orgredirect/organizations/:orgslug/explore/traces/) page and select a trace to reveal more information about each span, its duration, and any errors. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/sentry-basics/getting-started-tutorial/generate-first-error.md#ui-walkthrough).
+* Open the [**Profiles**](https://sentry.io/orgredirect/organizations/:orgslug/profiling/) page to see your slowest functions and an aggregate flame graph of your most frequent code paths. If tracing is enabled, select a transaction to see the flame graph for that part of your app. For more information, click [here](https://docs.sentry.io/product/profiling/profile-details.md).
+* Open the [**Logs**](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/) page and filter by service, environment, or search keywords to view log entries from your application. For an interactive UI walkthrough, click [here](https://docs.sentry.io/product/logs.md#overview).
+* Open the [**Application Metrics**](https://sentry.io/orgredirect/organizations/:orgslug/explore/metrics) page to view and analyze your metrics. For more details, see this [interactive walkthrough](https://docs.sentry.io/product/metrics.md#overview).
 
 ## [Next Steps](https://docs.sentry.io/platforms/java/guides/spring.md#next-steps)
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
+
+Are you having problems setting up the SDK or integration?
+
+* Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/java/guides/spring/troubleshooting.md)
+* [Get support](https://www.sentry.help/en/)
 
 ## Other Java Frameworks
 

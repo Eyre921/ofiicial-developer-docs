@@ -102,7 +102,7 @@ Then sign in with OAuth on your company OpenRouter organization, and there are n
 
 ### Zero Data Retention (ZDR)
 
-Zero Data Retention ensures providers do not store your prompts or responses. ZDR can be enforced per model group (Anthropic, OpenAI, Google, SpaceXAI, and all other models) in your [privacy settings](https://openrouter.ai/settings/privacy), via [guardrails](https://openrouter.ai/docs/guides/features/guardrails.md), or per-request using the `zdr` parameter.
+Zero Data Retention ensures providers do not store your prompts or responses. ZDR can be enforced per model group (Anthropic, OpenAI, Google, SpaceXSI, and all other models) in your [privacy settings](https://openrouter.ai/settings/privacy), via [guardrails](https://openrouter.ai/docs/guides/features/guardrails.md), or per-request using the `zdr` parameter.
 
 For inference content covered by OpenRouter's ZDR policy, we do not retain prompts or responses after processing, except when you explicitly choose to have us store them or when retention is needed for CSAM review, reporting, and related legal preservation.
 
@@ -145,7 +145,7 @@ See [Presets](https://openrouter.ai/docs/guides/features/presets.md) for the ful
 
 Broadcast automatically sends traces from your OpenRouter requests to external observability platforms without additional instrumentation. Supported destinations include Datadog, Langfuse, LangSmith, Braintrust, OpenTelemetry Collector, S3, and more.
 
-Configure broadcast at [Settings > Observability](https://openrouter.ai/settings/observability). You can filter traces by API key, set sampling rates, and configure up to 5 destinations of the same type for different environments.
+Configure broadcast at [Settings > Observability](https://openrouter.ai/settings/observability). You can filter traces by API key, set sampling rates, and enable up to 5 destinations per workspace.
 
 See [Broadcast](https://openrouter.ai/docs/guides/features/broadcast) for setup instructions and destination-specific walkthroughs.
 

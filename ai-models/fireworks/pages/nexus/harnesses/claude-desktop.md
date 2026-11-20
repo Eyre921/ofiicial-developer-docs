@@ -23,6 +23,7 @@ Support summary:
 * API the harness speaks to Fireworks: Anthropic Messages
 * Nexus Auto: Supported
 * Native web search: Supported. Fireworks runs the harness's native web search server-side, with any Fireworks model. See [Web search](/nexus/auto#web-search).
+* Auto mode safety checks: Supported in the Code tab. Fireworks runs the checks server-side, separately from the main model. See [Auto mode safety checks](/nexus/harnesses/claude-code#auto-mode-safety-checks).
 * Platforms: macOS. Linux is coming soon
 
 Requirements:
@@ -33,13 +34,13 @@ Requirements:
 
 **1. Install and sign in**
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
 curl -fsSL https://nexus.fireworks.ai/install.sh | bash
 ```
 
 You need Node.js 22 or later, `git`, and `bash`. On Windows, run the installer from Git Bash. PowerShell breaks the script's line endings.
 
-```bash wrap theme={null}
+```bash wrap theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
 nexus login
 ```
 
@@ -81,6 +82,13 @@ To restore your original settings and your claude.ai models, run `nexus claude-d
 
 - Native web search is supported while connected through Nexus CLI. Fireworks runs the search server-side and returns the results. No search service is needed.
 - Skill and plugin changes you make while connected do not copy back.
+
+## Auto mode safety checks
+
+In the Code tab's **Auto** permission mode, Claude Desktop checks risky actions, such as shell commands, before they run. Through Fireworks, these checks run server-side at Fireworks, separately from the model that answers your turn, and bill to your Fireworks account at Fireworks rates. See [Auto mode safety checks](/nexus/harnesses/claude-code#auto-mode-safety-checks) for which models run them and how they bill.
+
+* The local gateway forwards the check request and its results unchanged, so the checks behave as they do in the Claude Code CLI.
+* On Nexus accounts the checks run on Fireworks open models, so the [usage dashboard](/nexus/metrics#break-down-fireworks-usage-and-cost) can list a model, such as Kimi or GLM, that your session didn't use.
 
 ## Connectors
 

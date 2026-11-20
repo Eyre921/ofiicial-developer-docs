@@ -4336,6 +4336,7 @@ The `<svelte:options>` element provides a place to specify per-component compile
 - `namespace="..."` — the namespace where this component will be used, can be "html" (the default), "svg" or "mathml"
 - `customElement={...}` — the [options](custom-elements#Component-options) to use when compiling this component as a custom element. If a string is passed, it is used as the `tag` option
 - `css="injected"` — the component will inject its styles inline: During server-side rendering, it's injected as a `<style>` tag in the `head`, during client side rendering, it's loaded via JavaScript
+- `customRenderer="..."` — the module that provides the [custom renderer](custom-renderers) this component renders with. Use `customRenderer={null}` to render with the DOM instead of the default renderer. Requires the `experimental.customRenderer` compiler option
 
 > [!LEGACY] Deprecated options
 > Svelte 4 also included the following options. They are deprecated in Svelte 5 and non-functional in runes mode.
@@ -7497,6 +7498,448 @@ Svelte 5 uses an extra `<svelte-css-wrapper>` element instead of a `<div>` to wr
 
 <!-- TODO in final docs, add link to corresponding section for more details -->
 
+# Custom renderers
+
+By default, Svelte components render to the DOM. A _custom renderer_ lets them render to something else instead — a WebGL scene, a native mobile UI, a terminal, a PDF document — while you keep writing ordinary Svelte components with state, props, control flow and everything else you're used to.
+
+The renderer is a small object that tells Svelte how to create, arrange and update the nodes of the target environment. Svelte takes care of everything else.
+
+This feature is currently experimental, and you must opt in by adding the `experimental.customRenderer` option wherever you [configure](/docs/kit/configuration) Svelte, usually `svelte.config.js` or `vite.config.js`:
+
+```js
+// @noErrors
+/// file: svelte.config.js
+export default {
+	compilerOptions: {
+		experimental: {
+			customRenderer: true
+		}
+	}
+};
+```
+
+The API may change before the experimental flag is removed.
+
+## Choosing a renderer
+
+With the option set to `true`, components still render to the DOM unless they say otherwise. A component chooses a renderer with [`<svelte:options>`](svelte-options), by pointing to the module that exports it:
+
+```svelte
+<!--- file: Scene.svelte --->
+<svelte:options customRenderer="three-renderer" />
+
+<script>
+	let { speed } = $props();
+	let rotation = $state(0);
+</script>
+
+<mesh rotation={[0, rotation, 0]} onclick={() => (rotation += speed)}>
+	<boxGeometry args={[1, 1, 1]} />
+</mesh>
+```
+
+> [!NOTE] `three-renderer` is a made-up package, used as an example throughout this page.
+
+The elements in a custom renderer component — `<mesh>` and `<boxGeometry>` here — have no special meaning to Svelte. It passes their names and attributes to the renderer, which decides what to do with them.
+
+The module path is resolved like any other import in the component, so it can be a package name, an alias, or a path relative to the component (`customRenderer="./renderer.js"`).
+
+### Setting a default renderer
+
+If most of your components use the same renderer, you can make it the default by passing the module path instead of `true`:
+
+```js
+// @noErrors
+/// file: svelte.config.js
+export default {
+	compilerOptions: {
+		experimental: {
+			customRenderer: 'three-renderer'
+		}
+	}
+};
+```
+
+Individual components can still choose a different renderer, or no custom renderer at all with `<svelte:options customRenderer={null} />`.
+
+Every component imports the default renderer module, so a globally configured path can't be relative — it would be resolved relative to each component, rather than relative to your config file. Use a package name, a subpath import like `#lib/renderer.js`, or an absolute path.
+
+### Choosing a renderer by file
+
+For more control, pass a function. It receives the filename of each component, and returns the renderer module for that component, or `null` for the DOM:
+
+```js
+// @noErrors
+/// file: svelte.config.js
+export default {
+	compilerOptions: {
+		experimental: {
+			customRenderer: ({ filename }) => {
+				return filename.includes('/src/scene/') ? 'three-renderer' : null;
+			}
+		}
+	}
+};
+```
+
+Since the function knows which file it's choosing for, it can also return a path relative to that file. A `<svelte:options customRenderer={...}>` in a component takes precedence over the function.
+
+## Running outside the browser
+
+Many renderers target environments that aren't browsers at all, such as a terminal, a PDF generator, a native runtime or a test runner. In those environments, `svelte` normally resolves to its server-side implementation, which renders components to HTML strings rather than running them.
+
+To use custom renderers there, add the `svelte-custom-renderer` [resolve condition](https://nodejs.org/api/packages.html#conditional-exports), which makes `svelte` resolve to the implementation that runs components. With Node, run your code with `--conditions=svelte-custom-renderer`. If you're using a bundler, add `svelte-custom-renderer` to its list of resolve conditions. If the condition is missing, Svelte throws an error explaining what to do.
+
+Your components still need to be compiled, as with any Svelte app — for example by bundling them with Vite and `vite-plugin-svelte`.
+
+As an example, here's a clock that runs in a terminal:
+
+```svelte
+<!--- file: Clock.svelte --->
+<svelte:options customRenderer="terminal-renderer" />
+
+<script>
+	let time = $state(new Date());
+
+	$effect(() => {
+		const interval = setInterval(() => (time = new Date()), 1000);
+		return () => clearInterval(interval);
+	});
+</script>
+
+<box border="round" padding={1}>
+	<text bold>The time is {time.toLocaleTimeString()}</text>
+</box>
+```
+
+To start it, pass the renderer to [`mount`](svelte#mount), along with a target created by that renderer:
+
+```js
+/// file: main.js
+// @noErrors
+import { mount } from 'svelte';
+import renderer, { draw } from 'terminal-renderer';
+import Clock from './Clock.svelte';
+
+const screen = renderer.createFragment();
+
+mount(Clock, {
+	target: screen,
+	renderer
+});
+
+// draw `screen` to the terminal, and again whenever it changes
+draw(screen);
+```
+
+> [!NOTE] Like `three-renderer`, `terminal-renderer` is made up. A real terminal renderer would redraw the screen whenever Svelte changes it, by calling methods like `insert` and `setText`.
+
+Every second, the effect updates `time`, Svelte updates the text node through the renderer, and the renderer redraws the screen. A PDF renderer would work the same way, except that instead of drawing continuously, you would convert the rendered content to a PDF once `mount` returns.
+
+`props`, component exports and [`unmount`](svelte#unmount) work as they do with the DOM.
+
+## Using in the browser
+
+In the browser, you can use a custom renderer component inside a regular Svelte app, just like any other component, provided its renderer supports being used inside the DOM. Most renderers designed for the browser will, but check the renderer's documentation, and see [Mixing renderers](#Mixing-renderers) for how this works:
+
+```svelte
+<!--- file: App.svelte --->
+<script>
+	import Scene from './Scene.svelte';
+</script>
+
+<h1>My scene</h1>
+
+<canvas width="800" height="600">
+	<Scene speed={0.1} />
+</canvas>
+```
+
+You can also render an app entirely with a custom renderer, by passing the renderer to [`mount`](svelte#mount) along with a target created by that renderer, as in the [terminal example](#Running-outside-the-browser) above:
+
+```js
+// @noErrors
+import { mount } from 'svelte';
+import renderer from 'three-renderer';
+import Scene from './Scene.svelte';
+
+const root = renderer.createFragment();
+
+mount(Scene, {
+	target: root,
+	renderer,
+	props: { speed: 0.1 }
+});
+
+// `root` now contains the scene's nodes
+```
+
+## What's supported
+
+Custom renderer components support most of Svelte, including runes, props, [snippets](snippet), components, [context](context), [`{#if}`](if), [`{#each}`](each), [`{#key}`](key) and [`{#await}`](await) blocks, [`<svelte:boundary>`](svelte-boundary), [`<svelte:element>`](svelte-element), [attachments](@attach), [`await` expressions](await-expressions), and `bind:` on components.
+
+Attributes, including `class`, `style`, `class:` and `style:`, are passed to the renderer as attributes (see [Writing a renderer](#Writing-a-renderer)). Event attributes like `onclick` are passed to the renderer's `addEventListener`.
+
+Some features only make sense with the DOM, and cause a compile error in custom renderer components:
+
+- `bind:` on elements
+- [transitions](transition) (`transition:`, `in:` and `out:`) and [animations](animate) (`animate:`)
+- the legacy [`on:`](legacy-on) directive
+- [`{@html ...}`](@html)
+- [`<svelte:head>`](svelte-head), [`<svelte:window>`](svelte-window), [`<svelte:document>`](svelte-document) and [`<svelte:body>`](svelte-body)
+- `<svelte:options css="injected" />`
+
+### Styles
+
+Svelte still scopes a custom renderer component's `<style>`, adding a class like `svelte-xyz123` to the elements it applies to, but it doesn't inject the styles into the page — whether your renderer can make use of CSS is up to the renderer.
+
+If `css: 'injected'` is set in your compiler options (as it is in development with some setups), it's ignored for custom renderer components. Setting `<svelte:options css="injected" />` in a custom renderer component is an error.
+
+### Server-side rendering
+
+Custom renderer components render nothing during server-side rendering. If custom renderer is used in the browser, the components will be created there, after the page has loaded. The DOM around them is server-rendered and hydrated as usual.
+
+## Writing a renderer
+
+A renderer module's default export is an object created with `createRenderer` from `svelte/renderer`. Here's a complete renderer that renders to plain JavaScript objects, which is a good starting point for experimenting. A real renderer would call into the platform it targets instead — creating native views, scene objects, and so on.
+
+```js
+// @noErrors
+/// file: renderer.js
+import { createRenderer } from 'svelte/renderer';
+
+export default createRenderer({
+	createFragment() {
+		return { type: 'fragment', children: [], parent: null };
+	},
+	createElement(name) {
+		return {
+			type: 'element',
+			name,
+			attributes: {},
+			listeners: {},
+			children: [],
+			parent: null
+		};
+	},
+	createText(data) {
+		return { type: 'text', data, parent: null };
+	},
+	createComment(data) {
+		return { type: 'comment', data, parent: null };
+	},
+
+	getNodeType(node) {
+		return node.type;
+	},
+	getText(node) {
+		return node.data;
+	},
+	setText(node, text) {
+		node.data = text;
+	},
+
+	getAttribute(element, name) {
+		return element.attributes[name] ?? null;
+	},
+	setAttribute(element, name, value) {
+		element.attributes[name] = value;
+	},
+	removeAttribute(element, name) {
+		delete element.attributes[name];
+	},
+	hasAttribute(element, name) {
+		return name in element.attributes;
+	},
+
+	getFirstChild(node) {
+		return node.children[0] ?? null;
+	},
+	getLastChild(node) {
+		return node.children.at(-1) ?? null;
+	},
+	getNextSibling(node) {
+		const siblings = node.parent?.children ?? [];
+		return siblings[siblings.indexOf(node) + 1] ?? null;
+	},
+	getParent(node) {
+		return node.parent;
+	},
+
+	insert(parent, node, anchor) {
+		// inserting a fragment inserts its children, and leaves it empty
+		const nodes = node.type === 'fragment' ? node.children.splice(0) : [node];
+
+		// if necessary, remove the child from its existing parent
+		for (const child of nodes) this.remove(child);
+
+		const index = anchor ? parent.children.indexOf(anchor) : parent.children.length;
+		parent.children.splice(index, 0, ...nodes);
+
+		for (const child of nodes) child.parent = parent;
+	},
+	remove(node) {
+		if (node.parent) {
+			node.parent.children.splice(node.parent.children.indexOf(node), 1);
+			node.parent = null;
+		}
+	},
+
+	addEventListener(element, type, handler) {
+		(element.listeners[type] ??= new Set()).add(handler);
+	},
+	removeEventListener(element, type, handler) {
+		element.listeners[type]?.delete(handler);
+	}
+});
+```
+
+> [!NOTE] `createRenderer` returns its argument unchanged — its purpose is to provide type safety.
+
+The following sections describe what Svelte expects from each method.
+
+### Nodes
+
+Svelte works with four kinds of node: fragments, elements, text nodes and comments. They can be whatever kind of object makes sense for your renderer.
+
+- `createFragment()` creates a fragment, a temporary container for several nodes. When a fragment is inserted somewhere, its children are moved there and the fragment is left empty. Fragments are also used as mount targets
+- `createElement(name)` creates an element with the given name, such as `'mesh'` (you get to choose which elements are available in your render target)
+- `createText(data)` creates a text node
+- `createComment(data)` creates a comment. Svelte uses comments as invisible markers, for example to remember where the content of an `{#if}` block goes, so they don't need to be displayed
+- `getNodeType(node)` returns `'fragment'`, `'element'`, `'text'` or `'comment'`
+- `getText(node)` returns the text of a text node, or the data of a comment
+- `setText(node, text)` changes the text of a text node
+
+### The tree
+
+- `insert(parent, node, anchor)` inserts `node` into `parent` before `anchor`, or at the end if `anchor` is `null`. The node may already be in the tree, in which case it should be moved
+- `remove(node)` removes a node from its parent
+- `getParent(node)`, `getFirstChild(node)`, `getLastChild(node)` and `getNextSibling(node)` return the corresponding node, or `null`
+
+### Attributes
+
+- `setAttribute(element, name, value)` is called for every attribute, with the value as it is in the component — a number, an array, an object, a function and so on — rather than converted to a string. This includes attributes that are properties rather than attributes in the DOM, such as `value` and `checked`. Whether your renderer treats them as properties, attributes or something else is up to you
+- `removeAttribute(element, name)` is called instead of `setAttribute` when the value is `null` or `undefined`
+- `getAttribute(element, name)` returns the current value, or `null` if the attribute isn't set
+- `hasAttribute(element, name)` returns whether the attribute is set. Svelte uses this rather than checking whether `getAttribute` returns `null`, so in your renderer an attribute can be set and still have the value `null`
+
+`class` and `style` are always passed as strings. Svelte combines the `class` attribute with any `class:` directives and scoping class, and the `style` attribute with any `style:` directives, and sets the result in one go.
+
+### Events
+
+- `addEventListener(element, type, handler, options)` is called for event attributes like `onclick`, with `options` describing whether the listener is a capturing (`onclickcapture`) or passive listener. Call `handler` whenever the event happens — you can pass it whatever arguments make sense for your renderer, and they'll be passed on to the event handler in the component
+- `removeEventListener(element, type, handler, options)` removes a listener. Like the DOM, Svelte doesn't call it when an element is removed: an element and its listeners are expected to be discarded together
+
+### Crossings
+
+`embed` and `host` are optional, and only needed if your renderer will be combined with the DOM or other renderers. They're described [below](#Mixing-renderers).
+
+## TypeScript
+
+If you're writing a renderer in TypeScript, pass the types of your nodes to `createRenderer`, so that each method's parameters are typed:
+
+```ts
+// @noErrors
+import { createRenderer } from 'svelte/renderer';
+
+const renderer = createRenderer<{
+	fragment: SceneFragment;
+	element: SceneObject;
+	text: SceneText;
+	comment: SceneMarker;
+}>({
+	// ...
+});
+```
+
+If you don't, the node types are inferred from the return types of `createFragment`, `createElement`, `createText` and `createComment`, as long as those methods come first in the object. Passing them explicitly gives clearer error messages, and works in any order.
+
+The `Renderer` type is exported from `svelte/renderer` too, for code that works with renderers, such as a function that wraps one. It takes the same record of node types: `Renderer<{ fragment: ...; element: ...; text: ...; comment: ... }>`.
+
+## Mixing renderers
+
+Components that use different renderers can be nested, as long as the renderers involved anticipate it. A page can contain a 3D scene, and the scene can in turn contain DOM content, such as HTML labels positioned over the 3D objects. Context, props, snippets, [error boundaries](svelte-boundary) and reactivity all work across the boundary.
+
+If you're using a renderer library, its documentation should tell you where its components can be used. The rest of this section is for renderer authors.
+
+The place where content from one renderer appears inside content from another is called a _crossing_. The outer renderer is the _host_, and the inner one is the _guest_. At each crossing, Svelte needs two things:
+
+- a `container`, owned by the guest, that the guest's content is rendered into
+- optionally, a `node` owned by the host, that represents the guest's content in the host's tree. If there isn't one, Svelte inserts an empty text node
+
+Renderers provide these through two optional methods, `embed` and `host`:
+
+- `embed` is called on the guest. It means "I know how to put my content inside another renderer's tree"
+- `host` is called on the host. It means "I know how to make room for another renderer's content inside my tree"
+
+Svelte first tries the guest's `embed`, then the host's `host`. If neither exists, it throws an error. The DOM doesn't have either method, so in a mixed app it's always the custom renderer that provides them:
+
+| Situation                              | Method that is called                   | Example                                  |
+| -------------------------------------- | --------------------------------------- | ---------------------------------------- |
+| Custom renderer content inside the DOM | the custom renderer's `embed`           | a WebGL scene in a regular page          |
+| DOM content inside a custom renderer   | the custom renderer's `host`            | HTML labels floating over a 3D scene     |
+| Renderer A's content inside renderer B | A's `embed`, or B's `host` if A has none | a chart renderer inside a native app     |
+
+In other words: implement `embed` if your renderer will be used inside DOM apps, which is the case for most renderers. Implement `host` if DOM content (or another renderer's content) should be able to appear inside your renderer's tree.
+
+### `embed`
+
+`embed` receives the `host` renderer (`null` for the DOM), along with the `parent` and `anchor` of the position the content is rendered at. Here's how a canvas renderer might use it to render into a `<canvas>` element written by the user, or to create its own canvas otherwise:
+
+```js
+// @noErrors
+embed({ host, parent }) {
+	if (host !== null) {
+		throw new Error('The canvas renderer can only be used inside the DOM');
+	}
+
+	const canvas = parent instanceof HTMLCanvasElement ? parent : document.createElement('canvas');
+	const scene = create_scene(canvas);
+
+	return {
+		// only insert a canvas if we created one
+		node: canvas === parent ? undefined : canvas,
+		// the scene's root node, which the content is rendered into
+		container: scene.root,
+		// called once the content has been removed
+		destroy: () => scene.dispose()
+	};
+}
+```
+
+As in this example, throwing an error is the best way to reject a position your renderer doesn't support. It's also how you can express requirements like "only inside a `<canvas>`".
+
+### `host`
+
+`host` is the mirror image. It receives the `guest` renderer (`null` for the DOM), and returns a `node` from your renderer to put in your tree, and a `container` owned by the guest:
+
+```js
+// @noErrors
+host({ guest }) {
+	if (guest !== null) {
+		throw new Error('Only DOM content can be rendered inside a scene');
+	}
+
+	// a scene object that displays a DOM element as an overlay
+	const overlay = create_overlay();
+
+	return {
+		node: overlay,
+		container: overlay.element,
+		destroy: () => overlay.dispose()
+	};
+}
+```
+
+### Rules for crossings
+
+- `embed` and `host` are called once for each crossing, synchronously, when the component (or snippet) is created. Each instance of a component gets its own call.
+- `parent` may not be attached to anything yet. If the component is at the top level of its parent's markup, `parent` is a fragment that hasn't been inserted yet, so don't measure layout or assume the page is connected inside these methods. If the component is directly inside an element, such as the `<canvas>` above, `parent` is that element.
+- Svelte inserts and removes the `node` in the host's tree, and inserts and removes the content in the `container`. `destroy` is called after all of that, so only use it to release your own resources — don't remove the `node` or the content yourself.
+- Several crossings can share a container, for example several scenes drawn into the same canvas. Svelte keeps their content in the same order as their nodes in the host tree, including when they're reordered by a keyed `{#each}` block.
+- DOM event handlers like `onclick` work inside a DOM container, even if the container isn't part of the page. Events don't propagate from one renderer to another.
+- Snippets can be passed between renderers, as long as they were created by a component compiled with `experimental.customRenderer`. Snippets created with [`createRawSnippet`](svelte#createRawSnippet) can't be rendered by a custom renderer.
+
 # Frequently asked questions
 
 ## I'm new to Svelte. Where should I start?
@@ -7598,7 +8041,7 @@ While most mobile apps are written without using JavaScript, if you'd like to le
 
 You can also write apps in Svelte that compiles to native components by using [Symbiote Native](https://docs.symbiote-native.dev/), which leverages the infrastructure provided by React Native.
 
-Work has been completed towards [custom renderer support in Svelte 5](https://github.com/sveltejs/svelte/issues/15470), but this feature is not yet merged. The custom rendering API will allow support in additional mobile frameworks like Lynx JS and Svelte Native. Symbiote Native will also adopt this API. Svelte Native was an option available for Svelte 4, but Svelte 5 does not currently support it. Svelte Native lets you write NativeScript apps using Svelte components that contain [NativeScript UI components](https://docs.nativescript.org/ui/) rather than DOM elements.
+Svelte 5 also has experimental support for [custom renderers](custom-renderers), which let Svelte components render to targets other than the DOM. This will allow support in additional mobile frameworks like Lynx JS and Svelte Native, and Symbiote Native will also adopt this API. Svelte Native was an option available for Svelte 4, but Svelte 5 does not currently support it. Svelte Native lets you write NativeScript apps using Svelte components that contain [NativeScript UI components](https://docs.nativescript.org/ui/) rather than DOM elements.
 
 ## Can I tell Svelte not to remove my unused styles?
 
@@ -8080,7 +8523,8 @@ Hydrates a component on the given target and returns the exports and potentially
 ```dts
 function hydrate<
 	Props extends Record<string, any>,
-	Exports extends Record<string, any>
+	Exports extends Record<string, any>,
+	Renderer = undefined
 >(
 	component:
 		| ComponentType<SvelteComponent<Props>>
@@ -8121,12 +8565,13 @@ Transitions will play during the initial render unless the `intro` option is set
 ```dts
 function mount<
 	Props extends Record<string, any>,
-	Exports extends Record<string, any>
+	Exports extends Record<string, any>,
+	Renderer = undefined
 >(
 	component:
 		| ComponentType<SvelteComponent<Props>>
 		| Component<Props, Exports, any>,
-	options: MountOptions<Props>
+	options: MountOptions<Props, Renderer>
 ): Exports;
 ```
 
@@ -8167,9 +8612,7 @@ it will be called when the component is unmounted.
 ```dts
 function onMount<T>(
 	fn: () =>
-		| NotFunction<T>
-		| Promise<NotFunction<T>>
-		| (() => any)
+		NotFunction<T> | Promise<NotFunction<T>> | (() => any)
 ): void;
 ```
 
@@ -8665,22 +9108,33 @@ Discard the fork
 
 ## MountOptions
 
-Defines the options accepted by the `mount()` function.
-
 <div class="ts-block">
 
 ```dts
 type MountOptions<
-	Props extends Record<string, any> = Record<string, any>
-> = {
-	/**
-	 * Target element where the component will be mounted.
-	 */
-	target: Document | Element | ShadowRoot;
-	/**
-	 * Optional node inside `target`. When specified, it is used to render the component immediately before it.
-	 */
-	anchor?: Node;
+	Props extends Record<string, any> = Record<string, any>,
+	Renderer = undefined
+> = (Renderer extends MountRenderer
+	? {
+			/** Custom renderer to use instead of the DOM. */
+			renderer: Renderer;
+			/** Target node where the component will be mounted. */
+			target: MountRendererTarget<Renderer>;
+			/** Optional node inside `target`. When specified, it is used to render the component immediately before it. */
+			anchor?: MountRendererAnchor<Renderer>;
+		}
+	: {
+			/**
+			 * Target element where the component will be mounted.
+			 */
+			target: Document | Element | ShadowRoot;
+			/**
+			 * Optional node inside `target`. When specified, it is used to render the component immediately before it.
+			 */
+			anchor?: Node;
+			/** Custom renderer to use instead of the DOM. */
+			renderer?: undefined;
+		}) & {
 	/**
 	 * Allows the specification of events.
 	 * @deprecated Use callback props instead.
@@ -8703,18 +9157,18 @@ type MountOptions<
 		error: unknown
 	) => unknown | Promise<unknown>;
 } & ({} extends Props
-	? {
-			/**
-			 * Component properties.
-			 */
-			props?: Props;
-		}
-	: {
-			/**
-			 * Component properties.
-			 */
-			props: Props;
-		});
+		? {
+				/**
+				 * Component properties.
+				 */
+				props?: Props;
+			}
+		: {
+				/**
+				 * Component properties.
+				 */
+				props: Props;
+			});
 ```
 
 </div>
@@ -9350,13 +9804,11 @@ namespace AST {
 		preserveWhitespace?: boolean;
 		namespace?: Namespace;
 		css?: 'injected';
+		customRenderer?: string | null;
 		customElement?: {
 			tag?: string;
 			shadow?:
-				| 'open'
-				| 'none'
-				| ObjectExpression
-				| undefined;
+				'open' | 'none' | ObjectExpression | undefined;
 			props?: Record<
 				string,
 				{
@@ -9467,9 +9919,7 @@ namespace AST {
 		name: string;
 		/** The y in `bind:x={y}` */
 		expression:
-			| Identifier
-			| MemberExpression
-			| SequenceExpression;
+			Identifier | MemberExpression | SequenceExpression;
 	}
 
 	/** A `class:` directive */
@@ -9521,9 +9971,7 @@ namespace AST {
 		name: string;
 		/** The 'y' in `style:x={y}` */
 		value:
-			| true
-			| ExpressionTag
-			| Array<ExpressionTag | Text>;
+			true | ExpressionTag | Array<ExpressionTag | Text>;
 		modifiers: Array<'important'>;
 	}
 
@@ -9691,9 +10139,7 @@ namespace AST {
 		 * Quoted/string values are represented by an array, even if they contain a single expression like `"{x}"`
 		 */
 		value:
-			| true
-			| ExpressionTag
-			| Array<Text | ExpressionTag>;
+			true | ExpressionTag | Array<Text | ExpressionTag>;
 	}
 
 	export interface SpreadAttribute extends BaseNode {
@@ -9720,9 +10166,7 @@ namespace AST {
 	}
 
 	export type AttributeLike =
-		| Attribute
-		| SpreadAttribute
-		| Directive;
+		Attribute | SpreadAttribute | Directive;
 
 	export type Directive =
 		| AST.AnimateDirective
@@ -9780,11 +10224,7 @@ namespace AST {
 		| Block;
 
 	export type SvelteNode =
-		| Node
-		| TemplateNode
-		| AST.Fragment
-		| _CSS.Node
-		| Script;
+		Node | TemplateNode | AST.Fragment | _CSS.Node | Script;
 
 	export type { _CSS as CSS };
 }
@@ -10042,7 +10482,7 @@ discloseVersion?: boolean;
 
 </div>
 
-If `true`, exposes the Svelte major version in the browser by adding it to a `Set` stored in the global `window.__svelte.v`.
+If `true`, exposes the Svelte major version in the browser by adding it to a `Set` stored in the global `globalThis.__svelte.v`.
 
 </div>
 </div>
@@ -10482,6 +10922,24 @@ async?: boolean;
 </div>
 
 Allow `await` keyword in deriveds, template expressions, and the top level of components
+
+</div>
+</div>
+<div class="ts-block-property">
+
+```dts
+customRenderer?: true | string | ((options: { filename: string }) => string | null);
+```
+
+<div class="ts-block-property-details">
+
+Enables custom renderers to be specified with `<svelte:options customRenderer="path/to/renderer/module" />`. Can be:
+
+- `true`, allowing components to individually opt in
+- a string that points to a default custom renderer module: a package name, an alias or an absolute path (not a relative path, since every component imports it). Individual components can override the default, or opt out with `<svelte:options customRenderer={null} />`
+- a function that receives a `{ filename }` object and returns a custom renderer module path (resolved relative to that component, if relative), or `null` if the component should use the DOM
+
+A custom renderer module's default export must be an object created with `createRenderer`.
 
 </div>
 </div></div>
@@ -11271,8 +11729,7 @@ function asClassComponent<
 	Slots extends Record<string, any>
 >(
 	component:
-		| SvelteComponent<Props, Events, Slots>
-		| Component<Props>
+		SvelteComponent<Props, Events, Slots> | Component<Props>
 ): ComponentType<
 	SvelteComponent<Props, Events, Slots> & Exports
 >;
@@ -12769,6 +13226,257 @@ export class MediaQuery {
 function createSubscriber(
 	start: (update: () => void) => (() => void) | void
 ): () => void;
+```
+
+</div>
+
+# svelte/renderer
+
+```js
+// @noErrors
+import { createRenderer } from 'svelte/renderer';
+```
+
+## createRenderer
+
+Creates a custom renderer.
+
+The types of the renderer's nodes are inferred from the return types of `createFragment`,
+`createElement`, `createTextNode` and `createComment`, as long as those methods come before
+the others. Alternatively, pass them as the type argument:
+
+```ts
+const renderer = createRenderer<{ fragment: MyFragment; element: MyElement; text: MyText; comment: MyComment }>({
+	// ...
+});
+```
+
+Only the first type parameter is meant to be passed; the others exist so that the node types can be
+inferred from the methods (TypeScript can't infer the record itself from them).
+
+<div class="ts-block">
+
+```dts
+function createRenderer<
+	N extends RendererNodes = RendererNodes,
+	TFragment extends object = N['fragment'],
+	TElement extends object = N['element'],
+	TText extends object = N['text'],
+	TComment extends object = N['comment']
+>(
+	renderer: Renderer<{
+		fragment: TFragment;
+		element: TElement;
+		text: TText;
+		comment: TComment;
+	}>
+): Renderer<{
+	fragment: TFragment;
+	element: TElement;
+	text: TText;
+	comment: TComment;
+}>;
+```
+
+</div>
+
+
+
+## NodeType
+
+<div class="ts-block">
+
+```dts
+type NodeType = keyof RendererNodes;
+```
+
+</div>
+
+## Renderer
+
+A custom renderer. `N` describes the types of the renderer's nodes, for example:
+
+```ts
+const renderer: Renderer<{ fragment: MyFragment; element: MyElement; text: MyText; comment: MyComment }> = ...
+```
+
+<div class="ts-block">
+
+```dts
+type Renderer<N extends RendererNodes = RendererNodes> = {
+	/** Creates a fragment, a container for multiple nodes. Inserting a fragment should insert all of its children. */
+	createFragment(): N['fragment'];
+
+	/** Creates an element with the given name. */
+	createElement(name: string): N['element'];
+
+	/** Creates a text node with the given text. */
+	createText(data: string): N['text'];
+
+	/**
+	 * Creates a comment node with the given data.
+	 * This is often used as an anchor for inserting elements; it doesn't necessarily need to be rendered.
+	 */
+	createComment(data: string): N['comment'];
+
+	/** Return the type of the node: `'fragment'`, `'element'`, `'text'` or `'comment'`. */
+	getNodeType(node: N[NodeType]): NodeType;
+
+	/** Return the text of a text node, or the data of a comment. */
+	getText(node: N['text'] | N['comment']): string | null;
+
+	/** Return the value of the attribute with the given name on the element, or null if it doesn't exist. */
+	getAttribute(
+		element: N['element'],
+		name: string
+	): string | null;
+
+	/** Set the attribute with the given name and value on the element. */
+	setAttribute(
+		element: N['element'],
+		key: string,
+		value: any
+	): void;
+
+	/** Remove the attribute with the given name from the element. */
+	removeAttribute(
+		element: N['element'],
+		name: string
+	): void;
+
+	/** Return true if the element has an attribute with the given name. */
+	hasAttribute(
+		element: N['element'],
+		name: string
+	): boolean;
+
+	/** Set the text of a text node. */
+	setText(node: N['text'], text: string): void;
+
+	/** Return the first child of the element or fragment, or null if it has no children. */
+	getFirstChild(
+		element: N['element'] | N['fragment']
+	): N[NodeType] | null;
+
+	/** Return the last child of the element or fragment, or null if it has no children. */
+	getLastChild(
+		element: N['element'] | N['fragment']
+	): N[NodeType] | null;
+
+	/** Return the next sibling of the node, or null if it has no next sibling. */
+	getNextSibling(
+		node: N['element'] | N['text'] | N['comment']
+	): N[NodeType] | null;
+
+	/**
+	 * Insert the node into the parent before the anchor, or at the end if the anchor is `null`.
+	 * Inserting a fragment should insert its children (and leave the fragment empty).
+	 */
+	insert(
+		parent: N['element'] | N['fragment'],
+		node: N[NodeType],
+		anchor: N['element'] | N['text'] | N['comment'] | null
+	): void;
+
+	/** Remove the node from the tree. */
+	remove(
+		node: N['element'] | N['text'] | N['comment']
+	): void;
+
+	/** Return the parent of the node, or null if it has no parent. */
+	getParent(
+		node: N['element'] | N['text'] | N['comment']
+	): N[NodeType] | null;
+
+	/** Add an event listener of the given type and handler to the target node. */
+	addEventListener(
+		target: N['element'],
+		type: string,
+		handler: any,
+		options?: any
+	): void;
+
+	/** Remove an event listener of the given type and handler from the target node. */
+	removeEventListener(
+		target: N['element'],
+		type: string,
+		handler: any,
+		options?: any
+	): void;
+
+	/**
+	 * Called when a component (or snippet) that uses this renderer is rendered inside
+	 * content that belongs to a different renderer (`host` is `null` for the DOM).
+	 *
+	 * Return a `container` owned by this renderer that the content will be rendered into
+	 * and, optionally, a `node` owned by the host that represents the content in the host
+	 * tree. If no `node` is returned, an empty text node is used.
+	 *
+	 * `parent` is the host-owned parent of the position being rendered into, which makes it
+	 * possible to render into an element the user wrote, for example a `<canvas>`.
+	 */
+	embed?(context: {
+		host: Renderer<any> | null;
+		parent: unknown;
+		anchor: unknown;
+	}): RendererConnection<
+		unknown,
+		N['element'] | N['fragment']
+	>;
+
+	/**
+	 * Called when a component (or snippet) that uses a different renderer (`guest` is `null`
+	 * for the DOM) is rendered inside content that belongs to this renderer, and the guest
+	 * renderer doesn't define `embed`.
+	 *
+	 * Return a `container` owned by the guest renderer that the content will be rendered into
+	 * and, optionally, a `node` owned by this renderer that represents the content in this tree.
+	 */
+	host?(context: {
+		guest: Renderer<any> | null;
+		parent: N['element'] | N['fragment'] | null;
+		anchor: N['element'] | N['text'] | N['comment'];
+	}): RendererConnection<
+		N['element'] | N['text'] | N['comment'],
+		unknown
+	>;
+};
+```
+
+</div>
+
+## RendererConnection
+
+Describes how content belonging to one renderer is attached to content belonging to another
+
+<div class="ts-block">
+
+```dts
+type RendererConnection<THostNode, TContainer> = {
+	/** A node owned by the host renderer that represents the content in the host tree */
+	node?: THostNode;
+	/** A node owned by the guest renderer that the content is rendered into */
+	container: TContainer;
+	/** Called after the content has been removed */
+	destroy?(): void;
+};
+```
+
+</div>
+
+## RendererNodes
+
+The types of a custom renderer's nodes. Used as the type argument of `Renderer` and `createRenderer`
+
+<div class="ts-block">
+
+```dts
+type RendererNodes = {
+	fragment: object;
+	element: object;
+	text: object;
+	comment: object;
+};
 ```
 
 </div>
@@ -14408,6 +15116,12 @@ Cannot use `await` in deriveds and template expressions, or at the top level of 
 Imports of `svelte/internal/*` are forbidden. It contains private runtime code which is subject to change without notice. If you're importing from `svelte/internal/*` to work around a limitation of Svelte, please open an issue at https://github.com/sveltejs/svelte and explain your use case
 ```
 
+### incompatible_with_custom_renderer
+
+```
+%message% is not compatible with `customRenderer`
+```
+
 ### inspect_trace_generator
 
 ```
@@ -14920,6 +15634,12 @@ A component can only have one `<%name%>` element
 
 ```
 Valid `<svelte:...>` tag names are %list%
+```
+
+### svelte_options_customrenderer_disabled
+
+```
+`customRenderer` cannot be set in `<svelte:options>` unless the `experimental.customRenderer` compiler option is enabled
 ```
 
 ### svelte_options_deprecated_tag
@@ -16124,6 +16844,14 @@ Attempted to instantiate %component% with `new %name%`, which is no longer valid
 
 See the [migration guide](/docs/svelte/v5-migration-guide#Components-are-no-longer-classes) for more information.
 
+### custom_renderer_unsupported_operation
+
+```
+`%operation%` is not supported when rendering with a custom renderer
+```
+
+Some of Svelte's internals only work with the DOM, and are never expected to run while a custom renderer is active — for example, `{@html ...}` and hydration are not available with custom renderers. Reaching one of these code paths indicates a bug in Svelte rather than in your app or renderer, so please [open an issue](https://github.com/sveltejs/svelte/issues) with a reproduction.
+
 ### derived_references_self
 
 ```
@@ -16287,6 +17015,12 @@ Failed to hydrate the application
 Could not `{@render}` snippet due to the expression being `null` or `undefined`. Consider using optional chaining `{@render snippet?.()}`
 ```
 
+### invalid_snippet_in_custom_renderer
+
+```
+`createRawSnippet` cannot be used with a custom renderer
+```
+
 ### lifecycle_legacy_only
 
 ```
@@ -16305,10 +17039,22 @@ Cannot do `bind:%key%={undefined}` when `%key%` has a fallback value
 Rest element properties of `$props()` such as `%property%` are readonly
 ```
 
+### renderer_cannot_cross
+
+```
+Cannot render content belonging to %guest% inside %host%. A custom renderer must define `embed` or `host` to be combined with another renderer
+```
+
 ### rune_outside_svelte
 
 ```
 The `%rune%` rune is only available inside `.svelte` and `.svelte.js/ts` files
+```
+
+### snippet_renderer_mismatch
+
+```
+A snippet created in a component that was compiled without `experimental.customRenderer` cannot be rendered by a custom renderer
 ```
 
 ### state_descriptors_fixed
@@ -16480,6 +17226,14 @@ Certain functions such as `hydratable` cannot be invoked outside of a `render(..
 ## Shared errors
 
 <!-- This file is generated by scripts/process-messages/index.js. Do not edit! -->
+
+### custom_renderer_unavailable_on_server
+
+```
+You need to specify a custom condition to use a custom renderer in a non-browser environment such as Node. Add the `svelte-custom-renderer` resolve condition (eg. run Node with `--conditions=svelte-custom-renderer`).
+
+If you're using a bundler, add `svelte-custom-renderer` to its list of resolve conditions instead.
+```
 
 ### experimental_async_required
 

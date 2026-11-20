@@ -32387,6 +32387,7 @@ This page covers:
 * How to [create a destination](#create-a-destination) via the API, including provider-specific examples and credential options.
 * How to [rotate destination credentials](#rotate-destination-credentials) without recreating the destination.
 * How to [switch authentication mode](#switch-authentication-mode) between static credentials and AWS IAM role assumption.
+* How to [delete a destination](#delete-a-destination) that no bulk export uses.
 * How to [debug destination errors](#debug-destination-errors).
 
 ## Configuration fields
@@ -32871,6 +32872,27 @@ The same transition behavior described in [credential rotation](#credential-rota
 * **Already running bulk export runs** continue using the previous authentication mode until they finish.
 
 If the test write fails because the new configuration does not have sufficient write permissions, the request returns `400`.
+
+## Delete a destination
+
+> [!NOTE]
+>
+> On self-hosted LangSmith, deleting a destination requires Helm version `0.17.0` or later (application version `0.17.29` or later).
+
+Use `DELETE /api/v1/bulk-exports/destinations/{destination_id}` to delete a destination you no longer need. Deleting a destination requires the `bulk-exports:manage` [permission](/langsmith/organization-workspace-operations#bulk-exports).
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request DELETE \
+  --url 'https://api.smith.langchain.com/api/v1/bulk-exports/destinations/{destination_id}' \
+  --header 'X-API-Key: YOUR_API_KEY' \
+  --header 'X-Tenant-Id: YOUR_WORKSPACE_ID'
+```
+
+The request returns `204` when the destination is deleted, or when no destination with that ID exists in the workspace.
+
+You can only delete a destination that has never been used by a bulk export. If any bulk export references the destination, whatever its status, including `Completed` and `Cancelled`, the request returns `409`. Bulk exports themselves cannot be deleted. Once an export uses a destination, the API cannot delete that destination.
+
+To stop writing to a destination that has been used, [cancel](/langsmith/data-export-monitor#stop-an-export) its exports.
 
 ## Debug destination errors
 
@@ -68546,9 +68568,17 @@ A subagent runs inside the agent's graph. Managed Deep Agents builds each async 
 >
 > Async subagents require `managed-deepagents>=0.10.0`.
 
-## Declare a subagent
+## The general-purpose subagent
 
-Add subagent definitions to `subagents` in the [agent definition](/langsmith/javascript/managed-deep-agents-agent-definition). Each one needs a `name` and a `description`; the agent uses the description to decide when to delegate. To make a subagent async, add `async` to its definition:
+Every agent gets a built-in `general-purpose` subagent, even when you omit `subagents` from the [agent definition](/langsmith/javascript/managed-deep-agents-agent-definition). The agent can delegate independent tasks to it at runtime, including [fanning out tasks in parallel](#fan-out-tasks-in-parallel), without declaring specialized subagents up front.
+
+Unlike custom subagents, `general-purpose` inherits the agent's skills automatically, along with its model and tools. Like other subagents, it runs with its own prompt and context window, not the agent's conversation or [instructions](/langsmith/javascript/managed-deep-agents-instructions). Include all needed context, constraints, and expected output in each task's `description`.
+
+Declare a custom subagent when a task needs a different model, a restricted tool set, or a reusable system prompt. For customization options, see [The general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent).
+
+## Declare a custom subagent
+
+Add subagent definitions to `subagents` in the agent definition. Each one needs a `name` and a `description`; the agent uses the description to decide when to delegate. To make a subagent async, add `async` to its definition:
 
 > [tab] Subagent
 >
@@ -68591,8 +68621,6 @@ Add subagent definitions to `subagents` in the [agent definition](/langsmith/jav
 
 The agent runs a subagent with the `task` tool and waits for its answer. The subagent runs inside the agent's graph and works in the agent's [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes).
 
-Every agent also gets a `general-purpose` subagent for delegated work that doesn't match a declared subagent. See [The general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent).
-
 ### What a subagent inherits
 
 A subagent starts from the agent's configuration and replaces what its definition sets:
@@ -68606,6 +68634,35 @@ A subagent starts from the agent's configuration and replaces what its definitio
 | Memory | Not loaded |
 
 A subagent in fork mode starts with a copy of the agent's conversation and also uses the agent's instructions, middleware, skills, and memory. See [Choose a launch mode](/oss/javascript/deepagents/async-subagents#choose-a-launch-mode).
+
+### Fan out tasks in parallel
+
+To fan out work in parallel, the agent issues multiple `task` calls in one turn. This works with the built-in `general-purpose` subagent or any declared custom subagent. Each call sets `subagent_type` and a distinct `description`, and runs in its own context window. The agent receives all results before its next turn and combines them into one answer. To keep working while tasks run in the background, the agent issues multiple `start_async_task` calls instead. See [Async subagents](#async-subagents).
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+flowchart LR
+    A["Agent (one turn)"] -->|"task: project-a"| S1["general-purpose"]
+    A -->|"task: project-b"| S2["general-purpose"]
+    S1 -->|"findings"| R["Agent combines results"]
+    S2 -->|"findings"| R
+
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+
+    class A trigger
+    class S1,S2 process
+    class R output
+```
+
+For example, to investigate logs across multiple projects in parallel, add guidance to `instructions.md`:
+
+```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+When investigating multiple independent projects, delegate one task per project
+to the general-purpose subagent in the same turn. Include the project, time
+range, symptoms to look for, and expected output in each task description.
+Wait for all results, then compare the findings and cite sources.
+```
 
 ### Select MCP servers
 
@@ -69421,7 +69478,7 @@ After completing this guide, you'll have:
 
 * **LangSmith UI and APIs**: Observability, tracing, evaluation, Insights, and Chat.
 * **Backend services**: Queue, playground, and ACE.
-* **Datastores**: PostgreSQL, Redis, ClickHouse, and optional blob storage.
+* **Datastores**: PostgreSQL, Redis, ClickHouse, and blob storage.
 
 LangSmith runs on any conformant Kubernetes cluster. It has been tested on the following distributions:
 
@@ -69511,13 +69568,14 @@ You need a working Kubernetes cluster that you can access with `kubectl`. Your c
 
 ### Datastores
 
-LangSmith uses a PostgreSQL database, a Redis cache, and a ClickHouse database to store traces. By default, these services are installed inside your Kubernetes cluster. For production, use external datastores instead. For PostgreSQL and Redis, the best option is your cloud provider's managed services.
+LangSmith uses a PostgreSQL database, a Redis cache, a ClickHouse database, and blob storage to store traces. By default, these services are installed inside your Kubernetes cluster, with RustFS for blob storage. For production, use external datastores instead. For PostgreSQL and Redis, the best option is your cloud provider's managed services.
 
 For more information, refer to the following setup guides for external services:
 
 * [PostgreSQL](/langsmith/self-host-external-postgres)
 * [Redis](/langsmith/self-host-external-redis)
 * [ClickHouse](/langsmith/self-host-external-clickhouse)
+* [Blob storage](/langsmith/self-host-blob-storage)
 
 For the minimum supported version of each datastore, refer to [Minimum versions for self-hosting dependencies](/langsmith/self-host-dependency-versions). [SmithDB](/langsmith/self-host-smithdb) is an optional datastore that you can enable after the base installation. This guide does not require it.
 
@@ -71429,7 +71487,7 @@ This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/eval
 
 > [!NOTE]
 >
-> This guide uses the LangSmith UI. You can also create an LLM-as-a-judge evaluator programmatically with the SDK, and it appears in the LangSmith UI the same as one created here. Refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
+> This guide uses the LangSmith UI. You can also create an LLM-as-a-judge evaluator programmatically with the SDK, and it appears in the LangSmith UI the same as one created by following this guide. Refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
 >
 > To run evaluations in real-time on your production traces, refer to [setting up online evaluations](/langsmith/online-evaluations-llm-as-judge).
 
@@ -71467,6 +71525,21 @@ Create a custom prompt inline for your evaluator.
 Select the desired model from the provided options.
 
 To use a decision model as the judge, see [How to define a decision model evaluator](/langsmith/decision-model-evaluator).
+
+#### Use the OpenAI flex service tier
+
+[OpenAI's flex service tier](https://developers.openai.com/api/docs/guides/flex-processing) runs model calls at a lower cost in exchange for slower responses. Use it for evaluators where a score can arrive minutes later, such as online evaluators and evaluators bound to a dataset.
+
+The flex tier is available for OpenAI GPT-5 and GPT-6 models, `o3`, and `o4-mini`. To use it, click the model name under **Prompt & Model** to open the **Model Configuration** dialog, then set **Service Tier** to **Flex**. New OpenAI evaluators start on the **auto** tier, which uses the default tier of the OpenAI project that your API key belongs to. The **Flex** option appears only for models that support flex.
+
+Flex calls work differently from standard calls:
+
+* **Longer wait**: LangSmith waits up to 10 minutes for each flex call to return a score.
+* **One attempt**: LangSmith does not retry a flex call that times out, so you do not pay twice for a slow response. Each run in a timed-out call gets an error instead of a score.
+* **Time limit**: Each time LangSmith applies the evaluator to a batch of runs, it has a fixed time limit. When that time is nearly used up, LangSmith skips the remaining flex calls and keeps the scores it already has. Skipped calls return the error `Skipped: this rule run used up its time on slower OpenAI flex calls`.
+* **Test runs**: When you click **Test**, LangSmith waits up to 4 minutes instead. A slow flex call can time out in a test and still succeed after you save the evaluator.
+
+[Evaluator spend limits](/langsmith/evaluator-spend) count flex calls at flex rates when the model's entry in [Model pricing](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) includes flex rates. A custom price entry without flex rates counts flex calls at standard rates.
 
 ### Mapping variables
 
@@ -86481,6 +86554,8 @@ For details, refer to [Track and limit evaluator spend](/langsmith/evaluator-spe
 
 View [LLM-as-a-judge evaluators](/langsmith/llm-as-judge#evaluator-templates) for more information.
 
+To lower the cost of an online evaluator that uses an OpenAI model, you can run it on OpenAI's slower [flex service tier](/langsmith/llm-as-judge#use-the-openai-flex-service-tier).
+
 When you save a custom LLM-as-a-judge evaluator in the UI, LangSmith automatically saves its prompt to the prompt hub. You do not need to save the prompt separately. To find it, open **Prompts** and select **Used in Evaluators** from the filter dropdown. The **All Prompts** filter excludes evaluator-linked prompts.
 
 New evaluator prompts use the name `eval_<evaluator_name>_<8-character suffix>`. LangSmith lowercases the evaluator name and replaces characters other than letters, numbers, and underscores with underscores. The suffix contains eight random lowercase letters or digits.
@@ -87887,6 +87962,7 @@ Per-token model prices used to compute run costs. See [Cost tracking](/langsmith
 | Get bulk export destination | ✓ | ✓ | ✓ | `bulk-exports:read` |
 | Create bulk export destination | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 | Update bulk export destination | ✓ | ✗ | ✗ | `bulk-exports:manage` |
+| Delete bulk export destination | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 | Get filtered export runs | ✓ | ✓ | ✓ | `bulk-exports:read` |
 
 > [!TIP]
@@ -98209,9 +98285,17 @@ A subagent runs inside the agent's graph. Managed Deep Agents builds each async 
 >
 > Async subagents require `managed-deepagents>=0.10.0`.
 
-## Declare a subagent
+## The general-purpose subagent
 
-Add subagent definitions to `subagents` in the [agent definition](/langsmith/python/managed-deep-agents-agent-definition). Each one needs a `name` and a `description`; the agent uses the description to decide when to delegate. To make a subagent async, add `async` to its definition:
+Every agent gets a built-in `general-purpose` subagent, even when you omit `subagents` from the [agent definition](/langsmith/python/managed-deep-agents-agent-definition). The agent can delegate independent tasks to it at runtime, including [fanning out tasks in parallel](#fan-out-tasks-in-parallel), without declaring specialized subagents up front.
+
+Unlike custom subagents, `general-purpose` inherits the agent's skills automatically, along with its model and tools. Like other subagents, it runs with its own prompt and context window, not the agent's conversation or [instructions](/langsmith/python/managed-deep-agents-instructions). Include all needed context, constraints, and expected output in each task's `description`.
+
+Declare a custom subagent when a task needs a different model, a restricted tool set, or a reusable system prompt. For customization options, see [The general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent).
+
+## Declare a custom subagent
+
+Add subagent definitions to `subagents` in the agent definition. Each one needs a `name` and a `description`; the agent uses the description to decide when to delegate. To make a subagent async, add `async` to its definition:
 
 > [tab] Subagent
 >
@@ -98254,8 +98338,6 @@ Add subagent definitions to `subagents` in the [agent definition](/langsmith/pyt
 
 The agent runs a subagent with the `task` tool and waits for its answer. The subagent runs inside the agent's graph and works in the agent's [sandbox](/langsmith/python/managed-deep-agents-sandboxes).
 
-Every agent also gets a `general-purpose` subagent for delegated work that doesn't match a declared subagent. See [The general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent).
-
 ### What a subagent inherits
 
 A subagent starts from the agent's configuration and replaces what its definition sets:
@@ -98269,6 +98351,35 @@ A subagent starts from the agent's configuration and replaces what its definitio
 | Memory | Not loaded |
 
 A subagent in fork mode starts with a copy of the agent's conversation and also uses the agent's instructions, middleware, skills, and memory. See [Choose a launch mode](/oss/python/deepagents/async-subagents#choose-a-launch-mode).
+
+### Fan out tasks in parallel
+
+To fan out work in parallel, the agent issues multiple `task` calls in one turn. This works with the built-in `general-purpose` subagent or any declared custom subagent. Each call sets `subagent_type` and a distinct `description`, and runs in its own context window. The agent receives all results before its next turn and combines them into one answer. To keep working while tasks run in the background, the agent issues multiple `start_async_task` calls instead. See [Async subagents](#async-subagents).
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+flowchart LR
+    A["Agent (one turn)"] -->|"task: project-a"| S1["general-purpose"]
+    A -->|"task: project-b"| S2["general-purpose"]
+    S1 -->|"findings"| R["Agent combines results"]
+    S2 -->|"findings"| R
+
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+
+    class A trigger
+    class S1,S2 process
+    class R output
+```
+
+For example, to investigate logs across multiple projects in parallel, add guidance to `instructions.md`:
+
+```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+When investigating multiple independent projects, delegate one task per project
+to the general-purpose subagent in the same turn. Include the project, time
+range, symptoms to look for, and expected output in each task description.
+Wait for all results, then compare the findings and cite sources.
+```
 
 ### Select MCP servers
 
@@ -108420,13 +108531,12 @@ Once configured, LangSmith displays a login screen with email and password. Log 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-basic-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
 
 
-# Enable blob storage
+# Configure blob storage
 Source: https://docs.langchain.com/langsmith/self-host-blob-storage
 
-By default, LangSmith stores run inputs, outputs, errors, manifests, extras, and events in ClickHouse. If you so choose, you can instead store this information in blob storage, which has a couple of notable benefits. For the best results in production deployments, we **strongly** recommend using blob storage, which offers the following benefits:
+LangSmith stores run inputs, outputs, errors, manifests, extras, events, and attachments in blob storage. As of LangSmith v0.18, blob storage is required: the self-hosted API and queue workers do not start without it.
 
-1. In high trace environments, inputs, outputs, errors, manifests, extras, and events may balloon the size of your databases.
-2. If using LangSmith Managed ClickHouse, you may want sensitive information in blob storage that resides in your environment. To alleviate this, LangSmith supports storing run inputs, outputs, errors, manifests, extras, events, and attachments in an external blob storage system.
+When you do not configure your own storage, the LangSmith Helm chart deploys [RustFS](https://rustfs.com), an S3-compatible object store, in your cluster and uses it. RustFS runs as a single pod with one persistent volume, so it has no replication and its capacity is the size of that volume. For production, use your own blob storage, such as Amazon S3, Google Cloud Storage, or Azure Blob Storage. It also keeps sensitive run data in storage you control when you use [LangSmith Managed ClickHouse](/langsmith/langsmith-managed-clickhouse).
 
 > [!TIP]
 >
@@ -108439,7 +108549,44 @@ By default, LangSmith stores run inputs, outputs, errors, manifests, extras, and
 >
 > For complete cloud-specific setup and architecture guides, see [AWS](/langsmith/aws-self-hosted), [GCP](/langsmith/gcp-self-hosted), or [Azure](/langsmith/azure-self-hosted).
 
+## Upgrade to v0.18
+
+How an upgrade to LangSmith v0.18 behaves depends on your current blob storage configuration:
+
+* **A bucket or container is configured**: If `config.blobStorage.bucketName` (S3 or GCS) or `config.blobStorage.azureStorageContainerName` (Azure) is set, LangSmith keeps using that storage. No values change is needed.
+* **No blob storage is configured**: The chart deploys RustFS and LangSmith stores blobs there. To use your own storage instead, configure it before you upgrade. See [Configuration](#configuration).
+* **`config.blobStorage.enabled` is set**: The chart no longer has this setting. Remove it from your values. The chart fails with `enabled: false`.
+* **`engine` is `GCS` or `Azure` with no bucket or container**: The chart fails instead of deploying RustFS. Set the bucket or container.
+
+If you deploy LangSmith without the Helm chart, configure blob storage before you upgrade. The services read the same `BLOB_STORAGE_ENGINE`, `S3_BUCKET_NAME`, and `AZURE_STORAGE_CONTAINER_NAME` settings the chart sets.
+
+## Use the bundled RustFS
+
+The chart deploys RustFS when `config.blobStorage.external.enabled` is `false` and neither `bucketName` nor `azureStorageContainerName` is set. It creates a `langsmith` bucket and points the LangSmith services at it. Use the bundled RustFS for development and evaluation, not production.
+
+Configure it under `rustfs` in your Helm values:
+
+* **Volume size**: `rustfs.statefulSet.persistence.size` sets the persistent volume, `50Gi` by default. Set `storageClassName` to choose its storage class. Without persistence, stored traces are lost when the RustFS pod restarts.
+* **Credentials**: The access key is `langsmith`. When `rustfs.secretKey` is empty, the chart keeps the secret key from an earlier install, or derives one from `config.apiKeySalt`, so every render of the chart produces the same key. To choose the key, set `rustfs.secretKey`, or set `rustfs.existingSecretName` to a Kubernetes secret with `access_key` and `secret_key` entries.
+* **Security context**: RustFS runs as user and group `10001`, with `fsGroup: 10001` so it can write to its volume. On platforms that assign user IDs, such as OpenShift with the `restricted-v2` security context constraint, set `runAsUser`, `runAsGroup`, and `fsGroup` under `rustfs.statefulSet.podSecurityContext` to `null`.
+
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+rustfs:
+  statefulSet:
+    persistence:
+      size: 100Gi
+      storageClassName: "your-storage-class"
+```
+
+> [!NOTE]
+>
+> If you use `config.existingSecretName` and render the chart without cluster access, as Argo CD does, `config.apiKeySalt` is not in your values. Set `rustfs.secretKey` or `rustfs.existingSecretName` in that case. Otherwise, each render generates a new random secret key.
+
+RustFS supports a read-only root filesystem. Set `readOnlyRootFilesystem: true` in `rustfs.statefulSet.securityContext` and `rustfs.bucketJob.securityContext`.
+
 ## Requirements
+
+To use your own blob storage instead of the bundled RustFS, you need the following.
 
 > [!NOTE]
 >
@@ -108584,7 +108731,8 @@ By default, LangSmith stores run inputs, outputs, errors, manifests, extras, and
 >    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 >    config:
 >      blobStorage:
->        enabled: true
+>        external:
+>          enabled: true
 >        engine: "S3"
 >        bucketName: "langsmith"
 >        apiURL: "https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech"
@@ -108605,12 +108753,13 @@ By default, LangSmith will still store tokens for search in ClickHouse. If you a
 
 ## Configuration
 
-After creating your bucket and obtaining the necessary credentials, you can configure LangSmith to use your blob storage system.
+After creating your bucket and obtaining the necessary credentials, configure LangSmith to use your blob storage system. Set `external.enabled: true` so the chart does not deploy RustFS.
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
   blobStorage:
-    enabled: true
+    external:
+      enabled: true # Use your own storage instead of the bundled RustFS
     engine: "S3" # Or "GCS" or "Azure". This is case-sensitive.
     chSearchEnabled: true # Set to false if you want to disable CH search (Recommended for LangSmith Managed Clickhouse)
     bucketName: "your-bucket-name"
@@ -109169,7 +109318,7 @@ Self-hosted LangSmith is composed of stateless services backed by four state sto
 | LangSmith services | `langsmith-frontend`, `langsmith-backend`, `langsmith-platform-backend`, `langsmith-queue`, `langsmith-ingest-queue`, `langsmith-playground`, `langsmith-ace-backend` | Stateless | Reinstall the Helm chart |
 | PostgreSQL | Operational data: orgs, workspaces, users, API keys, datasets, prompts, projects, deployments metadata | **Durable** | Restore from backup or replica |
 | ClickHouse | Traces and feedback (high volume analytical data) | **Durable** | Restore from backup or replica |
-| Blob storage (S3/GCS/Azure Blob) | Run inputs, outputs, errors, manifests, extras, events, attachments (when enabled) | **Durable** | Restore from versioned bucket or replica |
+| Blob storage (S3/GCS/Azure Blob, or in-cluster RustFS) | Run inputs, outputs, errors, manifests, extras, events, attachments | **Durable** | Restore from versioned bucket or replica; back up the RustFS volume like other in-cluster datastores |
 | Redis (or Valkey) | Ephemeral queue state, pub/sub, cache, run heartbeats | Ephemeral | Reprovision; no restore required |
 | Kubernetes objects | Helm values, `Secret`s, TLS material, IRSA / Workload Identity bindings | Configuration | Re-apply from source control or back up cluster state |
 
@@ -112318,7 +112467,7 @@ Once configured, you will need to update your LangSmith installation. You can fo
 
 ## Additional images for Agent Server builds
 
-The [LangGraph CLI](/langsmith/cli) builds each Agent Server image on top of a public base image. When your build machine cannot reach Docker Hub, mirror the base image and point `base_image` in `langgraph.json` at the mirror. For the rest of the build setup, see [Build Agent Server images on a restricted network](/langsmith/self-host-restricted-network-build).
+The [LangGraph CLI](/langsmith/cli) builds each Agent Server image on top of a public base image. When your build machine cannot reach Docker Hub, mirror the base image and point `base_image` in `langgraph.json` at the mirror. For the rest of the build setup, see [Set up a build machine on a restricted network](/langsmith/self-host-restricted-network-build).
 
 The base image repository depends on the project language:
 
@@ -112350,7 +112499,7 @@ Then set `base_image` to the mirrored repository without a tag:
 ```
 
 * The CLI appends the tag itself, so a `base_image` value that includes a tag produces an invalid image reference.
-* Set `api_version` to an exact version such as `0.8.1`. A version range makes the CLI query pypi.org at build time to resolve it.
+* Set `api_version` to an exact version such as `0.8.1`. A version range makes the CLI query pypi.org at build time to resolve it. A range also fails with `Compatible api_version ranges cannot be used with a tagged base_image` when the registry in `base_image` includes a port, because the CLI reads the port's colon as a tag.
 
 ## Verifying image signatures
 
@@ -112806,6 +112955,16 @@ Every later step connects to the internal registry over HTTPS. Until the machine
 
 pip and uv each need their own CA setting, covered in [Configure pip](#configure-pip) and [Configure uv](#configure-uv).
 
+## Provide the Python interpreter
+
+The Agent Server image includes its own Python interpreter. The build machine needs Python 3.10 or later only to run pip, uv, and the LangGraph CLI. Install it from the OS repositories, for example on RHEL-family distributions:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sudo dnf install python3.12
+```
+
+On some distributions, `venv` ships as a separate OS package, such as `python3-venv` on Debian and Ubuntu. Install it too, because the uv installation uses it. If the OS repositories do not provide a supported Python version, see uv's [Installing Python](https://docs.astral.sh/uv/guides/install-python/) guide.
+
 ## Configure pip
 
 Set the index once in a pip configuration file. A long URL passed as `--index-url` on each command is easy to get wrong, and a missing space between two flags produces a misleading `404`.
@@ -112827,9 +112986,7 @@ If the index uses plain HTTP, add `trusted-host = <host>` with the index host na
 
 Install uv as a Python package from the internal index. The uv install script (`curl ... | sh`) does not work on a restricted network, because it downloads the uv binary from `releases.astral.sh` or GitHub.
 
-PyPI hosts uv as a wheel that contains the binary. On some distributions, `venv` ships as a separate OS package, such as `python3-venv` on Debian and Ubuntu.
-
-Install uv into its own virtual environment so it does not touch the system Python. Then link the binaries onto your `PATH`:
+PyPI hosts uv as a wheel that contains the binary. Install uv into its own virtual environment so it does not touch the system Python. Then link the binaries onto your `PATH`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 python3 -m venv ~/.local/share/uv-bootstrap
@@ -112857,23 +113014,13 @@ export UV_PYTHON_DOWNLOADS=never
 
 * **`UV_DEFAULT_INDEX`**: Replaces pypi.org as the default index.
 * **`UV_SYSTEM_CERTS`**: Loads certificates from the OS trust store, which holds the internal CA. By default, uv trusts only its bundled roots.
-* **`UV_PYTHON_DOWNLOADS`**: Stops uv from downloading Python. [Provide the Python interpreter](#provide-the-python-interpreter) explains why.
+* **`UV_PYTHON_DOWNLOADS`**: Stops uv from downloading Python, so it uses the interpreter on `PATH`. Without it, uv tries to download a missing interpreter from GitHub, and on a restricted network the request fails after three retries.
 
 > [!NOTE]
 >
 > `UV_SYSTEM_CERTS` requires uv 0.11.0 or later. Earlier versions use `UV_NATIVE_TLS=true`, which later versions still accept with a deprecation warning.
 
 To trust only the internal CA, set `SSL_CERT_FILE=<CA_BUNDLE_PATH>` in place of `UV_SYSTEM_CERTS`. `SSL_CERT_FILE` replaces both uv's bundled roots and the OS trust store. For every setting, see uv's [environment variable reference](https://docs.astral.sh/uv/reference/environment/).
-
-## Provide the Python interpreter
-
-The Agent Server image ships its own Python. The build machine needs Python 3.10 or later only to run pip, uv, and the LangGraph CLI. Install it from the OS repositories, for example on RHEL-family distributions:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-sudo dnf install python3.12
-```
-
-uv finds the interpreter on `PATH`. Keep `UV_PYTHON_DOWNLOADS=never`: without it, uv tries to download a missing interpreter from GitHub and retries with no clear error. If the OS repositories do not provide a supported version, see uv's [Installing Python](https://docs.astral.sh/uv/guides/install-python/) guide.
 
 ## Build the Agent Server image
 
@@ -112931,7 +113078,7 @@ To build the image:
    * **`base_image`**: The mirrored Agent Server image, without a tag. The CLI appends a tag built from `python_version`, plus `api_version` or `image_distro` when you set them. With the configuration above, the build pulls `<DOCKER_REGISTRY>/langchain/langgraph-api:3.12`, so that tag must exist in the registry.
    * **`dockerfile_lines`**: Lines the CLI inserts after `FROM`. The `COPY` and `RUN` lines append the internal CA to the image's system CA bundle, which keeps the public roots. The two `ARG` lines apply to every install step in the build, including installs from a `uv.lock` file. `SSL_CERT_FILE` points uv at the system bundle, which uv otherwise ignores, and `UV_DEFAULT_INDEX` points uv at the internal index. `ARG` values are visible in `docker history`, so do not put credentials in `<PYPI_INDEX_URL>`.
 
-   If the index uses a certificate from a public CA, leave out the `COPY`, `RUN`, and `SSL_CERT_FILE` lines.
+   If the index uses a certificate from a public CA, leave out the `COPY`, `RUN`, and `SSL_CERT_FILE` lines. If the agent calls internal HTTPS services at runtime, see [Trust the internal CA at runtime](#trust-the-internal-ca-at-runtime).
 
 2. Build the image:
 
@@ -112982,6 +113129,13 @@ To build the image:
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    langgraph build -t my-agent
    ```
+
+### Trust the internal CA at runtime
+
+`ARG` values apply only while the image builds, and the running container does not inherit them. If your agent calls internal HTTPS services at runtime, declare the CA setting with `ENV` instead so the running agent trusts the internal CA:
+
+* **Python**: Change the `SSL_CERT_FILE` line from `ARG` to `ENV`. Clients built on `httpx` read it. If your agent uses `requests`, also add `"ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt"`, because `requests` ignores `SSL_CERT_FILE`.
+* **JavaScript**: Change the `NODE_EXTRA_CA_CERTS` line from `ARG` to `ENV`.
 
 For every `langgraph.json` key, see the [LangGraph CLI configuration file](/langsmith/cli#configuration-file) reference.
 
@@ -113064,7 +113218,7 @@ error: No interpreter found for Python 3.99 in managed installations or search p
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dockerfile Dockerfile
-grep -E '^(FROM|COPY|RUN cat|ARG)' Dockerfile
+grep -E '^(FROM|COPY|RUN cat|ARG|ENV (SSL_CERT_FILE|REQUESTS_CA_BUNDLE|NODE_EXTRA_CA_CERTS))' Dockerfile
 ```
 
 For a Python project:
@@ -113086,7 +113240,7 @@ ARG NODE_EXTRA_CA_CERTS=/etc/ssl/certs/internal-ca.pem
 ARG NPM_CONFIG_REGISTRY=<NPM_REGISTRY_URL>
 ```
 
-`FROM` must name the internal registry, and every line from `dockerfile_lines` must be present.
+`FROM` must name the internal registry, and every line from `dockerfile_lines` must be present. If you changed the CA lines to `ENV` for [runtime trust](#trust-the-internal-ca-at-runtime), they show `ENV` in place of `ARG`.
 
 ## Next steps
 
@@ -114327,7 +114481,7 @@ The table below provides an overview comparing different LangSmith configuration
 | **ClickHouse resources** | 4 CPU 16 Gi (default) | 10 CPU 32Gi memory | 8 CPU 16 Gi per replica | 16 CPU 24Gi memory | 14 CPU 24 Gi per replica |
 | **ClickHouse setup** | Single instance | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) |
 | Postgres resources (We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) |
-| **Blob storage** | Disabled | Enabled | Enabled | Enabled | Enabled |
+| **Blob storage** | In-cluster RustFS (default) | External | External | External | External |
 
 > [!NOTE]
 >
@@ -126117,7 +126271,7 @@ For architecture patterns and best practices on each cloud provider, see the [AW
 |  **SmithDB** | SmithDB is an optional columnar datastore built for agent trace data: deeply nested spans, multi-modal content, and spans that stay open for hours. SmithDB is available on LangSmith 0.17 and later. It requires a dedicated PostgreSQL 18 or later database for its metastore and a dedicated object storage bucket, separate from the main PostgreSQL database and blob storage. 💡 [Enable SmithDB](/langsmith/self-host-smithdb) - [Prepare supporting infrastructure](/langsmith/self-host-smithdb-infrastructure) |
 |  **PostgreSQL** | [PostgreSQL](https://www.postgresql.org/about/) is a powerful, open source object-relational database system that uses and extends the SQL language combined with many features that safely store and scale the most complicated data workloads. LangSmith uses PostgreSQL as the primary data store for transactional workloads and operational data (almost everything besides traces and feedback). 💡 [Connect to external PostgreSQL](/langsmith/self-host-external-postgres) - AWS RDS, GCP Cloud SQL, Azure Database |
 |  **Redis / Valkey** | [Redis](https://github.com/redis/redis) is a powerful in-memory key-value database that persists on disk. By holding data in memory, Redis offers high performance for operations like caching. LangSmith uses Redis to back queuing and caching operations. [Valkey](https://valkey.io/) is also officially supported as a drop-in replacement for Redis. 💡 [Connect to external Redis or Valkey](/langsmith/self-host-external-redis) - AWS ElastiCache, GCP Memorystore, Azure Cache |
-|  **Blob storage** | LangSmith supports several blob storage providers, including [AWS S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/), and [Google Cloud Storage](https://cloud.google.com/storage). LangSmith uses blob storage to store large files, such as trace artifacts, feedback attachments, and other large data objects. Blob storage is optional, but highly recommended for production deployments. 💡 [Enable blob storage](/langsmith/self-host-blob-storage) - AWS S3, GCP GCS, Azure Blob |
+|  **Blob storage** | LangSmith supports several blob storage providers, including [AWS S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/), and [Google Cloud Storage](https://cloud.google.com/storage). LangSmith uses blob storage to store large files, such as trace artifacts, feedback attachments, and other large data objects. Blob storage is required as of LangSmith v0.18. When you do not configure your own, the Helm chart deploys RustFS in your cluster. For production, use external blob storage. 💡 [Configure blob storage](/langsmith/self-host-blob-storage) - AWS S3, GCP GCS, Azure Blob |
 
 ## Installation procedures
 
@@ -145658,7 +145812,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 
 > [tab] cURL
 >
-> The v1 API returns all matching runs in one response with no cursor. The v2 API paginates—pass the `cursor` from a response's `next_cursor` field to fetch the next page.
+> The v1 API is also cursor-paginated: pass the `cursors.next` value from a response as `cursor` in the next request body, and read runs from the `runs` array. The v2 API paginates the same way, with these differences: runs are in `items`, and the next-page token is the top-level `next_cursor` field.
 >
 > > [tab] Before
 > >
@@ -175879,6 +176033,42 @@ Use `dcode doctor` when Deep Agents Code is not starting correctly, a provider o
 
 Pair `dcode doctor` with `dcode config show` when you need both a high-level health check and the exact source of a specific setting. See [Run diagnostics with `dcode doctor`](/oss/deepagents/code/configuration#run-diagnostics-with-dcode-doctor).
 
+## Generate shell completions (`dcode completion`)
+
+`dcode completion` prints a static shell completion script for bash, zsh, or fish. The generated script provides tab completion for commands, subcommands, aliases, flags, and predefined option or positional values. Regenerate the script after upgrading Deep Agents Code so new commands and options are completed.
+
+Use `--prog NAME` to register the script under a custom command name. The flag is repeatable and replaces the defaults (`dcode` and `deepagents-code`).
+
+To set up shell completions:
+
+```bash Bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode completion bash > ~/.dcode-completion.bash
+echo 'source ~/.dcode-completion.bash' >> ~/.bashrc
+# macOS login shells read ~/.bash_profile instead of ~/.bashrc
+```
+
+```bash Zsh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mkdir -p ~/.zfunc
+dcode completion zsh > ~/.zfunc/_dcode
+# In ~/.zshrc, add these lines in this order:
+# fpath=(~/.zfunc $fpath)
+# autoload -Uz compinit && compinit
+```
+
+```bash Fish theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Fish loads one file per command name
+mkdir -p ~/.config/fish/completions
+cd ~/.config/fish/completions
+dcode completion fish --prog dcode > dcode.fish
+dcode completion fish --prog deepagents-code > deepagents-code.fish
+```
+
+```bash Other theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Generate completions for a custom alias (--prog replaces the defaults)
+dcode completion bash --prog dcode --prog myalias > ~/.myalias-completion.bash
+echo 'source ~/.myalias-completion.bash' >> ~/.bashrc
+```
+
 ## CLI commands
 
 | Command | Description |
@@ -175891,6 +176081,7 @@ Pair `dcode doctor` with `dcode config show` when you need both a high-level hea
 | `dcode uninstall NAME` | Remove one installed optional extra while preserving the rest of the tool environment |
 | `dcode update` | Check for and install Deep Agents Code updates |
 | `dcode doctor` | Run diagnostics without launching a session. See [Run diagnostics](#run-diagnostics-dcode-doctor) |
+| `dcode completion <bash\|zsh\|fish>` | Generate a shell completion script. See [Generate shell completions](#generate-shell-completions-dcode-completion) |
 | `dcode skills list [--project]` | List all skills (alias: `ls`) |
 | `dcode skills create NAME [--project]` | Create a new skill with template `SKILL.md`. Idempotent—re-creating an existing skill prints an informational message instead of an error |
 | `dcode skills info NAME [--project]` | Show detailed information about a skill |
@@ -209055,7 +209246,7 @@ Define subagents as dictionaries matching the [`SubAgent`](https://reference.lan
 | - | - | - |
 | `name` | `string` | Required. Unique identifier for the subagent. The main agent uses this name when calling the `task()` tool. The subagent name becomes metadata for `AIMessage`s and for streaming, which helps to differentiate between agents. |
 | `description` | `string` | Required. Description of what this subagent does. Be specific and action-oriented. The main agent uses this to decide when to delegate. |
-| `systemPrompt` | `string` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements. Does not inherit from main agent. For `mode: "fork"`, optional fork-only instructions, delivered with the task message. See [Forked subagents](#forked-subagents). |
+| `systemPrompt` | `string` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements. Does not inherit from main agent. For `mode: "fork"`, omit this field unless you need a fork-only addendum. See [Forked subagents](#forked-subagents). |
 | `mode` | `"isolated"` \| `"fork"` | Optional. Context mode. Defaults to `"isolated"`, where the subagent only sees the delegated task. Set to `"fork"` to inherit the parent's conversation and system prompt instead. See [Forked subagents](#forked-subagents). |
 | `tools` | `StructuredTool[]` | Optional. Tools the subagent can use. Keep this minimal and include only what's needed. Inherits from main agent by default. When specified, overrides the inherited tools entirely. |
 | `model` | `LanguageModelLike \| string` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-6.1-sol'` (using the `'provider:model'` format) or a LangChain chat model object (`await initChatModel("gpt-6.1-sol")` or `new ChatOpenAI({ model: "gpt-6.1-sol" })`). |
@@ -209820,7 +210011,7 @@ Set `mode: "fork"` on a [`SubAgent`](https://reference.langchain.com/javascript/
 
 The fork inherits the parent's skills; setting `skills` is not supported.
 
-The fork keeps the parent's system prompt unchanged. If you set `systemPrompt`, its instructions are added to the fork's task message, after the inherited conversation, so the fork can still reuse the parent's prompt cache.
+Leave `systemPrompt` unset to use the parent's prompt. If set, its instructions are appended to the parent's prompt, shortening the shared prefix available for prompt caching across providers. Consequently, setting a fork-specific system prompt is not recommended unless the fork needs additional instructions.
 
 By default, the fork inherits all tools passed to the parent. Set `tools` to replace those tools, not add to them. For example, a list containing one tool replaces the inherited list with that one tool. Filesystem and other middleware-provided tools are added separately.
 
@@ -209868,7 +210059,7 @@ const result = await agent.invoke({
 
 ### How it works
 
-A fork receives the parent's effective conversation history plus the delegated task description. Deep Agents removes the trailing delegation call and appends the task description with a continuation preamble. If the fork sets its own system prompt, those instructions go in the same message, between the preamble and the task description. If the parent has compacted its history, the fork receives that compacted context, not every original message.
+A fork receives the parent's effective conversation history plus the delegated task description. Deep Agents removes the trailing delegation call and appends the task description with a continuation preamble. If the parent has compacted its history, the fork receives that compacted context, not every original message.
 
 Here, forking means inheriting context for delegated work, not copying a persisted thread's checkpoint history. The subagent receives state prepared for its invocation, with parent-only fields excluded. When it finishes, its answer returns as a normal tool result, and the parent continues.
 
@@ -209905,7 +210096,7 @@ Compare isolated and forked modes along these dimensions:
 | Dimension | Isolated (default) | Forked |
 | - | - | - |
 | **Context** | Only the task description you pass in | The parent's effective conversation history and inherited state, plus the task description |
-| **System prompt and skills** | You set them on the subagent | Inherits skills and the parent's base prompt. An optional system prompt appends instructions and can reduce cache reuse. |
+| **System prompt and skills** | You set them on the subagent | Inherits skills and the parent's base prompt. An optional `systemPrompt` is appended to the parent's prompt and can reduce cache reuse. |
 | **Calling other subagents** | Can use the `task` tool | Cannot use `task`; must finish the work itself |
 | **Best for** | Focused work that needs little prior context | Continuing an investigation the parent has already started |
 
@@ -220299,6 +220490,14 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Enterprise search with Amazon Kendra.
 
+> [card] [LoomKnowledgeRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search documents in a self-hosted Loom deployment from LangChain.
+
+> [card] [LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search agent memories in a self-hosted Loom deployment from LangChain.
+
 > [card] [Perplexity Search](/oss/javascript/integrations/retrievers/perplexity_search)
 >
 > Retriever returning Documents from the Perplexity Search API.
@@ -221122,6 +221321,8 @@ Refer to the vector store [integration docs](/oss/javascript/integrations/vector
 | [`Knowledge bases for Amazon Bedrock`](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases) | | | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/aws) |
 | [`ExaRetriever`](/oss/javascript/integrations/retrievers/exa) | | | [`@langchain/exa`](https://www.npmjs.com/package/@langchain/exa) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/exa?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/exa) |
 | [`PerplexitySearchRetriever`](/oss/javascript/integrations/retrievers/perplexity_search) | | | [`@langchain/perplexity`](https://www.npmjs.com/package/@langchain/perplexity) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/perplexity?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/perplexity) |
+| [`LoomKnowledgeRetriever`](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain) | ✅ | | [`@clickhouse/loom`](https://www.npmjs.com/package/@clickhouse/loom) | [  ![Downloads per month](https://img.shields.io/npm/dm/@clickhouse/loom?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@clickhouse/loom) |
+| [`LoomMemoryRetriever`](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain) | ✅ | | [`@clickhouse/loom`](https://www.npmjs.com/package/@clickhouse/loom) | [  ![Downloads per month](https://img.shields.io/npm/dm/@clickhouse/loom?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@clickhouse/loom) |
 | [`SourceyRetriever`](/oss/javascript/integrations/retrievers/sourcey) | | | [`langchain-sourcey`](https://www.npmjs.com/package/langchain-sourcey) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-sourcey?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-sourcey) |
 | [`ClawDBRetriever (Axonio)`](https://github.com/hackcat29/axonio-sdk/tree/main/adapters/langchain#readme) | | | [`axonio-langchain`](https://www.npmjs.com/package/axonio-langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/axonio-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/axonio-langchain) |
 | [`AlchemystRetriever`](https://getalchemystai.com/docs) | | | [`@alchemystai/langchain-js`](https://www.npmjs.com/package/@alchemystai/langchain-js) | [  ![Downloads per month](https://img.shields.io/npm/dm/@alchemystai/langchain-js?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@alchemystai/langchain-js) |
@@ -235380,7 +235581,7 @@ Use per-call mode for new agents. LangChain plans to make it the default in the 
 
 Set `interruptMode: "per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
 
-```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235423,7 +235624,7 @@ let agent = createAgent({
 });
 ```
 
-```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235466,7 +235667,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235509,7 +235710,7 @@ let agent = createAgent({
 });
 ```
 
-```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235552,7 +235753,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235595,7 +235796,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235638,7 +235839,7 @@ let agent = createAgent({
 });
 ```
 
-```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
 import * as z from "zod";
@@ -235685,7 +235886,7 @@ let agent = createAgent({
 
 When the model calls all three tools in one turn, `read_data` runs right away. The two gated calls each raise an interrupt:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { isToolApprovalInterrupt } from "langchain";
 
 let config = { configurable: { thread_id: "1" } };
@@ -235827,7 +236028,7 @@ Each tab shows one `write_file` branch, an answer that matches it, and the [Tool
 
 Answer each interrupt with one decision, keyed by its ID:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph";
 
 const decisions = Object.fromEntries(
@@ -235852,7 +236053,7 @@ You can also answer interrupts one at a time. An interrupt you do not answer sta
 
 LangGraph checks each answer against the interrupt's `response_schema` before it saves the answer. An invalid answer throws an error and nothing is saved, so you can send a corrected answer to the same interrupt ID. The middleware wraps the error in a `MiddlewareError`, and its `cause` is the Zod error with the list of issues. Here, the edit leaves out `content`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const writeFileInterrupt = (result.__interrupt__ ?? [])
   .filter(isToolApprovalInterrupt)
   .find((interrupt) => interrupt.value.name === "write_file")!;
@@ -236123,7 +236324,7 @@ for await (const message of resumeStream.messages) {  // [!code highlight]
 
 In [per-call mode](#pause-once-per-tool-call), `stream.interrupts` holds one entry per gated tool call, with the interrupt value in `payload` and no `response_schema`. Resume with an object keyed by `interruptId`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const streamDecisions = Object.fromEntries(
   stream.interrupts.map((interrupt) => [
     interrupt.interruptId,
@@ -240790,7 +240991,7 @@ An agent harness sometimes adds a human message that the user did not type, such
 
 `addNotificationMetadata` returns a copy of a `HumanMessage` or `ToolMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage, addNotificationMetadata } from "@langchain/core/messages";
 
 const notification = addNotificationMetadata(
@@ -240801,7 +241002,7 @@ const notification = addNotificationMetadata(
 
 `getNotificationMetadata` returns the `source` and `data` of a notification, or `undefined` for any other message:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { getNotificationMetadata } from "@langchain/core/messages";
 
 for (const message of messages) {
@@ -240835,7 +241036,7 @@ Deep Agents notification sources include:
 
 You can serialize messages to plain objects for storage and deserialize back to message instances. This is useful for persisting conversation history and resuming sessions.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { HumanMessage } from "@langchain/core/messages";
 import { load } from "@langchain/core/load";
 
@@ -305850,6 +306051,10 @@ These examples assume you have already created a sandbox/devbox using the provid
 >     sandbox.stop()
 > ```
 
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
+
 > [!TIP]
 >
 > [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) traces show which shell commands ran inside a sandbox and how the agent used filesystem tools. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. For managed sandbox hosting, see [LangSmith Sandboxes](/langsmith/sandboxes).
@@ -306801,6 +307006,10 @@ You can also call the backend `execute()` method directly in your application co
 >     sandbox.stop()
 > ```
 
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
+
 For example:
 
 ```
@@ -307062,6 +307271,10 @@ Use `upload_files()` to populate the sandbox before the agent runs. Paths must b
 > )
 > ```
 
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
+
 ### Retrieving artifacts
 
 Use `download_files()` to retrieve files from the sandbox after the agent finishes:
@@ -307268,6 +307481,10 @@ Use `download_files()` to retrieve files from the sandbox after the agent finish
 >     else:
 >         print(f"Failed to download {result.path}: {result.error}")
 > ```
+
+> [tab] Other
+>
+> For other sandbox providers, see [sandbox integrations](/oss/python/integrations/sandboxes).
 
 > [!NOTE]
 >
@@ -310987,7 +311204,7 @@ Define subagents as dictionaries matching the [`SubAgent`](https://reference.lan
 | - | - | - |
 | `name` | `str` | Required. Unique identifier for the subagent. The main agent uses this name when calling the `task()` tool. The subagent name becomes metadata for `AIMessage`s and for streaming, which helps to differentiate between agents. |
 | `description` | `str` | Required. Description of what this subagent does. Be specific and action-oriented. The main agent uses this to decide when to delegate. |
-| `system_prompt` | `str` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements. Does not inherit from main agent. For `mode: "fork"`, optional fork-only instructions, delivered with the task message. See [Forked subagents](#forked-subagents). |
+| `system_prompt` | `str` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements. Does not inherit from main agent. For `mode: "fork"`, the fork keeps the parent's system prompt unchanged and delivers these instructions with the task message after the inherited conversation, preserving the parent's cached prompt prefix. See [Forked subagents](#forked-subagents). |
 | `mode` | `"isolated"` \| `"fork"` | Optional. Context mode. Defaults to `"isolated"`, where the subagent only sees the delegated task. Set to `"fork"` to inherit the parent's conversation and system prompt instead. See [Forked subagents](#forked-subagents). |
 | `tools` | `list[Callable]` | Optional. Tools the subagent can use. Keep this minimal and include only what's needed. Inherits from main agent by default. When specified, overrides the inherited tools entirely. |
 | `model` | `str` \| `BaseChatModel` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-6.1-sol'` (using the `'provider:model'` format) or a LangChain chat model object (`init_chat_model("gpt-6.1-sol")` or `ChatOpenAI(model="gpt-6.1-sol")`). |
@@ -311369,6 +311586,10 @@ By default, the fork inherits all tools passed to the parent. Set `tools` to rep
 
 `skills` is rejected if provided. The fork keeps the parent's system prompt unchanged. If you set `system_prompt`, its instructions are added to the fork's task message, after the inherited conversation, so the fork can still reuse the parent's prompt cache.
 
+> [!NOTE]
+>
+> Fork `system_prompt` delivery with the task message requires `deepagents>=0.7.35`.
+
 A `wrap_model_call` hook receives the fork's inherited prompt through `request.system_message`. It can rewrite the fork's outgoing request with `request.override(system_message=...)` without changing the parent's prompt. This differs from `system_prompt`, which adds instructions to the task message.
 
 Avoid rewriting the shared inherited prefix or changing tool definitions unless you accept reduced cache reuse and potentially higher model costs. For example, this hook fragment prepends text before the inherited prefix, preventing reuse of that prefix:
@@ -311425,7 +311646,7 @@ result = agent.invoke(
 
 ### How it works
 
-A fork receives the parent's effective conversation history plus the delegated task description. Deep Agents removes the trailing delegation call and appends the task description with a continuation preamble. If the fork sets its own system prompt, those instructions go in the same message, between the preamble and the task description. If the parent has compacted its history, the fork receives that compacted context, not every original message.
+A fork receives the parent's effective conversation history plus the delegated task description. Deep Agents removes the trailing delegation call and appends the task description with a continuation preamble. If the fork sets its own `system_prompt`, those instructions go in the same message, between the preamble and the task description. If the parent has compacted its history, the fork receives that compacted context, not every original message.
 
 Here, forking means inheriting context for delegated work, not copying a persisted thread's checkpoint history. The subagent receives state prepared for its invocation, with parent-only fields excluded. When it finishes, its answer returns as a normal tool result, and the parent continues.
 
@@ -311451,7 +311672,7 @@ Here, forking means inheriting context for delegated work, not copying a persist
 ]
 ```
 
-A fork can reuse the parent's prompt cache for the matching prefix of their requests. Changing the system prompt, tools, or earlier messages shortens that shared prefix across providers. Leave the fork's configuration unchanged to maximize reuse, though cache hits are not guaranteed.
+A fork can reuse the parent's prompt cache for the matching prefix of their requests. Changing tools or earlier messages shortens that shared prefix across providers. Setting `system_prompt` on the fork does not change the inherited system prompt. Those instructions go in the task message instead. Leave the fork's tools and model unchanged to maximize reuse, though cache hits are not guaranteed.
 
 A [`CompiledSubAgent`](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent) supports `mode: "fork"` too, though it keeps its own system prompt since the graph is already built.
 
@@ -311462,7 +311683,7 @@ Compare isolated and forked modes along these dimensions:
 | Dimension | Isolated (default) | Forked |
 | - | - | - |
 | **Context** | Only the task description you pass in | The parent's effective conversation history and inherited state, plus the task description |
-| **System prompt and skills** | You set them on the subagent | Inherits skills and the parent's base prompt. An optional system prompt appends instructions and can reduce cache reuse. |
+| **System prompt and skills** | You set them on the subagent | Inherits skills and the parent's base prompt. An optional `system_prompt` is delivered with the task message to preserve cache reuse. |
 | **Calling other subagents** | Can use the `task` tool | Cannot use `task`; must finish the work itself |
 | **Best for** | Focused work that needs little prior context | Continuing an investigation the parent has already started |
 
@@ -314678,7 +314899,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [MongoDB](/oss/python/integrations/memory/mongodb-short-term-memory) | [`langgraph-checkpoint-mongodb`](https://pypi.org/project/langgraph-checkpoint-mongodb/) | [langchain-ai/langchain-mongodb](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langgraph-checkpoint-mongodb) |
 | Azure Cosmos DB NoSQL | [`langchain-azure-cosmosdb`](https://pypi.org/project/langchain-azure-cosmosdb/) | [langchain-ai/langchain-azure](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-cosmosdb) |
 | Redis | [`langgraph-checkpoint-redis`](https://pypi.org/project/langgraph-checkpoint-redis/) | [redis-developer/langgraph-redis](https://github.com/redis-developer/langgraph-redis) |
-| [Cockroach DB](/oss/python/integrations/providers/cockroachdb#langgraph-checkpointer) | [`langchain-cockroachdb`](https://pypi.org/project/langchain-cockroachdb/) | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb) |
+| [CockroachDB](/oss/python/integrations/providers/cockroachdb#langgraph-checkpointer) | [`langchain-cockroachdb`](https://pypi.org/project/langchain-cockroachdb/) | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb) |
 | [Aerospike](/oss/python/integrations/providers/aerospike#langgraph-checkpointer) | [`langgraph-checkpoint-aerospike`](https://pypi.org/project/langgraph-checkpoint-aerospike/) | [aerospike-community/aerospike-langgraph](https://github.com/aerospike-community/aerospike-langgraph) |
 | [ScyllaDB](https://docs.scylladb.com) | [`langgraph-checkpoint-scylladb`](https://pypi.org/project/langgraph-checkpoint-scylladb/) | [scylladb/langchain-scylladb](https://github.com/scylladb/langchain-scylladb/tree/main/libs/langgraph-checkpoint-scylladb) |
 | [Tigris](https://www.tigrisdata.com/docs/) | [`langgraph-checkpoint-tigris`](https://pypi.org/project/langgraph-checkpoint-tigris/) | [tigrisdata/tigris-langgraph](https://github.com/tigrisdata/tigris-langgraph/tree/main/libs/checkpoint-tigris) |
@@ -315255,6 +315476,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [PostgreSQL / pgvector (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-postgres`](https://pypi.org/project/langgraph-store-postgres/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/postgres) |
 | [Azure Cosmos DB NoSQL (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-cosmosdb`](https://pypi.org/project/langgraph-store-cosmosdb/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/cosmosdb) |
 | [Google Firestore (agentstate)](https://skamalj.github.io/agentstate-reducer/langgraph/stores/) | [`langgraph-store-firestore`](https://pypi.org/project/langgraph-store-firestore/) | [skamalj/langgraph-store](https://github.com/skamalj/langgraph-store/tree/main/providers/firestore) |
+| [CockroachDB](/oss/python/integrations/providers/cockroachdb#langgraph-store) | [`langchain-cockroachdb`](https://pypi.org/project/langchain-cockroachdb/) | [cockroachdb/langchain-cockroachdb](https://github.com/cockroachdb/langchain-cockroachdb) |
 
 ***
 
@@ -316095,9 +316317,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Tools for live web search and reading web pages as Markdown, paid per call in USDC via x402 with no account or API key. Small free trial.
 
-> [card] [CyborgVectorStore](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction)
+> [card] [CyborgDB](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction)
 >
-> Vector store for CyborgDB, an encrypted vector database with metadata filtering and hybrid (BM25) search.
+> CyborgDB is a self-hosted encrypted vector store for confidential RAG with similarity search and metadata filtering on encrypted vectors.
 
 > [card] [DaoXE](https://daoxe.com)
 >
@@ -316118,6 +316340,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [Databricks](/oss/python/integrations/providers/databricks)
 >
 > Unified analytics platform for big data and ML.
+
+> [card] [DatacircleToolkit](https://github.com/waynehamadi/langchain-datacircle)
+>
+> Four tools that read Datacircle's open, keyless GTM API benchmarks: list APIs, best plans, search plans, provider ranks. [https://datacircle.dev](https://datacircle.dev)
 
 > [card] [Datadog](/oss/python/integrations/providers/datadog)
 >
@@ -316615,6 +316841,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Bi-temporal ledger memory with LangGraph checkpointer and store integrations.
 
+> [card] [InstaboxSandbox](https://github.com/InsForge/instabox-integrations/tree/main/langchain#readme)
+>
+> Deep Agents sandbox backend that runs commands and files in an instabox cloud Linux VM that pauses when idle and resumes on use.
+
 > [card] [Instanode](https://instanode.dev/docs)
 >
 > Zero-setup Postgres and webhook provisioning for AI agents.
@@ -316802,6 +317032,14 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [LongProbe](https://endevsols.github.io/LongProbe)
 >
 > Sub-second RAG retrieval regression testing and stability monitoring.
+
+> [card] [LoomKnowledgeRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search documents in a self-hosted Loom deployment from LangChain.
+
+> [card] [LoomMemoryRetriever](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain)
+>
+> Search agent memories in a self-hosted Loom deployment from LangChain.
 
 > [card] [LoomStore](https://github.com/ClickHouse/loom/blob/main/docs/features/integrations/frameworks.md#langgraph)
 >
@@ -317975,6 +318213,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > TranscriptFetch loads YouTube, TikTok, and Instagram transcripts from videos, channels, playlists, and searches with timestamped chunks for RAG.
 
+> [card] [TrezaToolkit](https://www.trezalabs.com/integrations/langchain)
+>
+> Tools that generate AI images and video and run saved Treza pipelines, with a per-render price cap.
+
 > [card] [Trimwise](https://trimwise.readthedocs.io/en/latest/integrations/langchain/)
 >
 > Post-retrieval Runnable that trims documents to a shared evidence budget and preserves source spans.
@@ -318018,6 +318260,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > [card] [TypesenseVectorStore](https://github.com/typesense/langchain-typesense#readme)
 >
 > Vector store integration for Typesense with vector and hybrid search, metadata filtering, scoring, MMR, and sync & async APIs.
+
+> [card] [UncoilCallbackHandler](https://www.uncoil.dev/integrations/langchain)
+>
+> Agent tracing callback handler for LangChain and LangGraph: chains, model calls, tool calls, tokens and cost in one trace.
 
 > [card] [UnDatasIO](https://undatas.io)
 >
@@ -320337,6 +320583,8 @@ The below retrievers will search over an external index (e.g., constructed from 
 | [`SpecStreamRetriever`](https://specstream.ai/docs/langchain) | | | [`langchain-specstream`](https://pypi.org/project/langchain-specstream/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-specstream/month)](https://pypi.org/project/langchain-specstream/) |
 | [`HydrafetchSearchRetriever`](https://docs.hydrafetch.com) | | | [`langchain-hydrafetch`](https://pypi.org/project/langchain-hydrafetch/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hydrafetch/month)](https://pypi.org/project/langchain-hydrafetch/) |
 | [`Valyucontext`](https://docs.valyu.ai/overview) | | | [`langchain-valyu`](https://pypi.org/project/langchain-valyu/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valyu/month)](https://pypi.org/project/langchain-valyu/) |
+| [`LoomKnowledgeRetriever`](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain) | ✅ | | [`clickhouse-loom`](https://pypi.org/project/clickhouse-loom/) | [  ![Downloads per month](https://static.pepy.tech/badge/clickhouse-loom/month)](https://pypi.org/project/clickhouse-loom/) |
+| [`LoomMemoryRetriever`](https://github.com/ClickHouse/loom/blob/v1.3.0-rc.1/docs/features/integrations/frameworks.md#langchain) | ✅ | | [`clickhouse-loom`](https://pypi.org/project/clickhouse-loom/) | [  ![Downloads per month](https://static.pepy.tech/badge/clickhouse-loom/month)](https://pypi.org/project/clickhouse-loom/) |
 | [`DiffbotKnowledgeGraphRetriever`](https://github.com/diffbot/langchain-diffbot) | | | [`langchain-diffbot`](https://pypi.org/project/langchain-diffbot/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotWebSearchRetriever`](https://github.com/diffbot/langchain-diffbot) | | | [`langchain-diffbot`](https://pypi.org/project/langchain-diffbot/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`CKGRetriever`](https://github.com/Yarmoluk/langchain-ckg) | | | [`langchain-ckg`](https://pypi.org/project/langchain-ckg/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ckg/month)](https://pypi.org/project/langchain-ckg/) |
@@ -320452,6 +320700,7 @@ Arrows show a typical retrieval flow. The highlighted component is the one this 
 | [`SuperserveSandbox`](https://docs.superserve.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-superserve/month)](https://pypi.org/project/langchain-superserve/) |
 | [`WBXSandbox`](https://github.com/WBX-Sandbox/langchain-wbxsandbox#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wbxsandbox/month)](https://pypi.org/project/langchain-wbxsandbox/) |
 | [`BoxdSandbox`](https://github.com/boxd-sh/boxd-langchain#readme) | N/A |
+| [`InstaboxSandbox`](https://github.com/InsForge/instabox-integrations/tree/main/langchain#readme) | N/A |
 | [`Kosa8Sandbox`](https://github.com/kosa8ai/langchain-kosa8#readme) | N/A |
 | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith) | N/A |
 | [`NoMacSandbox`](https://github.com/NoMac-app/langchain-nomac#readme) | N/A |
@@ -321154,10 +321403,12 @@ The following table shows tools that generate video, image, or audio assets:
 | [`EtfiqToolkit`](https://github.com/etfiq/etfiq-connectors/tree/main/langchain-etfiq) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-etfiq/month)](https://pypi.org/project/langchain-etfiq/) |
 | [`Channel3Toolkit`](https://channel3.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-channel3/month)](https://pypi.org/project/langchain-channel3/) |
 | [`StoreRouterToolkit`](https://github.com/octogen-ai/octogen-dev/tree/main/integrations/langchain#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-storerouter/month)](https://pypi.org/project/langchain-storerouter/) |
+| [`TrezaToolkit`](https://www.trezalabs.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-treza/month)](https://pypi.org/project/langchain-treza/) |
 | [`TensorustToolkit`](https://github.com/Mattbusel/langchain-tensorust/blob/main/docs/index.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tensorust/month)](https://pypi.org/project/langchain-tensorust/) |
 | [`ArcnmToolkit`](https://github.com/arcnm/langchain-arcnm#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-arcnm/month)](https://pypi.org/project/langchain-arcnm/) |
 | [`OutcrawlSearchTool`](https://github.com/outcrawlai/langchain-outcrawl#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-outcrawl/month)](https://pypi.org/project/langchain-outcrawl/) |
 | [`BrowsaToolkit`](https://github.com/browsa-io/browsa/tree/main/integrations/langchain-browsa#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-browsa/month)](https://pypi.org/project/langchain-browsa/) |
+| [`DatacircleToolkit`](https://github.com/waynehamadi/langchain-datacircle) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-datacircle/month)](https://pypi.org/project/langchain-datacircle/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
 | [`StophyToolkit`](https://github.com/stophydotdev/stophy/tree/main/sdk/packages/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stophy/month)](https://pypi.org/project/langchain-stophy/) |
 | [`BoscoToolkit`](https://github.com/Bosco-Labs/bosco-labs-data/tree/main/langchain-bosco) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bosco/month)](https://pypi.org/project/langchain-bosco/) |
@@ -322157,13 +322408,12 @@ vector_store.similarity_search(
 | [`Google firestore`](/oss/python/integrations/vectorstores/google_firestore) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-google-firestore/month)](https://pypi.org/project/langchain-google-firestore/) |
 | [`SemanticaVectorStore`](https://docs.getsemantica.ai/integrations/langchain) | ❌ | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/semantica/month)](https://pypi.org/project/semantica/) |
 | [`Google spanner`](/oss/python/integrations/vectorstores/google_spanner) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-google-spanner/month)](https://pypi.org/project/langchain-google-spanner/) |
-| [`AsyncCockroachDBVectorStore`](https://cockroachdb.github.io/langchain-cockroachdb/guides/vector-store/) | ✅ | ✅ | ✅ | ✅ | ✅ | | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cockroachdb/month)](https://pypi.org/project/langchain-cockroachdb/) |
+| [`CockroachDBVectorStore`](https://cockroachdb.github.io/langchain-cockroachdb/guides/vector-store/) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cockroachdb/month)](https://pypi.org/project/langchain-cockroachdb/) |
 | [`OceanbaseVectorStore`](https://pypi.org/project/langchain-oceanbase/) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oceanbase/month)](https://pypi.org/project/langchain-oceanbase/) |
 | [`IBM db2 vector store and vector search`](https://github.com/langchain-ai/langchain-ibm/tree/main/libs/langchain-db2) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-db2/month)](https://pypi.org/project/langchain-db2/) |
 | [`InfinoVectorStore`](https://infino.ai/docs) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-infino/month)](https://pypi.org/project/langchain-infino/) |
 | [`OpensolrVectorStore`](https://opensolr.com/langchain) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opensolr/month)](https://pypi.org/project/langchain-opensolr/) |
 | [`TeradataVectorStore`](https://github.com/Teradata/langchain-teradata) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-teradata/month)](https://pypi.org/project/langchain-teradata/) |
-| [`CyborgVectorStore`](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction) | ✅ | ✅ | ✅ | ✅ | ✅ | | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cyborgdb/month)](https://pypi.org/project/langchain-cyborgdb/) |
 | [`SingleStoreVectorStore`](https://docs.singlestore.com/cloud/developer-resources/functional-extensions/working-with-vector-data/) | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-singlestore/month)](https://pypi.org/project/langchain-singlestore/) |
 | [`YDB`](https://ydb.tech/) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ydb/month)](https://pypi.org/project/langchain-ydb/) |
 | [`CouchbaseSearchVectorStore`](https://docs.couchbase.com/server/current/vector-search/vector-search.html) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-couchbase/month)](https://pypi.org/project/langchain-couchbase/) |
@@ -322201,6 +322451,7 @@ vector_store.similarity_search(
 | [`Firebolt`](https://docs.firebolt.io/guides/integrations/langchain) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-firebolt/month)](https://pypi.org/project/langchain-firebolt/) |
 | [`SereneDB`](https://serenedb.com/docs/clients/langchain-serenedb) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serenedb/month)](https://pypi.org/project/langchain-serenedb/) |
 | [`DeweyVectorStore`](https://github.com/meetdewey/langchain-dewey) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dewey/month)](https://pypi.org/project/langchain-dewey/) |
+| [`CyborgDB`](https://docs.cyborg.co/versions/latest/integrations/langchain/introduction) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cyborgdb/month)](https://pypi.org/project/langchain-cyborgdb/) |
 | [`Activeloop Deep lake`](https://docs.deeplake.ai/) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-deeplake/month)](https://pypi.org/project/langchain-deeplake/) |
 | [`Vedb for mysql`](https://docs.volcengine.com/docs/6357?lang=en) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-volcengine-mysql/month)](https://pypi.org/project/langchain-volcengine-mysql/) |
 | [`Volcengine rds for mysql`](https://docs.volcengine.com/docs/6313?lang=en) | | | | | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-volcengine-mysql/month)](https://pypi.org/project/langchain-volcengine-mysql/) |
@@ -334086,7 +334337,7 @@ Use per-call mode for new agents. LangChain plans to make it the default in the 
 
 Set `interrupt_mode="per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
 
-```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334128,7 +334379,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334170,7 +334421,7 @@ agent = create_agent(
 )
 ```
 
-```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334212,7 +334463,7 @@ agent = create_agent(
 )
 ```
 
-```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334254,7 +334505,7 @@ agent = create_agent(
 )
 ```
 
-```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334296,7 +334547,7 @@ agent = create_agent(
 )
 ```
 
-```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334338,7 +334589,7 @@ agent = create_agent(
 )
 ```
 
-```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.tools import tool
@@ -334384,7 +334635,7 @@ agent = create_agent(
 
 When the model calls all three tools in one turn, `read_data` runs right away. The two gated calls each raise an interrupt:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": "1"}}
 result = agent.invoke(
     {"messages": [{"role": "user", "content": "Archive old orders, then delete them."}]},
@@ -334507,7 +334758,7 @@ Each tab shows one `write_file` branch, an answer that matches it, and the [Tool
 
 Answer each interrupt with one decision, keyed by its ID:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
 
 decisions = {}
@@ -334533,7 +334784,7 @@ You can also answer interrupts one at a time. An interrupt you do not answer sta
 
 LangGraph checks each answer against the interrupt's `response_schema` before it saves the answer. An invalid answer raises a `ValidationError` and nothing is saved, so you can send a corrected answer to the same interrupt ID. Here, the edit leaves out `content`:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from pydantic import ValidationError
 
 write_file_interrupt = next(
@@ -334805,7 +335056,7 @@ for message in stream.messages:  # [!code highlight]
 
 In [per-call mode](#pause-once-per-tool-call), `stream.interrupts` holds one interrupt per gated tool call. Resume with a dict keyed by interrupt ID:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 decisions = {interrupt.id: {"type": "approve"} for interrupt in stream.interrupts}
 stream = agent.stream_events(Command(resume=decisions), config=config, version="v3")
 for message in stream.messages:
@@ -338653,7 +338904,7 @@ An agent harness sometimes adds a human message that the user did not type, such
 
 `add_notification_metadata` returns a copy of a `HumanMessage` or `ToolMessage` with a `source` that names the feature that added it, and optional `data` with that feature's fields:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
 from langchain_core.messages import add_notification_metadata
 
@@ -338666,7 +338917,7 @@ notification = add_notification_metadata(
 
 `get_notification_metadata` returns the `source` and `data` of a notification, or `None` for any other message:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.messages import get_notification_metadata
 
 for message in messages:
@@ -338700,7 +338951,7 @@ Deep Agents notification sources include:
 
 You can serialize messages to plain objects for storage and deserialize back to message instances. This is useful for persisting conversation history and resuming sessions.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import HumanMessage
 from langchain_core.load import dumpd, load
 

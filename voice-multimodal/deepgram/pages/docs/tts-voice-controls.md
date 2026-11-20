@@ -1,5 +1,5 @@
 ---
-title: "Speed, pause, pronunciation"
+title: "Speed, pause, pronunciation, volume normalization"
 source: https://developers.deepgram.com/docs/tts-voice-controls.md
 path: docs/tts-voice-controls
 ---
@@ -7,7 +7,7 @@ path: docs/tts-voice-controls
 > For clean Markdown of any page, append .md to the page URL.
 > For a complete documentation index, see https://developers.deepgram.com/llms.txt.
 
-# Speed, pause, pronunciation
+# Speed, pause, pronunciation, volume normalization
 
 > **Info**
 >
@@ -19,11 +19,12 @@ Deepgram Aura-2 (`/v1/speak`) supports speed and pronunciation with the same syn
 
 ## Availability
 
-| Control       | [Batch (REST)](/docs/flux-tts/batch) | [Streaming (WebSocket)](/docs/flux-tts/quickstart) | Aura-2        |
-| ------------- | ------------------------------------ | -------------------------------------------------- | ------------- |
-| Speed         | Yes                                  | Yes, including mid-stream `Configure`              | Yes           |
-| Pronunciation | Early Access                         | Early Access                                       | Yes           |
-| Pause         | Yes                                  | No                                                 | Not supported |
+| Control                                       | [Batch (REST)](/docs/flux-tts/batch) | [Streaming (WebSocket)](/docs/flux-tts/quickstart) | Aura-2        |
+| --------------------------------------------- | ------------------------------------ | -------------------------------------------------- | ------------- |
+| Speed                                         | Yes                                  | Yes, including mid-stream `Configure`              | Yes           |
+| Pronunciation                                 | Early Access                         | Early Access                                       | Yes           |
+| Pause                                         | Yes                                  | No                                                 | Not supported |
+| [Volume normalization](#volume-normalization) | Yes, on by default                   | Yes, on by default                                 | Not supported |
 
 Flux TTS controls are available in English. Aura-2 speed and pronunciation are available in English and Spanish.
 
@@ -191,6 +192,53 @@ A few rules of thumb for producing IPA for your own vocabulary:
 > **Note**
 >
 > **Aura-2** pronunciation control is generally available, with the same syntax and limits and a maximum input text length of 2000 characters. On Aura-2, place the stress mark directly before the vowel (`duːpˈɪljuːmæb`); a stress mark before a consonant returns a pronunciation warning.
+
+## Volume normalization
+
+Flux TTS levels the loudness of generated speech so it lands at a consistent level across voices and requests. Quiet output comes up, loud output comes down, and a peak ceiling prevents clipping and distortion on playback devices. Volume normalization is on by default for batch and streaming requests.
+
+### Parameters
+
+| Parameter                                                  | Location | Type    | Default |
+| ---------------------------------------------------------- | -------- | ------- | ------- |
+| [`normalize_volume`](/reference/text-to-speech/speak-flux) | query    | boolean | `true`  |
+
+On a streaming session, set `normalize_volume` as a connection parameter. A [`Configure`](/docs/flux-tts/client-messages) message can't change it mid-session.
+
+### When to turn it off
+
+Set `normalize_volume=false` when you already manage loudness yourself, for example:
+
+* You apply your own loudness normalization, compression, or gain staging downstream.
+* You mix Flux TTS output with other audio and want to set levels in your own mix.
+* You need new audio to match clips you generated before Nov 8, 2026, when normalization became the default.
+
+Peak limiting still applies when normalization is off, so output doesn't clip either way.
+
+### Example requests
+
+**`REST`**
+
+```bash REST
+curl --request POST \
+     --header "Content-Type: application/json" \
+     --header "Authorization: Token DEEPGRAM_API_KEY" \
+     --output your_output_file.mp3 \
+     --data '{"text":"Hello, how can I help you today?"}' \
+     --url "https://api.deepgram.com/v2/speak?model=flux-haley-en&normalize_volume=false"
+```
+
+**`WebSocket`**
+
+```bash WebSocket
+# Connect with wscat for testing.
+wscat -H "Authorization: Token DEEPGRAM_API_KEY" \
+  -c "wss://api.deepgram.com/v2/speak?model=flux-haley-en&normalize_volume=false"
+
+# Then send text frames, e.g.
+# {"type": "Speak", "text": "Hello, how can I help you today?"}
+# {"type": "Flush"}
+```
 
 ## Combining controls
 

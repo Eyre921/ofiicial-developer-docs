@@ -7,7 +7,7 @@ path: docs/api-reference/inboxes/add-thread-labels
 POST /inboxes/:inbox_id/threads/:thread_id/labels
 Apply one or more labels to a thread.
 
-Labels already on the thread stay on it. If any label ID is not found, the
+Labels already on the thread stay on it. If any label ID isn't found, the
 request returns a `404` and nothing changes. To replace the thread's labels
 instead, use [Set Thread Labels](/docs/api-reference/inboxes/set-thread-labels).
 

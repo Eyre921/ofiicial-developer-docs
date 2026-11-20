@@ -16,7 +16,7 @@ url: https://docs.sentry.io/platforms/javascript/guides/solidstart/
 
 This SDK is currently in **beta**. Beta features are still in progress and may have bugs. Please reach out on [GitHub](https://github.com/getsentry/sentry-javascript/issues/new/choose) if you have any feedback or concerns.
 
-This SDK guide is specifically for SolidStart. For instrumenting your Solid app, see our [Solid SDK](https://docs.sentry.io/platforms/javascript/guides/solid.md).
+This SDK guide is specifically for SolidStart. For instrumenting your Solid app, see our [Solid SDK](https://docs.sentry.io/platforms/javascript/guides/solid.md). This guide covers Solid 1 only. SolidStart is discontinued for Solid 2.
 
 ## [Prerequisites](https://docs.sentry.io/platforms/javascript/guides/solidstart.md#prerequisites)
 
@@ -471,7 +471,7 @@ Need help locating captured data in your Sentry project?
 At this point, you should have integrated Sentry into your SolidStart application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/solidstart/agent-tracing.md) to monitor your AI systems
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/solidstart/agent-tracing.md) to follow agent runs from system prompt to final output, capturing every model call, tool execution, and handoff as a span
 * [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/solidstart/configuration/tunneling.md) to avoid ad blockers blocking Sentry events
 
 Are you having problems setting up the SDK?

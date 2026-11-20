@@ -6,32 +6,25 @@ path: platforms/java/guides/jul
 
 ---
 title: "java.util.logging"
+description: "Learn how to set up Sentry's JUL integration to capture logs."
 url: https://docs.sentry.io/platforms/java/guides/jul/
 ---
 
 # Sentry for java.util.logging
 
-The `sentry-jul` library provides a [java.util.logging Handler](http://docs.oracle.com/javase/8/docs/api/java/util/logging/Handler.html) that sends logged exceptions to Sentry.
+The `sentry-jul` library provides a [java.util.logging Handler](http://docs.oracle.com/javase/8/docs/api/java/util/logging/Handler.html) that sends logged exceptions to Sentry. You can find the source [on GitHub](https://github.com/getsentry/sentry-java/tree/master/sentry-jul).
 
-##### Sentry Logs
+## [Prerequisites](https://docs.sentry.io/platforms/java/guides/jul.md#prerequisites)
 
-Enable the Sentry Logs feature to unlock Sentry's full logging power. With Sentry Logs, you can search, filter, and analyze logs from across your entire application in one place.
+You need:
 
-Once this integration is configured you can *also* use Sentry’s static API, [as shown on the usage page](https://docs.sentry.io/platforms/java/guides/jul/usage.md), in order to do things like record breadcrumbs, set the current user, or manually send events. The source can be found [on GitHub](https://github.com/getsentry/sentry-java/tree/master/sentry-jul).
-
-On this page, we get you up and running with Sentry's SDK.
-
-##### Using a framework?
-
-Check out the other SDKs we support in the left-hand dropdown.
-
-Don't already have an account and Sentry project established? Head over to [sentry.io](https://sentry.io/signup/), then return to this page.
+* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
+* Your application up and running
+* Java version `8` (also known as Java `1.8`) or above
 
 ## [Install](https://docs.sentry.io/platforms/java/guides/jul.md#install)
 
-Sentry captures data by using an SDK within your application’s runtime.
-
-Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
+Add the `sentry-jul` dependency to your project:
 
 ```xml
 <dependency>
@@ -39,13 +32,6 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
     <artifactId>sentry-jul</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_START___ profiling
-<dependency>
-    <groupId>io.sentry</groupId>
-    <artifactId>sentry-async-profiler</artifactId>
-    <version>8.65.0</version>
-</dependency>
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 *Other available variations of the above snippet: Gradle, SBT*
@@ -53,22 +39,6 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
 For other dependency managers, see the [central Maven repository](https://search.maven.org/artifact/io.sentry/sentry-jul).
 
 If you are using multiple Sentry dependencies, you can add a [bill of materials](https://docs.sentry.io/platforms/java/configuration/bill-of-materials.md) to avoid specifying the version of each dependency.
-
-When running your application, please add our `sentry-opentelemetry-agent` to the `java` command.
-
-Download the latest version of the `sentry-opentelemetry-agent-8.65.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
-
-```bash
-curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.65.0/sentry-opentelemetry-agent-8.65.0.jar -o sentry-opentelemetry-agent-8.65.0.jar
-```
-
-Then run your application with:
-
-```bash
-SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.65.0.jar" java -jar your-application.jar
-```
-
-*Other available variations of the above snippet: Java CLI argument*
 
 ## [Configure](https://docs.sentry.io/platforms/java/guides/jul.md#configure)
 
@@ -97,20 +67,23 @@ When starting your application, add the `java.util.logging.config.file` to the s
 java -Djava.util.logging.config.file=/path/to/app.properties MyClass
 ```
 
-### [DSN Configuration](https://docs.sentry.io/platforms/java/guides/jul.md#dsn-configuration)
+Sentry Logs must be enabled for the appender to send log messages as Logs. If Sentry is initialized elsewhere, make sure Logs are enabled there. If the appender initializes the SDK, the `sentry.properties` file as shown in the section below enables them.
 
-Sentry reads the DSN from the system property `sentry.dsn`, environment variable `SENTRY_DSN` or the `dsn` property in `sentry.properties` file. [See the configuration page](https://docs.sentry.io/platforms/java/configuration.md) for more details on external configuration.
+### [Set the DSN If Nothing Else Initializes Sentry](https://docs.sentry.io/platforms/java/guides/jul.md#set-the-dsn-if-nothing-else-initializes-sentry)
+
+You can skip this section if your application already initializes Sentry through [`Sentry.init`](https://docs.sentry.io/platforms/java.md), the [Spring](https://docs.sentry.io/platforms/java/guides/spring.md) or [Spring Boot](https://docs.sentry.io/platforms/java/guides/spring-boot.md) integration, or the [Sentry OpenTelemetry agent](https://docs.sentry.io/platforms/java/opentelemetry/setup/agent.md).
+
+If you haven't initialized Sentry elsewhere, the handler initializes the SDK for you. It reads the DSN from the system property `sentry.dsn`, the environment variable `SENTRY_DSN`, or the `dsn` property in a `sentry.properties` file. See the [configuration page](https://docs.sentry.io/platforms/java/configuration.md) for details on external configuration.
 
 ```properties
 dsn=https://<key>@o<orgId>.ingest.sentry.io/<projectId>
+
+# Enable logs
+logs.enabled=true
+
 # Use Data Collection defaults but don't collect automatic user information.
 # https://docs.sentry.io/platforms/java/guides/jul/data-management/data-collected/
 data-collection.user-info=false
-# Configure other data categories here.
-<!-- ___PRODUCT_OPTION_START___ logs -->
-# Enable logs
-logs.enabled=true
-<!-- ___PRODUCT_OPTION_END___ logs  -->
 ```
 
 ### [Minimum Log Level](https://docs.sentry.io/platforms/java/guides/jul.md#minimum-log-level)
@@ -119,8 +92,7 @@ Two log levels are used to configure this integration:
 
 1. Configure the lowest level required for a log message to become an event (`minimumEventLevel`) sent to Sentry.
 2. Configure the lowest level a message has to be to become a breadcrumb (`minimumBreadcrumbLevel`).
-
-3) Configure the lowest level a message has to be to be sent as Sentry Log (`minimumLevel`).
+3. Configure the lowest level a message has to be to be sent as Sentry Log (`minimumLevel`).
 
 Setting `minimumEventLevel` or `minimumBreadcrumbLevel` in `logging.properties` only affects events logged by way of JUL. The settings will have no effect when calling `Sentry.captureMessage` or similar directly.
 
@@ -141,53 +113,33 @@ By default, [MessageFormat#format](https://docs.oracle.com/javase/8/docs/api/jav
 io.sentry.jul.SentryHandler.printfStyle=true
 ```
 
-The SDK can be configured using a `sentry.properties` file:
+## [Verify Your Setup](https://docs.sentry.io/platforms/java/guides/jul.md#verify-your-setup)
 
-```properties
-dsn=https://<key>@o<orgId>.ingest.sentry.io/<projectId>
-# Use Data Collection defaults but don't collect automatic user information.
-# https://docs.sentry.io/platforms/java/data-management/data-collected/
-data-collection.user-info=false
-# Configure other data categories here.
-# ___PRODUCT_OPTION_START___ performance
-traces-sample-rate=1.0
-# ___PRODUCT_OPTION_END___ performance
-// ___PRODUCT_OPTION_START___ logs
-logs.enabled=true
-// ___PRODUCT_OPTION_END___ logs
-// ___PRODUCT_OPTION_START___ profiling
-
-# Enable profiling
-profile-session-sample-rate=1.0
-profile-lifecycle=TRACE
-// ___PRODUCT_OPTION_END___ profiling
-```
-
-Learn more about setting up logging in our [Logs documentation](https://docs.sentry.io/platforms/java/guides/jul/logs.md).
-
-## [Verify](https://docs.sentry.io/platforms/java/guides/jul.md#verify)
-
-This snippet includes an intentional error, so you can test that everything is working as soon as you set it up.
+To verify that the integration is working, log an error through JUL:
 
 ```java
-import io.sentry.Sentry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-try {
-  throw new Exception("This is a test.");
-} catch (Exception e) {
-  Sentry.captureException(e);
-}
+Logger logger = Logger.getLogger("example");
+logger.log(Level.SEVERE, "This is a test.", new Exception("This is a test."));
 ```
 
-*Other available variations of the above snippet: Kotlin*
+### [View Captured Data in Sentry](https://docs.sentry.io/platforms/java/guides/jul.md#view-captured-data-in-sentry)
 
-Learn more about manually capturing an error or message in our [Usage documentation](https://docs.sentry.io/platforms/java/guides/jul/usage.md).
-
-To view and resolve the recorded error, log into [sentry.io](https://sentry.io) and select your project. Clicking on the error's title will open a page where you can see detailed information and mark it as resolved.
+Now, open the [**Logs**](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/) page and filter by service, environment, or search keywords to view log entries from your application (it takes a couple of moments for the data to appear).
 
 ## [Next Steps](https://docs.sentry.io/platforms/java/guides/jul.md#next-steps)
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
+* Learn more about [setting up logging](https://docs.sentry.io/platforms/java/guides/jul/logs.md)
+* Learn how to [send application metrics](https://docs.sentry.io/platforms/java/metrics.md) and [traces](https://docs.sentry.io/platforms/java/tracing.md)
+* Configure [profiling](https://docs.sentry.io/platforms/java/profiling.md) to capture performance data from your application
+
+Are you having problems setting up the SDK or integration?
+
+* Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/java/guides/jul/troubleshooting.md)
+* [Get support](https://www.sentry.help/en/)
 
 ## Other Java Frameworks
 

@@ -241,6 +241,16 @@ Web search is built into Nexus. In Claude Code, Claude Desktop, Codex, and ChatG
 
 Upgrading from the retired MCP: versions before 0.9.7 installed the `fireworks-websearch` MCP for Claude Code. It is retired because Fireworks handles Claude Code's native search tools server-side. `nexus update` removes the retired MCP and the tool denials earlier versions added to Claude Code, keeps other MCP servers, and removes the `web_search = "disabled"` line that version 0.9.6 wrote into the Codex config. Restart Claude Code and Codex afterward.
 
+## Auto mode safety checks
+
+In Claude Code and Claude Desktop's Code tab, auto mode checks risky actions, such as shell commands, before they run. Through Fireworks, these checks run server-side at Fireworks, separately from the model that answers your turn. On Nexus accounts they run on `auto` limited to Fireworks open models and bill to your Fireworks account. See [Auto mode safety checks](/nexus/harnesses/claude-code#auto-mode-safety-checks).
+
+| Harness | Safety checks |
+| - | - |
+| Claude Code | Run server-side at Fireworks |
+| Claude Desktop | Run server-side at Fireworks, in the Code tab's **Auto** permission mode |
+| Other harnesses | Not applicable. Claude Code auto mode only |
+
 ### Data residency
 
 * With US [data residency](/accounts/data-residency), `auto` is mapped to a [US-only Serverless](/serverless/us-only-serverless) twin for you. Send requests to `us.api.fireworks.ai`. A request that names a model instead must use a US-only model ID; other Fireworks IDs are rejected. Anthropic and OpenAI calls still run on your own provider account, in the region you configured with them. See [Enterprise Controls](/nexus/enterprise-controls#data-residency).

@@ -6,138 +6,35 @@ path: declines
 
 # Declines
 
-Learn about payment declines and how to lower your decline rate.
+Understand payment declines, find decline codes, and improve payment handling.
 
-> #### Track decline rates
-> 
-> Track your decline rate over time to identify potential fraud or integration issues. For a clearer overview of your authorization rates, analyze unique declines and exclude failed retries from your analysis.
+Payments can fail because of [issuer declines](https://docs.stripe.com/declines/how-declines-work.md#issuer-declines), [blocked payments](https://docs.stripe.com/declines/how-declines-work.md#blocked-payments), or [invalid API calls](https://docs.stripe.com/declines/how-declines-work.md#invalid-api-calls). Use these guides to understand the cause of a failed payment and decide what to do next.
 
-You need to handle each type of payment failure differently. For every failure, you can use the [Dashboard](https://dashboard.stripe.com/payments) or API to review a payment’s details. When using the API, look at the `Charge` object’s [outcome](https://docs.stripe.com/api/charges/object.md#charge_object-outcome). This attribute covers the payment failure type and provides information about its cause.
+## Understand declines
 
-Payments can fail for a variety of reasons, including some that help prevent fraudulent transactions. Stripe works to reduce decline rates across all supported payment methods, working with issuers and networks to improve acceptance rates, often without affecting your integration.
+Each type of payment failure requires a different response. Learn how to distinguish issuer declines, blocked payments, and invalid API calls.
 
-There are three reasons why a payment might fail:
+[How declines work](https://docs.stripe.com/declines/how-declines-work.md): Understand the different types of payment failures and how to review them in the Dashboard or API.
 
-- [Issuer declines](https://docs.stripe.com/declines.md#issuer-declines)
-- [Blocked payments](https://docs.stripe.com/declines.md#blocked-payments)
-- [Invalid API calls](https://docs.stripe.com/declines.md#invalid-api-calls)
+[Card declines](https://docs.stripe.com/declines/card.md): Learn why card issuers decline payments and how to reduce card declines.
 
-## Issuer declines 
+## Look up a code
 
-When your customer’s card issuer or payment provider receives a charge, their automated systems and models decide whether to authorize it. These tools analyze signals such as spending habits, account balance, and card data (expiration date, address information, and CVC).
+Choose a reference based on the type of code you received. For network codes, use the payment method or card network to interpret the code in context.
 
-Stripe handles non-card payment method declines similarly to card declines. Stripe sends you a response code that includes information about the decline, for example, if it’s due to insufficient funds, a lost or stolen card, or another reason.
+[Stripe decline codes](https://docs.stripe.com/declines/codes.md): Look up a Stripe decline code to understand why a payment was declined and what to do next.
 
-If the card issuer or payment provider declines a payment, Stripe shares with you the decline information it receives through [Stripe decline codes](https://docs.stripe.com/declines/codes.md). This information is available in the Dashboard and through the API.
+[Network decline codes](https://docs.stripe.com/declines/network-codes.md): Find a network decline code for the payment method or card network that returned it.
 
-When issuers provide specific explanations, such as an incorrect card number or low funds, these explanations return to Stripe as [network decline codes](https://docs.stripe.com/declines/network-codes.md).
+[API error codes](https://docs.stripe.com/error-codes.md): Look up Stripe API error codes to understand what they mean and what to do next.
 
-## Blocked payments 
+## Improve payment handling
 
-*Stripe Radar* (Stripe Radar helps detect and block fraud by using machine learning. It's built into Stripe and requires no additional setup to get started) blocks high risk payments, including those that violate your custom rules or have high risk scores. This automated fraud prevention product evaluates each payment, without requiring any action from you.
+Use error handling guidance and test payments to check how your integration handles failures. Analyze payment acceptance data to identify recurring issues and decide what to investigate.
 
-When Stripe blocks a payment, it doesn’t obtain authorization from the card issuer. This precaution helps prevent potential fraudulent payments that might lead to disputes.
+[Handle errors](https://docs.stripe.com/error-handling.md): Detect and handle errors in your integration.
 
-For some card types, customers might see the card issuer’s authorization for the payment amount on their statement. However, Stripe hasn’t charged this amount or withdrawn funds. The card issuer typically removes this authorization from the customer’s statement within a few days.
+[Test declined payments](https://docs.stripe.com/testing.md#declined-payments): Simulate declined payments to test how your integration responds.
 
-If a rule you configured blocks a payment you recognize as legitimate, you can lift the block by locating the payment in the Dashboard and clicking **Add to allow list**. This action doesn’t retry the payment. Instead, it overrides all of your other rules from blocking future payment attempts that match the list attribute.
-
-> Don’t see the **Add to allow list** button on the payment details page? [Contact Stripe](https://support.stripe.com/email) to add this feature to your Radar account.
-
-When using the API, the `outcome` of a blocked payment reflects the type of payment failure and the reason for it, along with the evaluated risk level.
-
-```json
-...
-"outcome": {
-  "network_decline_code": null,
-  "network_advice_code": null,
-  "network_status": "not_sent_to_network",
-  "reason": "highest_risk_level",
-  "advice_code": "do_not_try_again",
-  "risk_level": "highest",
-  "seller_message": "Stripe blocked this charge as too risky.",
-  "type": "blocked"
-},
-...
-```
-
-For users with [IC+ pricing](https://support.stripe.com/questions/understanding-blended-interchange-pricing), Adaptive Acceptance blocks certain payments to help you avoid unnecessary network costs. For example, Adaptive Acceptance helps you avoid excessive retry penalties. Adaptive Acceptance can also help you avoid network costs by blocking payments that have low likelihood of authorization.
-
-```json
-...
-"outcome": {
-  "network_decline_code": null,
-  "network_advice_code": null,
-  "network_status": "not_sent_to_network",
-  "reason": "low_probability_of_authorization",
-  "advice_code": "do_not_try_again",
-  "risk_level": "normal",
-  "seller_message": "Stripe blocked this payment as it is unlikely to be authorized.",
-  "type": "blocked"
-},
-...
-```
-
-## Invalid API calls 
-
-In the API, you might see an invalid API call like the following:
-
-```curl
-curl https://api.stripe.com/v1/payment_intents \
-  -u "<<YOUR_SECRET_KEY>>:" \
-  -d amount=2000 \
-  -d currency=usd \
-  -d payment_method=pm_card_chargeDeclinedIncorrectCvc \
-  -d confirm=true
-```
-
-The invalid API call generates an error response that might look like this:
-
-```json
-{
-  "error": {
-    "code": "incorrect_cvc",
-    "doc_url": "https://docs.stripe.com/error-codes#incorrect-cvc",
-    "message": "Your card's security code is incorrect.",
-    "param": "cvc",
-    "type": "card_error"
-  }
-}
-```
-
-The outcome of a declined payment includes the type of payment failure and the reason, based on the card network’s decline code. The reason might contain information other than the card network’s response code, for example, if a Radar rule evaluation blocked the charge.
-
-```json
-...
-"outcome": {
-  "network_decline_code": "54",
-  "network_advice_code": "03",
-  "network_status": "declined_by_network",
-  "reason": "expired_card",
-  "advice_code": "confirm_card_data",
-  "risk_level": "normal",
-  "seller_message": "The bank returned the decline code `expired_card`.",
-  "type": "issuer_declined"
-},
-...
-```
-
-As you develop your Stripe integration, continuously [test](https://docs.stripe.com/testing.md) it to identify any potential bugs that might lead to invalid API calls. Invalid API calls typically don’t result in a payment appearing in your Dashboard. However, you might see the payment appear in a few cases.
-
-```json
-...
-"outcome": {
-  "network_decline_code": null,
-  "network_advice_code": null,
-  "network_status": "not_sent_to_network",
-  "type": "invalid"
-},
-...
-```
-
-## See also
-
-- [Card declines](https://docs.stripe.com/declines/card.md)
-- [Test declined payments](https://docs.stripe.com/testing.md#declined-payments)
-- [Refund and cancel payments](https://docs.stripe.com/refunds.md)
+[Analyze payment acceptance](https://docs.stripe.com/payments/analytics/acceptance.md): Understand your payment acceptance rates and identify why payments fail.
 

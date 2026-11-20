@@ -6,32 +6,25 @@ path: platforms/java/guides/logback
 
 ---
 title: "Logback"
+description: "Learn how to set up Sentry's Logback integration to capture logs."
 url: https://docs.sentry.io/platforms/java/guides/logback/
 ---
 
 # Sentry for Logback
 
-The `sentry-logback` library provides [Logback](https://logback.qos.ch/) support for Sentry using an [Appender](https://logback.qos.ch/apidocs/ch/qos/logback/core/Appender.html) that sends logged exceptions to Sentry.
+The `sentry-logback` library provides [Logback](https://logback.qos.ch/) support for Sentry using an [Appender](https://logback.qos.ch/manual/appenders.html) that sends logged exceptions to Sentry. You can find the source [on GitHub](https://github.com/getsentry/sentry-java/tree/master/sentry-logback).
 
-##### Sentry Logs
+## [Prerequisites](https://docs.sentry.io/platforms/java/guides/logback.md#prerequisites)
 
-Enable the Sentry Logs feature to unlock Sentry's full logging power. With Sentry Logs, you can search, filter, and analyze logs from across your entire application in one place.
+You need:
 
-Once this integration is configured you can *also* use Sentry’s static API, [as shown on the usage page](https://docs.sentry.io/platforms/java/guides/logback/usage.md), in order to do things like record breadcrumbs, set the current user, or manually send events. The source can be found [on GitHub](https://github.com/getsentry/sentry-java/tree/master/sentry-logback).
-
-On this page, we get you up and running with Sentry's SDK.
-
-##### Using a framework?
-
-Check out the other SDKs we support in the left-hand dropdown.
-
-Don't already have an account and Sentry project established? Head over to [sentry.io](https://sentry.io/signup/), then return to this page.
+* A Sentry [account](https://sentry.io/signup/) and [project](https://docs.sentry.io/product/projects.md)
+* Your application up and running
+* Java version `8` (also known as Java `1.8`) or above
 
 ## [Install](https://docs.sentry.io/platforms/java/guides/logback.md#install)
 
-Sentry captures data by using an SDK within your application’s runtime.
-
-Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
+Add `sentry-logback` to your project (Maven Plugin and Gradle Plugin automatically add integrations for you):
 
 **\[Maven Plugin] pom.xml**
 
@@ -43,40 +36,15 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
   <!-- Required to allow auto-install of Sentry SDK and Integrations -->
   <extensions>true</extensions>
   <configuration>
-    <!-- In case you're self hosting, provide the URL here -->
-    <!-- <url>http://localhost:8000/</url> -->
-    <org>___SENTRY_ORG_SLUG___</org>
-    <project>___SENTRY_PROJECT_SLUG___</project>
-    <!-- Do not commit your auth token with this file, you should provide it via the SENTRY_AUTH_TOKEN environment variable or similar -->
-    <!-- <authToken>${env.SENTRY_AUTH_TOKEN}</authToken> -->
-    <authToken>___SENTRY_AUTH_TOKEN___</authToken>
-    <!-- Enable debugging to see logs in case something goes wrong when uploading the source bundle -->
-    <debugSentryCli>true</debugSentryCli>
+    <!-- your configuration -->
    </configuration>
    <executions>
-    <execution>
-      <goals>
-        <!-- Generates a source bundle and uploads it to Sentry -->
-        <!-- This enables source context, allowing you to see your source code as part of your stack traces in Sentry -->
-        <!-- Learn more about this feature in its dedicated "Source Context" docs page -->
-        <goal>uploadSourceBundle</goal>
-        <!--  Validates Sentry SDK dependency versions. -->
-        <!--  Mixing SDK dependency versions can result in build or run time errors. -->
-        <!--  If mixed versions are detected, the build will fail. -->
-        <goal>validateSdkDependencyVersions</goal>
-      </goals>
-    </execution>
+    <!-- your executions -->
   </executions>
 </plugin>
-// ___PRODUCT_OPTION_START___ profiling
 <dependencies>
-  <dependency>
-      <groupId>io.sentry</groupId>
-      <artifactId>sentry-async-profiler</artifactId>
-      <version>8.65.0</version>
-  </dependency>
+  <!-- your dependencies -->
 </dependencies>
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Maven**
@@ -87,13 +55,6 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
     <artifactId>sentry-logback</artifactId>
     <version>8.65.0</version>
 </dependency>
-// ___PRODUCT_OPTION_START___ profiling
-<dependency>
-    <groupId>io.sentry</groupId>
-    <artifactId>sentry-async-profiler</artifactId>
-    <version>8.65.0</version>
-</dependency>
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Gradle Plugin**
@@ -102,29 +63,18 @@ Error Monitoring\[ ]Tracing\[ ]Profiling\[x]Logs\[x]OpenTelemetry
 plugins {
   id "io.sentry.jvm.gradle" version "6.27.0"
 }
-// ___PRODUCT_OPTION_START___ profiling
-dependencies {
-  implementation 'io.sentry:sentry-async-profiler:8.65.0'
-}
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **Gradle**
 
 ```groovy
 implementation 'io.sentry:sentry-logback:8.65.0'
-// ___PRODUCT_OPTION_START___ profiling
-implementation 'io.sentry:sentry-async-profiler:8.65.0'
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 **SBT**
 
 ```scala
 libraryDependencies += "io.sentry" % "sentry-logback" % "8.65.0"
-// ___PRODUCT_OPTION_START___ profiling
-libraryDependencies += "io.sentry" % "sentry-async-profiler" % "8.65.0"
-// ___PRODUCT_OPTION_END___ profiling
 ```
 
 For other dependency managers, see the [central Maven repository](https://search.maven.org/artifact/io.sentry/sentry-logback).
@@ -132,22 +82,6 @@ For other dependency managers, see the [central Maven repository](https://search
 We recommend using our Gradle plugin as it can add integrations and provide source context for events.
 
 If you are manually adding multiple Sentry dependencies, you can add a [bill of materials](https://docs.sentry.io/platforms/java/configuration/bill-of-materials.md) to avoid specifying the version of each dependency.
-
-When running your application, please add our `sentry-opentelemetry-agent` to the `java` command.
-
-Download the latest version of the `sentry-opentelemetry-agent-8.65.0.jar` from [MavenCentral](https://search.maven.org/artifact/io.sentry/sentry-opentelemetry-agent):
-
-```bash
-curl https://repo1.maven.org/maven2/io/sentry/sentry-opentelemetry-agent/8.65.0/sentry-opentelemetry-agent-8.65.0.jar -o sentry-opentelemetry-agent-8.65.0.jar
-```
-
-Then run your application with:
-
-```bash
-SENTRY_PROPERTIES_FILE=sentry.properties JAVA_TOOL_OPTIONS="-javaagent:sentry-opentelemetry-agent-8.65.0.jar" java -jar your-application.jar
-```
-
-*Other available variations of the above snippet: Java CLI argument*
 
 ## [Configure](https://docs.sentry.io/platforms/java/guides/logback.md#configure)
 
@@ -170,11 +104,9 @@ The `ConsoleAppender` is provided only as an example of a non-Sentry appender se
     <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
     <appender name="Sentry" class="io.sentry.logback.SentryAppender">
         <options>
-            // ___PRODUCT_OPTION_START___ logs
             <logs>
                 <enabled>true</enabled>
             </logs>
-            // ___PRODUCT_OPTION_END___ logs
         </options>
     </appender>
 
@@ -187,38 +119,23 @@ The `ConsoleAppender` is provided only as an example of a non-Sentry appender se
 </configuration>
 ```
 
-```xml
-<configuration>
-    <!-- Configure the Console appender -->
-    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern
-      >%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
+Sentry Logs must be enabled for the appender to send log messages as Logs. If Sentry is initialized elsewhere, make sure Logs are enabled there. If the appender initializes the SDK, the `sentry.properties` file as shown in the section below enables them.
 
-    <!-- Configure the Sentry appender, overriding the logging threshold to the WARN level -->
-    <appender name="Sentry" class="io.sentry.logback.SentryAppender" />
+### [Set the DSN If Nothing Else Initializes Sentry](https://docs.sentry.io/platforms/java/guides/logback.md#set-the-dsn-if-nothing-else-initializes-sentry)
 
-    <!-- Enable the Console and Sentry appenders, Console is provided as an example
- of a non-Sentry logger that is set to a different logging threshold -->
-    <root level="INFO">
-        <appender-ref ref="Console" />
-        <appender-ref ref="Sentry" />
-    </root>
-</configuration>
-```
+You can skip this section if your application already initializes Sentry through [`Sentry.init`](https://docs.sentry.io/platforms/java.md), the [Spring](https://docs.sentry.io/platforms/java/guides/spring.md) or [Spring Boot](https://docs.sentry.io/platforms/java/guides/spring-boot.md) integration, or the [Sentry OpenTelemetry agent](https://docs.sentry.io/platforms/java/opentelemetry/setup/agent.md).
 
-### [SDK Configuration](https://docs.sentry.io/platforms/java/guides/logback.md#sdk-configuration)
-
-Configure the SDK using a `sentry.properties` file:
+If you haven't initialized Sentry elsewhere, the handler initializes the SDK for you. Configure it with a `sentry.properties` file:
 
 ```properties
 dsn=https://<key>@o<orgId>.ingest.sentry.io/<projectId>
+
+# Enable logs
+logs.enabled=true
+
 # Use Data Collection defaults but don't collect automatic user information.
 # https://docs.sentry.io/platforms/java/guides/logback/data-management/data-collected/
 data-collection.user-info=false
-# Configure other data categories here.
 ```
 
 You can also provide the DSN through the `sentry.dsn` system property or the `SENTRY_DSN` environment variable. [See the configuration page](https://docs.sentry.io/platforms/java/configuration.md) for more details on external configuration.
@@ -229,8 +146,7 @@ Two log levels are used to configure this integration:
 
 1. Configure the lowest level required for a log message to become an event (`minimumEventLevel`) sent to Sentry.
 2. Configure the lowest level a message has to be to become a breadcrumb (`minimumBreadcrumbLevel`).
-
-3) Configure the lowest level a message has to be to be sent as Sentry Log (`minimumLevel`).
+3. Configure the lowest level a message has to be to be sent as Sentry Log (`minimumLevel`).
 
 Setting `minimumEventLevel` or `minimumBreadcrumbLevel` in `logback.xml` only affects events logged by way of Logback. The settings will have no effect when calling `Sentry.captureMessage` or similar directly.
 
@@ -242,23 +158,8 @@ Breadcrumbs are kept in memory (by default the last 100 records) and are sent wi
     <minimumEventLevel>WARN</minimumEventLevel>
     <!-- Optionally change minimum Breadcrumbs level. Default for Breadcrumbs is INFO -->
     <minimumBreadcrumbLevel>DEBUG</minimumBreadcrumbLevel>
-    // ___PRODUCT_OPTION_START___ logs
     <!-- Optionally change minimum Log level. Default for Logs is INFO -->
     <minimumLevel>DEBUG</minimumLevel>
-    // ___PRODUCT_OPTION_END___ logs
-</appender>
-```
-
-```xml
-<appender name="Sentry" class="io.sentry.logback.SentryAppender">
-    <!-- Optionally change minimum Event level. Default for Events is ERROR -->
-    <minimumEventLevel>WARN</minimumEventLevel>
-    <!-- Optionally change minimum Breadcrumbs level. Default for Breadcrumbs is INFO -->
-    <minimumBreadcrumbLevel>DEBUG</minimumBreadcrumbLevel>
-    // ___PRODUCT_OPTION_START___ logs
-    <!-- Optionally change minimum Log level. Default for Logs is INFO -->
-    <minimumLevel>DEBUG</minimumLevel>
-    // ___PRODUCT_OPTION_END___ logs
 </appender>
 ```
 
@@ -280,53 +181,33 @@ Set `includeUnencodedMessage` to `true` when you also need the original template
 
 Original templates and parameters can contain sensitive data. Prefer this scoped appender option to `sendDefaultPii`; the legacy `sendDefaultPii=true` behavior remains supported for compatibility.
 
-The SDK can be configured using a `sentry.properties` file:
+## [Verify Your Setup](https://docs.sentry.io/platforms/java/guides/logback.md#verify-your-setup)
 
-```properties
-dsn=https://<key>@o<orgId>.ingest.sentry.io/<projectId>
-# Use Data Collection defaults but don't collect automatic user information.
-# https://docs.sentry.io/platforms/java/data-management/data-collected/
-data-collection.user-info=false
-# Configure other data categories here.
-# ___PRODUCT_OPTION_START___ performance
-traces-sample-rate=1.0
-# ___PRODUCT_OPTION_END___ performance
-// ___PRODUCT_OPTION_START___ logs
-logs.enabled=true
-// ___PRODUCT_OPTION_END___ logs
-// ___PRODUCT_OPTION_START___ profiling
-
-# Enable profiling
-profile-session-sample-rate=1.0
-profile-lifecycle=TRACE
-// ___PRODUCT_OPTION_END___ profiling
-```
-
-Learn more about setting up logging in our [Logs documentation](https://docs.sentry.io/platforms/java/guides/logback/logs.md).
-
-## [Verify](https://docs.sentry.io/platforms/java/guides/logback.md#verify)
-
-This snippet includes an intentional error, so you can test that everything is working as soon as you set it up.
+To verify that the integration is working, log an error through Logback:
 
 ```java
-import io.sentry.Sentry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-try {
-  throw new Exception("This is a test.");
-} catch (Exception e) {
-  Sentry.captureException(e);
-}
+Logger logger = LoggerFactory.getLogger("example");
+logger.error("This is a test.", new Exception("This is a test."));
 ```
 
-*Other available variations of the above snippet: Kotlin*
+### [View Captured Data in Sentry](https://docs.sentry.io/platforms/java/guides/logback.md#view-captured-data-in-sentry)
 
-Learn more about manually capturing an error or message in our [Usage documentation](https://docs.sentry.io/platforms/java/guides/logback/usage.md).
-
-To view and resolve the recorded error, log into [sentry.io](https://sentry.io) and select your project. Clicking on the error's title will open a page where you can see detailed information and mark it as resolved.
+Now, open the [**Logs**](https://sentry.io/orgredirect/organizations/:orgslug/explore/logs/) page and filter by service, environment, or search keywords to view log entries from your application (it takes a couple of moments for the data to appear).
 
 ## [Next Steps](https://docs.sentry.io/platforms/java/guides/logback.md#next-steps)
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
+* Learn more about [setting up logging](https://docs.sentry.io/platforms/java/guides/logback/logs.md)
+* Learn how to [send application metrics](https://docs.sentry.io/platforms/java/metrics.md) and [traces](https://docs.sentry.io/platforms/java/tracing.md)
+* Configure [profiling](https://docs.sentry.io/platforms/java/profiling.md) to capture performance data from your application
+
+Are you having problems setting up the SDK or integration?
+
+* Find various topics in [Troubleshooting](https://docs.sentry.io/platforms/java/guides/logback/troubleshooting.md)
+* [Get support](https://www.sentry.help/en/)
 
 ## Other Java Frameworks
 

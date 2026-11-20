@@ -209,7 +209,6 @@ Need help locating captured data in your Sentry project?
 At this point, you should have integrated Sentry into your Gatsby application. Here's what to explore next:
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
-* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/gatsby/agent-tracing.md) to monitor your AI systems
 * [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/gatsby/configuration/tunneling.md) to avoid ad blockers from blocking Sentry events
 
 Are you having problems setting up the SDK?

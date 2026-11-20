@@ -19,8 +19,8 @@ Trigger DNS verification for a domain claim.
 > [!NOTE]
 >
 > **After the claim completes:** the domain is transferred to your account as a
-> brand-new domain with its own DKIM keys, so the previous account's DNS records
-> can't be reused. Fetch it with [Retrieve
+> brand-new domain with its own DomainKeys Identified Mail (DKIM) keys, so the
+> previous account's DNS records can't be reused. Fetch it with [Retrieve
 > Domain](/docs/api-reference/domains/get-domain), update your DNS with the new DKIM
 > record(s), then run [Verify Domain](/docs/api-reference/domains/verify-domain) to
 > finish setup before sending or receiving email. See [DKIM

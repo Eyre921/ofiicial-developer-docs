@@ -54,9 +54,10 @@ curl https://api.stripe.com/v1/checkout/sessions \
 
 When creating a new [Checkout Session](https://docs.stripe.com/api/checkout/sessions.md), you need to:
 
-1. Add `link` to the list of `payment_method_types`.
-2. Make sure `card` is also included in the list of `payment_method_types`.
-3. Make sure all your `line_items` use the same currency.
+1. Enable Link in your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). The `allowed_payment_method_types` parameter only filters the payment methods you’ve enabled that are also eligible for the session.
+2. Add `link` to the list of [allowed_payment_method_types](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-allowed_payment_method_types).
+3. Make sure `card` is also included in the list of `allowed_payment_method_types`.
+4. Make sure all your `line_items` use the same currency.
 
 #### Ruby
 

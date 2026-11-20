@@ -12,6 +12,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 
 | Model | `model` ID |
 | - | - |
+| Kimi K3.1 Pro | `accounts/fireworks/routers/kimi-k3p1-pro-us` |
 | Kimi K3 | `accounts/fireworks/routers/kimi-k3-us` |
 | DeepSeek V4.1 Flash | `accounts/fireworks/routers/deepseek-v4p1-flash-us` |
 | DeepSeek V4.1 Flash 1017 | `accounts/fireworks/routers/deepseek-v4p1-flash-1017-us` |
@@ -50,7 +51,7 @@ To require this for every request on your account, see [Data residency](/account
 
 ## Pricing
 
-Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium. Muse Spark Open is US-only, and that premium is waived. See [Serverless pricing](/serverless/pricing).
+Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3.1 Pro (US) and Kimi K3 (US) already include this premium. Muse Spark Open is US-only, and that premium is waived. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

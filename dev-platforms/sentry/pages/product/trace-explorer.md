@@ -6,19 +6,19 @@ path: product/trace-explorer
 
 ---
 title: "Traces and Spans"
-description: "Learn how to use Sentry's Trace Explorer to search span data, find distributed traces, and debug performance issues across your entire application stack."
+description: "Search spans and traces to see how requests, jobs, and agent runs flow across your stack, and where they fail or slow down."
 url: https://docs.sentry.io/product/trace-explorer/
 ---
 
 # Traces and Spans | Sentry Docs
 
-[**Trace Explorer**](https://sentry.io/orgredirect/organizations/:orgslug/traces/) in Sentry is designed to make performance investigation easier and more intuitive. You can explore span samples, visualize span attributes, and aggregate your data with flexible queries and filters. This guide will walk you through the key concepts and features of Trace Explorer. To learn more about Explore as a whole, see [Explore](https://docs.sentry.io/product/explore.md).
+[**Trace Explorer**](https://sentry.io/orgredirect/organizations/:orgslug/traces/) is where you search and aggregate span data. Use it to follow a request, background job, or [agent run](https://docs.sentry.io/product/agents.md) across services and see where it failed or slowed down. You can explore span samples, visualize span attributes, and aggregate your data with flexible queries and filters. To learn more about Explore as a whole, see [Explore](https://docs.sentry.io/product/explore.md).
 
 ## [Key Concepts](https://docs.sentry.io/product/trace-explorer.md#key-concepts)
 
 ### [Traces](https://docs.sentry.io/product/trace-explorer.md#traces)
 
-* A trace represents a series of transactions or requests through a single system. This includes things like user browser sessions, HTTP requests, DB queries, middleware, caches and more.
+* A trace represents a series of transactions or requests across services: a page load, an HTTP request, a background job, or an agent run, including the database queries, cache calls, and tool executions along the way.
 * It captures a series of operations (*spans*) that show how different parts of your application interacted during each transaction.
 * Each trace is identified by a **Trace ID**, which you can use to follow a request across services or projects.
 * A [distributed trace](https://docs.sentry.io/platforms/javascript/tracing/distributed-tracing.md#what-is-distributed-tracing) is made of transactions and spans that traverse multiple servers, clients, edge workers, and other parts of your system. It is assembled by passing the Trace ID through browser headers.
@@ -39,14 +39,16 @@ You can group span durations by custom span attributes to investigate patterns, 
 ## [Practical Examples](https://docs.sentry.io/product/trace-explorer.md#practical-examples)
 
 * **See your changes in action**: Search for `span.domain is localhost:XXXX` and sort by Timestamp to see traces from your dev environment.
+* **Finding failed requests**: Search for `span.status:internal_error` or `http.status_code:500` and open a trace to see which service failed.
 * **Diagnosing slow pages**: Search for `span.op:navigation` and visualize `p90(span.duration)` to pinpoint slow page loads.
 * **Finding problematic API calls**: Aggregate by `http.url` and filter where `avg.(span.duration) > 2s` to identify slow external API calls.
 * **Database query analysis**: Aggregate by `db.query` and sort by `avg(span.duration)` to find inefficient queries.
 
 ### [Agent Tracing](https://docs.sentry.io/product/trace-explorer.md#agent-tracing)
 
-Set up [Agent Tracing](https://docs.sentry.io/platform-redirect.md?next=%2Fagent-tracing%2F) to capture traces for agents in Trace Explorer. [Agent traces](https://docs.sentry.io/product/agents.md) include model calls, tool executions, and token usage, so you can use the same search and aggregation tools when debugging agents.
+Set up [Agent Tracing](https://docs.sentry.io/platform-redirect.md?next=%2Fagent-tracing%2F) to debug agent runs in Trace Explorer. [Agent traces](https://docs.sentry.io/product/agents.md) include model calls, tool executions, and token usage on the same trace as the rest of the request.
 
+* **Debugging a failed run**: Search for `span.status:internal_error span.op:gen_ai.invoke_agent` and open the trace to see which step failed.
 * **Finding slow agent runs**: Search for `span.op:gen_ai.invoke_agent` and visualize `p90(span.duration)` grouped by `gen_ai.agent.name` to compare traces for agents.
 * **Debugging tool calls**: Search for `span.op:gen_ai.execute_tool` and visualize `avg(span.duration)` grouped by `gen_ai.tool.name` to find tools that stall your agent.
 

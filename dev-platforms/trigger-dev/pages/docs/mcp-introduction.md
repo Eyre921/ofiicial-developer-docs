@@ -20,7 +20,7 @@ The Trigger.dev MCP (Model Context Protocol) Server enables AI assistants to int
 
 > [!NOTE]
 >
-> This page covers the CLI MCP server, which runs locally and can deploy and run your dev server. To connect over HTTP without installing anything, use the [remote MCP server](/docs/mcp-remote).
+> This page covers the CLI MCP server, which runs locally and can deploy and run your dev server.
 
 ## Installation
 

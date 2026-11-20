@@ -140,6 +140,8 @@ Klarna can present customers with different payment options, depending on the lo
 
 Cart ranges and geographic availability for payment options are determined by Klarna and might change at their discretion. Regardless of the underlying payment option selected, Stripe makes the full amount of the funds (minus fees) available to you upfront and Klarna collects the purchase amount from your customer, who repays Klarna directly.
 
+Bespoke legacy configurations can have different transaction amount limits. A zero minimum in these tables describes Klarna’s threshold, not support for zero-value payments on Stripe.
+
 Select the region, then the country where you plan to accept payments to see the supported options, use cases (including  one-time, recurring short and long-term subscriptions, mixed cart, and on-demand payments), and transaction amount limits.
 
 > If a Klarna payment uses the `setup_future_usage` parameter, it’s considered a recurring payment, which limits the available payment options. If you set `setup_future_usage`, your payment page might not display payment plans that a customer is eligible for. This applies to integrations that use a [hosted page, an embedded form, or Elements](https://docs.stripe.com/payments/checkout.md#payment-uis).
@@ -263,11 +265,15 @@ Payment options | Use cases | Transaction amount limits |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
 - Long-term subscriptions (longer than 2 months)
-- On-demand payments | 0.1-5,000 EUR |
+- On-demand payments | 1-5,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
   - 1-5,000 EUR |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 25-5,000 EUR |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 5,000 EUR
+- Minimum by term:
+  - 6 months: 25 EUR
+  - 12 months: 120 EUR
+  - 24 or 36 months: 1,000 EUR |
 
 ### Supported payment options for Belgium
 
@@ -281,7 +287,7 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-10,000 EUR |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 1-1,500 EUR |
+- Long-term subscriptions (longer than 2 months) | 1-5,000 EUR |
 
 ### Supported payment options for Switzerland
 
@@ -295,10 +301,10 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 1-1,585 CHF |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 1-1,000 CHF |
+- Long-term subscriptions (longer than 2 months) | 1-15,000 CHF |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-5,000 CHF |
+  - 1-15,000 CHF |
 
 ### Supported payment options for Czechia
 
@@ -312,10 +318,10 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-100,000 CZK |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-12,250 CZK |
+- Long-term subscriptions (longer than 2 months) | 0-60,000 CZK |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 25-25,000 CZK |
+  - 25-60,000 CZK |
 
 ### Supported payment options for Germany
 
@@ -330,11 +336,15 @@ Payment options | Use cases | Transaction amount limits |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
 - Long-term subscriptions (longer than 2 months)
-- On-demand payments | 0.1-10,000 EUR |
+- On-demand payments | 1-10,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
   - 1-5,000 EUR |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 25-10,000 EUR |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 10,000 EUR
+- Minimum by term:
+  - 6 months: 25 EUR
+  - 12 months: 120 EUR
+  - 24 or 36 months: 1,000 EUR |
 
 ### Supported payment options for Denmark
 
@@ -365,10 +375,10 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-10,000 EUR |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-500 EUR |
+- Long-term subscriptions (longer than 2 months) | 0-3,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-3,000 EUR |
+  - 1-4,500 EUR |
 
 ### Supported payment options for Finland
 
@@ -382,8 +392,14 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-10,000 EUR |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 1-3,000 EUR |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 25-3,000 EUR |
+- Long-term subscriptions (longer than 2 months) | 1-10,000 EUR |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 10,000 EUR
+- Minimum by term:
+  - 3 months: 15 EUR
+  - 6 months: 25 EUR
+  - 12 months: 60 EUR
+  - 24 months: 120 EUR
+  - 36 months: 180 EUR |
 
 ### Supported payment options for France
 
@@ -397,10 +413,10 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-4,000 EUR |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-500 EUR |
+- Long-term subscriptions (longer than 2 months) | 0-3,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-3,000 EUR |
+  - 1-4,500 EUR |
 
 ### Supported payment options for United Kingdom
 
@@ -414,11 +430,15 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-4,000 GBP |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 1-1,500 GBP |
+- Long-term subscriptions (longer than 2 months) | 1-8,000 GBP |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-2,000 GBP |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 250-5,000 GBP |
+  - 1-8,000 GBP |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 8,000 GBP
+- Minimum by term:
+  - 6 months: 60 GBP
+  - 12 months: 120 GBP
+  - 24 months: 360 GBP |
 
 ### Supported payment options for Greece
 
@@ -432,10 +452,10 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-4,000 EUR |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-500 EUR |
+- Long-term subscriptions (longer than 2 months) | 0.1-1,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-1,000 EUR |
+  - 1-1,500 EUR |
 
 ### Supported payment options for Ireland
 
@@ -449,7 +469,7 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-4,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-3,000 EUR |
+  - 1-2,100 EUR |
 
 ### Supported payment options for Italy
 
@@ -463,11 +483,14 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-4,000 EUR |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-500 EUR |
+- Long-term subscriptions (longer than 2 months) | 0-3,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-3,000 EUR |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 35-3,000 EUR |
+  - 1-4,500 EUR |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 3,000 EUR
+- Minimum by term:
+  - 6 months: 35 EUR
+  - 12 months: 120 EUR |
 
 ### Supported payment options for Netherlands
 
@@ -484,7 +507,7 @@ Payment options | Use cases | Transaction amount limits |
 - Long-term subscriptions (longer than 2 months) | 1-5,000 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 25-5,000 EUR |
+  - 1-5,000 EUR |
 
 ### Supported payment options for Norway
 
@@ -494,11 +517,17 @@ Payment options | Use cases | Transaction amount limits |
 | **Pay in full**: Customers pay for the purchase immediately using a linked card, bank debit, or bank transfer. | - One-time payments | 1-100,000 NOK |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-75,000 NOK |
+- Long-term subscriptions (longer than 2 months) | 1-150,000 NOK |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 10-75,000 NOK |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 250-75,000 NOK |
+  - 10-100,000 NOK |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 150,000 NOK
+- Minimum by term:
+  - 3 months: 150 NOK
+  - 6 months: 250 NOK
+  - 12 months: 600 NOK
+  - 24 months: 1,200 NOK
+  - 36 months: 1,800 NOK |
 
 ### Supported payment options for Poland
 
@@ -508,9 +537,9 @@ Payment options | Use cases | Transaction amount limits |
 | **Pay in full**: Customers pay for the purchase immediately using a linked card, bank debit, or bank transfer. | - One-time payments | 0-20,000 PLN |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 1-7,000 PLN |
+- Long-term subscriptions (longer than 2 months) | 1-15,000 PLN |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments | - Pay in 3
-  - 5-5,000 PLN |
+  - 5-15,000 PLN |
 
 ### Supported payment options for Portugal
 
@@ -524,10 +553,10 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-4,000 EUR |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-500 EUR |
+- Long-term subscriptions (longer than 2 months) | 0-2,100 EUR |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 1-1,000 EUR |
+  - 1-2,100 EUR |
 
 ### Supported payment options for Romania
 
@@ -541,10 +570,10 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-20,000 RON |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
-- Long-term subscriptions (longer than 2 months) | 0-2,500 RON |
+- Long-term subscriptions (longer than 2 months) | 0-12,500 RON |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 3
-  - 5-5,000 RON |
+  - 5-12,500 RON |
 
 ### Supported payment options for Sweden
 
@@ -559,8 +588,14 @@ Payment options | Use cases | Transaction amount limits |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
 - Long-term subscriptions (longer than 2 months)
-- On-demand payments | 1-100,000 SEK |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 250-100,000 SEK |
+- On-demand payments | 1-150,000 SEK |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 150,000 SEK
+- Minimum by term:
+  - 3 months: 150 SEK
+  - 6 months: 250 SEK
+  - 12 months: 600 SEK
+  - 24 months: 1,200 SEK
+  - 36 months: 1,800 SEK |
 
 ### Supported payment options for Australia
 
@@ -569,7 +604,7 @@ Payment options | Use cases | Transaction amount limits |
 | --- | --- | --- |
 | **Pay in full**: Customers pay for the purchase immediately using a linked card, bank debit, or bank transfer. | - One-time payments | 0-4,000 AUD |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments | - Pay in 4
-  - 10-2,000 AUD |
+  - 1-2,000 AUD |
 
 ### Supported payment options for New Zealand
 
@@ -577,7 +612,7 @@ Payment options | Use cases | Transaction amount limits |
 Payment options | Use cases | Transaction amount limits |
 | --- | --- | --- |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments | - Pay in 4
-  - 10-2,000 NZD |
+  - 1-4,000 NZD |
 
 ### Supported payment options for Canada
 
@@ -591,8 +626,14 @@ Payment options | Use cases | Transaction amount limits |
 - On-demand payments | 0-2,000 CAD |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 4
-  - 1-1,500 CAD |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 250-17,500 CAD |
+  - 1-8,000 CAD |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 10,000 CAD
+- Minimum by term:
+  - 3 months: 15 CAD
+  - 6 months: 25 CAD
+  - 12 months: 60 CAD
+  - 18 months: 90 CAD
+  - 24 months: 120 CAD |
 
 ### Supported payment options for United States
 
@@ -607,13 +648,21 @@ Payment options | Use cases | Transaction amount limits |
 | **Pay later**: Customers pay for the purchase in a single payment in 30 days. | - One-time payments
 - Short-term subscriptions (weekly or monthly)
 - Long-term subscriptions (longer than 2 months)
-- On-demand payments | 5-1,000 USD |
+- On-demand payments | 0-10,000 USD |
 | **Pay in 3 or 4**: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. | - One-time payments
 - Long-term subscriptions (longer than 2 months) | - Pay in 4
-  - 1-2,000 USD |
-| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | 45-10,000 USD |
+  - 1-10,000 USD |
+| **Financing**: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. | - One-time payments | - Maximum: 30,000 USD
+- Minimum by term:
+  - 3 months: 45 USD
+  - 6 months: 60 USD
+  - 12 months: 120 USD
+  - 18 months: 599 USD
+  - 24 months: 999 USD |
 
 ### Payment options for all countries
+
+Financing ranges start at each market’s lowest term-specific minimum. Select a country in the [country tables](https://docs.stripe.com/payments/klarna.md#payment-options) for minimums by term.
 
 | Payment option | Customer country1 | Minimum/maximum |
 | --- | --- | --- |
@@ -679,22 +728,21 @@ Payment options | Use cases | Transaction amount limits |
 - PT
 - RO
 - SE
-- US | - 1-1,000 CHF
-- 0-12,250 CZK
+- US | - 1-15,000 CHF
+- 0-60,000 CZK
 - 1-50,000 DKK
 - EUR:
-  - Austria: 0.1-5,000
-  - Belgium: 1-1,500
-  - France, Greece, Italy, Portugal, Spain: 0-500
-  - Germany: 0.1-10,000
-  - Netherlands: 1-5,000
-  - Finland: 1-3,000
-- 1-1,500 GBP
-- 0-75,000 NOK
-- 1-7,000 PLN
-- 0-2,500 RON
-- 1-100,000 SEK
-- 5-1,000 USD |
+  - Austria, Belgium, Netherlands: 1-5,000
+  - Finland, Germany: 1-10,000
+  - France, Italy, Spain: 0-3,000
+  - Greece: 0.1-1,000
+  - Portugal: 0-2,100
+- 1-8,000 GBP
+- 1-150,000 NOK
+- 1-15,000 PLN
+- 0-12,500 RON
+- 1-150,000 SEK
+- 0-10,000 USD |
 | **Pay in 3 or 4**4: Customers pay for the purchase in three or four interest-free payments. The total transaction amount is typically spread equally across the installments, but Klarna might occasionally charge your customer more in the first installment based on the customer’s purchase power and other credit factors. Use cases:
 - One-time payments
 - Long-term subscriptions (longer than 2 months) | - AT
@@ -717,23 +765,23 @@ Payment options | Use cases | Transaction amount limits |
 - PT
 - RO
 - US | - Pay in 3
-  - 1-5,000 CHF
-  - 25-25,000 CZK
+  - 1-15,000 CHF
+  - 25-60,000 CZK
   - 10-50,000 DKK
   - EUR:
-    - Austria, Germany: 1-5,000
-    - France, Ireland, Italy, Spain: 1-3,000
-    - Netherlands: 25-5,000
-    - Greece, Portugal: 1-1,000
-  - 1-2,000 GBP
-  - 10-75,000 NOK
-  - 5-5,000 PLN
-  - 5-5,000 RON
+    - Austria, Germany, Netherlands: 1-5,000
+    - France, Italy, Spain: 1-4,500
+    - Greece: 1-1,500
+    - Ireland, Portugal: 1-2,100
+  - 1-8,000 GBP
+  - 10-100,000 NOK
+  - 5-15,000 PLN
+  - 5-12,500 RON
 - Pay in 4
-  - 10-2,000 AUD
-  - 1-1,500 CAD
-  - 10-2,000 NZD
-  - 1-2,000 USD |
+  - 1-2,000 AUD
+  - 1-8,000 CAD
+  - 1-4,000 NZD
+  - 1-10,000 USD |
 | **Financing**5: Customers pay for the purchase over a longer term of up to 36 months, which might include interest. Not all customers are approved for the maximum amount, and approval is subject to creditworthiness. Use cases:
 - One-time payments | - AT
 - CA
@@ -743,16 +791,16 @@ Payment options | Use cases | Transaction amount limits |
 - IT
 - NO
 - SE
-- US | - 250-17,500 CAD
+- US | - From 15 CAD to 10,000 CAD
 - EUR:
-  - Austria: 25-5,000
-  - Finland: 25-3,000
-  - Germany: 25-10,000
-  - Italy: 35-3,000
-- 250-5,000 GBP
-- 250-75,000 NOK
-- 250-100,000 SEK
-- 45-10,000 USD |
+  - Austria: from 25 to 5,000
+  - Finland: from 15 to 10,000
+  - Germany: from 25 to 10,000
+  - Italy: from 35 to 3,000
+- From 60 GBP to 8,000 GBP
+- From 150 NOK to 150,000 NOK
+- From 150 SEK to 150,000 SEK
+- From 45 USD to 30,000 USD |
 
 1 Among US territories, Klarna only supports Puerto Rico for all payment options. Pay later is supported in all states except Montana (MT), New Mexico (NM), and Hawaii (HI). Pay in 4 is supported in all states except New Mexico (NM) and Hawaii (HI). Financing is supported in all states except Iowa (IA), West Virginia (WV), and Massachusetts (MA).
 

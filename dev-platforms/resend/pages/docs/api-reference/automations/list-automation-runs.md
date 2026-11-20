@@ -9,7 +9,7 @@ Retrieve a list of automation runs.
 
 ## Path Parameters
 
-The automation ID.
+The Automation ID.
 
 ## Query Parameters
 

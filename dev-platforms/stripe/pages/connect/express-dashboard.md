@@ -87,19 +87,22 @@ In profile settings, you can change the preferred language and the color scheme,
 
 ## Access the Express Dashboard
 
-We recommend providing login links to your connected accounts so they can access their Express Dashboard. You can also give them direct access.
+We recommend providing account-specific links from your platform to your connected accounts so they can access their Express Dashboard. You can also give them direct access.
 
-### Login links 
+### Platform links 
 
-You can generate single-use, account-specific login links that redirect your connected accounts from your platform application to the Express Dashboard login page. They can log in using SMS or email authentication.
+You can generate single-use, account-specific links that redirect your connected accounts from your platform application to the Express Dashboard login page. They can log in using SMS or email authentication. The type of link depends on the connected account’s API model:
 
-Learn how to [integrate the Express Dashboard in your platform](https://docs.stripe.com/connect/integrate-express-dashboard.md) to create login links.
+- **Accounts v2**: Create an Account Link with the [Account Links v2 API](https://docs.stripe.com/api/v2/core/account-links/create.md) and the `account_dashboard` use case.
+- **Accounts v1**: Create a login link with the [Login Links v1 API](https://docs.stripe.com/api/accounts/login_link.md).
+
+Learn how to [integrate the Express Dashboard in your platform](https://docs.stripe.com/connect/integrate-express-dashboard.md) to create these links.
 
 ### Direct access 
 
 Connected accounts can access the Express Dashboard by logging into <https://connect.stripe.com/express_login> using their account email and an authentication code sent to their phone by SMS or to their email.
 
-Only live mode accounts can log in to <https://connect.stripe.com/express_login>. Connected accounts using a sandbox account can only access the Express Dashboard through a [login link](https://docs.stripe.com/connect/integrate-express-dashboard.md).
+You can only sign in directly to the [Express Dashboard](https://connect.stripe.com/express_login) for live mode accounts. To access the Express Dashboard for a connected account in a sandbox, use a [platform-generated link](https://docs.stripe.com/connect/integrate-express-dashboard.md). Use a Dashboard Account Link for Accounts v2 or a login link for Accounts v1.
 
 Learn more about [direct access to the Express Dashboard](https://support.stripe.com/express/questions/how-do-i-login-to-my-stripe-express-account).
 

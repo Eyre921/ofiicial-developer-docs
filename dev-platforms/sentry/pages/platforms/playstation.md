@@ -35,6 +35,29 @@ If you're using Unity or Unreal Engine, use the engine-specific SDK instead of i
 
 For custom engines or native C++ games, request access to integrate the console SDK directly as described above.
 
+## [Feature Highlights](https://docs.sentry.io/platforms/playstation.md#feature-highlights)
+
+PlayStation 5 support was originally introduced in Native SDK `0.8.5`.
+
+* **Screenshots**\
+  Screenshot attachments imported through the PlayStation CRS integration.
+
+* **Device Context**\
+  Automatic console model, family, and manufacturer context, including PS5 Pro detection.\
+  Available since `0.10.1+20250903` (expanded console context since `0.15.3-20260707`).
+
+* **Crash Attachments**\
+  Log files and other custom files attached to PlayStation crash reports.\
+  Available since `0.11.3+20251020`.
+
+* [**Non-Fatal Stack Traces**](https://docs.sentry.io/platforms/unreal/configuration/debug-symbols.md)\
+  Symbolicated stack traces for messages and ensures in Unreal Development/Test builds.\
+  Available since `0.16.0-20260729`.
+
+* [**Crash-Free Session Tracking**](https://docs.sentry.io/platforms/native/configuration/releases.md#release-health)\
+  Track crashed sessions through PlayStation crash reports without requiring a subsequent game launch.\
+  Available since `0.17.5-20261029`.
+
 ***
 
 "PlayStation", "PS5" are registered trademarks or trademarks of Sony Interactive Entertainment Inc.

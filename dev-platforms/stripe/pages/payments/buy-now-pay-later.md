@@ -84,7 +84,7 @@ In the buy now, pay later checkout process, the customer:
 | [Klarna](https://docs.stripe.com/payments/klarna.md) | Australia, Austria, Belgium, Canada, Czechia, Denmark, Finland, France, Germany, Greece, Ireland, Italy, Netherlands, New Zealand, Norway, Poland, Portugal, Spain, Sweden, Switzerland, United Kingdom, United States | - Pay in 3 or 4 interest-free installments
 - Pay in 30 days
 - Pay in full with stored payment details
-- Monthly payments for up to 36 months | 10 USD minimum or local equivalent. (Amounts over 5,000 USD for financing possible; maximum varies by customer) |
+- Monthly payments for up to 36 months | Limits vary by customer country and payment option. See [Klarna payment options](https://docs.stripe.com/payments/klarna.md#payment-options). |
 | [Meses sin intereses](https://docs.stripe.com/payments/mx-installments.md) | Mexico | Extend payments over 3 to 24 months of billing cycles | [Minimum transaction](https://docs.stripe.com/payments/mx-installments.md#fees) amount of 100 MXN per month of extension |
 | [Zip](https://docs.stripe.com/payments/zip.md)2 | Australia, United States | - Zip Pay: Pay using a 1,000 AUD credit, repay in your own time
 - Zip Money: Pay in a minimum of 3 monthly interest-free installments

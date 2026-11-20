@@ -76,6 +76,8 @@ Account cost by model. Names and amounts are illustrative.
 
 The dashboard covers Fireworks model usage and cost only. It doesn't include usage billed by closed-model providers.
 
+Claude Code [auto mode safety checks](/nexus/harnesses/claude-code#auto-mode-safety-checks) run at Fireworks, so they appear in the dashboard but not in the status line or session meter.
+
 ## Know which number you are reading
 
 * **Status line and session meter:** a local estimate from token counts and published model rates.

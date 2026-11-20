@@ -175,7 +175,7 @@ Whether you see this prompt depends on your [permission mode](/docs/en/permissio
 | Bypass permissions | Claude Code doesn't prompt you. The run starts immediately |
 | `claude -p`, Agent SDK | Claude Code doesn't prompt you |
 
-In `claude -p` and the Agent SDK, Claude Code never shows this prompt. It runs the Workflow tool call through the same [permission evaluation](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) as the rest of the session, so deny rules, ask rules, and `dontAsk` mode apply to the launch as they apply to every tool call. To let the workflow start in these runs, use one of these:
+In `claude -p` and the Agent SDK, the Workflow tool call goes through the same [permission evaluation](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) as the rest of the session. Deny rules, ask rules, and `dontAsk` mode apply to the call. To let the workflow start in these runs, use one of these:
 
 * **Permission rule**: add `Workflow` to your allow rules to approve every workflow, or `Workflow(<name>)` to approve one saved workflow by name.
 * **Auto permission mode**: run in [auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode), where the classifier reviews the call and can approve it.

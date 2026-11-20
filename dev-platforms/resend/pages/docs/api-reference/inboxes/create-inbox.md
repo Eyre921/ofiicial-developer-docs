@@ -10,9 +10,9 @@ Create an inbox to send, receive and organize email.
 An inbox sends and receives email at an address on one of your domains, such as
 `support@example.com`.
 
-Without `forwarding`, the domain must have receiving enabled, with DKIM and SPF
+Without `forwarding`, the domain must have receiving enabled, with DomainKeys Identified Mail (DKIM) and Sender Policy Framework (SPF)
 verified and the inbound MX record verified or pending. With `forwarding` set to
-`true`, the domain needs only DKIM and SPF verified. Otherwise, the request
+`true`, the domain needs only those DKIM and SPF records verified. Otherwise, the request
 returns a `422`. An address that is already in use
 returns a `409`. A team at the inbox limit of its plan gets a `403`.
 

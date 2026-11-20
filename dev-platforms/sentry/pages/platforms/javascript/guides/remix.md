@@ -71,9 +71,9 @@ npx @sentry/wizard@latest -i remix
 
 To configure Sentry manually, follow the [Manual Setup](https://docs.sentry.io/platforms/javascript/guides/remix/manual-setup.md) guide.
 
-## [Configure Server-Side Performance Monitoring](https://docs.sentry.io/platforms/javascript/guides/remix.md#configure-server-side-performance-monitoring)
+## [Configure Client-Side Tracing](https://docs.sentry.io/platforms/javascript/guides/remix.md#configure-client-side-tracing)
 
-To capture performance data on the server side, wrap your Remix root component (`root.tsx`) with `withSentry`:
+To trace client-side navigations and see where they fail or slow down, wrap your Remix root component (`root.tsx`) with `withSentry`:
 
 ```tsx
 import {
@@ -217,7 +217,7 @@ At this point, you should have integrated Sentry into your application. Here's w
 
 * Explore [practical guides](https://docs.sentry.io/get-started/guides.md) on what to monitor, log, track, and investigate after setup
 * [Set up tunneling](https://docs.sentry.io/platforms/javascript/guides/remix/troubleshooting.md#dealing-with-ad-blockers) to avoid ad blockers blocking Sentry events
-* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/remix/agent-tracing.md) to monitor your AI systems
+* [Set up Agent Tracing](https://docs.sentry.io/platforms/javascript/guides/remix/agent-tracing.md) to follow agent runs from system prompt to final output, capturing every model call, tool execution, and handoff as a span
 
 Are you having problems setting up the SDK?
 
