@@ -2263,7 +2263,7 @@ import { loadConnectAndInitialize } from "@stripe/connect-js";
   "scripts": {
     "start-client": "parcel watch",
     "start-server": "node server.js",
-    "start": "concurrently \"yarn start-client\" \"yarn start-server\"",
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\"",
     "build": "parcel build"
   },
   "author": "",
@@ -2305,7 +2305,7 @@ import { loadConnectAndInitialize } from "@stripe/connect-js";
         "build": "parcel build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
-        "start": "concurrently \"yarn start-client\" \"yarn start-server\""
+        "start": "concurrently \"npm run start-client\" \"npm run start-server\""
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -3128,7 +3128,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_INSERT_YOUR_PUBLISHABLE_KEY
     "start-client": "parcel watch",
     "start-server": "node server.js",
     "build": "parcel build",
-    "start": "concurrently \"yarn start-client\" \"yarn start-server\""
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\""
   },
   "dependencies": {
     "@stripe/connect-js": "3.3.13",

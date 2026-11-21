@@ -2706,7 +2706,7 @@ Use these test debit card numbers to test payouts to a debit card. You can only 
 | 4000057840000006 | `tok_visa_debit_ae_transferSuccess` | Visa debit. Payout succeeds. |
 | 4000057840000014 | `tok_visa_debit_ae_transferFail` | Visa debit. Payout fails with a `could_not_process` code. |
 | 4000057840000022 | `tok_visa_debit_ae_instantPayoutUnsupported` | Visa debit. Card isn’t eligible for Instant Payouts. |
-| 4000007840000006 | `tok_visa_credit_ae` | Visa credit. Card Not Supported (invalid card type). |
+| 4000007840000001 | `tok_visa_credit_ae` | Visa credit. Card Not Supported (invalid card type). |
 | 5555057840000002 | `tok_mastercard_debit_ae_transferSuccess` | Mastercard debit. Payout succeeds. |
 
 #### United Kingdom

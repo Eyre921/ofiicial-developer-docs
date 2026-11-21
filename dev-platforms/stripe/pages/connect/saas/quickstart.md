@@ -49,7 +49,7 @@ const SubscribeBtn = ({ accountId }) => {
         });
 
         if (!response.ok) {
-            console.error("Subscription failed:", data);
+            console.error("Subscription failed:", await response.text());
             return;
         }
         const data = await response.json();

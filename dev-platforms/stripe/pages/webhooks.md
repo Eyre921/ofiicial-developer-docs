@@ -427,7 +427,7 @@ Stripe sends most event types asynchronously, but waits for a response for some 
 If your event destination receives [Organization](https://docs.stripe.com/get-started/account/orgs.md) events, those requiring a response have the following limitations:
 
 - You can’t subscribe to `issuing_authorization.request` for organization destinations. Instead, set up a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) in a Stripe account within the organization to subscribe to this event type. Use `issuing_authorization.request` to authorize purchase requests in real-time.
-- Organization destinations receiving `checkout_sessions.completed` can’t [handle redirect behavior](https://docs.stripe.com/checkout/fulfillment.md#redirect-hosted-checkout) when you embed [Checkout](https://docs.stripe.com/payments/checkout.md) directly in your website or redirect customers to a Stripe-hosted payment page. To influence Checkout redirect behavior, process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization.
+- Organization destinations receiving `checkout.session.completed` can’t [handle redirect behavior](https://docs.stripe.com/checkout/fulfillment.md#redirect-hosted-checkout) when you embed [Checkout](https://docs.stripe.com/payments/checkout.md) directly in your website or redirect customers to a Stripe-hosted payment page. To influence Checkout redirect behavior, process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization.
 - Organization destinations responding unsuccessfully to an `invoice.created` event can’t influence [automatic invoice finalization when using automatic collection](https://docs.stripe.com/billing/subscriptions/webhooks.md#understand). You must process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization to trigger automatic invoice finalization.
 
 #### Using context 
@@ -443,17 +443,27 @@ require 'json'
 
 client = Stripe::StripeClient.new('sk_...')
 
+# Replace this endpoint secret with your unique endpoint secret key
+# If you're testing with the CLI, run 'stripe listen' to find the secret key
+endpoint_secret = 'whsec_...'
+
 # Using Sinatra
 post '/webhook' do
   payload = request.body.read
+  sig_header = request.env['HTTP_STRIPE_SIGNATURE']
   event = nil
 
   begin
-    event = Stripe::Event.construct_from(
-      JSON.parse(payload, symbolize_names: true)
+    # Verify the signature before you trust any field, including context
+    event = Stripe::Webhook.construct_event(
+      payload, sig_header, endpoint_secret
     )
   rescue JSON::ParserError => e
     # Invalid payload
+    status 400
+    return
+  rescue Stripe::SignatureVerificationError => e
+    # Invalid signature
     status 400
     return
   end

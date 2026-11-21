@@ -20,8 +20,8 @@ In addition, you must report an aggregated list of complaints to Stripe on a mon
 
 | Complaint type | Notification to Stripe | Acknowledgement to customer | Resolution | Aggregated reporting |
 | --- | --- | --- | --- | --- |
-| Executive | Within 1-2 business days | Within 5 business days | Within 15 business days | Monthly by the 10th of the month |
-| Operational | Reasonable access, upon request | Within 5 business days | Within 15 business days | Monthly by the 10th of the month |
+| Executive | Within 1-2 business days | Within 5 business days | Within 15 business days | Monthly by the 10th of the following month |
+| Operational | Reasonable access, upon request | Within 5 business days | Within 15 business days | Monthly by the 10th of the following month |
 
 To demonstrate your adherence to these complaint handling requirements, keep thorough records of all complaints. This includes email interactions and any documentation developed in the course of resolving complaints.
 
@@ -132,7 +132,7 @@ Examples of what isn’t a complaint:
 
 ## Complaints tracking
 
-Stripe requires all Issuing and Treasury for platforms users to regularly share complaints received from their connected accounts. You must complete reporting each month before the 10th calendar day of the following month.
+Stripe requires all Issuing and Treasury for platforms users to regularly share complaints received from their connected accounts. You must complete reporting each month by the 10th calendar day of the following month.
 
 Each platform receives a unique and secure form after onboarding to record complaints.
 

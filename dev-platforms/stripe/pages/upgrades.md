@@ -88,7 +88,7 @@ The [stripe-php](https://github.com/stripe/stripe-php) library allows you to set
 
 If you don’t set an API version, recent versions of stripe-php use the API version that was latest at the time your version of stripe-php was released. Versions of stripe-php before [v11](https://github.com/stripe/stripe-php/blob/master/CHANGELOG.md#1100---2023-08-16) use your account’s default API version.
 
-To set the API version **globally** with the SDK, pass the version to the `\Stripe\Stripe::setApiVersion()` method:
+To set the API version **globally** with the SDK, pass the `stripe_version` option when you create the `\Stripe\StripeClient`:
 
 ```php
 $stripe = new \Stripe\StripeClient([

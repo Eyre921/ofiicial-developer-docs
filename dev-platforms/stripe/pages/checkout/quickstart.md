@@ -888,7 +888,7 @@ export default async function Success({ searchParams }) {
 
   const {
     status,
-    customer_details: { email: customerEmail }
+    customer_details
   } = await stripe.checkout.sessions.retrieve(session_id, {
     expand: ['line_items', 'payment_intent']
   })
@@ -902,7 +902,7 @@ export default async function Success({ searchParams }) {
       <section id="success">
         <p>
           We appreciate your business! A confirmation email will be sent to{' '}
-          {customerEmail}. If you have any questions, please email{' '}
+          {customer_details?.email}. If you have any questions, please email{' '}
           <a href="mailto:orders@example.com">orders@example.com</a>.
         </p>
       </section>

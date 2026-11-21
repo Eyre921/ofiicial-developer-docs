@@ -57,7 +57,7 @@ curl https://api.stripe.com/v1/disputes/{{DISPUTE_ID}} \
 
 To view all available fields for the `evidence` parameter, see [Dispute evidence](https://docs.stripe.com/api/disputes/update.md#update_dispute-evidence). There are two types of evidence you can provide, depending on the field being updated:
 
-- Text-based evidence, such as `customer_email` and `service_date`. These types of evidence take a string of text.
+- Text-based evidence, such as `customer_email_address` and `service_date`. These types of evidence take a string of text.
 - File-based evidence, such as `service_documentation` and `customer_communication`. These take a [file_upload](https://docs.stripe.com/api/files/object.md#file_object-id) object ID.
 
 > The combined character count for all text-based evidence field submissions is limited to 150,000.

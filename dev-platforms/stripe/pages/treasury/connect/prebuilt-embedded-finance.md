@@ -89,18 +89,19 @@ After you request the capabilities for each account configuration, Stripe return
 
 You must collect the requirements from your connected accounts to enable the requested capabilities. You can use the [Connect embedded onboarding](https://docs.stripe.com/connect/supported-embedded-components/account-onboarding.md) component to collect onboarding requirements from your connected accounts.
 
-1. Create or update the connected account, requesting `money_manager` and `card_creator` capabilities. Choose the card program that Stripe has enabled for your platform.
+1. Update the connected account to add the `money_manager` and `card_creator` configurations and request their capabilities. Choose the card program that Stripe has enabled for your platform. To create a new connected account with these capabilities, see [Enable financial account-funded Issuing](https://docs.stripe.com/treasury/connect/onboard-with-card-creator.md#enable-capabilities).
 
    #### Celtic Bank spend card
 
    ```curl
-   curl -X POST https://api.stripe.com/v2/core/accounts \
+   curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-11-18.preview" \
      --json '{
        "include": [
            "configuration.money_manager",
-           "configuration.card_creator"
+           "configuration.card_creator",
+           "requirements"
        ],
        "configuration": {
            "money_manager": {
@@ -168,13 +169,14 @@ You must collect the requirements from your connected accounts to enable the req
    #### Cross River Bank prepaid card
 
    ```curl
-   curl -X POST https://api.stripe.com/v2/core/accounts \
+   curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_ACCOUNT_ID}} \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
      -H "Stripe-Version: 2026-11-18.preview" \
      --json '{
        "include": [
            "configuration.money_manager",
-           "configuration.card_creator"
+           "configuration.card_creator",
+           "requirements"
        ],
        "configuration": {
            "money_manager": {

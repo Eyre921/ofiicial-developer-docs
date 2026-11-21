@@ -11,6 +11,7 @@ path: changelog/llms.txt
 
 ## Entries
 
+- [November 20, 2026](https://developers.deepgram.com/changelog/2026/11/20.md): Agents can now buy Deepgram Nova-3, Flux TTS, and Aura-2 per request through AWS Marketplace with x402 and Amazon Bedrock AgentCore payments.
 - [November 17, 2026](https://developers.deepgram.com/changelog/2026/11/17.md)
 - [November 16, 2026](https://developers.deepgram.com/changelog/2026/11/16.md)
 - [Deepgram CLI 0.5.0: dg speak gets --out-file, dg init needs --yes outside a terminal](https://developers.deepgram.com/changelog/2026/11/13.md): Changes how dg speak saves audio, how dg init confirms setup outside a terminal, and what dg listen -o prints.

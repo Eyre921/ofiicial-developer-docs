@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 409 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 410 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -49,6 +49,7 @@
 - `docs/autoscaling-best-practices` — [Auto-scaling](pages/docs/autoscaling-best-practices.md) · [原文](https://developers.deepgram.com/docs/autoscaling-best-practices.md)
 - `docs/aws-docker-podman` — [Amazon Web Services](pages/docs/aws-docker-podman.md) · [原文](https://developers.deepgram.com/docs/aws-docker-podman.md)
 - `docs/aws-k8s` — [Amazon Web Services](pages/docs/aws-k8s.md) · [原文](https://developers.deepgram.com/docs/aws-k8s.md)
+- `docs/aws-marketplace-x402` — [AWS Marketplace (x402) and Deepgram](pages/docs/aws-marketplace-x402.md) · [原文](https://developers.deepgram.com/docs/aws-marketplace-x402.md)
 - `docs/azure-docker-podman` — [Microsoft Azure](pages/docs/azure-docker-podman.md) · [原文](https://developers.deepgram.com/docs/azure-docker-podman.md)
 - `docs/azure-k8s` — [Microsoft Azure](pages/docs/azure-k8s.md) · [原文](https://developers.deepgram.com/docs/azure-k8s.md)
 - `docs/bare-metal` — [Bare-metal servers](pages/docs/bare-metal.md) · [原文](https://developers.deepgram.com/docs/bare-metal.md)

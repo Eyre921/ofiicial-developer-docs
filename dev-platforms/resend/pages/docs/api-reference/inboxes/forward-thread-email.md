@@ -33,8 +33,8 @@ Emails](/docs/api-reference/inboxes/list-thread-emails) in `data[].id`.
 **to** `string | string[]` *required*
 
 Recipient email address. For multiple addresses, send as an array of strings.
-Must name at least one address. `to`, `cc`, and `bcc` combined cannot exceed
-50 recipients.
+Must name at least one address. `to`, `cc`, and `bcc` combined can't exceed 50
+recipients.
 
 **cc** `string | string[] | null`
 
@@ -75,7 +75,7 @@ Name of attached file.
 
 Path where the attachment file is hosted.
 
-Content type for the attachment. When not set, it is derived from the
+Content type for the attachment. When not set, it's derived from the
 `filename`.
 
 Content ID for embedding inline images with a `cid:` reference in the
@@ -92,12 +92,12 @@ Custom headers to add to the email. You cannot set `In-Reply-To`,
 
 Add an idempotency key to prevent duplicated emails.
 
-* Should be **unique per API request**
+* Use a **unique per API request**
 * Idempotency keys expire after **24 hours**
 * Have a maximum length of **256 characters**
 * A retry with the same key returns the first successful response, with the
   `idempotent-replayed: true` header
-* A failed request is not stored, so you can retry it with the same key
+* A failed request isn't stored, so you can retry it with the same key
 * Reusing the key with a different body, or while the first request is still
   running, returns a `409`
 

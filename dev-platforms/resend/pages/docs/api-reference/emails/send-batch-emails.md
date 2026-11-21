@@ -36,8 +36,7 @@ strings.
 Cc recipient email address. For multiple addresses, send as an array of
 strings.
 
-Schedule email to be sent later. The date can be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g:
-`2026-08-05T11:52:01.858Z`).
+Schedule email to be sent later. Use natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g: `2026-08-05T11:52:01.858Z`).
 
 [See examples](/docs/dashboard/emails/schedule-email)
 
@@ -120,7 +119,7 @@ The id of the published email template. Required if `template` is provided. Only
 
 Template variables object with key/value pairs.
 
-```ts theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+```ts theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
 variables: {
 	CTA: 'Sign up now',
 	CTA_LINK: 'https://example.com/signup'

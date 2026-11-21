@@ -121,6 +121,7 @@ During installation, the Stripe SmartPOS OS automatically grants [Android permis
 | [android.permission.FOREGROUND_SERVICE_DATA_SYNC](https://developer.android.com/reference/android/Manifest.permission#FOREGROUND_SERVICE_DATA_SYNC) |
 | [android.permission.FOREGROUND_SERVICE_SPECIAL_USE](https://developer.android.com/reference/android/Manifest.permission#FOREGROUND_SERVICE_SPECIAL_USE) |
 | [android.permission.INTERNET](https://developer.android.com/reference/android/Manifest.permission#INTERNET) |
+| [android.permission.MODIFY_AUDIO_SETTINGS](https://developer.android.com/reference/android/Manifest.permission#MODIFY_AUDIO_SETTINGS) |
 | [android.permission.NEARBY_WIFI_DEVICES](https://developer.android.com/reference/android/Manifest.permission#NEARBY_WIFI_DEVICES) |
 | [android.permission.NFC](https://developer.android.com/reference/android/Manifest.permission#NFC) |
 | [android.permission.POST_NOTIFICATIONS](https://developer.android.com/reference/android/Manifest.permission#POST_NOTIFICATIONS) |

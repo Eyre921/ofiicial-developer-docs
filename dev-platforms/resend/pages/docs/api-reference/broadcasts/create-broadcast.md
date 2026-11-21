@@ -63,7 +63,7 @@ Send the Broadcast immediately after creation. Defaults to `false`.
 >
 > When set to `true`, the Broadcast will be sent or scheduled (if `scheduled_at` is provided) without requiring a separate call to the [Send Broadcast](/docs/api-reference/broadcasts/send-broadcast) endpoint.
 
-Schedule the Broadcast to be sent later. The date can be in natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g: `2026-08-05T11:52:01.858Z`).
+Schedule the Broadcast to be sent later. Use natural language (e.g.: `in 1 min`) or ISO 8601 format (e.g: `2026-08-05T11:52:01.858Z`).
 
 > [!WARNING]
 >

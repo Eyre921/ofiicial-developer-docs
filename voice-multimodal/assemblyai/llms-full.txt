@@ -6218,7 +6218,7 @@ The disfluencies default depends on the speech model. AssemblyAI-STT-3.7 keeps d
 
 When `speech_models` includes `assemblyai-stt-3-7` in any position, `disfluencies` defaults to `true` for the whole request. This includes lists such as `["assemblyai-stt-3-7", "universal-2"]` and `["universal-2", "assemblyai-stt-3-7"]`, even when Universal-2 transcribes the audio.
 
-To keep the default you had on `universal-3-pro` or `universal-3-5-pro` and remove disfluencies, set `disfluencies` to `false`:
+To remove disfluencies as `universal-3-pro` and `universal-3-5-pro` did by default, set `disfluencies` to `false`:
 
 ```json
 {
@@ -6227,6 +6227,8 @@ To keep the default you had on `universal-3-pro` or `universal-3-5-pro` and remo
   "disfluencies": false
 }
 ```
+
+On AssemblyAI-STT-3.7, this currently removes most filler words but not all, so the output can contain more fillers than you saw on the earlier models. See [Reduce filler words on AssemblyAI-STT-3.7](/pre-recorded-audio/include-filler-words#reduce-filler-words-on-assemblyai-stt-3-7).
 
 ### Code switching
 
@@ -12145,9 +12147,9 @@ while (true) {
 }
 ```
 
-## Remove filler words on AssemblyAI-STT-3.7
+## Reduce filler words on AssemblyAI-STT-3.7
 
-AssemblyAI-STT-3.7 keeps filler words unless you turn them off. Set `disfluencies` to `false` to remove them:
+AssemblyAI-STT-3.7 keeps filler words unless you turn them off. Set `disfluencies` to `false` to reduce them:
 
 ```json
 {
@@ -12156,6 +12158,8 @@ AssemblyAI-STT-3.7 keeps filler words unless you turn them off. Set `disfluencie
   "disfluencies": false
 }
 ```
+
+  On AssemblyAI-STT-3.7, `disfluencies: false` currently removes most filler words, but not all of them. How many remain varies with the audio and with other request parameters, such as `keyterms_prompt`. If you need filler-free text, filter the remaining fillers in post-processing. We're currently working on a fix that removes them more consistently.
 
 ## Supported languages
 

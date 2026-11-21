@@ -51,7 +51,7 @@ To require this for every request on your account, see [Data residency](/account
 
 ## Pricing
 
-Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3.1 Pro (US) and Kimi K3 (US) already include this premium. Muse Spark Open is US-only, and that premium is waived. See [Serverless pricing](/serverless/pricing).
+Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium. Kimi K3.1 Pro (US) is priced at 1.25x the base model serverless prices. Muse Spark Open is US-only, and that premium is waived. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

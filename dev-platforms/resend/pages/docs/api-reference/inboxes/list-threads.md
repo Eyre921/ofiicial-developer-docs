@@ -50,10 +50,10 @@ Threads](/docs/api-reference/inboxes/search-threads) with `start_date`.
 **before** `string`
 
 The ID of the first thread on the current page. Returns the previous, newer
-page. Cannot be combined with `after`. Must be a thread ID. To filter by date,
+page. Can't be combined with `after`. Must be a thread ID. To filter by date,
 use [Search Threads](/docs/api-reference/inboxes/search-threads) with `end_date`.
 
-To find threads by text, sender, recipient, attachment, or date, use [Search
+To find threads by text, email address, attachment, or date, use [Search
 Threads](/docs/api-reference/inboxes/search-threads).
 
 ## Response Fields

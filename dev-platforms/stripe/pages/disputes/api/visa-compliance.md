@@ -22,7 +22,7 @@ You can identify a Visa compliance dispute from the [dispute object](https://doc
 
 Use any of the following indicators to identify a Visa compliance dispute:
 
-- [payment_method_details.case_type](https://docs.stripe.com/api/disputes/object.md#dispute_object-payment_method_details-card-case_type) is set to `compliance`.
+- [payment_method_details.card.case_type](https://docs.stripe.com/api/disputes/object.md#dispute_object-payment_method_details-card-case_type) is set to `compliance`.
 - [enhanced_eligibility_types](https://docs.stripe.com/api/disputes/object.md#dispute_object-enhanced_eligibility_types) contains `visa_compliance`.
 - [reason](https://docs.stripe.com/api/disputes/object.md#dispute_object-reason) is `noncompliant`.
 

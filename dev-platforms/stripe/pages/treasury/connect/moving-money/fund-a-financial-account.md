@@ -68,7 +68,7 @@ To get the bank credentials for your financial account, you must create a [Finan
 
 To create a financial address for your financial account, use the [Create FinancialAddress](https://docs.stripe.com/api/v2/money-management/financial-addresses/create.md?api-version=preview) API.
 
-Create a financial address when you need to receive funds into a financial account or enable outbound payments to third parties. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number, British sort code, or EU IBAN).
+Create a financial address when you need to receive funds into a financial account or enable outbound payments to third parties. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=2026-06-24.preview#v2_financial_address_object-credentials) (such as a US routing number, British sort code, or EU IBAN).
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_addresses \

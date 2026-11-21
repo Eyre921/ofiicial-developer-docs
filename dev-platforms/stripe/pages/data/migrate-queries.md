@@ -42,7 +42,7 @@ from
 
 ## Invalid column references
 
-Trino v414 doesn’t allow referencing column names with their originating sub-query or conditional table expression (CTE) out of scope.
+Trino v414 doesn’t allow referencing column names with their originating sub-query or common table expression (CTE) out of scope.
 
 ```sql
 -- FAILED: Presto error: COLUMN_NOT_FOUND: Column 'c.created' can't be resolved

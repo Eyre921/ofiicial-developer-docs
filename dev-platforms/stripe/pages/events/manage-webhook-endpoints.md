@@ -319,8 +319,6 @@ curl https://api.stripe.com/v1/payment_intents/pi_1QA8PKDTvO5jCVb3TVDZP75a \
 
 ## Use event notification handlers 
 
-> Event notification handlers are available in [public preview](https://docs.stripe.com/sdks/versioning.md#public-preview-release-channel). This feature doesn’t support event destinations that use [EventBridge](https://docs.stripe.com/event-destinations/eventbridge.md) in public preview.
-
 Event notification handlers are the preferred approach to process thin events in production. They replace manual `switch` statements with typed callback functions and handle signature verification automatically.
 
 Each Stripe SDK provides an `EventNotificationHandler` class that handles parsing, validating, and routing incoming webhook events to typed callback functions. You write one function per event type instead of a large `switch` statement, and the handler takes care of signature verification.

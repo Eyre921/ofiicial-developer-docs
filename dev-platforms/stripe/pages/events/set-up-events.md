@@ -173,7 +173,7 @@ Use the CLI to forward events to your local webhook endpoint.
 Assuming your application is running on port 4242:
 
 ```bash
-stripe listen --forward-to http://localhost:4242/webhook
+stripe listen --all-thin --forward-to http://localhost:4242/webhook
 ```
 
 In a separate terminal tab, trigger a mock event:
@@ -190,7 +190,7 @@ The following output appears in your `listen` tab:
 
 Your server logs `Meter error for:` followed by the meter’s display name in the terminal where it’s running.
 
-If you’re following the snapshot events example instead, trigger `payment_intent.succeeded` and your server logs `PaymentIntent was successful!`.
+If you’re following the snapshot events example instead, forward snapshot events with `stripe listen --all-snapshot --forward-to http://localhost:4242/webhook`, then trigger `payment_intent.succeeded`. Your server logs `PaymentIntent was successful!`.
 
 ## Optional: Check webhook signatures
 
